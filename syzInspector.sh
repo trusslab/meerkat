@@ -364,12 +364,12 @@ syzrun () {
         out=$(grep -m 1 "$bugname" $kallerout | cat)
         loopc=$(( $loopc + $waittime ))
 
-        if [[ $(ps -p $syzpid | grep "$syzpid") == "" ]]; then
+        if [[ $(ps -p $syzpid | grep "$syzpid" | cat) == "" ]]; then
             handlecrash
         fi
     done
 
-    if [[ $(ps -p $syzpid | grep "$syzpid") != "" ]]; then
+    if [[ $(ps -p $syzpid | grep "$syzpid" | cat) != "" ]]; then
         kill $syzpid
     else
         handlecrash
@@ -552,9 +552,30 @@ fi
 if [ ! -f "$repro" ]; then
     echo "There is no reproducer for this bug!"
     exit
+else
+    # decide which resource allocation to use
+    if [[ $(grep "\"procs\":1" $repro | cat) != "" ]]; then
+        # single threaded bug
+        echo "Using resource allocation for race bugs."
+        numVM=$numVMst
+        numCPU=$numCPUst
+        numProcs=$numProcsst
+    elif [[ $(grep "\"procs\":8" $repro | cat) != "" ]]; then
+        # race bug
+        echo "Using resource allocation for single threaded bugs."
+        numVM=$numVMr
+        numCPU=$numCPUr
+        numProcs=$numProcsr
+    else
+        # default
+        echo "Using default resource allocation."
+        numVM=$numVMd
+        numCPU=$numCPUd
+        numProcs=$numProcsd
+    fi
 fi
 
-# need to use our own syzkaller directory when there are multiple instances running
+# need to a unique syzkaller directory when there are multiple instances running
 if [ ! -d $syzdir ]; then
     echo "Prepping Syzkaller"
     mkdir $syzdir
