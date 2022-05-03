@@ -321,18 +321,18 @@ syzrun () {
 
     # fuzz time!
     echo "Running Syzbot..."
-    ./bin/syz-manager -config=$syzconfig 2> $managerwd/tmp.txt &
+    ./bin/syz-manager -config=$syzconfig 2> $kallerout &
     syzpid=$!
 
     loopc=0
     out=""
     waittime=1
-    out=$(grep -m 1 "$bugname" $managerwd/tmp.txt | cat)
+    out=$(grep -m 1 "$bugname" $kallerout | cat)
     # check output until bug is found or max time, then kill syzbot
     while [[ $loopc -lt $maxtime && $out == "" ]]
     do
         sleep ${waittime}m
-        out=$(grep -m 1 "$bugname" $managerwd/tmp.txt | cat)
+        out=$(grep -m 1 "$bugname" $kallerout | cat)
         loopc=$(( $loopc + $waittime ))
     done
 
@@ -363,8 +363,7 @@ inspectcurdate () {
         syzrun
 
         if [[ $(ls $kallerwd/crashes) != "" ]]; then
-            echo $(cat $kallerwd/crashes/*/description) >> $tmpbugfile
-            echo "" >> $tmpbugfile
+            echo "$(cat $kallerwd/crashes/*/description)" >> $tmpbugfile
         fi
 
         if [[ $out != "" ]]; then
@@ -409,8 +408,7 @@ inspectcurdate () {
             syzrun
 
             if [[ $(ls $kallerwd/crashes) != "" ]]; then
-                echo $(cat $kallerwd/crashes/*/description) >> $tmpbugfile
-                echo "" >> $tmpbugfile
+                echo "$(cat $kallerwd/crashes/*/description)" >> $tmpbugfile
             fi
 
             if [[ $out != "" ]]; then
@@ -448,8 +446,7 @@ inspectcurdate () {
             syzrun
 
             if [[ $(ls $kallerwd/crashes) != "" ]]; then
-                echo $(cat $kallerwd/crashes/*/description) >> $tmpbugfile
-                echo "" >> $tmpbugfile
+                echo "$(cat $kallerwd/crashes/*/description)" >> $tmpbugfile
             fi
 
             if [[ $out != "" ]]; then
@@ -507,6 +504,7 @@ done
 # current bug parameters
 source wd-inspector-$id/bug.cfg
 outfile=$managerwd/log/$curBug-log.csv
+kallerout=$managerwd/$curBug-kaller-log.txt
 tmpbugfile=$managerwd/crash_tmp.txt
 
 # environment checking. the manager should have already made managerwd
@@ -582,8 +580,7 @@ if [[ $dofind -eq 1 ]]; then
         syzrun
 
         if [[ $(ls $kallerwd/crashes) != "" ]]; then
-            echo $(cat $kallerwd/crashes/*/description) >> $tmpbugfile
-            echo "" >> $tmpbugfile
+            echo "$(cat $kallerwd/crashes/*/description)" >> $tmpbugfile
         fi
 
         echo -n ",$loopc" >> $outfile
@@ -621,8 +618,7 @@ if [[ $dofind -eq 1 ]]; then
         crashes=()
 
         if [[ $(ls $kallerwd/crashes) != "" ]]; then
-            echo $(cat $kallerwd/crashes/*/description) >> $tmpbugfile
-            echo "" >> $tmpbugfile
+            "echo $(cat $kallerwd/crashes/*/description)" >> $tmpbugfile
         fi
 
         echo "$(cat $tmpbugfile | sort | uniq -c)" >> $outfile
@@ -703,8 +699,7 @@ do
         syzrun
 
         if [[ $(ls $kallerwd/crashes) != "" ]]; then
-            echo $(cat $kallerwd/crashes/*/description) >> $tmpbugfile
-            echo "" >> $tmpbugfile
+            echo "$(cat $kallerwd/crashes/*/description)" >> $tmpbugfile
         fi
 
         if [[ $out != "" ]]; then
@@ -781,8 +776,7 @@ for (( i=0; i<10; i++ )); do
         syzrun
 
         if [[ $(ls $kallerwd/crashes) != "" ]]; then
-            echo $(cat $kallerwd/crashes/*/description) >> $tmpbugfile
-            echo "" >> $tmpbugfile
+            echo "$(cat $kallerwd/crashes/*/description)" >> $tmpbugfile
         fi
 
         if [[ $out != "" ]]; then
