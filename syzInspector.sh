@@ -43,6 +43,17 @@ TMPPATH=$PATH
 # =========================================================================================================================================================
 # functions go here
 
+handlecrash () {
+    # if syzkaller crashes, log it and exit to manager.
+    echo "" >> $outfile
+    echo "Syzkaller has experienced a crash!" >> $outfile
+    echo "Fuzzed for $loopc minutes before crashing" >> $outfile
+
+    echo "Syzkaller has experienced a crash!"
+    echo "Check out $kallerout for Syzkaller's output."
+    exit
+}
+
 # finds the most recent kernel for kdate
 # output stored in kdate and kernelVersion
 findkernel () {
@@ -306,6 +317,24 @@ oldoutput () {
     echo "$spacer" >> $outfile
 }
 
+# functions to make logging crashes easier
+clearcrashes () {
+    # empty out the tmp crash file
+    echo -n "" > $tmpbugfile
+}
+
+savecrashes () {
+    # grab the crash names from the kaller log and move them to a tmp file
+    if [[ $(ls $kallerwd/crashes) != "" ]]; then
+        echo "$(cat $kallerwd/crashes/*/description)" >> $tmpbugfile
+    fi
+}
+
+logcrashes () {
+    # output the crashes to the log file.
+    echo "$(cat $tmpbugfile | sort | uniq -c)" >> $outfile
+}
+
 # resets the wd and runs Syzkaller with all the params, then kills it
 syzrun () {
     # reset the working directory each run
@@ -334,9 +363,17 @@ syzrun () {
         sleep ${waittime}m
         out=$(grep -m 1 "$bugname" $kallerout | cat)
         loopc=$(( $loopc + $waittime ))
+
+        if [[ $(ps -p $syzpid | grep "$syzpid") == "" ]]; then
+            handlecrash
+        fi
     done
 
-    kill $syzpid
+    if [[ $(ps -p $syzpid | grep "$syzpid") != "" ]]; then
+        kill $syzpid
+    else
+        handlecrash
+    fi
 }
 
 # Inspects the bug at a given curdate. expects that kdate and sdate have been prepped
@@ -350,10 +387,8 @@ inspectcurdate () {
     tavg=0
     ttf=0  # time-to-find
 
-    # empt out the crash file
-    echo -n "" > $tmpbugfile
+    clearcrashes
 
-    crashes=()
     # fuzz n times for robust results
     for (( i=0; i<$fuzztimes; i++ )); do
         echo "Kernel Only try $i"
@@ -362,9 +397,7 @@ inspectcurdate () {
         syzconfigprep
         syzrun
 
-        if [[ $(ls $kallerwd/crashes) != "" ]]; then
-            echo "$(cat $kallerwd/crashes/*/description)" >> $tmpbugfile
-        fi
+        savecrashes
 
         if [[ $out != "" ]]; then
             echo "Found bug: $out"
@@ -381,8 +414,7 @@ inspectcurdate () {
     ttf=$kavg
     echo ",$ttf" >> $outfile
 
-    # output the crashes to the log file.
-    echo "$(cat $tmpbugfile | sort | uniq -c)" >> $outfile
+    logcrashes
 
     # Update Syzkaller and fuzz again
     # if there is a syzkaller update for curdate, set it
@@ -396,9 +428,8 @@ inspectcurdate () {
         # update syzkaller, but not the template yet
         syzprep 0
 
-        echo -n "" > $tmpbugfile
+        clearcrashes
 
-        crashes=()
         # fuzz n times for robust results
         for (( i=0; i<$fuzztimes; i++ )); do
             echo "Kernel and Syzkaller try $i"
@@ -407,9 +438,7 @@ inspectcurdate () {
             syzconfigprep
             syzrun
 
-            if [[ $(ls $kallerwd/crashes) != "" ]]; then
-                echo "$(cat $kallerwd/crashes/*/description)" >> $tmpbugfile
-            fi
+            savecrashes
 
             if [[ $out != "" ]]; then
                 echo "Found bug: $out"
@@ -425,7 +454,7 @@ inspectcurdate () {
         savg=$(( $savg / ${#stimes[@]} ))
         echo ",$savg" >> $outfile
 
-        echo "$(cat $tmpbugfile | sort | uniq -c)" >> $outfile
+        logcrashes
     fi
 
     # update the template and fuzz again
@@ -434,9 +463,8 @@ inspectcurdate () {
     if (( $templateupdate == 1 )); then
         echo -n "$curdate,$gccVersion,$kernelVersion,$kdate,$syzVersion,$sdate,$maxtime" >> $outfile
 
-        echo -n "" > $tmpbugfile
+        clearcrashes
 
-        crashes=()
         # fuzz n times for robust results
         for (( i=0; i<$fuzztimes; i++ )); do
             echo "Kernel, Syzkaller, and Template try $i"
@@ -445,9 +473,7 @@ inspectcurdate () {
             syzconfigprep
             syzrun
 
-            if [[ $(ls $kallerwd/crashes) != "" ]]; then
-                echo "$(cat $kallerwd/crashes/*/description)" >> $tmpbugfile
-            fi
+            savecrashes
 
             if [[ $out != "" ]]; then
                 echo "Found bug: $out"
@@ -463,7 +489,7 @@ inspectcurdate () {
         tavg=$(( $tavg / ${#ttimes[@]} ))
         echo ",$tavg" >> $outfile
 
-        echo "$(cat $tmpbugfile | sort | uniq -c)" >> $outfile
+        logcrashes
     fi
 
     mttf=$ttf
@@ -546,7 +572,7 @@ if [[ $dofind -eq 1 ]]; then
     echo "Fuzzing at the finding commit..."
     echo "Finding Commit" >> $outfile
 
-    echo -n "" > $tmpbugfile
+    clearcrashes
 
     curdate="$findDate"
     kdate="$findDate"
@@ -573,15 +599,12 @@ if [[ $dofind -eq 1 ]]; then
 
     found=0
     ftimes=()
-    crashes=()
     # run 3 times.
     for (( i=0; i<3; i++ )); do
         syzconfigprep
         syzrun
 
-        if [[ $(ls $kallerwd/crashes) != "" ]]; then
-            echo "$(cat $kallerwd/crashes/*/description)" >> $tmpbugfile
-        fi
+        savecrashes
 
         echo -n ",$loopc" >> $outfile
 
@@ -593,7 +616,7 @@ if [[ $dofind -eq 1 ]]; then
     done
     echo "" >> $outfile
 
-    echo "$(cat $tmpbugfile | sort | uniq -c)" >> $outfile
+    logcrashes
 
     # if the bug was found at least once
     if [[ $found == 1 ]]; then
@@ -608,20 +631,15 @@ if [[ $dofind -eq 1 ]]; then
         echo "Last ditch fuzz,$maxtime" >> $outfile
         echo -n "$curdate,$gccVersion,$kernelVersion,$kdate,$syzVersion,$sdate,$maxtime" >> $outfile
 
-        echo -n "" > $tmpbugfile
+        clearcrashes
 
         syzconfigprep
         syzrun
 
         echo ",$loopc" >> $outfile
 
-        crashes=()
-
-        if [[ $(ls $kallerwd/crashes) != "" ]]; then
-            "echo $(cat $kallerwd/crashes/*/description)" >> $tmpbugfile
-        fi
-
-        echo "$(cat $tmpbugfile | sort | uniq -c)" >> $outfile
+        savecrashes
+        logcrashes
 
         cleankernel
 
@@ -689,8 +707,8 @@ do
 
     syzprep 1
 
-    echo -n "" > $tmpbugfile
-    crashes=()
+    clearcrashes
+
     ktimes=()
     kavg=0
     for (( i=0; i<$fuzztimes; i++ )); do
@@ -698,9 +716,7 @@ do
         syzconfigprep
         syzrun
 
-        if [[ $(ls $kallerwd/crashes) != "" ]]; then
-            echo "$(cat $kallerwd/crashes/*/description)" >> $tmpbugfile
-        fi
+        savecrashes
 
         if [[ $out != "" ]]; then
             echo "Found bug: $out"
@@ -718,7 +734,7 @@ do
     ttf=$kavg
     echo "" >> $outfile
 
-    echo "$(cat $tmpbugfile | sort | uniq -c)" >> $outfile
+    logcrashes
 
     if (( $ttf < $maxtime )); then
         r=$(( $m - 1 ))
@@ -766,8 +782,8 @@ for (( i=0; i<10; i++ )); do
 
     syzprep 1
 
-    echo -n "" > $tmpbugfile
-    crashes=()
+    clearcrashes
+
     ktimes=()
     kavg=0
     for (( i=0; i<$fuzztimes; i++ )); do
@@ -775,9 +791,7 @@ for (( i=0; i<10; i++ )); do
         syzconfigprep
         syzrun
 
-        if [[ $(ls $kallerwd/crashes) != "" ]]; then
-            echo "$(cat $kallerwd/crashes/*/description)" >> $tmpbugfile
-        fi
+        savecrashes
 
         if [[ $out != "" ]]; then
             echo "Found bug: $out"
@@ -789,7 +803,7 @@ for (( i=0; i<10; i++ )); do
     cleankernel
     echo "" >> $outfile
 
-    echo "$(cat $tmpbugfile | sort | uniq -c)" >> $outfile
+    logcrashes
 
     # if we find the bug, restart the loop
     if (( $loopc < $maxtime && $loopc != 0 )); then
