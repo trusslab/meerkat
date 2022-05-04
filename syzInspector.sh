@@ -98,6 +98,7 @@ prepgcc () {
     cd $inspectdir
 }
 
+# just removes the gcc version from the path
 cleangcc () {
     PATH=$TMPPATH
 }
@@ -153,6 +154,7 @@ kernelprep () {
 
 cleansyz () {
     # I've had enough issues with this. wipe the directory.
+    # changes made to syzkaller stay even after changing the head location in git.
     cd $syzdir
     rm -r *
 }
@@ -215,6 +217,7 @@ syzprep () {
     cp $managerwd/$curBug.txt ./
     cd $syzdir
 
+    # remove checks for some undefined functions
     sed -i 's/\$(ADDCFLAGS) \$(CFLAGS) -DGOOS_\$(TARGETOS)=1 -DGOARCH_\$(TARGETARCH)=1/-m64 -O2 -pthread -Wall -static-pie -DGOOS_\$(TARGETOS)=1 -DGOARCH_\$(TARGETARCH)=1/' Makefile
     echo "$spacer"
     echo "Making Syzkaller..."
@@ -270,7 +273,6 @@ syzprep () {
 # outputs the current config to syzkaller
 # added functionality to choose from a set of ports (been having issues with ports not being freed)
 syzconfigprep () {
-    # port 56741
     port=$(( $startport + $pc ))
     pc=$(( ($pc + 1) % ($fuzztimes + 1) ))
 
@@ -290,7 +292,7 @@ syzconfigprep () {
         echo -n "\"vmlinux\": \"$managerwd/kernels/$kernelVersion/vmlinux\", " >> $syzconfig
     fi
 
-    # change image when syzkaller did
+    # change image when syzkaller did. It shouldn't matter, but who knows.
     if (( $($inspectdir/helpers/diffdate $sdate "2018-09-04") >= 0 )); then
         echo -n "\"image\": \"$inspectdir/image/stretch/stretch.img\", \"sshkey\": \"$inspectdir/image/stretch/stretch.id_rsa\", " >> $syzconfig
     else
@@ -300,26 +302,9 @@ syzconfigprep () {
     echo "\"syzkaller\": \"$syzdir\", \"procs\": $numProcs, \"type\": \"qemu\", \"reproduce\": false, \"vm\": { \"count\": $numVM, \"kernel\": \"$managerwd/kernels/$kernelVersion/arch/x86/boot/bzImage\", \"cpu\": $numCPU, \"mem\": $mem }}" >> $syzconfig
 }
 
-# old style of output. changed in favor of csv
-oldoutput () {
-    echo "Fuzz Results: $(date +%Y-%m-%d) $(date +%H:%M:%S)" >> $outfile
-    echo "Current Date: $curdate" >> $outfile
-    echo "Kernel: $kernelVersion" >> $outfile
-    echo "Kernel Date: $kdate" >> $outfile
-    echo "Syzkaller: $syzVersion" >> $outfile
-    echo "Syzkaller Date: $sdate" >> $outfile
-    echo "Maximum Fuzzing Time: $maxtime minutes" >> $outfile
-    echo "Time to find: $loopc minutes" >> $outfile
-    echo "Crashes Found:" >> $outfile
-    if [[ $(ls $inspectdir/$kallerwd/crashes) != "" ]]; then
-        echo "$(tail $inspectdir/$kallerwd/crashes/*/description)" >> $outfile
-    fi
-    echo "$spacer" >> $outfile
-}
-
 # functions to make logging crashes easier
 clearcrashes () {
-    # empty out the tmp crash file
+    # clear the tmp crash file
     echo -n "" > $tmpbugfile
 }
 
@@ -335,7 +320,7 @@ logcrashes () {
     echo "$(cat $tmpbugfile | sort | uniq -c)" >> $outfile
 }
 
-# resets the wd and runs Syzkaller with all the params, then kills it
+# resets the wd and runs Syzkaller, then kills it
 syzrun () {
     # reset the working directory each run
     cd $inspectdir
@@ -385,7 +370,7 @@ inspectcurdate () {
     kavg=0
     savg=0
     tavg=0
-    ttf=0  # time-to-find
+    ttf=0
 
     clearcrashes
 
@@ -575,7 +560,7 @@ else
     fi
 fi
 
-# need to a unique syzkaller directory when there are multiple instances running
+# need to have a unique syzkaller directory when there are multiple instances running
 if [ ! -d $syzdir ]; then
     echo "Prepping Syzkaller"
     mkdir $syzdir
@@ -641,7 +626,7 @@ if [[ $dofind -eq 1 ]]; then
 
     # if the bug was found at least once
     if [[ $found == 1 ]]; then
-        # take the maximum fuzzing time times 1.5
+        # take the mean + 3 * std dev
         maxtime=$(( $($inspectdir/helpers/findmaxtime ${ftimes[@]}) ))
         echo "Using maximum fuzzing time $maxtime"
         echo "Max Time,$maxtime" >> $outfile

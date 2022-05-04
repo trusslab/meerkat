@@ -43,7 +43,7 @@ printhelp () {
 
 # =================================================================================================
 
-# get the start and end dates from the arguments
+# get the start and end lines from the arguments
 while getopts "s:e:i:" flag
 do
     case $flag in
@@ -126,11 +126,11 @@ while (( $line <= $endLine )); do
         configlink=$(echo "$linetext" | awk -F',' '{ print $6; }')
         wget $configlink -O $wd/config-$curBug.txt
 
-        # reprducer - download it
+        # reproducer - download it
         reprolink=$(echo "$linetext" | awk -F',' '{ print $5; }')
         wget $reprolink -O $wd/repro-$curBug.prog
 
-        # repository
+        # linux kernel repository
         # the link to the finding commit has what we need
         findlink=$(echo "$linetext" | awk -F',' '{ print $7; }')
         repo=$(echo "$findlink" | grep "https://git.kernel" | awk -F'/' '{ print $9"/"$10; }' | cat)
