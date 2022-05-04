@@ -25,6 +25,7 @@ song=$inspectdir/Let_There_Be_Light.mp3
 
 # flags
 playmusic=0
+dayfuzz=0
 dorepro=0
 hasstart=0
 hasend=0
@@ -51,6 +52,15 @@ handlecrash () {
 
     echo "Syzkaller has experienced a crash!"
     echo "Check out $kallerout for Syzkaller's output."
+    exit
+}
+
+handlenotfound () {
+    echo "This bug is too hard to find!"
+    echo "This bug is too hard to find!" >> $outfile
+    if (( $playmusic == 1 )); then
+        play -q $song -V1 -t alsa
+    fi
     exit
 }
 
@@ -485,7 +495,7 @@ inspectcurdate () {
 # Begin Main Program
 
 # get the start and end dates from the arguments
-while getopts "s:e:f:F:m:i:p" flag
+while getopts "s:e:f:F:m:i:pd" flag
 do
     case $flag in
         s)
@@ -506,6 +516,8 @@ do
             id=${OPTARG} ;;
         p)
             playmusic=1 ;;
+        d)
+            dayfuzz=1 ;;
         *)
             echo "Bad Arguments!"
             exit
@@ -638,6 +650,9 @@ if [[ $dofind -eq 1 ]]; then
         maxtime=$(( $($inspectdir/helpers/findmaxtime ${ftimes[@]}) ))
         echo "Using maximum fuzzing time $maxtime"
         echo "Max Time,$maxtime" >> $outfile
+    elif (( dayfuzz == 0 )); then
+        # if the bug was never found
+        handlenotfound
     else
         echo "Bug was not found. Trying for 1 day"
         maxtime=1440
@@ -657,19 +672,8 @@ if [[ $dofind -eq 1 ]]; then
 
         cleankernel
 
-        if [[ $found == 0 ]]; then
-            # if the bug was never found
-            echo "This bug is too hard to find!"
-            echo "This bug was not found!" >> $outfile
-            if (( $playmusic == 1 )); then
-                play -q $song -V1 -t alsa
-            fi
-            exit
-        else
-            echo "This bug takes a little too long to find"
-            echo "This bug takes too long to find" >> $outfile
-            exit
-        fi
+        # for now, don't go after bugs that take a day to find. Leave them for later
+        handlenotfound
     fi
 
     cleankernel
