@@ -455,6 +455,7 @@ void parse_resource(const string &text, vector<string> &d)
 }
 
 // returns true if this is a constant, false otherwise
+// yeah, I know this is based on some optional formatting.
 bool check_flag(const string & s)
 {
     for (char c : s)
@@ -699,6 +700,16 @@ int main(int argc, char *argv[])
     for (string s : reprosys)
     {
         pos2 = find(s, syscalls);
+
+        int contextDelim = s.find('$');
+        if (pos2 < 0 && contextDelim != string::npos)
+        {
+            // if s has a context, and that context was not found, go get the more general syscall
+            // for syscalls of the form "ioctl$BPF_MAP()" -> "ioctl()"
+            string general = s.substr(0, contextDelim);
+            pos2 = find(general, syscalls);
+        }
+
         if (pos2 < 0)
         {
             cout << "Unknown Syscall: " << s << endl;
