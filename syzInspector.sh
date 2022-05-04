@@ -537,27 +537,6 @@ fi
 if [ ! -f "$repro" ]; then
     echo "There is no reproducer for this bug!"
     exit
-else
-    # decide which resource allocation to use
-    if [[ $(grep "\"procs\":1" $repro | cat) != "" ]]; then
-        # single threaded bug
-        echo "Using resource allocation for race bugs."
-        numVM=$numVMst
-        numCPU=$numCPUst
-        numProcs=$numProcsst
-    elif [[ $(grep "\"procs\":8" $repro | cat) != "" ]]; then
-        # race bug
-        echo "Using resource allocation for single threaded bugs."
-        numVM=$numVMr
-        numCPU=$numCPUr
-        numProcs=$numProcsr
-    else
-        # default
-        echo "Using default resource allocation."
-        numVM=$numVMd
-        numCPU=$numCPUd
-        numProcs=$numProcsd
-    fi
 fi
 
 # need to have a unique syzkaller directory when there are multiple instances running
@@ -572,6 +551,35 @@ fi
 startport=$(( $startport + $id * ($fuzztimes + 1) ))
 
 echo "$bugname,$buglink" > $outfile
+# decide which resource allocation to use
+if [[ $(grep "\"procs\":1" $repro | cat) != "" ]]; then
+    # single threaded bug
+    echo "Using resource allocation for race bugs."
+    numVM=$numVMst
+    numCPU=$numCPUst
+    numProcs=$numProcsst
+    echo "Single Threaded" >> $outfile
+elif [[ $(grep "\"procs\":8" $repro | cat) != "" ]]; then
+    # race bug
+    echo "Using resource allocation for single threaded bugs."
+    numVM=$numVMr
+    numCPU=$numCPUr
+    numProcs=$numProcsr
+    echo "Race Condition" >> $outfile
+else
+    # default
+    echo "Using default resource allocation."
+    numVM=$numVMd
+    numCPU=$numCPUd
+    numProcs=$numProcsd
+    echo "Default" >> $outfile
+fi
+
+# log the resource allocation
+echo "VMs,$numVM" >> $outfile
+echo "CPUs,$numCPU" >> $outfile
+echo "Procs,$numProcs" >> $outfile
+
 
 # fuzz at the finding commit to get the maximum time
 if [[ $dofind -eq 1 ]]; then
