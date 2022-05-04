@@ -4,15 +4,17 @@ I'll add more stuff later.
 
 ## Compilers
 
-Stuff about how to get compilers and mark them for inspector to use
+In order to have an accurate fuzzing environment for Syzkaller and the Linux kernel, syzInspector uses older gcc compilers for older versions of Linux. This has the added benefit of fixing some compiler-time bugs that have otherwise plagued me. However, this means you need to download multiple versions of gcc. Thankfully, the wonderful people over at Syzkaller have kept a log of all the compiler versions they have used, and the come pre-compiled! The tars for all of the compilers can be found over on the Syzkaller github. Download them and untar them into `compilers` so that the actual executable is found at `compilers/gcc-7.0.0/bin/gcc`.
+
+**Note**: Test out each compiler before you use it! Some of them require old libraries. You'll need to download them and put them in the right directory for your system. Often times, gcc can use the more recent library, but you'll need to point a symbolic link at it. Then come back here and remind me to make more in depth instructions.
 
 ## Helper Programs
 
-How to compiler and a shoort description
+How to compile and a short description
 
 ## OS Images
 
-How to compile and such
+Syzkaller has used two different OS images to interface with the kernel since it began. I have included scripts to download both of them (stolen from Syzkaller again). They are slightly modified to change where they pull from (as old repositories get archived). You should be able to simply run them, but no guarantees that they'll work forever.
 
 ## Parsers
 
@@ -20,7 +22,9 @@ How to run and such
 
 ## Patches
 
-Don't touch them
+**Do Not Touch the Patch Files**
+
+They are specific to some old versions of Linux and Syzkaller. There should not be a reason to change them unless you want to do your own debugging.
 
 ## Template
 
@@ -28,7 +32,11 @@ Compile and short description
 
 ## Tools
 
-Short description
+These are some tools that I found useful while writing and debugging syzInspector. They don't have all the fancy arguments set up, so if you want to change any part of it, edit the code.
+
+`tools/boot.sh` is a simple one-liner to boot a Linux version through Qemu with all the options that Syzkaller uses. You may need to change around the arguments and change the directory for either the OS image or Linux kernel
+
+`tools/kprep.sh` downloads and makes a kernel version as specified by a hash passed as a command line argument. To change the repository or any other parameter, edit the source code.
 
 ## Configuration
 
