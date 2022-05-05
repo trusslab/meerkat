@@ -527,7 +527,8 @@ done
 # current bug parameters
 source wd-inspector-$id/bug.cfg
 outfile=$managerwd/log/$curBug-log.csv
-kallerout=$managerwd/$curBug-kaller-log.txt
+# kallerout stores the current/last syzkaller debug output
+kallerout=$managerwd/log/$curBug-kaller-log.txt
 tmpbugfile=$managerwd/crash_tmp.txt
 
 # environment checking. the manager should have already made managerwd
