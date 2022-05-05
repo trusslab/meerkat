@@ -25,7 +25,7 @@ do
 	ndatearr=()
 	readarray -t datearr <<< "$dates"
 	for d in "${datearr[@]}"; do
-		ndatearr+=($(./ntod "$d"))
+		ndatearr+=($(date -d "$d" +"%Y-%m-%d"))
 	done
 
 	# break the numbers into an array and then get the hashes
