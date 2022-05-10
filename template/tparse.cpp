@@ -9,7 +9,7 @@ using namespace std;
 
 const bool VERB = false;
 
-const vector<string> KEYWORDS = {"in", "out", "int64", "int32", "int16", "int8", "intptr", "len", "opt", "timespec", "filename", "array", "const", "ptr64", "string", "flags", "bytesize", "stringnoz", "parent", "inout", "sizeof", "timeout", "ptr", "bool8", "bool16", "bool32", "bool64", "fmt", "void", "int16be", "int8be", "int32be", "int64be", "glob", "bitsize", "offsetof", "vma", "vma64", "proc", "text", "bytesize4", "bytesize8", "bytesize16", "bytesize32", "bytesize64", "dec", "oct", "hex", "align", "packed", "size", "varlen"};
+const vector<string> KEYWORDS = {"in", "out", "int64", "int32", "int16", "int8", "intptr", "len", "opt", "filename", "array", "const", "ptr64", "string", "flags", "bytesize", "stringnoz", "parent", "inout", "sizeof", "timeout", "ptr", "bool8", "bool16", "bool32", "bool64", "fmt", "void", "int16be", "int8be", "int32be", "int64be", "glob", "bitsize", "offsetof", "vma", "vma64", "proc", "text", "bytesize4", "bytesize8", "bytesize16", "bytesize32", "bytesize64", "dec", "oct", "hex", "align", "packed", "size", "varlen"};
 
 // returns true if s is in v, false otherwise
 bool is_in(const string & s, const vector<string> & v)
@@ -81,8 +81,8 @@ void parse_syscall(const string &text, vector<string> &d, vector<string> &args, 
     for (int i = pos0; i < text.size() && text.at(i) != ')'; i++)
     {
         // first is always a parameter name
-        for (i = (text.at(i) == ' ' ? i + 1 : i); i < text.size() && text.at(i) != ' ' && text.at(i) != ')'; i++);
-        if (text.at(i) == ')')
+        i = text.find_first_of(" )", pos0);
+        if (i == string::npos || text.at(i) == ')')
             break;
 
         tempArg.clear();
@@ -92,7 +92,10 @@ void parse_syscall(const string &text, vector<string> &d, vector<string> &args, 
         pos0 = i + 1;
 
         // then the value
-        for (i++; i < text.size() && text.at(i) != ',' && text.at(i) != '[' && text.at(i) != ')'; i++);
+        i = text.find_first_of(",[)", pos0);
+        if (i == string::npos)
+            break;
+
         dep.clear();
         dep = text.substr(pos0, i - pos0);
         if (check_dep(dep, KEYWORDS) && check_dep(dep, d) && !is_number(dep))
@@ -112,7 +115,7 @@ void parse_syscall(const string &text, vector<string> &d, vector<string> &args, 
             int p = 1;
             while (p > 0)
             {
-                for(i++; i < text.size() && text.at(i) != ',' && text.at(i) != '[' && text.at(i) != ']'; i++);
+                i = text.find_first_of(",[]", pos0);
                 dep.clear();
                 dep = text.substr(pos0, i - pos0);
 
@@ -152,7 +155,9 @@ void parse_syscall(const string &text, vector<string> &d, vector<string> &args, 
         // [out, resource]
         pos1 += 5;
         int i;
-        for (i = pos1; i < text.size() && text.at(i) != '[' && text.at(i) != ']'; i++);
+        i = text.find_first_of("[]", pos1);
+        if (i == string::npos)
+            break;
 
         dep = text.substr(pos1, i - pos1);
         if (check_dep(dep, KEYWORDS) && !is_number(dep))
@@ -166,7 +171,7 @@ void parse_syscall(const string &text, vector<string> &d, vector<string> &args, 
             while (layers > 0 && i < text.size())
             {
                 // find the next substring
-                for (i = pos1; i < text.size() && text.at(i) != '[' && text.at(i) != ']' && text.at(i) != ','; i++);
+                i = text.find_first_of("[,]", pos1);
 
                 dep = text.substr(pos1, i - pos1);
                 if (check_dep(dep, KEYWORDS) && !is_number(dep))
@@ -210,17 +215,17 @@ void parse_single_line_type(const string & text, vector<string> &d, const vector
     string dep;
 
     // find the start of the data portion
-    for (i = 5; i < text.size() && text.at(i) != ' ' && text.at(i) != '['; i++);
+    i = text.find_first_of(" [", 5);
+
     if (text.at(i) == '[')
-    {
-        for (; i < text.size() && text.at(i) != ']'; i++);
-        i++;
-    }
+        i = text.find_first_of("]", i) + 1;
+
     int pos0 = i + 1;
 
     for (i = pos0; i < text.size(); i++)
     {
-        for (; i < text.size() && text.at(i) != ' ' && text.at(i) != '['; i++);
+        i = text.find_first_of(" [", pos0);
+
         dep.clear();
         dep = text.substr(pos0, i - pos0);
         if (dep.find(":") != string::npos)
@@ -240,6 +245,7 @@ void parse_single_line_type(const string & text, vector<string> &d, const vector
             int p = 1;
             while (p > 0)
             {
+                // leaving this silly for loop in because I'm checking for a special case inside.
                 for(i = pos0; i < text.size() && text.at(i) != ',' && text.at(i) != '[' && text.at(i) != ']'; i++)
                 {
                     if (text.substr(i, 3) == "\',\'")
@@ -288,7 +294,8 @@ void parse_type_args(const string & text, vector<string> &args)
         return;
 
     int i = 0;
-    for (i = 5; i < text.size() && text.at(i) != '[' && text.at(i) != ' '; i++);
+    i = text.find_first_of(" [", 5);
+
     if (i >= text.size() || text.at(i) == ' ')
         return;
 
@@ -296,7 +303,8 @@ void parse_type_args(const string & text, vector<string> &args)
 
     for (i = pos0; i < text.size() && text.at(i) != ']'; i++)
     {
-        for (; i < text.size() && text.at(i) != ']' && text.at(i) != ','; i++);
+        i = text.find_first_of("],", pos0);
+
         args.push_back(text.substr(pos0, i - pos0));
         i = (text.at(i) == ',' ? i + 1 : i);
         pos0 = i + 1;
@@ -318,16 +326,15 @@ void parse_body(const string &text, vector<string> &d, vector<string> &params, c
     for (i = pos0; i < text.size() && text.at(i) != delim; i++)
     {
         // first the arg name
-        for (; i < text.size() && (text.at(i) == '\t' || text.at(i) == ' '); i++);
+        i = text.find_first_not_of("\t ", pos0);
         pos0 = i;
-        for (i = pos0; i < text.size() && text.at(i) != '\t' && text.at(i) != ' '; i++);
+        i = text.find_first_of("\t ", pos0);
         params.push_back(text.substr(pos0, i - pos0));
 
-        for (; i < text.size() && (text.at(i) == '\t' || text.at(i) == ' '); i++);
-        pos0 = i;
-
         // then the value
-        for (; i < text.size() && text.at(i) != '[' && text.at(i) != '\n' && text.at(i) != '\t' && text.at(i) != ' '; i++);
+        i = text.find_first_not_of("\t ", i);
+        pos0 = i;
+        i = text.find_first_of("\n\t[ ", pos0);
 
         dep.clear();
         dep = text.substr(pos0, i - pos0);
@@ -348,6 +355,7 @@ void parse_body(const string &text, vector<string> &d, vector<string> &params, c
             int p = 1;
             while (p > 0)
             {
+                // once again leaving this because of the check. should come back and fix this. (and put it in a function)
                 for(i = pos0; i < text.size() && text.at(i) != ',' && text.at(i) != '[' && text.at(i) != ']'; i++)
                 {
                     if (text.substr(i, 3) == "\',\'")
@@ -398,7 +406,7 @@ void parse_body(const string &text, vector<string> &d, vector<string> &params, c
         int p = 1;
         while (p > 0)
         {
-            for(i = pos0; i < text.size() && text.at(i) != ',' && text.at(i) != '[' && text.at(i) != ']'; i++);
+            i = text.find_first_of("[],", pos0);
             dep.clear();
             dep = text.substr(pos0, i - pos0);
             if (!dep.empty())
@@ -443,7 +451,7 @@ void parse_resource(const string &text, vector<string> &d)
         pos0 = pos1 + 3;
         for (int i = pos0; i < text.size(); i++)
         {
-            for (; i < text.size() && text.at(i) != ','; i++);
+            i = text.find_first_of(",", pos0);
             if (!is_number(text.substr(pos0, i - pos0)))
                 d.push_back(text.substr(pos0, i - pos0));
             i++;
@@ -471,7 +479,7 @@ void parse_flag(const string &text, vector<string> &d)
 
     for (int i = pos0; i < text.size(); i++)
     {
-        for (; i < text.size() && text.at(i) != ','; i++);
+        i = text.find_first_of(",", pos0);
         if (check_flag(text.substr(pos0, i - pos0)))
             d.push_back(text.substr(pos0, i - pos0));
         i++;
