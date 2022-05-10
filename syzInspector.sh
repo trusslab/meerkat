@@ -276,6 +276,12 @@ syzprep () {
         rm vendor/cloud.google.com/go/storage/not_go110.go
     fi
 
+    if [[ $(grep "descriptions:" Makefile | cat) == "" ]]; then
+        # Sometimes we need to regenerate the template ourselves.
+        make bin/syz-sysgen
+        ./bin/syz-sysgen
+    fi
+
     make -f Makefile
     echo "$spacer"
 }
