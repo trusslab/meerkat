@@ -711,6 +711,7 @@ l=0
 r=$daterange
 m=$(( ($l + $r) / 2 ))
 curdate=$($inspectdir/helpers/dpd $startDate $m)
+revealdate="$findDate"
 
 while (( $l < $r ))
 do
@@ -762,6 +763,7 @@ do
     logcrashes
 
     if (( $ttf < $maxtime )); then
+        revealdate="$curdate"
         r=$(( $m - 1 ))
     else
         l=$(( $m + 1 ))
@@ -774,7 +776,7 @@ do
 done
 
 # Check back 10 days to verify results
-backdate=$curdate
+backdate="$revealdate"
 for (( i=0; i<10; i++ )); do
     loopc=0
     backdate=$($inspectdir/helpers/decdate $(date +"%Y %m %d" -d $backdate))
@@ -832,7 +834,7 @@ for (( i=0; i<10; i++ )); do
 
     # if we find the bug, restart the loop
     if (( $loopc < $maxtime && $loopc != 0 )); then
-        curdate=$backdate
+        revealdate=$backdate
         i=0
     fi
 done
@@ -840,6 +842,7 @@ done
 # Inspect the current date (current date is the one we converged to)
 echo "Now inspecting the revealing date"
 echo "Revealing Date" >> $outfile
+curdate="$revealdate"
 kdate=$curdate
 findkernel
 
