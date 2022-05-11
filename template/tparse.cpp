@@ -81,6 +81,7 @@ void parse_syscall(const string &text, vector<string> &d, vector<string> &args, 
     for (int i = pos0; i < text.size() && text.at(i) != ')'; i++)
     {
         // first is always a parameter name
+        pos0 = text.find_first_not_of(" ", pos0);
         i = text.find_first_of(" )", pos0);
         if (i == string::npos || text.at(i) == ')')
             break;
@@ -116,6 +117,9 @@ void parse_syscall(const string &text, vector<string> &d, vector<string> &args, 
             while (p > 0)
             {
                 i = text.find_first_of(",[]", pos0);
+                if (i == string::npos)
+                    break;
+
                 dep.clear();
                 dep = text.substr(pos0, i - pos0);
 
@@ -172,6 +176,8 @@ void parse_syscall(const string &text, vector<string> &d, vector<string> &args, 
             {
                 // find the next substring
                 i = text.find_first_of("[,]", pos1);
+                if (i == string::npos)
+                    break;
 
                 dep = text.substr(pos1, i - pos1);
                 if (check_dep(dep, KEYWORDS) && !is_number(dep))
@@ -225,6 +231,8 @@ void parse_single_line_type(const string & text, vector<string> &d, const vector
     for (i = pos0; i < text.size(); i++)
     {
         i = text.find_first_of(" [", pos0);
+        if (i == string::npos)
+            break;
 
         dep.clear();
         dep = text.substr(pos0, i - pos0);
@@ -304,6 +312,8 @@ void parse_type_args(const string & text, vector<string> &args)
     for (i = pos0; i < text.size() && text.at(i) != ']'; i++)
     {
         i = text.find_first_of("],", pos0);
+        if (i == string::npos)
+            break;
 
         args.push_back(text.substr(pos0, i - pos0));
         i = (text.at(i) == ',' ? i + 1 : i);
@@ -329,12 +339,17 @@ void parse_body(const string &text, vector<string> &d, vector<string> &params, c
         i = text.find_first_not_of("\t ", pos0);
         pos0 = i;
         i = text.find_first_of("\t ", pos0);
+        if (i == string::npos)
+            break;
+
         params.push_back(text.substr(pos0, i - pos0));
 
         // then the value
         i = text.find_first_not_of("\t ", i);
         pos0 = i;
         i = text.find_first_of("\n\t[ ", pos0);
+        if (i == string::npos)
+            break;
 
         dep.clear();
         dep = text.substr(pos0, i - pos0);
@@ -407,6 +422,9 @@ void parse_body(const string &text, vector<string> &d, vector<string> &params, c
         while (p > 0)
         {
             i = text.find_first_of("[],", pos0);
+            if (i == string::npos)
+                break;
+
             dep.clear();
             dep = text.substr(pos0, i - pos0);
             if (!dep.empty())
@@ -452,6 +470,9 @@ void parse_resource(const string &text, vector<string> &d)
         for (int i = pos0; i < text.size(); i++)
         {
             i = text.find_first_of(",", pos0);
+            if (i == string::npos)
+                i = text.size();
+
             if (!is_number(text.substr(pos0, i - pos0)))
                 d.push_back(text.substr(pos0, i - pos0));
             i++;
@@ -480,6 +501,9 @@ void parse_flag(const string &text, vector<string> &d)
     for (int i = pos0; i < text.size(); i++)
     {
         i = text.find_first_of(",", pos0);
+        if (i == string::npos)
+            i = text.size();
+
         if (check_flag(text.substr(pos0, i - pos0)))
             d.push_back(text.substr(pos0, i - pos0));
         i++;
