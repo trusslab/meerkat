@@ -168,7 +168,7 @@ while (( $line <= $endLine )); do
             # run inspector on the bug
             # using finding date as the ending date
             echo "Fuzzing. start: $startDate; end: $findDate; finding: $findDate"
-            ./syzInspector.sh -f $findDate -F $findhash -i $id # -s $startDate -e $findDate -f $findDate -F $findhash -i $id
+            ./syzInspector.sh -f $findDate -F $findhash -s $startDate -e $findDate -i $id
             number=$(( $number + 1 ))
         else
             echo "Possible bad parse on line $line"

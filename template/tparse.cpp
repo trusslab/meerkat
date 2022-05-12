@@ -840,11 +840,23 @@ int main(int argc, char *argv[])
             int syspos = -1, pos3;
             cout << items.at(pos2).name << endl;
 
+            // first, check if a syscall directly returns the resource already
             for (int j = 0; j < depends.size() && syspos != -2; j++)
-            {
                 syspos = (pos3 = find(depends.at(j), syscalls)) >= 0 && is_in(items.at(pos2).name, syscalls.at(pos3).returnType) ? -2 : syspos;
+
+            // second, check if a syscall returns a structure that contains the resource
+            vector<string> parentstructs;
+            if (syspos == -1)
+            {
+                for (ParseType p : items)
+                    if ((p.type == 'T' || p.type == 'S') && is_in(items.at(pos2).name, p.depend))
+                        parentstructs.push_back(p.name);
+
+                for (int j = 0; j < depends.size() && syspos != -2; j++)
+                    syspos = (pos3 = find(depends.at(j), syscalls)) >= 0 && is_in(items.at(pos2).name, syscalls.at(pos3).returnType) ? -2 : syspos;
             }
 
+            // look for the simplest syscall that returns the resource
             for (int j = 0; j < syscalls.size() && syspos != -2; j++)
             {
                 if (is_in(items.at(pos2).name, syscalls.at(j).returnType))
@@ -863,6 +875,33 @@ int main(int argc, char *argv[])
                     }
                 }
             }
+
+            // if there is no syscall that directly returns the syscall, find one for a parent structure
+            if (parentstructs.size() > 0 && syspos == -1)
+            {
+                bool doublebreak = false;
+                for (int j = 0; j < syscalls.size() && !doublebreak; j++)
+                {
+                    // for each syscall, is a parent struct returned by it?
+                    for (string p : parentstructs)
+                    {
+                        bool isin = is_in(p, syscalls.at(j).returnType);
+                        if (isin == true && syscalls.at(j).depend.empty())
+                        {
+                            syspos = j;
+                            doublebreak = true;
+                            break;
+                        }
+                        else if (isin == true)
+                        {
+                            // find the syscall with the least amount of dependencies
+                            syspos = (syspos < 0) ? j : syspos;
+                            syspos = (syscalls.at(j).depend.size() < syscalls.at(syspos).depend.size()) ? j : syspos;
+                        }
+                    }
+                }
+            }
+
             // add the chosen syscall
             cout << syspos << endl;
             if (syspos >= 0 && !is_in(syscalls.at(syspos).name, depends))
