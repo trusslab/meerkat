@@ -174,9 +174,6 @@ while (( $line <= $endLine )); do
             echo "Possible bad parse on line $line"
             echo ",bad parse" >> $logfile
         fi
-
-        rm $wd/config-$curBug.txt
-        rm $wd/repro-$curBug.prog
     else
         if (( $findAge <= 1 && $findAge >= 0 )); then
             echo "Bug was found within 1 day on line $line: $fixDate, finding: $findDate, guilty: $guiltyDate"
