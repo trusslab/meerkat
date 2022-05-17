@@ -77,7 +77,7 @@ handledone () {
 calcbloat () {
     cd $managerwd
     callsInRepro=$(grep -o "[a-zA-Z_$]*(" $repro | sort | uniq | wc -l)
-    callsInTemp=$(grep -o "[a-zA-z_$*(]" $curBug.txt | sort | uniq | wc -l)
+    callsInTemp=$(grep -o "[a-zA-Z_$]*(" $curBug.txt | sort | uniq | wc -l)
     bloat=$(( $callsInTemp - $callsInRepro ))
 }
 
