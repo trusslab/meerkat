@@ -119,7 +119,7 @@ while (( $line <= $endLine )); do
 
     if (( $findAge > 1 && $fixAge >= 0)); then
         # bug number and name
-        curBug="bug$number"
+        curBug="bug$line"
         bugName="$(echo "$linetext" | awk -F',' '{ print $2; }')"
 
         # kernel config - download it
