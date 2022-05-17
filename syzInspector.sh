@@ -57,7 +57,7 @@ handlecrash () {
 
 handlenotfound () {
     echo "This bug is too hard to find!"
-    echo "This bug is too hard to find!" >> $outfile
+    echo "Failure: Bug was not found" >> $outfile
     if (( $playmusic == 1 )); then
         play -q $song -V1 -t alsa
     fi
@@ -158,7 +158,17 @@ kernelprep () {
     echo "Making the kernel..."
     make -f Makefile olddefconfig
     echo "$spacer"
+    unset -e
     make -f Makefile -j$makeproc
+    if (( $? > 0 )); then
+        echo "" >> $outfile
+        echo "Error: the kernel failed to make." >> $outfile
+        echo "Repository: $repo" >> $outfile
+        echo "Version: $kernelVersion" >> $outfile
+        echo "Fatal Error: Kernel Build Error"
+        exit
+    fi
+    set -e
     cd $inspectdir
 }
 
@@ -282,7 +292,16 @@ syzprep () {
         ./bin/syz-sysgen
     fi
 
+    unset -e
     make -f Makefile
+    if (( $? > 0 )); then
+        echo "" >> $outfile
+        echo "Error: syzkaller failed to make." >> $outfile
+        echo "Version: $syzVersion" >> $outfile
+        echo "Fatal Error: Syzkaller Build Error"
+        exit
+    fi
+    set -e
     echo "$spacer"
 }
 
