@@ -175,7 +175,7 @@ kernelprep () {
     echo "Making the kernel..."
     make -f Makefile olddefconfig
     echo "$spacer"
-    unset -e
+    set +e
     make -f Makefile -j$makeproc
     if (( $? > 0 )); then
         echo "" >> $outfile
@@ -309,7 +309,7 @@ syzprep () {
         ./bin/syz-sysgen
     fi
 
-    unset -e
+    set +e
     make -f Makefile
     if (( $? > 0 )); then
         echo "" >> $outfile
