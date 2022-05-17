@@ -777,7 +777,7 @@ done
 
 # Check back 10 days to verify results
 backdate="$revealdate"
-for (( i=0; i<10; i++ )); do
+for (( back=0; back<10; back++ )); do
     loopc=0
     backdate=$($inspectdir/helpers/decdate $(date +"%Y %m %d" -d $backdate))
 
@@ -811,8 +811,7 @@ for (( i=0; i<10; i++ )); do
 
     clearcrashes
 
-    ktimes=()
-    kavg=0
+    found=0
     for (( i=0; i<$fuzztimes; i++ )); do
         # run syzkaller
         syzconfigprep
@@ -820,12 +819,11 @@ for (( i=0; i<10; i++ )); do
 
         savecrashes
 
-        if [[ $out != "" ]]; then
-            echo "Found bug: $out"
-        fi
-
-        ktimes+=($loopc)
         echo -n ",$loopc" >> $outfile
+
+        if (( $loopc < $maxtime )); then
+            found=1
+        fi
     done
     cleankernel
     echo "" >> $outfile
@@ -833,9 +831,9 @@ for (( i=0; i<10; i++ )); do
     logcrashes
 
     # if we find the bug, restart the loop
-    if (( $loopc < $maxtime && $loopc != 0 )); then
+    if (( $found == 1 )); then
         revealdate=$backdate
-        i=0
+        back=0
     fi
 done
 
