@@ -47,10 +47,11 @@ TMPPATH=$PATH
 handlecrash () {
     # if syzkaller crashes, log it and exit to manager.
     echo "" >> $outfile
-    echo "Syzkaller has experienced a crash!" >> $outfile
+    echo "Error: Syzkaller has experienced a crash!" >> $outfile
     echo "Fuzzed for $loopc minutes before crashing" >> $outfile
+    echo "Syscall Bloat: $bloat" >> $outfile
 
-    echo "Syzkaller has experienced a crash!"
+    echo "Error: Syzkaller has experienced a crash!"
     echo "Check out $kallerout for Syzkaller's output."
     exit
 }
@@ -58,10 +59,26 @@ handlecrash () {
 handlenotfound () {
     echo "This bug is too hard to find!"
     echo "Failure: Bug was not found" >> $outfile
+    echo "Syscall Bloat: $bloat" >> $outfile
     if (( $playmusic == 1 )); then
         play -q $song -V1 -t alsa
     fi
     exit
+}
+
+handledone () {
+    echo "" >> $outfile
+    echo "Success: Bug was inspected" >> $outfile
+    echo "Syscall Bloat: $bloat" >> $outfile
+}
+
+# calculates how many extra syscalls were added to the slimmed template
+# higher number is bad
+calcbloat () {
+    cd $managerwd
+    callsInRepro=$(grep -o "[a-zA-Z_$]*(" $repro | sort | uniq | wc -l)
+    callsInTemp=$(grep -o "[a-zA-z_$*(]" $curBug.txt | sort | uniq | wc -l)
+    bloat=$(( $callsInTemp - $callsInRepro ))
 }
 
 # finds the most recent kernel for kdate
@@ -649,6 +666,8 @@ if [[ $dofind -eq 1 ]]; then
 
     syzprep 1
 
+    calcbloat
+
     found=0
     ftimes=()
     # run 3 times.
@@ -883,6 +902,7 @@ inspectcurdate
 # clean up some stuff
 export PATH=$TMPPATH
 
+handledone
 if (( $playmusic == 1 )); then
     play -q $song -V1 -t alsa
 fi
