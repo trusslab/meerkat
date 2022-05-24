@@ -427,7 +427,8 @@ inspectcurdate () {
     clearcrashes
 
     # fuzz n times for robust results
-    for (( i=0; i<$fuzztimes; i++ )); do
+    found=0
+    for (( i=0; i<$fuzztimes && $found==0; i++ )); do
         echo "Kernel Only try $i"
 
         # run syzkaller
@@ -437,7 +438,7 @@ inspectcurdate () {
         savecrashes
 
         if [[ $out != "" ]]; then
-            echo "Found bug: $out"
+            found=1
         fi
 
         ktimes+=($loopc)
@@ -468,7 +469,8 @@ inspectcurdate () {
         clearcrashes
 
         # fuzz n times for robust results
-        for (( i=0; i<$fuzztimes; i++ )); do
+        found=0
+        for (( i=0; i<$fuzztimes && $found==0; i++ )); do
             echo "Kernel and Syzkaller try $i"
 
             # run syzkaller
@@ -478,7 +480,7 @@ inspectcurdate () {
             savecrashes
 
             if [[ $out != "" ]]; then
-                echo "Found bug: $out"
+                found=1
             fi
 
             stimes+=($loopc)
@@ -503,7 +505,8 @@ inspectcurdate () {
         clearcrashes
 
         # fuzz n times for robust results
-        for (( i=0; i<$fuzztimes; i++ )); do
+        found=0
+        for (( i=0; i<$fuzztimes && $found==0; i++ )); do
             echo "Kernel, Syzkaller, and Template try $i"
 
             # run syzkaller
@@ -513,7 +516,7 @@ inspectcurdate () {
             savecrashes
 
             if [[ $out != "" ]]; then
-                echo "Found bug: $out"
+                found=1
             fi
 
             ttimes+=($loopc)
@@ -775,7 +778,8 @@ do
 
     ktimes=()
     kavg=0
-    for (( i=0; i<$fuzztimes; i++ )); do
+    found=0
+    for (( i=0; i<$fuzztimes && $found==0; i++ )); do
         # run syzkaller
         syzconfigprep
         syzrun
@@ -783,7 +787,7 @@ do
         savecrashes
 
         if [[ $out != "" ]]; then
-            echo "Found bug: $out"
+            found=1
         fi
 
         ktimes+=($loopc)
@@ -850,7 +854,7 @@ for (( back=0; back<10; back++ )); do
     clearcrashes
 
     found=0
-    for (( i=0; i<$fuzztimes; i++ )); do
+    for (( i=0; i<$fuzztimes && $found==0; i++ )); do
         # run syzkaller
         syzconfigprep
         syzrun
