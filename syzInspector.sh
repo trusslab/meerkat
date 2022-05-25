@@ -49,6 +49,9 @@ handlecrash () {
     echo "" >> $outfile
     echo "Error: Syzkaller has experienced a crash!" >> $outfile
     echo "Fuzzed for $loopc minutes before crashing" >> $outfile
+    echo "This bug also manifests as:" >> $outfile
+    echo "$(cat $bugdup | sort | uniq)" >> $outfile
+    echo "" >> $outfile
     echo "Syscall Bloat: $bloat" >> $outfile
 
     echo "Error: Syzkaller has experienced a crash!"
@@ -59,6 +62,9 @@ handlecrash () {
 handlenotfound () {
     echo "This bug is too hard to find!"
     echo "Failure: Bug was not found" >> $outfile
+    echo "This bug also manifests as:" >> $outfile
+    echo "$(cat $bugdup | sort | uniq)" >> $outfile
+    echo "" >> $outfile
     echo "Syscall Bloat: $bloat" >> $outfile
     if (( $playmusic == 1 )); then
         play -q $song -V1 -t alsa
@@ -69,6 +75,9 @@ handlenotfound () {
 handledone () {
     echo "" >> $outfile
     echo "Success: Bug was inspected" >> $outfile
+    echo "This bug also manifests as:" >> $outfile
+    echo "$(cat $bugdup | sort | uniq)" >> $outfile
+    echo "" >> $outfile
     echo "Syscall Bloat: $bloat" >> $outfile
 }
 
@@ -413,6 +422,9 @@ syzrun () {
                 break
             elif [ -z "$(grep "$bugname" $knownfixes | grep "$tmpbug" | cat)" ]; then
                 out="$tmpbug"
+                # it doesn't matter how many duplicates there are in this log file
+                # going to print out uniq anyways
+                echo "$tmpbug" >> $bugdup
                 found=1
                 break
             fi
@@ -586,7 +598,8 @@ fi
 echo "$spacer"
 echo "Gathering bug fixes from Syzbot"
 snapshotfile=$managerwd/snapshot
-knownfixes=$managerwd/knownfixes
+knownfixes=$managerwd/knownfixes.txt
+bugdup=$managerwd/bugdup.txt
 
 echo "$(lynx -dump -dont_wrap_pre -width=1000 https://syzkaller.appspot.com/upstream/fixed)" > $snapshotfile
 
@@ -595,6 +608,7 @@ sed -i '1,/^[ ]*\[[0-9]*\]Title/ d' $snapshotfile
 sed -i '/^$/q' $snapshotfile
 
 ./psf $snapshotfile $knownfixes
+echo -n "" > bugdup
 rm $snapshotfile
 
 echo "$spacer"
