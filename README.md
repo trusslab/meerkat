@@ -70,6 +70,10 @@ Lastly, `GOROOT` is the directory where go is installed. Syzkaller needs go, so 
 
 ## syzInspector / Inspector-Manager
 
+### dependencies
+
+`lynx` `bison` `flex` `gcc` `g++`
+
 Description and how to run them
 
 ## Syzkaller
