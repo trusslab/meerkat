@@ -393,12 +393,33 @@ syzrun () {
     loopc=0
     out=""
     waittime=1
-    out=$(grep -m 1 "$bugname" $kallerout | cat)
+    checkedCrashes=()
+    found=0
     # check output until bug is found or max time, then kill syzbot
-    while [[ $loopc -lt $maxtime && $out == "" ]]
-    do
+    while (( $loopc < $maxtime && $found == 0 )); do
         sleep ${waittime}m
-        out=$(grep -m 1 "$bugname" $kallerout | cat)
+
+        crashHashes=(`ls $kallerwd/crashes/`)
+        # for each crash, check it against the bugs checked so far and known deduplications
+        for dir in ${crashHashes[@]}; do
+            if [[ ! "${checkedCrashes[*]}" =~ "${dir}" ]]; then
+                continue
+            fi
+
+            tmpbug="$(cat $kallerwd/$dir/description)"
+            if [[ "$tmpbug" == "$bugname" ]]; then
+                out="$bugname"
+                found=1
+                break
+            elif [ -z "$(grep "$bugname" $knownfixes | grep "$tmpbug" | cat)" ]; then
+                out="$tmpbug"
+                found=1
+                break
+            fi
+
+            checked+=($dir)
+        done
+
         loopc=$(( $loopc + $waittime ))
 
         if [[ $(ps -p $syzpid | grep "$syzpid" | cat) == "" ]]; then
@@ -415,15 +436,6 @@ syzrun () {
 
 # Inspects the bug at a given curdate. expects that kdate and sdate have been prepped
 inspectcurdate () {
-    # places to put time results
-    ktimes=()
-    stimes=()
-    ttimes=()
-    kavg=0
-    savg=0
-    tavg=0
-    ttf=0
-
     clearcrashes
 
     # fuzz n times for robust results
@@ -437,21 +449,8 @@ inspectcurdate () {
 
         savecrashes
 
-        if [[ $out != "" ]]; then
-            found=1
-        fi
-
-        ktimes+=($loopc)
         echo -n ",$loopc" >> $outfile
     done
-
-    for t in ${ktimes[@]}; do
-        kavg=$(( $kavg + $t ))
-    done
-    kavg=$(( $kavg/${#ktimes[@]} ))
-    ttf=$kavg
-    echo ",$ttf" >> $outfile
-
     logcrashes
 
     # Update Syzkaller and fuzz again
@@ -479,19 +478,8 @@ inspectcurdate () {
 
             savecrashes
 
-            if [[ $out != "" ]]; then
-                found=1
-            fi
-
-            stimes+=($loopc)
             echo -n ",$loopc" >> $outfile
         done
-
-        for t in ${stimes[@]}; do
-            savg=$(( $savg + $t ))
-        done
-        savg=$(( $savg / ${#stimes[@]} ))
-        echo ",$savg" >> $outfile
 
         logcrashes
     fi
@@ -515,24 +503,12 @@ inspectcurdate () {
 
             savecrashes
 
-            if [[ $out != "" ]]; then
-                found=1
-            fi
-
-            ttimes+=($loopc)
             echo -n ",$loopc" >> $outfile
         done
-
-        for t in ${ttimes[@]}; do
-            tavg=$(( $tavg + $t ))
-        done
-        tavg=$(( $tavg / ${#ttimes[@]} ))
-        echo ",$tavg" >> $outfile
 
         logcrashes
     fi
 
-    mttf=$ttf
     cleankernel
 }
 
@@ -606,6 +582,23 @@ if [ ! -d $syzdir ]; then
     git pull https://github.com/google/syzkaller
 fi
 
+# gather all of the known bugs and their fixes from syzbot
+echo "$spacer"
+echo "Gathering bug fixes from Syzbot"
+snapshotfile=$managerwd/snapshot
+knownfixes=$managerwd/knownfixes
+
+echo "$(lynx -dump -dont_wrap_pre -width=1000 https://syzkaller.appspot.com/upstream/fixed)" > $snapshotfile
+
+# trim the bits we don't need
+sed -i '1,/^[ ]*\[[0-9]*\]Title/ d' $snapshotfile
+sed -i '/^$/q' $snapshotfile
+
+./psf $snapshotfile $knownfixes
+rm $snapshotfile
+
+echo "$spacer"
+
 startport=$(( $startport + $id * ($fuzztimes + 1) ))
 
 echo "$bugname,$buglink" > $outfile
@@ -671,7 +664,7 @@ if [[ $dofind -eq 1 ]]; then
 
     calcbloat
 
-    found=0
+    findfound=0
     ftimes=()
     # run 3 times.
     for (( i=0; i<3; i++ )); do
@@ -682,8 +675,8 @@ if [[ $dofind -eq 1 ]]; then
 
         echo -n ",$loopc" >> $outfile
 
-        if (( $loopc < $maxtime )); then
-            found=1
+        if (( $found == 1 )); then
+            findfound=1
         fi
 
         ftimes+=($loopc)
@@ -693,7 +686,7 @@ if [[ $dofind -eq 1 ]]; then
     logcrashes
 
     # if the bug was found at least once
-    if [[ $found == 1 ]]; then
+    if [[ $findfound == 1 ]]; then
         # take the mean + 3 * std dev
         maxtime=$(( $($inspectdir/helpers/findmaxtime ${ftimes[@]}) ))
         echo "Using maximum fuzzing time $maxtime"
@@ -786,10 +779,6 @@ do
 
         savecrashes
 
-        if [[ $out != "" ]]; then
-            found=1
-        fi
-
         ktimes+=($loopc)
         echo -n ",$loopc" >> $outfile
     done
@@ -862,10 +851,6 @@ for (( back=0; back<10; back++ )); do
         savecrashes
 
         echo -n ",$loopc" >> $outfile
-
-        if (( $loopc < $maxtime )); then
-            found=1
-        fi
     done
     cleankernel
     echo "" >> $outfile
