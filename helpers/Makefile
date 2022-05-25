@@ -4,6 +4,7 @@ all:
 	g++ diffdate.cpp -o diffdate
 	g++ dateplusdays.cpp -o dpd
 	g++ findmaxtime.cpp -o findmaxtime
+	g++ parseSyzbotFixes.cpp -o psf
 
 clean:
 	rm decdate
@@ -11,3 +12,4 @@ clean:
 	rm diffdate
 	rm dpd
 	rm findmaxtime
+	rm psf
