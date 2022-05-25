@@ -2,7 +2,7 @@
 
 clean=0
 h=$1
-id=2
+id=1
 repo=torvalds/linux.git
 pref=linux
 kern="$pref-$h"
