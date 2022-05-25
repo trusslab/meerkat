@@ -111,7 +111,7 @@ vector<string> getBugFixes(const string & line)
         // -1 because there is always a space
         pos1 = findHash(line, pos0) - 1;
 
-        if (pos1 != -1)
+        if (pos1 >= 0)
             s = line.substr(pos0, pos1 - pos0);
         else
             s = line.substr(pos0);
