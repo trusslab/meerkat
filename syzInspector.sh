@@ -607,8 +607,8 @@ echo "$(lynx -dump -dont_wrap_pre -width=1000 https://syzkaller.appspot.com/upst
 sed -i '1,/^[ ]*\[[0-9]*\]Title/ d' $snapshotfile
 sed -i '/^$/q' $snapshotfile
 
-./psf $snapshotfile $knownfixes
-echo -n "" > bugdup
+$inspectdir/helpers/psf $snapshotfile $knownfixes
+echo -n "" > $bugdup
 rm $snapshotfile
 
 echo "$spacer"
