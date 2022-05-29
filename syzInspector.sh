@@ -411,25 +411,27 @@ syzrun () {
         crashHashes=(`ls $kallerwd/crashes/`)
         # for each crash, check it against the bugs checked so far and known deduplications
         for dir in ${crashHashes[@]}; do
-            if [[ ! "${checkedCrashes[*]}" =~ "${dir}" ]]; then
+            if [[ "${checkedCrashes[*]}" =~ "${dir}" ]]; then
                 continue
             fi
 
             tmpbug="$(cat $kallerwd/$dir/description)"
             if [[ "$tmpbug" == "$bugname" ]]; then
                 out="$bugname"
+                echo "Found the bug! $bugname"
                 found=1
                 break
-            elif [ -z "$(grep "$bugname" $knownfixes | grep "$tmpbug" | cat)" ]; then
+            elif [ ! -z "$(grep "$bugname" $knownfixes | grep "$tmpbug" | cat)" ]; then
                 out="$tmpbug"
                 # it doesn't matter how many duplicates there are in this log file
                 # going to print out uniq anyways
                 echo "$tmpbug" >> $bugdup
+                echo "Found a duplicate bug! $tmpbug"
                 found=1
                 break
             fi
 
-            checked+=($dir)
+            checkedCrashes+=($dir)
         done
 
         loopc=$(( $loopc + $waittime ))
