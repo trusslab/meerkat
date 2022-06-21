@@ -415,7 +415,7 @@ syzrun () {
                 continue
             fi
 
-            tmpbug="$(cat $kallerwd/$dir/description)"
+            tmpbug="$(cat $kallerwd/crashes/$dir/description)"
             if [[ "$tmpbug" == "$bugname" ]]; then
                 out="$bugname"
                 echo "Found the bug! $bugname"

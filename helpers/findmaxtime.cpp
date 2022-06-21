@@ -19,7 +19,7 @@ int main (int argc, char * argv[])
 
     if (MEAN_PLUS_STANDARD)
     {
-        // time = mean + 3 * std
+        // time = mean + 1 * std
         double mean = 0;
         double std = 0;
 
@@ -33,7 +33,7 @@ int main (int argc, char * argv[])
         std = std / times.size();
         std = sqrt(std);
 
-        time = mean + 3 * std;
+        time = mean + 1 * std;
     }
     else
     {
