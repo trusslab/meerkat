@@ -72,7 +72,7 @@ Lastly, `GOROOT` is the directory where go is installed. Syzkaller needs go, so 
 
 ### dependencies
 
-`lynx` `bison` `flex` `gcc` `g++`
+`lynx` `bison` `flex` `gcc` `g++` `libgit2`
 
 Description and how to run them
 
