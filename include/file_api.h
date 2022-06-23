@@ -5,5 +5,6 @@
 
 bool check_file(const std::string &);
 int make_dir(const std::string &);
+int remove_file(const std::string &);
 
 #endif

@@ -26,7 +26,6 @@ song=$inspectdir/Let_There_Be_Light.mp3
 # flags
 playmusic=0
 dayfuzz=0
-dorepro=0
 hasstart=0
 hasend=0
 dofind=0

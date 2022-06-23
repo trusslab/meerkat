@@ -66,7 +66,7 @@ fi
 
 wd="wd-inspector-$id"
 inspectorconfig=$wd/bug.cfg
-logfile=$wd/log/manager-log.csv
+logfile=$wd/log/manager.log
 
 if [ ! -d $wd ]; then
     echo "Making the working directory: $wd"

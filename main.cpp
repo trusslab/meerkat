@@ -3,6 +3,10 @@
 #include <bug_info.h>
 #include <inspector_config.h>
 #include <file_api.h>
+#include <shell_api.h>
+#include <psf.h>
+#include <fuzz_prep.h>
+#include <inspect.h>
 
 #include <string>
 #include <vector>
@@ -14,8 +18,10 @@
 using namespace std;
 
 const string SYZKALLER_REPO_REMOTE = "https://github.com/google/syzkaller";
-const string SYZBOT_FIXED = "https://syzkaller.appspot.com/upstream/fixed";
+const string SYZBOT_FIXED_LINK = "https://syzkaller.appspot.com/upstream/fixed";
 const string SPACER = "====================================================================================================================================================\n";
+
+const int FUZZTIMES = 3;
 
 int main(int argc, char ** argv)
 {
@@ -24,7 +30,7 @@ int main(int argc, char ** argv)
     args.expect(vector<string>({ "setup-only", "help", "recover" }));
     args.parse(argc, argv);
 
-    int max_time = 720, id;
+    int max_time = 720, id, startport = 12000, port, port_count = 0;
     Date start_date, end_date, find_date;
     string find_hash;
 
@@ -88,14 +94,6 @@ int main(int argc, char ** argv)
     else
         cout << "Found log directory.\n";
 
-    if (!check_file(bug.get_wd() + "/kernels"))
-    {
-        cout << "Creating kernels directory.\n";
-        make_dir(bug.get_wd() + "/kernels");
-    }
-    else
-        cout << "Found kernels directory.\n";
-
     if (!check_file(bug.get_repro()))
     {
         cerr << "Error: No reproducer file " << bug.get_repro() << " exists.\n";
@@ -111,6 +109,22 @@ int main(int argc, char ** argv)
     }
     else
         cout << "Found kernel config.\n";
+
+    if (!check_file("image/stretch/stretch.img"))
+    {
+        cerr << "Error: No image file for stretch.\n";
+        return -1;
+    }
+    else
+        cout << "Found stretch image.\n";
+
+    if (!check_file("image/wheezy/wheezy.img"))
+    {
+        cerr << "Error: No image file for wheezy.\n";
+        return -1;
+    }
+    else
+        cout << "Found wheezy image.\n";
 
     git_libgit2_init();
 
@@ -140,29 +154,118 @@ int main(int argc, char ** argv)
     else
         cout << "Found Syzkaller local repository.\n";
 
+    // Set up linux repository locally
+    git_repository *linux_repo = nullptr;
+    string linux_repo_remote = "https://git.kernel.org/pub/scm/linux/kernel/git/" + bug.get_repo();
+
+    if (!check_file(bug.get_kerneldir()))
+    {
+        cout << "Creating kernel directory.\n";
+        make_dir(bug.get_kerneldir());
+    }
+    else
+        cout << "Found kernel directory.\n";
+
+    git_err = git_repository_open(&linux_repo, bug.get_kerneldir().c_str());
+    if (git_err < 0)
+    {
+        cout << "Cloning Linux repository...\n";
+        git_err = git_clone(&linux_repo, linux_repo_remote.c_str(), bug.get_kerneldir().c_str(), nullptr);
+        if (git_err < 0)
+        {
+            cerr << "Error: Git clone failed.\n";
+            return -1;
+        }
+    }
+    else
+        cout << "Found Linux local repository.\n";
+
+    // begin logging
+    string logfilename = bug.get_wd() + "/log/bug" + to_string(bug.get_number()) + ".log";
+    ofstream logfile;
+    logfile.open(logfilename);
+    if(!logfile)
+    {
+        cerr << "Error: Failed to open log file " << logfilename << ".\n";
+        return -1;
+    }
+
+    logfile << bug.get_name() << "," << bug.get_buglink() << endl;
+
     // Parse Syzbot for duplicate bugs
     cout << SPACER
         << "Gathering bug fixes from Syzbot.\n";
 
     string tmp_snapshotfile = bug.get_wd() + "/snapshot";
-    // vector<> knownfixes;
-    // vector<> duplicate_bugs;
 
-    // lynx_dump(https://syzkaller.appspot.com/upstream/fixed, tmp_snapshotfile);
-    // lynx -dump -dont_wrap_pre -width=1000 https://syzkaller.appspot.com/upstream/fixed)
+    lynx_dump(SYZBOT_FIXED_LINK, tmp_snapshotfile);
+    trim_syzbot_fixes(tmp_snapshotfile);
+    vector<string> duplicates = parse_syzbot_fixes(tmp_snapshotfile, bug.get_name());
 
-    // trim_syzbot_fixes()
-    // sed -i '1,/^[ ]*\[[0-9]*\]Title/ d' $snapshotfile
-    // sed -i '/^$/q' $snapshotfile
+    if (duplicates.size() > 1)
+    {
+        cout << "Duplicate Bugs:\n";
+        logfile << "Duplicate Names:\n";
+        for (string s : duplicates)
+        {
+            cout << "    " << s << endl;
+            logfile << "    " << s << endl;
+        }
+    }
+    else
+    {
+        cout << "No duplicate bugs found.\n";
+        logfile << "No Duplicates\n";
+    }
 
-    // parse_syzbot_fixes(tmp_snapshotfile, knownfixes);
-
-    // rm tmp_snapshotfile;
-
+    remove_file(tmp_snapshotfile);
     cout << SPACER;
 
+    startport = startport + id * (FUZZTIMES + 1);
+
+    VMConfig vmc = determine_threadedness(inspector, bug, logfile);
+
+    /*
+    For now:
+    Get fuzzing to work
+        all helpers needed
+        all makes
+        template slimming
+    */
+
+    grab_gcc_versions();
+
+    reset_inspector();          // reset the found crashes, wd, etc...
+    write_syzkaller_config();   // write the config for syzkaller to use
+
+    set_gcc();                  // set environment variable for correct gcc
+    prep_kernel();              // go get the correct kernel version and build it
+    clean_gcc();                // remove gcc from path
+
+    prep_syzkaller();           // go get the correct syzkaller version and build it
+    slim_template();            // slim the template
+    calc_bloat();               // calculate how much bloat is in the slimmed template
+
+    fuzz_loop();                // begin the loop to fuzz FUZZTIMES
+
+    /*
+    Inspect template changes
+        gather all template changes
+        fuzz before and after each
+        collect new range
+    Bisect on kernel changes
+        daily for now
+        use git bisect (or at least same strat)
+        use syzkaller for the same day as commit
+        once commit is decided, fuzz before and after with everything else constant
+    Inspect Syzkaller (only if kernel is inconclusive)
+        long fuzz time
+        only need to fuzz once
+    */
+    
 
     cout << "Cleaning up...\n";
+    logfile.close();
     git_repository_free(syzkaller_repo);
     git_libgit2_shutdown();
     return 0;

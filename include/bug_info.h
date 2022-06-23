@@ -17,6 +17,7 @@ private:
     std::string syzkaller_config;
     std::string wd;
     std::string syzkaller_dir;
+    std::string kernel_dir;
     std::string bug_link;
 
     std::string syzkaller_log;
@@ -56,6 +57,9 @@ public:
 
     std::string get_syzdir() const
     { return syzkaller_dir; }
+
+    std::string get_kerneldir() const
+    { return kernel_dir; }
 
     std::string get_buglink() const
     { return bug_link; }

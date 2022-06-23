@@ -80,6 +80,7 @@ void Bug_Info::parse_config_file(const std::string & filename)
     }
 
     syzkaller_log = wd + "/log/bug" + std::to_string(number) + "-kaller-log.txt";
+    kernel_dir = wd + "/kernel";
 
     inf.close();
     return;
