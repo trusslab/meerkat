@@ -1,10 +1,17 @@
 #include <fuzz_prep.h>
 #include <inspector_config.h>
 #include <bug_info.h>
+#include <shell_api.h>
+#include <file_api.h>
+#include <consts.h>
+#include <date.h>
+#include <version.h>
 
 #include <string>
 #include <fstream>
 #include <iostream>
+
+#include <unistd.h>
 
 using namespace std;
 
@@ -66,3 +73,48 @@ VMConfig determine_threadedness(const InspectorConfig &inspector, const Bug_Info
 
     return vmc;
 }
+
+vector<Version> grab_gcc_versions()
+{}
+
+void reset_inspector()
+{}
+
+int export_gcc(const vector<Version> &versions, const Date &kernel_date)
+{
+    // Assumes list of versions is sorted!
+
+}
+
+void clean_gcc()
+{}
+
+int prep_kernel(const Bug_Info &bug, const InspectorConfig &inspector)
+{
+    // grab the kernel version
+    // copy over the config
+
+    cd(bug.get_kerneldir());
+    make(inspector.get_makeprocs(), "defconfig");
+    cout << SPACER;
+    make(inspector.get_makeprocs());
+    cd(inspector.get_inspect_dir());
+    return 0;
+}
+
+int prep_syzkaller(const Bug_Info &bug, const InspectorConfig &inspector)
+{
+    // still need to grab syzkaller version and make sure it compiles correctly
+
+    cd(bug.get_syzdir());
+    if (make(inspector.get_makeprocs()) != 0)
+        cerr << "Error: Syzkaller failed to make.\n";
+    cd(inspector.get_inspect_dir());
+    return 0;
+}
+
+void clean_syzkaller()
+{}
+
+void calc_bloat()
+{}

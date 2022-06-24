@@ -7,6 +7,7 @@
 #include <psf.h>
 #include <fuzz_prep.h>
 #include <inspect.h>
+#include <consts.h>
 
 #include <string>
 #include <vector>
@@ -17,12 +18,6 @@
 
 using namespace std;
 
-const string SYZKALLER_REPO_REMOTE = "https://github.com/google/syzkaller";
-const string SYZBOT_FIXED_LINK = "https://syzkaller.appspot.com/upstream/fixed";
-const string SPACER = "====================================================================================================================================================\n";
-
-const int FUZZTIMES = 3;
-
 int main(int argc, char ** argv)
 {
     Argparse args;
@@ -30,7 +25,12 @@ int main(int argc, char ** argv)
     args.expect(vector<string>({ "setup-only", "help", "recover" }));
     args.parse(argc, argv);
 
-    int max_time = 720, id, startport = 12000, port, port_count = 0;
+    int max_time = 2, id;
+    Port_Info port;
+    port.start_port = 12000;
+    port.port_count = 0;
+    port.port = 0;
+
     Date start_date, end_date, find_date;
     string find_hash;
 
@@ -82,6 +82,8 @@ int main(int argc, char ** argv)
     // get information about the bug
     Bug_Info bug;
     bug.parse_config_file("wd-inspector-" + to_string(id) + "/" + "bug.cfg");
+
+    export_go(inspector);
 
     // make sure all of the needed files are here.
     cout << SPACER
@@ -221,7 +223,7 @@ int main(int argc, char ** argv)
     remove_file(tmp_snapshotfile);
     cout << SPACER;
 
-    startport = startport + id * (FUZZTIMES + 1);
+    port.start_port = port.start_port + id * (FUZZTIMES + 1);
 
     VMConfig vmc = determine_threadedness(inspector, bug, logfile);
 
@@ -233,20 +235,22 @@ int main(int argc, char ** argv)
         template slimming
     */
 
-    grab_gcc_versions();
+    //gcc_versions = grab_gcc_versions();        // parse the gccVersions file
 
-    reset_inspector();          // reset the found crashes, wd, etc...
-    write_syzkaller_config();   // write the config for syzkaller to use
+    //export_gcc(gcc_versions, kernel_date);                  // set environment variable for correct gcc
+    cout << SPACER
+        << "Making the kernel\n";
+    prep_kernel(bug, inspector);
+    //clean_gcc();                // remove gcc from path
 
-    set_gcc();                  // set environment variable for correct gcc
-    prep_kernel();              // go get the correct kernel version and build it
-    clean_gcc();                // remove gcc from path
+    cout << SPACER
+        << "Making Syzkaller.\n";
+    prep_syzkaller(bug, inspector);
+    //slim_template();            // slim the template
+    //calc_bloat();               // calculate how much bloat is in the slimmed template
 
-    prep_syzkaller();           // go get the correct syzkaller version and build it
-    slim_template();            // slim the template
-    calc_bloat();               // calculate how much bloat is in the slimmed template
-
-    fuzz_loop();                // begin the loop to fuzz FUZZTIMES
+    cout << SPACER;
+    fuzz_loop(bug, inspector, duplicates, max_time, vmc, port);
 
     /*
     Inspect template changes
@@ -264,9 +268,11 @@ int main(int argc, char ** argv)
     */
     
 
-    cout << "Cleaning up...\n";
+    cout << SPACER
+        << "Cleaning up...";
     logfile.close();
     git_repository_free(syzkaller_repo);
     git_libgit2_shutdown();
+    cout << "Done.\n";
     return 0;
 }

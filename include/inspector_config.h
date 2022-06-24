@@ -3,6 +3,14 @@
 
 #include <string>
 
+class Port_Info
+{
+public:
+    int port;
+    int port_count;
+    int start_port;
+};
+
 class VMConfig
 {
 public:
@@ -14,17 +22,17 @@ public:
 class InspectorConfig
 {
 private:
-    std::string home_dir;
-    std::string inspector_dir;
-    std::string gcc_dir;
-    std::string go_dir;
+    std::string home_dir;               // the directory just outside of SyzInspector
+    std::string inspector_dir;          // SyzInspector
+    std::string gcc_dir;                // the directory housing all of the gcc compilers
+    std::string go_dir;                 // the directory housing go
 
-    VMConfig vmd;
+    VMConfig vmd;                       // vm resource allocations for default, race, and single-thread
     VMConfig vmr;
     VMConfig vmst;
 
-    int memory;
-    int makeprocs;
+    int memory;                         // memory per vm in MB
+    int makeprocs;                      // number of threads to using while making
 
 public:
     InspectorConfig()

@@ -1,10 +1,42 @@
 #include <shell_api.h>
 #include <exec_api.h>
-#include <string.h>
+#include <inspector_config.h>
+
 #include <string>
 #include <iostream>
 
+#include <string.h>
+#include <stdlib.h>
+
 using namespace std;
+
+string get_path()
+{
+    char * path = getenv("PATH");
+
+    if (path == nullptr)
+        return "";
+
+    return string(path);
+}
+
+int export_env(const string &e)
+{
+    char * e_c = new char[e.size() + 1];
+    strcpy(e_c, e.c_str());
+    int err = putenv(e_c);
+    if (err < 0)
+    {
+        cerr << "Error: Could not export " << e << ".\n";
+        return err;
+    }
+
+    // This might be a memory leak, but environment variables get
+    // cranky when I free the stuff they were using. And it's probably
+    // best not to free the PATH variable.
+    // delete[] e_c;
+    return 0;
+}
 
 // For the record, this is not my favorite way to do this. But
 // I'm the goof who decided C++ was the way to go. now I'm mixing
@@ -46,4 +78,51 @@ int sed_i(const string &regex, const string &filename)
     delete[] arg2;
     delete[] arg3;
     return ret;
+}
+
+int make(int procs, const string &option)
+{
+    char command[] = "make";
+
+    string j = "-j" + to_string(procs);
+    char * arg1 = new char[j.size() + 1];
+    strcpy(arg1, j.c_str());
+
+    char arg2[] = "-f";
+    char arg3[] = "Makefile";
+
+    char * arg4 = nullptr;
+    if (!option.empty())
+    {
+        arg4 = new char[option.size() + 1];
+        strcpy(arg4, option.c_str());
+    }
+
+    char * arg_list[] = {command, arg1, arg2, arg3, arg4, nullptr};
+
+    int ret = exec_and_wait("make", arg_list);
+
+    delete[] arg1;
+    if (arg4)
+        delete[] arg4;
+
+    return ret;
+}
+
+int copy(const string &src, const string &dest)
+{
+    return 0;
+}
+
+int export_go(const InspectorConfig &inspector)
+{
+    string goroot = "GOROOT=" + inspector.get_go_dir();
+    int err = export_env(goroot);
+    if (err < 0)
+        return err;
+
+    string path = "PATH=" + inspector.get_go_dir() + "/bin:" + get_path();
+    err = export_env(path);
+
+    return err;
 }

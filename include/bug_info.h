@@ -6,21 +6,21 @@
 class Bug_Info
 {
 private:
-    int number;
-    std::string name;
+    int number;                         // the bug number
+    std::string name;                   // the name of the bug given by syzbot
 
-    std::string kpreface;
-    std::string repository;
-    std::string kernel_config;
-    std::string reproducer;
-    std::string syzkaller_wd;
-    std::string syzkaller_config;
-    std::string wd;
-    std::string syzkaller_dir;
-    std::string kernel_dir;
-    std::string bug_link;
+    std::string kpreface;               // the preface of the repository (linux, linux-next, net, etc..)
+    std::string repository;             // the repository in a form that fits the link (torvalds/linux.git)
+    std::string kernel_config;          // the config file for the kernel
+    std::string reproducer;             // the POC
+    std::string syzkaller_wd;           // wd-kaller
+    std::string syzkaller_config;       // the config for syzkaller. We write this ourselves
+    std::string wd;                     // wd-inspector-[id]
+    std::string syzkaller_dir;          // the directory that houses syzkaller
+    std::string kernel_dir;             // the directory that houses the kernel
+    std::string bug_link;               // the link to the bug in syzbot
 
-    std::string syzkaller_log;
+    std::string syzkaller_log;          // the log file to hold syzkaller output
 
 public:
     Bug_Info()

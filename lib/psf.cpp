@@ -14,7 +14,6 @@ using namespace std;
 // sed -i /^$/q snapshotfile
 void trim_syzbot_fixes(const string &filename)
 {
-    cout << "Cleaning dump file.\n";
     sed_i("1,/^[ ]*\\[[0-9]*\\]Title/ d", filename);
     sed_i("/^$/q", filename);
     return;

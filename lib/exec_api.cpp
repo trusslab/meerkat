@@ -8,10 +8,29 @@
 #include <fcntl.h>
 #include <unistd.h>
 #include <sys/wait.h>
+#include <signal.h>
 
 using namespace std;
 
-int exec_and_wait(const string & prog, char ** args, const string & outfile)
+bool check_alive(int pid)
+{
+    int ret;
+    int ret_status = waitpid(pid, &ret, WNOHANG);
+
+    if (ret_status < 0)
+    {
+        cerr << "Error: Waitpid on pid " << pid << " failed.\n";
+        return false;
+    }
+    else if (ret_status > 0)
+        return false;
+    else if (ret_status == 0)
+        return true;
+
+    return false;
+}
+
+int exec_and_wait(const string & prog, char ** args, const string & outfile, const string &errfile)
 {
     int ret, ret_status = 0;
     pid_t pid = fork();
@@ -33,7 +52,7 @@ int exec_and_wait(const string & prog, char ** args, const string & outfile)
                 exit(-1);
             }
             dup2(fd, 1);
-            close(fd);
+            //close(fd);
         }
 
         execvp(prog.c_str(), args);
@@ -52,5 +71,65 @@ int exec_and_wait(const string & prog, char ** args, const string & outfile)
             cerr << "Warning: Child process " << prog << " exited with error status " << ret_status << ".\n";
     }
 
+    return ret_status;
+}
+
+int exec_and_continue(const string & prog, char ** args, const string &outfile, const string &errfile)
+{
+    int ret, ret_status = 0;
+    pid_t pid = fork();
+    if (pid < 0)
+    {
+        cerr << "Error: Failed to fork.\n";
+        return -1;
+    }
+    else if (pid == 0)
+    {
+        // child
+        if (!outfile.empty())
+        {
+            // duping file in C because I couldn't find an easy way to do it in C++
+            int fd = open(outfile.c_str(), O_CREAT | O_WRONLY, 0666);
+            if (fd < 0)
+            {
+                cerr << "Error: Could not open file " << outfile << " for child process.\n";
+                exit(-1);
+            }
+            dup2(fd, 1);
+            //close(fd);
+        }
+        if (!errfile.empty())
+        {
+            // duping file in C because I couldn't find an easy way to do it in C++
+            int fd = open(errfile.c_str(), O_CREAT | O_WRONLY, 0666);
+            if (fd < 0)
+            {
+                cerr << "Error: Could not open file " << errfile << " for child process.\n";
+                exit(-1);
+            }
+            dup2(fd, 2);
+            //close(fd);
+        }
+
+        execvp(prog.c_str(), args);
+        
+        cerr << "Error: exec for " << prog << " failed.\n";
+        return -1;
+    }
+
+    return pid;
+}
+
+int kill_child(int pid)
+{
+    int ret, ret_status;
+    kill(pid, SIGINT);
+    waitpid(pid, &ret, 0);
+    if (WIFEXITED(ret))
+        ret_status = WEXITSTATUS(ret);
+
+    if (ret_status != 0)
+        cerr << "Warning: Child process exited with error status " << ret_status << ".\n";
+    
     return ret_status;
 }
