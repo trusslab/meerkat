@@ -3,6 +3,7 @@
 
 #include <string>
 
+// stores info about the host port for easy arithmetic
 class Port_Info
 {
 public:
@@ -11,6 +12,7 @@ public:
     int start_port;
 };
 
+// stores vm resource allocation
 class VMConfig
 {
 public:
@@ -19,6 +21,7 @@ public:
     int numProcs;
 };
 
+// stores information from the parameters.cfg file
 class InspectorConfig
 {
 private:
@@ -38,6 +41,7 @@ public:
     InspectorConfig()
     { return; }
 
+    // parses the parameters.cfg into the data structure
     void parse_config_file(const std::string &);
 
     std::string get_home_dir() const

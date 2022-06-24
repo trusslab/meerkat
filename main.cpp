@@ -235,7 +235,7 @@ int main(int argc, char ** argv)
         template slimming
     */
 
-    //gcc_versions = grab_gcc_versions();        // parse the gccVersions file
+    //vector<Version> gcc_versions = grab_gcc_versions();        // parse the gccVersions file
 
     //export_gcc(gcc_versions, kernel_date);                  // set environment variable for correct gcc
     cout << SPACER

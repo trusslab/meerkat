@@ -29,7 +29,11 @@ public:
     { return; }
 };
 
+// calls sed to clean up the dump file
 void trim_syzbot_fixes(const std::string &);
+
+// parses the fixes out of the dump file and returns
+// the duplicate bug names related to this bug.
 std::vector<std::string> parse_syzbot_fixes(const std::string &, const std::string &);
 
 #endif

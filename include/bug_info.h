@@ -26,6 +26,7 @@ public:
     Bug_Info()
     { return; }
 
+    // takes in a filename and parses it into the data structure
     void parse_config_file(const std::string &);
 
     int get_number() const
