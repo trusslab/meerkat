@@ -80,6 +80,23 @@ int sed_i(const string &regex, const string &filename)
     return ret;
 }
 
+bool grep_to_find(const string &expr, const string &file)
+{
+    char command[] = "grep";
+    char * arg1 = new char[expr.size() + 1];
+    strcpy(arg1, expr.c_str());
+    char * arg2 = new char[file.size() + 1];
+    strcpy(arg2, file.c_str());
+
+    char * arg_list[] = {command, arg1, arg2, nullptr};
+
+    int ret = exec_and_wait("grep", arg_list);
+
+    delete[] arg1;
+    delete[] arg2;
+    return ret == 0 ? true : false;
+}
+
 int make(int procs, const string &option)
 {
     char command[] = "make";
@@ -111,7 +128,36 @@ int make(int procs, const string &option)
 
 int copy(const string &src, const string &dest)
 {
-    return 0;
+    char command[] = "cp";
+    char * arg1 = new char[src.size() + 1];
+    strcpy(arg1, src.c_str());
+    char * arg2 = new char[dest.size() + 1];
+    strcpy(arg2, dest.c_str());
+
+    char * arg_list[] = {command, arg1, arg2, nullptr};
+
+    int ret = exec_and_wait("cp", arg_list);
+
+    delete[] arg2;
+    delete[] arg1;
+    return ret;
+}
+
+int move(const string &src, const string &dest)
+{
+    char command[] = "mv";
+    char * arg1 = new char[src.size() + 1];
+    strcpy(arg1, src.c_str());
+    char * arg2 = new char[dest.size() + 1];
+    strcpy(arg2, dest.c_str());
+
+    char * arg_list[] = {command, arg1, arg2, nullptr};
+
+    int ret = exec_and_wait("mv", arg_list);
+
+    delete[] arg2;
+    delete[] arg1;
+    return ret;
 }
 
 int export_go(const InspectorConfig &inspector)
@@ -125,4 +171,34 @@ int export_go(const InspectorConfig &inspector)
     err = export_env(path);
 
     return err;
+}
+
+int go_mod_init()
+{
+    char command[] = "go";
+    char arg1[] = "mod";
+    char arg2[] = "init";
+    char * arg_list[] = {command, arg1, arg2, nullptr};
+
+    return exec_and_wait("go", arg_list);
+}
+
+int go_mod_tidy()
+{
+    char command[] = "go";
+    char arg1[] = "mod";
+    char arg2[] = "tidy";
+    char * arg_list[] = {command, arg1, arg2, nullptr};
+
+    return exec_and_wait("go", arg_list);
+}
+
+int go_mod_vendor()
+{
+    char command[] = "go";
+    char arg1[] = "mod";
+    char arg2[] = "vendor";
+    char * arg_list[] = {command, arg1, arg2, nullptr};
+
+    return exec_and_wait("go", arg_list);
 }

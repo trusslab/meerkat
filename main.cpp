@@ -8,6 +8,7 @@
 #include <fuzz_prep.h>
 #include <inspect.h>
 #include <consts.h>
+#include <template_parse.h>
 
 #include <string>
 #include <vector>
@@ -21,7 +22,7 @@ using namespace std;
 int main(int argc, char ** argv)
 {
     Argparse args;
-    args.expect("sefFmidh");
+    args.expect("sefFGmidh");
     args.expect(vector<string>({ "setup-only", "help", "recover" }));
     args.parse(argc, argv);
 
@@ -31,8 +32,8 @@ int main(int argc, char ** argv)
     port.port_count = 0;
     port.port = 0;
 
-    Date start_date, end_date, find_date;
-    string find_hash;
+    Date start_date, end_date, find_date, kernel_date, syz_date;
+    string find_hash, guilty_hash;
 
     if (args.is_set('h') || args.is_set("help"))
     {
@@ -42,6 +43,7 @@ int main(int argc, char ** argv)
             << "    -e [end_date]: the date to stop inspecting on (usually finding date).\n"
             << "    -f [find_date]: the date the bug is known to be found on.\n"
             << "    -F [find_hash]: the hash of the finding commit.\n"
+            << "    -G [guilty_hash]: the hash of the guilty commit.\n"
             << "    -m [max_time]: the maximum time allowed when fuzzing.\n"
             << "    -i [id]: REQUIRED. The id of the inspector.\n"
             << "Long Ticks:\n"
@@ -62,6 +64,9 @@ int main(int argc, char ** argv)
 
     if (args.is_set('F'))
         find_hash = args.get_arg_as_string('F');
+
+    if (args.is_set('G'))
+        guilty_hash = args.get_arg_as_string('G');
 
     if (args.is_set('m'))
         max_time = args.get_arg_as_int('m');
@@ -84,6 +89,8 @@ int main(int argc, char ** argv)
     bug.parse_config_file("wd-inspector-" + to_string(id) + "/" + "bug.cfg");
 
     export_go(inspector);
+    vector<Version> gcc_versions = grab_gcc_versions(inspector.get_gcc_dir() + "/gccVersions.csv");
+    string tmp_path = get_path();
 
     // make sure all of the needed files are here.
     cout << SPACER
@@ -168,6 +175,7 @@ int main(int argc, char ** argv)
     else
         cout << "Found kernel directory.\n";
 
+    // this may cause issues when the repository opened is not the one we want
     git_err = git_repository_open(&linux_repo, bug.get_kerneldir().c_str());
     if (git_err < 0)
     {
@@ -226,45 +234,55 @@ int main(int argc, char ** argv)
     port.start_port = port.start_port + id * (FUZZTIMES + 1);
 
     VMConfig vmc = determine_threadedness(inspector, bug, logfile);
+    
+    // ======================================================================================================
+    // Begin Inspection
+    // ======================================================================================================
 
-    /*
-    For now:
-    Get fuzzing to work
-        all helpers needed
-        all makes
-        template slimming
-    */
-
-    //vector<Version> gcc_versions = grab_gcc_versions();        // parse the gccVersions file
-
-    //export_gcc(gcc_versions, kernel_date);                  // set environment variable for correct gcc
     cout << SPACER
         << "Making the kernel\n";
+    export_gcc(gcc_versions, Date(2022,6,24), inspector);
     prep_kernel(bug, inspector);
-    //clean_gcc();                // remove gcc from path
+    clean_gcc(tmp_path);
 
-    cout << SPACER
-        << "Making Syzkaller.\n";
+    cout << SPACER;
     prep_syzkaller(bug, inspector);
-    //slim_template();            // slim the template
     //calc_bloat();               // calculate how much bloat is in the slimmed template
 
     cout << SPACER;
+    // don't forget to log everything
     fuzz_loop(bug, inspector, duplicates, max_time, vmc, port);
 
     /*
+    Start by getting a list of all kernel versions between finding and guilty
+        Use a vector<Version> kernel_versions with hash and date
+
     Inspect template changes
         gather all template changes
-        fuzz before and after each
-        collect new range
+            get a date range (start to end)
+            slim at the start and end of the range and check if the templates match
+            if they match, skip this part
+            if they do not match, **magic to find commits with template changes**
+                for each change...
+                    slim the template
+                    if it matches the template before it, skip
+                    otherwise add it to a list of commits to fuzz at
+        fuzz before and after each commit of interest (kernel stays constant for the individual commit)
+            for each commit, syzkaller comes with, but use the most recent kernel for that day
+            if we find a commit where the bug is found after, but not before, finish
+            if we find 2 commits where the bug is found in one, but not the one before, continue
+        collect the new range
     Bisect on kernel changes
-        daily for now
-        use git bisect (or at least same strat)
-        use syzkaller for the same day as commit
-        once commit is decided, fuzz before and after with everything else constant
-    Inspect Syzkaller (only if kernel is inconclusive)
-        long fuzz time
-        only need to fuzz once
+        git bisect on the commits in the date range (use date from the version to also grab syzkaller)
+        once bisect converges, fuzz before and after keeping syzkaller constant
+        if the bug is found after, but not before, finish
+        if the bug is found both times, collect the date range between this kernel commit and its parent
+        continue
+    Inspect Syzkaller
+        Compile a kernel commit where the bug is known to be found
+        bisect on syzkaller commits in the new date range
+        if the bug is not found, exit
+        once bisect converges, finish
     */
     
 
@@ -272,6 +290,7 @@ int main(int argc, char ** argv)
         << "Cleaning up...";
     logfile.close();
     git_repository_free(syzkaller_repo);
+    git_repository_free(linux_repo);
     git_libgit2_shutdown();
     cout << "Done.\n";
     return 0;

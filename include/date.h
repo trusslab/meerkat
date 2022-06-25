@@ -45,7 +45,7 @@ public:
 
     Date operator=(const Date &);                                           // assignment operator
     bool operator==(const Date &) const;                                    // equality operator
-    bool operator!=(const Date &) const;
+    bool operator!=(const Date &) const;                                    // comparison operators
     bool operator>(const Date &) const;
     bool operator>=(const Date &) const;
     bool operator<(const Date &) const;

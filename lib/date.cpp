@@ -261,7 +261,7 @@ int Date::days_in_month() const
 
 Date Date::operator=(const Date & other)
 {
-    set_date(other.day, other.month, other.year);
+    set_date(other.year, other.month, other.day);
     return *this;
 }
 
@@ -273,4 +273,24 @@ bool Date::operator==(const Date & other) const
 bool Date::operator!=(const Date & other) const
 {
     return !(*this == other);
+}
+
+bool Date::operator>(const Date &other) const
+{
+    return year > other.year || (year == other.year && month > other.month) || (year == other.year && month == other.month && day > other.day);
+}
+
+bool Date::operator>=(const Date &other) const
+{
+    return *this > other || *this == other;
+}
+
+bool Date::operator<(const Date &other) const
+{
+    return !(*this >= other);
+}
+
+bool Date::operator<=(const Date &other) const
+{
+    return !(*this > other);
 }

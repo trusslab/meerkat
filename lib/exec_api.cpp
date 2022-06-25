@@ -45,14 +45,24 @@ int exec_and_wait(const string & prog, char ** args, const string & outfile, con
         if (!outfile.empty())
         {
             // duping file in C because I couldn't find an easy way to do it in C++
-            int fd = open(outfile.c_str(), O_CREAT | O_WRONLY, 0666);
+            int fd = open(outfile.c_str(), O_CREAT | O_WRONLY | O_TRUNC, 0666);
             if (fd < 0)
             {
                 cerr << "Error: Could not open file " << outfile << " for child process.\n";
                 exit(-1);
             }
             dup2(fd, 1);
-            //close(fd);
+        }
+        if (!errfile.empty())
+        {
+            // duping file in C because I couldn't find an easy way to do it in C++
+            int fd = open(errfile.c_str(), O_CREAT | O_WRONLY | O_TRUNC, 0666);
+            if (fd < 0)
+            {
+                cerr << "Error: Could not open file " << errfile << " for child process.\n";
+                exit(-1);
+            }
+            dup2(fd, 2);
         }
 
         execvp(prog.c_str(), args);
@@ -89,26 +99,24 @@ int exec_and_continue(const string & prog, char ** args, const string &outfile, 
         if (!outfile.empty())
         {
             // duping file in C because I couldn't find an easy way to do it in C++
-            int fd = open(outfile.c_str(), O_CREAT | O_WRONLY, 0666);
+            int fd = open(outfile.c_str(), O_CREAT | O_WRONLY | O_TRUNC, 0666);
             if (fd < 0)
             {
                 cerr << "Error: Could not open file " << outfile << " for child process.\n";
                 exit(-1);
             }
             dup2(fd, 1);
-            //close(fd);
         }
         if (!errfile.empty())
         {
             // duping file in C because I couldn't find an easy way to do it in C++
-            int fd = open(errfile.c_str(), O_CREAT | O_WRONLY, 0666);
+            int fd = open(errfile.c_str(), O_CREAT | O_WRONLY | O_TRUNC, 0666);
             if (fd < 0)
             {
                 cerr << "Error: Could not open file " << errfile << " for child process.\n";
                 exit(-1);
             }
             dup2(fd, 2);
-            //close(fd);
         }
 
         execvp(prog.c_str(), args);

@@ -17,11 +17,18 @@ int lynx_dump(const std::string &, const std::string &);
 // calls sed -i with a given pattern and file
 int sed_i(const std::string &, const std::string &);
 
+// calls grep to look for an expression in a file.
+// Returns true if the expression is found.
+bool grep_to_find(const std::string &, const std::string &);
+
 // runs make for the current directory
 int make(int, const std::string & = "");
 
 // runs cp src dest
 int copy(const std::string &, const std::string &);
+
+// runs mv src dest
+int move(const std::string &, const std::string &);
 
 // Go Interface functions
 
