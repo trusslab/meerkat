@@ -8,6 +8,7 @@
 #include <version.h>
 #include <template_parse.h>
 #include <exec_api.h>
+#include <git_api.h>
 
 #include <string>
 #include <fstream>
@@ -125,13 +126,10 @@ int clean_gcc(const string &old_path)
     return export_env("PATH=" + old_path);
 }
 
-int prep_kernel(const Bug_Info &bug, const InspectorConfig &inspector)
+int prep_kernel(const Bug_Info &bug, const InspectorConfig &inspector, const Version &linux_version, const string &repo) // repoistory &repo, const hash
 {
     // downloads the kernel version (does not decide)
-    /*
-    git fetch kernel_repo kernel_hash
-    git checkout -f FETCH_HEAD
-    */
+    git_fetch_and_checkout(bug.get_kerneldir(), repo, linux_version.name);
 
     // copy over the config
     copy(bug.get_kconfig(), bug.get_kerneldir() + "/.config");
@@ -163,20 +161,15 @@ int prep_kernel(const Bug_Info &bug, const InspectorConfig &inspector)
     return 0;
 }
 
-int prep_syzkaller(const Bug_Info &bug, const InspectorConfig &inspector)
+int prep_syzkaller(const Bug_Info &bug, const InspectorConfig &inspector, const Version &syzkaller_version)
 {
-    // these will become passed args
-    Date syzkaller_date(2022,6,24);
-    bool slim = true;
-
+    clean_syzkaller(bug);
+    
     // work around time period where go mod tidy doesn't work
     bool dangerzone = false;
-    if (syzkaller_date < Date(2020,7,4) && syzkaller_date >= Date(2020,4,30))
+    if (syzkaller_version.date < Date(2020,7,4) && syzkaller_version.date >= Date(2020,4,30))
     {
-        /*
-        git fetch https://github.com/google/syzkaller 136082ab38d86932bc3ed0087694e99d0e55491b
-        git checkout -f FETCH_HEAD
-        */
+        git_fetch_and_checkout(bug.get_syzdir(), SYZKALLER_REPO_REMOTE, "136082ab38d86932bc3ed0087694e99d0e55491b");
         go_mod_init();
         go_mod_tidy();
         go_mod_vendor();
@@ -184,37 +177,30 @@ int prep_syzkaller(const Bug_Info &bug, const InspectorConfig &inspector)
     }
 
     // download syzkaller (does not decide)
-    /*
-    git fetch https://github.com/google/syzkaller $syzVersion
-    git checkout -f FETCH_HEAD
-    */
+    git_fetch_and_checkout(bug.get_syzdir(), SYZKALLER_REPO_REMOTE, syzkaller_version.name);
 
-    // Slim the template
-    if (slim)
-    {
-        cout << "Slimming the template.\n";
-        string full_template = bug.get_syzdir() + "/sys/linux";
-        string new_template = bug.get_wd() + "/template.txt";
-        vector<string> template_files = list_template_files(full_template);
-        slim_template(bug.get_repro(), new_template, template_files);
-        remove_template_files(template_files);
-        move(new_template, full_template);
-        cout << SPACER;
-    }
+    cout << "Slimming the template.\n";
+    string full_template = bug.get_syzdir() + "/sys/linux";
+    string new_template = bug.get_wd() + "/template.txt";
+    vector<string> template_files = list_template_files(full_template);
+    slim_template(bug.get_repro(), new_template, template_files);
+    remove_template_files(template_files);
+    move(new_template, full_template);
+    cout << SPACER;
 
     // Remove the flags that check for unused functions
     sed_i("s/$(ADDCFLAGS) $(CFLAGS) -DGOOS_$(TARGETOS)=1 -DGOARCH_$(TARGETARCH)=1/-m64 -O2 -pthread -Wall -static-pie -DGOOS_$(TARGETOS)=1 -DGOARCH_$(TARGETARCH)=1/",
             bug.get_syzdir() + "/Makefile");
 
     // Patch a boot error related to kvm
-    if (syzkaller_date < Date(2021,1,1) && syzkaller_date >= Date(2020,5,1))
+    if (syzkaller_version.date < Date(2021,1,1) && syzkaller_version.date >= Date(2020,5,1))
     {
         cout << "Applying a patch to Syzkaller.\n";
         sed_i("s/\\-enable\\-kvm \\-cpu host,migratable=off/\\-enable\\-kvm \\-cpu host/", bug.get_syzdir() + "/vm/qemu/qemu.go");
     }
 
     // Apply patch for netfilter_bridge/ebtables
-    if (syzkaller_date < Date(2018,9,27) && syzkaller_date >= Date(2018,2,17))
+    if (syzkaller_version.date < Date(2018,9,27) && syzkaller_version.date >= Date(2018,2,17))
     {
         cout << "Applying a patch to Syzkaller.\n";
         sed_i("/#include <linux\\/netfilter_bridge\\/ebtables.h>/r patches/syz-1.txt", bug.get_syzdir() + "/executor/common_linux.h");
@@ -231,7 +217,7 @@ int prep_syzkaller(const Bug_Info &bug, const InspectorConfig &inspector)
     }
 
     // Fix a build error with strncpy
-    if (syzkaller_date < Date(2018,5,13) && syzkaller_date >= Date(2018,2,10))
+    if (syzkaller_version.date < Date(2018,5,13) && syzkaller_version.date >= Date(2018,2,10))
     {
         sed_i("s/NONFAILING(strncpy(buf, (char\\*)a0, sizeof(buf)));/NONFAILING(strncpy(buf, (char\\*)a0, sizeof(buf) - 1));/", bug.get_syzdir() + "/executor/common_linux.h");
         sed_i("s/NONFAILING(strncpy(buf, (char\\*)a0, sizeof(buf)));/NONFAILING(strncpy(buf, (char\\*)a0, sizeof(buf) - 1));/", bug.get_syzdir() + "/pkg/csource/linux_common.go");
@@ -306,8 +292,10 @@ int insert_POC_as_seed(const Bug_Info &bug)
     return ret;
 }
 
-void clean_syzkaller()
-{}
+int clean_syzkaller(const Bug_Info &bug)
+{
+    return remove_files_in_dir(bug.get_syzdir());
+}
 
 void calc_bloat()
 {}

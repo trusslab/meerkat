@@ -61,10 +61,16 @@ void reset_kaller_wd(const string &wd)
     return;
 }
 
-int write_syzkaller_config(const Bug_Info &bug, const InspectorConfig &inspector, const VMConfig &vmc, Port_Info &p)
+void inc_port (Port_Info &p)
 {
     p.port = p.start_port + p.port_count;
     p.port_count = (p.port_count + 1) % (FUZZTIMES + 1);
+    return;
+}
+
+int write_syzkaller_config(const Bug_Info &bug, const InspectorConfig &inspector, const VMConfig &vmc, Port_Info &p)
+{
+    inc_port(p);
 
     ofstream outf;
     outf.open(bug.get_syzconfig());

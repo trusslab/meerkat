@@ -956,3 +956,8 @@ int remove_template_files(const vector<string> &template_files)
 
     return 0;
 }
+
+bool compare_templates(const string &template1, const string &template2)
+{
+    return compare_files(template1, template2);
+}

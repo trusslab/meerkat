@@ -34,18 +34,18 @@ int clean_gcc(const std::string &);
 
 // Grabs the correct kernel version, applies any patches needed,
 // copies the config in, and build the kernel
-int prep_kernel(const Bug_Info &, const InspectorConfig &);
+int prep_kernel(const Bug_Info &, const InspectorConfig &, const Version &, const std::string &);
 
 // grabs the correct syzkaller version, applies any patches
 // slims the template, and builds syzkaller
-int prep_syzkaller(const Bug_Info &, const InspectorConfig &);
+int prep_syzkaller(const Bug_Info &, const InspectorConfig &, const Version &);
 
 // Takes the POC file and the corpus file. calls syz-db to insert
 // the POC into the corpus.
 int insert_POC_as_seed(const Bug_Info &);
 
 // cleans files when we switch syzkaller versions
-void clean_syzkaller();
+int clean_syzkaller(const Bug_Info &);
 
 // calculates the bloat in the template.
 // syscalls in template - syscalls in reproducer

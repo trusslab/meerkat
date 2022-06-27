@@ -77,7 +77,7 @@ int exec_and_wait(const string & prog, char ** args, const string & outfile, con
         if (WIFEXITED(ret))
             ret_status = WEXITSTATUS(ret);
 
-        if (ret_status != 0)
+        if (ret_status != 0 && prog != "grep")
             cerr << "Warning: Child process " << prog << " exited with error status " << ret_status << ".\n";
     }
 

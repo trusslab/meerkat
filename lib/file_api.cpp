@@ -1,4 +1,5 @@
 #include <file_api.h>
+#include <exec_api.h>
 
 #include <string>
 #include <iostream>
@@ -15,6 +16,14 @@ bool check_file(const string &filename)
 {
     struct stat buf;
     return stat(filename.c_str(), &buf) == 0;
+}
+
+string pwd()
+{
+    char *buf = new char[1000];
+    string cwd(getcwd(buf, 1000));
+    delete[] buf;
+    return cwd;
 }
 
 int make_dir(const string &filename)
@@ -35,6 +44,27 @@ int remove_file(const string &filename)
         cerr << "Error: Failed to delete file " << filename << ".\n";
     
     return ret;
+}
+
+int remove_files_in_dir(const string &dir)
+{
+    string return_to = pwd();
+    cd(dir);
+    char command[] = "rm";
+    char arg1[] = "-r";
+    char arg2[] = "*";
+
+    char * arg_list[] = {command, arg1, arg2, nullptr};
+
+    int ret = exec_and_wait("rm", arg_list);
+    if (ret != 0)
+    {
+        cerr << "Error: rm failed.\n";
+        cd(return_to);
+    }
+
+    cd(return_to);
+    return 0;
 }
 
 int remove_dir(const string &dir)
@@ -65,4 +95,47 @@ vector<string> list_dir(const string &dir)
         files.push_back(file.path().string());
 
     return files;
+}
+
+bool compare_files(const string &file1, const string &file2)
+{
+    bool ok1, ok2, ret = true;
+    string line1, line2;
+    ifstream inf1, inf2;
+    inf1.open(file1);
+    inf2.open(file2);
+
+    if (!inf1 || !inf2)
+    {
+        cerr << "Error: Failed to open either " << file1 << " or " << file2 << ".\n";
+        return false;
+    }
+
+    while (true)
+    {
+        ok1 = getline(inf1, line1) ? true : false;
+        ok2 = getline(inf2, line2) ? true : false;
+
+        if (ok1 && ok2)
+        {
+            if (line1 != line2)
+            {
+                ret = false;
+                break;
+            }
+        }
+        else if (!ok1 && !ok2)
+        {
+            break;
+        }
+        else
+        {
+            ret = false;
+            break;
+        }
+    }
+
+    inf1.close();
+    inf2.close();
+    return ret;
 }

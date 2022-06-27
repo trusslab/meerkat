@@ -9,6 +9,7 @@
 #include <inspect.h>
 #include <consts.h>
 #include <template_parse.h>
+#include <git_api.h>
 
 #include <string>
 #include <vector>
@@ -28,7 +29,7 @@ int main(int argc, char ** argv)
 
     int max_time = 2, id;
     Port_Info port;
-    port.start_port = 12000;
+    port.start_port = START_PORT;
     port.port_count = 0;
     port.port = 0;
 
@@ -239,6 +240,7 @@ int main(int argc, char ** argv)
     // Begin Inspection
     // ======================================================================================================
 
+    /*
     cout << SPACER
         << "Making the kernel\n";
     export_gcc(gcc_versions, Date(2022,6,24), inspector);
@@ -252,39 +254,162 @@ int main(int argc, char ** argv)
     cout << SPACER;
     // don't forget to log everything
     fuzz_loop(bug, inspector, duplicates, max_time, vmc, port);
-
-    /*
-    Start by getting a list of all kernel versions between finding and guilty
-        Use a vector<Version> kernel_versions with hash and date
-
-    Inspect template changes
-        gather all template changes
-            get a date range (start to end)
-            slim at the start and end of the range and check if the templates match
-            if they match, skip this part
-            if they do not match, **magic to find commits with template changes**
-                for each change...
-                    slim the template
-                    if it matches the template before it, skip
-                    otherwise add it to a list of commits to fuzz at
-        fuzz before and after each commit of interest (kernel stays constant for the individual commit)
-            for each commit, syzkaller comes with, but use the most recent kernel for that day
-            if we find a commit where the bug is found after, but not before, finish
-            if we find 2 commits where the bug is found in one, but not the one before, continue
-        collect the new range
-    Bisect on kernel changes
-        git bisect on the commits in the date range (use date from the version to also grab syzkaller)
-        once bisect converges, fuzz before and after keeping syzkaller constant
-        if the bug is found after, but not before, finish
-        if the bug is found both times, collect the date range between this kernel commit and its parent
-        continue
-    Inspect Syzkaller
-        Compile a kernel commit where the bug is known to be found
-        bisect on syzkaller commits in the new date range
-        if the bug is not found, exit
-        once bisect converges, finish
     */
+
+    // commits are arranged newest (low index) to oldest (high index)
+    cout << SPACER
+         << "Gathering kernel versions...\n";
+    vector<Version> kernel_versions = get_kernel_versions(bug, guilty_hash, find_hash);
+    cout << "Found " << kernel_versions.size() << " kernel commits.\n";
+
+    Date high_date = kernel_versions.front().date, low_date = kernel_versions.back().date;
+
+    // commits are arranged newest (low index) to oldest (high index)
+    cout << SPACER
+         << "Gathering Syzkaller versions...\n";
+    vector<Version> syzkaller_versions = get_syzkaller_versions(bug);
+    cout << "Found " << syzkaller_versions.size() << " Syzkaller commits.\n";
+
+    // Begin Template Inspection
+    cout << SPACER
+         << "Gathering template_changes...\n";
+    vector<Version> template_changes = get_template_changes(bug, kernel_versions.back().date, kernel_versions.front().date, syzkaller_versions);
+    cout << "Found " << template_changes.size() << " template_changes.\n";
+
+    vector<Version> relevant_template_changes = {template_changes.back()};
+
+    cout << SPACER
+         << "Checking templates for relevance...\n";
+    if (template_changes.size() > 1)
+    {
+        // git fetch first commit (older)
+        cout << "Fetching version " << template_changes.back().name << ".\n";
+        clean_syzkaller(bug);
+        git_fetch_and_checkout(bug.get_syzdir(), SYZKALLER_REPO_REMOTE, template_changes.back().name);
+        
+        // compare each consecutive pair of templates
+        cout << "Slimming version " << template_changes.back().name << ".\n";
+        string template1 = bug.get_wd() + "template1.txt", template2 = bug.get_wd() + "template2.txt";
+        string template_dir = template_changes.back().date < Date(2017,9,15) ? bug.get_syzdir() + "/sys" : bug.get_syzdir() + "/sys/linux";
+        slim_template(bug.get_repro(), template1, list_template_files(template_dir));
+        for (int i = template_changes.size() - 2; i > 0; i--)
+        {
+            cout << "Fetching version " << template_changes.back().name << ".\n";
+            clean_syzkaller(bug);
+            git_fetch_and_checkout(bug.get_syzdir(), SYZKALLER_REPO_REMOTE, template_changes.at(i).name);
+
+            cout << "Slimming version " << template_changes.back().name << ".\n";
+            template_dir = template_changes.back().date < Date(2017,9,15) ? bug.get_syzdir() + "/sys" : bug.get_syzdir() + "/sys/linux";
+            slim_template(bug.get_repro(), template2, list_template_files(template_dir));
+            if (!compare_templates(template1, template2))
+                relevant_template_changes.insert(relevant_template_changes.begin(), template_changes.at(i));
+
+            move(template2, template1);
+        }
+    }
+    else
+        cout << "No template changes in the date range " << kernel_versions.back().date.get_date() << " to " << kernel_versions.front().date.get_date() << ".\n";
+
+    if (relevant_template_changes.size() > 1) {
+        cout << "Inspecting " << relevant_template_changes.size() << " template changes.\n";
+
+        string template_dir;
+        string slimmed_template = "";
+        Version linux_version, prev_syzkaller_version;
+        Syzkaller_Result result_before, result_after;
+        for (Version current_version : relevant_template_changes)
+        {
+            // found_before = fuzz before
+            linux_version = get_version_by_date(kernel_versions, current_version.date);
+            export_gcc(gcc_versions, current_version.date, inspector);
+            prep_kernel(bug, inspector, linux_version, linux_repo_remote);
+            clean_gcc(tmp_path);
+
+            prev_syzkaller_version = get_version_by_date(relevant_template_changes, current_version.date.dec());
+            prep_syzkaller(bug, inspector, prev_syzkaller_version);
+
+            result_before = fuzz_loop(bug, inspector, duplicates, max_time, vmc, port);
+
+            if (result_before.found)
+            {
+                // log
+                continue;
+            }
+
+            // found_after = fuzz after
+            export_gcc(gcc_versions, current_version.date, inspector);
+            prep_kernel(bug, inspector, linux_version, linux_repo_remote);
+            clean_gcc(tmp_path);
+
+            prep_syzkaller(bug, inspector, current_version);
+
+            result_after = fuzz_loop(bug, inspector, duplicates, max_time, vmc, port);
+
+            if (!result_before.found && result_after.found)
+            {
+                // finish logging
+                return 0;
+            }
+
+            if (result_after.found)
+                high_date = current_version.date;
+            else
+                low_date = current_version.date;
+        }
+    }
+    else
+        cout << "No template updates to inspect. Skipping.\n";
+
+    // Begin Kernel Inspection
+    // int start_index = get_starting_index();
+    // int end_index = get_ending_index();
+
+    // r is the starting date. older. higher index
+    // l is the ending date. recent. lower index
+    // int r = start_index;
+    // int l = end_index;
+    // int m = (r + l) / 2;
+    // while (l < r) {
+        // fetch kernel commit
+        // fuzz
+        // if (found)
+            // l = m
+        // else
+            // r = m
+        // m = (r + l) / 2;
+    // }
+
+    // m is the index of the bisected commit
+    // MAKE SURE THIS IS THE CASE
+
+    // fetch if needed
+    // found_after = fuzz after (chance fetch/build is not needed)
+    // fetch before
+    // found_before = fuzz before
+    // if (found_after && !found_before)
+        // finish
     
+    // update date range
+
+    // Begin Syzkaller Inspection
+    // vector<Version> syzkaller_updates = get_syzkaller_commits();
+
+    // start with the newest and go back
+    // for (each syzkaller_update) {
+        // fetch syzkaller
+        // fuzz
+        // if (!found)
+            // break
+    // }
+
+    // if (first syzkaller commit)
+        // too hard to find
+    // else
+        // report previous syzkaller commit and finish
+
+    // ======================================================================================================
+    // Finish
+    // ======================================================================================================
 
     cout << SPACER
         << "Cleaning up...";

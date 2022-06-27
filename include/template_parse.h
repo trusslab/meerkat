@@ -46,4 +46,6 @@ std::vector<std::string> list_template_files(const std::string &);
 // removes all of the files in the given vector.
 int remove_template_files(const std::vector<std::string> &);
 
+bool compare_templates(const std::string &, const std::string &);
+
 #endif

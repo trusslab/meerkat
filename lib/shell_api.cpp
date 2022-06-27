@@ -90,7 +90,7 @@ bool grep_to_find(const string &expr, const string &file)
 
     char * arg_list[] = {command, arg1, arg2, nullptr};
 
-    int ret = exec_and_wait("grep", arg_list);
+    int ret = exec_and_wait("grep", arg_list, "/dev/null");
 
     delete[] arg1;
     delete[] arg2;

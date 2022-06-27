@@ -7,11 +7,17 @@
 // Checks if a file exists
 bool check_file(const std::string &);
 
+// pwd
+std::string pwd();
+
 // makes a directory with the given name
 int make_dir(const std::string &);
 
 // removes a file or empty directory
 int remove_file(const std::string &);
+
+// runs rm -r * in the specified directory
+int remove_files_in_dir(const std::string &);
 
 // removes a full directory
 int remove_dir(const std::string &);
@@ -22,5 +28,7 @@ int cd(const std::string &);
 // lists the contents of the given dir. Returns
 // a list of filenames in a vector.
 std::vector<std::string> list_dir(const std::string &);
+
+bool compare_files(const std::string &, const std::string &);
 
 #endif
