@@ -161,10 +161,10 @@ int prep_kernel(const Bug_Info &bug, const InspectorConfig &inspector, const Ver
     return 0;
 }
 
-int prep_syzkaller(const Bug_Info &bug, const InspectorConfig &inspector, const Version &syzkaller_version)
+int prep_syzkaller(const Bug_Info &bug, const InspectorConfig &inspector, const Version &syzkaller_version, const string &use_template)
 {
     clean_syzkaller(bug);
-    
+
     // work around time period where go mod tidy doesn't work
     bool dangerzone = false;
     if (syzkaller_version.date < Date(2020,7,4) && syzkaller_version.date >= Date(2020,4,30))
@@ -179,14 +179,26 @@ int prep_syzkaller(const Bug_Info &bug, const InspectorConfig &inspector, const 
     // download syzkaller (does not decide)
     git_fetch_and_checkout(bug.get_syzdir(), SYZKALLER_REPO_REMOTE, syzkaller_version.name);
 
-    cout << "Slimming the template.\n";
-    string full_template = bug.get_syzdir() + "/sys/linux";
-    string new_template = bug.get_wd() + "/template.txt";
+    // Slim the template if needed, otherwise copy over the one given
+    string full_template = syzkaller_version.date < Date(2017,9,15) ? bug.get_syzdir() + "/sys" : bug.get_syzdir() + "/sys/linux";;
+    string new_template = bug.get_wd() + "/my_template.txt";
     vector<string> template_files = list_template_files(full_template);
-    slim_template(bug.get_repro(), new_template, template_files);
-    remove_template_files(template_files);
-    move(new_template, full_template);
-    cout << SPACER;
+
+    if (use_template.empty())
+    {
+        cout << "Slimming the template.\n";
+        slim_template(bug.get_repro(), new_template, template_files);
+        remove_template_files(template_files);
+        copy(new_template, full_template);
+        cout << SPACER;
+    }
+    else
+    {
+        remove_template_files(template_files);
+        copy(use_template, full_template);
+    }
+
+    
 
     // Remove the flags that check for unused functions
     sed_i("s/$(ADDCFLAGS) $(CFLAGS) -DGOOS_$(TARGETOS)=1 -DGOARCH_$(TARGETARCH)=1/-m64 -O2 -pthread -Wall -static-pie -DGOOS_$(TARGETOS)=1 -DGOARCH_$(TARGETARCH)=1/",
@@ -294,8 +306,18 @@ int insert_POC_as_seed(const Bug_Info &bug)
 
 int clean_syzkaller(const Bug_Info &bug)
 {
-    return remove_files_in_dir(bug.get_syzdir());
+    int pos0;
+    for (string file : list_dir(bug.get_syzdir()))
+    {
+        pos0 = file.find_last_of("/");
+        if (file.at(pos0 + 1) != '.')
+            remove_dir(file);
+    }
+
+    return 0;
 }
 
-void calc_bloat()
-{}
+int calc_bloat()
+{
+    return 0;
+}

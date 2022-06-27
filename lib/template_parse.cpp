@@ -520,8 +520,8 @@ int slim_template(const string &reproFile, const string &outfilename, const vect
 {
     int pos0, pos1, pos2;
 
-    fstream templateIn;
-    fstream reproIn;
+    ifstream templateIn;
+    ifstream reproIn;
     string line, line2;
 
     vector<string> includes;
@@ -906,8 +906,8 @@ int slim_template(const string &reproFile, const string &outfilename, const vect
     }
 
     // output each depends
-    fstream outfile;
-    outfile.open(outfilename, fstream::out);
+    ofstream outfile;
+    outfile.open(outfilename, fstream::out | fstream::trunc);
     if (!outfile)
     {
         cout << "Failed to open output file: " << outfilename << endl;

@@ -38,17 +38,19 @@ int prep_kernel(const Bug_Info &, const InspectorConfig &, const Version &, cons
 
 // grabs the correct syzkaller version, applies any patches
 // slims the template, and builds syzkaller
-int prep_syzkaller(const Bug_Info &, const InspectorConfig &, const Version &);
+int prep_syzkaller(const Bug_Info &, const InspectorConfig &, const Version &, const std::string & = "");
 
 // Takes the POC file and the corpus file. calls syz-db to insert
 // the POC into the corpus.
 int insert_POC_as_seed(const Bug_Info &);
 
-// cleans files when we switch syzkaller versions
+// cleans files when we switch syzkaller versions.
+// Simply removes any non-hidden file.
+// Same behavior as rm -r *
 int clean_syzkaller(const Bug_Info &);
 
 // calculates the bloat in the template.
 // syscalls in template - syscalls in reproducer
-void calc_bloat();
+int calc_bloat();
 
 #endif

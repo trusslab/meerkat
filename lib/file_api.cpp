@@ -48,22 +48,9 @@ int remove_file(const string &filename)
 
 int remove_files_in_dir(const string &dir)
 {
-    string return_to = pwd();
-    cd(dir);
-    char command[] = "rm";
-    char arg1[] = "-r";
-    char arg2[] = "*";
+    for (string file : list_dir(dir))
+        remove_dir(file);
 
-    char * arg_list[] = {command, arg1, arg2, nullptr};
-
-    int ret = exec_and_wait("rm", arg_list);
-    if (ret != 0)
-    {
-        cerr << "Error: rm failed.\n";
-        cd(return_to);
-    }
-
-    cd(return_to);
     return 0;
 }
 

@@ -228,8 +228,6 @@ int git_fetch_and_checkout(const string &local_repo, const string &repo, const s
         return ret;
     }
 
-    delete[] arg2;
-    delete[] arg3;
     // git checkout -f FETCH_HEAD
     char arg4[] = "checkout";
     char arg5[] = "-f";
@@ -237,7 +235,7 @@ int git_fetch_and_checkout(const string &local_repo, const string &repo, const s
 
     char * arg_list2[] = {command, arg4, arg5, arg6, nullptr};
 
-    ret = exec_and_wait("git", arg_list);
+    ret = exec_and_wait("git", arg_list2);
     if (ret != 0)
     {
         cerr << "Error: checkout FETCH_HEAD failed.\n";
@@ -246,5 +244,7 @@ int git_fetch_and_checkout(const string &local_repo, const string &repo, const s
     }
 
     cd(old_dir);
+    delete[] arg2;
+    delete[] arg3;
     return 0;
 }

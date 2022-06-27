@@ -289,64 +289,83 @@ int main(int argc, char ** argv)
         
         // compare each consecutive pair of templates
         cout << "Slimming version " << template_changes.back().name << ".\n";
-        string template1 = bug.get_wd() + "template1.txt", template2 = bug.get_wd() + "template2.txt";
+        string template1 = bug.get_wd() + "/template1.txt", template2 = bug.get_wd() + "/template2.txt";
         string template_dir = template_changes.back().date < Date(2017,9,15) ? bug.get_syzdir() + "/sys" : bug.get_syzdir() + "/sys/linux";
         slim_template(bug.get_repro(), template1, list_template_files(template_dir));
         for (int i = template_changes.size() - 2; i > 0; i--)
         {
-            cout << "Fetching version " << template_changes.back().name << ".\n";
+            cout << SPACER
+                 << "Fetching version " << template_changes.at(i).name << ".\n";
             clean_syzkaller(bug);
             git_fetch_and_checkout(bug.get_syzdir(), SYZKALLER_REPO_REMOTE, template_changes.at(i).name);
 
-            cout << "Slimming version " << template_changes.back().name << ".\n";
+            cout << "Slimming version " << template_changes.at(i).name << ".\n";
             template_dir = template_changes.back().date < Date(2017,9,15) ? bug.get_syzdir() + "/sys" : bug.get_syzdir() + "/sys/linux";
             slim_template(bug.get_repro(), template2, list_template_files(template_dir));
             if (!compare_templates(template1, template2))
+            {
+                cout << "This template differs from the one before.\n";
                 relevant_template_changes.insert(relevant_template_changes.begin(), template_changes.at(i));
+            }
 
             move(template2, template1);
         }
+        remove_file(template1);
     }
     else
         cout << "No template changes in the date range " << kernel_versions.back().date.get_date() << " to " << kernel_versions.front().date.get_date() << ".\n";
 
     if (relevant_template_changes.size() > 1) {
-        cout << "Inspecting " << relevant_template_changes.size() << " template changes.\n";
+        cout << SPACER
+             << "Inspecting " << relevant_template_changes.size() - 1 << " template changes.\n";
+        logfile << "Inspecting " << relevant_template_changes.size() - 1 << " template changes in " 
+                << kernel_versions.back().date.get_date() << " to " << kernel_versions.front().date.get_date() << ".\n";
 
         string template_dir;
-        string slimmed_template = "";
         Version linux_version, prev_syzkaller_version;
         Syzkaller_Result result_before, result_after;
         for (Version current_version : relevant_template_changes)
         {
             // found_before = fuzz before
+            cout << SPACER
+                << "Making the kernel\n";
             linux_version = get_version_by_date(kernel_versions, current_version.date);
             export_gcc(gcc_versions, current_version.date, inspector);
             prep_kernel(bug, inspector, linux_version, linux_repo_remote);
             clean_gcc(tmp_path);
 
+            // pull the previous template
+            cout << SPACER
+                << "Prepping the old template\n";
             prev_syzkaller_version = get_version_by_date(relevant_template_changes, current_version.date.dec());
             prep_syzkaller(bug, inspector, prev_syzkaller_version);
+
+            // now compile the current syzkaller using the old template
+            cout << SPACER
+                << "Making Syzkaller\n";
+            prev_syzkaller_version = get_version_by_date(relevant_template_changes, current_version.date);
+            prep_syzkaller(bug, inspector, prev_syzkaller_version, bug.get_wd() + "/my_template.txt");
 
             result_before = fuzz_loop(bug, inspector, duplicates, max_time, vmc, port);
 
             if (result_before.found)
             {
-                // log
+                cout << "The bug can be found before this day. Moving on.\n";
                 continue;
             }
 
             // found_after = fuzz after
-            export_gcc(gcc_versions, current_version.date, inspector);
-            prep_kernel(bug, inspector, linux_version, linux_repo_remote);
-            clean_gcc(tmp_path);
-
+            // no need to rebuild the kernel.
+            cout << SPACER
+                << "Making Syzkaller\n";
             prep_syzkaller(bug, inspector, current_version);
 
             result_after = fuzz_loop(bug, inspector, duplicates, max_time, vmc, port);
 
             if (!result_before.found && result_after.found)
             {
+                cout << "Revealing Factor Found!\n"
+                     << "Template update from " << current_version.name << " on " << current_version.date.get_date() << " is the reason.\n";
                 // finish logging
                 return 0;
             }
