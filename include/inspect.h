@@ -3,6 +3,7 @@
 
 #include <bug_info.h>
 #include <inspector_config.h>
+#include <date.h>
 
 #include <string>
 #include <vector>
@@ -11,7 +12,7 @@ class Syzkaller_Result
 {
 public:
     bool found;                             // was the bug found
-    int ttf;                                // time to find
+    int ttf;                                // time to find. this ios the only time that matters
     std::vector<std::string> bugsfound;     // a list of all the bugs found
 };
 
@@ -19,16 +20,15 @@ public:
 // recreates it.
 void reset_kaller_wd(const std::string &wd);
 
-// writes the syzkaller config to the config file.
-// also shifts the host port by one
-int write_syzkaller_config(const Bug_Info &, const InspectorConfig &, const VMConfig &, Port_Info &);
+// takes in a port and increments it
+void inc_port (Port_Info &p);
 
 // runs syzkaller once. Returns a data structure with
 // time to find and bugs found.
-Syzkaller_Result run_syzkaller(const Bug_Info &, const InspectorConfig &, const std::vector<std::string> &, int);
+Syzkaller_Result run_syzkaller(const Bug_Info &, const InspectorConfig &, const std::vector<std::string> &, int, bool = true);
 
 // Runs syzkaller FUZZTIMES times. Returns the culmination
 // of the results.
-Syzkaller_Result fuzz_loop(const Bug_Info &, const InspectorConfig &, const std::vector<std::string> &, int, const VMConfig &, Port_Info &);
+Syzkaller_Result fuzz_loop(const Bug_Info &, const InspectorConfig &, const std::vector<std::string> &, int, const VMConfig &, Port_Info &, const Date &, bool = true);
 
 #endif

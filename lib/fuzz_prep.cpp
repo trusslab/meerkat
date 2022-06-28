@@ -9,6 +9,7 @@
 #include <template_parse.h>
 #include <exec_api.h>
 #include <git_api.h>
+#include <inspect.h>
 
 #include <string>
 #include <fstream>
@@ -198,8 +199,6 @@ int prep_syzkaller(const Bug_Info &bug, const InspectorConfig &inspector, const 
         copy(use_template, full_template);
     }
 
-    
-
     // Remove the flags that check for unused functions
     sed_i("s/$(ADDCFLAGS) $(CFLAGS) -DGOOS_$(TARGETOS)=1 -DGOARCH_$(TARGETARCH)=1/-m64 -O2 -pthread -Wall -static-pie -DGOOS_$(TARGETOS)=1 -DGOARCH_$(TARGETARCH)=1/",
             bug.get_syzdir() + "/Makefile");
@@ -267,10 +266,57 @@ int prep_syzkaller(const Bug_Info &bug, const InspectorConfig &inspector, const 
         cerr << "Error: Syzkaller failed to make.\n";
     cd(inspector.get_inspect_dir());
 
-    cout << SPACER
-        << "Inserting POC as a seed.\n";
-    insert_POC_as_seed(bug);
+    return 0;
+}
 
+int write_syzkaller_config(const Bug_Info &bug, const InspectorConfig &inspector, const VMConfig &vmc, Port_Info &p, const Date &syz_date)
+{
+    inc_port(p);
+
+    ofstream outf;
+    outf.open(bug.get_syzconfig());
+    if (!outf)
+    {
+        cerr << "Error: Failed to open file " << bug.get_syzconfig() << ".\n";
+        return -1;
+    }
+
+    outf << "{\n";
+
+    // target was added on 2017-09-15
+    if(syz_date > Date(2017,9,15)) 
+        outf << "    \"target\": \"linux/amd64\",\n";
+
+    outf << "    \"http\": \"127.0.0.1:" << p.port << "\",\n"
+         << "    \"workdir\": \"" << bug.get_kallerwd() << "\",\n";
+
+    // "vmlinux" until 2018-06-27, then "kernel_obj" starting on 2018-06-28
+    if (syz_date  >= Date(2018,6,28))
+        outf << "    \"kernel_obj\": \"" << bug.get_kerneldir() << "\",\n";
+    else
+        outf << "    \"vmlinux\": \"" << bug.get_kerneldir() << "/vmlinux\",\n";
+
+    // change image when syzkaller did. It shouldn't matter, but who knows.
+    if (syz_date >= Date(2018,9,4))
+        outf << "    \"image\": \"" << inspector.get_inspect_dir() << "/image/stretch/stretch.img\",\n"
+             << "    \"sshkey\": \"" << inspector.get_inspect_dir() << "/image/stretch/stretch.id_rsa\",\n";
+    else
+        outf << "    \"image\": \"" << inspector.get_inspect_dir() << "/image/wheezy/wheezy.img\",\n"
+             << "    \"sshkey\": \"" << inspector.get_inspect_dir() << "/image/wheezy/ssh/id_rsa\",\n";
+
+    outf << "    \"syzkaller\": \"" << bug.get_syzdir() << "\",\n"
+         << "    \"procs\": " << vmc.numProcs << ",\n"
+         << "    \"type\": \"qemu\",\n"
+         << "    \"reproduce\": false,\n"
+         << "    \"vm\": {\n"
+         << "        \"count\": " << vmc.numVM << ",\n"
+         << "        \"kernel\": \"" << bug.get_kerneldir() << "/arch/x86/boot/bzImage\",\n"
+         << "        \"cpu\": " << vmc.numCPU << ",\n"
+         << "        \"mem\": " << inspector.get_mem() << "\n"
+         << "    }\n"
+         << "}\n";
+
+    outf.close();
     return 0;
 }
 
@@ -282,6 +328,11 @@ int insert_POC_as_seed(const Bug_Info &bug)
     // watch if syzkaller complains about having the raw poc (with commants)
     copy(bug.get_repro(), to_pack);
 
+    string corpus = bug.get_kallerwd() + "/corpus.db";
+    // make sure to clear out the old corpus
+    if (check_file(corpus))
+        remove_file(corpus);
+
     // assumes syzkaller has already been made
     string com = bug.get_syzdir() + "/bin/syz-db";
     char * command = new char[com.size() + 1];
@@ -289,7 +340,7 @@ int insert_POC_as_seed(const Bug_Info &bug)
     char arg1[] = "pack";
     char * arg2 = new char[to_pack.size() + 1];
     strcpy(arg2, to_pack.c_str());
-    string corpus = bug.get_kallerwd() + "/corpus.db";
+    
     char * arg3 = new char[corpus.size() + 1];
     strcpy(arg3, corpus.c_str());
 

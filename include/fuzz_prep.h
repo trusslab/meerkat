@@ -40,6 +40,10 @@ int prep_kernel(const Bug_Info &, const InspectorConfig &, const Version &, cons
 // slims the template, and builds syzkaller
 int prep_syzkaller(const Bug_Info &, const InspectorConfig &, const Version &, const std::string & = "");
 
+// writes the syzkaller config to the config file.
+// also shifts the host port by one
+int write_syzkaller_config(const Bug_Info &, const InspectorConfig &, const VMConfig &, Port_Info &, const Date &);
+
 // Takes the POC file and the corpus file. calls syz-db to insert
 // the POC into the corpus.
 int insert_POC_as_seed(const Bug_Info &);

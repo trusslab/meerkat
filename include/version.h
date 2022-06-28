@@ -2,6 +2,7 @@
 #define VERSION_H
 
 #include <date.h>
+#include <version.h>
 
 #include <string>
 #include <vector>
@@ -15,8 +16,22 @@ class Version
 public:
     std::string name;
     Date date;
+
+    Version()
+    { return; }
+
+    bool operator==(const Version &);
+    bool operator!=(const Version &);
 };
 
 Version get_version_by_date(const std::vector<Version> &, const Date &);
+
+int get_index_by_name(const std::vector<Version> &, const std::string &);
+
+// get the index of the first (oldest) version on or after the given date
+int get_starting_index(const std::vector<Version> &, const Date &);
+
+// get the index of the last (most recent) version on or before the given date
+int get_ending_index(const std::vector<Version> &, const Date &);
 
 #endif

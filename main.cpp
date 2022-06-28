@@ -10,6 +10,7 @@
 #include <consts.h>
 #include <template_parse.h>
 #include <git_api.h>
+#include <session.h>
 
 #include <string>
 #include <vector>
@@ -235,26 +236,15 @@ int main(int argc, char ** argv)
     port.start_port = port.start_port + id * (FUZZTIMES + 1);
 
     VMConfig vmc = determine_threadedness(inspector, bug, logfile);
+
+    logfile << "Max time:" << max_time << endl;
     
     // ======================================================================================================
     // Begin Inspection
     // ======================================================================================================
 
-    /*
-    cout << SPACER
-        << "Making the kernel\n";
-    export_gcc(gcc_versions, Date(2022,6,24), inspector);
-    prep_kernel(bug, inspector);
-    clean_gcc(tmp_path);
-
-    cout << SPACER;
-    prep_syzkaller(bug, inspector);
-    //calc_bloat();               // calculate how much bloat is in the slimmed template
-
-    cout << SPACER;
-    // don't forget to log everything
-    fuzz_loop(bug, inspector, duplicates, max_time, vmc, port);
-    */
+    vector<Session> fuzz_sessions;
+    int session_count = 0;
 
     // commits are arranged newest (low index) to oldest (high index)
     cout << SPACER
@@ -270,6 +260,7 @@ int main(int argc, char ** argv)
     vector<Version> syzkaller_versions = get_syzkaller_versions(bug);
     cout << "Found " << syzkaller_versions.size() << " Syzkaller commits.\n";
 
+    // ======================================================================================================
     // Begin Template Inspection
     cout << SPACER
          << "Gathering template_changes...\n";
@@ -318,35 +309,61 @@ int main(int argc, char ** argv)
     if (relevant_template_changes.size() > 1) {
         cout << SPACER
              << "Inspecting " << relevant_template_changes.size() - 1 << " template changes.\n";
-        logfile << "Inspecting " << relevant_template_changes.size() - 1 << " template changes in " 
-                << kernel_versions.back().date.get_date() << " to " << kernel_versions.front().date.get_date() << ".\n";
+        logfile << "Inspecting " << relevant_template_changes.size() - 1 << " template changes in [" 
+                << kernel_versions.back().date.get_date() << ", " << kernel_versions.front().date.get_date() << "].\n";
 
+        // maybe binary search here
         string template_dir;
         Version linux_version, prev_syzkaller_version;
+        Session this_session;
         Syzkaller_Result result_before, result_after;
         for (Version current_version : relevant_template_changes)
         {
             // found_before = fuzz before
-            cout << SPACER
-                << "Making the kernel\n";
             linux_version = get_version_by_date(kernel_versions, current_version.date);
-            export_gcc(gcc_versions, current_version.date, inspector);
-            prep_kernel(bug, inspector, linux_version, linux_repo_remote);
-            clean_gcc(tmp_path);
-
-            // pull the previous template
-            cout << SPACER
-                << "Prepping the old template\n";
             prev_syzkaller_version = get_version_by_date(relevant_template_changes, current_version.date.dec());
-            prep_syzkaller(bug, inspector, prev_syzkaller_version);
 
-            // now compile the current syzkaller using the old template
-            cout << SPACER
-                << "Making Syzkaller\n";
-            prev_syzkaller_version = get_version_by_date(relevant_template_changes, current_version.date);
-            prep_syzkaller(bug, inspector, prev_syzkaller_version, bug.get_wd() + "/my_template.txt");
+            this_session = Session(linux_version, current_version, prev_syzkaller_version, false);
 
-            result_before = fuzz_loop(bug, inspector, duplicates, max_time, vmc, port);
+            session_count++;
+            logfile << "Session " << session_count << " before:\n"
+                    << "    Template:  " << prev_syzkaller_version.date.get_date() << " - " << prev_syzkaller_version.name << "\n"
+                    << "    Syzkaller: " << current_version.date.get_date() << " - " << current_version.name << "\n"
+                    << "    Kernel:    " << linux_version.date.get_date() << " - " << linux_version.name << "\n";
+
+            if (!already_fuzzed(fuzz_sessions, this_session))
+            {
+                cout << SPACER
+                    << "Making the kernel\n";
+                export_gcc(gcc_versions, current_version.date, inspector);
+                prep_kernel(bug, inspector, linux_version, linux_repo_remote);
+                clean_gcc(tmp_path);
+
+                // pull the previous template
+                cout << SPACER
+                    << "Prepping the old template\n";
+                prep_syzkaller(bug, inspector, prev_syzkaller_version);
+
+                // now compile the current syzkaller using the old template
+                cout << SPACER
+                    << "Making Syzkaller\n";
+                prep_syzkaller(bug, inspector, current_version, bug.get_wd() + "/my_template.txt");
+
+                result_before = fuzz_loop(bug, inspector, duplicates, max_time, vmc, port, current_version.date);
+
+                logfile << "    The bug was " << (result_before.found ? "found in " : "not found and timed out at ") << result_before.ttf << " minutes\n";
+                for (string b : result_before.bugsfound)
+                    logfile << "        " << b << "\n";
+
+                this_session.found = result_before.found;
+                fuzz_sessions.push_back(this_session);
+            }
+            else
+            {
+                cout << "This session has already been fuzzed. Skipping.\n";
+                result_before.found = get_result(fuzz_sessions, this_session) == 1 ? true : false;
+                logfile << "The bug was " << (result_before.found ? "found " : "not found ") << "in a previous identical fuzzing session.\n";
+            }
 
             if (result_before.found)
             {
@@ -355,18 +372,47 @@ int main(int argc, char ** argv)
             }
 
             // found_after = fuzz after
-            // no need to rebuild the kernel.
-            cout << SPACER
-                << "Making Syzkaller\n";
-            prep_syzkaller(bug, inspector, current_version);
+            logfile << "Session " << session_count << " after:\n"
+                    << "    Template:  " << current_version.date.get_date() << " - " << current_version.name << "\n"
+                    << "    Syzkaller: " << current_version.date.get_date() << " - " << current_version.name << "\n"
+                    << "    Kernel:    " << linux_version.date.get_date() << " - " << linux_version.name << "\n";
 
-            result_after = fuzz_loop(bug, inspector, duplicates, max_time, vmc, port);
+            this_session = Session(linux_version, current_version, current_version, false);
+
+            if (!already_fuzzed(fuzz_sessions, this_session))
+            {
+                // no need to rebuild the kernel.
+                cout << SPACER
+                    << "Making Syzkaller\n";
+                prep_syzkaller(bug, inspector, current_version);
+
+                result_after = fuzz_loop(bug, inspector, duplicates, max_time, vmc, port, current_version.date);
+
+                logfile << "    The bug was " << (result_after.found ? "found in " : "not found and timed out at ") << result_after.ttf << " minutes\n";
+                for (string b : result_after.bugsfound)
+                    logfile << "        " << b << "\n";
+
+                this_session.found = result_before.found;
+                fuzz_sessions.push_back(this_session);
+            }
+            else
+            {
+                cout << "This session has already been fuzzed. Skipping.\n";
+                result_after.found = get_result(fuzz_sessions, this_session) == 1 ? true : false;
+                logfile << "The bug was " << (result_after.found ? "found " : "not found ") << "in a previous identical fuzzing session.\n";
+            }
 
             if (!result_before.found && result_after.found)
             {
-                cout << "Revealing Factor Found!\n"
+                cout << SPACER
+                     << "Revealing Factor Found!\n"
                      << "Template update from " << current_version.name << " on " << current_version.date.get_date() << " is the reason.\n";
-                // finish logging
+                
+                logfile << "\nSuccess\n"
+                        << "Revealing factor: Template Update\n"
+                        << "Template Version: " << current_version.date.get_date() << " - " << current_version.name << endl;
+
+                // clean up
                 return 0;
             }
 
@@ -377,54 +423,251 @@ int main(int argc, char ** argv)
         }
     }
     else
-        cout << "No template updates to inspect. Skipping.\n";
+        cout << SPACER
+             << "No template updates to inspect. Skipping.\n";
 
+    // ======================================================================================================
     // Begin Kernel Inspection
-    // int start_index = get_starting_index();
-    // int end_index = get_ending_index();
 
-    // r is the starting date. older. higher index
-    // l is the ending date. recent. lower index
-    // int r = start_index;
-    // int l = end_index;
-    // int m = (r + l) / 2;
-    // while (l < r) {
-        // fetch kernel commit
-        // fuzz
-        // if (found)
-            // l = m
-        // else
-            // r = m
-        // m = (r + l) / 2;
-    // }
+    // r is the starting date. older date (lower). higher index
+    // l is the ending date. recent date (higher). lower index
+    int r = get_starting_index(kernel_versions, low_date);
+    int l = get_ending_index(kernel_versions, high_date);
+    int m;
 
-    // m is the index of the bisected commit
-    // MAKE SURE THIS IS THE CASE
+    cout << SPACER
+         << "Inspecting " << r - l << " kernel versions.\n";
+    logfile << "Inspecting " << r - l << " kernel versions in the range [" << low_date.get_date() << ", " << high_date.get_date() << "].\n";
 
-    // fetch if needed
-    // found_after = fuzz after (chance fetch/build is not needed)
-    // fetch before
-    // found_before = fuzz before
-    // if (found_after && !found_before)
-        // finish
+    Syzkaller_Result result;
+    Version linux_version, syzkaller_version, bisect_version;
+    Session this_session;
+    while (l <= r)
+    {
+        m = (r + l) / 2;
+        linux_version = kernel_versions.at(m);
+        syzkaller_version = get_version_by_date(syzkaller_versions, linux_version.date);
+        this_session = Session(linux_version, syzkaller_version, syzkaller_version, false);
+
+        session_count++;
+        logfile << "Session " << session_count << ":\n"
+                    << "    Template:  " << syzkaller_version.date.get_date() << " - " << syzkaller_version.name << "\n"
+                    << "    Syzkaller: " << syzkaller_version.date.get_date() << " - " << syzkaller_version.name << "\n"
+                    << "    Kernel:    " << linux_version.date.get_date() << " - " << linux_version.name << "\n";
+
+        if (!already_fuzzed(fuzz_sessions, this_session))
+        {
+            cout << SPACER
+                 << "Making the kernel\n";
+            export_gcc(gcc_versions, linux_version.date, inspector);
+            prep_kernel(bug, inspector, linux_version, linux_repo_remote);
+            clean_gcc(tmp_path);
+
+            cout << SPACER
+                 << "Prepping Syzkaller\n";
+            prep_syzkaller(bug, inspector, syzkaller_version);
+
+            result = fuzz_loop(bug, inspector, duplicates, max_time, vmc, port, syzkaller_version.date);
+
+            logfile << "    The bug was " << (result.found ? "found in " : "not found and timed out at ") << result.ttf << " minutes\n";
+            for (string b : result.bugsfound)
+                logfile << "        " << b << "\n";
+
+            this_session.found = result.found;
+            fuzz_sessions.push_back(this_session);
+        }
+        else
+        {
+            cout << "This session has already been fuzzed. Skipping.\n";
+            result.found = get_result(fuzz_sessions, this_session) == 1 ? true : false;
+            logfile << "The bug was " << (result.found ? "found " : "not found ") << "in a previous identical fuzzing session.\n";
+        }
+
+        if (result.found)
+        {
+            l = m;
+            bisect_version = linux_version;
+        }
+        else
+            r = m;
+    }
+
+    // fuzz before and after the linux version to confirm
+    cout << "Checking if the kernel is the revealing factor.\n";
+    Syzkaller_Result result_after, result_before;
+    syzkaller_version = get_version_by_date(syzkaller_versions, bisect_version.date);
+    this_session = Session(bisect_version, syzkaller_version, syzkaller_version, false);
+
+    session_count++;
+    logfile << "Session " << session_count << ":\n"
+            << "    Template:  " << syzkaller_version.date.get_date() << " - " << syzkaller_version.name << "\n"
+            << "    Syzkaller: " << syzkaller_version.date.get_date() << " - " << syzkaller_version.name << "\n"
+            << "    Kernel:    " << bisect_version.date.get_date() << " - " << bisect_version.name << "\n";
+
+    if (!already_fuzzed(fuzz_sessions, this_session))
+    {
+        // fuzz after first
+        // check if we need to fetch anything
+        if (bisect_version != linux_version)
+        {
+            cout << SPACER
+                << "Making the kernel\n";
+            export_gcc(gcc_versions, bisect_version.date, inspector);
+            prep_kernel(bug, inspector, bisect_version, linux_repo_remote);
+            clean_gcc(tmp_path);
+
+            cout << SPACER
+                << "Prepping Syzkaller\n";
+            prep_syzkaller(bug, inspector, syzkaller_version);
+        }
+
+        result_after = fuzz_loop(bug, inspector, duplicates, max_time, vmc, port, syzkaller_version.date);
+
+        logfile << "    The bug was " << (result_after.found ? "found in " : "not found and timed out at ") << result_after.ttf << " minutes\n";
+        for (string b : result_after.bugsfound)
+            logfile << "        " << b << "\n";
+
+        this_session.found = result_after.found;
+        fuzz_sessions.push_back(this_session);
+    }
+    else
+    {
+        cout << "This session has already been fuzzed. Skipping.\n";
+        result_after.found = get_result(fuzz_sessions, this_session) == 1 ? true : false;
+        logfile << "The bug was " << (result_after.found ? "found " : "not found ") << "in a previous identical fuzzing session.\n";
+    }
     
-    // update date range
 
+    // Remember to do corner case range checking in cases like this!!
+    linux_version = kernel_versions.at(get_index_by_name(kernel_versions, bisect_version.name) - 1);
+    this_session = Session(linux_version, syzkaller_version, syzkaller_version, false);
+
+    session_count++;
+    logfile << "Session " << session_count << ":\n"
+            << "    Template:  " << syzkaller_version.date.get_date() << " - " << syzkaller_version.name << "\n"
+            << "    Syzkaller: " << syzkaller_version.date.get_date() << " - " << syzkaller_version.name << "\n"
+            << "    Kernel:    " << linux_version.date.get_date() << " - " << linux_version.name << "\n";
+    
+    if (!already_fuzzed(fuzz_sessions, this_session))
+    {
+        cout << SPACER
+             << "Making the kernel\n";
+        export_gcc(gcc_versions, linux_version.date, inspector);
+        prep_kernel(bug, inspector, linux_version, linux_repo_remote);
+        clean_gcc(tmp_path);
+
+        result_before = fuzz_loop(bug, inspector, duplicates, max_time, vmc, port, syzkaller_version.date);
+
+        logfile << "    The bug was " << (result_before.found ? "found in " : "not found and timed out at ") << result_before.ttf << " minutes\n";
+        for (string b : result_before.bugsfound)
+            logfile << "        " << b << "\n";
+
+        this_session.found = result_before.found;
+        fuzz_sessions.push_back(this_session);
+    }
+    else
+    {
+        cout << "This session has already been fuzzed. Skipping.\n";
+        result_before.found = get_result(fuzz_sessions, this_session) == 1 ? true : false;
+        logfile << "The bug was " << (result_before.found ? "found " : "not found ") << "in a previous identical fuzzing session.\n";
+    }
+
+    // check the results
+    if (result_after.found && !result_before.found)
+    {
+        cout << SPACER
+             << "Revealing Factor Found!\n"
+             << "Kernel code change from " << linux_version.name << " on " << linux_version.date.get_date() << " is the reason.\n";
+                
+        logfile << "\nSuccess\n"
+                << "Revealing factor: Kernel Code Change\n"
+                << "Kernel Version: " << linux_version.date.get_date() << " - " << linux_version.name << endl;
+        
+        // clean up
+        return 0;
+    }
+    
+    high_date = low_date = bisect_version.date;
+
+    // ======================================================================================================
     // Begin Syzkaller Inspection
-    // vector<Version> syzkaller_updates = get_syzkaller_commits();
 
     // start with the newest and go back
-    // for (each syzkaller_update) {
-        // fetch syzkaller
-        // fuzz
-        // if (!found)
-            // break
-    // }
+    r = get_starting_index(kernel_versions, low_date);
+    l = get_ending_index(kernel_versions, high_date);
 
-    // if (first syzkaller commit)
-        // too hard to find
-    // else
-        // report previous syzkaller commit and finish
+    cout << SPACER
+         << "Inspecting " << r - l << " syzkaller versions.\n";
+    logfile << "Inspecting " << r - l << " syzkaller versions from " << high_date.get_date() << ".\n";
+
+    // we only need one kernel version
+    cout << SPACER
+         << "Making the kernel\n";
+    export_gcc(gcc_versions, bisect_version.date, inspector);
+    prep_kernel(bug, inspector, bisect_version, linux_repo_remote);
+    clean_gcc(tmp_path);
+
+    for (int i = l; i >= r; i++)
+    {
+        syzkaller_version = syzkaller_versions.at(i);
+        this_session = Session(bisect_version, syzkaller_version, syzkaller_version, false);
+
+        session_count++;
+        logfile << "Session " << session_count << ":\n"
+                << "    Template:  " << syzkaller_version.date.get_date() << " - " << syzkaller_version.name << "\n"
+                << "    Syzkaller: " << syzkaller_version.date.get_date() << " - " << syzkaller_version.name << "\n"
+                << "    Kernel:    " << bisect_version.date.get_date() << " - " << bisect_version.name << "\n";
+
+        if (!already_fuzzed(fuzz_sessions, this_session))
+        {
+            cout << SPACER
+                << "Prepping Syzkaller\n";
+            prep_syzkaller(bug, inspector, syzkaller_version);
+
+            // run without the poc
+            result = fuzz_loop(bug, inspector, duplicates, max_time, vmc, port, syzkaller_version.date, false);
+
+            logfile << "    The bug was " << (result.found ? "found in " : "not found and timed out at ") << result.ttf << " minutes\n";
+            for (string b : result.bugsfound)
+                logfile << "        " << b << "\n";
+
+            this_session.found = result.found;
+            fuzz_sessions.push_back(this_session);
+        }
+        else
+        {
+            cout << "This session has already been fuzzed. Skipping.\n";
+            result.found = get_result(fuzz_sessions, this_session) == 1 ? true : false;
+            logfile << "The bug was " << (result.found ? "found " : "not found ") << "in a previous identical fuzzing session.\n";
+        }
+
+        if (!result.found)
+        {
+            syzkaller_version = syzkaller_versions.at(i - 1);
+            break;
+        }
+    }
+
+    if (get_index_by_name(syzkaller_versions, syzkaller_version.name) < l)
+    {
+        cout << SPACER
+             << "Revealing Factor Found!\n"
+             << "Exact Syzkaller commit unknown.\n";
+                
+        logfile << "\nSuccess\n"
+                << "Revealing factor: Syzkaller Update\n"
+                << "Syzkaller Version: Unknown.\n";
+    }
+    else
+    {
+        cout << SPACER
+             << "Revealing Factor Found!\n"
+             << "Syzkaller update from " << syzkaller_version.name << " on " << syzkaller_version.date.get_date() << " is the reason.\n";
+                
+        logfile << "\nSuccess\n"
+                << "Revealing factor: Syzkaller Update\n"
+                << "Syzkaller Version: " << syzkaller_version.date.get_date() << " - " << syzkaller_version.name << endl;
+    }
 
     // ======================================================================================================
     // Finish

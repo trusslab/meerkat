@@ -5,6 +5,7 @@
 #include <file_api.h>
 #include <bug_info.h>
 #include <inspector_config.h>
+#include <fuzz_prep.h>
 
 #include <iostream>
 #include <string>
@@ -68,60 +69,7 @@ void inc_port (Port_Info &p)
     return;
 }
 
-int write_syzkaller_config(const Bug_Info &bug, const InspectorConfig &inspector, const VMConfig &vmc, Port_Info &p)
-{
-    inc_port(p);
-
-    ofstream outf;
-    outf.open(bug.get_syzconfig());
-    if (!outf)
-    {
-        cerr << "Error: Failed to open file " << bug.get_syzconfig() << ".\n";
-        return -1;
-    }
-
-    outf << "{\n";
-
-    // if(target flag exists) // target was added on 2017-09-15
-    outf << "    \"target\": \"linux/amd64\",\n";
-    // endif
-
-    outf << "    \"http\": \"127.0.0.1:" << p.port << "\",\n"
-         << "    \"workdir\": \"" << bug.get_kallerwd() << "\",\n";
-
-    // "vmlinux" until 2018-06-27, then "kernel_obj" starting on 2018-06-28
-    //if (( $($inspectdir/helpers/diffdate $sdate "2018-06-28") >= 0 )); then
-        outf << "    \"kernel_obj\": \"" << bug.get_kerneldir() << "\",\n";
-    //else
-    //    outf << "    \"vmlinux\": \"" << bug.get_kerneldir() << "/vmlinux\",\n";
-    //endif
-
-    // change image when syzkaller did. It shouldn't matter, but who knows.
-    //if (( $($inspectdir/helpers/diffdate $sdate "2018-09-04") >= 0 )); then
-        outf << "    \"image\": \"" << inspector.get_inspect_dir() << "/image/stretch/stretch.img\",\n"
-             << "    \"sshkey\": \"" << inspector.get_inspect_dir() << "/image/stretch/stretch.id_rsa\",\n";
-    //else
-    //    outf << "    \"image\": \"" << inspector.get_inspect_dir() << "/image/wheezy/wheezy.img\",\n"
-    //         << "    \"sshkey\": \"" << inspector.get_inspect_dir() << "/image/wheezy/ssh/id_rsa\",\n";
-    //fi
-
-    outf << "    \"syzkaller\": \"" << bug.get_syzdir() << "\",\n"
-         << "    \"procs\": " << vmc.numProcs << ",\n"
-         << "    \"type\": \"qemu\",\n"
-         << "    \"reproduce\": false,\n"
-         << "    \"vm\": {\n"
-         << "        \"count\": " << vmc.numVM << ",\n"
-         << "        \"kernel\": \"" << bug.get_kerneldir() << "/arch/x86/boot/bzImage\",\n"
-         << "        \"cpu\": " << vmc.numCPU << ",\n"
-         << "        \"mem\": " << inspector.get_mem() << "\n"
-         << "    }\n"
-         << "}";
-
-    outf.close();
-    return 0;
-}
-
-Syzkaller_Result run_syzkaller(const Bug_Info &bug, const InspectorConfig &inspector, const vector<string> &dups, int max_time)
+Syzkaller_Result run_syzkaller(const Bug_Info &bug, const InspectorConfig &inspector, const vector<string> &dups, int max_time, bool poc)
 {
     Syzkaller_Result ret;
     ret.ttf = 0;
@@ -130,6 +78,8 @@ Syzkaller_Result run_syzkaller(const Bug_Info &bug, const InspectorConfig &inspe
     string crash_name;
 
     reset_kaller_wd(bug.get_kallerwd());
+    if (poc)
+        insert_POC_as_seed(bug);
 
     // run syzkaller
     cd(bug.get_syzdir());
@@ -179,15 +129,16 @@ Syzkaller_Result run_syzkaller(const Bug_Info &bug, const InspectorConfig &inspe
     return ret;
 }
 
-Syzkaller_Result fuzz_loop(const Bug_Info &bug, const InspectorConfig &inspector, const std::vector<std::string> &dups, int max_time, const VMConfig &vmc, Port_Info &port)
+Syzkaller_Result fuzz_loop(const Bug_Info &bug, const InspectorConfig &inspector, const std::vector<std::string> &dups,
+                            int max_time, const VMConfig &vmc, Port_Info &port, const Date &syz_date, bool poc)
 {
     Syzkaller_Result ret;
     Syzkaller_Result session_ret;
     ret.found = false;
     for (int i = 0; i < FUZZTIMES & !ret.found; i++)
     {
-        write_syzkaller_config(bug, inspector, vmc, port);
-        ret = run_syzkaller(bug, inspector, dups, max_time);
+        write_syzkaller_config(bug, inspector, vmc, port, syz_date);
+        ret = run_syzkaller(bug, inspector, dups, max_time, poc);
 
         // keep a list of all unique bugs found this session
         for (string s : ret.bugsfound)
