@@ -23,8 +23,7 @@ using namespace std;
 
 int main(int argc, char ** argv)
 {
-
-    int max_time = 10, id, session_count = 0, r, l, m, err = 0;
+    int max_time = 10, id, session_count = 0, r, l, m, err = 0, k;
     string find_hash, guilty_hash, 
             linux_repo_remote, logfilename,
             tmp_path, tmp_snapshotfile,
@@ -75,6 +74,7 @@ int main(int argc, char ** argv)
     }
 
     git_libgit2_init();
+    set_timezone("UTC0");
 
     if (args.is_set('F'))
         find_hash = args.get_arg_as_string('F');
@@ -105,7 +105,8 @@ int main(int argc, char ** argv)
     }
 
     // get config for how to run
-    cout << "Parsing configs.\n";
+    cout << SPACER
+         << "Parsing configs.\n";
     inspector.parse_config_file("inspector-config/parameters.cfg");
 
     // get information about the bug
@@ -223,7 +224,9 @@ int main(int argc, char ** argv)
         goto finish;
     }
 
-    logfile << bug.get_name() << "," << bug.get_buglink() << endl;
+    logfile << bug.get_name() << "," << bug.get_buglink() << endl
+            << "Finding: " << find_hash << endl
+            << "Guilty: " << guilty_hash << endl;
 
     // Parse Syzbot for duplicate bugs
     cout << SPACER
@@ -254,7 +257,7 @@ int main(int argc, char ** argv)
     remove_file(tmp_snapshotfile);
     cout << SPACER;
 
-    port.start_port = port.start_port + id * (FUZZTIMES + 1);
+    port.init(id);
 
     vmc = determine_threadedness(inspector, bug, logfile);
 
@@ -285,6 +288,7 @@ int main(int argc, char ** argv)
 
     // ======================================================================================================
     // Fuzz at the finding commit
+    
     cout << SPACER
          << "Testing the finding commit.\n";
     logfile << "Inspecting the finding commit.\n";
@@ -304,13 +308,27 @@ int main(int argc, char ** argv)
     err = prep_kernel(bug, inspector, linux_version, linux_repo_remote);
     clean_gcc(tmp_path);
     if (err < 0)
+    {
+        logfile << "Error: The kernel failed to make.\n" << flush;
         goto finish;
+    }
 
     cout << SPACER
          << "Prepping Syzkaller\n";
     err = prep_syzkaller(bug, inspector, syzkaller_version);
     if (err < 0)
+    {
+        logfile << "Error: Syzkaller failed to make.\n" << flush;
         goto finish;
+    }
+
+    if (args.is_set("setup-only"))
+    {
+        write_syzkaller_config(bug, inspector, vmc, port, syzkaller_version.date);
+        reset_kaller_wd(bug.get_kallerwd());
+        cout << "Setup complete.\n";
+        goto finish;
+    }
 
     cout << SPACER;
     result = fuzz_loop(bug, inspector, duplicates, max_time, vmc, port, syzkaller_version.date);
@@ -322,12 +340,13 @@ int main(int argc, char ** argv)
     if (!result.found)
     {
         cout << "This bug cannot be found at the finding commit. Ingoring this bug.\n";
+        logfile << "Failure: This bug cannot be found at the finding commit.\n";
         goto finish;
     }
 
     this_session.found = result.found;
     fuzz_sessions.push_back(this_session);
-
+    
     // ======================================================================================================
     // Begin Template Inspection
     cout << SPACER
@@ -445,21 +464,30 @@ int main(int argc, char ** argv)
                 err = prep_kernel(bug, inspector, linux_version, linux_repo_remote);
                 clean_gcc(tmp_path);
                 if (err < 0)
+                {
+                    logfile << "Error: The kernel failed to make.\n" << flush;
                     goto finish;
+                }
 
                 // pull the previous template
                 cout << SPACER
                     << "Prepping the old template\n";
                 err = prep_syzkaller(bug, inspector, prev_syzkaller_version);
                 if (err < 0)
+                {
+                    logfile << "Error: Syzkaller failed to make.\n" << flush;
                     goto finish;
+                }
 
                 // now compile the current syzkaller using the old template
                 cout << SPACER
                     << "Making Syzkaller\n";
                 err = prep_syzkaller(bug, inspector, current_version, bug.get_wd() + "/my_template.txt");
                 if (err < 0)
+                {
+                    logfile << "Error: Syzkaller failed to make.\n" << flush;
                     goto finish;
+                }
 
                 cout << SPACER;
                 result_before = fuzz_loop(bug, inspector, duplicates, max_time, vmc, port, current_version.date);
@@ -499,7 +527,10 @@ int main(int argc, char ** argv)
                     << "Making Syzkaller\n";
                 err = prep_syzkaller(bug, inspector, current_version);
                 if (err < 0)
+                {
+                    logfile << "Error: The kernel failed to make.\n" << flush;
                     goto finish;
+                }
 
                 cout << SPACER;
                 result_after = fuzz_loop(bug, inspector, duplicates, max_time, vmc, port, current_version.date);
@@ -541,8 +572,11 @@ int main(int argc, char ** argv)
         }
     }
     else
+    {
         cout << SPACER
              << "No template updates to inspect. Skipping.\n";
+        logfile << "No template updates to inspect.\n";
+    }
 
     // ======================================================================================================
     // Begin Kernel Inspection
@@ -578,13 +612,19 @@ int main(int argc, char ** argv)
             err = prep_kernel(bug, inspector, linux_version, linux_repo_remote);
             clean_gcc(tmp_path);
             if (err < 0)
-                    goto finish;
+            {
+                logfile << "Error: The kernel failed to make.\n" << flush;
+                goto finish;
+            }
 
             cout << SPACER
                  << "Prepping Syzkaller\n";
             err = prep_syzkaller(bug, inspector, syzkaller_version);
             if (err < 0)
-                    goto finish;
+            {
+                logfile << "Error: Syzkaller failed to make.\n" << flush;
+                goto finish;
+            }
 
             cout << SPACER;
             result = fuzz_loop(bug, inspector, duplicates, max_time, vmc, port, syzkaller_version.date);
@@ -605,20 +645,22 @@ int main(int argc, char ** argv)
 
         if (result.found)
         {
-            l = m - 1;
+            l = m + 1;
             bisect_version = linux_version;
         }
         else
-            r = m + 1;
+            r = m - 1;
     }
 
     // fuzz before and after the linux version to confirm
-    cout << "Checking if the kernel is the revealing factor.\n";
+    cout << SPACER
+         << "Checking if the kernel is the revealing factor.\n";
+    logfile << "Confirming the bisected kernel commit.\n";
     syzkaller_version = get_version_by_date(syzkaller_versions, bisect_version.date);
     this_session = Session(bisect_version, syzkaller_version, syzkaller_version, false);
 
     session_count++;
-    logfile << "Session " << session_count << ":\n"
+    logfile << "Session " << session_count << " after:\n"
             << "    Template:  " << syzkaller_version.date.get_date() << " - " << syzkaller_version.name << "\n"
             << "    Syzkaller: " << syzkaller_version.date.get_date() << " - " << syzkaller_version.name << "\n"
             << "    Kernel:    " << bisect_version.date.get_date() << " - " << bisect_version.name << "\n" << flush;
@@ -635,13 +677,19 @@ int main(int argc, char ** argv)
             err = prep_kernel(bug, inspector, bisect_version, linux_repo_remote);
             clean_gcc(tmp_path);
             if (err < 0)
+            {
+                logfile << "Error: The kernel failed to make.\n" << flush;
                 goto finish;
+            }
 
             cout << SPACER
                 << "Prepping Syzkaller\n";
             err = prep_syzkaller(bug, inspector, syzkaller_version);
             if (err < 0)
+            {
+                logfile << "Error: Syzkaller failed to make.\n" << flush;
                 goto finish;
+            }
         }
 
         cout << SPACER;
@@ -661,13 +709,21 @@ int main(int argc, char ** argv)
         logfile << "The bug was " << (result_after.found ? "found " : "not found ") << "in a previous identical fuzzing session.\n";
     }
     
+    k = get_index_by_name(kernel_versions, bisect_version.name) + 1;
+    if (k >= kernel_versions.size())
+    {
+        cout << "This bug is findable at the guilty commit.\n";
+        logfile << "\nSuccess\n"
+                << "Revealing factor: Guilty Commit\n"
+                << "Kernel Version: " << kernel_versions.at(k - 1).date.get_date() << " - " << kernel_versions.at(k - 1).name << endl;
+        goto finish;
+    }
 
-    // Remember to do corner case range checking in cases like this!!
-    linux_version = kernel_versions.at(get_index_by_name(kernel_versions, bisect_version.name) - 1);
+    linux_version = kernel_versions.at(k);
     this_session = Session(linux_version, syzkaller_version, syzkaller_version, false);
 
     session_count++;
-    logfile << "Session " << session_count << ":\n"
+    logfile << "Session " << session_count << " before:\n"
             << "    Template:  " << syzkaller_version.date.get_date() << " - " << syzkaller_version.name << "\n"
             << "    Syzkaller: " << syzkaller_version.date.get_date() << " - " << syzkaller_version.name << "\n"
             << "    Kernel:    " << linux_version.date.get_date() << " - " << linux_version.name << "\n" << flush;
@@ -680,7 +736,10 @@ int main(int argc, char ** argv)
         err = prep_kernel(bug, inspector, linux_version, linux_repo_remote);
         clean_gcc(tmp_path);
         if (err < 0)
+        {
+            logfile << "Error: The kernel failed to make.\n" << flush;
             goto finish;
+        }
 
         cout << SPACER;
         result_before = fuzz_loop(bug, inspector, duplicates, max_time, vmc, port, syzkaller_version.date);
@@ -723,8 +782,8 @@ int main(int argc, char ** argv)
     l = get_ending_index(kernel_versions, high_date);
 
     cout << SPACER
-         << "Inspecting " << r - l << " syzkaller versions.\n";
-    logfile << "Inspecting " << r - l << " syzkaller versions from " << high_date.get_date() << ".\n";
+         << "Inspecting " << r - l + 1 << " syzkaller version(s).\n";
+    logfile << "Inspecting " << r - l + 1 << " syzkaller version(s) from " << high_date.get_date() << ".\n";
 
     // we only need one kernel version
     cout << SPACER
@@ -733,9 +792,12 @@ int main(int argc, char ** argv)
     err = prep_kernel(bug, inspector, bisect_version, linux_repo_remote);
     clean_gcc(tmp_path);
     if (err < 0)
+    {
+        logfile << "Error: The kernel failed to make.\n" << flush;
         goto finish;
+    }
 
-    for (int i = l; i >= r; i++)
+    for (int i = l; i <= r; i++)
     {
         syzkaller_version = syzkaller_versions.at(i);
         this_session = Session(bisect_version, syzkaller_version, syzkaller_version, false);
@@ -752,11 +814,14 @@ int main(int argc, char ** argv)
                 << "Prepping Syzkaller\n";
             err = prep_syzkaller(bug, inspector, syzkaller_version);
             if (err < 0)
+            {
+                logfile << "Error: Syzkaller failed to make.\n" << flush;
                 goto finish;
+            }
 
             // run without the poc
             cout << SPACER;
-            result = fuzz_loop(bug, inspector, duplicates, max_time, vmc, port, syzkaller_version.date, false);
+            result = fuzz_loop(bug, inspector, duplicates, 60, vmc, port, syzkaller_version.date, false);
 
             logfile << "    The bug was " << (result.found ? "found in " : "not found and timed out at ") << result.ttf << " minutes\n";
             for (string b : result.bugsfound)
@@ -779,7 +844,7 @@ int main(int argc, char ** argv)
         }
     }
 
-    if (get_index_by_name(syzkaller_versions, syzkaller_version.name) < l)
+    if (get_index_by_name(syzkaller_versions, syzkaller_version.name) < r)
     {
         cout << SPACER
              << "Revealing Factor Found!\n"
@@ -787,7 +852,7 @@ int main(int argc, char ** argv)
                 
         logfile << "\nSuccess\n"
                 << "Revealing factor: Syzkaller Update\n"
-                << "Syzkaller Version: Unknown.\n";
+                << "Syzkaller Version: Unknown commit from " << syzkaller_version.date.get_date() << ".\n";
     }
     else
     {

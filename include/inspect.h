@@ -20,9 +20,6 @@ public:
 // recreates it.
 void reset_kaller_wd(const std::string &wd);
 
-// takes in a port and increments it
-void inc_port (Port_Info &p);
-
 // runs syzkaller once. Returns a data structure with
 // time to find and bugs found.
 Syzkaller_Result run_syzkaller(const Bug_Info &, const InspectorConfig &, const std::vector<std::string> &, int, bool = true);

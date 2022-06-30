@@ -10,6 +10,16 @@ public:
     int port;
     int port_count;
     int start_port;
+
+    Port_Info()
+    { return; }
+    
+    Port_Info(int p, int pc, int sp)
+        : port(p), port_count(pc), start_port(sp)
+    { return; }
+
+    int init(int);
+    int inc();
 };
 
 // stores vm resource allocation

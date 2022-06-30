@@ -1,8 +1,22 @@
 #include <inspector_config.h>
+#include <consts.h>
 
 #include <string>
 #include <iostream>
 #include <fstream>
+
+int Port_Info::init(int offset)
+{
+    start_port = start_port + offset * (FUZZTIMES + 1);
+    return start_port;
+}
+
+int Port_Info::inc()
+{
+    port = start_port + port_count;
+    port_count = (port_count + 1) % (FUZZTIMES + 1);
+    return port;
+}
 
 void InspectorConfig::parse_config_file(const std::string & filename)
 {

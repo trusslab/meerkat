@@ -39,12 +39,15 @@ printhelp () {
     echo "    s - the line in parse/bugs.csv to start on"
     echo "    e - the last line in parse/bugs.csv to use"
     echo "    i - the id given to this manager"
+    echo "    x - only set up the kernel and syzkaller. Do not fuzz."
 }
 
 # =================================================================================================
 
+setuponly=""
+
 # get the start and end lines from the arguments
-while getopts "s:e:i:" flag
+while getopts "s:e:i:x" flag
 do
     case $flag in
         s)
@@ -53,6 +56,8 @@ do
             endLine="${OPTARG}" ;;
         i)
             id="${OPTARG}" ;;
+        x)
+            setuponly="--setup-only" ;;
         *)
             printhelp
             exit
@@ -171,7 +176,7 @@ while (( $line <= $endLine )); do
             # run inspector on the bug
             # using finding date as the ending date
             echo "Fuzzing. finding: $findhash; guilty: $guiltyhash"
-            ./syzInspector -F $findhash -G $guiltyhash -i $id
+            ./syzInspector -F $findhash -G $guiltyhash -i $id $setuponly
             number=$(( $number + 1 ))
         else
             echo "Possible bad parse on line $line"

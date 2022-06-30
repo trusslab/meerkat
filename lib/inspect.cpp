@@ -62,13 +62,6 @@ void reset_kaller_wd(const string &wd)
     return;
 }
 
-void inc_port (Port_Info &p)
-{
-    p.port = p.start_port + p.port_count;
-    p.port_count = (p.port_count + 1) % (FUZZTIMES + 1);
-    return;
-}
-
 Syzkaller_Result run_syzkaller(const Bug_Info &bug, const InspectorConfig &inspector, const vector<string> &dups, int max_time, bool poc)
 {
     Syzkaller_Result ret;

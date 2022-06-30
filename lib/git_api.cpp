@@ -15,6 +15,12 @@
 
 using namespace std;
 
+int set_timezone(const string &tz)
+{
+    string env = "TZ=" + tz;
+    return (export_env(env) == 0 ? 0 : -1);
+}
+
 Date git_get_commit_date(const string &wd, const string &local_repo, const string &hash)
 {
     string outfile = wd + "/tmp_commit_date.txt";
@@ -91,7 +97,7 @@ int git_rev_list(const string &local_repo, const string &old_hash, const string 
     char command[] = "git";
     char arg1[] = "rev-list";
     char arg2[] = "--ancestry-path";
-    char arg3[] = "--date=format:%Y-%m-%d";
+    char arg3[] = "--date=format-local:%Y-%m-%d";
     char arg4[] = "--format=%cd";
     string hash_path = old_hash + ".." + new_hash;
     char * arg5 = new char[hash_path.size() + 1];
@@ -168,6 +174,10 @@ vector<Version> get_syzkaller_versions(const Bug_Info &bug)
         v.date = Date(line);
         syzkaller_versions.push_back(v);
     }
+
+    v.name = OLDEST_SYZKALLER_HASH;
+    v.date = git_get_commit_date(bug.get_wd(), bug.get_syzdir(), OLDEST_SYZKALLER_HASH);
+    syzkaller_versions.push_back(v);
 
     inf.close();
     remove_file(outfile);

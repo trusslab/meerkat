@@ -108,9 +108,6 @@ vector<Version> grab_gcc_versions(const string &filename)
     return versions;
 }
 
-void reset_inspector()
-{}
-
 int export_gcc(const vector<Version> &versions, const Date &kernel_date, const InspectorConfig &inspector)
 {
     string v;
@@ -130,6 +127,11 @@ int clean_gcc(const string &old_path)
 int prep_kernel(const Bug_Info &bug, const InspectorConfig &inspector, const Version &linux_version, const string &repo) // repoistory &repo, const hash
 {
     int err = 0;
+
+    cout << "Cleaning the kernel.\n";
+    clean_kernel(bug);
+    cout << SPACER;
+
     // downloads the kernel version (does not decide)
     err = git_fetch_and_checkout(bug.get_kerneldir(), repo, linux_version.name);
     if (err < 0)
@@ -164,9 +166,24 @@ int prep_kernel(const Bug_Info &bug, const InspectorConfig &inspector, const Ver
     cout << SPACER;
     err = make(inspector.get_makeprocs());
     if (err < 0)
+    {
+        cerr << "Error: The kernel failed to make.\n";
         return err;
+    }
     cd(inspector.get_inspect_dir());
     return err;
+}
+
+int clean_kernel(const Bug_Info &bug)
+{
+    string old_dir = pwd();
+    int err = 0;
+
+    cd(bug.get_kerneldir());
+    err = make(1, "clean");
+    cd(old_dir);
+
+    return (err == 0 ? 0 : -1);
 }
 
 int prep_syzkaller(const Bug_Info &bug, const InspectorConfig &inspector, const Version &syzkaller_version, const string &use_template)
@@ -207,7 +224,10 @@ int prep_syzkaller(const Bug_Info &bug, const InspectorConfig &inspector, const 
         cout << "Slimming the template.\n";
         err = slim_template(bug.get_repro(), new_template, template_files);
         if (err < 0)
+        {
+            cout << "Error: failed to slim the template.\n";
             return err;
+        }
         remove_template_files(template_files);
         copy(new_template, full_template);
         cout << SPACER;
@@ -295,7 +315,7 @@ int prep_syzkaller(const Bug_Info &bug, const InspectorConfig &inspector, const 
 
 int write_syzkaller_config(const Bug_Info &bug, const InspectorConfig &inspector, const VMConfig &vmc, Port_Info &p, const Date &syz_date)
 {
-    inc_port(p);
+    p.inc();
 
     ofstream outf;
     outf.open(bug.get_syzconfig());

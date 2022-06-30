@@ -62,7 +62,7 @@ Lastly, `godir` is the directory where go is installed. Syzkaller needs go, so m
 
 ### dependencies
 
-`lynx` `bison` `flex` `gcc` `g++` `libgit2`
+`lynx` `bison` `flex` `gcc` `g++` `libgit2` `dwarves`
 
 Description and how to run them
 

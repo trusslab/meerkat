@@ -23,9 +23,6 @@ VMConfig determine_threadedness(const InspectorConfig &, const Bug_Info &, std::
 // in vector form
 std::vector<Version> grab_gcc_versions(const std::string &);
 
-// resets inspector state
-void reset_inspector();
-
 // exports the correct gcc version to the path for use
 int export_gcc(const std::vector<Version> &, const Date &, const InspectorConfig &);
 
@@ -35,6 +32,9 @@ int clean_gcc(const std::string &);
 // Grabs the correct kernel version, applies any patches needed,
 // copies the config in, and build the kernel
 int prep_kernel(const Bug_Info &, const InspectorConfig &, const Version &, const std::string &);
+
+// runs make clean
+int clean_kernel(const Bug_Info &);
 
 // grabs the correct syzkaller version, applies any patches
 // slims the template, and builds syzkaller

@@ -37,8 +37,8 @@ int get_index_by_name(const vector<Version> &versions, const string &name)
 int get_starting_index(const std::vector<Version> &versions, const Date &d)
 {
     int i;
-    for (i = versions.size() - 1; i >= 0 && d > versions.at(i).date; i--);
-    return (i < 0 ? 0 : i);
+    for (i = 0; i < versions.size() && d <= versions.at(i).date; i++);
+    return i - 1;
 }
 
 // get the index of the last (most recent) version on or before the given date
