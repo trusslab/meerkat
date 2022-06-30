@@ -176,7 +176,9 @@ while (( $line <= $endLine )); do
             # run inspector on the bug
             # using finding date as the ending date
             echo "Fuzzing. finding: $findhash; guilty: $guiltyhash"
+            set +e
             ./syzInspector -F $findhash -G $guiltyhash -i $id $setuponly
+            set -e
             number=$(( $number + 1 ))
         else
             echo "Possible bad parse on line $line"
