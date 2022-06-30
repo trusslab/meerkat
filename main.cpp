@@ -349,6 +349,7 @@ int main(int argc, char ** argv)
     
     // ======================================================================================================
     // Begin Template Inspection
+
     cout << SPACER
          << "Gathering template_changes...\n";
     template_changes = get_template_changes(bug, low_date, high_date, syzkaller_versions);
