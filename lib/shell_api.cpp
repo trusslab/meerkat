@@ -117,13 +117,13 @@ int make(int procs, const string &option)
 
     char * arg_list[] = {command, arg1, arg2, arg3, arg4, nullptr};
 
-    int ret = exec_and_wait("make", arg_list);
+    int err = exec_and_wait("make", arg_list);
 
     delete[] arg1;
     if (arg4)
         delete[] arg4;
 
-    return ret;
+    return (err == 0 ? 0 : -1);
 }
 
 int copy(const string &src, const string &dest)

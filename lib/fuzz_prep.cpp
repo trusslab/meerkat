@@ -129,8 +129,11 @@ int clean_gcc(const string &old_path)
 
 int prep_kernel(const Bug_Info &bug, const InspectorConfig &inspector, const Version &linux_version, const string &repo) // repoistory &repo, const hash
 {
+    int err = 0;
     // downloads the kernel version (does not decide)
-    git_fetch_and_checkout(bug.get_kerneldir(), repo, linux_version.name);
+    err = git_fetch_and_checkout(bug.get_kerneldir(), repo, linux_version.name);
+    if (err < 0)
+        return err;
 
     // copy over the config
     copy(bug.get_kconfig(), bug.get_kerneldir() + "/.config");
@@ -155,30 +158,44 @@ int prep_kernel(const Bug_Info &bug, const InspectorConfig &inspector, const Ver
 
     // build the kernel
     cd(bug.get_kerneldir());
-    make(inspector.get_makeprocs(), "olddefconfig");
+    err = make(inspector.get_makeprocs(), "olddefconfig");
+    if (err < 0)
+        return err;
     cout << SPACER;
-    make(inspector.get_makeprocs());
+    err = make(inspector.get_makeprocs());
+    if (err < 0)
+        return err;
     cd(inspector.get_inspect_dir());
-    return 0;
+    return err;
 }
 
 int prep_syzkaller(const Bug_Info &bug, const InspectorConfig &inspector, const Version &syzkaller_version, const string &use_template)
 {
-    clean_syzkaller(bug);
+    int err = 0;
+    err = clean_syzkaller(bug);
+    if (err < 0)
+        return err;
 
     // work around time period where go mod tidy doesn't work
     bool dangerzone = false;
     if (syzkaller_version.date < Date(2020,7,4) && syzkaller_version.date >= Date(2020,4,30))
     {
-        git_fetch_and_checkout(bug.get_syzdir(), SYZKALLER_REPO_REMOTE, "136082ab38d86932bc3ed0087694e99d0e55491b");
+        err = git_fetch_and_checkout(bug.get_syzdir(), SYZKALLER_REPO_REMOTE, "136082ab38d86932bc3ed0087694e99d0e55491b");
+        if (err < 0)
+            return err;
+
+        cd(bug.get_syzdir());
         go_mod_init();
         go_mod_tidy();
         go_mod_vendor();
+        cd(inspector.get_inspect_dir());
         dangerzone = true;
     }
 
     // download syzkaller (does not decide)
-    git_fetch_and_checkout(bug.get_syzdir(), SYZKALLER_REPO_REMOTE, syzkaller_version.name);
+    err = git_fetch_and_checkout(bug.get_syzdir(), SYZKALLER_REPO_REMOTE, syzkaller_version.name);
+    if (err < 0)
+        return err;
 
     // Slim the template if needed, otherwise copy over the one given
     string full_template = syzkaller_version.date < Date(2017,9,15) ? bug.get_syzdir() + "/sys" : bug.get_syzdir() + "/sys/linux";;
@@ -188,7 +205,9 @@ int prep_syzkaller(const Bug_Info &bug, const InspectorConfig &inspector, const 
     if (use_template.empty())
     {
         cout << "Slimming the template.\n";
-        slim_template(bug.get_repro(), new_template, template_files);
+        err = slim_template(bug.get_repro(), new_template, template_files);
+        if (err < 0)
+            return err;
         remove_template_files(template_files);
         copy(new_template, full_template);
         cout << SPACER;
@@ -235,11 +254,13 @@ int prep_syzkaller(const Bug_Info &bug, const InspectorConfig &inspector, const 
     }
 
     // Handle old go mod
-    if (check_file(bug.get_syzdir() + "Godeps/Godeps.json") && !dangerzone)
+    if (check_file(bug.get_syzdir() + "/Godeps/Godeps.json") && !dangerzone)
     {
+        cd(bug.get_syzdir());
         go_mod_init();
         go_mod_tidy();
         go_mod_vendor();
+        cd(inspector.get_inspect_dir());
     }
 
     // Fix issue with earlier versions of syzkaller
@@ -249,24 +270,27 @@ int prep_syzkaller(const Bug_Info &bug, const InspectorConfig &inspector, const 
     }
 
     // manually generate the template if needed
-    if (grep_to_find("descriptions:", bug.get_syzdir() + "/Makefile"))
+    if (!grep_to_find("descriptions:", bug.get_syzdir() + "/Makefile"))
     {
         cd(bug.get_syzdir());
         make(inspector.get_makeprocs(), "bin/syz-sysgen");
         char command[] = "./bin/syz-sysgen";
         char * arg_list[] = {command, nullptr};
-        exec_and_wait("./bin/syz-sysgen", arg_list);
+        err = exec_and_wait("./bin/syz-sysgen", arg_list);
+        if (err != 0)
+            return -1;
         cd(inspector.get_inspect_dir());
     }
 
     // Build syzkaller
     cout << "Making Syzkaller.\n";
     cd(bug.get_syzdir());
-    if (make(inspector.get_makeprocs()) != 0)
+    err = make(inspector.get_makeprocs());
+    if (err < 0)
         cerr << "Error: Syzkaller failed to make.\n";
     cd(inspector.get_inspect_dir());
 
-    return 0;
+    return err;
 }
 
 int write_syzkaller_config(const Bug_Info &bug, const InspectorConfig &inspector, const VMConfig &vmc, Port_Info &p, const Date &syz_date)
@@ -357,12 +381,16 @@ int insert_POC_as_seed(const Bug_Info &bug)
 
 int clean_syzkaller(const Bug_Info &bug)
 {
-    int pos0;
+    int pos0, err = 0;
     for (string file : list_dir(bug.get_syzdir()))
     {
         pos0 = file.find_last_of("/");
         if (file.at(pos0 + 1) != '.')
-            remove_dir(file);
+        {
+            err = remove_dir(file);
+            if (err != 0)
+                return err;
+        }
     }
 
     return 0;

@@ -28,30 +28,31 @@ string pwd()
 
 int make_dir(const string &filename)
 {
-    int ret = mkdir(filename.c_str(), 0775);
+    int err = mkdir(filename.c_str(), 0775);
 
-    if (ret < 0)
+    if (err < 0)
         cerr << "Error: Directory " << filename << " could not be made\n";
 
-    return ret;
+    return (err == 0 ? 0 : -1);
 }
 
 int remove_file(const string &filename)
 {
-    int ret = remove(filename.c_str());
+    int err = remove(filename.c_str());
 
-    if (ret != 0)
+    if (err != 0)
         cerr << "Error: Failed to delete file " << filename << ".\n";
     
-    return ret;
+    return (err == 0 ? 0 : -1);
 }
 
 int remove_files_in_dir(const string &dir)
 {
+    int err = 0;
     for (string file : list_dir(dir))
-        remove_dir(file);
+        err = remove_dir(file);
 
-    return 0;
+    return err;
 }
 
 int remove_dir(const string &dir)

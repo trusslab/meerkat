@@ -87,15 +87,17 @@ int git_rev_list(const string &local_repo, const string &old_hash, const string 
 {
     string old_dir = pwd();
     cd(local_repo);
-    // git rev-list --ancestry-path old_hash..new_hash
+    // git rev-list --ancestry-path --date=format:'%Y-%m-%d' --format=%cd old_hash..new_hash
     char command[] = "git";
     char arg1[] = "rev-list";
     char arg2[] = "--ancestry-path";
+    char arg3[] = "--date=format:%Y-%m-%d";
+    char arg4[] = "--format=%cd";
     string hash_path = old_hash + ".." + new_hash;
-    char * arg3 = new char[hash_path.size() + 1];
-    strcpy(arg3, hash_path.c_str());
+    char * arg5 = new char[hash_path.size() + 1];
+    strcpy(arg5, hash_path.c_str());
 
-    char * arg_list[] = {command, arg1, arg2, arg3, nullptr};
+    char * arg_list[] = {command, arg1, arg2, arg3, arg4, arg5, nullptr};
     int ret = exec_and_wait("git", arg_list, outfile);
     if (ret != 0)
     {
@@ -104,7 +106,7 @@ int git_rev_list(const string &local_repo, const string &old_hash, const string 
     }
 
     cd(old_dir);
-    delete[] arg3;
+    delete[] arg5;
     return 0;
 }
 
@@ -127,8 +129,9 @@ vector<Version> get_kernel_versions(const Bug_Info &bug, const string &old_hash,
     Version v;
     while(getline(inf, line))
     {
-        v.name = line;
-        v.date = git_get_commit_date(bug.get_wd(), bug.get_kerneldir(), line);
+        v.name = line.substr(7);
+        getline(inf, line);
+        v.date = Date(line);
         kernel_versions.push_back(v);
     }
 
@@ -160,8 +163,9 @@ vector<Version> get_syzkaller_versions(const Bug_Info &bug)
     Version v;
     while(getline(inf, line))
     {
-        v.name = line;
-        v.date = git_get_commit_date(bug.get_wd(), bug.get_syzdir(), line);
+        v.name = line.substr(7);
+        getline(inf, line);
+        v.date = Date(line);
         syzkaller_versions.push_back(v);
     }
 
@@ -185,8 +189,8 @@ vector<Version> get_template_changes(const Bug_Info &bug, const Date &old_date, 
         // stop once we are before the date range
         if (v.date < old_date)
         {
-            save.name = v.name;
-            save.date = v.date;
+            // keep one commit before the range
+            template_changes.push_back(v);
             break;
         }
 
@@ -199,9 +203,6 @@ vector<Version> get_template_changes(const Bug_Info &bug, const Date &old_date, 
             continue;
         }
     }
-
-    // keep the latest template change before the date range
-    template_changes.push_back(save);
 
     return template_changes;
 }
@@ -220,12 +221,12 @@ int git_fetch_and_checkout(const string &local_repo, const string &repo, const s
 
     char * arg_list[] = {command, arg1, arg2, arg3, nullptr};
 
-    int ret = exec_and_wait("git", arg_list);
-    if (ret != 0)
+    int err = exec_and_wait("git", arg_list);
+    if (err != 0)
     {
         cerr << "Error: fetch " << repo << " " << hash << " failed.\n";
         cd(old_dir);
-        return ret;
+        return -1;
     }
 
     // git checkout -f FETCH_HEAD
@@ -235,12 +236,12 @@ int git_fetch_and_checkout(const string &local_repo, const string &repo, const s
 
     char * arg_list2[] = {command, arg4, arg5, arg6, nullptr};
 
-    ret = exec_and_wait("git", arg_list2);
-    if (ret != 0)
+    err = exec_and_wait("git", arg_list2);
+    if (err != 0)
     {
         cerr << "Error: checkout FETCH_HEAD failed.\n";
         cd(old_dir);
-        return ret;
+        return -1;
     }
 
     cd(old_dir);

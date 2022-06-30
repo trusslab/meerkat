@@ -74,7 +74,7 @@ Syzkaller_Result run_syzkaller(const Bug_Info &bug, const InspectorConfig &inspe
     Syzkaller_Result ret;
     ret.ttf = 0;
     ret.found = false;
-    vector<string> crash_hashes;
+    vector<string> crash_hashes, checked_crashes;
     string crash_name;
 
     reset_kaller_wd(bug.get_kallerwd());
@@ -108,12 +108,13 @@ Syzkaller_Result run_syzkaller(const Bug_Info &bug, const InspectorConfig &inspe
         crash_hashes = list_dir(bug.get_kallerwd() + "/crashes");
         for (string hash : crash_hashes)
         {
-            if (inspector_is_in(hash, ret.bugsfound))
+            if (inspector_is_in(hash, checked_crashes))
                 continue;
             else
-                ret.bugsfound.push_back(hash);
+                checked_crashes.push_back(hash);
 
             crash_name = get_crash_name(hash);
+            ret.bugsfound.push_back(crash_name);
             if (inspector_is_in(crash_name, dups))
                 ret.found = true;
         }
@@ -148,7 +149,7 @@ Syzkaller_Result fuzz_loop(const Bug_Info &bug, const InspectorConfig &inspector
 
     // the final return value will have these for us.
     session_ret.found = ret.found;
-    session_ret.ttf - ret.ttf;
+    session_ret.ttf = ret.ttf;
 
     return session_ret;
 }

@@ -153,6 +153,8 @@ while (( $line <= $endLine )); do
             kpref=""
         fi
 
+        guiltylink=$(echo "$linetext" | awk -F',' '{ print $9; }')
+
         # clean up the bug name if it is a duplicate name
         if [[ $(echo "$bugName" | grep "([0-9]*)$" | cat) != "" ]]; then
             bugName=${bugName::-4}
@@ -160,6 +162,7 @@ while (( $line <= $endLine )); do
 
         findhash=$(echo $findlink | grep -o "[0-9a-f]*$" | cat)
         buglink=$(echo "$linetext" | awk -F',' '{ print $1; }')
+        guiltyhash=$(echo $guiltylink | grep -o "[0-9a-f]*$" | cat)
 
         if [[ $reprolink != "" && $configlink != "" && $bugName != "" && $findlink != "" && $repo != "" && $kpref != "" && fixhash != "" ]]; then
             writebugconfig
@@ -167,8 +170,8 @@ while (( $line <= $endLine )); do
             echo ",good fuzz,$findDate,$findDate,$startDate" >> $logfile
             # run inspector on the bug
             # using finding date as the ending date
-            echo "Fuzzing. start: $startDate; end: $findDate; finding: $findDate"
-            ./syzInspector.sh -f $findDate -F $findhash -s $startDate -e $findDate -i $id
+            echo "Fuzzing. finding: $findhash; guilty: $guiltyhash"
+            ./syzInspector -F $findhash -G $guiltyhash -i $id
             number=$(( $number + 1 ))
         else
             echo "Possible bad parse on line $line"

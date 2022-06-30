@@ -959,5 +959,47 @@ int remove_template_files(const vector<string> &template_files)
 
 bool compare_templates(const string &template1, const string &template2)
 {
-    return compare_files(template1, template2);
+    bool ok1, ok2, ret = true;
+    string line1, line2;
+    ifstream inf1, inf2;
+    inf1.open(template1);
+    inf2.open(template2);
+
+    if (!inf1 || !inf2)
+    {
+        cerr << "Error: Failed to open either " << template1 << " or " << template2 << ".\n";
+        return false;
+    }
+
+    // skip all of the includes
+    while (getline(inf1, line1) && line1.substr(0, 7) == "include");
+    while (getline(inf2, line2) && line2.substr(0, 7) == "include");
+
+    while (true)
+    {
+        ok1 = getline(inf1, line1) ? true : false;
+        ok2 = getline(inf2, line2) ? true : false;
+
+        if (ok1 && ok2)
+        {
+            if (line1 != line2)
+            {
+                ret = false;
+                break;
+            }
+        }
+        else if (!ok1 && !ok2)
+        {
+            break;
+        }
+        else
+        {
+            ret = false;
+            break;
+        }
+    }
+
+    inf1.close();
+    inf2.close();
+    return ret;
 }

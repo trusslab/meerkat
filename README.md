@@ -8,16 +8,6 @@ In order to have an accurate fuzzing environment for Syzkaller and the Linux ker
 
 **Note**: Test out each compiler before you use it! Some of them require old libraries. You'll need to download them and put them in the right directory for your system. Often times, gcc can use the more recent library, but you'll need to point a symbolic link at it. Then come back here and remind me to make more in depth instructions.
 
-## Helper Programs
-
-There are several helper programs that I made because I'm misusing bash script and feeling the consequences. They can all be found in `helpers/`. Simply run `make` to make them and `make clean` to clean up the executables. I appologies for input/output format inconsistencies.
-
-- `dateplusdays.cpp`: Compiles to `dpd`. Takes in a date (yyyy-mm-dd) and a number (x). Adds x days to the date and returns the new date.
-- `decdate`: Takes in a date (yyyy mm dd) and decrements it by one. Returns the new date (yyyy-mm-dd).
-- `incdate`: Takes in a date (yyyy mm dd) and increments it by one. Returns the new date (yyyy-mm-dd).
-- `diffdate`: Takes in 2 dates (yyyy-mm-dd) and returns their difference in number of days.
-- `findmaxtime`: Takes in any number of integers and returns floor(mean + 3 * standard deviation).
-
 ## OS Images
 
 Syzkaller has used two different OS images to interface with the kernel since it began. I have included scripts to download both of them (stolen from Syzkaller again). They are slightly modified to change where they pull from (as old repositories get archived). You should be able to simply run them, but no guarantees that they'll work forever.
@@ -36,7 +26,7 @@ They are specific to some old versions of Linux and Syzkaller. There should not 
 
 ## Template
 
-Compile and short description
+short description
 
 ## Tools
 
@@ -66,7 +56,7 @@ Each of the postfixes for the parameters above, namely `d`, `r`, and `st`, stand
 
 `makeproc` is the number of cores to use when building the kernel. Using 72 cores, I could compile in 2 minutes, but it's dialed back to share resources with other instances. The variable is used in `make -j$makeproc`.
 
-Lastly, `GOROOT` is the directory where go is installed. Syzkaller needs go, so make sure you install it in accordance with the Syzkaller documentation, and then point this variable at it.
+Lastly, `godir` is the directory where go is installed. Syzkaller needs go, so make sure you install it in accordance with the Syzkaller documentation, and then point this variable at it.
 
 ## syzInspector / Inspector-Manager
 
