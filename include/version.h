@@ -20,6 +20,10 @@ public:
     Version()
     { return; }
 
+    Version(const std::string &n, const Date &d)
+        : name(n), date(d)
+    { return; }
+
     bool operator==(const Version &);
     bool operator!=(const Version &);
 };

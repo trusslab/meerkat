@@ -274,6 +274,11 @@ int main(int argc, char ** argv)
          << "Gathering kernel versions...\n";
     kernel_versions = get_kernel_versions(bug, guilty_hash, find_hash);
     cout << "Found " << kernel_versions.size() << " kernel commits.\n";
+    if (kernel_versions.size() == 0)
+    {
+        logfile << "Error: Failed to gather kernel versions.\n";
+        goto finish;
+    }
 
     high_date = kernel_versions.front().date;
     low_date = kernel_versions.back().date;
@@ -293,7 +298,14 @@ int main(int argc, char ** argv)
          << "Testing the finding commit.\n";
     logfile << "Inspecting the finding commit.\n";
 
-    linux_version = kernel_versions.at(get_index_by_name(kernel_versions, find_hash));
+    k = get_index_by_name(kernel_versions, find_hash);
+    if (k < 0)
+    {
+        cerr << "This kernel version does not exist.\n";
+        logfile << "Error: Could not find kernel version " << find_hash << ".\n";
+        goto finish;
+    }
+    linux_version = kernel_versions.at(k);
     syzkaller_version = get_version_by_date(syzkaller_versions, linux_version.date);
     this_session = Session(linux_version, syzkaller_version, syzkaller_version, false);
 
@@ -340,7 +352,7 @@ int main(int argc, char ** argv)
     if (!result.found)
     {
         cout << "This bug cannot be found at the finding commit. Ingoring this bug.\n";
-        logfile << "Failure: This bug cannot be found at the finding commit.\n";
+        logfile << "\nFailure: This bug cannot be found at the finding commit.\n";
         goto finish;
     }
 
@@ -764,11 +776,11 @@ int main(int argc, char ** argv)
     {
         cout << SPACER
              << "Revealing Factor Found!\n"
-             << "Kernel code change from " << linux_version.name << " on " << linux_version.date.get_date() << " is the reason.\n";
+             << "Kernel code change from " << bisect_version.name << " on " << bisect_version.date.get_date() << " is the reason.\n";
                 
         logfile << "\nSuccess\n"
                 << "Revealing factor: Kernel Code Change\n"
-                << "Kernel Version: " << linux_version.date.get_date() << " - " << linux_version.name << endl;
+                << "Kernel Version: " << bisect_version.date.get_date() << " - " << bisect_version.name << endl;
         
         goto finish;
     }

@@ -108,7 +108,7 @@ int git_rev_list(const string &local_repo, const string &old_hash, const string 
     if (ret != 0)
     {
         cerr << "Error: git rev-list " << hash_path << " failed.\n";
-        return ret;
+        return -1;
     }
 
     cd(old_dir);
@@ -120,7 +120,10 @@ vector<Version> get_kernel_versions(const Bug_Info &bug, const string &old_hash,
 {
     string outfile = bug.get_wd() + "/tmp_kernel_versions.txt";
     
-    git_rev_list(bug.get_kerneldir(), old_hash, new_hash, outfile);
+    if (git_rev_list(bug.get_kerneldir(), old_hash, new_hash, outfile) < 0)
+    {
+        return vector<Version>();
+    }
 
     ifstream inf;
     inf.open(outfile);
@@ -152,6 +155,7 @@ vector<Version> get_kernel_versions(const Bug_Info &bug, const string &old_hash,
 
 vector<Version> get_syzkaller_versions(const Bug_Info &bug)
 {
+    int k;
     string outfile = bug.get_wd() + "/tmp_template_changes.txt";
 
     git_rev_list(bug.get_syzdir(), OLDEST_SYZKALLER_HASH, LATEST_SYZKALLER_HASH, outfile);
@@ -178,6 +182,14 @@ vector<Version> get_syzkaller_versions(const Bug_Info &bug)
     v.name = OLDEST_SYZKALLER_HASH;
     v.date = git_get_commit_date(bug.get_wd(), bug.get_syzdir(), OLDEST_SYZKALLER_HASH);
     syzkaller_versions.push_back(v);
+
+    // remove bad versions of syzkaller
+    for (string h : SYZKALLER_BROKEN_VERSONS)
+    {
+        k = get_index_by_name(syzkaller_versions, h);
+        if (k >= 0)
+            syzkaller_versions.erase(syzkaller_versions.begin() + k);
+    }
 
     inf.close();
     remove_file(outfile);
