@@ -245,14 +245,14 @@ int prep_syzkaller(const Bug_Info &bug, const InspectorConfig &inspector, const 
     // Patch a boot error related to kvm
     if (syzkaller_version.date < Date(2021,1,1) && syzkaller_version.date >= Date(2020,5,1))
     {
-        cout << "Applying a patch to Syzkaller.\n";
+        cout << "Applying build patch to Syzkaller.\n";
         sed_i("s/\\-enable\\-kvm \\-cpu host,migratable=off/\\-enable\\-kvm \\-cpu host/", bug.get_syzdir() + "/vm/qemu/qemu.go");
     }
 
     // Apply patch for netfilter_bridge/ebtables
     if (syzkaller_version.date < Date(2018,9,27) && syzkaller_version.date >= Date(2018,2,17))
     {
-        cout << "Applying a patch to Syzkaller.\n";
+        cout << "Applying netfilter_bridge patch to Syzkaller.\n";
         sed_i("/#include <linux\\/netfilter_bridge\\/ebtables.h>/r patches/syz-1.txt", bug.get_syzdir() + "/executor/common_linux.h");
         sed_i("s/#include <linux\\/netfilter_bridge\\/ebtables.h>//", bug.get_syzdir() + "/executor/common_linux.h");
         sed_i("s/#include <linux\\/if.h>//", bug.get_syzdir() + "/executor/common_linux.h");
@@ -264,6 +264,13 @@ int prep_syzkaller(const Bug_Info &bug, const InspectorConfig &inspector, const 
             sed_i("s/#include <linux\\/if.h>//", bug.get_syzdir() + "/pkg/csource/generated.go");
             sed_i("s/#include <errno.h>/#include <errno.h>\n#include <linux\\/if.h>/", bug.get_syzdir() + "/pkg/csource/generated.go");
         }
+    }
+
+    if (syzkaller_version.date >= Date(2020,10,12) && syzkaller_version.date <= Date(2020,10,13))
+    {
+        cout << "Applying cgroup mount patch to Syzkaller.\n";
+        sed_i("s/failmsg(\\\"mount cgroup failed\\\", \\\"(%s, %s): %d\\\\n\\\", dir, enabled + 1, errno);/debug(\\\"mount(%s, %s) failed: %d\\\\n\\\", dir, enabled + 1, errno);/",
+                    bug.get_syzdir() + "/executor/common_linux.h");
     }
 
     // Fix a build error with strncpy
