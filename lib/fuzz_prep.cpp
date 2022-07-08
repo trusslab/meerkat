@@ -108,16 +108,6 @@ vector<Version> grab_compiler_versions(const string &filename)
     return versions;
 }
 
-string export_compiler(const vector<Version> &gcc_versions, const vector<Version> &clang_versions, const Date &kernel_date, const InspectorConfig &inspector, bool useclang)
-{
-    if (useclang)
-        return export_compiler_sub(clang_versions, kernel_date, inspector);
-    else
-        return export_compiler_sub(gcc_versions, kernel_date, inspector);
-    
-    return "";
-}
-
 string export_compiler_sub(const vector<Version> &versions, const Date &kernel_date, const InspectorConfig &inspector)
 {
     string v;
@@ -128,6 +118,16 @@ string export_compiler_sub(const vector<Version> &versions, const Date &kernel_d
 
     export_env("PATH=" + inspector.get_gcc_dir() + "/" + versions.at(i).name + "/bin:" + get_path());
     return versions.at(i).name;
+}
+
+string export_compiler(const vector<Version> &gcc_versions, const vector<Version> &clang_versions, const Date &kernel_date, const InspectorConfig &inspector, bool useclang)
+{
+    if (useclang)
+        return export_compiler_sub(clang_versions, kernel_date, inspector);
+    else
+        return export_compiler_sub(gcc_versions, kernel_date, inspector);
+    
+    return "";
 }
 
 int clean_path(const string &old_path)
