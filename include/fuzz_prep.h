@@ -21,13 +21,14 @@ VMConfig determine_threadedness(const InspectorConfig &, const Bug_Info &, std::
 
 // Reads the gcc version file and returns them
 // in vector form
-std::vector<Version> grab_gcc_versions(const std::string &);
+std::vector<Version> grab_compiler_versions(const std::string &);
 
-// exports the correct gcc version to the path for use
-int export_gcc(const std::vector<Version> &, const Date &, const InspectorConfig &);
+// exports the correct gcc version to the path for use.
+// returns the name of the compiler that was exported
+std::string export_compiler(const std::vector<Version> &, const std::vector<Version> &, const Date &, const InspectorConfig &, bool = false);
 
 // removes gcc from the path (actually just resets the path)
-int clean_gcc(const std::string &);
+int clean_path(const std::string &);
 
 // Grabs the correct kernel version, applies any patches needed,
 // copies the config in, and build the kernel

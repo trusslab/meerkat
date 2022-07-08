@@ -79,7 +79,7 @@ VMConfig determine_threadedness(const InspectorConfig &inspector, const Bug_Info
     return vmc;
 }
 
-vector<Version> grab_gcc_versions(const string &filename)
+vector<Version> grab_compiler_versions(const string &filename)
 {
     ifstream inf;
     inf.open(filename);
@@ -108,7 +108,17 @@ vector<Version> grab_gcc_versions(const string &filename)
     return versions;
 }
 
-int export_gcc(const vector<Version> &versions, const Date &kernel_date, const InspectorConfig &inspector)
+string export_compiler(const vector<Version> &gcc_versions, const vector<Version> &clang_versions, const Date &kernel_date, const InspectorConfig &inspector, bool useclang)
+{
+    if (useclang)
+        return export_compiler_sub(clang_versions, kernel_date, inspector);
+    else
+        return export_compiler_sub(gcc_versions, kernel_date, inspector);
+    
+    return "";
+}
+
+string export_compiler_sub(const vector<Version> &versions, const Date &kernel_date, const InspectorConfig &inspector)
 {
     string v;
     int i;
@@ -116,10 +126,11 @@ int export_gcc(const vector<Version> &versions, const Date &kernel_date, const I
     for (i = versions.size() - 1; i >= 0 && kernel_date < versions.at(i).date; i--);
     i = i < 0 ? 0 : i;
 
-    return export_env("PATH=" + inspector.get_gcc_dir() + "/" + versions.at(i).name + "/bin:" + get_path());
+    export_env("PATH=" + inspector.get_gcc_dir() + "/" + versions.at(i).name + "/bin:" + get_path());
+    return versions.at(i).name;
 }
 
-int clean_gcc(const string &old_path)
+int clean_path(const string &old_path)
 {
     return export_env("PATH=" + old_path);
 }

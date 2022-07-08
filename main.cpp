@@ -23,11 +23,13 @@ using namespace std;
 
 int main(int argc, char ** argv)
 {
+    bool useclang = false;
     int max_time = 10, id, session_count = 0, r, l, m, err = 0, k;
     string find_hash, guilty_hash, 
-            linux_repo_remote, logfilename,
-            tmp_path, tmp_snapshotfile,
-            template1, template2, template3, template_dir;
+           linux_repo_remote, logfilename,
+           compiler,
+           tmp_path, tmp_snapshotfile,
+           template1, template2, template3, template_dir;
 
     VMConfig vmc;
     Port_Info port;
@@ -47,7 +49,8 @@ int main(int argc, char ** argv)
 
     ofstream logfile;
     vector<string> duplicates;
-    vector<Version> gcc_versions, kernel_versions, syzkaller_versions,
+    vector<Version> gcc_versions, clang_versions,
+                    kernel_versions, syzkaller_versions,
                     template_changes, relevant_template_changes;
     vector<Session> fuzz_sessions;
 
@@ -113,7 +116,8 @@ int main(int argc, char ** argv)
     bug.parse_config_file("wd-inspector-" + to_string(id) + "/" + "bug.cfg");
 
     export_go(inspector);
-    gcc_versions = grab_gcc_versions(inspector.get_gcc_dir() + "/gccVersions.csv");
+    gcc_versions = grab_compiler_versions(inspector.get_gcc_dir() + "/gccVersions.csv");
+    clang_versions = grab_compiler_versions(inspector.get_gcc_dir() + "/clangVersions.csv");
     tmp_path = get_path();
 
     // make sure all of the needed files are here.
@@ -227,7 +231,7 @@ int main(int argc, char ** argv)
     logfile << bug.get_name() << "," << bug.get_buglink() << endl
             << "Repository: " << bug.get_kpref() << endl
             << "Finding: " << find_hash << endl
-            << "Guilty: " << guilty_hash << endl;
+            << "Guilty: " << guilty_hash << endl << flush;
 
     // Parse Syzbot for duplicate bugs
     cout << SPACER
@@ -262,7 +266,7 @@ int main(int argc, char ** argv)
 
     vmc = determine_threadedness(inspector, bug, logfile);
 
-    logfile << "Max time:" << max_time << endl;
+    logfile << "Max time:" << max_time << endl << flush;
     
     // ======================================================================================================
     // Begin Inspection
@@ -277,7 +281,7 @@ int main(int argc, char ** argv)
     cout << "Found " << kernel_versions.size() << " kernel commits.\n";
     if (kernel_versions.size() == 0)
     {
-        logfile << "Error: Failed to gather kernel versions.\n";
+        logfile << "Error: Failed to gather kernel versions.\n" << flush;
         goto finish;
     }
 
@@ -297,13 +301,13 @@ int main(int argc, char ** argv)
     
     cout << SPACER
          << "Testing the finding commit.\n";
-    logfile << "Inspecting the finding commit.\n";
+    logfile << "Inspecting the finding commit.\n" << flush;
 
     k = get_index_by_name(kernel_versions, find_hash);
     if (k < 0)
     {
         cerr << "This kernel version does not exist.\n";
-        logfile << "Error: Could not find kernel version " << find_hash << ".\n";
+        logfile << "Error: Could not find kernel version " << find_hash << ".\n" << flush;
         goto finish;
     }
     linux_version = kernel_versions.at(k);
@@ -317,9 +321,10 @@ int main(int argc, char ** argv)
             << "    Kernel:    " << linux_version.date.get_date() << " - " << linux_version.name << "\n" << flush;
 
     cout << "Making the kernel\n";
-    export_gcc(gcc_versions, linux_version.date, inspector);
+    compiler = export_compiler(gcc_versions, clang_versions, linux_version.date, inspector, useclang);
+    logfile << "    Compiler:  " << compiler << "\n" << flush;
     err = prep_kernel(bug, inspector, linux_version, linux_repo_remote);
-    clean_gcc(tmp_path);
+    clean_path(tmp_path);
     if (err < 0)
     {
         logfile << "Error: The kernel failed to make.\n" << flush;
@@ -346,14 +351,14 @@ int main(int argc, char ** argv)
     cout << SPACER;
     result = fuzz_loop(bug, inspector, duplicates, max_time, vmc, port, syzkaller_version.date);
 
-    logfile << "    The bug was " << (result.found ? "found in " : "not found and timed out at ") << result.ttf << " minutes\n";
+    logfile << "    The bug was " << (result.found ? "found in " : "not found and timed out at ") << result.ttf << " minutes\n" << flush;
     for (string b : result.bugsfound)
         logfile << "        " << b << "\n";
 
     if (!result.found)
     {
         cout << "This bug cannot be found at the finding commit. Ingoring this bug.\n";
-        logfile << "\nFailure: This bug cannot be found at the finding commit.\n";
+        logfile << "\nFailure: This bug cannot be found at the finding commit.\n" << flush;
         goto finish;
     }
 
@@ -451,7 +456,7 @@ int main(int argc, char ** argv)
         cout << SPACER
              << "Inspecting " << relevant_template_changes.size() - 1 << " template changes.\n";
         logfile << "Inspecting " << relevant_template_changes.size() - 1 << " template changes in [" 
-                << low_date.get_date() << ", " << high_date.get_date() << "].\n";
+                << low_date.get_date() << ", " << high_date.get_date() << "].\n" << flush;
 
         // maybe binary search here
         for (int i = 0; i < relevant_template_changes.size() - 1; i++)
@@ -474,9 +479,10 @@ int main(int argc, char ** argv)
             {
                 cout << SPACER
                     << "Making the kernel\n";
-                export_gcc(gcc_versions, linux_version.date, inspector);
+                compiler = export_compiler(gcc_versions, clang_versions, linux_version.date, inspector, useclang);
+                logfile << "    Compiler:  " << compiler << "\n" << flush;
                 err = prep_kernel(bug, inspector, linux_version, linux_repo_remote);
-                clean_gcc(tmp_path);
+                clean_path(tmp_path);
                 if (err < 0)
                 {
                     logfile << "Error: The kernel failed to make.\n" << flush;
@@ -506,7 +512,7 @@ int main(int argc, char ** argv)
                 cout << SPACER;
                 result_before = fuzz_loop(bug, inspector, duplicates, max_time, vmc, port, current_version.date);
 
-                logfile << "    The bug was " << (result_before.found ? "found in " : "not found and timed out at ") << result_before.ttf << " minutes\n";
+                logfile << "    The bug was " << (result_before.found ? "found in " : "not found and timed out at ") << result_before.ttf << " minutes\n" << flush;
                 for (string b : result_before.bugsfound)
                     logfile << "        " << b << "\n";
 
@@ -517,7 +523,7 @@ int main(int argc, char ** argv)
             {
                 cout << "This session has already been fuzzed. Skipping.\n";
                 result_before.found = get_result(fuzz_sessions, this_session) == 1 ? true : false;
-                logfile << "The bug was " << (result_before.found ? "found " : "not found ") << "in a previous identical fuzzing session.\n";
+                logfile << "The bug was " << (result_before.found ? "found " : "not found ") << "in a previous identical fuzzing session.\n" << flush;
             }
 
             if (result_before.found)
@@ -549,7 +555,7 @@ int main(int argc, char ** argv)
                 cout << SPACER;
                 result_after = fuzz_loop(bug, inspector, duplicates, max_time, vmc, port, current_version.date);
 
-                logfile << "    The bug was " << (result_after.found ? "found in " : "not found and timed out at ") << result_after.ttf << " minutes\n";
+                logfile << "    The bug was " << (result_after.found ? "found in " : "not found and timed out at ") << result_after.ttf << " minutes\n" << flush;
                 for (string b : result_after.bugsfound)
                     logfile << "        " << b << "\n";
 
@@ -560,7 +566,7 @@ int main(int argc, char ** argv)
             {
                 cout << "This session has already been fuzzed. Skipping.\n";
                 result_after.found = get_result(fuzz_sessions, this_session) == 1 ? true : false;
-                logfile << "The bug was " << (result_after.found ? "found " : "not found ") << "in a previous identical fuzzing session.\n";
+                logfile << "The bug was " << (result_after.found ? "found " : "not found ") << "in a previous identical fuzzing session.\n" << flush;
             }
 
             if (!result_before.found && result_after.found)
@@ -571,7 +577,7 @@ int main(int argc, char ** argv)
                 
                 logfile << "\nSuccess\n"
                         << "Revealing factor: Template Update\n"
-                        << "Template Version: " << current_version.date.get_date() << " - " << current_version.name << endl;
+                        << "Template Version: " << current_version.date.get_date() << " - " << current_version.name << endl << flush;
 
                 goto finish;
             }
@@ -589,7 +595,7 @@ int main(int argc, char ** argv)
     {
         cout << SPACER
              << "No template updates to inspect. Skipping.\n";
-        logfile << "No template updates to inspect.\n";
+        logfile << "No template updates to inspect.\n" << flush;
     }
 
     // ======================================================================================================
@@ -603,7 +609,7 @@ int main(int argc, char ** argv)
 
     cout << SPACER
          << "Inspecting " << r - l << " kernel versions.\n";
-    logfile << "Inspecting " << r - l << " kernel versions in the range [" << low_date.get_date() << ", " << high_date.get_date() << "].\n";
+    logfile << "Inspecting " << r - l << " kernel versions in the range [" << low_date.get_date() << ", " << high_date.get_date() << "].\n" << flush;
 
     while (l <= r)
     {
@@ -622,9 +628,10 @@ int main(int argc, char ** argv)
         {
             cout << SPACER
                  << "Making the kernel\n";
-            export_gcc(gcc_versions, linux_version.date, inspector);
+            compiler = export_compiler(gcc_versions, clang_versions, linux_version.date, inspector, useclang);
+            logfile << "    Compiler:  " << compiler << "\n" << flush;
             err = prep_kernel(bug, inspector, linux_version, linux_repo_remote);
-            clean_gcc(tmp_path);
+            clean_path(tmp_path);
             if (err < 0)
             {
                 logfile << "Error: The kernel failed to make.\n" << flush;
@@ -643,7 +650,7 @@ int main(int argc, char ** argv)
             cout << SPACER;
             result = fuzz_loop(bug, inspector, duplicates, max_time, vmc, port, syzkaller_version.date);
 
-            logfile << "    The bug was " << (result.found ? "found in " : "not found and timed out at ") << result.ttf << " minutes\n";
+            logfile << "    The bug was " << (result.found ? "found in " : "not found and timed out at ") << result.ttf << " minutes\n" << flush;
             for (string b : result.bugsfound)
                 logfile << "        " << b << "\n";
 
@@ -654,7 +661,7 @@ int main(int argc, char ** argv)
         {
             cout << "This session has already been fuzzed. Skipping.\n";
             result.found = get_result(fuzz_sessions, this_session) == 1 ? true : false;
-            logfile << "The bug was " << (result.found ? "found " : "not found ") << "in a previous identical fuzzing session.\n";
+            logfile << "The bug was " << (result.found ? "found " : "not found ") << "in a previous identical fuzzing session.\n" << flush;
         }
 
         if (result.found)
@@ -669,7 +676,7 @@ int main(int argc, char ** argv)
     // fuzz before and after the linux version to confirm
     cout << SPACER
          << "Checking if the kernel is the revealing factor.\n";
-    logfile << "Confirming the bisected kernel commit.\n";
+    logfile << "Confirming the bisected kernel commit.\n" << flush;
     syzkaller_version = get_version_by_date(syzkaller_versions, bisect_version.date);
     this_session = Session(bisect_version, syzkaller_version, syzkaller_version, false);
 
@@ -687,9 +694,10 @@ int main(int argc, char ** argv)
         {
             cout << SPACER
                 << "Making the kernel\n";
-            export_gcc(gcc_versions, bisect_version.date, inspector);
+            compiler = export_compiler(gcc_versions, clang_versions, bisect_version.date, inspector, useclang);
+            logfile << "    Compiler:  " << compiler << "\n" << flush;
             err = prep_kernel(bug, inspector, bisect_version, linux_repo_remote);
-            clean_gcc(tmp_path);
+            clean_path(tmp_path);
             if (err < 0)
             {
                 logfile << "Error: The kernel failed to make.\n" << flush;
@@ -709,7 +717,7 @@ int main(int argc, char ** argv)
         cout << SPACER;
         result_after = fuzz_loop(bug, inspector, duplicates, max_time, vmc, port, syzkaller_version.date);
 
-        logfile << "    The bug was " << (result_after.found ? "found in " : "not found and timed out at ") << result_after.ttf << " minutes\n";
+        logfile << "    The bug was " << (result_after.found ? "found in " : "not found and timed out at ") << result_after.ttf << " minutes\n" << flush;
         for (string b : result_after.bugsfound)
             logfile << "        " << b << "\n";
 
@@ -720,7 +728,7 @@ int main(int argc, char ** argv)
     {
         cout << "This session has already been fuzzed. Skipping.\n";
         result_after.found = get_result(fuzz_sessions, this_session) == 1 ? true : false;
-        logfile << "The bug was " << (result_after.found ? "found " : "not found ") << "in a previous identical fuzzing session.\n";
+        logfile << "The bug was " << (result_after.found ? "found " : "not found ") << "in a previous identical fuzzing session.\n" << flush;
     }
     
     k = get_index_by_name(kernel_versions, bisect_version.name) + 1;
@@ -729,7 +737,7 @@ int main(int argc, char ** argv)
         cout << "This bug is findable at the guilty commit.\n";
         logfile << "\nSuccess\n"
                 << "Revealing factor: Guilty Commit\n"
-                << "Kernel Version: " << kernel_versions.at(k - 1).date.get_date() << " - " << kernel_versions.at(k - 1).name << endl;
+                << "Kernel Version: " << kernel_versions.at(k - 1).date.get_date() << " - " << kernel_versions.at(k - 1).name << endl << flush;
         goto finish;
     }
 
@@ -746,9 +754,10 @@ int main(int argc, char ** argv)
     {
         cout << SPACER
              << "Making the kernel\n";
-        export_gcc(gcc_versions, linux_version.date, inspector);
+        compiler = export_compiler(gcc_versions, clang_versions, linux_version.date, inspector, useclang);
+        logfile << "    Compiler:  " << compiler << "\n" << flush;
         err = prep_kernel(bug, inspector, linux_version, linux_repo_remote);
-        clean_gcc(tmp_path);
+        clean_path(tmp_path);
         if (err < 0)
         {
             logfile << "Error: The kernel failed to make.\n" << flush;
@@ -758,7 +767,7 @@ int main(int argc, char ** argv)
         cout << SPACER;
         result_before = fuzz_loop(bug, inspector, duplicates, max_time, vmc, port, syzkaller_version.date);
 
-        logfile << "    The bug was " << (result_before.found ? "found in " : "not found and timed out at ") << result_before.ttf << " minutes\n";
+        logfile << "    The bug was " << (result_before.found ? "found in " : "not found and timed out at ") << result_before.ttf << " minutes\n" << flush;
         for (string b : result_before.bugsfound)
             logfile << "        " << b << "\n";
 
@@ -769,7 +778,7 @@ int main(int argc, char ** argv)
     {
         cout << "This session has already been fuzzed. Skipping.\n";
         result_before.found = get_result(fuzz_sessions, this_session) == 1 ? true : false;
-        logfile << "The bug was " << (result_before.found ? "found " : "not found ") << "in a previous identical fuzzing session.\n";
+        logfile << "The bug was " << (result_before.found ? "found " : "not found ") << "in a previous identical fuzzing session.\n" << flush;
     }
 
     // check the results
@@ -781,7 +790,7 @@ int main(int argc, char ** argv)
                 
         logfile << "\nSuccess\n"
                 << "Revealing factor: Kernel Code Change\n"
-                << "Kernel Version: " << bisect_version.date.get_date() << " - " << bisect_version.name << endl;
+                << "Kernel Version: " << bisect_version.date.get_date() << " - " << bisect_version.name << endl << flush;
         
         goto finish;
     }
@@ -797,14 +806,14 @@ int main(int argc, char ** argv)
 
     cout << SPACER
          << "Inspecting " << r - l + 1 << " syzkaller version(s).\n";
-    logfile << "Inspecting " << r - l + 1 << " syzkaller version(s) from " << high_date.get_date() << ".\n";
+    logfile << "Inspecting " << r - l + 1 << " syzkaller version(s) from " << high_date.get_date() << ".\n" << flush;
 
     // we only need one kernel version
     cout << SPACER
          << "Making the kernel\n";
-    export_gcc(gcc_versions, bisect_version.date, inspector);
+    compiler = export_compiler(gcc_versions, clang_versions, bisect_version.date, inspector, useclang);
     err = prep_kernel(bug, inspector, bisect_version, linux_repo_remote);
-    clean_gcc(tmp_path);
+    clean_path(tmp_path);
     if (err < 0)
     {
         logfile << "Error: The kernel failed to make.\n" << flush;
@@ -820,7 +829,8 @@ int main(int argc, char ** argv)
         logfile << "Session " << session_count << ":\n"
                 << "    Template:  " << syzkaller_version.date.get_date() << " - " << syzkaller_version.name << "\n"
                 << "    Syzkaller: " << syzkaller_version.date.get_date() << " - " << syzkaller_version.name << "\n"
-                << "    Kernel:    " << bisect_version.date.get_date() << " - " << bisect_version.name << "\n" << flush;
+                << "    Kernel:    " << bisect_version.date.get_date() << " - " << bisect_version.name << "\n"
+                << "    Compiler:  " << compiler << "\n" << flush;
 
         if (!already_fuzzed(fuzz_sessions, this_session))
         {
@@ -837,7 +847,7 @@ int main(int argc, char ** argv)
             cout << SPACER;
             result = fuzz_loop(bug, inspector, duplicates, 60, vmc, port, syzkaller_version.date, false);
 
-            logfile << "    The bug was " << (result.found ? "found in " : "not found and timed out at ") << result.ttf << " minutes\n";
+            logfile << "    The bug was " << (result.found ? "found in " : "not found and timed out at ") << result.ttf << " minutes\n" << flush;
             for (string b : result.bugsfound)
                 logfile << "        " << b << "\n";
 
@@ -848,7 +858,7 @@ int main(int argc, char ** argv)
         {
             cout << "This session has already been fuzzed. Skipping.\n";
             result.found = get_result(fuzz_sessions, this_session) == 1 ? true : false;
-            logfile << "The bug was " << (result.found ? "found " : "not found ") << "in a previous identical fuzzing session.\n";
+            logfile << "The bug was " << (result.found ? "found " : "not found ") << "in a previous identical fuzzing session.\n" << flush;
         }
 
         if (!result.found)
@@ -866,7 +876,7 @@ int main(int argc, char ** argv)
                 
         logfile << "\nSuccess\n"
                 << "Revealing factor: Syzkaller Update\n"
-                << "Syzkaller Version: Unknown commit from " << syzkaller_version.date.get_date() << ".\n";
+                << "Syzkaller Version: Unknown commit from " << syzkaller_version.date.get_date() << ".\n" << flush;
     }
     else
     {
@@ -876,7 +886,7 @@ int main(int argc, char ** argv)
                 
         logfile << "\nSuccess\n"
                 << "Revealing factor: Syzkaller Update\n"
-                << "Syzkaller Version: " << syzkaller_version.date.get_date() << " - " << syzkaller_version.name << endl;
+                << "Syzkaller Version: " << syzkaller_version.date.get_date() << " - " << syzkaller_version.name << endl << flush;
     }
 
     // ======================================================================================================
@@ -888,7 +898,10 @@ finish:
         << "Cleaning up...";
     
     if (logfile)
+    {
+        logfile << flush;
         logfile.close();
+    }
 
     if (syzkaller_repo)
         git_repository_free(syzkaller_repo);
@@ -897,6 +910,6 @@ finish:
         git_repository_free(linux_repo);
     
     git_libgit2_shutdown();
-    cout << "Done.\n";
+    cout << "Done.\n" << flush;
     return err;
 }
