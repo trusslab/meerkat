@@ -344,6 +344,7 @@ int main(int argc, char ** argv)
     {
         write_syzkaller_config(bug, inspector, vmc, port, syzkaller_version.date);
         reset_kaller_wd(bug.get_kallerwd());
+        logfile << "Setup-only complete.\n" << flush;
         cout << "Setup complete.\n";
         goto finish;
     }
