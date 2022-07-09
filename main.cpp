@@ -801,8 +801,8 @@ int main(int argc, char ** argv)
     // Begin Syzkaller Inspection
 
     // start with the newest and go back
-    r = get_starting_index(kernel_versions, low_date);
-    l = get_ending_index(kernel_versions, high_date);
+    r = get_starting_index(syzkaller_versions, low_date);
+    l = get_ending_index(syzkaller_versions, high_date);
 
     cout << SPACER
          << "Inspecting " << r - l + 1 << " syzkaller version(s).\n";
