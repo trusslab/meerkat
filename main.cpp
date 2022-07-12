@@ -904,6 +904,16 @@ finish:
         logfile.close();
     }
 
+    // clean up reproducer and config
+    if (!check_file(bug.get_wd() + "/old"))
+        make_dir(bug.get_wd() + "/old");
+
+    if (check_file(bug.get_kconfig()))
+        move(bug.get_kconfig(), bug.get_wd() + "/old");
+    
+    if (check_file(bug.get_repro()))
+        move(bug.get_repro(), bug.get_wd() + "/old");
+
     if (syzkaller_repo)
         git_repository_free(syzkaller_repo);
 
