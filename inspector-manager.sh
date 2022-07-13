@@ -24,7 +24,7 @@ writebugconfig () {
     echo "curBug=\"$curBug\"" >> $inspectorconfig
     echo "bugname=\"$bugName\"" >> $inspectorconfig
     echo "kpref=\"$kpref\"" >> $inspectorconfig
-    echo "arch=amd46" >> $inspectorconfig
+    echo "arch=amd64" >> $inspectorconfig
     echo "repo=$repo" >> $inspectorconfig
     echo "kconfig=$inspectdir/$wd/config-$curBug.txt" >> $inspectorconfig
     echo "repro=$inspectdir/$wd/repro-$curBug.prog" >> $inspectorconfig
@@ -174,6 +174,7 @@ while (( $line <= $endLine )); do
             writebugconfig
 
             echo ",good fuzz,$findDate,$findDate,$startDate" >> $logfile
+            echo "./syzInspector -F $findhash -G $guiltyhash -i $id $setuponly" >> $logfile
             # run inspector on the bug
             # using finding date as the ending date
             echo "Fuzzing. finding: $findhash; guilty: $guiltyhash"

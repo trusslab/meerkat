@@ -347,7 +347,7 @@ int main(int argc, char ** argv)
         reset_kaller_wd(bug.get_kallerwd());
         logfile << "Setup-only complete.\n" << flush;
         cout << "Setup complete.\n";
-        goto finish;
+        goto setup_only_finish;
     }
 
     cout << SPACER;
@@ -898,12 +898,6 @@ int main(int argc, char ** argv)
 finish:
     cout << SPACER
         << "Cleaning up...";
-    
-    if (logfile)
-    {
-        logfile << flush;
-        logfile.close();
-    }
 
     // clean up reproducer and config
     if (!check_file(bug.get_wd() + "/old"))
@@ -914,6 +908,17 @@ finish:
     
     if (check_file(bug.get_repro()))
         move(bug.get_repro(), bug.get_wd() + "/old");
+
+    // clean up syzkaller if syz-env was used
+    if (bug.get_arch() == "i386")
+        err = syz_env_clean(inspector.get_inspect_dir() + "/tools/syz-env");
+
+setup_only_finish:
+    if (logfile)
+    {
+        logfile << flush;
+        logfile.close();
+    }
 
     if (syzkaller_repo)
         git_repository_free(syzkaller_repo);

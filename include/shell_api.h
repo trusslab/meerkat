@@ -24,6 +24,12 @@ bool grep_to_find(const std::string &, const std::string &);
 // runs make for the current directory
 int make(int, const std::string & = "");
 
+// builds syzkaller for 386 POCs using syz-env
+int syz_env_cross_compile(const std::string &);
+
+// cleans up after syz-env because sudo
+int syz_env_clean(const std::string &);
+
 // runs cp src dest
 int copy(const std::string &, const std::string &);
 
