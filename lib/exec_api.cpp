@@ -68,7 +68,7 @@ int exec_and_wait(const string & prog, char ** args, const string & outfile, con
         execvp(prog.c_str(), args);
         
         cerr << "Error: exec for " << prog << " failed.\n";
-        return -1;
+        exit(-1);
     }
     else if (pid > 0)
     {
@@ -122,7 +122,7 @@ int exec_and_continue(const string & prog, char ** args, const string &outfile, 
         execvp(prog.c_str(), args);
         
         cerr << "Error: exec for " << prog << " failed.\n";
-        return -1;
+        exit(-1);
     }
 
     return pid;
