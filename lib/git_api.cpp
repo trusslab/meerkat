@@ -106,14 +106,11 @@ int git_rev_list(const string &local_repo, const string &old_hash, const string 
     char * arg_list[] = {command, arg1, arg2, arg3, arg4, arg5, nullptr};
     int ret = exec_and_wait("git", arg_list, outfile);
     if (ret != 0)
-    {
         cerr << "Error: git rev-list " << hash_path << " failed.\n";
-        return -1;
-    }
 
     cd(old_dir);
     delete[] arg5;
-    return 0;
+    return (ret != 0 ? -1 : 0);
 }
 
 vector<Version> get_kernel_versions(const Bug_Info &bug, const string &old_hash, const string &new_hash)
@@ -244,6 +241,8 @@ int git_fetch_and_checkout(const string &local_repo, const string &repo, const s
     char * arg_list[] = {command, arg1, arg2, arg3, nullptr};
 
     int err = exec_and_wait("git", arg_list);
+    delete[] arg2;
+    delete[] arg3;
     if (err != 0)
     {
         cerr << "Error: fetch " << repo << " " << hash << " failed.\n";
@@ -260,14 +259,30 @@ int git_fetch_and_checkout(const string &local_repo, const string &repo, const s
 
     err = exec_and_wait("git", arg_list2);
     if (err != 0)
-    {
         cerr << "Error: checkout FETCH_HEAD failed.\n";
-        cd(old_dir);
-        return -1;
-    }
 
     cd(old_dir);
-    delete[] arg2;
-    delete[] arg3;
-    return 0;
+    return (err != 0 ? -1 : 0);
+}
+
+string get_commit_name(const string &repo, const string &hash)
+{
+    string old_dir = pwd();
+    cd(repo);
+    char command[] = "git";
+    char arg1[] = "show";
+    char arg2[] = "-s";
+    char arg3[] = "--format=%s";
+    char * arg4 = new char[hash.size() + 1];
+    strcpy(arg4, hash.c_str());
+
+    char * arg_list[] = {command, arg1, arg2, arg3, arg4};
+
+    string ret = exec_and_read("git", arg_list);
+    if (ret == "")
+        cerr << "Warning: Failed to read name for commit " << hash << ".\n";
+
+    delete[] arg4;
+    cd(old_dir);
+    return ret;
 }

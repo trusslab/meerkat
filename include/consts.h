@@ -23,4 +23,6 @@ const int FUZZTIMES = 3;
 const int TIME_INCREMENT = 1;
 const int START_PORT = 12000;
 
+const int BUF_SIZE = 1024;
+
 #endif

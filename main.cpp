@@ -579,7 +579,8 @@ int main(int argc, char ** argv)
                 
                 logfile << "\nSuccess\n"
                         << "Revealing factor: Template Update\n"
-                        << "Template Version: " << current_version.date.get_date() << " - " << current_version.name << endl << flush;
+                        << "Template Version: " << current_version.date.get_date() << " - " << current_version.name << endl
+                        << "Commit name: " << get_commit_name(bug.get_syzdir(), current_version.name) << endl << flush;
 
                 goto finish;
             }
@@ -739,7 +740,8 @@ int main(int argc, char ** argv)
         cout << "This bug is findable at the guilty commit.\n";
         logfile << "\nSuccess\n"
                 << "Revealing factor: Guilty Commit\n"
-                << "Kernel Version: " << kernel_versions.at(k - 1).date.get_date() << " - " << kernel_versions.at(k - 1).name << endl << flush;
+                << "Kernel Version: " << kernel_versions.at(k - 1).date.get_date() << " - " << kernel_versions.at(k - 1).name << endl
+                << "Commit name: " << get_commit_name(bug.get_kerneldir(), kernel_versions.at(k - 1).name) << endl << flush;
         goto finish;
     }
 
@@ -792,7 +794,8 @@ int main(int argc, char ** argv)
                 
         logfile << "\nSuccess\n"
                 << "Revealing factor: Kernel Code Change\n"
-                << "Kernel Version: " << bisect_version.date.get_date() << " - " << bisect_version.name << endl << flush;
+                << "Kernel Version: " << bisect_version.date.get_date() << " - " << bisect_version.name << endl
+                << "Commit name: " << get_commit_name(bug.get_kerneldir(), bisect_version.name) << endl << flush;
         
         goto finish;
     }
@@ -888,7 +891,8 @@ int main(int argc, char ** argv)
                 
         logfile << "\nSuccess\n"
                 << "Revealing factor: Syzkaller Update\n"
-                << "Syzkaller Version: " << syzkaller_version.date.get_date() << " - " << syzkaller_version.name << endl << flush;
+                << "Syzkaller Version: " << syzkaller_version.date.get_date() << " - " << syzkaller_version.name << endl
+                << "Commit name: " << get_commit_name(bug.get_syzdir(), syzkaller_version.name) << endl << flush;
     }
 
     // ======================================================================================================

@@ -1,4 +1,5 @@
 #include <exec_api.h>
+#include <consts.h>
 
 #include <string>
 #include <iostream>
@@ -126,6 +127,52 @@ int exec_and_continue(const string & prog, char ** args, const string &outfile, 
     }
 
     return pid;
+}
+
+string exec_and_read(const string & prog, char ** args)
+{
+    int ret, ret_status = 0;
+    int pipefd[2];
+    char buf[BUF_SIZE];
+
+    ret = pipe(pipefd);
+    if (ret < 0)
+        return "";
+
+    pid_t pid = fork();
+    if (pid < 0)
+    {
+        cerr << "Error: Failed to fork.\n";
+        return "";
+    }
+    else if (pid == 0)
+    {
+        // child
+        close(pipefd[0]);
+        dup2(pipefd[1], 1);
+
+        execvp(prog.c_str(), args);
+        
+        cerr << "Error: exec for " << prog << " failed.\n";
+        exit(-1);
+    }
+    else if (pid > 0)
+    {
+        // parent. wait for child to finish.
+        close(pipefd[1]);
+        waitpid(pid, &ret, 0);
+        if (WIFEXITED(ret))
+            ret_status = WEXITSTATUS(ret);
+
+        if (ret_status != 0 && prog != "grep")
+            cerr << "Warning: Child process " << prog << " exited with error status " << ret_status << ".\n";
+
+        read(pipefd[0], buf, BUF_SIZE);
+    }
+
+    string output(buf);
+
+    return output;
 }
 
 int kill_child(int pid)

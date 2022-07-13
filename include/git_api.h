@@ -18,4 +18,6 @@ std::vector<Version> get_template_changes(const Bug_Info &, const Date &, const 
 
 int git_fetch_and_checkout(const std::string &, const std::string &, const std::string &);
 
+std::string get_commit_name(const std::string &, const std::string &);
+
 #endif
