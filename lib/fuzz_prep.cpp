@@ -204,6 +204,13 @@ int prep_syzkaller(const Bug_Info &bug, const InspectorConfig &inspector, const 
     if (err < 0)
         return err;
 
+    // export targetvmarch and target arch if building for 386
+    if (bug.get_arch() == "i386")
+    {
+        export_env("TARGETVMARCH=amd64");
+        export_env("TARGETARCH=386");
+    }
+
     // work around time period where go mod tidy doesn't work
     bool dangerzone = false;
     if (syzkaller_version.date < Date(2020,7,4) && syzkaller_version.date >= Date(2020,4,30))
@@ -347,7 +354,9 @@ int write_syzkaller_config(const Bug_Info &bug, const InspectorConfig &inspector
 
     // target was added on 2017-09-15
     if(syz_date > Date(2017,9,15)) 
-        outf << "    \"target\": \"linux/amd64\",\n";
+    {
+        outf << "    \"target\": \"linux/amd64" << (bug.get_arch() == "i386" ? "/386" : "") << "\",\n";
+    }
 
     outf << "    \"http\": \"127.0.0.1:" << p.port << "\",\n"
          << "    \"workdir\": \"" << bug.get_kallerwd() << "\",\n";

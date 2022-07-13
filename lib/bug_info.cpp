@@ -77,6 +77,11 @@ void Bug_Info::parse_config_file(const std::string & filename)
             pos1 = line.find_last_of("\"");
             bug_link = line.substr(pos0, pos1 - pos0);
         }
+        else if (line.find("arch=") != std::string::npos)
+        {
+            pos0 = line.find_first_of("=") + 1;
+            arch = line.substr(pos0);
+        }
     }
 
     syzkaller_log = wd + "/log/bug" + std::to_string(number) + "-kaller.log";

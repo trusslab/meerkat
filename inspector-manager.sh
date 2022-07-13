@@ -24,6 +24,7 @@ writebugconfig () {
     echo "curBug=\"$curBug\"" >> $inspectorconfig
     echo "bugname=\"$bugName\"" >> $inspectorconfig
     echo "kpref=\"$kpref\"" >> $inspectorconfig
+    echo "arch=amd46" >> $inspectorconfig
     echo "repo=$repo" >> $inspectorconfig
     echo "kconfig=$inspectdir/$wd/config-$curBug.txt" >> $inspectorconfig
     echo "repro=$inspectdir/$wd/repro-$curBug.prog" >> $inspectorconfig

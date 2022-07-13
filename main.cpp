@@ -230,6 +230,7 @@ int main(int argc, char ** argv)
 
     logfile << bug.get_name() << "," << bug.get_buglink() << endl
             << "Repository: " << bug.get_kpref() << endl
+            << "Arch: " << bug.get_arch() << endl
             << "Finding: " << find_hash << endl
             << "Guilty: " << guilty_hash << endl << flush;
 

@@ -10,6 +10,7 @@ private:
     std::string name;                   // the name of the bug given by syzbot
 
     std::string kpreface;               // the preface of the repository (linux, linux-next, net, etc..)
+    std::string arch;                   // either amd64 or i386 for 64 or 32 bit POC 
     std::string repository;             // the repository in a form that fits the link (torvalds/linux.git)
     std::string kernel_config;          // the config file for the kernel
     std::string reproducer;             // the POC
@@ -37,6 +38,9 @@ public:
 
     std::string get_kpref() const
     { return kpreface; }
+
+    std::string get_arch() const
+    { return arch; }
 
     std::string get_repo() const
     { return repository; }
