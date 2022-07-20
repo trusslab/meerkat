@@ -588,9 +588,6 @@ int slim_template(const string &reproFile, const string &outfilename, const vect
         templateIn.close();
     }
 
-    for (TypeTag tt : items)
-        cout << tt.get_name() << endl << flush;
-
     // ======================================================================================================
     // Read the reproducer to get syscalls
     reproIn.open(reproFile);

@@ -231,6 +231,7 @@ public:
     void push_arg(const std::string &);
     std::vector<std::string>& get_args();
     bool has_args() const;
+    int find_arg(const std::string &) const;
 };
 
 // type identifier underlying_type
@@ -384,6 +385,8 @@ public:
     { return; }
 
     std::string print() const;
+
+    int find_outoverlay() const;
 };
 
 // ======================================================================================================

@@ -235,6 +235,15 @@ vector<string>& BaseType::get_args()
 bool BaseType::has_args() const
 { return !args.empty(); }
 
+int BaseType::find_arg(const string &query) const
+{
+    for (int i = 0; i < args.size(); i++)
+        if (args.at(i) == query)
+            return i;
+
+    return -1;
+}
+
 string BaseType::print_args() const
 {
     string p = "[";
@@ -409,6 +418,15 @@ string Structure::print() const
     return print_delim('{');
 }
 
+int Structure::find_outoverlay() const
+{
+    for (int i = 0; i < fields.size(); i++)
+        if (fields.at(i).check_attrs("out_overlay"))
+            return i;
+
+    return -1;
+}
+
 // ======================================================================================================
 // Flag
 
@@ -502,6 +520,7 @@ vector<TypeTag> Syscall::get_resources_used(const vector<TypeTag> &items,
 {
     int index;
     vector<TypeRef> items_to_check;
+    TypeRef tmp;
     if (!checked_used)
     {
         for (Field f : args)
@@ -526,36 +545,32 @@ vector<TypeTag> Syscall::get_resources_used(const vector<TypeTag> &items,
 
                         for (TypeTag tt : find_in_items(items, items_to_check.at(i).get_name()))
                         {
-                            if (tt.get_class() == resourceClass)
+                            switch (tt.get_class())
                             {
+                            case resourceClass:
                                 resources_used.push_back(tt);
-                            }
-                            else
-                            {
-                                switch (tt.get_class())
-                                {
-                                case structureClass:
-                                    for (Field ff : structures.at(tt.get_index()).get_fields())
-                                        if (!is_in_typeref(items_to_check, ff.get_typeref().get_name()))
-                                            items_to_check.push_back(ff.get_typeref());
-                                    break;
-                                case unionClass:
-                                    for (Field ff : unions.at(tt.get_index()).get_fields())
-                                        if (!is_in_typeref(items_to_check, ff.get_typeref().get_name()))
-                                            items_to_check.push_back(ff.get_typeref());
-                                    break;
-                                case typeolClass:
-                                    if (!is_in_typeref(items_to_check, tt.get_name()))
-                                        items_to_check.push_back(typeols.at(tt.get_index()).get_type());
-                                    break;
-                                case typemlClass:
-                                    for (Field ff : typemls.at(tt.get_index()).get_fields())
-                                        if (!is_in_typeref(items_to_check, ff.get_typeref().get_name()))
-                                            items_to_check.push_back(ff.get_typeref());
-                                    break;
-                                default:
-                                    break;
-                                }
+                                break;
+                            case structureClass:
+                                for (Field ff : structures.at(tt.get_index()).get_fields())
+                                    if (!is_in_typeref(items_to_check, ff.get_typeref().get_name()))
+                                        items_to_check.push_back(ff.get_typeref());
+                                break;
+                            case unionClass:
+                                for (Field ff : unions.at(tt.get_index()).get_fields())
+                                    if (!is_in_typeref(items_to_check, ff.get_typeref().get_name()))
+                                        items_to_check.push_back(ff.get_typeref());
+                                break;
+                            case typeolClass:
+                                if (!is_in_typeref(items_to_check, typeols.at(tt.get_index()).get_type().get_name()))
+                                    items_to_check.push_back(typeols.at(tt.get_index()).get_type());
+                                break;
+                            case typemlClass:
+                                for (Field ff : typemls.at(tt.get_index()).get_fields())
+                                    if (!is_in_typeref(items_to_check, ff.get_typeref().get_name()))
+                                        items_to_check.push_back(ff.get_typeref());
+                                break;
+                            default:
+                                break;
                             }
                         }
                     }
@@ -566,15 +581,49 @@ vector<TypeTag> Syscall::get_resources_used(const vector<TypeTag> &items,
                     {
                         for (TypeTag tt : find_in_items(items, items_to_check.at(i).get_name()))
                         {
-                            if (tt.get_class() == resourceClass)
+                            switch (tt.get_class())
                             {
+                            case resourceClass:
                                 resources_used.push_back(tt);
-                            }
-                            else if (tt.get_class() == structureClass)
-                            {
+                                break;
+                            case structureClass:
+                                // Check for out_overlay
+                                index = structures.at(tt.get_index()).find_outoverlay();
+                                if (index >= 0)
+                                {
+                                    for (int i = 0; i < structures.at(tt.get_index()).get_fields().size() && i < index; i++)
+                                        if (!is_in_typeref(items_to_check, structures.at(tt.get_index()).get_fields().at(i).get_typeref().get_name()))
+                                            items_to_check.push_back(structures.at(tt.get_index()).get_fields().at(i).get_typeref());
+                                    break;
+                                }
+
                                 for (Field ff : structures.at(tt.get_index()).get_fields())
                                     if (ff.has_attrs() && (ff.check_attrs("in") || ff.check_attrs("inout")))
                                         items_to_check.push_back(ff.get_typeref());
+                                break;
+                            case typeolClass:
+                                if (!is_in_typeref(items_to_check, typeols.at(tt.get_index()).get_type().get_name()))
+                                    items_to_check.push_back(typeols.at(tt.get_index()).get_type());
+                                break;
+                            case typemlClass:
+                                for (Field ff : typemls.at(tt.get_index()).get_fields())
+                                {
+                                    if (ff.has_attrs() && (ff.check_attrs("in") || ff.check_attrs("inout")))
+                                    {
+                                        // Keep track of passed args in type templates
+                                        index = typemls.at(tt.get_index()).find_arg(ff.get_typeref().get_name());
+                                        if (index >= 0)
+                                            tmp = TypeRef(items_to_check.at(i).get_opts().at(index).get_name(), ff.get_typeref().get_opts());
+                                        else
+                                            tmp = ff.get_typeref();
+                                        
+                                        if (!is_in_typeref(items_to_check, tmp.get_name()))
+                                            items_to_check.push_back(tmp);
+                                    }
+                                }
+                                break;
+                            default:
+                                break;
                             }
                         }
                     }
@@ -592,6 +641,7 @@ vector<TypeTag> Syscall::get_resources_produced(const vector<TypeTag> &items,
 {
     int index;
     vector<TypeRef> items_to_check;
+    TypeRef tmp;
     if (!checked_produced)
     {
         for (Field f : args)
@@ -653,15 +703,49 @@ vector<TypeTag> Syscall::get_resources_produced(const vector<TypeTag> &items,
                     {
                         for (TypeTag tt : find_in_items(items, items_to_check.at(i).get_name()))
                         {
-                            if (tt.get_class() == resourceClass)
+                            switch (tt.get_class())
                             {
+                            case resourceClass:
                                 resources_produced.push_back(tt);
-                            }
-                            else if (tt.get_class() == structureClass)
-                            {
+                                break;
+                            case structureClass:
+                                // Check for out_overlay
+                                index = structures.at(tt.get_index()).find_outoverlay();
+                                if (index >= 0)
+                                {
+                                    for (int i = index; i < structures.at(tt.get_index()).get_fields().size(); i++)
+                                        if (!is_in_typeref(items_to_check, structures.at(tt.get_index()).get_fields().at(i).get_typeref().get_name()))
+                                            items_to_check.push_back(structures.at(tt.get_index()).get_fields().at(i).get_typeref());
+                                    break;
+                                }
+
                                 for (Field ff : structures.at(tt.get_index()).get_fields())
-                                    if (ff.has_attrs() && (ff.check_attrs("out") || ff.check_attrs("inout")))
+                                    if (ff.has_attrs() && (ff.check_attrs("in") || ff.check_attrs("inout")))
                                         items_to_check.push_back(ff.get_typeref());
+                                break;
+                            case typeolClass:
+                                if (!is_in_typeref(items_to_check, typeols.at(tt.get_index()).get_type().get_name()))
+                                    items_to_check.push_back(typeols.at(tt.get_index()).get_type());
+                                break;
+                            case typemlClass:
+                                for (Field ff : typemls.at(tt.get_index()).get_fields())
+                                {
+                                    if (ff.has_attrs() && (ff.check_attrs("in") || ff.check_attrs("inout")))
+                                    {
+                                        // Keep track of passed args in type templates
+                                        index = typemls.at(tt.get_index()).find_arg(ff.get_typeref().get_name());
+                                        if (index >= 0)
+                                            tmp = TypeRef(items_to_check.at(i).get_opts().at(index).get_name(), ff.get_typeref().get_opts());
+                                        else
+                                            tmp = ff.get_typeref();
+                                        
+                                        if (!is_in_typeref(items_to_check, tmp.get_name()))
+                                            items_to_check.push_back(tmp);
+                                    }
+                                }
+                                break;
+                            default:
+                                break;
                             }
                         }
                     }
