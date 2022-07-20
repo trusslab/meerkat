@@ -525,26 +525,37 @@ vector<TypeTag> Syscall::get_resources_used(const vector<TypeTag> &items,
     {
         for (Field f : args)
         {
+            // For each field in the syscall
             items_to_check.clear();
+            // if the field is directly a resource, keep it
             index = find_in_items(items, TypeTag(resourceClass, f.get_typeref().get_name()));
             if (index >= 0 && items.at(index).get_class() == resourceClass)
                 resources_used.push_back(items.at(index));
+            // if the field is a pointer, look into it (pointers are how other complex classes are referenced)
             else if (f.get_typeref().get_name() == "ptr" && f.get_typeref().has_opts())
             {
+                // always check the options passed to complex types
                 for (TypeRef tr : f.get_typeref().get_opts())
                     if (!is_in_typeref(items_to_check, tr.get_name()))
                         items_to_check.push_back(tr);
                 
+                // look for pointers with the "in" direction
                 if (items_to_check.size() > 0 && items_to_check.at(0).get_name() == "in")
                 {
+                    // for each other item to check
                     for (int i = 1; i < items_to_check.size(); i++)
                     {
+                        // add all of its options if there are any
                         for (TypeRef tr : items_to_check.at(i).get_opts())
                             if (!is_in_typeref(items_to_check, tr.get_name()))
                                 items_to_check.push_back(tr);
 
+                        // for each item with the same name...
+                        // (we ignore that it is only referring to one since items that
+                        // share a name always go together, and usually it's just types and flags)
                         for (TypeTag tt : find_in_items(items, items_to_check.at(i).get_name()))
                         {
+                            // switch on the class. Ether keep the resource, or go deeper
                             switch (tt.get_class())
                             {
                             case resourceClass:
@@ -575,12 +586,15 @@ vector<TypeTag> Syscall::get_resources_used(const vector<TypeTag> &items,
                         }
                     }
                 }
+                // pointers with "inout" are a little more complicated
                 else if (items_to_check.at(0).get_name() == "inout")
                 {
+                    // once again for all the items to check...
                     for (int i = 1; i < items_to_check.size(); i++)
                     {
                         for (TypeTag tt : find_in_items(items, items_to_check.at(i).get_name()))
                         {
+                            // switch on the class of the item
                             switch (tt.get_class())
                             {
                             case resourceClass:
@@ -611,6 +625,7 @@ vector<TypeTag> Syscall::get_resources_used(const vector<TypeTag> &items,
                                     if (ff.has_attrs() && (ff.check_attrs("in") || ff.check_attrs("inout")))
                                     {
                                         // Keep track of passed args in type templates
+                                        // re-create the typeref with the proper name so we can check it later
                                         index = typemls.at(tt.get_index()).find_arg(ff.get_typeref().get_name());
                                         if (index >= 0)
                                             tmp = TypeRef(items_to_check.at(i).get_opts().at(index).get_name(), ff.get_typeref().get_opts());
