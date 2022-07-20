@@ -102,7 +102,7 @@ int main(int argc, char ** argv)
         id = args.get_arg_as_int('i');
     else
     {
-        cout << "Warning: No id given. Please use -i [id]\n";
+        cout << "Error: No id given. Please use -i [id]\n";
         err = -1;
         goto finish;
     }

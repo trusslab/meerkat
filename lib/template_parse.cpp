@@ -1,9 +1,9 @@
 #include <template_parse.h>
 #include <file_api.h>
+#include <syzlang.h>
 
 #include <iostream>
 #include <fstream>
-#include <sstream>
 #include <vector>
 #include <string>
 #include <cctype>
@@ -12,687 +12,586 @@ using namespace std;
 
 const bool VERB = false;
 
-const vector<string> KEYWORDS = {"in", "out", "int64", "int32", "int16", "int8", "intptr", "len", "opt", "filename", "array", "const", "ptr64", "string", "flags", "bytesize", "stringnoz", "parent", "inout", "sizeof", "timeout", "ptr", "bool8", "bool16", "bool32", "bool64", "fmt", "void", "int16be", "int8be", "int32be", "int64be", "glob", "bitsize", "offsetof", "vma", "vma64", "proc", "text", "bytesize4", "bytesize8", "bytesize16", "bytesize32", "bytesize64", "dec", "oct", "hex", "align", "packed", "size", "varlen"};
-
-// returns true if s is in v, false otherwise
-bool tparse_is_in(const string & s, const vector<string> & v)
+// parses a typeref: name<[typeref]>
+TypeRef parse_typeref(const string &typestring)
 {
-    for (string st : v)
-        if (st == s)
-            return true;
+    TypeRef ret;
+    int pos0 = 0, pos1 = typestring.find("["), count = 0;
 
-    return false;
-}
-
-// returns true if s is in v, false otherwise
-bool tparse_is_in(const string & s, const vector<ParseType> & v)
-{
-    for (ParseType pt : v)
-        if (pt.name == s)
-            return true;
-
-    return false;
-}
-
-// returns the index of the syscall, or -1 on fail
-int tparse_find(const string & s, const vector<Syscall> & v)
-{
-    for (int i = 0; i < v.size(); i++)
-        if (s == v.at(i).name)
-            return i;
-
-    return -1;
-}
-
-// returns the index of the item, or -1 on fail
-int tparse_find(const string & s, const vector<ParseType> & v)
-{
-    for (int i = 0; i < v.size(); i++)
-        if (s == v.at(i).name)
-            return i;
-
-    return -1;
-}
-
-// returns true if d is in number form, false otherwise
-bool tparse_is_number(const string &d)
-{
-    return !d.empty() && (isdigit(d.at(0)) || (d.at(0) == '-' && isdigit(d.at(1))));
-}
-
-// returns true if d is NOT in the given vector, false otherwise
-bool tparse_check_dep(const string &d, const vector<string> &other = vector<string>())
-{
-    if (!d.empty() && (d.at(0) == '"' || d.at(d.size() - 1) == '"'))
-        return false;
-
-    if (!d.empty() && d.at(0) == '\'' && d.at(d.size() - 1) == '\'')
-        return false;
-
-    for (string s : other)
-        if (d == s)
-            return false;
-
-    return !d.empty();
-}
-
-void tparse_parse_syscall(const string &text, vector<string> &d, vector<string> &args, vector<string> &r)
-{
-    int pos0 = text.find("(") + 1;
-    string tempArg, dep;
-
-    for (int i = pos0; i < text.size() && text.at(i) != ')'; i++)
-    {
-        // first is always a parameter name
-        pos0 = text.find_first_not_of(" ", pos0);
-        i = text.find_first_of(" )", pos0);
-        if (i == string::npos || text.at(i) == ')')
-            break;
-
-        tempArg.clear();
-        tempArg = text.substr(pos0, i - pos0);
-        tempArg = tempArg.at(0) == ' ' ? tempArg.substr(1) : tempArg;
-        args.push_back(tempArg);
-        pos0 = i + 1;
-
-        // then the value
-        i = text.find_first_of(",[)", pos0);
-        if (i == string::npos)
-            break;
-
-        dep.clear();
-        dep = text.substr(pos0, i - pos0);
-        if (tparse_check_dep(dep, KEYWORDS) && tparse_check_dep(dep, d) && !tparse_is_number(dep))
-            d.push_back(dep);
-        pos0 = i + 1;
-
-        if (text.at(i) == ')')
-        { // closed paren is the end of the syscall
-            break;
-        }
-        else if (text.at(i) == ',')
-        { // comma is the end of the parameter value
-            continue;
-        }
-        else if(text.at(i) == '[')
-        { // open bracket signifies more to parse
-            int p = 1;
-            while (p > 0)
+    if (pos1 != string::npos)
+    { // if there are options
+        ret.set_name(typestring.substr(pos0, pos1 - pos0));
+        do {
+            pos0 = pos1 + (typestring.at(pos1) == ',' ? 2 : 1);
+            for (pos1 = pos1 + 1; pos1 < typestring.size(); pos1++)
             {
-                i = text.find_first_of(",[]", pos0);
-                if (i == string::npos)
+                if (typestring.at(pos1) == '[')
+                    count++;
+                else if (typestring.at(pos1) == ']' && count > 0)
+                    count--;
+                else if (typestring.at(pos1) == ',' && count == 0)
                     break;
-
-                dep.clear();
-                dep = text.substr(pos0, i - pos0);
-
-                if (dep.find(":") != string::npos)
-                {
-                    if (tparse_check_dep(dep, KEYWORDS) && tparse_check_dep(dep.substr(0, dep.find(":")), KEYWORDS) && !tparse_is_number(dep.substr(0, dep.find(":"))))
-                        d.push_back(dep.substr(0, dep.find(":")));
-
-                    if (tparse_check_dep(dep, KEYWORDS) && tparse_check_dep(dep.substr(dep.find(":") + 1), KEYWORDS) && !tparse_is_number(dep.substr(dep.find(":") + 1)))
-                        d.push_back(dep.substr(dep.find(":") + 1));
-                }
-                else if (tparse_check_dep(dep, KEYWORDS) && tparse_check_dep(dep, d) && !tparse_is_number(dep))
-                    d.push_back(dep);
-
-                if (text.at(i) == ',')
-                    i++;
-                else if (text.at(i) == '[')
-                    p++;
-                else if (text.at(i) == ']')
-                    for (; i < text.size() && text.at(i) == ']'; i++)
-                        p--;
-
-                pos0 = i + 1;
+                else if (typestring.at(pos1) == ']' && count == 0)
+                    break;
             }
-        }
+            ret.push_opt(parse_typeref(typestring.substr(pos0, pos1 - pos0)));
+        } while (pos1 < typestring.size() && typestring.at(pos1) != ']');
+    }
+    else
+        ret.set_name(typestring);
 
-        if (text.at(i) == ')')
-            break;
+    return ret;
+}
+
+TailingAttribute parse_tailing_attribute(const string &line)
+{
+    TailingAttribute ta;
+    int pos0 = 0, pos1 = line.find("[");
+
+    if (pos1 != string::npos)
+    {
+        ta.set_name(line.substr(pos0, pos1 - pos0));
+        pos0 = pos1 + 1;
+        pos1 = line.find("]", pos0);
+        ta.set_n(stoi_custom(line.substr(pos0, pos1)));
+    }
+    else
+    {
+        ta.set_name(line);
+        ta.set_n(-1);
     }
 
-    // find any output arguments
-    // out is a substring of inout. works
-    int pos1 = text.find("out, ");
-    while (pos1 != string::npos)
+    return ta;
+}
+
+// parses a field: name typeref <(attr)>
+Field parse_field(const string &line)
+{
+    Field field;
+    int pos0 = line.find_first_not_of(" \t");
+    int pos1 = line.find_first_of(" \t", pos0);
+    field.set_name(line.substr(pos0, pos1 - pos0));
+    
+    pos0 = line.find_first_not_of(" \t", pos1);
+    pos1 = line.find("[", pos0);
+    if (pos1 != string::npos)
+        pos1 = line.find_last_of("]", pos0) + 1;
+    else
+        pos1 = line.find_first_of(" \t", pos0);
+
+    if (pos1 != string::npos)
+        field.set_typeref(parse_typeref(line.substr(pos0, pos1 - pos0)));
+    else
+        field.set_typeref(parse_typeref(line.substr(pos0)));
+
+    pos1 = line.find("(", pos0);
+    if (pos1 != string::npos)
     {
-        // it looks like each syscall has at most 1 output parameter.
-        // [out, resource]
-        pos1 += 5;
-        int i;
-        i = text.find_first_of("[]", pos1);
-        if (i == string::npos)
-            break;
-
-        dep = text.substr(pos1, i - pos1);
-        if (tparse_check_dep(dep, KEYWORDS) && !tparse_is_number(dep))
-            r.push_back(dep);
-
-        // open bracket signifies more to grab
-        if (text.at(i) == '[')
-        {
-            pos1 = i + 1;
-            int layers = 1;
-            while (layers > 0 && i < text.size())
-            {
-                // find the next substring
-                i = text.find_first_of("[,]", pos1);
-                if (i == string::npos)
-                    break;
-
-                dep = text.substr(pos1, i - pos1);
-                if (tparse_check_dep(dep, KEYWORDS) && !tparse_is_number(dep))
-                    r.push_back(dep);
-
-                pos1 = i + 1;
-
-                if (text.at(i) == ']')
-                    layers--;
-                else if (text.at(i) == '[')
-                    layers++;
-                else if (text.at(i) == ',')
-                    pos1 += 1;
-            }
-        }
-
-        // find the next output parameter
-        pos1 = text.find("out, ", pos1);
+        do {
+            pos0 = pos1 + (line.at(pos1) == ',' ? 2 : 1);
+            pos1 = line.find_first_of(",)", pos0);
+            field.push_attr(parse_tailing_attribute(line.substr(pos0, pos1 - pos0)));
+        } while (line.at(pos1) != ')');
     }
 
-    // get return type
-    pos0 = text.find(")") + 2;
-    if (pos0 > text.size() || text.at(pos0) == '(')
+    return field;
+}
+
+// parses a line that is known to be an include (or incdir) and pushes it to the given vector
+void parse_include(vector<Include> &includes, const string &line)
+{
+    int pos0, pos1;
+    string name;
+
+    pos0 = line.find("<");
+    pos1 = line.find(">");
+    if (pos0 == string::npos || pos1 == string::npos)
+    {
+        cerr << "Error: Bad include: " << line << endl;
         return;
+    }
 
-    int pos2 = text.find("(", pos0);
+    pos0++;
+    name = line.substr(pos0, pos1 - pos0);
 
-    r.push_back(text.substr(pos0, pos2 - pos0 - 1));
-
-    // remember to clean out args after averything is built
+    if (!is_in_includes(includes, name))
+        includes.push_back(Include(line, name));
     return;
 }
 
-// takes in a single line type and parses it for dependencies
-void tparse_parse_single_line_type(const string & text, vector<string> &d, const vector<string> &args = vector<string>())
+// parses a line known to be a resource and pushes it to items and resources
+void parse_resource(vector<TypeTag> &items, vector<Resource> &resources, const string &line)
 {
-    if (text.substr(0, 5) != "type ")
-        return;
-
-    int i = 0;
-    string dep;
-
-    // find the start of the data portion
-    i = text.find_first_of(" [", 5);
-
-    if (text.at(i) == '[')
-        i = text.find_first_of("]", i) + 1;
-
-    int pos0 = i + 1;
-
-    for (i = pos0; i < text.size(); i++)
+    int pos0 = 9;
+    int pos1 = line.find_first_of("[");
+    string name, typestring;
+    vector<string> sv;
+    if (pos0 >= line.size() || pos1 == string::npos)
     {
-        i = text.find_first_of(" [", pos0);
-        if (i == string::npos)
-            break;
-
-        dep.clear();
-        dep = text.substr(pos0, i - pos0);
-        if (dep.find(":") != string::npos)
-        {
-            if (tparse_check_dep(dep, args) && tparse_check_dep(dep.substr(0, dep.find(":")), KEYWORDS) && !tparse_is_number(dep.substr(0, dep.find(":"))))
-                d.push_back(dep.substr(0, dep.find(":")));
-
-            if (tparse_check_dep(dep, args) && tparse_check_dep(dep.substr(dep.find(":") + 1), KEYWORDS) && !tparse_is_number(dep.substr(dep.find(":") + 1)))
-                d.push_back(dep.substr(dep.find(":") + 1));
-        }
-        else if (tparse_check_dep(dep, KEYWORDS) && tparse_check_dep(dep, d) && tparse_check_dep(dep, args) && !tparse_is_number(dep))
-            d.push_back(dep);
-        pos0 = i + 1;
-
-        if (i < text.size() && text.at(i) == '[')
-        { // open bracket signifies more to parse
-            int p = 1;
-            while (p > 0)
-            {
-                // leaving this silly for loop in because I'm checking for a special case inside.
-                for(i = pos0; i < text.size() && text.at(i) != ',' && text.at(i) != '[' && text.at(i) != ']'; i++)
-                {
-                    if (text.substr(i, 3) == "\',\'")
-                    {
-                        i += 2;
-                        pos0 = i + 1;
-                    }
-                }
-
-                dep.clear();
-                dep = text.substr(pos0, i - pos0);
-                if (!dep.empty())
-                    dep = dep.at(0) == ' ' ? dep.substr(1) : dep;
-
-                if (dep.find(":") != string::npos)
-                {
-                    if (tparse_check_dep(dep, args) && tparse_check_dep(dep.substr(0, dep.find(":")), KEYWORDS) && !tparse_is_number(dep.substr(0, dep.find(":"))))
-                        d.push_back(dep.substr(0, dep.find(":")));
-
-                    if (tparse_check_dep(dep, args) && tparse_check_dep(dep.substr(dep.find(":") + 1), KEYWORDS) && !tparse_is_number(dep.substr(dep.find(":") + 1)))
-                        d.push_back(dep.substr(dep.find(":") + 1));
-                }
-                else if (tparse_check_dep(dep, KEYWORDS) && tparse_check_dep(dep, d) && tparse_check_dep(dep, args) && !tparse_is_number(dep))
-                    d.push_back(dep);
-
-                if (text.at(i) == ',')
-                    i++;
-                else if (text.at(i) == '[')
-                    p++;
-                else if (text.at(i) == ']')
-                    for (; i < text.size() && text.at(i) == ']'; i++)
-                        p--;
-
-                pos0 = i + 1;
-            }
-        }
+        cerr << "Error: Bad resource: " << line << endl;
+        return;
     }
 
-    return; 
+    name = line.substr(pos0, pos1 - pos0);
+    pos0 = pos1 + 1;
+    pos1 = line.find_first_of("]");
+    typestring = line.substr(pos0, pos1 - pos0);
+
+    pos0 = line.find_first_of(":");
+    if (pos0 != string::npos)
+    {
+        pos0 += 2;
+        pos1 = line.find(",", pos0);
+        while (pos1 != string::npos)
+        {
+            sv.push_back(line.substr(pos0, pos1 - pos0));
+            pos0 = pos1 + 2;
+            pos1 = line.find(",", pos0);
+        }
+        sv.push_back(line.substr(pos0));
+    }
+
+    if (!is_in_items(items, name))
+    {
+        item_push_sorted(items, TypeTag(resourceClass, name, resources.size()));
+        resources.push_back(Resource(line, name, parse_typeref(typestring), sv));
+    }
+
+    return;
 }
 
-// takes in a type line, parses the args if there are any
-void tparse_parse_type_args(const string & text, vector<string> &args)
+// parses a multi-line type where all the lines are given in a vector
+void parse_typeml(vector<TypeTag> &items, vector<TypeMultiline> &typemls, const vector<string> &lines)
 {
-    if (text.substr(0, 5) != "type ")
-        return;
+    int pos0 = 5;
+    int pos1 = lines.at(0).find_first_of(" [", pos0);
+    string name = lines.at(0).substr(pos0, pos1 - pos0);
+    vector<string> args;
+    vector<Field> fields;
 
-    int i = 0;
-    i = text.find_first_of(" [", 5);
-
-    if (i >= text.size() || text.at(i) == ' ')
-        return;
-
-    int pos0 = i + 1;
-
-    for (i = pos0; i < text.size() && text.at(i) != ']'; i++)
-    {
-        i = text.find_first_of("],", pos0);
-        if (i == string::npos)
-            break;
-
-        args.push_back(text.substr(pos0, i - pos0));
-        i = (text.at(i) == ',' ? i + 1 : i);
-        pos0 = i + 1;
-
-        if (text.at(i) == ']')
-            break;
+    if (lines.at(0).at(pos1) == '[')
+    { // parse type template args
+        do {
+            pos0 = pos1 + (lines.at(0).at(pos1) == ',' ? 2 : 1);
+            pos1 = lines.at(0).find_first_of(",]", pos0);
+            args.push_back(lines.at(0).substr(pos0, pos1 - pos0));
+        } while (pos1 != string::npos && lines.at(0).at(pos1) != ']');
     }
+
+    for (int i = 1; i < lines.size() - 1; i++)
+        fields.push_back(parse_field(lines.at(i)));
+
+    string text;
+    for (string l : lines)
+        text += l + "\n";
+
+    if (!is_in_items(items, name))
+    {
+        item_push_sorted(items, TypeTag(typemlClass, name, typemls.size()));
+        typemls.push_back(TypeMultiline(text, name, args, fields));
+    }
+
+    return;
 }
 
-void tparse_parse_body(const string &text, vector<string> &d, vector<string> &params, const vector<string> &args = vector<string>())
+// parses a type that is only one line
+void parse_typeol(vector<TypeTag> &items, vector<TypeOneline> &typeols, const string &line)
 {
-    string dep;
-    int pos0, i;
+    int pos0 = 5;
+    int pos1 = line.find_first_of(" [", pos0);
+    string name = line.substr(pos0, pos1 - pos0);
+    vector<string> args;
 
-    pos0 = text.find("\n") - 1;
-    char delim = text.at(pos0) == '{' ? '}' : ']';
-    pos0 = text.find("\n") + 1;
-
-    for (i = pos0; i < text.size() && text.at(i) != delim; i++)
-    {
-        // first the arg name
-        i = text.find_first_not_of("\t ", pos0);
-        pos0 = i;
-        i = text.find_first_of("\t ", pos0);
-        if (i == string::npos)
-            break;
-
-        params.push_back(text.substr(pos0, i - pos0));
-
-        // then the value
-        i = text.find_first_not_of("\t ", i);
-        pos0 = i;
-        i = text.find_first_of("\n\t[ ", pos0);
-        if (i == string::npos)
-            break;
-
-        dep.clear();
-        dep = text.substr(pos0, i - pos0);
-        if (dep.find(":") != string::npos)
-        {
-            if (tparse_check_dep(dep, args) && tparse_check_dep(dep.substr(0, dep.find(":")), KEYWORDS) && !tparse_is_number(dep.substr(0, dep.find(":"))))
-                d.push_back(dep.substr(0, dep.find(":")));
-
-            if (tparse_check_dep(dep, args) && tparse_check_dep(dep.substr(dep.find(":") + 1), KEYWORDS) && !tparse_is_number(dep.substr(dep.find(":") + 1)))
-                d.push_back(dep.substr(dep.find(":") + 1));
-        }
-        else if (tparse_check_dep(dep, KEYWORDS) && tparse_check_dep(dep, d) && tparse_check_dep(dep, args) && !tparse_is_number(dep))
-            d.push_back(dep);
-        pos0 = i + 1;
-
-        if(text.at(i) == '[')
-        { // open bracket signifies more to parse
-            int p = 1;
-            while (p > 0)
-            {
-                // once again leaving this because of the check. should come back and fix this. (and put it in a function)
-                for(i = pos0; i < text.size() && text.at(i) != ',' && text.at(i) != '[' && text.at(i) != ']'; i++)
-                {
-                    if (text.substr(i, 3) == "\',\'")
-                    {
-                        i += 2;
-                        pos0 = i + 1;
-                    }
-                }
-
-                dep.clear();
-                dep = text.substr(pos0, i - pos0);
-                if (!dep.empty())
-                    dep = dep.at(0) == ' ' ? dep.substr(1) : dep;
-
-                if (dep.find(":") != string::npos)
-                {
-                    if (tparse_check_dep(dep, args) && tparse_check_dep(dep.substr(0, dep.find(":")), KEYWORDS) && !tparse_is_number(dep.substr(0, dep.find(":"))))
-                        d.push_back(dep.substr(0, dep.find(":")));
-
-                    if (tparse_check_dep(dep, args) && tparse_check_dep(dep.substr(dep.find(":") + 1), KEYWORDS) && !tparse_is_number(dep.substr(dep.find(":") + 1)))
-                        d.push_back(dep.substr(dep.find(":") + 1));
-                }
-                else if (tparse_check_dep(dep, KEYWORDS) && tparse_check_dep(dep, d) && tparse_check_dep(dep, args) && !tparse_is_number(dep))
-                    d.push_back(dep);
-
-                if (text.at(i) == ',')
-                    i++;
-                else if (text.at(i) == '[')
-                    p++;
-                else if (text.at(i) == ']')
-                    for (; i < text.size() && text.at(i) == ']'; i++)
-                        p--;
-
-                pos0 = i + 1;
-            }
-        }
-
-        if (text.at(i) != '\n')
-            i = text.find("\n", pos0);
+    if (line.at(pos1) == '[')
+    { // parse type template args
+        do {
+            pos0 = pos1 + (line.at(pos1) == ',' ? 2 : 1);
+            pos1 = line.find_first_of(",]", pos0);
+            args.push_back(line.substr(pos0, pos1 - pos0));
+        } while (pos1 != string::npos && line.at(pos1) != ']');
     }
 
-    // something hanging off the end?
-    if (text.find("[", i) != string::npos)
-    {
-        pos0 = text.find("[", i) + 1;
-        i = pos0;
+    // find the position of the underlying type
+    pos0 = line.find_first_not_of(" ]", pos1);
 
-        int p = 1;
-        while (p > 0)
+    if (!is_in_items(items, name))
+    {
+        item_push_sorted(items, TypeTag(typeolClass, name, typeols.size()));
+        typeols.push_back(TypeOneline(line, name, args, parse_typeref(line.substr(pos0))));
+    }
+
+    return;
+}
+
+void parse_definition(vector<TypeTag> &items, vector<Definition> &defines, const string &line)
+{
+    int pos0 = 7, pos1 = line.find_first_of(" \t", pos0);
+    string name = line.substr(pos0, pos1 - pos0);
+
+    if (!is_in_items(items, name))
+    {
+        item_push_sorted(items, TypeTag(definitionClass, name, defines.size()));
+        defines.push_back(Definition(line, name));
+    }
+    return;
+}
+
+void parse_syscall(vector<TypeTag> &items, vector<Syscall> &syscalls, const string &line)
+{
+    int pos0 = 0, pos1 = line.find("("), count = 0;
+    Syscall syscall;
+    syscall.set_name(line.substr(pos0, pos1 - pos0));
+    syscall.set_text(line);
+
+    do {
+        pos0 = pos1 + (line.at(pos1) == ',' ? 2 : 1);
+        for (pos1 = pos0; pos1 < line.size(); pos1++)
         {
-            i = text.find_first_of("[],", pos0);
-            if (i == string::npos)
+            if (line.at(pos1) == '[')
+                count++;
+            else if (line.at(pos1) == ']' && count > 0)
+                count--;
+            else if (line.at(pos1) == ',' && count == 0)
                 break;
-
-            dep.clear();
-            dep = text.substr(pos0, i - pos0);
-            if (!dep.empty())
-                dep = dep.at(0) == ' ' ? dep.substr(1) : dep;
-
-            if (dep.find(":") != string::npos)
-            {
-                if (tparse_check_dep(dep) && tparse_check_dep(dep.substr(0, dep.find(":")), KEYWORDS) && !tparse_is_number(dep.substr(0, dep.find(":"))))
-                    d.push_back(dep.substr(0, dep.find(":")));
-
-                if (tparse_check_dep(dep) && tparse_check_dep(dep.substr(dep.find(":") + 1), KEYWORDS) && !tparse_is_number(dep.substr(dep.find(":") + 1)))
-                    d.push_back(dep.substr(dep.find(":") + 1));
-            }
-            else if (tparse_check_dep(dep, KEYWORDS) && tparse_check_dep(dep, d) && !tparse_is_number(dep))
-                d.push_back(dep);
-
-            if (text.at(i) == ',')
-                i++;
-            else if (text.at(i) == '[')
-                p++;
-            else if (text.at(i) == ']')
-                for (; i < text.size() && text.at(i) == ']'; i++)
-                    p--;
-
-            pos0 = i + 1;
+            else if (line.at(pos1) == ')')
+                break;
         }
+        if (pos1 - pos0 != 0)
+            syscall.push_field(parse_field(line.substr(pos0, pos1 - pos0)));
+    } while (pos1 < line.size() && line.at(pos1) != ')');
+
+    pos0 = line.find_first_not_of(" \t", pos1 + 1);
+
+    if (pos0 != string::npos && line.at(pos0) != '(')
+    {
+        pos1 = line.find_first_of(" \t", pos0);
+        if (pos1 != string::npos)
+            syscall.set_return(line.substr(pos0, pos1 - pos0));
+        else
+            syscall.set_return(line.substr(pos0));
+        
+        // pos0 = line.find_first_of("(", pos0);
+    }
+    // tailing attributes have been left out for now
+
+    if (!is_in_items(items, syscall.get_name()))
+    {
+        item_push_sorted(items, TypeTag(syscallClass, syscall.get_name(), syscalls.size()));
+        syscalls.push_back(syscall);
+    }
+    return;
+}
+
+// Both struct and union are the same format, so we can use the same function to parse them
+// heh, strunion
+BaseStruct parse_strunion(const vector<string> &lines)
+{
+    BaseStruct bs;
+    int pos0 = 0, pos1 = lines.front().find_first_of(" {");
+    bs.set_name(lines.front().substr(pos0, pos1 - pos0));
+
+    for (int i = 1; i < lines.size() - 1; i++)
+        bs.push_field(parse_field(lines.at(i)));
+
+    string text;
+    for (int i = 0; i < lines.size(); i++)
+        text += lines.at(i) + (i == lines.size() - 1 ? "" : "\n");
+    
+    bs.set_text(text);
+
+    return bs;
+}
+
+// parses a struct
+void parse_structure(vector<TypeTag> &items, vector<Structure> &structures, const vector<string> &lines)
+{
+    BaseStruct bs = parse_strunion(lines);
+
+    if (!is_in_items(items, bs.get_name()))
+    {
+        item_push_sorted(items, TypeTag(structureClass, bs.get_name(), structures.size()));
+        structures.push_back(Structure(bs));
+    }
+    return;
+}
+
+// parses a union
+void parse_union(vector<TypeTag> &items, vector<Union> &unions, const vector<string> &lines)
+{
+    BaseStruct bs = parse_strunion(lines);
+
+    if (!is_in_items(items, bs.get_name()))
+    {
+        item_push_sorted(items, TypeTag(unionClass, bs.get_name(), unions.size()));
+        unions.push_back(Union(bs));
+    }
+    return;
+}
+
+// parses a flag
+void parse_flag(vector<TypeTag> &items, vector<Flag> &flags, const string &line)
+{
+    int pos0 = 0, pos1 = line.find(" = ");
+    string name = line.substr(pos0, pos1 - pos0);
+    vector<string> values;
+
+    do {
+        pos0 = pos1 + (line.at(pos1) == ',' ? 2 : 3);
+        pos1 = line.find(",", pos0);
+        if (pos1 != string::npos)
+            values.push_back(line.substr(pos0, pos1 - pos0));
+        else
+            values.push_back(line.substr(pos0));
+    } while (pos1 != string::npos);
+
+    if (!is_in_items(items, name))
+    {
+        item_push_sorted(items, TypeTag(flagClass, name, flags.size()));
+        flags.push_back(Flag(line, name, values));
     }
 
     return;
 }
 
-void tparse_parse_resource(const string &text, vector<string> &d)
+void get_one_user_syscall(const TypeTag &this_resource, vector<TypeTag> &needed, const vector<TypeTag> &items,
+                        vector<Syscall> &syscalls, vector<TypeOneline> &typeols, vector<TypeMultiline> &typemls,
+                        vector<Union> &unions, vector<Structure> &structures)
 {
-    int pos0 = text.find("[") + 1;
-    int pos1 = text.find("]");
-
-    if (tparse_check_dep(text.substr(pos0, pos1 - pos0), KEYWORDS))
-        d.push_back(text.substr(pos0, pos1 - pos0));
-
-    if (text.find(":") != string::npos)
+    // check the syscalls already in needed
+    int index;
+    vector<TypeTag> used_recs;
+    for (TypeTag tt : needed)
     {
-        pos0 = pos1 + 3;
-        for (int i = pos0; i < text.size(); i++)
+        if (tt.get_class() == syscallClass)
         {
-            i = text.find_first_of(",", pos0);
-            if (i == string::npos)
-                i = text.size();
-
-            if (!tparse_is_number(text.substr(pos0, i - pos0)))
-                d.push_back(text.substr(pos0, i - pos0));
-            i++;
-            pos0 = i + 1;
+            used_recs.clear();
+            used_recs = syscalls.at(tt.get_index()).get_resources_used(items, typeols, typemls, unions, structures);
+            if (is_in_needed(used_recs, this_resource.get_name()))
+                return;
         }
     }
 
+    Syscall chosen_syscall("", "");
+    for (Syscall s : syscalls)
+    {
+        used_recs.clear();
+        used_recs = s.get_resources_used(items, typeols, typemls, unions, structures);
+        if (is_in_needed(used_recs, this_resource.get_name()))
+        {
+            if (s.total_resources(items, typeols, typemls, unions, structures) == 1)
+            {
+                chosen_syscall = s;
+                break;
+            }
+            else if (chosen_syscall.get_text().empty() ||
+                        s.total_resources(items, typeols, typemls, unions, structures)
+                        < chosen_syscall.total_resources(items, typeols, typemls, unions, structures))
+                chosen_syscall = s;
+        }
+    }
+
+    if (!chosen_syscall.get_text().empty())
+    {
+        index = find_in_items(items, chosen_syscall.get_name());
+        needed.push_back(items.at(index));
+    }
+    else
+        cerr << "Warning: No syscall found that uses " << this_resource.get_name() << ".\n";
     return;
 }
 
-// returns true if this is a constant, false otherwise
-// yeah, I know this is based on some optional formatting.
-bool tparse_check_flag(const string & s)
+void get_one_producer_syscall(const TypeTag &this_resource, vector<TypeTag> &needed, const vector<TypeTag> &items,
+                        vector<Syscall> &syscalls, const vector<TypeOneline> &typeols, const vector<TypeMultiline> &typemls,
+                        const vector<Union> &unions, const vector<Structure> &structures)
 {
-    for (char c : s)
-        if (!isupper(c) && c != '_')
-            return false;
-
-    return true;
-}
-
-void tparse_parse_flag(const string &text, vector<string> &d)
-{
-    int pos0 = text.find(" = ") + 3;
-
-    for (int i = pos0; i < text.size(); i++)
+    // check the syscalls already in needed
+    int index;
+    vector<TypeTag> produced_recs;
+    for (TypeTag tt : needed)
     {
-        i = text.find_first_of(",", pos0);
-        if (i == string::npos)
-            i = text.size();
-
-        if (tparse_check_flag(text.substr(pos0, i - pos0)))
-            d.push_back(text.substr(pos0, i - pos0));
-        i++;
-        pos0 = i + 1;
+        if (tt.get_class() == syscallClass)
+        {
+            produced_recs.clear();
+            produced_recs = syscalls.at(tt.get_index()).get_resources_produced(items, typeols, typemls, unions, structures);
+            if (is_in_needed(produced_recs, this_resource.get_name()))
+                return;
+        }
     }
 
+    Syscall chosen_syscall("", "");
+    for (Syscall s : syscalls)
+    {
+        produced_recs.clear();
+        produced_recs = s.get_resources_produced(items, typeols, typemls, unions, structures);
+        if (is_in_needed(produced_recs, this_resource.get_name()))
+        {
+            if (s.total_resources(items, typeols, typemls, unions, structures) == 1)
+            {
+                chosen_syscall = s;
+                break;
+            }
+            else if (chosen_syscall.get_text().empty() ||
+                    s.total_resources(items, typeols, typemls, unions, structures)
+                    < chosen_syscall.total_resources(items, typeols, typemls, unions, structures))
+            {
+                chosen_syscall = s;
+            }
+        }
+    }
+
+    if (!chosen_syscall.get_text().empty())
+    {
+        index = find_in_items(items, chosen_syscall.get_name());
+        needed.push_back(items.at(index));
+    }
+    else
+        cerr << "Warning: No syscall found that produces " << this_resource.get_name() << ".\n";
     return;
 }
 
 int slim_template(const string &reproFile, const string &outfilename, const vector<string> &templateFiles)
 {
-    int pos0, pos1, pos2;
+    int pos0, pos1, index;
 
     ifstream templateIn;
     ifstream reproIn;
+    ofstream outf;
     string line, line2;
+    vector<string> lines;
 
-    vector<string> includes;
-    vector<ParseType> items;
+    vector<TypeTag> items;
+    vector<Include> includes;
+    vector<Resource> resources;
+    vector<TypeOneline> typeols;
+    vector<TypeMultiline> typemls;
+    vector<Definition> definitions;
     vector<Syscall> syscalls;
-    vector<string> depends;
-    vector<string> returns;
+    vector<Structure> structures;
+    vector<Union> unions;
+    vector<Flag> flags;
 
-    // Time to parse the template
+    vector<TypeTag> needed;
+
+    // ======================================================================================================
+    // Parse the full template
     for (string filename : templateFiles)
     {
-        // if a file ever fails to open, fail.
-        templateIn.open(filename, fstream::in);
+        templateIn.open(filename);
         if (!templateIn)
         {
-            cout << "Failed to open file: " << filename << endl;
+            cout << "Error: Failed to open file " << filename << ".\n";
             return -1;
         }
-        
-        if (VERB)
-            cout << "Parsing " << filename << endl;
 
-        // parse the file line by line
+        if (VERB)
+            cout << "Parsing " << filename << ".\n";
+
         line.clear();
+        lines.clear();
         while (getline(templateIn, line))
         {
-            if (line.empty() || line.at(0) == '#' || line.at(0) == '_')
-            { // skip empty lines, commments, and unnamed vars
+            // __structname is a case now I guess
+            if (line.empty() || line.at(0) == '#' || (line.at(0) == '_' && line.at(1) != '_') || line.substr(0, 5) == "meta ")
+            { // skip empty lines, commments, unnamed vars, and meta
                 line.clear();
                 continue;
             }
-            else if (line.substr(0, 7) == "include")
-            { // if it is an include
-                if (!tparse_is_in(line.substr(line.find("<")), includes))
-                    includes.push_back(line.substr(line.find("<")));
+            else if (line.substr(0, 8) == "include " || line.substr(0, 7) == "incdir ")
+            { // if it is an include or incdir
                 if (VERB)
-                    cout << "include: " << line.substr(line.find("<")) << endl;
+                    cout << "Found include.\n";
+                parse_include(includes, line);
             }
-            else if (line.substr(0, 8) == "resource")
+            else if (line.substr(0, 9) == "resource ")
             { // if it is a resource
-                items.push_back(ParseType(line.substr(9, line.find("[", 10) - 9), 'R', line));
-                tparse_parse_resource(line, items.at(items.size() - 1).depend);
                 if (VERB)
-                    cout << "resource: " << line.substr(9, line.find("[", 10) - 9) << endl;
+                    cout << "Found resource.\n";
+                parse_resource(items, resources, line);
             }
-            else if (line.substr(0, 4) == "type")
+            else if (line.substr(0, 5) == "type ")
             { // if it is a type
-                if (VERB)
-                    cout << "type: ";
-
                 if (line.at(line.size() - 1) == '{' || line.at(line.size() - 1) == '[')
                 { // check for multi-line type
-                    char delimStart = line.at(line.size() - 1);
-                    char delimEnd = (delimStart == '{') ? '}' : ']';
-
-                    string name = line.substr(5, line.find("[", 6) - 5);
-                    string text = line + "\n";
                     if (VERB)
-                        cout << name << ' ' << delimStart;
-
-                    line2.clear();
-                    while(getline(templateIn, line2))
-                    {
-                        if (line2.empty() || line2.at(0) == '#')
-                        {
-                            line2.clear();
+                        cout << "Found multi-line type.\n";
+                    do {
+                        if (line.empty() || line.at(0) == '#')
                             continue;
-                        }
-
-                        text = text + line2 + "\n";
-
-                        if (line2.at(0) == delimEnd)
+                        lines.push_back(line);
+                        if (line.at(0) == '}' || line.at(0) == ']')
                             break;
-
-                        if (VERB)
-                            cout << '.';
-                        line2.clear();
-                    }
-                    if (VERB)
-                        cout << delimEnd << endl;
-
-                    items.push_back(ParseType(name, 'T', text));
-                    vector<string> tempargs;
-                    tparse_parse_type_args(line, tempargs);
-                    tparse_parse_body(text, items.at(items.size() - 1).depend, items.at(items.size() - 1).args, tempargs);
+                    } while (getline(templateIn, line));
+                    parse_typeml(items, typemls, lines);
                 }
                 else
                 {
-                    items.push_back(ParseType(line.substr(5, (line.find(" ", 6) < line.find("[", 6) ? line.find(" ", 6) : line.find("[", 6)) - 5), 'T', line));
-                    vector<string> tempargs;
-                    tparse_parse_type_args(line, tempargs);
-                    tparse_parse_single_line_type(line, items.at(items.size() - 1).depend, tempargs);
                     if (VERB)
-                        cout << line.substr(5, (line.find(" ", 6) < line.find("[", 6) ? line.find(" ", 6) : line.find("[", 6)) - 5) << endl;
+                        cout << "Found one-line type.\n";
+                    parse_typeol(items, typeols, line);
                 }
             }
-            else if (line.substr(0, 6) == "define")
-            {
-                // this may run into some issues where the define is the sizeof some struct. such depends are not tracked yet.
-                // I'll have to deal with it if it becomes an issue.
-                // Only an issue if the size of the struct is used, but the struct is not. should never happen.
-                items.push_back(ParseType(line.substr(7, (line.find(" ", 8) < line.find("\t", 8) ? line.find(" ", 8) : line.find("\t", 8)) - 7), 'D', line));
+            else if (line.substr(0, 7) == "define ")
+            { // if it is a define
                 if (VERB)
-                    cout << "define: " << line.substr(7, (line.find(" ", 8) < line.find("\t", 8) ? line.find(" ", 8) : line.find("\t", 8)) - 7) << endl;
-            }
-            else if (line.substr(0, 6) == "incdir")
-            {
-                if (!tparse_is_in(line.substr(line.find("<")), includes))
-                    includes.push_back(line.substr(line.find("<")));
-                if (VERB)
-                    cout << "incdir: " << line.substr(line.find("<")) << endl;
+                    cout << "Found definition.\n";
+                
+                parse_definition(items, definitions, line);
             }
             else if (line.find("(") != string::npos)
             { // if it is a syscall
-                syscalls.push_back(Syscall(line.substr(0, line.find("(")), 's', line));
-                // parse the line for dependencies and return value
-                tparse_parse_syscall(line, syscalls.at(syscalls.size() - 1).depend, syscalls.at(syscalls.size() - 1).args, syscalls.at(syscalls.size() - 1).returnType);
                 if (VERB)
-                    cout << "syscall: " << line.substr(0, line.find("(")) << " (...)" << endl << flush;
+                    cout << "Found syscall.\n";
+
+                parse_syscall(items, syscalls, line);
             }
-            else if (line.at(line.size() - 1) == '{' || line.at(line.size() - 1) == '[')
-            { // if it is a struct/union
-                char delimStart = line.at(line.size() - 1);
-                char delimEnd = (delimStart == '{') ? '}' : ']';
-
-                string name = line.substr(0, line.find(delimStart) - 1);
-                string text = line + "\n";
+            else if (line.at(line.size() - 1) == '{')
+            { // if it is a struct
                 if (VERB)
-                    cout << "struct: " << name << ' ' << delimStart;
+                    cout << "Found structure.\n";
 
-                line2.clear();
-                while(getline(templateIn, line2))
-                {
-                    if (line2.empty() || line2.at(0) == '#')
-                    {
-                        line2.clear();
+                do {
+                    if (line.empty() || line.at(0) == '#')
                         continue;
-                    }
-
-                    text = text + line2 + "\n";
-
-                    if (line2.at(0) == delimEnd)
+                    lines.push_back(line);
+                    if (line.at(0) == '}')
                         break;
+                } while (getline(templateIn, line));
 
-                    if (VERB)
-                        cout << '.';
-                    line2.clear();
-                }
-                items.push_back(ParseType(name, 'S', text));
-                tparse_parse_body(text, items.at(items.size() - 1).depend, items.at(items.size() - 1).args);
+                parse_structure(items, structures, lines);
+            }
+            else if (line.at(line.size() - 1) == '[')
+            { // if it is a union
                 if (VERB)
-                    cout << delimEnd << endl;
+                    cout << "Found union.\n";
+                do {
+                    if (line.empty() || line.at(0) == '#')
+                        continue;
+                    lines.push_back(line);
+                    if (line.at(0) == ']')
+                        break;
+                } while (getline(templateIn, line));
+
+                parse_union(items, unions, lines);
             }
             else if (line.find(" = ") != string::npos)
             { // if it is a flag
-                items.push_back(ParseType(line.substr(0, line.find(" = ")), 'F', line));
-                tparse_parse_flag(line, items.at(items.size() - 1).depend);
                 if (VERB)
-                    cout << "flag: " << line.substr(0, line.find(" = ")) << endl;
+                    cout << "Found flag.\n";
+                
+                parse_flag(items, flags, line);
             }
             else {
-                cout << "Unknown line type! " << line << endl;
+                cerr << "Warning: Unknown line type: " << line << endl;
             }
-
             line.clear();
+            lines.clear();
         }
 
         templateIn.close();
     }
 
-    // parse the reproducer for a list of syscalls
+    // ======================================================================================================
+    // Read the reproducer to get syscalls
     reproIn.open(reproFile);
     if(!reproIn)
     {
@@ -701,8 +600,9 @@ int slim_template(const string &reproFile, const string &outfilename, const vect
     }
 
     // Always include a few syscalls that are needed for syzkaller to function.
-    vector<string> reprosys = {"syz_execute_func", "mmap", "open"};
+    vector<string> reproducer_syscalls = {"syz_execute_func", "mmap", "open"};
 
+    line.clear();
     while (getline(reproIn, line))
     {
         if (line.empty() || line.at(0) == '#')
@@ -712,228 +612,118 @@ int slim_template(const string &reproFile, const string &outfilename, const vect
         pos0 = (pos0 == string::npos) ? 0 : pos0 + 3;
         pos1 = line.find("(");
 
-        reprosys.push_back(line.substr(pos0, pos1 - pos0));
+        reproducer_syscalls.push_back(line.substr(pos0, pos1 - pos0));
+        line.clear();
     }
     reproIn.close();
 
-    // for each syscall, add it and all dependencies to depends
-    for (string s : reprosys)
+    // ======================================================================================================
+    // Create the slimmed template
+    // grab everything first, then print it all to the file
+
+    // initial syscalls
+    for (string s : reproducer_syscalls)
+        item_push_sorted(needed, TypeTag(syscallClass, s, find_in_syscalls(syscalls, s)));
+
+    // Demote resources down to basic types
+    // Special values add on
+    // Skip this idea for now
+
+    // For each item that is needed, grab all of its depends as well
+    for (int i = 0; i < needed.size(); i++)
     {
-        pos2 = tparse_find(s, syscalls);
-
-        int contextDelim = s.find('$');
-        if (pos2 < 0 && contextDelim != string::npos)
+        index = needed.at(i).get_index();
+        if (index < 0)
         {
-            // if s has a context, and that context was not found, go get the more general syscall
-            // for syscalls of the form "ioctl$BPF_MAP()" -> "ioctl()"
-            string general = s.substr(0, contextDelim);
-            pos2 = tparse_find(general, syscalls);
-        }
-
-        if (pos2 < 0)
-        {
-            cout << "Unknown Syscall: " << s << endl;
+            cerr << "Warning: Unknown item " << needed.at(i).get_name();
             continue;
         }
-
-        // no duplicate syscalls
-        if (tparse_is_in(syscalls.at(pos2).name, depends))
-            continue;
-
-        depends.push_back(syscalls.at(pos2).name);
-
-        for (string s : syscalls.at(pos2).depend)
+        switch (needed.at(i).get_class())
         {
-            if ((tparse_is_in(s, items) || !tparse_is_in(s, syscalls.at(pos2).args)) && !tparse_is_in(s, depends))
-                depends.push_back(s);
-        }
-
-        for (string ret : syscalls.at(pos2).returnType)
-        {
-            if (!tparse_is_in(ret, depends))
-            {
-                returns.push_back(ret);
-                depends.push_back(ret);
-            }
-        }
+        case resourceClass:
+            resources.at(index).push_depends(needed, items);
+            get_one_user_syscall(needed.at(i), needed, items, syscalls, typeols, typemls, unions, structures);
+            get_one_producer_syscall(needed.at(i), needed, items, syscalls, typeols, typemls, unions, structures);
+            break;
+        case typeolClass:
+            typeols.at(index).push_depends(needed, items);
+            break;
+        case typemlClass:
+            typemls.at(index).push_depends(needed, items);
+            break;
+        case definitionClass:
+            //definitions.at(index).push_depends(needed, items);
+            break;
+        case unionClass:
+            unions.at(index).push_depends(needed, items);
+            break;
+        case structureClass:
+            structures.at(index).push_depends(needed, items);
+            break;
+        case flagClass:
+            flags.at(index).push_depends(needed, items);
+            break;
+        case syscallClass:
+            syscalls.at(index).push_depends(needed, items);
+            break;
+        default:
+            cout << "Warning: Unknown class type found while grabbing dependencies.\n";
+            break;
+        };
     }
 
-    // for each return type, find a syscall that depends on it.
-    for (int i = 0; i < returns.size(); i++)
-    {
-        int syspos = -1;
-        for (int j = 0; j < syscalls.size(); j++)
-        {
-            if (tparse_is_in(returns.at(i), syscalls.at(j).depend))
-            {
-                // keep track of the best syscall (empty return type, fewest dependencies)
-                if (tparse_is_in(syscalls.at(j).name, depends))
-                {
-                    syspos = -2;
-                    break;
-                }
-                else if (syscalls.at(j).returnType.empty() && syscalls.at(j).depend.size() == 1)
-                {
-                    // this is the best syscall
-                    syspos = j;
-                    break;
-                }
-                else
-                {
-                    // keep track of the syscall with the fewest dependencies
-                    syspos = (syspos < 0) ? j : syspos;
-                    syspos = (syscalls.at(j).depend.size() < syscalls.at(syspos).depend.size()) ? j : syspos;
-                    syspos = (syscalls.at(j).depend.size() <= syscalls.at(syspos).depend.size() && syscalls.at(j).returnType.empty()) ? j : syspos;
-                }
-            }
-        }
-        // add the chosen syscall
-        if (syspos >= 0 && !tparse_is_in(syscalls.at(syspos).name, depends))
-        {
-            depends.push_back(syscalls.at(syspos).name);
+    // ======================================================================================================
+    // Print the template to the file
 
-            // add each of the syscalls dependencies
-            for (string s : syscalls.at(syspos).depend)
-                if ((tparse_is_in(s, items) || !tparse_is_in(s, syscalls.at(syspos).args)) && !tparse_is_in(s, depends))
-                    depends.push_back(s);
-
-            // add the return type to the end of the list
-            for (string ret : syscalls.at(syspos).returnType)
-            {
-                if (!tparse_is_in(ret, depends))
-                {
-                    returns.push_back(ret);
-                    returns.push_back(ret);
-                }
-            }
-        }
-    }
-
-    // for each depend, fetch it, and add its depends to the list
-    for (int i = 0; i < depends.size(); i++)
-    {
-        pos2 = tparse_find(depends.at(i), items);
-        if (pos2 < 0)
-            continue;
-
-        for (string s : items.at(pos2).depend)
-        {
-            if ((tparse_is_in(s, items) || !tparse_is_in(s, items.at(pos2).args)) && !tparse_is_in(s, depends))
-                depends.push_back(s);
-        }
-
-        // Make sure each resource can be created by a syscall
-        if (items.at(pos2).type == 'R')
-        {
-            int syspos = -1, pos3;
-            cout << items.at(pos2).name << endl;
-
-            // first, check if a syscall directly returns the resource already
-            for (int j = 0; j < depends.size() && syspos != -2; j++)
-                syspos = (pos3 = tparse_find(depends.at(j), syscalls)) >= 0 && tparse_is_in(items.at(pos2).name, syscalls.at(pos3).returnType) ? -2 : syspos;
-
-            // second, check if a syscall returns a structure that contains the resource
-            vector<string> parentstructs;
-            if (syspos == -1)
-            {
-                for (ParseType p : items)
-                    if ((p.type == 'T' || p.type == 'S') && tparse_is_in(items.at(pos2).name, p.depend))
-                        parentstructs.push_back(p.name);
-
-                for (int j = 0; j < depends.size() && syspos != -2; j++)
-                    syspos = (pos3 = tparse_find(depends.at(j), syscalls)) >= 0 && tparse_is_in(items.at(pos2).name, syscalls.at(pos3).returnType) ? -2 : syspos;
-            }
-
-            // look for the simplest syscall that returns the resource
-            for (int j = 0; j < syscalls.size() && syspos != -2; j++)
-            {
-                if (tparse_is_in(items.at(pos2).name, syscalls.at(j).returnType))
-                {
-                    if (syscalls.at(j).depend.empty())
-                    {
-                        // if we find a syscall with no dependencies, use it
-                        syspos = j;
-                        break;
-                    }
-                    else
-                    {
-                        // find the syscall with the least amount of dependencies
-                        syspos = (syspos < 0) ? j : syspos;
-                        syspos = (syscalls.at(j).depend.size() < syscalls.at(syspos).depend.size()) ? j : syspos;
-                    }
-                }
-            }
-
-            // if there is no syscall that directly returns the syscall, find one for a parent structure
-            if (parentstructs.size() > 0 && syspos == -1)
-            {
-                bool doublebreak = false;
-                for (int j = 0; j < syscalls.size() && !doublebreak; j++)
-                {
-                    // for each syscall, is a parent struct returned by it?
-                    for (string p : parentstructs)
-                    {
-                        bool isin = tparse_is_in(p, syscalls.at(j).returnType);
-                        if (isin == true && syscalls.at(j).depend.empty())
-                        {
-                            syspos = j;
-                            doublebreak = true;
-                            break;
-                        }
-                        else if (isin == true)
-                        {
-                            // find the syscall with the least amount of dependencies
-                            syspos = (syspos < 0) ? j : syspos;
-                            syspos = (syscalls.at(j).depend.size() < syscalls.at(syspos).depend.size()) ? j : syspos;
-                        }
-                    }
-                }
-            }
-
-            // add the chosen syscall
-            cout << syspos << endl;
-            if (syspos >= 0 && !tparse_is_in(syscalls.at(syspos).name, depends))
-            {
-                cout << syscalls.at(syspos).name << " -> " << items.at(pos2).name << endl;
-                depends.push_back(syscalls.at(syspos).name);
-                for (string s : syscalls.at(syspos).depend)
-                {
-                    if ((tparse_is_in(s, items) || !tparse_is_in(s, syscalls.at(syspos).args)) && !tparse_is_in(s, depends))
-                        depends.push_back(s);
-                }
-            }
-        }
-    }
-
-    // output each depends
-    ofstream outfile;
-    outfile.open(outfilename, fstream::out | fstream::trunc);
-    if (!outfile)
+    outf.open(outfilename);
+    if (!outf)
     {
         cout << "Failed to open output file: " << outfilename << endl;
         return -1;
     }
 
-    for (string s : includes)
-        outfile << "include " << s << endl;
+    for (Include i : includes)
+        outf << i.get_text() << endl;
 
-    outfile << endl;
+    outf << "\n\n";
 
-    for (string s : depends)
+    for (TypeTag tt : needed)
     {
-        pos2 = tparse_find(s, items);
-        if (pos2 >= 0)
+        index = tt.get_index();
+        switch (tt.get_class())
         {
-            outfile << items.at(pos2).text << endl;
-        }
-
-        pos2 = tparse_find(s, syscalls);
-        if (pos2 >= 0)
-        {
-            outfile << syscalls.at(pos2).text << endl << endl;
-        }
+        case resourceClass:
+            outf << resources.at(index).get_text() << "\n\n";
+            break;
+        case typeolClass:
+            outf << typeols.at(index).get_text() << "\n\n";
+            break;
+        case typemlClass:
+            outf << typemls.at(index).get_text() << "\n\n";
+            break;
+        case definitionClass:
+            outf << definitions.at(index).get_text() << "\n\n";
+            break;
+        case unionClass:
+            outf << unions.at(index).get_text() << "\n\n";
+            break;
+        case structureClass:
+            outf << structures.at(index).get_text() << "\n\n";
+            break;
+        case flagClass:
+            outf << flags.at(index).get_text() << "\n\n";
+            break;
+        case syscallClass:
+            outf << syscalls.at(index).get_text() << "\n\n";
+            break;
+        default:
+            cout << "Warning: Unknown class type found while printing.\n";
+            break;
+        };
     }
 
+    outf << flush;
+    outf.close();
     return 0;
 }
 
