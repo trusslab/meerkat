@@ -151,7 +151,7 @@ void parse_resource(vector<TypeTag> &items, vector<Resource> &resources, const s
         sv.push_back(line.substr(pos0));
     }
 
-    if (!is_in_items(items, name))
+    if (!is_in_items(items, TypeTag(resourceClass, name)))
     {
         item_push_sorted(items, TypeTag(resourceClass, name, resources.size()));
         resources.push_back(Resource(line, name, parse_typeref(typestring), sv));
@@ -185,7 +185,7 @@ void parse_typeml(vector<TypeTag> &items, vector<TypeMultiline> &typemls, const 
     for (string l : lines)
         text += l + "\n";
 
-    if (!is_in_items(items, name))
+    if (!is_in_items(items, TypeTag(typemlClass, name)))
     {
         item_push_sorted(items, TypeTag(typemlClass, name, typemls.size()));
         typemls.push_back(TypeMultiline(text, name, args, fields));
@@ -214,7 +214,7 @@ void parse_typeol(vector<TypeTag> &items, vector<TypeOneline> &typeols, const st
     // find the position of the underlying type
     pos0 = line.find_first_not_of(" ]", pos1);
 
-    if (!is_in_items(items, name))
+    if (!is_in_items(items, TypeTag(typeolClass, name)))
     {
         item_push_sorted(items, TypeTag(typeolClass, name, typeols.size()));
         typeols.push_back(TypeOneline(line, name, args, parse_typeref(line.substr(pos0))));
@@ -228,7 +228,7 @@ void parse_definition(vector<TypeTag> &items, vector<Definition> &defines, const
     int pos0 = 7, pos1 = line.find_first_of(" \t", pos0);
     string name = line.substr(pos0, pos1 - pos0);
 
-    if (!is_in_items(items, name))
+    if (!is_in_items(items, TypeTag(definitionClass, name)))
     {
         item_push_sorted(items, TypeTag(definitionClass, name, defines.size()));
         defines.push_back(Definition(line, name));
@@ -269,12 +269,10 @@ void parse_syscall(vector<TypeTag> &items, vector<Syscall> &syscalls, const stri
             syscall.set_return(line.substr(pos0, pos1 - pos0));
         else
             syscall.set_return(line.substr(pos0));
-        
-        // pos0 = line.find_first_of("(", pos0);
     }
     // tailing attributes have been left out for now
 
-    if (!is_in_items(items, syscall.get_name()))
+    if (!is_in_items(items, TypeTag(syscallClass, syscall.get_name())))
     {
         item_push_sorted(items, TypeTag(syscallClass, syscall.get_name(), syscalls.size()));
         syscalls.push_back(syscall);
@@ -307,7 +305,7 @@ void parse_structure(vector<TypeTag> &items, vector<Structure> &structures, cons
 {
     BaseStruct bs = parse_strunion(lines);
 
-    if (!is_in_items(items, bs.get_name()))
+    if (!is_in_items(items, TypeTag(structureClass, bs.get_name())))
     {
         item_push_sorted(items, TypeTag(structureClass, bs.get_name(), structures.size()));
         structures.push_back(Structure(bs));
@@ -320,7 +318,7 @@ void parse_union(vector<TypeTag> &items, vector<Union> &unions, const vector<str
 {
     BaseStruct bs = parse_strunion(lines);
 
-    if (!is_in_items(items, bs.get_name()))
+    if (!is_in_items(items, TypeTag(unionClass, bs.get_name())))
     {
         item_push_sorted(items, TypeTag(unionClass, bs.get_name(), unions.size()));
         unions.push_back(Union(bs));
@@ -344,7 +342,7 @@ void parse_flag(vector<TypeTag> &items, vector<Flag> &flags, const string &line)
             values.push_back(line.substr(pos0));
     } while (pos1 != string::npos);
 
-    if (!is_in_items(items, name))
+    if (!is_in_items(items, TypeTag(flagClass, name)))
     {
         item_push_sorted(items, TypeTag(flagClass, name, flags.size()));
         flags.push_back(Flag(line, name, values));
@@ -366,7 +364,7 @@ void get_one_user_syscall(const TypeTag &this_resource, vector<TypeTag> &needed,
         {
             used_recs.clear();
             used_recs = syscalls.at(tt.get_index()).get_resources_used(items, typeols, typemls, unions, structures);
-            if (is_in_needed(used_recs, this_resource.get_name()))
+            if (is_in_needed(used_recs, this_resource))
                 return;
         }
     }
@@ -376,7 +374,7 @@ void get_one_user_syscall(const TypeTag &this_resource, vector<TypeTag> &needed,
     {
         used_recs.clear();
         used_recs = s.get_resources_used(items, typeols, typemls, unions, structures);
-        if (is_in_needed(used_recs, this_resource.get_name()))
+        if (is_in_needed(used_recs, this_resource))
         {
             if (s.total_resources(items, typeols, typemls, unions, structures) == 1)
             {
@@ -392,7 +390,7 @@ void get_one_user_syscall(const TypeTag &this_resource, vector<TypeTag> &needed,
 
     if (!chosen_syscall.get_text().empty())
     {
-        index = find_in_items(items, chosen_syscall.get_name());
+        index = find_in_items(items, TypeTag(syscallClass, chosen_syscall.get_name()));
         needed.push_back(items.at(index));
     }
     else
@@ -413,7 +411,7 @@ void get_one_producer_syscall(const TypeTag &this_resource, vector<TypeTag> &nee
         {
             produced_recs.clear();
             produced_recs = syscalls.at(tt.get_index()).get_resources_produced(items, typeols, typemls, unions, structures);
-            if (is_in_needed(produced_recs, this_resource.get_name()))
+            if (is_in_needed(produced_recs, this_resource))
                 return;
         }
     }
@@ -423,7 +421,7 @@ void get_one_producer_syscall(const TypeTag &this_resource, vector<TypeTag> &nee
     {
         produced_recs.clear();
         produced_recs = s.get_resources_produced(items, typeols, typemls, unions, structures);
-        if (is_in_needed(produced_recs, this_resource.get_name()))
+        if (is_in_needed(produced_recs, this_resource))
         {
             if (s.total_resources(items, typeols, typemls, unions, structures) == 1)
             {
@@ -441,7 +439,7 @@ void get_one_producer_syscall(const TypeTag &this_resource, vector<TypeTag> &nee
 
     if (!chosen_syscall.get_text().empty())
     {
-        index = find_in_items(items, chosen_syscall.get_name());
+        index = find_in_items(items, TypeTag(syscallClass, chosen_syscall.get_name()));
         needed.push_back(items.at(index));
     }
     else
@@ -589,6 +587,9 @@ int slim_template(const string &reproFile, const string &outfilename, const vect
 
         templateIn.close();
     }
+
+    for (TypeTag tt : items)
+        cout << tt.get_name() << endl << flush;
 
     // ======================================================================================================
     // Read the reproducer to get syscalls

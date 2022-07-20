@@ -90,9 +90,8 @@ void TypeRef::push_depends(vector<TypeTag> &needed, const vector<TypeTag> &items
     int index;
     if(!checked_depends)
     {
-        index = find_in_items(items, name);
-        if (index >= 0)
-            depends.push_back(items.at(index));
+        for (TypeTag tt : find_in_items(items, name))
+            depends.push_back(tt);
 
         for (TypeRef tr : options)
             tr.push_depends(depends, items);
@@ -101,7 +100,7 @@ void TypeRef::push_depends(vector<TypeTag> &needed, const vector<TypeTag> &items
     }
 
     for (TypeTag tt : depends)
-        if (!is_in_needed(needed, tt.get_name()))
+        if (!is_in_needed(needed, tt))
             needed.push_back(tt);
 
     return;
@@ -199,7 +198,7 @@ void Field::push_depends(vector<TypeTag> &needed, const vector<TypeTag> &items)
     }
 
     for (TypeTag tt : depends)
-        if (!is_in_needed(needed, tt.get_name()))
+        if (!is_in_needed(needed, tt))
             needed.push_back(tt);
 
     return;
@@ -269,7 +268,7 @@ void TypeOneline::push_depends(vector<TypeTag> &needed, const vector<TypeTag> &i
     }
 
     for (TypeTag tt : depends)
-        if (!is_in_needed(needed, tt.get_name()))
+        if (!is_in_needed(needed, tt))
             needed.push_back(tt);
 
     return;
@@ -305,7 +304,7 @@ void TypeMultiline::push_depends(vector<TypeTag> &needed, const vector<TypeTag> 
     }
 
     for (TypeTag tt : depends)
-        if (!is_in_needed(needed, tt.get_name()))
+        if (!is_in_needed(needed, tt))
             needed.push_back(tt);
     return;
 }
@@ -345,7 +344,7 @@ void Resource::push_depends(vector<TypeTag> &needed, const vector<TypeTag> &item
 
         for (string v : special_values)
         {
-            index = find_in_items(items, v);
+            index = find_in_items(items, TypeTag(definitionClass, v));
             if (index >= 0)
                 depends.push_back(items.at(index));
         }
@@ -353,7 +352,7 @@ void Resource::push_depends(vector<TypeTag> &needed, const vector<TypeTag> &item
     }
 
     for (TypeTag tt : depends)
-        if(!is_in_needed(needed, tt.get_name()))
+        if(!is_in_needed(needed, tt))
             needed.push_back(tt);
 
     return;
@@ -394,7 +393,7 @@ void BaseStruct::push_depends(vector<TypeTag> &needed, const vector<TypeTag> &it
     }
 
     for (TypeTag tt : depends)
-        if (!is_in_needed(needed, tt.get_name()))
+        if (!is_in_needed(needed, tt))
             needed.push_back(tt);
 
     return;
@@ -430,7 +429,7 @@ void Flag::push_depends(vector<TypeTag> &needed, const vector<TypeTag> &items)
     {
         for (string s : values)
         {
-            index = find_in_items(items, s);
+            index = find_in_items(items, TypeTag(definitionClass, s));
             if (index >= 0)
                 depends.push_back(items.at(index));
         }
@@ -438,7 +437,7 @@ void Flag::push_depends(vector<TypeTag> &needed, const vector<TypeTag> &items)
     }
 
     for (TypeTag tt : depends)
-        if (!is_in_needed(needed, tt.get_name()))
+        if (!is_in_needed(needed, tt))
             needed.push_back(tt);
     
     return;
@@ -484,7 +483,7 @@ void Syscall::push_depends(vector<TypeTag> &needed, const vector<TypeTag> &items
         for (Field f : args)
             f.push_depends(depends, items);
 
-        index = find_in_items(items, return_type);
+        index = find_in_items(items, TypeTag(resourceClass, return_type));
         if (index >= 0)
             depends.push_back(items.at(index));
         
@@ -492,7 +491,7 @@ void Syscall::push_depends(vector<TypeTag> &needed, const vector<TypeTag> &items
     }
 
     for (TypeTag tt : depends)
-        if (!is_in_needed(needed, tt.get_name()))
+        if (!is_in_needed(needed, tt))
             needed.push_back(tt);
     return;
 }
@@ -508,15 +507,9 @@ vector<TypeTag> Syscall::get_resources_used(const vector<TypeTag> &items,
         for (Field f : args)
         {
             items_to_check.clear();
-            index = find_in_items(items, f.get_typeref().get_name());
+            index = find_in_items(items, TypeTag(resourceClass, f.get_typeref().get_name()));
             if (index >= 0 && items.at(index).get_class() == resourceClass)
                 resources_used.push_back(items.at(index));
-            else if (index >= 0)
-            {
-                // if it is an item, but not a resource.
-                // Usually this means it is a typeol
-                //cerr << "Warning: Non-resource item taken as input: " << f.get_typeref().get_name() << ".\n";
-            }
             else if (f.get_typeref().get_name() == "ptr" && f.get_typeref().has_opts())
             {
                 for (TypeRef tr : f.get_typeref().get_opts())
@@ -527,43 +520,42 @@ vector<TypeTag> Syscall::get_resources_used(const vector<TypeTag> &items,
                 {
                     for (int i = 1; i < items_to_check.size(); i++)
                     {
-                        index = find_in_items(items, items_to_check.at(i).get_name());
-                        if (items_to_check.at(i).has_opts())
-                        {
-                            for (TypeRef tr : items_to_check.at(i).get_opts())
-                                if (!is_in_typeref(items_to_check, tr.get_name()))
-                                    items_to_check.push_back(tr);
-                        }
+                        for (TypeRef tr : items_to_check.at(i).get_opts())
+                            if (!is_in_typeref(items_to_check, tr.get_name()))
+                                items_to_check.push_back(tr);
 
-                        if (index >= 0 && items.at(index).get_class() == resourceClass)
+                        for (TypeTag tt : find_in_items(items, items_to_check.at(i).get_name()))
                         {
-                            resources_used.push_back(items.at(index));
-                        }
-                        else if (index >= 0)
-                        {
-                            switch (items.at(index).get_class())
+                            if (tt.get_class() == resourceClass)
                             {
-                            case structureClass:
-                                for (Field ff : structures.at(items.at(index).get_index()).get_fields())
-                                    if (!is_in_typeref(items_to_check, ff.get_typeref().get_name()))
-                                        items_to_check.push_back(ff.get_typeref());
-                                break;
-                            case unionClass:
-                                for (Field ff : unions.at(items.at(index).get_index()).get_fields())
-                                    if (!is_in_typeref(items_to_check, ff.get_typeref().get_name()))
-                                        items_to_check.push_back(ff.get_typeref());
-                                break;
-                            case typeolClass:
-                                if (!is_in_typeref(items_to_check, items.at(index).get_name()))
-                                    items_to_check.push_back(typeols.at(items.at(index).get_index()).get_type());
-                                break;
-                            case typemlClass:
-                                for (Field ff : typemls.at(items.at(index).get_index()).get_fields())
-                                    if (!is_in_typeref(items_to_check, ff.get_typeref().get_name()))
-                                        items_to_check.push_back(ff.get_typeref());
-                                break;
-                            default:
-                                break;
+                                resources_used.push_back(tt);
+                            }
+                            else
+                            {
+                                switch (tt.get_class())
+                                {
+                                case structureClass:
+                                    for (Field ff : structures.at(tt.get_index()).get_fields())
+                                        if (!is_in_typeref(items_to_check, ff.get_typeref().get_name()))
+                                            items_to_check.push_back(ff.get_typeref());
+                                    break;
+                                case unionClass:
+                                    for (Field ff : unions.at(tt.get_index()).get_fields())
+                                        if (!is_in_typeref(items_to_check, ff.get_typeref().get_name()))
+                                            items_to_check.push_back(ff.get_typeref());
+                                    break;
+                                case typeolClass:
+                                    if (!is_in_typeref(items_to_check, tt.get_name()))
+                                        items_to_check.push_back(typeols.at(tt.get_index()).get_type());
+                                    break;
+                                case typemlClass:
+                                    for (Field ff : typemls.at(tt.get_index()).get_fields())
+                                        if (!is_in_typeref(items_to_check, ff.get_typeref().get_name()))
+                                            items_to_check.push_back(ff.get_typeref());
+                                    break;
+                                default:
+                                    break;
+                                }
                             }
                         }
                     }
@@ -572,16 +564,18 @@ vector<TypeTag> Syscall::get_resources_used(const vector<TypeTag> &items,
                 {
                     for (int i = 1; i < items_to_check.size(); i++)
                     {
-                        index = find_in_items(items, items_to_check.at(i).get_name());
-                        if (index >= 0 && items.at(index).get_class() == resourceClass)
+                        for (TypeTag tt : find_in_items(items, items_to_check.at(i).get_name()))
                         {
-                            resources_used.push_back(items.at(index));
-                        }
-                        else if (index >= 0 && items.at(index).get_class() == structureClass)
-                        {
-                            for (Field ff : structures.at(items.at(index).get_index()).get_fields())
-                                if (ff.has_attrs() && (ff.check_attrs("in") || ff.check_attrs("inout")))
-                                    items_to_check.push_back(ff.get_typeref());
+                            if (tt.get_class() == resourceClass)
+                            {
+                                resources_used.push_back(tt);
+                            }
+                            else if (tt.get_class() == structureClass)
+                            {
+                                for (Field ff : structures.at(tt.get_index()).get_fields())
+                                    if (ff.has_attrs() && (ff.check_attrs("in") || ff.check_attrs("inout")))
+                                        items_to_check.push_back(ff.get_typeref());
+                            }
                         }
                     }
                 }
@@ -613,43 +607,42 @@ vector<TypeTag> Syscall::get_resources_produced(const vector<TypeTag> &items,
                 {
                     for (int i = 1; i < items_to_check.size(); i++)
                     {
-                        index = find_in_items(items, items_to_check.at(i).get_name());
-                        if (items_to_check.at(i).has_opts())
+                        for (TypeRef tr : items_to_check.at(i).get_opts())
+                            if (!is_in_typeref(items_to_check, tr.get_name()))
+                                items_to_check.push_back(tr);
+                        
+                        for (TypeTag tt : find_in_items(items, items_to_check.at(i).get_name()))
                         {
-                            for (TypeRef tr : items_to_check.at(i).get_opts())
-                                if (!is_in_typeref(items_to_check, tr.get_name()))
-                                    items_to_check.push_back(tr);
-                        }
-
-                        if (index >= 0 && items.at(index).get_class() == resourceClass)
-                        {
-                            resources_produced.push_back(items.at(index));
-                        }
-                        else if (index >= 0)
-                        {
-                            switch (items.at(index).get_class())
+                            if (tt.get_class() == resourceClass)
                             {
-                            case structureClass:
-                                for (Field ff : structures.at(items.at(index).get_index()).get_fields())
-                                    if (!is_in_typeref(items_to_check, ff.get_typeref().get_name()))
-                                        items_to_check.push_back(ff.get_typeref());
-                                break;
-                            case unionClass:
-                                for (Field ff : unions.at(items.at(index).get_index()).get_fields())
-                                    if (!is_in_typeref(items_to_check, ff.get_typeref().get_name()))
-                                        items_to_check.push_back(ff.get_typeref());
-                                break;
-                            case typeolClass:
-                                if (!is_in_typeref(items_to_check, items.at(index).get_name()))
-                                    items_to_check.push_back(typeols.at(items.at(index).get_index()).get_type());
-                                break;
-                            case typemlClass:
-                                for (Field ff : typemls.at(items.at(index).get_index()).get_fields())
-                                    if (!is_in_typeref(items_to_check, ff.get_typeref().get_name()))
-                                        items_to_check.push_back(ff.get_typeref());
-                                break;
-                            default:
-                                break;
+                                resources_produced.push_back(tt);
+                            }
+                            else
+                            {
+                                switch (tt.get_class())
+                                {
+                                case structureClass:
+                                    for (Field ff : structures.at(tt.get_index()).get_fields())
+                                        if (!is_in_typeref(items_to_check, ff.get_typeref().get_name()))
+                                            items_to_check.push_back(ff.get_typeref());
+                                    break;
+                                case unionClass:
+                                    for (Field ff : unions.at(tt.get_index()).get_fields())
+                                        if (!is_in_typeref(items_to_check, ff.get_typeref().get_name()))
+                                            items_to_check.push_back(ff.get_typeref());
+                                    break;
+                                case typeolClass:
+                                    if (!is_in_typeref(items_to_check, tt.get_name()))
+                                        items_to_check.push_back(typeols.at(tt.get_index()).get_type());
+                                    break;
+                                case typemlClass:
+                                    for (Field ff : typemls.at(tt.get_index()).get_fields())
+                                        if (!is_in_typeref(items_to_check, ff.get_typeref().get_name()))
+                                            items_to_check.push_back(ff.get_typeref());
+                                    break;
+                                default:
+                                    break;
+                                }
                             }
                         }
                     }
@@ -658,16 +651,18 @@ vector<TypeTag> Syscall::get_resources_produced(const vector<TypeTag> &items,
                 {
                     for (int i = 1; i < items_to_check.size(); i++)
                     {
-                        index = find_in_items(items, items_to_check.at(i).get_name());
-                        if (index >= 0 && items.at(index).get_class() == resourceClass)
+                        for (TypeTag tt : find_in_items(items, items_to_check.at(i).get_name()))
                         {
-                            resources_produced.push_back(items.at(index));
-                        }
-                        else if (index >= 0 && items.at(index).get_class() == structureClass)
-                        {
-                            for (Field ff : structures.at(items.at(index).get_index()).get_fields())
-                                if (ff.has_attrs() && (ff.check_attrs("out") || ff.check_attrs("inout")))
-                                    items_to_check.push_back(ff.get_typeref());
+                            if (tt.get_class() == resourceClass)
+                            {
+                                resources_produced.push_back(tt);
+                            }
+                            else if (tt.get_class() == structureClass)
+                            {
+                                for (Field ff : structures.at(tt.get_index()).get_fields())
+                                    if (ff.has_attrs() && (ff.check_attrs("out") || ff.check_attrs("inout")))
+                                        items_to_check.push_back(ff.get_typeref());
+                            }
                         }
                     }
                 }
@@ -676,7 +671,7 @@ vector<TypeTag> Syscall::get_resources_produced(const vector<TypeTag> &items,
 
         if (has_return())
         {
-            index = find_in_items(items, return_type);
+            index = find_in_items(items, TypeTag(resourceClass, return_type));
             if (index >= 0)
                 resources_produced.push_back(items.at(index));
             else
@@ -728,7 +723,7 @@ void item_push_sorted(vector<TypeTag> &items, const TypeTag &tt)
     return;
 }
 
-int find_in_items(const vector<TypeTag> &items, const string &name)
+int find_in_items(const vector<TypeTag> &items, const TypeTag &query)
 {
     if (items.empty())
         return -1;
@@ -737,31 +732,68 @@ int find_in_items(const vector<TypeTag> &items, const string &name)
     while (l <= h)
     {
         m = (l + h) / 2;
-        if (name == items.at(m).get_name())
+        if (query.get_name() == items.at(m).get_name() && query.get_class() == items.at(m).get_class())
             return m;
-        else if (name > items.at(m).get_name())
+        else if (query.get_name() > items.at(m).get_name())
             l = m + 1;
         else
             h = m - 1;
     }
 
-    if (l >= items.size() || h < 0)
+    // check for the exact class nearby
+    for (int i = l; i >= 0 && i < items.size() && items.at(i).get_name() == query.get_name(); i++)
+        l = items.at(i).get_class() == query.get_class() ? i : l;
+
+    for (int i = l - 1; i >= 0 && i < items.size() && items.at(i).get_name() == query.get_name(); i--)
+        l = items.at(i).get_class() == query.get_class() ? i : l;
+
+    if (l >= items.size() || l < 0 || h < 0)
         return -1;
 
-    return (items.at(l).get_name() == name ? l : -1);
+    return (items.at(l).get_name() == query.get_name() && query.get_class() == items.at(m).get_class() ? l : -1);
+}
+
+// Turns out that items of different type can have the same name.
+// This function returns a vector of all items that share a given name
+// for when you don't know which one you'll need.
+// Thankfully, this really only happens when a type template is acting
+// as a wrapper for flags
+vector<TypeTag> find_in_items(const vector<TypeTag> &items, const string &query)
+{
+    vector<TypeTag> ret;
+    if (items.empty())
+        return ret;
+    
+    int l = 0, h = items.size() - 1, m;
+    while (l <= h)
+    {
+        m = (l + h) / 2;
+        if (query > items.at(m).get_name())
+            l = m + 1;
+        else
+            h = m - 1;
+    }
+
+    for (int i = l; i >= 0 && i < items.size() && items.at(i).get_name() == query; i++)
+        ret.push_back(items.at(i));
+
+    for (int i = l - 1; i >= 0 && i < items.size() && items.at(i).get_name() == query; i--)
+        ret.push_back(items.at(i));
+
+    return ret;
 }
 
 // binary search on the items
-bool is_in_items(const vector<TypeTag> &items, const string &name)
+bool is_in_items(const vector<TypeTag> &items, const TypeTag &query)
 {
-    return (find_in_items(items, name) >= 0);
+    return (find_in_items(items, query) >= 0);
 }
 
 // needed cannot be sorted because of how we add things to it.
-bool is_in_needed(const vector<TypeTag> &needed, const string &name)
+bool is_in_needed(const vector<TypeTag> &needed, const TypeTag &query)
 {
     for (TypeTag tt : needed)
-        if (name == tt.get_name())
+        if (query.get_name() == tt.get_name() && query.get_class() == tt.get_class())
             return true;
 
     return false;
