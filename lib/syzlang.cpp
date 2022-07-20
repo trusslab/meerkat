@@ -682,7 +682,7 @@ vector<TypeTag> Syscall::get_resources_produced(const vector<TypeTag> &items,
                                             items_to_check.push_back(ff.get_typeref());
                                     break;
                                 case typeolClass:
-                                    if (!is_in_typeref(items_to_check, tt.get_name()))
+                                    if (!is_in_typeref(items_to_check, typeols.at(tt.get_index()).get_type().get_name()))
                                         items_to_check.push_back(typeols.at(tt.get_index()).get_type());
                                     break;
                                 case typemlClass:
@@ -720,7 +720,7 @@ vector<TypeTag> Syscall::get_resources_produced(const vector<TypeTag> &items,
                                 }
 
                                 for (Field ff : structures.at(tt.get_index()).get_fields())
-                                    if (ff.has_attrs() && (ff.check_attrs("in") || ff.check_attrs("inout")))
+                                    if (ff.has_attrs() && (ff.check_attrs("out") || ff.check_attrs("inout")))
                                         items_to_check.push_back(ff.get_typeref());
                                 break;
                             case typeolClass:
@@ -730,7 +730,7 @@ vector<TypeTag> Syscall::get_resources_produced(const vector<TypeTag> &items,
                             case typemlClass:
                                 for (Field ff : typemls.at(tt.get_index()).get_fields())
                                 {
-                                    if (ff.has_attrs() && (ff.check_attrs("in") || ff.check_attrs("inout")))
+                                    if (ff.has_attrs() && (ff.check_attrs("out") || ff.check_attrs("inout")))
                                     {
                                         // Keep track of passed args in type templates
                                         index = typemls.at(tt.get_index()).find_arg(ff.get_typeref().get_name());
