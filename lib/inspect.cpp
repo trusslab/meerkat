@@ -11,12 +11,14 @@
 #include <string>
 #include <vector>
 #include <fstream>
+#include <cmath>
 
 #include <string.h>
 #include <unistd.h>
 
 using namespace std;
 
+// Quick and dirty search function for string vectors
 bool inspector_is_in(const string &s, const vector<string> &v)
 {
     for (string str : v)
@@ -24,6 +26,29 @@ bool inspector_is_in(const string &s, const vector<string> &v)
             return true;
     
     return false;
+}
+
+int find_max_time(const vector<Syzkaller_Result> &times)
+{
+    // time = mean + 1 * std
+    int time = 0;
+    double mean = 0;
+    double std = 0;
+
+    for (Syzkaller_Result sr : times)
+        mean += sr.ttf;
+    mean = mean / times.size();
+
+    for (Syzkaller_Result sr : times)
+        std += pow((sr.ttf - mean), 2);
+
+    std = std / times.size();
+    std = sqrt(std);
+
+    time = mean + 1 * std;
+    time = (time < 10 ? 10 : time);
+
+    return time;
 }
 
 void handle_syzkaller_crash()
@@ -121,6 +146,31 @@ Syzkaller_Result run_syzkaller(const Bug_Info &bug, const InspectorConfig &inspe
     cd(inspector.get_inspect_dir());
     delete[] arg1;
     return ret;
+}
+
+Syzkaller_Result fuzz_loop_finding(const Bug_Info &bug, const InspectorConfig &inspector, const std::vector<std::string> &dups,
+                            int max_time, const VMConfig &vmc, Port_Info &port, const Date &syz_date, bool poc)
+{
+    vector<Syzkaller_Result> vret;
+    Syzkaller_Result session_ret;
+    for (int i = 0; i < FUZZTIMES; i++)
+    {
+        write_syzkaller_config(bug, inspector, vmc, port, syz_date);
+        vret.push_back(run_syzkaller(bug, inspector, dups, max_time, poc));
+    }
+
+    for (Syzkaller_Result ret : vret)
+    {
+        for (string s : ret.bugsfound)
+            if (!inspector_is_in(s, session_ret.bugsfound))
+                session_ret.bugsfound.push_back(s);
+
+        session_ret.found = ret.found ? true : session_ret.found;
+    }
+
+    session_ret.ttf = find_max_time(vret);
+
+    return session_ret;
 }
 
 Syzkaller_Result fuzz_loop(const Bug_Info &bug, const InspectorConfig &inspector, const std::vector<std::string> &dups,

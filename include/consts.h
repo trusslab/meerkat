@@ -10,6 +10,7 @@ const Date SYZBOT_BEGIN_DATE(2017,7,22);
 
 // Some remote repositories/websites
 const std::string SYZKALLER_REPO_REMOTE = "https://github.com/google/syzkaller";
+const std::string LINUX_REPO_REMOTE = "https://git.kernel.org/pub/scm/linux/kernel/git/";
 const std::string SYZBOT_FIXED_LINK = "https://syzkaller.appspot.com/upstream/fixed";
 
 const std::string OLDEST_SYZKALLER_HASH = "87f9bdb8688ceafa804eb49d566bdc38dfb9fd5e";

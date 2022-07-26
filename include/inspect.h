@@ -24,6 +24,10 @@ void reset_kaller_wd(const std::string &wd);
 // time to find and bugs found.
 Syzkaller_Result run_syzkaller(const Bug_Info &, const InspectorConfig &, const std::vector<std::string> &, int, bool = true);
 
+// Runs Syzkaller FUZZTIMES times. Returns the new max time
+// to use. Intended to be run on the finding commit.
+Syzkaller_Result fuzz_loop_finding(const Bug_Info &, const InspectorConfig &, const std::vector<std::string> &, int, const VMConfig &, Port_Info &, const Date &, bool = true);
+
 // Runs syzkaller FUZZTIMES times. Returns the culmination
 // of the results.
 Syzkaller_Result fuzz_loop(const Bug_Info &, const InspectorConfig &, const std::vector<std::string> &, int, const VMConfig &, Port_Info &, const Date &, bool = true);

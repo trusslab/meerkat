@@ -24,7 +24,7 @@ using namespace std;
 int main(int argc, char ** argv)
 {
     bool useclang = false;
-    int max_time = 10, id, session_count = 0, r, l, m, err = 0, k;
+    int max_time = 30, id, session_count = 0, r, l, m, err = 0, k;
     string find_hash, guilty_hash, 
            linux_repo_remote, logfilename,
            compiler,
@@ -192,7 +192,7 @@ int main(int argc, char ** argv)
         cout << "Found Syzkaller local repository.\n";
 
     // Set up linux repository locally
-    linux_repo_remote = "https://git.kernel.org/pub/scm/linux/kernel/git/" + bug.get_repo();
+    linux_repo_remote = LINUX_REPO_REMOTE + bug.get_repo();
 
     if (!check_file(bug.get_kerneldir()))
     {
@@ -351,9 +351,10 @@ int main(int argc, char ** argv)
         goto setup_only_finish;
     }
 
-    result = fuzz_loop(bug, inspector, duplicates, max_time, vmc, port, syzkaller_version.date);
+    result = fuzz_loop_finding(bug, inspector, duplicates, max_time, vmc, port, syzkaller_version.date);
+    // set the max_time
 
-    logfile << "    The bug was " << (result.found ? "found in " : "not found and timed out at ") << result.ttf << " minutes\n" << flush;
+    logfile << "    The bug was " << (result.found ? "" : "not ") << "found.\n" << flush;
     for (string b : result.bugsfound)
         logfile << "        " << b << "\n";
 
@@ -362,6 +363,10 @@ int main(int argc, char ** argv)
         cout << "This bug cannot be found at the finding commit. Ingoring this bug.\n";
         logfile << "\nFailure: This bug cannot be found at the finding commit.\n" << flush;
         goto finish;
+    }
+    else
+    {
+        logfile << "New Max Time: " << result.ttf << ".\n";
     }
 
     this_session.found = result.found;
