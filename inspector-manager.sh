@@ -99,9 +99,9 @@ echo "" >> $logfile
 
 while (( $line <= $endLine )); do
     linetext=$(sed -n ${line}p $bugfile)
-    fixDate=$(echo "$linetext" | awk -F',' '{ print $4; }')
-    findDate=$(echo "$linetext" | awk -F',' '{ print $8; }')
-    guiltyDate=$(echo "$linetext" | awk -F',' '{ print $10; }')
+    fixDate=$(echo "$linetext" | awk -F',' '{ print $5; }')
+    findDate=$(echo "$linetext" | awk -F',' '{ print $9; }')
+    guiltyDate=$(echo "$linetext" | awk -F',' '{ print $11; }')
     echo -n "$line,$fixDate,$findDate,$guiltyDate" >> $logfile
 
     # if the bug is older than syzbot, use syzbot as the starting date
@@ -116,7 +116,7 @@ while (( $line <= $endLine )); do
     fixAge=$(( $($inspectdir/helpers/diffdate $fixDate $findDate) ))
     if (( $fixAge < 0 )); then
         # sed at the end because shell script is weird about what is escaped in urls...
-        findlink=$(echo "$linetext" | awk -F',' '{ print $7; }' | sed 's/\\//' | sed 's/log/commit/')
+        findlink=$(echo "$linetext" | awk -F',' '{ print $8; }' | sed 's/\\//' | sed 's/log/commit/')
         snapshot=$(lynx -dump -dont_wrap_pre -width=300 $findlink)
         findDate=$(echo "$snapshot" | grep -m 1 "^[ ]*committer " | grep -o "20[0-9][0-9]-[0-9][0-9]-[0-9][0-9]" | cat)
         fixAge=$(( $($inspectdir/helpers/diffdate $fixDate $findDate) ))
@@ -131,16 +131,16 @@ while (( $line <= $endLine )); do
         bugName="$(echo "$linetext" | awk -F',' '{ print $2; }')"
 
         # kernel config - download it
-        configlink=$(echo "$linetext" | awk -F',' '{ print $6; }')
+        configlink=$(echo "$linetext" | awk -F',' '{ print $7; }')
         wget $configlink -O $wd/config-$curBug.txt
 
         # reproducer - download it
-        reprolink=$(echo "$linetext" | awk -F',' '{ print $5; }')
+        reprolink=$(echo "$linetext" | awk -F',' '{ print $6; }')
         wget $reprolink -O $wd/repro-$curBug.prog
 
         # linux kernel repository
         # the link to the finding commit has what we need
-        findlink=$(echo "$linetext" | awk -F',' '{ print $7; }')
+        findlink=$(echo "$linetext" | awk -F',' '{ print $8; }')
         repo=$(echo "$findlink" | grep "https://git.kernel" | awk -F'/' '{ print $9"/"$10; }' | cat)
         if [[ $repo == "bpf/bpf.git" ]]; then
             kpref="bpf"
@@ -161,7 +161,7 @@ while (( $line <= $endLine )); do
             kpref=""
         fi
 
-        guiltylink=$(echo "$linetext" | awk -F',' '{ print $9; }')
+        guiltylink=$(echo "$linetext" | awk -F',' '{ print $10; }')
 
         # clean up the bug name if it is a duplicate name
         if [[ $(echo "$bugName" | grep "([0-9]*)$" | cat) != "" ]]; then

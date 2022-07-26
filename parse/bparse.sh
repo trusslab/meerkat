@@ -1,6 +1,6 @@
 #!/bin/bash
 
-outfile=bugs2.csv
+outfile=bugs.csv
 debugfile=debug.txt
 
 link=https://syzkaller.appspot.com/upstream/fixed
@@ -60,17 +60,21 @@ for l in ${buglinks[@]}; do
     echo "${#fixhashes[@]} Fixing Commits Found" >> $debugfile
 
     # decide on a good crash
+    # get a list of the crashes
+    precrash=$(echo "$bsnapshot" | grep "\[[0-9]*\]\.config[ ]*\[[0-9]*\]log[ ]*\[[0-9]*\]report" | cat)
 
-    # get the first crash that has a syz repro
-    precrash=$(echo "$bsnapshot" | grep "report[ ]*\[[0-9]*\]syz" | cat)
-    if [[ $(echo "$precrash" | grep " upstream " | cat) != "" ]]; then
-        upstream="true"
-    else
-        upstream="false"
-    fi
+    truefinddate=$(echo "$precrash" | sort -k3 | sort -k2 | head -n 1 | grep -o "20[0-9][0-9]\/[0-9][0-9]\/[0-9][0-9]" | cat)
 
+    # get only crashes with syz reproducers
+    precrash=$(echo "$precrash" | grep "\[[0-9]*\]syz" | cat)
+
+    # get only crashes in upstream
+    precrash=$(echo "$precrash" | grep " upstream " | cat)
+
+    # sort crashes by date and take the oldest
     crash=$(echo "$precrash" | sort -k3 | sort -k2 | head -n 1 | cat)
 
+    # report if the bug is 32 bit
     if [[ $(echo "$crash" | grep "\-386" | cat) == "" ]]; then
         bit32="amd64"
     else
@@ -200,7 +204,6 @@ for l in ${buglinks[@]}; do
 
         # find earliest guilty and latest fixing
         echo "${guiltydates[@]}" >> $debugfile
-
         earlyguilty=0
         for (( i=1; i<${#guiltydates[@]}; i++ )); do
             if (( $(../helpers/diffdate ${guiltydates[$earlyguilty]} ${guiltydates[$i]}) > 0 )); then
@@ -216,11 +219,9 @@ for l in ${buglinks[@]}; do
             badbugs+=($l)
             continue
         fi
-
         echo "$guiltydate" >> $debugfile
 
         echo "${fixdates[@]}" >> $debugfile
-
         latefix=0
         for (( i=1; i<${#fixdates[@]}; i++ )); do
             if (( $(../helpers/diffdate ${fixdates[$latefix]} ${fixdates[$i]}) < 0 )); then
@@ -236,10 +237,9 @@ for l in ${buglinks[@]}; do
             badbugs+=($l)
             continue
         fi
-
         echo "$fixdate" >> $debugfile
 
-        echo "$l,$name,$fixlink,$fixdate,$repro,$config,$findlink,$finddate,$guiltylink,$guiltydate,$bit32,$upstream" >> $outfile
+        echo "$l,$name,$truefinddate,$fixlink,$fixdate,$repro,$config,$findlink,$finddate,$guiltylink,$guiltydate,$bit32" >> $outfile
         count=$(( $count + 1 ))
     fi
 
