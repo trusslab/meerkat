@@ -196,3 +196,21 @@ Syzkaller_Result fuzz_loop(const Bug_Info &bug, const InspectorConfig &inspector
 
     return session_ret;
 }
+
+bool check_faulty_result(const string &name, const vector<int> &ttfs, int max_time)
+{
+    bool fault = false;
+
+    // merge commits are bad.
+    if (name.substr(0, 9) == "Merge tag")
+        fault = true;
+
+    // if the ttf gets too close to timing out, other runs
+    // may have timed out without finding the bug when they
+    // should not have
+    for (int n : ttfs)
+        if (n >= max_time * 0.7)
+            fault = true;
+
+    return fault;
+}

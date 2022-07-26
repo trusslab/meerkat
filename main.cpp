@@ -48,6 +48,7 @@ int main(int argc, char ** argv)
     int git_err;
 
     ofstream logfile;
+    vector<int> ttfs;
     vector<string> duplicates;
     vector<Version> gcc_versions, clang_versions,
                     kernel_versions, syzkaller_versions,
@@ -525,6 +526,8 @@ int main(int argc, char ** argv)
 
                 this_session.found = result_before.found;
                 fuzz_sessions.push_back(this_session);
+                if (result_before.found)
+                    ttfs.push_back(result_before.ttf);
             }
             else
             {
@@ -566,8 +569,10 @@ int main(int argc, char ** argv)
                 for (string b : result_after.bugsfound)
                     logfile << "        " << b << "\n";
 
-                this_session.found = result_before.found;
+                this_session.found = result_after.found;
                 fuzz_sessions.push_back(this_session);
+                if (result_after.found)
+                    ttfs.push_back(result_after.ttf);
             }
             else
             {
@@ -664,6 +669,8 @@ int main(int argc, char ** argv)
 
             this_session.found = result.found;
             fuzz_sessions.push_back(this_session);
+            if (result.found)
+                ttfs.push_back(result.ttf);
         }
         else
         {
@@ -731,6 +738,8 @@ int main(int argc, char ** argv)
 
         this_session.found = result_after.found;
         fuzz_sessions.push_back(this_session);
+        if (result_after.found)
+            ttfs.push_back(result_after.ttf);
     }
     else
     {
@@ -782,6 +791,8 @@ int main(int argc, char ** argv)
 
         this_session.found = result_before.found;
         fuzz_sessions.push_back(this_session);
+        if (result_before.found)
+            ttfs.push_back(result_before.ttf);
     }
     else
     {
@@ -802,6 +813,12 @@ int main(int argc, char ** argv)
                 << "Kernel Version: " << bisect_version.date.get_date() << " - " << bisect_version.name << endl
                 << "Commit name: " << get_commit_name(bug.get_kerneldir(), bisect_version.name) << endl << flush;
         
+        if (check_faulty_result(get_commit_name(bug.get_kerneldir(), bisect_version.name), ttfs, max_time))
+        {
+            cout << "Revealing factor marked as faulty.\n";
+            logfile << "Warning: Revealing commit may be faulty.\n";
+        }
+
         goto finish;
     }
     
