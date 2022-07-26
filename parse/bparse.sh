@@ -1,16 +1,26 @@
 #!/bin/bash
 
-outfile=bugs.csv
+outfile=bugs2.csv
 debugfile=debug.txt
 
 link=https://syzkaller.appspot.com/upstream/fixed
+
+while getopts "o:" flag
+do
+    case $flag in
+        o)
+            outfile="${OPTARG}" ;;
+        *)
+            exit
+    esac
+done
 
 echo "Looking for bugs..."
 snapshot=$(lynx -dump -dont_wrap_pre -width=300 $link)
 alllinks=$(echo "$snapshot" | grep "https:\/\/syzkaller\.appspot\.com\/bug?id\=[0-9a-f]*$" | cat)
 goodbugs=$(echo "$snapshot" | grep -E ' C | syz ' | cat)
 
-echo "Found $(echo "$goodbugs" | wc -l) bugs to test!"
+echo "Found $(echo "$goodbugs" | wc -l) bugs to parse!"
 
 linknums=$(echo "$goodbugs" | grep -o "^[ ]*\[[0-9]*\]" | grep -o "[0-9]*" | cat)
 linknumarr=()
@@ -26,9 +36,12 @@ echo "Found ${#buglinks[@]} links!"
 
 echo "Parsing the bugs..."
 echo -n "" > $outfile   # clear out the output file
+echo -n "" > $debugfile
 bad=0
 noguilty=0
 count=0
+bit32="amd64"
+upstream="false"
 for l in ${buglinks[@]}; do
     echo "==============================================================================================" >> $debugfile
     bsnapshot=$(lynx -dump -dont_wrap_pre -width=300 $l)
@@ -46,8 +59,23 @@ for l in ${buglinks[@]}; do
 
     echo "${#fixhashes[@]} Fixing Commits Found" >> $debugfile
 
+    # decide on a good crash
+
     # get the first crash that has a syz repro
-    crash=$(echo "$bsnapshot" | grep "report[ ]*\[[0-9]*\]syz" | sort -k3 | sort -k2 | head -n 1 | cat)
+    precrash=$(echo "$bsnapshot" | grep "report[ ]*\[[0-9]*\]syz" | cat)
+    if [[ $(echo "$precrash" | grep " upstream " | cat) != "" ]]; then
+        upstream="true"
+    else
+        upstream="false"
+    fi
+
+    crash=$(echo "$precrash" | sort -k3 | sort -k2 | head -n 1 | cat)
+
+    if [[ $(echo "$crash" | grep "\-386" | cat) == "" ]]; then
+        bit32="amd64"
+    else
+        bit32="i386"
+    fi
 
     # grab the syz repro
     repronum=$(echo "$crash" | grep -o "\[[0-9]*\]syz" | grep -o "[0-9]*" | cat)
@@ -85,6 +113,7 @@ for l in ${buglinks[@]}; do
         kpref="linux"
     else
         echo "Bad Repository: $repo" >> $debugfile
+        echo "$findlink" >> $debugfile
         bad=$(($bad + 1))
         badbugs+=($l)
         kpref=""
@@ -210,7 +239,7 @@ for l in ${buglinks[@]}; do
 
         echo "$fixdate" >> $debugfile
 
-        echo "$l,$name,$fixlink,$fixdate,$repro,$config,$findlink,$finddate,$guiltylink,$guiltydate" >> $outfile
+        echo "$l,$name,$fixlink,$fixdate,$repro,$config,$findlink,$finddate,$guiltylink,$guiltydate,$bit32,$upstream" >> $outfile
         count=$(( $count + 1 ))
     fi
 

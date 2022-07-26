@@ -341,6 +341,7 @@ int main(int argc, char ** argv)
         goto finish;
     }
 
+    cout << SPACER;
     if (args.is_set("setup-only"))
     {
         write_syzkaller_config(bug, inspector, vmc, port, syzkaller_version.date);
@@ -350,7 +351,6 @@ int main(int argc, char ** argv)
         goto setup_only_finish;
     }
 
-    cout << SPACER;
     result = fuzz_loop(bug, inspector, duplicates, max_time, vmc, port, syzkaller_version.date);
 
     logfile << "    The bug was " << (result.found ? "found in " : "not found and timed out at ") << result.ttf << " minutes\n" << flush;

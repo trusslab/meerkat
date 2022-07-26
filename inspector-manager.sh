@@ -48,7 +48,7 @@ printhelp () {
 setuponly=""
 
 # get the start and end lines from the arguments
-while getopts "s:e:i:x" flag
+while getopts "s:e:i:b:x" flag
 do
     case $flag in
         s)
@@ -57,6 +57,8 @@ do
             endLine="${OPTARG}" ;;
         i)
             id="${OPTARG}" ;;
+        b)
+            bugfile="$inspectdir/parse/${OPTARG}" ;;
         x)
             setuponly="--setup-only" ;;
         *)
