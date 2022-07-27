@@ -29,7 +29,8 @@ int main(int argc, char ** argv)
            linux_repo_remote, logfilename,
            compiler,
            tmp_path, tmp_snapshotfile,
-           template1, template2, template3, template_dir;
+           template1, template2, template3, template_dir,
+           kernel_commit_name = "";
 
     VMConfig vmc;
     Port_Info port;
@@ -814,12 +815,7 @@ int main(int argc, char ** argv)
                 << "Kernel Version: " << bisect_version.date.get_date() << " - " << bisect_version.name << endl
                 << "Commit name: " << get_commit_name(bug.get_kerneldir(), bisect_version.name) << endl << flush;
         
-        if (check_faulty_result(get_commit_name(bug.get_kerneldir(), bisect_version.name), ttfs, max_time))
-        {
-            cout << "Revealing factor marked as faulty.\n";
-            logfile << "Warning: Revealing commit may be faulty.\n";
-        }
-
+        kernel_commit_name = get_commit_name(bug.get_kerneldir(), bisect_version.name);
         goto finish;
     }
     
@@ -923,6 +919,12 @@ int main(int argc, char ** argv)
     // ======================================================================================================
 
 finish:
+    if (check_faulty_result(bug, ttfs, max_time, kernel_commit_name))
+    {
+        cout << "Revealing factor marked as faulty.\n";
+        logfile << "Warning: Revealing factor may be faulty.\n" << flush;
+    }
+
     cout << SPACER
         << "Cleaning up...";
 

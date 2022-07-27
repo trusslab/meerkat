@@ -198,12 +198,16 @@ Syzkaller_Result fuzz_loop(const Bug_Info &bug, const InspectorConfig &inspector
     return session_ret;
 }
 
-bool check_faulty_result(const string &name, const vector<int> &ttfs, int max_time)
+bool check_faulty_result(const Bug_Info &bug, const vector<int> &ttfs, int max_time, const string &name)
 {
     bool fault = false;
 
     // merge commits are bad.
-    if (name.substr(0, 9) == "Merge tag")
+    if (!name.empty() && name.substr(0, 9) == "Merge tag")
+        fault = true;
+
+    // Check if the reproducer is dependent on fault injection
+    if (grep_to_find("\\\"fault_call\\\":-1", bug.get_repro()))
         fault = true;
 
     // if the ttf gets too close to timing out, other runs
