@@ -610,7 +610,8 @@ int slim_template(const string &reproFile, const string &outfilename, const vect
         pos0 = (pos0 == string::npos) ? 0 : pos0 + 3;
         pos1 = line.find("(");
 
-        reproducer_syscalls.push_back(line.substr(pos0, pos1 - pos0));
+        if (!is_in_string(reproducer_syscalls, line.substr(pos0, pos1 - pos0)))
+            reproducer_syscalls.push_back(line.substr(pos0, pos1 - pos0));
         line.clear();
     }
     reproIn.close();
@@ -621,7 +622,8 @@ int slim_template(const string &reproFile, const string &outfilename, const vect
 
     // initial syscalls
     for (string s : reproducer_syscalls)
-        item_push_sorted(needed, TypeTag(syscallClass, s, find_in_syscalls(syscalls, s)));
+        if (!is_in_needed(needed, TypeTag(syscallClass ,s)))
+            item_push_sorted(needed, TypeTag(syscallClass, s, find_in_syscalls(syscalls, s)));
 
     // Demote resources down to basic types
     // Special values add on

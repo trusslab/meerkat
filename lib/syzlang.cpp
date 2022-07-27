@@ -916,6 +916,15 @@ bool is_in_typeref(const vector<TypeRef> &typerefs, const string &name)
     return false;
 }
 
+bool is_in_string(const vector<string> &strs, const string &s)
+{
+    for (string str : strs)
+        if (s == str)
+            return true;
+    
+    return false;
+}
+
 int find_in_syscalls(const vector<Syscall> &syscalls, const string &name)
 {
     int i = 0;

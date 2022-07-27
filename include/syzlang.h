@@ -469,6 +469,7 @@ bool is_in_items(const std::vector<TypeTag> &, const TypeTag &);
 bool is_in_needed(const std::vector<TypeTag> &, const TypeTag &);
 bool is_in_includes(const std::vector<Include> &, const std::string &);
 bool is_in_typeref(const std::vector<TypeRef> &, const std::string &);
+bool is_in_string(const std::vector<std::string> &, const std::string &);
 int find_in_syscalls(const std::vector<Syscall> &, const std::string &);
 int stoi_custom(const std::string &);
 
