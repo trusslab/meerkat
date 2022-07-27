@@ -276,7 +276,7 @@ string get_commit_name(const string &repo, const string &hash)
     char * arg4 = new char[hash.size() + 1];
     strcpy(arg4, hash.c_str());
 
-    char * arg_list[] = {command, arg1, arg2, arg3, arg4};
+    char * arg_list[] = {command, arg1, arg2, arg3, arg4, nullptr};
 
     string ret = exec_and_read("git", arg_list);
     if (ret == "")
