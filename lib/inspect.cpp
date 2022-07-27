@@ -159,6 +159,7 @@ Syzkaller_Result fuzz_loop_finding(const Bug_Info &bug, const InspectorConfig &i
         vret.push_back(run_syzkaller(bug, inspector, dups, max_time, poc));
     }
 
+    session_ret.found = false;
     for (Syzkaller_Result ret : vret)
     {
         for (string s : ret.bugsfound)

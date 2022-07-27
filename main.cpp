@@ -354,6 +354,7 @@ int main(int argc, char ** argv)
 
     result = fuzz_loop_finding(bug, inspector, duplicates, max_time, vmc, port, syzkaller_version.date);
     // set the max_time
+    max_time = result.ttf;
 
     logfile << "    The bug was " << (result.found ? "" : "not ") << "found.\n" << flush;
     for (string b : result.bugsfound)
