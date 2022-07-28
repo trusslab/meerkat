@@ -1,5 +1,6 @@
 #include <file_api.h>
 #include <exec_api.h>
+#include <consts.h>
 
 #include <string>
 #include <iostream>
@@ -20,8 +21,8 @@ bool check_file(const string &filename)
 
 string pwd()
 {
-    char *buf = new char[1000];
-    string cwd(getcwd(buf, 1000));
+    char *buf = new char[BUF_SIZE];
+    string cwd(getcwd(buf, BUF_SIZE));
     delete[] buf;
     return cwd;
 }

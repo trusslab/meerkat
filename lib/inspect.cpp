@@ -207,7 +207,7 @@ bool check_faulty_result(const Bug_Info &bug, const vector<int> &ttfs, int max_t
         fault = true;
 
     // Check if the reproducer is dependent on fault injection
-    if (grep_to_find("\\\"fault_call\\\":-1", bug.get_repro()))
+    if (grep_to_find("\\\"fault_call\\\":", bug.get_repro()) && !grep_to_find("\\\"fault_call\\\":-1", bug.get_repro()))
         fault = true;
 
     // if the ttf gets too close to timing out, other runs
