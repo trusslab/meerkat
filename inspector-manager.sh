@@ -24,7 +24,7 @@ writebugconfig () {
     echo "curBug=\"$curBug\"" >> $inspectorconfig
     echo "bugname=\"$bugName\"" >> $inspectorconfig
     echo "kpref=\"$kpref\"" >> $inspectorconfig
-    echo "arch=amd64" >> $inspectorconfig
+    echo "arch=$arch" >> $inspectorconfig
     echo "repo=$repo" >> $inspectorconfig
     echo "kconfig=$inspectdir/$wd/config-$curBug.txt" >> $inspectorconfig
     echo "repro=$inspectdir/$wd/repro-$curBug.prog" >> $inspectorconfig
@@ -104,6 +104,8 @@ while (( $line <= $endLine )); do
     guiltyDate=$(echo "$linetext" | awk -F',' '{ print $11; }')
     echo -n "$line,$fixDate,$findDate,$guiltyDate" >> $logfile
 
+    arch=$(echo "$linetext" | awk -F',' '{ print $12; }')
+
     # if the bug is older than syzbot, use syzbot as the starting date
     syzbotAge=$(( $($inspectdir/helpers/diffdate $guiltyDate $syzbotDate) ))
     if (( $syzbotAge < 0 )); then
@@ -125,7 +127,7 @@ while (( $line <= $endLine )); do
     # check that the time to find is good and interesting
     findAge=$(( $($inspectdir/helpers/diffdate $findDate $startDate) ))
 
-    if (( $findAge > 1 && $fixAge >= 0)); then
+    if (( $findAge > 1 && $fixAge >= 0 )) && [[ $arch == "amd64" ]]; then
         # bug number and name
         curBug="bug$line"
         bugName="$(echo "$linetext" | awk -F',' '{ print $2; }')"
@@ -172,7 +174,7 @@ while (( $line <= $endLine )); do
         buglink=$(echo "$linetext" | awk -F',' '{ print $1; }')
         guiltyhash=$(echo $guiltylink | grep -o "[0-9a-f]*$" | cat)
 
-        if [[ $reprolink != "" && $configlink != "" && $bugName != "" && $findlink != "" && $repo != "" && $kpref != "" && fixhash != "" ]]; then
+        if [[ $reprolink != "" && $configlink != "" && $bugName != "" && $findlink != "" && $repo != "" && $kpref != "" ]]; then
             writebugconfig
 
             echo ",good fuzz,$findDate,$findDate,$startDate" >> $logfile
@@ -192,6 +194,8 @@ while (( $line <= $endLine )); do
         if (( $findAge <= 1 && $findAge >= 0 )); then
             echo "Bug was found within 1 day on line $line: $fixDate, finding: $findDate, guilty: $guiltyDate"
             echo ",too young" >> $logfile
+        elif [[ $arch != "amd64" ]]; then
+            echo ",32bit" >> $logfile
         else
             echo "Bad dates on line $line: fixing: $fixDate, finding: $findDate, guilty: $guiltyDate"
             echo ",bad dates" >> $logfile
