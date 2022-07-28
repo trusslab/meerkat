@@ -1,5 +1,6 @@
 #include <psf.h>
 #include <shell_api.h>
+#include <file_api.h>
 
 #include <iostream>
 #include <fstream>
@@ -121,14 +122,13 @@ PSF_Bug PSF_parseLineAsBug(const string &line)
     return PSF_Bug(PSF_getBugName(line), PSF_getBugFixes(line));
 }
 
-vector<string> parse_syzbot_fixes(const string &filename, const string &bugname)
+vector<string> parse_syzbot_fixes(const string &filename, const string &bugname, vector<string> &dups)
 {
     int pos0;
     ifstream inf;
     string line;
     PSF_Bug this_bug;
     vector<PSF_Fix> fixes;
-    vector<string> dups;
 
     cout << "Parsing file: " << filename << ".\n";
 
@@ -174,5 +174,49 @@ vector<string> parse_syzbot_fixes(const string &filename, const string &bugname)
         }
     }
 
+    return dups;
+}
+
+vector<string> parse_manual_duplicates(const string &filename, const string &bugname, vector<string> &dups)
+{
+    ifstream inf;
+    string line;
+    int pos0, pos1;
+
+    if (!check_file(filename))
+    {
+        cerr << "Info: Manual duplicates file does not exist.\n";
+        return dups;
+    }
+
+    inf.open(filename);
+    if (!inf)
+    {
+        cerr << "Warning: Failed to open file " << filename << ".\n";
+        return dups;
+    }
+
+    while (getline(inf, line))
+    {
+        if (line.empty() || line.at(0) == '#')
+            continue;
+
+        pos0 = line.find(" ~ ");
+
+        if (line.substr(0, pos0) == bugname)
+        {
+            pos0 += 3;
+            pos1 = line.find(" ~ ", pos0);
+            while (pos1 != string::npos)
+            {
+                dups.push_back(line.substr(pos0, pos1 - pos0));
+                pos0 = pos1 + 3;
+                pos1 = line.find(" ~ ", pos0);
+            }
+            dups.push_back(line.substr(pos0));
+        }
+    }
+
+    inf.close();
     return dups;
 }

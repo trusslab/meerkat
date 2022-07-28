@@ -112,7 +112,7 @@ int main(int argc, char ** argv)
     // get config for how to run
     cout << SPACER
          << "Parsing configs.\n";
-    inspector.parse_config_file("inspector-config/parameters.cfg");
+    inspector.parse_config_file("parameters/config.cfg");
 
     // get information about the bug
     bug.parse_config_file("wd-inspector-" + to_string(id) + "/" + "bug.cfg");
@@ -244,7 +244,8 @@ int main(int argc, char ** argv)
 
     lynx_dump(SYZBOT_FIXED_LINK, tmp_snapshotfile);
     trim_syzbot_fixes(tmp_snapshotfile);
-    duplicates = parse_syzbot_fixes(tmp_snapshotfile, bug.get_name());
+    parse_syzbot_fixes(tmp_snapshotfile, bug.get_name(), duplicates);
+    parse_manual_duplicates("parameters/manual_duplicates.txt", bug.get_name(), duplicates);
 
     if (duplicates.size() > 1)
     {

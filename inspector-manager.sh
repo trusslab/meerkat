@@ -2,7 +2,7 @@
 
 set -e
 
-source inspector-config/parameters.cfg
+source parameters/config.cfg
 
 # input file. Made by parse/bparse.sh
 bugfile=$inspectdir/parse/bugs.csv
@@ -116,7 +116,7 @@ while (( $line <= $endLine )); do
     fixAge=$(( $($inspectdir/helpers/diffdate $fixDate $findDate) ))
     if (( $fixAge < 0 )); then
         # sed at the end because shell script is weird about what is escaped in urls...
-        findlink=$(echo "$linetext" | awk -F',' '{ print $8; }' | sed 's/\\//' | sed 's/log/commit/')
+        findlink=$(echo "$linetext" | awk -F',' '{ print $7; }' | sed 's/\\//' | sed 's/log/commit/')
         snapshot=$(lynx -dump -dont_wrap_pre -width=300 $findlink)
         findDate=$(echo "$snapshot" | grep -m 1 "^[ ]*committer " | grep -o "20[0-9][0-9]-[0-9][0-9]-[0-9][0-9]" | cat)
         fixAge=$(( $($inspectdir/helpers/diffdate $fixDate $findDate) ))

@@ -2,7 +2,6 @@
 #define VERSION_H
 
 #include <date.h>
-#include <version.h>
 
 #include <string>
 #include <vector>
