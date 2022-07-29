@@ -70,18 +70,29 @@ Field parse_field(const string &line)
     Field field;
     int pos0 = line.find_first_not_of(" \t");
     int pos1 = line.find_first_of(" \t", pos0);
+    if (pos0 == string::npos || pos1 == string::npos)
+    {
+        cerr << "Warning: Bad field " << line << ".\n";
+        return field;
+    }
     field.set_name(line.substr(pos0, pos1 - pos0));
     
     pos0 = line.find_first_not_of(" \t", pos1);
+    if (pos0 == string::npos)
+    {
+        cerr << "Warning: Bad field " << line << ".\n";
+        return field;
+    }
+
     pos1 = line.find("[", pos0);
-    if (pos1 != string::npos)
+    if (pos1 != string::npos && pos0 != string::npos)
         pos1 = line.find_last_of("]", pos0) + 1;
-    else
+    else if (pos0 != string::npos)
         pos1 = line.find_first_of(" \t", pos0);
 
-    if (pos1 != string::npos)
+    if (pos1 != string::npos && pos0 != string::npos)
         field.set_typeref(parse_typeref(line.substr(pos0, pos1 - pos0)));
-    else
+    else if (pos0 != string::npos)
         field.set_typeref(parse_typeref(line.substr(pos0)));
 
     pos1 = line.find("(", pos0);
@@ -165,9 +176,16 @@ void parse_typeml(vector<TypeTag> &items, vector<TypeMultiline> &typemls, const 
 {
     int pos0 = 5;
     int pos1 = lines.at(0).find_first_of(" [", pos0);
-    string name = lines.at(0).substr(pos0, pos1 - pos0);
+    string name; 
     vector<string> args;
     vector<Field> fields;
+
+    if (pos1 == string::npos)
+    {
+        cerr << "Warning: Bad typeml " << lines.front() << ".\n";
+        return;
+    }
+    name = lines.at(0).substr(pos0, pos1 - pos0);
 
     if (lines.at(0).at(pos1) == '[')
     { // parse type template args
@@ -199,8 +217,15 @@ void parse_typeol(vector<TypeTag> &items, vector<TypeOneline> &typeols, const st
 {
     int pos0 = 5;
     int pos1 = line.find_first_of(" [", pos0);
-    string name = line.substr(pos0, pos1 - pos0);
+    string name; 
     vector<string> args;
+
+    if (pos1 == string::npos)
+    {
+        cerr << "Warning: Bad typeol " << line << ".\n";
+        return;
+    }
+    name = line.substr(pos0, pos1 - pos0);
 
     if (line.at(pos1) == '[')
     { // parse type template args
@@ -214,7 +239,7 @@ void parse_typeol(vector<TypeTag> &items, vector<TypeOneline> &typeols, const st
     // find the position of the underlying type
     pos0 = line.find_first_not_of(" ]", pos1);
 
-    if (!is_in_items(items, TypeTag(typeolClass, name)))
+    if (!is_in_items(items, TypeTag(typeolClass, name)) && pos0 != string::npos)
     {
         item_push_sorted(items, TypeTag(typeolClass, name, typeols.size()));
         typeols.push_back(TypeOneline(line, name, args, parse_typeref(line.substr(pos0))));
@@ -226,7 +251,14 @@ void parse_typeol(vector<TypeTag> &items, vector<TypeOneline> &typeols, const st
 void parse_definition(vector<TypeTag> &items, vector<Definition> &defines, const string &line)
 {
     int pos0 = 7, pos1 = line.find_first_of(" \t", pos0);
-    string name = line.substr(pos0, pos1 - pos0);
+    string name;
+
+    if (pos1 == string::npos)
+    {
+        cerr << "Warning: Bad define " << line << ".\n";
+        return;
+    }
+    name = line.substr(pos0, pos1 - pos0);
 
     if (!is_in_items(items, TypeTag(definitionClass, name)))
     {
@@ -240,6 +272,12 @@ void parse_syscall(vector<TypeTag> &items, vector<Syscall> &syscalls, const stri
 {
     int pos0 = 0, pos1 = line.find("("), count = 0;
     Syscall syscall;
+    
+    if (pos1 == string::npos)
+    {
+        cerr << "Warning: Bad syscall " << line << ".\n";
+        return;
+    }
     syscall.set_name(line.substr(pos0, pos1 - pos0));
     syscall.set_text(line);
 
@@ -256,7 +294,7 @@ void parse_syscall(vector<TypeTag> &items, vector<Syscall> &syscalls, const stri
             else if (line.at(pos1) == ')')
                 break;
         }
-        if (pos1 - pos0 != 0)
+        if (pos1 - pos0 != 0 && pos0 < line.size() && pos1 < line.size())
             syscall.push_field(parse_field(line.substr(pos0, pos1 - pos0)));
     } while (pos1 < line.size() && line.at(pos1) != ')');
 
@@ -285,7 +323,12 @@ void parse_syscall(vector<TypeTag> &items, vector<Syscall> &syscalls, const stri
 BaseStruct parse_strunion(const vector<string> &lines)
 {
     BaseStruct bs;
-    int pos0 = 0, pos1 = lines.front().find_first_of(" {");
+    int pos0 = 0, pos1 = lines.front().find_first_of(" {[");
+    if (pos1 == string::npos)
+    {
+        cerr << "Warning: Bad strunion " << lines.front() << ".\n";
+    }
+
     bs.set_name(lines.front().substr(pos0, pos1 - pos0));
 
     for (int i = 1; i < lines.size() - 1; i++)
@@ -329,9 +372,17 @@ void parse_union(vector<TypeTag> &items, vector<Union> &unions, const vector<str
 // parses a flag
 void parse_flag(vector<TypeTag> &items, vector<Flag> &flags, const string &line)
 {
-    int pos0 = 0, pos1 = line.find(" = ");
-    string name = line.substr(pos0, pos1 - pos0);
     vector<string> values;
+    string name;
+    int pos0 = 0, pos1;
+    
+    pos1 = line.find(" = ");
+    if (pos1 == string::npos)
+    {
+        cerr << "Warning: Bad flag " << line << ".\n";
+        return;
+    }
+    name = line.substr(pos0, pos1 - pos0);
 
     do {
         pos0 = pos1 + (line.at(pos1) == ',' ? 2 : 3);
@@ -622,8 +673,11 @@ int slim_template(const string &reproFile, const string &outfilename, const vect
 
     // initial syscalls
     for (string s : reproducer_syscalls)
-        if (!is_in_needed(needed, TypeTag(syscallClass ,s)))
-            item_push_sorted(needed, TypeTag(syscallClass, s, find_in_syscalls(syscalls, s)));
+    {
+        index = find_in_syscalls(syscalls, s);
+        if (!is_in_needed(needed, TypeTag(syscallClass ,s)) && index >= 0)
+            item_push_sorted(needed, TypeTag(syscallClass, s, index));
+    }
 
     // Demote resources down to basic types
     // Special values add on
@@ -635,7 +689,7 @@ int slim_template(const string &reproFile, const string &outfilename, const vect
         index = needed.at(i).get_index();
         if (index < 0)
         {
-            cerr << "Warning: Unknown item " << needed.at(i).get_name();
+            cerr << "Warning: Unknown item " << needed.at(i).get_name() << ".\n";
             continue;
         }
         switch (needed.at(i).get_class())

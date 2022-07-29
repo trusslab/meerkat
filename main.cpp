@@ -360,17 +360,17 @@ int main(int argc, char ** argv)
 
     logfile << "    The bug was " << (result.found ? "" : "not ") << "found.\n" << flush;
     for (string b : result.bugsfound)
-        logfile << "        " << b << "\n";
+        logfile << "        " << b << "\n" << flush;
 
     if (!result.found)
     {
-        cout << "This bug cannot be found at the finding commit. Ingoring this bug.\n";
+        cout << "This bug cannot be found at the finding commit. Ignoring this bug.\n";
         logfile << "\nFailure: This bug cannot be found at the finding commit.\n" << flush;
         goto finish;
     }
     else
     {
-        logfile << "New Max Time: " << result.ttf << ".\n";
+        logfile << "New Max Time: " << result.ttf << ".\n" << flush;
     }
 
     this_session.found = result.found;

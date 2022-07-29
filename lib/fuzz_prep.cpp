@@ -264,6 +264,11 @@ int prep_syzkaller(const Bug_Info &bug, const InspectorConfig &inspector, const 
     sed_i("s/$(ADDCFLAGS) $(CFLAGS) -DGOOS_$(TARGETOS)=1 -DGOARCH_$(TARGETARCH)=1/-m64 -O2 -pthread -Wall -static-pie -DGOOS_$(TARGETOS)=1 -DGOARCH_$(TARGETARCH)=1/",
             bug.get_syzdir() + "/Makefile");
 
+    // This sed is for older versions before e935237c9c7214eb37cb35a93c9930b590016094 (2019-01-19)
+    // thankfully no overlap between the two checks, so we can just run both.
+    sed_i("s/-pthread -Wall -Wframe-larger-than=8192 -Wparentheses -Werror -O2 $(ADDCFLAGS) $(CFLAGS)/-pthread -Wall -Wframe-larger-than=8192 -Wparentheses -O2 $(ADDCFLAGS) $(CFLAGS)/",
+            bug.get_syzdir() + "/Makefile");
+
     // Patch a boot error related to kvm
     if (syzkaller_version.date < Date(2021,1,1) && syzkaller_version.date >= Date(2020,5,1))
     {
