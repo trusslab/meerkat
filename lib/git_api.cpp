@@ -226,6 +226,59 @@ vector<Version> get_template_changes(const Bug_Info &bug, const Date &old_date, 
     return template_changes;
 }
 
+vector<string> git_show_commits_merged(const string &repo, const string &mergehash)
+{
+    int pos0, pos1;
+    vector<string> commits;
+    string old_dir = pwd();
+    cd(repo);
+
+    // git log --format=%H hash^..hash
+    char command[] = "git";
+    char arg1[] = "log";
+    char arg2[] = "--format=%H";
+    string range = mergehash + "^.." + mergehash;
+    char * arg3 = new char[range.size() + 1];
+    strcpy(arg3, range.c_str());
+
+    char * arg_list[] = {command, arg1, arg2, arg3, nullptr};
+
+    string ret = exec_and_read("git", arg_list);
+
+    delete[] arg3;
+    cd(old_dir);
+
+    pos0 = 0;
+    pos1 = ret.find("\n");
+    while (pos1 != string::npos)
+    {
+        commits.push_back(ret.substr(pos0, pos1 - pos0));
+        pos0 = pos1 + 1;
+        pos1 = ret.find("\n", pos0);
+    }
+    commits.push_back(ret.substr(pos0));
+    
+    return commits;
+}
+
+Version git_find_merge_commit(const string &repo, const vector<Version> &commits, const string &hash_to_find)
+{
+    vector<string> commits_merged;
+    for (int i = commits.size() - 1; i >= 0; i--)
+    {
+        if (commits.at(i).name == hash_to_find)
+            continue;
+
+        commits_merged.clear();
+        commits_merged = git_show_commits_merged(repo, commits.at(i).name);
+        for (string c : commits_merged)
+            if (hash_to_find == c)
+                return commits.at(i);
+    }
+
+    return Version("", Date(0,0,0));
+}
+
 int git_fetch_and_checkout(const string &local_repo, const string &repo, const string &hash)
 {
     string old_dir = pwd();

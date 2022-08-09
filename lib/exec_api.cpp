@@ -131,7 +131,7 @@ int exec_and_continue(const string & prog, char ** args, const string &outfile, 
 
 string exec_and_read(const string & prog, char ** args)
 {
-    int ret, ret_status = 0;
+    int ret, ret_status = 0, size;
     int pipefd[2];
     char buf[BUF_SIZE];
 
@@ -167,7 +167,8 @@ string exec_and_read(const string & prog, char ** args)
         if (ret_status != 0 && prog != "grep")
             cerr << "Warning: Child process " << prog << " exited with error status " << ret_status << ".\n";
 
-        read(pipefd[0], buf, BUF_SIZE);
+        size = read(pipefd[0], buf, BUF_SIZE);
+        buf[size + 1] = '\0';
     }
 
     string output(buf);

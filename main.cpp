@@ -40,7 +40,7 @@ int main(int argc, char ** argv)
     Argparse args;
 
     Version linux_version, syzkaller_version, prev_syzkaller_version,
-            current_version, bisect_version;
+            current_version, bisect_version, merge_commit;
     Session this_session;
     Syzkaller_Result result, result_before, result_after;
     
@@ -61,7 +61,7 @@ int main(int argc, char ** argv)
     port.port = 0;
 
     args.expect("FGmidh");
-    args.expect(vector<string>({ "setup-only", "help", "recover" }));
+    args.expect(vector<string>({ "setup-only", "help", "recover", "no-merge" }));
     args.parse(argc, argv);
     if (args.is_set('h') || args.is_set("help"))
     {
@@ -376,9 +376,35 @@ int main(int argc, char ** argv)
     this_session.found = result.found;
     fuzz_sessions.push_back(this_session);
     
+    //  ======================================================================================================
+    // Find Merge Commit
+
+    if (!args.is_set("no-merge"))
+    {
+        cout << SPACER
+             << "Looking for Merge Commit...\n";
+
+        merge_commit = git_find_merge_commit(bug.get_kerneldir(), kernel_versions, guilty_hash);
+
+        if (!merge_commit.name.empty())
+        {
+            cout << "Merge commit found: " << merge_commit.name << ".\n";
+            logfile << "Merge Commit: " << merge_commit.date.get_date() << " - " << merge_commit.name << ".\n" << flush;
+            low_date = merge_commit.date;
+        }
+        else
+        {
+            cout << "No merge commit found.\n";
+            logfile << "No Merge Commit.\n";
+        }
+    }
+
+    return 0;
+
     // ======================================================================================================
     // Begin Template Inspection
 
+    // Gather Template Changes
     cout << SPACER
          << "Gathering template_changes...\n";
     template_changes = get_template_changes(bug, low_date, high_date, syzkaller_versions);
@@ -463,10 +489,11 @@ int main(int argc, char ** argv)
     else
         cout << "No template changes in the date range [" << low_date.get_date() << ", " << high_date.get_date() << "].\n";
 
+    // Inspect Each Template Change
     if (relevant_template_changes.size() > 1) {
         cout << SPACER
              << "Inspecting " << relevant_template_changes.size() - 1 << " template changes.\n";
-        logfile << "Inspecting " << relevant_template_changes.size() - 1 << " template changes in [" 
+        logfile << "Inspecting " << relevant_template_changes.size() - 1 << " template changes in ["
                 << low_date.get_date() << ", " << high_date.get_date() << "].\n" << flush;
 
         // maybe binary search here
