@@ -453,8 +453,16 @@ void get_one_producer_syscall(const TypeTag &this_resource, vector<TypeTag> &nee
                         vector<Syscall> &syscalls, const vector<TypeOneline> &typeols, const vector<TypeMultiline> &typemls,
                         const vector<Union> &unions, const vector<Structure> &structures, bool old_inout)
 {
-    // check the syscalls already in needed
     int index;
+    // manual adding for uid and gid
+    if (this_resource.get_name() == "uid" || this_resource.get_name() == "gid")
+    {
+        index = find_in_items(items, TypeTag(syscallClass, "get" + this_resource.get_name()));
+        needed.push_back(items.at(index));
+        return;
+    }
+
+    // check the syscalls already in needed
     vector<TypeTag> produced_recs;
     for (TypeTag tt : needed)
     {
