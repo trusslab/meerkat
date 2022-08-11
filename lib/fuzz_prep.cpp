@@ -204,7 +204,6 @@ int prep_syzkaller(const Bug_Info &bug, const InspectorConfig &inspector, const 
         err = syz_env_clean(inspector.get_inspect_dir() + "/tools/syz-env");
     
     err = clean_syzkaller(bug);
-
     if (err < 0)
         return err;
 
@@ -237,14 +236,14 @@ int prep_syzkaller(const Bug_Info &bug, const InspectorConfig &inspector, const 
         return err;
 
     // Slim the template if needed, otherwise copy over the one given
-    string full_template = syzkaller_version.date < Date(2017,9,15) ? bug.get_syzdir() + "/sys" : bug.get_syzdir() + "/sys/linux";;
+    string full_template = syzkaller_version.date < Date(2017,9,15) ? bug.get_syzdir() + "/sys" : bug.get_syzdir() + "/sys/linux";
     string new_template = bug.get_wd() + "/my_template.txt";
     vector<string> template_files = list_template_files(full_template);
 
     if (use_template.empty())
     {
         cout << "Slimming the template.\n";
-        err = slim_template(bug.get_repro(), new_template, template_files);
+        err = slim_template(bug.get_repro(), new_template, template_files, syzkaller_version.date < OLD_INOUT_DATE);
         if (err < 0)
         {
             cout << "Error: failed to slim the template.\n";
@@ -283,13 +282,13 @@ int prep_syzkaller(const Bug_Info &bug, const InspectorConfig &inspector, const 
         sed_i("/#include <linux\\/netfilter_bridge\\/ebtables.h>/r patches/syz-1.txt", bug.get_syzdir() + "/executor/common_linux.h");
         sed_i("s/#include <linux\\/netfilter_bridge\\/ebtables.h>//", bug.get_syzdir() + "/executor/common_linux.h");
         sed_i("s/#include <linux\\/if.h>//", bug.get_syzdir() + "/executor/common_linux.h");
-        sed_i("s/#include <errno.h>/#include <errno.h>\n#include <linux\\/if.h>/", bug.get_syzdir() + "/executor/common_linux.h");
+        sed_i("s/#include <errno.h>/#include <errno.h>\\n#include <linux\\/if.h>/", bug.get_syzdir() + "/executor/common_linux.h");
         if (check_file(bug.get_syzdir() + "/pkg/csource/generated.go"))
         {
             sed_i("/#include <linux\\/netfilter_bridge\\/ebtables.h>/r patches/syz-2.txt", bug.get_syzdir() + "/pkg/csource/generated.go");
             sed_i("s/#include <linux\\/netfilter_bridge\\/ebtables.h>//", bug.get_syzdir() + "/pkg/csource/generated.go");
             sed_i("s/#include <linux\\/if.h>//", bug.get_syzdir() + "/pkg/csource/generated.go");
-            sed_i("s/#include <errno.h>/#include <errno.h>\n#include <linux\\/if.h>/", bug.get_syzdir() + "/pkg/csource/generated.go");
+            sed_i("s/#include <errno.h>/#include <errno.h>\\n#include <linux\\/if.h>/", bug.get_syzdir() + "/pkg/csource/generated.go");
         }
     }
 

@@ -122,7 +122,6 @@ Syzkaller_Result run_syzkaller(const Bug_Info &bug, const InspectorConfig &inspe
             handle_syzkaller_crash();
 
         // check crashes
-        // I let the loop finish checking even if we find our bug
         crash_hashes = list_dir(bug.get_kallerwd() + "/crashes");
         for (string hash : crash_hashes)
         {

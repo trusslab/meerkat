@@ -516,7 +516,7 @@ void Syscall::push_depends(vector<TypeTag> &needed, const vector<TypeTag> &items
 
 vector<TypeTag> Syscall::get_resources_used(const vector<TypeTag> &items,
                 const vector<TypeOneline> &typeols, const vector<TypeMultiline> &typemls,
-                const vector<Union> &unions, const vector<Structure> &structures)
+                const vector<Union> &unions, const vector<Structure> &structures, bool old_inout)
 {
     int index;
     vector<TypeRef> items_to_check;
@@ -612,7 +612,7 @@ vector<TypeTag> Syscall::get_resources_used(const vector<TypeTag> &items,
                                 }
 
                                 for (Field ff : structures.at(tt.get_index()).get_fields())
-                                    if (ff.has_attrs() && (ff.check_attrs("in") || ff.check_attrs("inout")))
+                                    if ((ff.has_attrs() && (ff.check_attrs("in") || ff.check_attrs("inout"))) || old_inout)
                                         items_to_check.push_back(ff.get_typeref());
                                 break;
                             case typeolClass:
@@ -652,7 +652,7 @@ vector<TypeTag> Syscall::get_resources_used(const vector<TypeTag> &items,
 
 vector<TypeTag> Syscall::get_resources_produced(const vector<TypeTag> &items,
                     const vector<TypeOneline> &typeols, const vector<TypeMultiline> &typemls,
-                    const vector<Union> &unions, const vector<Structure> &structures)
+                    const vector<Union> &unions, const vector<Structure> &structures, bool old_inout)
 {
     int index;
     vector<TypeRef> items_to_check;
@@ -735,7 +735,7 @@ vector<TypeTag> Syscall::get_resources_produced(const vector<TypeTag> &items,
                                 }
 
                                 for (Field ff : structures.at(tt.get_index()).get_fields())
-                                    if (ff.has_attrs() && (ff.check_attrs("out") || ff.check_attrs("inout")))
+                                    if ((ff.has_attrs() && (ff.check_attrs("out") || ff.check_attrs("inout"))) || old_inout)
                                         items_to_check.push_back(ff.get_typeref());
                                 break;
                             case typeolClass:
@@ -783,12 +783,12 @@ vector<TypeTag> Syscall::get_resources_produced(const vector<TypeTag> &items,
 
 int Syscall::total_resources(const vector<TypeTag> &items, const vector<TypeOneline> &typeols,
                                 const vector<TypeMultiline> &typemls, const vector<Union> &unions,
-                                const vector<Structure> &structures)
+                                const vector<Structure> &structures, bool old_inout)
 {
     if (!checked_produced || !checked_used)
     {
-        get_resources_used(items, typeols, typemls, unions, structures);
-        get_resources_produced(items, typeols, typemls, unions, structures);
+        get_resources_used(items, typeols, typemls, unions, structures, old_inout);
+        get_resources_produced(items, typeols, typemls, unions, structures, old_inout);
     }
 
     return resources_used.size() + resources_produced.size();

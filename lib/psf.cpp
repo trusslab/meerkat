@@ -44,13 +44,20 @@ bool PSF_is_in(const string &str, const vector<string> &vec)
 // "  [##]BUGNAME      C      Done   ..."
 string PSF_getBugName(const string &line)
 {
+    string ret;
     // find the end of the link marker. The next char is the bug name
     int pos0 = line.find_first_of("]") + 1;
 
     // the first case of 2 or more spaces is the end of the bug name
     int pos1 = line.find("  ", pos0);
 
-    return line.substr(pos0, pos1 - pos0);
+    ret = line.substr(pos0, pos1 - pos0);
+
+    // cut out the dup name marker: (#)
+    if (ret.size() > 0 && ret.at(ret.size() - 1) == ')')
+        ret = ret.substr(0, line.size() - 4);
+
+    return ret;
 }
 
 // returns true if the character is a hex character (a-f, 0-9)
@@ -173,6 +180,10 @@ vector<string> parse_syzbot_fixes(const string &filename, const string &bugname,
                 dups.push_back(b);
         }
     }
+
+    // sometimes the name is not found. If so, push back here.
+    if (!PSF_is_in(bugname, dups))
+        dups.push_back(bugname);
 
     return dups;
 }

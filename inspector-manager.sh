@@ -14,6 +14,7 @@ syzbotDate="2017-07-22"
 number=1
 wd=""
 startLine=1
+endLine=0
 
 # =================================================================================================
 # Functions
@@ -66,7 +67,9 @@ do
     esac
 done
 
-endLine=$(( $(cat $bugfile | wc -l) ))
+if (( endLine == 0 )); then
+    endLine=$(( $(cat $bugfile | wc -l) ))
+fi
 
 if [[ $id == "" ]]; then
     echo "No id given. Use -i <id>"

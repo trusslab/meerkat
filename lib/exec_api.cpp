@@ -168,7 +168,10 @@ string exec_and_read(const string & prog, char ** args)
             cerr << "Warning: Child process " << prog << " exited with error status " << ret_status << ".\n";
 
         size = read(pipefd[0], buf, BUF_SIZE);
-        buf[size + 1] = '\0';
+        if (size < BUF_SIZE)
+            buf[size] = '\0';
+        else
+            buf[BUF_SIZE - 1] = '\0';
     }
 
     string output(buf);

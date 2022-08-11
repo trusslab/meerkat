@@ -8,7 +8,7 @@
 // Parses and slims the template such that the outfile file contains just
 // enough of the template to recreate the reproducer (or as much of it as 
 // possible).
-int slim_template(const std::string &, const std::string &, const std::vector<std::string> &);
+int slim_template(const std::string &, const std::string &, const std::vector<std::string> &, bool);
 
 // creates a vector with a list of all the .txt files in the given template.
 std::vector<std::string> list_template_files(const std::string &);

@@ -404,7 +404,7 @@ void parse_flag(vector<TypeTag> &items, vector<Flag> &flags, const string &line)
 
 void get_one_user_syscall(const TypeTag &this_resource, vector<TypeTag> &needed, const vector<TypeTag> &items,
                         vector<Syscall> &syscalls, vector<TypeOneline> &typeols, vector<TypeMultiline> &typemls,
-                        vector<Union> &unions, vector<Structure> &structures)
+                        vector<Union> &unions, vector<Structure> &structures, bool old_inout)
 {
     // check the syscalls already in needed
     int index;
@@ -414,7 +414,7 @@ void get_one_user_syscall(const TypeTag &this_resource, vector<TypeTag> &needed,
         if (tt.get_class() == syscallClass)
         {
             used_recs.clear();
-            used_recs = syscalls.at(tt.get_index()).get_resources_used(items, typeols, typemls, unions, structures);
+            used_recs = syscalls.at(tt.get_index()).get_resources_used(items, typeols, typemls, unions, structures, old_inout);
             if (is_in_needed(used_recs, this_resource))
                 return;
         }
@@ -424,17 +424,17 @@ void get_one_user_syscall(const TypeTag &this_resource, vector<TypeTag> &needed,
     for (Syscall s : syscalls)
     {
         used_recs.clear();
-        used_recs = s.get_resources_used(items, typeols, typemls, unions, structures);
+        used_recs = s.get_resources_used(items, typeols, typemls, unions, structures, old_inout);
         if (is_in_needed(used_recs, this_resource))
         {
-            if (s.total_resources(items, typeols, typemls, unions, structures) == 1)
+            if (s.total_resources(items, typeols, typemls, unions, structures, old_inout) == 1)
             {
                 chosen_syscall = s;
                 break;
             }
             else if (chosen_syscall.get_text().empty() ||
-                        s.total_resources(items, typeols, typemls, unions, structures)
-                        < chosen_syscall.total_resources(items, typeols, typemls, unions, structures))
+                        s.total_resources(items, typeols, typemls, unions, structures, old_inout)
+                        < chosen_syscall.total_resources(items, typeols, typemls, unions, structures, old_inout))
                 chosen_syscall = s;
         }
     }
@@ -451,7 +451,7 @@ void get_one_user_syscall(const TypeTag &this_resource, vector<TypeTag> &needed,
 
 void get_one_producer_syscall(const TypeTag &this_resource, vector<TypeTag> &needed, const vector<TypeTag> &items,
                         vector<Syscall> &syscalls, const vector<TypeOneline> &typeols, const vector<TypeMultiline> &typemls,
-                        const vector<Union> &unions, const vector<Structure> &structures)
+                        const vector<Union> &unions, const vector<Structure> &structures, bool old_inout)
 {
     // check the syscalls already in needed
     int index;
@@ -461,7 +461,7 @@ void get_one_producer_syscall(const TypeTag &this_resource, vector<TypeTag> &nee
         if (tt.get_class() == syscallClass)
         {
             produced_recs.clear();
-            produced_recs = syscalls.at(tt.get_index()).get_resources_produced(items, typeols, typemls, unions, structures);
+            produced_recs = syscalls.at(tt.get_index()).get_resources_produced(items, typeols, typemls, unions, structures, old_inout);
             if (is_in_needed(produced_recs, this_resource))
                 return;
         }
@@ -471,17 +471,17 @@ void get_one_producer_syscall(const TypeTag &this_resource, vector<TypeTag> &nee
     for (Syscall s : syscalls)
     {
         produced_recs.clear();
-        produced_recs = s.get_resources_produced(items, typeols, typemls, unions, structures);
+        produced_recs = s.get_resources_produced(items, typeols, typemls, unions, structures, old_inout);
         if (is_in_needed(produced_recs, this_resource))
         {
-            if (s.total_resources(items, typeols, typemls, unions, structures) == 1)
+            if (s.total_resources(items, typeols, typemls, unions, structures, old_inout) == 1)
             {
                 chosen_syscall = s;
                 break;
             }
             else if (chosen_syscall.get_text().empty() ||
-                    s.total_resources(items, typeols, typemls, unions, structures)
-                    < chosen_syscall.total_resources(items, typeols, typemls, unions, structures))
+                    s.total_resources(items, typeols, typemls, unions, structures, old_inout)
+                    < chosen_syscall.total_resources(items, typeols, typemls, unions, structures, old_inout))
             {
                 chosen_syscall = s;
             }
@@ -498,7 +498,7 @@ void get_one_producer_syscall(const TypeTag &this_resource, vector<TypeTag> &nee
     return;
 }
 
-int slim_template(const string &reproFile, const string &outfilename, const vector<string> &templateFiles)
+int slim_template(const string &reproFile, const string &outfilename, const vector<string> &templateFiles, bool old_inout)
 {
     int pos0, pos1, index;
 
@@ -696,8 +696,8 @@ int slim_template(const string &reproFile, const string &outfilename, const vect
         {
         case resourceClass:
             resources.at(index).push_depends(needed, items);
-            get_one_user_syscall(needed.at(i), needed, items, syscalls, typeols, typemls, unions, structures);
-            get_one_producer_syscall(needed.at(i), needed, items, syscalls, typeols, typemls, unions, structures);
+            get_one_user_syscall(needed.at(i), needed, items, syscalls, typeols, typemls, unions, structures, old_inout);
+            get_one_producer_syscall(needed.at(i), needed, items, syscalls, typeols, typemls, unions, structures, old_inout);
             break;
         case typeolClass:
             typeols.at(index).push_depends(needed, items);

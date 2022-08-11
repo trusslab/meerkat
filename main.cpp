@@ -74,6 +74,7 @@ int main(int argc, char ** argv)
             << "Long Ticks:\n"
             << "    --setup-only: download and build all the parts, but don't actually fuzz.\n"
             << "    --recover: enter recovery mode.\n"
+            << "    --no-merge: don't use the merge commit as a revealing factor.\n"
             << endl;
         return 0;
     }
@@ -395,11 +396,9 @@ int main(int argc, char ** argv)
         else
         {
             cout << "No merge commit found.\n";
-            logfile << "No Merge Commit.\n";
+            logfile << "No Merge Commit.\n" << flush;
         }
     }
-
-    return 0;
 
     // ======================================================================================================
     // Begin Template Inspection
@@ -424,7 +423,7 @@ int main(int argc, char ** argv)
         template2 = bug.get_wd() + "/template2.txt";
         template3 = bug.get_wd() + "/template3.txt";
         template_dir = check_file(bug.get_syzdir() + "/sys/linux") ? bug.get_syzdir() + "/sys/linux" : bug.get_syzdir() + "/sys";
-        slim_template(bug.get_repro(), template1, list_template_files(template_dir));
+        slim_template(bug.get_repro(), template1, list_template_files(template_dir), template_changes.back().date < OLD_INOUT_DATE);
 
         int l = 0;                              // left is always 0 to start 
         int r = template_changes.size() - 2;    // right is one to the left of the commit we are comparing to
@@ -443,7 +442,7 @@ int main(int argc, char ** argv)
 
                 cout << "Slimming version " << template_changes.at(m).name << ".\n";
                 template_dir = check_file(bug.get_syzdir() + "/sys/linux") ? bug.get_syzdir() + "/sys/linux" : bug.get_syzdir() + "/sys";
-                slim_template(bug.get_repro(), template2, list_template_files(template_dir));
+                slim_template(bug.get_repro(), template2, list_template_files(template_dir), template_changes.at(m).date < OLD_INOUT_DATE);
 
                 same = compare_templates(template1, template2);
                 if (same)

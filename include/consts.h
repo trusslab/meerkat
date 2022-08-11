@@ -8,6 +8,8 @@
 // the date syzbot started on (roughly)
 const Date SYZBOT_BEGIN_DATE(2017,7,22);
 
+const Date OLD_INOUT_DATE(2020,8,13);
+
 // Some remote repositories/websites
 const std::string SYZKALLER_REPO_REMOTE = "https://github.com/google/syzkaller";
 const std::string LINUX_REPO_REMOTE = "https://git.kernel.org/pub/scm/linux/kernel/git/";
@@ -24,6 +26,6 @@ const int FUZZTIMES = 3;
 const int TIME_INCREMENT = 1;
 const int START_PORT = 12000;
 
-const int BUF_SIZE = 1024;
+const int BUF_SIZE = 4096;
 
 #endif

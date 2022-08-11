@@ -248,23 +248,27 @@ vector<string> git_show_commits_merged(const string &repo, const string &mergeha
     delete[] arg3;
     cd(old_dir);
 
-    pos0 = 0;
-    pos1 = ret.find("\n");
-    while (pos1 != string::npos)
+    if (!ret.empty())
     {
-        commits.push_back(ret.substr(pos0, pos1 - pos0));
-        pos0 = pos1 + 1;
-        pos1 = ret.find("\n", pos0);
+        pos0 = 0;
+        pos1 = ret.find("\n");
+        while (pos1 != string::npos)
+        {
+            commits.push_back(ret.substr(pos0, pos1 - pos0));
+            pos0 = pos1 + 1;
+            pos1 = ret.find("\n", pos0);
+        }
+        commits.push_back(ret.substr(pos0));
     }
-    commits.push_back(ret.substr(pos0));
-    
+
     return commits;
 }
 
 Version git_find_merge_commit(const string &repo, const vector<Version> &commits, const string &hash_to_find)
 {
     vector<string> commits_merged;
-    for (int i = commits.size() - 1; i >= 0; i--)
+    // search linearly for the merge commit. Max out at 10,000 commits
+    for (int i = commits.size() - 1; i >= 0 && commits.size() - i <= 10,000; i--)
     {
         if (commits.at(i).name == hash_to_find)
             continue;
