@@ -155,12 +155,20 @@ int prep_kernel(const Bug_Info &bug, const InspectorConfig &inspector, const Ver
     // apply patch from 760f8522ce08
     if (grep_to_find("#include <sys/socket.h>", bug.get_kerneldir() + "/scripts/selinux/mdp/mdp.c") &&
         grep_to_find("#include <sys/socket.h>", bug.get_kerneldir() + "/scripts/selinux/genheaders/genheaders.c") &&
-        grep_to_find("#include <sys/socket.h>", bug.get_kerneldir() + "/security/selinux/include/classmap.h"))
+        !grep_to_find("#include <sys/socket.h>", bug.get_kerneldir() + "/security/selinux/include/classmap.h"))
     {
         cout << "Applying a patch to the kernel.\n";
         sed_i("s/#include <sys\\/socket.h>//", bug.get_kerneldir() + "/scripts/selinux/mdp/mdp.c");
         sed_i("s/#include <sys\\/socket.h>//", bug.get_kerneldir() + "/scripts/selinux/genheaders/genheaders.c");
-        sed_i("s/#include <linux\\/capability.h>/#include <linux\\/capability.h>\n#include <linux\\/socket.h>/", bug.get_kerneldir() + "/security/selinux/include/classmap.h");
+        sed_i("s/#include <linux\\/capability.h>/#include <linux\\/capability.h>\\n#include <linux\\/socket.h>/", bug.get_kerneldir() + "/security/selinux/include/classmap.h");
+    }
+
+    // Add a patch for all of 14 commits
+    if (linux_version.date == Date(2019,12,1))
+    {
+        sed_i("s/VM_BUG_ON(dst_addr & ~huge_page_mask(h));/VM_BUG_ON(dst_addr & (vma_hpagesize - 1));/", bug.get_kerneldir() + "/mm/userfaultfd.c");
+        sed_i("s/dst_pte = huge_pte_alloc(dst_mm, dst_addr, huge_page_size(h));/dst_pte = huge_pte_alloc(dst_mm, dst_addr, vma_hpagesize);/", bug.get_kerneldir() + "/mm/userfaultfd.c");
+        sed_i("s/pages_per_huge_page(h), true);/vma_hpagesize / PAGE_SIZE, true);/", bug.get_kerneldir() + "/mm/userfaultfd.c");
     }
 
     if (grep_to_find("ifdef CONFIG_X86_64", bug.get_kerneldir() + "/arch/x86/Makefile"))

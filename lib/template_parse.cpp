@@ -458,7 +458,8 @@ void get_one_producer_syscall(const TypeTag &this_resource, vector<TypeTag> &nee
     if (this_resource.get_name() == "uid" || this_resource.get_name() == "gid")
     {
         index = find_in_items(items, TypeTag(syscallClass, "get" + this_resource.get_name()));
-        needed.push_back(items.at(index));
+        if (!is_in_needed(needed, items.at(index)))
+            needed.push_back(items.at(index));
         return;
     }
 
