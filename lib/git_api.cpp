@@ -324,6 +324,7 @@ int git_fetch_and_checkout(const string &local_repo, const string &repo, const s
 
 string get_commit_name(const string &repo, const string &hash)
 {
+    int index;
     string old_dir = pwd();
     cd(repo);
     char command[] = "git";
@@ -341,5 +342,10 @@ string get_commit_name(const string &repo, const string &hash)
 
     delete[] arg4;
     cd(old_dir);
+    
+    index = ret.find("\n");
+    if (index != string::npos)
+        ret = ret.substr(0, index);
+
     return ret;
 }

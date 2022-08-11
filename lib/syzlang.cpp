@@ -563,7 +563,7 @@ vector<TypeTag> Syscall::get_resources_used(const vector<TypeTag> &items,
                                 break;
                             case structureClass:
                                 for (Field ff : structures.at(tt.get_index()).get_fields())
-                                    if (!is_in_typeref(items_to_check, ff.get_typeref().get_name()))
+                                    if (!is_in_typeref(items_to_check, ff.get_typeref().get_name()) && (!ff.get_typeref().has_opts() || ff.get_typeref().get_opts().at(0).get_name() != "out"))
                                         items_to_check.push_back(ff.get_typeref());
                                 break;
                             case unionClass:
@@ -688,7 +688,7 @@ vector<TypeTag> Syscall::get_resources_produced(const vector<TypeTag> &items,
                                 {
                                 case structureClass:
                                     for (Field ff : structures.at(tt.get_index()).get_fields())
-                                        if (!is_in_typeref(items_to_check, ff.get_typeref().get_name()))
+                                        if (!is_in_typeref(items_to_check, ff.get_typeref().get_name()) && (!ff.get_typeref().has_opts() || ff.get_typeref().get_opts().at(0).get_name() != "in"))
                                             items_to_check.push_back(ff.get_typeref());
                                     break;
                                 case unionClass:
