@@ -23,7 +23,7 @@ using namespace std;
 
 int main(int argc, char ** argv)
 {
-    bool useclang = false;
+    bool useclang = false, use_poc = true;
     int max_time = 30, id, session_count = 0, r, l, m, err = 0, k;
     string find_hash, guilty_hash, 
            linux_repo_remote, logfilename,
@@ -61,7 +61,7 @@ int main(int argc, char ** argv)
     port.port = 0;
 
     args.expect("FGmidh");
-    args.expect(vector<string>({ "setup-only", "help", "recover", "no-merge" }));
+    args.expect(vector<string>({ "setup-only", "help", "recover", "no-merge", "no-poc" }));
     args.parse(argc, argv);
     if (args.is_set('h') || args.is_set("help"))
     {
@@ -109,6 +109,10 @@ int main(int argc, char ** argv)
         err = -1;
         goto finish;
     }
+
+    // allow for fuzzing without the poc
+    if (args.is_set("no-poc"))
+        use_poc = false;
 
     // get config for how to run
     cout << SPACER
@@ -355,7 +359,7 @@ int main(int argc, char ** argv)
         goto setup_only_finish;
     }
 
-    result = fuzz_loop_finding(bug, inspector, duplicates, max_time, vmc, port, syzkaller_version.date);
+    result = fuzz_loop_finding(bug, inspector, duplicates, max_time, vmc, port, syzkaller_version.date, use_poc);
     // set the max_time
     max_time = result.ttf;
 
@@ -547,7 +551,7 @@ int main(int argc, char ** argv)
                 }
 
                 cout << SPACER;
-                result_before = fuzz_loop(bug, inspector, duplicates, max_time, vmc, port, current_version.date);
+                result_before = fuzz_loop(bug, inspector, duplicates, max_time, vmc, port, current_version.date, use_poc);
 
                 logfile << "    The bug was " << (result_before.found ? "found in " : "not found and timed out at ") << result_before.ttf << " minutes\n" << flush;
                 for (string b : result_before.bugsfound)
@@ -592,7 +596,7 @@ int main(int argc, char ** argv)
                 }
 
                 cout << SPACER;
-                result_after = fuzz_loop(bug, inspector, duplicates, max_time, vmc, port, current_version.date);
+                result_after = fuzz_loop(bug, inspector, duplicates, max_time, vmc, port, current_version.date, use_poc);
 
                 logfile << "    The bug was " << (result_after.found ? "found in " : "not found and timed out at ") << result_after.ttf << " minutes\n" << flush;
                 for (string b : result_after.bugsfound)
@@ -690,7 +694,7 @@ int main(int argc, char ** argv)
             }
 
             cout << SPACER;
-            result = fuzz_loop(bug, inspector, duplicates, max_time, vmc, port, syzkaller_version.date);
+            result = fuzz_loop(bug, inspector, duplicates, max_time, vmc, port, syzkaller_version.date, use_poc);
 
             logfile << "    The bug was " << (result.found ? "found in " : "not found and timed out at ") << result.ttf << " minutes\n" << flush;
             for (string b : result.bugsfound)
@@ -759,7 +763,7 @@ int main(int argc, char ** argv)
         }
 
         cout << SPACER;
-        result_after = fuzz_loop(bug, inspector, duplicates, max_time, vmc, port, syzkaller_version.date);
+        result_after = fuzz_loop(bug, inspector, duplicates, max_time, vmc, port, syzkaller_version.date, use_poc);
 
         logfile << "    The bug was " << (result_after.found ? "found in " : "not found and timed out at ") << result_after.ttf << " minutes\n" << flush;
         for (string b : result_after.bugsfound)
@@ -812,7 +816,7 @@ int main(int argc, char ** argv)
         }
 
         cout << SPACER;
-        result_before = fuzz_loop(bug, inspector, duplicates, max_time, vmc, port, syzkaller_version.date);
+        result_before = fuzz_loop(bug, inspector, duplicates, max_time, vmc, port, syzkaller_version.date, use_poc);
 
         logfile << "    The bug was " << (result_before.found ? "found in " : "not found and timed out at ") << result_before.ttf << " minutes\n" << flush;
         for (string b : result_before.bugsfound)

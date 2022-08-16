@@ -40,15 +40,20 @@ printhelp () {
     echo "    s - the line in parse/bugs.csv to start on"
     echo "    e - the last line in parse/bugs.csv to use"
     echo "    i - the id given to this manager"
+    echo "    b - determine the name of the bug file in parse/"
+    echo "    m - the maximum time to fuzz at the finding commit"
+    echo "    p - fuzz without the poc as a seed"
     echo "    x - only set up the kernel and syzkaller. Do not fuzz."
 }
 
 # =================================================================================================
 
 setuponly=""
+nopoc=""
+mtime=""
 
 # get the start and end lines from the arguments
-while getopts "s:e:i:b:x" flag
+while getopts "s:e:i:b:m:xp" flag
 do
     case $flag in
         s)
@@ -59,6 +64,10 @@ do
             id="${OPTARG}" ;;
         b)
             bugfile="$inspectdir/parse/${OPTARG}" ;;
+        m)
+            mtime="-m ${OPTARG}" ;;
+        p)
+            nopoc="--no-poc" ;;
         x)
             setuponly="--setup-only" ;;
         *)
@@ -182,12 +191,12 @@ while (( $line <= $endLine )); do
             writebugconfig
 
             echo ",good fuzz,$findDate,$findDate,$startDate" >> $logfile
-            echo "./syzInspector -F $findhash -G $guiltyhash -i $id $setuponly" >> $logfile
+            echo "./syzInspector -F $findhash -G $guiltyhash -i $id $mtime $nopoc $setuponly" >> $logfile
             # run inspector on the bug
             # using finding date as the ending date
             echo "Fuzzing. finding: $findhash; guilty: $guiltyhash"
             set +e
-            ./syzInspector -F $findhash -G $guiltyhash -i $id $setuponly
+            ./syzInspector -F $findhash -G $guiltyhash -i $id $mtime $nopoc $setuponly
             set -e
             number=$(( $number + 1 ))
         else
