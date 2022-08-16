@@ -54,8 +54,8 @@ VMConfig determine_threadedness(const InspectorConfig &inspector, const Bug_Info
     switch (procs)
     {
     case 1:
-        cout << "Using resource allocation for a single threaded bug.\n";
-        logfile << "Single Threaded Allocation\n";
+        cout << "Using resource allocation for a single proc bug.\n";
+        logfile << "Single Proc Allocation\n";
         vmc = inspector.get_vmst();
         break;
     case 6:
@@ -64,8 +64,8 @@ VMConfig determine_threadedness(const InspectorConfig &inspector, const Bug_Info
         vmc = inspector.get_vmd();
         break;
     case 8:
-        cout << "Using resource allocation for a race bug.\n";
-        logfile << "Race Allocation.\n";
+        cout << "Using resource allocation for a multi-proc bug.\n";
+        logfile << "Multi-Proc Allocation.\n";
         vmc = inspector.get_vmr();
         break;
     default:
@@ -166,9 +166,9 @@ int prep_kernel(const Bug_Info &bug, const InspectorConfig &inspector, const Ver
     // Add a patch for all of 14 commits
     if (linux_version.date == Date(2019,12,1))
     {
-        sed_i("s/VM_BUG_ON(dst_addr & ~huge_page_mask(h));/VM_BUG_ON(dst_addr & (vma_hpagesize - 1));/", bug.get_kerneldir() + "/mm/userfaultfd.c");
+        sed_i("s/VM_BUG_ON(dst_addr \\& ~huge_page_mask(h));/VM_BUG_ON(dst_addr \\& (vma_hpagesize - 1));/", bug.get_kerneldir() + "/mm/userfaultfd.c");
         sed_i("s/dst_pte = huge_pte_alloc(dst_mm, dst_addr, huge_page_size(h));/dst_pte = huge_pte_alloc(dst_mm, dst_addr, vma_hpagesize);/", bug.get_kerneldir() + "/mm/userfaultfd.c");
-        sed_i("s/pages_per_huge_page(h), true);/vma_hpagesize / PAGE_SIZE, true);/", bug.get_kerneldir() + "/mm/userfaultfd.c");
+        sed_i("s/pages_per_huge_page(h), true);/vma_hpagesize \\/ PAGE_SIZE, true);/", bug.get_kerneldir() + "/mm/userfaultfd.c");
     }
 
     if (grep_to_find("ifdef CONFIG_X86_64", bug.get_kerneldir() + "/arch/x86/Makefile"))
@@ -300,6 +300,15 @@ int prep_syzkaller(const Bug_Info &bug, const InspectorConfig &inspector, const 
         }
     }
 
+    // runtime patch for file extraction (slab oob)
+    if (syzkaller_version.date == Date(2018,9,26))
+    {
+        sed_i("s/report := rep.Report\\[rep.StartPos:\\]/report := rep.Report\\[rep.reportPrefixLen:\\]/", bug.get_syzdir() + "/pkg/report/linux.go");
+        sed_i("s/rep.Report = append(rep.Report, report...)/rep.reportPrefixLen = len(rep.Report)\\n\\trep.Report = append(rep.Report, report...)/", bug.get_syzdir() + "/pkg/report/linux.go");
+        sed_i("s/guiltyFile string/guiltyFile string\\n\\treportPrefixLen int/", bug.get_syzdir() + "/pkg/report/report.go");
+    }
+
+    // patch for mounting cgroup
     if (syzkaller_version.date >= Date(2020,10,12) && syzkaller_version.date <= Date(2020,10,13))
     {
         cout << "Applying cgroup mount patch to Syzkaller.\n";
