@@ -23,7 +23,7 @@ using namespace std;
 
 int main(int argc, char ** argv)
 {
-    bool useclang = false, use_poc = true, find_only = false;
+    bool useclang = false, use_poc = true, find_only = false, no_merge = false;
     int max_time = 30, id, session_count = 0, r, l, m, err = 0, k;
     string find_hash, guilty_hash, 
            linux_repo_remote, logfilename,
@@ -111,13 +111,6 @@ int main(int argc, char ** argv)
         err = -1;
         goto finish;
     }
-
-    // allow for fuzzing without the poc
-    if (args.is_set("no-poc"))
-        use_poc = false;
-
-    if (args.is_set("find-only"))
-        find_only = true;
 
     // get config for how to run
     cout << SPACER
@@ -280,6 +273,27 @@ int main(int argc, char ** argv)
 
     vmc = determine_threadedness(inspector, bug, logfile);
 
+    // allow for fuzzing without the poc
+    if (args.is_set("no-poc"))
+    {
+        logfile << "no-poc is set.\n";
+        use_poc = false;
+    }
+
+    // allow for fuzzing only at the finding commit
+    if (args.is_set("find-only"))
+    {
+        logfile << "find-only is set.\n";
+        find_only = true;
+    }
+
+    // allow for ignoring the merge as a revealing factor
+    if (args.is_set("no-merge"))
+    {
+        logfile << "no-merge is set.\n";
+        no_merge = true;
+    }
+
     logfile << "Max time:" << max_time << endl << flush;
     
     // ======================================================================================================
@@ -396,7 +410,7 @@ int main(int argc, char ** argv)
     //  ======================================================================================================
     // Find Merge Commit
 
-    if (!args.is_set("no-merge"))
+    if (!no_merge)
     {
         cout << SPACER
              << "Looking for Merge Commit...\n";
