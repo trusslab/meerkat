@@ -26,7 +26,7 @@ Syzkaller_Result run_syzkaller(const Bug_Info &, const InspectorConfig &, const 
 
 // Runs Syzkaller FUZZTIMES times. Returns the new max time
 // to use. Intended to be run on the finding commit.
-Syzkaller_Result fuzz_loop_finding(const Bug_Info &, const InspectorConfig &, const std::vector<std::string> &, int, const VMConfig &, Port_Info &, const Date &, bool = true);
+Syzkaller_Result fuzz_loop_finding(const Bug_Info &, const InspectorConfig &, const std::vector<std::string> &, int, const VMConfig &, Port_Info &, const Date &, bool = true, bool = true);
 
 // Runs syzkaller FUZZTIMES times. Returns the culmination
 // of the results.

@@ -51,6 +51,16 @@ int find_max_time(const vector<Syzkaller_Result> &times)
     return time;
 }
 
+int find_average_time(const vector<Syzkaller_Result> &times)
+{
+    int sum = 0;
+
+    for (Syzkaller_Result sr : times)
+        sum += sr.ttf;
+
+    return sum / times.size();
+}
+
 void handle_syzkaller_crash()
 {
     cerr << "Error: Syzkaller has experienced a crash.\n";
@@ -148,7 +158,7 @@ Syzkaller_Result run_syzkaller(const Bug_Info &bug, const InspectorConfig &inspe
 }
 
 Syzkaller_Result fuzz_loop_finding(const Bug_Info &bug, const InspectorConfig &inspector, const std::vector<std::string> &dups,
-                            int max_time, const VMConfig &vmc, Port_Info &port, const Date &syz_date, bool poc)
+                            int max_time, const VMConfig &vmc, Port_Info &port, const Date &syz_date, bool poc, bool find_max_time)
 {
     vector<Syzkaller_Result> vret;
     Syzkaller_Result session_ret;
@@ -168,7 +178,10 @@ Syzkaller_Result fuzz_loop_finding(const Bug_Info &bug, const InspectorConfig &i
         session_ret.found = ret.found ? true : session_ret.found;
     }
 
-    session_ret.ttf = find_max_time(vret);
+    if (find_max_time)
+        session_ret.ttf = find_max_time(vret);
+    else
+        session_ret.ttf = find_average_time(vret);
 
     return session_ret;
 }

@@ -23,7 +23,7 @@ using namespace std;
 
 int main(int argc, char ** argv)
 {
-    bool useclang = false, use_poc = true;
+    bool useclang = false, use_poc = true, find_only = false;
     int max_time = 30, id, session_count = 0, r, l, m, err = 0, k;
     string find_hash, guilty_hash, 
            linux_repo_remote, logfilename,
@@ -75,6 +75,8 @@ int main(int argc, char ** argv)
             << "    --setup-only: download and build all the parts, but don't actually fuzz.\n"
             << "    --recover: enter recovery mode.\n"
             << "    --no-merge: don't use the merge commit as a revealing factor.\n"
+            << "    --no-poc: fuzz without the poc.\n"
+            << "    --find-only: only fuzz at the finding commit.\n"
             << endl;
         return 0;
     }
@@ -113,6 +115,9 @@ int main(int argc, char ** argv)
     // allow for fuzzing without the poc
     if (args.is_set("no-poc"))
         use_poc = false;
+
+    if (args.is_set("find-only"))
+        find_only = true;
 
     // get config for how to run
     cout << SPACER
@@ -359,13 +364,20 @@ int main(int argc, char ** argv)
         goto setup_only_finish;
     }
 
-    result = fuzz_loop_finding(bug, inspector, duplicates, max_time, vmc, port, syzkaller_version.date, use_poc);
+    result = fuzz_loop_finding(bug, inspector, duplicates, max_time, vmc, port, syzkaller_version.date, use_poc, find_only);
     // set the max_time
     max_time = result.ttf;
 
     logfile << "    The bug was " << (result.found ? "" : "not ") << "found.\n" << flush;
     for (string b : result.bugsfound)
         logfile << "        " << b << "\n" << flush;
+
+    if (find_only)
+    {
+        logfile << "Average TTF: " << result.ttf << ".\n";
+        cout << "Find-only complete.\n";
+        goto finish;
+    }
 
     if (!result.found)
     {

@@ -51,9 +51,10 @@ printhelp () {
 setuponly=""
 nopoc=""
 mtime=""
+findonly=""
 
 # get the start and end lines from the arguments
-while getopts "s:e:i:b:m:xp" flag
+while getopts "s:e:i:b:m:xpf" flag
 do
     case $flag in
         s)
@@ -68,8 +69,12 @@ do
             mtime="-m ${OPTARG}" ;;
         p)
             nopoc="--no-poc" ;;
+        f)
+            findonly="--find-only"
+            setuponly="" ;;
         x)
-            setuponly="--setup-only" ;;
+            setuponly="--setup-only"
+            findonly="" ;;
         *)
             printhelp
             exit
@@ -191,12 +196,12 @@ while (( $line <= $endLine )); do
             writebugconfig
 
             echo ",good fuzz,$findDate,$findDate,$startDate" >> $logfile
-            echo "./syzInspector -F $findhash -G $guiltyhash -i $id $mtime $nopoc $setuponly" >> $logfile
+            echo "./syzInspector -F $findhash -G $guiltyhash -i $id $mtime $nopoc $findonly $setuponly" >> $logfile
             # run inspector on the bug
             # using finding date as the ending date
             echo "Fuzzing. finding: $findhash; guilty: $guiltyhash"
             set +e
-            ./syzInspector -F $findhash -G $guiltyhash -i $id $mtime $nopoc $setuponly
+            ./syzInspector -F $findhash -G $guiltyhash -i $id $mtime $nopoc $findonly $setuponly
             set -e
             number=$(( $number + 1 ))
         else
