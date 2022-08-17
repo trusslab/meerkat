@@ -158,7 +158,7 @@ Syzkaller_Result run_syzkaller(const Bug_Info &bug, const InspectorConfig &inspe
 }
 
 Syzkaller_Result fuzz_loop_finding(const Bug_Info &bug, const InspectorConfig &inspector, const std::vector<std::string> &dups,
-                            int max_time, const VMConfig &vmc, Port_Info &port, const Date &syz_date, bool poc, bool find_max_time)
+                            int max_time, const VMConfig &vmc, Port_Info &port, const Date &syz_date, bool poc, bool find_only)
 {
     vector<Syzkaller_Result> vret;
     Syzkaller_Result session_ret;
@@ -178,7 +178,7 @@ Syzkaller_Result fuzz_loop_finding(const Bug_Info &bug, const InspectorConfig &i
         session_ret.found = ret.found ? true : session_ret.found;
     }
 
-    if (find_max_time)
+    if (!find_only)
         session_ret.ttf = find_max_time(vret);
     else
         session_ret.ttf = find_average_time(vret);

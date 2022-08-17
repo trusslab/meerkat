@@ -61,7 +61,7 @@ int main(int argc, char ** argv)
     port.port = 0;
 
     args.expect("FGmidh");
-    args.expect(vector<string>({ "setup-only", "help", "recover", "no-merge", "no-poc" }));
+    args.expect(vector<string>({ "setup-only", "help", "recover", "no-merge", "no-poc", "find-only" }));
     args.parse(argc, argv);
     if (args.is_set('h') || args.is_set("help"))
     {
