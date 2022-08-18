@@ -43,6 +43,7 @@ printhelp () {
     echo "    b - determine the name of the bug file in parse/"
     echo "    m - the maximum time to fuzz at the finding commit"
     echo "    p - fuzz without the poc as a seed"
+    echo "    f - fuzz only at the finding commit"
     echo "    x - only set up the kernel and syzkaller. Do not fuzz."
 }
 

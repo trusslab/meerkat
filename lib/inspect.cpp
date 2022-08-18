@@ -166,6 +166,7 @@ Syzkaller_Result fuzz_loop_finding(const Bug_Info &bug, const InspectorConfig &i
     {
         write_syzkaller_config(bug, inspector, vmc, port, syz_date);
         vret.push_back(run_syzkaller(bug, inspector, dups, max_time, poc));
+        cout << "Time spent: " << vret.back().ttf << endl;
     }
 
     session_ret.found = false;

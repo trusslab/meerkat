@@ -313,7 +313,9 @@ int prep_syzkaller(const Bug_Info &bug, const InspectorConfig &inspector, const 
     {
         cout << "Applying cgroup mount patch to Syzkaller.\n";
         sed_i("s/failmsg(\\\"mount cgroup failed\\\", \\\"(%s, %s): %d\\\\n\\\", dir, enabled + 1, errno);/debug(\\\"mount(%s, %s) failed: %d\\\\n\\\", dir, enabled + 1, errno);/",
-                    bug.get_syzdir() + "/executor/common_linux.h");
+                bug.get_syzdir() + "/executor/common_linux.h");
+        sed_i("s/failmsg(\\\"mount cgroup failed\\\", \\\"(%s, %s): %d\\\\n\\\", dir, enabled + 1, errno);/debug(\\\"mount(%s, %s) failed: %d\\\\n\\\", dir, enabled + 1, errno);/",
+                bug.get_syzdir() + "/pkg/csource/generated.go");
     }
 
     // Fix a build error with strncpy

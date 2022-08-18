@@ -388,7 +388,7 @@ int main(int argc, char ** argv)
 
     if (find_only)
     {
-        logfile << "Average TTF: " << result.ttf << ".\n";
+        logfile << "Average TTF: " << result.ttf << endl;
         cout << "Find-only complete.\n";
         goto finish;
     }
