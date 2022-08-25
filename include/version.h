@@ -27,9 +27,18 @@ public:
     bool operator!=(const Version &);
 };
 
+class Version_p
+{
+public:
+    Version v;
+    std::vector<std::string> parents;
+};
+
 Version get_version_by_date(const std::vector<Version> &, const Date &);
 
-int get_index_by_name(const std::vector<Version> &, const std::string &);
+int get_index_by_name(const std::vector<Version> &, const std::string &, const int pos = 0);
+
+int get_index_by_name(const std::vector<Version_p> &, const std::string &, const int pos = 0);
 
 // get the index of the first (oldest) version on or after the given date
 int get_starting_index(const std::vector<Version> &, const Date &);

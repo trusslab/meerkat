@@ -348,7 +348,7 @@ int main(int argc, char ** argv)
             << "    Syzkaller: " << syzkaller_version.date.get_date() << " - " << syzkaller_version.name << "\n"
             << "    Kernel:    " << linux_version.date.get_date() << " - " << linux_version.name << "\n" << flush;
 
-    cout << "Making the kernel\n";
+    cout << "Making the kernel.\n";
     compiler = export_compiler(gcc_versions, clang_versions, linux_version.date, inspector, useclang);
     logfile << "    Compiler:  " << compiler << "\n" << flush;
     err = prep_kernel(bug, inspector, linux_version, linux_repo_remote);

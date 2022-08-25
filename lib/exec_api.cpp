@@ -154,6 +154,7 @@ string exec_and_read(const string & prog, char ** args)
         execvp(prog.c_str(), args);
         
         cerr << "Error: exec for " << prog << " failed.\n";
+        close(pipefd[1]);
         exit(-1);
     }
     else if (pid > 0)
@@ -168,6 +169,7 @@ string exec_and_read(const string & prog, char ** args)
             cerr << "Warning: Child process " << prog << " exited with error status " << ret_status << ".\n";
 
         size = read(pipefd[0], buf, BUF_SIZE);
+        close(pipefd[0]);
         if (size < BUF_SIZE)
             buf[size] = '\0';
         else

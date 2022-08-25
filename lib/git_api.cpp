@@ -10,6 +10,7 @@
 #include <vector>
 #include <iostream>
 #include <fstream>
+#include <unordered_map>
 
 #include <string.h>
 
@@ -39,7 +40,7 @@ Date git_get_commit_date(const string &wd, const string &local_repo, const strin
     int ret = exec_and_wait("git", arg_list, outfile);
     if (ret != 0)
     {
-        cerr << "Error: git show " << hash << " failed.\n";
+        cerr << "Error: git show " << hash << " failed.\n" << flush;
         return Date();
     }
 
@@ -50,7 +51,7 @@ Date git_get_commit_date(const string &wd, const string &local_repo, const strin
     inf.open(outfile);
     if(!inf)
     {
-        cerr << "Error: Failed to open temp file " << outfile << ".\n";
+        cerr << "Error: Failed to open temp file " << outfile << ".\n" << flush;
         return Date();
     }
 
@@ -62,6 +63,42 @@ Date git_get_commit_date(const string &wd, const string &local_repo, const strin
     inf.close();
     remove_file(outfile);
     return Date(line);
+}
+
+vector<string> git_get_parents(const string &local_repo, const string &hash)
+{
+    string wd = pwd();
+    cd(local_repo);
+
+    char command[] = "git";
+    char arg1[] = "show";
+    char arg2[] = "-s";
+    char arg3[] = "--format=%P";
+    char *arg4 = new char[hash.size() + 1];
+    strcpy(arg4, hash.c_str());
+
+    char * arg_list[] = {command, arg1, arg2, arg3, arg4, nullptr};
+    string ret = exec_and_read("git", arg_list);
+
+    if (ret == "")
+    {
+        cerr << "Error: git show parents " << hash << " failed.\n" << flush;
+        exit(-1);
+    }
+
+    cd(wd);
+    delete[] arg4;
+
+    vector<string> parents;
+    int pos0 = 0, pos1 = ret.find_first_of(" \n");
+    while (pos1 != string::npos)
+    {
+        parents.push_back(ret.substr(pos0, pos1 - pos0));
+        pos0 = pos1 + 1;
+        pos1 = ret.find_first_of(" \n", pos0);
+    }
+
+    return parents;
 }
 
 bool git_check_modified_file(const string &wd, const string &local_repo, const string &hash, const string &file)
@@ -93,23 +130,24 @@ int git_rev_list(const string &local_repo, const string &old_hash, const string 
 {
     string old_dir = pwd();
     cd(local_repo);
-    // git rev-list --ancestry-path --date=format:'%Y-%m-%d' --format=%cd old_hash..new_hash
+    // git rev-list --ancestry-path --topo-order --date=format:'%Y-%m-%d' --format='%cd %P' old_hash..new_hash
     char command[] = "git";
     char arg1[] = "rev-list";
     char arg2[] = "--ancestry-path";
-    char arg3[] = "--date=format-local:%Y-%m-%d";
-    char arg4[] = "--format=%cd";
+    char arg3[] = "--topo-order";
+    char arg4[] = "--date=format-local:%Y-%m-%d";
+    char arg5[] = "--format=%cd %P";
     string hash_path = old_hash + ".." + new_hash;
-    char * arg5 = new char[hash_path.size() + 1];
-    strcpy(arg5, hash_path.c_str());
+    char * arg6 = new char[hash_path.size() + 1];
+    strcpy(arg6, hash_path.c_str());
 
-    char * arg_list[] = {command, arg1, arg2, arg3, arg4, arg5, nullptr};
+    char * arg_list[] = {command, arg1, arg2, arg3, arg4, arg5, arg6, nullptr};
     int ret = exec_and_wait("git", arg_list, outfile);
     if (ret != 0)
-        cerr << "Error: git rev-list " << hash_path << " failed.\n";
+        cerr << "Error: git rev-list " << hash_path << " failed.\n" << flush;
 
     cd(old_dir);
-    delete[] arg5;
+    delete[] arg6;
     return (ret != 0 ? -1 : 0);
 }
 
@@ -117,6 +155,7 @@ vector<Version> get_kernel_versions(const Bug_Info &bug, const string &old_hash,
 {
     string outfile = bug.get_wd() + "/tmp_kernel_versions.txt";
     
+    cout << "Listing...\n";
     if (git_rev_list(bug.get_kerneldir(), old_hash, new_hash, outfile) < 0)
     {
         return vector<Version>();
@@ -126,27 +165,63 @@ vector<Version> get_kernel_versions(const Bug_Info &bug, const string &old_hash,
     inf.open(outfile);
     if (!inf)
     {
-        cerr << "Error: Failed to open temp file " << outfile << ".\n";
+        cerr << "Error: Failed to open temp file " << outfile << ".\n" << flush;
         return vector<Version>();
     }
 
     string line;
+    unordered_map<string, Version_p> kernel_versions_raw;
     vector<Version> kernel_versions;
-    Version v;
+    Version_p vp;
+    int pos0 = 0, pos1 = 0, count = 0;
+    cout << "Reading...\n";
     while(getline(inf, line))
     {
-        v.name = line.substr(7);
+        vp.parents.clear();
+        vp.v.name = line.substr(7);
         getline(inf, line);
-        v.date = Date(line);
-        kernel_versions.push_back(v);
+        pos0 = 0;
+        pos1 = line.find_first_of(" ");
+        vp.v.date = Date(line.substr(pos0, pos1 - pos0));
+
+        pos0 = pos1 + 1;
+        pos1 = line.find_first_of(" ", pos0);
+        while (pos1 != string::npos)
+        {
+            vp.parents.push_back(line.substr(pos0, pos1 - pos0));
+            pos0 = pos1 + 1;
+            pos1 = line.find_first_of(" ", pos0);
+        }
+        vp.parents.push_back(line.substr(pos0));
+
+        kernel_versions_raw.insert(pair<string,Version_p>(vp.v.name, vp));
     }
 
-    v.name = old_hash;
-    v.date = git_get_commit_date(bug.get_wd(), bug.get_kerneldir(), old_hash);
-    kernel_versions.push_back(v);
+    vp.v.name = old_hash;
+    vp.v.date = git_get_commit_date(bug.get_wd(), bug.get_kerneldir(), old_hash);
+    kernel_versions_raw.insert(pair<string,Version_p>(vp.v.name, vp));
 
     inf.close();
     remove_file(outfile);
+
+    // now draw a single line using first-parent (except for the merge including the guilty commit)
+    string cur_hash = new_hash;
+    cout << "Parsing...\n";
+    kernel_versions.push_back(kernel_versions_raw.at(cur_hash).v);
+    while (kernel_versions.back().name != old_hash)
+    {
+        // starting with the first parent, if it exists, push back
+        for (int j = 0; j < kernel_versions_raw.at(cur_hash).parents.size(); j++)
+        {
+            if (kernel_versions_raw.find(kernel_versions_raw.at(cur_hash).parents.at(j)) != kernel_versions_raw.end())
+            {
+                kernel_versions.push_back(kernel_versions_raw.at(kernel_versions_raw.at(cur_hash).parents.at(j)).v);
+                cur_hash = kernel_versions_raw.at(cur_hash).parents.at(j);
+                break;
+            }
+        }
+    }
+
     return kernel_versions;
 }
 

@@ -26,10 +26,17 @@ Version get_version_by_date(const vector<Version> &versions, const Date &date)
     return versions.at(i);
 }
 
-int get_index_by_name(const vector<Version> &versions, const string &name)
+int get_index_by_name(const vector<Version> &versions, const string &name, const int pos)
 {
-    int i;
-    for (i = 0; i < versions.size() && name != versions.at(i).name; i++);
+    int i = (pos < versions.size() ? pos : 0);
+    for (; i < versions.size() && name != versions.at(i).name; i++);
+    return i < versions.size() ? i : -1;
+}
+
+int get_index_by_name(const vector<Version_p> &versions, const string &name, const int pos)
+{
+    int i = (pos < versions.size() ? pos : 0);
+    for (; i < versions.size() && name != versions.at(i).v.name; i++);
     return i < versions.size() ? i : -1;
 }
 
