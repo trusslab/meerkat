@@ -113,7 +113,7 @@ fi
 
 line=$startLine
 
-echo "startline:,$startLine,endline:,$endLine" >> $logfile
+echo "file: $bugfile startline: $startLine endline: $endLine" >> $logfile
 echo "" >> $logfile
 
 while (( $line <= $endLine )); do

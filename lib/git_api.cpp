@@ -134,6 +134,31 @@ int git_rev_list(const string &local_repo, const string &old_hash, const string 
     char command[] = "git";
     char arg1[] = "rev-list";
     char arg2[] = "--ancestry-path";
+    char arg3[] = "--date=format-local:%Y-%m-%d";
+    char arg4[] = "--format=%cd";
+    string hash_path = old_hash + ".." + new_hash;
+    char * arg5 = new char[hash_path.size() + 1];
+    strcpy(arg5, hash_path.c_str());
+
+    char * arg_list[] = {command, arg1, arg2, arg3, arg4, arg5, nullptr};
+    int ret = exec_and_wait("git", arg_list, outfile);
+    if (ret != 0)
+        cerr << "Error: git rev-list " << hash_path << " failed.\n" << flush;
+
+    cd(old_dir);
+    delete[] arg5;
+    return (ret != 0 ? -1 : 0);
+}
+
+
+int git_rev_list_topo(const string &local_repo, const string &old_hash, const string &new_hash, const string &outfile)
+{
+    string old_dir = pwd();
+    cd(local_repo);
+    // git rev-list --ancestry-path --topo-order --date=format:'%Y-%m-%d' --format='%cd %P' old_hash..new_hash
+    char command[] = "git";
+    char arg1[] = "rev-list";
+    char arg2[] = "--ancestry-path";
     char arg3[] = "--topo-order";
     char arg4[] = "--date=format-local:%Y-%m-%d";
     char arg5[] = "--format=%cd %P";
@@ -156,7 +181,7 @@ vector<Version> get_kernel_versions(const Bug_Info &bug, const string &old_hash,
     string outfile = bug.get_wd() + "/tmp_kernel_versions.txt";
     
     cout << "Listing...\n";
-    if (git_rev_list(bug.get_kerneldir(), old_hash, new_hash, outfile) < 0)
+    if (git_rev_list_topo(bug.get_kerneldir(), old_hash, new_hash, outfile) < 0)
     {
         return vector<Version>();
     }
