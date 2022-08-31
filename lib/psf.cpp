@@ -55,7 +55,7 @@ string PSF_getBugName(const string &line)
 
     // cut out the dup name marker: (#)
     if (ret.size() > 0 && ret.at(ret.size() - 1) == ')')
-        ret = ret.substr(0, line.size() - 4);
+        ret = ret.substr(0, ret.find_last_of('(') - 1);
 
     return ret;
 }

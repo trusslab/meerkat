@@ -367,8 +367,7 @@ vector<string> git_show_commits_merged(const string &repo, const string &mergeha
 Version git_find_merge_commit(const string &repo, const vector<Version> &commits, const string &hash_to_find)
 {
     vector<string> commits_merged;
-    // search linearly for the merge commit. Max out at 10,000 commits
-    for (int i = commits.size() - 1; i >= 0 && commits.size() - i <= 10,000; i--)
+    for (int i = commits.size() - 1; i >= 0; i--)
     {
         if (commits.at(i).name == hash_to_find)
             continue;
