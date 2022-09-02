@@ -336,16 +336,17 @@ vector<string> git_show_commits_merged(const string &repo, const string &mergeha
     // git log --format=%H hash^..hash
     char command[] = "git";
     char arg1[] = "log";
-    char arg2[] = "--format=%H";
+    char arg2[] = "-100";
+    char arg3[] = "--format=%H";
     string range = mergehash + "^.." + mergehash;
-    char * arg3 = new char[range.size() + 1];
-    strcpy(arg3, range.c_str());
+    char * arg4 = new char[range.size() + 1];
+    strcpy(arg4, range.c_str());
 
-    char * arg_list[] = {command, arg1, arg2, arg3, nullptr};
+    char * arg_list[] = {command, arg1, arg2, arg3, arg4, nullptr};
 
     string ret = exec_and_read("git", arg_list);
 
-    delete[] arg3;
+    delete[] arg4;
     cd(old_dir);
 
     if (!ret.empty())
