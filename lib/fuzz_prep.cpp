@@ -309,7 +309,7 @@ int prep_syzkaller(const Bug_Info &bug, const InspectorConfig &inspector, const 
     }
 
     // patch for mounting cgroup
-    if (syzkaller_version.date >= Date(2020,10,12) && syzkaller_version.date <= Date(2020,10,13))
+    if (syzkaller_version.date >= Date(2021,10,12) && syzkaller_version.date <= Date(2021,10,13))
     {
         cout << "Applying cgroup mount patch to Syzkaller.\n";
         sed_i("s/failmsg(\\\"mount cgroup failed\\\", \\\"(%s, %s): %d\\\\n\\\", dir, enabled + 1, errno);/debug(\\\"mount(%s, %s) failed: %d\\\\n\\\", dir, enabled + 1, errno);/",
