@@ -30,7 +30,8 @@ int main(int argc, char ** argv)
            compiler,
            tmp_path, tmp_snapshotfile,
            template1, template2, template3, template_dir,
-           kernel_commit_name = "";
+           revealing_factor = "",
+           reveal_name = "";
 
     VMConfig vmc;
     Port_Info port;
@@ -40,7 +41,8 @@ int main(int argc, char ** argv)
     Argparse args;
 
     Version linux_version, syzkaller_version, prev_syzkaller_version,
-            current_version, bisect_version, merge_commit;
+            current_version, bisect_version, merge_commit,
+            guilty_version, finding_version, reveal_version;
     Session this_session;
     Syzkaller_Result result, result_before, result_after;
     
@@ -313,8 +315,10 @@ int main(int argc, char ** argv)
         goto finish;
     }
 
-    high_date = kernel_versions.front().date;
-    low_date = kernel_versions.back().date;
+    finding_version.name = find_hash;
+    guilty_version.name = guilty_hash;
+    high_date = finding_version.date = kernel_versions.front().date;
+    low_date = guilty_version.date = kernel_versions.back().date;
     if (low_date < SYZBOT_BEGIN_DATE)
         low_date = SYZBOT_BEGIN_DATE;
 
@@ -421,7 +425,7 @@ int main(int argc, char ** argv)
         {
             cout << "Merge commit found: " << merge_commit.name << ".\n";
             logfile << "Merge Commit: " << merge_commit.date.get_date() << " - " << merge_commit.name << ".\n" << flush;
-            low_date = merge_commit.date;
+            low_date = merge_commit.date > SYZBOT_BEGIN_DATE ? merge_commit.date : SYZBOT_BEGIN_DATE;
         }
         else
         {
@@ -642,16 +646,15 @@ int main(int argc, char ** argv)
 
             if (!result_before.found && result_after.found)
             {
+                revealing_factor = "Template Update";
+                reveal_version = Version(current_version.name, current_version.date);
+                reveal_name = get_commit_name(bug.get_syzdir(), current_version.name);
+
                 cout << SPACER
                      << "Revealing Factor Found!\n"
-                     << "Template update from " << current_version.name << " on " << current_version.date.get_date() << " is the reason.\n";
-                
-                logfile << "\nSuccess\n"
-                        << "Revealing factor: Template Update\n"
-                        << "Template Version: " << current_version.date.get_date() << " - " << current_version.name << endl
-                        << "Commit name: " << get_commit_name(bug.get_syzdir(), current_version.name) << endl << flush;
+                     << "Template update " << reveal_version.name << " on " << reveal_version.date.get_date() << " is the reason.\n";
 
-                goto finish;
+                goto report;
             }
 
             if (result_after.found)
@@ -811,11 +814,12 @@ int main(int argc, char ** argv)
     if (k >= kernel_versions.size())
     {
         cout << "This bug is findable at the guilty commit.\n";
-        logfile << "\nSuccess\n"
-                << "Revealing factor: Guilty Commit\n"
-                << "Kernel Version: " << kernel_versions.at(k - 1).date.get_date() << " - " << kernel_versions.at(k - 1).name << endl
-                << "Commit name: " << get_commit_name(bug.get_kerneldir(), kernel_versions.at(k - 1).name) << endl << flush;
-        goto finish;
+
+        revealing_factor = "Guilty Commit";
+        reveal_version = Version(kernel_versions.at(k - 1).name, kernel_versions.at(k - 1).date);
+        reveal_name = get_commit_name(bug.get_kerneldir(), kernel_versions.at(k - 1).name);
+
+        goto report;
     }
 
     linux_version = kernel_versions.at(k);
@@ -863,17 +867,15 @@ int main(int argc, char ** argv)
     // check the results
     if (result_after.found && !result_before.found)
     {
+        revealing_factor = "Kernel Commit";
+        reveal_version = Version(bisect_version.name, bisect_version.date);
+        reveal_name = get_commit_name(bug.get_kerneldir(), bisect_version.name);
+
         cout << SPACER
              << "Revealing Factor Found!\n"
-             << "Kernel code change from " << bisect_version.name << " on " << bisect_version.date.get_date() << " is the reason.\n";
-                
-        logfile << "\nSuccess\n"
-                << "Revealing factor: Kernel Code Change\n"
-                << "Kernel Version: " << bisect_version.date.get_date() << " - " << bisect_version.name << endl
-                << "Commit name: " << get_commit_name(bug.get_kerneldir(), bisect_version.name) << endl << flush;
-        
-        kernel_commit_name = get_commit_name(bug.get_kerneldir(), bisect_version.name);
-        goto finish;
+             << "Kernel commit " << reveal_version.name << " on " << reveal_version.date.get_date() << " is the reason.\n";
+
+        goto report;
     }
     
     high_date = low_date = bisect_version.date;
@@ -951,32 +953,49 @@ int main(int argc, char ** argv)
 
     if (get_index_by_name(syzkaller_versions, syzkaller_version.name) < r)
     {
+        revealing_factor = "Syzkaller Update";
+        reveal_version = Version("Unknown", syzkaller_version.date);
+        reveal_name = "Unknown";
+
         cout << SPACER
              << "Revealing Factor Found!\n"
              << "Exact Syzkaller commit unknown.\n";
-                
-        logfile << "\nSuccess\n"
-                << "Revealing factor: Syzkaller Update\n"
-                << "Syzkaller Version: Unknown commit from " << syzkaller_version.date.get_date() << ".\n" << flush;
     }
     else
     {
+        revealing_factor = "Syzkaller Update";
+        reveal_version = Version(syzkaller_version.name, syzkaller_version.date);
+        reveal_name = get_commit_name(bug.get_syzdir(), syzkaller_version.name);
+
         cout << SPACER
              << "Revealing Factor Found!\n"
-             << "Syzkaller update from " << syzkaller_version.name << " on " << syzkaller_version.date.get_date() << " is the reason.\n";
-                
-        logfile << "\nSuccess\n"
-                << "Revealing factor: Syzkaller Update\n"
-                << "Syzkaller Version: " << syzkaller_version.date.get_date() << " - " << syzkaller_version.name << endl
-                << "Commit name: " << get_commit_name(bug.get_syzdir(), syzkaller_version.name) << endl << flush;
+             << "Syzkaller update from " << reveal_version.name << " on " << reveal_version.date.get_date() << " is the reason.\n";
     }
 
     // ======================================================================================================
     // Finish
     // ======================================================================================================
 
+report:
+    logfile << "\n" << SPACER
+            << "Success\n"
+            << "Revealing Factor:   " << revealing_factor << "\n"
+            << "Version:            " << reveal_version.date.get_date() << " - " << reveal_version.name << "\n"
+            << "Commit Name:        " << reveal_name << "\n\n"
+            << "Bug Name:           " << bug.get_name() << "\n"
+            << "Bug Link:           " << bug.get_buglink() << "\n"
+            << "Arch:               " << bug.get_arch() << "\n"
+            << "Finding Commit:     " << finding_version.date.get_date() << " - " << finding_version.name << "\n";
+    
+    if (!merge_commit.name.empty())
+        logfile << "Guilty Merge:       " << merge_commit.date.get_date() << " - " << merge_commit.name << "\n";
+    else
+        logfile << "Guilty Merge:       " << "None\n";
+        
+    logfile << "Guilty Commit:      " << guilty_version.date.get_date() << " - " << guilty_version.name << "\n" << flush;
+
 finish:
-    if (check_faulty_result(bug, ttfs, max_time, kernel_commit_name))
+    if (check_faulty_result(bug, ttfs, max_time))
     {
         cout << "Revealing factor marked as faulty.\n";
         logfile << "Warning: Revealing factor may be faulty.\n" << flush;

@@ -211,13 +211,9 @@ Syzkaller_Result fuzz_loop(const Bug_Info &bug, const InspectorConfig &inspector
     return session_ret;
 }
 
-bool check_faulty_result(const Bug_Info &bug, const vector<int> &ttfs, int max_time, const string &name)
+bool check_faulty_result(const Bug_Info &bug, const vector<int> &ttfs, int max_time)
 {
     bool fault = false;
-
-    // merge commits are bad.
-    if (!name.empty() && name.substr(0, 9) == "Merge tag")
-        fault = true;
 
     // Check if the reproducer is dependent on fault injection
     if (grep_to_find("\\\"fault_call\\\":", bug.get_repro()) && !grep_to_find("\\\"fault_call\\\":-1", bug.get_repro()))
@@ -227,7 +223,7 @@ bool check_faulty_result(const Bug_Info &bug, const vector<int> &ttfs, int max_t
     // may have timed out without finding the bug when they
     // should not have
     for (int n : ttfs)
-        if (n >= max_time * 0.7)
+        if (n >= max_time * 0.8)
             fault = true;
 
     return fault;

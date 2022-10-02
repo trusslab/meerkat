@@ -34,6 +34,6 @@ Syzkaller_Result fuzz_loop(const Bug_Info &, const InspectorConfig &, const std:
 
 // Checks against heuristics to see if the resulting kernel
 // commit is faulty. Returns true if it is.
-bool check_faulty_result(const Bug_Info &, const std::vector<int> &, int, const std::string & = "");
+bool check_faulty_result(const Bug_Info &, const std::vector<int> &, int);
 
 #endif

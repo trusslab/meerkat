@@ -262,6 +262,7 @@ int Date::days_in_month() const
 Date Date::operator=(const Date & other)
 {
     set_date(other.year, other.month, other.day);
+    set_delim(other.delim);
     return *this;
 }
 
