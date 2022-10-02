@@ -16,6 +16,8 @@ wd=""
 startLine=1
 endLine=0
 
+retrospector=syzInspector
+
 # =================================================================================================
 # Functions
 
@@ -55,7 +57,7 @@ mtime=""
 findonly=""
 
 # get the start and end lines from the arguments
-while getopts "s:e:i:b:m:xpf" flag
+while getopts "s:e:i:b:m:xpfd" flag
 do
     case $flag in
         s)
@@ -76,6 +78,9 @@ do
         x)
             setuponly="--setup-only"
             findonly="" ;;
+        d)
+            retrospector=syzInspector-debug
+            make -f Makefile debug ;;
         *)
             printhelp
             exit
@@ -197,12 +202,12 @@ while (( $line <= $endLine )); do
             writebugconfig
 
             echo ",good fuzz,$findDate,$findDate,$startDate" >> $logfile
-            echo "./syzInspector -F $findhash -G $guiltyhash -i $id $mtime $nopoc $findonly $setuponly" >> $logfile
+            echo "./$retrospector -F $findhash -G $guiltyhash -i $id $mtime $nopoc $findonly $setuponly" >> $logfile
             # run inspector on the bug
             # using finding date as the ending date
             echo "Fuzzing. finding: $findhash; guilty: $guiltyhash"
             set +e
-            ./syzInspector -F $findhash -G $guiltyhash -i $id $mtime $nopoc $findonly $setuponly
+            ./$retrospector -F $findhash -G $guiltyhash -i $id $mtime $nopoc $findonly $setuponly
             set -e
             number=$(( $number + 1 ))
         else
