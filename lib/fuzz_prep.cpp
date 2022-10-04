@@ -289,6 +289,21 @@ int prep_syzkaller(const Bug_Info &bug, const InspectorConfig &inspector, const 
         sed_i("s/\\-enable\\-kvm/\\-enable\\-kvm \\-cpu host,migratable=off/", bug.get_syzdir() + "/vm/qemu/qemu.go");
     }
 
+    if (syzkaller_version.date <= Date(2018,04,20) && syzkaller_version.date >= Date(2017,12,17))
+    {
+        cout << "Fixing -smp in qemu boot args.\n";
+        if (grep_to_find("Cpu", bug.get_syzdir() + "/vm/qemu/qemu.go"))
+        {
+            sed_i("/if inst.cfg.Cpu == 1/,+14d", bug.get_syzdir() + "/vm/qemu/qemu.go");
+            sed_i("s/strconv.Itoa(inst.cfg.Mem),/strconv.Itoa(inst.cfg.Mem),\\n\\t\\\"\\-smp\\\", strconv.Itoa(inst.cfg.Cpu),/", bug.get_syzdir() + "/vm/qemu/qemu.go");
+        }
+        else
+        {
+            sed_i("/if inst.cfg.CPU == 1/,+14d", bug.get_syzdir() + "/vm/qemu/qemu.go");
+            sed_i("s/strconv.Itoa(inst.cfg.Mem),/strconv.Itoa(inst.cfg.Mem),\\n\\t\\\"\\-smp\\\", strconv.Itoa(inst.cfg.CPU),/", bug.get_syzdir() + "/vm/qemu/qemu.go");
+        }
+    }
+
     // Apply patch for netfilter_bridge/ebtables
     if (syzkaller_version.date < Date(2018,9,27) && syzkaller_version.date >= Date(2018,2,17))
     {
