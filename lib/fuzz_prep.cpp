@@ -279,8 +279,14 @@ int prep_syzkaller(const Bug_Info &bug, const InspectorConfig &inspector, const 
     // Patch a boot error related to kvm
     if (syzkaller_version.date < Date(2021,1,1) && syzkaller_version.date >= Date(2020,5,1))
     {
-        cout << "Applying build patch to Syzkaller.\n";
+        cout << "Removing migratable=off from qemu boot args.\n";
         sed_i("s/\\-enable\\-kvm \\-cpu host,migratable=off/\\-enable\\-kvm \\-cpu host/", bug.get_syzdir() + "/vm/qemu/qemu.go");
+    }
+
+    if (syzkaller_version.date <= Date(2018,10,28))
+    {
+        cout << "Adding -cpu host to qemu boot args.\n";
+        sed_i("s/\\-enable\\-kvm/\\-enable\\-kvm \\-cpu host,migratable=off/", bug.get_syzdir() + "/vm/qemu/qemu.go");
     }
 
     // Apply patch for netfilter_bridge/ebtables
