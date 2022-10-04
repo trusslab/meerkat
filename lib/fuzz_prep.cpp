@@ -304,6 +304,13 @@ int prep_syzkaller(const Bug_Info &bug, const InspectorConfig &inspector, const 
         }
     }
 
+    if ( syzkaller_version.date <= Date(2018,04,16) &&
+        grep_to_find(" \\-usb \\-usbdevice mouse \\-usbdevice tablet \\-soundhw all", bug.get_syzdir() + "/vm/qemu/qemu.go"))
+    {
+        cout << "Removing usb/sound qemu boot args.\n";
+        sed_i("s/ \\-usb \\-usbdevice mouse \\-usbdevice tablet \\-soundhw all//", bug.get_syzdir() + "/vm/qemu/qemu.go");
+    }
+
     // Apply patch for netfilter_bridge/ebtables
     if (syzkaller_version.date < Date(2018,9,27) && syzkaller_version.date >= Date(2018,2,17))
     {
