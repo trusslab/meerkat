@@ -166,6 +166,7 @@ int prep_kernel(const Bug_Info &bug, const InspectorConfig &inspector, const Ver
     // Add a patch for all of 14 commits
     if (linux_version.date == Date(2019,12,1))
     {
+        cout << "PATCH: Fixing page size references in mm/userfaultfd.c.\n";
         sed_i("s/VM_BUG_ON(dst_addr \\& ~huge_page_mask(h));/VM_BUG_ON(dst_addr \\& (vma_hpagesize - 1));/", bug.get_kerneldir() + "/mm/userfaultfd.c");
         sed_i("s/dst_pte = huge_pte_alloc(dst_mm, dst_addr, huge_page_size(h));/dst_pte = huge_pte_alloc(dst_mm, dst_addr, vma_hpagesize);/", bug.get_kerneldir() + "/mm/userfaultfd.c");
         sed_i("s/pages_per_huge_page(h), true);/vma_hpagesize \\/ PAGE_SIZE, true);/", bug.get_kerneldir() + "/mm/userfaultfd.c");
@@ -335,6 +336,7 @@ int prep_syzkaller(const Bug_Info &bug, const InspectorConfig &inspector, const 
     // runtime patch for file extraction (slab oob)
     if (syzkaller_version.date == Date(2018,9,26))
     {
+        cout << "PATCH: Fixing slab OOB in pkg/report/linux.go.\n";
         sed_i("s/report := rep.Report\\[rep.StartPos:\\]/report := rep.Report\\[rep.reportPrefixLen:\\]/", bug.get_syzdir() + "/pkg/report/linux.go");
         sed_i("s/rep.Report = append(rep.Report, report...)/rep.reportPrefixLen = len(rep.Report)\\n\\trep.Report = append(rep.Report, report...)/", bug.get_syzdir() + "/pkg/report/linux.go");
         sed_i("s/guiltyFile string/guiltyFile string\\n\\treportPrefixLen int/", bug.get_syzdir() + "/pkg/report/report.go");
@@ -343,7 +345,7 @@ int prep_syzkaller(const Bug_Info &bug, const InspectorConfig &inspector, const 
     // patch for mounting cgroup
     if (syzkaller_version.date >= Date(2021,10,12) && syzkaller_version.date <= Date(2021,10,13))
     {
-        cout << "Applying cgroup mount patch to Syzkaller.\n";
+        cout << "PATCH: Fixing crash on cgroup mount.\n";
         sed_i("s/failmsg(\\\"mount cgroup failed\\\", \\\"(%s, %s): %d\\\\n\\\", dir, enabled + 1, errno);/debug(\\\"mount(%s, %s) failed: %d\\\\n\\\", dir, enabled + 1, errno);/",
                 bug.get_syzdir() + "/executor/common_linux.h");
         sed_i("s/failmsg(\\\"mount cgroup failed\\\", \\\"(%s, %s): %d\\\\n\\\", dir, enabled + 1, errno);/debug(\\\"mount(%s, %s) failed: %d\\\\n\\\", dir, enabled + 1, errno);/",
@@ -353,6 +355,7 @@ int prep_syzkaller(const Bug_Info &bug, const InspectorConfig &inspector, const 
     // Fix a build error with strncpy
     if (syzkaller_version.date < Date(2018,5,13) && syzkaller_version.date >= Date(2018,2,10))
     {
+        cout << "PATCH: Fixing off by one in executor/common_linux.h.\n";
         sed_i("s/NONFAILING(strncpy(buf, (char\\*)a0, sizeof(buf)));/NONFAILING(strncpy(buf, (char\\*)a0, sizeof(buf) - 1));/", bug.get_syzdir() + "/executor/common_linux.h");
         sed_i("s/NONFAILING(strncpy(buf, (char\\*)a0, sizeof(buf)));/NONFAILING(strncpy(buf, (char\\*)a0, sizeof(buf) - 1));/", bug.get_syzdir() + "/pkg/csource/linux_common.go");
     }
