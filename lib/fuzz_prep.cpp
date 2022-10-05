@@ -277,7 +277,7 @@ int prep_syzkaller(const Bug_Info &bug, const InspectorConfig &inspector, const 
 
     // This sed is for older versions before e935237c9c7214eb37cb35a93c9930b590016094 (2019-01-19)
     // thankfully no overlap between the two checks, so we can just run both.
-    sed_i("s/-pthread -Wall -Wframe-larger-than=8192 -Wparentheses -Werror -O2/-pthread -Wall -Wframe-larger-than=8192 -Wparentheses -O2/",
+    sed_i("s/-pthread -Wall -Wframe-larger-than=8192 -Wparentheses -Werror/-pthread -Wall -Wframe-larger-than=8192 -Wparentheses/",
             bug.get_syzdir() + "/Makefile");
 
     // Patch a boot error related to kvm
