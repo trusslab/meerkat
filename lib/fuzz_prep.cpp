@@ -157,7 +157,7 @@ int prep_kernel(const Bug_Info &bug, const InspectorConfig &inspector, const Ver
         grep_to_find("#include <sys/socket.h>", bug.get_kerneldir() + "/scripts/selinux/genheaders/genheaders.c") &&
         !grep_to_find("#include <sys/socket.h>", bug.get_kerneldir() + "/security/selinux/include/classmap.h"))
     {
-        cout << "Applying a patch to the kernel.\n";
+        cout << "PATCH: Fixing includes in selinux/mpd and selinux/genheaders.\n";
         sed_i("s/#include <sys\\/socket.h>//", bug.get_kerneldir() + "/scripts/selinux/mdp/mdp.c");
         sed_i("s/#include <sys\\/socket.h>//", bug.get_kerneldir() + "/scripts/selinux/genheaders/genheaders.c");
         sed_i("s/#include <linux\\/capability.h>/#include <linux\\/capability.h>\\n#include <linux\\/socket.h>/", bug.get_kerneldir() + "/security/selinux/include/classmap.h");
@@ -171,10 +171,14 @@ int prep_kernel(const Bug_Info &bug, const InspectorConfig &inspector, const Ver
         sed_i("s/pages_per_huge_page(h), true);/vma_hpagesize \\/ PAGE_SIZE, true);/", bug.get_kerneldir() + "/mm/userfaultfd.c");
     }
 
-    if (grep_to_find("ifdef CONFIG_X86_64", bug.get_kerneldir() + "/arch/x86/Makefile"))
+    // the date here gives rough estimate. Fix works before that date.
+    if (!grep_to_find("ifdef CONFIG_X86_64", bug.get_kerneldir() + "/arch/x86/Makefile") &&
+        linux_version.date <= Date(2018,6,9))
     {
-        cout << "Applying a patch to the kernel.\n";
-        sed_i("/LDFLAGS :=/r patches/patch.txt", bug.get_kerneldir() + "/arch/x86/Makefile");
+        cout << "PATCH: Forcing 2MB page size in arch/x86/Makefile.\n";
+        sed_i("s/LDFLAGS := \\-m elf_$(UTS_MACHINE)/LDFLAGS := \\-m elf_$(UTS_MACHINE)\\nifdef CONFIG_X86_64\\nLDFLAGS += $(call ld\\-option, \\-z max\\-page\\-size=0x200000)\\nendif\\n/",
+                bug.get_kerneldir() + "/arch/x86/Makefile");
+        
     }
 
     // build the kernel
@@ -279,19 +283,19 @@ int prep_syzkaller(const Bug_Info &bug, const InspectorConfig &inspector, const 
     // Patch a boot error related to kvm
     if (syzkaller_version.date < Date(2021,1,1) && syzkaller_version.date >= Date(2020,5,1))
     {
-        cout << "Removing migratable=off from qemu boot args.\n";
+        cout << "PATCH: Removing migratable=off from qemu boot args.\n";
         sed_i("s/\\-enable\\-kvm \\-cpu host,migratable=off/\\-enable\\-kvm \\-cpu host/", bug.get_syzdir() + "/vm/qemu/qemu.go");
     }
 
     if (syzkaller_version.date <= Date(2018,10,28))
     {
-        cout << "Adding -cpu host to qemu boot args.\n";
+        cout << "PATCH: Adding -cpu host to qemu boot args.\n";
         sed_i("s/\\-enable\\-kvm/\\-enable\\-kvm \\-cpu host,migratable=off/", bug.get_syzdir() + "/vm/qemu/qemu.go");
     }
 
-    if (syzkaller_version.date <= Date(2018,04,20) && syzkaller_version.date >= Date(2017,12,17))
+    if (syzkaller_version.date <= Date(2018,4,20) && syzkaller_version.date >= Date(2017,12,17))
     {
-        cout << "Fixing -smp in qemu boot args.\n";
+        cout << "PATCH: Fixing -smp in qemu boot args.\n";
         if (grep_to_find("Cpu", bug.get_syzdir() + "/vm/qemu/qemu.go"))
         {
             sed_i("/if inst.cfg.Cpu == 1/,+14d", bug.get_syzdir() + "/vm/qemu/qemu.go");
@@ -304,17 +308,17 @@ int prep_syzkaller(const Bug_Info &bug, const InspectorConfig &inspector, const 
         }
     }
 
-    if ( syzkaller_version.date <= Date(2018,04,16) &&
+    if ( syzkaller_version.date <= Date(2018,4,16) &&
         grep_to_find(" \\-usb \\-usbdevice mouse \\-usbdevice tablet \\-soundhw all", bug.get_syzdir() + "/vm/qemu/qemu.go"))
     {
-        cout << "Removing usb/sound qemu boot args.\n";
+        cout << "PATCH: Removing usb/sound qemu boot args.\n";
         sed_i("s/ \\-usb \\-usbdevice mouse \\-usbdevice tablet \\-soundhw all//", bug.get_syzdir() + "/vm/qemu/qemu.go");
     }
 
     // Apply patch for netfilter_bridge/ebtables
     if (syzkaller_version.date < Date(2018,9,27) && syzkaller_version.date >= Date(2018,2,17))
     {
-        cout << "Applying netfilter_bridge patch to Syzkaller.\n";
+        cout << "PATCH: Fixing includes in netfilter_bridge.\n";
         sed_i("/#include <linux\\/netfilter_bridge\\/ebtables.h>/r patches/syz-1.txt", bug.get_syzdir() + "/executor/common_linux.h");
         sed_i("s/#include <linux\\/netfilter_bridge\\/ebtables.h>//", bug.get_syzdir() + "/executor/common_linux.h");
         sed_i("s/#include <linux\\/if.h>//", bug.get_syzdir() + "/executor/common_linux.h");
