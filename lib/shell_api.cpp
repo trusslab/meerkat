@@ -126,7 +126,7 @@ int make(int procs, const string &option)
     return (err == 0 ? 0 : -1);
 }
 
-int syz_env_cross_compile(const string &syz_env)
+int syz_env_cross_compile(const string &syz_env, const Bug_Info &bug)
 {
     char command[] = "sudo";
     char * arg1 = new char[syz_env.size() + 1];
@@ -135,7 +135,7 @@ int syz_env_cross_compile(const string &syz_env)
     char arg3[] = "TARGETVMARCH=amd64";
     char arg4[] = "TARGETARCH=386";
 
-    char * arg_list[] = {command, arg1, arg2, arg3, arg4};
+    char * arg_list[] = {command, arg1, arg2, arg3, arg4, nullptr};
 
     int err = exec_and_wait("sudo", arg_list);
 
@@ -143,7 +143,7 @@ int syz_env_cross_compile(const string &syz_env)
     return (err != 0 ? -1 : 0);
 }
 
-int syz_env_clean(const string &syz_env)
+int syz_env_clean(const string &syz_env, const Bug_Info &bug)
 {
     char command[] = "sudo";
     char * arg1 = new char[syz_env.size() + 1];
@@ -151,7 +151,7 @@ int syz_env_clean(const string &syz_env)
     char arg2[] = "make";
     char arg3[] = "clean";
 
-    char * arg_list[] = {command, arg1, arg2, arg3};
+    char * arg_list[] = {command, arg1, arg2, arg3, nullptr};
 
     int err = exec_and_wait("sudo", arg_list);
 

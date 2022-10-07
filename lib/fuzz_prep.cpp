@@ -214,7 +214,14 @@ int prep_syzkaller(const Bug_Info &bug, const InspectorConfig &inspector, const 
 {
     int err = 0;
     if (bug.get_arch() == "i386")
-        err = syz_env_clean(inspector.get_inspect_dir() + "/tools/syz-env");
+    {
+        if(!check_file(bug.get_syzdir() + "/tools/syz-env"))
+            copy(inspector.get_inspect_dir() + "/tools/syz-env", bug.get_syzdir() + "/tools/");
+
+        cd(bug.get_syzdir());
+        err = syz_env_clean(bug.get_syzdir() + "/tools/syz-env", bug);
+        cd(inspector.get_inspect_dir());
+    }
     
     err = clean_syzkaller(bug);
     if (err < 0)
@@ -395,7 +402,12 @@ int prep_syzkaller(const Bug_Info &bug, const InspectorConfig &inspector, const 
     if (bug.get_arch() == "amd64")
         err = make(inspector.get_makeprocs());
     else
-        err = syz_env_cross_compile(inspector.get_inspect_dir() + "/tools/syz-env");
+    {
+        if(!check_file(bug.get_syzdir() + "/tools/syz-env"))
+            copy(inspector.get_inspect_dir() + "/tools/syz-env", bug.get_syzdir() + "/tools/");
+
+        err = syz_env_cross_compile(bug.get_syzdir() + "/tools/syz-env", bug);
+    }
 
     if (err < 0)
         cerr << "Error: Syzkaller failed to make.\n";

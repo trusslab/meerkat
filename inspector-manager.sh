@@ -42,11 +42,13 @@ printhelp () {
     echo "    s - the line in parse/bugs.csv to start on"
     echo "    e - the last line in parse/bugs.csv to use"
     echo "    i - the id given to this manager"
-    echo "    b - determine the name of the bug file in parse/"
+    echo "    b - determine the name of the bug file in parse"
     echo "    m - the maximum time to fuzz at the finding commit"
+    echo "    a - the arch to build on (amd64/i386)"
     echo "    p - fuzz without the poc as a seed"
     echo "    f - fuzz only at the finding commit"
-    echo "    x - only set up the kernel and syzkaller. Do not fuzz."
+    echo "    x - only set up the kernel and syzkaller. Do not fuzz"
+    echo "    d - build and use a debug version of SyzRetrospector"
 }
 
 # =================================================================================================
@@ -55,9 +57,10 @@ setuponly=""
 nopoc=""
 mtime=""
 findonly=""
+targetarch="amd64" # i386
 
 # get the start and end lines from the arguments
-while getopts "s:e:i:b:m:xpfd" flag
+while getopts "s:e:i:b:m:a:xpfd" flag
 do
     case $flag in
         s)
@@ -70,6 +73,8 @@ do
             bugfile="$inspectdir/parse/${OPTARG}" ;;
         m)
             mtime="-m ${OPTARG}" ;;
+        a)
+            targetarch="${OPTARG}" ;;
         p)
             nopoc="--no-poc" ;;
         f)
@@ -118,7 +123,7 @@ fi
 
 line=$startLine
 
-echo "file: $bugfile startline: $startLine endline: $endLine" >> $logfile
+echo "file: $bugfile startline: $startLine endline: $endLine arch: $targetarch" >> $logfile
 echo "" >> $logfile
 
 while (( $line <= $endLine )); do
@@ -151,7 +156,7 @@ while (( $line <= $endLine )); do
     # check that the time to find is good and interesting
     findAge=$(( $($inspectdir/helpers/diffdate $findDate $startDate) ))
 
-    if (( $findAge > 1 && $fixAge >= 0 )) && [[ $arch == "amd64" ]]; then
+    if (( $findAge > 1 && $fixAge >= 0 )) && [[ $arch == $targetarch ]]; then
         # bug number and name
         curBug="bug$line"
         bugName="$(echo "$linetext" | awk -F',' '{ print $2; }')"
@@ -218,8 +223,8 @@ while (( $line <= $endLine )); do
         if (( $findAge <= 1 && $findAge >= 0 )); then
             echo "Bug was found within 1 day on line $line: $fixDate, finding: $findDate, guilty: $guiltyDate"
             echo ",too young" >> $logfile
-        elif [[ $arch != "amd64" ]]; then
-            echo ",32bit" >> $logfile
+        elif [[ $arch != $targetarch ]]; then
+            echo ",wrong arch" >> $logfile
         else
             echo "Bad dates on line $line: fixing: $fixDate, finding: $findDate, guilty: $guiltyDate"
             echo ",bad dates" >> $logfile

@@ -2,6 +2,7 @@
 #define SHELL_API_H
 
 #include <inspector_config.h>
+#include <bug_info.h>
 
 #include <string>
 
@@ -25,10 +26,10 @@ bool grep_to_find(const std::string &, const std::string &);
 int make(int, const std::string & = "");
 
 // builds syzkaller for 386 POCs using syz-env
-int syz_env_cross_compile(const std::string &);
+int syz_env_cross_compile(const std::string &, const Bug_Info &);
 
 // cleans up after syz-env because sudo
-int syz_env_clean(const std::string &);
+int syz_env_clean(const std::string &, const Bug_Info &);
 
 // runs cp src dest
 int copy(const std::string &, const std::string &);

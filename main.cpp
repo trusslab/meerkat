@@ -1016,7 +1016,14 @@ finish:
 
     // clean up syzkaller if syz-env was used
     if (bug.get_arch() == "i386")
-        err = syz_env_clean(inspector.get_inspect_dir() + "/tools/syz-env");
+    {
+        if(!check_file(bug.get_syzdir() + "/tools/syz-env"))
+            copy(inspector.get_inspect_dir() + "/tools/syz-env", bug.get_syzdir() + "/tools/");
+        
+        cd(bug.get_syzdir());
+        err = syz_env_clean(inspector.get_inspect_dir() + "/tools/syz-env", bug);
+        cd(inspector.get_inspect_dir());
+    }
 
 setup_only_finish:
     if (logfile)
