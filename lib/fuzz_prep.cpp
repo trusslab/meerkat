@@ -280,8 +280,17 @@ int prep_syzkaller(const Bug_Info &bug, const InspectorConfig &inspector, const 
     }
 
     // Remove the flags that check for unused functions
-    sed_i("s/$(ADDCFLAGS) $(CFLAGS) -DGOOS_$(TARGETOS)=1 -DGOARCH_$(TARGETARCH)=1/-m64 -O2 -pthread -Wall -static-pie -DGOOS_$(TARGETOS)=1 -DGOARCH_$(TARGETARCH)=1/",
-            bug.get_syzdir() + "/Makefile");
+    // Also remember to build execcutor with 32 bit flags for i386
+    if (bug.get_arch() == "i386")
+    {
+        sed_i("s/$(ADDCFLAGS) $(CFLAGS) -DGOOS_$(TARGETOS)=1 -DGOARCH_$(TARGETARCH)=1/-m32 -O2 -pthread -Wall -static-pie -DGOOS_$(TARGETOS)=1 -DGOARCH_$(TARGETARCH)=1/",
+                bug.get_syzdir() + "/Makefile");
+    }
+    else
+    {
+        sed_i("s/$(ADDCFLAGS) $(CFLAGS) -DGOOS_$(TARGETOS)=1 -DGOARCH_$(TARGETARCH)=1/-m64 -O2 -pthread -Wall -static-pie -DGOOS_$(TARGETOS)=1 -DGOARCH_$(TARGETARCH)=1/",
+                bug.get_syzdir() + "/Makefile");
+    }
 
     // This sed is for older versions before e935237c9c7214eb37cb35a93c9930b590016094 (2019-01-19)
     // thankfully no overlap between the two checks, so we can just run both.
