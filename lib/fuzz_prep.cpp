@@ -215,8 +215,14 @@ int prep_syzkaller(const Bug_Info &bug, const InspectorConfig &inspector, const 
     int err = 0;
     if (bug.get_arch() == "i386")
     {
-        if(!check_file(bug.get_syzdir() + "/tools/syz-env"))
+        if(syzkaller_version.date <= Date(2020,5,18))
+        {
+            cout << "Copying syz-env from " << inspector.get_inspect_dir() + "/tools/syz-env" << " to " << bug.get_syzdir() + "/tools/" << endl;
+            move(bug.get_syzdir() + "/tools/syz-env/env.go", bug.get_syzdir() + "/tools/syz-env/make.go");
+            move(bug.get_syzdir() + "/tools/syz-env", bug.get_syzdir() + "/tools/syz-make");
+            sed_i("s/go run tools\\/syz-env\\/env\\.go))/go run tools\\/syz-make\\/make\\.go))/", bug.get_syzdir() + "/Makefile");
             copy(inspector.get_inspect_dir() + "/tools/syz-env", bug.get_syzdir() + "/tools/");
+        }
 
         cd(bug.get_syzdir());
         err = syz_env_clean(bug.get_syzdir() + "/tools/syz-env", bug);
@@ -412,8 +418,14 @@ int prep_syzkaller(const Bug_Info &bug, const InspectorConfig &inspector, const 
         err = make(inspector.get_makeprocs());
     else
     {
-        if(!check_file(bug.get_syzdir() + "/tools/syz-env"))
+        if(syzkaller_version.date <= Date(2020,5,18))
+        {
+            cout << "Copying syz-env from " << inspector.get_inspect_dir() + "/tools/syz-env" << " to " << bug.get_syzdir() + "/tools/" << endl;
+            move(bug.get_syzdir() + "/tools/syz-env/env.go", bug.get_syzdir() + "/tools/syz-env/make.go");
+            move(bug.get_syzdir() + "/tools/syz-env", bug.get_syzdir() + "/tools/syz-make");
+            sed_i("s/go run tools\\/syz-env\\/env\\.go))/go run tools\\/syz-make\\/make\\.go))/", bug.get_syzdir() + "/Makefile");
             copy(inspector.get_inspect_dir() + "/tools/syz-env", bug.get_syzdir() + "/tools/");
+        }
 
         err = syz_env_cross_compile(bug.get_syzdir() + "/tools/syz-env", bug);
     }
