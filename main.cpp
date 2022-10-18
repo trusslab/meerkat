@@ -426,6 +426,8 @@ int main(int argc, char ** argv)
             cout << "Merge commit found: " << merge_commit.name << ".\n";
             logfile << "Merge Commit: " << merge_commit.date.get_date() << " - " << merge_commit.name << ".\n" << flush;
             low_date = merge_commit.date > SYZBOT_BEGIN_DATE ? merge_commit.date : SYZBOT_BEGIN_DATE;
+            // cut the kernel_versions here. Find the merge commit, then erase everything after it.
+            kernel_versions.erase(kernel_versions.begin() + get_index_by_name(kernel_versions, merge_commit.name) + 1, kernel_versions.end());
         }
         else
         {
@@ -602,6 +604,7 @@ int main(int argc, char ** argv)
             if (result_before.found)
             {
                 cout << "The bug can be found before this day. Moving on.\n";
+                high_date = linux_version.date;
                 continue;
             }
 
@@ -658,10 +661,10 @@ int main(int argc, char ** argv)
             }
 
             if (result_after.found)
-                high_date = current_version.date;
+                high_date = linux_version.date;
             else
             {
-                low_date = current_version.date;
+                low_date = linux_version.date;
                 break;
             }
         }
@@ -813,9 +816,17 @@ int main(int argc, char ** argv)
     k = get_index_by_name(kernel_versions, bisect_version.name) + 1;
     if (k >= kernel_versions.size())
     {
-        cout << "This bug is findable at the guilty commit.\n";
-
-        revealing_factor = "Guilty Commit";
+        // make case for guilty merge here
+        if (kernel_versions.at(k - 1).name == merge_commit.name)
+        {
+            cout << "This bug is findable at the guilty merge commit.\n";
+            revealing_factor = "Guilty Merge";
+        }
+        else
+        {
+            cout << "This bug is findable at the guilty commit.\n";
+            revealing_factor = "Guilty Commit";
+        }
         reveal_version = Version(kernel_versions.at(k - 1).name, kernel_versions.at(k - 1).date);
         reveal_name = get_commit_name(bug.get_kerneldir(), kernel_versions.at(k - 1).name);
 
@@ -1013,17 +1024,6 @@ finish:
     
     if (check_file(bug.get_repro()))
         move(bug.get_repro(), bug.get_wd() + "/old");
-
-    // clean up syzkaller if syz-env was used
-    if (bug.get_arch() == "i386")
-    {
-        if(!check_file(bug.get_syzdir() + "/tools/syz-env"))
-            copy(inspector.get_inspect_dir() + "/tools/syz-env", bug.get_syzdir() + "/tools/");
-        
-        cd(bug.get_syzdir());
-        err = syz_env_clean(inspector.get_inspect_dir() + "/tools/syz-env", bug);
-        cd(inspector.get_inspect_dir());
-    }
 
 setup_only_finish:
     if (logfile)
