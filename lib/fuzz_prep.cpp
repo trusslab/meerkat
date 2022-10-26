@@ -309,8 +309,12 @@ int prep_syzkaller(const Bug_Info &bug, const InspectorConfig &inspector, const 
         cout << "PATCH: Removing migratable=off from qemu boot args.\n";
         sed_i("s/\\-enable\\-kvm \\-cpu host,migratable=off/\\-enable\\-kvm \\-cpu host/", bug.get_syzdir() + "/vm/qemu/qemu.go");
     }
-
-    if (syzkaller_version.date <= Date(2018,10,28))
+    else if (syzkaller_version.date <= Date(2017,9,15) && grep_to_find("\\\"\\-enable\\-kvm\\\",", bug.get_syzdir() + "/vm/qemu/qemu.go"))
+    {
+        cout << "PATCH: Adding -cpu host to really old qemu boot args.\n";
+        sed_i("s/\\\"\\-enable\\-kvm\\\",/\\\"\\-enable\\-kvm\\\", \\\"\\-cpu\\\", \\\"host,migratable=off\\\",/", bug.get_syzdir() + "/vm/qemu/qemu.go");
+    }
+    else if (syzkaller_version.date <= Date(2018,10,28))
     {
         cout << "PATCH: Adding -cpu host to qemu boot args.\n";
         sed_i("s/\\-enable\\-kvm/\\-enable\\-kvm \\-cpu host,migratable=off/", bug.get_syzdir() + "/vm/qemu/qemu.go");
