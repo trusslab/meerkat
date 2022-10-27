@@ -595,7 +595,7 @@ int slim_template(const string &reproFile, const string &outfilename, const vect
                 
                 parse_definition(items, definitions, line);
             }
-            else if (line.find("(") != string::npos)
+            else if (line.find("(") != string::npos && line.find(" = ") == string::npos)
             { // if it is a syscall
                 if (VERB)
                     cout << "Found syscall.\n";
