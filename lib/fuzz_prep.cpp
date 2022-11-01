@@ -415,6 +415,14 @@ int prep_syzkaller(const Bug_Info &bug, const InspectorConfig &inspector, const 
         cd(inspector.get_inspect_dir());
     }
 
+    if (syzkaller_version.date <= Date(2017,7,28))
+    {
+        cout << "Making all-tools.\n";
+        cd(bug.get_syzdir());
+        make(inspector.get_makeprocs(), "all-tools");
+        cd(inspector.get_inspect_dir());
+    }
+
     // Build syzkaller
     cout << "Making Syzkaller.\n";
     cd(bug.get_syzdir());
