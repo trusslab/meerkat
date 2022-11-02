@@ -207,12 +207,12 @@ while (( $line <= $endLine )); do
             writebugconfig
 
             echo ",good fuzz,$findDate,$findDate,$startDate" >> $logfile
-            echo "./$retrospector -F $findhash -G $guiltyhash -i $id $mtime $nopoc $findonly $setuponly" >> $logfile
+            echo "./$retrospector -F $findhash -f $findDate -G $guiltyhash -i $id $mtime $nopoc $findonly $setuponly" >> $logfile
             # run inspector on the bug
             # using finding date as the ending date
             echo "Fuzzing. finding: $findhash; guilty: $guiltyhash"
             set +e
-            ./$retrospector -F $findhash -G $guiltyhash -i $id $mtime $nopoc $findonly $setuponly
+            ./$retrospector -F $findhash -f $findDate -G $guiltyhash -i $id $mtime $nopoc $findonly $setuponly
             set -e
             number=$(( $number + 1 ))
         else

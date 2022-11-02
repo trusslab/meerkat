@@ -35,7 +35,7 @@ int main(int argc, char ** argv)
 
     VMConfig vmc;
     Port_Info port;
-    Date high_date, low_date;
+    Date high_date, low_date, find_date;
     InspectorConfig inspector;
     Bug_Info bug;
     Argparse args;
@@ -62,7 +62,7 @@ int main(int argc, char ** argv)
     port.port_count = 0;
     port.port = 0;
 
-    args.expect("FGmidh");
+    args.expect("FGfmidh");
     args.expect(vector<string>({ "setup-only", "help", "recover", "no-merge", "no-poc", "find-only" }));
     args.parse(argc, argv);
     if (args.is_set('h') || args.is_set("help"))
@@ -71,6 +71,7 @@ int main(int argc, char ** argv)
             << "Short Ticks:\n"
             << "    -F [find_hash]: the hash of the finding commit.\n"
             << "    -G [guilty_hash]: the hash of the guilty commit.\n"
+            << "    -f [find_date]: the date the bug was found on.\n"
             << "    -m [max_time]: the maximum time allowed when fuzzing.\n"
             << "    -i [id]: REQUIRED. The id of the inspector.\n"
             << "Long Ticks:\n"
@@ -113,6 +114,9 @@ int main(int argc, char ** argv)
         err = -1;
         goto finish;
     }
+
+    if (args.is_set('f'))
+        find_date = Date(args.get_arg_as_string('f'));
 
     // get config for how to run
     cout << SPACER
@@ -317,7 +321,12 @@ int main(int argc, char ** argv)
 
     finding_version.name = find_hash;
     guilty_version.name = guilty_hash;
-    high_date = finding_version.date = kernel_versions.front().date;
+    finding_version.date = kernel_versions.front().date;
+    if (args.is_set('f'))
+        high_date = find_date;
+    else
+        high_date = finding_version.date;
+    
     low_date = guilty_version.date = kernel_versions.back().date;
     if (low_date < SYZBOT_BEGIN_DATE)
         low_date = SYZBOT_BEGIN_DATE;
@@ -343,7 +352,7 @@ int main(int argc, char ** argv)
         goto finish;
     }
     linux_version = kernel_versions.at(k);
-    syzkaller_version = get_version_by_date(syzkaller_versions, linux_version.date);
+    syzkaller_version = get_version_by_date(syzkaller_versions, high_date);
     this_session = Session(linux_version, syzkaller_version, syzkaller_version, false);
 
     session_count++;
@@ -996,7 +1005,7 @@ report:
             << "Bug Name:           " << bug.get_name() << "\n"
             << "Bug Link:           " << bug.get_buglink() << "\n"
             << "Arch:               " << bug.get_arch() << "\n"
-            << "Finding Commit:     " << finding_version.date.get_date() << " - " << finding_version.name << "\n";
+            << "Finding Commit:     " << find_date.get_date() << " - " << finding_version.name << "\n";
     
     if (!merge_commit.name.empty())
         logfile << "Guilty Merge:       " << merge_commit.date.get_date() << " - " << merge_commit.name << "\n";
