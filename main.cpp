@@ -323,9 +323,14 @@ int main(int argc, char ** argv)
     guilty_version.name = guilty_hash;
     finding_version.date = kernel_versions.front().date;
     if (args.is_set('f'))
+    {
+        find_date.set_delim('-');
         high_date = find_date;
+    }
     else
-        high_date = finding_version.date;
+    {
+        high_date = find_date = finding_version.date;
+    }
     
     low_date = guilty_version.date = kernel_versions.back().date;
     if (low_date < SYZBOT_BEGIN_DATE)
