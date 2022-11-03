@@ -1010,7 +1010,8 @@ report:
             << "Bug Name:           " << bug.get_name() << "\n"
             << "Bug Link:           " << bug.get_buglink() << "\n"
             << "Arch:               " << bug.get_arch() << "\n"
-            << "Finding Commit:     " << find_date.get_date() << " - " << finding_version.name << "\n";
+            << "Finding Date:       " << find_date.get_date()
+            << "Finding Commit:     " << finding_version.date.get_date() << " - " << finding_version.name << "\n";
     
     if (!merge_commit.name.empty())
         logfile << "Guilty Merge:       " << merge_commit.date.get_date() << " - " << merge_commit.name << "\n";
