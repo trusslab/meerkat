@@ -331,7 +331,7 @@ int main(int argc, char ** argv)
     {
         high_date = find_date = finding_version.date;
     }
-    
+
     low_date = guilty_version.date = kernel_versions.back().date;
     if (low_date < SYZBOT_BEGIN_DATE)
         low_date = SYZBOT_BEGIN_DATE;
@@ -1010,7 +1010,7 @@ report:
             << "Bug Name:           " << bug.get_name() << "\n"
             << "Bug Link:           " << bug.get_buglink() << "\n"
             << "Arch:               " << bug.get_arch() << "\n"
-            << "Finding Date:       " << find_date.get_date()
+            << "Finding Date:       " << find_date.get_date() << "\n"
             << "Finding Commit:     " << finding_version.date.get_date() << " - " << finding_version.name << "\n";
     
     if (!merge_commit.name.empty())
