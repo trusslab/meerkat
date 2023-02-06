@@ -153,6 +153,7 @@ int prep_kernel(const Bug_Info &bug, const InspectorConfig &inspector, const Ver
 
     // Handle Patches
     // apply patch from 760f8522ce08
+    // Fixes "error: #error New address family defined, please update secclass_map."
     if (grep_to_find("#include <sys/socket.h>", bug.get_kerneldir() + "/scripts/selinux/mdp/mdp.c") &&
         grep_to_find("#include <sys/socket.h>", bug.get_kerneldir() + "/scripts/selinux/genheaders/genheaders.c") &&
         !grep_to_find("#include <sys/socket.h>", bug.get_kerneldir() + "/security/selinux/include/classmap.h"))
