@@ -101,6 +101,8 @@ if [[ $id == "" ]]; then
     exit
 fi
 
+echo "Starting at: $(date)"
+
 wd="wd-inspector-$id"
 inspectorconfig=$wd/bug.cfg
 logfile=$wd/log/manager.log
@@ -234,4 +236,5 @@ while (( $line <= $endLine )); do
     line=$(( $line + 1 ))
 done
 
+echo "Ending at: $(date)"
 echo "All Done!"
