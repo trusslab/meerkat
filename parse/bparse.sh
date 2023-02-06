@@ -1,6 +1,6 @@
 #!/bin/bash
 
-outfile=bugs.csv
+outfile=bugs-second_try.csv
 debugfile=debug.txt
 
 link=https://syzkaller.appspot.com/upstream/fixed
@@ -61,18 +61,29 @@ for l in ${buglinks[@]}; do
 
     # decide on a good crash
     # get a list of the crashes
-    precrash=$(echo "$bsnapshot" | grep "\[[0-9]*\]\.config[ ]*\[[0-9]*\]log[ ]*\[[0-9]*\]report" | cat)
+    precrash=$(echo "$bsnapshot" | grep "\[[0-9]*\]\.config[ ]*\[[0-9]*\]console\|strace log[ ]*\[[0-9]*\]report" | cat)
 
     truefinddate=$(echo "$precrash" | sort -k3 | sort -k2 | head -n 1 | grep -o "20[0-9][0-9]\/[0-9][0-9]\/[0-9][0-9]" | cat)
 
-    # get only crashes with syz reproducers
-    precrash=$(echo "$precrash" | grep "\[[0-9]*\]syz" | cat)
-
     # get only crashes in upstream
-    precrash=$(echo "$precrash" | grep " upstream " | cat)
+    # if there is an upstream crash but no repro, grab a different repro
+    precrashupstream=$(echo "$precrash" | grep " upstream " | cat)
+    
+    # get only crashes with syz reproducers
+    precrashrepro=$(echo "$precrashupstream" | grep "\[[0-9]*\]syz" | cat)
+    
+    if [[ $precrashrepro != "" ]]; then
+        # if there is an upstream crash with a repro, continue as normal
+        crash=$(echo "$precrashrepro" | sort -k3 | sort -k2 | head -n 1 | cat)
+        repronum=$(echo "$crash" | grep -o "\[[0-9]*\]syz" | grep -o "[0-9]*" | cat)
+    else
+        # If there is no upstream crash with a repro, grab a different (oldest) repro
+        crash=$(echo "$precrashupstream" | sort -k3 | sort -k2 | head -n 1 | cat)
+        crashrepro=$(echo "$precrash" | grep "\[[0-9]*\]syz" | sort -k3 | sort -k2 | head -n 1 | cat)
+        repronum=$(echo "$crashrepro" | grep -o "\[[0-9]*\]syz" | grep -o "[0-9]*" | cat)
+    fi
 
-    # sort crashes by date and take the oldest
-    crash=$(echo "$precrash" | sort -k3 | sort -k2 | head -n 1 | cat)
+    echo "repronum: $repronum" >> $debugfile
 
     # report if the bug is 32 bit
     if [[ $(echo "$crash" | grep "\-386" | cat) == "" ]]; then
@@ -82,7 +93,6 @@ for l in ${buglinks[@]}; do
     fi
 
     # grab the syz repro
-    repronum=$(echo "$crash" | grep -o "\[[0-9]*\]syz" | grep -o "[0-9]*" | cat)
     repro=$(echo "$bsnapshot" | grep "^[ ]*$repronum\. https" | grep -o -m 1 "https:\/\/syzkaller\.appspot\.com\/text?tag\=ReproSyz\&x\=[0-9a-f]*$" | cat)
     if [[ $repro != "" ]]; then
         echo "Repro Found" >> $debugfile
@@ -98,22 +108,23 @@ for l in ${buglinks[@]}; do
 
     # grab the finding commit
     findnum=$(echo "$crash" | grep -o "\[[0-9]*\][a-f0-9]*" | grep -m 1 -o "\[[0-9]*\]" | grep -o "[0-9]*" | cat)
-    findlink=$(echo "$bsnapshot" | grep -m 1 "[ ]*$findnum\. https" | grep -o "https.*$" | cat)
+    findlink=$(echo "$bsnapshot" | grep -m 1 "^\([ ]\+\)$findnum\. https" | grep -o "https.*$" | cat)
 
     repo=$(echo "$findlink" | grep "https://git.kernel" | awk -F'/' '{ print $9"/"$10; }' | cat)
-    if [[ $repo == "bpf/bpf.git" ]]; then
-        kpref="bpf"
-    elif [[ $repo == "bpf/bpf-next.git" ]]; then
-        kpref="bpf-next"
-    elif [[ $repo == "davem/net.git" ]]; then
-        kpref="net"
-    elif [[ $repo == "davem/net-next.git" ]]; then
-        kpref="net-next"
-    elif [[ $repo == "gregkh/usb.git" ]]; then
-        kpref="usb"
-    elif [[ $repo == "next/linux-next.git" ]]; then
-        kpref="linux-next"
-    elif [[ $repo == "torvalds/linux.git" ]]; then
+    # for now only use upstream repository
+    #if [[ $repo == "bpf/bpf.git" ]]; then
+    #    kpref="bpf"
+    #elif [[ $repo == "bpf/bpf-next.git" ]]; then
+    #    kpref="bpf-next"
+    #elif [[ $repo == "davem/net.git" ]]; then
+    #    kpref="net"
+    #elif [[ $repo == "davem/net-next.git" ]]; then
+    #    kpref="net-next"
+    #elif [[ $repo == "gregkh/usb.git" ]]; then
+    #    kpref="usb"
+    #elif [[ $repo == "next/linux-next.git" ]]; then
+    #    kpref="linux-next"
+    if [[ $repo == "torvalds/linux.git" ]]; then
         kpref="linux"
     else
         echo "Bad Repository: $repo" >> $debugfile
