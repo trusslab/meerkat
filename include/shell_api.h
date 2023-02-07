@@ -12,6 +12,8 @@ std::string get_path();
 // exports an environment variable
 int export_env(const std::string &);
 
+int set_timezone(const std::string &);
+
 // calls lynx and dumps the result to a dump file
 int lynx_dump(const std::string &, const std::string &);
 

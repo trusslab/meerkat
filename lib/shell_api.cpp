@@ -38,10 +38,11 @@ int export_env(const string &e)
     return 0;
 }
 
-// For the record, this is not my favorite way to do this. But
-// I'm the goof who decided C++ was the way to go. now I'm mixing
-// all sorts of libraries. At least it's only here where I can
-// keep track of it.
+int set_timezone(const string &tz)
+{
+    string env = "TZ=" + tz;
+    return (export_env(env) == 0 ? 0 : -1);
+}
 
 // lynx -dump -dont_wrap_pre -width=1000 link
 int lynx_dump(const std::string &link, const string &dumpfile)

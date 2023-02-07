@@ -11,6 +11,7 @@
 #include <template_parse.h>
 #include <git_api.h>
 #include <session.h>
+#include <git_traverse.h>
 
 #include <string>
 #include <vector>
@@ -29,7 +30,6 @@ int main(int argc, char ** argv)
            linux_repo_remote, logfilename,
            compiler,
            tmp_path, tmp_snapshotfile,
-           template1, template2, template3, template_dir,
            revealing_factor = "",
            reveal_name = "";
 
@@ -328,9 +328,7 @@ int main(int argc, char ** argv)
         high_date = find_date;
     }
     else
-    {
         high_date = find_date = finding_version.date;
-    }
 
     low_date = guilty_version.date = kernel_versions.back().date;
     if (low_date < SYZBOT_BEGIN_DATE)
@@ -347,7 +345,7 @@ int main(int argc, char ** argv)
     
     cout << SPACER
          << "Testing the finding commit.\n";
-    logfile << "Inspecting the finding commit.\n" << flush;
+    logfile << "Testing the finding commit.\n" << flush;
 
     k = get_index_by_name(kernel_versions, find_hash);
     if (k < 0)
@@ -459,81 +457,11 @@ int main(int argc, char ** argv)
     template_changes = get_template_changes(bug, low_date, high_date, syzkaller_versions);
     cout << "Found " << template_changes.size() << " template_changes.\n";
 
-    relevant_template_changes = {template_changes.back()};
-
     cout << SPACER
          << "Checking templates for relevance...\n";
     if (template_changes.size() > 1)
     {
-        cout << "Fetching version " << template_changes.back().name << ".\n";
-        clean_syzkaller(bug);
-        git_fetch_and_checkout(bug.get_syzdir(), SYZKALLER_REPO_REMOTE, template_changes.back().name);
-        cout << "Slimming version " << template_changes.back().name << ".\n";
-        template1 = bug.get_wd() + "/template1.txt";
-        template2 = bug.get_wd() + "/template2.txt";
-        template3 = bug.get_wd() + "/template3.txt";
-        template_dir = check_file(bug.get_syzdir() + "/sys/linux") ? bug.get_syzdir() + "/sys/linux" : bug.get_syzdir() + "/sys";
-        slim_template(bug.get_repro(), template1, list_template_files(template_dir), template_changes.back().date < OLD_INOUT_DATE);
-
-        int l = 0;                              // left is always 0 to start 
-        int r = template_changes.size() - 2;    // right is one to the left of the commit we are comparing to
-        int m = (l + r) / 2;
-        bool same;
-        while (m > 0)
-        {
-            while (l <= r)
-            {
-                m = (l + r) / 2;
-
-                cout << SPACER
-                    << "Fetching version " << template_changes.at(m).name << ".\n";
-                clean_syzkaller(bug);
-                git_fetch_and_checkout(bug.get_syzdir(), SYZKALLER_REPO_REMOTE, template_changes.at(m).name);
-
-                cout << "Slimming version " << template_changes.at(m).name << ".\n";
-                template_dir = check_file(bug.get_syzdir() + "/sys/linux") ? bug.get_syzdir() + "/sys/linux" : bug.get_syzdir() + "/sys";
-                slim_template(bug.get_repro(), template2, list_template_files(template_dir), template_changes.at(m).date < OLD_INOUT_DATE);
-
-                same = compare_templates(template1, template2);
-                if (same)
-                {
-                    cout << "Moving left.\n";
-                    r = m - 1;
-                }
-                else
-                {
-                    cout << "Moving right.\n";
-                    move(template2, template3);
-                    l = m + 1;
-                }
-            }
-            
-            // if the result has 2 same templates, the answer is either the commit before, or no more changes
-            if (same && m > 0)
-            {
-                relevant_template_changes.insert(relevant_template_changes.begin(), template_changes.at(m - 1));
-                l = 0;
-                r = m > 2 ? m - 2: 0;
-            }
-            else if (!same)
-            {
-                relevant_template_changes.insert(relevant_template_changes.begin(), template_changes.at(m));
-                l = 0;
-                r = m > 1 ? m - 1: 0;
-            }
-            else if (same)
-            {
-                break;
-            }
-
-            cout << "Found a relevant template change.\n";
-            move(template3, template1);
-        }
-        remove_file(template1);
-        if (check_file(template2))
-            remove_file(template2);
-        if (check_file(template3))
-            remove_file(template3);
+        relevant_template_changes = get_relevant_template_changes(bug, template_changes);
     }
     else
         cout << "No template changes in the date range [" << low_date.get_date() << ", " << high_date.get_date() << "].\n";
@@ -1003,7 +931,6 @@ int main(int argc, char ** argv)
 
 report:
     logfile << "\n" << SPACER
-            << "Success\n"
             << "Revealing Factor:   " << revealing_factor << "\n"
             << "Version:            " << reveal_version.date.get_date() << " - " << reveal_version.name << "\n"
             << "Commit Name:        " << reveal_name << "\n\n"
