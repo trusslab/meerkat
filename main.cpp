@@ -28,8 +28,7 @@ int main(int argc, char ** argv)
     int max_time = 30, id, session_count = 0, r, l, m, err = 0, k;
     string find_hash, guilty_hash, 
            linux_repo_remote, logfilename,
-           compiler,
-           tmp_path, tmp_snapshotfile,
+           compiler, tmp_path,
            revealing_factor = "",
            reveal_name = "";
 
@@ -249,12 +248,7 @@ int main(int argc, char ** argv)
     cout << SPACER
         << "Gathering bug fixes from Syzbot.\n";
 
-    tmp_snapshotfile = bug.get_wd() + "/snapshot";
-
-    lynx_dump(SYZBOT_FIXED_LINK, tmp_snapshotfile);
-    trim_syzbot_fixes(tmp_snapshotfile);
-    parse_syzbot_fixes(tmp_snapshotfile, bug.get_name(), duplicates);
-    parse_manual_duplicates("parameters/manual_duplicates.txt", bug.get_name(), duplicates);
+    duplicates = gather_duplicates(bug);
 
     if (duplicates.size() > 1)
     {
@@ -271,8 +265,6 @@ int main(int argc, char ** argv)
         cout << "No duplicate bugs found.\n";
         logfile << "No Duplicates\n";
     }
-
-    remove_file(tmp_snapshotfile);
     cout << SPACER;
 
     port.init(id);
