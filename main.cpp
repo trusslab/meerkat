@@ -12,6 +12,7 @@
 #include <git_api.h>
 #include <session.h>
 #include <git_traverse.h>
+#include <retrospect.h>
 
 #include <string>
 #include <vector>
@@ -112,12 +113,7 @@ int main(int argc, char ** argv)
     }
 
     if(args.is_set("safe-mode"))
-    {
-        safe_mode = true;
-        FUZZTIMES = 5;
-        max_time = 60;
-        cout << "Running in safe-mode: Fuzzing " << FUZZTIMES << " times at " << max_time << " minutes\n";
-    }
+        set_safe_mode(safe_mode, max_time);
 
     if (args.is_set('f'))
         find_date = Date(args.get_arg_as_string('f'));
