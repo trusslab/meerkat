@@ -1,6 +1,6 @@
 #!/bin/bash
 
-outfile=bugs-second_try.csv
+outfile=bugs-all_repro.csv
 debugfile=debug.txt
 
 link=https://syzkaller.appspot.com/upstream/fixed
@@ -51,39 +51,47 @@ for l in ${buglinks[@]}; do
     echo $name >> $debugfile
 
     # grab the fixing commits
-    fixnums=$(echo "$bsnapshot" | grep "Fix commit: " | grep -o "\[[0-9]*\]" | grep -o "[0-9]*" | cat)
+    fixnums=$(echo "$bsnapshot" | grep "Fix commit: " | grep -o "\[\([0-9]\+\)\]" | grep -o "\([0-9]\+\)" | cat)
     fixhashes=()
     for n in $fixnums; do
-        fixhashes+=($(echo "$bsnapshot" | grep -m 1 "^[ ]*$n\." | grep -o "[0-9a-f]*$" | cat))
+        fixhashes+=($(echo "$bsnapshot" | grep -m 1 "^\([ ]\+\)$n\." | grep -o "[0-9a-f]*$" | cat))
     done
 
     echo "${#fixhashes[@]} Fixing Commits Found" >> $debugfile
 
     # decide on a good crash
     # get a list of the crashes
-    precrash=$(echo "$bsnapshot" | grep "\[[0-9]*\]\.config[ ]*\[[0-9]*\]console\|strace log[ ]*\[[0-9]*\]report" | cat)
+    precrash=$(echo "$bsnapshot" | awk '/Crashes \(/,0' | grep "\[\([0-9]\+\)\]\.config[ ]*\[\([0-9]\+\)\]console\|strace log[ ]*\[\([0-9]\+\)\]report" | cat)
 
     truefinddate=$(echo "$precrash" | sort -k3 | sort -k2 | head -n 1 | grep -o "20[0-9][0-9]\/[0-9][0-9]\/[0-9][0-9]" | cat)
 
     # get only crashes in upstream
     # if there is an upstream crash but no repro, grab a different repro
     precrashupstream=$(echo "$precrash" | grep " upstream " | cat)
-    
-    # get only crashes with syz reproducers
-    precrashrepro=$(echo "$precrashupstream" | grep "\[[0-9]*\]syz" | cat)
-    
-    if [[ $precrashrepro != "" ]]; then
-        # if there is an upstream crash with a repro, continue as normal
-        crash=$(echo "$precrashrepro" | sort -k3 | sort -k2 | head -n 1 | cat)
-        repronum=$(echo "$crash" | grep -o "\[[0-9]*\]syz" | grep -o "[0-9]*" | cat)
-    else
-        # If there is no upstream crash with a repro, grab a different (oldest) repro
-        crash=$(echo "$precrashupstream" | sort -k3 | sort -k2 | head -n 1 | cat)
-        crashrepro=$(echo "$precrash" | grep "\[[0-9]*\]syz" | sort -k3 | sort -k2 | head -n 1 | cat)
-        repronum=$(echo "$crashrepro" | grep -o "\[[0-9]*\]syz" | grep -o "[0-9]*" | cat)
-    fi
+    crash=$(echo "$precrashupstream" | sort -k3 | sort -k2 | head -n 1 | cat)
 
-    echo "repronum: $repronum" >> $debugfile
+    readarray -t repronumarr <<< "$(echo "$precrash" | grep -o "\[\([0-9]\+\)\]syz" | grep -o "\([0-9]\+\)" | cat)"
+    echo "Found ${#repronumarr[@]} reproducers" >> $debugfile
+
+    allrepro=()
+    for num in ${repronumarr[@]}; do
+        allrepro+=($(echo "$bsnapshot" | grep "^\([ ]\+\)$num\. https" | grep -o -m 1 "https:\/\/syzkaller\.appspot\.com\/text?tag\=ReproSyz\&x\=\([0-9a-f]\+\)$" | cat))
+    done
+
+    # get only crashes with syz reproducers
+    #precrashrepro=$(echo "$precrashupstream" | grep "\[\([0-9]\+\)\]syz" | cat)
+    
+    #if [[ $precrashrepro != "" ]]; then
+    #    # if there is an upstream crash with a repro, continue as normal
+    #    crash=$(echo "$precrashrepro" | sort -k3 | sort -k2 | head -n 1 | cat)
+    #    repronum=$(echo "$crash" | grep -o "\[\([0-9]\+\)\]syz" | grep -o "\([0-9]\+\)" | cat)
+    #else
+    #    # If there is no upstream crash with a repro, grab a different (oldest) repro
+    #    crash=$(echo "$precrashupstream" | sort -k3 | sort -k2 | head -n 1 | cat)
+    #    crashrepro=$(echo "$precrash" | grep "\[\([0-9]\+\)\]syz" | sort -k3 | sort -k2 | head -n 1 | cat)
+    #    repronum=$(echo "$crashrepro" | grep -o "\[\([0-9]\+\)\]syz" | grep -o "\([0-9]\+\)" | cat)
+    #fi
+    #echo "repronum: $repronum" >> $debugfile
 
     # report if the bug is 32 bit
     if [[ $(echo "$crash" | grep "\-386" | cat) == "" ]]; then
@@ -92,22 +100,16 @@ for l in ${buglinks[@]}; do
         bit32="i386"
     fi
 
-    # grab the syz repro
-    repro=$(echo "$bsnapshot" | grep "^[ ]*$repronum\. https" | grep -o -m 1 "https:\/\/syzkaller\.appspot\.com\/text?tag\=ReproSyz\&x\=[0-9a-f]*$" | cat)
-    if [[ $repro != "" ]]; then
-        echo "Repro Found" >> $debugfile
-    fi
-
     # grab the config link
-    confignum=$(echo "$crash" | grep -o "\[[0-9]*\]\.config " | grep -o "[0-9]*" | cat)
-    config=$(echo "$bsnapshot" | grep "^[ ]*$confignum\. https" | grep -o -m 1 "https:\/\/syzkaller\.appspot\.com\/text?tag\=KernelConfig\&x\=[0-9a-f]*$" | cat)
+    confignum=$(echo "$crash" | grep -o "\[\([0-9]\+\)\]\.config " | grep -o "\([0-9]\+\)" | cat)
+    config=$(echo "$bsnapshot" | grep "^\([ ]\+\)$confignum\. https" | grep -o -m 1 "https:\/\/syzkaller\.appspot\.com\/text?tag\=KernelConfig\&x\=[0-9a-f]*$" | cat)
 
     if [[ $config != "" ]]; then
         echo "Config Found" >> $debugfile
     fi
 
     # grab the finding commit
-    findnum=$(echo "$crash" | grep -o "\[[0-9]*\][a-f0-9]*" | grep -m 1 -o "\[[0-9]*\]" | grep -o "[0-9]*" | cat)
+    findnum=$(echo "$crash" | grep -o "\[\([0-9]\+\)\][a-f0-9]*" | grep -m 1 -o "\[\([0-9]\+\)\]" | grep -o "\([0-9]\+\)" | cat)
     findlink=$(echo "$bsnapshot" | grep -m 1 "^\([ ]\+\)$findnum\. https" | grep -o "https.*$" | cat)
 
     repo=$(echo "$findlink" | grep "https://git.kernel" | awk -F'/' '{ print $9"/"$10; }' | cat)
@@ -124,9 +126,7 @@ for l in ${buglinks[@]}; do
     #    kpref="usb"
     #elif [[ $repo == "next/linux-next.git" ]]; then
     #    kpref="linux-next"
-    if [[ $repo == "torvalds/linux.git" ]]; then
-        kpref="linux"
-    else
+    if [[ $repo != "torvalds/linux.git" ]]; then
         echo "Bad Repository: $repo" >> $debugfile
         echo "$findlink" >> $debugfile
         bad=$(($bad + 1))
@@ -134,9 +134,7 @@ for l in ${buglinks[@]}; do
         kpref=""
         continue
     fi
-
     echo $repo >> $debugfile
-    echo $kpref >> $debugfile
 
     # grab the finding date
     finddate=$(echo "$crash" | grep -o "20[0-9][0-9]\/[0-9][0-9]\/[0-9][0-9]" | cat)
@@ -159,12 +157,12 @@ for l in ${buglinks[@]}; do
     echo "${#guiltyhashes[@]} Guilty Commits Found" >> $debugfile
 
     # check for a bad parse
-    if [[ $name == "" || $crash == "" || $repro == "" || $config == "" || $findlink == "" || $finddate == "" || $repo == "" ]] || (( ${#fixhashes[@]} == 0)); then
+    if [[ $name == "" || $crash == "" || $config == "" || $findlink == "" || $finddate == "" || $repo == "" ]] || (( ${#fixhashes[@]} == 0)) || (( ${#allrepro[@]} == 0 )); then
         if [[ $name == "" ]]; then
             echo "Bad Name" >> $debugfile
         elif [[ $crash == "" ]]; then
             echo "Bad Crash" >> $debugfile
-        elif [[ $repro == "" ]]; then
+        elif (( ${#allrepro[@]} == 0 )); then
             echo "Bad Reproducer" >> $debugfile
         elif [[ $config == "" ]]; then
             echo "Bad Config" >> $debugfile
@@ -183,76 +181,76 @@ for l in ${buglinks[@]}; do
         bad=$(($bad + 1))
         badbugs+=($l)
         continue
-    else
-        # make sure the guilty commit exists
-        if (( ${#guiltyhashes[@]} == 0 )); then
-            echo "No Guilty Commits" >> $debugfile
-            noguilty=$(($noguilty + 1))
-            continue
-        else
-            # continue grabbing guilty commit stuff
-            guiltylinks=()
-            guiltydates=()
-            for ghash in ${guiltyhashes[@]}; do
-                snapshot=$(lynx -dump -dont_wrap_pre -width=300 https://git.kernel.org/pub/scm/linux/kernel/git/$repo/log/?qt\=range\&q\=$ghash)
-                fullghash=$(echo "$snapshot" | grep -o "$ghash[0-9a-f]*$" | cat)
-                snapshot=$(lynx -dump -dont_wrap_pre -width=300 https://git.kernel.org/pub/scm/linux/kernel/git/$repo/commit/?id\=$fullghash)
-                guiltylinks+=("https://git.kernel.org/pub/scm/linux/kernel/git/$repo/commit/?id\=$fullghash")
-                guiltydates+=($(echo "$snapshot" | grep -m 1 "^[ ]*committer " | grep -o "20[0-9][0-9]-[0-9][0-9]-[0-9][0-9]" | cat))
-            done
-        fi
-
-        if (( ${#guiltylinks[@]} == 0 || ${#guiltydates[@]} == 0 )); then
-            if (( ${#guiltylinks[@]} == 0 )); then
-                echo "No Guilty Links" >> $debugfile
-            elif (( ${#guiltydates[@]} == 0 )); then
-                echo "No Guilty Dates" >> $debugfile
-            fi
-            bad=$(($bad + 1))
-            badbugs+=($l)
-            continue
-        fi
-
-        # find earliest guilty and latest fixing
-        echo "${guiltydates[@]}" >> $debugfile
-        earlyguilty=0
-        for (( i=1; i<${#guiltydates[@]}; i++ )); do
-            if (( $(../helpers/diffdate ${guiltydates[$earlyguilty]} ${guiltydates[$i]}) > 0 )); then
-                earlyguilty=$i
-            fi
-        done
-
-        guiltydate=${guiltydates[$earlyguilty]}
-        guiltylink=${guiltylinks[$earlyguilty]}
-        if [[ $guiltylink == "" ]]; then
-            echo "Bad Guilty Link" >> $debugfile
-            bad=$(($bad + 1))
-            badbugs+=($l)
-            continue
-        fi
-        echo "$guiltydate" >> $debugfile
-
-        echo "${fixdates[@]}" >> $debugfile
-        latefix=0
-        for (( i=1; i<${#fixdates[@]}; i++ )); do
-            if (( $(../helpers/diffdate ${fixdates[$latefix]} ${fixdates[$i]}) < 0 )); then
-                latefix=$i
-            fi
-        done
-
-        fixlink=${fixlinks[$latefix]}
-        fixdate=${fixdates[$latefix]}
-        if [[ $fixlink == "" ]]; then
-            echo "Bad Fixing Link" >> $debugfile
-            bad=$(($bad + 1))
-            badbugs+=($l)
-            continue
-        fi
-        echo "$fixdate" >> $debugfile
-
-        echo "$l,$name,$truefinddate,$fixlink,$fixdate,$repro,$config,$findlink,$finddate,$guiltylink,$guiltydate,$bit32" >> $outfile
-        count=$(( $count + 1 ))
     fi
+
+    # make sure the guilty commit exists
+    if (( ${#guiltyhashes[@]} == 0 )); then
+        echo "No Guilty Commits" >> $debugfile
+        noguilty=$(($noguilty + 1))
+        continue
+    else
+        # continue grabbing guilty commit stuff
+        guiltylinks=()
+        guiltydates=()
+        for ghash in ${guiltyhashes[@]}; do
+            snapshot=$(lynx -dump -dont_wrap_pre -width=300 https://git.kernel.org/pub/scm/linux/kernel/git/$repo/log/?qt\=range\&q\=$ghash)
+            fullghash=$(echo "$snapshot" | grep -o "$ghash[0-9a-f]*$" | cat)
+            snapshot=$(lynx -dump -dont_wrap_pre -width=300 https://git.kernel.org/pub/scm/linux/kernel/git/$repo/commit/?id\=$fullghash)
+            guiltylinks+=("https://git.kernel.org/pub/scm/linux/kernel/git/$repo/commit/?id\=$fullghash")
+            guiltydates+=($(echo "$snapshot" | grep -m 1 "^[ ]*committer " | grep -o "20[0-9][0-9]-[0-9][0-9]-[0-9][0-9]" | cat))
+        done
+    fi
+
+    if (( ${#guiltylinks[@]} == 0 || ${#guiltydates[@]} == 0 )); then
+        if (( ${#guiltylinks[@]} == 0 )); then
+            echo "No Guilty Links" >> $debugfile
+        elif (( ${#guiltydates[@]} == 0 )); then
+            echo "No Guilty Dates" >> $debugfile
+        fi
+        bad=$(($bad + 1))
+        badbugs+=($l)
+        continue
+    fi
+
+    # find earliest guilty and latest fixing
+    echo "${guiltydates[@]}" >> $debugfile
+    earlyguilty=0
+    for (( i=1; i<${#guiltydates[@]}; i++ )); do
+        if (( $(../helpers/diffdate ${guiltydates[$earlyguilty]} ${guiltydates[$i]}) > 0 )); then
+            earlyguilty=$i
+        fi
+    done
+
+    guiltydate=${guiltydates[$earlyguilty]}
+    guiltylink=${guiltylinks[$earlyguilty]}
+    if [[ $guiltylink == "" ]]; then
+        echo "Bad Guilty Link" >> $debugfile
+        bad=$(($bad + 1))
+        badbugs+=($l)
+        continue
+    fi
+    echo "$guiltydate" >> $debugfile
+
+    echo "${fixdates[@]}" >> $debugfile
+    latefix=0
+    for (( i=1; i<${#fixdates[@]}; i++ )); do
+        if (( $(../helpers/diffdate ${fixdates[$latefix]} ${fixdates[$i]}) < 0 )); then
+            latefix=$i
+        fi
+    done
+
+    fixlink=${fixlinks[$latefix]}
+    fixdate=${fixdates[$latefix]}
+    if [[ $fixlink == "" ]]; then
+        echo "Bad Fixing Link" >> $debugfile
+        bad=$(($bad + 1))
+        badbugs+=($l)
+        continue
+    fi
+    echo "$fixdate" >> $debugfile
+
+    echo "$l,$name,$truefinddate,$fixlink,$fixdate,$config,$findlink,$finddate,$guiltylink,$guiltydate,$bit32,${allrepro[@]}" >> $outfile
+    count=$(( $count + 1 ))
 
 done
 

@@ -13,7 +13,8 @@ private:
     std::string arch;                   // either amd64 or i386 for 64 or 32 bit POC 
     std::string repository;             // the repository in a form that fits the link (torvalds/linux.git)
     std::string kernel_config;          // the config file for the kernel
-    std::string reproducer;             // the POC
+    std::string reproducer;             // the directory with all of the PoCs
+    std::string allreproducer;          // the file with all PoCs concatenated
     std::string syzkaller_wd;           // wd-kaller
     std::string syzkaller_config;       // the config for syzkaller. We write this ourselves
     std::string wd;                     // wd-inspector-[id]
@@ -50,6 +51,9 @@ public:
 
     std::string get_repro() const
     { return reproducer; }
+
+    std::string get_allrepro() const
+    { return allreproducer; }
 
     std::string get_kallerwd() const
     { return syzkaller_wd; }

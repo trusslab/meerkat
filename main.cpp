@@ -18,7 +18,6 @@
 #include <sstream>
 #include <iostream>
 #include <fstream>
-#include <git2.h>
 
 using namespace std;
 
@@ -45,8 +44,6 @@ int main(int argc, char ** argv)
     Session this_session;
     Syzkaller_Result result, result_before, result_after;
     
-    git_repository *syzkaller_repo = nullptr;
-    git_repository *linux_repo = nullptr;
     int git_err;
 
     ofstream logfile;
@@ -79,11 +76,11 @@ int main(int argc, char ** argv)
             << "    --no-merge: don't use the merge commit as a revealing factor.\n"
             << "    --no-poc: fuzz without the poc.\n"
             << "    --find-only: only fuzz at the finding commit.\n"
+            << "    --safe: use safe mode.\n"
             << endl;
         return 0;
     }
 
-    git_libgit2_init();
     set_timezone("UTC0");
 
     if (args.is_set('F'))
@@ -141,9 +138,9 @@ int main(int argc, char ** argv)
     else
         cout << "Found log directory.\n";
 
-    if (!check_file(bug.get_repro()))
+    if (!check_file(bug.get_allrepro()))
     {
-        cerr << "Error: No reproducer file " << bug.get_repro() << " exists.\n";
+        cerr << "Error: No reproducer file " << bug.get_allrepro() << " exists.\n";
         err = -1;
         goto finish;
     }
@@ -186,11 +183,10 @@ int main(int argc, char ** argv)
     else
         cout << "Found Syzkaller directory.\n";
 
-    git_err = git_repository_open(&syzkaller_repo, bug.get_syzdir().c_str());
-    if (git_err < 0)
+    if (!check_file(bug.get_syzdir() + "/.git"))
     {
         cout << "Cloning Syzkaller repository...\n";
-        git_err = git_clone(&syzkaller_repo, SYZKALLER_REPO_REMOTE.c_str(), bug.get_syzdir().c_str(), nullptr);
+        git_err = git_clone(SYZKALLER_REPO_REMOTE, bug.get_syzdir());
         if (git_err < 0)
         {
             cerr << "Error: Git clone failed.\n";
@@ -213,11 +209,10 @@ int main(int argc, char ** argv)
         cout << "Found kernel directory.\n";
 
     // this may cause issues when the repository opened is not the one we want
-    git_err = git_repository_open(&linux_repo, bug.get_kerneldir().c_str());
-    if (git_err < 0)
+    if (!check_file(bug.get_kerneldir() + "/.git"))
     {
         cout << "Cloning Linux repository...\n";
-        git_err = git_clone(&linux_repo, linux_repo_remote.c_str(), bug.get_kerneldir().c_str(), nullptr);
+        git_err = git_clone(linux_repo_remote, bug.get_kerneldir());
         if (git_err < 0)
         {
             cerr << "Error: Git clone failed.\n";
@@ -957,7 +952,7 @@ finish:
         move(bug.get_kconfig(), bug.get_wd() + "/old");
     
     if (check_file(bug.get_repro()))
-        move(bug.get_repro(), bug.get_wd() + "/old");
+        move(bug.get_repro() + "/*", bug.get_wd() + "/old");
 
 setup_only_finish:
     if (logfile)
@@ -965,14 +960,7 @@ setup_only_finish:
         logfile << flush;
         logfile.close();
     }
-
-    if (syzkaller_repo)
-        git_repository_free(syzkaller_repo);
-
-    if (linux_repo)
-        git_repository_free(linux_repo);
     
-    git_libgit2_shutdown();
     cout << "Done.\n" << flush;
     return err;
 }

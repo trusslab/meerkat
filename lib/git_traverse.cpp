@@ -181,7 +181,7 @@ vector<Version> get_relevant_template_changes(const Bug_Info &bug, const vector<
 
     cout << "Slimming version " << template_changes.back().name << ".\n";
     string template_dir = check_file(bug.get_syzdir() + "/sys/linux") ? bug.get_syzdir() + "/sys/linux" : bug.get_syzdir() + "/sys";
-    slim_template(bug.get_repro(), template1, list_template_files(template_dir), template_changes.back().date < OLD_INOUT_DATE);
+    slim_template(bug.get_allrepro(), template1, list_template_files(template_dir), template_changes.back().date < OLD_INOUT_DATE);
 
     int l = 0;                              // left is always 0 to start
     int r = template_changes.size() - 2;    // right is one to the left of the commit we are comparing to
@@ -200,7 +200,7 @@ vector<Version> get_relevant_template_changes(const Bug_Info &bug, const vector<
 
             cout << "Slimming version " << template_changes.at(m).name << ".\n";
             template_dir = check_file(bug.get_syzdir() + "/sys/linux") ? bug.get_syzdir() + "/sys/linux" : bug.get_syzdir() + "/sys";
-            slim_template(bug.get_repro(), template2, list_template_files(template_dir), template_changes.at(m).date < OLD_INOUT_DATE);
+            slim_template(bug.get_allrepro(), template2, list_template_files(template_dir), template_changes.at(m).date < OLD_INOUT_DATE);
 
             same = compare_templates(template1, template2);
             if (same)

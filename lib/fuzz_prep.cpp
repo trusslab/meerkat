@@ -49,7 +49,8 @@ int get_procs_from_repro(const string & repro)
 
 VMConfig determine_threadedness(const InspectorConfig &inspector, const Bug_Info &bug, std::ostream &logfile)
 {
-    int procs = get_procs_from_repro(bug.get_repro());
+    string reproducer = bug.get_repro() + "/repro-" + to_string(bug.get_number()) + "-1.prog";
+    int procs = get_procs_from_repro(reproducer);
     VMConfig vmc;
     switch (procs)
     {
@@ -69,7 +70,7 @@ VMConfig determine_threadedness(const InspectorConfig &inspector, const Bug_Info
         vmc = inspector.get_vmr();
         break;
     default:
-        cerr << "Warning: Could not retrieve number of procs from reproducer " << bug.get_repro() << ". Using Default.\n";
+        cerr << "Warning: Could not retrieve number of procs from reproducer " << reproducer << ". Using Default.\n";
         vmc = inspector.get_vmd();
     }
     logfile << "VMs:" << vmc.numVM << endl
@@ -270,7 +271,7 @@ int prep_syzkaller(const Bug_Info &bug, const InspectorConfig &inspector, const 
     if (use_template.empty())
     {
         cout << "Slimming the template.\n";
-        err = slim_template(bug.get_repro(), new_template, template_files, syzkaller_version.date < OLD_INOUT_DATE);
+        err = slim_template(bug.get_allrepro(), new_template, template_files, syzkaller_version.date < OLD_INOUT_DATE);
         if (err < 0)
         {
             cout << "Error: failed to slim the template.\n";
@@ -505,12 +506,6 @@ int write_syzkaller_config(const Bug_Info &bug, const InspectorConfig &inspector
 
 int insert_POC_as_seed(const Bug_Info &bug)
 {
-    // syz-db wants a directory with the seeds
-    string to_pack = bug.get_wd() + "/to_pack";
-    make_dir(to_pack);
-    // watch if syzkaller complains about having the raw poc (with commants)
-    copy(bug.get_repro(), to_pack);
-
     string corpus = bug.get_kallerwd() + "/corpus.db";
     // make sure to clear out the old corpus
     if (check_file(corpus))
@@ -521,8 +516,8 @@ int insert_POC_as_seed(const Bug_Info &bug)
     char * command = new char[com.size() + 1];
     strcpy(command, com.c_str());
     char arg1[] = "pack";
-    char * arg2 = new char[to_pack.size() + 1];
-    strcpy(arg2, to_pack.c_str());
+    char * arg2 = new char[bug.get_repro().size() + 1];
+    strcpy(arg2, bug.get_repro().c_str());
     
     char * arg3 = new char[corpus.size() + 1];
     strcpy(arg3, corpus.c_str());
@@ -531,7 +526,6 @@ int insert_POC_as_seed(const Bug_Info &bug)
 
     int ret = exec_and_wait(com, arg_list);
 
-    remove_dir(to_pack);
     delete[] command;
     delete[] arg2;
     delete[] arg3;

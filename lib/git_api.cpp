@@ -209,11 +209,43 @@ vector<string> git_show_commits_merged(const string &repo, const string &mergeha
     return commits;
 }
 
-int git_fetch_and_checkout(const string &local_repo, const string &repo, const string &hash)
+int git_init()
 {
+    char command[] = "git";
+    char arg1[] = "init";
+    char * arg_list[] = {command, arg1, nullptr};
+    return (exec_and_wait("git", arg_list) != 0 ? -1 : 0);
+}
+
+int git_pull(const string &remote)
+{
+    char command[] = "git";
+    char arg1[] = "pull";
+    char * arg2 = new char[remote.size() + 1];
+    strcpy(arg2, remote.c_str());
+
+    char * arg_list[] = {command, arg1, arg2, nullptr};
+    int err = exec_and_wait("git", arg_list);
+
+    delete[] arg2;
+    return (err != 0 ? -1 : 0);
+}
+
+int git_clone(const string &remote, const string &local_dir)
+{
+    int err;
     string old_dir = pwd();
-    cd(local_repo);
-    // git fetch repo hash
+    cd(local_dir);
+
+    git_init();
+    err = git_pull(remote);
+
+    cd(old_dir);
+    return err;
+}
+
+int git_fetch(const string &repo, const string &hash)
+{
     char command[] = "git";
     char arg1[] = "fetch";
     char * arg2 = new char[repo.size() + 1];
@@ -226,26 +258,45 @@ int git_fetch_and_checkout(const string &local_repo, const string &repo, const s
     int err = exec_and_wait("git", arg_list);
     delete[] arg2;
     delete[] arg3;
-    if (err != 0)
+    return (err != 0 ? -1 : 0);
+}
+
+int git_checkout(const string &branch)
+{
+    char command[] = "git";
+    char arg1[] = "checkout";
+    char arg2[] = "-f";
+    char * arg3 = new char[branch.size() + 1];
+    strcpy(arg3, branch.c_str());
+
+    char * arg_list[] = {command, arg1, arg2, arg3, nullptr};
+
+    int err =  exec_and_wait("git", arg_list);
+    delete[] arg3;
+    return (err != 0 ? -1 : 0);
+}
+
+int git_fetch_and_checkout(const string &local_repo, const string &repo, const string &hash)
+{
+    string old_dir = pwd();
+    cd(local_repo);
+
+    if (git_fetch(repo, hash) != 0)
     {
         cerr << "Error: fetch " << repo << " " << hash << " failed.\n";
         cd(old_dir);
         return -1;
     }
-
-    // git checkout -f FETCH_HEAD
-    char arg4[] = "checkout";
-    char arg5[] = "-f";
-    char arg6[] = "FETCH_HEAD";
-
-    char * arg_list2[] = {command, arg4, arg5, arg6, nullptr};
-
-    err = exec_and_wait("git", arg_list2);
-    if (err != 0)
+    
+    if (git_checkout("FETCH_HEAD") != 0)
+    {
         cerr << "Error: checkout FETCH_HEAD failed.\n";
+        cd(old_dir);
+        return -1;
+    }
 
     cd(old_dir);
-    return (err != 0 ? -1 : 0);
+    return 0;
 }
 
 string get_commit_name(const string &repo, const string &hash)

@@ -29,7 +29,8 @@ writebugconfig () {
     echo "arch=$arch" >> $inspectorconfig
     echo "repo=$repo" >> $inspectorconfig
     echo "kconfig=$inspectdir/$wd/config-$curBug.txt" >> $inspectorconfig
-    echo "repro=$inspectdir/$wd/repro-$curBug.prog" >> $inspectorconfig
+    echo "repro=$inspectdir/$wd/reproducers" >> $inspectorconfig
+    echo "reproall=$inspectdir/$wd/repro-$curBug-all.prog" >> $inspectorconfig
     echo "kallerwd=$inspectdir/$wd/wd-kaller" >> $inspectorconfig
     echo "syzconfig=$inspectdir/$wd/syzkaller.cfg" >> $inspectorconfig
     echo "managerwd=$inspectdir/$wd" >> $inspectorconfig
@@ -112,6 +113,11 @@ if [ ! -d $wd ]; then
     mkdir $wd
 fi
 
+if [ ! -d $wd/reproducers ]; then
+    echo "Making the reproducer directory: $wd/reproducers"
+    mkdir $wd/reproducers
+fi
+
 if [ ! -d $wd/log ]; then
     echo "Making the log directory"
     mkdir $wd/log
@@ -128,14 +134,15 @@ line=$startLine
 echo "file: $bugfile startline: $startLine endline: $endLine arch: $targetarch" >> $logfile
 echo "" >> $logfile
 
+# "$l,$name,$truefinddate,$fixlink,$fixdate,$config,$findlink,$finddate,$guiltylink,$guiltydate,$bit32,${allrepro[@]}"
 while (( $line <= $endLine )); do
     linetext=$(sed -n ${line}p $bugfile)
     fixDate=$(echo "$linetext" | awk -F',' '{ print $5; }')
-    findDate=$(echo "$linetext" | awk -F',' '{ print $9; }')
-    guiltyDate=$(echo "$linetext" | awk -F',' '{ print $11; }')
+    findDate=$(echo "$linetext" | awk -F',' '{ print $8; }')        # was $9
+    guiltyDate=$(echo "$linetext" | awk -F',' '{ print $10; }')     # was $11
     echo -n "$line,$fixDate,$findDate,$guiltyDate" >> $logfile
 
-    arch=$(echo "$linetext" | awk -F',' '{ print $12; }')
+    arch=$(echo "$linetext" | awk -F',' '{ print $11; }')           # was $12
 
     # if the bug is older than syzbot, use syzbot as the starting date
     syzbotAge=$(( $($inspectdir/helpers/diffdate $guiltyDate $syzbotDate) ))
@@ -149,7 +156,7 @@ while (( $line <= $endLine )); do
     fixAge=$(( $($inspectdir/helpers/diffdate $fixDate $findDate) ))
     if (( $fixAge < 0 )); then
         # sed at the end because shell script is weird about what is escaped in urls...
-        findlink=$(echo "$linetext" | awk -F',' '{ print $8; }' | sed 's/\\//' | sed 's/log/commit/')
+        findlink=$(echo "$linetext" | awk -F',' '{ print $7; }' | sed 's/\\//' | sed 's/log/commit/')   # was $8
         snapshot=$(lynx -dump -dont_wrap_pre -width=300 $findlink)
         findDate=$(echo "$snapshot" | grep -m 1 "^[ ]*committer " | grep -o "20[0-9][0-9]-[0-9][0-9]-[0-9][0-9]" | cat)
         fixAge=$(( $($inspectdir/helpers/diffdate $fixDate $findDate) ))
@@ -164,16 +171,22 @@ while (( $line <= $endLine )); do
         bugName="$(echo "$linetext" | awk -F',' '{ print $2; }')"
 
         # kernel config - download it
-        configlink=$(echo "$linetext" | awk -F',' '{ print $7; }')
+        configlink=$(echo "$linetext" | awk -F',' '{ print $6; }')      # was $7
         wget $configlink -O $wd/config-$curBug.txt
 
-        # reproducer - download it
-        reprolink=$(echo "$linetext" | awk -F',' '{ print $6; }')
-        wget $reprolink -O $wd/repro-$curBug.prog
+        # reproducers - download them
+        allrepro=($(echo "$linetext" | awk -F',' '{ print $12; }'))
+        echo "${allrepro[@]}"
+        reprocount=0
+        for reprolink in ${allrepro[@]}; do
+            reprocount=$(( $reprocount + 1 ))
+            wget $reprolink -O $wd/reproducers/repro-$curBug-$reprocount.prog
+        done
+        cat $wd/reproducers/repro-$curBug-*.prog > $wd/repro-$curBug-all.prog
 
         # linux kernel repository
         # the link to the finding commit has what we need
-        findlink=$(echo "$linetext" | awk -F',' '{ print $8; }')
+        findlink=$(echo "$linetext" | awk -F',' '{ print $7; }')        # was $8
         repo=$(echo "$findlink" | grep "https://git.kernel" | awk -F'/' '{ print $9"/"$10; }' | cat)
         if [[ $repo == "bpf/bpf.git" ]]; then
             kpref="bpf"
@@ -194,7 +207,7 @@ while (( $line <= $endLine )); do
             kpref=""
         fi
 
-        guiltylink=$(echo "$linetext" | awk -F',' '{ print $10; }')
+        guiltylink=$(echo "$linetext" | awk -F',' '{ print $9; }')     # was $10
 
         # clean up the bug name if it is a duplicate name
         if [[ $(echo "$bugName" | grep "([0-9]*)$" | cat) != "" ]]; then
@@ -221,6 +234,8 @@ while (( $line <= $endLine )); do
             echo "Possible bad parse on line $line"
             echo ",bad parse" >> $logfile
         fi
+
+        rm $wd/repro-$curBug-all.prog
     else
         if (( $findAge <= 1 && $findAge >= 0 )); then
             echo "Bug was found within 1 day on line $line: $fixDate, finding: $findDate, guilty: $guiltyDate"

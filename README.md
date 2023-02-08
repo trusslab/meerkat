@@ -62,7 +62,7 @@ Lastly, `godir` is the directory where go is installed. Syzkaller needs go, so m
 
 ### dependencies
 
-`lynx` `bison` `flex` `gcc` `g++` `libgit2` `dwarves`
+`lynx` `bison` `flex` `gcc` `g++` `dwarves`
 
 `syz-env` : Required for cross compiling syzkaller. Recommend pulling the most recent syzkaller version and copying it out from there.
 

@@ -51,6 +51,11 @@ void Bug_Info::parse_config_file(const std::string & filename)
             pos0 = line.find_first_of("=") + 1;
             reproducer = line.substr(pos0);
         }
+        else if (line.find("reproall=") != std::string::npos)
+        {
+            pos0 = line.find_first_of("=") + 1;
+            allreproducer = line.substr(pos0);
+        }
         else if (line.find("kallerwd=") != std::string::npos)
         {
             pos0 = line.find_first_of("=") + 1;

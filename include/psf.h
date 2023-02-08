@@ -1,6 +1,8 @@
 #ifndef PSF_H
 #define PSF_H
 
+#include <bug_info.h>
+
 #include <string>
 #include <vector>
 
