@@ -6,7 +6,7 @@
 #include <shell_api.h>
 #include <psf.h>
 #include <fuzz_prep.h>
-#include <inspect.h>
+#include <fuzz.h>
 #include <consts.h>
 #include <template_parse.h>
 #include <git_api.h>
@@ -23,7 +23,7 @@ using namespace std;
 
 int main(int argc, char ** argv)
 {
-    bool useclang = false, use_poc = true, find_only = false, no_merge = false;
+    bool useclang = false, use_poc = true, find_only = false, no_merge = false, safe_mode = false;
     int max_time = 30, id, session_count = 0, r, l, m, err = 0, k;
     string find_hash, guilty_hash, 
            linux_repo_remote, logfilename,
@@ -113,6 +113,7 @@ int main(int argc, char ** argv)
 
     if(args.is_set("safe-mode"))
     {
+        safe_mode = true;
         FUZZTIMES = 5;
         max_time = 60;
         cout << "Running in safe-mode: Fuzzing " << FUZZTIMES << " times at " << max_time << " minutes\n";
@@ -388,8 +389,7 @@ int main(int argc, char ** argv)
 
     result = fuzz_loop_finding(bug, inspector, duplicates, max_time, vmc, port, syzkaller_version.date, use_poc, find_only);
     // set the max_time
-    if(!args.is_set("safe-mode"))
-        max_time = result.ttf;
+    max_time = (safe_mode ? max_time : result.ttf);
 
     logfile << "    The bug was " << (result.found ? "" : "not ") << "found.\n" << flush;
     for (string b : result.bugsfound)

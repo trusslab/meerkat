@@ -1,5 +1,5 @@
-#ifndef INSPECT_H
-#define INSPECT_H
+#ifndef FUZZ_H
+#define FUZZ_H
 
 #include <bug_info.h>
 #include <inspector_config.h>

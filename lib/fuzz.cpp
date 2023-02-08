@@ -1,4 +1,4 @@
-#include <inspect.h>
+#include <fuzz.h>
 #include <consts.h>
 #include <exec_api.h>
 #include <shell_api.h>
