@@ -179,6 +179,7 @@ while (( $line <= $endLine )); do
         wget $configlink -O $wd/config-$curBug.txt
 
         # reproducers - download them
+        rm -rf $wd/reproducers/*
         allrepro=($(echo "$linetext" | awk -F',' '{ print $12; }'))
         echo "${allrepro[@]}"
         reprocount=0

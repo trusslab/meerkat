@@ -289,7 +289,8 @@ int main(int argc, char ** argv)
         no_merge = true;
     }
 
-    logfile << "Max time:" << max_time << endl << flush;
+    logfile << "Max time:" << max_time << endl 
+            << "Fuzz times: " << FUZZTIMES << endl << flush;
     
     // ======================================================================================================
     // Begin Inspection
@@ -953,8 +954,10 @@ finish:
     if (check_file(bug.get_kconfig()))
         move(bug.get_kconfig(), bug.get_wd() + "/old");
     
-    if (check_file(bug.get_repro()))
-        move(bug.get_repro() + "/*", bug.get_wd() + "/old");
+    if (check_file(bug.get_allrepro()))
+        move(bug.get_allrepro(), bug.get_wd() + "/old");
+
+    remove_files_in_dir(bug.get_repro());
 
 setup_only_finish:
     if (logfile)
