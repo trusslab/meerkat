@@ -9,7 +9,7 @@
 #include <template_parse.h>
 #include <exec_api.h>
 #include <git_api.h>
-#include <inspect.h>
+#include <fuzz.h>
 
 #include <string>
 #include <fstream>
