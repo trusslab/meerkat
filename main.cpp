@@ -59,7 +59,7 @@ int main(int argc, char ** argv)
     port.port = 0;
 
     args.expect("FGfmidh");
-    args.expect(vector<string>({ "setup-only", "help", "recover", "no-merge", "no-poc", "find-only" }));
+    args.expect(vector<string>({ "setup-only", "help", "recover", "no-merge", "no-poc", "find-only", "safe-mode" }));
     args.parse(argc, argv);
     if (args.is_set('h') || args.is_set("help"))
     {
@@ -76,7 +76,7 @@ int main(int argc, char ** argv)
             << "    --no-merge: don't use the merge commit as a revealing factor.\n"
             << "    --no-poc: fuzz without the poc.\n"
             << "    --find-only: only fuzz at the finding commit.\n"
-            << "    --safe: use safe mode.\n"
+            << "    --safe-mode: use safe mode.\n"
             << endl;
         return 0;
     }
@@ -109,6 +109,13 @@ int main(int argc, char ** argv)
         cout << "Error: No id given. Please use -i [id]\n";
         err = -1;
         goto finish;
+    }
+
+    if(args.is_set("safe-mode"))
+    {
+        FUZZTIMES = 5;
+        max_time = 60;
+        cout << "Running in safe-mode: Fuzzing " << FUZZTIMES << " times at " << max_time << " minutes\n";
     }
 
     if (args.is_set('f'))
@@ -186,8 +193,7 @@ int main(int argc, char ** argv)
     if (!check_file(bug.get_syzdir() + "/.git"))
     {
         cout << "Cloning Syzkaller repository...\n";
-        git_err = git_clone(SYZKALLER_REPO_REMOTE, bug.get_syzdir());
-        if (git_err < 0)
+        if (git_clone(SYZKALLER_REPO_REMOTE, bug.get_syzdir()) < 0)
         {
             cerr << "Error: Git clone failed.\n";
             err = -1;
@@ -212,8 +218,7 @@ int main(int argc, char ** argv)
     if (!check_file(bug.get_kerneldir() + "/.git"))
     {
         cout << "Cloning Linux repository...\n";
-        git_err = git_clone(linux_repo_remote, bug.get_kerneldir());
-        if (git_err < 0)
+        if (git_clone(linux_repo_remote, bug.get_kerneldir()) < 0)
         {
             cerr << "Error: Git clone failed.\n";
             err = -1;
@@ -383,7 +388,8 @@ int main(int argc, char ** argv)
 
     result = fuzz_loop_finding(bug, inspector, duplicates, max_time, vmc, port, syzkaller_version.date, use_poc, find_only);
     // set the max_time
-    max_time = result.ttf;
+    if(!args.is_set("safe-mode"))
+        max_time = result.ttf;
 
     logfile << "    The bug was " << (result.found ? "" : "not ") << "found.\n" << flush;
     for (string b : result.bugsfound)

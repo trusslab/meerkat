@@ -21,7 +21,7 @@ int git_rev_list_topo(const std::string &, const std::string &, const std::strin
 // then returns the hashes of the commits that were included in that merge.
 std::vector<std::string> git_show_commits_merged(const std::string &, const std::string &);
 
-int git_clone(const string &, const string &);
+int git_clone(const std::string &, const std::string &);
 int git_fetch_and_checkout(const std::string &, const std::string &, const std::string &);
 
 std::string get_commit_name(const std::string &, const std::string &);

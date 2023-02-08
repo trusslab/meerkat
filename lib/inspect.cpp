@@ -97,7 +97,7 @@ void reset_kaller_wd(const string &wd)
     return;
 }
 
-Syzkaller_Result run_syzkaller(const Bug_Info &bug, const InspectorConfig &inspector, const vector<string> &dups, int max_time, bool poc)
+Syzkaller_Result run_syzkaller(const Bug_Info &bug, const InspectorConfig &inspector, const vector<string> &dups, const int max_time, bool poc)
 {
     Syzkaller_Result ret;
     ret.ttf = 0;
@@ -158,7 +158,7 @@ Syzkaller_Result run_syzkaller(const Bug_Info &bug, const InspectorConfig &inspe
 }
 
 Syzkaller_Result fuzz_loop_finding(const Bug_Info &bug, const InspectorConfig &inspector, const std::vector<std::string> &dups,
-                            int max_time, const VMConfig &vmc, Port_Info &port, const Date &syz_date, bool poc, bool find_only)
+                            const int max_time, const VMConfig &vmc, Port_Info &port, const Date &syz_date, bool poc, bool find_only)
 {
     vector<Syzkaller_Result> vret;
     Syzkaller_Result session_ret;
@@ -188,7 +188,7 @@ Syzkaller_Result fuzz_loop_finding(const Bug_Info &bug, const InspectorConfig &i
 }
 
 Syzkaller_Result fuzz_loop(const Bug_Info &bug, const InspectorConfig &inspector, const std::vector<std::string> &dups,
-                            int max_time, const VMConfig &vmc, Port_Info &port, const Date &syz_date, bool poc)
+                            const int max_time, const VMConfig &vmc, Port_Info &port, const Date &syz_date, bool poc)
 {
     Syzkaller_Result ret;
     Syzkaller_Result session_ret;

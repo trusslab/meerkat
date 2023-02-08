@@ -23,7 +23,8 @@ const std::vector<std::string> SYZKALLER_BROKEN_VERSONS = {"ec42220e7773fba548e3
 
 const std::string SPACER = "====================================================================================================================================================\n";
 
-const int FUZZTIMES = 3;
+// FUZZTIMES will change in safe mode
+static int FUZZTIMES = 3;
 const int TIME_INCREMENT = 1;
 const int START_PORT = 12000;
 

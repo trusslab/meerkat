@@ -50,6 +50,7 @@ printhelp () {
     echo "    f - fuzz only at the finding commit"
     echo "    x - only set up the kernel and syzkaller. Do not fuzz"
     echo "    d - build and use a debug version of SyzRetrospector"
+    echo "    S - run in safe mode"
 }
 
 # =================================================================================================
@@ -58,10 +59,11 @@ setuponly=""
 nopoc=""
 mtime=""
 findonly=""
+safemode=""
 targetarch="amd64" # i386
 
 # get the start and end lines from the arguments
-while getopts "s:e:i:b:m:a:xpfd" flag
+while getopts "s:e:i:b:m:a:xpfdS" flag
 do
     case $flag in
         s)
@@ -87,6 +89,8 @@ do
         d)
             retrospector=syzInspector-debug
             make -f Makefile debug ;;
+        S)
+            safemode="--safe-mode" ;;
         *)
             printhelp
             exit
@@ -222,12 +226,12 @@ while (( $line <= $endLine )); do
             writebugconfig
 
             echo ",good fuzz,$findDate,$findDate,$startDate" >> $logfile
-            echo "./$retrospector -F $findhash -f $findDate -G $guiltyhash -i $id $mtime $nopoc $findonly $setuponly" >> $logfile
+            echo "./$retrospector -F $findhash -f $findDate -G $guiltyhash -i $id $mtime $nopoc $findonly $setuponly $safemode" >> $logfile
             # run inspector on the bug
             # using finding date as the ending date
             echo "Fuzzing. finding: $findhash; guilty: $guiltyhash"
             set +e
-            ./$retrospector -F $findhash -f $findDate -G $guiltyhash -i $id $mtime $nopoc $findonly $setuponly
+            ./$retrospector -F $findhash -f $findDate -G $guiltyhash -i $id $mtime $nopoc $findonly $setuponly $safemode
             set -e
             number=$(( $number + 1 ))
         else
