@@ -451,10 +451,8 @@ int prep_syzkaller(const Bug_Info &bug, const InspectorConfig &inspector, const 
     return err;
 }
 
-int write_syzkaller_config(const Bug_Info &bug, const InspectorConfig &inspector, const VMConfig &vmc, Port_Info &p, const Date &syz_date, const int fuzztimes)
+int write_syzkaller_config(const Bug_Info &bug, const InspectorConfig &inspector, const VMConfig &vmc, Port_Info &p, const Date &syz_date)
 {
-    p.inc(fuzztimes);
-
     ofstream outf;
     outf.open(bug.get_syzconfig());
     if (!outf)

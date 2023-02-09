@@ -164,7 +164,8 @@ Syzkaller_Result fuzz_loop_finding(const Bug_Info &bug, const InspectorConfig &i
     Syzkaller_Result session_ret;
     for (int i = 0; i < fuzztimes; i++)
     {
-        write_syzkaller_config(bug, inspector, vmc, port, syz_date, fuzztimes);
+        port.inc();
+        write_syzkaller_config(bug, inspector, vmc, port, syz_date);
         vret.push_back(run_syzkaller(bug, inspector, dups, max_time, poc));
         cout << "Time spent: " << vret.back().ttf << endl;
     }
@@ -195,7 +196,8 @@ Syzkaller_Result fuzz_loop(const Bug_Info &bug, const InspectorConfig &inspector
     ret.found = false;
     for (int i = 0; i < fuzztimes & !ret.found; i++)
     {
-        write_syzkaller_config(bug, inspector, vmc, port, syz_date, fuzztimes);
+        port.inc();
+        write_syzkaller_config(bug, inspector, vmc, port, syz_date);
         ret = run_syzkaller(bug, inspector, dups, max_time, poc);
 
         // keep a list of all unique bugs found this session

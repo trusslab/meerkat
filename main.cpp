@@ -55,10 +55,6 @@ int main(int argc, char ** argv)
                     template_changes, relevant_template_changes;
     vector<Session> fuzz_sessions;
 
-    port.start_port = START_PORT;
-    port.port_count = 0;
-    port.port = 0;
-
     args.expect("FGfmidh");
     args.expect(vector<string>({ "setup-only", "help", "recover", "no-merge", "no-poc", "find-only", "safe-mode" }));
     args.parse(argc, argv);
@@ -264,7 +260,7 @@ int main(int argc, char ** argv)
     }
     cout << SPACER;
 
-    port.init(id, fuzztimes);
+    port.init(START_PORT, id, 5);
 
     vmc = determine_threadedness(inspector, bug, logfile);
 
@@ -377,7 +373,7 @@ int main(int argc, char ** argv)
     cout << SPACER;
     if (args.is_set("setup-only"))
     {
-        write_syzkaller_config(bug, inspector, vmc, port, syzkaller_version.date, fuzztimes);
+        write_syzkaller_config(bug, inspector, vmc, port, syzkaller_version.date);
         reset_kaller_wd(bug.get_kallerwd());
         logfile << "Setup-only complete.\n" << flush;
         cout << "Setup complete.\n";

@@ -43,7 +43,7 @@ int prep_syzkaller(const Bug_Info &, const InspectorConfig &, const Version &, c
 
 // writes the syzkaller config to the config file.
 // also shifts the host port by one
-int write_syzkaller_config(const Bug_Info &, const InspectorConfig &, const VMConfig &, Port_Info &, const Date &, const int);
+int write_syzkaller_config(const Bug_Info &, const InspectorConfig &, const VMConfig &, Port_Info &, const Date &);
 
 // Takes the POC file and the corpus file. calls syz-db to insert
 // the POC into the corpus.
