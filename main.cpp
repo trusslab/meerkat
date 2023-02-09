@@ -25,7 +25,7 @@ using namespace std;
 int main(int argc, char ** argv)
 {
     bool useclang = false, use_poc = true, find_only = false, no_merge = false, safe_mode = false;
-    int max_time = 30, id, session_count = 0, r, l, m, err = 0, k;
+    int max_time = 30, fuzztimes = 3, id, session_count = 0, r, l, m, err = 0, k;
     string find_hash, guilty_hash, 
            linux_repo_remote, logfilename,
            compiler, tmp_path,
@@ -113,7 +113,7 @@ int main(int argc, char ** argv)
     }
 
     if(args.is_set("safe-mode"))
-        set_safe_mode(safe_mode, max_time);
+        set_safe_mode(safe_mode, max_time, fuzztimes);
 
     if (args.is_set('f'))
         find_date = Date(args.get_arg_as_string('f'));
@@ -264,7 +264,7 @@ int main(int argc, char ** argv)
     }
     cout << SPACER;
 
-    port.init(id);
+    port.init(id, fuzztimes);
 
     vmc = determine_threadedness(inspector, bug, logfile);
 
@@ -290,7 +290,7 @@ int main(int argc, char ** argv)
     }
 
     logfile << "Max time:" << max_time << endl 
-            << "Fuzz times: " << FUZZTIMES << endl << flush;
+            << "Fuzz times: " << fuzztimes << endl << flush;
     
     // ======================================================================================================
     // Begin Inspection
@@ -377,14 +377,14 @@ int main(int argc, char ** argv)
     cout << SPACER;
     if (args.is_set("setup-only"))
     {
-        write_syzkaller_config(bug, inspector, vmc, port, syzkaller_version.date);
+        write_syzkaller_config(bug, inspector, vmc, port, syzkaller_version.date, fuzztimes);
         reset_kaller_wd(bug.get_kallerwd());
         logfile << "Setup-only complete.\n" << flush;
         cout << "Setup complete.\n";
         goto setup_only_finish;
     }
 
-    result = fuzz_loop_finding(bug, inspector, duplicates, max_time, vmc, port, syzkaller_version.date, use_poc, find_only);
+    result = fuzz_loop_finding(bug, inspector, duplicates, max_time, fuzztimes, vmc, port, syzkaller_version.date, use_poc, find_only);
     // set the max_time
     max_time = (safe_mode ? max_time : result.ttf);
 
@@ -515,7 +515,7 @@ int main(int argc, char ** argv)
                 }
 
                 cout << SPACER;
-                result_before = fuzz_loop(bug, inspector, duplicates, max_time, vmc, port, current_version.date, use_poc);
+                result_before = fuzz_loop(bug, inspector, duplicates, max_time, fuzztimes, vmc, port, current_version.date, use_poc);
 
                 logfile << "    The bug was " << (result_before.found ? "found in " : "not found and timed out at ") << result_before.ttf << " minutes\n" << flush;
                 for (string b : result_before.bugsfound)
@@ -561,7 +561,7 @@ int main(int argc, char ** argv)
                 }
 
                 cout << SPACER;
-                result_after = fuzz_loop(bug, inspector, duplicates, max_time, vmc, port, current_version.date, use_poc);
+                result_after = fuzz_loop(bug, inspector, duplicates, max_time, fuzztimes, vmc, port, current_version.date, use_poc);
 
                 logfile << "    The bug was " << (result_after.found ? "found in " : "not found and timed out at ") << result_after.ttf << " minutes\n" << flush;
                 for (string b : result_after.bugsfound)
@@ -658,7 +658,7 @@ int main(int argc, char ** argv)
             }
 
             cout << SPACER;
-            result = fuzz_loop(bug, inspector, duplicates, max_time, vmc, port, syzkaller_version.date, use_poc);
+            result = fuzz_loop(bug, inspector, duplicates, max_time, fuzztimes, vmc, port, syzkaller_version.date, use_poc);
 
             logfile << "    The bug was " << (result.found ? "found in " : "not found and timed out at ") << result.ttf << " minutes\n" << flush;
             for (string b : result.bugsfound)
@@ -727,7 +727,7 @@ int main(int argc, char ** argv)
         }
 
         cout << SPACER;
-        result_after = fuzz_loop(bug, inspector, duplicates, max_time, vmc, port, syzkaller_version.date, use_poc);
+        result_after = fuzz_loop(bug, inspector, duplicates, max_time, fuzztimes, vmc, port, syzkaller_version.date, use_poc);
 
         logfile << "    The bug was " << (result_after.found ? "found in " : "not found and timed out at ") << result_after.ttf << " minutes\n" << flush;
         for (string b : result_after.bugsfound)
@@ -789,7 +789,7 @@ int main(int argc, char ** argv)
         }
 
         cout << SPACER;
-        result_before = fuzz_loop(bug, inspector, duplicates, max_time, vmc, port, syzkaller_version.date, use_poc);
+        result_before = fuzz_loop(bug, inspector, duplicates, max_time, fuzztimes, vmc, port, syzkaller_version.date, use_poc);
 
         logfile << "    The bug was " << (result_before.found ? "found in " : "not found and timed out at ") << result_before.ttf << " minutes\n" << flush;
         for (string b : result_before.bugsfound)
@@ -871,7 +871,7 @@ int main(int argc, char ** argv)
 
             // run without the poc
             cout << SPACER;
-            result = fuzz_loop(bug, inspector, duplicates, 60, vmc, port, syzkaller_version.date, false);
+            result = fuzz_loop(bug, inspector, duplicates, (max_time > 60 ? max_time : 60), fuzztimes, vmc, port, syzkaller_version.date, false);
 
             logfile << "    The bug was " << (result.found ? "found in " : "not found and timed out at ") << result.ttf << " minutes\n" << flush;
             for (string b : result.bugsfound)

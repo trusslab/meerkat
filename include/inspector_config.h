@@ -18,8 +18,8 @@ public:
         : port(p), port_count(pc), start_port(sp)
     { return; }
 
-    int init(int);
-    int inc();
+    int init(const int, const int);
+    int inc(const int);
 };
 
 // stores vm resource allocation

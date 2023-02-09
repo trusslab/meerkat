@@ -5,16 +5,16 @@
 #include <iostream>
 #include <fstream>
 
-int Port_Info::init(int offset)
+int Port_Info::init(const int offset, const int fuzztimes)
 {
-    start_port = start_port + offset * (FUZZTIMES + 1);
+    start_port = start_port + offset * (fuzztimes + 1);
     return start_port;
 }
 
-int Port_Info::inc()
+int Port_Info::inc(const int fuzztimes)
 {
     port = start_port + port_count;
-    port_count = (port_count + 1) % (FUZZTIMES + 1);
+    port_count = (port_count + 1) % (fuzztimes + 1);
     return port;
 }
 

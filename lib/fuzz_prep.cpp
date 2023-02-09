@@ -49,7 +49,7 @@ int get_procs_from_repro(const string & repro)
 
 VMConfig determine_threadedness(const InspectorConfig &inspector, const Bug_Info &bug, std::ostream &logfile)
 {
-    string reproducer = bug.get_repro() + "/repro-" + to_string(bug.get_number()) + "-1.prog";
+    string reproducer = bug.get_repro() + "/repro-bug" + to_string(bug.get_number()) + "-1.prog";
     int procs = get_procs_from_repro(reproducer);
     VMConfig vmc;
     switch (procs)
@@ -451,9 +451,9 @@ int prep_syzkaller(const Bug_Info &bug, const InspectorConfig &inspector, const 
     return err;
 }
 
-int write_syzkaller_config(const Bug_Info &bug, const InspectorConfig &inspector, const VMConfig &vmc, Port_Info &p, const Date &syz_date)
+int write_syzkaller_config(const Bug_Info &bug, const InspectorConfig &inspector, const VMConfig &vmc, Port_Info &p, const Date &syz_date, const int fuzztimes)
 {
-    p.inc();
+    p.inc(fuzztimes);
 
     ofstream outf;
     outf.open(bug.get_syzconfig());

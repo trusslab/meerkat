@@ -158,13 +158,13 @@ Syzkaller_Result run_syzkaller(const Bug_Info &bug, const InspectorConfig &inspe
 }
 
 Syzkaller_Result fuzz_loop_finding(const Bug_Info &bug, const InspectorConfig &inspector, const std::vector<std::string> &dups,
-                            const int max_time, const VMConfig &vmc, Port_Info &port, const Date &syz_date, bool poc, bool find_only)
+                            const int max_time, const int fuzztimes, const VMConfig &vmc, Port_Info &port, const Date &syz_date, bool poc, bool find_only)
 {
     vector<Syzkaller_Result> vret;
     Syzkaller_Result session_ret;
-    for (int i = 0; i < FUZZTIMES; i++)
+    for (int i = 0; i < fuzztimes; i++)
     {
-        write_syzkaller_config(bug, inspector, vmc, port, syz_date);
+        write_syzkaller_config(bug, inspector, vmc, port, syz_date, fuzztimes);
         vret.push_back(run_syzkaller(bug, inspector, dups, max_time, poc));
         cout << "Time spent: " << vret.back().ttf << endl;
     }
@@ -188,14 +188,14 @@ Syzkaller_Result fuzz_loop_finding(const Bug_Info &bug, const InspectorConfig &i
 }
 
 Syzkaller_Result fuzz_loop(const Bug_Info &bug, const InspectorConfig &inspector, const std::vector<std::string> &dups,
-                            const int max_time, const VMConfig &vmc, Port_Info &port, const Date &syz_date, bool poc)
+                            const int max_time, const int fuzztimes, const VMConfig &vmc, Port_Info &port, const Date &syz_date, bool poc)
 {
     Syzkaller_Result ret;
     Syzkaller_Result session_ret;
     ret.found = false;
-    for (int i = 0; i < FUZZTIMES & !ret.found; i++)
+    for (int i = 0; i < fuzztimes & !ret.found; i++)
     {
-        write_syzkaller_config(bug, inspector, vmc, port, syz_date);
+        write_syzkaller_config(bug, inspector, vmc, port, syz_date, fuzztimes);
         ret = run_syzkaller(bug, inspector, dups, max_time, poc);
 
         // keep a list of all unique bugs found this session

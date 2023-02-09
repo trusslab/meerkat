@@ -24,13 +24,13 @@ void reset_kaller_wd(const std::string &wd);
 // time to find and bugs found.
 Syzkaller_Result run_syzkaller(const Bug_Info &, const InspectorConfig &, const std::vector<std::string> &, const int, bool = true);
 
-// Runs Syzkaller FUZZTIMES times. Returns the new max time
+// Runs Syzkaller fuzztimes times. Returns the new max time
 // to use. Intended to be run on the finding commit.
-Syzkaller_Result fuzz_loop_finding(const Bug_Info &, const InspectorConfig &, const std::vector<std::string> &, const int, const VMConfig &, Port_Info &, const Date &, bool = true, bool = true);
+Syzkaller_Result fuzz_loop_finding(const Bug_Info &, const InspectorConfig &, const std::vector<std::string> &, const int, const int, const VMConfig &, Port_Info &, const Date &, bool = true, bool = true);
 
-// Runs syzkaller FUZZTIMES times. Returns the culmination
+// Runs syzkaller fuzztimes times. Returns the culmination
 // of the results.
-Syzkaller_Result fuzz_loop(const Bug_Info &, const InspectorConfig &, const std::vector<std::string> &, const int, const VMConfig &, Port_Info &, const Date &, bool = true);
+Syzkaller_Result fuzz_loop(const Bug_Info &, const InspectorConfig &, const std::vector<std::string> &, const int, const int, const VMConfig &, Port_Info &, const Date &, bool = true);
 
 // Checks against heuristics to see if the resulting kernel
 // commit is faulty. Returns true if it is.
