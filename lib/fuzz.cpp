@@ -28,6 +28,13 @@ bool fuzz_is_in(const string &s, const vector<string> &v)
     return false;
 }
 
+int cr_find(const string &s, const vector<Crash_Report> &v)
+{
+    int i = 0;
+    for (i = 0; i < v.size() && v.at(i) != s; i++);
+    return i >= v.size() ? -1 : i;
+}
+
 int find_max_time(const vector<Syzkaller_Result> &times)
 {
     // time = mean + 1 * std
@@ -102,10 +109,11 @@ void reset_kaller_wd(const string &wd)
 Syzkaller_Result run_syzkaller(const Bug_Info &bug, const InspectorConfig &inspector, const vector<string> &dups, const int max_time, bool poc)
 {
     Syzkaller_Result result;
-    int time = 0;
+    int time = 0, to_add = 0, i = 0;
     result.ttf = 0;
     result.found = false;
-    vector<string> crash_hashes, checked_crashes;
+    vector<string> crash_hashes;
+    vector<Crash_Report> checked_crashes;
     string crash_name;
 
     reset_kaller_wd(bug.get_kallerwd());
@@ -138,14 +146,30 @@ Syzkaller_Result run_syzkaller(const Bug_Info &bug, const InspectorConfig &inspe
         crash_hashes = list_dir(bug.get_kallerwd() + "/crashes");
         for (string hash : crash_hashes)
         {
-            if (fuzz_is_in(hash, checked_crashes))
-                continue;
+            to_add = 0;
+            i = cr_find(hash, checked_crashes);
+            if (i >= 0)
+            {
+                // reusing crash_report becuase it has the same data layout that I need, even if it is the wrong name
+                while (check_file(bug.get_kallerwd() + "/crashes/" + hash + "/report" + to_string(checked_crashes.at(i).time)))
+                {
+                    to_add++;
+                    checked_crashes.at(i).time++;
+                }
+
+                if (to_add == 0)
+                    continue;
+            }
             else
-                checked_crashes.push_back(hash);
+            {
+                to_add = 1;
+                checked_crashes.push_back({hash, 0});
+            }
 
             crash_name = get_crash_name(hash);
-            result.reports.push_back({crash_name, time});
-            result.found = fuzz_is_in(crash_name, dups);
+            result.found = fuzz_is_in(crash_name, dups) ? true : result.found;
+            for (int j = 0; j < to_add; j++)
+                result.reports.push_back({crash_name, time});
         }
     }
     result.ttf = time;
