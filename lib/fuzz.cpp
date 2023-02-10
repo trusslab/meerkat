@@ -172,7 +172,8 @@ Syzkaller_Result run_syzkaller(const Bug_Info &bug, const InspectorConfig &inspe
             for (int j = 0; j < to_add; j++)
                 result.reports.push_back({crash_name, time});
 
-            if (crash_name == "suppressed report" || crash_name == "panic: disabled syscall" || crash_name.find("SYZFATAL") != string::npos)
+            if (crash_name == "suppressed report" || crash_name == "panic: disabled syscall"
+                || crash_name == "lost connection to test machine" || crash_name.find("SYZFATAL") != string::npos)
                 result.bad_crashes += to_add;
         }
     }

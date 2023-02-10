@@ -63,6 +63,6 @@ void log_session_result(ofstream &logfile, const Test_Result &result, const vect
 {
     logfile << "The bug was " << (result.found ? "" : "not ") << "found.\n" << flush;
     for (int i = 0; i < result.attempts.size(); i++)
-        log_attempt_result(logfile, result.attempts.at(i), i, dups);
+        log_attempt_result(logfile, result.attempts.at(i), i+1, dups);
     logfile << endl << flush;
 }
