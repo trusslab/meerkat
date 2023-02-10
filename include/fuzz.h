@@ -19,6 +19,7 @@ class Syzkaller_Result
 {
 public:
     bool found;                             // was the bug found
+    int bad_crashes;
     int ttf;                                // time to find
     std::vector<Crash_Report> reports;      // a list of all the bugs found
 };

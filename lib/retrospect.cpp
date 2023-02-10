@@ -47,16 +47,22 @@ void log_syzkaller_build_error(ofstream &logfile)
 // Attempt 2:
 // ...
 
+void log_attempt_result(ofstream &logfile, const Syzkaller_Result &attempt, int i, const vector<string> &dups)
+{
+    logfile << "Attempt " << i << ":\n"
+            << "    Time  Bug Name\n";
+    
+    for (Crash_Report cr : attempt.reports)
+        logfile << (fuzz_is_in(cr.name, dups) ? "*** " : "    ") << right << setw(4) << cr.time << "  " << cr.name << endl << flush;
+    
+    if (attempt.bad_crashes > 0)
+        logfile << "Warning: " << attempt.bad_crashes << " bad crashes were found.\n" << flush;
+}
+
 void log_session_result(ofstream &logfile, const Test_Result &result, const vector<string> &dups)
 {
     logfile << "The bug was " << (result.found ? "" : "not ") << "found.\n" << flush;
     for (int i = 0; i < result.attempts.size(); i++)
-    {
-        logfile << "Attempt " << i << ":\n"
-                << "    Time  Bug Name\n";
-        
-        for (Crash_Report cr : result.attempts.at(i).reports)
-            logfile << (fuzz_is_in(cr.name, dups) ? "*** " : "    ") << right << setw(4) << cr.time << "  " << cr.name << endl << flush;
-    }
+        log_attempt_result(logfile, result.attempts.at(i), i, dups);
     logfile << endl << flush;
 }

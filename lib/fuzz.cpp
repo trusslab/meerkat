@@ -112,6 +112,7 @@ Syzkaller_Result run_syzkaller(const Bug_Info &bug, const InspectorConfig &inspe
     int time = 0, to_add = 0, i = 0;
     result.ttf = 0;
     result.found = false;
+    result.bad_crashes = 0;
     vector<string> crash_hashes;
     vector<Crash_Report> checked_crashes;
     string crash_name;
@@ -170,6 +171,9 @@ Syzkaller_Result run_syzkaller(const Bug_Info &bug, const InspectorConfig &inspe
             result.found = fuzz_is_in(crash_name, dups) ? true : result.found;
             for (int j = 0; j < to_add; j++)
                 result.reports.push_back({crash_name, time});
+
+            if (crash_name == "suppressed report" || crash_name == "panic: disabled syscall" || crash_name.find("SYZFATAL") != string::npos)
+                result.bad_crashes += to_add;
         }
     }
     result.ttf = time;
