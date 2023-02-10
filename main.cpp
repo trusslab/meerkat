@@ -43,7 +43,7 @@ int main(int argc, char ** argv)
             current_version, bisect_version, merge_commit,
             guilty_version, finding_version, reveal_version;
     Session this_session;
-    Syzkaller_Result result, result_before, result_after;
+    Test_Result result, result_before, result_after;
     
     int git_err;
 
@@ -342,22 +342,18 @@ int main(int argc, char ** argv)
     }
     linux_version = kernel_versions.at(k);
     syzkaller_version = get_version_by_date(syzkaller_versions, high_date);
-    this_session = Session(linux_version, syzkaller_version, syzkaller_version, false);
 
-    session_count++;
-    logfile << "Session " << session_count << ":\n"
-            << "    Template:  " << syzkaller_version.date.get_date() << " - " << syzkaller_version.name << "\n"
-            << "    Syzkaller: " << syzkaller_version.date.get_date() << " - " << syzkaller_version.name << "\n"
-            << "    Kernel:    " << linux_version.date.get_date() << " - " << linux_version.name << "\n" << flush;
+    this_session = Session(linux_version, syzkaller_version, syzkaller_version, false);
+    log_session_info(logfile, this_session, ++session_count);
 
     cout << "Making the kernel.\n";
     compiler = export_compiler(gcc_versions, clang_versions, linux_version.date, inspector, useclang);
-    logfile << "    Compiler:  " << compiler << "\n" << flush;
+    log_session_compiler(logfile, compiler);
     err = prep_kernel(bug, inspector, linux_version, linux_repo_remote);
     clean_path(tmp_path);
     if (err < 0)
     {
-        logfile << "Error: The kernel failed to make.\n" << flush;
+        log_kernel_build_error(logfile);
         goto finish;
     }
 
@@ -366,7 +362,7 @@ int main(int argc, char ** argv)
     err = prep_syzkaller(bug, inspector, syzkaller_version);
     if (err < 0)
     {
-        logfile << "Error: Syzkaller failed to make.\n" << flush;
+        log_syzkaller_build_error(logfile);
         goto finish;
     }
 
@@ -381,16 +377,12 @@ int main(int argc, char ** argv)
     }
 
     result = fuzz_loop_finding(bug, inspector, duplicates, max_time, fuzztimes, vmc, port, syzkaller_version.date, use_poc, find_only);
-    // set the max_time
-    max_time = (safe_mode ? max_time : result.ttf);
-
-    logfile << "    The bug was " << (result.found ? "" : "not ") << "found.\n" << flush;
-    for (string b : result.bugsfound)
-        logfile << "        " << b << "\n" << flush;
+    max_time = (safe_mode ? max_time : result.suggest_ttf);
+    log_session_result(logfile, result, duplicates);
 
     if (find_only)
     {
-        logfile << "Average TTF: " << result.ttf << endl;
+        logfile << "Average TTF: " << result.suggest_ttf << endl;
         cout << "Find-only complete.\n";
         goto finish;
     }
@@ -403,7 +395,7 @@ int main(int argc, char ** argv)
     }
     else
     {
-        logfile << "New Max Time: " << result.ttf << ".\n" << flush;
+        logfile << "New Max Time: " << max_time << ".\n" << flush;
     }
 
     this_session.found = result.found;
@@ -469,24 +461,19 @@ int main(int argc, char ** argv)
             prev_syzkaller_version = relevant_template_changes.at(i + 1);
 
             this_session = Session(linux_version, current_version, prev_syzkaller_version, false);
-
-            session_count++;
-            logfile << "Session " << session_count << " before:\n"
-                    << "    Template:  " << prev_syzkaller_version.date.get_date() << " - " << prev_syzkaller_version.name << "\n"
-                    << "    Syzkaller: " << current_version.date.get_date() << " - " << current_version.name << "\n"
-                    << "    Kernel:    " << linux_version.date.get_date() << " - " << linux_version.name << "\n" << flush;
+            log_session_info(logfile, this_session, ++session_count);
 
             if (!already_fuzzed(fuzz_sessions, this_session))
             {
                 cout << SPACER
                     << "Making the kernel\n";
                 compiler = export_compiler(gcc_versions, clang_versions, linux_version.date, inspector, useclang);
-                logfile << "    Compiler:  " << compiler << "\n" << flush;
+                log_session_compiler(logfile, compiler);
                 err = prep_kernel(bug, inspector, linux_version, linux_repo_remote);
                 clean_path(tmp_path);
                 if (err < 0)
                 {
-                    logfile << "Error: The kernel failed to make.\n" << flush;
+                    log_kernel_build_error(logfile);
                     goto finish;
                 }
 
@@ -496,7 +483,7 @@ int main(int argc, char ** argv)
                 err = prep_syzkaller(bug, inspector, prev_syzkaller_version);
                 if (err < 0)
                 {
-                    logfile << "Error: Syzkaller failed to make.\n" << flush;
+                    log_syzkaller_build_error(logfile);
                     goto finish;
                 }
 
@@ -506,21 +493,18 @@ int main(int argc, char ** argv)
                 err = prep_syzkaller(bug, inspector, current_version, bug.get_wd() + "/my_template.txt");
                 if (err < 0)
                 {
-                    logfile << "Error: Syzkaller failed to make.\n" << flush;
+                    log_syzkaller_build_error(logfile);
                     goto finish;
                 }
 
                 cout << SPACER;
                 result_before = fuzz_loop(bug, inspector, duplicates, max_time, fuzztimes, vmc, port, current_version.date, use_poc);
-
-                logfile << "    The bug was " << (result_before.found ? "found in " : "not found and timed out at ") << result_before.ttf << " minutes\n" << flush;
-                for (string b : result_before.bugsfound)
-                    logfile << "        " << b << "\n";
+                log_session_result(logfile, result_before, duplicates);
 
                 this_session.found = result_before.found;
                 fuzz_sessions.push_back(this_session);
                 if (result_before.found)
-                    ttfs.push_back(result_before.ttf);
+                    ttfs.push_back(result_before.attempts.back().ttf);
             }
             else
             {
@@ -536,13 +520,8 @@ int main(int argc, char ** argv)
                 continue;
             }
 
-            // fuzz after
-            logfile << "Session " << session_count << " after:\n"
-                    << "    Template:  " << current_version.date.get_date() << " - " << current_version.name << "\n"
-                    << "    Syzkaller: " << current_version.date.get_date() << " - " << current_version.name << "\n"
-                    << "    Kernel:    " << linux_version.date.get_date() << " - " << linux_version.name << "\n" << flush;
-
             this_session = Session(linux_version, current_version, current_version, false);
+            log_session_info(logfile, this_session, ++session_count);
 
             if (!already_fuzzed(fuzz_sessions, this_session))
             {
@@ -552,21 +531,18 @@ int main(int argc, char ** argv)
                 err = prep_syzkaller(bug, inspector, current_version);
                 if (err < 0)
                 {
-                    logfile << "Error: The kernel failed to make.\n" << flush;
+                    log_kernel_build_error(logfile);
                     goto finish;
                 }
 
                 cout << SPACER;
                 result_after = fuzz_loop(bug, inspector, duplicates, max_time, fuzztimes, vmc, port, current_version.date, use_poc);
-
-                logfile << "    The bug was " << (result_after.found ? "found in " : "not found and timed out at ") << result_after.ttf << " minutes\n" << flush;
-                for (string b : result_after.bugsfound)
-                    logfile << "        " << b << "\n";
+                log_session_result(logfile, result_after, duplicates);
 
                 this_session.found = result_after.found;
                 fuzz_sessions.push_back(this_session);
                 if (result_after.found)
-                    ttfs.push_back(result_after.ttf);
+                    ttfs.push_back(result_after.attempts.back().ttf);
             }
             else
             {
@@ -623,24 +599,19 @@ int main(int argc, char ** argv)
         linux_version = kernel_versions.at(m);
         syzkaller_version = get_version_by_date(syzkaller_versions, linux_version.date);
         this_session = Session(linux_version, syzkaller_version, syzkaller_version, false);
-
-        session_count++;
-        logfile << "Session " << session_count << ":\n"
-                    << "    Template:  " << syzkaller_version.date.get_date() << " - " << syzkaller_version.name << "\n"
-                    << "    Syzkaller: " << syzkaller_version.date.get_date() << " - " << syzkaller_version.name << "\n"
-                    << "    Kernel:    " << linux_version.date.get_date() << " - " << linux_version.name << "\n" << flush;
+        log_session_info(logfile, this_session, ++session_count);
 
         if (!already_fuzzed(fuzz_sessions, this_session))
         {
             cout << SPACER
                  << "Making the kernel\n";
             compiler = export_compiler(gcc_versions, clang_versions, linux_version.date, inspector, useclang);
-            logfile << "    Compiler:  " << compiler << "\n" << flush;
+            log_session_compiler(logfile, compiler);
             err = prep_kernel(bug, inspector, linux_version, linux_repo_remote);
             clean_path(tmp_path);
             if (err < 0)
             {
-                logfile << "Error: The kernel failed to make.\n" << flush;
+                log_kernel_build_error(logfile);
                 goto finish;
             }
 
@@ -649,21 +620,18 @@ int main(int argc, char ** argv)
             err = prep_syzkaller(bug, inspector, syzkaller_version);
             if (err < 0)
             {
-                logfile << "Error: Syzkaller failed to make.\n" << flush;
+                log_syzkaller_build_error(logfile);
                 goto finish;
             }
 
             cout << SPACER;
             result = fuzz_loop(bug, inspector, duplicates, max_time, fuzztimes, vmc, port, syzkaller_version.date, use_poc);
-
-            logfile << "    The bug was " << (result.found ? "found in " : "not found and timed out at ") << result.ttf << " minutes\n" << flush;
-            for (string b : result.bugsfound)
-                logfile << "        " << b << "\n";
+            log_session_result(logfile, result, duplicates);
 
             this_session.found = result.found;
             fuzz_sessions.push_back(this_session);
             if (result.found)
-                ttfs.push_back(result.ttf);
+                ttfs.push_back(result.attempts.back().ttf);
         }
         else
         {
@@ -687,12 +655,7 @@ int main(int argc, char ** argv)
     logfile << "Confirming the bisected kernel commit.\n" << flush;
     syzkaller_version = get_version_by_date(syzkaller_versions, bisect_version.date);
     this_session = Session(bisect_version, syzkaller_version, syzkaller_version, false);
-
-    session_count++;
-    logfile << "Session " << session_count << " after:\n"
-            << "    Template:  " << syzkaller_version.date.get_date() << " - " << syzkaller_version.name << "\n"
-            << "    Syzkaller: " << syzkaller_version.date.get_date() << " - " << syzkaller_version.name << "\n"
-            << "    Kernel:    " << bisect_version.date.get_date() << " - " << bisect_version.name << "\n" << flush;
+    log_session_info(logfile, this_session, ++session_count);
 
     if (!already_fuzzed(fuzz_sessions, this_session))
     {
@@ -703,12 +666,12 @@ int main(int argc, char ** argv)
             cout << SPACER
                 << "Making the kernel\n";
             compiler = export_compiler(gcc_versions, clang_versions, bisect_version.date, inspector, useclang);
-            logfile << "    Compiler:  " << compiler << "\n" << flush;
+            log_session_compiler(logfile, compiler);
             err = prep_kernel(bug, inspector, bisect_version, linux_repo_remote);
             clean_path(tmp_path);
             if (err < 0)
             {
-                logfile << "Error: The kernel failed to make.\n" << flush;
+                log_kernel_build_error(logfile);
                 goto finish;
             }
 
@@ -717,22 +680,19 @@ int main(int argc, char ** argv)
             err = prep_syzkaller(bug, inspector, syzkaller_version);
             if (err < 0)
             {
-                logfile << "Error: Syzkaller failed to make.\n" << flush;
+                log_syzkaller_build_error(logfile);
                 goto finish;
             }
         }
 
         cout << SPACER;
         result_after = fuzz_loop(bug, inspector, duplicates, max_time, fuzztimes, vmc, port, syzkaller_version.date, use_poc);
-
-        logfile << "    The bug was " << (result_after.found ? "found in " : "not found and timed out at ") << result_after.ttf << " minutes\n" << flush;
-        for (string b : result_after.bugsfound)
-            logfile << "        " << b << "\n";
+        log_session_result(logfile, result_after, duplicates);
 
         this_session.found = result_after.found;
         fuzz_sessions.push_back(this_session);
         if (result_after.found)
-            ttfs.push_back(result_after.ttf);
+            ttfs.push_back(result_after.attempts.back().ttf);
     }
     else
     {
@@ -763,38 +723,30 @@ int main(int argc, char ** argv)
 
     linux_version = kernel_versions.at(k);
     this_session = Session(linux_version, syzkaller_version, syzkaller_version, false);
-
-    session_count++;
-    logfile << "Session " << session_count << " before:\n"
-            << "    Template:  " << syzkaller_version.date.get_date() << " - " << syzkaller_version.name << "\n"
-            << "    Syzkaller: " << syzkaller_version.date.get_date() << " - " << syzkaller_version.name << "\n"
-            << "    Kernel:    " << linux_version.date.get_date() << " - " << linux_version.name << "\n" << flush;
+    log_session_info(logfile, this_session, ++session_count);
     
     if (!already_fuzzed(fuzz_sessions, this_session))
     {
         cout << SPACER
              << "Making the kernel\n";
         compiler = export_compiler(gcc_versions, clang_versions, linux_version.date, inspector, useclang);
-        logfile << "    Compiler:  " << compiler << "\n" << flush;
+        log_session_compiler(logfile, compiler);
         err = prep_kernel(bug, inspector, linux_version, linux_repo_remote);
         clean_path(tmp_path);
         if (err < 0)
         {
-            logfile << "Error: The kernel failed to make.\n" << flush;
+            log_kernel_build_error(logfile);
             goto finish;
         }
 
         cout << SPACER;
         result_before = fuzz_loop(bug, inspector, duplicates, max_time, fuzztimes, vmc, port, syzkaller_version.date, use_poc);
-
-        logfile << "    The bug was " << (result_before.found ? "found in " : "not found and timed out at ") << result_before.ttf << " minutes\n" << flush;
-        for (string b : result_before.bugsfound)
-            logfile << "        " << b << "\n";
+        log_session_result(logfile, result_before, duplicates);
 
         this_session.found = result_before.found;
         fuzz_sessions.push_back(this_session);
         if (result_before.found)
-            ttfs.push_back(result_before.ttf);
+            ttfs.push_back(result_before.attempts.back().ttf);
     }
     else
     {
@@ -838,7 +790,7 @@ int main(int argc, char ** argv)
     clean_path(tmp_path);
     if (err < 0)
     {
-        logfile << "Error: The kernel failed to make.\n" << flush;
+        log_kernel_build_error(logfile);
         goto finish;
     }
 
@@ -846,13 +798,7 @@ int main(int argc, char ** argv)
     {
         syzkaller_version = syzkaller_versions.at(i);
         this_session = Session(bisect_version, syzkaller_version, syzkaller_version, false);
-
-        session_count++;
-        logfile << "Session " << session_count << ":\n"
-                << "    Template:  " << syzkaller_version.date.get_date() << " - " << syzkaller_version.name << "\n"
-                << "    Syzkaller: " << syzkaller_version.date.get_date() << " - " << syzkaller_version.name << "\n"
-                << "    Kernel:    " << bisect_version.date.get_date() << " - " << bisect_version.name << "\n"
-                << "    Compiler:  " << compiler << "\n" << flush;
+        log_session_info(logfile, this_session, ++session_count);
 
         if (!already_fuzzed(fuzz_sessions, this_session))
         {
@@ -861,17 +807,14 @@ int main(int argc, char ** argv)
             err = prep_syzkaller(bug, inspector, syzkaller_version);
             if (err < 0)
             {
-                logfile << "Error: Syzkaller failed to make.\n" << flush;
+                log_syzkaller_build_error(logfile);
                 goto finish;
             }
 
             // run without the poc
             cout << SPACER;
             result = fuzz_loop(bug, inspector, duplicates, (max_time > 60 ? max_time : 60), fuzztimes, vmc, port, syzkaller_version.date, false);
-
-            logfile << "    The bug was " << (result.found ? "found in " : "not found and timed out at ") << result.ttf << " minutes\n" << flush;
-            for (string b : result.bugsfound)
-                logfile << "        " << b << "\n";
+            log_session_result(logfile, result, duplicates);
 
             this_session.found = result.found;
             fuzz_sessions.push_back(this_session);

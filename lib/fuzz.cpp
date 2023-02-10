@@ -19,7 +19,7 @@
 using namespace std;
 
 // Quick and dirty search function for string vectors
-bool inspector_is_in(const string &s, const vector<string> &v)
+bool fuzz_is_in(const string &s, const vector<string> &v)
 {
     for (string str : v)
         if (str == s)
@@ -97,11 +97,14 @@ void reset_kaller_wd(const string &wd)
     return;
 }
 
+// The time is rough here and rounds up to the nearest time increment (usually 1 minute)
+// result.ttf is the time it took to find the bug, or the max_time
 Syzkaller_Result run_syzkaller(const Bug_Info &bug, const InspectorConfig &inspector, const vector<string> &dups, const int max_time, bool poc)
 {
-    Syzkaller_Result ret;
-    ret.ttf = 0;
-    ret.found = false;
+    Syzkaller_Result result;
+    int time = 0;
+    result.ttf = 0;
+    result.found = false;
     vector<string> crash_hashes, checked_crashes;
     string crash_name;
 
@@ -122,10 +125,10 @@ Syzkaller_Result run_syzkaller(const Bug_Info &bug, const InspectorConfig &inspe
     int pid = exec_and_continue("./bin/syz-manager", arg_list, bug.get_kaller_log(), bug.get_kaller_log());
 
     // watch syzkaller's progress
-    while (ret.ttf < max_time && !ret.found)
+    while (time < max_time && !result.found)
     {
         sleep(60*TIME_INCREMENT);
-        ret.ttf += TIME_INCREMENT;
+        time += TIME_INCREMENT;
 
         // make sure syzkaller stays alive
         if (!check_alive(pid))
@@ -135,17 +138,17 @@ Syzkaller_Result run_syzkaller(const Bug_Info &bug, const InspectorConfig &inspe
         crash_hashes = list_dir(bug.get_kallerwd() + "/crashes");
         for (string hash : crash_hashes)
         {
-            if (inspector_is_in(hash, checked_crashes))
+            if (fuzz_is_in(hash, checked_crashes))
                 continue;
             else
                 checked_crashes.push_back(hash);
 
             crash_name = get_crash_name(hash);
-            ret.bugsfound.push_back(crash_name);
-            if (inspector_is_in(crash_name, dups))
-                ret.found = true;
+            result.reports.push_back({crash_name, time});
+            result.found = fuzz_is_in(crash_name, dups);
         }
     }
+    result.ttf = time;
 
     if (check_alive(pid))
         kill_child(pid);
@@ -154,63 +157,43 @@ Syzkaller_Result run_syzkaller(const Bug_Info &bug, const InspectorConfig &inspe
 
     cd(inspector.get_inspect_dir());
     delete[] arg1;
-    return ret;
+    return result;
 }
 
-Syzkaller_Result fuzz_loop_finding(const Bug_Info &bug, const InspectorConfig &inspector, const std::vector<std::string> &dups,
+Test_Result fuzz_loop_finding(const Bug_Info &bug, const InspectorConfig &inspector, const vector<string> &dups,
                             const int max_time, const int fuzztimes, const VMConfig &vmc, Port_Info &port, const Date &syz_date, bool poc, bool find_only)
 {
-    vector<Syzkaller_Result> vret;
-    Syzkaller_Result session_ret;
+    Test_Result result;
+    result.found = false;
     for (int i = 0; i < fuzztimes; i++)
     {
         port.inc();
         write_syzkaller_config(bug, inspector, vmc, port, syz_date);
-        vret.push_back(run_syzkaller(bug, inspector, dups, max_time, poc));
-        cout << "Time spent: " << vret.back().ttf << endl;
+        result.attempts.push_back(run_syzkaller(bug, inspector, dups, max_time, poc));
+        result.found = result.attempts.back().found ? true : result.found;
     }
 
-    session_ret.found = false;
-    for (Syzkaller_Result ret : vret)
-    {
-        for (string s : ret.bugsfound)
-            if (!inspector_is_in(s, session_ret.bugsfound))
-                session_ret.bugsfound.push_back(s);
+    result.suggest_ttf = (find_only ? find_average_time(result.attempts) : find_max_time(result.attempts));
 
-        session_ret.found = ret.found ? true : session_ret.found;
-    }
-
-    if (!find_only)
-        session_ret.ttf = find_max_time(vret);
-    else
-        session_ret.ttf = find_average_time(vret);
-
-    return session_ret;
+    return result;
 }
 
-Syzkaller_Result fuzz_loop(const Bug_Info &bug, const InspectorConfig &inspector, const std::vector<std::string> &dups,
+Test_Result fuzz_loop(const Bug_Info &bug, const InspectorConfig &inspector, const vector<string> &dups,
                             const int max_time, const int fuzztimes, const VMConfig &vmc, Port_Info &port, const Date &syz_date, bool poc)
 {
-    Syzkaller_Result ret;
-    Syzkaller_Result session_ret;
-    ret.found = false;
-    for (int i = 0; i < fuzztimes & !ret.found; i++)
+    Test_Result result;
+    result.found = false;
+    for (int i = 0; i < fuzztimes & !result.found; i++)
     {
         port.inc();
         write_syzkaller_config(bug, inspector, vmc, port, syz_date);
-        ret = run_syzkaller(bug, inspector, dups, max_time, poc);
-
-        // keep a list of all unique bugs found this session
-        for (string s : ret.bugsfound)
-            if (!inspector_is_in(s, session_ret.bugsfound))
-                session_ret.bugsfound.push_back(s);
+        result.attempts.push_back(run_syzkaller(bug, inspector, dups, max_time, poc));
+        result.found = result.attempts.back().found;
     }
 
-    // the final return value will have these for us.
-    session_ret.found = ret.found;
-    session_ret.ttf = ret.ttf;
+    result.suggest_ttf = find_max_time(result.attempts);
 
-    return session_ret;
+    return result;
 }
 
 bool check_faulty_result(const Bug_Info &bug, const vector<int> &ttfs, int max_time)
