@@ -234,8 +234,8 @@ int main(int argc, char ** argv)
     logfile << bug.get_name() << "," << bug.get_buglink() << endl
             << "Repository: " << bug.get_kpref() << endl
             << "Arch: " << bug.get_arch() << endl
-            << "Finding: " << find_hash << endl
-            << "Guilty: " << guilty_hash << endl << flush;
+            << "Finding: " << git_get_commit_date(bug.get_wd(), bug.get_kerneldir(), find_hash).get_date() << " - " << find_hash << endl
+            << "Guilty:  " << git_get_commit_date(bug.get_wd(), bug.get_kerneldir(), guilty_hash).get_date() << " - " << guilty_hash << endl << flush;
 
     // Parse Syzbot for duplicate bugs
     cout << SPACER

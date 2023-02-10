@@ -31,7 +31,7 @@ bool fuzz_is_in(const string &s, const vector<string> &v)
 int cr_find(const string &s, const vector<Crash_Report> &v)
 {
     int i = 0;
-    for (i = 0; i < v.size() && v.at(i) != s; i++);
+    for (i = 0; i < v.size() && v.at(i).name != s; i++);
     return i >= v.size() ? -1 : i;
 }
 

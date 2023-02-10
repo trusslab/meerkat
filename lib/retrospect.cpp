@@ -12,13 +12,13 @@ void set_safe_mode(bool &safe_mode, int &max_time, int &fuzztimes)
 {
     safe_mode = true;
     fuzztimes = 5;
-    max_time = 60;
+    max_time = max_time > 30 ? max_time : 30;
     cout << "Switching to safe-mode: Fuzzing " << fuzztimes << " times at " << max_time << " minutes\n";
 }
 
 void log_session_info(ofstream &logfile, const Session &session, const int count)
 {
-    logfile << "Session:   " << count << "\n"
+    logfile << "\nSession:   " << count << "\n"
             << "Template:  " << session.syz_template.date.get_date() << " - " << session.syz_template.name << "\n"
             << "Syzkaller: " << session.syzkaller.date.get_date() << " - " << session.syzkaller.name << "\n"
             << "Kernel:    " << session.kernel.date.get_date() << " - " << session.kernel.name << "\n" << flush;
