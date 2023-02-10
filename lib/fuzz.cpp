@@ -179,7 +179,7 @@ Test_Result fuzz_loop_finding(const Bug_Info &bug, const InspectorConfig &inspec
 }
 
 Test_Result fuzz_loop(const Bug_Info &bug, const InspectorConfig &inspector, const vector<string> &dups,
-                            const int max_time, const int fuzztimes, const VMConfig &vmc, Port_Info &port, const Date &syz_date, bool poc)
+                    const int max_time, const int fuzztimes, const VMConfig &vmc, Port_Info &port, const Date &syz_date, bool poc)
 {
     Test_Result result;
     result.found = false;

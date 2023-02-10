@@ -286,7 +286,7 @@ int main(int argc, char ** argv)
     }
 
     logfile << "Max time:" << max_time << endl 
-            << "Fuzz times: " << fuzztimes << endl << flush;
+            << "Max attempts:" << fuzztimes << endl << flush;
     
     // ======================================================================================================
     // Begin Inspection
