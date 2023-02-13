@@ -2,7 +2,7 @@
 #define RETROSPECT_H
 
 #include <session.h>
-#include <fuzz.h>
+#include <result.h>
 
 #include <fstream>
 
@@ -16,6 +16,8 @@ void log_session_compiler(std::ofstream &, const std::string &);
 void log_kernel_build_error(std::ofstream &);
 
 void log_syzkaller_build_error(std::ofstream &);
+
+void log_attempt_result(std::ofstream &, const Syzkaller_Result &, int, const std::vector<std::string> &, int);
 
 void log_session_result(std::ofstream &, const Test_Result &, const std::vector<std::string> &);
 

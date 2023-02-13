@@ -1,6 +1,6 @@
 #include <consts.h>
 #include <session.h>
-#include <fuzz.h>
+#include <result.h>
 
 #include <iostream>
 #include <fstream>
@@ -47,10 +47,14 @@ void log_syzkaller_build_error(ofstream &logfile)
 // Attempt 2:
 // ...
 
-void log_attempt_result(ofstream &logfile, const Syzkaller_Result &attempt, int i, const vector<string> &dups)
+void log_attempt_result(ofstream &logfile, const Syzkaller_Result &attempt, int i, const vector<string> &dups, int fuzztimes)
 {
-    logfile << "Attempt " << i << ":\n"
-            << "    Time  Bug Name\n";
+    logfile << "Attempt " << i << ":" << (i >= fuzztimes ? " (RETRY)" : "") << "\n";
+
+    if (attempt.reports.size() > 0)
+        logfile << "    Time  Bug Name\n";
+    else
+        logfile << "    No crashes found.\n";
     
     for (Crash_Report cr : attempt.reports)
         logfile << (fuzz_is_in(cr.name, dups) ? "*** " : "    ") << right << setw(4) << cr.time << "  " << cr.name << endl << flush;
@@ -62,7 +66,4 @@ void log_attempt_result(ofstream &logfile, const Syzkaller_Result &attempt, int 
 void log_session_result(ofstream &logfile, const Test_Result &result, const vector<string> &dups)
 {
     logfile << "The bug was " << (result.found ? "" : "not ") << "found.\n" << flush;
-    for (int i = 0; i < result.attempts.size(); i++)
-        log_attempt_result(logfile, result.attempts.at(i), i+1, dups);
-    logfile << endl << flush;
 }

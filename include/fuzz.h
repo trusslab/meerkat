@@ -4,35 +4,11 @@
 #include <bug_info.h>
 #include <inspector_config.h>
 #include <date.h>
+#include <result.h>
 
+#include <fstream>
 #include <string>
 #include <vector>
-
-class Crash_Report
-{
-public:
-    std::string name;
-    int time;
-};
-
-class Syzkaller_Result
-{
-public:
-    bool found;                             // was the bug found
-    int bad_crashes;
-    int ttf;                                // time to find
-    std::vector<Crash_Report> reports;      // a list of all the bugs found
-};
-
-class Test_Result
-{
-public:
-    bool found;                             // was the bug found
-    int suggest_ttf;                        // sugested max ttf for this bug
-    std::vector<Syzkaller_Result> attempts; // results for each time Syzkaller fuzzed
-};
-
-bool fuzz_is_in(const std::string &, const std::vector<std::string> &);
 
 // deletes the syzkaller working directory and
 // recreates it.
@@ -44,11 +20,11 @@ Syzkaller_Result run_syzkaller(const Bug_Info &, const InspectorConfig &, const 
 
 // Runs Syzkaller fuzztimes times. Returns the new max time
 // to use. Intended to be run on the finding commit.
-Test_Result fuzz_loop_finding(const Bug_Info &, const InspectorConfig &, const std::vector<std::string> &, const int, const int, const VMConfig &, Port_Info &, const Date &, bool = true, bool = true);
+Test_Result fuzz_loop_finding(std::ofstream &, const Bug_Info &, const InspectorConfig &, const std::vector<std::string> &, const int, const int, const VMConfig &, Port_Info &, const Date &, bool = true, bool = true);
 
 // Runs syzkaller fuzztimes times. Returns the culmination
 // of the results.
-Test_Result fuzz_loop(const Bug_Info &, const InspectorConfig &, const std::vector<std::string> &, const int, const int, const VMConfig &, Port_Info &, const Date &, bool = true);
+Test_Result fuzz_loop(std::ofstream &, const Bug_Info &, const InspectorConfig &, const std::vector<std::string> &, const int, const int, const VMConfig &, Port_Info &, const Date &, bool = true);
 
 // Checks against heuristics to see if the resulting kernel
 // commit is faulty. Returns true if it is.

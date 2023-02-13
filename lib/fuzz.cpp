@@ -6,8 +6,11 @@
 #include <bug_info.h>
 #include <inspector_config.h>
 #include <fuzz_prep.h>
+#include <retrospect.h>
+#include <result.h>
 
 #include <iostream>
+#include <fstream>
 #include <string>
 #include <vector>
 #include <fstream>
@@ -17,16 +20,6 @@
 #include <unistd.h>
 
 using namespace std;
-
-// Quick and dirty search function for string vectors
-bool fuzz_is_in(const string &s, const vector<string> &v)
-{
-    for (string str : v)
-        if (str == s)
-            return true;
-    
-    return false;
-}
 
 int cr_find(const string &s, const vector<Crash_Report> &v)
 {
@@ -104,6 +97,13 @@ void reset_kaller_wd(const string &wd)
     return;
 }
 
+bool fuzz_is_bad_crash(const string &crash_name)
+{
+    return crash_name == "suppressed report" || crash_name == "panic: disabled syscall"
+            || crash_name == "lost connection to test machine" || crash_name.find("SYZFATAL") != string::npos
+            || crash_name.find("SYZFAIL:") != string::npos;
+}
+
 // The time is rough here and rounds up to the nearest time increment (usually 1 minute)
 // result.ttf is the time it took to find the bug, or the max_time
 Syzkaller_Result run_syzkaller(const Bug_Info &bug, const InspectorConfig &inspector, const vector<string> &dups, const int max_time, bool poc)
@@ -152,7 +152,7 @@ Syzkaller_Result run_syzkaller(const Bug_Info &bug, const InspectorConfig &inspe
             if (i >= 0)
             {
                 // reusing crash_report becuase it has the same data layout that I need, even if it is the wrong name
-                while (check_file(bug.get_kallerwd() + "/crashes/" + hash + "/report" + to_string(checked_crashes.at(i).time)))
+                while (check_file(bug.get_kallerwd() + "/crashes/" + hash + "/log" + to_string(checked_crashes.at(i).time)))
                 {
                     to_add++;
                     checked_crashes.at(i).time++;
@@ -172,8 +172,7 @@ Syzkaller_Result run_syzkaller(const Bug_Info &bug, const InspectorConfig &inspe
             for (int j = 0; j < to_add; j++)
                 result.reports.push_back({crash_name, time});
 
-            if (crash_name == "suppressed report" || crash_name == "panic: disabled syscall"
-                || crash_name == "lost connection to test machine" || crash_name.find("SYZFATAL") != string::npos)
+            if (fuzz_is_bad_crash(crash_name))
                 result.bad_crashes += to_add;
         }
     }
@@ -189,17 +188,21 @@ Syzkaller_Result run_syzkaller(const Bug_Info &bug, const InspectorConfig &inspe
     return result;
 }
 
-Test_Result fuzz_loop_finding(const Bug_Info &bug, const InspectorConfig &inspector, const vector<string> &dups,
+Test_Result fuzz_loop_finding(ofstream &logfile, const Bug_Info &bug, const InspectorConfig &inspector, const vector<string> &dups,
                             const int max_time, const int fuzztimes, const VMConfig &vmc, Port_Info &port, const Date &syz_date, bool poc, bool find_only)
 {
     Test_Result result;
     result.found = false;
-    for (int i = 0; i < fuzztimes; i++)
+    int retries = 0;
+    for (int i = 0; i < fuzztimes + retries; i++)
     {
         port.inc();
         write_syzkaller_config(bug, inspector, vmc, port, syz_date);
         result.attempts.push_back(run_syzkaller(bug, inspector, dups, max_time, poc));
         result.found = result.attempts.back().found ? true : result.found;
+        if (result.attempts.back().bad_crashes > 0 && retries < fuzztimes)
+            retries++;
+        log_attempt_result(logfile, result.attempts.back(), i, dups, fuzztimes);
     }
 
     result.suggest_ttf = (find_only ? find_average_time(result.attempts) : find_max_time(result.attempts));
@@ -207,17 +210,21 @@ Test_Result fuzz_loop_finding(const Bug_Info &bug, const InspectorConfig &inspec
     return result;
 }
 
-Test_Result fuzz_loop(const Bug_Info &bug, const InspectorConfig &inspector, const vector<string> &dups,
+Test_Result fuzz_loop(ofstream &logfile, const Bug_Info &bug, const InspectorConfig &inspector, const vector<string> &dups,
                     const int max_time, const int fuzztimes, const VMConfig &vmc, Port_Info &port, const Date &syz_date, bool poc)
 {
     Test_Result result;
     result.found = false;
-    for (int i = 0; i < fuzztimes & !result.found; i++)
+    int retries = 0;
+    for (int i = 0; i < fuzztimes + retries & !result.found; i++)
     {
         port.inc();
         write_syzkaller_config(bug, inspector, vmc, port, syz_date);
         result.attempts.push_back(run_syzkaller(bug, inspector, dups, max_time, poc));
         result.found = result.attempts.back().found;
+        if (result.attempts.back().bad_crashes > 0 && retries < fuzztimes)
+            retries++;
+        log_attempt_result(logfile, result.attempts.back(), i, dups, fuzztimes);
     }
 
     result.suggest_ttf = find_max_time(result.attempts);
