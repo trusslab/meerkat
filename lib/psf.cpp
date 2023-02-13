@@ -23,7 +23,6 @@ void trim_syzbot_fixes(const string &filename)
 }
 
 // find a fix name in a vector of fixes. -1 on fail
-// will sort the array if it starts to take a while
 int PSF_find(const string &s, const vector<PSF_Fix> &v)
 {
     for (int i = 0; i < v.size(); i++)
@@ -103,7 +102,11 @@ vector<string> PSF_getBugFixes(const string &line)
     while (pos0 >= 0)
     {
         // find the start of the commit name
-        pos0 = line.find_first_of("]", pos0) + 1;
+        pos0 = line.find_first_of("]", pos0);
+        if (pos0 == string::npos)
+            break;
+        else
+            pos0++;
 
         // if there are more commits, get those too
         // -1 because there is always a space
@@ -198,7 +201,7 @@ vector<string> parse_manual_duplicates(const string &filename, const string &bug
 
     if (!check_file(filename))
     {
-        cerr << "Info: Manual duplicates file does not exist.\n";
+        cerr << "Info: Manual duplicates file " << filename << " does not exist.\n";
         return dups;
     }
 
@@ -242,7 +245,7 @@ vector<string> gather_duplicates(const Bug_Info &bug)
     lynx_dump(SYZBOT_FIXED_LINK, tmp_snapshotfile);
     trim_syzbot_fixes(tmp_snapshotfile);
     parse_syzbot_fixes(tmp_snapshotfile, bug.get_name(), duplicates);
-    parse_manual_duplicates("parameters/manual_duplicates.txt", bug.get_name(), duplicates);
+    parse_manual_duplicates(bug.get_wd() + "parameters/manual_duplicates.txt", bug.get_name(), duplicates);
     remove_file(tmp_snapshotfile);
 
     return duplicates;
