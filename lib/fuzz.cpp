@@ -202,7 +202,7 @@ Test_Result fuzz_loop_finding(ofstream &logfile, const Bug_Info &bug, const Insp
         result.found = result.attempts.back().found ? true : result.found;
         if (result.attempts.back().bad_crashes > 0 && retries < fuzztimes)
             retries++;
-        log_attempt_result(logfile, result.attempts.back(), i, dups, fuzztimes);
+        log_attempt_result(logfile, result.attempts.back(), i + 1, dups, fuzztimes);
     }
 
     result.suggest_ttf = (find_only ? find_average_time(result.attempts) : find_max_time(result.attempts));
@@ -224,7 +224,7 @@ Test_Result fuzz_loop(ofstream &logfile, const Bug_Info &bug, const InspectorCon
         result.found = result.attempts.back().found;
         if (result.attempts.back().bad_crashes > 0 && retries < fuzztimes)
             retries++;
-        log_attempt_result(logfile, result.attempts.back(), i, dups, fuzztimes);
+        log_attempt_result(logfile, result.attempts.back(), i + 1, dups, fuzztimes);
     }
 
     result.suggest_ttf = find_max_time(result.attempts);
