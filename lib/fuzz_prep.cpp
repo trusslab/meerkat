@@ -184,6 +184,16 @@ int prep_kernel(const Bug_Info &bug, const InspectorConfig &inspector, const Ver
         
     }
 
+    // Implement a patch from ea7b4244b3656ca33b19a950f092b5bbc718b40c
+    // ~ 2021-07-31 to 2021-09-01 (merged to mainline on 2021-08-31)
+    // Fixes "arch/x86/kernel/setup.c:916:6: error: implicit declaration of function ‘acpi_mps_check’"
+    if (linux_version.date >= Date(2021,8,31) && linux_version.date <= Date(2021,9,1)
+        && !grep_to_find("#include <linux\\/acpi\\.h>", bug.get_kerneldir() + "/arch/x86/kernel/setup.c"))
+    {
+        cout << "PATCH: Explicitly include acpi.h\n";
+        sed_i("s/#include <linux\\/console\\.h>/#include <linux\\/acpi\\.h>\n#include <linux\\/console\\.h>/", bug.get_kerneldir() + "/arch/x86/kernel/setup.c");
+    }
+
     // build the kernel
     cd(bug.get_kerneldir());
     err = make(inspector.get_makeprocs(), "olddefconfig");
