@@ -240,20 +240,13 @@ Test_Result fuzz_loop(ofstream &logfile, const Bug_Info &bug, const InspectorCon
     return result;
 }
 
-bool check_faulty_result(const Bug_Info &bug, const vector<int> &ttfs, int max_time)
+bool check_faulty_result(const Bug_Info &bug)
 {
     bool fault = false;
 
     // Check if the reproducer is dependent on fault injection
     if (grep_to_find("\\\"fault_call\\\":", bug.get_allrepro()) && !grep_to_find("\\\"fault_call\\\":-1", bug.get_allrepro()))
         fault = true;
-
-    // if the ttf gets too close to timing out, other runs
-    // may have timed out without finding the bug when they
-    // should not have
-    for (int n : ttfs)
-        if (n >= max_time * 0.8)
-            fault = true;
 
     return fault;
 }

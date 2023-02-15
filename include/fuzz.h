@@ -28,6 +28,6 @@ Test_Result fuzz_loop(std::ofstream &, const Bug_Info &, const InspectorConfig &
 
 // Checks against heuristics to see if the resulting kernel
 // commit is faulty. Returns true if it is.
-bool check_faulty_result(const Bug_Info &, const std::vector<int> &, int);
+bool check_faulty_result(const Bug_Info &);
 
 #endif

@@ -49,7 +49,6 @@ int main(int argc, char ** argv)
     int git_err;
 
     ofstream logfile;
-    vector<int> ttfs;
     vector<string> duplicates;
     vector<Version> gcc_versions, clang_versions,
                     kernel_versions, syzkaller_versions,
@@ -510,8 +509,6 @@ int main(int argc, char ** argv)
                 this_session.stable = result_before.stable;
                 kernel_versions.at(k).skipped = !result_before.stable && !result_before.found;
                 fuzz_sessions.push_back(this_session);
-                if (result_before.found)
-                    ttfs.push_back(result_before.attempts.back().ttf);
             }
             else
             {
@@ -555,8 +552,6 @@ int main(int argc, char ** argv)
                 this_session.stable = result_after.stable;
                 kernel_versions.at(k).skipped = !result_after.stable && !result_after.found;
                 fuzz_sessions.push_back(this_session);
-                if (result_after.found)
-                    ttfs.push_back(result_after.attempts.back().ttf);
             }
             else
             {
@@ -660,8 +655,6 @@ int main(int argc, char ** argv)
             this_session.stable = result.stable;
             kernel_versions.at(m).skipped = !result.stable && !result.found;
             fuzz_sessions.push_back(this_session);
-            if (result.found)
-                ttfs.push_back(result.attempts.back().ttf);
         }
         else
         {
@@ -728,8 +721,6 @@ int main(int argc, char ** argv)
         this_session.found = result_after.found;
         kernel_versions.at(get_index_by_name(kernel_versions, bisect_version.name)).skipped = !result_after.stable && !result_after.found;
         fuzz_sessions.push_back(this_session);
-        if (result_after.found)
-            ttfs.push_back(result_after.attempts.back().ttf);
     }
     else
     {
@@ -787,8 +778,6 @@ int main(int argc, char ** argv)
         this_session.found = result_before.found;
         kernel_versions.at(k).skipped = !result_before.stable && !result_before.found;
         fuzz_sessions.push_back(this_session);
-        if (result_before.found)
-            ttfs.push_back(result_before.attempts.back().ttf);
     }
     else
     {
@@ -926,7 +915,7 @@ report:
     logfile << "Guilty Commit:      " << guilty_version.date.get_date() << " - " << guilty_version.name << "\n" << flush;
 
 finish:
-    if (check_faulty_result(bug, ttfs, max_time))
+    if (check_faulty_result(bug))
     {
         cout << "Revealing factor marked as faulty.\n";
         logfile << "Warning: Revealing factor may be faulty.\n" << flush;
