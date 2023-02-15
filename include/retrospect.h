@@ -7,8 +7,12 @@
 
 #include <fstream>
 
+void log_safe_mode(std::ofstream &, int, int);
+
 // switch to fuzzing in safe mode. More fuzzing attempts and for longer.
 void set_safe_mode(bool &, int &, int &);
+
+bool check_safe_mode(const Test_Result &, bool &, int &, int &);
 
 int get_next_commit_binary(const int, const int, std::vector<Version> &);
 

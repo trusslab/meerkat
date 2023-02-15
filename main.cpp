@@ -503,6 +503,8 @@ int main(int argc, char ** argv)
                 cout << SPACER;
                 result_before = fuzz_loop(logfile, bug, inspector, duplicates, max_time, fuzztimes, vmc, port, current_version.date, use_poc);
                 log_session_result(logfile, result_before, duplicates);
+                if (check_safe_mode(result_before, safe_mode, max_time, fuzztimes))
+                    log_safe_mode(logfile, max_time, fuzztimes);
 
                 this_session.found = result_before.found;
                 this_session.stable = result_before.stable;
@@ -546,6 +548,8 @@ int main(int argc, char ** argv)
                 cout << SPACER;
                 result_after = fuzz_loop(logfile, bug, inspector, duplicates, max_time, fuzztimes, vmc, port, current_version.date, use_poc);
                 log_session_result(logfile, result_after, duplicates);
+                if (check_safe_mode(result_after, safe_mode, max_time, fuzztimes))
+                    log_safe_mode(logfile, max_time, fuzztimes);
 
                 this_session.found = result_after.found;
                 this_session.stable = result_after.stable;
@@ -649,6 +653,8 @@ int main(int argc, char ** argv)
             cout << SPACER;
             result = fuzz_loop(logfile, bug, inspector, duplicates, max_time, fuzztimes, vmc, port, syzkaller_version.date, use_poc);
             log_session_result(logfile, result, duplicates);
+            if (check_safe_mode(result, safe_mode, max_time, fuzztimes))
+                log_safe_mode(logfile, max_time, fuzztimes);
 
             this_session.found = result.found;
             this_session.stable = result.stable;
@@ -715,6 +721,8 @@ int main(int argc, char ** argv)
         cout << SPACER;
         result_after = fuzz_loop(logfile, bug, inspector, duplicates, max_time, fuzztimes, vmc, port, syzkaller_version.date, use_poc);
         log_session_result(logfile, result_after, duplicates);
+        if (check_safe_mode(result_after, safe_mode, max_time, fuzztimes))
+            log_safe_mode(logfile, max_time, fuzztimes);
 
         this_session.stable = result_after.stable;
         this_session.found = result_after.found;
@@ -772,6 +780,8 @@ int main(int argc, char ** argv)
         cout << SPACER;
         result_before = fuzz_loop(logfile, bug, inspector, duplicates, max_time, fuzztimes, vmc, port, syzkaller_version.date, use_poc);
         log_session_result(logfile, result_before, duplicates);
+        if (check_safe_mode(result_before, safe_mode, max_time, fuzztimes))
+            log_safe_mode(logfile, max_time, fuzztimes);
 
         this_session.stable = result_before.stable;
         this_session.found = result_before.found;

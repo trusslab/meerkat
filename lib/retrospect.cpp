@@ -9,12 +9,29 @@
 
 using namespace std;
 
+void log_safe_mode(ofstream &logfile, int max_time, int fuzztimes)
+{
+    cout << "Switching to Safe Mode: Fuzzing " << fuzztimes << " times at " << max_time << " minutes\n";
+    logfile << "Switching to Safe Mode: Fuzzing " << fuzztimes << " times at " << max_time << " minutes\n";
+}
+
 void set_safe_mode(bool &safe_mode, int &max_time, int &fuzztimes)
 {
     safe_mode = true;
     fuzztimes = 5;
     max_time = max_time > 30 ? max_time : 30;
-    cout << "Switching to Safe Mode: Fuzzing " << fuzztimes << " times at " << max_time << " minutes\n";
+}
+
+// Checks the given result to see if SyzRetrospector should switch to safe mode.
+// If yes, sets safe mode
+bool check_safe_mode(const Test_Result &result, bool &safe_mode, int &max_time, int &fuzztimes)
+{
+    if (!safe_mode && result.found && result.attempts.back().ttf > max_time * 0.8)
+    {
+        set_safe_mode(safe_mode, max_time, fuzztimes);
+        return true;
+    }
+    return false;
 }
 
 // Identifies groups of unstable commits and makes a guess
