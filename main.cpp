@@ -905,8 +905,12 @@ int main(int argc, char ** argv)
 
 report:
     logfile << "\n" << SPACER
-            << "Revealing Factor:   " << revealing_factor << "\n"
-            << "Version:            " << reveal_version.date.get_date() << " - " << reveal_version.name << "\n"
+            << "Revealing Factor:   " << revealing_factor << "\n" << flush;
+
+    if (revealing_factor == "Unstable Commits")
+        logfile << "Unstable Range:     " << "[" << kernel_versions.at(r).date.get_date() << ", " << kernel_versions.at(l).date.get_date() << "]\n";
+    
+    logfile << "Version:            " << reveal_version.date.get_date() << " - " << reveal_version.name << "\n"
             << "Commit Name:        " << reveal_name << "\n\n"
             << "Bug Name:           " << bug.get_name() << "\n"
             << "Bug Link:           " << bug.get_buglink() << "\n"
