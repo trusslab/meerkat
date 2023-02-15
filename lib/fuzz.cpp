@@ -193,7 +193,7 @@ Test_Result fuzz_loop_finding(ofstream &logfile, const Bug_Info &bug, const Insp
 {
     Test_Result result;
     result.found = false;
-    int retries = 0;
+    int retries = 0, unstable_count = 0;
     for (int i = 0; i < fuzztimes + retries; i++)
     {
         port.inc();
@@ -201,10 +201,14 @@ Test_Result fuzz_loop_finding(ofstream &logfile, const Bug_Info &bug, const Insp
         result.attempts.push_back(run_syzkaller(bug, inspector, dups, max_time, poc));
         result.found = result.attempts.back().found ? true : result.found;
         if (result.attempts.back().bad_crashes > 0 && retries < fuzztimes)
+        {
             retries++;
+            unstable_count++;
+        }
         log_attempt_result(logfile, result.attempts.back(), i + 1, dups, fuzztimes);
     }
 
+    result.stable = unstable_count < result.attempts.size() / 2 && !result.found;
     result.suggest_ttf = (find_only ? find_average_time(result.attempts) : find_max_time(result.attempts));
 
     return result;
@@ -215,7 +219,7 @@ Test_Result fuzz_loop(ofstream &logfile, const Bug_Info &bug, const InspectorCon
 {
     Test_Result result;
     result.found = false;
-    int retries = 0;
+    int retries = 0, unstable_count = 0;
     for (int i = 0; i < fuzztimes + retries & !result.found; i++)
     {
         port.inc();
@@ -223,10 +227,14 @@ Test_Result fuzz_loop(ofstream &logfile, const Bug_Info &bug, const InspectorCon
         result.attempts.push_back(run_syzkaller(bug, inspector, dups, max_time, poc));
         result.found = result.attempts.back().found;
         if (result.attempts.back().bad_crashes > 0 && retries < fuzztimes)
+        {
             retries++;
+            unstable_count++;
+        }
         log_attempt_result(logfile, result.attempts.back(), i + 1, dups, fuzztimes);
     }
 
+    result.stable = unstable_count < result.attempts.size() / 2 && !result.found;
     result.suggest_ttf = find_max_time(result.attempts);
 
     return result;

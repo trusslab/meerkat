@@ -191,7 +191,7 @@ int prep_kernel(const Bug_Info &bug, const InspectorConfig &inspector, const Ver
         && !grep_to_find("#include <linux\\/acpi\\.h>", bug.get_kerneldir() + "/arch/x86/kernel/setup.c"))
     {
         cout << "PATCH: Explicitly include acpi.h\n";
-        sed_i("s/#include <linux\\/console\\.h>/#include <linux\\/acpi\\.h>\n#include <linux\\/console\\.h>/", bug.get_kerneldir() + "/arch/x86/kernel/setup.c");
+        sed_i("s/#include <linux\\/console.h>/#include <linux\\/acpi.h>\\n#include <linux\\/console.h>/", bug.get_kerneldir() + "/arch/x86/kernel/setup.c");
     }
 
     // build the kernel

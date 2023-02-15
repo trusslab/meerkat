@@ -400,6 +400,8 @@ int main(int argc, char ** argv)
     }
 
     this_session.found = result.found;
+    this_session.stable = result.stable;
+    kernel_versions.at(k).skipped = !result.stable && !result.found;
     fuzz_sessions.push_back(this_session);
     
     //  ======================================================================================================
@@ -503,6 +505,8 @@ int main(int argc, char ** argv)
                 log_session_result(logfile, result_before, duplicates);
 
                 this_session.found = result_before.found;
+                this_session.stable = result_before.stable;
+                kernel_versions.at(k).skipped = !result_before.stable && !result_before.found;
                 fuzz_sessions.push_back(this_session);
                 if (result_before.found)
                     ttfs.push_back(result_before.attempts.back().ttf);
@@ -510,7 +514,8 @@ int main(int argc, char ** argv)
             else
             {
                 cout << "This session has already been fuzzed. Skipping.\n";
-                result_before.found = get_result(fuzz_sessions, this_session) == 1 ? true : false;
+                result_before.found = session_get_result(fuzz_sessions, this_session) == 1 ? true : false;
+                result_before.stable = session_get_stable(fuzz_sessions, this_session) == 1 ? true : false;
                 logfile << "The bug was " << (result_before.found ? "found " : "not found ") << "in a previous identical fuzzing session.\n" << flush;
             }
 
@@ -520,6 +525,8 @@ int main(int argc, char ** argv)
                 high_date = linux_version.date;
                 continue;
             }
+            else if (!result_before.stable)
+                continue;
 
             this_session = Session(linux_version, current_version, current_version, false);
             log_session_info(logfile, this_session, ++session_count);
@@ -541,6 +548,8 @@ int main(int argc, char ** argv)
                 log_session_result(logfile, result_after, duplicates);
 
                 this_session.found = result_after.found;
+                this_session.stable = result_after.stable;
+                kernel_versions.at(k).skipped = !result_after.stable && !result_after.found;
                 fuzz_sessions.push_back(this_session);
                 if (result_after.found)
                     ttfs.push_back(result_after.attempts.back().ttf);
@@ -548,7 +557,8 @@ int main(int argc, char ** argv)
             else
             {
                 cout << "This session has already been fuzzed. Skipping.\n";
-                result_after.found = get_result(fuzz_sessions, this_session) == 1 ? true : false;
+                result_after.found = session_get_result(fuzz_sessions, this_session) == 1 ? true : false;
+                result_after.stable = session_get_stable(fuzz_sessions, this_session) == 1 ? true : false;
                 logfile << "The bug was " << (result_after.found ? "found " : "not found ") << "in a previous identical fuzzing session.\n" << flush;
             }
 
@@ -567,6 +577,8 @@ int main(int argc, char ** argv)
 
             if (result_after.found)
                 high_date = linux_version.date;
+            if (!result_after.stable)
+                break;
             else
             {
                 low_date = linux_version.date;
@@ -596,7 +608,16 @@ int main(int argc, char ** argv)
 
     while (l <= r)
     {
-        m = (r + l) / 2;
+        // find the next stable version to test. If there are none, end the search and report a date range.
+        m = get_next_commit_binary(r, l, kernel_versions);
+        if (m < 0)
+        {
+            cout << "There are no more stable commits to test.\n";
+            revealing_factor = "Unstable Commits";
+            reveal_version = kernel_versions.at(l);
+            reveal_name = get_commit_name(bug.get_kerneldir(), kernel_versions.at(l).name);
+            goto report;
+        }
         linux_version = kernel_versions.at(m);
         syzkaller_version = get_version_by_date(syzkaller_versions, linux_version.date);
         this_session = Session(linux_version, syzkaller_version, syzkaller_version, false);
@@ -630,6 +651,8 @@ int main(int argc, char ** argv)
             log_session_result(logfile, result, duplicates);
 
             this_session.found = result.found;
+            this_session.stable = result.stable;
+            kernel_versions.at(m).skipped = !result.stable && !result.found;
             fuzz_sessions.push_back(this_session);
             if (result.found)
                 ttfs.push_back(result.attempts.back().ttf);
@@ -637,7 +660,8 @@ int main(int argc, char ** argv)
         else
         {
             cout << "This session has already been fuzzed. Skipping.\n";
-            result.found = get_result(fuzz_sessions, this_session) == 1 ? true : false;
+            result.found = session_get_result(fuzz_sessions, this_session) == 1 ? true : false;
+            result.stable = session_get_stable(fuzz_sessions, this_session) == 1 ? true : false;
             logfile << "The bug was " << (result.found ? "found " : "not found ") << "in a previous identical fuzzing session.\n" << flush;
         }
 
@@ -646,6 +670,8 @@ int main(int argc, char ** argv)
             l = m + 1;
             bisect_version = linux_version;
         }
+        else if (!result.stable)
+            continue;
         else
             r = m - 1;
     }
@@ -690,7 +716,9 @@ int main(int argc, char ** argv)
         result_after = fuzz_loop(logfile, bug, inspector, duplicates, max_time, fuzztimes, vmc, port, syzkaller_version.date, use_poc);
         log_session_result(logfile, result_after, duplicates);
 
+        this_session.stable = result_after.stable;
         this_session.found = result_after.found;
+        kernel_versions.at(get_index_by_name(kernel_versions, bisect_version.name)).skipped = !result_after.stable && !result_after.found;
         fuzz_sessions.push_back(this_session);
         if (result_after.found)
             ttfs.push_back(result_after.attempts.back().ttf);
@@ -698,12 +726,13 @@ int main(int argc, char ** argv)
     else
     {
         cout << "This session has already been fuzzed. Skipping.\n";
-        result_after.found = get_result(fuzz_sessions, this_session) == 1 ? true : false;
+        result_after.found = session_get_result(fuzz_sessions, this_session) == 1 ? true : false;
+        result_after.stable = session_get_stable(fuzz_sessions, this_session) == 1 ? true : false;
         logfile << "The bug was " << (result_after.found ? "found " : "not found ") << "in a previous identical fuzzing session.\n" << flush;
     }
     
     k = get_index_by_name(kernel_versions, bisect_version.name) + 1;
-    if (k >= kernel_versions.size())
+    if (k >= kernel_versions.size() && result_after.found)
     {
         // make case for guilty merge here
         if (kernel_versions.at(k - 1).name == merge_commit.name)
@@ -744,7 +773,9 @@ int main(int argc, char ** argv)
         result_before = fuzz_loop(logfile, bug, inspector, duplicates, max_time, fuzztimes, vmc, port, syzkaller_version.date, use_poc);
         log_session_result(logfile, result_before, duplicates);
 
+        this_session.stable = result_before.stable;
         this_session.found = result_before.found;
+        kernel_versions.at(k).skipped = !result_before.stable && !result_before.found;
         fuzz_sessions.push_back(this_session);
         if (result_before.found)
             ttfs.push_back(result_before.attempts.back().ttf);
@@ -752,7 +783,8 @@ int main(int argc, char ** argv)
     else
     {
         cout << "This session has already been fuzzed. Skipping.\n";
-        result_before.found = get_result(fuzz_sessions, this_session) == 1 ? true : false;
+        result_before.found = session_get_result(fuzz_sessions, this_session) == 1 ? true : false;
+        result_before.stable = session_get_stable(fuzz_sessions, this_session) == 1 ? true : false;
         logfile << "The bug was " << (result_before.found ? "found " : "not found ") << "in a previous identical fuzzing session.\n" << flush;
     }
 
@@ -817,13 +849,15 @@ int main(int argc, char ** argv)
             result = fuzz_loop(logfile, bug, inspector, duplicates, (max_time > 60 ? max_time : 60), fuzztimes, vmc, port, syzkaller_version.date, false);
             log_session_result(logfile, result, duplicates);
 
+            this_session.stable = result.stable;
             this_session.found = result.found;
             fuzz_sessions.push_back(this_session);
         }
         else
         {
             cout << "This session has already been fuzzed. Skipping.\n";
-            result.found = get_result(fuzz_sessions, this_session) == 1 ? true : false;
+            result.found = session_get_result(fuzz_sessions, this_session) == 1 ? true : false;
+            result.stable = session_get_stable(fuzz_sessions, this_session) == 1 ? true : false;
             logfile << "The bug was " << (result.found ? "found " : "not found ") << "in a previous identical fuzzing session.\n" << flush;
         }
 

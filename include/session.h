@@ -12,18 +12,21 @@ public:
     Version syzkaller;
     Version syz_template;
     bool found;
+    bool stable;
 
     Session()
+        : stable(true)
     { return; }
 
     Session(const Version &k, const Version &syz, const Version &temp, bool f)
-        : kernel(k), syzkaller(syz), syz_template(temp), found(f)
+        : kernel(k), syzkaller(syz), syz_template(temp), found(f), stable(true)
     {
         return;
     }
 };
 
 bool already_fuzzed(const std::vector<Session> &, const Session &);
-int get_result(const std::vector<Session> &, const Session &);
+int session_get_result(const std::vector<Session> &, const Session &);
+int session_get_stable(const std::vector<Session> &, const Session &);
 
 #endif

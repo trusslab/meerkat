@@ -6,7 +6,7 @@
 #include <string>
 #include <vector>
 
-// A class to storeinformation about versions of 
+// A class to store information about versions of 
 // gcc, linux, or syzkaller (or anything else).
 // Stores an identifying value and the assiciated
 // date.
@@ -15,12 +15,14 @@ class Version
 public:
     std::string name;
     Date date;
+    bool skipped;
 
     Version()
+        : skipped(false)
     { return; }
 
     Version(const std::string &n, const Date &d)
-        : name(n), date(d)
+        : name(n), date(d), skipped(false)
     { return; }
 
     bool operator==(const Version &);

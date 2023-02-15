@@ -3,11 +3,14 @@
 
 #include <session.h>
 #include <result.h>
+#include <version.h>
 
 #include <fstream>
 
 // switch to fuzzing in safe mode. More fuzzing attempts and for longer.
 void set_safe_mode(bool &, int &, int &);
+
+int get_next_commit_binary(const int, const int, std::vector<Version> &);
 
 void log_session_info(std::ofstream &, const Session &, const int);
 

@@ -24,10 +24,12 @@ class Test_Result
 {
 public:
     bool found;                             // was the bug found
+    bool stable;                            // is the result stable
     int suggest_ttf;                        // sugested max ttf for this bug
     std::vector<Syzkaller_Result> attempts; // results for each time Syzkaller fuzzed
 };
 
 bool fuzz_is_in(const std::string &, const std::vector<std::string> &);
+bool result_is_stable(const Test_Result &);
 
 #endif
