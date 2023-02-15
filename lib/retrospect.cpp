@@ -116,12 +116,12 @@ void log_attempt_result(ofstream &logfile, const Syzkaller_Result &attempt, int 
     
     for (Crash_Report cr : attempt.reports)
         logfile << (fuzz_is_in(cr.name, dups) ? "*** " : "    ") << right << setw(4) << cr.time << "  " << cr.name << endl << flush;
-    
-    if (attempt.bad_crashes > 0)
-        logfile << "Warning: " << attempt.bad_crashes << " bad crashes were found.\n" << flush;
 }
 
 void log_session_result(ofstream &logfile, const Test_Result &result, const vector<string> &dups)
 {
     logfile << "The bug was " << (result.found ? "" : "not ") << "found.\n" << flush;
+
+    if (!result.stable)
+        logfile << "Warning: This session is unstable.\n" << flush;
 }
