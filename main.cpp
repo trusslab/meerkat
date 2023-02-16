@@ -867,7 +867,7 @@ int main(int argc, char ** argv)
         }
     }
 
-    if (get_index_by_name(syzkaller_versions, syzkaller_version.name) < r)
+    if (get_index_by_name(syzkaller_versions, syzkaller_version.name) > r)
     {
         revealing_factor = "Syzkaller Update";
         reveal_version = Version("Unknown", syzkaller_version.date);
