@@ -21,13 +21,6 @@
 
 using namespace std;
 
-int cr_find(const string &s, const vector<Crash_Report> &v)
-{
-    int i = 0;
-    for (i = 0; i < v.size() && v.at(i).name != s; i++);
-    return i < v.size() ? i : -1;
-}
-
 int find_max_time(const vector<Syzkaller_Result> &times)
 {
     // time = mean + 1 * std
@@ -95,13 +88,6 @@ void reset_kaller_wd(const string &wd)
     make_dir(wd);
     make_dir(wd + "/crashes");
     return;
-}
-
-bool fuzz_is_bad_crash(const string &crash_name)
-{
-    return crash_name == "suppressed report" || crash_name == "panic: disabled syscall"
-            || crash_name == "lost connection to test machine" || crash_name.find("SYZFATAL") != string::npos
-            || crash_name.find("SYZFAIL:") != string::npos;
 }
 
 // The time is rough here and rounds up to the nearest time increment (usually 1 minute)
@@ -208,7 +194,7 @@ Test_Result fuzz_loop_finding(ofstream &logfile, const Bug_Info &bug, const Insp
         log_attempt_result(logfile, result.attempts.back(), i + 1, dups, fuzztimes);
     }
 
-    result.stable = unstable_count < result.attempts.size() / 2 && !result.found;
+    result.stable = unstable_count < result.attempts.size() / 2 || result.found;
     result.suggest_ttf = (find_only ? find_average_time(result.attempts) : find_max_time(result.attempts));
 
     return result;
@@ -234,7 +220,7 @@ Test_Result fuzz_loop(ofstream &logfile, const Bug_Info &bug, const InspectorCon
         log_attempt_result(logfile, result.attempts.back(), i + 1, dups, fuzztimes);
     }
 
-    result.stable = unstable_count < result.attempts.size() / 2 && !result.found;
+    result.stable = unstable_count < result.attempts.size() / 2 || result.found;
     result.suggest_ttf = find_max_time(result.attempts);
 
     return result;

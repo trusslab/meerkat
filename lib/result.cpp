@@ -15,6 +15,20 @@ bool fuzz_is_in(const string &s, const vector<string> &v)
     return false;
 }
 
+int cr_find(const string &s, const vector<Crash_Report> &v)
+{
+    int i = 0;
+    for (i = 0; i < v.size() && v.at(i).name != s; i++);
+    return i < v.size() ? i : -1;
+}
+
+bool fuzz_is_bad_crash(const string &crash_name)
+{
+    return crash_name == "suppressed report" || crash_name == "panic: disabled syscall"
+            || crash_name == "lost connection to test machine" || crash_name.find("SYZFATAL") != string::npos
+            || crash_name.find("SYZFAIL:") != string::npos;
+}
+
 bool result_is_stable(const Test_Result &result)
 {
     int count = 0;

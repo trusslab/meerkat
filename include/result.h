@@ -30,6 +30,8 @@ public:
 };
 
 bool fuzz_is_in(const std::string &, const std::vector<std::string> &);
+int cr_find(const std::string &, const std::vector<Crash_Report> &);
+bool fuzz_is_bad_crash(const string &);
 bool result_is_stable(const Test_Result &);
 
 #endif

@@ -14,6 +14,7 @@
 #include <git_traverse.h>
 #include <retrospect.h>
 #include <result.h>
+#include <blocking_bugs.h>
 
 #include <string>
 #include <vector>
@@ -50,6 +51,7 @@ int main(int argc, char ** argv)
 
     ofstream logfile;
     vector<string> duplicates;
+    Blocking_Bugs blocking_bugs;
     vector<Version> gcc_versions, clang_versions,
                     kernel_versions, syzkaller_versions,
                     template_changes, relevant_template_changes;
@@ -379,6 +381,7 @@ int main(int argc, char ** argv)
     result = fuzz_loop_finding(logfile, bug, inspector, duplicates, max_time, fuzztimes, vmc, port, syzkaller_version.date, use_poc, find_only);
     max_time = (safe_mode ? max_time : result.suggest_ttf);
     log_session_result(logfile, result, duplicates);
+    blocking_bugs.count_blocking_bugs(result);
 
     if (find_only)
     {
@@ -502,6 +505,7 @@ int main(int argc, char ** argv)
                 cout << SPACER;
                 result_before = fuzz_loop(logfile, bug, inspector, duplicates, max_time, fuzztimes, vmc, port, current_version.date, use_poc);
                 log_session_result(logfile, result_before, duplicates);
+                blocking_bugs.count_blocking_bugs(result_before);
                 if (check_safe_mode(result_before, safe_mode, max_time, fuzztimes))
                     log_safe_mode(logfile, max_time, fuzztimes);
 
@@ -545,6 +549,7 @@ int main(int argc, char ** argv)
                 cout << SPACER;
                 result_after = fuzz_loop(logfile, bug, inspector, duplicates, max_time, fuzztimes, vmc, port, current_version.date, use_poc);
                 log_session_result(logfile, result_after, duplicates);
+                blocking_bugs.count_blocking_bugs(result_after);
                 if (check_safe_mode(result_after, safe_mode, max_time, fuzztimes))
                     log_safe_mode(logfile, max_time, fuzztimes);
 
@@ -648,6 +653,7 @@ int main(int argc, char ** argv)
             cout << SPACER;
             result = fuzz_loop(logfile, bug, inspector, duplicates, max_time, fuzztimes, vmc, port, syzkaller_version.date, use_poc);
             log_session_result(logfile, result, duplicates);
+            blocking_bugs.count_blocking_bugs(result);
             if (check_safe_mode(result, safe_mode, max_time, fuzztimes))
                 log_safe_mode(logfile, max_time, fuzztimes);
 
@@ -714,6 +720,7 @@ int main(int argc, char ** argv)
         cout << SPACER;
         result_after = fuzz_loop(logfile, bug, inspector, duplicates, max_time, fuzztimes, vmc, port, syzkaller_version.date, use_poc);
         log_session_result(logfile, result_after, duplicates);
+        blocking_bugs.count_blocking_bugs(result_after);
         if (check_safe_mode(result_after, safe_mode, max_time, fuzztimes))
             log_safe_mode(logfile, max_time, fuzztimes);
 
@@ -771,6 +778,7 @@ int main(int argc, char ** argv)
         cout << SPACER;
         result_before = fuzz_loop(logfile, bug, inspector, duplicates, max_time, fuzztimes, vmc, port, syzkaller_version.date, use_poc);
         log_session_result(logfile, result_before, duplicates);
+        blocking_bugs.count_blocking_bugs(result_before);
         if (check_safe_mode(result_before, safe_mode, max_time, fuzztimes))
             log_safe_mode(logfile, max_time, fuzztimes);
 
@@ -847,6 +855,7 @@ int main(int argc, char ** argv)
             cout << SPACER;
             result = fuzz_loop(logfile, bug, inspector, duplicates, (max_time > 60 ? max_time : 60), fuzztimes, vmc, port, syzkaller_version.date, false);
             log_session_result(logfile, result, duplicates);
+            blocking_bugs.count_blocking_bugs(result);
 
             this_session.stable = result.stable;
             this_session.found = result.found;
@@ -913,6 +922,10 @@ report:
         logfile << "Guilty Merge:       " << "None\n";
         
     logfile << "Guilty Commit:      " << guilty_version.date.get_date() << " - " << guilty_version.name << "\n" << flush;
+
+    logfile << "\nPossible Blocking Bugs:\n";
+    for (string b : blocking_bugs.list_blocking_bugs())
+        logfile << "    " << b << endl;
 
 finish:
     if (check_faulty_result(bug))
