@@ -25,7 +25,7 @@ int cr_find(const string &s, const vector<Crash_Report> &v)
 {
     int i = 0;
     for (i = 0; i < v.size() && v.at(i).name != s; i++);
-    return i >= v.size() ? -1 : i;
+    return i < v.size() ? i : -1;
 }
 
 int find_max_time(const vector<Syzkaller_Result> &times)
@@ -164,7 +164,7 @@ Syzkaller_Result run_syzkaller(const Bug_Info &bug, const InspectorConfig &inspe
             else
             {
                 to_add = 1;
-                checked_crashes.push_back({hash, 0});
+                checked_crashes.push_back({hash, 1});
             }
 
             crash_name = get_crash_name(hash);
