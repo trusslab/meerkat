@@ -137,8 +137,9 @@ Syzkaller_Result run_syzkaller(const Bug_Info &bug, const InspectorConfig &inspe
             i = cr_find(hash, checked_crashes);
             if (i >= 0)
             {
-                // reusing crash_report becuase it has the same data layout that I need, even if it is the wrong name
-                while (check_file(bug.get_kallerwd() + "/crashes/" + hash + "/log" + to_string(checked_crashes.at(i).time)))
+                // reusing crash_report becuase it has the same data layout that I need, even if it is the wrong name.
+                // The hash string here has the whole path in it. Realistically this deserves a fix, but this will work for now.
+                while (check_file(hash + "/log" + to_string(checked_crashes.at(i).time)))
                 {
                     to_add++;
                     checked_crashes.at(i).time++;
