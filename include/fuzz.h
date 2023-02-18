@@ -16,7 +16,7 @@ void reset_kaller_wd(const std::string &wd);
 
 // runs syzkaller once. Returns a data structure with
 // time to find and bugs found.
-Syzkaller_Result run_syzkaller(const Bug_Info &, const InspectorConfig &, const std::vector<std::string> &, const int, bool = true);
+Syzkaller_Result run_syzkaller(std::ofstream &, const Bug_Info &, const InspectorConfig &, const std::vector<std::string> &, const int, bool = true);
 
 // Runs Syzkaller fuzztimes times. Returns the new max time
 // to use. Intended to be run on the finding commit.

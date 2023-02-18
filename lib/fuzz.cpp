@@ -92,7 +92,7 @@ void reset_kaller_wd(const string &wd)
 
 // The time is rough here and rounds up to the nearest time increment (usually 1 minute)
 // result.ttf is the time it took to find the bug, or the max_time
-Syzkaller_Result run_syzkaller(const Bug_Info &bug, const InspectorConfig &inspector, const vector<string> &dups, const int max_time, bool poc)
+Syzkaller_Result run_syzkaller(ofstream &logfile, const Bug_Info &bug, const InspectorConfig &inspector, const vector<string> &dups, const int max_time, bool poc)
 {
     Syzkaller_Result result;
     int time = 0, to_add = 0, i = 0;
@@ -161,6 +161,17 @@ Syzkaller_Result run_syzkaller(const Bug_Info &bug, const InspectorConfig &inspe
             if (fuzz_is_bad_crash(crash_name))
                 result.bad_crashes += to_add;
         }
+
+        if (wc_l(bug.get_kaller_log()) > 5000)
+        {
+            cout << "Warning: Syzkaller log file exceeded 5000 lines. Assuming boot failure";
+            logfile << "Warning: Syzkaller log file exceeded 5000 lines.\n"
+                    << "Saved at " << bug.get_wd() + "log/bug" + to_string(bug.get_number()) + "-boot_failure.log" << ".\n" << flush;
+            copy(bug.get_kaller_log(), bug.get_wd() + "log/bug" + to_string(bug.get_number()) + "-boot_failure.log");
+            result.bad_crashes++;
+            result.reports.push_back({"boot failure", time});
+            break;
+        }
     }
     result.ttf = time;
 
@@ -184,7 +195,7 @@ Test_Result fuzz_loop_finding(ofstream &logfile, const Bug_Info &bug, const Insp
     {
         port.inc();
         write_syzkaller_config(bug, inspector, vmc, port, syz_date);
-        result.attempts.push_back(run_syzkaller(bug, inspector, dups, max_time, poc));
+        result.attempts.push_back(run_syzkaller(logfile, bug, inspector, dups, max_time, poc));
         result.found = result.attempts.back().found ? true : result.found;
         if (result.attempts.back().bad_crashes > 0 && retries < fuzztimes)
         {
@@ -210,7 +221,7 @@ Test_Result fuzz_loop(ofstream &logfile, const Bug_Info &bug, const InspectorCon
     {
         port.inc();
         write_syzkaller_config(bug, inspector, vmc, port, syz_date);
-        result.attempts.push_back(run_syzkaller(bug, inspector, dups, max_time, poc));
+        result.attempts.push_back(run_syzkaller(logfile, bug, inspector, dups, max_time, poc));
         result.found = result.attempts.back().found;
         if (result.attempts.back().bad_crashes > 0 && retries < fuzztimes)
         {
