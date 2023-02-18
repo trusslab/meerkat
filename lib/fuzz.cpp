@@ -135,25 +135,24 @@ Syzkaller_Result run_syzkaller(const Bug_Info &bug, const InspectorConfig &inspe
         {
             to_add = 0;
             i = cr_find(hash, checked_crashes);
-            if (i >= 0)
-            {
-                // reusing crash_report becuase it has the same data layout that I need, even if it is the wrong name.
-                // The hash string here has the whole path in it. Realistically this deserves a fix, but this will work for now.
-                while (check_file(hash + "/log" + to_string(checked_crashes.at(i).time)))
-                {
-                    to_add++;
-                    checked_crashes.at(i).time++;
-                }
-
-                if (to_add == 0)
-                    continue;
-            }
-            else
+            if (i < 0)
             {
                 to_add = 1;
                 checked_crashes.push_back({hash, 1});
+                i = checked_crashes.size() - 1;
             }
 
+            // reusing crash_report becuase it has the same data layout that I need, even if it is the wrong name.
+            // The hash string here has the whole path in it. Realistically this deserves a fix, but this will work for now.
+            while (check_file(hash + "/log" + to_string(checked_crashes.at(i).time)))
+            {
+                to_add++;
+                checked_crashes.at(i).time++;
+            }
+
+            if (to_add == 0)
+                continue;
+            
             crash_name = get_crash_name(hash);
             result.found = fuzz_is_in(crash_name, dups) ? true : result.found;
             for (int j = 0; j < to_add; j++)
