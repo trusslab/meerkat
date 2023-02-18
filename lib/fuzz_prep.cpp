@@ -139,6 +139,7 @@ int clean_path(const string &old_path)
 int prep_kernel(const Bug_Info &bug, const InspectorConfig &inspector, const Version &linux_version, const string &repo) // repoistory &repo, const hash
 {
     int err = 0;
+    cd(inspector.get_inspect_dir());
 
     cout << "Cleaning the kernel.\n";
     clean_kernel(bug);
@@ -192,6 +193,23 @@ int prep_kernel(const Bug_Info &bug, const InspectorConfig &inspector, const Ver
     {
         cout << "PATCH: Explicitly include acpi.h\n";
         sed_i("s/#include <linux\\/console.h>/#include <linux\\/acpi.h>\\n#include <linux\\/console.h>/", bug.get_kerneldir() + "/arch/x86/kernel/setup.c");
+    }
+
+    // Apply patch from bd74708cd979f4934f0744055ce3b47da68733ce
+    // Revert "blackhole_netdev: fix syzkaller reported issue"
+    if ((linux_version.date == Date(2019,10,15) || linux_version.date == Date(2019,10,16))
+        && grep_to_find("struct inet6_dev \\*idev, \\*bdev;", bug.get_kerneldir() + "/net/ipv6/addrconf.c"))
+    {
+        cout << "PATCH: Fix regression in blackhole_netdev\n";
+        sed_i("s/struct inet6_dev \\*idev, \\*bdev;/struct inet6_dev \\*idev;/", bug.get_kerneldir() + "/net/ipv6/addrconf.c");
+        sed_i("/bdev = ipv6_add_dev(blackhole_netdev);/ d", bug.get_kerneldir() + "/net/ipv6/addrconf.c");
+        sed_i("/} else if (IS_ERR(bdev)) {/,+2 d", bug.get_kerneldir() + "/net/ipv6/addrconf.c");
+        sed_i("/addrconf_ifdown(blackhole_netdev, 2);/ d", bug.get_kerneldir() + "/net/ipv6/addrconf.c");
+
+        sed_i("s/if (dev == net->loopback_dev)/struct net_device \\*loopback_dev = net->loopback_dev;\\nif (dev == loopback_dev)/", bug.get_kerneldir() + "/net/ipv6/route.c");
+        sed_i("s/rt->rt6i_idev = in6_dev_get(blackhole_netdev);/rt->rt6i_idev = in6_dev_get(loopback_dev);/", bug.get_kerneldir() + "/net/ipv6/route.c");
+        sed_i("/if (idev \\&\\& idev->dev != dev_net(dev)->loopback_dev) {/, +3 d", bug.get_kerneldir() + "/net/ipv6/route.c");
+        sed_i("/struct inet6_dev \\*idev = rt->rt6i_idev;/r patches/linux-1.txt", bug.get_kerneldir() + "/net/ipv6/route.c");
     }
 
     // build the kernel
