@@ -4,6 +4,7 @@
 
 #include <string>
 #include <iostream>
+#include <cctype>
 
 #include <string.h>
 #include <stdlib.h>
@@ -191,6 +192,24 @@ int move(const string &src, const string &dest)
 
     delete[] arg2;
     delete[] arg1;
+    return ret;
+}
+
+int wc_l(const string &filename)
+{
+    char command[] = "wc";
+    char arg1[] = "-l";
+    char * arg2 = new char[filename.size() + 1];
+    strcpy(arg2, filename.c_str());
+
+    char * arg_list[] = {command, arg1, arg2, nullptr};
+    string output = exec_and_read("wc", arg_list);
+
+    int ret = 0;
+    for (int i = 0; i < output.size() && isdigit(output.at(i)); i++)
+        ret = (ret * 10) + (output.at(i) - '0');
+
+    delete[] arg2;
     return ret;
 }
 

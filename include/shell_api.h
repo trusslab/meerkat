@@ -39,6 +39,8 @@ int copy(const std::string &, const std::string &);
 // runs mv src dest
 int move(const std::string &, const std::string &);
 
+int wc_l(const std::string &);
+
 // Go Interface functions
 
 // exports go to the path
