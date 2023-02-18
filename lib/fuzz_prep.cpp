@@ -136,24 +136,11 @@ int clean_path(const string &old_path)
     return export_env("PATH=" + old_path);
 }
 
-int prep_kernel(const Bug_Info &bug, const InspectorConfig &inspector, const Version &linux_version, const string &repo) // repoistory &repo, const hash
+void patch_kernel(const Bug_Info &bug, const InspectorConfig &inspector, const Version &linux_version)
 {
-    int err = 0;
+    string old_dir = pwd();
     cd(inspector.get_inspect_dir());
 
-    cout << "Cleaning the kernel.\n";
-    clean_kernel(bug);
-    cout << SPACER;
-
-    // downloads the kernel version (does not decide)
-    err = git_fetch_and_checkout(bug.get_kerneldir(), repo, linux_version.name);
-    if (err < 0)
-        return err;
-
-    // copy over the config
-    copy(bug.get_kconfig(), bug.get_kerneldir() + "/.config");
-
-    // Handle Patches
     // apply patch from 760f8522ce08
     // Fixes "error: #error New address family defined, please update secclass_map."
     if (grep_to_find("#include <sys/socket.h>", bug.get_kerneldir() + "/scripts/selinux/mdp/mdp.c") &&
@@ -212,6 +199,29 @@ int prep_kernel(const Bug_Info &bug, const InspectorConfig &inspector, const Ver
         sed_i("/struct inet6_dev \\*idev = rt->rt6i_idev;/r patches/linux-1.txt", bug.get_kerneldir() + "/net/ipv6/route.c");
     }
 
+    cd(old_dir);
+}
+
+int prep_kernel(const Bug_Info &bug, const InspectorConfig &inspector, const Version &linux_version, const string &repo) // repoistory &repo, const hash
+{
+    int err = 0;
+    cd(inspector.get_inspect_dir());
+
+    cout << "Cleaning the kernel.\n";
+    clean_kernel(bug);
+    cout << SPACER;
+
+    // downloads the kernel version (does not decide)
+    err = git_fetch_and_checkout(bug.get_kerneldir(), repo, linux_version.name);
+    if (err < 0)
+        return err;
+
+    // copy over the config
+    copy(bug.get_kconfig(), bug.get_kerneldir() + "/.config");
+
+    // Handle Patches
+    patch_kernel(bug, inspector, linux_version);
+
     // build the kernel
     cd(bug.get_kerneldir());
     err = make(inspector.get_makeprocs(), "olddefconfig");
@@ -238,6 +248,97 @@ int clean_kernel(const Bug_Info &bug)
     cd(old_dir);
 
     return (err == 0 ? 0 : -1);
+}
+
+void patch_syzkaller(const Bug_Info &bug, const InspectorConfig &inspector, const Version &syzkaller_version)
+{
+    string old_dir = pwd();
+    cd(inspector.get_inspect_dir());
+
+    // Patch a boot error related to kvm
+    if (syzkaller_version.date < Date(2021,1,1) && syzkaller_version.date >= Date(2020,5,1))
+    {
+        cout << "PATCH: Removing migratable=off from qemu boot args.\n";
+        sed_i("s/\\-enable\\-kvm \\-cpu host,migratable=off/\\-enable\\-kvm \\-cpu host/", bug.get_syzdir() + "/vm/qemu/qemu.go");
+    }
+    else if (syzkaller_version.date <= Date(2017,9,15) && grep_to_find("\\\"\\-enable\\-kvm\\\",", bug.get_syzdir() + "/vm/qemu/qemu.go"))
+    {
+        cout << "PATCH: Adding -cpu host to really old qemu boot args.\n";
+        sed_i("s/\\\"\\-enable\\-kvm\\\",/\\\"\\-enable\\-kvm\\\", \\\"\\-cpu\\\", \\\"host,migratable=off\\\",/", bug.get_syzdir() + "/vm/qemu/qemu.go");
+    }
+    else if (syzkaller_version.date <= Date(2018,10,28))
+    {
+        cout << "PATCH: Adding -cpu host to qemu boot args.\n";
+        sed_i("s/\\-enable\\-kvm/\\-enable\\-kvm \\-cpu host,migratable=off/", bug.get_syzdir() + "/vm/qemu/qemu.go");
+    }
+
+    if (syzkaller_version.date <= Date(2018,4,20) && syzkaller_version.date >= Date(2017,12,17))
+    {
+        cout << "PATCH: Fixing -smp in qemu boot args.\n";
+        if (grep_to_find("Cpu", bug.get_syzdir() + "/vm/qemu/qemu.go"))
+        {
+            sed_i("/if inst.cfg.Cpu == 1/,+14d", bug.get_syzdir() + "/vm/qemu/qemu.go");
+            sed_i("s/strconv.Itoa(inst.cfg.Mem),/strconv.Itoa(inst.cfg.Mem),\\n\\t\\\"\\-smp\\\", strconv.Itoa(inst.cfg.Cpu),/", bug.get_syzdir() + "/vm/qemu/qemu.go");
+        }
+        else
+        {
+            sed_i("/if inst.cfg.CPU == 1/,+14d", bug.get_syzdir() + "/vm/qemu/qemu.go");
+            sed_i("s/strconv.Itoa(inst.cfg.Mem),/strconv.Itoa(inst.cfg.Mem),\\n\\t\\\"\\-smp\\\", strconv.Itoa(inst.cfg.CPU),/", bug.get_syzdir() + "/vm/qemu/qemu.go");
+        }
+    }
+
+    if ( syzkaller_version.date <= Date(2018,4,16) &&
+        grep_to_find(" \\-usb \\-usbdevice mouse \\-usbdevice tablet \\-soundhw all", bug.get_syzdir() + "/vm/qemu/qemu.go"))
+    {
+        cout << "PATCH: Removing usb/sound qemu boot args.\n";
+        sed_i("s/ \\-usb \\-usbdevice mouse \\-usbdevice tablet \\-soundhw all//", bug.get_syzdir() + "/vm/qemu/qemu.go");
+    }
+
+    // Apply patch for netfilter_bridge/ebtables
+    if (syzkaller_version.date < Date(2018,9,27) && syzkaller_version.date >= Date(2018,2,17))
+    {
+        cout << "PATCH: Fixing includes in netfilter_bridge.\n";
+        sed_i("/#include <linux\\/netfilter_bridge\\/ebtables.h>/r patches/syz-1.txt", bug.get_syzdir() + "/executor/common_linux.h");
+        sed_i("s/#include <linux\\/netfilter_bridge\\/ebtables.h>//", bug.get_syzdir() + "/executor/common_linux.h");
+        sed_i("s/#include <linux\\/if.h>//", bug.get_syzdir() + "/executor/common_linux.h");
+        sed_i("s/#include <errno.h>/#include <errno.h>\\n#include <linux\\/if.h>/", bug.get_syzdir() + "/executor/common_linux.h");
+        if (check_file(bug.get_syzdir() + "/pkg/csource/generated.go"))
+        {
+            sed_i("/#include <linux\\/netfilter_bridge\\/ebtables.h>/r patches/syz-2.txt", bug.get_syzdir() + "/pkg/csource/generated.go");
+            sed_i("s/#include <linux\\/netfilter_bridge\\/ebtables.h>//", bug.get_syzdir() + "/pkg/csource/generated.go");
+            sed_i("s/#include <linux\\/if.h>//", bug.get_syzdir() + "/pkg/csource/generated.go");
+            sed_i("s/#include <errno.h>/#include <errno.h>\\n#include <linux\\/if.h>/", bug.get_syzdir() + "/pkg/csource/generated.go");
+        }
+    }
+
+    // runtime patch for file extraction (slab oob)
+    if (syzkaller_version.date == Date(2018,9,26))
+    {
+        cout << "PATCH: Fixing slab OOB in pkg/report/linux.go.\n";
+        sed_i("s/report := rep.Report\\[rep.StartPos:\\]/report := rep.Report\\[rep.reportPrefixLen:\\]/", bug.get_syzdir() + "/pkg/report/linux.go");
+        sed_i("s/rep.Report = append(rep.Report, report...)/rep.reportPrefixLen = len(rep.Report)\\n\\trep.Report = append(rep.Report, report...)/", bug.get_syzdir() + "/pkg/report/linux.go");
+        sed_i("s/guiltyFile string/guiltyFile string\\n\\treportPrefixLen int/", bug.get_syzdir() + "/pkg/report/report.go");
+    }
+
+    // patch for mounting cgroup
+    if (syzkaller_version.date >= Date(2021,10,12) && syzkaller_version.date <= Date(2021,10,13))
+    {
+        cout << "PATCH: Fixing crash on cgroup mount.\n";
+        sed_i("s/failmsg(\\\"mount cgroup failed\\\", \\\"(%s, %s): %d\\\\n\\\", dir, enabled + 1, errno);/debug(\\\"mount(%s, %s) failed: %d\\\\n\\\", dir, enabled + 1, errno);/",
+                bug.get_syzdir() + "/executor/common_linux.h");
+        sed_i("s/failmsg(\\\"mount cgroup failed\\\", \\\"(%s, %s): %d\\\\n\\\", dir, enabled + 1, errno);/debug(\\\"mount(%s, %s) failed: %d\\\\n\\\", dir, enabled + 1, errno);/",
+                bug.get_syzdir() + "/pkg/csource/generated.go");
+    }
+
+    // Fix a build error with strncpy
+    if (syzkaller_version.date < Date(2018,5,13) && syzkaller_version.date >= Date(2018,2,10))
+    {
+        cout << "PATCH: Fixing off by one in executor/common_linux.h.\n";
+        sed_i("s/NONFAILING(strncpy(buf, (char\\*)a0, sizeof(buf)));/NONFAILING(strncpy(buf, (char\\*)a0, sizeof(buf) - 1));/", bug.get_syzdir() + "/executor/common_linux.h");
+        sed_i("s/NONFAILING(strncpy(buf, (char\\*)a0, sizeof(buf)));/NONFAILING(strncpy(buf, (char\\*)a0, sizeof(buf) - 1));/", bug.get_syzdir() + "/pkg/csource/linux_common.go");
+    }
+
+    cd(old_dir);
 }
 
 int prep_syzkaller(const Bug_Info &bug, const InspectorConfig &inspector, const Version &syzkaller_version, const string &use_template)
@@ -333,88 +434,7 @@ int prep_syzkaller(const Bug_Info &bug, const InspectorConfig &inspector, const 
     sed_i("s/-pthread -Wall -Wframe-larger-than=8192 -Wparentheses -Werror/-pthread -Wall -Wframe-larger-than=8192 -Wparentheses/",
             bug.get_syzdir() + "/Makefile");
 
-    // Patch a boot error related to kvm
-    if (syzkaller_version.date < Date(2021,1,1) && syzkaller_version.date >= Date(2020,5,1))
-    {
-        cout << "PATCH: Removing migratable=off from qemu boot args.\n";
-        sed_i("s/\\-enable\\-kvm \\-cpu host,migratable=off/\\-enable\\-kvm \\-cpu host/", bug.get_syzdir() + "/vm/qemu/qemu.go");
-    }
-    else if (syzkaller_version.date <= Date(2017,9,15) && grep_to_find("\\\"\\-enable\\-kvm\\\",", bug.get_syzdir() + "/vm/qemu/qemu.go"))
-    {
-        cout << "PATCH: Adding -cpu host to really old qemu boot args.\n";
-        sed_i("s/\\\"\\-enable\\-kvm\\\",/\\\"\\-enable\\-kvm\\\", \\\"\\-cpu\\\", \\\"host,migratable=off\\\",/", bug.get_syzdir() + "/vm/qemu/qemu.go");
-    }
-    else if (syzkaller_version.date <= Date(2018,10,28))
-    {
-        cout << "PATCH: Adding -cpu host to qemu boot args.\n";
-        sed_i("s/\\-enable\\-kvm/\\-enable\\-kvm \\-cpu host,migratable=off/", bug.get_syzdir() + "/vm/qemu/qemu.go");
-    }
-
-    if (syzkaller_version.date <= Date(2018,4,20) && syzkaller_version.date >= Date(2017,12,17))
-    {
-        cout << "PATCH: Fixing -smp in qemu boot args.\n";
-        if (grep_to_find("Cpu", bug.get_syzdir() + "/vm/qemu/qemu.go"))
-        {
-            sed_i("/if inst.cfg.Cpu == 1/,+14d", bug.get_syzdir() + "/vm/qemu/qemu.go");
-            sed_i("s/strconv.Itoa(inst.cfg.Mem),/strconv.Itoa(inst.cfg.Mem),\\n\\t\\\"\\-smp\\\", strconv.Itoa(inst.cfg.Cpu),/", bug.get_syzdir() + "/vm/qemu/qemu.go");
-        }
-        else
-        {
-            sed_i("/if inst.cfg.CPU == 1/,+14d", bug.get_syzdir() + "/vm/qemu/qemu.go");
-            sed_i("s/strconv.Itoa(inst.cfg.Mem),/strconv.Itoa(inst.cfg.Mem),\\n\\t\\\"\\-smp\\\", strconv.Itoa(inst.cfg.CPU),/", bug.get_syzdir() + "/vm/qemu/qemu.go");
-        }
-    }
-
-    if ( syzkaller_version.date <= Date(2018,4,16) &&
-        grep_to_find(" \\-usb \\-usbdevice mouse \\-usbdevice tablet \\-soundhw all", bug.get_syzdir() + "/vm/qemu/qemu.go"))
-    {
-        cout << "PATCH: Removing usb/sound qemu boot args.\n";
-        sed_i("s/ \\-usb \\-usbdevice mouse \\-usbdevice tablet \\-soundhw all//", bug.get_syzdir() + "/vm/qemu/qemu.go");
-    }
-
-    // Apply patch for netfilter_bridge/ebtables
-    if (syzkaller_version.date < Date(2018,9,27) && syzkaller_version.date >= Date(2018,2,17))
-    {
-        cout << "PATCH: Fixing includes in netfilter_bridge.\n";
-        sed_i("/#include <linux\\/netfilter_bridge\\/ebtables.h>/r patches/syz-1.txt", bug.get_syzdir() + "/executor/common_linux.h");
-        sed_i("s/#include <linux\\/netfilter_bridge\\/ebtables.h>//", bug.get_syzdir() + "/executor/common_linux.h");
-        sed_i("s/#include <linux\\/if.h>//", bug.get_syzdir() + "/executor/common_linux.h");
-        sed_i("s/#include <errno.h>/#include <errno.h>\\n#include <linux\\/if.h>/", bug.get_syzdir() + "/executor/common_linux.h");
-        if (check_file(bug.get_syzdir() + "/pkg/csource/generated.go"))
-        {
-            sed_i("/#include <linux\\/netfilter_bridge\\/ebtables.h>/r patches/syz-2.txt", bug.get_syzdir() + "/pkg/csource/generated.go");
-            sed_i("s/#include <linux\\/netfilter_bridge\\/ebtables.h>//", bug.get_syzdir() + "/pkg/csource/generated.go");
-            sed_i("s/#include <linux\\/if.h>//", bug.get_syzdir() + "/pkg/csource/generated.go");
-            sed_i("s/#include <errno.h>/#include <errno.h>\\n#include <linux\\/if.h>/", bug.get_syzdir() + "/pkg/csource/generated.go");
-        }
-    }
-
-    // runtime patch for file extraction (slab oob)
-    if (syzkaller_version.date == Date(2018,9,26))
-    {
-        cout << "PATCH: Fixing slab OOB in pkg/report/linux.go.\n";
-        sed_i("s/report := rep.Report\\[rep.StartPos:\\]/report := rep.Report\\[rep.reportPrefixLen:\\]/", bug.get_syzdir() + "/pkg/report/linux.go");
-        sed_i("s/rep.Report = append(rep.Report, report...)/rep.reportPrefixLen = len(rep.Report)\\n\\trep.Report = append(rep.Report, report...)/", bug.get_syzdir() + "/pkg/report/linux.go");
-        sed_i("s/guiltyFile string/guiltyFile string\\n\\treportPrefixLen int/", bug.get_syzdir() + "/pkg/report/report.go");
-    }
-
-    // patch for mounting cgroup
-    if (syzkaller_version.date >= Date(2021,10,12) && syzkaller_version.date <= Date(2021,10,13))
-    {
-        cout << "PATCH: Fixing crash on cgroup mount.\n";
-        sed_i("s/failmsg(\\\"mount cgroup failed\\\", \\\"(%s, %s): %d\\\\n\\\", dir, enabled + 1, errno);/debug(\\\"mount(%s, %s) failed: %d\\\\n\\\", dir, enabled + 1, errno);/",
-                bug.get_syzdir() + "/executor/common_linux.h");
-        sed_i("s/failmsg(\\\"mount cgroup failed\\\", \\\"(%s, %s): %d\\\\n\\\", dir, enabled + 1, errno);/debug(\\\"mount(%s, %s) failed: %d\\\\n\\\", dir, enabled + 1, errno);/",
-                bug.get_syzdir() + "/pkg/csource/generated.go");
-    }
-
-    // Fix a build error with strncpy
-    if (syzkaller_version.date < Date(2018,5,13) && syzkaller_version.date >= Date(2018,2,10))
-    {
-        cout << "PATCH: Fixing off by one in executor/common_linux.h.\n";
-        sed_i("s/NONFAILING(strncpy(buf, (char\\*)a0, sizeof(buf)));/NONFAILING(strncpy(buf, (char\\*)a0, sizeof(buf) - 1));/", bug.get_syzdir() + "/executor/common_linux.h");
-        sed_i("s/NONFAILING(strncpy(buf, (char\\*)a0, sizeof(buf)));/NONFAILING(strncpy(buf, (char\\*)a0, sizeof(buf) - 1));/", bug.get_syzdir() + "/pkg/csource/linux_common.go");
-    }
+    patch_syzkaller(bug, inspector, syzkaller_version);
 
     // Handle old go mod
     if (check_file(bug.get_syzdir() + "/Godeps/Godeps.json") && !dangerzone)
