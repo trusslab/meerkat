@@ -110,9 +110,6 @@ int main(int argc, char ** argv)
         goto finish;
     }
 
-    if(args.is_set("safe-mode"))
-        set_safe_mode(safe_mode, max_time, fuzztimes);
-
     if (args.is_set('f'))
         find_date = Date(args.get_arg_as_string('f'));
 
@@ -286,6 +283,9 @@ int main(int argc, char ** argv)
         logfile << "no-merge is set.\n";
         no_merge = true;
     }
+    
+    if(args.is_set("safe-mode") || bug.get_name().substr(0, 11) == "memory leak")
+        set_safe_mode(safe_mode, max_time, fuzztimes);
 
     logfile << "Max time:" << max_time << endl 
             << "Max attempts:" << fuzztimes << endl << flush;
