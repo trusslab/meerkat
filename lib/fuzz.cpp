@@ -54,9 +54,10 @@ int find_average_time(const vector<Syzkaller_Result> &times)
     return sum / times.size();
 }
 
-void handle_syzkaller_crash()
+void handle_syzkaller_crash(ostream &logfile)
 {
-    cerr << "Error: Syzkaller has experienced a crash.\n";
+    cerr << "Error: Syzkaller has experienced a crash.\n" << flush;
+    logfile << "Error: Syzkaller has experienced a crash.\n" << flush;
     exit(-1);
 }
 
@@ -127,7 +128,7 @@ Syzkaller_Result run_syzkaller(ofstream &logfile, const Bug_Info &bug, const Ins
 
         // make sure syzkaller stays alive
         if (!check_alive(pid))
-            handle_syzkaller_crash();
+            handle_syzkaller_crash(logfile);
 
         // check crashes
         crash_hashes = list_dir(bug.get_kallerwd() + "/crashes");
@@ -178,7 +179,7 @@ Syzkaller_Result run_syzkaller(ofstream &logfile, const Bug_Info &bug, const Ins
     if (check_alive(pid))
         kill_child(pid);
     else
-        handle_syzkaller_crash();
+        handle_syzkaller_crash(logfile);
 
     cd(inspector.get_inspect_dir());
     delete[] arg1;
