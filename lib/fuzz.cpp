@@ -165,7 +165,7 @@ Syzkaller_Result run_syzkaller(ofstream &logfile, const Bug_Info &bug, const Ins
 
         if (wc_l(bug.get_kaller_log()) > 5000)
         {
-            cout << "Warning: Syzkaller log file exceeded 5000 lines. Assuming boot failure";
+            cout << "Warning: Syzkaller log file exceeded 5000 lines. Assuming boot failure\n";
             logfile << "Warning: Syzkaller log file exceeded 5000 lines.\n"
                     << "Saved at " << bug.get_wd() + "/log/bug" + to_string(bug.get_number()) + "-boot_failure.log" << ".\n" << flush;
             copy(bug.get_kaller_log(), bug.get_wd() + "/log/bug" + to_string(bug.get_number()) + "-boot_failure.log");
