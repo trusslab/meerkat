@@ -240,7 +240,7 @@ int main(int argc, char ** argv)
     cout << SPACER
         << "Gathering bug fixes from Syzbot.\n";
 
-    duplicates = gather_duplicates(bug);
+    duplicates = gather_duplicates(bug, inspector);
 
     if (duplicates.size() > 1)
     {
