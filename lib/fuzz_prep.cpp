@@ -199,6 +199,16 @@ void patch_kernel(const Bug_Info &bug, const InspectorConfig &inspector, const V
         sed_i("/struct inet6_dev \\*idev = rt->rt6i_idev;/r patches/linux-1.txt", bug.get_kerneldir() + "/net/ipv6/route.c");
     }
 
+    // Apply Patch to fix boot error "VFS: Unable to mount root fs on unknown-block(8,0)"
+    // patch from 79dede78c0573618e3137d3d8cbf78c84e25fabd
+    if (linux_version.date <= Date(2020,5,8) && linux_version.date >= Date(2020,3,29)
+        && grep_to_find("LSM_HOOK(int, 0, fs_context_parse_param, struct fs_context \\*fc,", bug.get_kerneldir() + "/include/linux/lsm_hook_defs.h"))
+    {
+        cout << "PATCH: Fix boot error \"VFS: Unable to mount root fs on unknown-block(8,0)\"\n";
+        sed_i("s/LSM_HOOK(int, 0, fs_context_parse_param, struct fs_context \\*fc,/LSM_HOOK(int, -ENOPARAM, fs_context_parse_param, struct fs_context \\*fc,/",
+                bug.get_kerneldir() + "/include/linux/lsm_hook_defs.h");
+    }
+
     cd(old_dir);
 }
 
