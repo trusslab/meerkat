@@ -127,9 +127,9 @@ void log_attempt_result(ofstream &logfile, const Syzkaller_Result &attempt, int 
     logfile << "Attempt " << i << ":" << (i > fuzztimes ? " (RETRY)" : "") << "\n";
 
     if (attempt.reports.size() > 0)
-        logfile << "    Time  Bug Name\n";
+        logfile << "    Time  Bug Name\n" << flush;
     else
-        logfile << "    No crashes found.\n";
+        logfile << "    No crashes found.\n" << flush;
     
     for (Crash_Report cr : attempt.reports)
         logfile << (fuzz_is_in(cr.name, dups) ? "*** " : "    ") << right << setw(4) << cr.time << "  " << cr.name << endl << flush;
