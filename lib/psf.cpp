@@ -42,6 +42,18 @@ bool PSF_is_in(const string &str, const vector<string> &vec)
     return false;
 }
 
+int PSF_findEndOfName(const string &line, int pos0)
+{
+    int pos1 = line.find("  ", pos0);
+    int pos2 = pos0;
+    for (;pos2 < line.size() - 2; pos2++)
+    {
+        if (line.substr(pos2, 2) == " [" && isdigit(line.at(pos2 + 2)))
+            break;
+    }
+    return (pos1 < pos2 ? pos1 : pos2);
+}
+
 // returns the bug name from the raw text displayed on syzbot's website
 // "  [##]BUGNAME      C      Done   ..."
 string PSF_getBugName(const string &line)
@@ -51,7 +63,7 @@ string PSF_getBugName(const string &line)
     int pos0 = line.find_first_of("]") + 1;
 
     // the first case of 2 or more spaces is the end of the bug name
-    int pos1 = line.find("  ", pos0);
+    int pos1 = PSF_findEndOfName(line, pos0);
 
     ret = line.substr(pos0, pos1 - pos0);
 
@@ -154,6 +166,9 @@ vector<string> parse_syzbot_fixes(const string &filename, const string &bugname,
 
     while (getline(inf, line))
     {
+        if (line.empty())
+            continue;
+
         PSF_Bug b(PSF_parseLineAsBug(line));
         if (b.name == bugname)
         {
