@@ -209,6 +209,17 @@ void patch_kernel(const Bug_Info &bug, const InspectorConfig &inspector, const V
                 bug.get_kerneldir() + "/include/linux/lsm_hook_defs.h");
     }
 
+    // Apply patch from 9f457179244a1c0316546b1760f8993d0d718861
+    // fixes "WARNING: CPU: 0 PID: 0 at mm/memcontrol.c:5226 mem_cgroup_css_alloc+0x27a/0x860"
+    // Also "boot error: WARNING in mem_cgroup_css_alloc"
+    if (linux_version.date <= Date(2020,8,13) && linux_version.date >= Date(2020,8,12)
+        && grep_to_find("\\/\\* We charge the parent cgroup, never the current task \\*\\/", bug.get_kerneldir() + "/mm/memcontrol.c"))
+    {
+        cout << "PATCH: Remove warning when allocating the root cgroup\n";
+        sed_i("/\\/\\* We charge the parent cgroup, never the current task \\*\\//,+1 d", bug.get_kerneldir() + "/mm/memcontrol.c");
+        sed_i("/\\/\\* We charge the parent cgroup, never the current task \\*\\//,+1 d", bug.get_kerneldir() + "/mm/memcontrol.c");
+    }
+
     cd(old_dir);
 }
 
