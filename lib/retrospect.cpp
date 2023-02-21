@@ -37,16 +37,16 @@ bool check_safe_mode(const Test_Result &result, bool &safe_mode, int &max_time, 
 // Identifies groups of unstable commits and makes a guess
 // whether a given commit is stable or unstable.
 // Returns true if stable, false if unstable.
-bool infer_stability(vector<Version> &kernel_versions, const int m)
+bool infer_stability(vector<Version> &versions, const int m)
 {
     int ir = m, il = m;
-    if (kernel_versions.at(m).skipped)
+    if (versions.at(m).skipped)
         return false;
     
-    for (; ir < kernel_versions.size() && !kernel_versions.at(m).skipped; ir++);
-    for (; il > 0 && !kernel_versions.at(m).skipped; il--);
+    for (; ir < versions.size() && !versions.at(m).skipped; ir++);
+    for (; il > 0 && !versions.at(m).skipped; il--);
 
-    if (ir < kernel_versions.size() && il > 0)
+    if (ir < versions.size() && il > 0)
         return ir - il >= 100;
     else
         return true;
@@ -56,13 +56,13 @@ bool infer_stability(vector<Version> &kernel_versions, const int m)
 // It is assumed that nearby commits will also be unstable,
 // so skip back based on a ratio of the remaining commit versions.
 // May skip forward only if there are no stable commits back in time.
-int skip_commit(const int r, const int l, const int mid, vector<Version> &kernel_versions)
+int skip_commit(const int r, const int l, const int mid, vector<Version> &versions)
 {
     int s = (r - l) / 8;
     int m = mid;
-    while (m < r && !infer_stability(kernel_versions, m))
+    while (m < r && !infer_stability(versions, m))
     {
-        kernel_versions.at(m).skipped = true;
+        versions.at(m).skipped = true;
         m += (s < 100 ? s : 100);
     }
     
@@ -70,9 +70,9 @@ int skip_commit(const int r, const int l, const int mid, vector<Version> &kernel
         return m;
     
     m = mid;
-    while (m > l && !infer_stability(kernel_versions, m))
+    while (m > l && !infer_stability(versions, m))
     {
-        kernel_versions.at(m).skipped = true;
+        versions.at(m).skipped = true;
         m -= (s < 100 ? s : 100);
     }
 
@@ -83,11 +83,11 @@ int skip_commit(const int r, const int l, const int mid, vector<Version> &kernel
 // If there are no stable commits left, end the search.
 // r is older date (lower). higher index
 // l is recent date (higher). lower index
-int get_next_commit_binary(const int r, const int l, vector<Version> &kernel_versions)
+int get_next_commit_binary(const int r, const int l, vector<Version> &versions)
 {
     int m = (r + l) / 2;
-    if (!infer_stability(kernel_versions, m))
-        m = skip_commit(r, l, m, kernel_versions);
+    if (!infer_stability(versions, m))
+        m = skip_commit(r, l, m, versions);
     return m;
 }
 
