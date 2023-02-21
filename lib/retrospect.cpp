@@ -2,6 +2,7 @@
 #include <session.h>
 #include <result.h>
 #include <version.h>
+#include <shell_api.h>
 
 #include <iostream>
 #include <fstream>
@@ -91,9 +92,20 @@ int get_next_commit_binary(const int r, const int l, vector<Version> &versions)
     return m;
 }
 
+string get_datetime()
+{
+    return date("%Y-%m-%d %T");
+}
+
+void log_datetime(ofstream &logfile)
+{
+    logfile << get_datetime() << endl;
+}
+
 void log_session_info(ofstream &logfile, const Session &session, const int count)
 {
-    logfile << "\nSession:   " << count << "\n"
+    logfile << "\n" << get_datetime() << "\n"
+            << "Session:   " << count << "\n"
             << "Template:  " << session.syz_template.date.get_date() << " - " << session.syz_template.name << "\n"
             << "Syzkaller: " << session.syzkaller.date.get_date() << " - " << session.syzkaller.name << "\n"
             << "Kernel:    " << session.kernel.date.get_date() << " - " << session.kernel.name << "\n" << flush;

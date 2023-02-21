@@ -16,6 +16,8 @@ bool check_safe_mode(const Test_Result &, bool &, int &, int &);
 
 int get_next_commit_binary(const int, const int, std::vector<Version> &);
 
+void log_datetime(std::ofstream &);
+
 void log_session_info(std::ofstream &, const Session &, const int);
 
 void log_session_compiler(std::ofstream &, const std::string &);

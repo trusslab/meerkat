@@ -45,6 +45,21 @@ int set_timezone(const string &tz)
     return (export_env(env) == 0 ? 0 : -1);
 }
 
+string date(const string &format)
+{
+    string plus_format = "+" + format;
+
+    char command[] = "date";
+    char * arg1 = new char[plus_format.size() + 1];
+    strcpy(arg1, plus_format.c_str());
+
+    char * arg_list[] = {command, arg1, nullptr};
+    string ret = exec_and_read("date", arg_list);
+
+    delete[] arg1;
+    return ret;
+}
+
 // lynx -dump -dont_wrap_pre -width=1000 link
 int lynx_dump(const std::string &link, const string &dumpfile)
 {
