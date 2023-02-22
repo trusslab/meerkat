@@ -450,22 +450,26 @@ int main(int argc, char ** argv)
         cout << "No template changes in the date range [" << low_date.get_date() << ", " << high_date.get_date() << "].\n";
 
     // Inspect Each Template Change
-    if (relevant_template_changes.size() > 1) {
+    // Always one oldest template, we want more than that
+    if (relevant_template_changes.size() > 1)
+    {
         cout << SPACER
-             << "Inspecting " << relevant_template_changes.size() - 1 << " template changes.\n";
-        logfile << "Inspecting " << relevant_template_changes.size() - 1 << " template changes in ["
+             << "Retrospecting " << relevant_template_changes.size() - 1 << " template changes.\n";
+        logfile << "Retrospecting " << relevant_template_changes.size() - 1 << " template changes in ["
                 << low_date.get_date() << ", " << high_date.get_date() << "].\n" << flush;
 
-        // maybe binary search here
-        for (int i = 0; i < relevant_template_changes.size() - 1; i++)
-        {
-            // fuzz before
-            current_version = relevant_template_changes.at(i);
-            linux_version = get_version_by_date(kernel_versions, current_version.date);
-            // previous (older) means incrementing the index
-            prev_syzkaller_version = relevant_template_changes.at(i + 1);
+        bisect_version = relevant_template_changes.back();
 
-            this_session = Session(linux_version, current_version, prev_syzkaller_version, false);
+        // r is the older date (lower date). higher index
+        // l is the recent date (higher date). lower index
+        r = relevant_template_changes.size() - 2;
+        l = 0;
+        while (l <= r)
+        {
+            m = (l + r) / 2;
+            current_version = relevant_template_changes.at(m);
+            linux_version = get_version_by_date(kernel_versions, current_version.date);
+            this_session = Session(linux_version, current_version, current_version, false);
             log_session_info(logfile, this_session, ++session_count);
 
             if (!already_fuzzed(fuzz_sessions, this_session))
@@ -482,67 +486,12 @@ int main(int argc, char ** argv)
                     goto finish;
                 }
 
-                // pull the previous template
-                cout << SPACER
-                    << "Prepping the old template\n";
-                err = prep_syzkaller(bug, inspector, prev_syzkaller_version);
-                if (err < 0)
-                {
-                    log_syzkaller_build_error(logfile);
-                    goto finish;
-                }
-
-                // now compile the current syzkaller using the old template
-                cout << SPACER
-                    << "Making Syzkaller\n";
-                err = prep_syzkaller(bug, inspector, current_version, bug.get_wd() + "/my_template.txt");
-                if (err < 0)
-                {
-                    log_syzkaller_build_error(logfile);
-                    goto finish;
-                }
-
-                cout << SPACER;
-                result_before = fuzz_loop(logfile, bug, inspector, duplicates, max_time, fuzztimes, vmc, port, current_version.date, use_poc);
-                log_session_result(logfile, result_before, duplicates);
-                blocking_bugs.count_blocking_bugs(result_before);
-                if (check_safe_mode(result_before, safe_mode, max_time, fuzztimes))
-                    log_safe_mode(logfile, max_time, fuzztimes);
-
-                this_session.found = result_before.found;
-                this_session.stable = result_before.stable;
-                kernel_versions.at(k).skipped = !result_before.stable && !result_before.found;
-                fuzz_sessions.push_back(this_session);
-            }
-            else
-            {
-                cout << "This session has already been fuzzed. Skipping.\n";
-                result_before.found = session_get_result(fuzz_sessions, this_session) == 1 ? true : false;
-                result_before.stable = session_get_stable(fuzz_sessions, this_session) == 1 ? true : false;
-                logfile << "The bug was " << (result_before.found ? "found " : "not found ") << "in a previous identical fuzzing session.\n" << flush;
-            }
-
-            if (result_before.found)
-            {
-                cout << "The bug can be found before this day. Moving on.\n";
-                high_date = linux_version.date;
-                continue;
-            }
-            else if (!result_before.stable)
-                continue;
-
-            this_session = Session(linux_version, current_version, current_version, false);
-            log_session_info(logfile, this_session, ++session_count);
-
-            if (!already_fuzzed(fuzz_sessions, this_session))
-            {
-                // no need to rebuild the kernel.
                 cout << SPACER
                     << "Making Syzkaller\n";
                 err = prep_syzkaller(bug, inspector, current_version);
                 if (err < 0)
                 {
-                    log_kernel_build_error(logfile);
+                    log_syzkaller_build_error(logfile);
                     goto finish;
                 }
 
@@ -566,27 +515,99 @@ int main(int argc, char ** argv)
                 logfile << "The bug was " << (result_after.found ? "found " : "not found ") << "in a previous identical fuzzing session.\n" << flush;
             }
 
+            if (result_after.found)
+            {
+                l = m + 1;
+                bisect_version = current_version;
+                high_date = linux_version.date;
+            }
+            else
+            {
+                r = m - 1;
+                low_date = linux_version.date;
+            }
+        }
+
+        // check before the bisected version here
+        k = get_index_by_name(relevant_template_changes, bisect_version.name);
+        if (k < relevant_template_changes.size() - 1)
+        {
+            linux_version = get_version_by_date(kernel_versions, bisect_version.date);
+            // previous (older) means incrementing the index
+            prev_syzkaller_version = relevant_template_changes.at(k + 1);
+
+            this_session = Session(linux_version, bisect_version, prev_syzkaller_version, false);
+            log_session_info(logfile, this_session, ++session_count);
+
+            if (!already_fuzzed(fuzz_sessions, this_session))
+            {
+                // only build the kernel if we have to
+                if (bisect_version != current_version)
+                {
+                    cout << SPACER
+                        << "Making the kernel\n";
+                    compiler = export_compiler(gcc_versions, clang_versions, linux_version.date, inspector, useclang);
+                    log_session_compiler(logfile, compiler);
+                    err = prep_kernel(bug, inspector, linux_version, linux_repo_remote);
+                    clean_path(tmp_path);
+                    if (err < 0)
+                    {
+                        log_kernel_build_error(logfile);
+                        goto finish;
+                    }
+                }
+                
+                // pull the previous template
+                cout << SPACER
+                    << "Prepping the old template\n";
+                err = prep_syzkaller(bug, inspector, prev_syzkaller_version);
+                if (err < 0)
+                {
+                    log_syzkaller_build_error(logfile);
+                    goto finish;
+                }
+
+                // now compile the current syzkaller using the old template
+                cout << SPACER
+                    << "Making Syzkaller\n";
+                err = prep_syzkaller(bug, inspector, bisect_version, bug.get_wd() + "/my_template.txt");
+                if (err < 0)
+                {
+                    log_syzkaller_build_error(logfile);
+                    goto finish;
+                }
+
+                cout << SPACER;
+                result_before = fuzz_loop(logfile, bug, inspector, duplicates, max_time, fuzztimes, vmc, port, bisect_version.date, use_poc);
+                log_session_result(logfile, result_before, duplicates);
+                blocking_bugs.count_blocking_bugs(result_before);
+                if (check_safe_mode(result_before, safe_mode, max_time, fuzztimes))
+                    log_safe_mode(logfile, max_time, fuzztimes);
+
+                this_session.found = result_before.found;
+                this_session.stable = result_before.stable;
+                kernel_versions.at(k).skipped = !result_before.stable && !result_before.found;
+                fuzz_sessions.push_back(this_session);
+            }
+            else
+            {
+                cout << "This session has already been fuzzed. Skipping.\n";
+                result_before.found = session_get_result(fuzz_sessions, this_session) == 1 ? true : false;
+                result_before.stable = session_get_stable(fuzz_sessions, this_session) == 1 ? true : false;
+                logfile << "The bug was " << (result_before.found ? "found " : "not found ") << "in a previous identical fuzzing session.\n" << flush;
+            }
+
             if (!result_before.found && result_after.found)
             {
                 revealing_factor = "Template Update";
-                reveal_version = Version(current_version.name, current_version.date);
-                reveal_name = get_commit_name(bug.get_syzdir(), current_version.name);
+                reveal_version = Version(bisect_version.name, bisect_version.date);
+                reveal_name = get_commit_name(bug.get_syzdir(), bisect_version.name);
 
                 cout << SPACER
                      << "Revealing Factor Found!\n"
                      << "Template update " << reveal_version.name << " on " << reveal_version.date.get_date() << " is the reason.\n";
 
                 goto report;
-            }
-
-            if (result_after.found)
-                high_date = linux_version.date;
-            if (!result_after.stable)
-                break;
-            else
-            {
-                low_date = linux_version.date;
-                break;
             }
         }
     }
@@ -600,8 +621,8 @@ int main(int argc, char ** argv)
     // ======================================================================================================
     // Begin Kernel Inspection
 
-    // r is the starting date. older date (lower). higher index
-    // l is the ending date. recent date (higher). lower index
+    // r is the starting date. older date (lower date). higher index
+    // l is the ending date. recent date (higher date). lower index
     r = get_starting_index(kernel_versions, low_date);
     l = get_ending_index(kernel_versions, high_date);
     m;
