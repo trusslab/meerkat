@@ -99,12 +99,13 @@ string get_datetime()
 
 void log_datetime(ofstream &logfile)
 {
-    logfile << get_datetime() << endl;
+    logfile << get_datetime();
 }
 
 void log_session_info(ofstream &logfile, const Session &session, const int count)
 {
-    logfile << "\n" << get_datetime() << "\n"
+    // date puts an endline there on its own
+    logfile << "\n" << get_datetime() << ""
             << "Session:   " << count << "\n"
             << "Template:  " << session.syz_template.date.get_date() << " - " << session.syz_template.name << "\n"
             << "Syzkaller: " << session.syzkaller.date.get_date() << " - " << session.syzkaller.name << "\n"
