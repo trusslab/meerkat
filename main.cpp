@@ -860,6 +860,7 @@ int main(int argc, char ** argv)
         syzkaller_version = syzkaller_versions.at(i);
         this_session = Session(bisect_version, syzkaller_version, syzkaller_version, false);
         log_session_info(logfile, this_session, ++session_count);
+        log_session_compiler(logfile, compiler);
 
         if (!already_fuzzed(fuzz_sessions, this_session))
         {
