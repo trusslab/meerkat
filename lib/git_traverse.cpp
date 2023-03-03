@@ -87,6 +87,14 @@ vector<Version> get_kernel_versions(const Bug_Info &bug, const string &old_hash,
         }
     }
 
+    // remove bad versions of the kernel
+    for (string h : LINUX_BROKEN_VERSONS)
+    {
+        pos0 = get_index_by_name(kernel_versions, h);
+        if (pos0 >= 0)
+            kernel_versions.erase(kernel_versions.begin() + pos0);
+    }
+
     return kernel_versions;
 }
 
