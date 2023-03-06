@@ -597,7 +597,8 @@ int main(int argc, char ** argv)
                 logfile << "The bug was " << (result_before.found ? "found " : "not found ") << "in a previous identical fuzzing session.\n" << flush;
             }
 
-            if (!result_before.found && result_after.found)
+            // if we get to here, the bug must have been found on the bisect version
+            if (!result_before.found) // && result_after.found
             {
                 revealing_factor = "Template Update";
                 reveal_version = Version(bisect_version.name, bisect_version.date);
