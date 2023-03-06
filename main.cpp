@@ -625,7 +625,6 @@ int main(int argc, char ** argv)
     // l is the ending date. recent date (higher date). lower index
     r = get_starting_index(kernel_versions, low_date);
     l = get_ending_index(kernel_versions, high_date);
-    m;
 
     cout << SPACER
          << "Inspecting " << r - l << " kernel versions.\n";
