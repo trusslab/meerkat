@@ -398,7 +398,7 @@ int main(int argc, char ** argv)
     }
     else
     {
-        logfile << "New Max Time: " << max_time << ".\n" << flush;
+        logfile << "\nNew Max Time: " << max_time << ".\n" << flush;
     }
 
     this_session.found = result.found;
@@ -455,7 +455,8 @@ int main(int argc, char ** argv)
     {
         cout << SPACER
              << "Retrospecting " << relevant_template_changes.size() - 1 << " template changes.\n";
-        logfile << "Retrospecting " << relevant_template_changes.size() - 1 << " template changes in ["
+        logfile << "\n==== Template Retrospection ====\n" 
+                << relevant_template_changes.size() - 1 << " template change" << (relevant_template_changes.size() - 1 == 1 ? "" : "s") << " in ["
                 << low_date.get_date() << ", " << high_date.get_date() << "].\n" << flush;
 
         bisect_version = relevant_template_changes.back();
@@ -630,7 +631,8 @@ int main(int argc, char ** argv)
 
     cout << SPACER
          << "Inspecting " << r - l << " kernel versions.\n";
-    logfile << "Inspecting " << r - l << " kernel versions in the range [" << low_date.get_date() << ", " << high_date.get_date() << "].\n" << flush;
+    logfile << "\n==== Kernel Retrospection ====\n"
+            << r - l << " Linux commit" << (r - l == 1 ? "" : "s") << " in [" << low_date.get_date() << ", " << high_date.get_date() << "].\n" << flush;
 
     while (l <= r)
     {
@@ -706,7 +708,7 @@ int main(int argc, char ** argv)
     // fuzz before and after the linux version to confirm
     cout << SPACER
          << "Checking if the kernel is the revealing factor.\n";
-    logfile << "Confirming the bisected kernel commit.\n" << flush;
+    logfile << "\n== Confirming the bisected commit ==\n" << flush;
     syzkaller_version = get_version_by_date(syzkaller_versions, bisect_version.date);
     this_session = Session(bisect_version, syzkaller_version, syzkaller_version, false);
     log_session_info(logfile, this_session, ++session_count);
@@ -842,7 +844,8 @@ int main(int argc, char ** argv)
 
     cout << SPACER
          << "Inspecting " << r - l + 1 << " syzkaller version(s).\n";
-    logfile << "Inspecting " << r - l + 1 << " syzkaller version(s) from " << high_date.get_date() << ".\n" << flush;
+    logfile << "\n==== Syzkaller Retrospection ====\n"
+            << r - l + 1 << " Syzkaller commit" << (r - l + 1 == 1 ? "" : "s") << " from [" << high_date.get_date() << "].\n" << flush;
 
     // we only need one kernel version
     cout << SPACER
