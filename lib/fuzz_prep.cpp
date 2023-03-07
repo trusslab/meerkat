@@ -220,6 +220,11 @@ void patch_kernel(const Bug_Info &bug, const InspectorConfig &inspector, const V
         sed_i("/\\/\\* We charge the parent cgroup, never the current task \\*\\//,+1 d", bug.get_kerneldir() + "/mm/memcontrol.c");
     }
 
+    // KASAN: slab-out-of-bounds in hpet_alloc is known to trigger in the range 2020-01-23 to 2020-02-03
+    // Patch: https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=98c49f1746ac44ccc164e914b9a44183fad09f51
+    // Guilty: https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=987f028b8637cfa7658aa456ae73f8f21a7a7f6f
+    // If it becomes a big issue, we can patch it.
+
     cd(old_dir);
 }
 
