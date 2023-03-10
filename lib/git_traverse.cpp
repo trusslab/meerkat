@@ -257,7 +257,11 @@ vector<Version> get_relevant_template_changes(const Bug_Info &bug, const vector<
 Version git_find_merge_commit(const string &repo, const vector<Version> &commits, const string &hash_to_find)
 {
     vector<string> commits_merged;
-    for (int i = commits.size() - 1; i >= 0; i--)
+    // The merge commit SHOULD be the commit at index commits.size() - 2.
+    // Certainly don't go searching up until the finding commit. Cut it at
+    // 1000 commits for now. That should leave some head room in case I'm
+    // wrong while still not wasting too much time.
+    for (int i = commits.size() - 1, j = 0; i >= 0 && j < 1000; i--, j++)
     {
         if (commits.at(i).name == hash_to_find)
             continue;
