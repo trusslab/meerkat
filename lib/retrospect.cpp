@@ -60,6 +60,7 @@ bool infer_stability(vector<Version> &versions, const int m)
 int skip_commit(const int r, const int l, const int mid, vector<Version> &versions)
 {
     int s = (r - l) / 8;
+    s = s <= 0 ? 1 : s;
     int m = mid;
     while (m < r && !infer_stability(versions, m))
     {
