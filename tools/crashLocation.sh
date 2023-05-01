@@ -6,7 +6,7 @@ bugfile=/mnt/sda/jtbursey/SyzInspector/parse/bugs-all_repro.csv
 totalLines=$(wc -l $bugfile | grep -o "[0-9]*")
 
 startLine=1
-endLine=1
+endLine=$totalLines
 outfile=""
 
 # get the start and end lines from the arguments
