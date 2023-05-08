@@ -699,7 +699,7 @@ int main(int argc, char ** argv)
             l = m + 1;
             bisect_version = linux_version;
         }
-        else if (!result.stable)
+        else if (!result.stable) // It looks like this caused an infinite loop somewhere. (mixed with choosing a commit to skip to)
             continue;
         else
             r = m - 1;
