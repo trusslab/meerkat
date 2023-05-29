@@ -192,7 +192,7 @@ Test_Result fuzz_loop_finding(ofstream &logfile, const Bug_Info &bug, const Insp
     Test_Result result;
     result.found = false;
     int retries = 0, unstable_count = 0;
-    for (int i = 0; i < fuzztimes + retries; i++)
+    for (int i = 0; i < fuzztimes + retries && unstable_count < fuzztimes; i++)
     {
         port.inc();
         write_syzkaller_config(bug, inspector, vmc, port, syz_date);
@@ -218,7 +218,7 @@ Test_Result fuzz_loop(ofstream &logfile, const Bug_Info &bug, const InspectorCon
     Test_Result result;
     result.found = false;
     int retries = 0, unstable_count = 0;
-    for (int i = 0; i < fuzztimes + retries & !result.found; i++)
+    for (int i = 0; i < fuzztimes + retries && !result.found  && unstable_count < fuzztimes; i++)
     {
         port.inc();
         write_syzkaller_config(bug, inspector, vmc, port, syz_date);
