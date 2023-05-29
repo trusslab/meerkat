@@ -1,7 +1,7 @@
 #!/bin/bash
 
-count() {
-    echo "$(git log --numstat --pretty="%H" $1..$2 $3 | awk 'NF==3 {plus+=$1; minus+=$2} END {printf("+%d, -%d\n", plus, minus)}')"
+countChurn() {
+    echo "$(git log --numstat --pretty="%H" $1..$2 $3 | awk 'NF==3 {plus+=$1; minus+=$2} END {printf("%d,%d\n", plus, minus)}')"
 }
 
 # Q1: Jan-Mar 01
@@ -32,27 +32,29 @@ y22q1="da629478930871e4c9a51c56ad86078f10b83f9f" # 5.16-rc8 2022-01-02
 y22q2="3123109284176b1532874591f7c81f3837bbdc17" # 5.18-rc1 2022-04-03
 y22q3="88084a3df1672e131ddc1b4e39eeacfd39864acf" # 5.19-rc5 2022-07-03
 y22q4="4fe89d07dcc2804c8b562f6c7896a45643d34b2f" # 6.0      2022-10-02
+y23q1="88603b6dc419445847923fcb7fe5080067a30f98" # 6.1-rc2  2023-01-01
 
 dir=$1
 
-echo "2017 Q3: $(count $y17q3 $y17q4 $dir)"
-echo "2017 Q4: $(count $y17q4 $y18q1 $dir)"
-echo "2018 Q1: $(count $y18q1 $y18q2 $dir)"
-echo "2018 Q2: $(count $y18q2 $y18q3 $dir)"
-echo "2018 Q3: $(count $y18q3 $y18q4 $dir)"
-echo "2018 Q4: $(count $y18q4 $y19q1 $dir)"
-echo "2019 Q1: $(count $y19q1 $y19q2 $dir)"
-echo "2019 Q2: $(count $y19q2 $y19q3 $dir)"
-echo "2019 Q3: $(count $y19q3 $y19q4 $dir)"
-echo "2019 Q4: $(count $y19q4 $y20q1 $dir)"
-echo "2020 Q1: $(count $y20q1 $y20q2 $dir)"
-echo "2020 Q2: $(count $y20q2 $y20q3 $dir)"
-echo "2020 Q3: $(count $y20q3 $y20q4 $dir)"
-echo "2020 Q4: $(count $y20q4 $y21q1 $dir)"
-echo "2021 Q1: $(count $y21q1 $y21q2 $dir)"
-echo "2021 Q2: $(count $y21q2 $y21q3 $dir)"
-echo "2021 Q3: $(count $y21q3 $y21q4 $dir)"
-echo "2021 Q4: $(count $y21q4 $y22q1 $dir)"
-echo "2022 Q1: $(count $y22q1 $y22q2 $dir)"
-echo "2022 Q2: $(count $y22q2 $y22q3 $dir)"
-echo "2022 Q3: $(count $y22q3 $y22q4 $dir)"
+echo "2017 Q3,$(countChurn $y17q3 $y17q4 $dir)"
+echo "2017 Q4,$(countChurn $y17q4 $y18q1 $dir)"
+echo "2018 Q1,$(countChurn $y18q1 $y18q2 $dir)"
+echo "2018 Q2,$(countChurn $y18q2 $y18q3 $dir)"
+echo "2018 Q3,$(countChurn $y18q3 $y18q4 $dir)"
+echo "2018 Q4,$(countChurn $y18q4 $y19q1 $dir)"
+echo "2019 Q1,$(countChurn $y19q1 $y19q2 $dir)"
+echo "2019 Q2,$(countChurn $y19q2 $y19q3 $dir)"
+echo "2019 Q3,$(countChurn $y19q3 $y19q4 $dir)"
+echo "2019 Q4,$(countChurn $y19q4 $y20q1 $dir)"
+echo "2020 Q1,$(countChurn $y20q1 $y20q2 $dir)"
+echo "2020 Q2,$(countChurn $y20q2 $y20q3 $dir)"
+echo "2020 Q3,$(countChurn $y20q3 $y20q4 $dir)"
+echo "2020 Q4,$(countChurn $y20q4 $y21q1 $dir)"
+echo "2021 Q1,$(countChurn $y21q1 $y21q2 $dir)"
+echo "2021 Q2,$(countChurn $y21q2 $y21q3 $dir)"
+echo "2021 Q3,$(countChurn $y21q3 $y21q4 $dir)"
+echo "2021 Q4,$(countChurn $y21q4 $y22q1 $dir)"
+echo "2022 Q1,$(countChurn $y22q1 $y22q2 $dir)"
+echo "2022 Q2,$(countChurn $y22q2 $y22q3 $dir)"
+echo "2022 Q3,$(countChurn $y22q3 $y22q4 $dir)"
+echo "2022 Q4,$(countChurn $y22q4 $y23q1 $dir)"
