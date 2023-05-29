@@ -847,6 +847,9 @@ int main(int argc, char ** argv)
     logfile << "\n==== Syzkaller Retrospection ====\n"
             << r - l + 1 << " Syzkaller commit" << (r - l + 1 == 1 ? "" : "s") << " from [" << high_date.get_date() << "].\n" << flush;
 
+    if (r - l + 1 == 0)
+        goto skip_syzkaller;
+
     // we only need one kernel version
     cout << SPACER
          << "Making the kernel\n";
@@ -902,6 +905,7 @@ int main(int argc, char ** argv)
         }
     }
 
+skip_syzkaller:
     if (get_index_by_name(syzkaller_versions, syzkaller_version.name) > r)
     {
         revealing_factor = "Syzkaller Update";
