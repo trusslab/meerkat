@@ -54,6 +54,10 @@ void InspectorConfig::parse_config_file(const std::string & filename)
         {
             go_dir = line.substr(pos0);
         }
+        else if (line.find("imagedir=") != std::string::npos)
+        {
+            image_dir = line.substr(pos0);
+        }
         else if (line.find("numVMd=") != std::string::npos)
         {
             vmd.numVM = std::stoi(line.substr(pos1));

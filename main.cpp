@@ -155,7 +155,7 @@ int main(int argc, char ** argv)
     else
         cout << "Found kernel config.\n";
 
-    if (!check_file("image/stretch/stretch.img"))
+    if (!check_file(inspector.get_image_dir() + "/stretch/stretch.img"))
     {
         cerr << "Error: No image file for stretch.\n";
         err = -1;
@@ -164,7 +164,7 @@ int main(int argc, char ** argv)
     else
         cout << "Found stretch image.\n";
 
-    if (!check_file("image/wheezy/wheezy.img"))
+    if (!check_file(inspector.get_image_dir() + "/wheezy/wheezy.img"))
     {
         cerr << "Error: No image file for wheezy.\n";
         err = -1;

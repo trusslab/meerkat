@@ -43,6 +43,7 @@ private:
     std::string inspector_dir;          // SyzInspector
     std::string gcc_dir;                // the directory housing all of the gcc compilers
     std::string go_dir;                 // the directory housing go
+    std::string image_dir;              // directory of the os images
 
     VMConfig vmd;                       // vm resource allocations for default, race, and single-thread
     VMConfig vmr;
@@ -69,6 +70,9 @@ public:
 
     std::string get_go_dir() const
     { return go_dir; }
+
+    std::string get_image_dir() const
+    { return image_dir; }
 
     VMConfig get_vmd() const
     { return vmd; }

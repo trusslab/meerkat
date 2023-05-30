@@ -554,11 +554,11 @@ int write_syzkaller_config(const Bug_Info &bug, const InspectorConfig &inspector
 
     // change image when syzkaller did. It shouldn't matter, but who knows.
     if (syz_date >= Date(2018,9,4))
-        outf << "    \"image\": \"" << inspector.get_inspect_dir() << "/image/stretch/stretch.img\",\n"
-             << "    \"sshkey\": \"" << inspector.get_inspect_dir() << "/image/stretch/stretch.id_rsa\",\n";
+        outf << "    \"image\": \"" << inspector.get_image_dir() << "/stretch/stretch.img\",\n"
+             << "    \"sshkey\": \"" << inspector.get_image_dir() << "/stretch/stretch.id_rsa\",\n";
     else
-        outf << "    \"image\": \"" << inspector.get_inspect_dir() << "/image/wheezy/wheezy.img\",\n"
-             << "    \"sshkey\": \"" << inspector.get_inspect_dir() << "/image/wheezy/ssh/id_rsa\",\n";
+        outf << "    \"image\": \"" << inspector.get_image_dir() << "/wheezy/wheezy.img\",\n"
+             << "    \"sshkey\": \"" << inspector.get_image_dir() << "/wheezy/ssh/id_rsa\",\n";
 
     outf << "    \"syzkaller\": \"" << bug.get_syzdir() << "\",\n"
          << "    \"procs\": " << vmc.numProcs << ",\n"
