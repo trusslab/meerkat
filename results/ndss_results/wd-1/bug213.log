@@ -1,0 +1,233 @@
+KASAN: use-after-free Read in port100_send_complete,https://syzkaller.appspot.com/bug?id=ac656870d3dd0ef6169a42db4d7f1c17147eb58c
+Repository: linux
+Arch: amd64
+Finding: 2022-03-03 - 38f80f42147ff658aff218edb0a88c37e58bf44f
+Guilty:  2013-10-07 - 0347a6ab300a1532c298823408d6e51ccf4e4f45
+Duplicate Names:
+    INFO: task hung in port100_probe
+    KASAN: use-after-free Read in port100_send_complete
+Single Proc Allocation
+VMs:8
+CPUs:2
+Procs:16
+Max time:30
+Max attempts:3
+Testing the finding commit.
+
+2023-05-13 11:08:50
+Session:   1
+Template:  2022-02-25 - 45a13a7381e60020d94d037d88a75727984b7a9a
+Syzkaller: 2022-02-25 - 45a13a7381e60020d94d037d88a75727984b7a9a
+Kernel:    2022-03-03 - 38f80f42147ff658aff218edb0a88c37e58bf44f
+Compiler:  gcc-10.2.1-20210110
+Attempt 1:
+    Time  Bug Name
+***    3  KASAN: use-after-free Read in port100_send_complete
+Attempt 2:
+    Time  Bug Name
+***    3  KASAN: use-after-free Read in port100_send_complete
+Attempt 3:
+    Time  Bug Name
+***    3  KASAN: use-after-free Read in port100_send_complete
+The bug was found.
+
+New Max Time: 10.
+Merge Commit: 2013-10-18 - df3c2adea4e432a2ca8fc0aed1caa7c7a7d84086.
+
+==== Template Retrospection ====
+54 template changes in [2017-07-22, 2022-03-04].
+
+2023-05-13 16:57:57
+Session:   2
+Template:  2019-12-30 - 7f117e28b86fbcd044980c4d2c8baa07548bf0cb
+Syzkaller: 2019-12-30 - 7f117e28b86fbcd044980c4d2c8baa07548bf0cb
+Kernel:    2019-12-29 - fd6988496e79a6a4bdb514a4655d2920209eb85d
+Compiler:  gcc-9.0.0-20181231
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+The bug was not found.
+
+2023-05-13 19:10:15
+Session:   3
+Template:  2021-04-13 - 8ba8079b119fc956671eed6c7e8cb6efd355ae61
+Syzkaller: 2021-04-13 - 8ba8079b119fc956671eed6c7e8cb6efd355ae61
+Kernel:    2021-04-13 - eebe426d32e1a10ac7c35f8ffab5f818c32a2454
+Compiler:  gcc-10.2.1-20210110
+Attempt 1:
+    Time  Bug Name
+       3  WARNING in port100_send_cmd_async/usb_submit_urb
+Attempt 2:
+    Time  Bug Name
+       4  WARNING in port100_send_cmd_async/usb_submit_urb
+Attempt 3:
+    Time  Bug Name
+       3  WARNING in port100_send_cmd_async/usb_submit_urb
+The bug was not found.
+
+2023-05-13 21:52:40
+Session:   4
+Template:  2021-10-29 - c40503e1fa86f3027e003118aaf91646a82f2b5d
+Syzkaller: 2021-10-29 - c40503e1fa86f3027e003118aaf91646a82f2b5d
+Kernel:    2021-10-29 - a379fbbcb88bcf43d886977c6fb91fb43f330b84
+Compiler:  gcc-10.2.1-20210110
+Attempt 1:
+    Time  Bug Name
+***    4  KASAN: use-after-free Read in port100_send_complete
+The bug was found.
+
+2023-05-13 23:23:37
+Session:   5
+Template:  2021-10-13 - 169113bb626eb213f34ad27dcc5988928998cbf4
+Syzkaller: 2021-10-13 - 169113bb626eb213f34ad27dcc5988928998cbf4
+Kernel:    2021-10-13 - 348949d9a4440abdab3b1dc99a9bb660e8c7da7c
+Compiler:  gcc-10.2.1-20210110
+Attempt 1:
+    Time  Bug Name
+       3  WARNING in port100_send_cmd_async/usb_submit_urb
+Attempt 2:
+    Time  Bug Name
+       3  WARNING in port100_send_cmd_async/usb_submit_urb
+Attempt 3:
+    Time  Bug Name
+       3  WARNING in port100_send_cmd_async/usb_submit_urb
+The bug was not found.
+
+2023-05-14 01:14:52
+Session:   6
+Template:  2021-10-21 - 4560aea643a6f605080bc24b3a125cada138ddc4
+Syzkaller: 2021-10-21 - 4560aea643a6f605080bc24b3a125cada138ddc4
+Kernel:    2021-10-20 - 2f111a6fd5b5297b4e92f53798ca086f7c7d33a4
+Compiler:  gcc-10.2.1-20210110
+Attempt 1:
+    Time  Bug Name
+       3  WARNING in port100_send_cmd_async/usb_submit_urb
+Attempt 2:
+    Time  Bug Name
+       4  WARNING in port100_send_cmd_async/usb_submit_urb
+Attempt 3:
+    Time  Bug Name
+       5  WARNING in port100_send_cmd_async/usb_submit_urb
+The bug was not found.
+
+2023-05-14 03:40:13
+Session:   7
+Template:  2021-10-21 - 4560aea643a6f605080bc24b3a125cada138ddc4
+Syzkaller: 2021-10-29 - c40503e1fa86f3027e003118aaf91646a82f2b5d
+Kernel:    2021-10-29 - a379fbbcb88bcf43d886977c6fb91fb43f330b84
+Compiler:  gcc-10.2.1-20210110
+Attempt 1:
+    Time  Bug Name
+***    4  KASAN: use-after-free Read in port100_send_complete
+The bug was found.
+
+==== Kernel Retrospection ====
+48 Linux commits in [2021-10-20, 2021-10-29].
+
+2023-05-14 05:40:17
+Session:   8
+Template:  2021-10-24 - 4f0000ee28dffdfa5be45c94f77c16ec68994384
+Syzkaller: 2021-10-24 - 4f0000ee28dffdfa5be45c94f77c16ec68994384
+Kernel:    2021-10-24 - 87066fdd2e30fe9dd531125d95257c118a74617e
+Compiler:  gcc-10.2.1-20210110
+Attempt 1:
+    Time  Bug Name
+       3  WARNING in port100_send_cmd_async/usb_submit_urb
+Attempt 2:
+    Time  Bug Name
+       3  WARNING in port100_send_cmd_async/usb_submit_urb
+Attempt 3:
+    Time  Bug Name
+       3  WARNING in port100_send_cmd_async/usb_submit_urb
+The bug was not found.
+
+2023-05-14 07:40:37
+Session:   9
+Template:  2021-10-27 - be531bb42381b245eed805e49fd889d1c2118c76
+Syzkaller: 2021-10-27 - be531bb42381b245eed805e49fd889d1c2118c76
+Kernel:    2021-10-28 - eecd231a80a5d54afc5eb350fc890ab15350408d
+Compiler:  gcc-10.2.1-20210110
+Attempt 1:
+    Time  Bug Name
+       3  WARNING in port100_send_cmd_async/usb_submit_urb
+Attempt 2:
+    Time  Bug Name
+       3  WARNING in port100_send_cmd_async/usb_submit_urb
+Attempt 3:
+    Time  Bug Name
+       3  WARNING in port100_send_cmd_async/usb_submit_urb
+The bug was not found.
+
+2023-05-14 09:43:00
+Session:   10
+Template:  2021-10-29 - 098b5d530648147c744a7c2eb8b78c1307f9d3ce
+Syzkaller: 2021-10-29 - 098b5d530648147c744a7c2eb8b78c1307f9d3ce
+Kernel:    2021-10-29 - 2c04d67ec1eb558c9d0f58d61e64554d8f39f120
+Compiler:  gcc-10.2.1-20210110
+Attempt 1:
+    Time  Bug Name
+***    5  KASAN: use-after-free Read in port100_send_complete
+The bug was found.
+
+2023-05-14 11:33:55
+Session:   11
+Template:  2021-10-27 - be531bb42381b245eed805e49fd889d1c2118c76
+Syzkaller: 2021-10-27 - be531bb42381b245eed805e49fd889d1c2118c76
+Kernel:    2021-10-28 - 411a44c24a561e449b592ff631b7ae321f1eb559
+Compiler:  gcc-10.2.1-20210110
+Attempt 1:
+    Time  Bug Name
+***    4  KASAN: use-after-free Read in port100_send_complete
+The bug was found.
+
+2023-05-14 13:10:05
+Session:   12
+Template:  2021-10-27 - be531bb42381b245eed805e49fd889d1c2118c76
+Syzkaller: 2021-10-27 - be531bb42381b245eed805e49fd889d1c2118c76
+Kernel:    2021-10-28 - 4fb7d85b2ebf0f06d6b47df2c9f2d45c6fec8b8c
+Compiler:  gcc-10.2.1-20210110
+Attempt 1:
+    Time  Bug Name
+       3  WARNING in port100_send_cmd_async/usb_submit_urb
+Attempt 2:
+    Time  Bug Name
+       3  WARNING in port100_send_cmd_async/usb_submit_urb
+Attempt 3:
+    Time  Bug Name
+       3  WARNING in port100_send_cmd_async/usb_submit_urb
+The bug was not found.
+
+== Confirming the bisected commit ==
+
+2023-05-14 15:06:40
+Session:   13
+Template:  2021-10-27 - be531bb42381b245eed805e49fd889d1c2118c76
+Syzkaller: 2021-10-27 - be531bb42381b245eed805e49fd889d1c2118c76
+Kernel:    2021-10-28 - 411a44c24a561e449b592ff631b7ae321f1eb559
+The bug was found in a previous identical fuzzing session.
+
+2023-05-14 15:06:40
+Session:   14
+Template:  2021-10-27 - be531bb42381b245eed805e49fd889d1c2118c76
+Syzkaller: 2021-10-27 - be531bb42381b245eed805e49fd889d1c2118c76
+Kernel:    2021-10-28 - 4fb7d85b2ebf0f06d6b47df2c9f2d45c6fec8b8c
+The bug was not found in a previous identical fuzzing session.
+
+====================================================================================================================================================
+Revealing Factor:   Kernel Commit
+Version:            2021-10-28 - 411a44c24a561e449b592ff631b7ae321f1eb559
+Commit Name:        Merge tag 'net-5.15-rc8' of git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net
+
+Bug Name:           KASAN: use-after-free Read in port100_send_complete
+Bug Link:           https://syzkaller.appspot.com/bug?id=ac656870d3dd0ef6169a42db4d7f1c17147eb58c
+Arch:               amd64
+Finding Date:       2022-03-04
+Finding Commit:     2022-03-03 - 38f80f42147ff658aff218edb0a88c37e58bf44f
+Guilty Merge:       2013-10-18 - df3c2adea4e432a2ca8fc0aed1caa7c7a7d84086
+Guilty Commit:      2013-10-07 - 0347a6ab300a1532c298823408d6e51ccf4e4f45
+
+Possible Blocking Bugs:
+    WARNING in port100_send_cmd_async/usb_submit_urb

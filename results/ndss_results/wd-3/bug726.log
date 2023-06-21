@@ -1,0 +1,237 @@
+KASAN: use-after-free Read in tick_sched_handle,https://syzkaller.appspot.com/bug?id=fce6ae4655ae3133b8b7410c3370bb2167c6324d
+Repository: linux
+Arch: amd64
+Finding: 2018-12-27 - b71acb0e372160167bf6d5500b88b30b52ccef6e
+Guilty:  2018-12-17 - 11789039da536fea96c98a40c2b441decf2e7323
+Duplicate Names:
+    KASAN: use-after-free Read in tick_sched_handle
+    KASAN: use-after-free Read in update_blocked_averages
+    kernel BUG at mm/slab.c:LINE!
+    WARNING in update_load_avg
+    WARNING: bad usercopy in corrupted
+    KASAN: slab-out-of-bounds Read in tick_sched_handle
+Single Proc Allocation
+VMs:8
+CPUs:2
+Procs:16
+Max time:30
+Max attempts:3
+Testing the finding commit.
+
+2023-04-05 19:23:45
+Session:   1
+Template:  2018-12-28 - e33ad0f1875349ef73a89aad2473594de21ad9c0
+Syzkaller: 2018-12-28 - e33ad0f1875349ef73a89aad2473594de21ad9c0
+Kernel:    2018-12-27 - b71acb0e372160167bf6d5500b88b30b52ccef6e
+Compiler:  gcc-8.0.1-20180412
+Attempt 1:
+    Time  Bug Name
+       2  general protection fault in corrupted
+Attempt 2:
+    Time  Bug Name
+***    2  KASAN: use-after-free Read in tick_sched_handle
+Attempt 3:
+    Time  Bug Name
+       2  lost connection to test machine
+Attempt 4: (RETRY)
+    Time  Bug Name
+       2  BUG: unable to handle kernel paging request in corrupted
+The bug was found.
+
+New Max Time: 35.
+No Merge Commit.
+
+==== Template Retrospection ====
+4 template changes in [2018-12-17, 2018-12-28].
+
+2023-04-05 21:37:53
+Session:   2
+Template:  2018-12-24 - a961943f0246ba8ca0ef00b3f990617d35a6d0c1
+Syzkaller: 2018-12-24 - a961943f0246ba8ca0ef00b3f990617d35a6d0c1
+Kernel:    2018-12-24 - c92c81df93df95dafbf6926613ce0b436227b007
+Compiler:  gcc-8.0.1-20180412
+Attempt 1:
+    Time  Bug Name
+       2  KASAN: stack-out-of-bounds Read in debug_check_no_obj_freed
+Attempt 2:
+    Time  Bug Name
+       2  general protection fault in depot_save_stack
+Attempt 3:
+    Time  Bug Name
+***    2  KASAN: use-after-free Read in tick_sched_handle
+The bug was found.
+
+2023-04-05 23:22:05
+Session:   3
+Template:  2018-12-24 - 57541e29d9d7fba916a77292d80e8f35a132bcb4
+Syzkaller: 2018-12-24 - 57541e29d9d7fba916a77292d80e8f35a132bcb4
+Kernel:    2018-12-24 - c92c81df93df95dafbf6926613ce0b436227b007
+Compiler:  gcc-8.0.1-20180412
+Attempt 1:
+    Time  Bug Name
+       2  BUG: unable to handle kernel paging request in unlink_anon_vmas
+Attempt 2:
+    Time  Bug Name
+       3  KASAN: stack-out-of-bounds Read in recalc_sigpending_tsk
+      24  BUG: unable to handle kernel paging request in bpf_prog_kallsyms_add
+Attempt 3:
+    Time  Bug Name
+***    2  KASAN: use-after-free Read in tick_sched_handle
+The bug was found.
+
+2023-04-06 01:15:31
+Session:   4
+Template:  2018-12-24 - dd61e58d94240df628a568c5609b1441746f4a54
+Syzkaller: 2018-12-24 - dd61e58d94240df628a568c5609b1441746f4a54
+Kernel:    2018-12-24 - c92c81df93df95dafbf6926613ce0b436227b007
+Compiler:  gcc-8.0.1-20180412
+Attempt 1:
+    Time  Bug Name
+***    2  KASAN: slab-out-of-bounds Read in tick_sched_handle
+The bug was found.
+
+2023-04-06 02:02:21
+Session:   5
+Template:  2018-12-16 - 1749e412ca50caa145ba53de69c0daf95f1b6d6f
+Syzkaller: 2018-12-24 - dd61e58d94240df628a568c5609b1441746f4a54
+Kernel:    2018-12-24 - c92c81df93df95dafbf6926613ce0b436227b007
+Attempt 1:
+    Time  Bug Name
+       2  lost connection to test machine
+Attempt 2:
+    Time  Bug Name
+***    2  KASAN: use-after-free Read in tick_sched_handle
+The bug was found.
+
+==== Kernel Retrospection ====
+66 Linux commits in [2018-12-17, 2018-12-24].
+
+2023-04-06 02:44:17
+Session:   6
+Template:  2018-12-20 - 2b4970017d38fd9b148939c7acdbf704c232f1dc
+Syzkaller: 2018-12-20 - 2b4970017d38fd9b148939c7acdbf704c232f1dc
+Kernel:    2018-12-20 - 754d5da63145852736f34cfc762164f5d8d6537b
+Compiler:  gcc-8.0.1-20180412
+Attempt 1:
+    Time  Bug Name
+       2  KASAN: slab-out-of-bounds Read in filp_close
+Attempt 2:
+    Time  Bug Name
+       2  BUG: unable to handle kernel NULL pointer dereference in corrupted
+Attempt 3:
+    Time  Bug Name
+       2  KASAN: stack-out-of-bounds Read in debug_check_no_obj_freed
+The bug was not found.
+
+2023-04-06 05:04:31
+Session:   7
+Template:  2018-12-21 - 603b512405c78d0143dc44bed638f70f01f9f95c
+Syzkaller: 2018-12-21 - 603b512405c78d0143dc44bed638f70f01f9f95c
+Kernel:    2018-12-21 - a6ae520defea9986a422032eda7f0bdbb1368a18
+Compiler:  gcc-8.0.1-20180412
+Attempt 1:
+    Time  Bug Name
+       2  KASAN: stack-out-of-bounds Read in check_lifetime
+Attempt 2:
+    Time  Bug Name
+       2  general protection fault in timerqueue_add
+Attempt 3:
+    Time  Bug Name
+***    2  KASAN: use-after-free Read in tick_sched_handle
+The bug was found.
+
+2023-04-06 06:53:38
+Session:   8
+Template:  2018-12-21 - 603b512405c78d0143dc44bed638f70f01f9f95c
+Syzkaller: 2018-12-21 - 603b512405c78d0143dc44bed638f70f01f9f95c
+Kernel:    2018-12-21 - 3a6d528a5e0179b1e8b20033c5cb7384dd7a830d
+Compiler:  gcc-8.0.1-20180412
+Attempt 1:
+    Time  Bug Name
+       2  KASAN: stack-out-of-bounds Read in __hrtimer_run_queues
+       8  general protection fault in fib_sync_down_dev
+Attempt 2:
+    Time  Bug Name
+       2  KASAN: stack-out-of-bounds Read in __handle_mm_fault
+Attempt 3:
+    Time  Bug Name
+       3  KASAN: stack-out-of-bounds Read in find_vma
+The bug was not found.
+
+2023-04-06 09:18:13
+Session:   9
+Template:  2018-12-21 - 603b512405c78d0143dc44bed638f70f01f9f95c
+Syzkaller: 2018-12-21 - 603b512405c78d0143dc44bed638f70f01f9f95c
+Kernel:    2018-12-21 - 7de333090a803a6678c3848d4eed1031bbc3dc95
+Compiler:  gcc-8.0.1-20180412
+Attempt 1:
+    Time  Bug Name
+***    2  KASAN: slab-out-of-bounds Read in tick_sched_handle
+The bug was found.
+
+2023-04-06 10:15:37
+Session:   10
+Template:  2018-12-21 - 603b512405c78d0143dc44bed638f70f01f9f95c
+Syzkaller: 2018-12-21 - 603b512405c78d0143dc44bed638f70f01f9f95c
+Kernel:    2018-12-21 - 463561e6b9facf93ef90b65d2c75a80c7262d778
+Compiler:  gcc-8.0.1-20180412
+Attempt 1:
+    Time  Bug Name
+       2  WARNING in unlink_anon_vmas
+Attempt 2:
+    Time  Bug Name
+       2  BUG: unable to handle kernel paging request in corrupted
+      23  INFO: task hung in rq_qos_throttle
+Attempt 3:
+    Time  Bug Name
+***    2  KASAN: slab-out-of-bounds Read in tick_sched_handle
+The bug was found.
+
+2023-04-06 12:00:45
+Session:   11
+Template:  2018-12-21 - 603b512405c78d0143dc44bed638f70f01f9f95c
+Syzkaller: 2018-12-21 - 603b512405c78d0143dc44bed638f70f01f9f95c
+Kernel:    2018-12-21 - 962ad710f7d64d441c4e02c0e9e5fddd1aeb54b7
+Compiler:  gcc-8.0.1-20180412
+Attempt 1:
+    Time  Bug Name
+       2  general protection fault in debug_check_no_obj_freed
+Attempt 2:
+    Time  Bug Name
+       2  general protection fault in corrupted
+      14  general protection fault in depot_save_stack
+Attempt 3:
+    Time  Bug Name
+***    2  KASAN: slab-out-of-bounds Read in tick_sched_handle
+The bug was found.
+
+== Confirming the bisected commit ==
+
+2023-04-06 14:12:14
+Session:   12
+Template:  2018-12-21 - 603b512405c78d0143dc44bed638f70f01f9f95c
+Syzkaller: 2018-12-21 - 603b512405c78d0143dc44bed638f70f01f9f95c
+Kernel:    2018-12-21 - 962ad710f7d64d441c4e02c0e9e5fddd1aeb54b7
+The bug was found in a previous identical fuzzing session.
+
+2023-04-06 14:12:14
+Session:   13
+Template:  2018-12-21 - 603b512405c78d0143dc44bed638f70f01f9f95c
+Syzkaller: 2018-12-21 - 603b512405c78d0143dc44bed638f70f01f9f95c
+Kernel:    2018-12-21 - 3a6d528a5e0179b1e8b20033c5cb7384dd7a830d
+The bug was not found in a previous identical fuzzing session.
+
+====================================================================================================================================================
+Revealing Factor:   Kernel Commit
+Version:            2018-12-21 - 962ad710f7d64d441c4e02c0e9e5fddd1aeb54b7
+Commit Name:        net: dsa: microchip: fix unicast frame leak
+
+Bug Name:           KASAN: use-after-free Read in tick_sched_handle
+Bug Link:           https://syzkaller.appspot.com/bug?id=fce6ae4655ae3133b8b7410c3370bb2167c6324d
+Arch:               amd64
+Finding Date:       2018-12-28
+Finding Commit:     2018-12-27 - b71acb0e372160167bf6d5500b88b30b52ccef6e
+Guilty Merge:       None
+Guilty Commit:      2018-12-17 - 11789039da536fea96c98a40c2b441decf2e7323
+
+Possible Blocking Bugs:

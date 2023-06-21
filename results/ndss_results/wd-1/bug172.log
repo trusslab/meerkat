@@ -1,0 +1,305 @@
+KASAN: use-after-free Write in null_skcipher_crypt,https://syzkaller.appspot.com/bug?id=517fa734b92b7db404c409b924cf5c997640e324
+Repository: linux
+Arch: amd64
+Finding: 2021-09-11 - 78e709522d2c012cb0daad2e668506637bffb7c2
+Guilty:  2017-01-17 - 03e2a30f6a27e2f3e5283b777f6ddd146b38c738
+No Duplicates
+Single Proc Allocation
+VMs:8
+CPUs:2
+Procs:16
+Max time:30
+Max attempts:3
+Testing the finding commit.
+
+2023-05-04 18:18:50
+Session:   1
+Template:  2021-09-10 - 3ce60af85b4644bd7f2d2ef01a7d2b9a41545b76
+Syzkaller: 2021-09-10 - 3ce60af85b4644bd7f2d2ef01a7d2b9a41545b76
+Kernel:    2021-09-11 - 78e709522d2c012cb0daad2e668506637bffb7c2
+Compiler:  gcc-10.2.1-20210110
+Attempt 1:
+    Time  Bug Name
+       3  KASAN: use-after-free Read in skb_copy_bits
+Attempt 2:
+    Time  Bug Name
+       3  KASAN: slab-out-of-bounds Write in null_skcipher_crypt
+Attempt 3:
+    Time  Bug Name
+***    3  KASAN: use-after-free Write in null_skcipher_crypt
+The bug was found.
+
+New Max Time: 33.
+Merge Commit: 2017-02-01 - 04cdf13e34e912dcab9a94f391e15b2c26dfd0a2.
+
+==== Template Retrospection ====
+70 template changes in [2017-07-22, 2021-09-12].
+
+2023-05-05 00:07:20
+Session:   2
+Template:  2018-12-24 - dd61e58d94240df628a568c5609b1441746f4a54
+Syzkaller: 2018-12-24 - dd61e58d94240df628a568c5609b1441746f4a54
+Kernel:    2018-12-23 - 8fe28cb58bcb235034b64cbbb7550a8a43fd88be
+Compiler:  gcc-8.0.1-20180412
+Attempt 1:
+    Time  Bug Name
+       8  WARNING in pfkey_sock_destruct
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    Time  Bug Name
+      24  no output from test machine
+The bug was not found.
+
+2023-05-05 02:46:25
+Session:   3
+Template:  2020-01-19 - 0342f8c7bc656ea8ee3c45e49edeb4ee9cc12cce
+Syzkaller: 2020-01-19 - 0342f8c7bc656ea8ee3c45e49edeb4ee9cc12cce
+Kernel:    2020-01-19 - 7008ee121089b8193aea918b98850fe87d996508
+Compiler:  gcc-9.0.0-20181231
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    Time  Bug Name
+      16  kernel BUG at net/core/skbuff.c:LINE!
+Attempt 3:
+    Time  Bug Name
+      13  kernel BUG at net/core/skbuff.c:LINE!
+      14  kernel BUG at net/core/skbuff.c:LINE!
+      19  kernel BUG at net/core/skbuff.c:LINE!
+The bug was not found.
+
+2023-05-05 05:49:24
+Session:   4
+Template:  2020-04-14 - 3f3c557402456696073f79aafa65b4d7fa2b8794
+Syzkaller: 2020-04-14 - 3f3c557402456696073f79aafa65b4d7fa2b8794
+Kernel:    2020-04-14 - 8632e9b5645bbc2331d21d892b0d6961c1a08429
+Compiler:  gcc-9.0.0-20181231
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    Time  Bug Name
+      13  kernel BUG at net/core/skbuff.c:LINE!
+      16  kernel BUG at net/core/skbuff.c:LINE!
+      20  kernel BUG at net/core/skbuff.c:LINE!
+Attempt 3:
+    No crashes found.
+The bug was not found.
+
+2023-05-05 08:55:57
+Session:   5
+Template:  2020-09-22 - 2450c42f1be626b601353c1e039f8fcbadfaffb1
+Syzkaller: 2020-09-22 - 2450c42f1be626b601353c1e039f8fcbadfaffb1
+Kernel:    2020-09-22 - 805c6d3c19210c90c109107d189744e960eae025
+Compiler:  gcc-10.1.0-syz
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    Time  Bug Name
+      31  BUG: using smp_processor_id() in preemptible code in radix_tree_node_alloc
+Attempt 3:
+    No crashes found.
+The bug was not found.
+
+2023-05-05 11:52:30
+Session:   6
+Template:  2021-04-13 - 8ba8079b119fc956671eed6c7e8cb6efd355ae61
+Syzkaller: 2021-04-13 - 8ba8079b119fc956671eed6c7e8cb6efd355ae61
+Kernel:    2021-04-13 - eebe426d32e1a10ac7c35f8ffab5f818c32a2454
+Compiler:  gcc-10.2.1-20210110
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+The bug was not found.
+
+2023-05-05 14:56:30
+Session:   7
+Template:  2021-04-22 - 33c28d0389a6b0dd17a5de7c093a011cdadb33b1
+Syzkaller: 2021-04-22 - 33c28d0389a6b0dd17a5de7c093a011cdadb33b1
+Kernel:    2021-04-22 - 18a3c5f7abfdf97f88536d35338ebbee119c355c
+Compiler:  gcc-10.2.1-20210110
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+The bug was not found.
+
+==== Kernel Retrospection ====
+1079 Linux commits in [2021-04-22, 2021-09-12].
+
+2023-05-05 17:48:03
+Session:   8
+Template:  2021-07-02 - 55aa55c24fe77aae07d530662f91b4d50c4990f0
+Syzkaller: 2021-07-02 - 55aa55c24fe77aae07d530662f91b4d50c4990f0
+Kernel:    2021-07-02 - e4aa67b023167c570be95a39149a918cca9e36a0
+Compiler:  gcc-10.2.1-20210110
+Attempt 1:
+    Time  Bug Name
+       3  KASAN: use-after-free Read in skb_copy_bits
+Attempt 2:
+    Time  Bug Name
+       3  KASAN: use-after-free Read in skb_copy_bits
+       4  BUG: sleeping function called from invalid context in lock_sock_nested
+Attempt 3:
+    Time  Bug Name
+***    2  KASAN: use-after-free Write in null_skcipher_crypt
+The bug was found.
+
+2023-05-05 19:56:59
+Session:   9
+Template:  2021-05-20 - 3c7fef3361a6007112b26adc1c5a550189ef43fe
+Syzkaller: 2021-05-20 - 3c7fef3361a6007112b26adc1c5a550189ef43fe
+Kernel:    2021-05-21 - 93bb533a340bde2065ecdd8694c8d1852537edd2
+Compiler:  gcc-10.2.1-20210110
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+The bug was not found.
+
+2023-05-05 22:51:11
+Session:   10
+Template:  2021-06-16 - aba2b2fb3544d9e42991237c13d8cada421deda5
+Syzkaller: 2021-06-16 - aba2b2fb3544d9e42991237c13d8cada421deda5
+Kernel:    2021-06-18 - 89fec7420354ff2d23ed46e62aaea402587efd1c
+Compiler:  gcc-10.2.1-20210110
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    Time  Bug Name
+      33  general protection fault in kcm_sendmsg
+Attempt 3:
+    No crashes found.
+The bug was not found.
+
+2023-05-06 02:18:54
+Session:   11
+Template:  2021-06-26 - 9d2ab5dfe7727dfea4b9b279f4edf731acb386ef
+Syzkaller: 2021-06-26 - 9d2ab5dfe7727dfea4b9b279f4edf731acb386ef
+Kernel:    2021-06-28 - 31e798fd6f0ff0acdc49c1a358b581730936a09a
+Compiler:  gcc-10.2.1-20210110
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    Time  Bug Name
+       3  BUG: sleeping function called from invalid context in lock_sock_nested
+Attempt 3:
+    Time  Bug Name
+       4  BUG: sleeping function called from invalid context in lock_sock_nested
+The bug was not found.
+
+2023-05-06 05:58:54
+Session:   12
+Template:  2021-06-30 - 38a885d1c94053040c0881240224dd60328a4836
+Syzkaller: 2021-06-30 - 38a885d1c94053040c0881240224dd60328a4836
+Kernel:    2021-06-30 - e60d726f5d8ccc85f18b9f1f6839112dc8c58fb8
+Compiler:  gcc-10.2.1-20210110
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    Time  Bug Name
+      24  BUG: sleeping function called from invalid context in stack_depot_save
+The bug was not found.
+
+2023-05-06 08:54:44
+Session:   13
+Template:  2021-07-01 - 658ebc66ddf4b2d7ebaf8ecf291da16a1528eeef
+Syzkaller: 2021-07-01 - 658ebc66ddf4b2d7ebaf8ecf291da16a1528eeef
+Kernel:    2021-07-01 - e058a84bfddc42ba356a2316f2cf1141974625c9
+Compiler:  gcc-10.2.1-20210110
+Attempt 1:
+    Time  Bug Name
+***    2  KASAN: use-after-free Write in null_skcipher_crypt
+The bug was found.
+
+2023-05-06 09:59:12
+Session:   14
+Template:  2021-06-30 - 38a885d1c94053040c0881240224dd60328a4836
+Syzkaller: 2021-06-30 - 38a885d1c94053040c0881240224dd60328a4836
+Kernel:    2021-06-30 - 92183137e6c14b68ff4de51f6ef371b2b1fe6e68
+Compiler:  gcc-10.2.1-20210110
+Attempt 1:
+    Time  Bug Name
+      17  BUG: sleeping function called from invalid context in stack_depot_save
+      19  BUG: sleeping function called from invalid context in stack_depot_save
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+The bug was not found.
+
+2023-05-06 12:48:49
+Session:   15
+Template:  2021-07-01 - 658ebc66ddf4b2d7ebaf8ecf291da16a1528eeef
+Syzkaller: 2021-07-01 - 658ebc66ddf4b2d7ebaf8ecf291da16a1528eeef
+Kernel:    2021-07-01 - 2cfa582be80081fb8db02d4d9b44bff34b82ac54
+Compiler:  gcc-10.2.1-20210110
+Attempt 1:
+    Time  Bug Name
+***    3  KASAN: use-after-free Write in null_skcipher_crypt
+The bug was found.
+
+2023-05-06 14:00:07
+Session:   16
+Template:  2021-06-30 - 38a885d1c94053040c0881240224dd60328a4836
+Syzkaller: 2021-06-30 - 38a885d1c94053040c0881240224dd60328a4836
+Kernel:    2021-06-30 - a6eaf3850cb171c328a8b0db6d3c79286a1eba9d
+Compiler:  gcc-10.2.1-20210110
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+The bug was not found.
+
+2023-05-06 16:58:25
+Session:   17
+Template:  2021-06-30 - 38a885d1c94053040c0881240224dd60328a4836
+Syzkaller: 2021-06-30 - 38a885d1c94053040c0881240224dd60328a4836
+Kernel:    2021-06-30 - dbe69e43372212527abf48609aba7fc39a6daa27
+Compiler:  gcc-10.2.1-20210110
+Attempt 1:
+    Time  Bug Name
+***    3  KASAN: use-after-free Write in null_skcipher_crypt
+The bug was found.
+
+== Confirming the bisected commit ==
+
+2023-05-06 18:23:13
+Session:   18
+Template:  2021-06-30 - 38a885d1c94053040c0881240224dd60328a4836
+Syzkaller: 2021-06-30 - 38a885d1c94053040c0881240224dd60328a4836
+Kernel:    2021-06-30 - dbe69e43372212527abf48609aba7fc39a6daa27
+The bug was found in a previous identical fuzzing session.
+
+2023-05-06 18:23:13
+Session:   19
+Template:  2021-06-30 - 38a885d1c94053040c0881240224dd60328a4836
+Syzkaller: 2021-06-30 - 38a885d1c94053040c0881240224dd60328a4836
+Kernel:    2021-06-30 - a6eaf3850cb171c328a8b0db6d3c79286a1eba9d
+The bug was not found in a previous identical fuzzing session.
+
+====================================================================================================================================================
+Revealing Factor:   Kernel Commit
+Version:            2021-06-30 - dbe69e43372212527abf48609aba7fc39a6daa27
+Commit Name:        Merge tag 'net-next-5.14' of git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net-next
+
+Bug Name:           KASAN: use-after-free Write in null_skcipher_crypt
+Bug Link:           https://syzkaller.appspot.com/bug?id=517fa734b92b7db404c409b924cf5c997640e324
+Arch:               amd64
+Finding Date:       2021-09-12
+Finding Commit:     2021-09-11 - 78e709522d2c012cb0daad2e668506637bffb7c2
+Guilty Merge:       2017-02-01 - 04cdf13e34e912dcab9a94f391e15b2c26dfd0a2
+Guilty Commit:      2017-01-17 - 03e2a30f6a27e2f3e5283b777f6ddd146b38c738
+
+Possible Blocking Bugs:

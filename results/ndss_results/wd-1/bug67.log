@@ -1,0 +1,134 @@
+INFO: task hung in hci_dev_close_sync,https://syzkaller.appspot.com/bug?id=8137f770127ad3ae80cc615fbb3b3bdf71c5e17e
+Repository: linux
+Arch: amd64
+Finding: 2022-05-27 - 9d004b2f4fea97cde123e7f1939b80e77bf2e695
+Guilty:  2022-05-13 - ff7f2926114d3a50f5ffe461a9bce8d761748da5
+No Duplicates
+Default Allocation.
+VMs:4
+CPUs:4
+Procs:24
+Max time:30
+Max attempts:3
+Testing the finding commit.
+
+2023-03-28 07:57:35
+Session:   1
+Template:  2022-05-27 - a46af3462c457f5f23b620200144d9a2a430f49f
+Syzkaller: 2022-05-27 - a46af3462c457f5f23b620200144d9a2a430f49f
+Kernel:    2022-05-28 - 9d004b2f4fea97cde123e7f1939b80e77bf2e695
+Compiler:  gcc-10.2.1-20210110
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    Time  Bug Name
+***    5  INFO: task hung in hci_dev_close_sync
+Attempt 3:
+    Time  Bug Name
+***    5  INFO: task hung in hci_dev_close_sync
+The bug was found.
+
+New Max Time: 25.
+Merge Commit: 2022-05-23 - b1e6738a2185fd7626a6187050a3edf9c38c2afe.
+No template updates to inspect.
+
+==== Kernel Retrospection ====
+56 Linux commits in [2022-05-23, 2022-05-29].
+
+2023-03-28 09:12:13
+Session:   2
+Template:  2022-05-25 - 3037caa999f22cdb40f1fa5c6b1b13e5d6af9781
+Syzkaller: 2022-05-25 - 3037caa999f22cdb40f1fa5c6b1b13e5d6af9781
+Kernel:    2022-05-26 - 98931dd95fd489fcbfa97da563505a6f071d7c77
+Compiler:  gcc-10.2.1-20210110
+Attempt 1:
+    Time  Bug Name
+      14  no output from test machine
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    Time  Bug Name
+***    4  INFO: task hung in hci_dev_close_sync
+The bug was found.
+
+2023-03-28 10:40:23
+Session:   3
+Template:  2022-05-25 - 3037caa999f22cdb40f1fa5c6b1b13e5d6af9781
+Syzkaller: 2022-05-25 - 3037caa999f22cdb40f1fa5c6b1b13e5d6af9781
+Kernel:    2022-05-25 - d7227785e384d4422b3ca189aa5bf19f462337cc
+Compiler:  gcc-10.2.1-20210110
+Attempt 1:
+    Time  Bug Name
+***    5  INFO: task hung in hci_dev_close_sync
+The bug was found.
+
+2023-03-28 11:21:02
+Session:   4
+Template:  2022-05-25 - 3037caa999f22cdb40f1fa5c6b1b13e5d6af9781
+Syzkaller: 2022-05-25 - 3037caa999f22cdb40f1fa5c6b1b13e5d6af9781
+Kernel:    2022-05-25 - 7e062cda7d90543ac8c7700fc7c5527d0c0f22ad
+Compiler:  gcc-10.2.1-20210110
+Attempt 1:
+    Time  Bug Name
+       2  SYZFATAL: Manager.Check call failed: machine check failed: program execution failed: executor NUM: exit status NUM
+***    5  INFO: task hung in hci_dev_close_sync
+The bug was found.
+
+2023-03-28 12:01:26
+Session:   5
+Template:  2022-05-24 - 647c0e2737b12e092ce23948537ddf7dd3992c53
+Syzkaller: 2022-05-24 - 647c0e2737b12e092ce23948537ddf7dd3992c53
+Kernel:    2022-05-24 - 677fb7525331375ba2f90f4bc94a80b9b6e697a3
+Compiler:  gcc-10.2.1-20210110
+Attempt 1:
+    Time  Bug Name
+       4  WARNING in hci_conn_timeout
+***    5  INFO: task hung in hci_dev_close_sync
+The bug was found.
+
+2023-03-28 12:39:51
+Session:   6
+Template:  2022-05-23 - e7f9308d43198223b192f94a7030f9ebdf92e551
+Syzkaller: 2022-05-23 - e7f9308d43198223b192f94a7030f9ebdf92e551
+Kernel:    2022-05-23 - 9fa87dd23251574a29cf948fd16cf39075762f3e
+Compiler:  gcc-10.2.1-20210110
+Attempt 1:
+    Time  Bug Name
+       4  WARNING in hci_conn_timeout
+***    7  INFO: task hung in hci_dev_close_sync
+The bug was found.
+
+2023-03-28 13:26:36
+Session:   7
+Template:  2022-05-23 - e7f9308d43198223b192f94a7030f9ebdf92e551
+Syzkaller: 2022-05-23 - e7f9308d43198223b192f94a7030f9ebdf92e551
+Kernel:    2022-05-23 - b1e6738a2185fd7626a6187050a3edf9c38c2afe
+Compiler:  gcc-10.2.1-20210110
+Attempt 1:
+    Time  Bug Name
+***    5  INFO: task hung in hci_dev_close_sync
+The bug was found.
+
+== Confirming the bisected commit ==
+
+2023-03-28 14:06:06
+Session:   8
+Template:  2022-05-23 - e7f9308d43198223b192f94a7030f9ebdf92e551
+Syzkaller: 2022-05-23 - e7f9308d43198223b192f94a7030f9ebdf92e551
+Kernel:    2022-05-23 - b1e6738a2185fd7626a6187050a3edf9c38c2afe
+The bug was found in a previous identical fuzzing session.
+
+====================================================================================================================================================
+Revealing Factor:   Guilty Merge
+Version:            2022-05-23 - b1e6738a2185fd7626a6187050a3edf9c38c2afe
+Commit Name:        Merge tag 'for-net-next-2022-05-23' of git://git.kernel.org/pub/scm/linux/kernel/git/bluetooth/bluetooth-next
+
+Bug Name:           INFO: task hung in hci_dev_close_sync
+Bug Link:           https://syzkaller.appspot.com/bug?id=8137f770127ad3ae80cc615fbb3b3bdf71c5e17e
+Arch:               amd64
+Finding Date:       2022-05-29
+Finding Commit:     2022-05-28 - 9d004b2f4fea97cde123e7f1939b80e77bf2e695
+Guilty Merge:       2022-05-23 - b1e6738a2185fd7626a6187050a3edf9c38c2afe
+Guilty Commit:      2022-05-13 - ff7f2926114d3a50f5ffe461a9bce8d761748da5
+
+Possible Blocking Bugs:

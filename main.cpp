@@ -799,6 +799,15 @@ int main(int argc, char ** argv)
             goto finish;
         }
 
+        cout << SPACER
+            << "Prepping Syzkaller\n";
+        err = prep_syzkaller(bug, inspector, syzkaller_version);
+        if (err < 0)
+        {
+            log_syzkaller_build_error(logfile);
+            goto finish;
+        }
+
         cout << SPACER;
         result_before = fuzz_loop(logfile, bug, inspector, duplicates, max_time, fuzztimes, vmc, port, syzkaller_version.date, use_poc);
         log_session_result(logfile, result_before, duplicates);

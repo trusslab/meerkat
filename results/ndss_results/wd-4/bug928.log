@@ -1,0 +1,43 @@
+KASAN: stack-out-of-bounds Read in __aa_lookupn_ns,https://syzkaller.appspot.com/bug?id=f0d603856d8b3cc9b8e09228f2f548c18ef907ac
+Repository: linux
+Arch: amd64
+Finding: 2018-09-24 - 02214bfc89c71bcc5167f653994cfa5c57f10ff1
+Guilty:  2017-01-16 - 3b0aaf5866bf92a3e47627a02ed5e1be6d7cc110
+Duplicate Names:
+    KMSAN: uninit-value in aa_fqlookupn_profile
+    KASAN: stack-out-of-bounds Read in __aa_lookupn_ns
+Single Proc Allocation
+VMs:8
+CPUs:2
+Procs:16
+Max time:30
+Max attempts:3
+Testing the finding commit.
+
+2023-03-20 03:59:04
+Session:   1
+Template:  2018-09-24 - 0e7547d77c52f0ec26e6e95dc06baa6154bc81e4
+Syzkaller: 2018-09-24 - 0e7547d77c52f0ec26e6e95dc06baa6154bc81e4
+Kernel:    2018-09-24 - 02214bfc89c71bcc5167f653994cfa5c57f10ff1
+Compiler:  gcc-8.0.1-20180412
+Attempt 1:
+    Time  Bug Name
+       2  general protection fault in __aa_lookupn_ns
+       3  KASAN: global-out-of-bounds Read in __aa_lookupn_ns
+      15  general protection fault in __aa_lookupn_ns
+Attempt 2:
+    Time  Bug Name
+       1  general protection fault in __aa_lookupn_ns
+       1  general protection fault in __aa_lookupn_ns
+       4  general protection fault in corrupted
+      13  general protection fault in __aa_lookupn_ns
+      27  general protection fault in __aa_lookupn_ns
+Attempt 3:
+    Time  Bug Name
+       2  general protection fault in __aa_lookupn_ns
+       2  KASAN: global-out-of-bounds Read in __aa_lookupn_ns
+       3  general protection fault in __aa_lookupn_ns
+      26  general protection fault in __aa_lookupn_ns
+The bug was not found.
+
+Failure: This bug cannot be found at the finding commit.

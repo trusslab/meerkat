@@ -1,0 +1,225 @@
+general protection fault in gcmaes_crypt_by_sg,https://syzkaller.appspot.com/bug?id=fdc3d4dae8a0a78587603e1c288f3014c6d2b60b
+Repository: linux
+Arch: amd64
+Finding: 2019-12-02 - 76bb8b05960c3d1668e6bee7624ed886cbd135ba
+Guilty:  2018-10-15 - d3b18ad31f93d0b6bae105c679018a1ba7daa9ca
+Duplicate Names:
+    KASAN: out-of-bounds Write in tls_push_record
+    KASAN: use-after-free Read in tls_tx_records
+    general protection fault in tls_push_sg
+    general protection fault in gcmaes_crypt_by_sg
+    kernel BUG at include/linux/mm.h:LINE!
+    KASAN: use-after-free Write in tls_push_record
+Single Proc Allocation
+VMs:8
+CPUs:2
+Procs:16
+Max time:30
+Max attempts:3
+Testing the finding commit.
+
+2023-03-13 12:50:54
+Session:   1
+Template:  2019-12-03 - 0ecb9746a701be4544b845514a31a21cce92cc79
+Syzkaller: 2019-12-03 - 0ecb9746a701be4544b845514a31a21cce92cc79
+Kernel:    2019-12-03 - 76bb8b05960c3d1668e6bee7624ed886cbd135ba
+Compiler:  gcc-9.0.0-20181231
+Attempt 1:
+    Time  Bug Name
+***    2  general protection fault in gcmaes_crypt_by_sg
+Attempt 2:
+    Time  Bug Name
+***    2  general protection fault in gcmaes_crypt_by_sg
+Attempt 3:
+    Time  Bug Name
+***    3  general protection fault in gcmaes_crypt_by_sg
+The bug was found.
+
+New Max Time: 10.
+Merge Commit: 2018-10-15 - d04fb13c9fcdad850c0fcaeb155863de3d8169a0.
+
+==== Template Retrospection ====
+13 template changes in [2018-10-15, 2019-12-03].
+
+2023-03-13 13:44:06
+Session:   2
+Template:  2019-01-10 - 0108829095758774257301e06d38003c02aaae7f
+Syzkaller: 2019-01-10 - 0108829095758774257301e06d38003c02aaae7f
+Kernel:    2019-01-10 - de6629eb262e0dc52a2367db38e3d2780cff5427
+Compiler:  gcc-9.0.0-20181231
+Attempt 1:
+    Time  Bug Name
+       1  KASAN: use-after-free Read in generic_gcmaes_encrypt
+Attempt 2:
+    Time  Bug Name
+       6  INFO: task hung in __flush_work
+Attempt 3:
+    Time  Bug Name
+       2  KASAN: use-after-free Read in generic_gcmaes_encrypt
+       8  lost connection to test machine
+Attempt 4: (RETRY)
+    Time  Bug Name
+       2  KASAN: use-after-free Read in generic_gcmaes_encrypt
+The bug was not found.
+
+2023-03-13 14:55:18
+Session:   3
+Template:  2019-07-22 - 6a786da97c822c3ad536290c412f472e58342c91
+Syzkaller: 2019-07-22 - 6a786da97c822c3ad536290c412f472e58342c91
+Kernel:    2019-07-22 - 7b5cf701ea9c395c792e2a7e3b7caf4c68b87721
+Compiler:  gcc-9.0.0-20181231
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+The bug was not found.
+
+2023-03-13 16:00:52
+Session:   4
+Template:  2019-11-25 - 6bfd3dd23bb76adbc71f245930d5969243843641
+Syzkaller: 2019-11-25 - 6bfd3dd23bb76adbc71f245930d5969243843641
+Kernel:    2019-11-25 - 4ba380f61624113395bebdc2f9f6da990a0738f9
+Compiler:  gcc-9.0.0-20181231
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+The bug was not found.
+
+==== Kernel Retrospection ====
+143 Linux commits in [2019-11-25, 2019-12-03].
+
+2023-03-13 16:56:56
+Session:   5
+Template:  2019-11-27 - 0d63f89cabcbc3e57201973370a309b646cc43c9
+Syzkaller: 2019-11-27 - 0d63f89cabcbc3e57201973370a309b646cc43c9
+Kernel:    2019-11-27 - 8f56e4ebe05c26c30e167519273843476e39e244
+Compiler:  gcc-9.0.0-20181231
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+The bug was not found.
+
+2023-03-13 18:00:56
+Session:   6
+Template:  2019-12-01 - f879db37f90dcefb681897d2e486c11d8298cb72
+Syzkaller: 2019-12-01 - f879db37f90dcefb681897d2e486c11d8298cb72
+Kernel:    2019-12-01 - ceb307474506f888e8f16dab183405ff01dffa08
+Compiler:  gcc-9.0.0-20181231
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+The bug was not found.
+
+2023-03-13 19:06:36
+Session:   7
+Template:  2019-12-02 - ab342da3f9aa45e3f2d9e872576ab5cd3e3c350b
+Syzkaller: 2019-12-02 - ab342da3f9aa45e3f2d9e872576ab5cd3e3c350b
+Kernel:    2019-12-02 - b7fcf31f7036895ca8fc3a30eefffab0e82f75f6
+Compiler:  gcc-9.0.0-20181231
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+The bug was not found.
+
+2023-03-13 20:07:16
+Session:   8
+Template:  2019-12-02 - ab342da3f9aa45e3f2d9e872576ab5cd3e3c350b
+Syzkaller: 2019-12-02 - ab342da3f9aa45e3f2d9e872576ab5cd3e3c350b
+Kernel:    2019-12-02 - ef2cc88e2a205b8a11a19e78db63a70d3728cdf5
+Compiler:  gcc-9.0.0-20181231
+Attempt 1:
+    Time  Bug Name
+***    3  general protection fault in gcmaes_crypt_by_sg
+The bug was found.
+
+2023-03-13 21:02:31
+Session:   9
+Template:  2019-12-02 - ab342da3f9aa45e3f2d9e872576ab5cd3e3c350b
+Syzkaller: 2019-12-02 - ab342da3f9aa45e3f2d9e872576ab5cd3e3c350b
+Kernel:    2019-12-02 - 1daa56bcfd8b329447e0c1b1e91c3925d08489b7
+Compiler:  gcc-9.0.0-20181231
+Attempt 1:
+    Time  Bug Name
+***    3  general protection fault in gcmaes_crypt_by_sg
+The bug was found.
+
+2023-03-13 21:48:55
+Session:   10
+Template:  2019-12-02 - ab342da3f9aa45e3f2d9e872576ab5cd3e3c350b
+Syzkaller: 2019-12-02 - ab342da3f9aa45e3f2d9e872576ab5cd3e3c350b
+Kernel:    2019-12-02 - 596cf45cbf6e4fa7bcb0df33e373a7d062b644b5
+Compiler:  gcc-9.0.0-20181231
+Attempt 1:
+    Time  Bug Name
+***    3  general protection fault in gcmaes_crypt_by_sg
+The bug was found.
+
+2023-03-13 22:20:33
+Session:   11
+Template:  2019-12-02 - ab342da3f9aa45e3f2d9e872576ab5cd3e3c350b
+Syzkaller: 2019-12-02 - ab342da3f9aa45e3f2d9e872576ab5cd3e3c350b
+Kernel:    2019-12-02 - c3bfc5dd73c6f519ff0636d4e709515f06edef78
+Compiler:  gcc-9.0.0-20181231
+Attempt 1:
+    Time  Bug Name
+***    4  general protection fault in gcmaes_crypt_by_sg
+The bug was found.
+
+2023-03-13 23:20:50
+Session:   12
+Template:  2019-12-02 - ab342da3f9aa45e3f2d9e872576ab5cd3e3c350b
+Syzkaller: 2019-12-02 - ab342da3f9aa45e3f2d9e872576ab5cd3e3c350b
+Kernel:    2019-12-02 - e5b3fc125d768eacd73bb4dc5019f0ce95635af4
+Compiler:  gcc-9.0.0-20181231
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+The bug was not found.
+
+== Confirming the bisected commit ==
+
+2023-03-14 00:29:26
+Session:   13
+Template:  2019-12-02 - ab342da3f9aa45e3f2d9e872576ab5cd3e3c350b
+Syzkaller: 2019-12-02 - ab342da3f9aa45e3f2d9e872576ab5cd3e3c350b
+Kernel:    2019-12-02 - c3bfc5dd73c6f519ff0636d4e709515f06edef78
+The bug was found in a previous identical fuzzing session.
+
+2023-03-14 00:29:26
+Session:   14
+Template:  2019-12-02 - ab342da3f9aa45e3f2d9e872576ab5cd3e3c350b
+Syzkaller: 2019-12-02 - ab342da3f9aa45e3f2d9e872576ab5cd3e3c350b
+Kernel:    2019-12-02 - e5b3fc125d768eacd73bb4dc5019f0ce95635af4
+The bug was not found in a previous identical fuzzing session.
+
+====================================================================================================================================================
+Revealing Factor:   Kernel Commit
+Version:            2019-12-02 - c3bfc5dd73c6f519ff0636d4e709515f06edef78
+Commit Name:        Merge git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net
+
+Bug Name:           general protection fault in gcmaes_crypt_by_sg
+Bug Link:           https://syzkaller.appspot.com/bug?id=fdc3d4dae8a0a78587603e1c288f3014c6d2b60b
+Arch:               amd64
+Finding Date:       2019-12-03
+Finding Commit:     2019-12-03 - 76bb8b05960c3d1668e6bee7624ed886cbd135ba
+Guilty Merge:       2018-10-15 - d04fb13c9fcdad850c0fcaeb155863de3d8169a0
+Guilty Commit:      2018-10-15 - d3b18ad31f93d0b6bae105c679018a1ba7daa9ca
+
+Possible Blocking Bugs:

@@ -1,0 +1,63 @@
+KASAN: use-after-free Read in jbd2_journal_wait_updates,https://syzkaller.appspot.com/bug?id=884fbebcbeb7193b713f187815d9b7bb95717985
+Repository: linux
+Arch: amd64
+Finding: 555f3d7be91a873114c9656069f1a9fa476ec41a
+Guilty: 4f98186848707f530669238d90e0562d92a78aab
+No Duplicates
+Default Allocation.
+VMs:4
+CPUs:4
+Procs:24
+Max time:30
+Inspecting the finding commit.
+Session 1:
+    Template:  2022-02-05 - a7dab6385c1d95547a88e22577fb56fbcd5c37eb
+    Syzkaller: 2022-02-05 - a7dab6385c1d95547a88e22577fb56fbcd5c37eb
+    Kernel:    2022-02-07 - 555f3d7be91a873114c9656069f1a9fa476ec41a
+    Compiler:  gcc-10.2.1-20210110
+    The bug was found.
+        KASAN: use-after-free Read in jbd2_journal_wait_updates
+New Max Time: 10.
+No Merge Commit.
+No template updates to inspect.
+Inspecting 10 kernel versions in the range [2022-02-03, 2022-02-07].
+Session 2:
+    Template:  2022-02-05 - a7dab6385c1d95547a88e22577fb56fbcd5c37eb
+    Syzkaller: 2022-02-05 - a7dab6385c1d95547a88e22577fb56fbcd5c37eb
+    Kernel:    2022-02-06 - d8ad2ce873abab1cfd38779c626b79cef6307aac
+    Compiler:  gcc-10.2.1-20210110
+    The bug was found in 4 minutes
+        KASAN: use-after-free Read in jbd2_journal_wait_updates
+Session 3:
+    Template:  2022-02-03 - 30646bfed4b28f1c023ab44ae5c777dca493f629
+    Syzkaller: 2022-02-03 - 30646bfed4b28f1c023ab44ae5c777dca493f629
+    Kernel:    2022-02-03 - 715a67f11d6755e0cc853ff4ef539f362b566096
+    Compiler:  gcc-10.2.1-20210110
+    The bug was found in 5 minutes
+        KASAN: use-after-free Read in jbd2_journal_wait_updates
+Session 4:
+    Template:  2022-02-03 - 30646bfed4b28f1c023ab44ae5c777dca493f629
+    Syzkaller: 2022-02-03 - 30646bfed4b28f1c023ab44ae5c777dca493f629
+    Kernel:    2022-02-03 - 7c268d4ce2d3761f666a9950b029c8902bfab710
+    Compiler:  gcc-10.2.1-20210110
+    The bug was found in 7 minutes
+        KASAN: use-after-free Read in jbd2_journal_wait_updates
+Session 5:
+    Template:  2022-02-03 - 30646bfed4b28f1c023ab44ae5c777dca493f629
+    Syzkaller: 2022-02-03 - 30646bfed4b28f1c023ab44ae5c777dca493f629
+    Kernel:    2022-02-03 - 4f98186848707f530669238d90e0562d92a78aab
+    Compiler:  gcc-10.2.1-20210110
+    The bug was found in 6 minutes
+        KASAN: use-after-free Read in jbd2_journal_wait_updates
+Confirming the bisected kernel commit.
+Session 6 after:
+    Template:  2022-02-03 - 30646bfed4b28f1c023ab44ae5c777dca493f629
+    Syzkaller: 2022-02-03 - 30646bfed4b28f1c023ab44ae5c777dca493f629
+    Kernel:    2022-02-03 - 4f98186848707f530669238d90e0562d92a78aab
+The bug was found in a previous identical fuzzing session.
+
+Success
+Revealing factor: Guilty Commit
+Kernel Version: 2022-02-03 - 4f98186848707f530669238d90e0562d92a78aab
+Commit name: jbd2: refactor wait logic for transaction updates into a common function
+Warning: Revealing factor may be faulty.

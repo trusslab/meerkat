@@ -1,0 +1,66 @@
+KASAN: stack-out-of-bounds Write in __ip_options_echo,https://syzkaller.appspot.com/bug?id=7a9e3dc3b685efc6ecf97072adb71aa28bf0ed51
+Repository: linux
+Arch: amd64
+Finding: 3ecafda911f4e56cb80149fd7ab87f8610c7765f
+Guilty: ed0de45a1008991fdaa27a0152befcb74d126a8b
+No Duplicates
+Default Allocation.
+VMs:4
+CPUs:4
+Procs:24
+Max time:30
+Inspecting the finding commit.
+Session 1:
+    Template:  2019-04-17 - b0e8efcb4b0aac61f4647a76bbe54a5d38a370ba
+    Syzkaller: 2019-04-17 - b0e8efcb4b0aac61f4647a76bbe54a5d38a370ba
+    Kernel:    2019-04-19 - 3ecafda911f4e56cb80149fd7ab87f8610c7765f
+    Compiler:  gcc-9.0.0-20181231
+    The bug was found.
+        KASAN: stack-out-of-bounds Write in __ip_options_echo
+New Max Time: 32.
+Merge Commit: 2019-04-17 - 2a3a028fc61d03e80ac57091330eb514280bd5be.
+No template updates to inspect.
+Inspecting 24 kernel versions in the range [2019-04-17, 2019-04-19].
+Session 2:
+    Template:  2019-04-17 - b0e8efcb4b0aac61f4647a76bbe54a5d38a370ba
+    Syzkaller: 2019-04-17 - b0e8efcb4b0aac61f4647a76bbe54a5d38a370ba
+    Kernel:    2019-04-17 - 2a3a028fc61d03e80ac57091330eb514280bd5be
+    Compiler:  gcc-9.0.0-20181231
+    The bug was found in 30 minutes
+        KASAN: stack-out-of-bounds Write in __ip_options_echo
+Session 3:
+    Template:  2019-04-17 - b0e8efcb4b0aac61f4647a76bbe54a5d38a370ba
+    Syzkaller: 2019-04-17 - b0e8efcb4b0aac61f4647a76bbe54a5d38a370ba
+    Kernel:    2019-04-17 - 3321b6c23fb330e690ed5cf1336c827e07843200
+    Compiler:  gcc-9.0.0-20181231
+    The bug was found in 19 minutes
+        KASAN: stack-out-of-bounds Write in __ip_options_echo
+Session 4:
+    Template:  2019-04-17 - b0e8efcb4b0aac61f4647a76bbe54a5d38a370ba
+    Syzkaller: 2019-04-17 - b0e8efcb4b0aac61f4647a76bbe54a5d38a370ba
+    Kernel:    2019-04-17 - d85e8be2a5a02869f815dd0ac2d743deb4cd7957
+    Compiler:  gcc-9.0.0-20181231
+    The bug was not found and timed out at 32 minutes
+Session 5:
+    Template:  2019-04-17 - b0e8efcb4b0aac61f4647a76bbe54a5d38a370ba
+    Syzkaller: 2019-04-17 - b0e8efcb4b0aac61f4647a76bbe54a5d38a370ba
+    Kernel:    2019-04-17 - 4bcd4ec1017205644a2697bccbc3b5143f522f5f
+    Compiler:  gcc-9.0.0-20181231
+    The bug was not found and timed out at 32 minutes
+Confirming the bisected kernel commit.
+Session 6 after:
+    Template:  2019-04-17 - b0e8efcb4b0aac61f4647a76bbe54a5d38a370ba
+    Syzkaller: 2019-04-17 - b0e8efcb4b0aac61f4647a76bbe54a5d38a370ba
+    Kernel:    2019-04-17 - 3321b6c23fb330e690ed5cf1336c827e07843200
+The bug was found in a previous identical fuzzing session.
+Session 7 before:
+    Template:  2019-04-17 - b0e8efcb4b0aac61f4647a76bbe54a5d38a370ba
+    Syzkaller: 2019-04-17 - b0e8efcb4b0aac61f4647a76bbe54a5d38a370ba
+    Kernel:    2019-04-17 - 4bcd4ec1017205644a2697bccbc3b5143f522f5f
+The bug was not found in a previous identical fuzzing session.
+
+Success
+Revealing factor: Kernel Code Change
+Kernel Version: 2019-04-17 - 3321b6c23fb330e690ed5cf1336c827e07843200
+Commit name: qed: fix spelling mistake "faspath" -> "fastpath"
+Warning: Revealing factor may be faulty.

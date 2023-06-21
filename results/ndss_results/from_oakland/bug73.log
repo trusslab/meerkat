@@ -1,0 +1,122 @@
+general protection fault in sock_close,https://syzkaller.appspot.com/bug?id=95b0f82c40d4fd6caccede817617677702c8fb8c
+Repository: linux
+Arch: amd64
+Finding: 15bc20c6af4ceee97a1f90b43c0e386643c071b4
+Guilty: a9ed4a6560b8562b7e2e2bed9527e88001f7b682
+Duplicate Names:
+    general protection fault in sock_close
+    WARNING: ODEBUG bug in exit_to_user_mode_prepare
+    BUG: corrupted list in mousedev_release
+    KASAN: use-after-free Read in snd_pcm_oss_release
+    general protection fault in snd_ctl_release
+Single Proc Allocation
+VMs:8
+CPUs:2
+Procs:16
+Max time:30
+Inspecting the finding commit.
+Session 1:
+    Template:  2020-08-26 - 318430cbb3b2ceefe51518ecccabbdabb32ffe3b
+    Syzkaller: 2020-08-26 - 318430cbb3b2ceefe51518ecccabbdabb32ffe3b
+    Kernel:    2020-08-26 - 15bc20c6af4ceee97a1f90b43c0e386643c071b4
+    Compiler:  gcc-10.1.0-syz
+    The bug was found.
+        kernel BUG at fs/inode.c:LINE!
+        BUG: using smp_processor_id() in preemptible code in radix_tree_node_alloc
+        general protection fault in __sock_release
+        WARNING: ODEBUG bug in exit_to_user_mode_prepare
+        KASAN: use-after-free Read in task_work_run
+New Max Time: 25.
+Merge Commit: 2020-08-23 - f320ac6e131669345c7f4abefbb228b570eb9199.
+No template updates to inspect.
+Inspecting 20 kernel versions in the range [2020-08-23, 2020-08-26].
+Session 2:
+    Template:  2020-08-24 - 344da168cb738076d82a75e1a7a1f5177df8dbc7
+    Syzkaller: 2020-08-24 - 344da168cb738076d82a75e1a7a1f5177df8dbc7
+    Kernel:    2020-08-24 - c41c3ec4a2bcd3f24ab753bb337ec342f24bdf94
+    Compiler:  gcc-10.1.0-syz
+    The bug was found in 21 minutes
+        kernel BUG at fs/inode.c:LINE!
+        WARNING: ODEBUG bug in exit_to_user_mode_prepare
+Session 3:
+    Template:  2020-08-23 - cef5ae6814696260ff58c538a1b6044af90c5979
+    Syzkaller: 2020-08-23 - cef5ae6814696260ff58c538a1b6044af90c5979
+    Kernel:    2020-08-23 - cea05c192b07b82a770816fc9d06031403cea164
+    Compiler:  gcc-10.1.0-syz
+    The bug was found in 22 minutes
+        general protection fault in __sock_release
+        kernel BUG at fs/inode.c:LINE!
+        BUG: using smp_processor_id() in preemptible code in radix_tree_node_alloc
+        WARNING: ODEBUG bug in exit_to_user_mode_prepare
+Session 4:
+    Template:  2020-08-23 - cef5ae6814696260ff58c538a1b6044af90c5979
+    Syzkaller: 2020-08-23 - cef5ae6814696260ff58c538a1b6044af90c5979
+    Kernel:    2020-08-23 - d9232cb79651c244f8679607b6e30c5230bcc967
+    Compiler:  gcc-10.1.0-syz
+    The bug was found in 9 minutes
+        kernel BUG at fs/inode.c:LINE!
+        WARNING: ODEBUG bug in exit_to_user_mode_prepare
+        BUG: using smp_processor_id() in preemptible code in radix_tree_node_alloc
+Session 5:
+    Template:  2020-08-23 - cef5ae6814696260ff58c538a1b6044af90c5979
+    Syzkaller: 2020-08-23 - cef5ae6814696260ff58c538a1b6044af90c5979
+    Kernel:    2020-08-23 - 9d045ed1ebe1a6115d3fa9930c5371defb31d95a
+    Compiler:  gcc-10.1.0-syz
+    The bug was found in 6 minutes
+        KASAN: use-after-free Read in task_work_run
+        kernel BUG at fs/inode.c:LINE!
+        BUG: using smp_processor_id() in preemptible code in radix_tree_node_alloc
+        WARNING: ODEBUG bug in get_signal
+        WARNING: ODEBUG bug in exit_to_user_mode_prepare
+Session 6:
+    Template:  2020-08-23 - cef5ae6814696260ff58c538a1b6044af90c5979
+    Syzkaller: 2020-08-23 - cef5ae6814696260ff58c538a1b6044af90c5979
+    Kernel:    2020-08-23 - f320ac6e131669345c7f4abefbb228b570eb9199
+    Compiler:  gcc-10.1.0-syz
+    The bug was found in 11 minutes
+        kernel BUG at fs/inode.c:LINE!
+        BUG: using smp_processor_id() in preemptible code in radix_tree_node_alloc
+        KASAN: use-after-free Read in tun_chr_close
+        WARNING: ODEBUG bug in exit_to_user_mode_prepare
+Confirming the bisected kernel commit.
+Session 7 after:
+    Template:  2020-08-23 - cef5ae6814696260ff58c538a1b6044af90c5979
+    Syzkaller: 2020-08-23 - cef5ae6814696260ff58c538a1b6044af90c5979
+    Kernel:    2020-08-23 - f320ac6e131669345c7f4abefbb228b570eb9199
+The bug was found in a previous identical fuzzing session.
+Session 8 before:
+    Template:  2020-08-23 - cef5ae6814696260ff58c538a1b6044af90c5979
+    Syzkaller: 2020-08-23 - cef5ae6814696260ff58c538a1b6044af90c5979
+    Kernel:    2020-08-22 - 52c479697c9b73f628140dcdfcd39ea302d05482
+    Compiler:  gcc-10.1.0-syz
+    The bug was found in 17 minutes
+        kernel BUG at fs/inode.c:LINE!
+        general protection fault in __sock_release
+        KASAN: use-after-free Read in eventpoll_release_file
+        KASAN: use-after-free Read in task_work_run
+        BUG: using smp_processor_id() in preemptible code in radix_tree_node_alloc
+        WARNING: ODEBUG bug in exit_to_user_mode_prepare
+Inspecting 3 syzkaller version(s) from 2020-08-23.
+Session 9:
+    Template:  2020-08-23 - cef5ae6814696260ff58c538a1b6044af90c5979
+    Syzkaller: 2020-08-23 - cef5ae6814696260ff58c538a1b6044af90c5979
+    Kernel:    2020-08-23 - f320ac6e131669345c7f4abefbb228b570eb9199
+    Compiler:  gcc-10.1.0-syz
+The bug was found in a previous identical fuzzing session.
+Session 10:
+    Template:  2020-08-23 - 5bde7c3b04ebdee3e83abb0f53ba985ae937e2ea
+    Syzkaller: 2020-08-23 - 5bde7c3b04ebdee3e83abb0f53ba985ae937e2ea
+    Kernel:    2020-08-23 - f320ac6e131669345c7f4abefbb228b570eb9199
+    Compiler:  gcc-10.1.0-syz
+    The bug was not found and timed out at 60 minutes
+        KASAN: use-after-free Read in eventpoll_release_file
+        KASAN: use-after-free Read in tun_chr_close
+        kernel BUG at fs/inode.c:LINE!
+        BUG: using smp_processor_id() in preemptible code in radix_tree_node_alloc
+        general protection fault in __sock_release
+        WARNING: ODEBUG bug in get_signal
+
+Success
+Revealing factor: Syzkaller Update
+Syzkaller Version: Unknown commit from 2020-08-23.
+Warning: Revealing factor may be faulty.

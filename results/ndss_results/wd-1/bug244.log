@@ -1,0 +1,306 @@
+general protection fault in cgroup_sk_free,https://syzkaller.appspot.com/bug?id=ae19f85167d86f3f9b0425073909515164059a55
+Repository: linux
+Arch: amd64
+Finding: 2021-09-28 - a4e6f95a891ac08bd09d62e3e6dae239b150f4c1
+Guilty:  2020-03-10 - e876ecc67db80dfdb8e237f71e5b43bb88ae549c
+Duplicate Names:
+    general protection fault in cgroup_sk_free
+    general protection fault in percpu_ref_put
+Default Allocation.
+VMs:4
+CPUs:4
+Procs:24
+Max time:30
+Max attempts:3
+Testing the finding commit.
+
+2023-05-23 15:08:26
+Session:   1
+Template:  2021-09-28 - d82cb92782c3ba0f68f7393b069afb07adfbc585
+Syzkaller: 2021-09-28 - d82cb92782c3ba0f68f7393b069afb07adfbc585
+Kernel:    2021-09-28 - a4e6f95a891ac08bd09d62e3e6dae239b150f4c1
+Compiler:  gcc-10.2.1-20210110
+Attempt 1:
+    Time  Bug Name
+***    3  general protection fault in cgroup_sk_free
+Attempt 2:
+    Time  Bug Name
+***    3  general protection fault in cgroup_sk_free
+Attempt 3:
+    Time  Bug Name
+***    3  general protection fault in cgroup_sk_free
+The bug was found.
+
+New Max Time: 10.
+Merge Commit: 2020-03-12 - 1b51f69461e6a3485bab5a7601e16b79d7eeac59.
+
+==== Template Retrospection ====
+14 template changes in [2020-03-12, 2021-09-28].
+
+2023-05-23 16:57:20
+Session:   2
+Template:  2020-07-22 - 38237e24ca3cd282d51266f5300d69687f5a496e
+Syzkaller: 2020-07-22 - 38237e24ca3cd282d51266f5300d69687f5a496e
+Kernel:    2020-07-22 - d15be546031cf65a0fc34879beca02fd90fe7ac7
+Compiler:  gcc-10.1.0-syz
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    Time  Bug Name
+       3  general protection fault in free_netdev
+Attempt 3:
+    No crashes found.
+The bug was not found.
+
+2023-05-23 19:23:47
+Session:   3
+Template:  2021-04-13 - 8ba8079b119fc956671eed6c7e8cb6efd355ae61
+Syzkaller: 2021-04-13 - 8ba8079b119fc956671eed6c7e8cb6efd355ae61
+Kernel:    2021-04-13 - eebe426d32e1a10ac7c35f8ffab5f818c32a2454
+Compiler:  gcc-10.2.1-20210110
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    Time  Bug Name
+       4  unregister_netdevice: waiting for DEV to become free
+The bug was not found.
+
+2023-05-23 21:47:21
+Session:   4
+Template:  2021-09-28 - 6b6e15b0ff6d7ddfc1c029250f1fb8fcc2d4a204
+Syzkaller: 2021-09-28 - 6b6e15b0ff6d7ddfc1c029250f1fb8fcc2d4a204
+Kernel:    2021-09-28 - a4e6f95a891ac08bd09d62e3e6dae239b150f4c1
+Compiler:  gcc-10.2.1-20210110
+Attempt 1:
+    Time  Bug Name
+***    3  general protection fault in cgroup_sk_free
+The bug was found.
+
+2023-05-23 22:54:13
+Session:   5
+Template:  2021-04-22 - 33c28d0389a6b0dd17a5de7c093a011cdadb33b1
+Syzkaller: 2021-04-22 - 33c28d0389a6b0dd17a5de7c093a011cdadb33b1
+Kernel:    2021-04-22 - 18a3c5f7abfdf97f88536d35338ebbee119c355c
+Compiler:  gcc-10.2.1-20210110
+Attempt 1:
+    Time  Bug Name
+       7  unregister_netdevice: waiting for DEV to become free
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+The bug was not found.
+
+2023-05-24 01:00:30
+Session:   6
+Template:  2021-04-22 - 33c28d0389a6b0dd17a5de7c093a011cdadb33b1
+Syzkaller: 2021-09-28 - 6b6e15b0ff6d7ddfc1c029250f1fb8fcc2d4a204
+Kernel:    2021-09-28 - a4e6f95a891ac08bd09d62e3e6dae239b150f4c1
+Compiler:  gcc-10.2.1-20210110
+Attempt 1:
+    Time  Bug Name
+***    4  general protection fault in cgroup_sk_free
+The bug was found.
+
+==== Kernel Retrospection ====
+1203 Linux commits in [2021-04-22, 2021-09-28].
+
+2023-05-24 02:23:11
+Session:   7
+Template:  2021-07-09 - 8f5a7b8cde529e0a19a53f79bdf9c6cad306827b
+Syzkaller: 2021-07-09 - 8f5a7b8cde529e0a19a53f79bdf9c6cad306827b
+Kernel:    2021-07-09 - e49d68ce7cc5a865ce14c1e57938438ab01c3ce3
+Compiler:  gcc-10.2.1-20210110
+Attempt 1:
+    Time  Bug Name
+      10  suppressed report
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    Time  Bug Name
+       3  general protection fault in hrtimer_active
+       7  suppressed report
+Attempt 4: (RETRY)
+    No crashes found.
+Attempt 5: (RETRY)
+    Time  Bug Name
+       5  possible deadlock in fs_reclaim_acquire
+       5  BUG: sleeping function called from invalid context in lock_sock_nested
+The bug was not found.
+Warning: This session is unstable.
+
+2023-05-24 04:48:36
+Session:   8
+Template:  2021-06-30 - 38a885d1c94053040c0881240224dd60328a4836
+Syzkaller: 2021-06-30 - 38a885d1c94053040c0881240224dd60328a4836
+Kernel:    2021-06-30 - 8418dabd97ce4b0713c36dd8226978f737c342b0
+Compiler:  gcc-10.2.1-20210110
+Attempt 1:
+    Time  Bug Name
+       5  possible deadlock in fs_reclaim_acquire
+Attempt 2:
+    Time  Bug Name
+       9  BUG: sleeping function called from invalid context in stack_depot_save
+      10  BUG: sleeping function called from invalid context in lock_sock_nested
+Attempt 3:
+    Time  Bug Name
+       3  BUG: sleeping function called from invalid context in lock_sock_nested
+       3  BUG: sleeping function called from invalid context in lock_sock_nested
+The bug was not found.
+
+2023-05-24 07:00:02
+Session:   9
+Template:  2021-08-27 - d5a29e53050521d8733a9f78b474b65755f6fd21
+Syzkaller: 2021-08-27 - d5a29e53050521d8733a9f78b474b65755f6fd21
+Kernel:    2021-08-27 - 5a61b7a29647ed7c939ca76d3bf83c75d10ba16e
+Compiler:  gcc-10.2.1-20210110
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+The bug was not found.
+
+2023-05-24 08:58:32
+Session:   10
+Template:  2021-09-08 - e2776ee417c18d6e0056b058f3b6055f65206ee9
+Syzkaller: 2021-09-08 - e2776ee417c18d6e0056b058f3b6055f65206ee9
+Kernel:    2021-09-08 - b339ec9c229aaf399296a120d7be0e34fbc355ca
+Compiler:  gcc-10.2.1-20210110
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+The bug was not found.
+
+2023-05-24 11:13:21
+Session:   11
+Template:  2021-09-17 - 70b76c1d627711cc3ef109af16d6cb7429a61fe3
+Syzkaller: 2021-09-17 - 70b76c1d627711cc3ef109af16d6cb7429a61fe3
+Kernel:    2021-09-17 - 0bc7eb03cbd3e5d057cbe2ee15ddedf168f25a8d
+Compiler:  gcc-10.2.1-20210110
+Attempt 1:
+    Time  Bug Name
+***    3  general protection fault in cgroup_sk_free
+The bug was found.
+
+2023-05-24 12:58:12
+Session:   12
+Template:  2021-09-10 - 3ce60af85b4644bd7f2d2ef01a7d2b9a41545b76
+Syzkaller: 2021-09-10 - 3ce60af85b4644bd7f2d2ef01a7d2b9a41545b76
+Kernel:    2021-09-11 - ce4c8f882041341cbb3f1b4632b20440692cbccc
+Compiler:  gcc-10.2.1-20210110
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+The bug was not found.
+
+2023-05-24 14:43:39
+Session:   13
+Template:  2021-09-14 - 07e953c105af057cb474bc086f68fb7ec5b241ec
+Syzkaller: 2021-09-14 - 07e953c105af057cb474bc086f68fb7ec5b241ec
+Kernel:    2021-09-14 - 1619b69edce14c4a4665fa8ff4c587dcc77202a9
+Compiler:  gcc-10.2.1-20210110
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+The bug was not found.
+
+2023-05-24 16:51:02
+Session:   14
+Template:  2021-09-16 - 5b989942e1043028009d3a08610a8f52efad7330
+Syzkaller: 2021-09-16 - 5b989942e1043028009d3a08610a8f52efad7330
+Kernel:    2021-09-16 - 5fe983d3f1a5b103fc00a24f9e0408302e60c39c
+Compiler:  gcc-10.2.1-20210110
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+The bug was not found.
+
+2023-05-24 18:38:00
+Session:   15
+Template:  2021-09-16 - 5b989942e1043028009d3a08610a8f52efad7330
+Syzkaller: 2021-09-16 - 5b989942e1043028009d3a08610a8f52efad7330
+Kernel:    2021-09-16 - fc0c0548c1a2e676d3a928aaed70f2d4d254e395
+Compiler:  gcc-10.2.1-20210110
+Attempt 1:
+    Time  Bug Name
+***    3  general protection fault in cgroup_sk_free
+The bug was found.
+
+2023-05-24 20:20:27
+Session:   16
+Template:  2021-09-16 - 5b989942e1043028009d3a08610a8f52efad7330
+Syzkaller: 2021-09-16 - 5b989942e1043028009d3a08610a8f52efad7330
+Kernel:    2021-09-16 - b60cee5bae733f49ba33840804c159a8e474cfda
+Compiler:  gcc-10.2.1-20210110
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+The bug was not found.
+
+2023-05-24 22:02:36
+Session:   17
+Template:  2021-09-16 - 5b989942e1043028009d3a08610a8f52efad7330
+Syzkaller: 2021-09-16 - 5b989942e1043028009d3a08610a8f52efad7330
+Kernel:    2021-09-16 - 3c0d2a46c0141913dc6fd126c57d0615677d946e
+Compiler:  gcc-10.2.1-20210110
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    Time  Bug Name
+      10  suppressed report
+Attempt 3:
+    No crashes found.
+Attempt 4: (RETRY)
+    Time  Bug Name
+       5  WARNING: ODEBUG bug in netdev_run_todo
+The bug was not found.
+
+== Confirming the bisected commit ==
+
+2023-05-25 00:10:00
+Session:   18
+Template:  2021-09-16 - 5b989942e1043028009d3a08610a8f52efad7330
+Syzkaller: 2021-09-16 - 5b989942e1043028009d3a08610a8f52efad7330
+Kernel:    2021-09-16 - fc0c0548c1a2e676d3a928aaed70f2d4d254e395
+The bug was found in a previous identical fuzzing session.
+
+2023-05-25 00:10:00
+Session:   19
+Template:  2021-09-16 - 5b989942e1043028009d3a08610a8f52efad7330
+Syzkaller: 2021-09-16 - 5b989942e1043028009d3a08610a8f52efad7330
+Kernel:    2021-09-16 - 3c0d2a46c0141913dc6fd126c57d0615677d946e
+The bug was not found in a previous identical fuzzing session.
+
+====================================================================================================================================================
+Revealing Factor:   Kernel Commit
+Version:            2021-09-16 - fc0c0548c1a2e676d3a928aaed70f2d4d254e395
+Commit Name:        Merge tag 'net-5.15-rc2' of git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net
+
+Bug Name:           general protection fault in cgroup_sk_free
+Bug Link:           https://syzkaller.appspot.com/bug?id=ae19f85167d86f3f9b0425073909515164059a55
+Arch:               amd64
+Finding Date:       2021-09-28
+Finding Commit:     2021-09-28 - a4e6f95a891ac08bd09d62e3e6dae239b150f4c1
+Guilty Merge:       2020-03-12 - 1b51f69461e6a3485bab5a7601e16b79d7eeac59
+Guilty Commit:      2020-03-10 - e876ecc67db80dfdb8e237f71e5b43bb88ae549c
+
+Possible Blocking Bugs:

@@ -1,0 +1,88 @@
+kernel BUG at mm/khugepaged.c:LINE!,https://syzkaller.appspot.com/bug?id=d2dce0b24023e5d982f2b6b2df432d72ab87d248
+Repository: linux
+Arch: amd64
+Finding: 00e4db51259a5f936fec1424b884f029479d3981
+Guilty: bbe98f9cadff58cdd6a4acaeba0efa8565dabe65
+No Duplicates
+Single Proc Allocation
+VMs:8
+CPUs:2
+Procs:16
+Max time:30
+Inspecting the finding commit.
+Session 1:
+    Template:  2020-08-11 - bb3e5fe608aa1d99df8f41cee2dcc33fdef06123
+    Syzkaller: 2020-08-11 - bb3e5fe608aa1d99df8f41cee2dcc33fdef06123
+    Kernel:    2020-08-11 - 00e4db51259a5f936fec1424b884f029479d3981
+    Compiler:  gcc-10.1.0-syz
+    The bug was found.
+        WARNING in send_hsr_supervision_frame
+        kernel BUG at mm/khugepaged.c:LINE!
+New Max Time: 31.
+No Merge Commit.
+No template updates to inspect.
+Inspecting 34 kernel versions in the range [2020-08-07, 2020-08-11].
+Session 2:
+    Template:  2020-08-08 - f721e4a097714a9054b9fe1aadf427afbbd2c157
+    Syzkaller: 2020-08-08 - f721e4a097714a9054b9fe1aadf427afbbd2c157
+    Kernel:    2020-08-08 - b79675e15a754ca51b9fc631e0961ccdd4ec3fc7
+    Compiler:  gcc-10.1.0-syz
+    The bug was found in 13 minutes
+        kernel BUG at mm/khugepaged.c:LINE!
+Session 3:
+    Template:  2020-08-07 - ff51e5229e0ee846d2fd687cb0dbca13de758c66
+    Syzkaller: 2020-08-07 - ff51e5229e0ee846d2fd687cb0dbca13de758c66
+    Kernel:    2020-08-07 - f6235eb189706bf38c82b5fa5f2db0d21bc1dcef
+    Compiler:  gcc-10.1.0-syz
+    The bug was not found and timed out at 31 minutes
+        WARNING in send_hsr_supervision_frame
+Session 4:
+    Template:  2020-08-08 - f721e4a097714a9054b9fe1aadf427afbbd2c157
+    Syzkaller: 2020-08-08 - f721e4a097714a9054b9fe1aadf427afbbd2c157
+    Kernel:    2020-08-08 - 7b9de97711225559af213dc52b6ea883ef1ea7a8
+    Compiler:  gcc-10.1.0-syz
+    The bug was found in 15 minutes
+        WARNING in send_hsr_supervision_frame
+        kernel BUG at mm/khugepaged.c:LINE!
+Session 5:
+    Template:  2020-08-07 - ff51e5229e0ee846d2fd687cb0dbca13de758c66
+    Syzkaller: 2020-08-07 - ff51e5229e0ee846d2fd687cb0dbca13de758c66
+    Kernel:    2020-08-07 - 0f43283be7fec4a76cd4ed50dc37db30719bde05
+    Compiler:  gcc-10.1.0-syz
+    The bug was found in 16 minutes
+        WARNING in send_hsr_supervision_frame
+        kernel BUG at mm/khugepaged.c:LINE!
+Session 6:
+    Template:  2020-08-07 - ff51e5229e0ee846d2fd687cb0dbca13de758c66
+    Syzkaller: 2020-08-07 - ff51e5229e0ee846d2fd687cb0dbca13de758c66
+    Kernel:    2020-08-07 - 6ba0d2e4fc2f3e8544f40fb1165c668f78fe951c
+    Compiler:  gcc-10.1.0-syz
+    The bug was found in 2 minutes
+        WARNING in send_hsr_supervision_frame
+        kernel BUG at mm/khugepaged.c:LINE!
+Session 7:
+    Template:  2020-08-07 - ff51e5229e0ee846d2fd687cb0dbca13de758c66
+    Syzkaller: 2020-08-07 - ff51e5229e0ee846d2fd687cb0dbca13de758c66
+    Kernel:    2020-08-07 - 1fa2c0a0c814fbae0eb3e79a510765225570d043
+    Compiler:  gcc-10.1.0-syz
+    The bug was not found and timed out at 31 minutes
+        WARNING in send_hsr_supervision_frame
+        BUG: using smp_processor_id() in preemptible code in radix_tree_node_alloc
+        general protection fault in corrupted
+Confirming the bisected kernel commit.
+Session 8 after:
+    Template:  2020-08-07 - ff51e5229e0ee846d2fd687cb0dbca13de758c66
+    Syzkaller: 2020-08-07 - ff51e5229e0ee846d2fd687cb0dbca13de758c66
+    Kernel:    2020-08-07 - 6ba0d2e4fc2f3e8544f40fb1165c668f78fe951c
+The bug was found in a previous identical fuzzing session.
+Session 9 before:
+    Template:  2020-08-07 - ff51e5229e0ee846d2fd687cb0dbca13de758c66
+    Syzkaller: 2020-08-07 - ff51e5229e0ee846d2fd687cb0dbca13de758c66
+    Kernel:    2020-08-07 - 1fa2c0a0c814fbae0eb3e79a510765225570d043
+The bug was not found in a previous identical fuzzing session.
+
+Success
+Revealing factor: Kernel Code Change
+Kernel Version: 2020-08-07 - 6ba0d2e4fc2f3e8544f40fb1165c668f78fe951c
+Commit name: Merge tag 'kallsyms_show_value-fix-v5.9-rc1' of git://git.kernel.org/pub/scm/linux/kernel/git/kees/linux
+Warning: Revealing factor may be faulty.

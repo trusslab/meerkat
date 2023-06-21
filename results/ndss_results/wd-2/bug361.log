@@ -1,0 +1,327 @@
+general protection fault in gfn_to_rmap,https://syzkaller.appspot.com/bug?id=2e916194dd6d77e2f7b4e3beae9416dba0e33a7d
+Repository: linux
+Arch: amd64
+Finding: 2021-06-06 - 614124bea77e452aa6df7a8714e8bc820b489922
+Guilty:  2019-04-16 - 9ec19493fb86d6d5fbf9286b94ff21e56ef66376
+Duplicate Names:
+    general protection fault in gfn_to_rmap
+    general protection fault in hrtimer_active
+    general protection fault in __gfn_to_rmap
+Single Proc Allocation
+VMs:8
+CPUs:2
+Procs:16
+Max time:30
+Max attempts:3
+Testing the finding commit.
+
+2023-03-30 22:08:33
+Session:   1
+Template:  2021-06-07 - b718257f456d456345e1129b27a9340c91c18f3b
+Syzkaller: 2021-06-07 - b718257f456d456345e1129b27a9340c91c18f3b
+Kernel:    2021-06-06 - 614124bea77e452aa6df7a8714e8bc820b489922
+Compiler:  gcc-10.2.1-20210110
+Attempt 1:
+    Time  Bug Name
+***    3  general protection fault in __gfn_to_rmap
+Attempt 2:
+    Time  Bug Name
+***    3  general protection fault in __gfn_to_rmap
+Attempt 3:
+    Time  Bug Name
+***    3  general protection fault in __gfn_to_rmap
+The bug was found.
+
+New Max Time: 10.
+Merge Commit: 2019-04-16 - b5de3c5026f52b6b409904a1c37f590a6c0e44c5.
+
+==== Template Retrospection ====
+8 template changes in [2019-04-16, 2021-06-07].
+
+2023-03-30 23:24:31
+Session:   2
+Template:  2020-03-17 - 924f7606047a430a9b313c135b782e1e8f852bec
+Syzkaller: 2020-03-17 - 924f7606047a430a9b313c135b782e1e8f852bec
+Kernel:    2020-03-17 - ac309e7744bee222df6de0122facaf2d9706fa70
+Compiler:  gcc-9.0.0-20181231
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+The bug was not found.
+
+2023-03-31 00:48:12
+Session:   3
+Template:  2021-04-13 - 8ba8079b119fc956671eed6c7e8cb6efd355ae61
+Syzkaller: 2021-04-13 - 8ba8079b119fc956671eed6c7e8cb6efd355ae61
+Kernel:    2021-04-13 - eebe426d32e1a10ac7c35f8ffab5f818c32a2454
+Compiler:  gcc-10.2.1-20210110
+Attempt 1:
+    Time  Bug Name
+       8  BUG: spinlock bad magic in synchronize_srcu
+      10  BUG: spinlock bad magic in synchronize_srcu
+Attempt 2:
+    Time  Bug Name
+      10  BUG: spinlock bad magic in synchronize_srcu
+Attempt 3:
+    Time  Bug Name
+       9  BUG: spinlock bad magic in synchronize_srcu
+The bug was not found.
+
+2023-03-31 02:01:47
+Session:   4
+Template:  2021-04-22 - 33c28d0389a6b0dd17a5de7c093a011cdadb33b1
+Syzkaller: 2021-04-22 - 33c28d0389a6b0dd17a5de7c093a011cdadb33b1
+Kernel:    2021-04-22 - 18a3c5f7abfdf97f88536d35338ebbee119c355c
+Compiler:  gcc-10.2.1-20210110
+Attempt 1:
+    Time  Bug Name
+***    3  general protection fault in __gfn_to_rmap
+The bug was found.
+
+2023-03-31 02:48:11
+Session:   5
+Template:  2021-04-13 - 8ba8079b119fc956671eed6c7e8cb6efd355ae61
+Syzkaller: 2021-04-22 - 33c28d0389a6b0dd17a5de7c093a011cdadb33b1
+Kernel:    2021-04-22 - 18a3c5f7abfdf97f88536d35338ebbee119c355c
+Attempt 1:
+    Time  Bug Name
+***    3  general protection fault in __gfn_to_rmap
+The bug was found.
+
+==== Kernel Retrospection ====
+32 Linux commits in [2021-04-13, 2021-04-22].
+
+2023-03-31 02:52:11
+Session:   6
+Template:  2021-04-16 - 7e2b734bac96c22086fedd1b18135da06d5e4054
+Syzkaller: 2021-04-16 - 7e2b734bac96c22086fedd1b18135da06d5e4054
+Kernel:    2021-04-17 - fdb5d6cab638a2881687b59b27817c74d8efac76
+Compiler:  gcc-10.2.1-20210110
+Attempt 1:
+    Time  Bug Name
+       8  BUG: spinlock bad magic in synchronize_srcu
+       9  BUG: spinlock bad magic in synchronize_srcu
+Attempt 2:
+    Time  Bug Name
+      10  BUG: spinlock bad magic in synchronize_srcu
+Attempt 3:
+    No crashes found.
+The bug was not found.
+
+2023-03-31 03:55:55
+Session:   7
+Template:  2021-04-16 - 7e2b734bac96c22086fedd1b18135da06d5e4054
+Syzkaller: 2021-04-16 - 7e2b734bac96c22086fedd1b18135da06d5e4054
+Kernel:    2021-04-18 - 5ffe04ccd69ae56af304ff7f98fbdaa4478ed47e
+Compiler:  gcc-10.2.1-20210110
+Attempt 1:
+    Time  Bug Name
+       9  BUG: spinlock bad magic in synchronize_srcu
+Attempt 2:
+    Time  Bug Name
+       8  BUG: spinlock bad magic in synchronize_srcu
+      10  BUG: spinlock bad magic in synchronize_srcu
+      10  BUG: spinlock bad magic in synchronize_srcu
+Attempt 3:
+    Time  Bug Name
+       7  BUG: spinlock bad magic in synchronize_srcu
+       8  BUG: spinlock bad magic in synchronize_srcu
+      10  BUG: spinlock bad magic in synchronize_srcu
+The bug was not found.
+
+2023-03-31 05:12:34
+Session:   8
+Template:  2021-04-20 - c0ced5570c6505a80235b64884c93e89733b77f3
+Syzkaller: 2021-04-20 - c0ced5570c6505a80235b64884c93e89733b77f3
+Kernel:    2021-04-20 - 1fe5501ba1abf2b7e78295df73675423bd6899a0
+Compiler:  gcc-10.2.1-20210110
+Attempt 1:
+    Time  Bug Name
+       6  BUG: spinlock bad magic in synchronize_srcu
+       8  BUG: spinlock bad magic in synchronize_srcu
+       8  BUG: spinlock bad magic in synchronize_srcu
+       9  BUG: spinlock bad magic in synchronize_srcu
+Attempt 2:
+    Time  Bug Name
+       4  BUG: spinlock bad magic in synchronize_srcu
+      10  BUG: spinlock bad magic in synchronize_srcu
+Attempt 3:
+    No crashes found.
+The bug was not found.
+
+2023-03-31 06:27:20
+Session:   9
+Template:  2021-04-22 - 590921a5bc7ed9ced1d4c5cb517e4b6355813a5d
+Syzkaller: 2021-04-22 - 590921a5bc7ed9ced1d4c5cb517e4b6355813a5d
+Kernel:    2021-04-22 - 90c911ad7445ccec9936763f05fa5db6a3da53be
+Compiler:  gcc-10.2.1-20210110
+Attempt 1:
+    Time  Bug Name
+***    3  general protection fault in __gfn_to_rmap
+The bug was found.
+
+2023-03-31 07:24:24
+Session:   10
+Template:  2021-04-21 - 2bc8999a98bda25c1c6cad6f8ff4d2bb07ac3be2
+Syzkaller: 2021-04-21 - 2bc8999a98bda25c1c6cad6f8ff4d2bb07ac3be2
+Kernel:    2021-04-21 - 16fc44d6387e260f4932e9248b985837324705d8
+Compiler:  gcc-10.2.1-20210110
+Attempt 1:
+    Time  Bug Name
+***    3  general protection fault in __gfn_to_rmap
+The bug was found.
+
+== Confirming the bisected commit ==
+
+2023-03-31 08:23:10
+Session:   11
+Template:  2021-04-21 - 2bc8999a98bda25c1c6cad6f8ff4d2bb07ac3be2
+Syzkaller: 2021-04-21 - 2bc8999a98bda25c1c6cad6f8ff4d2bb07ac3be2
+Kernel:    2021-04-21 - 16fc44d6387e260f4932e9248b985837324705d8
+The bug was found in a previous identical fuzzing session.
+
+2023-03-31 08:23:10
+Session:   12
+Template:  2021-04-21 - 2bc8999a98bda25c1c6cad6f8ff4d2bb07ac3be2
+Syzkaller: 2021-04-21 - 2bc8999a98bda25c1c6cad6f8ff4d2bb07ac3be2
+Kernel:    2021-04-20 - 1fe5501ba1abf2b7e78295df73675423bd6899a0
+Compiler:  gcc-10.2.1-20210110
+Attempt 1:
+    Time  Bug Name
+***    4  general protection fault in __gfn_to_rmap
+The bug was found.
+
+==== Syzkaller Retrospection ====
+4 Syzkaller commits from [2021-04-21].
+
+2023-03-31 09:46:00
+Session:   13
+Template:  2021-04-21 - 2bc8999a98bda25c1c6cad6f8ff4d2bb07ac3be2
+Syzkaller: 2021-04-21 - 2bc8999a98bda25c1c6cad6f8ff4d2bb07ac3be2
+Kernel:    2021-04-21 - 16fc44d6387e260f4932e9248b985837324705d8
+Compiler:  gcc-10.2.1-20210110
+The bug was found in a previous identical fuzzing session.
+
+2023-03-31 09:46:00
+Session:   14
+Template:  2021-04-21 - ad3ce6afab30fb68cfcda40a1910b87279795c5a
+Syzkaller: 2021-04-21 - ad3ce6afab30fb68cfcda40a1910b87279795c5a
+Kernel:    2021-04-21 - 16fc44d6387e260f4932e9248b985837324705d8
+Compiler:  gcc-10.2.1-20210110
+Attempt 1:
+    Time  Bug Name
+      16  BUG: spinlock bad magic in synchronize_srcu
+      16  BUG: spinlock bad magic in synchronize_srcu
+      17  BUG: spinlock bad magic in synchronize_srcu
+      18  BUG: spinlock bad magic in synchronize_srcu
+      18  BUG: spinlock bad magic in synchronize_srcu
+      19  BUG: spinlock bad magic in synchronize_srcu
+      20  BUG: spinlock bad magic in synchronize_srcu
+      21  BUG: spinlock bad magic in synchronize_srcu
+      24  BUG: spinlock bad magic in synchronize_srcu
+      25  BUG: spinlock bad magic in synchronize_srcu
+      30  BUG: spinlock bad magic in synchronize_srcu
+      30  BUG: spinlock bad magic in synchronize_srcu
+      30  BUG: spinlock bad magic in synchronize_srcu
+      35  BUG: spinlock bad magic in synchronize_srcu
+      36  BUG: spinlock bad magic in synchronize_srcu
+      37  BUG: spinlock bad magic in synchronize_srcu
+      40  BUG: spinlock bad magic in synchronize_srcu
+      43  BUG: spinlock bad magic in synchronize_srcu
+      45  BUG: spinlock bad magic in synchronize_srcu
+      46  BUG: spinlock bad magic in synchronize_srcu
+      50  BUG: spinlock bad magic in synchronize_srcu
+      53  BUG: spinlock bad magic in synchronize_srcu
+      56  BUG: spinlock bad magic in synchronize_srcu
+      58  BUG: spinlock bad magic in synchronize_srcu
+      59  BUG: spinlock bad magic in synchronize_srcu
+      60  BUG: spinlock bad magic in synchronize_srcu
+Attempt 2:
+    Time  Bug Name
+       6  BUG: spinlock bad magic in synchronize_srcu
+       6  BUG: spinlock bad magic in synchronize_srcu
+       8  BUG: spinlock bad magic in synchronize_srcu
+      11  BUG: spinlock bad magic in synchronize_srcu
+      12  BUG: spinlock bad magic in synchronize_srcu
+      13  BUG: spinlock bad magic in synchronize_srcu
+      16  BUG: spinlock bad magic in synchronize_srcu
+      17  BUG: spinlock bad magic in synchronize_srcu
+      18  BUG: spinlock bad magic in synchronize_srcu
+      18  BUG: spinlock bad magic in synchronize_srcu
+      19  BUG: spinlock bad magic in synchronize_srcu
+      24  BUG: spinlock bad magic in synchronize_srcu
+      25  BUG: spinlock bad magic in synchronize_srcu
+      26  BUG: spinlock bad magic in synchronize_srcu
+      26  BUG: spinlock bad magic in synchronize_srcu
+      28  BUG: spinlock bad magic in synchronize_srcu
+      30  BUG: spinlock bad magic in synchronize_srcu
+      34  BUG: spinlock bad magic in synchronize_srcu
+      34  BUG: spinlock bad magic in synchronize_srcu
+      35  BUG: spinlock bad magic in synchronize_srcu
+      39  BUG: spinlock bad magic in synchronize_srcu
+      39  BUG: spinlock bad magic in synchronize_srcu
+      43  BUG: spinlock bad magic in synchronize_srcu
+      44  BUG: spinlock bad magic in synchronize_srcu
+      44  BUG: spinlock bad magic in synchronize_srcu
+      45  BUG: spinlock bad magic in synchronize_srcu
+      46  BUG: spinlock bad magic in synchronize_srcu
+      49  BUG: spinlock bad magic in synchronize_srcu
+      53  BUG: spinlock bad magic in synchronize_srcu
+      54  BUG: spinlock bad magic in synchronize_srcu
+      54  BUG: spinlock bad magic in synchronize_srcu
+      56  BUG: spinlock bad magic in synchronize_srcu
+      57  BUG: spinlock bad magic in synchronize_srcu
+      58  BUG: spinlock bad magic in synchronize_srcu
+      59  BUG: spinlock bad magic in synchronize_srcu
+      60  BUG: spinlock bad magic in synchronize_srcu
+Attempt 3:
+    Time  Bug Name
+      10  BUG: spinlock bad magic in synchronize_srcu
+      11  BUG: spinlock bad magic in synchronize_srcu
+      11  BUG: spinlock bad magic in synchronize_srcu
+      15  BUG: spinlock bad magic in synchronize_srcu
+      15  BUG: spinlock bad magic in synchronize_srcu
+      17  BUG: spinlock bad magic in synchronize_srcu
+      19  BUG: spinlock bad magic in synchronize_srcu
+      22  BUG: spinlock bad magic in synchronize_srcu
+      24  BUG: spinlock bad magic in synchronize_srcu
+      26  BUG: spinlock bad magic in synchronize_srcu
+      27  BUG: spinlock bad magic in synchronize_srcu
+      28  BUG: spinlock bad magic in synchronize_srcu
+      30  BUG: spinlock bad magic in synchronize_srcu
+      31  BUG: spinlock bad magic in synchronize_srcu
+      33  BUG: spinlock bad magic in synchronize_srcu
+      36  BUG: spinlock bad magic in synchronize_srcu
+      38  BUG: spinlock bad magic in synchronize_srcu
+      39  BUG: spinlock bad magic in synchronize_srcu
+      41  BUG: spinlock bad magic in synchronize_srcu
+      41  BUG: spinlock bad magic in synchronize_srcu
+      43  BUG: spinlock bad magic in synchronize_srcu
+      49  BUG: spinlock bad magic in synchronize_srcu
+      49  BUG: spinlock bad magic in synchronize_srcu
+      51  BUG: spinlock bad magic in synchronize_srcu
+      53  BUG: spinlock bad magic in synchronize_srcu
+      53  BUG: spinlock bad magic in synchronize_srcu
+      54  BUG: spinlock bad magic in synchronize_srcu
+      54  BUG: spinlock bad magic in synchronize_srcu
+      59  BUG: spinlock bad magic in synchronize_srcu
+The bug was not found.
+
+====================================================================================================================================================
+Revealing Factor:   Syzkaller Update
+Version:            2021-04-21 - 2bc8999a98bda25c1c6cad6f8ff4d2bb07ac3be2
+Commit Name:        docs: extend contributing.md
+
+Bug Name:           general protection fault in gfn_to_rmap
+Bug Link:           https://syzkaller.appspot.com/bug?id=2e916194dd6d77e2f7b4e3beae9416dba0e33a7d
+Arch:               amd64
+Finding Date:       2021-06-07
+Finding Commit:     2021-06-06 - 614124bea77e452aa6df7a8714e8bc820b489922
+Guilty Merge:       2019-04-16 - b5de3c5026f52b6b409904a1c37f590a6c0e44c5
+Guilty Commit:      2019-04-16 - 9ec19493fb86d6d5fbf9286b94ff21e56ef66376
+
+Possible Blocking Bugs:
+    BUG: spinlock bad magic in synchronize_srcu

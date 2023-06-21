@@ -1,0 +1,86 @@
+possible deadlock in dccp_v4_ctl_send_reset,https://syzkaller.appspot.com/bug?id=f545f7c3545aae6dabe7070d64a4172ed79a9354
+Repository: linux
+Arch: amd64
+Finding: 2022-11-17 - 81ac25651a62c958bb0e074e0d4e25060ea557dd
+Guilty:  2022-11-16 - b68777d54fac21fc833ec26ea1a2a84f975ab035
+Duplicate Names:
+    possible deadlock in dccp_v4_ctl_send_reset
+    possible deadlock in l2tp_tunnel_register
+    inconsistent lock state in smc_fback_state_change
+    inconsistent lock state in l2tp_tunnel_register
+    BUG: sleeping function called from invalid context in static_key_slow_inc
+    possible deadlock in __inet_inherit_port
+    possible deadlock in sk_common_release
+Single Proc Allocation
+VMs:8
+CPUs:2
+Procs:16
+Max time:30
+Max attempts:3
+Testing the finding commit.
+
+2023-04-19 11:09:32
+Session:   1
+Template:  2022-06-17 - 8f633d840e3eb6454f036e9da3285bcf27345616
+Syzkaller: 2022-06-17 - 8f633d840e3eb6454f036e9da3285bcf27345616
+Kernel:    2022-11-17 - 81ac25651a62c958bb0e074e0d4e25060ea557dd
+Compiler:  gcc-10.2.1-20210110
+Attempt 1:
+    Time  Bug Name
+***    2  possible deadlock in l2tp_tunnel_register
+Attempt 2:
+    Time  Bug Name
+***    3  possible deadlock in l2tp_tunnel_register
+Attempt 3:
+    Time  Bug Name
+***    2  possible deadlock in l2tp_tunnel_register
+The bug was found.
+
+New Max Time: 10.
+Merge Commit: 2022-11-17 - 847ccab8fdcf4a0cd85a278480fab1ccdc9f6136.
+No template updates to inspect.
+
+==== Kernel Retrospection ====
+1 Linux commit in [2022-11-17, 2022-11-18].
+
+2023-04-19 12:15:02
+Session:   2
+Template:  2022-06-17 - 8f633d840e3eb6454f036e9da3285bcf27345616
+Syzkaller: 2022-06-17 - 8f633d840e3eb6454f036e9da3285bcf27345616
+Kernel:    2022-11-17 - 81ac25651a62c958bb0e074e0d4e25060ea557dd
+The bug was found in a previous identical fuzzing session.
+
+2023-04-19 12:15:02
+Session:   3
+Template:  2022-06-17 - 8f633d840e3eb6454f036e9da3285bcf27345616
+Syzkaller: 2022-06-17 - 8f633d840e3eb6454f036e9da3285bcf27345616
+Kernel:    2022-11-17 - 847ccab8fdcf4a0cd85a278480fab1ccdc9f6136
+Compiler:  gcc-10.2.1-20210110
+Attempt 1:
+    Time  Bug Name
+***    2  possible deadlock in l2tp_tunnel_register
+The bug was found.
+
+== Confirming the bisected commit ==
+
+2023-04-19 13:02:07
+Session:   4
+Template:  2022-06-17 - 8f633d840e3eb6454f036e9da3285bcf27345616
+Syzkaller: 2022-06-17 - 8f633d840e3eb6454f036e9da3285bcf27345616
+Kernel:    2022-11-17 - 847ccab8fdcf4a0cd85a278480fab1ccdc9f6136
+The bug was found in a previous identical fuzzing session.
+
+====================================================================================================================================================
+Revealing Factor:   Guilty Merge
+Version:            2022-11-17 - 847ccab8fdcf4a0cd85a278480fab1ccdc9f6136
+Commit Name:        Merge tag 'net-6.1-rc6' of git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net
+
+Bug Name:           possible deadlock in dccp_v4_ctl_send_reset
+Bug Link:           https://syzkaller.appspot.com/bug?id=f545f7c3545aae6dabe7070d64a4172ed79a9354
+Arch:               amd64
+Finding Date:       2022-11-18
+Finding Commit:     2022-11-17 - 81ac25651a62c958bb0e074e0d4e25060ea557dd
+Guilty Merge:       2022-11-17 - 847ccab8fdcf4a0cd85a278480fab1ccdc9f6136
+Guilty Commit:      2022-11-16 - b68777d54fac21fc833ec26ea1a2a84f975ab035
+
+Possible Blocking Bugs:

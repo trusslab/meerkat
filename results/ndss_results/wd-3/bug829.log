@@ -1,0 +1,38 @@
+possible deadlock in userfaultfd_release,https://syzkaller.appspot.com/bug?id=6408a8ba0fa0e3940c5c2dfa40e808cbf4228689
+Repository: linux
+Arch: amd64
+Finding: 2018-10-26 - 345671ea0f9258f410eb057b9ced9cefbbe5dc78
+Guilty:  2018-08-06 - bfe4037e722ec672c9dafd5730d9132afeeb76e9
+Duplicate Names:
+    possible deadlock in io_submit_one
+    possible deadlock in userfaultfd_release
+    possible deadlock in userfaultfd_read
+Default Allocation.
+VMs:4
+CPUs:4
+Procs:24
+Max time:30
+Max attempts:3
+Testing the finding commit.
+
+2023-06-01 16:52:54
+Session:   1
+Template:  2018-10-27 - 8efba39a81ef8a67638d6ed1a23adbfd83bd1480
+Syzkaller: 2018-10-27 - 8efba39a81ef8a67638d6ed1a23adbfd83bd1480
+Kernel:    2018-10-27 - 345671ea0f9258f410eb057b9ced9cefbbe5dc78
+Compiler:  gcc-8.0.1-20180412
+Attempt 1:
+    Time  Bug Name
+       2  WARNING: possible irq lock inversion dependency detected
+       3  WARNING: possible irq lock inversion dependency detected
+       6  WARNING in md_ioctl
+Attempt 2:
+    Time  Bug Name
+       2  possible deadlock in free_ioctx_users
+Attempt 3:
+    Time  Bug Name
+       2  possible deadlock in aio_poll
+       2  WARNING: locking bug in lock_downgrade
+The bug was not found.
+
+Failure: This bug cannot be found at the finding commit.

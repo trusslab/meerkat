@@ -1,0 +1,878 @@
+general protection fault in tls_sk_proto_close,https://syzkaller.appspot.com/bug?id=de17cc3f6902e8bf07334a3eb4a7bb30120c9fbb
+Repository: linux
+Arch: amd64
+Finding: 2021-05-08 - ab159ac569fddf812c0a217d6dbffaa5d93ef88f
+Guilty:  2019-07-22 - 95fa145479fbc0a0c1fd3274ceb42ec03c042a4a
+Duplicate Names:
+    BUG: spinlock recursion in release_sock
+    general protection fault in tls_trim_both_msgs
+    KASAN: invalid-free in tls_sk_proto_cleanup
+    general protection fault in tls_sk_proto_close
+    KASAN: use-after-free Read in tls_wait_data
+    general protection fault in tls_tx_records
+    KASAN: use-after-free Read in tls_sk_proto_cleanup
+    general protection fault in tls_setsockopt
+Single Proc Allocation
+VMs:8
+CPUs:2
+Procs:16
+Max time:30
+Max attempts:3
+Testing the finding commit.
+
+2023-04-03 06:22:54
+Session:   1
+Template:  2021-05-07 - bc5434be1a615eca6d901c20b026712bd9697fd4
+Syzkaller: 2021-05-07 - bc5434be1a615eca6d901c20b026712bd9697fd4
+Kernel:    2021-05-08 - ab159ac569fddf812c0a217d6dbffaa5d93ef88f
+Compiler:  gcc-10.2.1-20210110
+Attempt 1:
+    Time  Bug Name
+***    3  general protection fault in tls_sk_proto_close
+***    3  general protection fault in tls_sk_proto_close
+Attempt 2:
+    Time  Bug Name
+***    3  general protection fault in tls_sk_proto_close
+***    3  general protection fault in tls_sk_proto_close
+***    3  general protection fault in tls_sk_proto_close
+Attempt 3:
+    Time  Bug Name
+***    3  general protection fault in tls_sk_proto_close
+The bug was found.
+
+New Max Time: 10.
+Merge Commit: 2019-07-22 - 57ebc6230f060fd467fd5fd4552de5ebc40cb48c.
+
+==== Template Retrospection ====
+34 template changes in [2019-07-22, 2021-05-08].
+
+2023-04-03 08:09:47
+Session:   2
+Template:  2020-02-18 - b97f1e694a1c096eac2f48c6e3ca47e8a3c4693c
+Syzkaller: 2020-02-18 - b97f1e694a1c096eac2f48c6e3ca47e8a3c4693c
+Kernel:    2020-02-18 - 0a44cac8105059eb756ed4276e932e54e1ba004d
+Compiler:  gcc-9.0.0-20181231
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+The bug was not found.
+
+2023-04-03 09:22:04
+Session:   3
+Template:  2020-07-10 - 18d18b591b354e07ba76be8f115b7119d49056a9
+Syzkaller: 2020-07-10 - 18d18b591b354e07ba76be8f115b7119d49056a9
+Kernel:    2020-07-10 - 9321f1aaf63e74ec3884347490e4ebb039f01b6e
+Compiler:  gcc-10.1.0-syz
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+The bug was not found.
+
+2023-04-03 10:28:59
+Session:   4
+Template:  2021-01-05 - b1c228e1773559f05fa98950902ab025d6ab946e
+Syzkaller: 2021-01-05 - b1c228e1773559f05fa98950902ab025d6ab946e
+Kernel:    2021-01-05 - 9f1abbe97c08ba7ed609791627533a805a1b2c66
+Compiler:  gcc-10.1.0-syz
+Attempt 1:
+    Time  Bug Name
+       9  panic: disabled syscall
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4: (RETRY)
+    No crashes found.
+The bug was not found.
+
+2023-04-03 11:47:03
+Session:   5
+Template:  2021-04-13 - 8ba8079b119fc956671eed6c7e8cb6efd355ae61
+Syzkaller: 2021-04-13 - 8ba8079b119fc956671eed6c7e8cb6efd355ae61
+Kernel:    2021-04-13 - eebe426d32e1a10ac7c35f8ffab5f818c32a2454
+Compiler:  gcc-10.2.1-20210110
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+The bug was not found.
+
+2023-04-03 13:08:35
+Session:   6
+Template:  2021-04-22 - 33c28d0389a6b0dd17a5de7c093a011cdadb33b1
+Syzkaller: 2021-04-22 - 33c28d0389a6b0dd17a5de7c093a011cdadb33b1
+Kernel:    2021-04-22 - 18a3c5f7abfdf97f88536d35338ebbee119c355c
+Compiler:  gcc-10.2.1-20210110
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    Time  Bug Name
+       8  suppressed report
+Attempt 3:
+    No crashes found.
+Attempt 4: (RETRY)
+    No crashes found.
+The bug was not found.
+
+==== Kernel Retrospection ====
+207 Linux commits in [2021-04-22, 2021-05-08].
+
+2023-04-03 14:30:13
+Session:   7
+Template:  2021-04-28 - 77e2b66864e69c17416614228723a1ebd3581ddc
+Syzkaller: 2021-04-28 - 77e2b66864e69c17416614228723a1ebd3581ddc
+Kernel:    2021-04-28 - fc0586062816559defb14c947319ef8c4c326fb3
+Compiler:  gcc-10.2.1-20210110
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    Time  Bug Name
+       8  panic: disabled syscall
+Attempt 4: (RETRY)
+    No crashes found.
+The bug was not found.
+
+2023-04-03 16:11:23
+Session:   8
+Template:  2021-05-03 - 09efdd63fa8ebdadeccc841b699026e73081f7e0
+Syzkaller: 2021-05-03 - 09efdd63fa8ebdadeccc841b699026e73081f7e0
+Kernel:    2021-05-03 - a7efd197bc7ff03076faf09d6325d7c3427893e3
+Compiler:  gcc-10.2.1-20210110
+Attempt 1:
+    Time  Bug Name
+       3  WARNING in __nf_unregister_net_hook
+       3  WARNING in __nf_unregister_net_hook
+       3  WARNING in __nf_unregister_net_hook
+       3  WARNING in __nf_unregister_net_hook
+       3  WARNING in __nf_unregister_net_hook
+       4  WARNING in __nf_unregister_net_hook
+       4  WARNING in __nf_unregister_net_hook
+       4  WARNING in __nf_unregister_net_hook
+       5  WARNING in __nf_unregister_net_hook
+       5  WARNING in __nf_unregister_net_hook
+       5  WARNING in __nf_unregister_net_hook
+       5  WARNING in __nf_unregister_net_hook
+       5  WARNING in __nf_unregister_net_hook
+       6  WARNING in __nf_unregister_net_hook
+       6  WARNING in __nf_unregister_net_hook
+       6  WARNING in __nf_unregister_net_hook
+       7  WARNING in __nf_unregister_net_hook
+       7  WARNING in __nf_unregister_net_hook
+       7  WARNING in __nf_unregister_net_hook
+       7  WARNING in __nf_unregister_net_hook
+       7  WARNING in __nf_unregister_net_hook
+       8  WARNING in __nf_unregister_net_hook
+       8  WARNING in __nf_unregister_net_hook
+       8  WARNING in __nf_unregister_net_hook
+       8  WARNING in __nf_unregister_net_hook
+       9  WARNING in __nf_unregister_net_hook
+       9  WARNING in __nf_unregister_net_hook
+       9  WARNING in __nf_unregister_net_hook
+       9  WARNING in __nf_unregister_net_hook
+***   10  general protection fault in tls_sk_proto_close
+***   10  general protection fault in tls_sk_proto_close
+The bug was found.
+Switching to Safe Mode: Fuzzing 5 times at 30 minutes
+
+2023-04-03 17:13:07
+Session:   9
+Template:  2021-04-28 - 77e2b66864e69c17416614228723a1ebd3581ddc
+Syzkaller: 2021-04-28 - 77e2b66864e69c17416614228723a1ebd3581ddc
+Kernel:    2021-04-30 - c70a4be130de333ea079c59da41cc959712bb01c
+Compiler:  gcc-10.2.1-20210110
+Attempt 1:
+    Time  Bug Name
+       3  WARNING in __nf_unregister_net_hook
+       3  WARNING in __nf_unregister_net_hook
+       3  WARNING in __nf_unregister_net_hook
+       3  WARNING in __nf_unregister_net_hook
+       4  WARNING in __nf_unregister_net_hook
+       4  WARNING in __nf_unregister_net_hook
+       4  WARNING in __nf_unregister_net_hook
+       4  WARNING in __nf_unregister_net_hook
+       5  WARNING in __nf_unregister_net_hook
+       5  WARNING in __nf_unregister_net_hook
+       5  WARNING in __nf_unregister_net_hook
+       5  WARNING in __nf_unregister_net_hook
+       5  WARNING in __nf_unregister_net_hook
+       5  WARNING in __nf_unregister_net_hook
+***    6  general protection fault in tls_sk_proto_close
+***    6  general protection fault in tls_sk_proto_close
+The bug was found.
+
+2023-04-03 17:58:52
+Session:   10
+Template:  2021-04-28 - 77e2b66864e69c17416614228723a1ebd3581ddc
+Syzkaller: 2021-04-28 - 77e2b66864e69c17416614228723a1ebd3581ddc
+Kernel:    2021-04-29 - d72cd4ad4174cfd2257c426ad51e4f53bcfde9c9
+Compiler:  gcc-10.2.1-20210110
+Attempt 1:
+    Time  Bug Name
+       6  panic: disabled syscall
+       7  panic: disabled syscall
+       8  suppressed report
+Attempt 2:
+    Time  Bug Name
+       5  suppressed report
+       6  panic: disabled syscall
+Attempt 3:
+    Time  Bug Name
+       8  panic: disabled syscall
+      18  suppressed report
+Attempt 4:
+    Time  Bug Name
+      17  BUG: using smp_processor_id() in preemptible code in radix_tree_node_alloc
+Attempt 5:
+    Time  Bug Name
+       7  panic: disabled syscall
+      28  unregister_netdevice: waiting for DEV to become free
+Attempt 6: (RETRY)
+    No crashes found.
+Attempt 7: (RETRY)
+    Time  Bug Name
+       8  panic: disabled syscall
+      22  suppressed report
+      22  suppressed report
+Attempt 8: (RETRY)
+    Time  Bug Name
+       8  suppressed report
+      10  suppressed report
+      23  suppressed report
+      30  suppressed report
+Attempt 9: (RETRY)
+    Time  Bug Name
+      18  suppressed report
+      25  suppressed report
+      27  suppressed report
+Attempt 10: (RETRY)
+    Time  Bug Name
+       6  panic: disabled syscall
+      12  suppressed report
+      26  suppressed report
+The bug was not found.
+Warning: This session is unstable.
+
+2023-04-03 23:38:46
+Session:   11
+Template:  2021-04-28 - 77e2b66864e69c17416614228723a1ebd3581ddc
+Syzkaller: 2021-04-28 - 77e2b66864e69c17416614228723a1ebd3581ddc
+Kernel:    2021-04-28 - d8201efe75e13146ebde433745c7920e15593baf
+Compiler:  gcc-10.2.1-20210110
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    Time  Bug Name
+      23  suppressed report
+      24  suppressed report
+Attempt 3:
+    Time  Bug Name
+       9  panic: disabled syscall
+      20  suppressed report
+Attempt 4:
+    Time  Bug Name
+      12  suppressed report
+      17  suppressed report
+      18  suppressed report
+      29  suppressed report
+Attempt 5:
+    Time  Bug Name
+      12  suppressed report
+      19  suppressed report
+      23  suppressed report
+Attempt 6: (RETRY)
+    Time  Bug Name
+      19  suppressed report
+      24  suppressed report
+      25  suppressed report
+Attempt 7: (RETRY)
+    Time  Bug Name
+      30  suppressed report
+Attempt 8: (RETRY)
+    No crashes found.
+Attempt 9: (RETRY)
+    Time  Bug Name
+       7  panic: disabled syscall
+      25  suppressed report
+      28  suppressed report
+Attempt 10: (RETRY)
+    Time  Bug Name
+      12  suppressed report
+      14  suppressed report
+      18  suppressed report
+      28  suppressed report
+The bug was not found.
+Warning: This session is unstable.
+
+2023-04-04 05:20:10
+Session:   12
+Template:  2021-04-28 - 77e2b66864e69c17416614228723a1ebd3581ddc
+Syzkaller: 2021-04-28 - 77e2b66864e69c17416614228723a1ebd3581ddc
+Kernel:    2021-04-28 - be18cd1fcae2ed7db58d92d20733dfa8aa0a5173
+Compiler:  gcc-10.2.1-20210110
+Attempt 1:
+    Time  Bug Name
+       9  suppressed report
+      13  suppressed report
+      21  suppressed report
+      27  suppressed report
+Attempt 2:
+    Time  Bug Name
+      18  suppressed report
+      29  suppressed report
+Attempt 3:
+    Time  Bug Name
+      12  suppressed report
+      13  suppressed report
+      18  suppressed report
+      18  BUG: using smp_processor_id() in preemptible code in radix_tree_node_alloc
+      21  suppressed report
+Attempt 4:
+    Time  Bug Name
+       9  suppressed report
+      25  suppressed report
+Attempt 5:
+    Time  Bug Name
+      28  BUG: using smp_processor_id() in preemptible code in radix_tree_node_alloc
+Attempt 6: (RETRY)
+    Time  Bug Name
+       6  panic: disabled syscall
+      10  suppressed report
+      27  suppressed report
+Attempt 7: (RETRY)
+    Time  Bug Name
+       7  panic: disabled syscall
+      13  suppressed report
+      29  suppressed report
+Attempt 8: (RETRY)
+    Time  Bug Name
+       7  panic: disabled syscall
+      18  suppressed report
+Attempt 9: (RETRY)
+    Time  Bug Name
+       8  suppressed report
+      19  suppressed report
+      24  suppressed report
+Attempt 10: (RETRY)
+    Time  Bug Name
+       8  suppressed report
+The bug was not found.
+Warning: This session is unstable.
+
+2023-04-04 10:57:53
+Session:   13
+Template:  2021-04-28 - 77e2b66864e69c17416614228723a1ebd3581ddc
+Syzkaller: 2021-04-28 - 77e2b66864e69c17416614228723a1ebd3581ddc
+Kernel:    2021-04-28 - 5a69e9bce9984806029926f405b4517878e703e2
+Compiler:  gcc-10.2.1-20210110
+Attempt 1:
+    Time  Bug Name
+      24  suppressed report
+      26  suppressed report
+Attempt 2:
+    Time  Bug Name
+      21  suppressed report
+      27  suppressed report
+      28  suppressed report
+Attempt 3:
+    Time  Bug Name
+      14  suppressed report
+      24  suppressed report
+      27  suppressed report
+Attempt 4:
+    Time  Bug Name
+      17  suppressed report
+      29  suppressed report
+Attempt 5:
+    Time  Bug Name
+       8  panic: disabled syscall
+Attempt 6: (RETRY)
+    Time  Bug Name
+      30  suppressed report
+Attempt 7: (RETRY)
+    Time  Bug Name
+       6  suppressed report
+      18  suppressed report
+Attempt 8: (RETRY)
+    Time  Bug Name
+       7  suppressed report
+      20  suppressed report
+Attempt 9: (RETRY)
+    Time  Bug Name
+       7  suppressed report
+      27  panic: disabled syscall
+Attempt 10: (RETRY)
+    Time  Bug Name
+      12  suppressed report
+      12  suppressed report
+      17  suppressed report
+The bug was not found.
+Warning: This session is unstable.
+
+2023-04-04 16:35:32
+Session:   14
+Template:  2021-04-28 - 77e2b66864e69c17416614228723a1ebd3581ddc
+Syzkaller: 2021-04-28 - 77e2b66864e69c17416614228723a1ebd3581ddc
+Kernel:    2021-04-29 - d2b6f8a179194de0ffc4886ffc2c4358d86047b8
+Compiler:  gcc-10.2.1-20210110
+Attempt 1:
+    Time  Bug Name
+      13  suppressed report
+      24  suppressed report
+Attempt 2:
+    Time  Bug Name
+       7  suppressed report
+       7  panic: disabled syscall
+      25  suppressed report
+Attempt 3:
+    Time  Bug Name
+      16  suppressed report
+      26  BUG: using smp_processor_id() in preemptible code in radix_tree_node_alloc
+Attempt 4:
+    Time  Bug Name
+      18  suppressed report
+Attempt 5:
+    Time  Bug Name
+      16  suppressed report
+Attempt 6: (RETRY)
+    No crashes found.
+Attempt 7: (RETRY)
+    Time  Bug Name
+      10  no output from test machine
+      11  no output from test machine
+      22  panic: disabled syscall
+      28  suppressed report
+Attempt 8: (RETRY)
+    Time  Bug Name
+       9  no output from test machine
+      10  no output from test machine
+      11  no output from test machine
+      12  no output from test machine
+      12  no output from test machine
+      13  no output from test machine
+      15  INFO: task hung in linkwatch_event
+Attempt 9: (RETRY)
+    Time  Bug Name
+      14  suppressed report
+      15  suppressed report
+      21  BUG: using smp_processor_id() in preemptible code in radix_tree_node_alloc
+      27  suppressed report
+Attempt 10: (RETRY)
+    Time  Bug Name
+       6  suppressed report
+      21  suppressed report
+      30  suppressed report
+The bug was not found.
+Warning: This session is unstable.
+
+2023-04-04 22:11:50
+Session:   15
+Template:  2021-04-28 - 77e2b66864e69c17416614228723a1ebd3581ddc
+Syzkaller: 2021-04-28 - 77e2b66864e69c17416614228723a1ebd3581ddc
+Kernel:    2021-04-29 - 77d51337d650086643e1e96b8a7e1e6cbf0b09ff
+Compiler:  gcc-10.2.1-20210110
+Attempt 1:
+    Time  Bug Name
+      16  suppressed report
+      25  unregister_netdevice: waiting for DEV to become free
+      30  suppressed report
+Attempt 2:
+    Time  Bug Name
+       8  suppressed report
+      22  suppressed report
+Attempt 3:
+    Time  Bug Name
+      28  suppressed report
+      30  suppressed report
+Attempt 4:
+    Time  Bug Name
+      19  suppressed report
+Attempt 5:
+    Time  Bug Name
+      17  suppressed report
+      20  BUG: using smp_processor_id() in preemptible code in radix_tree_node_alloc
+Attempt 6: (RETRY)
+    Time  Bug Name
+       7  panic: disabled syscall
+      13  suppressed report
+      20  suppressed report
+      21  suppressed report
+Attempt 7: (RETRY)
+    Time  Bug Name
+       7  suppressed report
+      16  suppressed report
+      18  suppressed report
+      18  suppressed report
+      19  suppressed report
+      22  suppressed report
+      24  suppressed report
+      27  suppressed report
+Attempt 8: (RETRY)
+    Time  Bug Name
+      15  suppressed report
+      26  suppressed report
+Attempt 9: (RETRY)
+    Time  Bug Name
+      22  suppressed report
+      24  BUG: using smp_processor_id() in preemptible code in radix_tree_node_alloc
+Attempt 10: (RETRY)
+    Time  Bug Name
+      22  suppressed report
+The bug was not found.
+Warning: This session is unstable.
+
+2023-04-05 03:52:49
+Session:   16
+Template:  2021-04-28 - 77e2b66864e69c17416614228723a1ebd3581ddc
+Syzkaller: 2021-04-28 - 77e2b66864e69c17416614228723a1ebd3581ddc
+Kernel:    2021-04-29 - 9d31d2338950293ec19d9b095fbaa9030899dcb4
+Compiler:  gcc-10.2.1-20210110
+Attempt 1:
+    Time  Bug Name
+       2  WARNING in __nf_unregister_net_hook
+       2  WARNING in __nf_unregister_net_hook
+       2  WARNING in __nf_unregister_net_hook
+***    3  general protection fault in tls_sk_proto_close
+***    3  general protection fault in tls_sk_proto_close
+The bug was found.
+
+2023-04-05 04:31:06
+Session:   17
+Template:  2021-04-28 - 77e2b66864e69c17416614228723a1ebd3581ddc
+Syzkaller: 2021-04-28 - 77e2b66864e69c17416614228723a1ebd3581ddc
+Kernel:    2021-04-29 - 35655ceb31b56cd1cb52635a725dfcdb9662d7b7
+Compiler:  gcc-10.2.1-20210110
+Attempt 1:
+    Time  Bug Name
+      18  suppressed report
+      30  suppressed report
+Attempt 2:
+    Time  Bug Name
+      17  BUG: using smp_processor_id() in preemptible code in radix_tree_node_alloc
+      18  suppressed report
+      26  suppressed report
+Attempt 3:
+    Time  Bug Name
+       8  suppressed report
+      14  suppressed report
+      15  suppressed report
+      25  suppressed report
+Attempt 4:
+    Time  Bug Name
+      19  BUG: using smp_processor_id() in preemptible code in radix_tree_node_alloc
+      27  suppressed report
+Attempt 5:
+    Time  Bug Name
+       8  panic: disabled syscall
+      13  suppressed report
+      25  suppressed report
+      26  suppressed report
+Attempt 6: (RETRY)
+    Time  Bug Name
+      15  BUG: using smp_processor_id() in preemptible code in radix_tree_node_alloc
+      29  suppressed report
+Attempt 7: (RETRY)
+    Time  Bug Name
+      17  suppressed report
+      21  suppressed report
+      28  suppressed report
+Attempt 8: (RETRY)
+    No crashes found.
+Attempt 9: (RETRY)
+    Time  Bug Name
+      21  suppressed report
+      24  suppressed report
+      28  suppressed report
+Attempt 10: (RETRY)
+    Time  Bug Name
+      19  BUG: using smp_processor_id() in preemptible code in radix_tree_node_alloc
+      20  suppressed report
+      28  suppressed report
+The bug was not found.
+Warning: This session is unstable.
+
+2023-04-05 10:07:49
+Session:   18
+Template:  2021-04-28 - 77e2b66864e69c17416614228723a1ebd3581ddc
+Syzkaller: 2021-04-28 - 77e2b66864e69c17416614228723a1ebd3581ddc
+Kernel:    2021-04-28 - c969f2451b5343a01635d35542f48bc14b44f6b3
+Compiler:  gcc-10.2.1-20210110
+Attempt 1:
+    Time  Bug Name
+      15  suppressed report
+      15  suppressed report
+      17  BUG: using smp_processor_id() in preemptible code in radix_tree_node_alloc
+Attempt 2:
+    Time  Bug Name
+      12  suppressed report
+      13  suppressed report
+      25  suppressed report
+      26  suppressed report
+      28  suppressed report
+Attempt 3:
+    Time  Bug Name
+      12  suppressed report
+      22  suppressed report
+      30  suppressed report
+Attempt 4:
+    Time  Bug Name
+      13  suppressed report
+      17  suppressed report
+Attempt 5:
+    Time  Bug Name
+      18  suppressed report
+      21  suppressed report
+      22  suppressed report
+      26  suppressed report
+Attempt 6: (RETRY)
+    Time  Bug Name
+      16  suppressed report
+Attempt 7: (RETRY)
+    Time  Bug Name
+       6  suppressed report
+      20  suppressed report
+      22  suppressed report
+      29  suppressed report
+Attempt 8: (RETRY)
+    Time  Bug Name
+      13  suppressed report
+      22  unregister_netdevice: waiting for DEV to become free
+      28  suppressed report
+Attempt 9: (RETRY)
+    Time  Bug Name
+       7  suppressed report
+      20  BUG: using smp_processor_id() in preemptible code in radix_tree_node_alloc
+      23  suppressed report
+      29  suppressed report
+Attempt 10: (RETRY)
+    Time  Bug Name
+       4  suppressed report
+       6  suppressed report
+      24  suppressed report
+The bug was not found.
+Warning: This session is unstable.
+
+2023-04-05 15:53:34
+Session:   19
+Template:  2021-04-28 - 77e2b66864e69c17416614228723a1ebd3581ddc
+Syzkaller: 2021-04-28 - 77e2b66864e69c17416614228723a1ebd3581ddc
+Kernel:    2021-04-28 - 0080665fbd0e6a771aee366bb2aa208626e43def
+Compiler:  gcc-10.2.1-20210110
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    Time  Bug Name
+      10  panic: disabled syscall
+      12  suppressed report
+      19  suppressed report
+      26  suppressed report
+Attempt 3:
+    Time  Bug Name
+      12  suppressed report
+Attempt 4:
+    Time  Bug Name
+      22  suppressed report
+      22  suppressed report
+      29  suppressed report
+Attempt 5:
+    Time  Bug Name
+      23  suppressed report
+      30  suppressed report
+Attempt 6: (RETRY)
+    Time  Bug Name
+      20  suppressed report
+      26  suppressed report
+Attempt 7: (RETRY)
+    Time  Bug Name
+      23  suppressed report
+Attempt 8: (RETRY)
+    Time  Bug Name
+      20  suppressed report
+      21  suppressed report
+Attempt 9: (RETRY)
+    Time  Bug Name
+       7  panic: disabled syscall
+      17  suppressed report
+      28  suppressed report
+Attempt 10: (RETRY)
+    Time  Bug Name
+       6  panic: disabled syscall
+      18  suppressed report
+      23  suppressed report
+The bug was not found.
+Warning: This session is unstable.
+
+2023-04-05 21:35:02
+Session:   20
+Template:  2021-04-28 - 77e2b66864e69c17416614228723a1ebd3581ddc
+Syzkaller: 2021-04-28 - 77e2b66864e69c17416614228723a1ebd3581ddc
+Kernel:    2021-04-28 - a8b5e037d8a00d396377a97f08f5fd2a410b96a1
+Compiler:  gcc-10.2.1-20210110
+Attempt 1:
+    Time  Bug Name
+      11  no output from test machine
+      14  panic: disabled syscall
+      29  suppressed report
+      30  suppressed report
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    Time  Bug Name
+      15  suppressed report
+      23  suppressed report
+      24  suppressed report
+      25  suppressed report
+      27  suppressed report
+Attempt 4:
+    Time  Bug Name
+      21  suppressed report
+      25  suppressed report
+      28  suppressed report
+Attempt 5:
+    Time  Bug Name
+       9  panic: disabled syscall
+      23  suppressed report
+Attempt 6: (RETRY)
+    Time  Bug Name
+      21  suppressed report
+      22  suppressed report
+Attempt 7: (RETRY)
+    Time  Bug Name
+      14  suppressed report
+      17  suppressed report
+Attempt 8: (RETRY)
+    Time  Bug Name
+      30  suppressed report
+Attempt 9: (RETRY)
+    Time  Bug Name
+      17  suppressed report
+      22  suppressed report
+      26  suppressed report
+Attempt 10: (RETRY)
+    Time  Bug Name
+      15  suppressed report
+      19  suppressed report
+      23  suppressed report
+      30  unregister_netdevice: waiting for DEV to become free
+The bug was not found.
+Warning: This session is unstable.
+
+2023-04-06 03:34:43
+Session:   21
+Template:  2021-04-28 - 77e2b66864e69c17416614228723a1ebd3581ddc
+Syzkaller: 2021-04-28 - 77e2b66864e69c17416614228723a1ebd3581ddc
+Kernel:    2021-04-29 - f2c80837e27e67e91ad93f41f0849be28b808b14
+Compiler:  gcc-10.2.1-20210110
+Attempt 1:
+    Time  Bug Name
+      15  suppressed report
+      28  suppressed report
+Attempt 2:
+    Time  Bug Name
+       6  suppressed report
+      14  suppressed report
+Attempt 3:
+    Time  Bug Name
+      19  suppressed report
+Attempt 4:
+    Time  Bug Name
+       8  suppressed report
+      15  suppressed report
+      22  suppressed report
+Attempt 5:
+    Time  Bug Name
+      16  suppressed report
+      25  suppressed report
+      28  suppressed report
+Attempt 6: (RETRY)
+    Time  Bug Name
+       8  suppressed report
+      23  suppressed report
+Attempt 7: (RETRY)
+    Time  Bug Name
+      18  suppressed report
+      30  suppressed report
+Attempt 8: (RETRY)
+    No crashes found.
+Attempt 9: (RETRY)
+    Time  Bug Name
+      27  suppressed report
+      30  suppressed report
+Attempt 10: (RETRY)
+    Time  Bug Name
+       7  suppressed report
+      20  suppressed report
+      26  suppressed report
+The bug was not found.
+Warning: This session is unstable.
+
+2023-04-06 09:54:01
+Session:   22
+Template:  2021-04-28 - 77e2b66864e69c17416614228723a1ebd3581ddc
+Syzkaller: 2021-04-28 - 77e2b66864e69c17416614228723a1ebd3581ddc
+Kernel:    2021-04-29 - 767fcbc80f63d7f08ff6c0858fe33583e6fdd327
+Compiler:  gcc-10.2.1-20210110
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    Time  Bug Name
+      17  suppressed report
+      18  suppressed report
+Attempt 3:
+    Time  Bug Name
+      18  suppressed report
+      27  BUG: using smp_processor_id() in preemptible code in radix_tree_node_alloc
+Attempt 4:
+    Time  Bug Name
+      10  panic: disabled syscall
+      20  suppressed report
+      20  suppressed report
+Attempt 5:
+    Time  Bug Name
+      22  suppressed report
+Attempt 6: (RETRY)
+    Time  Bug Name
+      24  suppressed report
+Attempt 7: (RETRY)
+    Time  Bug Name
+      19  suppressed report
+      20  suppressed report
+      28  suppressed report
+Attempt 8: (RETRY)
+    Time  Bug Name
+      13  suppressed report
+      17  suppressed report
+      22  BUG: using smp_processor_id() in preemptible code in radix_tree_node_alloc
+Attempt 9: (RETRY)
+    Time  Bug Name
+       8  panic: disabled syscall
+      30  suppressed report
+Attempt 10: (RETRY)
+    No crashes found.
+The bug was not found.
+Warning: This session is unstable.
+
+====================================================================================================================================================
+Revealing Factor:   Unstable Commits
+Unstable Range:     [2021-04-28, 2021-04-29]
+Version:            2021-04-29 - 635de956a7f5a6ffcb04f29d70630c64c717b56b
+Commit Name:        Merge tag 'x86-mm-2021-04-29' of git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip
+
+Bug Name:           general protection fault in tls_sk_proto_close
+Bug Link:           https://syzkaller.appspot.com/bug?id=de17cc3f6902e8bf07334a3eb4a7bb30120c9fbb
+Arch:               amd64
+Finding Date:       2021-05-08
+Finding Commit:     2021-05-08 - ab159ac569fddf812c0a217d6dbffaa5d93ef88f
+Guilty Merge:       2019-07-22 - 57ebc6230f060fd467fd5fd4552de5ebc40cb48c
+Guilty Commit:      2019-07-22 - 95fa145479fbc0a0c1fd3274ceb42ec03c042a4a
+
+Possible Blocking Bugs:
