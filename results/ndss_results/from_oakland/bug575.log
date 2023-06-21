@@ -1,0 +1,64 @@
+memory leak in copy_net_ns,https://syzkaller.appspot.com/bug?id=3babacc2ed6bddb8e168d022ef77d32db0e05ea6
+Repository: linux
+Arch: amd64
+Finding: 5ad18b2e60b75c7297a998dea702451d33a052ed
+Guilty: 9b242610514fe387ef957bce05e1fdd3efd60359
+No Duplicates
+Multi-Proc Allocation.
+VMs:4
+CPUs:4
+Procs:24
+Max time:30
+Inspecting the finding commit.
+Session 1:
+    Template:  2019-07-05 - f62e1e85cf54ccfa990868a402eca32bf4513b21
+    Syzkaller: 2019-07-05 - f62e1e85cf54ccfa990868a402eca32bf4513b21
+    Kernel:    2019-07-09 - 5ad18b2e60b75c7297a998dea702451d33a052ed
+    Compiler:  gcc-9.0.0-20181231
+    The bug was found.
+        memory leak in nf_hook_entries_grow
+        memory leak in copy_net_ns
+New Max Time: 10.
+No Merge Commit.
+No template updates to inspect.
+Inspecting 11 kernel versions in the range [2019-06-26, 2019-07-09].
+Session 2:
+    Template:  2019-07-05 - f62e1e85cf54ccfa990868a402eca32bf4513b21
+    Syzkaller: 2019-07-05 - f62e1e85cf54ccfa990868a402eca32bf4513b21
+    Kernel:    2019-07-09 - 8b68150883ca466a23e90902dd4113b22e692f04
+    Compiler:  gcc-9.0.0-20181231
+    The bug was found in 2 minutes
+        memory leak in copy_net_ns
+Session 3:
+    Template:  2019-07-02 - 55565fa0377f97cf09bfab365707e08b0156c11b
+    Syzkaller: 2019-07-02 - 55565fa0377f97cf09bfab365707e08b0156c11b
+    Kernel:    2019-07-03 - 7a1ade847596dadc94b37e49f8c03f167fd71748
+    Compiler:  gcc-9.0.0-20181231
+    The bug was found in 2 minutes
+        memory leak in copy_net_ns
+Session 4:
+    Template:  2019-06-26 - 7509bf360eba1461ac6059e4cacfbc29c9d2d4c7
+    Syzkaller: 2019-06-26 - 7509bf360eba1461ac6059e4cacfbc29c9d2d4c7
+    Kernel:    2019-06-27 - a58946c158a040068e7c94dc1d58bbd273258068
+    Compiler:  gcc-9.0.0-20181231
+    The bug was found in 7 minutes
+        memory leak in copy_net_ns
+Session 5:
+    Template:  2019-06-26 - 7509bf360eba1461ac6059e4cacfbc29c9d2d4c7
+    Syzkaller: 2019-06-26 - 7509bf360eba1461ac6059e4cacfbc29c9d2d4c7
+    Kernel:    2019-06-26 - 9b242610514fe387ef957bce05e1fdd3efd60359
+    Compiler:  gcc-9.0.0-20181231
+    The bug was found in 7 minutes
+        memory leak in copy_net_ns
+Confirming the bisected kernel commit.
+Session 6 after:
+    Template:  2019-06-26 - 7509bf360eba1461ac6059e4cacfbc29c9d2d4c7
+    Syzkaller: 2019-06-26 - 7509bf360eba1461ac6059e4cacfbc29c9d2d4c7
+    Kernel:    2019-06-26 - 9b242610514fe387ef957bce05e1fdd3efd60359
+The bug was found in a previous identical fuzzing session.
+
+Success
+Revealing factor: Guilty Commit
+Kernel Version: 2019-06-26 - 9b242610514fe387ef957bce05e1fdd3efd60359
+Commit name: keys: Network namespace domain tag
+Warning: Revealing factor may be faulty.

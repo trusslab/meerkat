@@ -1,0 +1,158 @@
+possible deadlock in pie_timer,https://syzkaller.appspot.com/bug?id=3fe7aeaebd5c9784a30e0c4c0118e2cbbadd4f2a
+Repository: linux
+Arch: amd64
+Finding: 2019-09-26 - da05b5ea12c1e50b2988a63470d6b69434796f8b
+Guilty:  2019-02-12 - c266f64dbfa2a970a13b0574246c0ddfec492365
+Duplicate Names:
+    BUG: sleeping function called from invalid context in tcf_chain0_head_change_cb_del
+    possible deadlock in pie_timer
+Single Proc Allocation
+VMs:8
+CPUs:2
+Procs:16
+Max time:30
+Max attempts:3
+Testing the finding commit.
+
+2023-04-25 06:00:39
+Session:   1
+Template:  2019-09-26 - 2f1548bc77986e756b536eaa15726b483a0b1858
+Syzkaller: 2019-09-26 - 2f1548bc77986e756b536eaa15726b483a0b1858
+Kernel:    2019-09-26 - da05b5ea12c1e50b2988a63470d6b69434796f8b
+Compiler:  gcc-9.0.0-20181231
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    Time  Bug Name
+      13  INFO: task hung in nbd_ioctl
+Attempt 3:
+    Time  Bug Name
+***    3  possible deadlock in pie_timer
+The bug was found.
+
+New Max Time: 33.
+Merge Commit: 2019-02-12 - ef718bc30993d40547c243e88e13633f2a7f3934.
+
+==== Template Retrospection ====
+3 template changes in [2019-02-12, 2019-09-26].
+
+2023-04-25 08:16:46
+Session:   2
+Template:  2019-07-22 - 6a786da97c822c3ad536290c412f472e58342c91
+Syzkaller: 2019-07-22 - 6a786da97c822c3ad536290c412f472e58342c91
+Kernel:    2019-07-22 - 7b5cf701ea9c395c792e2a7e3b7caf4c68b87721
+Compiler:  gcc-9.0.0-20181231
+Attempt 1:
+    Time  Bug Name
+       7  no output from test machine
+       7  no output from test machine
+       7  no output from test machine
+       7  no output from test machine
+       7  no output from test machine
+       7  no output from test machine
+       7  no output from test machine
+       7  no output from test machine
+      14  no output from test machine
+      14  no output from test machine
+      14  no output from test machine
+      14  no output from test machine
+      14  no output from test machine
+      14  no output from test machine
+      14  no output from test machine
+      14  no output from test machine
+      20  no output from test machine
+      21  no output from test machine
+      21  no output from test machine
+      21  no output from test machine
+      21  no output from test machine
+      21  no output from test machine
+      21  no output from test machine
+      21  no output from test machine
+      27  no output from test machine
+      27  no output from test machine
+      27  no output from test machine
+      27  no output from test machine
+      27  no output from test machine
+      28  no output from test machine
+      33  no output from test machine
+      33  no output from test machine
+Attempt 2:
+    Time  Bug Name
+       7  no output from test machine
+       7  no output from test machine
+       7  no output from test machine
+       7  no output from test machine
+       7  no output from test machine
+       7  no output from test machine
+       7  no output from test machine
+      13  no output from test machine
+      13  no output from test machine
+      13  no output from test machine
+      13  no output from test machine
+      13  no output from test machine
+      17  INFO: task hung in switchdev_deferred_process_work
+      20  no output from test machine
+      21  no output from test machine
+      23  no output from test machine
+      27  no output from test machine
+      29  no output from test machine
+      30  no output from test machine
+      33  no output from test machine
+Attempt 3:
+    Time  Bug Name
+       7  no output from test machine
+       7  no output from test machine
+       7  no output from test machine
+      13  no output from test machine
+      13  no output from test machine
+      20  no output from test machine
+      20  no output from test machine
+      25  WARNING in generic_make_request_checks
+      27  no output from test machine
+      27  no output from test machine
+      33  no output from test machine
+      33  no output from test machine
+The bug was not found.
+
+2023-04-25 11:13:15
+Session:   3
+Template:  2019-09-18 - c2dcd7009f76ef614ef3f5cc7c11a89d6d83d08c
+Syzkaller: 2019-09-18 - c2dcd7009f76ef614ef3f5cc7c11a89d6d83d08c
+Kernel:    2019-09-18 - f60c55a94e1d127186566f06294f2dadd966e9b4
+Compiler:  gcc-9.0.0-20181231
+Attempt 1:
+    Time  Bug Name
+***    2  possible deadlock in pie_timer
+The bug was found.
+
+2023-04-25 12:24:40
+Session:   4
+Template:  2019-07-22 - 6a786da97c822c3ad536290c412f472e58342c91
+Syzkaller: 2019-09-18 - c2dcd7009f76ef614ef3f5cc7c11a89d6d83d08c
+Kernel:    2019-09-18 - f60c55a94e1d127186566f06294f2dadd966e9b4
+Attempt 1:
+    Time  Bug Name
+       2  possible deadlock in del_timer_sync
+Attempt 2:
+    Time  Bug Name
+      18  INFO: task hung in nbd_ioctl
+Attempt 3:
+    Time  Bug Name
+       2  possible deadlock in del_timer_sync
+The bug was not found.
+
+====================================================================================================================================================
+Revealing Factor:   Template Update
+Version:            2019-09-18 - c2dcd7009f76ef614ef3f5cc7c11a89d6d83d08c
+Commit Name:        sys/linux: update BPF's anonymous structures
+
+Bug Name:           possible deadlock in pie_timer
+Bug Link:           https://syzkaller.appspot.com/bug?id=3fe7aeaebd5c9784a30e0c4c0118e2cbbadd4f2a
+Arch:               amd64
+Finding Date:       2019-09-26
+Finding Commit:     2019-09-26 - da05b5ea12c1e50b2988a63470d6b69434796f8b
+Guilty Merge:       2019-02-12 - ef718bc30993d40547c243e88e13633f2a7f3934
+Guilty Commit:      2019-02-12 - c266f64dbfa2a970a13b0574246c0ddfec492365
+
+Possible Blocking Bugs:
+    no output from test machine

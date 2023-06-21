@@ -1,0 +1,76 @@
+KASAN: slab-out-of-bounds Write in sha1_finup,https://syzkaller.appspot.com/bug?id=4fbc4bf3d1300cf7629a7f63686b5d9cf94ed429
+Repository: linux
+Arch: i386
+Finding: 1c8c5a9d38f607c0b6fd12c91cbe1a4418762a21
+Guilty: 383203eff718d7397ffc68ac6c3ed644d3017fc7
+Duplicate Names:
+    KASAN: slab-out-of-bounds Write in sha512_final
+    KASAN: slab-out-of-bounds Write in rmd320_final
+    KASAN: slab-out-of-bounds Write in tgr192_final
+    KASAN: slab-out-of-bounds Write in wp384_final
+    KASAN: slab-out-of-bounds Write in crypto_sha3_final
+    KASAN: slab-out-of-bounds Write in sha1_finup
+    KASAN: slab-out-of-bounds Write in sha1_final
+    KASAN: slab-out-of-bounds Write in tgr160_final
+    KASAN: slab-out-of-bounds Write in sha512_finup
+Single Proc Allocation
+VMs:8
+CPUs:2
+Procs:16
+Max time:30
+Inspecting the finding commit.
+Session 1:
+    Template:  2018-06-07 - 645e75f8038d1b177ead2d6ea0b3ade6f7f9d985
+    Syzkaller: 2018-06-07 - 645e75f8038d1b177ead2d6ea0b3ade6f7f9d985
+    Kernel:    2018-06-07 - 1c8c5a9d38f607c0b6fd12c91cbe1a4418762a21
+    Compiler:  gcc-8.0.1-20180412
+    The bug was found.
+        KASAN: slab-out-of-bounds Write in tgr160_final
+        KASAN: slab-out-of-bounds Write in sha1_finup
+New Max Time: 10.
+Merge Commit: 2018-06-06 - 10b1eb7d8ce5635a7deb273f8291d8a0a7681de1.
+No template updates to inspect.
+Inspecting 5 kernel versions in the range [2018-06-06, 2018-06-07].
+Session 2:
+    Template:  2018-06-06 - e0e534c6c2485161cf80d4ab7f7658c85fabc83f
+    Syzkaller: 2018-06-06 - e0e534c6c2485161cf80d4ab7f7658c85fabc83f
+    Kernel:    2018-06-06 - 5eb6eed7e0fe880dc8de8da203cc888716bbf196
+    Compiler:  gcc-8.0.1-20180412
+    The bug was found in 3 minutes
+        KASAN: slab-out-of-bounds Write in sha256_final
+        KASAN: slab-out-of-bounds Write in sha512_finup
+        KASAN: slab-out-of-bounds Write in sha1_finup
+Session 3:
+    Template:  2018-06-06 - e0e534c6c2485161cf80d4ab7f7658c85fabc83f
+    Syzkaller: 2018-06-06 - e0e534c6c2485161cf80d4ab7f7658c85fabc83f
+    Kernel:    2018-06-06 - 8b70543e9af036984a52800811416b74978ae4de
+    Compiler:  gcc-8.0.1-20180412
+    The bug was found in 2 minutes
+        KASAN: slab-out-of-bounds Write in sha512_final
+        KASAN: slab-out-of-bounds Write in sha1_finup
+Session 4:
+    Template:  2018-06-06 - e0e534c6c2485161cf80d4ab7f7658c85fabc83f
+    Syzkaller: 2018-06-06 - e0e534c6c2485161cf80d4ab7f7658c85fabc83f
+    Kernel:    2018-06-06 - 10b1eb7d8ce5635a7deb273f8291d8a0a7681de1
+    Compiler:  gcc-8.0.1-20180412
+    The bug was found in 2 minutes
+        KASAN: slab-out-of-bounds Write in sha1_finup
+Confirming the bisected kernel commit.
+Session 5 after:
+    Template:  2018-06-06 - e0e534c6c2485161cf80d4ab7f7658c85fabc83f
+    Syzkaller: 2018-06-06 - e0e534c6c2485161cf80d4ab7f7658c85fabc83f
+    Kernel:    2018-06-06 - 10b1eb7d8ce5635a7deb273f8291d8a0a7681de1
+The bug was found in a previous identical fuzzing session.
+
+====================================================================================================================================================
+Success
+Revealing Factor:   Guilty Merge
+Version:            2018-06-06 - 10b1eb7d8ce5635a7deb273f8291d8a0a7681de1
+Commit Name:        Merge branch 'next-general' of git://git.kernel.org/pub/scm/linux/kernel/git/jmorris/linux-security
+
+Bug Name:           KASAN: slab-out-of-bounds Write in sha1_finup
+Bug Link:           https://syzkaller.appspot.com/bug?id=4fbc4bf3d1300cf7629a7f63686b5d9cf94ed429
+Arch:               i386
+Finding Commit:     2018-06-07 - 1c8c5a9d38f607c0b6fd12c91cbe1a4418762a21
+Guilty Merge:       2018-06-06 - 10b1eb7d8ce5635a7deb273f8291d8a0a7681de1
+Guilty Commit:      2018-05-11 - 383203eff718d7397ffc68ac6c3ed644d3017fc7

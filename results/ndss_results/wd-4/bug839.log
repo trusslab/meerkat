@@ -1,0 +1,46 @@
+general protection fault in dst_dev_put,https://syzkaller.appspot.com/bug?id=2d6a9427fceb9941d6d87128130babe7e40baba0
+Repository: linux
+Arch: i386
+Finding: 2018-12-10 - f5d582777bcb1c7ff19a5a2343f66ea01de401c6
+Guilty:  2015-12-25 - 039f50629b7f860f36644ed1f34b27da9aa62f43
+Duplicate Names:
+    general protection fault in icmpv6_xrlim_allow
+    general protection fault in ip6_rcv_finish
+    KASAN: user-memory-access Read in ip6_hold_safe
+    BUG: unable to handle kernel paging request in ipv6_rcv
+    KASAN: slab-out-of-bounds Read in dst_dev_put
+    KASAN: slab-out-of-bounds Read in __fib6_drop_pcpu_from
+    general protection fault in rt_cache_valid
+    general protection fault in dst_dev_put
+    KASAN: slab-out-of-bounds Read in rt_cache_valid
+    BUG: unable to handle kernel paging request in dst_dev_put
+    KASAN: use-after-free Read in rt_cache_valid
+Single Proc Allocation
+VMs:8
+CPUs:2
+Procs:16
+Max time:30
+Max attempts:3
+Testing the finding commit.
+
+2023-06-11 11:54:59
+Session:   1
+Template:  2018-12-11 - 7795ae03c0d2358a40130693e40e0fcab5232ed2
+Syzkaller: 2018-12-11 - 7795ae03c0d2358a40130693e40e0fcab5232ed2
+Kernel:    2018-12-10 - f5d582777bcb1c7ff19a5a2343f66ea01de401c6
+Compiler:  gcc-8.0.1-20180412
+Attempt 1:
+    Time  Bug Name
+      10  KASAN: use-after-free Read in kfree_skb
+      14  KASAN: use-after-free Read in kfree_skb
+      29  KASAN: use-after-free Read in kfree_skb
+      30  KASAN: use-after-free Read in kfree_skb
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    Time  Bug Name
+       2  KASAN: use-after-free Write in find_get_pid
+      22  KASAN: use-after-free Read in kfree_skb
+The bug was not found.
+
+Failure: This bug cannot be found at the finding commit.

@@ -1,0 +1,140 @@
+WARNING: refcount bug in smap_release_sock,https://syzkaller.appspot.com/bug?id=e493feda726c849487b64e6304b045a32169db1b
+Repository: linux
+Arch: amd64
+Finding: 2018-06-22 - 27db64f65f1be2f2ee741a1bf20d8d13d62c167f
+Guilty:  2018-02-06 - 1aa12bdf1bfb95db7e75bfecf0e39a65f4e8fbf8
+No Duplicates
+Single Proc Allocation
+VMs:8
+CPUs:2
+Procs:16
+Max time:30
+Max attempts:3
+Testing the finding commit.
+
+2023-04-04 15:22:28
+Session:   1
+Template:  2018-06-22 - 89d2e600233c301002ab9c6a9f7db9f4fd2071f6
+Syzkaller: 2018-06-22 - 89d2e600233c301002ab9c6a9f7db9f4fd2071f6
+Kernel:    2018-06-21 - 27db64f65f1be2f2ee741a1bf20d8d13d62c167f
+Compiler:  gcc-8.0.1-20180412
+Attempt 1:
+    Time  Bug Name
+***    2  WARNING: refcount bug in smap_release_sock
+***    2  WARNING: refcount bug in smap_release_sock
+Attempt 2:
+    Time  Bug Name
+       2  KASAN: use-after-free Read in bpf_tcp_close
+       7  INFO: task hung in __sb_start_write
+      22  lost connection to test machine
+      25  KASAN: slab-out-of-bounds Write in process_preds
+      26  lost connection to test machine
+      30  lost connection to test machine
+Attempt 3:
+    Time  Bug Name
+       2  KASAN: use-after-free Read in bpf_tcp_close
+***    2  WARNING: refcount bug in smap_release_sock
+***    2  WARNING: refcount bug in smap_release_sock
+Attempt 4: (RETRY)
+    Time  Bug Name
+       2  KASAN: use-after-free Read in bpf_tcp_close
+***    2  WARNING: refcount bug in smap_release_sock
+The bug was found.
+
+New Max Time: 21.
+Merge Commit: 2018-02-06 - 41b0530eca69740f0c69eb5a867c41b01ec2e551.
+
+==== Template Retrospection ====
+25 template changes in [2018-02-06, 2018-06-22].
+
+2023-04-04 16:58:50
+Session:   2
+Template:  2018-03-25 - 2675f920652cc9218b4b3dc513c76b0546a5a5ae
+Syzkaller: 2018-03-25 - 2675f920652cc9218b4b3dc513c76b0546a5a5ae
+Kernel:    2018-03-25 - 3eb2ce825ea1ad89d20f7a3b5780df850e4be274
+Compiler:  gcc-8.0.1-20180301
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    Time  Bug Name
+      20  no output from test machine
+      20  lost connection to test machine
+Attempt 4: (RETRY)
+    Time  Bug Name
+      16  no output from test machine
+      16  no output from test machine
+      18  WARNING in tracepoint_probe_register_prio
+The bug was not found.
+
+2023-04-04 19:26:37
+Session:   3
+Template:  2018-05-17 - 256b70f9cfff65292358cf8c0b9d2611db56c326
+Syzkaller: 2018-05-17 - 256b70f9cfff65292358cf8c0b9d2611db56c326
+Kernel:    2018-05-17 - 3acf4e395260e3bd30a6fa29ba7eada4bf7566ca
+Compiler:  gcc-8.0.1-20180412
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+The bug was not found.
+
+2023-04-04 21:28:56
+Session:   4
+Template:  2018-06-07 - 85e7c1404ffb155db3fd40b21467402b308f2a7c
+Syzkaller: 2018-06-07 - 85e7c1404ffb155db3fd40b21467402b308f2a7c
+Kernel:    2018-06-07 - ba1b7309fc2e909a5828c36a7cd187e5d7df6f53
+Compiler:  gcc-8.0.1-20180412
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    Time  Bug Name
+***   14  WARNING: refcount bug in smap_release_sock
+***   14  WARNING: refcount bug in smap_release_sock
+The bug was found.
+
+2023-04-04 22:53:37
+Session:   5
+Template:  2018-05-18 - 849705db5cd36907fecfb80a4e3339542033b11e
+Syzkaller: 2018-05-18 - 849705db5cd36907fecfb80a4e3339542033b11e
+Kernel:    2018-05-18 - 2c71d338bef2cc8a2e5f8ebe70788eeff246fcd8
+Compiler:  gcc-8.0.1-20180412
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+The bug was not found.
+
+2023-04-05 00:51:06
+Session:   6
+Template:  2018-05-18 - 849705db5cd36907fecfb80a4e3339542033b11e
+Syzkaller: 2018-06-07 - 85e7c1404ffb155db3fd40b21467402b308f2a7c
+Kernel:    2018-06-07 - ba1b7309fc2e909a5828c36a7cd187e5d7df6f53
+Compiler:  gcc-8.0.1-20180412
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+The bug was not found.
+
+====================================================================================================================================================
+Revealing Factor:   Template Update
+Version:            2018-06-07 - 85e7c1404ffb155db3fd40b21467402b308f2a7c
+Commit Name:        sys/linux: add AF_XDP support
+
+Bug Name:           WARNING: refcount bug in smap_release_sock
+Bug Link:           https://syzkaller.appspot.com/bug?id=e493feda726c849487b64e6304b045a32169db1b
+Arch:               amd64
+Finding Date:       2018-06-22
+Finding Commit:     2018-06-21 - 27db64f65f1be2f2ee741a1bf20d8d13d62c167f
+Guilty Merge:       2018-02-06 - 41b0530eca69740f0c69eb5a867c41b01ec2e551
+Guilty Commit:      2018-02-06 - 1aa12bdf1bfb95db7e75bfecf0e39a65f4e8fbf8
+
+Possible Blocking Bugs:

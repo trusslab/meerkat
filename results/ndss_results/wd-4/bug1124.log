@@ -1,0 +1,39 @@
+KASAN: use-after-free Read in __wake_up_common,https://syzkaller.appspot.com/bug?id=e65349bf521316a169c92614cbc68d53ac1f2bed
+Repository: linux
+Arch: i386
+Finding: 2018-01-19 - 8dd903d2cf7b6dfe98be7c19f891882583c7266e
+Guilty:  2010-01-15 - 3a4d5c94e959359ece6d6b55045c3f046677f55c
+Duplicate Names:
+    KASAN: use-after-free Read in perf_trace_lock_acquire
+    KASAN: use-after-free Read in __list_add_valid
+    WARNING in vhost_dev_cleanup
+    KASAN: use-after-free Read in __wake_up_common
+VMs:4
+CPUs:4
+Procs:24
+Max time:30
+Max attempts:3
+Testing the finding commit.
+
+2023-06-19 02:32:31
+Session:   1
+Template:  2018-01-19 - fbbdcd922893cc95f78a9e00adbf5fec1b5fcff6
+Syzkaller: 2018-01-19 - fbbdcd922893cc95f78a9e00adbf5fec1b5fcff6
+Kernel:    2018-01-19 - 8dd903d2cf7b6dfe98be7c19f891882583c7266e
+Compiler:  gcc-7.1.1-20170620
+Attempt 1:
+    Time  Bug Name
+       5  WARNING in tracepoint_probe_register_prio
+       6  WARNING in tracepoint_probe_register_prio
+Attempt 2:
+    Time  Bug Name
+       7  WARNING in tty_set_ldisc
+       7  no output from test machine
+      13  WARNING in tracepoint_probe_register_prio
+Attempt 3:
+    Time  Bug Name
+       7  WARNING in tracepoint_probe_register_prio
+       7  kernel panic: n_tty: init_tty
+The bug was not found.
+
+Failure: This bug cannot be found at the finding commit.
