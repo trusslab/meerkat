@@ -2,7 +2,7 @@
 
 set -e
 
-bugfile=/mnt/sda/jtbursey/SyzInspector/parse/bugs-all_repro.csv
+bugfile=/mnt/sdd/jtbursey/SyzInspector/parse/bugs-from_oakland.csv
 totalLines=$(wc -l $bugfile | grep -o "[0-9]*")
 
 startLine=1

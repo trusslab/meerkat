@@ -16,8 +16,7 @@ const std::string LINUX_REPO_REMOTE = "https://git.kernel.org/pub/scm/linux/kern
 const std::string SYZBOT_FIXED_LINK = "https://syzkaller.appspot.com/upstream/fixed";
 
 const std::string OLDEST_SYZKALLER_HASH = "87f9bdb8688ceafa804eb49d566bdc38dfb9fd5e";
-const std::string LATEST_SYZKALLER_HASH = "7a7cb3044bb1ce0ba83e549d64c152bb5dacb98a";
-//const std::string LATEST_SYZKALLER_HASH = "7e83566529c0c9fd1882625e157ad53383fe3168";
+const std::string LATEST_SYZKALLER_HASH = "a4ae4f428721da42ac15f07d6f3b54584dedee27";
 
 const std::vector<std::string> LINUX_BROKEN_VERSONS = {};
 
