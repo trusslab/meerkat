@@ -17,6 +17,7 @@ done
 
 echo "Looking for bugs..."
 snapshot=$(lynx -dump -dont_wrap_pre -width=300 $link)
+# ******* New bugs use a different url. Fix for future runs
 alllinks=$(echo "$snapshot" | grep "https:\/\/syzkaller\.appspot\.com\/bug?id\=[0-9a-f]*$" | cat)
 goodbugs=$(echo "$snapshot" | grep -E ' C | syz ' | cat)
 
