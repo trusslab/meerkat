@@ -1,5 +1,6 @@
 import os
 import time
+import string
 from typing import List
 from urllib.request import urlopen
 from lxml import html
@@ -51,7 +52,7 @@ class Bugdata:
         self.truefind = ""                  # the date the bug was first found (out of all crashes)
         self.fixCommits = []                # the latest commit that links the guilty commit
         self.guiltyCommits = []             # the earliest guilty commit
-    
+
     def valid_crashes(self) -> List[CrashEntry]:
         crashes = []
 
@@ -80,34 +81,34 @@ class Bugdata:
 
     def validate(self) -> bool:
         if self.name == "":
-            print("Bug: Bad name")
+            print("Bug: Bad name", flush=True)
             return False
         elif self.link == "":
-            print("Bug: Bad link")
+            print("Bug: Bad link", flush=True)
             return False
         elif self.hash == "":
-            print("Bug: Bad hash")
+            print("Bug: Bad hash", flush=True)
             return False
         elif self.hasrepro == False or len(self.reproducers()) == 0:
-            print("Bug: No reproducer")
+            print("Bug: No reproducer", flush=True)
             return False
         elif self.bit32 == "":
-            print("Bug: Bad 32-bit decision")
+            print("Bug: Bad 32-bit decision", flush=True)
             return False
         elif len(self.crashes) == 0:
-            print("Bug: No crashes")
+            print("Bug: No crashes", flush=True)
             return False
         elif self.anchor == None:
-            print("Bug: No valid anchor")
+            print("Bug: No valid anchor", flush=True)
             return False
         elif self.truefind == "":
-            print("Bug: Bad truefind date")
+            print("Bug: Bad truefind date", flush=True)
             return False
         elif len(self.fixCommits) == 0:
-            print("Bug: No fixing commits")
+            print("Bug: No fixing commits", flush=True)
             return False
         elif len(self.guiltyCommits) == 0:
-            print("Bug: No guilty commits")
+            print("Bug: No guilty commits", flush=True)
             return False
         return True
 
@@ -194,19 +195,19 @@ def filter_bugs(bugs : List[Bugdata]) -> List[Bugdata]:
 
     return newbugs
 
-def get_repros_arr(repro_elements) -> List[str]:
-    repros = []
+def get_link_arr(link_elements, prepend = "") -> List[str]:
+    links = []
 
-    for x in repro_elements:
+    for x in link_elements:
         if len(x.xpath("a/@href")) == 1:
-            repros.append(syzbotlink + x.xpath("a/@href")[0])
+            links.append(prepend + x.xpath("a/@href")[0])
         elif len(x.xpath("a/@href")) > 1:
-            print("Warning: Found more than one reproducer link in crash entry!")
-            repros.append(syzbotlink + x.xpath("a/@href")[0])
+            print("Warning: Found more than one link in crash entry!")
+            links.append(prepend + x.xpath("a/@href")[0])
         else:
-            repros.append("")
+            links.append("")
     
-    return repros
+    return links
 
 def filter_crashes_manager(crashes : List[CrashEntry]) -> List[CrashEntry]:
     newcrashes = []
@@ -253,11 +254,12 @@ def fetch_bug(bug : Bugdata) -> Bugdata:
     bughtml = fetch_link(bug.link)
 
     times = bughtml.xpath("//body/table[@class='list_table']/tbody/tr/td[@class='time']/text()")
-    kernels = bughtml.xpath("//body/table[@class='list_table']/tbody/tr/td[@class='tag']/a/@href")[0::2]
+    kernels = bughtml.xpath("//body/table[@class='list_table']/tbody/tr/td[@class='tag']")[0::2]
+    kernels = get_link_arr(kernels)
     configs = bughtml.xpath("//body/table[@class='list_table']/tbody/tr/td[@class='config']/a/@href")
-    repros = bughtml.xpath("//body/table[@class='list_table']/tbody/tr/td[@class='config']/following-sibling::td[3][@class='repro']")
-    repros = get_repros_arr(repros)
-    managers = bughtml.xpath("//body/table[@class='list_table']/tbody/tr/td[@class='manager'][starts-with(text(), 'ci')]/text()")
+    repros = bughtml.xpath("//body/table[@class='list_table']/tbody/tr/td[@class='config']/following-sibling::td[3][contains(@class, 'repro')]")
+    repros = get_link_arr(repros, syzbotlink)
+    managers = bughtml.xpath("//body/table[@class='list_table']/tbody/tr/td[@class='manager'][starts-with(text(), 'ci') or starts-with(text(), 'skylake')]/text()")
 
     bug.crashes = transpose_crash_entries(times, kernels, configs, repros, managers)
 
@@ -289,11 +291,14 @@ def fetch_bug(bug : Bugdata) -> Bugdata:
         fixtext = "\n".join(fixtext).split("\n")
         for line in fixtext:
             if line.startswith("Fixes:"):
-                guiltyhashes.append(line.split(" ")[1])
+                hash = line.split(" ")[1]
+                if len(hash) == 12 and all(c in string.hexdigits for c in hash):
+                    guiltyhashes.append(hash)
 
     bug.fixCommits.sort(reverse=True, key=sort_date)
 
     for hash in guiltyhashes:
+        # I think there is some issue here with too many requests or timeout or something. A problem for a later date.
         searchhtml = fetch_link("https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/log/?qt=range&q=" + hash)
         guiltydate = searchhtml.xpath("//table[@class='list nowrap']/tr[2]/td[1]/span/text()")[0]
         guiltylink = "https://git.kernel.org" + searchhtml.xpath("//table[@class='list nowrap']/tr[2]/td[2]/a/@href")[0]
@@ -310,7 +315,7 @@ def fetch_bug(bug : Bugdata) -> Bugdata:
         print("Patch:")
         bug.fixCommits[0].print()
         print()
-        print("Guilty Commit:")
+        print("Guilty Commit:", flush=True)
         bug.guiltyCommits[0].print()
         return bug
 
@@ -330,7 +335,7 @@ def main():
     bugs = transpose_bug_entries(bugnames, buglinks, bugrepros)
     print(len(bugs), " bugs found")
     bugs = filter_bugs(bugs)
-    print(len(bugs), " bugs passed first filter")
+    print(len(bugs), " bugs passed first filter", flush=True)
 
     if (len(bugs) == 0):
         os._exit(os.EX_DATAERR)
@@ -344,6 +349,7 @@ def main():
         bug = fetch_bug(b)
         if bug != None:
             file.write(",".join([bug.link, bug.name, bug.truefind, bug.fixCommits[0].link, bug.fixCommits[0].date, bug.anchor.config, bug.anchor.kernel, bug.anchor.date, bug.guiltyCommits[0].link, bug.guiltyCommits[0].date, bug.bit32, " ".join(bug.reproducers())]) + "\n")
+            file.flush()
         time.sleep(1)
 
     file.close()
