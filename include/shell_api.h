@@ -27,7 +27,8 @@ int sed_i(const std::string &, const std::string &);
 bool grep_to_find(const std::string &, const std::string &);
 
 // runs make for the current directory
-int make(int, const std::string & = "");
+int make(unsigned int, const std::string & = "");
+int make(unsigned int, const std::vector<std::string>);
 
 // builds syzkaller for 386 POCs using syz-env
 int syz_env_cross_compile(const std::string &, const Bug_Info &);
