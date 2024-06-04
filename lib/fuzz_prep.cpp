@@ -109,24 +109,27 @@ vector<Version> grab_compiler_versions(const string &filename)
     return versions;
 }
 
-string export_compiler_sub(const vector<Version> &versions, const Date &kernel_date, const InspectorConfig &inspector)
+string compiler_mux(const vector<Version> &versions, const Date &kernel_date, const InspectorConfig &inspector)
 {
-    string v;
     int i;
     // Assumes list of versions is sorted least to greatest
     for (i = versions.size() - 1; i >= 0 && kernel_date < versions.at(i).date; i--);
     i = i < 0 ? 0 : i;
 
-    export_env("PATH=" + inspector.get_gcc_dir() + "/" + versions.at(i).name + "/bin:" + get_path());
-    return versions.at(i).name;
+    return inspector.get_gcc_dir() + "/" + versions.at(i).name;
 }
 
-string export_compiler(const vector<Version> &gcc_versions, const vector<Version> &clang_versions, const Date &kernel_date, const InspectorConfig &inspector, bool useclang)
+string get_compiler(const vector<Version> &gcc_versions, const vector<Version> &clang_versions, const Date &kernel_date, const InspectorConfig &inspector, Compiler_Setting comp)
 {
-    if (useclang)
-        return export_compiler_sub(clang_versions, kernel_date, inspector);
-    else
-        return export_compiler_sub(gcc_versions, kernel_date, inspector);
+    switch (comp)
+    {
+        case COMPILER_GCC:
+            return compiler_mux(gcc_versions, kernel_date, inspector);
+        case COMPILER_CLANG:
+            return compiler_mux(clang_versions, kernel_date, inspector);
+        case COMPILER_CLANG_14:
+            return "clang-14";
+    }
     
     return "";
 }
@@ -228,7 +231,7 @@ void patch_kernel(const Bug_Info &bug, const InspectorConfig &inspector, const V
     cd(old_dir);
 }
 
-int prep_kernel(const Bug_Info &bug, const InspectorConfig &inspector, const Version &linux_version, const string &repo) // repoistory &repo, const hash
+int prep_kernel(const Bug_Info &bug, const InspectorConfig &inspector, const Version &linux_version, const string &repo, const string &compiler)
 {
     int err = 0;
     cd(inspector.get_inspect_dir());
@@ -250,11 +253,11 @@ int prep_kernel(const Bug_Info &bug, const InspectorConfig &inspector, const Ver
 
     // build the kernel
     cd(bug.get_kerneldir());
-    err = make(inspector.get_makeprocs(), "olddefconfig");
+    err = make(inspector.get_makeprocs(), {"olddefconfig", "CC="+compiler});
     if (err < 0)
         return err;
     cout << SPACER;
-    err = make(inspector.get_makeprocs());
+    err = make(inspector.get_makeprocs(), "CC="+compiler);
     if (err < 0)
     {
         cerr << "Error: The kernel failed to make.\n";

@@ -26,8 +26,9 @@ using namespace std;
 
 int main(int argc, char ** argv)
 {
-    bool useclang = false, use_poc = true, find_only = false, no_merge = false, safe_mode = false;
+    bool use_poc = true, find_only = false, no_merge = false, safe_mode = false;
     int max_time = 30, fuzztimes = 3, id, session_count = 0, r, l, m, err = 0, k;
+    Compiler_Setting compiler_setting;
     string find_hash, guilty_hash, 
            linux_repo_remote, logfilename,
            compiler, tmp_path,
@@ -307,6 +308,11 @@ int main(int argc, char ** argv)
         goto finish;
     }
 
+    if (bug.get_name().find("KMSAN") != string::npos)
+        compiler_setting = COMPILER_CLANG_14;
+    else
+        compiler_setting = COMPILER_GCC; // default for now
+
     finding_version.name = find_hash;
     guilty_version.name = guilty_hash;
     finding_version.date = kernel_versions.front().date;
@@ -349,9 +355,9 @@ int main(int argc, char ** argv)
     log_session_info(logfile, this_session, ++session_count);
 
     cout << "Making the kernel.\n";
-    compiler = export_compiler(gcc_versions, clang_versions, linux_version.date, inspector, useclang);
+    compiler = get_compiler(gcc_versions, clang_versions, linux_version.date, inspector, compiler_setting);
     log_session_compiler(logfile, compiler);
-    err = prep_kernel(bug, inspector, linux_version, linux_repo_remote);
+    err = prep_kernel(bug, inspector, linux_version, linux_repo_remote, compiler);
     clean_path(tmp_path);
     if (err < 0)
     {
@@ -477,9 +483,9 @@ int main(int argc, char ** argv)
             {
                 cout << SPACER
                     << "Making the kernel\n";
-                compiler = export_compiler(gcc_versions, clang_versions, linux_version.date, inspector, useclang);
+                compiler = get_compiler(gcc_versions, clang_versions, linux_version.date, inspector, compiler_setting);
                 log_session_compiler(logfile, compiler);
-                err = prep_kernel(bug, inspector, linux_version, linux_repo_remote);
+                err = prep_kernel(bug, inspector, linux_version, linux_repo_remote, compiler);
                 clean_path(tmp_path);
                 if (err < 0)
                 {
@@ -547,9 +553,9 @@ int main(int argc, char ** argv)
                 {
                     cout << SPACER
                         << "Making the kernel\n";
-                    compiler = export_compiler(gcc_versions, clang_versions, linux_version.date, inspector, useclang);
+                    compiler = get_compiler(gcc_versions, clang_versions, linux_version.date, inspector, compiler_setting);
                     log_session_compiler(logfile, compiler);
-                    err = prep_kernel(bug, inspector, linux_version, linux_repo_remote);
+                    err = prep_kernel(bug, inspector, linux_version, linux_repo_remote, compiler);
                     clean_path(tmp_path);
                     if (err < 0)
                     {
@@ -655,9 +661,9 @@ int main(int argc, char ** argv)
         {
             cout << SPACER
                  << "Making the kernel\n";
-            compiler = export_compiler(gcc_versions, clang_versions, linux_version.date, inspector, useclang);
+            compiler = get_compiler(gcc_versions, clang_versions, linux_version.date, inspector, compiler_setting);
             log_session_compiler(logfile, compiler);
-            err = prep_kernel(bug, inspector, linux_version, linux_repo_remote);
+            err = prep_kernel(bug, inspector, linux_version, linux_repo_remote, compiler);
             clean_path(tmp_path);
             if (err < 0)
             {
@@ -721,9 +727,9 @@ int main(int argc, char ** argv)
         {
             cout << SPACER
                 << "Making the kernel\n";
-            compiler = export_compiler(gcc_versions, clang_versions, bisect_version.date, inspector, useclang);
+            compiler = get_compiler(gcc_versions, clang_versions, bisect_version.date, inspector, compiler_setting);
             log_session_compiler(logfile, compiler);
-            err = prep_kernel(bug, inspector, bisect_version, linux_repo_remote);
+            err = prep_kernel(bug, inspector, bisect_version, linux_repo_remote, compiler);
             clean_path(tmp_path);
             if (err < 0)
             {
@@ -789,9 +795,9 @@ int main(int argc, char ** argv)
     {
         cout << SPACER
              << "Making the kernel\n";
-        compiler = export_compiler(gcc_versions, clang_versions, linux_version.date, inspector, useclang);
+        compiler = get_compiler(gcc_versions, clang_versions, linux_version.date, inspector, compiler_setting);
         log_session_compiler(logfile, compiler);
-        err = prep_kernel(bug, inspector, linux_version, linux_repo_remote);
+        err = prep_kernel(bug, inspector, linux_version, linux_repo_remote, compiler);
         clean_path(tmp_path);
         if (err < 0)
         {
@@ -862,8 +868,8 @@ int main(int argc, char ** argv)
     // we only need one kernel version
     cout << SPACER
          << "Making the kernel\n";
-    compiler = export_compiler(gcc_versions, clang_versions, bisect_version.date, inspector, useclang);
-    err = prep_kernel(bug, inspector, bisect_version, linux_repo_remote);
+    compiler = get_compiler(gcc_versions, clang_versions, bisect_version.date, inspector, compiler_setting);
+    err = prep_kernel(bug, inspector, bisect_version, linux_repo_remote, compiler);
     clean_path(tmp_path);
     if (err < 0)
     {

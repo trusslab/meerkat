@@ -10,6 +10,8 @@
 #include <vector>
 #include <iostream>
 
+enum Compiler_Setting {COMPILER_GCC = 0, COMPILER_CLANG, COMPILER_CLANG_14};
+
 // reads the reproducer file to determine how many
 // procs syzbot used to trigger the bug. The number
 // of procs can be used to determine the threadedness of the bug
@@ -23,16 +25,15 @@ VMConfig determine_threadedness(const InspectorConfig &, const Bug_Info &, std::
 // in vector form
 std::vector<Version> grab_compiler_versions(const std::string &);
 
-// exports the correct gcc version to the path for use.
-// returns the name of the compiler that was exported
-std::string export_compiler(const std::vector<Version> &, const std::vector<Version> &, const Date &, const InspectorConfig &, bool = false);
+// returns the name of the compiler to be used
+std::string get_compiler(const std::vector<Version> &, const std::vector<Version> &, const Date &, const InspectorConfig &, const Compiler_Setting = COMPILER_GCC);
 
 // removes gcc from the path (actually just resets the path)
 int clean_path(const std::string &);
 
 // Grabs the correct kernel version, applies any patches needed,
 // copies the config in, and build the kernel
-int prep_kernel(const Bug_Info &, const InspectorConfig &, const Version &, const std::string &);
+int prep_kernel(const Bug_Info &, const InspectorConfig &, const Version &, const std::string &, const std::string &);
 
 // runs make clean
 int clean_kernel(const Bug_Info &);

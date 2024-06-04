@@ -1,8 +1,10 @@
 #include <shell_api.h>
 #include <exec_api.h>
 #include <inspector_config.h>
+#include <my_string.h>
 
 #include <string>
+#include <vector>
 #include <iostream>
 #include <cctype>
 
@@ -114,32 +116,48 @@ bool grep_to_find(const string &expr, const string &file)
     return ret == 0 ? true : false;
 }
 
-int make(int procs, const string &option)
+int make(unsigned int procs, const vector<string> &opts)
 {
-    char command[] = "make";
+    std::string argstr = "make -j" + to_string(procs) + " -f Makefile";
+    vector<string> spl = split(argstr, ' ');
 
-    string j = "-j" + to_string(procs);
-    char * arg1 = new char[j.size() + 1];
-    strcpy(arg1, j.c_str());
+    for (string o : opts)
+        if (!o.empty())
+            spl.push_back(o);
+    
+    const char ** arg_list = new const char*[spl.size()+1];
+    for (int i = 0; i < spl.size(); i++)
+        arg_list[i] = spl.at(i).c_str();
 
-    char arg2[] = "-f";
-    char arg3[] = "Makefile";
+    arg_list[spl.size()] = nullptr;
 
-    char * arg4 = nullptr;
+    int err = exec_and_wait("make", (char **)arg_list);
+    if (err != 0)
+        cerr << "Warning: make exited with error status 0x" << hex << err << endl << dec << flush;
+
+    delete[] arg_list;
+    return (err == 0 ? 0 : -1);
+}
+
+int make(unsigned int procs, const string &option)
+{
+    string argstr = "make -j" + to_string(procs) + " -f Makefile";
+    vector<string> spl = split(argstr, ' ');
+
     if (!option.empty())
-    {
-        arg4 = new char[option.size() + 1];
-        strcpy(arg4, option.c_str());
-    }
+        spl.push_back(option);
 
-    char * arg_list[] = {command, arg1, arg2, arg3, arg4, nullptr};
+    const char ** arg_list = new const char*[spl.size()+1];
+    for (int i = 0; i < spl.size(); i++)
+        arg_list[i] = spl.at(i).c_str();
 
-    int err = exec_and_wait("make", arg_list);
+    arg_list[spl.size()] = nullptr;
 
-    delete[] arg1;
-    if (arg4)
-        delete[] arg4;
+    int err = exec_and_wait("make", (char **)arg_list);
+    if (err != 0)
+        cerr << "Warning: make exited with error status 0x" << hex << err << endl << dec << flush;
 
+    delete[] arg_list;
     return (err == 0 ? 0 : -1);
 }
 
