@@ -425,7 +425,7 @@ int main(int argc, char ** argv)
         if (!merge_commit.name.empty())
         {
             cout << "Merge commit found: " << merge_commit.name << ".\n";
-            logfile << "Merge Commit: " << merge_commit.date.get_date() << " - " << merge_commit.name << ".\n" << flush;
+            logfile << "Merge Commit: " << merge_commit.date.get_date() << " - " << merge_commit.name << "\n" << flush;
             low_date = merge_commit.date > SYZBOT_BEGIN_DATE ? merge_commit.date : SYZBOT_BEGIN_DATE;
             // cut the kernel_versions here. Find the merge commit, then erase everything after it.
             kernel_versions.erase(kernel_versions.begin() + get_index_by_name(kernel_versions, merge_commit.name) + 1, kernel_versions.end());
