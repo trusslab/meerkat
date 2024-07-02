@@ -5,6 +5,7 @@
 #include <bug_info.h>
 
 #include <string>
+#include <vector>
 
 // returns the path environment variable
 std::string get_path();
@@ -28,7 +29,7 @@ bool grep_to_find(const std::string &, const std::string &);
 
 // runs make for the current directory
 int make(unsigned int, const std::string & = "");
-int make(unsigned int, const std::vector<std::string>);
+int make(unsigned int, const std::vector<std::string> &);
 
 // builds syzkaller for 386 POCs using syz-env
 int syz_env_cross_compile(const std::string &, const Bug_Info &);
