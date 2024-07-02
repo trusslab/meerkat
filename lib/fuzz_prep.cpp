@@ -125,9 +125,9 @@ string get_compiler(const vector<Version> &gcc_versions, const vector<Version> &
     switch (comp)
     {
         case COMPILER_GCC:
-            return compiler_mux(gcc_versions, kernel_date, inspector);
+            return compiler_mux(gcc_versions, kernel_date, inspector)+"/bin/gcc";
         case COMPILER_CLANG:
-            return compiler_mux(clang_versions, kernel_date, inspector);
+            return compiler_mux(clang_versions, kernel_date, inspector)+"/bin/clang";
         case COMPILER_CLANG_14:
             return "clang-14";
     }
