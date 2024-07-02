@@ -68,7 +68,7 @@ int skip_commit(const int r, const int l, const int mid, vector<Version> &versio
         m += (s < 100 ? s : 100);
     }
     
-    if (m < r)
+    if (m < r && !versions.at(m).skipped)
         return m;
     
     m = mid;
@@ -78,7 +78,7 @@ int skip_commit(const int r, const int l, const int mid, vector<Version> &versio
         m -= (s < 100 ? s : 100);
     }
 
-    return m > l ? m : -1;
+    return (m > l && !versions.at(m).skipped) ? m : -1;
 }
 
 // Binary search abstracted here to include skipping.
