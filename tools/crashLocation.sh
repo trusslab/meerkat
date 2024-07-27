@@ -1,9 +1,7 @@
 #!/bin/bash
 
-set -e
-
-bugfile=/mnt/sdd/jtbursey/SyzInspector/parse/bugs-from_oakland.csv
-totalLines=$(wc -l $bugfile | grep -o "[0-9]*")
+bugfile=/mnt/sdd/jtbursey/SyzInspector/parse/bugs-2023-unique.csv
+totalLines=$(wc -l $bugfile | grep -o "^\([0-9]\+\)")
 
 startLine=1
 endLine=$totalLines
@@ -68,7 +66,15 @@ while (( $currentLine <= $endLine )); do
     echo "Function: $crashingFunc"
 
     # find a report from the bug page
-    bugSnapshot=$(lynx -dump -dont_wrap_pre -width=300 $bugLink)
+    prev=1
+    while (( prev != 0 )); do
+        bugSnapshot=$(lynx -dump -dont_wrap_pre -width=300 $bugLink)
+        prev=$?
+        if (( prev != 0 )); then
+            echo "playing nice"
+            sleep 5s
+        fi
+    done
     crash=$(echo "$bugSnapshot" | awk '/Crashes \(/,0' | grep " upstream " | grep -m 1 "\[\([0-9]\+\)\]\.config[ ]*\[\([0-9]\+\)\]console\|strace log[ ]*\[\([0-9]\+\)\]report" | cat)
     reportLinkNum=$(echo $crash | grep -o "\[\([0-9]\+\)\]report" | grep -o "\([0-9]\+\)" | cat)
     reportLink=$(echo "$bugSnapshot" | grep "^[ ]*${reportLinkNum}. http" | grep -o "http.*$" | cat)
@@ -91,6 +97,7 @@ while (( $currentLine <= $endLine )); do
             echo "$currentLine,$bugName,$bugLink,$crashingFunc,HELP" >> $outfile
         fi
         currentLine=$(( $currentLine + 1 ))
+        #sleep 1s
         continue
     fi
 
@@ -106,4 +113,5 @@ while (( $currentLine <= $endLine )); do
     fi
 
     currentLine=$(( $currentLine + 1 ))
+    #sleep 1s
 done
