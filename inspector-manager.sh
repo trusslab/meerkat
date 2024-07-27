@@ -166,13 +166,22 @@ while (( $line <= $endLine )); do
         fixAge=$(( $($inspectdir/helpers/diffdate $fixDate $findDate) ))
     fi
 
+    # ignore most recent bugs as they are broken to my elfutils
+    elfutilAge=$(( $($inspectdir/helpers/diffdate "2024-01-01" $findDate) ))
+
     # check that the time to find is good and interesting
     findAge=$(( $($inspectdir/helpers/diffdate $findDate $startDate) ))
 
-    if (( $findAge > 1 && $fixAge >= 0 )) && [[ $arch == $targetarch ]]; then
+    if (( $findAge > 1 && $fixAge >= 0 )) && [[ $arch == $targetarch ]] && (( $elfutilAge > 0 )); then
         # bug number and name
-        curBug="bug$line"
+        curBug="bug${line}"
         bugName="$(echo "$linetext" | awk -F',' '{ print $2; }')"
+        if [[ $(echo "${bugName}" | grep "^KMSAN" | cat) != "" ]]; then
+            echo ",KMSAN bug. Skip until clang" >> $logfile
+            echo "KMSAN bug on line ${line}"
+            line=$(( $line + 1 ))
+            continue
+        fi
 
         # kernel config - download it
         configlink=$(echo "$linetext" | awk -F',' '{ print $6; }')      # was $7
@@ -181,7 +190,6 @@ while (( $line <= $endLine )); do
         # reproducers - download them
         rm -rf $wd/reproducers/*
         allrepro=($(echo "$linetext" | awk -F',' '{ print $12; }'))
-        echo "${allrepro[@]}"
         reprocount=0
         for reprolink in ${allrepro[@]}; do
             reprocount=$(( $reprocount + 1 ))
@@ -240,7 +248,10 @@ while (( $line <= $endLine )); do
             echo ",bad parse" >> $logfile
         fi
     else
-        if (( $findAge <= 1 && $findAge >= 0 )); then
+        if (( $elfutilAge <= 0 )); then
+            echo "Bug found too recently (2024 check) on line $line: fixing: $fixDate, finding: $findDate, guilty: $guiltyDate"
+            echo ",2024 check" >> $logfile
+        elif (( $findAge <= 1 && $findAge >= 0 )); then
             echo "Bug was found within 1 day on line $line: $fixDate, finding: $findDate, guilty: $guiltyDate"
             echo ",too young" >> $logfile
         elif [[ $arch != $targetarch ]]; then
