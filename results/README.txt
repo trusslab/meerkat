@@ -18,7 +18,7 @@ found too soon after their introduction to be interesting (within 1 day), so the
 also ignored.
 
         Gathered    Tested  Ignored
-Batch1: 106         106     0
+Batch1: 104         104     0
 Batch2: 1197        1040    157
 Batch3: 413         263     150
 
