@@ -22,6 +22,11 @@ Batch1: 104         104     0
 Batch2: 1197        1040    157
 Batch3: 413         263     150
 
-Total:              1409
+Total:              1407
 
 There are additional READMEs in each batch explaining any irregularities.
+
+Collected and Processed Data:
+
+The data collected from each of the tested bugs is provided in collected-data.csv. To
+filter the data, we used a combination of Excel charts and pivot tables.
