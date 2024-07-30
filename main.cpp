@@ -973,12 +973,6 @@ report:
         logfile << "    " << b << endl;
 
 finish:
-    if (check_faulty_result(bug))
-    {
-        cout << "Revealing factor marked as faulty.\n";
-        logfile << "Warning: Revealing factor may be faulty.\n" << flush;
-    }
-
     cout << SPACER
         << "Cleaning up...";
 
