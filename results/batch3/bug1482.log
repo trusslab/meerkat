@@ -1,0 +1,131 @@
+WARNING in inet_csk_get_port,https://syzkaller.appspot.com/bug?extid=71e724675ba3958edb31
+Repository: linux
+Arch: amd64
+Finding: 2023-09-18 - 2cf0f715623872823a72e451243bbf555d10d032
+Guilty:  2023-09-13 - c48ef9c4aed3632566b57ba66cec6ec78624d4cb
+Duplicate Names:
+    WARNING in inet_csk_get_port
+    general protection fault in __inet_hash_connect
+    KASAN: use-after-free Write in inet_put_port
+    KASAN: use-after-free Read in inet_bind2_bucket_find
+Single Proc Allocation
+VMs:8
+CPUs:2
+Procs:16
+Max time:30
+Max attempts:3
+Testing the finding commit.
+
+2024-06-06 09:24:59
+Session:   1
+Template:  2023-09-13 - 0b6a67ac4b0dc26f43030c5edd01c9175f13b784
+Syzkaller: 2023-09-13 - 0b6a67ac4b0dc26f43030c5edd01c9175f13b784
+Kernel:    2023-09-18 - 2cf0f715623872823a72e451243bbf555d10d032
+Compiler:  gcc-10.2.1-20210110
+Attempt 1:
+    Time  Bug Name
+***    2  WARNING in inet_csk_get_port
+Attempt 2:
+    Time  Bug Name
+***    2  WARNING in inet_csk_get_port
+Attempt 3:
+    Time  Bug Name
+***    2  WARNING in inet_csk_get_port
+The bug was found.
+
+New Max Time: 10.
+Merge Commit: 2023-09-13 - ab6c4ec8742a653b1ba06215d9bccb31c4d87d0f.
+No template updates to inspect.
+
+==== Kernel Retrospection ====
+37 Linux commits in [2023-09-13, 2023-09-20].
+
+2024-06-06 09:48:00
+Session:   2
+Template:  2023-09-13 - 0b6a67ac4b0dc26f43030c5edd01c9175f13b784
+Syzkaller: 2023-09-13 - 0b6a67ac4b0dc26f43030c5edd01c9175f13b784
+Kernel:    2023-09-16 - fd455e77a67690aab2aae885fa0e2e2a9b98bd2b
+Compiler:  gcc-10.2.1-20210110
+Attempt 1:
+    Time  Bug Name
+***    2  WARNING in inet_csk_get_port
+The bug was found.
+
+2024-06-06 10:07:06
+Session:   3
+Template:  2023-09-13 - 0b6a67ac4b0dc26f43030c5edd01c9175f13b784
+Syzkaller: 2023-09-13 - 0b6a67ac4b0dc26f43030c5edd01c9175f13b784
+Kernel:    2023-09-15 - 9608c7b729e29c177525006711966ae0fd399b11
+Compiler:  gcc-10.2.1-20210110
+Attempt 1:
+    Time  Bug Name
+***    2  WARNING in inet_csk_get_port
+The bug was found.
+
+2024-06-06 10:26:21
+Session:   4
+Template:  2023-09-13 - 0b6a67ac4b0dc26f43030c5edd01c9175f13b784
+Syzkaller: 2023-09-13 - 0b6a67ac4b0dc26f43030c5edd01c9175f13b784
+Kernel:    2023-09-14 - a22730b1b4bf437c6bbfdeff5feddf54be4aeada
+Compiler:  gcc-10.2.1-20210110
+Attempt 1:
+    Time  Bug Name
+***    2  WARNING in inet_csk_get_port
+The bug was found.
+
+2024-06-06 10:45:29
+Session:   5
+Template:  2023-09-13 - 0b6a67ac4b0dc26f43030c5edd01c9175f13b784
+Syzkaller: 2023-09-13 - 0b6a67ac4b0dc26f43030c5edd01c9175f13b784
+Kernel:    2023-09-13 - bc6ed2fa24b14e40e1005488bbe11268ce7108fa
+Compiler:  gcc-10.2.1-20210110
+Attempt 1:
+    Time  Bug Name
+***    2  WARNING in inet_csk_get_port
+The bug was found.
+
+2024-06-06 11:02:58
+Session:   6
+Template:  2023-09-13 - 0b6a67ac4b0dc26f43030c5edd01c9175f13b784
+Syzkaller: 2023-09-13 - 0b6a67ac4b0dc26f43030c5edd01c9175f13b784
+Kernel:    2023-09-13 - 3c44191dd76cf9c0cc49adaf34384cbd42ef8ad2
+Compiler:  gcc-10.2.1-20210110
+Attempt 1:
+    Time  Bug Name
+***    2  WARNING in inet_csk_get_port
+The bug was found.
+
+2024-06-06 11:21:24
+Session:   7
+Template:  2023-09-13 - 0b6a67ac4b0dc26f43030c5edd01c9175f13b784
+Syzkaller: 2023-09-13 - 0b6a67ac4b0dc26f43030c5edd01c9175f13b784
+Kernel:    2023-09-13 - ab6c4ec8742a653b1ba06215d9bccb31c4d87d0f
+Compiler:  gcc-10.2.1-20210110
+Attempt 1:
+    Time  Bug Name
+***    2  WARNING in inet_csk_get_port
+The bug was found.
+
+== Confirming the bisected commit ==
+
+2024-06-06 11:39:25
+Session:   8
+Template:  2023-09-13 - 0b6a67ac4b0dc26f43030c5edd01c9175f13b784
+Syzkaller: 2023-09-13 - 0b6a67ac4b0dc26f43030c5edd01c9175f13b784
+Kernel:    2023-09-13 - ab6c4ec8742a653b1ba06215d9bccb31c4d87d0f
+The bug was found in a previous identical fuzzing session.
+
+====================================================================================================================================================
+Revealing Factor:   Guilty Merge
+Version:            2023-09-13 - ab6c4ec8742a653b1ba06215d9bccb31c4d87d0f
+Commit Name:        Merge branch 'tcp-bind-fixes'
+
+Bug Name:           WARNING in inet_csk_get_port
+Bug Link:           https://syzkaller.appspot.com/bug?extid=71e724675ba3958edb31
+Arch:               amd64
+Finding Date:       2023-09-20
+Finding Commit:     2023-09-18 - 2cf0f715623872823a72e451243bbf555d10d032
+Guilty Merge:       2023-09-13 - ab6c4ec8742a653b1ba06215d9bccb31c4d87d0f
+Guilty Commit:      2023-09-13 - c48ef9c4aed3632566b57ba66cec6ec78624d4cb
+
+Possible Blocking Bugs:

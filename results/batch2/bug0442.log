@@ -1,0 +1,136 @@
+UBSAN: shift-out-of-bounds in vhci_hub_control,https://syzkaller.appspot.com/bug?id=4ed0d6eea4561854b366170155a78652da4cef29
+Repository: linux
+Arch: amd64
+Finding: 2020-12-17 - a409ed156a90093a03fe6a93721ddf4c591eac87
+Guilty:  2017-06-13 - 03cd00d538a6feb0492cd153edf256ef7d7bd95e
+Duplicate Names:
+    UBSAN: shift-out-of-bounds in vhci_hub_control
+    UBSAN: undefined-behaviour in vhci_hub_control
+    UBSAN: shift-out-of-bounds in drivers/usb/usbip/vhci_hcd.c:LINE
+    UBSAN: Undefined behaviour in drivers/usb/usbip/vhci_hcd.c:LINE
+Single Proc Allocation
+VMs:8
+CPUs:2
+Procs:16
+Max time:30
+Max attempts:3
+Testing the finding commit.
+
+2023-04-29 17:30:41
+Session:   1
+Template:  2020-12-16 - 04201c0669446145fd9c347c5538da0ca13ff29b
+Syzkaller: 2020-12-16 - 04201c0669446145fd9c347c5538da0ca13ff29b
+Kernel:    2020-12-18 - a409ed156a90093a03fe6a93721ddf4c591eac87
+Compiler:  gcc-10.1.0-syz
+Attempt 1:
+    Time  Bug Name
+***    5  UBSAN: shift-out-of-bounds in vhci_hub_control
+Attempt 2:
+    Time  Bug Name
+***    4  UBSAN: shift-out-of-bounds in vhci_hub_control
+Attempt 3:
+    Time  Bug Name
+***    4  UBSAN: shift-out-of-bounds in vhci_hub_control
+The bug was found.
+
+New Max Time: 10.
+Merge Commit: 2017-07-04 - 362f6729cbb1d6bbab59e069f19441b0622ff7ec.
+
+==== Template Retrospection ====
+11 template changes in [2017-07-22, 2020-12-19].
+
+2023-04-29 19:15:03
+Session:   2
+Template:  2018-08-31 - a4718693a3d9fcabb02299b2ec07c19d8208c539
+Syzkaller: 2018-08-31 - a4718693a3d9fcabb02299b2ec07c19d8208c539
+Kernel:    2018-08-31 - 420f51f4ab6bce6e580390729fadb89c31123636
+Compiler:  gcc-8.0.1-20180412
+Attempt 1:
+    Time  Bug Name
+       5  lost connection to test machine
+       6  lost connection to test machine
+       9  no output from test machine
+       9  lost connection to test machine
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    Time  Bug Name
+       4  lost connection to test machine
+       7  lost connection to test machine
+Attempt 4: (RETRY)
+    Time  Bug Name
+      10  no output from test machine
+Attempt 5: (RETRY)
+    Time  Bug Name
+       7  lost connection to test machine
+Attempt 6: (RETRY)
+    Time  Bug Name
+       3  lost connection to test machine
+The bug was not found.
+Warning: This session is unstable.
+
+2023-04-29 21:13:00
+Session:   3
+Template:  2019-10-25 - f2635abc2ab7c5581a369c7907278190e72520cc
+Syzkaller: 2019-10-25 - f2635abc2ab7c5581a369c7907278190e72520cc
+Kernel:    2019-10-25 - b4b61b224d12ef12ff21cc598acce0ee818903ab
+Compiler:  gcc-9.0.0-20181231
+Attempt 1:
+    Time  Bug Name
+***    2  UBSAN: Undefined behaviour in drivers/usb/usbip/vhci_hcd.c:LINE
+The bug was found.
+
+2023-04-29 22:15:06
+Session:   4
+Template:  2019-10-01 - 9d33246a91aa72325ce8ef81007ce17dc133548d
+Syzkaller: 2019-10-01 - 9d33246a91aa72325ce8ef81007ce17dc133548d
+Kernel:    2019-09-30 - 54ecb8f7028c5eb3d740bb82b0f1d90f2df63c5c
+Compiler:  gcc-9.0.0-20181231
+Attempt 1:
+    Time  Bug Name
+***    2  UBSAN: Undefined behaviour in drivers/usb/usbip/vhci_hcd.c:LINE
+The bug was found.
+
+2023-04-29 23:19:19
+Session:   5
+Template:  2019-07-22 - 6a786da97c822c3ad536290c412f472e58342c91
+Syzkaller: 2019-07-22 - 6a786da97c822c3ad536290c412f472e58342c91
+Kernel:    2019-07-22 - 7b5cf701ea9c395c792e2a7e3b7caf4c68b87721
+Compiler:  gcc-9.0.0-20181231
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    Time  Bug Name
+       9  no output from test machine
+Attempt 3:
+    No crashes found.
+The bug was not found.
+
+2023-04-30 00:55:10
+Session:   6
+Template:  2019-07-22 - 6a786da97c822c3ad536290c412f472e58342c91
+Syzkaller: 2019-10-01 - 9d33246a91aa72325ce8ef81007ce17dc133548d
+Kernel:    2019-09-30 - 54ecb8f7028c5eb3d740bb82b0f1d90f2df63c5c
+Compiler:  gcc-9.0.0-20181231
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+The bug was not found.
+
+====================================================================================================================================================
+Revealing Factor:   Template Update
+Version:            2019-10-01 - 9d33246a91aa72325ce8ef81007ce17dc133548d
+Commit Name:        sys/linux: add new syscall descriptions for devio and usbmon
+
+Bug Name:           UBSAN: shift-out-of-bounds in vhci_hub_control
+Bug Link:           https://syzkaller.appspot.com/bug?id=4ed0d6eea4561854b366170155a78652da4cef29
+Arch:               amd64
+Finding Date:       2020-12-19
+Finding Commit:     2020-12-18 - a409ed156a90093a03fe6a93721ddf4c591eac87
+Guilty Merge:       2017-07-04 - 362f6729cbb1d6bbab59e069f19441b0622ff7ec
+Guilty Commit:      2017-06-13 - 03cd00d538a6feb0492cd153edf256ef7d7bd95e
+
+Possible Blocking Bugs:

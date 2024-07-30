@@ -1,0 +1,59 @@
+WARNING in percpu_ref_kill_and_confirm,https://syzkaller.appspot.com/bug?id=74a985d8fcf8a22a9b566f5642c16ce4001d4e95
+Repository: linux
+Arch: i386
+Finding: 9e5de623a0cb9374bdcc73c0c098818f0d7ab7e9
+Guilty: b19062a567266ee1f10f6709325f766bbcc07d1c
+No Duplicates
+Single Proc Allocation
+VMs:8
+CPUs:2
+Procs:16
+Max time:30
+Inspecting the finding commit.
+Session 1:
+    Template:  2019-04-17 - b0e8efcb4b0aac61f4647a76bbe54a5d38a370ba
+    Syzkaller: 2019-04-17 - b0e8efcb4b0aac61f4647a76bbe54a5d38a370ba
+    Kernel:    2019-04-20 - 9e5de623a0cb9374bdcc73c0c098818f0d7ab7e9
+    Compiler:  gcc-9.0.0-20181231
+    The bug was found.
+        WARNING in percpu_ref_kill_and_confirm
+        WARNING in io_uring_setup
+New Max Time: 10.
+Merge Commit: 2019-04-20 - 38a2ca2cac28cd202a364e30f9fd252ac66619be.
+No template updates to inspect.
+Inspecting 2 kernel versions in the range [2019-04-20, 2019-04-20].
+Session 2:
+    Template:  2019-04-17 - b0e8efcb4b0aac61f4647a76bbe54a5d38a370ba
+    Syzkaller: 2019-04-17 - b0e8efcb4b0aac61f4647a76bbe54a5d38a370ba
+    Kernel:    2019-04-20 - a06bc2f241f2e6c0c27b48e4c383d6cddd4f6464
+    Compiler:  gcc-9.0.0-20181231
+    The bug was found in 1 minutes
+        WARNING in percpu_ref_kill_and_confirm
+        WARNING in io_uring_setup
+Session 3:
+    Template:  2019-04-17 - b0e8efcb4b0aac61f4647a76bbe54a5d38a370ba
+    Syzkaller: 2019-04-17 - b0e8efcb4b0aac61f4647a76bbe54a5d38a370ba
+    Kernel:    2019-04-20 - 38a2ca2cac28cd202a364e30f9fd252ac66619be
+    Compiler:  gcc-9.0.0-20181231
+    The bug was found in 1 minutes
+        WARNING in percpu_ref_kill_and_confirm
+        WARNING in io_uring_setup
+Confirming the bisected kernel commit.
+Session 4 after:
+    Template:  2019-04-17 - b0e8efcb4b0aac61f4647a76bbe54a5d38a370ba
+    Syzkaller: 2019-04-17 - b0e8efcb4b0aac61f4647a76bbe54a5d38a370ba
+    Kernel:    2019-04-20 - 38a2ca2cac28cd202a364e30f9fd252ac66619be
+The bug was found in a previous identical fuzzing session.
+
+====================================================================================================================================================
+Success
+Revealing Factor:   Guilty Merge
+Version:            2019-04-20 - 38a2ca2cac28cd202a364e30f9fd252ac66619be
+Commit Name:        Merge tag 'for-linus-20190420' of git://git.kernel.dk/linux-block
+
+Bug Name:           WARNING in percpu_ref_kill_and_confirm
+Bug Link:           https://syzkaller.appspot.com/bug?id=74a985d8fcf8a22a9b566f5642c16ce4001d4e95
+Arch:               i386
+Finding Commit:     2019-04-20 - 9e5de623a0cb9374bdcc73c0c098818f0d7ab7e9
+Guilty Merge:       2019-04-20 - 38a2ca2cac28cd202a364e30f9fd252ac66619be
+Guilty Commit:      2019-04-15 - b19062a567266ee1f10f6709325f766bbcc07d1c

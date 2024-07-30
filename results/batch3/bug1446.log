@@ -1,0 +1,119 @@
+KASAN: use-after-free Read in j1939_session_get_by_addr,https://syzkaller.appspot.com/bug?extid=d9536adc269404a984f8
+Repository: linux
+Arch: amd64
+Finding: 2019-11-03 - a99d8080aaf358d5d23581244e5da23b35e340b9
+Guilty:  2019-09-04 - 9d71dd0c70099914fcd063135da3c580865e924c
+No Duplicates
+Default Allocation.
+VMs:4
+CPUs:4
+Procs:24
+Max time:30
+Max attempts:3
+Testing the finding commit.
+
+2024-05-30 17:49:20
+Session:   1
+Template:  2019-11-05 - bc2c6e45b9f01fa6046cb3efa9d3aae9f05238a8
+Syzkaller: 2019-11-05 - bc2c6e45b9f01fa6046cb3efa9d3aae9f05238a8
+Kernel:    2019-11-03 - a99d8080aaf358d5d23581244e5da23b35e340b9
+Compiler:  gcc-9.0.0-20181231
+Attempt 1:
+    Time  Bug Name
+       3  general protection fault in j1939_sk_sendmsg
+      15  general protection fault in j1939_jsk_del
+Attempt 2:
+    Time  Bug Name
+***    2  KASAN: use-after-free Read in j1939_session_get_by_addr
+***    2  KASAN: use-after-free Read in j1939_session_get_by_addr
+Attempt 3:
+    Time  Bug Name
+***    2  KASAN: use-after-free Read in j1939_session_get_by_addr
+***    2  KASAN: use-after-free Read in j1939_session_get_by_addr
+The bug was found.
+
+New Max Time: 24.
+Merge Commit: 2019-09-05 - 44c40910b66f786d33ffd2682ef38750eebb567c.
+
+==== Template Retrospection ====
+12 template changes in [2019-09-05, 2019-11-05].
+
+2024-05-30 18:42:21
+Session:   2
+Template:  2019-10-25 - f2635abc2ab7c5581a369c7907278190e72520cc
+Syzkaller: 2019-10-25 - f2635abc2ab7c5581a369c7907278190e72520cc
+Kernel:    2019-10-25 - b4b61b224d12ef12ff21cc598acce0ee818903ab
+Compiler:  gcc-9.0.0-20181231
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+The bug was not found.
+
+2024-05-30 20:08:32
+Session:   3
+Template:  2019-11-03 - 97f4b019d87a073ff02a3ff8b08ada59aea6e688
+Syzkaller: 2019-11-03 - 97f4b019d87a073ff02a3ff8b08ada59aea6e688
+Kernel:    2019-11-03 - a99d8080aaf358d5d23581244e5da23b35e340b9
+Compiler:  gcc-9.0.0-20181231
+Attempt 1:
+    Time  Bug Name
+***    2  KASAN: use-after-free Read in j1939_session_get_by_addr
+The bug was found.
+
+2024-05-30 20:25:16
+Session:   4
+Template:  2019-11-02 - 841212d4cc293fc5fcf57066eb506477ee3936ab
+Syzkaller: 2019-11-02 - 841212d4cc293fc5fcf57066eb506477ee3936ab
+Kernel:    2019-11-02 - 56cfd2507d3e720f4b1dbf9513e00680516a0826
+Compiler:  gcc-9.0.0-20181231
+Attempt 1:
+    Time  Bug Name
+***    2  KASAN: use-after-free Read in j1939_session_get_by_addr
+The bug was found.
+
+2024-05-30 20:40:29
+Session:   5
+Template:  2019-11-02 - 1297f2394760dc7237eeb27a41b3380233684d4e
+Syzkaller: 2019-11-02 - 1297f2394760dc7237eeb27a41b3380233684d4e
+Kernel:    2019-11-02 - 56cfd2507d3e720f4b1dbf9513e00680516a0826
+Compiler:  gcc-9.0.0-20181231
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    Time  Bug Name
+      22  INFO: task hung in register_netdevice_notifier
+Attempt 3:
+    No crashes found.
+The bug was not found.
+
+2024-05-30 22:05:49
+Session:   6
+Template:  2019-11-02 - 1297f2394760dc7237eeb27a41b3380233684d4e
+Syzkaller: 2019-11-02 - 841212d4cc293fc5fcf57066eb506477ee3936ab
+Kernel:    2019-11-02 - 56cfd2507d3e720f4b1dbf9513e00680516a0826
+Compiler:  gcc-9.0.0-20181231
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+The bug was not found.
+
+====================================================================================================================================================
+Revealing Factor:   Template Update
+Version:            2019-11-02 - 841212d4cc293fc5fcf57066eb506477ee3936ab
+Commit Name:        sys/linux: extend CAN descriptions
+
+Bug Name:           KASAN: use-after-free Read in j1939_session_get_by_addr
+Bug Link:           https://syzkaller.appspot.com/bug?extid=d9536adc269404a984f8
+Arch:               amd64
+Finding Date:       2019-11-05
+Finding Commit:     2019-11-03 - a99d8080aaf358d5d23581244e5da23b35e340b9
+Guilty Merge:       2019-09-05 - 44c40910b66f786d33ffd2682ef38750eebb567c
+Guilty Commit:      2019-09-04 - 9d71dd0c70099914fcd063135da3c580865e924c
+
+Possible Blocking Bugs:

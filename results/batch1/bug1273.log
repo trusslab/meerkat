@@ -1,0 +1,125 @@
+memory leak in inet6_create,https://syzkaller.appspot.com/bug?id=4462b73f1e909dcd0f6e0d5d2f0b3e8be5191b69
+Repository: linux
+Arch: amd64
+Finding: 156c05917e0920ef5643eb54c0ea71aae5d60c3d
+Guilty: 100f6d8e09905c59be45b6316f8f369c0be1b2d8
+No Duplicates
+Single Proc Allocation
+VMs:8
+CPUs:2
+Procs:16
+Max time:30
+Inspecting the finding commit.
+Session 1:
+    Template:  2019-06-04 - bfb4a51e30c8c04658a2675333b9b89a9d327c4a
+    Syzkaller: 2019-06-04 - bfb4a51e30c8c04658a2675333b9b89a9d327c4a
+    Kernel:    2019-06-05 - 156c05917e0920ef5643eb54c0ea71aae5d60c3d
+    Compiler:  gcc-9.0.0-20181231
+    The bug was found.
+        memory leak in __ip6_append_data
+        memory leak in inet_create
+        memory leak in inet6_create
+New Max Time: 33.
+Merge Commit: 2019-05-31 - 036e34310931e64ce4f1edead435708cd517db10.
+No template updates to inspect.
+Inspecting 34 kernel versions in the range [2019-05-31, 2019-06-05].
+Session 2:
+    Template:  2019-05-31 - 53c81ea5385ee17c68d0afa4e524b6aead37c903
+    Syzkaller: 2019-05-31 - 53c81ea5385ee17c68d0afa4e524b6aead37c903
+    Kernel:    2019-06-02 - 378e853f68e9a9548c64687880715ac3cca31c22
+    Compiler:  gcc-9.0.0-20181231
+    The bug was found in 2 minutes
+        memory leak in __ip6_append_data
+        memory leak in new_inode_pseudo
+        memory leak in inet6_create
+Session 3:
+    Template:  2019-05-31 - 53c81ea5385ee17c68d0afa4e524b6aead37c903
+    Syzkaller: 2019-05-31 - 53c81ea5385ee17c68d0afa4e524b6aead37c903
+    Kernel:    2019-05-31 - 27a03b1a71b9adfa7f4ef3f61452fb3bc5b195b1
+    Compiler:  gcc-9.0.0-20181231
+    The bug was found in 2 minutes
+        memory leak in inet6_create
+Session 4:
+    Template:  2019-05-31 - 53c81ea5385ee17c68d0afa4e524b6aead37c903
+    Syzkaller: 2019-05-31 - 53c81ea5385ee17c68d0afa4e524b6aead37c903
+    Kernel:    2019-05-31 - 2209a3055d6f366eeb070c217491afe855d3f389
+    Compiler:  gcc-9.0.0-20181231
+    The bug was found in 2 minutes
+        memory leak in inet6_create
+Session 5:
+    Template:  2019-05-31 - 53c81ea5385ee17c68d0afa4e524b6aead37c903
+    Syzkaller: 2019-05-31 - 53c81ea5385ee17c68d0afa4e524b6aead37c903
+    Kernel:    2019-05-31 - e49c8547fb940982a04c98377bf5468a3b4a3fd4
+    Compiler:  gcc-9.0.0-20181231
+    The bug was found in 2 minutes
+        memory leak in inet6_create
+Session 6:
+    Template:  2019-05-31 - 53c81ea5385ee17c68d0afa4e524b6aead37c903
+    Syzkaller: 2019-05-31 - 53c81ea5385ee17c68d0afa4e524b6aead37c903
+    Kernel:    2019-05-31 - ca1918049673a9be507c41fb7e4a69a57601a017
+    Compiler:  gcc-9.0.0-20181231
+    The bug was found in 2 minutes
+        memory leak in __ip6_append_data
+        memory leak in inet_create
+        memory leak in inet6_create
+Session 7:
+    Template:  2019-05-31 - 53c81ea5385ee17c68d0afa4e524b6aead37c903
+    Syzkaller: 2019-05-31 - 53c81ea5385ee17c68d0afa4e524b6aead37c903
+    Kernel:    2019-05-31 - 036e34310931e64ce4f1edead435708cd517db10
+    Compiler:  gcc-9.0.0-20181231
+    The bug was found in 2 minutes
+        memory leak in inet6_create
+Confirming the bisected kernel commit.
+Session 8 after:
+    Template:  2019-05-31 - 53c81ea5385ee17c68d0afa4e524b6aead37c903
+    Syzkaller: 2019-05-31 - 53c81ea5385ee17c68d0afa4e524b6aead37c903
+    Kernel:    2019-05-31 - 036e34310931e64ce4f1edead435708cd517db10
+The bug was found in a previous identical fuzzing session.
+Session 9 before:
+    Template:  2019-05-31 - 53c81ea5385ee17c68d0afa4e524b6aead37c903
+    Syzkaller: 2019-05-31 - 53c81ea5385ee17c68d0afa4e524b6aead37c903
+    Kernel:    2019-05-30 - 100f6d8e09905c59be45b6316f8f369c0be1b2d8
+    Compiler:  gcc-9.0.0-20181231
+    The bug was found in 2 minutes
+        memory leak in inet6_create
+Inspecting 4 syzkaller version(s) from 2019-05-31.
+Session 10:
+    Template:  2019-05-31 - 53c81ea5385ee17c68d0afa4e524b6aead37c903
+    Syzkaller: 2019-05-31 - 53c81ea5385ee17c68d0afa4e524b6aead37c903
+    Kernel:    2019-05-31 - 036e34310931e64ce4f1edead435708cd517db10
+    Compiler:  gcc-9.0.0-20181231
+The bug was found in a previous identical fuzzing session.
+Session 11:
+    Template:  2019-05-31 - 142ce68175f5321ccde23eafda4830707f20e67b
+    Syzkaller: 2019-05-31 - 142ce68175f5321ccde23eafda4830707f20e67b
+    Kernel:    2019-05-31 - 036e34310931e64ce4f1edead435708cd517db10
+    Compiler:  gcc-9.0.0-20181231
+    The bug was found in 9 minutes
+        memory leak in inet6_create
+Session 12:
+    Template:  2019-05-31 - c054a92ddef28b343db8a733b3e191cf96c28768
+    Syzkaller: 2019-05-31 - c054a92ddef28b343db8a733b3e191cf96c28768
+    Kernel:    2019-05-31 - 036e34310931e64ce4f1edead435708cd517db10
+    Compiler:  gcc-9.0.0-20181231
+    The bug was found in 38 minutes
+        memory leak in new_inode_pseudo
+        memory leak in inet_create
+        memory leak in inet6_create
+Session 13:
+    Template:  2019-05-31 - a8482b78fba29ae70c98729401928daccd5201e0
+    Syzkaller: 2019-05-31 - a8482b78fba29ae70c98729401928daccd5201e0
+    Kernel:    2019-05-31 - 036e34310931e64ce4f1edead435708cd517db10
+    Compiler:  gcc-9.0.0-20181231
+    The bug was found in 50 minutes
+        memory leak in inet_create
+        memory leak in new_inode_pseudo
+        memory leak in inet6_create
+        memory leak in kcm_sendmsg
+
+Success
+Revealing factor: Syzkaller Update
+Syzkaller Version: 2019-05-31 - a8482b78fba29ae70c98729401928daccd5201e0
+Commit name: sys/linux/vusb.txt: more descriptions to be done
+
+AUTHOR: SyzInspector didn't realize it had already gone back to the guilty merge. The
+correct revealing factor is Guilty Merge. This bug is fixed in later versions.

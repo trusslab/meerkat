@@ -1,0 +1,87 @@
+WARNING: suspicious RCU usage in wiphy_apply_custom_regulatory,https://syzkaller.appspot.com/bug?id=7e98ae88bcf946363eb3fabca189b3deb3700caf
+Repository: linux
+Arch: amd64
+Finding: d635a69dd4981cc51f90293f5f64268620ed1565
+Guilty: beee246951571cc5452176f3dbfe9aa5a10ba2b9
+Duplicate Names:
+    WARNING: suspicious RCU usage in get_wiphy_regdom
+    WARNING: suspicious RCU usage in wiphy_apply_custom_regulatory
+Single Proc Allocation
+VMs:8
+CPUs:2
+Procs:16
+Max time:30
+Inspecting the finding commit.
+Session 1:
+    Template:  2020-12-15 - f213e07ead587b07a84e60c356520bce7277166c
+    Syzkaller: 2020-12-15 - f213e07ead587b07a84e60c356520bce7277166c
+    Kernel:    2020-12-15 - d635a69dd4981cc51f90293f5f64268620ed1565
+    Compiler:  gcc-10.1.0-syz
+    The bug was found.
+        WARNING: suspicious RCU usage in get_wiphy_regdom
+New Max Time: 10.
+No Merge Commit.
+No template updates to inspect.
+Inspecting 98 kernel versions in the range [2020-12-11, 2020-12-15].
+Session 2:
+    Template:  2020-12-15 - f213e07ead587b07a84e60c356520bce7277166c
+    Syzkaller: 2020-12-15 - f213e07ead587b07a84e60c356520bce7277166c
+    Kernel:    2020-12-15 - 6d4634d1b09172a9f5863d8c4cec8f82fbecdf15
+    Compiler:  gcc-10.1.0-syz
+    The bug was found in 2 minutes
+        WARNING: suspicious RCU usage in get_wiphy_regdom
+Session 3:
+    Template:  2020-12-11 - bca53db974f570410921f59b8c2c59a3d263cb44
+    Syzkaller: 2020-12-11 - bca53db974f570410921f59b8c2c59a3d263cb44
+    Kernel:    2020-12-12 - e0a64d1dffca048a99546993322bd1fb5c728ee8
+    Compiler:  gcc-10.1.0-syz
+    The bug was found in 2 minutes
+        WARNING: suspicious RCU usage in get_wiphy_regdom
+Session 4:
+    Template:  2020-12-11 - bca53db974f570410921f59b8c2c59a3d263cb44
+    Syzkaller: 2020-12-11 - bca53db974f570410921f59b8c2c59a3d263cb44
+    Kernel:    2020-12-11 - 2dedfe1dbdf27ac344584ed03c3876c85d2779fb
+    Compiler:  gcc-10.1.0-syz
+    The bug was found in 2 minutes
+        WARNING: suspicious RCU usage in get_wiphy_regdom
+Session 5:
+    Template:  2020-12-11 - bca53db974f570410921f59b8c2c59a3d263cb44
+    Syzkaller: 2020-12-11 - bca53db974f570410921f59b8c2c59a3d263cb44
+    Kernel:    2020-12-11 - a5a55032ea654e5fdd9255035bb5066c87d7b95e
+    Compiler:  gcc-10.1.0-syz
+    The bug was found in 2 minutes
+        WARNING: suspicious RCU usage in get_wiphy_regdom
+Session 6:
+    Template:  2020-12-11 - bca53db974f570410921f59b8c2c59a3d263cb44
+    Syzkaller: 2020-12-11 - bca53db974f570410921f59b8c2c59a3d263cb44
+    Kernel:    2020-12-11 - 669b84134a2be14d333d4f82b65943d467404f87
+    Compiler:  gcc-10.1.0-syz
+    The bug was found in 2 minutes
+        WARNING: suspicious RCU usage in get_wiphy_regdom
+Session 7:
+    Template:  2020-12-11 - bca53db974f570410921f59b8c2c59a3d263cb44
+    Syzkaller: 2020-12-11 - bca53db974f570410921f59b8c2c59a3d263cb44
+    Kernel:    2020-12-11 - 9850742470804b2cc6a6543bd8f5822eeb5fdbc0
+    Compiler:  gcc-10.1.0-syz
+    The bug was found in 2 minutes
+        WARNING: suspicious RCU usage in get_wiphy_regdom
+Session 8:
+    Template:  2020-12-11 - bca53db974f570410921f59b8c2c59a3d263cb44
+    Syzkaller: 2020-12-11 - bca53db974f570410921f59b8c2c59a3d263cb44
+    Kernel:    2020-12-11 - beee246951571cc5452176f3dbfe9aa5a10ba2b9
+    Compiler:  gcc-10.1.0-syz
+    The bug was found in 2 minutes
+        WARNING: suspicious RCU usage in get_wiphy_regdom
+Confirming the bisected kernel commit.
+Session 9 after:
+    Template:  2020-12-11 - bca53db974f570410921f59b8c2c59a3d263cb44
+    Syzkaller: 2020-12-11 - bca53db974f570410921f59b8c2c59a3d263cb44
+    Kernel:    2020-12-11 - beee246951571cc5452176f3dbfe9aa5a10ba2b9
+The bug was found in a previous identical fuzzing session.
+
+Success
+Revealing factor: Guilty Commit
+Kernel Version: 2020-12-11 - beee246951571cc5452176f3dbfe9aa5a10ba2b9
+Commit name: cfg80211: Save the regulatory domain when setting custom regulatory
+
+AUTHOR: This bug should have stopped at the guilty merge, went all the way back to guilty.

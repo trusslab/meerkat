@@ -1,0 +1,94 @@
+KASAN: use-after-free Read in __hrtimer_run_queues,https://syzkaller.appspot.com/bug?extid=62c155c276e580cfb606
+Repository: linux
+Arch: amd64
+Finding: 2020-03-30 - 673b41e04a035d760bc0aff83fa9ee24fd9c2779
+Guilty:  2020-03-21 - 40db173965c05a1d803451240ed41707d5bd978d
+No Duplicates
+Single Proc Allocation
+VMs:8
+CPUs:2
+Procs:16
+Max time:30
+Max attempts:3
+Testing the finding commit.
+
+2024-06-22 16:07:14
+Session:   1
+Template:  2020-03-31 - a34e2c332411388ed2b3f6f1a3acdc062feceb79
+Syzkaller: 2020-03-31 - a34e2c332411388ed2b3f6f1a3acdc062feceb79
+Kernel:    2020-03-31 - 673b41e04a035d760bc0aff83fa9ee24fd9c2779
+Compiler:  gcc-9.0.0-20181231
+Attempt 1:
+    Time  Bug Name
+***    2  KASAN: use-after-free Read in __hrtimer_run_queues
+Attempt 2:
+    Time  Bug Name
+***    2  KASAN: use-after-free Read in __hrtimer_run_queues
+Attempt 3:
+    Time  Bug Name
+***    2  KASAN: use-after-free Read in __hrtimer_run_queues
+The bug was found.
+
+New Max Time: 10.
+Merge Commit: 2020-03-30 - 4b9fd8a829a1eec7442e38afff21d610604de56a.
+No template updates to inspect.
+
+==== Kernel Retrospection ====
+3 Linux commits in [2020-03-30, 2020-03-31].
+
+2024-06-22 16:26:44
+Session:   2
+Template:  2020-03-31 - a34e2c332411388ed2b3f6f1a3acdc062feceb79
+Syzkaller: 2020-03-31 - a34e2c332411388ed2b3f6f1a3acdc062feceb79
+Kernel:    2020-03-31 - 642e53ead6aea8740a219ede509a5d138fd4f780
+Compiler:  gcc-9.0.0-20181231
+Attempt 1:
+    Time  Bug Name
+***    2  KASAN: use-after-free Read in __hrtimer_run_queues
+The bug was found.
+
+2024-06-22 16:40:27
+Session:   3
+Template:  2020-03-30 - c8d1cc20df5ca5d9ea437054720fa3cfdfa1f578
+Syzkaller: 2020-03-30 - c8d1cc20df5ca5d9ea437054720fa3cfdfa1f578
+Kernel:    2020-03-30 - 9b82f05f869a823d43ea4186f5f732f2924d3693
+Compiler:  gcc-9.0.0-20181231
+Attempt 1:
+    Time  Bug Name
+***    2  KASAN: use-after-free Read in __hrtimer_run_queues
+The bug was found.
+
+2024-06-22 16:55:13
+Session:   4
+Template:  2020-03-30 - c8d1cc20df5ca5d9ea437054720fa3cfdfa1f578
+Syzkaller: 2020-03-30 - c8d1cc20df5ca5d9ea437054720fa3cfdfa1f578
+Kernel:    2020-03-30 - 4b9fd8a829a1eec7442e38afff21d610604de56a
+Compiler:  gcc-9.0.0-20181231
+Attempt 1:
+    Time  Bug Name
+***    2  KASAN: use-after-free Read in __hrtimer_run_queues
+The bug was found.
+
+== Confirming the bisected commit ==
+
+2024-06-22 17:08:35
+Session:   5
+Template:  2020-03-30 - c8d1cc20df5ca5d9ea437054720fa3cfdfa1f578
+Syzkaller: 2020-03-30 - c8d1cc20df5ca5d9ea437054720fa3cfdfa1f578
+Kernel:    2020-03-30 - 4b9fd8a829a1eec7442e38afff21d610604de56a
+The bug was found in a previous identical fuzzing session.
+
+====================================================================================================================================================
+Revealing Factor:   Guilty Merge
+Version:            2020-03-30 - 4b9fd8a829a1eec7442e38afff21d610604de56a
+Commit Name:        Merge branch 'locking-core-for-linus' of git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip
+
+Bug Name:           KASAN: use-after-free Read in __hrtimer_run_queues
+Bug Link:           https://syzkaller.appspot.com/bug?extid=62c155c276e580cfb606
+Arch:               amd64
+Finding Date:       2020-03-31
+Finding Commit:     2020-03-31 - 673b41e04a035d760bc0aff83fa9ee24fd9c2779
+Guilty Merge:       2020-03-30 - 4b9fd8a829a1eec7442e38afff21d610604de56a
+Guilty Commit:      2020-03-21 - 40db173965c05a1d803451240ed41707d5bd978d
+
+Possible Blocking Bugs:

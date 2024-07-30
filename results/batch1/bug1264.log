@@ -1,0 +1,81 @@
+general protection fault in override_creds,https://syzkaller.appspot.com/bug?id=1ce8eda0663dcd056224360924d4dd3e6c534ef0
+Repository: linux
+Arch: amd64
+Finding: b94ae8ad9fe79da61231999f347f79645b909bda
+Guilty: 181e448d8709e517c9c7b523fcd209f24eb38ca7
+No Duplicates
+Single Proc Allocation
+VMs:8
+CPUs:2
+Procs:16
+Max time:30
+Inspecting the finding commit.
+Session 1:
+    Template:  2019-12-01 - f879db37f90dcefb681897d2e486c11d8298cb72
+    Syzkaller: 2019-12-01 - f879db37f90dcefb681897d2e486c11d8298cb72
+    Kernel:    2019-12-01 - b94ae8ad9fe79da61231999f347f79645b909bda
+    Compiler:  gcc-9.0.0-20181231
+    The bug was found.
+        no output from test machine
+        general protection fault in override_creds
+New Max Time: 32.
+No Merge Commit.
+No template updates to inspect.
+Inspecting 35 kernel versions in the range [2019-11-25, 2019-12-01].
+Session 2:
+    Template:  2019-11-30 - a76bf83ffac5c0bed0a686f8ebc98c74bfb34a0c
+    Syzkaller: 2019-11-30 - a76bf83ffac5c0bed0a686f8ebc98c74bfb34a0c
+    Kernel:    2019-11-30 - 50b8b3f85a01543fb82d3bb9bfe7d06659522c70
+    Compiler:  gcc-9.0.0-20181231
+    The bug was found in 21 minutes
+        no output from test machine
+        general protection fault in override_creds
+Session 3:
+    Template:  2019-11-26 - 1048481f27fb0ab9d1af5000f7c81e392cdee0f3
+    Syzkaller: 2019-11-26 - 1048481f27fb0ab9d1af5000f7c81e392cdee0f3
+    Kernel:    2019-11-26 - 6206f0e180d4eddc0a178f57120ab1b913701f6e
+    Compiler:  gcc-9.0.0-20181231
+    The bug was found in 7 minutes
+        general protection fault in override_creds
+Session 4:
+    Template:  2019-11-26 - 1048481f27fb0ab9d1af5000f7c81e392cdee0f3
+    Syzkaller: 2019-11-26 - 1048481f27fb0ab9d1af5000f7c81e392cdee0f3
+    Kernel:    2019-11-26 - cc42e0ac17d3664a70e020dfe7897f14e7aa7453
+    Compiler:  gcc-9.0.0-20181231
+    The bug was found in 14 minutes
+        general protection fault in override_creds
+Session 5:
+    Template:  2019-11-26 - 1048481f27fb0ab9d1af5000f7c81e392cdee0f3
+    Syzkaller: 2019-11-26 - 1048481f27fb0ab9d1af5000f7c81e392cdee0f3
+    Kernel:    2019-11-26 - 4257c8ca13b084550574b8c9a667d9c90ff746eb
+    Compiler:  gcc-9.0.0-20181231
+    The bug was found in 26 minutes
+        general protection fault in override_creds
+Session 6:
+    Template:  2019-11-26 - 1048481f27fb0ab9d1af5000f7c81e392cdee0f3
+    Syzkaller: 2019-11-26 - 1048481f27fb0ab9d1af5000f7c81e392cdee0f3
+    Kernel:    2019-11-26 - 8042d6ce8c40df0abb0d91662a754d074a3d3f16
+    Compiler:  gcc-9.0.0-20181231
+    The bug was found in 8 minutes
+        general protection fault in override_creds
+Session 7:
+    Template:  2019-11-25 - f746151a9375b5b700196314d9e5f308b81e729f
+    Syzkaller: 2019-11-25 - f746151a9375b5b700196314d9e5f308b81e729f
+    Kernel:    2019-11-25 - 181e448d8709e517c9c7b523fcd209f24eb38ca7
+    Compiler:  gcc-9.0.0-20181231
+    The bug was found in 14 minutes
+        general protection fault in override_creds
+Confirming the bisected kernel commit.
+Session 8 after:
+    Template:  2019-11-25 - f746151a9375b5b700196314d9e5f308b81e729f
+    Syzkaller: 2019-11-25 - f746151a9375b5b700196314d9e5f308b81e729f
+    Kernel:    2019-11-25 - 181e448d8709e517c9c7b523fcd209f24eb38ca7
+The bug was found in a previous identical fuzzing session.
+
+Success
+Revealing factor: Guilty Commit
+Kernel Version: 2019-11-25 - 181e448d8709e517c9c7b523fcd209f24eb38ca7
+Commit name: io_uring: async workers should inherit the user creds
+Warning: Revealing factor may be faulty.
+
+AUTHOR: This bug should have stopped at the guilty merge, went all the way back to guilty.

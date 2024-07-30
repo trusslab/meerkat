@@ -1,0 +1,42 @@
+WARNING: refcount bug in nr_insert_socket,https://syzkaller.appspot.com/bug?extid=ec1fd464d849d91c3665
+Repository: linux
+Arch: amd64
+Finding: 2019-07-11 - d7d170a8e357bd9926cc6bfea5c2385c2eac65b2
+Guilty:  2019-07-01 - c8c8218ec5af5d2598381883acbefbf604e56b5e
+Duplicate Names:
+    WARNING: refcount bug in nr_insert_socket
+    WARNING: held lock freed!
+    KASAN: use-after-free Read in release_sock
+    WARNING: held lock freed in nr_release
+    KASAN: use-after-free Read in nr_release
+    WARNING: refcount bug in nr_rx_frame
+    KASAN: use-after-free Read in nr_insert_socket
+    KASAN: use-after-free Read in nr_rx_frame
+Default Allocation.
+VMs:4
+CPUs:4
+Procs:24
+Max time:30
+Max attempts:3
+Testing the finding commit.
+
+2024-06-27 18:28:28
+Session:   1
+Template:  2019-07-11 - baa5258a5eddb26cc15d56ac371cb2350a3f1302
+Syzkaller: 2019-07-11 - baa5258a5eddb26cc15d56ac371cb2350a3f1302
+Kernel:    2019-07-12 - d7d170a8e357bd9926cc6bfea5c2385c2eac65b2
+Compiler:  gcc-9.0.0-20181231
+Attempt 1:
+    Time  Bug Name
+      16  BUG: MAX_STACK_TRACE_ENTRIES too low!
+Attempt 2:
+    Time  Bug Name
+      12  BUG: MAX_STACK_TRACE_ENTRIES too low!
+      17  BUG: MAX_STACK_TRACE_ENTRIES too low!
+      17  BUG: MAX_STACK_TRACE_ENTRIES too low!
+Attempt 3:
+    Time  Bug Name
+      16  BUG: MAX_STACK_TRACE_ENTRIES too low!
+The bug was not found.
+
+Failure: This bug cannot be found at the finding commit.

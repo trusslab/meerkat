@@ -1,0 +1,120 @@
+WARNING in lockdep_unregister_key,https://syzkaller.appspot.com/bug?extid=be0c198232f86389c3dd
+Repository: linux
+Arch: amd64
+Finding: 2019-03-10 - 12ad143e1b803e541e48b8ba40f550250259ecdd
+Guilty:  2019-03-09 - 009bb421b6ceb7916ce627023d0eb7ced04c8910
+No Duplicates
+Single Proc Allocation
+VMs:8
+CPUs:2
+Procs:16
+Max time:30
+Max attempts:3
+Testing the finding commit.
+
+2024-06-18 15:03:52
+Session:   1
+Template:  2019-03-08 - 12365b99ce83b8a58433eaedbe412dff563ef8fb
+Syzkaller: 2019-03-08 - 12365b99ce83b8a58433eaedbe412dff563ef8fb
+Kernel:    2019-03-10 - 12ad143e1b803e541e48b8ba40f550250259ecdd
+Compiler:  gcc-9.0.0-20181231
+Attempt 1:
+    Time  Bug Name
+       9  BUG: unable to handle kernel paging request in slhc_free
+***   11  WARNING in lockdep_unregister_key
+Attempt 2:
+    Time  Bug Name
+       4  BUG: unable to handle kernel paging request in slhc_free
+       6  possible deadlock in console_unlock
+       7  WARNING in tty_set_termios
+      11  WARNING in tty_set_termios
+      12  WARNING in tty_set_termios
+***   18  WARNING in lockdep_unregister_key
+Attempt 3:
+    Time  Bug Name
+       6  BUG: unable to handle kernel paging request in slhc_free
+       8  possible deadlock in console_unlock
+      11  WARNING in tty_set_termios
+      15  WARNING in tty_set_termios
+      15  possible deadlock in console_unlock
+      17  general protection fault in skb_put
+      18  WARNING in tty_set_termios
+      19  WARNING in tty_set_termios
+      22  WARNING in tty_set_termios
+      24  WARNING in tty_set_termios
+      25  WARNING in tty_set_termios
+      26  WARNING in tty_set_termios
+      29  WARNING in tty_set_termios
+The bug was found.
+
+New Max Time: 27.
+Merge Commit: 2019-03-10 - 9e55f87c0e3b3db11f52834222f881094eb97205.
+No template updates to inspect.
+
+==== Kernel Retrospection ====
+4 Linux commits in [2019-03-10, 2019-03-11].
+
+2024-06-18 16:12:51
+Session:   2
+Template:  2019-03-08 - 12365b99ce83b8a58433eaedbe412dff563ef8fb
+Syzkaller: 2019-03-08 - 12365b99ce83b8a58433eaedbe412dff563ef8fb
+Kernel:    2019-03-10 - b6e3cb4e8679dd971eed33f6a08d62c66a4230c9
+Compiler:  gcc-9.0.0-20181231
+Attempt 1:
+    Time  Bug Name
+***    4  WARNING in lockdep_unregister_key
+The bug was found.
+
+2024-06-18 16:26:50
+Session:   3
+Template:  2019-03-08 - 12365b99ce83b8a58433eaedbe412dff563ef8fb
+Syzkaller: 2019-03-08 - 12365b99ce83b8a58433eaedbe412dff563ef8fb
+Kernel:    2019-03-10 - a15f6b923e1e1040edc79f222d5d229ea8097259
+Compiler:  gcc-9.0.0-20181231
+Attempt 1:
+    Time  Bug Name
+       5  possible deadlock in console_unlock
+***    7  WARNING in lockdep_unregister_key
+The bug was found.
+
+2024-06-18 16:42:43
+Session:   4
+Template:  2019-03-08 - 12365b99ce83b8a58433eaedbe412dff563ef8fb
+Syzkaller: 2019-03-08 - 12365b99ce83b8a58433eaedbe412dff563ef8fb
+Kernel:    2019-03-10 - 9e55f87c0e3b3db11f52834222f881094eb97205
+Compiler:  gcc-9.0.0-20181231
+Attempt 1:
+    Time  Bug Name
+       4  possible deadlock in console_unlock
+       8  WARNING in tty_set_termios
+***    8  WARNING in lockdep_unregister_key
+The bug was found.
+
+== Confirming the bisected commit ==
+
+2024-06-18 16:59:40
+Session:   5
+Template:  2019-03-08 - 12365b99ce83b8a58433eaedbe412dff563ef8fb
+Syzkaller: 2019-03-08 - 12365b99ce83b8a58433eaedbe412dff563ef8fb
+Kernel:    2019-03-10 - 9e55f87c0e3b3db11f52834222f881094eb97205
+The bug was found in a previous identical fuzzing session.
+
+====================================================================================================================================================
+Revealing Factor:   Guilty Merge
+Version:            2019-03-10 - 9e55f87c0e3b3db11f52834222f881094eb97205
+Commit Name:        Merge branch 'locking-urgent-for-linus' of git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip
+
+Bug Name:           WARNING in lockdep_unregister_key
+Bug Link:           https://syzkaller.appspot.com/bug?extid=be0c198232f86389c3dd
+Arch:               amd64
+Finding Date:       2019-03-11
+Finding Commit:     2019-03-10 - 12ad143e1b803e541e48b8ba40f550250259ecdd
+Guilty Merge:       2019-03-10 - 9e55f87c0e3b3db11f52834222f881094eb97205
+Guilty Commit:      2019-03-09 - 009bb421b6ceb7916ce627023d0eb7ced04c8910
+
+Possible Blocking Bugs:
+    BUG: unable to handle kernel paging request in slhc_free
+    possible deadlock in console_unlock
+    WARNING in tty_set_termios
+    general protection fault in skb_put
+Warning: Revealing factor may be faulty.

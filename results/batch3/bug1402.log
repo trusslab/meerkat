@@ -1,0 +1,133 @@
+possible deadlock in hci_rfkill_set_block,https://syzkaller.appspot.com/bug?extid=f93d183bc91522d90de9
+Repository: linux
+Arch: amd64
+Finding: 2023-10-19 - ce55c22ec8b223a90ff3e084d842f73cfba35588
+Guilty:  2023-10-11 - 92d4abd66f7080075793970fc8f241239e58a9e7
+Duplicate Names:
+    possible deadlock in hci_rfkill_set_block
+    possible deadlock in hci_dev_do_close
+Single Proc Allocation
+VMs:8
+CPUs:2
+Procs:16
+Max time:30
+Max attempts:3
+Testing the finding commit.
+
+2024-06-28 21:32:10
+Session:   1
+Template:  2023-10-20 - 361b23dca53619ee1dfd92dd6a74a7f3e58f270c
+Syzkaller: 2023-10-20 - 361b23dca53619ee1dfd92dd6a74a7f3e58f270c
+Kernel:    2023-10-19 - ce55c22ec8b223a90ff3e084d842f73cfba35588
+Compiler:  gcc-10.2.1-20210110
+Attempt 1:
+    Time  Bug Name
+***    2  possible deadlock in hci_dev_do_close
+***    2  possible deadlock in hci_dev_do_close
+***    2  possible deadlock in hci_dev_do_close
+Attempt 2:
+    Time  Bug Name
+***    2  possible deadlock in hci_dev_do_close
+***    2  possible deadlock in hci_dev_do_close
+***    2  possible deadlock in hci_dev_do_close
+Attempt 3:
+    Time  Bug Name
+***    2  possible deadlock in hci_dev_do_close
+***    2  possible deadlock in hci_dev_do_close
+The bug was found.
+
+New Max Time: 10.
+Merge Commit: 2023-10-17 - 2b10740ce74abaea31c2cad4ff8e180549c4544b.
+No template updates to inspect.
+
+==== Kernel Retrospection ====
+23 Linux commits in [2023-10-17, 2023-10-20].
+
+2024-06-28 21:54:11
+Session:   2
+Template:  2023-10-19 - a42250d2817c29e8c9b5617612ba366dfe55cba1
+Syzkaller: 2023-10-19 - a42250d2817c29e8c9b5617612ba366dfe55cba1
+Kernel:    2023-10-19 - a13b67c9a015c4e21601ef9aa4ec9c5d972df1b4
+Compiler:  gcc-10.2.1-20210110
+Attempt 1:
+    Time  Bug Name
+***    2  possible deadlock in hci_dev_do_close
+***    2  possible deadlock in hci_dev_do_close
+***    2  possible deadlock in hci_dev_do_close
+The bug was found.
+
+2024-06-28 22:11:47
+Session:   3
+Template:  2023-10-16 - 342b9c5594e85819665af37b55afe27d0731379f
+Syzkaller: 2023-10-16 - 342b9c5594e85819665af37b55afe27d0731379f
+Kernel:    2023-10-18 - 1d30162f35c7a73fc2f8cdcdcdbd690bedb99d1a
+Compiler:  gcc-10.2.1-20210110
+Attempt 1:
+    Time  Bug Name
+***    2  possible deadlock in hci_dev_do_close
+***    2  possible deadlock in hci_dev_do_close
+       2  possible deadlock in rfkill_send_events
+The bug was found.
+
+2024-06-28 22:28:48
+Session:   4
+Template:  2023-10-16 - 342b9c5594e85819665af37b55afe27d0731379f
+Syzkaller: 2023-10-16 - 342b9c5594e85819665af37b55afe27d0731379f
+Kernel:    2023-10-18 - cbfbfe3aee718dc4c3c837f5d2463170ee59d78c
+Compiler:  gcc-10.2.1-20210110
+Attempt 1:
+    Time  Bug Name
+***    2  possible deadlock in hci_dev_do_close
+***    2  possible deadlock in hci_dev_do_close
+***    2  possible deadlock in hci_dev_do_close
+The bug was found.
+
+2024-06-28 22:47:23
+Session:   5
+Template:  2023-10-16 - 342b9c5594e85819665af37b55afe27d0731379f
+Syzkaller: 2023-10-16 - 342b9c5594e85819665af37b55afe27d0731379f
+Kernel:    2023-10-17 - 95535e37e8959f50e7aee365a5bdc9e5ed720443
+Compiler:  gcc-10.2.1-20210110
+Attempt 1:
+    Time  Bug Name
+***    2  possible deadlock in hci_dev_do_close
+***    2  possible deadlock in hci_dev_do_close
+***    2  possible deadlock in hci_dev_do_close
+The bug was found.
+
+2024-06-28 23:05:38
+Session:   6
+Template:  2023-10-16 - 342b9c5594e85819665af37b55afe27d0731379f
+Syzkaller: 2023-10-16 - 342b9c5594e85819665af37b55afe27d0731379f
+Kernel:    2023-10-17 - 2b10740ce74abaea31c2cad4ff8e180549c4544b
+Compiler:  gcc-10.2.1-20210110
+Attempt 1:
+    Time  Bug Name
+***    2  possible deadlock in hci_dev_do_close
+***    2  possible deadlock in hci_dev_do_close
+***    2  possible deadlock in hci_dev_do_close
+The bug was found.
+
+== Confirming the bisected commit ==
+
+2024-06-28 23:24:14
+Session:   7
+Template:  2023-10-16 - 342b9c5594e85819665af37b55afe27d0731379f
+Syzkaller: 2023-10-16 - 342b9c5594e85819665af37b55afe27d0731379f
+Kernel:    2023-10-17 - 2b10740ce74abaea31c2cad4ff8e180549c4544b
+The bug was found in a previous identical fuzzing session.
+
+====================================================================================================================================================
+Revealing Factor:   Guilty Merge
+Version:            2023-10-17 - 2b10740ce74abaea31c2cad4ff8e180549c4544b
+Commit Name:        Merge tag 'for-net-2023-10-13' of git://git.kernel.org/pub/scm/linux/kernel/git/bluetooth/bluetooth
+
+Bug Name:           possible deadlock in hci_rfkill_set_block
+Bug Link:           https://syzkaller.appspot.com/bug?extid=f93d183bc91522d90de9
+Arch:               amd64
+Finding Date:       2023-10-20
+Finding Commit:     2023-10-19 - ce55c22ec8b223a90ff3e084d842f73cfba35588
+Guilty Merge:       2023-10-17 - 2b10740ce74abaea31c2cad4ff8e180549c4544b
+Guilty Commit:      2023-10-11 - 92d4abd66f7080075793970fc8f241239e58a9e7
+
+Possible Blocking Bugs:

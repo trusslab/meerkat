@@ -1,0 +1,85 @@
+memory leak in crypto_create_tfm,https://syzkaller.appspot.com/bug?id=a2cf4f2142145d626f5c80441856be2292394b2a
+Repository: linux
+Arch: amd64
+Finding: 194098915ac74daddca9d6ed46fd11be57f45e16
+Guilty: 97f2650e504033376e8813691cb6eccf73151676
+No Duplicates
+Single Proc Allocation
+VMs:8
+CPUs:2
+Procs:16
+Max time:30
+Inspecting the finding commit.
+Session 1:
+    Template:  2020-06-02 - f3ba1b5b7b3b1e8e178f239c514ba0c2cb50f214
+    Syzkaller: 2020-06-02 - f3ba1b5b7b3b1e8e178f239c514ba0c2cb50f214
+    Kernel:    2020-06-02 - 194098915ac74daddca9d6ed46fd11be57f45e16
+    Compiler:  gcc-10.1.0-syz
+    The bug was found.
+        memory leak in crypto_create_tfm
+New Max Time: 10.
+Merge Commit: 2020-06-01 - 81e8c10dac62c427b25f6bbb07936806e4dd9e8a.
+No template updates to inspect.
+Inspecting 40 kernel versions in the range [2020-06-01, 2020-06-02].
+Session 2:
+    Template:  2020-05-31 - a0331e89e036103c95eb898742ea5d5f28a987b0
+    Syzkaller: 2020-05-31 - a0331e89e036103c95eb898742ea5d5f28a987b0
+    Kernel:    2020-06-01 - 88bc1de11cf5b5fa14dbeff7c613ce62fdfae7f6
+    Compiler:  gcc-10.1.0-syz
+    The bug was found in 2 minutes
+        memory leak in crypto_create_tfm
+Session 3:
+    Template:  2020-05-31 - a0331e89e036103c95eb898742ea5d5f28a987b0
+    Syzkaller: 2020-05-31 - a0331e89e036103c95eb898742ea5d5f28a987b0
+    Kernel:    2020-06-01 - 60056060bede58c3073dccb8a5e73a6c40804aa9
+    Compiler:  gcc-10.1.0-syz
+    The bug was found in 2 minutes
+        memory leak in crypto_create_tfm
+Session 4:
+    Template:  2020-05-31 - a0331e89e036103c95eb898742ea5d5f28a987b0
+    Syzkaller: 2020-05-31 - a0331e89e036103c95eb898742ea5d5f28a987b0
+    Kernel:    2020-06-01 - 8b11dd54add63aa398c4b239d31b7f4477a4b859
+    Compiler:  gcc-10.1.0-syz
+    The bug was found in 2 minutes
+        memory leak in crypto_create_tfm
+Session 5:
+    Template:  2020-05-31 - a0331e89e036103c95eb898742ea5d5f28a987b0
+    Syzkaller: 2020-05-31 - a0331e89e036103c95eb898742ea5d5f28a987b0
+    Kernel:    2020-06-01 - afdb0f2ec57d4899eda2c5e09fc3a005f2119690
+    Compiler:  gcc-10.1.0-syz
+    The bug was found in 2 minutes
+        memory leak in crypto_create_tfm
+Session 6:
+    Template:  2020-05-31 - a0331e89e036103c95eb898742ea5d5f28a987b0
+    Syzkaller: 2020-05-31 - a0331e89e036103c95eb898742ea5d5f28a987b0
+    Kernel:    2020-06-01 - 829f3b9401fe7cc3c1f3642bb2520751a42a87df
+    Compiler:  gcc-10.1.0-syz
+    The bug was found in 2 minutes
+        memory leak in crypto_create_tfm
+Session 7:
+    Template:  2020-05-31 - a0331e89e036103c95eb898742ea5d5f28a987b0
+    Syzkaller: 2020-05-31 - a0331e89e036103c95eb898742ea5d5f28a987b0
+    Kernel:    2020-06-01 - 81e8c10dac62c427b25f6bbb07936806e4dd9e8a
+    Compiler:  gcc-10.1.0-syz
+    The bug was found in 2 minutes
+        memory leak in crypto_create_tfm
+Confirming the bisected kernel commit.
+Session 8 after:
+    Template:  2020-05-31 - a0331e89e036103c95eb898742ea5d5f28a987b0
+    Syzkaller: 2020-05-31 - a0331e89e036103c95eb898742ea5d5f28a987b0
+    Kernel:    2020-06-01 - 81e8c10dac62c427b25f6bbb07936806e4dd9e8a
+The bug was found in a previous identical fuzzing session.
+Session 9 before:
+    Template:  2020-05-31 - a0331e89e036103c95eb898742ea5d5f28a987b0
+    Syzkaller: 2020-05-31 - a0331e89e036103c95eb898742ea5d5f28a987b0
+    Kernel:    2020-05-28 - 58ca0060ec4e51208d2eee12198fc55fd9e4feb3
+    Compiler:  gcc-10.1.0-syz
+    The bug was not found and timed out at 10 minutes
+
+Success
+Revealing factor: Kernel Code Change
+Kernel Version: 2020-06-01 - 81e8c10dac62c427b25f6bbb07936806e4dd9e8a
+Commit name: Merge branch 'linus' of git://git.kernel.org/pub/scm/linux/kernel/git/herbert/crypto-2.6
+
+AUTHOR: This bug made it back to and reproduces at its guilty merge. The correct
+revealing factor is guilty merge.

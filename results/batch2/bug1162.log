@@ -1,0 +1,541 @@
+KASAN: use-after-free Read in __list_del_entry_valid,https://syzkaller.appspot.com/bug?id=6820604ffdbef60ed889a3486df4c2731172f87b
+Repository: linux
+Arch: amd64
+Finding: 2017-12-12 - d39a01eff9af1045f6e30ff9db40310517c4b45f
+Guilty:  2015-06-03 - 0496f56065e00f6c3bfcefc4f9b5419847e4a8b5
+Duplicate Names:
+    KASAN: double-free or invalid-free in skb_free_head
+    KASAN: double-free or invalid-free in kvm_arch_vcpu_uninit
+    BUG: bad usercopy in do_syslog
+    BUG: bad usercopy in alg_setsockopt
+    KASAN: use-after-free Read in __list_del_entry_valid
+    BUG: bad usercopy in strncpy_from_user
+    BUG: bad usercopy in rw_copy_check_uvector
+    BUG: unable to handle kernel paging request in ipcget
+VMs:4
+CPUs:4
+Procs:24
+Max time:30
+Max attempts:3
+Testing the finding commit.
+
+2023-05-04 13:45:55
+Session:   1
+Template:  2017-12-13 - 06ea774dca81c53408f248915da116d5468d6af8
+Syzkaller: 2017-12-13 - 06ea774dca81c53408f248915da116d5468d6af8
+Kernel:    2017-12-13 - d39a01eff9af1045f6e30ff9db40310517c4b45f
+Compiler:  gcc-7.1.1-20170620
+Attempt 1:
+    Time  Bug Name
+      25  lost connection to test machine
+      26  KASAN: use-after-free Read in crypto_skcipher_init_tfm
+      26  general protection fault in __crypto_alg_lookup
+      27  KASAN: double-free or invalid-free in crypto_rfc4309_create
+      27  lost connection to test machine
+      28  general protection fault in __crypto_alg_lookup
+      28  general protection fault in __crypto_alg_lookup
+***   29  KASAN: double-free or invalid-free in skb_free_head
+Attempt 2:
+    Time  Bug Name
+      21  BUG: unable to handle kernel NULL pointer dereference in qlist_free_all
+      22  KASAN: use-after-free Read in crypto_aead_free_instance
+      23  general protection fault in crypto_aead_init_tfm
+      28  KASAN: use-after-free Read in __crypto_alg_lookup
+      29  KASAN: slab-out-of-bounds Read in crypto_aead_free_instance
+***   30  KASAN: use-after-free Read in __list_del_entry_valid
+Attempt 3:
+    Time  Bug Name
+      16  lost connection to test machine
+      17  KASAN: slab-out-of-bounds Read in __crypto_alg_lookup
+      17  KASAN: use-after-free Read in crypto_aead_free_instance
+      19  KASAN: use-after-free Read in __crypto_alg_lookup
+      19  KASAN: use-after-free Read in strcmp
+      20  KASAN: use-after-free Read in __crypto_alg_lookup
+      22  KASAN: use-after-free Read in crypto_skcipher_init_tfm
+      22  general protection fault in __crypto_alg_lookup
+      24  general protection fault in crypto_aead_init_tfm
+      25  KASAN: use-after-free Write in pipe_write
+      26  KASAN: use-after-free Read in crypto_aead_free_instance
+      27  KASAN: double-free or invalid-free in crypto_larval_destroy
+      27  KASAN: use-after-free Read in __dev_queue_xmit
+      28  KASAN: use-after-free Read in skb_clone
+      29  general protection fault in crypto_aead_init_tfm
+Attempt 4: (RETRY)
+    Time  Bug Name
+      21  lost connection to test machine
+      21  lost connection to test machine
+      25  KASAN: use-after-free Read in crypto_destroy_tfm
+      26  KASAN: use-after-free Read in __crypto_alg_lookup
+      27  KASAN: use-after-free Read in crypto_skcipher_init_tfm
+      27  KASAN: use-after-free Read in crypto_skcipher_init_tfm
+      30  KASAN: use-after-free Read in __tcp_retransmit_skb
+Attempt 5: (RETRY)
+    Time  Bug Name
+      14  general protection fault in qlist_free_all
+      16  no output from test machine
+      16  no output from test machine
+      17  KASAN: use-after-free Read in crypto_destroy_tfm
+      18  KASAN: use-after-free Read in __crypto_alg_lookup
+      19  general protection fault in __crypto_alg_lookup
+      20  KASAN: use-after-free Read in crypto_aead_free_instance
+      21  KASAN: slab-out-of-bounds Read in __crypto_alg_lookup
+***   22  KASAN: use-after-free Read in __list_del_entry_valid
+Attempt 6: (RETRY)
+    Time  Bug Name
+      24  lost connection to test machine
+      25  KASAN: use-after-free Read in crypto_skcipher_init_tfm
+      27  KASAN: use-after-free Read in blk_attempt_plug_merge
+      28  KASAN: use-after-free Read in __tcp_retransmit_skb
+      29  BUG: unable to handle kernel paging request in free_block
+      29  KASAN: use-after-free Read in crypto_ahash_init_tfm
+The bug was found.
+
+New Max Time: 31.
+No Merge Commit.
+
+==== Template Retrospection ====
+2 template changes in [2017-07-22, 2017-12-13].
+
+2023-05-04 17:33:15
+Session:   2
+Template:  2017-11-27 - 473d90487bd18f55b035887093e17b4a0ccc3b52
+Syzkaller: 2017-11-27 - 473d90487bd18f55b035887093e17b4a0ccc3b52
+Kernel:    2017-11-27 - 1751e8a6cb935e555fcdbcb9ab4f0446e322ca3e
+Compiler:  gcc-7.1.1-20170620
+Attempt 1:
+    Time  Bug Name
+      23  KASAN: use-after-free Read in __crypto_alg_lookup
+***   24  KASAN: use-after-free Read in __list_del_entry_valid
+The bug was found.
+
+2023-05-04 18:40:33
+Session:   3
+Template:  2017-08-18 - 5b461e7ecd9556f9a54e1a5afc3ef962bc5cd11e
+Syzkaller: 2017-08-18 - 5b461e7ecd9556f9a54e1a5afc3ef962bc5cd11e
+Kernel:    2017-08-18 - 58d4e450a490d5f02183f6834c12550ba26d3b47
+Compiler:  gcc-7.1.1-20170620
+Attempt 1:
+    Time  Bug Name
+      20  general protection fault in memset_erms
+      20  KASAN: use-after-free Write in pipe_write
+      20  KASAN: use-after-free Read in tcp_fragment
+      20  KASAN: use-after-free Read in crypto_skcipher_init_tfm
+      23  KASAN: use-after-free Read in crypto_skcipher_init_tfm
+      25  KASAN: use-after-free Write in pipe_write
+Attempt 2:
+    Time  Bug Name
+      12  KASAN: use-after-free Read in ipt_do_table
+      13  general protection fault in sidtab_search_core
+      13  KASAN: use-after-free Read in skb_clone
+      13  KASAN: use-after-free Write in pipe_write
+      15  KASAN: use-after-free Read in pskb_expand_head
+      15  general protection fault in crypto_aead_init_tfm
+      19  KASAN: use-after-free Read in crypto_ahash_init_tfm
+***   19  KASAN: double-free or invalid-free in skb_free_head
+The bug was found.
+
+2023-05-04 20:11:31
+Session:   4
+Template:  2017-07-21 - 87f9bdb8688ceafa804eb49d566bdc38dfb9fd5e
+Syzkaller: 2017-08-18 - 5b461e7ecd9556f9a54e1a5afc3ef962bc5cd11e
+Kernel:    2017-08-18 - 58d4e450a490d5f02183f6834c12550ba26d3b47
+Attempt 1:
+    Time  Bug Name
+      15  KASAN: use-after-free Write in pipe_write
+      15  KASAN: use-after-free Read in __crypto_alg_lookup
+      15  KASAN: use-after-free Read in crypto_ahash_init_tfm
+***   15  KASAN: double-free or invalid-free in skb_free_head
+The bug was found.
+
+==== Kernel Retrospection ====
+132 Linux commits in [2017-07-22, 2017-08-18].
+
+2023-05-04 20:35:01
+Session:   5
+Template:  2017-08-04 - d23bf3250e6705f2272f5ffa5970948feb202a72
+Syzkaller: 2017-08-04 - d23bf3250e6705f2272f5ffa5970948feb202a72
+Kernel:    2017-08-05 - aab7761c4f65a909047d10fc0c337800f770e820
+Compiler:  gcc-7.1.1-20170620
+Attempt 1:
+    Time  Bug Name
+      15  KASAN: use-after-free Write in pipe_write
+      15  KASAN: use-after-free Write in pipe_write
+      16  KASAN: use-after-free Write in pipe_write
+      16  KASAN: use-after-free Read in crypto_skcipher_init_tfm
+      17  KASAN: use-after-free Write in pipe_write
+      17  KASAN: use-after-free Read in crypto_skcipher_init_tfm
+      18  KASAN: use-after-free Read in __crypto_alg_lookup
+      19  KASAN: use-after-free Read in pskb_expand_head
+      20  general protection fault in memset_erms
+      20  general protection fault in crypto_aead_init_tfm
+      23  KASAN: use-after-free Read in __crypto_alg_lookup
+***   23  KASAN: double-free or invalid-free in skb_free_head
+The bug was found.
+
+2023-05-04 21:34:03
+Session:   6
+Template:  2017-07-28 - 032fb6f70ae1f26d2febedb6c566e341aaa5e039
+Syzkaller: 2017-07-28 - 032fb6f70ae1f26d2febedb6c566e341aaa5e039
+Kernel:    2017-07-28 - 286ba844c59bf0deebc25119f48e00a9ae54efb9
+Compiler:  gcc-7.1.1-20170620
+Attempt 1:
+    Time  Bug Name
+      14  KASAN: use-after-free Write in pipe_write
+      14  KASAN: use-after-free Read in __crypto_alg_lookup
+      14  lost connection to test machine
+      14  lost connection to test machine
+      15  lost connection to test machine
+      15  lost connection to test machine
+      15  lost connection to test machine
+      15  lost connection to test machine
+      15  lost connection to test machine
+      15  lost connection to test machine
+      15  lost connection to test machine
+      15  lost connection to test machine
+      16  lost connection to test machine
+      16  lost connection to test machine
+      16  lost connection to test machine
+      16  lost connection to test machine
+      17  lost connection to test machine
+      17  lost connection to test machine
+      17  lost connection to test machine
+      17  lost connection to test machine
+      17  lost connection to test machine
+      17  lost connection to test machine
+      18  lost connection to test machine
+      18  lost connection to test machine
+      18  lost connection to test machine
+      18  lost connection to test machine
+      18  lost connection to test machine
+      18  lost connection to test machine
+      19  lost connection to test machine
+      19  lost connection to test machine
+      19  lost connection to test machine
+      19  lost connection to test machine
+      19  lost connection to test machine
+      19  lost connection to test machine
+      20  lost connection to test machine
+      20  lost connection to test machine
+      20  lost connection to test machine
+      20  lost connection to test machine
+      20  lost connection to test machine
+      20  lost connection to test machine
+      21  lost connection to test machine
+      21  lost connection to test machine
+      21  lost connection to test machine
+      21  lost connection to test machine
+      21  lost connection to test machine
+      21  lost connection to test machine
+      22  lost connection to test machine
+      22  lost connection to test machine
+      22  lost connection to test machine
+      22  lost connection to test machine
+      22  lost connection to test machine
+      22  lost connection to test machine
+      23  lost connection to test machine
+      23  lost connection to test machine
+      23  lost connection to test machine
+      23  lost connection to test machine
+      23  lost connection to test machine
+      23  lost connection to test machine
+      24  lost connection to test machine
+      24  lost connection to test machine
+      24  lost connection to test machine
+      24  lost connection to test machine
+      25  lost connection to test machine
+      25  lost connection to test machine
+      25  lost connection to test machine
+      25  lost connection to test machine
+      25  lost connection to test machine
+      25  lost connection to test machine
+      26  lost connection to test machine
+      26  lost connection to test machine
+      26  lost connection to test machine
+      26  lost connection to test machine
+      26  lost connection to test machine
+      27  lost connection to test machine
+      27  lost connection to test machine
+      27  lost connection to test machine
+      27  lost connection to test machine
+      27  lost connection to test machine
+      28  lost connection to test machine
+      28  lost connection to test machine
+      28  lost connection to test machine
+      28  lost connection to test machine
+      28  lost connection to test machine
+      29  lost connection to test machine
+      29  lost connection to test machine
+      29  lost connection to test machine
+      29  lost connection to test machine
+      29  lost connection to test machine
+      30  lost connection to test machine
+      30  lost connection to test machine
+      30  lost connection to test machine
+      30  lost connection to test machine
+      30  lost connection to test machine
+      30  lost connection to test machine
+      31  lost connection to test machine
+      31  lost connection to test machine
+      31  lost connection to test machine
+      31  lost connection to test machine
+Attempt 2:
+    Time  Bug Name
+      21  KASAN: use-after-free Write in pipe_write
+      21  KASAN: use-after-free Read in crypto_skcipher_init_tfm
+      21  BUG: unable to handle kernel paging request in qlist_free_all
+      21  general protection fault in crypto_aead_init_tfm
+      23  KASAN: use-after-free Read in pskb_expand_head
+      23  KASAN: use-after-free Write in pipe_write
+      23  KASAN: use-after-free Write in pipe_write
+      29  kernel BUG at mm/usercopy.c:LINE!
+      30  KASAN: use-after-free Write in pipe_write
+Attempt 3:
+    Time  Bug Name
+      18  KASAN: use-after-free Read in tcp_fragment
+      18  KASAN: use-after-free Read in __crypto_alg_lookup
+      19  no output from test machine
+      19  KASAN: use-after-free Write in pipe_write
+      21  KASAN: use-after-free Write in pipe_write
+      21  KASAN: use-after-free Read in refcount_sub_and_test
+***   21  KASAN: double-free or invalid-free in skb_free_head
+The bug was found.
+
+2023-05-04 23:33:29
+Session:   7
+Template:  2017-07-26 - 240fb175d9a4dc4ff79dfefa60c51096be302e4a
+Syzkaller: 2017-07-26 - 240fb175d9a4dc4ff79dfefa60c51096be302e4a
+Kernel:    2017-07-26 - da08f35b0f82b0a7a79f518faf8d0c0b477f91bc
+Compiler:  gcc-7.1.1-20170620
+Attempt 1:
+    Time  Bug Name
+      14  KASAN: use-after-free Read in crypto_skcipher_init_tfm
+      14  KASAN: use-after-free Read in crypto_skcipher_init_tfm
+***   14  KASAN: double-free or invalid-free in skb_free_head
+The bug was found.
+
+2023-05-05 00:27:48
+Session:   8
+Template:  2017-07-21 - 87f9bdb8688ceafa804eb49d566bdc38dfb9fd5e
+Syzkaller: 2017-07-21 - 87f9bdb8688ceafa804eb49d566bdc38dfb9fd5e
+Kernel:    2017-07-23 - 7683e9e529258d01ce99216ad3be21f59eff83ec
+Compiler:  gcc-7.1.1-20170620
+Attempt 1:
+    Time  Bug Name
+      12  general protection fault in memset_erms
+      12  general protection fault in memset_erms
+      12  lost connection to test machine
+      12  lost connection to test machine
+      12  lost connection to test machine
+      12  lost connection to test machine
+      13  lost connection to test machine
+      13  lost connection to test machine
+      13  lost connection to test machine
+      13  lost connection to test machine
+      13  lost connection to test machine
+      13  lost connection to test machine
+      14  lost connection to test machine
+      14  lost connection to test machine
+      14  lost connection to test machine
+      14  lost connection to test machine
+      15  lost connection to test machine
+      15  lost connection to test machine
+      15  lost connection to test machine
+      15  lost connection to test machine
+      16  lost connection to test machine
+      16  lost connection to test machine
+      16  lost connection to test machine
+      16  lost connection to test machine
+      17  lost connection to test machine
+      17  lost connection to test machine
+      17  lost connection to test machine
+      17  lost connection to test machine
+      17  lost connection to test machine
+      18  lost connection to test machine
+      18  lost connection to test machine
+      18  lost connection to test machine
+      18  lost connection to test machine
+      18  lost connection to test machine
+      18  lost connection to test machine
+      19  lost connection to test machine
+      19  lost connection to test machine
+      19  lost connection to test machine
+      19  lost connection to test machine
+      19  lost connection to test machine
+      20  lost connection to test machine
+      20  lost connection to test machine
+      20  lost connection to test machine
+      20  lost connection to test machine
+      21  lost connection to test machine
+      21  lost connection to test machine
+      21  lost connection to test machine
+      21  lost connection to test machine
+      22  lost connection to test machine
+      22  lost connection to test machine
+      22  lost connection to test machine
+      22  lost connection to test machine
+      23  lost connection to test machine
+      23  lost connection to test machine
+      23  lost connection to test machine
+      23  lost connection to test machine
+      24  lost connection to test machine
+      24  lost connection to test machine
+      24  lost connection to test machine
+      24  lost connection to test machine
+      25  lost connection to test machine
+      25  lost connection to test machine
+      25  lost connection to test machine
+      25  lost connection to test machine
+      25  lost connection to test machine
+      26  lost connection to test machine
+      26  lost connection to test machine
+      26  lost connection to test machine
+      26  lost connection to test machine
+      27  lost connection to test machine
+      27  lost connection to test machine
+      27  lost connection to test machine
+      27  lost connection to test machine
+      28  lost connection to test machine
+      28  lost connection to test machine
+      28  lost connection to test machine
+      28  lost connection to test machine
+      28  lost connection to test machine
+      28  lost connection to test machine
+      29  lost connection to test machine
+      29  lost connection to test machine
+      29  lost connection to test machine
+      29  lost connection to test machine
+      29  lost connection to test machine
+      30  lost connection to test machine
+      30  lost connection to test machine
+      30  lost connection to test machine
+      30  lost connection to test machine
+      31  lost connection to test machine
+      31  lost connection to test machine
+      31  lost connection to test machine
+      31  lost connection to test machine
+Attempt 2:
+    Time  Bug Name
+      24  KASAN: use-after-free Write in pipe_write
+      24  KASAN: use-after-free Write in pipe_write
+      24  KASAN: use-after-free Read in crypto_skcipher_init_tfm
+***   24  KASAN: double-free or invalid-free in skb_free_head
+The bug was found.
+
+2023-05-05 01:47:54
+Session:   9
+Template:  2017-07-21 - 87f9bdb8688ceafa804eb49d566bdc38dfb9fd5e
+Syzkaller: 2017-07-21 - 87f9bdb8688ceafa804eb49d566bdc38dfb9fd5e
+Kernel:    2017-07-22 - ae75d1aefe04c30de9b344abc69939cf7b537ac6
+Compiler:  gcc-7.1.1-20170620
+Attempt 1:
+    Time  Bug Name
+      18  KASAN: use-after-free Write in pipe_write
+      18  BUG: unable to handle kernel paging request in free_block
+      21  KASAN: use-after-free Read in crypto_ahash_init_tfm
+      29  KASAN: use-after-free Read in pskb_expand_head
+      30  no output from test machine
+Attempt 2:
+    Time  Bug Name
+      19  KASAN: use-after-free Write in pipe_write
+***   19  KASAN: double-free or invalid-free in skb_free_head
+The bug was found.
+
+2023-05-05 03:40:59
+Session:   10
+Template:  2017-07-21 - 87f9bdb8688ceafa804eb49d566bdc38dfb9fd5e
+Syzkaller: 2017-07-21 - 87f9bdb8688ceafa804eb49d566bdc38dfb9fd5e
+Kernel:    2017-07-22 - 55fd939e8ee4538c3b66a28975dcc3beb96f80ba
+Compiler:  gcc-7.1.1-20170620
+Attempt 1:
+    Time  Bug Name
+      21  KASAN: use-after-free Write in pipe_write
+      21  general protection fault in crypto_aead_init_tfm
+      22  WARNING in fpu__copy
+      26  KASAN: use-after-free Write in pipe_write
+      29  no output from test machine
+Attempt 2:
+    Time  Bug Name
+       6  KASAN: use-after-free Write in pipe_write
+       6  KASAN: use-after-free Write in pipe_write
+       6  KASAN: use-after-free Write in pipe_write
+       6  KASAN: use-after-free Read in sidtab_search_core
+       7  KASAN: use-after-free Read in ip_finish_output2
+       7  KASAN: use-after-free Write in pipe_write
+***    7  KASAN: double-free or invalid-free in skb_free_head
+The bug was found.
+
+2023-05-05 04:43:07
+Session:   11
+Template:  2017-07-21 - 87f9bdb8688ceafa804eb49d566bdc38dfb9fd5e
+Syzkaller: 2017-07-21 - 87f9bdb8688ceafa804eb49d566bdc38dfb9fd5e
+Kernel:    2017-07-22 - bcb53e5769227813b7878df1ec9d329b0bd68f74
+Compiler:  gcc-7.1.1-20170620
+Attempt 1:
+    Time  Bug Name
+      17  KASAN: use-after-free Write in pipe_write
+***   17  KASAN: double-free or invalid-free in skb_free_head
+The bug was found.
+
+2023-05-05 05:43:00
+Session:   12
+Template:  2017-07-21 - 87f9bdb8688ceafa804eb49d566bdc38dfb9fd5e
+Syzkaller: 2017-07-21 - 87f9bdb8688ceafa804eb49d566bdc38dfb9fd5e
+Kernel:    2017-07-22 - 82abbea734d659b4218ad06734b4927b43261985
+Compiler:  gcc-7.1.1-20170620
+Attempt 1:
+    Time  Bug Name
+      19  KASAN: use-after-free Read in pskb_expand_head
+      19  KASAN: use-after-free Read in skb_clone
+      19  KASAN: use-after-free Write in pipe_write
+      19  KASAN: use-after-free Read in __tcp_retransmit_skb
+      24  KASAN: use-after-free Write in pipe_write
+      24  KASAN: use-after-free Read in crypto_destroy_tfm
+      25  no output from test machine
+      28  KASAN: use-after-free Read in __crypto_alg_lookup
+***   28  KASAN: double-free or invalid-free in skb_free_head
+The bug was found.
+Switching to Safe Mode: Fuzzing 5 times at 31 minutes
+
+== Confirming the bisected commit ==
+
+2023-05-05 06:40:16
+Session:   13
+Template:  2017-07-21 - 87f9bdb8688ceafa804eb49d566bdc38dfb9fd5e
+Syzkaller: 2017-07-21 - 87f9bdb8688ceafa804eb49d566bdc38dfb9fd5e
+Kernel:    2017-07-22 - 82abbea734d659b4218ad06734b4927b43261985
+The bug was found in a previous identical fuzzing session.
+
+2023-05-05 06:40:17
+Session:   14
+Template:  2017-07-21 - 87f9bdb8688ceafa804eb49d566bdc38dfb9fd5e
+Syzkaller: 2017-07-21 - 87f9bdb8688ceafa804eb49d566bdc38dfb9fd5e
+Kernel:    2017-07-21 - 505d5c11192960a3f0639d1d9e05dffeddd4e874
+Compiler:  gcc-7.1.1-20170620
+Attempt 1:
+    Time  Bug Name
+      25  BUG: Bad rss-counter state
+      25  KASAN: use-after-free Read in __crypto_alg_lookup
+***   25  KASAN: double-free or invalid-free in skb_free_head
+The bug was found.
+
+==== Syzkaller Retrospection ====
+0 Syzkaller commits from [2017-07-22].
+
+====================================================================================================================================================
+Revealing Factor:   Syzkaller Update
+Version:            2017-07-21 - Unknown
+Commit Name:        Unknown
+
+Bug Name:           KASAN: use-after-free Read in __list_del_entry_valid
+Bug Link:           https://syzkaller.appspot.com/bug?id=6820604ffdbef60ed889a3486df4c2731172f87b
+Arch:               amd64
+Finding Date:       2017-12-13
+Finding Commit:     2017-12-13 - d39a01eff9af1045f6e30ff9db40310517c4b45f
+Guilty Merge:       None
+Guilty Commit:      2015-06-03 - 0496f56065e00f6c3bfcefc4f9b5419847e4a8b5
+
+Possible Blocking Bugs:
+    KASAN: use-after-free Read in __crypto_alg_lookup
+    KASAN: use-after-free Read in crypto_skcipher_init_tfm
+    general protection fault in crypto_aead_init_tfm
+    KASAN: use-after-free Write in pipe_write

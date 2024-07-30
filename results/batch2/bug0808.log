@@ -1,0 +1,286 @@
+BUG: unable to handle kernel NULL pointer dereference in hci_uart_set_flow_control,https://syzkaller.appspot.com/bug?id=1b42faa2848963564a5b1b7f8c837ea7b55ffa50
+Repository: linux
+Arch: amd64
+Finding: 2019-03-20 - 54c490164523de90c42b1d89e7de3befe3284d1b
+Guilty:  2010-07-21 - b3190df628617c7a4f188a9465aeabe1f5761933
+Duplicate Names:
+    WARNING in tty_set_termios
+    general protection fault in qca_setup
+    BUG: unable to handle kernel NULL pointer dereference in hci_uart_set_flow_control
+Single Proc Allocation
+VMs:8
+CPUs:2
+Procs:16
+Max time:30
+Max attempts:3
+Testing the finding commit.
+
+2023-05-17 01:08:16
+Session:   1
+Template:  2019-03-21 - dce6e62ffce4b315ab41407813f0257ced29903f
+Syzkaller: 2019-03-21 - dce6e62ffce4b315ab41407813f0257ced29903f
+Kernel:    2019-03-20 - 54c490164523de90c42b1d89e7de3befe3284d1b
+Compiler:  gcc-9.0.0-20181231
+Attempt 1:
+    Time  Bug Name
+***    2  BUG: unable to handle kernel NULL pointer dereference in hci_uart_set_flow_control
+Attempt 2:
+    Time  Bug Name
+***    2  BUG: unable to handle kernel NULL pointer dereference in hci_uart_set_flow_control
+Attempt 3:
+    Time  Bug Name
+***    2  BUG: unable to handle kernel NULL pointer dereference in hci_uart_set_flow_control
+The bug was found.
+
+New Max Time: 10.
+Merge Commit: 2010-07-27 - 800f65bba8d2030b3fef62850e203f9f176625a8.
+
+==== Template Retrospection ====
+7 template changes in [2017-07-22, 2019-03-21].
+
+2023-05-17 02:32:12
+Session:   2
+Template:  2018-05-18 - d302e8164182e77b558e471c712839fda3ed7779
+Syzkaller: 2018-05-18 - d302e8164182e77b558e471c712839fda3ed7779
+Kernel:    2018-05-18 - 2c71d338bef2cc8a2e5f8ebe70788eeff246fcd8
+Compiler:  gcc-8.0.1-20180412
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+The bug was not found.
+
+2023-05-17 05:12:39
+Session:   3
+Template:  2018-08-31 - a4718693a3d9fcabb02299b2ec07c19d8208c539
+Syzkaller: 2018-08-31 - a4718693a3d9fcabb02299b2ec07c19d8208c539
+Kernel:    2018-08-31 - 420f51f4ab6bce6e580390729fadb89c31123636
+Compiler:  gcc-8.0.1-20180412
+Attempt 1:
+    Time  Bug Name
+       2  BUG: unable to handle kernel NULL pointer dereference in mrvl_setup
+Attempt 2:
+    Time  Bug Name
+       2  BUG: unable to handle kernel NULL pointer dereference in mrvl_setup
+       4  KASAN: invalid-free in x25_asy_free
+       8  possible deadlock in console_unlock
+       8  KASAN: invalid-free in x25_asy_free
+      10  possible deadlock in console_unlock
+Attempt 3:
+    Time  Bug Name
+       2  BUG: unable to handle kernel NULL pointer dereference in mrvl_setup
+The bug was not found.
+
+2023-05-17 06:45:28
+Session:   4
+Template:  2018-12-24 - 57541e29d9d7fba916a77292d80e8f35a132bcb4
+Syzkaller: 2018-12-24 - 57541e29d9d7fba916a77292d80e8f35a132bcb4
+Kernel:    2018-12-23 - 8fe28cb58bcb235034b64cbbb7550a8a43fd88be
+Compiler:  gcc-8.0.1-20180412
+Attempt 1:
+    Time  Bug Name
+       2  BUG: unable to handle kernel NULL pointer dereference in mrvl_setup
+Attempt 2:
+    Time  Bug Name
+       2  BUG: unable to handle kernel NULL pointer dereference in mrvl_setup
+       7  WARNING: locking bug in corrupted
+       9  BUG: unable to handle kernel paging request in slhc_free
+Attempt 3:
+    Time  Bug Name
+       2  BUG: unable to handle kernel NULL pointer dereference in mrvl_setup
+       5  BUG: unable to handle kernel paging request in slhc_free
+       6  KASAN: invalid-free in x25_asy_free
+       7  possible deadlock in console_unlock
+       9  possible deadlock in console_unlock
+The bug was not found.
+
+==== Kernel Retrospection ====
+655 Linux commits in [2018-12-23, 2019-03-21].
+
+2023-05-17 08:07:37
+Session:   5
+Template:  2019-02-02 - c198d5ddeb35c810b03f6e7042bc64b5f7a8726c
+Syzkaller: 2019-02-02 - c198d5ddeb35c810b03f6e7042bc64b5f7a8726c
+Kernel:    2019-02-02 - 33640d718c5ec9dccdeea49fd23bd9acfc537ce7
+Compiler:  gcc-9.0.0-20181231
+Attempt 1:
+    Time  Bug Name
+       2  BUG: unable to handle kernel NULL pointer dereference in mrvl_setup
+       5  possible deadlock in console_unlock
+Attempt 2:
+    Time  Bug Name
+       2  BUG: unable to handle kernel NULL pointer dereference in mrvl_setup
+Attempt 3:
+    Time  Bug Name
+       2  BUG: unable to handle kernel NULL pointer dereference in mrvl_setup
+       8  possible deadlock in console_unlock
+The bug was not found.
+
+2023-05-17 09:33:02
+Session:   6
+Template:  2019-03-06 - 18215b8d64c9bf653619b9eb9907445e225adf11
+Syzkaller: 2019-03-06 - 18215b8d64c9bf653619b9eb9907445e225adf11
+Kernel:    2019-03-06 - fa29f5ba42404b44aceb1a63ff4757efe5cd1789
+Compiler:  gcc-9.0.0-20181231
+Attempt 1:
+    Time  Bug Name
+       2  BUG: unable to handle kernel NULL pointer dereference in mrvl_setup
+       9  possible deadlock in console_unlock
+Attempt 2:
+    Time  Bug Name
+       2  BUG: unable to handle kernel NULL pointer dereference in mrvl_setup
+Attempt 3:
+    Time  Bug Name
+       2  BUG: unable to handle kernel NULL pointer dereference in mrvl_setup
+       7  possible deadlock in console_unlock
+       8  BUG: unable to handle kernel paging request in slhc_free
+The bug was not found.
+
+2023-05-17 11:02:42
+Session:   7
+Template:  2019-03-08 - 12365b99ce83b8a58433eaedbe412dff563ef8fb
+Syzkaller: 2019-03-08 - 12365b99ce83b8a58433eaedbe412dff563ef8fb
+Kernel:    2019-03-10 - dbbdf54c7206bf3f201f9ddaa5f4dd87835271cc
+Compiler:  gcc-9.0.0-20181231
+Attempt 1:
+    Time  Bug Name
+       2  BUG: unable to handle kernel NULL pointer dereference in mrvl_setup
+Attempt 2:
+    Time  Bug Name
+       2  BUG: unable to handle kernel NULL pointer dereference in mrvl_setup
+       8  lost connection to test machine
+Attempt 3:
+    Time  Bug Name
+       2  BUG: unable to handle kernel NULL pointer dereference in mrvl_setup
+Attempt 4: (RETRY)
+    Time  Bug Name
+       2  BUG: unable to handle kernel NULL pointer dereference in mrvl_setup
+       6  possible deadlock in vprintk_emit
+The bug was not found.
+
+2023-05-17 12:53:23
+Session:   8
+Template:  2019-03-12 - 2881fc25a8b874becd6b5c31668ebaeb7c6e9646
+Syzkaller: 2019-03-12 - 2881fc25a8b874becd6b5c31668ebaeb7c6e9646
+Kernel:    2019-03-13 - 8636b1dbce854363cd98922b3e4b49a603c4d5fd
+Compiler:  gcc-9.0.0-20181231
+Attempt 1:
+    Time  Bug Name
+***    2  BUG: unable to handle kernel NULL pointer dereference in hci_uart_set_flow_control
+The bug was found.
+
+2023-05-17 14:17:23
+Session:   9
+Template:  2019-03-12 - 2881fc25a8b874becd6b5c31668ebaeb7c6e9646
+Syzkaller: 2019-03-12 - 2881fc25a8b874becd6b5c31668ebaeb7c6e9646
+Kernel:    2019-03-12 - f47d633134f7033e3d0c667419d9f8afd69e308d
+Compiler:  gcc-9.0.0-20181231
+Attempt 1:
+    Time  Bug Name
+***    2  BUG: unable to handle kernel NULL pointer dereference in hci_uart_set_flow_control
+The bug was found.
+
+2023-05-17 15:33:26
+Session:   10
+Template:  2019-03-08 - 12365b99ce83b8a58433eaedbe412dff563ef8fb
+Syzkaller: 2019-03-08 - 12365b99ce83b8a58433eaedbe412dff563ef8fb
+Kernel:    2019-03-11 - bc119dd954ba172554b4cc49db249c4fb62701e6
+Compiler:  gcc-9.0.0-20181231
+Attempt 1:
+    Time  Bug Name
+***    2  BUG: unable to handle kernel NULL pointer dereference in hci_uart_set_flow_control
+The bug was found.
+
+2023-05-17 16:38:51
+Session:   11
+Template:  2019-03-08 - 12365b99ce83b8a58433eaedbe412dff563ef8fb
+Syzkaller: 2019-03-08 - 12365b99ce83b8a58433eaedbe412dff563ef8fb
+Kernel:    2019-03-10 - 12ad143e1b803e541e48b8ba40f550250259ecdd
+Compiler:  gcc-9.0.0-20181231
+Attempt 1:
+    Time  Bug Name
+***    2  BUG: unable to handle kernel NULL pointer dereference in hci_uart_set_flow_control
+The bug was found.
+
+2023-05-17 17:41:21
+Session:   12
+Template:  2019-03-08 - 12365b99ce83b8a58433eaedbe412dff563ef8fb
+Syzkaller: 2019-03-08 - 12365b99ce83b8a58433eaedbe412dff563ef8fb
+Kernel:    2019-03-10 - a15f6b923e1e1040edc79f222d5d229ea8097259
+Compiler:  gcc-9.0.0-20181231
+Attempt 1:
+    Time  Bug Name
+       2  BUG: unable to handle kernel NULL pointer dereference in mrvl_setup
+Attempt 2:
+    Time  Bug Name
+       2  BUG: unable to handle kernel NULL pointer dereference in mrvl_setup
+Attempt 3:
+    Time  Bug Name
+       2  BUG: unable to handle kernel NULL pointer dereference in mrvl_setup
+       7  WARNING in lockdep_unregister_key
+      10  BUG: unable to handle kernel paging request in slhc_free
+The bug was not found.
+
+2023-05-17 19:17:13
+Session:   13
+Template:  2019-03-08 - 12365b99ce83b8a58433eaedbe412dff563ef8fb
+Syzkaller: 2019-03-08 - 12365b99ce83b8a58433eaedbe412dff563ef8fb
+Kernel:    2019-03-10 - 262d6a9a63a387c8dfa9eb4f7713e159c941e52c
+Compiler:  gcc-9.0.0-20181231
+Attempt 1:
+    Time  Bug Name
+***    2  BUG: unable to handle kernel NULL pointer dereference in hci_uart_set_flow_control
+The bug was found.
+
+2023-05-17 20:10:43
+Session:   14
+Template:  2019-03-08 - 12365b99ce83b8a58433eaedbe412dff563ef8fb
+Syzkaller: 2019-03-08 - 12365b99ce83b8a58433eaedbe412dff563ef8fb
+Kernel:    2019-03-10 - b6e3cb4e8679dd971eed33f6a08d62c66a4230c9
+Compiler:  gcc-9.0.0-20181231
+Attempt 1:
+    Time  Bug Name
+       2  BUG: unable to handle kernel NULL pointer dereference in mrvl_setup
+Attempt 2:
+    Time  Bug Name
+       2  BUG: unable to handle kernel NULL pointer dereference in mrvl_setup
+Attempt 3:
+    Time  Bug Name
+       2  BUG: unable to handle kernel NULL pointer dereference in mrvl_setup
+The bug was not found.
+
+== Confirming the bisected commit ==
+
+2023-05-17 21:57:39
+Session:   15
+Template:  2019-03-08 - 12365b99ce83b8a58433eaedbe412dff563ef8fb
+Syzkaller: 2019-03-08 - 12365b99ce83b8a58433eaedbe412dff563ef8fb
+Kernel:    2019-03-10 - 262d6a9a63a387c8dfa9eb4f7713e159c941e52c
+The bug was found in a previous identical fuzzing session.
+
+2023-05-17 21:57:39
+Session:   16
+Template:  2019-03-08 - 12365b99ce83b8a58433eaedbe412dff563ef8fb
+Syzkaller: 2019-03-08 - 12365b99ce83b8a58433eaedbe412dff563ef8fb
+Kernel:    2019-03-10 - b6e3cb4e8679dd971eed33f6a08d62c66a4230c9
+The bug was not found in a previous identical fuzzing session.
+
+====================================================================================================================================================
+Revealing Factor:   Kernel Commit
+Version:            2019-03-10 - 262d6a9a63a387c8dfa9eb4f7713e159c941e52c
+Commit Name:        Merge branch 'x86-urgent-for-linus' of git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip
+
+Bug Name:           BUG: unable to handle kernel NULL pointer dereference in hci_uart_set_flow_control
+Bug Link:           https://syzkaller.appspot.com/bug?id=1b42faa2848963564a5b1b7f8c837ea7b55ffa50
+Arch:               amd64
+Finding Date:       2019-03-21
+Finding Commit:     2019-03-20 - 54c490164523de90c42b1d89e7de3befe3284d1b
+Guilty Merge:       2010-07-27 - 800f65bba8d2030b3fef62850e203f9f176625a8
+Guilty Commit:      2010-07-21 - b3190df628617c7a4f188a9465aeabe1f5761933
+
+Possible Blocking Bugs:
+    BUG: unable to handle kernel NULL pointer dereference in mrvl_setup
+
+AUTHOR: Determined to be a blocking bug.

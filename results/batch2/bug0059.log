@@ -1,0 +1,42 @@
+KASAN: use-after-free Read in nf_confirm,https://syzkaller.appspot.com/bug?id=8d094d6bc5fba75ff8d065959e44152c39e58690
+Repository: linux
+Arch: i386
+Finding: 2022-05-25 - d7227785e384d4422b3ca189aa5bf19f462337cc
+Guilty:  2016-05-05 - 71d8c47fc653711c41bc3282e5b0e605b3727956
+No Duplicates
+Single Proc Allocation
+VMs:8
+CPUs:2
+Procs:16
+Max time:30
+Max attempts:3
+Testing the finding commit.
+
+2023-05-11 06:17:34
+Session:   1
+Template:  2022-05-25 - 3037caa999f22cdb40f1fa5c6b1b13e5d6af9781
+Syzkaller: 2022-05-25 - 3037caa999f22cdb40f1fa5c6b1b13e5d6af9781
+Kernel:    2022-05-25 - d7227785e384d4422b3ca189aa5bf19f462337cc
+Compiler:  gcc-10.2.1-20210110
+Attempt 1:
+    Time  Bug Name
+      13  UBSAN: array-index-out-of-bounds in nfnetlink_unbind
+      22  UBSAN: array-index-out-of-bounds in nfnetlink_unbind
+      24  INFO: task hung in blkdev_get_by_dev
+Attempt 2:
+    Time  Bug Name
+       3  UBSAN: array-index-out-of-bounds in nfnetlink_unbind
+       5  WARNING: ODEBUG bug in netdev_run_todo
+      19  INFO: task hung in blkdev_get_by_dev
+      28  UBSAN: array-index-out-of-bounds in nfnetlink_unbind
+Attempt 3:
+    Time  Bug Name
+      22  UBSAN: array-index-out-of-bounds in nfnetlink_unbind
+      23  INFO: task hung in blkdev_put
+***   24  KASAN: use-after-free Read in nf_confirm
+The bug was found.
+
+New Max Time: 30.
+Merge Commit: 2016-05-09 - e8ed77dfa90dd79c5343415a4bbbfdab9787b35a.
+
+AUTHOR: A bug in SyzInspector caused an oob vector call.

@@ -1,0 +1,41 @@
+KASAN: use-after-free Read in __post_watch_notification,https://syzkaller.appspot.com/bug?id=3f5d1a7de17359e085f9a912eae7bf7e89dc7435
+Repository: linux
+Arch: amd64
+Finding: 2022-07-24 - e0dccc3b76fb35bb257b4118367a883073d7390e
+Guilty:  2020-05-19 - c73be61cede5882f9605a852414db559c0ebedfd
+No Duplicates
+Single Proc Allocation
+VMs:8
+CPUs:2
+Procs:16
+Max time:30
+Max attempts:3
+Testing the finding commit.
+
+2023-03-08 22:19:27
+Session:   1
+Template:  2022-07-25 - 34795c51ab3f8f36aaa7daca93071df2d02ade82
+Syzkaller: 2022-07-25 - 34795c51ab3f8f36aaa7daca93071df2d02ade82
+Kernel:    2022-07-24 - e0dccc3b76fb35bb257b4118367a883073d7390e
+Compiler:  gcc-10.2.1-20210110
+Attempt 1:
+    Time  Bug Name
+       2  INFO: trying to register non-static key in ieee80211_do_stop
+       2  INFO: trying to register non-static key in ieee80211_do_stop
+       9  WARNING: refcount bug in free_watch
+      17  INFO: trying to register non-static key in ieee80211_do_stop
+      23  INFO: trying to register non-static key in ieee80211_do_stop
+Attempt 2:
+    Time  Bug Name
+       2  INFO: trying to register non-static key in ieee80211_do_stop
+      18  INFO: trying to register non-static key in ieee80211_do_stop
+      30  INFO: trying to register non-static key in remove_watch_from_object
+Attempt 3:
+    Time  Bug Name
+       2  INFO: trying to register non-static key in ieee80211_do_stop
+       6  INFO: trying to register non-static key in ieee80211_do_stop
+      17  INFO: trying to register non-static key in ieee80211_do_stop
+      28  KASAN: use-after-free Read in remove_watch_from_object
+The bug was not found.
+
+Failure: This bug cannot be found at the finding commit.

@@ -1,0 +1,136 @@
+BUG: unable to handle kernel paging request in dput,https://syzkaller.appspot.com/bug?extid=4f39ae71208fef432d97
+Repository: linux
+Arch: amd64
+Finding: 2018-06-04 - 716a685fdb89942a50c4138141027e38336a895f
+Guilty:  2018-05-26 - 0168b9e38c4213e162b15444c071d4198ff470e8
+No Duplicates
+Single Proc Allocation
+VMs:8
+CPUs:2
+Procs:16
+Max time:30
+Max attempts:3
+Testing the finding commit.
+
+2024-06-22 20:19:59
+Session:   1
+Template:  2018-06-05 - 863a24bb5da2268d7705ec57fb2d16dfafa2e02c
+Syzkaller: 2018-06-05 - 863a24bb5da2268d7705ec57fb2d16dfafa2e02c
+Kernel:    2018-06-05 - 716a685fdb89942a50c4138141027e38336a895f
+Compiler:  gcc-8.0.1-20180412
+Attempt 1:
+    Time  Bug Name
+***    1  BUG: unable to handle kernel paging request in dput
+Attempt 2:
+    Time  Bug Name
+***    2  BUG: unable to handle kernel paging request in dput
+***    2  BUG: unable to handle kernel paging request in dput
+***    2  BUG: unable to handle kernel paging request in dput
+***    2  BUG: unable to handle kernel paging request in dput
+***    2  BUG: unable to handle kernel paging request in dput
+Attempt 3:
+    Time  Bug Name
+***    2  BUG: unable to handle kernel paging request in dput
+***    2  BUG: unable to handle kernel paging request in dput
+The bug was found.
+
+New Max Time: 10.
+Merge Commit: 2018-06-04 - b058efc1acfd99027b4c70458e72c3d20a1a5bbc.
+No template updates to inspect.
+
+==== Kernel Retrospection ====
+27 Linux commits in [2018-06-04, 2018-06-05].
+
+2024-06-22 20:35:45
+Session:   2
+Template:  2018-06-05 - 863a24bb5da2268d7705ec57fb2d16dfafa2e02c
+Syzkaller: 2018-06-05 - 863a24bb5da2268d7705ec57fb2d16dfafa2e02c
+Kernel:    2018-06-05 - d9b446e294f21a9616d36a786087466da64afe0a
+Compiler:  gcc-8.0.1-20180412
+Attempt 1:
+    Time  Bug Name
+***    2  BUG: unable to handle kernel paging request in dput
+***    2  BUG: unable to handle kernel paging request in dput
+       2  BUG: unable to handle kernel
+The bug was found.
+
+2024-06-22 20:46:41
+Session:   3
+Template:  2018-06-04 - a50d873b175c260850259e724add6f5ddd92a6e4
+Syzkaller: 2018-06-04 - a50d873b175c260850259e724add6f5ddd92a6e4
+Kernel:    2018-06-04 - d8aed8415b861d5b829742608400f772559b6739
+Compiler:  gcc-8.0.1-20180412
+Attempt 1:
+    Time  Bug Name
+***    2  BUG: unable to handle kernel paging request in dput
+***    2  BUG: unable to handle kernel paging request in dput
+***    2  BUG: unable to handle kernel paging request in dput
+***    2  BUG: unable to handle kernel paging request in dput
+The bug was found.
+
+2024-06-22 20:57:41
+Session:   4
+Template:  2018-06-04 - a50d873b175c260850259e724add6f5ddd92a6e4
+Syzkaller: 2018-06-04 - a50d873b175c260850259e724add6f5ddd92a6e4
+Kernel:    2018-06-04 - 704996566f97e0e24c97052f81678060c213c260
+Compiler:  gcc-8.0.1-20180412
+Attempt 1:
+    Time  Bug Name
+***    2  BUG: unable to handle kernel paging request in dput
+***    2  BUG: unable to handle kernel paging request in dput
+***    2  BUG: unable to handle kernel paging request in dput
+The bug was found.
+
+2024-06-22 21:09:43
+Session:   5
+Template:  2018-06-04 - a50d873b175c260850259e724add6f5ddd92a6e4
+Syzkaller: 2018-06-04 - a50d873b175c260850259e724add6f5ddd92a6e4
+Kernel:    2018-06-04 - 408afb8d7847faea115508ba154346e33edfc7d5
+Compiler:  gcc-8.0.1-20180412
+Attempt 1:
+    Time  Bug Name
+***    2  BUG: unable to handle kernel paging request in dput
+***    2  BUG: unable to handle kernel paging request in dput
+***    2  BUG: unable to handle kernel paging request in dput
+***    2  BUG: unable to handle kernel paging request in dput
+       2  BUG: unable to handle kernel
+The bug was found.
+
+2024-06-22 21:20:39
+Session:   6
+Template:  2018-06-04 - a50d873b175c260850259e724add6f5ddd92a6e4
+Syzkaller: 2018-06-04 - a50d873b175c260850259e724add6f5ddd92a6e4
+Kernel:    2018-06-04 - b058efc1acfd99027b4c70458e72c3d20a1a5bbc
+Compiler:  gcc-8.0.1-20180412
+Attempt 1:
+    Time  Bug Name
+***    2  BUG: unable to handle kernel paging request in dput
+***    2  BUG: unable to handle kernel paging request in dput
+***    2  BUG: unable to handle kernel paging request in dput
+***    2  BUG: unable to handle kernel paging request in dput
+The bug was found.
+
+== Confirming the bisected commit ==
+
+2024-06-22 21:31:14
+Session:   7
+Template:  2018-06-04 - a50d873b175c260850259e724add6f5ddd92a6e4
+Syzkaller: 2018-06-04 - a50d873b175c260850259e724add6f5ddd92a6e4
+Kernel:    2018-06-04 - b058efc1acfd99027b4c70458e72c3d20a1a5bbc
+The bug was found in a previous identical fuzzing session.
+
+====================================================================================================================================================
+Revealing Factor:   Guilty Merge
+Version:            2018-06-04 - b058efc1acfd99027b4c70458e72c3d20a1a5bbc
+Commit Name:        Merge branch 'work.lookup' of git://git.kernel.org/pub/scm/linux/kernel/git/viro/vfs
+
+Bug Name:           BUG: unable to handle kernel paging request in dput
+Bug Link:           https://syzkaller.appspot.com/bug?extid=4f39ae71208fef432d97
+Arch:               amd64
+Finding Date:       2018-06-05
+Finding Commit:     2018-06-05 - 716a685fdb89942a50c4138141027e38336a895f
+Guilty Merge:       2018-06-04 - b058efc1acfd99027b4c70458e72c3d20a1a5bbc
+Guilty Commit:      2018-05-26 - 0168b9e38c4213e162b15444c071d4198ff470e8
+
+Possible Blocking Bugs:
+Warning: Revealing factor may be faulty.

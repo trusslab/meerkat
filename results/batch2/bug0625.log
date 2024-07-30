@@ -1,0 +1,253 @@
+KASAN: use-after-free Read in l3mdev_master_ifindex_rcu,https://syzkaller.appspot.com/bug?id=242116e45aad680d3c0f380ba48a6ecd119665e4
+Repository: linux
+Arch: amd64
+Finding: 2020-02-12 - 0bf999f9c5e74c7ecf9dafb527146601e5c848b9
+Guilty:  2019-10-01 - 36fbf1e52bd3ff8a5cb604955eedfc9350c2e6cc
+Duplicate Names:
+    KASAN: use-after-free Read in alloc_netdev_mqs
+    KASAN: use-after-free Read in ipv6_get_ifaddr
+    KASAN: use-after-free Read in inet_lookup_ifaddr_rcu
+    KASAN: use-after-free Read in ipv6_chk_addr_and_flags
+    KASAN: use-after-free Read in dev_get_by_index_rcu
+    KASAN: use-after-free Read in vsscanf
+    KASAN: use-after-free Read in l3mdev_master_ifindex_rcu
+    KMSAN: use-after-free in l3mdev_master_ifindex_rcu
+    KMSAN: use-after-free in dev_alloc_name_ns
+Single Proc Allocation
+VMs:8
+CPUs:2
+Procs:16
+Max time:30
+Max attempts:3
+Testing the finding commit.
+
+2023-03-12 00:39:22
+Session:   1
+Template:  2020-02-13 - 5d7b90f1af2e3bf33992b75e7fcf0bab6bf49bd6
+Syzkaller: 2020-02-13 - 5d7b90f1af2e3bf33992b75e7fcf0bab6bf49bd6
+Kernel:    2020-02-12 - 0bf999f9c5e74c7ecf9dafb527146601e5c848b9
+Compiler:  gcc-9.0.0-20181231
+Attempt 1:
+    Time  Bug Name
+       2  KASAN: use-after-free Read in find_match
+Attempt 2:
+    Time  Bug Name
+***    2  KASAN: use-after-free Read in ipv6_get_ifaddr
+Attempt 3:
+    Time  Bug Name
+       2  KASAN: use-after-free Read in ipv6_add_addr
+The bug was found.
+
+New Max Time: 33.
+Merge Commit: 2019-10-01 - 7a56493f0620cc1b4cffc9bc59289fdefe76b5f3.
+
+==== Template Retrospection ====
+42 template changes in [2019-10-01, 2020-02-14].
+
+2023-03-12 02:54:17
+Session:   2
+Template:  2020-01-05 - d83499aa568e869fc4bea4e278a0f2229214b29d
+Syzkaller: 2020-01-05 - d83499aa568e869fc4bea4e278a0f2229214b29d
+Kernel:    2020-01-05 - c79f46a282390e0f5b306007bf7b11a46d529538
+Compiler:  gcc-9.0.0-20181231
+Attempt 1:
+    Time  Bug Name
+       2  KASAN: use-after-free Read in ipv6_add_addr
+Attempt 2:
+    Time  Bug Name
+       2  KASAN: use-after-free Read in mld_in_v1_mode
+Attempt 3:
+    Time  Bug Name
+***    2  KASAN: use-after-free Read in ipv6_chk_addr_and_flags
+The bug was found.
+
+2023-03-12 04:41:08
+Session:   3
+Template:  2019-12-17 - 7b9de469e696f30f158d023b4f8f7b624123c8d6
+Syzkaller: 2019-12-17 - 7b9de469e696f30f158d023b4f8f7b624123c8d6
+Kernel:    2019-12-17 - 2187f215ebaac73ddbd814696d7c7fa34f0c3de0
+Compiler:  gcc-9.0.0-20181231
+Attempt 1:
+    Time  Bug Name
+***    2  KASAN: use-after-free Read in ipv6_get_ifaddr
+The bug was found.
+
+2023-03-12 05:12:55
+Session:   4
+Template:  2019-11-04 - e2d61622eb61b451cb2cc72684154fafa1977eef
+Syzkaller: 2019-11-04 - e2d61622eb61b451cb2cc72684154fafa1977eef
+Kernel:    2019-11-04 - 56c1291ee48b4da2a70aa116098c2afc4a54783b
+Compiler:  gcc-9.0.0-20181231
+Attempt 1:
+    Time  Bug Name
+       2  KASAN: use-after-free Read in addrconf_dad_work
+      15  INFO: task hung in raw_release
+      21  no output from test machine
+Attempt 2:
+    Time  Bug Name
+       2  KASAN: use-after-free Read in ipv6_add_addr
+      26  INFO: task hung in raw_release
+      32  INFO: task hung in raw_release
+Attempt 3:
+    Time  Bug Name
+***    2  KASAN: use-after-free Read in ipv6_chk_addr_and_flags
+The bug was found.
+
+2023-03-12 06:49:23
+Session:   5
+Template:  2019-11-02 - 1297f2394760dc7237eeb27a41b3380233684d4e
+Syzkaller: 2019-11-02 - 1297f2394760dc7237eeb27a41b3380233684d4e
+Kernel:    2019-11-02 - ae8a76fb8b5d03fa2adc7249dc6131ba6a0c6119
+Compiler:  gcc-9.0.0-20181231
+Attempt 1:
+    Time  Bug Name
+       2  KASAN: use-after-free Read in ipv6_add_addr
+Attempt 2:
+    Time  Bug Name
+       2  KASAN: use-after-free Read in ipv6_add_addr
+      30  INFO: task hung in register_netdevice_notifier
+Attempt 3:
+    Time  Bug Name
+       2  KASAN: use-after-free Read in is_dynamic_key
+      22  INFO: task hung in register_netdevice_notifier
+      26  no output from test machine
+The bug was not found.
+
+2023-03-12 08:57:07
+Session:   6
+Template:  2019-11-03 - 99d946ccff4e757395f5607f06645c79c2c951df
+Syzkaller: 2019-11-03 - 99d946ccff4e757395f5607f06645c79c2c951df
+Kernel:    2019-11-02 - ae8a76fb8b5d03fa2adc7249dc6131ba6a0c6119
+Compiler:  gcc-9.0.0-20181231
+Attempt 1:
+    Time  Bug Name
+       2  KASAN: use-after-free Read in ipv6_add_addr
+Attempt 2:
+    Time  Bug Name
+       2  KASAN: use-after-free Read in mld_in_v1_mode
+      20  INFO: task hung in raw_release
+Attempt 3:
+    Time  Bug Name
+       2  KASAN: use-after-free Read in ipv6_add_addr
+The bug was not found.
+
+2023-03-12 11:06:33
+Session:   7
+Template:  2019-11-03 - 99d946ccff4e757395f5607f06645c79c2c951df
+Syzkaller: 2019-11-04 - e2d61622eb61b451cb2cc72684154fafa1977eef
+Kernel:    2019-11-04 - 56c1291ee48b4da2a70aa116098c2afc4a54783b
+Compiler:  gcc-9.0.0-20181231
+Attempt 1:
+    Time  Bug Name
+       2  KASAN: use-after-free Read in ipv6_add_addr
+Attempt 2:
+    Time  Bug Name
+       2  KASAN: use-after-free Read in ipv6_add_addr
+      24  INFO: task hung in register_netdevice_notifier
+Attempt 3:
+    Time  Bug Name
+***    2  KASAN: use-after-free Read in ipv6_get_ifaddr
+The bug was found.
+
+==== Kernel Retrospection ====
+19 Linux commits in [2019-11-02, 2019-11-04].
+
+2023-03-12 12:45:44
+Session:   8
+Template:  2019-11-04 - 76630fc9477809305ab0fc257f92826e7671cb7e
+Syzkaller: 2019-11-04 - 76630fc9477809305ab0fc257f92826e7671cb7e
+Kernel:    2019-11-04 - 5d1fcaf35d74b4188d238e46f0be37c14a01f169
+Compiler:  gcc-9.0.0-20181231
+Attempt 1:
+    Time  Bug Name
+       2  KASAN: use-after-free Read in ipv6_add_addr
+Attempt 2:
+    Time  Bug Name
+       2  KASAN: use-after-free Read in mld_in_v1_mode
+Attempt 3:
+    Time  Bug Name
+       2  KASAN: use-after-free Read in mld_in_v1_mode
+The bug was not found.
+
+2023-03-12 14:57:58
+Session:   9
+Template:  2019-11-04 - 76630fc9477809305ab0fc257f92826e7671cb7e
+Syzkaller: 2019-11-04 - 76630fc9477809305ab0fc257f92826e7671cb7e
+Kernel:    2019-11-04 - 051a07ec7a3def775c599547e5ce69bd59c43794
+Compiler:  gcc-9.0.0-20181231
+Attempt 1:
+    Time  Bug Name
+       2  KASAN: use-after-free Read in ipv6_add_addr
+      20  INFO: task hung in register_netdevice_notifier
+      27  INFO: task hung in raw_release
+Attempt 2:
+    Time  Bug Name
+       2  KASAN: use-after-free Read in addrconf_dad_work
+      17  no output from test machine
+Attempt 3:
+    Time  Bug Name
+***    2  KASAN: use-after-free Read in ipv6_chk_addr_and_flags
+The bug was found.
+
+2023-03-12 16:37:27
+Session:   10
+Template:  2019-11-04 - 76630fc9477809305ab0fc257f92826e7671cb7e
+Syzkaller: 2019-11-04 - 76630fc9477809305ab0fc257f92826e7671cb7e
+Kernel:    2019-11-04 - 4dd147471dae02e21db317fff02b7cf98694b22f
+Compiler:  gcc-9.0.0-20181231
+Attempt 1:
+    Time  Bug Name
+       2  KASAN: use-after-free Read in mld_in_v1_mode
+      32  INFO: task hung in raw_release
+Attempt 2:
+    Time  Bug Name
+       2  KASAN: use-after-free Read in mld_in_v1_mode
+Attempt 3:
+    Time  Bug Name
+       2  KASAN: use-after-free Read in mld_in_v1_mode
+The bug was not found.
+
+2023-03-12 18:54:29
+Session:   11
+Template:  2019-11-04 - 76630fc9477809305ab0fc257f92826e7671cb7e
+Syzkaller: 2019-11-04 - 76630fc9477809305ab0fc257f92826e7671cb7e
+Kernel:    2019-11-04 - 59511bcf33f95e2bcf1100e8fde31e2d4a15f3a0
+Compiler:  gcc-9.0.0-20181231
+Attempt 1:
+    Time  Bug Name
+***    2  KASAN: use-after-free Read in ipv6_chk_addr_and_flags
+The bug was found.
+
+== Confirming the bisected commit ==
+
+2023-03-12 19:26:15
+Session:   12
+Template:  2019-11-04 - 76630fc9477809305ab0fc257f92826e7671cb7e
+Syzkaller: 2019-11-04 - 76630fc9477809305ab0fc257f92826e7671cb7e
+Kernel:    2019-11-04 - 59511bcf33f95e2bcf1100e8fde31e2d4a15f3a0
+The bug was found in a previous identical fuzzing session.
+
+2023-03-12 19:26:15
+Session:   13
+Template:  2019-11-04 - 76630fc9477809305ab0fc257f92826e7671cb7e
+Syzkaller: 2019-11-04 - 76630fc9477809305ab0fc257f92826e7671cb7e
+Kernel:    2019-11-04 - 4dd147471dae02e21db317fff02b7cf98694b22f
+The bug was not found in a previous identical fuzzing session.
+
+====================================================================================================================================================
+Revealing Factor:   Kernel Commit
+Version:            2019-11-04 - 59511bcf33f95e2bcf1100e8fde31e2d4a15f3a0
+Commit Name:        net: sgi: ioc3-eth: fix usage of GFP_* flags
+
+Bug Name:           KASAN: use-after-free Read in l3mdev_master_ifindex_rcu
+Bug Link:           https://syzkaller.appspot.com/bug?id=242116e45aad680d3c0f380ba48a6ecd119665e4
+Arch:               amd64
+Finding Date:       2020-02-14
+Finding Commit:     2020-02-12 - 0bf999f9c5e74c7ecf9dafb527146601e5c848b9
+Guilty Merge:       2019-10-01 - 7a56493f0620cc1b4cffc9bc59289fdefe76b5f3
+Guilty Commit:      2019-10-01 - 36fbf1e52bd3ff8a5cb604955eedfc9350c2e6cc
+
+Possible Blocking Bugs:
+    KASAN: use-after-free Read in ipv6_add_addr
+
+AUTHOR: Determined to be blocking bugs.

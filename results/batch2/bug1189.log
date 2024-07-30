@@ -1,0 +1,126 @@
+KASAN: use-after-free Read in free_ldt_struct,https://syzkaller.appspot.com/bug?id=a0baab60775fd411b40856d541de27944cf3f230
+Repository: linux
+Arch: amd64
+Finding: 2017-08-13 - c9dc281d91aed57251e94c7cca81a5c8777e3e4a
+Guilty:  2016-02-18 - 39a0526fb3f7d93433d146304278477eb463f8af
+No Duplicates
+VMs:4
+CPUs:4
+Procs:24
+Max time:30
+Max attempts:3
+Testing the finding commit.
+
+2023-05-10 03:08:28
+Session:   1
+Template:  2017-08-14 - 6a0246bf72830c3461e9784c104894882738541f
+Syzkaller: 2017-08-14 - 6a0246bf72830c3461e9784c104894882738541f
+Kernel:    2017-08-13 - c9dc281d91aed57251e94c7cca81a5c8777e3e4a
+Compiler:  gcc-7.1.1-20170620
+Attempt 1:
+    Time  Bug Name
+***   19  KASAN: use-after-free Read in free_ldt_struct
+***   19  KASAN: use-after-free Read in free_ldt_struct
+***   19  KASAN: use-after-free Read in free_ldt_struct
+      19  KASAN: use-after-free Read in switch_mm_irqs_off
+Attempt 2:
+    Time  Bug Name
+      19  WARNING in tracepoint_probe_register_prio
+      19  KASAN: use-after-free Read in switch_mm_irqs_off
+      19  KASAN: use-after-free Read in switch_mm_irqs_off
+***   20  KASAN: use-after-free Read in free_ldt_struct
+***   20  KASAN: use-after-free Read in free_ldt_struct
+      20  KASAN: use-after-free Read in switch_mm_irqs_off
+      20  lost connection to test machine
+Attempt 3:
+    Time  Bug Name
+***    7  KASAN: use-after-free Read in free_ldt_struct
+       7  KASAN: use-after-free Read in switch_mm_irqs_off
+       7  lost connection to test machine
+       7  lost connection to test machine
+Attempt 4: (RETRY)
+    Time  Bug Name
+      16  KASAN: use-after-free Read in switch_mm_irqs_off
+***   17  KASAN: use-after-free Read in free_ldt_struct
+      17  lost connection to test machine
+      17  lost connection to test machine
+Attempt 5: (RETRY)
+    Time  Bug Name
+***   15  KASAN: use-after-free Read in free_ldt_struct
+***   15  KASAN: use-after-free Read in free_ldt_struct
+Attempt 6: (RETRY)
+    Time  Bug Name
+***   21  KASAN: use-after-free Read in free_ldt_struct
+***   21  KASAN: use-after-free Read in free_ldt_struct
+The bug was found.
+
+New Max Time: 21.
+Merge Commit: 2016-03-21 - 643ad15d47410d37d43daf3ef1c8ac52c281efa5.
+
+==== Template Retrospection ====
+2 template changes in [2017-07-22, 2017-08-14].
+
+2023-05-10 05:40:34
+Session:   2
+Template:  2017-08-12 - 360f05289f99230d9a288b6121032d143ba90c59
+Syzkaller: 2017-08-12 - 360f05289f99230d9a288b6121032d143ba90c59
+Kernel:    2017-08-12 - 89a55278dee487b172fb16295ccb2d0b2a1b319b
+Compiler:  gcc-7.1.1-20170620
+Attempt 1:
+    Time  Bug Name
+***   12  KASAN: use-after-free Read in free_ldt_struct
+      12  KASAN: use-after-free Read in switch_mm_irqs_off
+      12  KASAN: use-after-free Read in switch_mm_irqs_off
+The bug was found.
+
+2023-05-10 06:45:43
+Session:   3
+Template:  2017-08-07 - c7434a4081b4e809176fab3dd7a154652644678f
+Syzkaller: 2017-08-07 - c7434a4081b4e809176fab3dd7a154652644678f
+Kernel:    2017-08-07 - aae4e7a8bc44722fe70d58920a36916b1043195e
+Compiler:  gcc-7.1.1-20170620
+Attempt 1:
+    Time  Bug Name
+      18  kernel panic: n_tty: init_tty
+Attempt 2:
+    Time  Bug Name
+      20  kernel panic: n_tty: init_tty
+      20  WARNING in tracepoint_probe_register_prio
+      20  WARNING in tracepoint_probe_register_prio
+      20  WARNING in tracepoint_probe_register_prio
+Attempt 3:
+    No crashes found.
+The bug was not found.
+
+2023-05-10 08:20:53
+Session:   4
+Template:  2017-08-07 - c7434a4081b4e809176fab3dd7a154652644678f
+Syzkaller: 2017-08-12 - 360f05289f99230d9a288b6121032d143ba90c59
+Kernel:    2017-08-12 - 89a55278dee487b172fb16295ccb2d0b2a1b319b
+Compiler:  gcc-7.1.1-20170620
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    Time  Bug Name
+      19  kernel panic: n_tty: init_tty
+      19  kernel panic: n_tty: init_tty
+The bug was not found.
+
+====================================================================================================================================================
+Revealing Factor:   Template Update
+Version:            2017-08-12 - 360f05289f99230d9a288b6121032d143ba90c59
+Commit Name:        sys: describe clone/execve calls
+
+Bug Name:           KASAN: use-after-free Read in free_ldt_struct
+Bug Link:           https://syzkaller.appspot.com/bug?id=a0baab60775fd411b40856d541de27944cf3f230
+Arch:               amd64
+Finding Date:       2017-08-14
+Finding Commit:     2017-08-13 - c9dc281d91aed57251e94c7cca81a5c8777e3e4a
+Guilty Merge:       2016-03-21 - 643ad15d47410d37d43daf3ef1c8ac52c281efa5
+Guilty Commit:      2016-02-18 - 39a0526fb3f7d93433d146304278477eb463f8af
+
+Possible Blocking Bugs:
+    kernel panic: n_tty: init_tty
+    WARNING in tracepoint_probe_register_prio

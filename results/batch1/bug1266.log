@@ -1,0 +1,71 @@
+WARNING: suspicious RCU usage in kvm_dev_ioctl,https://syzkaller.appspot.com/bug?id=933d1c2b20a63c9babba868dc3cf9ab7b07f106f
+Repository: linux
+Arch: amd64
+Finding: 9d2345057538bb97b1e556508ad69983f446462f
+Guilty: a97b0e773e492ae319a7e981e98962a1060215f9
+No Duplicates
+Single Proc Allocation
+VMs:8
+CPUs:2
+Procs:16
+Max time:30
+Inspecting the finding commit.
+Session 1:
+    Template:  2019-11-02 - d603afc9e4ab932977582f4be7f9ce2375411236
+    Syzkaller: 2019-11-02 - d603afc9e4ab932977582f4be7f9ce2375411236
+    Kernel:    2019-11-02 - 9d2345057538bb97b1e556508ad69983f446462f
+    Compiler:  gcc-9.0.0-20181231
+    The bug was found.
+        WARNING: suspicious RCU usage in kvm_dev_ioctl
+New Max Time: 10.
+No Merge Commit.
+No template updates to inspect.
+Inspecting 16 kernel versions in the range [2019-10-31, 2019-11-02].
+Session 2:
+    Template:  2019-11-02 - d603afc9e4ab932977582f4be7f9ce2375411236
+    Syzkaller: 2019-11-02 - d603afc9e4ab932977582f4be7f9ce2375411236
+    Kernel:    2019-11-02 - e5897c7d2e6507ac2423455bada21c8a6b005db6
+    Compiler:  gcc-9.0.0-20181231
+    The bug was found in 2 minutes
+        WARNING: suspicious RCU usage in kvm_dev_ioctl
+Session 3:
+    Template:  2019-11-01 - 997ccc675b3dc049ad3ce922580397bd546956ea
+    Syzkaller: 2019-11-01 - 997ccc675b3dc049ad3ce922580397bd546956ea
+    Kernel:    2019-11-01 - b2a18c25c73f30316eb356e915f4c9cc58ec42fc
+    Compiler:  gcc-9.0.0-20181231
+    The bug was found in 2 minutes
+        WARNING: suspicious RCU usage in kvm_dev_ioctl
+Session 4:
+    Template:  2019-11-01 - 997ccc675b3dc049ad3ce922580397bd546956ea
+    Syzkaller: 2019-11-01 - 997ccc675b3dc049ad3ce922580397bd546956ea
+    Kernel:    2019-11-01 - b88866b60d98f2fe1f66f2a4e1a181d9f2b36b5d
+    Compiler:  gcc-9.0.0-20181231
+    The bug was found in 2 minutes
+        WARNING: suspicious RCU usage in kvm_dev_ioctl
+Session 5:
+    Template:  2019-10-30 - a41ca8fa8285754d8561dcc3ed54cca2da60eed7
+    Syzkaller: 2019-10-30 - a41ca8fa8285754d8561dcc3ed54cca2da60eed7
+    Kernel:    2019-10-31 - 9167ab79936206118cc60e47dcb926c3489f3bd5
+    Compiler:  gcc-9.0.0-20181231
+    The bug was found in 2 minutes
+        WARNING: suspicious RCU usage in kvm_dev_ioctl
+Session 6:
+    Template:  2019-10-30 - a41ca8fa8285754d8561dcc3ed54cca2da60eed7
+    Syzkaller: 2019-10-30 - a41ca8fa8285754d8561dcc3ed54cca2da60eed7
+    Kernel:    2019-10-31 - a97b0e773e492ae319a7e981e98962a1060215f9
+    Compiler:  gcc-9.0.0-20181231
+    The bug was found in 2 minutes
+        WARNING: suspicious RCU usage in kvm_dev_ioctl
+Confirming the bisected kernel commit.
+Session 7 after:
+    Template:  2019-10-30 - a41ca8fa8285754d8561dcc3ed54cca2da60eed7
+    Syzkaller: 2019-10-30 - a41ca8fa8285754d8561dcc3ed54cca2da60eed7
+    Kernel:    2019-10-31 - a97b0e773e492ae319a7e981e98962a1060215f9
+The bug was found in a previous identical fuzzing session.
+
+Success
+Revealing factor: Guilty Commit
+Kernel Version: 2019-10-31 - a97b0e773e492ae319a7e981e98962a1060215f9
+Commit name: kvm: call kvm_arch_destroy_vm if vm creation fails
+
+AUTHOR: This bug should have stopped at the guilty merge, went all the way back to guilty.

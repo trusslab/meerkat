@@ -1,0 +1,79 @@
+BUG: unable to handle kernel paging request in corrupted,https://syzkaller.appspot.com/bug?id=85810864c00a07b6d124b9fbc09f24ee5d6aeec3
+Repository: linux
+Arch: amd64
+Finding: 2021-05-11 - 88b06399c9c766c283e070b022b5ceafa4f63f19
+Guilty:  2021-04-15 - ea6a693d862d4f0edd748a1fa3fc6faf2c39afb2
+No Duplicates
+Single Proc Allocation
+VMs:8
+CPUs:2
+Procs:16
+Max time:30
+Max attempts:3
+Testing the finding commit.
+
+2023-03-22 13:04:14
+Session:   1
+Template:  2021-05-12 - ed7d41c582d6f194ff35353d8bfdf7681dc0718e
+Syzkaller: 2021-05-12 - ed7d41c582d6f194ff35353d8bfdf7681dc0718e
+Kernel:    2021-05-11 - 88b06399c9c766c283e070b022b5ceafa4f63f19
+Compiler:  gcc-10.2.1-20210110
+Attempt 1:
+    Time  Bug Name
+       3  WARNING in exception_type
+       4  WARNING in exception_type
+       5  general protection fault in ath9k_hif_usb_rx_cb
+       7  KASAN: use-after-free Read in ath9k_hif_usb_rx_cb
+       9  suppressed report
+      10  suppressed report
+      11  WARNING in sta_info_insert_rcu
+      13  general protection fault in ath9k_hif_usb_rx_cb
+      15  WARNING in hci_conn_timeout
+      17  general protection fault in ath9k_hif_usb_rx_cb
+      19  general protection fault in ath9k_hif_usb_rx_cb
+      23  no output from test machine
+      24  suppressed report
+      30  WARNING in sta_info_insert_rcu
+Attempt 2:
+    Time  Bug Name
+       4  WARNING in sta_info_insert_rcu
+       5  WARNING in exception_type
+      12  suppressed report
+      20  general protection fault in ath9k_hif_usb_rx_cb
+      21  BUG: spinlock bad magic in synchronize_srcu
+Attempt 3:
+    Time  Bug Name
+       8  general protection fault in ath9k_hif_usb_rx_cb
+      12  lost connection to test machine
+      16  suppressed report
+Attempt 4: (RETRY)
+    Time  Bug Name
+       3  WARNING in exception_type
+       4  WARNING in exception_type
+       6  general protection fault in ath9k_hif_usb_rx_cb
+       8  WARNING in sta_info_insert_rcu
+       8  BUG: spinlock bad magic in synchronize_srcu
+      15  general protection fault in ath9k_hif_usb_rx_cb
+      18  suppressed report
+      19  general protection fault in ath9k_hif_usb_rx_cb
+      20  general protection fault in ath9k_hif_usb_rx_cb
+      27  no output from test machine
+Attempt 5: (RETRY)
+    Time  Bug Name
+       3  WARNING in exception_type
+       9  suppressed report
+      12  INFO: rcu detected stall in mac80211_hwsim_beacon
+      13  suppressed report
+      16  general protection fault in ath9k_hif_usb_rx_cb
+      19  INFO: task hung in linkwatch_event
+      21  suppressed report
+      26  BUG: spinlock bad magic in synchronize_srcu
+      27  inconsistent lock state in stack_depot_save
+Attempt 6: (RETRY)
+    Time  Bug Name
+       4  WARNING in exception_type
+       8  suppressed report
+The bug was not found.
+Warning: This session is unstable.
+
+Failure: This bug cannot be found at the finding commit.

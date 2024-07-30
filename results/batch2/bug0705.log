@@ -1,0 +1,64 @@
+BUG: workqueue lockup,https://syzkaller.appspot.com/bug?id=0041bf1423916e9ae458b08b760e269a33c14960
+Repository: linux
+Arch: amd64
+Finding: 2018-09-04 - 28619527b8a712590c93d0a9e24b4425b9376a8c
+Guilty:  2010-12-10 - 6610e0893b8bc6f59b14fed7f089c5997f035f88
+No Duplicates
+Single Proc Allocation
+VMs:8
+CPUs:2
+Procs:16
+Max time:30
+Max attempts:3
+Testing the finding commit.
+
+2023-04-02 19:23:09
+Session:   1
+Template:  2018-09-05 - 873745f2ff183dcbc303a504683ccaa3a472a635
+Syzkaller: 2018-09-05 - 873745f2ff183dcbc303a504683ccaa3a472a635
+Kernel:    2018-09-04 - 28619527b8a712590c93d0a9e24b4425b9376a8c
+Compiler:  gcc-8.0.1-20180412
+Attempt 1:
+    Time  Bug Name
+       2  BUG: soft lockup in rtc_handle_legacy_irq
+       7  KASAN: use-after-free Read in finish_task_switch
+      27  lost connection to test machine
+Attempt 2:
+    Time  Bug Name
+       2  BUG: soft lockup in rtc_handle_legacy_irq
+Attempt 3:
+    Time  Bug Name
+       2  BUG: soft lockup in timerqueue_del
+       2  BUG: soft lockup in rtc_timer_do_work
+       3  BUG: soft lockup in rtc_timer_do_work
+      11  BUG: soft lockup in rtc_handle_legacy_irq
+      12  KASAN: use-after-free Read in finish_task_switch
+      21  BUG: soft lockup in __wake_up
+      23  lost connection to test machine
+      25  lost connection to test machine
+      27  lost connection to test machine
+      27  lost connection to test machine
+Attempt 4: (RETRY)
+    Time  Bug Name
+       3  BUG: soft lockup in rcu_is_watching
+      15  kernel panic: corrupted stack end detected inside scheduler
+Attempt 5: (RETRY)
+    Time  Bug Name
+       2  BUG: soft lockup in rtc_handle_legacy_irq
+      13  INFO: task hung in jbd2_journal_commit_transaction
+      24  lost connection to test machine
+      25  INFO: task hung in jbd2_journal_commit_transaction
+      30  lost connection to test machine
+Attempt 6: (RETRY)
+    Time  Bug Name
+       3  BUG: soft lockup in __wake_up_common_lock
+      19  general protection fault in __dev_queue_xmit
+      19  general protection fault in ubifs_mount
+      19  lost connection to test machine
+      26  BUG: soft lockup in __wake_up_common_lock
+      27  KASAN: use-after-free Read in finish_task_switch
+      29  lost connection to test machine
+The bug was not found.
+Warning: This session is unstable.
+
+Failure: This bug cannot be found at the finding commit.

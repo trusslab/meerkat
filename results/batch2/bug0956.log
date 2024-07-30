@@ -1,0 +1,394 @@
+kernel BUG at net/ipv6/route.c:LINE!,https://syzkaller.appspot.com/bug?id=f8a2405cdc200ef0c01d2ebe2dc22173c7a7ee9e
+Repository: linux
+Arch: amd64
+Finding: 2018-07-14 - c31496dbacc2b6352750937afc20a8dbe22b27a4
+Guilty:  2018-04-17 - 93531c6743157d7e8c5792f8ed1a57641149d62c
+Duplicate Names:
+    KASAN: use-after-free Write in ip6_dst_destroy
+    kernel BUG at net/ipv6/route.c:LINE!
+    WARNING in __ip6_make_skb
+    WARNING in ip6_sk_dst_lookup_flow
+    WARNING in ip6_setup_cork
+    BUG: unable to handle kernel paging request in neigh_update
+Single Proc Allocation
+VMs:8
+CPUs:2
+Procs:16
+Max time:30
+Max attempts:3
+Testing the finding commit.
+
+2023-04-01 14:55:18
+Session:   1
+Template:  2018-07-13 - 92a4950507d9d15be9541491300b2201433f6814
+Syzkaller: 2018-07-13 - 92a4950507d9d15be9541491300b2201433f6814
+Kernel:    2018-07-14 - c31496dbacc2b6352750937afc20a8dbe22b27a4
+Compiler:  gcc-8.0.1-20180412
+Attempt 1:
+    Time  Bug Name
+      22  WARNING in smc_unhash_sk
+Attempt 2:
+    Time  Bug Name
+***    2  kernel BUG at net/ipv6/route.c:LINE!
+Attempt 3:
+    Time  Bug Name
+      22  lost connection to test machine
+      30  lost connection to test machine
+Attempt 4: (RETRY)
+    Time  Bug Name
+      18  lost connection to test machine
+***   22  kernel BUG at net/ipv6/route.c:LINE!
+Attempt 5: (RETRY)
+    Time  Bug Name
+      27  WARNING in smc_unhash_sk
+The bug was found.
+
+New Max Time: 33.
+Merge Commit: 2018-04-18 - 0565de29cbd65b378147d36f9642f93a046240dc.
+
+==== Template Retrospection ====
+6 template changes in [2018-04-18, 2018-07-15].
+
+2023-04-01 17:13:47
+Session:   2
+Template:  2018-06-08 - 866118af36a38963903be2bdee4aff0c36ae365f
+Syzkaller: 2018-06-08 - 866118af36a38963903be2bdee4aff0c36ae365f
+Kernel:    2018-06-08 - a3818841bd5e9b4a7e0e732c19cf3a632fcb525e
+Compiler:  gcc-8.0.1-20180412
+Warning: Syzkaller log file exceeded 5000 lines.
+Saved at /mnt/sda/author/SyzInspector/wd-inspector-4/log/bug956-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      11  boot failure
+Warning: Syzkaller log file exceeded 5000 lines.
+Saved at /mnt/sda/author/SyzInspector/wd-inspector-4/log/bug956-boot_failure.log.
+Attempt 2:
+    Time  Bug Name
+      11  boot failure
+Warning: Syzkaller log file exceeded 5000 lines.
+Saved at /mnt/sda/author/SyzInspector/wd-inspector-4/log/bug956-boot_failure.log.
+Attempt 3:
+    Time  Bug Name
+      11  boot failure
+Warning: Syzkaller log file exceeded 5000 lines.
+Saved at /mnt/sda/author/SyzInspector/wd-inspector-4/log/bug956-boot_failure.log.
+Attempt 4: (RETRY)
+    Time  Bug Name
+      11  boot failure
+Warning: Syzkaller log file exceeded 5000 lines.
+Saved at /mnt/sda/author/SyzInspector/wd-inspector-4/log/bug956-boot_failure.log.
+Attempt 5: (RETRY)
+    Time  Bug Name
+      11  boot failure
+Warning: Syzkaller log file exceeded 5000 lines.
+Saved at /mnt/sda/author/SyzInspector/wd-inspector-4/log/bug956-boot_failure.log.
+Attempt 6: (RETRY)
+    Time  Bug Name
+      11  boot failure
+The bug was not found.
+Warning: This session is unstable.
+
+2023-04-01 19:39:13
+Session:   3
+Template:  2018-07-09 - 59da9e439317c83d5374d06832060fbd66efbbbc
+Syzkaller: 2018-07-09 - 59da9e439317c83d5374d06832060fbd66efbbbc
+Kernel:    2018-07-09 - bdf33113d89f70186ffb6674e925fa9b8a0266b1
+Compiler:  gcc-8.0.1-20180412
+Attempt 1:
+    Time  Bug Name
+       8  WARNING in smc_unhash_sk
+Attempt 2:
+    Time  Bug Name
+       2  KASAN: use-after-free Write in ip6_hold_safe
+Attempt 3:
+    Time  Bug Name
+***    2  kernel BUG at net/ipv6/route.c:LINE!
+The bug was found.
+
+2023-04-01 21:15:17
+Session:   4
+Template:  2018-06-18 - dde158e0af7bc1acf328d393a1fcb4eca60a5dfe
+Syzkaller: 2018-06-18 - dde158e0af7bc1acf328d393a1fcb4eca60a5dfe
+Kernel:    2018-06-18 - ba4dbdedd3edc2798659bcd8b1a184ea8bdd04dc
+Compiler:  gcc-8.0.1-20180412
+Attempt 1:
+    Time  Bug Name
+***   20  kernel BUG at net/ipv6/route.c:LINE!
+The bug was found.
+
+2023-04-01 22:03:57
+Session:   5
+Template:  2018-06-08 - 866118af36a38963903be2bdee4aff0c36ae365f
+Syzkaller: 2018-06-18 - dde158e0af7bc1acf328d393a1fcb4eca60a5dfe
+Kernel:    2018-06-18 - ba4dbdedd3edc2798659bcd8b1a184ea8bdd04dc
+Attempt 1:
+    Time  Bug Name
+***   19  kernel BUG at net/ipv6/route.c:LINE!
+The bug was found.
+
+==== Kernel Retrospection ====
+104 Linux commits in [2018-06-08, 2018-06-18].
+
+2023-04-01 22:25:56
+Session:   6
+Template:  2018-06-12 - 27c5f59f504f562333e3cd5e715fea5cb69c396e
+Syzkaller: 2018-06-12 - 27c5f59f504f562333e3cd5e715fea5cb69c396e
+Kernel:    2018-06-12 - b357bf6023a948cf6a9472f07a1b0caac0e4f8e8
+Compiler:  gcc-8.0.1-20180412
+Attempt 1:
+    Time  Bug Name
+***   17  kernel BUG at net/ipv6/route.c:LINE!
+The bug was found.
+
+2023-04-01 23:12:10
+Session:   7
+Template:  2018-06-08 - 866118af36a38963903be2bdee4aff0c36ae365f
+Syzkaller: 2018-06-08 - 866118af36a38963903be2bdee4aff0c36ae365f
+Kernel:    2018-06-10 - a2211de0f979aa83e9008fd04f39ea5f63473154
+Compiler:  gcc-8.0.1-20180412
+Warning: Syzkaller log file exceeded 5000 lines.
+Saved at /mnt/sda/author/SyzInspector/wd-inspector-4/log/bug956-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      11  boot failure
+Warning: Syzkaller log file exceeded 5000 lines.
+Saved at /mnt/sda/author/SyzInspector/wd-inspector-4/log/bug956-boot_failure.log.
+Attempt 2:
+    Time  Bug Name
+      11  boot failure
+Warning: Syzkaller log file exceeded 5000 lines.
+Saved at /mnt/sda/author/SyzInspector/wd-inspector-4/log/bug956-boot_failure.log.
+Attempt 3:
+    Time  Bug Name
+      11  boot failure
+Warning: Syzkaller log file exceeded 5000 lines.
+Saved at /mnt/sda/author/SyzInspector/wd-inspector-4/log/bug956-boot_failure.log.
+Attempt 4: (RETRY)
+    Time  Bug Name
+      11  boot failure
+Warning: Syzkaller log file exceeded 5000 lines.
+Saved at /mnt/sda/author/SyzInspector/wd-inspector-4/log/bug956-boot_failure.log.
+Attempt 5: (RETRY)
+    Time  Bug Name
+      11  boot failure
+Warning: Syzkaller log file exceeded 5000 lines.
+Saved at /mnt/sda/author/SyzInspector/wd-inspector-4/log/bug956-boot_failure.log.
+Attempt 6: (RETRY)
+    Time  Bug Name
+      11  boot failure
+The bug was not found.
+Warning: This session is unstable.
+
+2023-04-02 01:43:05
+Session:   8
+Template:  2018-06-08 - 866118af36a38963903be2bdee4aff0c36ae365f
+Syzkaller: 2018-06-08 - 866118af36a38963903be2bdee4aff0c36ae365f
+Kernel:    2018-06-09 - a16afaf7928b74c30a4727cdcaa67bd10675a55d
+Compiler:  gcc-8.0.1-20180412
+Warning: Syzkaller log file exceeded 5000 lines.
+Saved at /mnt/sda/author/SyzInspector/wd-inspector-4/log/bug956-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      11  boot failure
+Warning: Syzkaller log file exceeded 5000 lines.
+Saved at /mnt/sda/author/SyzInspector/wd-inspector-4/log/bug956-boot_failure.log.
+Attempt 2:
+    Time  Bug Name
+      11  boot failure
+Warning: Syzkaller log file exceeded 5000 lines.
+Saved at /mnt/sda/author/SyzInspector/wd-inspector-4/log/bug956-boot_failure.log.
+Attempt 3:
+    Time  Bug Name
+      11  boot failure
+Warning: Syzkaller log file exceeded 5000 lines.
+Saved at /mnt/sda/author/SyzInspector/wd-inspector-4/log/bug956-boot_failure.log.
+Attempt 4: (RETRY)
+    Time  Bug Name
+      11  boot failure
+Warning: Syzkaller log file exceeded 5000 lines.
+Saved at /mnt/sda/author/SyzInspector/wd-inspector-4/log/bug956-boot_failure.log.
+Attempt 5: (RETRY)
+    Time  Bug Name
+      11  boot failure
+Warning: Syzkaller log file exceeded 5000 lines.
+Saved at /mnt/sda/author/SyzInspector/wd-inspector-4/log/bug956-boot_failure.log.
+Attempt 6: (RETRY)
+    Time  Bug Name
+      11  boot failure
+The bug was not found.
+Warning: This session is unstable.
+
+2023-04-02 04:08:30
+Session:   9
+Template:  2018-06-08 - 866118af36a38963903be2bdee4aff0c36ae365f
+Syzkaller: 2018-06-08 - 866118af36a38963903be2bdee4aff0c36ae365f
+Kernel:    2018-06-09 - eafdca4d7010a0e019aaaace3dd71b432a69b54c
+Compiler:  gcc-8.0.1-20180412
+Warning: Syzkaller log file exceeded 5000 lines.
+Saved at /mnt/sda/author/SyzInspector/wd-inspector-4/log/bug956-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      11  boot failure
+Warning: Syzkaller log file exceeded 5000 lines.
+Saved at /mnt/sda/author/SyzInspector/wd-inspector-4/log/bug956-boot_failure.log.
+Attempt 2:
+    Time  Bug Name
+      11  boot failure
+Warning: Syzkaller log file exceeded 5000 lines.
+Saved at /mnt/sda/author/SyzInspector/wd-inspector-4/log/bug956-boot_failure.log.
+Attempt 3:
+    Time  Bug Name
+      11  boot failure
+Warning: Syzkaller log file exceeded 5000 lines.
+Saved at /mnt/sda/author/SyzInspector/wd-inspector-4/log/bug956-boot_failure.log.
+Attempt 4: (RETRY)
+    Time  Bug Name
+      11  boot failure
+Warning: Syzkaller log file exceeded 5000 lines.
+Saved at /mnt/sda/author/SyzInspector/wd-inspector-4/log/bug956-boot_failure.log.
+Attempt 5: (RETRY)
+    Time  Bug Name
+      11  boot failure
+Warning: Syzkaller log file exceeded 5000 lines.
+Saved at /mnt/sda/author/SyzInspector/wd-inspector-4/log/bug956-boot_failure.log.
+Attempt 6: (RETRY)
+    Time  Bug Name
+      11  boot failure
+The bug was not found.
+Warning: This session is unstable.
+
+2023-04-02 06:48:16
+Session:   10
+Template:  2018-06-08 - 866118af36a38963903be2bdee4aff0c36ae365f
+Syzkaller: 2018-06-08 - 866118af36a38963903be2bdee4aff0c36ae365f
+Kernel:    2018-06-08 - 18f1837632783fec017fd932a812d383e3406af0
+Compiler:  gcc-8.0.1-20180412
+Attempt 1:
+    Time  Bug Name
+      10  KASAN: use-after-free Write in ip6_hold_safe
+      17  no output from test machine
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+The bug was not found.
+
+2023-04-02 08:59:10
+Session:   11
+Template:  2018-06-08 - 866118af36a38963903be2bdee4aff0c36ae365f
+Syzkaller: 2018-06-08 - 866118af36a38963903be2bdee4aff0c36ae365f
+Kernel:    2018-06-10 - 0c14e43a42e4e44f70963f8ccf89461290c4e4da
+Compiler:  gcc-8.0.1-20180412
+Attempt 1:
+    Time  Bug Name
+      17  KASAN: use-after-free Write in ip6_hold_safe
+Attempt 2:
+    Time  Bug Name
+      32  KASAN: use-after-free Write in ip6_hold_safe
+Attempt 3:
+    Time  Bug Name
+      20  KASAN: use-after-free Write in ip6_hold_safe
+The bug was not found.
+
+2023-04-02 11:13:05
+Session:   12
+Template:  2018-06-11 - 62d1af2467768d46623d446efaaf2f2cb6e8350e
+Syzkaller: 2018-06-11 - 62d1af2467768d46623d446efaaf2f2cb6e8350e
+Kernel:    2018-06-11 - 6f75edeadd0dd3d58017bc3bcdc2b80879a7cfd3
+Compiler:  gcc-8.0.1-20180412
+Attempt 1:
+    Time  Bug Name
+***   17  kernel BUG at net/ipv6/route.c:LINE!
+The bug was found.
+
+2023-04-02 11:51:37
+Session:   13
+Template:  2018-06-11 - 62d1af2467768d46623d446efaaf2f2cb6e8350e
+Syzkaller: 2018-06-11 - 62d1af2467768d46623d446efaaf2f2cb6e8350e
+Kernel:    2018-06-11 - 883cad5ba8cc2d9b740b4ad0a8a91063c99c75a3
+Compiler:  gcc-8.0.1-20180412
+Attempt 1:
+    Time  Bug Name
+      27  KASAN: use-after-free Write in ip6_hold_safe
+Attempt 2:
+    Time  Bug Name
+***   21  kernel BUG at net/ipv6/route.c:LINE!
+The bug was found.
+
+2023-04-02 13:17:38
+Session:   14
+Template:  2018-06-08 - 866118af36a38963903be2bdee4aff0c36ae365f
+Syzkaller: 2018-06-08 - 866118af36a38963903be2bdee4aff0c36ae365f
+Kernel:    2018-06-10 - 1aaccb5fa0eac996adde53538ca4b87a0b229ab7
+Compiler:  gcc-8.0.1-20180412
+Attempt 1:
+    Time  Bug Name
+      23  KASAN: use-after-free Write in ip6_hold_safe
+      25  lost connection to test machine
+Attempt 2:
+    Time  Bug Name
+      25  KASAN: use-after-free Write in dst_release
+Attempt 3:
+    Time  Bug Name
+      12  KASAN: use-after-free Write in ip6_hold_safe
+Attempt 4: (RETRY)
+    Time  Bug Name
+***   33  kernel BUG at net/ipv6/route.c:LINE!
+The bug was found.
+Switching to Safe Mode: Fuzzing 5 times at 33 minutes
+
+2023-04-02 15:56:21
+Session:   15
+Template:  2018-06-08 - 866118af36a38963903be2bdee4aff0c36ae365f
+Syzkaller: 2018-06-08 - 866118af36a38963903be2bdee4aff0c36ae365f
+Kernel:    2018-06-10 - ab0b2e59323cd3972e5f011fbbf3868a4ec360dd
+Compiler:  gcc-8.0.1-20180412
+Attempt 1:
+    Time  Bug Name
+      31  KASAN: use-after-free Write in ip6_hold_safe
+Attempt 2:
+    Time  Bug Name
+      29  KASAN: use-after-free Write in pppol2tp_connect
+      32  INFO: task hung in __sb_start_write
+Attempt 3:
+    Time  Bug Name
+      24  KASAN: use-after-free Write in ip6_hold_safe
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    Time  Bug Name
+      28  KASAN: use-after-free Write in ip6_hold_safe
+The bug was not found.
+
+== Confirming the bisected commit ==
+
+2023-04-02 19:48:39
+Session:   16
+Template:  2018-06-08 - 866118af36a38963903be2bdee4aff0c36ae365f
+Syzkaller: 2018-06-08 - 866118af36a38963903be2bdee4aff0c36ae365f
+Kernel:    2018-06-10 - 1aaccb5fa0eac996adde53538ca4b87a0b229ab7
+The bug was found in a previous identical fuzzing session.
+
+2023-04-02 19:48:39
+Session:   17
+Template:  2018-06-08 - 866118af36a38963903be2bdee4aff0c36ae365f
+Syzkaller: 2018-06-08 - 866118af36a38963903be2bdee4aff0c36ae365f
+Kernel:    2018-06-10 - ab0b2e59323cd3972e5f011fbbf3868a4ec360dd
+The bug was not found in a previous identical fuzzing session.
+
+====================================================================================================================================================
+Revealing Factor:   Kernel Commit
+Version:            2018-06-10 - 1aaccb5fa0eac996adde53538ca4b87a0b229ab7
+Commit Name:        Merge tag 'rtc-4.18' of git://git.kernel.org/pub/scm/linux/kernel/git/abelloni/linux
+
+Bug Name:           kernel BUG at net/ipv6/route.c:LINE!
+Bug Link:           https://syzkaller.appspot.com/bug?id=f8a2405cdc200ef0c01d2ebe2dc22173c7a7ee9e
+Arch:               amd64
+Finding Date:       2018-07-15
+Finding Commit:     2018-07-14 - c31496dbacc2b6352750937afc20a8dbe22b27a4
+Guilty Merge:       2018-04-18 - 0565de29cbd65b378147d36f9642f93a046240dc
+Guilty Commit:      2018-04-17 - 93531c6743157d7e8c5792f8ed1a57641149d62c
+
+Possible Blocking Bugs:
+
+AUTHOR: no clear blocking bug

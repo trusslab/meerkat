@@ -1,0 +1,93 @@
+memory leak in nf_hook_entries_grow,https://syzkaller.appspot.com/bug?id=64be609cf3e23c7d046fca5b84344bc997927a61
+Repository: linux
+Arch: amd64
+Finding: 3ab4436f688c2d2f221793953cd05435ca84261c
+Guilty: 719c7d563c17b150877cee03a4b812a424989dfa
+No Duplicates
+Multi-Proc Allocation.
+VMs:4
+CPUs:4
+Procs:24
+Max time:30
+Inspecting the finding commit.
+Session 1:
+    Template:  2019-05-31 - 53c81ea5385ee17c68d0afa4e524b6aead37c903
+    Syzkaller: 2019-05-31 - 53c81ea5385ee17c68d0afa4e524b6aead37c903
+    Kernel:    2019-05-31 - 3ab4436f688c2d2f221793953cd05435ca84261c
+    Compiler:  gcc-9.0.0-20181231
+    The bug was found.
+        memory leak in nf_hook_entries_grow
+New Max Time: 14.
+Merge Commit: 2019-05-23 - 71e15f76f8df7ca01cfa87ed895b194feee90dd4.
+No template updates to inspect.
+Inspecting 48 kernel versions in the range [2019-05-23, 2019-05-31].
+Session 2:
+    Template:  2019-05-29 - d9aaf3c2880a46e1ded81325f2f62ce911239187
+    Syzkaller: 2019-05-29 - d9aaf3c2880a46e1ded81325f2f62ce911239187
+    Kernel:    2019-05-30 - 4b280531e84cd6350c3b611de600ef2d47351bbb
+    Compiler:  gcc-9.0.0-20181231
+    The bug was found in 2 minutes
+        memory leak in nf_hook_entries_grow
+Session 3:
+    Template:  2019-05-27 - 6bd615015dc05e75bc8979aab3bc710abd1fdffb
+    Syzkaller: 2019-05-27 - 6bd615015dc05e75bc8979aab3bc710abd1fdffb
+    Kernel:    2019-05-27 - c3cf73c7a2c6f278cf5be380c753c129fa03bb2b
+    Compiler:  gcc-9.0.0-20181231
+    The bug was found in 2 minutes
+        memory leak in nf_hook_entries_grow
+Session 4:
+    Template:  2019-05-24 - 85c573157db1baae51178263fe3289c8329e6dc2
+    Syzkaller: 2019-05-24 - 85c573157db1baae51178263fe3289c8329e6dc2
+    Kernel:    2019-05-25 - 3d92410a22e241397110346b447215bb162a5f3a
+    Compiler:  gcc-9.0.0-20181231
+    The bug was found in 2 minutes
+        memory leak in nf_hook_entries_grow
+Session 5:
+    Template:  2019-05-24 - 85c573157db1baae51178263fe3289c8329e6dc2
+    Syzkaller: 2019-05-24 - 85c573157db1baae51178263fe3289c8329e6dc2
+    Kernel:    2019-05-24 - 4097e9d250fb17958c1d9b94538386edd3f20144
+    Compiler:  gcc-9.0.0-20181231
+    The bug was found in 2 minutes
+        memory leak in nf_hook_entries_grow
+Session 6:
+    Template:  2019-05-24 - 85c573157db1baae51178263fe3289c8329e6dc2
+    Syzkaller: 2019-05-24 - 85c573157db1baae51178263fe3289c8329e6dc2
+    Kernel:    2019-05-24 - ce8d24f9a5965a58c588f9342689702a1024433c
+    Compiler:  gcc-9.0.0-20181231
+    The bug was found in 2 minutes
+        memory leak in nf_hook_entries_grow
+Session 7:
+    Template:  2019-05-23 - 0dadcd9d912d7faab1cd5fc0dfad21ff95ff86a8
+    Syzkaller: 2019-05-23 - 0dadcd9d912d7faab1cd5fc0dfad21ff95ff86a8
+    Kernel:    2019-05-23 - 71e15f76f8df7ca01cfa87ed895b194feee90dd4
+    Compiler:  gcc-9.0.0-20181231
+    The bug was found in 1 minutes
+        memory leak in nf_hook_entries_grow
+Confirming the bisected kernel commit.
+Session 8 after:
+    Template:  2019-05-23 - 0dadcd9d912d7faab1cd5fc0dfad21ff95ff86a8
+    Syzkaller: 2019-05-23 - 0dadcd9d912d7faab1cd5fc0dfad21ff95ff86a8
+    Kernel:    2019-05-23 - 71e15f76f8df7ca01cfa87ed895b194feee90dd4
+The bug was found in a previous identical fuzzing session.
+Session 9 before:
+    Template:  2019-05-23 - 0dadcd9d912d7faab1cd5fc0dfad21ff95ff86a8
+    Syzkaller: 2019-05-23 - 0dadcd9d912d7faab1cd5fc0dfad21ff95ff86a8
+    Kernel:    2019-05-22 - 2de03b45236f3af1800755614fd434d347adf046
+    Compiler:  gcc-9.0.0-20181231
+    The bug was found in 2 minutes
+        memory leak in nf_hook_entries_grow
+Inspecting 1 syzkaller version(s) from 2019-05-23.
+Session 10:
+    Template:  2019-05-23 - 0dadcd9d912d7faab1cd5fc0dfad21ff95ff86a8
+    Syzkaller: 2019-05-23 - 0dadcd9d912d7faab1cd5fc0dfad21ff95ff86a8
+    Kernel:    2019-05-23 - 71e15f76f8df7ca01cfa87ed895b194feee90dd4
+    Compiler:  gcc-9.0.0-20181231
+The bug was found in a previous identical fuzzing session.
+
+Success
+Revealing factor: Syzkaller Update
+Syzkaller Version: 2019-05-23 - 0dadcd9d912d7faab1cd5fc0dfad21ff95ff86a8
+Commit name: pkg/build: Add the KCOV build commands
+
+AUTHOR: SyzInspector didn't realize it had already gone back to the guilty merge. The
+correct revealing factor is Guilty Merge. This bug is fixed in later versions.

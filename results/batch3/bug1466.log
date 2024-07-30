@@ -1,0 +1,206 @@
+BUG: corrupted list in ptp_open,https://syzkaller.appspot.com/bug?extid=df3f3ef31f60781fa911
+Repository: linux
+Arch: amd64
+Finding: 2023-11-01 - babe393974de0351c0e6cca50f5f84edaf8d7fa1
+Guilty:  2023-10-15 - 8f5de6fb245326704f37d91780b9a10253a8a100
+Duplicate Names:
+    BUG: corrupted list in ptp_open
+    KASAN: slab-use-after-free Read in ptp_poll
+    KASAN: slab-use-after-free Read in ptp_release
+Default Allocation.
+VMs:4
+CPUs:4
+Procs:24
+Max time:30
+Max attempts:3
+Testing the finding commit.
+
+2024-06-28 22:30:29
+Session:   1
+Template:  2023-11-02 - c4ac074caa7ae68aef44c619a09b02832cc91f35
+Syzkaller: 2023-11-02 - c4ac074caa7ae68aef44c619a09b02832cc91f35
+Kernel:    2023-11-02 - babe393974de0351c0e6cca50f5f84edaf8d7fa1
+Compiler:  gcc-10.2.1-20210110
+Attempt 1:
+    Time  Bug Name
+       4  KASAN: slab-use-after-free Read in ptp_read
+       5  BUG: MAX_LOCKDEP_KEYS too low!
+       5  BUG: MAX_LOCKDEP_KEYS too low!
+***    9  KASAN: slab-use-after-free Read in ptp_release
+Attempt 2:
+    Time  Bug Name
+       2  KASAN: slab-use-after-free Read in ptp_read
+***    2  KASAN: slab-use-after-free Read in ptp_release
+Attempt 3:
+    Time  Bug Name
+       5  KASAN: slab-use-after-free Read in ptp_read
+       5  BUG: MAX_LOCKDEP_KEYS too low!
+       5  BUG: MAX_LOCKDEP_KEYS too low!
+       5  BUG: MAX_LOCKDEP_KEYS too low!
+       6  KASAN: slab-use-after-free Read in ptp_read
+***    8  KASAN: slab-use-after-free Read in ptp_release
+The bug was found.
+
+New Max Time: 10.
+Merge Commit: 2023-10-15 - c49bba011b51e44d45bbc279ef8f42d46f4b0700.
+No template updates to inspect.
+
+==== Kernel Retrospection ====
+176 Linux commits in [2023-10-15, 2023-11-02].
+
+2024-06-28 23:08:37
+Session:   2
+Template:  2023-10-24 - 17e6d52686f8a56935991f1b066798279f76504a
+Syzkaller: 2023-10-24 - 17e6d52686f8a56935991f1b066798279f76504a
+Kernel:    2023-10-24 - 898ae9bdbb7efa3d80fcf039b52c24068f7e6c6e
+Compiler:  gcc-10.2.1-20210110
+Attempt 1:
+    Time  Bug Name
+       4  BUG: MAX_LOCKDEP_KEYS too low!
+       5  BUG: corrupted list in ptp_release
+       5  KASAN: slab-use-after-free Read in ptp_read
+       9  BUG: MAX_LOCKDEP_KEYS too low!
+Attempt 2:
+    Time  Bug Name
+***    3  KASAN: slab-use-after-free Read in ptp_release
+The bug was found.
+
+2024-06-28 23:38:43
+Session:   3
+Template:  2023-10-19 - a42250d2817c29e8c9b5617612ba366dfe55cba1
+Syzkaller: 2023-10-19 - a42250d2817c29e8c9b5617612ba366dfe55cba1
+Kernel:    2023-10-19 - dcf02bac377e48a4864ed2b4e1ffef84fcb8284f
+Compiler:  gcc-10.2.1-20210110
+Attempt 1:
+    Time  Bug Name
+       2  KASAN: slab-use-after-free Read in ptp_read
+       5  BUG: MAX_LOCKDEP_KEYS too low!
+       7  KASAN: slab-use-after-free Read in ptp_read
+      10  KASAN: slab-use-after-free Read in ptp_read
+Attempt 2:
+    Time  Bug Name
+       4  BUG: MAX_LOCKDEP_KEYS too low!
+       6  KASAN: slab-use-after-free Read in ptp_read
+Attempt 3:
+    Time  Bug Name
+       2  general protection fault in simple_recursive_removal
+       3  KASAN: slab-use-after-free Read in ptp_read
+       5  KASAN: slab-use-after-free Read in ptp_read
+       5  BUG: MAX_LOCKDEP_KEYS too low!
+       9  BUG: MAX_LOCKDEP_KEYS too low!
+The bug was not found.
+
+2024-06-29 00:24:40
+Session:   4
+Template:  2023-10-23 - af8d2e46418eefb127e9fa9309a63fa60ef7fc66
+Syzkaller: 2023-10-23 - af8d2e46418eefb127e9fa9309a63fa60ef7fc66
+Kernel:    2023-10-23 - 6e7ce2d71bb99096d811918341fde61e66bfff2c
+Compiler:  gcc-10.2.1-20210110
+Attempt 1:
+    Time  Bug Name
+       3  KASAN: slab-use-after-free Read in ptp_read
+       5  BUG: MAX_LOCKDEP_KEYS too low!
+       7  general protection fault in simple_recursive_removal
+***    8  KASAN: slab-use-after-free Read in ptp_release
+The bug was found.
+
+2024-06-29 00:48:53
+Session:   5
+Template:  2023-10-20 - 361b23dca53619ee1dfd92dd6a74a7f3e58f270c
+Syzkaller: 2023-10-20 - 361b23dca53619ee1dfd92dd6a74a7f3e58f270c
+Kernel:    2023-10-20 - 20c6e05bd33deaa6fa890252d7ffc5ad54a0942c
+Compiler:  gcc-10.2.1-20210110
+Attempt 1:
+    Time  Bug Name
+***    2  KASAN: slab-use-after-free Read in ptp_release
+***    2  KASAN: slab-use-after-free Read in ptp_release
+The bug was found.
+
+2024-06-29 01:06:41
+Session:   6
+Template:  2023-10-20 - 361b23dca53619ee1dfd92dd6a74a7f3e58f270c
+Syzkaller: 2023-10-20 - 361b23dca53619ee1dfd92dd6a74a7f3e58f270c
+Kernel:    2023-10-20 - a10f9bfe935dd49d09e1c284a73bcd322de12917
+Compiler:  gcc-10.2.1-20210110
+Attempt 1:
+    Time  Bug Name
+       4  BUG: MAX_LOCKDEP_KEYS too low!
+       6  BUG: MAX_LOCKDEP_KEYS too low!
+       8  BUG: corrupted list in ptp_release
+***    8  KASAN: slab-use-after-free Read in ptp_release
+The bug was found.
+
+2024-06-29 01:31:45
+Session:   7
+Template:  2023-10-19 - a42250d2817c29e8c9b5617612ba366dfe55cba1
+Syzkaller: 2023-10-19 - a42250d2817c29e8c9b5617612ba366dfe55cba1
+Kernel:    2023-10-19 - 041c3466f39d7073bbc7fb91c4e5d14170d5eb08
+Compiler:  gcc-10.2.1-20210110
+Attempt 1:
+    Time  Bug Name
+       4  BUG: MAX_LOCKDEP_KEYS too low!
+       5  KASAN: slab-use-after-free Read in ptp_read
+       8  KASAN: slab-use-after-free Read in ptp_read
+***   10  KASAN: slab-use-after-free Read in ptp_release
+      10  BUG: MAX_LOCKDEP_KEYS too low!
+The bug was found.
+Switching to Safe Mode: Fuzzing 5 times at 30 minutes
+
+2024-06-29 01:58:02
+Session:   8
+Template:  2023-10-19 - a42250d2817c29e8c9b5617612ba366dfe55cba1
+Syzkaller: 2023-10-19 - a42250d2817c29e8c9b5617612ba366dfe55cba1
+Kernel:    2023-10-19 - f2cab25b0eb7bd735459059e2eb8d21d2569c41d
+Compiler:  gcc-10.2.1-20210110
+Attempt 1:
+    Time  Bug Name
+       4  KASAN: slab-use-after-free Read in ptp_read
+       5  BUG: MAX_LOCKDEP_KEYS too low!
+       5  BUG: MAX_LOCKDEP_KEYS too low!
+      13  BUG: MAX_LOCKDEP_KEYS too low!
+***   14  KASAN: slab-use-after-free Read in ptp_release
+The bug was found.
+
+2024-06-29 02:29:43
+Session:   9
+Template:  2023-10-19 - a42250d2817c29e8c9b5617612ba366dfe55cba1
+Syzkaller: 2023-10-19 - a42250d2817c29e8c9b5617612ba366dfe55cba1
+Kernel:    2023-10-19 - 4b316e0700b6fdf585cacef2d7cb9f7d2a5275a0
+Compiler:  gcc-10.2.1-20210110
+Attempt 1:
+    Time  Bug Name
+***    2  KASAN: slab-use-after-free Read in ptp_release
+The bug was found.
+
+== Confirming the bisected commit ==
+
+2024-06-29 02:49:22
+Session:   10
+Template:  2023-10-19 - a42250d2817c29e8c9b5617612ba366dfe55cba1
+Syzkaller: 2023-10-19 - a42250d2817c29e8c9b5617612ba366dfe55cba1
+Kernel:    2023-10-19 - 4b316e0700b6fdf585cacef2d7cb9f7d2a5275a0
+The bug was found in a previous identical fuzzing session.
+
+2024-06-29 02:49:22
+Session:   11
+Template:  2023-10-19 - a42250d2817c29e8c9b5617612ba366dfe55cba1
+Syzkaller: 2023-10-19 - a42250d2817c29e8c9b5617612ba366dfe55cba1
+Kernel:    2023-10-19 - dcf02bac377e48a4864ed2b4e1ffef84fcb8284f
+The bug was not found in a previous identical fuzzing session.
+
+====================================================================================================================================================
+Revealing Factor:   Kernel Commit
+Version:            2023-10-19 - 4b316e0700b6fdf585cacef2d7cb9f7d2a5275a0
+Commit Name:        Merge branch 'dt-bindings-net-child-node-schema-cleanups'
+
+Bug Name:           BUG: corrupted list in ptp_open
+Bug Link:           https://syzkaller.appspot.com/bug?extid=df3f3ef31f60781fa911
+Arch:               amd64
+Finding Date:       2023-11-02
+Finding Commit:     2023-11-02 - babe393974de0351c0e6cca50f5f84edaf8d7fa1
+Guilty Merge:       2023-10-15 - c49bba011b51e44d45bbc279ef8f42d46f4b0700
+Guilty Commit:      2023-10-15 - 8f5de6fb245326704f37d91780b9a10253a8a100
+
+Possible Blocking Bugs:
+    BUG: MAX_LOCKDEP_KEYS too low!
+    KASAN: slab-use-after-free Read in ptp_read

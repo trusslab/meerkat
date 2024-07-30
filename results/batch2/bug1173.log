@@ -1,0 +1,53 @@
+KASAN: use-after-free Read in aead_recvmsg,https://syzkaller.appspot.com/bug?id=f1834e1735946170a8a3a4c85edb978e94bada81
+Repository: linux
+Arch: i386
+Finding: 2017-11-25 - 844056fd74ebdd826bd23a7d989597e15f478acb
+Guilty:  2017-08-09 - 72548b093ee38a6d4f2a19e6ef1948ae05c181f7
+Duplicate Names:
+    KASAN: use-after-free in aead_recvmsg
+    KASAN: use-after-free Read in aead_recvmsg
+VMs:4
+CPUs:4
+Procs:24
+Max time:30
+Max attempts:3
+Testing the finding commit.
+
+2023-06-20 19:29:59
+Session:   1
+Template:  2017-11-24 - 4bd70f886bd18faa69e9b1e4a9ee1897202cf202
+Syzkaller: 2017-11-24 - 4bd70f886bd18faa69e9b1e4a9ee1897202cf202
+Kernel:    2017-11-25 - 844056fd74ebdd826bd23a7d989597e15f478acb
+Compiler:  gcc-7.1.1-20170620
+Attempt 1:
+    Time  Bug Name
+       5  lost connection to test machine
+       7  lost connection to test machine
+      13  WARNING in dio_complete
+      15  WARNING in dio_complete
+      16  WARNING in dio_complete
+      16  WARNING in dio_complete
+      17  WARNING in dio_complete
+      20  WARNING in dio_complete
+      21  WARNING in dio_complete
+      24  WARNING in dio_complete
+      24  kernel BUG at mm/usercopy.c:LINE!
+      27  WARNING in dio_complete
+      28  WARNING in dio_complete
+      29  WARNING in dio_complete
+Attempt 2:
+    Time  Bug Name
+       4  lost connection to test machine
+       5  lost connection to test machine
+      13  KASAN: use-after-free Read in __vunmap
+      26  WARNING in dio_complete
+Attempt 3:
+    Time  Bug Name
+      28  general protection fault in __free_pages
+Attempt 4: (RETRY)
+    Time  Bug Name
+       2  lost connection to test machine
+The bug was not found.
+Warning: This session is unstable.
+
+Failure: This bug cannot be found at the finding commit.

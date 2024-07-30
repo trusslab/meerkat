@@ -1,0 +1,152 @@
+WARNING: held lock freed in nr_release,https://syzkaller.appspot.com/bug?extid=a34e5f3d0300163f0c87
+Repository: linux
+Arch: amd64
+Finding: 2019-07-16 - 3eb514866f20c5eb74637279774b6d73b855480a
+Guilty:  2019-07-01 - c8c8218ec5af5d2598381883acbefbf604e56b5e
+Duplicate Names:
+    WARNING: refcount bug in nr_insert_socket
+    WARNING: held lock freed!
+    KASAN: use-after-free Read in release_sock
+    WARNING: held lock freed in nr_release
+    KASAN: use-after-free Read in nr_release
+    WARNING: refcount bug in nr_rx_frame
+    KASAN: use-after-free Read in nr_insert_socket
+    KASAN: use-after-free Read in nr_rx_frame
+Default Allocation.
+VMs:4
+CPUs:4
+Procs:24
+Max time:30
+Max attempts:3
+Testing the finding commit.
+
+2024-06-28 02:39:38
+Session:   1
+Template:  2019-07-17 - f613a7c41d0b3ea16eeaad515e44dec003688ffb
+Syzkaller: 2019-07-17 - f613a7c41d0b3ea16eeaad515e44dec003688ffb
+Kernel:    2019-07-16 - 3eb514866f20c5eb74637279774b6d73b855480a
+Compiler:  gcc-9.0.0-20181231
+Attempt 1:
+    Time  Bug Name
+       8  WARNING in hsr_addr_subst_dest
+***   10  WARNING: held lock freed in nr_release
+Attempt 2:
+    Time  Bug Name
+***    2  KASAN: use-after-free Read in nr_insert_socket
+Attempt 3:
+    Time  Bug Name
+      11  WARNING in hsr_addr_subst_dest
+      26  WARNING in hsr_addr_subst_dest
+The bug was found.
+
+New Max Time: 25.
+Merge Commit: 2019-07-09 - af144a983402f7fd324ce556d9f9011a8b3e01fe.
+
+==== Template Retrospection ====
+1 template change in [2019-07-09, 2019-07-17].
+
+2024-06-28 03:34:01
+Session:   2
+Template:  2019-07-16 - 84d08cdf2d65976799e858fd6add094cd462b506
+Syzkaller: 2019-07-16 - 84d08cdf2d65976799e858fd6add094cd462b506
+Kernel:    2019-07-16 - 3eb514866f20c5eb74637279774b6d73b855480a
+Compiler:  gcc-9.0.0-20181231
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+The bug was not found.
+
+==== Kernel Retrospection ====
+13 Linux commits in [2019-07-16, 2019-07-17].
+
+2024-06-28 05:02:46
+Session:   3
+Template:  2019-07-16 - 4ec4ea48904fe8b1ddfe85e84ea117b9dfdc90f2
+Syzkaller: 2019-07-16 - 4ec4ea48904fe8b1ddfe85e84ea117b9dfdc90f2
+Kernel:    2019-07-16 - 50950626414a982c8ed539128c7f69a3d328a970
+Compiler:  gcc-9.0.0-20181231
+Attempt 1:
+    Time  Bug Name
+      21  WARNING in hsr_addr_subst_dest
+Attempt 2:
+    Time  Bug Name
+***    3  KASAN: use-after-free Read in nr_insert_socket
+The bug was found.
+
+2024-06-28 05:43:00
+Session:   4
+Template:  2019-07-16 - 4ec4ea48904fe8b1ddfe85e84ea117b9dfdc90f2
+Syzkaller: 2019-07-16 - 4ec4ea48904fe8b1ddfe85e84ea117b9dfdc90f2
+Kernel:    2019-07-16 - fb4da215ed92f564f7ca090bb81a199b0d6cab8a
+Compiler:  gcc-9.0.0-20181231
+Attempt 1:
+    Time  Bug Name
+***    8  WARNING: held lock freed in nr_release
+The bug was found.
+
+2024-06-28 06:02:43
+Session:   5
+Template:  2019-07-16 - 4ec4ea48904fe8b1ddfe85e84ea117b9dfdc90f2
+Syzkaller: 2019-07-16 - 4ec4ea48904fe8b1ddfe85e84ea117b9dfdc90f2
+Kernel:    2019-07-16 - 8de262531f5fbb7458463224a7587429800c24bf
+Compiler:  gcc-9.0.0-20181231
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    Time  Bug Name
+      10  WARNING in hsr_addr_subst_dest
+      13  WARNING in hsr_addr_subst_dest
+      16  WARNING: ODEBUG bug in netdev_freemem
+The bug was not found.
+
+2024-06-28 07:28:26
+Session:   6
+Template:  2019-07-16 - 4ec4ea48904fe8b1ddfe85e84ea117b9dfdc90f2
+Syzkaller: 2019-07-16 - 4ec4ea48904fe8b1ddfe85e84ea117b9dfdc90f2
+Kernel:    2019-07-16 - 2a3c389a0fde49b241430df806a34276568cfb29
+Compiler:  gcc-9.0.0-20181231
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    Time  Bug Name
+***    8  WARNING: held lock freed in nr_release
+The bug was found.
+
+== Confirming the bisected commit ==
+
+2024-06-28 08:38:08
+Session:   7
+Template:  2019-07-16 - 4ec4ea48904fe8b1ddfe85e84ea117b9dfdc90f2
+Syzkaller: 2019-07-16 - 4ec4ea48904fe8b1ddfe85e84ea117b9dfdc90f2
+Kernel:    2019-07-16 - 2a3c389a0fde49b241430df806a34276568cfb29
+The bug was found in a previous identical fuzzing session.
+
+2024-06-28 08:38:08
+Session:   8
+Template:  2019-07-16 - 4ec4ea48904fe8b1ddfe85e84ea117b9dfdc90f2
+Syzkaller: 2019-07-16 - 4ec4ea48904fe8b1ddfe85e84ea117b9dfdc90f2
+Kernel:    2019-07-16 - 8de262531f5fbb7458463224a7587429800c24bf
+The bug was not found in a previous identical fuzzing session.
+
+====================================================================================================================================================
+Revealing Factor:   Kernel Commit
+Version:            2019-07-16 - 2a3c389a0fde49b241430df806a34276568cfb29
+Commit Name:        Merge tag 'for-linus' of git://git.kernel.org/pub/scm/linux/kernel/git/rdma/rdma
+
+Bug Name:           WARNING: held lock freed in nr_release
+Bug Link:           https://syzkaller.appspot.com/bug?extid=a34e5f3d0300163f0c87
+Arch:               amd64
+Finding Date:       2019-07-17
+Finding Commit:     2019-07-16 - 3eb514866f20c5eb74637279774b6d73b855480a
+Guilty Merge:       2019-07-09 - af144a983402f7fd324ce556d9f9011a8b3e01fe
+Guilty Commit:      2019-07-01 - c8c8218ec5af5d2598381883acbefbf604e56b5e
+
+Possible Blocking Bugs:
+    WARNING in hsr_addr_subst_dest

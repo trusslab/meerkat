@@ -1,0 +1,35 @@
+KASAN: use-after-free Read in sctp_epaddr_lookup_transport,https://syzkaller.appspot.com/bug?id=3b9e3e0e36c81e6bf9d2e2bce409e41e40deae62
+Repository: linux
+Arch: amd64
+Finding: 2018-11-16 - e6a2562fe27f0a42243ca5a0aec5408c9a1d42a5
+Guilty:  2016-11-16 - 7fda702f9315e6f4a74fee155c540750788a2d66
+Duplicate Names:
+    KASAN: use-after-free Read in sctp_hash_transport
+    KASAN: use-after-free Read in sctp_epaddr_lookup_transport
+Default Allocation.
+VMs:4
+CPUs:4
+Procs:24
+Max time:30
+Max attempts:3
+Testing the finding commit.
+
+2023-03-17 03:53:45
+Session:   1
+Template:  2018-11-17 - 3659cea21d579af9e307c2097c89b4961f25c935
+Syzkaller: 2018-11-17 - 3659cea21d579af9e307c2097c89b4961f25c935
+Kernel:    2018-11-16 - e6a2562fe27f0a42243ca5a0aec5408c9a1d42a5
+Compiler:  gcc-8.0.1-20180412
+Attempt 1:
+    Time  Bug Name
+       3  kernel panic: corrupted stack end detected inside scheduler
+Attempt 2:
+    Time  Bug Name
+       6  kernel panic: stack-protector: Kernel stack is corrupted in: do_page_fault
+      19  kernel panic: corrupted stack end detected inside scheduler
+Attempt 3:
+    Time  Bug Name
+       5  BUG: unable to handle kernel NULL pointer dereference in depot_save_stack
+The bug was not found.
+
+Failure: This bug cannot be found at the finding commit.

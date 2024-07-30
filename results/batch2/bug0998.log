@@ -1,0 +1,41 @@
+general protection fault in vfs_read,https://syzkaller.appspot.com/bug?id=46ab4d83f21d42d1287c3819ab42ab836f8a0f8d
+Repository: linux
+Arch: i386
+Finding: 2018-06-06 - 1c8c5a9d38f607c0b6fd12c91cbe1a4418762a21
+Guilty:  2018-05-23 - d2ba09c17a0647f899d6c20a11bab9e6d3382f07
+Duplicate Names:
+    KASAN: use-after-free Read in __vfs_write
+    general protection fault in pipe_write
+    general protection fault in __vfs_write
+    KASAN: use-after-free Read in pipe_read
+    KASAN: use-after-free Read in finish_wait
+    KASAN: use-after-free Read in __kernel_write
+    general protection fault in touch_atime
+    general protection fault in __mnt_want_write
+    general protection fault in vfs_read
+    KASAN: use-after-free Read in pipe_wait
+Multi-Proc Allocation.
+VMs:4
+CPUs:4
+Procs:24
+Max time:30
+Max attempts:3
+Testing the finding commit.
+
+2023-06-14 19:22:29
+Session:   1
+Template:  2018-06-07 - 645e75f8038d1b177ead2d6ea0b3ade6f7f9d985
+Syzkaller: 2018-06-07 - 645e75f8038d1b177ead2d6ea0b3ade6f7f9d985
+Kernel:    2018-06-07 - 1c8c5a9d38f607c0b6fd12c91cbe1a4418762a21
+Compiler:  gcc-8.0.1-20180412
+Attempt 1:
+    Time  Bug Name
+       2  lost connection to test machine
+***    3  KASAN: use-after-free Read in __vfs_write
+Attempt 2:
+    Time  Bug Name
+       1  lost connection to test machine
+       2  lost connection to test machine
+***    7  general protection fault in __vfs_write
+
+AUTHOR: Crash. Rerun if time allows.

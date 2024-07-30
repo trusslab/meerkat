@@ -1,0 +1,269 @@
+KASAN: use-after-free Read in tls_sk_proto_close,https://syzkaller.appspot.com/bug?id=32f49c56127fb8eb57e0f02a9b8ef6114c28a2e9
+Repository: linux
+Arch: amd64
+Finding: 2018-01-14 - a8750ddca918032d6349adbf9a4b6555e7db20da
+Guilty:  2017-06-15 - 3c4d7559159bfe1e3b94df3a657b2cda3a34e218
+Duplicate Names:
+    KASAN: slab-out-of-bounds Write in tcp_v6_syn_recv_sock
+    KASAN: use-after-free Read in tls_sk_proto_close
+VMs:4
+CPUs:4
+Procs:24
+Max time:30
+Max attempts:3
+Testing the finding commit.
+
+2023-05-02 19:59:45
+Session:   1
+Template:  2018-01-16 - a46e53184f7ecbaf37e0981bf8272dede209ad6d
+Syzkaller: 2018-01-16 - a46e53184f7ecbaf37e0981bf8272dede209ad6d
+Kernel:    2018-01-14 - a8750ddca918032d6349adbf9a4b6555e7db20da
+Compiler:  gcc-7.1.1-20170620
+Attempt 1:
+    Time  Bug Name
+***   18  KASAN: use-after-free Read in tls_sk_proto_close
+Attempt 2:
+    Time  Bug Name
+***   19  KASAN: use-after-free Read in tls_sk_proto_close
+Attempt 3:
+    Time  Bug Name
+***   22  KASAN: use-after-free Read in tls_sk_proto_close
+The bug was found.
+
+New Max Time: 21.
+Merge Commit: 2017-06-15 - 108ea51412a7fddcd0a39efe564dffd47a033e6c.
+
+==== Template Retrospection ====
+25 template changes in [2017-07-22, 2018-01-16].
+
+2023-05-02 22:05:13
+Session:   2
+Template:  2017-12-31 - 6bfd4f1979d582602a91ee57865e588ffed41ab5
+Syzkaller: 2017-12-31 - 6bfd4f1979d582602a91ee57865e588ffed41ab5
+Kernel:    2017-12-31 - 30a7acd573899fd8b8ac39236eff6468b195ac7d
+Compiler:  gcc-7.1.1-20170620
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+The bug was not found.
+
+2023-05-02 23:48:15
+Session:   3
+Template:  2018-01-14 - 36e37bdf6ce1243e86e31d5cc17d6468aa3847d0
+Syzkaller: 2018-01-14 - 36e37bdf6ce1243e86e31d5cc17d6468aa3847d0
+Kernel:    2018-01-14 - a8750ddca918032d6349adbf9a4b6555e7db20da
+Compiler:  gcc-7.1.1-20170620
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+The bug was not found.
+
+2023-05-03 01:56:59
+Session:   4
+Template:  2018-01-15 - b75f5cb3cb6145796e39a799e4b4c83d7d4b4237
+Syzkaller: 2018-01-15 - b75f5cb3cb6145796e39a799e4b4c83d7d4b4237
+Kernel:    2018-01-14 - a8750ddca918032d6349adbf9a4b6555e7db20da
+Compiler:  gcc-7.1.1-20170620
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+The bug was not found.
+
+2023-05-03 04:08:02
+Session:   5
+Template:  2018-01-15 - e17f4a5dfb4e9ad6fc12d6a94a6a978e8bec42aa
+Syzkaller: 2018-01-15 - e17f4a5dfb4e9ad6fc12d6a94a6a978e8bec42aa
+Kernel:    2018-01-14 - a8750ddca918032d6349adbf9a4b6555e7db20da
+Compiler:  gcc-7.1.1-20170620
+Attempt 1:
+    Time  Bug Name
+***   16  KASAN: use-after-free Read in tls_sk_proto_close
+The bug was found.
+
+2023-05-03 05:00:29
+Session:   6
+Template:  2018-01-15 - 47501d0f3be031c9ef6121e48050b5d2d4d5a7f5
+Syzkaller: 2018-01-15 - 47501d0f3be031c9ef6121e48050b5d2d4d5a7f5
+Kernel:    2018-01-14 - a8750ddca918032d6349adbf9a4b6555e7db20da
+Compiler:  gcc-7.1.1-20170620
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+The bug was not found.
+
+2023-05-03 07:07:58
+Session:   7
+Template:  2018-01-15 - 47501d0f3be031c9ef6121e48050b5d2d4d5a7f5
+Syzkaller: 2018-01-15 - e17f4a5dfb4e9ad6fc12d6a94a6a978e8bec42aa
+Kernel:    2018-01-14 - a8750ddca918032d6349adbf9a4b6555e7db20da
+Compiler:  gcc-7.1.1-20170620
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    Time  Bug Name
+***   17  KASAN: use-after-free Read in tls_sk_proto_close
+The bug was found.
+Switching to Safe Mode: Fuzzing 5 times at 30 minutes
+
+==== Kernel Retrospection ====
+4 Linux commits in [2018-01-14, 2018-01-14].
+
+2023-05-03 08:38:05
+Session:   8
+Template:  2018-01-14 - 66d492a6c7bb8f9eea386e016b95a0152004bf7c
+Syzkaller: 2018-01-14 - 66d492a6c7bb8f9eea386e016b95a0152004bf7c
+Kernel:    2018-01-14 - 6bb821193b6e8b9cc40714f700da27b4688cbc22
+Compiler:  gcc-7.1.1-20170620
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    Time  Bug Name
+***   29  KASAN: use-after-free Read in tls_sk_proto_close
+The bug was found.
+
+2023-05-03 10:10:27
+Session:   9
+Template:  2018-01-14 - 66d492a6c7bb8f9eea386e016b95a0152004bf7c
+Syzkaller: 2018-01-14 - 66d492a6c7bb8f9eea386e016b95a0152004bf7c
+Kernel:    2018-01-14 - 9443c168505d308f5ecd8c0db249f6f62a39c448
+Compiler:  gcc-7.1.1-20170620
+Attempt 1:
+    Time  Bug Name
+***   22  KASAN: use-after-free Read in tls_sk_proto_close
+The bug was found.
+
+2023-05-03 11:04:26
+Session:   10
+Template:  2018-01-14 - 66d492a6c7bb8f9eea386e016b95a0152004bf7c
+Syzkaller: 2018-01-14 - 66d492a6c7bb8f9eea386e016b95a0152004bf7c
+Kernel:    2018-01-14 - 40548c6b6c134275c750eb372dc2cf8ee1bbc3d4
+Compiler:  gcc-7.1.1-20170620
+Attempt 1:
+    Time  Bug Name
+***   25  KASAN: use-after-free Read in tls_sk_proto_close
+The bug was found.
+
+== Confirming the bisected commit ==
+
+2023-05-03 12:22:37
+Session:   11
+Template:  2018-01-14 - 66d492a6c7bb8f9eea386e016b95a0152004bf7c
+Syzkaller: 2018-01-14 - 66d492a6c7bb8f9eea386e016b95a0152004bf7c
+Kernel:    2018-01-14 - 40548c6b6c134275c750eb372dc2cf8ee1bbc3d4
+The bug was found in a previous identical fuzzing session.
+
+2023-05-03 12:22:37
+Session:   12
+Template:  2018-01-14 - 66d492a6c7bb8f9eea386e016b95a0152004bf7c
+Syzkaller: 2018-01-14 - 66d492a6c7bb8f9eea386e016b95a0152004bf7c
+Kernel:    2018-01-13 - 2c1cfa49901839136e578ca516a7e230182da024
+Compiler:  gcc-7.1.1-20170620
+Attempt 1:
+    Time  Bug Name
+***   25  KASAN: use-after-free Read in tls_sk_proto_close
+The bug was found.
+
+==== Syzkaller Retrospection ====
+4 Syzkaller commits from [2018-01-14].
+
+2023-05-03 13:49:21
+Session:   13
+Template:  2018-01-14 - 66d492a6c7bb8f9eea386e016b95a0152004bf7c
+Syzkaller: 2018-01-14 - 66d492a6c7bb8f9eea386e016b95a0152004bf7c
+Kernel:    2018-01-14 - 40548c6b6c134275c750eb372dc2cf8ee1bbc3d4
+Compiler:  gcc-7.1.1-20170620
+The bug was found in a previous identical fuzzing session.
+
+2023-05-03 13:49:21
+Session:   14
+Template:  2018-01-14 - 33bb46947ad3f2bdc26a2d9ab7a0fe27d650522c
+Syzkaller: 2018-01-14 - 33bb46947ad3f2bdc26a2d9ab7a0fe27d650522c
+Kernel:    2018-01-14 - 40548c6b6c134275c750eb372dc2cf8ee1bbc3d4
+Compiler:  gcc-7.1.1-20170620
+Attempt 1:
+    Time  Bug Name
+      43  kernel BUG at ./include/linux/skbuff.h:LINE!
+      48  kernel BUG at ./include/linux/skbuff.h:LINE!
+      58  kernel BUG at ./include/linux/skbuff.h:LINE!
+Attempt 2:
+    Time  Bug Name
+      27  kernel BUG at ./include/linux/skbuff.h:LINE!
+      33  kernel BUG at ./include/linux/skbuff.h:LINE!
+      36  kernel BUG at ./include/linux/skbuff.h:LINE!
+***   43  KASAN: use-after-free Read in tls_sk_proto_close
+The bug was found.
+
+2023-05-03 15:36:06
+Session:   15
+Template:  2018-01-14 - 36e37bdf6ce1243e86e31d5cc17d6468aa3847d0
+Syzkaller: 2018-01-14 - 36e37bdf6ce1243e86e31d5cc17d6468aa3847d0
+Kernel:    2018-01-14 - 40548c6b6c134275c750eb372dc2cf8ee1bbc3d4
+Compiler:  gcc-7.1.1-20170620
+Attempt 1:
+    Time  Bug Name
+      34  kernel BUG at ./include/linux/skbuff.h:LINE!
+      39  kernel BUG at ./include/linux/skbuff.h:LINE!
+      42  kernel BUG at ./include/linux/skbuff.h:LINE!
+      44  kernel BUG at ./include/linux/skbuff.h:LINE!
+***   45  KASAN: use-after-free Read in tls_sk_proto_close
+***   45  KASAN: use-after-free Read in tls_sk_proto_close
+***   45  KASAN: use-after-free Read in tls_sk_proto_close
+The bug was found.
+
+2023-05-03 16:24:52
+Session:   16
+Template:  2018-01-14 - 90c33e5d0cb5c5c3cec65f12974d5fd5c714f5a3
+Syzkaller: 2018-01-14 - 90c33e5d0cb5c5c3cec65f12974d5fd5c714f5a3
+Kernel:    2018-01-14 - 40548c6b6c134275c750eb372dc2cf8ee1bbc3d4
+Compiler:  gcc-7.1.1-20170620
+Attempt 1:
+    Time  Bug Name
+      25  kernel BUG at ./include/linux/skbuff.h:LINE!
+      31  kernel BUG at ./include/linux/skbuff.h:LINE!
+      32  kernel BUG at ./include/linux/skbuff.h:LINE!
+      37  kernel BUG at ./include/linux/skbuff.h:LINE!
+      38  kernel BUG at ./include/linux/skbuff.h:LINE!
+      42  kernel BUG at ./include/linux/skbuff.h:LINE!
+      46  kernel BUG at ./include/linux/skbuff.h:LINE!
+      50  kernel BUG at ./include/linux/skbuff.h:LINE!
+      52  kernel BUG at ./include/linux/skbuff.h:LINE!
+      52  kernel BUG at ./include/linux/skbuff.h:LINE!
+      53  kernel BUG at ./include/linux/skbuff.h:LINE!
+Attempt 2:
+    Time  Bug Name
+      30  kernel BUG at ./include/linux/skbuff.h:LINE!
+      32  kernel BUG at ./include/linux/skbuff.h:LINE!
+      34  kernel BUG at ./include/linux/skbuff.h:LINE!
+      37  kernel BUG at ./include/linux/skbuff.h:LINE!
+      46  kernel BUG at ./include/linux/skbuff.h:LINE!
+***   53  KASAN: use-after-free Read in tls_sk_proto_close
+***   53  KASAN: use-after-free Read in tls_sk_proto_close
+The bug was found.
+
+====================================================================================================================================================
+Revealing Factor:   Syzkaller Update
+Version:            2018-01-14 - 90c33e5d0cb5c5c3cec65f12974d5fd5c714f5a3
+Commit Name:        syz-manager: check new inputs from fuzzers
+
+Bug Name:           KASAN: use-after-free Read in tls_sk_proto_close
+Bug Link:           https://syzkaller.appspot.com/bug?id=32f49c56127fb8eb57e0f02a9b8ef6114c28a2e9
+Arch:               amd64
+Finding Date:       2018-01-16
+Finding Commit:     2018-01-14 - a8750ddca918032d6349adbf9a4b6555e7db20da
+Guilty Merge:       2017-06-15 - 108ea51412a7fddcd0a39efe564dffd47a033e6c
+Guilty Commit:      2017-06-15 - 3c4d7559159bfe1e3b94df3a657b2cda3a34e218
+
+Possible Blocking Bugs:
+    kernel BUG at ./include/linux/skbuff.h:LINE!
