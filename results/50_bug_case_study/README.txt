@@ -3,9 +3,8 @@ then manually studied to determine their correctness. There are brief notes in e
 explaining the result.
 
 The bugs with bad results are:
-    0252
-    0322
-    0708
-    0832
-    1575
-    1653
+    0252 - 1 day
+    0708 - 29 days
+    0832 - 15 days
+    1575 - 1 day
+    1653 - 52 days
