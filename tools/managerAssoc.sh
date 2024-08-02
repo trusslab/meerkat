@@ -3,7 +3,7 @@
 set -e
 
 line=1
-bugfile=../parse/bugs-upstream.csv
+bugfile=../parse/bugs.csv
 outfile=manager-assiciated.txt
 maxline=$(cat $bugfile | wc -l)
 

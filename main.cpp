@@ -460,8 +460,8 @@ int main(int argc, char ** argv)
     if (relevant_template_changes.size() > 1)
     {
         cout << SPACER
-             << "Retrospecting " << relevant_template_changes.size() - 1 << " template changes.\n";
-        logfile << "\n==== Template Retrospection ====\n" 
+             << "Inspecting " << relevant_template_changes.size() - 1 << " template changes.\n";
+        logfile << "\n==== Template Inspection ====\n" 
                 << relevant_template_changes.size() - 1 << " template change" << (relevant_template_changes.size() - 1 == 1 ? "" : "s") << " in ["
                 << low_date.get_date() << ", " << high_date.get_date() << "].\n" << flush;
 
@@ -637,7 +637,7 @@ int main(int argc, char ** argv)
 
     cout << SPACER
          << "Inspecting " << r - l << " kernel versions.\n";
-    logfile << "\n==== Kernel Retrospection ====\n"
+    logfile << "\n==== Kernel Inspection ====\n"
             << r - l << " Linux commit" << (r - l == 1 ? "" : "s") << " in [" << low_date.get_date() << ", " << high_date.get_date() << "].\n" << flush;
 
     while (l <= r)
@@ -859,7 +859,7 @@ int main(int argc, char ** argv)
 
     cout << SPACER
          << "Inspecting " << r - l + 1 << " syzkaller version(s).\n";
-    logfile << "\n==== Syzkaller Retrospection ====\n"
+    logfile << "\n==== Syzkaller Inspection ====\n"
             << r - l + 1 << " Syzkaller commit" << (r - l + 1 == 1 ? "" : "s") << " from [" << high_date.get_date() << "].\n" << flush;
 
     if (r - l + 1 == 0)

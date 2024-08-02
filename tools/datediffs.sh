@@ -2,7 +2,7 @@
 
 set -e
 
-bugfile=parse/bugs-2023-unique.csv
+bugfile=parse/bugs.csv
 
 finding=()
 guilty=()

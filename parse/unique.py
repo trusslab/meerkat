@@ -1,7 +1,7 @@
 def main():
-    file1 = "bugs-2023.csv"
-    file2 = "bugs-from_oakland.csv"
-    file3 = "bugs-2023-unique.csv"
+    file1 = "bugs.csv"
+    file2 = "bugs-other.csv"
+    file3 = "bugs-unique.csv"
 
     print("Finding all bugs in", file1, "that are not in", file2)
 

@@ -8,9 +8,9 @@ old=`pwd`
 cd ../parse
 
 # old and new files
-originfile=bugs-upstream.csv
-newfile=bugs-all_repro.csv
-donefile=bugs-already_done.csv
+originfile=bugs.csv
+newfile=bugs-new.csv
+donefile=bugs-done.csv
 
 # get the bug name from the bug number
 bugname=$(sed -n $1p $originfile | awk -F',' '{ print $2}')

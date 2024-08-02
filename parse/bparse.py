@@ -138,7 +138,7 @@ class Bugdata:
 
 spacer = "=========================================================================================="
 
-outfile = "bugs-2023.csv"
+outfile = "bugs.csv"
 
 syzbotlink = "https://syzkaller.appspot.com"
 syzbotfixedlink = syzbotlink + "/upstream/fixed"

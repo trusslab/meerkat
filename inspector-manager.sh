@@ -49,7 +49,7 @@ printhelp () {
     echo "    p - fuzz without the poc as a seed"
     echo "    f - fuzz only at the finding commit"
     echo "    x - only set up the kernel and syzkaller. Do not fuzz"
-    echo "    d - build and use a debug version of SyzRetrospector"
+    echo "    d - build and use a debug version of SyzInspector"
     echo "    S - run in safe mode"
 }
 

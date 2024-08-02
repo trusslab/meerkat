@@ -23,7 +23,7 @@ void set_safe_mode(bool &safe_mode, int &max_time, int &fuzztimes)
     max_time = max_time > 30 ? max_time : 30;
 }
 
-// Checks the given result to see if SyzRetrospector should switch to safe mode.
+// Checks the given result to see if SyzInspector should switch to safe mode.
 // If yes, sets safe mode
 bool check_safe_mode(const Test_Result &result, bool &safe_mode, int &max_time, int &fuzztimes)
 {

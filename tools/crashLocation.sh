@@ -1,6 +1,6 @@
 #!/bin/bash
 
-bugfile=/mnt/sdd/jtbursey/SyzInspector/parse/bugs-2023-unique.csv
+bugfile=/absolute/path/to/SyzInspector/parse/bugs.csv
 totalLines=$(wc -l $bugfile | grep -o "^\([0-9]\+\)")
 
 startLine=1
