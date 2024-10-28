@@ -71,6 +71,7 @@ The arch can also be specified as either i386 or amd64. Default is amd64. SyzIns
 ### Notes
 
 - Not every parsed bug can be inspected. inspector-manager.sh has its own checks to ensure the bug is valid. As of right now, it also filters out bugs from 2024. These checks are performed here to reduce spamming Linux and Syzkaller gits.
+- Inspecting i386 bugs requires docker. if you do not have rootless docker, this means you must run `sudo ./inspector-manager.sh`. This also has the downside of messing up the file ownership of the working directory.
 - The name of this project changed partway through. Some files refer to "retrospect" rather than "inspect". Please ignore these differences.
 
 ## Patches
