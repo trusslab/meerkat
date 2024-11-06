@@ -11,6 +11,7 @@ from lxml import html
 class Bisect_Result:
     def __init__(self) -> None:
         self.link = ""          # bug link
+        self.guilty_date = ""   # guilty date
         self.converge = ""      # good/multiple/error/none
         self.hash = ""          # hash of resulting commit
         self.date = ""          # date of resulting commit
@@ -30,13 +31,14 @@ class Bisect_Result:
         self.err = ""
 
     def tostring(self) -> str:
-        st = self.link + ',' + self.converge + ',' + self.hash + ',' + self.date + ',' + self.correct + ',' + self.best_hash + ',' + self.best_date + ',' + self.err
+        st = self.link + ',' + self.guilty_date + ',' + self.converge + ',' + self.hash + ',' + self.date + ',' + self.correct + ',' + self.best_hash + ',' + self.best_date + ',' + self.err
         return st
 
-bugfilename = "../results/batch1/bugs-batch1.csv"
-outfilename = "bisect-comp-b1.csv"
+bugfilename = "../results/batch3/bugs-batch3.csv"
+outfilename = "bisect-comp-b3.csv"
 
-GUILTY_INDEX = 9
+GUILTY_LINK_INDEX = 8 # 9 for b1, 8 for b3 and b2
+GUILTY_DATE_INDEX = GUILTY_LINK_INDEX + 1
 
 def read_file_lines(filename : str) -> List[str]:
     print("Reading:", filename, flush=True)
@@ -117,12 +119,17 @@ def bisect_log_best_guess(bugname : str, bughtml : html, result : Bisect_Result)
 
     cur_hash = ""
     best_hash = ""
+    bugname1 = bugname.split(' ')[0]
+    if (bugname.split(' ')[-1][-1] == ')'):
+        bugname2 = bugname.split(' ')[-2]
+    else:
+        bugname2 = bugname.split(' ')[-1]
     for line in loglines:
         if (line.startswith("testing commit")):
             cur_hash = line.split(' ')[2]
             continue
         if (line.startswith("run #") or line.startswith("all runs:")):
-            if (bugname.split(' ')[0] in line and bugname.split(' ')[-1] in line): # check for function name and sanitizer. Should be good enough
+            if (bugname1 in line and bugname2 in line): # check for function name and sanitizer. Should be good enough
                 best_hash = cur_hash
 
     if (len(best_hash) > 0):
@@ -138,7 +145,7 @@ def handle_good_result(line : str, bughtml : html, result : Bisect_Result) -> Bi
     print("Found good result", flush=True)
     result.converge = "good"
     
-    guilty_link = ''.join(line.split(',')[GUILTY_INDEX].split('\\'))
+    guilty_link = ''.join(line.split(',')[GUILTY_LINK_INDEX].split('\\'))
     guilty_hash = link2hash(guilty_link)
     guilty_date = fetch_kcommit_date(guilty_link)
     if (guilty_date.isoformat() == "1990-01-01"):
@@ -189,7 +196,7 @@ def handle_multiple_result(line : str, bughtml : html, result : Bisect_Result) -
     for link in linklist:
         hashes.append(link2hash(link))
     
-    guilty_link = ''.join(line.split(',')[GUILTY_INDEX].split('\\'))
+    guilty_link = ''.join(line.split(',')[GUILTY_LINK_INDEX].split('\\'))
     guilty_hash = link2hash(guilty_link)
     guilty_date = fetch_kcommit_date(guilty_link)
     if (guilty_date.isoformat() == "1990-01-01"):
@@ -231,7 +238,7 @@ def handle_error_result(line : str, bughtml : html, result : Bisect_Result) -> B
         result.err = "parse failure"
         return result
 
-    errmsg = errmsg[0].split('\n')[0]
+    errmsg = errmsg[0].split('\n')[0].split(',')[0]
     result.err = errmsg
     print("Error message:", errmsg, flush=True)
     # taking too long, oldest tested release
@@ -259,6 +266,7 @@ def main():
         br.reset()
         buglink = line.split(',')[0]
         br.link = buglink
+        br.guilty_date = line.split(',')[GUILTY_DATE_INDEX]
         print(line.split(',')[1], flush=True)
         bughtml = fetch_link(buglink)
         bisect_result = bughtml.xpath("//body/div/div[@class='bug-bisection-info']/b[1]/text()")
