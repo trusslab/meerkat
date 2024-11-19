@@ -44,7 +44,7 @@ void Bug_Info::parse_config_file(const std::string & filename)
         else if (line.find("kconfig=") != std::string::npos)
         {
             pos0 = line.find_first_of("=") + 1;
-            kernel_config = line.substr(pos0);
+            kconfig = line.substr(pos0);
         }
         else if (line.find("repro=") != std::string::npos)
         {
@@ -59,12 +59,12 @@ void Bug_Info::parse_config_file(const std::string & filename)
         else if (line.find("kallerwd=") != std::string::npos)
         {
             pos0 = line.find_first_of("=") + 1;
-            syzkaller_wd = line.substr(pos0);
+            syzwd = line.substr(pos0);
         }
         else if (line.find("syzconfig=") != std::string::npos)
         {
             pos0 = line.find_first_of("=") + 1;
-            syzkaller_config = line.substr(pos0);
+            syzconfig = line.substr(pos0);
         }
         else if (line.find("managerwd=") != std::string::npos)
         {
@@ -74,13 +74,13 @@ void Bug_Info::parse_config_file(const std::string & filename)
         else if (line.find("syzdir=") != std::string::npos)
         {
             pos0 = line.find_first_of("=") + 1;
-            syzkaller_dir = line.substr(pos0);
+            syzdir = line.substr(pos0);
         }
         else if (line.find("buglink=") != std::string::npos)
         {
             pos0 = line.find_first_of("\"") + 1;
             pos1 = line.find_last_of("\"");
-            bug_link = line.substr(pos0, pos1 - pos0);
+            buglink = line.substr(pos0, pos1 - pos0);
         }
         else if (line.find("arch=") != std::string::npos)
         {
@@ -90,7 +90,7 @@ void Bug_Info::parse_config_file(const std::string & filename)
     }
 
     syzkaller_log = wd + "/log/bug" + std::to_string(number) + "-kaller.log";
-    kernel_dir = wd + "/kernel";
+    kerneldir = wd + "/kernel";
 
     inf.close();
     return;

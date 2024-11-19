@@ -16,7 +16,7 @@ void log_safe_mode(ofstream &logfile, int max_time, int fuzztimes)
     logfile << "Switching to Safe Mode: Fuzzing " << fuzztimes << " times at " << max_time << " minutes\n";
 }
 
-void set_safe_mode(bool &safe_mode, int &max_time, int &fuzztimes)
+void set_safe_mode(bool &safe_mode, unsigned int &max_time, unsigned int &fuzztimes)
 {
     safe_mode = true;
     fuzztimes = 5;
@@ -25,7 +25,7 @@ void set_safe_mode(bool &safe_mode, int &max_time, int &fuzztimes)
 
 // Checks the given result to see if SyzInspector should switch to safe mode.
 // If yes, sets safe mode
-bool check_safe_mode(const Test_Result &result, bool &safe_mode, int &max_time, int &fuzztimes)
+bool check_safe_mode(const Test_Result &result, bool &safe_mode, unsigned int &max_time, unsigned int &fuzztimes)
 {
     if (!safe_mode && result.found && result.attempts.back().ttf > max_time * 0.8)
     {
@@ -108,7 +108,6 @@ void log_session_info(ofstream &logfile, const Session &session, const int count
     // date puts an endline there on its own
     logfile << "\n" << get_datetime() << ""
             << "Session:   " << count << "\n"
-            << "Template:  " << session.syz_template.date.get_date() << " - " << session.syz_template.name << "\n"
             << "Syzkaller: " << session.syzkaller.date.get_date() << " - " << session.syzkaller.name << "\n"
             << "Kernel:    " << session.kernel.date.get_date() << " - " << session.kernel.name << "\n" << flush;
 }

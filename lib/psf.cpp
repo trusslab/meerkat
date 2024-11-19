@@ -253,15 +253,15 @@ vector<string> parse_manual_duplicates(const string &filename, const string &bug
     return dups;
 }
 
-vector<string> gather_duplicates(const Bug_Info &bug, const InspectorConfig &inspector)
+vector<string> gather_duplicates(Bug_Info &bug, const InspectorConfig &inspector)
 {
-    string tmp_snapshotfile = bug.get_wd() + "/snapshot";
+    string tmp_snapshotfile = bug.wd + "/snapshot";
     vector<string> duplicates;
 
     lynx_dump(SYZBOT_FIXED_LINK, tmp_snapshotfile);
     trim_syzbot_fixes(tmp_snapshotfile);
-    parse_syzbot_fixes(tmp_snapshotfile, bug.get_name(), duplicates);
-    parse_manual_duplicates(inspector.get_inspect_dir() + "/parameters/manual_duplicates.txt", bug.get_name(), duplicates);
+    parse_syzbot_fixes(tmp_snapshotfile, bug.name, bug.duplicates);
+    parse_manual_duplicates(inspector.get_inspect_dir() + "/parameters/manual_duplicates.txt", bug.name, bug.duplicates);
     remove_file(tmp_snapshotfile);
 
     return duplicates;

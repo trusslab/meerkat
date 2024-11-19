@@ -73,21 +73,21 @@ int main(int argc, char ** argv)
     // get information about the bug
     bug.parse_config_file("../wd-inspector-" + to_string(id) + "/" + "bug.cfg");
 
-    if (!check_file(bug.get_wd() + "/log"))
-        make_dir(bug.get_wd() + "/log");
+    if (!check_file(bug.wd + "/log"))
+        make_dir(bug.wd + "/log");
 
     // Set up linux repository locally
-    linux_repo_remote = LINUX_REPO_REMOTE + bug.get_repo();
+    linux_repo_remote = LINUX_REPO_REMOTE + bug.repository;
 
-    if (!check_file(bug.get_kerneldir()))
-        make_dir(bug.get_kerneldir());
+    if (!check_file(bug.kerneldir))
+        make_dir(bug.kerneldir);
 
     // this may cause issues when the repository opened is not the one we want
-    git_err = git_repository_open(&linux_repo, bug.get_kerneldir().c_str());
+    git_err = git_repository_open(&linux_repo, bug.kerneldir.c_str());
     if (git_err < 0)
     {
         cout << "Cloning Linux repository...\n";
-        git_err = git_clone(&linux_repo, linux_repo_remote.c_str(), bug.get_kerneldir().c_str(), nullptr);
+        git_err = git_clone(&linux_repo, linux_repo_remote.c_str(), bug.kerneldir.c_str(), nullptr);
         if (git_err < 0)
         {
             cerr << "Error: Git clone failed.\n";
@@ -97,7 +97,7 @@ int main(int argc, char ** argv)
     }
 
     // begin logging
-    logfilename = bug.get_wd() + "/log/merges.log";
+    logfilename = bug.wd + "/log/merges.log";
     logfile.open(logfilename, ios_base::app);
     if(!logfile)
     {
@@ -123,17 +123,17 @@ int main(int argc, char ** argv)
     cout << SPACER
          << "Looking for Merge Commit...\n";
 
-    merge_commit = git_find_merge_commit(bug.get_kerneldir(), kernel_versions, guilty_hash);
+    merge_commit = git_find_merge_commit(bug.kerneldir, kernel_versions, guilty_hash);
 
     if (!merge_commit.name.empty())
     {
         cout << "Merge commit found: " << merge_commit.name << ".\n";
-        logfile << "Bug " << bug.get_number() << ": " << merge_commit.date.get_date() << " - " << merge_commit.name << ".\n" << flush;
+        logfile << "Bug " << bug.number << ": " << merge_commit.date.get_date() << " - " << merge_commit.name << ".\n" << flush;
     }
     else
     {
         cout << "No merge commit found.\n";
-        logfile << "Bug " << bug.get_number() << ": No Merge Commit.\n" << flush;
+        logfile << "Bug " << bug.number << ": No Merge Commit.\n" << flush;
     }
 
     // ======================================================================================================

@@ -9,7 +9,6 @@ bool already_fuzzed(const vector<Session> &sessions, const Session &this_session
     for (Session s : sessions)
     {
         if (s.kernel.name == this_session.kernel.name &&
-            s.syz_template.name == this_session.syz_template.name &&
             s.syzkaller.name == this_session.syzkaller.name)
         {
             return true;
@@ -24,7 +23,6 @@ int session_get_result(const vector<Session> &sessions, const Session &this_sess
     for (Session s : sessions)
     {
         if (s.kernel.name == this_session.kernel.name &&
-            s.syz_template.name == this_session.syz_template.name &&
             s.syzkaller.name == this_session.syzkaller.name)
         {
             return s.found ? 1 : 0;
@@ -39,7 +37,6 @@ int session_get_stable(const vector<Session> &sessions, const Session &this_sess
     for (Session s : sessions)
     {
         if (s.kernel.name == this_session.kernel.name &&
-            s.syz_template.name == this_session.syz_template.name &&
             s.syzkaller.name == this_session.syzkaller.name)
         {
             return s.stable ? 1 : 0;

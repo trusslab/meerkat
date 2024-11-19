@@ -3,6 +3,8 @@
 
 #include <string>
 
+enum Compiler_Setting {COMPILER_GCC = 0, COMPILER_CLANG, COMPILER_CLANG_14};
+
 // stores info about the host port for easy arithmetic
 // The port must change in between runs of Syzkaller in
 // case the previous port was not freed yet.
@@ -53,6 +55,11 @@ private:
     int makeprocs;                      // number of threads to using while making
 
 public:
+    Compiler_Setting compiler_setting;
+    VMConfig vmc;
+
+    Port_Info port;
+
     InspectorConfig()
     { return; }
 

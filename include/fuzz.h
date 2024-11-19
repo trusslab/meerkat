@@ -20,11 +20,11 @@ Syzkaller_Result run_syzkaller(std::ofstream &, const Bug_Info &, const Inspecto
 
 // Runs Syzkaller fuzztimes times. Returns the new max time
 // to use. Intended to be run on the finding commit.
-Test_Result fuzz_loop_finding(std::ofstream &, const Bug_Info &, const InspectorConfig &, const std::vector<std::string> &, const int, const int, const VMConfig &, Port_Info &, const Date &, bool = true, bool = true);
+Test_Result fuzz_loop_finding(std::ofstream &, const Bug_Info &, InspectorConfig &, const std::vector<std::string> &, const int, const int, const Date &, bool = true, bool = true);
 
 // Runs syzkaller fuzztimes times. Returns the culmination
 // of the results.
-Test_Result fuzz_loop(std::ofstream &, const Bug_Info &, const InspectorConfig &, const std::vector<std::string> &, const int, const int, const VMConfig &, Port_Info &, const Date &, bool = true);
+Test_Result fuzz_loop(std::ofstream &, const Bug_Info &, InspectorConfig &, const std::vector<std::string> &, const int, const int, const Date &, bool = true);
 
 // Checks against heuristics to see if the resulting kernel
 // commit is faulty. Returns true if it is.

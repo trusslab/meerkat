@@ -10,7 +10,6 @@ class Session
 public:
     Version kernel;
     Version syzkaller;
-    Version syz_template;
     bool found;
     bool stable;
 
@@ -18,8 +17,8 @@ public:
         : stable(true)
     { return; }
 
-    Session(const Version &k, const Version &syz, const Version &temp, bool f)
-        : kernel(k), syzkaller(syz), syz_template(temp), found(f), stable(true)
+    Session(const Version &k, const Version &syz, bool f)
+        : kernel(k), syzkaller(syz), found(f), stable(true)
     {
         return;
     }

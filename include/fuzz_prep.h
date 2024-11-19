@@ -10,8 +10,6 @@
 #include <vector>
 #include <iostream>
 
-enum Compiler_Setting {COMPILER_GCC = 0, COMPILER_CLANG, COMPILER_CLANG_14};
-
 // reads the reproducer file to determine how many
 // procs syzbot used to trigger the bug. The number
 // of procs can be used to determine the threadedness of the bug
@@ -19,14 +17,14 @@ int get_procs_from_repro(const std::string &);
 
 // Outer function to determine the threadedness of the bug.
 // Returns the allocation to use.
-VMConfig determine_threadedness(const InspectorConfig &, const Bug_Info &, std::ostream &);
+VMConfig determine_threadedness(InspectorConfig &, const Bug_Info &, std::ostream &);
 
 // Reads the gcc version file and returns them
 // in vector form
 std::vector<Version> grab_compiler_versions(const std::string &);
 
 // returns the name of the compiler to be used
-std::string get_compiler(const std::vector<Version> &, const std::vector<Version> &, const Date &, const InspectorConfig &, const Compiler_Setting = COMPILER_GCC);
+std::string get_compiler(const std::vector<Version> &, const std::vector<Version> &, const Date &, const InspectorConfig &);
 
 // removes gcc from the path (actually just resets the path)
 int clean_path(const std::string &);
@@ -44,7 +42,7 @@ int prep_syzkaller(const Bug_Info &, const InspectorConfig &, const Version &, c
 
 // writes the syzkaller config to the config file.
 // also shifts the host port by one
-int write_syzkaller_config(const Bug_Info &, const InspectorConfig &, const VMConfig &, Port_Info &, const Date &);
+int write_syzkaller_config(const Bug_Info &, const InspectorConfig &, const Date &);
 
 // Takes the POC file and the corpus file. calls syz-db to insert
 // the POC into the corpus.

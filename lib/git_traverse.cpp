@@ -18,10 +18,10 @@ using namespace std;
 
 vector<Version> get_kernel_versions(const Bug_Info &bug, const string &old_hash, const string &new_hash)
 {
-    string outfile = bug.get_wd() + "/tmp_kernel_versions.txt";
+    string outfile = bug.wd + "/tmp_kernel_versions.txt";
     
     cout << "Listing...\n";
-    if (git_rev_list_topo(bug.get_kerneldir(), old_hash, new_hash, outfile) < 0)
+    if (git_rev_list_topo(bug.kerneldir, old_hash, new_hash, outfile) < 0)
     {
         return vector<Version>();
     }
@@ -63,7 +63,7 @@ vector<Version> get_kernel_versions(const Bug_Info &bug, const string &old_hash,
     }
 
     vp.v.name = old_hash;
-    vp.v.date = git_get_commit_date(bug.get_wd(), bug.get_kerneldir(), old_hash);
+    vp.v.date = git_get_commit_date(bug.wd, bug.kerneldir, old_hash);
     kernel_versions_raw.insert(pair<string,Version_p>(vp.v.name, vp));
 
     inf.close();
@@ -101,9 +101,9 @@ vector<Version> get_kernel_versions(const Bug_Info &bug, const string &old_hash,
 vector<Version> get_syzkaller_versions(const Bug_Info &bug)
 {
     int k;
-    string outfile = bug.get_wd() + "/tmp_template_changes.txt";
+    string outfile = bug.wd + "/tmp_template_changes.txt";
 
-    git_rev_list(bug.get_syzdir(), OLDEST_SYZKALLER_HASH, LATEST_SYZKALLER_HASH, outfile);
+    git_rev_list(bug.syzdir, OLDEST_SYZKALLER_HASH, LATEST_SYZKALLER_HASH, outfile);
 
     ifstream inf;
     inf.open(outfile);
@@ -125,7 +125,7 @@ vector<Version> get_syzkaller_versions(const Bug_Info &bug)
     }
 
     v.name = OLDEST_SYZKALLER_HASH;
-    v.date = git_get_commit_date(bug.get_wd(), bug.get_syzdir(), OLDEST_SYZKALLER_HASH);
+    v.date = git_get_commit_date(bug.wd, bug.syzdir, OLDEST_SYZKALLER_HASH);
     syzkaller_versions.push_back(v);
 
     // remove bad versions of syzkaller
@@ -163,8 +163,8 @@ vector<Version> get_template_changes(const Bug_Info &bug, const Date &old_date, 
 
         // keep only modifications to the linux template
         // older versions used sys/ rather than sys/linux/
-        if (git_check_modified_file(bug.get_wd(), bug.get_syzdir(), v.name, "sys/linux") ||
-            (v.date < Date(2017,9,15) && git_check_modified_file(bug.get_wd(), bug.get_syzdir(), v.name, "sys")))
+        if (git_check_modified_file(bug.wd, bug.syzdir, v.name, "sys/linux") ||
+            (v.date < Date(2017,9,15) && git_check_modified_file(bug.wd, bug.syzdir, v.name, "sys")))
         {
             template_changes.push_back(v);
             continue;
@@ -177,19 +177,19 @@ vector<Version> get_template_changes(const Bug_Info &bug, const Date &old_date, 
 // move non-api functions to another library
 vector<Version> get_relevant_template_changes(const Bug_Info &bug, const vector<Version> &template_changes)
 {
-    string template1 = bug.get_wd() + "/template1.txt";
-    string template2 = bug.get_wd() + "/template2.txt";
-    string template3 = bug.get_wd() + "/template3.txt";
+    string template1 = bug.wd + "/template1.txt";
+    string template2 = bug.wd + "/template2.txt";
+    string template3 = bug.wd + "/template3.txt";
 
     vector<Version> relevant_template_changes = {template_changes.back()};
 
     cout << "Fetching version " << template_changes.back().name << ".\n";
     clean_syzkaller(bug);
-    git_fetch_and_checkout(bug.get_syzdir(), SYZKALLER_REPO_REMOTE, template_changes.back().name);
+    git_fetch_and_checkout(bug.syzdir, SYZKALLER_REPO_REMOTE, template_changes.back().name);
 
     cout << "Slimming version " << template_changes.back().name << ".\n";
-    string template_dir = check_file(bug.get_syzdir() + "/sys/linux") ? bug.get_syzdir() + "/sys/linux" : bug.get_syzdir() + "/sys";
-    slim_template(bug.get_allrepro(), template1, list_template_files(template_dir), template_changes.back().date < OLD_INOUT_DATE);
+    string template_dir = check_file(bug.syzdir + "/sys/linux") ? bug.syzdir + "/sys/linux" : bug.syzdir + "/sys";
+    slim_template(bug.allreproducer, template1, list_template_files(template_dir), template_changes.back().date < OLD_INOUT_DATE);
 
     int l = 0;                              // left is always 0 to start
     int r = template_changes.size() - 2;    // right is one to the left of the commit we are comparing to
@@ -204,11 +204,11 @@ vector<Version> get_relevant_template_changes(const Bug_Info &bug, const vector<
             cout << SPACER
                 << "Fetching version " << template_changes.at(m).name << ".\n";
             clean_syzkaller(bug);
-            git_fetch_and_checkout(bug.get_syzdir(), SYZKALLER_REPO_REMOTE, template_changes.at(m).name);
+            git_fetch_and_checkout(bug.syzdir, SYZKALLER_REPO_REMOTE, template_changes.at(m).name);
 
             cout << "Slimming version " << template_changes.at(m).name << ".\n";
-            template_dir = check_file(bug.get_syzdir() + "/sys/linux") ? bug.get_syzdir() + "/sys/linux" : bug.get_syzdir() + "/sys";
-            slim_template(bug.get_allrepro(), template2, list_template_files(template_dir), template_changes.at(m).date < OLD_INOUT_DATE);
+            template_dir = check_file(bug.syzdir + "/sys/linux") ? bug.syzdir + "/sys/linux" : bug.syzdir + "/sys";
+            slim_template(bug.allreproducer, template2, list_template_files(template_dir), template_changes.at(m).date < OLD_INOUT_DATE);
 
             same = compare_templates(template1, template2);
             if (same)

@@ -104,21 +104,21 @@ Syzkaller_Result run_syzkaller(ofstream &logfile, const Bug_Info &bug, const Ins
     vector<Crash_Report> checked_crashes;
     string crash_name;
 
-    reset_kaller_wd(bug.get_kallerwd());
+    reset_kaller_wd(bug.syzwd);
     if (poc)
         insert_POC_as_seed(bug);
 
     // run syzkaller
-    cd(bug.get_syzdir());
+    cd(bug.syzdir);
 
     char command[] = "./bin/syz-manager";
-    string configArg = "-config=" + bug.get_syzconfig();
+    string configArg = "-config=" + bug.syzconfig;
     char * arg1 = new char[configArg.size() + 1];
     strcpy(arg1, configArg.c_str());
     char * arg_list[] = {command, arg1, nullptr};
 
     cout << "Running Syzkaller...\n";
-    int pid = exec_and_continue("./bin/syz-manager", arg_list, bug.get_kaller_log(), bug.get_kaller_log());
+    int pid = exec_and_continue("./bin/syz-manager", arg_list, bug.syzkaller_log, bug.syzkaller_log);
 
     // watch syzkaller's progress
     while (time < max_time && !result.found)
@@ -131,7 +131,7 @@ Syzkaller_Result run_syzkaller(ofstream &logfile, const Bug_Info &bug, const Ins
             handle_syzkaller_crash(logfile);
 
         // check crashes
-        crash_hashes = list_dir(bug.get_kallerwd() + "/crashes");
+        crash_hashes = list_dir(bug.syzwd + "/crashes");
         for (string hash : crash_hashes)
         {
             to_add = 0;
@@ -163,12 +163,12 @@ Syzkaller_Result run_syzkaller(ofstream &logfile, const Bug_Info &bug, const Ins
                 result.bad_crashes += to_add;
         }
 
-        if (wc_l(bug.get_kaller_log()) > 5000)
+        if (wc_l(bug.syzkaller_log) > 5000)
         {
             cout << "Warning: Syzkaller log file exceeded 5000 lines. Assuming boot failure\n";
             logfile << "Warning: Syzkaller log file exceeded 5000 lines.\n"
-                    << "Saved at " << bug.get_wd() + "/log/bug" + to_string(bug.get_number()) + "-boot_failure.log" << ".\n" << flush;
-            copy(bug.get_kaller_log(), bug.get_wd() + "/log/bug" + to_string(bug.get_number()) + "-boot_failure.log");
+                    << "Saved at " << bug.wd + "/log/bug" + to_string(bug.number) + "-boot_failure.log" << ".\n" << flush;
+            copy(bug.syzkaller_log, bug.wd + "/log/bug" + to_string(bug.number) + "-boot_failure.log");
             result.bad_crashes++;
             result.reports.push_back({"boot failure", time});
             break;
@@ -186,16 +186,16 @@ Syzkaller_Result run_syzkaller(ofstream &logfile, const Bug_Info &bug, const Ins
     return result;
 }
 
-Test_Result fuzz_loop_finding(ofstream &logfile, const Bug_Info &bug, const InspectorConfig &inspector, const vector<string> &dups,
-                            const int max_time, const int fuzztimes, const VMConfig &vmc, Port_Info &port, const Date &syz_date, bool poc, bool find_only)
+Test_Result fuzz_loop_finding(ofstream &logfile, const Bug_Info &bug, InspectorConfig &inspector, const vector<string> &dups,
+                            const int max_time, const int fuzztimes, const Date &syz_date, bool poc, bool find_only)
 {
     Test_Result result;
     result.found = false;
     int retries = 0, unstable_count = 0;
     for (int i = 0; i < fuzztimes + retries && unstable_count < fuzztimes; i++)
     {
-        port.inc();
-        write_syzkaller_config(bug, inspector, vmc, port, syz_date);
+        inspector.port.inc();
+        write_syzkaller_config(bug, inspector, syz_date);
         result.attempts.push_back(run_syzkaller(logfile, bug, inspector, dups, max_time, poc));
         result.found = result.attempts.back().found ? true : result.found;
         if (result.attempts.back().bad_crashes > 0 && retries < fuzztimes)
@@ -212,16 +212,16 @@ Test_Result fuzz_loop_finding(ofstream &logfile, const Bug_Info &bug, const Insp
     return result;
 }
 
-Test_Result fuzz_loop(ofstream &logfile, const Bug_Info &bug, const InspectorConfig &inspector, const vector<string> &dups,
-                    const int max_time, const int fuzztimes, const VMConfig &vmc, Port_Info &port, const Date &syz_date, bool poc)
+Test_Result fuzz_loop(ofstream &logfile, const Bug_Info &bug, InspectorConfig &inspector, const vector<string> &dups,
+                    const int max_time, const int fuzztimes, const Date &syz_date, bool poc)
 {
     Test_Result result;
     result.found = false;
     int retries = 0, unstable_count = 0;
     for (int i = 0; i < fuzztimes + retries && !result.found  && unstable_count < fuzztimes; i++)
     {
-        port.inc();
-        write_syzkaller_config(bug, inspector, vmc, port, syz_date);
+        inspector.port.inc();
+        write_syzkaller_config(bug, inspector, syz_date);
         result.attempts.push_back(run_syzkaller(logfile, bug, inspector, dups, max_time, poc));
         result.found = result.attempts.back().found;
         if (result.attempts.back().bad_crashes > 0 && retries < fuzztimes)
@@ -243,7 +243,7 @@ bool check_faulty_result(const Bug_Info &bug)
     bool fault = false;
 
     // Check if the reproducer is dependent on fault injection
-    if (grep_to_find("\\\"fault_call\\\":", bug.get_allrepro()) && !grep_to_find("\\\"fault_call\\\":-1", bug.get_allrepro()))
+    if (grep_to_find("\\\"fault_call\\\":", bug.allreproducer) && !grep_to_find("\\\"fault_call\\\":-1", bug.allreproducer))
         fault = true;
 
     return fault;
