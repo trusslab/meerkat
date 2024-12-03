@@ -25,5 +25,6 @@ int git_clone(const std::string &, const std::string &);
 int git_fetch_and_checkout(const std::string &, const std::string &, const std::string &);
 
 std::string get_commit_name(const std::string &, const std::string &);
+std::string get_current_commit_hash(const std::string &);
 
 #endif

@@ -326,3 +326,30 @@ string get_commit_name(const string &repo, const string &hash)
 
     return ret;
 }
+
+// Returns the full hash of the current commit. repo is the local directory
+// where the repository is (i.e. /path/to/syzkaller)
+string get_current_commit_hash(const string &repo)
+{
+    int index;
+    string old_dir = pwd();
+    cd(repo);
+    char command[] = "git";
+    char arg1[] = "show";
+    char arg2[] = "-s";
+    char arg3[] = "--format=%H";
+
+    char * arg_list[] = {command, arg1, arg2, arg3, nullptr};
+
+    string ret = exec_and_read("git", arg_list);
+    if (ret == "")
+        cerr << "Warning: Failed to read hash in " << repo << ".\n";
+
+    cd(old_dir);
+    
+    index = ret.find("\n");
+    if (index != string::npos)
+        ret = ret.substr(0, index);
+
+    return ret;
+}

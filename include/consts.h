@@ -16,7 +16,6 @@ const Date OLD_INOUT_DATE(2020,8,13);
 #define SYZBOT_FIXED_LINK "https://syzkaller.appspot.com/upstream/fixed"
 
 #define OLDEST_SYZKALLER_HASH "87f9bdb8688ceafa804eb49d566bdc38dfb9fd5e"
-#define LATEST_SYZKALLER_HASH "c0f1611a36d66bb0bb8e2f294b97fb685bfc5f9c"
 
 const std::vector<std::string> LINUX_BROKEN_VERSONS = {};
 

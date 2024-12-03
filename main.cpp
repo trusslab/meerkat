@@ -78,27 +78,10 @@ int prep_kernel_local_repo(Environment &env, const Bug_Info &bug)
     return 0;
 }
 
-void print_help()
-{
-    cout << "Help:\n"
-        << "Short Ticks:\n"
-        << "    -F [find_hash]: the hash of the finding commit.\n"
-        << "    -G [guilty_hash]: the hash of the guilty commit.\n"
-        << "    -f [find_date]: the date the bug was found on.\n"
-        << "    -m [max_time]: the maximum time allowed when fuzzing.\n"
-        << "    -i [id]: REQUIRED. The id of the inspector.\n"
-        << "Long Ticks:\n"
-        << "    --setup-only: download and build all the parts, but don't actually fuzz.\n"
-        << "    --no-merge: don't use the merge commit as a revealing factor.\n"
-        << "    --no-poc: fuzz without the poc.\n"
-        << "    --find-only: only fuzz at the finding commit.\n"
-        << "    --safe-mode: use safe mode.\n"
-        << endl;
-}
-
 int bisect(Argparse &args, Environment &env, InspectorConfig &inspector, Bug_Info &bug)
 {
     int err = 0, git_err = 0;
+    string starttime = date("%Y-%m-%d %T");
     ofstream logfile;
     Bisect bisector;
     Test_Result result;
@@ -161,7 +144,17 @@ int bisect(Argparse &args, Environment &env, InspectorConfig &inspector, Bug_Inf
     // ======================================================================================================
 
     cout << "Initializing Bisector...\n";
-    bisector.init(env, inspector, bug, args.is_set('f'));
+    if (args.is_set("known-syz"))
+    {
+        Version known_syz;
+        known_syz.name = args.get_arg_as_string("known-syz");
+        known_syz.date = Date(args.get_arg_as_string("known-syz-date"));
+        bisector.init(env, inspector, bug, args.is_set('f'), known_syz);
+    }
+    else
+    {
+        bisector.init(env, inspector, bug, args.is_set('f'));
+    }
     if (bisector.kernel_versions.size() == 0)
     {
         logfile << "Error: Failed to gather kernel versions.\n" << flush;
@@ -217,7 +210,6 @@ int bisect(Argparse &args, Environment &env, InspectorConfig &inspector, Bug_Inf
     }
 
     bisector.record(result);
-    // TODO: advance stage
     
     //  ======================================================================================================
     // Find Merge Commit
@@ -241,9 +233,15 @@ int bisect(Argparse &args, Environment &env, InspectorConfig &inspector, Bug_Inf
     // ======================================================================================================
     // Syzkaller Bisection
 
-    logfile << "\n==== Syzkaller Bisection ====\n" 
-            << bisector.syzkaller_versions.size() << " Syzkaller commit" << (bisector.syzkaller_versions.size() == 1 ? "" : "s") << " in ["
-            << bisector.low_date_str() << ", " << bisector.high_date_str() << "].\n" << flush;
+    if (args.is_set("known-syz"))
+    {
+        if ((err = bisector.skip_syzkaller()) < 0)
+        {
+            cerr << "Could not advance to syzkaller phase via skip.\n" << flush;
+            goto finish;
+        }
+        goto skip_syzkaller;
+    }
 
     err = bisector.next_phase(Bisect_Syzkaller);
     if (err < 0)
@@ -251,6 +249,10 @@ int bisect(Argparse &args, Environment &env, InspectorConfig &inspector, Bug_Inf
         cerr << "Failed to advance to Syzkaller bisection phase.\n" << flush;
         goto finish;
     }
+
+    logfile << "\n==== Syzkaller Bisection ====\n" 
+            << bisector.syzkaller_versions.size() << " Syzkaller commit" << (bisector.syzkaller_versions.size() == 1 ? "" : "s") << " in ["
+            << bisector.low_date_str() << ", " << bisector.high_date_str() << "].\n" << flush;
 
     while ((err = bisector.next_session(logfile, env, inspector, bug)) == 0)
     {
@@ -269,6 +271,7 @@ int bisect(Argparse &args, Environment &env, InspectorConfig &inspector, Bug_Inf
     // We will need to test the remainder of the kernel commits between the bisect date
     // (whichever commit was tested alongside), and the earliest kernel commit testable.
 
+skip_syzkaller:
     err = bisector.next_phase(Bisect_Kernel);
     if (err < 0)
     {
@@ -297,7 +300,7 @@ int bisect(Argparse &args, Environment &env, InspectorConfig &inspector, Bug_Inf
     bisector.next_phase(Bisect_Done);
 
     logfile << "\n" << SPACER
-            << bisector.print_result(env, bug) << flush;
+            << bisector.print_result(env, bug, starttime) << flush;
 
     logfile << "\nPossible Blocking Bugs:\n";
     for (string b : bug.blocking_bugs.list_blocking_bugs())
@@ -330,6 +333,24 @@ setup_only_finish:
     return err;
 }
 
+void print_help()
+{
+    cout << "Help:\n"
+        << "Short Ticks:\n"
+        << "    -F [find_hash]: the hash of the finding commit.\n"
+        << "    -G [guilty_hash]: the hash of the guilty commit.\n"
+        << "    -f [find_date]: the date the bug was found on.\n"
+        << "    -m [max_time]: the maximum time allowed when fuzzing.\n"
+        << "    -i [id]: REQUIRED. The id of the inspector.\n"
+        << "Long Ticks:\n"
+        << "    --setup-only: download and build all the parts, but don't actually fuzz.\n"
+        << "    --no-merge: don't use the merge commit as a revealing factor.\n"
+        << "    --no-poc: fuzz without the poc.\n"
+        << "    --find-only: only fuzz at the finding commit.\n"
+        << "    --safe-mode: use safe mode.\n"
+        << endl;
+}
+
 void handle_bug_config(Environment &env, Bug_Info &bug)
 {
     string filename = "wd-inspector-" + to_string(env.id) + "/" + "bug.cfg";
@@ -345,7 +366,7 @@ int main(int argc, char ** argv)
     Bug_Info bug;
 
     args.expect("FGfmidh");
-    args.expect(vector<string>({ "setup-only", "help", "no-merge", "no-poc", "find-only", "safe-mode" }));
+    args.expect(vector<string>({ "setup-only", "help", "no-merge", "no-poc", "find-only", "safe-mode", "known-syz", "known-syz-date" }));
     args.parse(argc, argv);
     if (args.is_set('h') || args.is_set("help"))
     {
@@ -368,6 +389,12 @@ int main(int argc, char ** argv)
     else
     {
         cout << "Error: No guilty commit given. Please use -G [hash].\n";
+        return -1;
+    }
+
+    if (args.is_set("known-syz") != args.is_set("known-syz-date"))
+    {
+        cout << "Error: known-syz and known-syz-date must be used together.\n";
         return -1;
     }
 

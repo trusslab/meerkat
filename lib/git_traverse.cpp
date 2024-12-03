@@ -104,7 +104,8 @@ vector<Version> get_syzkaller_versions(const Environment &env)
     int k;
     string outfile = env.wd + "/tmp_template_changes.txt";
 
-    git_rev_list(env.syzdir, OLDEST_SYZKALLER_HASH, LATEST_SYZKALLER_HASH, outfile);
+    string latest_syzkaller_hash = get_current_commit_hash(env.syzdir);
+    git_rev_list(env.syzdir, OLDEST_SYZKALLER_HASH, latest_syzkaller_hash, outfile);
 
     ifstream inf;
     inf.open(outfile);

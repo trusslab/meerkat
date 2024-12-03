@@ -8,7 +8,6 @@
 #include <session.h>
 #include <version.h>
 
-
 #include <fstream>
 #include <vector>
 #include <set>
@@ -44,9 +43,6 @@ private:
     std::vector<Version> gcc_versions;
     std::vector<Version> clang_versions;
 
-    bool infer_stability_kernel(const int);
-    int skip_commit_kernel(const int);
-
     int next_stable_binary_syzkaller();
     int next_stable_binary_kernel();
     int next_stable_binary();
@@ -73,7 +69,8 @@ public:
     std::vector<Version> kernel_versions;
     std::vector<Version> syzkaller_versions;
 
-    int init(const Environment &, const InspectorConfig &, const Bug_Info &, bool = false);
+    int init(const Environment &, const InspectorConfig &, const Bug_Info &, bool);
+    int init(const Environment &, const InspectorConfig &, const Bug_Info &, bool, const Version&);
 
     int inc_session()
     { return ++session_count; }
@@ -94,6 +91,7 @@ public:
     Version find_merge_commit(const Environment &env, const Bug_Info &bug);
 
     int next_phase(Bisect_Phase);
+    int skip_syzkaller();
 
     // Goto the next session. Build everything as needed
     // Decide next session based on internal state
@@ -105,28 +103,23 @@ public:
     int record(const Test_Result &);
     int archive_session(const Test_Result &);
 
-    std::string print_result(const Environment &, const Bug_Info &) const;
+    std::string print_result(const Environment &, const Bug_Info &, const std::string &) const;
 };
 
-void log_safe_mode(std::ofstream &, int, int);
-
+bool check_safe_mode(const Test_Result &, bool &, unsigned int &, unsigned int &);
 // switch to fuzzing in safe mode. More fuzzing attempts and for longer.
 void set_safe_mode(bool &, unsigned int &, unsigned int &);
-
-bool check_safe_mode(const Test_Result &, bool &, unsigned int &, unsigned int &);
+void log_safe_mode(std::ofstream &, int, int);
 
 void log_datetime(std::ofstream &);
 
 void log_session_info(std::ofstream &, const Session &, const int);
-
 void log_session_compiler(std::ofstream &, const std::string &);
 
 void log_kernel_build_error(std::ofstream &);
-
 void log_syzkaller_build_error(std::ofstream &);
 
 void log_attempt_result(std::ofstream &, const Syzkaller_Result &, int, const std::vector<std::string> &, int);
-
 void log_session_result(std::ofstream &, const Test_Result &, const std::vector<std::string> &);
 
 #endif

@@ -47,7 +47,16 @@ int Bisect::init(const Environment &env, const InspectorConfig &inspector, const
     // commits are arranged newest (low index) to oldest (high index)
     syzkaller_versions = get_syzkaller_versions(env);
 
+    last_session.kernel.name.clear();
+    last_session.syzkaller.name.clear();
+
     return 0;
+}
+
+int Bisect::init(const Environment &env, const InspectorConfig &inspector, const Bug_Info &bug, bool have_fdate, const Version &known_syzkaller)
+{
+    bisect_version = known_syzkaller;
+    return init(env, inspector, bug, have_fdate);
 }
 
 int Bisect::gather_compiler_versions(const InspectorConfig &inspector)
@@ -73,7 +82,7 @@ Version Bisect::find_merge_commit(const Environment &env, const Bug_Info &bug)
 
 int Bisect::init_syzkaller_phase()
 {
-    bisect_version = syzkaller_versions.back();
+    bisect_version = syzkaller_versions.front();
 
     // right is the older date (lower date). higher index
     // left is the recent date (higher date). lower index
@@ -127,6 +136,15 @@ int Bisect::next_phase(Bisect_Phase expect)
         err = -1;
 
     return err;
+}
+
+int Bisect::skip_syzkaller()
+{
+    if (phase != Bisect_Finding)
+        return -1;
+    phase = Bisect_Syzkaller;
+    high_date = bisect_version.date;
+    return 0;
 }
 
 int Bisect::next_stable_binary_syzkaller()
@@ -194,12 +212,6 @@ int Bisect::next_stable_binary()
     int err = 0;
     switch(phase)
     {
-    case Bisect_Init:
-        err = -1;
-        break;
-    case Bisect_Finding:
-        err = -1;
-        break;
     case Bisect_Syzkaller:
         err = next_stable_binary_syzkaller();
         break;
@@ -385,9 +397,6 @@ int Bisect::next_session(ofstream &outf, const Environment &env, const Inspector
     int err = 0;
     switch(phase)
     {
-    case Bisect_Init:
-        err = -1;
-        break;
     case Bisect_Finding:
         err = goto_finding_session(outf, env, inspector, bug);
         break;
@@ -465,8 +474,6 @@ Test_Result Bisect::test_current(std::ofstream &outf, Environment &env, Inspecto
     Test_Result res;
     switch(phase)
     {
-    case Bisect_Init:
-        break;
     case Bisect_Finding:
         res = test_finding(outf, env, inspector, bug);
         break;
@@ -547,19 +554,21 @@ int Bisect::archive_session(const Test_Result &result)
     current_session.found = result.found;
     current_session.stable = result.stable;
     kernel_versions.at(kernel_index).skipped = !result.stable && !result.found;
+    last_session = this_session();
     past_sessions.insert(this_session());
     return 0;
 }
 
-std::string Bisect::print_result(const Environment &env, const Bug_Info &bug) const
+std::string Bisect::print_result(const Environment &env, const Bug_Info &bug, const std::string &start) const
 {
     // TODO: iomanip this
     std::stringstream ss;
     ss << "Bug Name:             " << bug.name << "\n";
     ss << "Bug Link:             " << bug.buglink << "\n";
     ss << "Bisection Result:     " << bisect_version.date.get_date() << " - " << bisect_version.name << "\n";
-    ss << "Bisected Commit Name: " << get_commit_name(env.kerneldir, bisect_version.name) << "\n\n";
-    ss << "Arch:                 " << bug.arch << "\n";
+    ss << "Bisected Commit Name: " << get_commit_name(env.kerneldir, bisect_version.name) << "\n";
+    ss << "Run Time:             " << start << " - " << date("%Y-%m-%d %T") << "\n";
+    ss << "Arch:                 " << bug.arch << "\n\n";
 
     ss << "Finding Date:         " << find_date.get_date() << "\n";
     ss << "Finding Commit:       " << finding_version.date.get_date() << " - " << finding_version.name << "\n";
