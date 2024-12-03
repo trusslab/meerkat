@@ -2,6 +2,7 @@
 #define PSF_H
 
 #include <bug_info.h>
+#include <environment.h>
 #include <inspector_config.h>
 
 #include <string>
@@ -40,6 +41,6 @@ void trim_syzbot_fixes(const std::string &);
 std::vector<std::string> parse_syzbot_fixes(const std::string &, const std::string &, std::vector<std::string> &);
 std::vector<std::string> parse_manual_duplicates(const std::string &, const std::string &, std::vector<std::string> &);
 
-std::vector<std::string> gather_duplicates(Bug_Info &, const InspectorConfig &);
+std::vector<std::string> gather_duplicates(const Environment &, Bug_Info &, const InspectorConfig &);
 
 #endif

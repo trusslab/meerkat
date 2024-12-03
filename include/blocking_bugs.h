@@ -1,3 +1,6 @@
+#ifndef BLOCKING_BUGS
+#define BLOCKING_BUGS
+
 #include <result.h>
 
 #include <string>
@@ -20,3 +23,5 @@ public:
     void count_blocking_bugs(const Test_Result &);
     std::vector<std::string> list_blocking_bugs();
 };
+
+#endif

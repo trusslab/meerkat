@@ -1,12 +1,13 @@
-#include <consts.h>
-#include <git_api.h>
-#include <file_api.h>
-#include <version.h>
 #include <bug_info.h>
+#include <consts.h>
 #include <date.h>
-#include <template_parse.h>
+#include <environment.h>
+#include <file_api.h>
 #include <fuzz_prep.h>
+#include <git_api.h>
 #include <shell_api.h>
+#include <template_parse.h>
+#include <version.h>
 
 #include <vector>
 #include <string>
@@ -16,12 +17,12 @@
 
 using namespace std;
 
-vector<Version> get_kernel_versions(const Bug_Info &bug, const string &old_hash, const string &new_hash)
+vector<Version> get_kernel_versions(const Environment &env, const Bug_Info &bug)
 {
-    string outfile = bug.wd + "/tmp_kernel_versions.txt";
+    string outfile = env.wd + "/tmp_kernel_versions.txt";
     
     cout << "Listing...\n";
-    if (git_rev_list_topo(bug.kerneldir, old_hash, new_hash, outfile) < 0)
+    if (git_rev_list_topo(env.kerneldir, bug.guilty_hash, bug.find_hash, outfile) < 0)
     {
         return vector<Version>();
     }
@@ -62,18 +63,18 @@ vector<Version> get_kernel_versions(const Bug_Info &bug, const string &old_hash,
         kernel_versions_raw.insert(pair<string,Version_p>(vp.v.name, vp));
     }
 
-    vp.v.name = old_hash;
-    vp.v.date = git_get_commit_date(bug.wd, bug.kerneldir, old_hash);
+    vp.v.name = bug.guilty_hash;
+    vp.v.date = git_get_commit_date(env.wd, env.kerneldir, bug.guilty_hash);
     kernel_versions_raw.insert(pair<string,Version_p>(vp.v.name, vp));
 
     inf.close();
     remove_file(outfile);
 
     // now draw a single line using first-parent (except for the merge including the guilty commit)
-    string cur_hash = new_hash;
+    string cur_hash = bug.find_hash;
     cout << "Parsing...\n";
     kernel_versions.push_back(kernel_versions_raw.at(cur_hash).v);
-    while (kernel_versions.back().name != old_hash)
+    while (kernel_versions.back().name != bug.guilty_hash)
     {
         // starting with the first parent, if it exists, push back
         for (int j = 0; j < kernel_versions_raw.at(cur_hash).parents.size(); j++)
@@ -98,12 +99,12 @@ vector<Version> get_kernel_versions(const Bug_Info &bug, const string &old_hash,
     return kernel_versions;
 }
 
-vector<Version> get_syzkaller_versions(const Bug_Info &bug)
+vector<Version> get_syzkaller_versions(const Environment &env)
 {
     int k;
-    string outfile = bug.wd + "/tmp_template_changes.txt";
+    string outfile = env.wd + "/tmp_template_changes.txt";
 
-    git_rev_list(bug.syzdir, OLDEST_SYZKALLER_HASH, LATEST_SYZKALLER_HASH, outfile);
+    git_rev_list(env.syzdir, OLDEST_SYZKALLER_HASH, LATEST_SYZKALLER_HASH, outfile);
 
     ifstream inf;
     inf.open(outfile);
@@ -125,7 +126,7 @@ vector<Version> get_syzkaller_versions(const Bug_Info &bug)
     }
 
     v.name = OLDEST_SYZKALLER_HASH;
-    v.date = git_get_commit_date(bug.wd, bug.syzdir, OLDEST_SYZKALLER_HASH);
+    v.date = git_get_commit_date(env.wd, env.syzdir, OLDEST_SYZKALLER_HASH);
     syzkaller_versions.push_back(v);
 
     // remove bad versions of syzkaller
@@ -139,119 +140,6 @@ vector<Version> get_syzkaller_versions(const Bug_Info &bug)
     inf.close();
     remove_file(outfile);
     return syzkaller_versions;
-}
-
-vector<Version> get_template_changes(const Bug_Info &bug, const Date &old_date, const Date &new_date, const vector<Version> &syz_versions)
-{
-    vector<Version> template_changes;
-    Version save;
-
-    // traverse going back in time
-    for (Version v : syz_versions)
-    {
-        // skip until we get to the date range
-        if (v.date > new_date)
-            continue;
-
-        // stop once we are before the date range
-        if (v.date < old_date)
-        {
-            // keep one commit before the range
-            template_changes.push_back(v);
-            break;
-        }
-
-        // keep only modifications to the linux template
-        // older versions used sys/ rather than sys/linux/
-        if (git_check_modified_file(bug.wd, bug.syzdir, v.name, "sys/linux") ||
-            (v.date < Date(2017,9,15) && git_check_modified_file(bug.wd, bug.syzdir, v.name, "sys")))
-        {
-            template_changes.push_back(v);
-            continue;
-        }
-    }
-
-    return template_changes;
-}
-
-// move non-api functions to another library
-vector<Version> get_relevant_template_changes(const Bug_Info &bug, const vector<Version> &template_changes)
-{
-    string template1 = bug.wd + "/template1.txt";
-    string template2 = bug.wd + "/template2.txt";
-    string template3 = bug.wd + "/template3.txt";
-
-    vector<Version> relevant_template_changes = {template_changes.back()};
-
-    cout << "Fetching version " << template_changes.back().name << ".\n";
-    clean_syzkaller(bug);
-    git_fetch_and_checkout(bug.syzdir, SYZKALLER_REPO_REMOTE, template_changes.back().name);
-
-    cout << "Slimming version " << template_changes.back().name << ".\n";
-    string template_dir = check_file(bug.syzdir + "/sys/linux") ? bug.syzdir + "/sys/linux" : bug.syzdir + "/sys";
-    slim_template(bug.allreproducer, template1, list_template_files(template_dir), template_changes.back().date < OLD_INOUT_DATE);
-
-    int l = 0;                              // left is always 0 to start
-    int r = template_changes.size() - 2;    // right is one to the left of the commit we are comparing to
-    int m = (l + r) / 2;
-    bool same;
-    while (m > 0)
-    {
-        while (l <= r)
-        {
-            m = (l + r) / 2;
-
-            cout << SPACER
-                << "Fetching version " << template_changes.at(m).name << ".\n";
-            clean_syzkaller(bug);
-            git_fetch_and_checkout(bug.syzdir, SYZKALLER_REPO_REMOTE, template_changes.at(m).name);
-
-            cout << "Slimming version " << template_changes.at(m).name << ".\n";
-            template_dir = check_file(bug.syzdir + "/sys/linux") ? bug.syzdir + "/sys/linux" : bug.syzdir + "/sys";
-            slim_template(bug.allreproducer, template2, list_template_files(template_dir), template_changes.at(m).date < OLD_INOUT_DATE);
-
-            same = compare_templates(template1, template2);
-            if (same)
-            {
-                cout << "Moving left.\n";
-                r = m - 1;
-            }
-            else
-            {
-                cout << "Moving right.\n";
-                move(template2, template3);
-                l = m + 1;
-            }
-        }
-        
-        // if the result has 2 same templates, the answer is either the commit before, or no more changes
-        if (same && m > 0)
-        {
-            relevant_template_changes.insert(relevant_template_changes.begin(), template_changes.at(m - 1));
-            l = 0;
-            r = m > 2 ? m - 2: 0;
-        }
-        else if (!same)
-        {
-            relevant_template_changes.insert(relevant_template_changes.begin(), template_changes.at(m));
-            l = 0;
-            r = m > 1 ? m - 1: 0;
-        }
-        else if (same)
-        {
-            break;
-        }
-
-        cout << "Found a relevant template change.\n";
-        move(template3, template1);
-    }
-    remove_file(template1);
-    if (check_file(template2))
-        remove_file(template2);
-    if (check_file(template3))
-        remove_file(template3);
-    
-    return relevant_template_changes;
 }
 
 Version git_find_merge_commit(const string &repo, const vector<Version> &commits, const string &hash_to_find)

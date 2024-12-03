@@ -1,17 +1,38 @@
 #ifndef RETROSPECT_H
 #define RETROSPECT_H
 
-#include <session.h>
-#include <result.h>
-#include <version.h>
 #include <date.h>
+#include <environment.h>
+#include <inspector_config.h>
+#include <result.h>
+#include <session.h>
+#include <version.h>
+
 
 #include <fstream>
+#include <vector>
+#include <set>
+
+enum Bisect_Phase {Bisect_Init, Bisect_Finding, Bisect_Syzkaller, Bisect_Kernel, Bisect_Done};
 
 class Bisect
 {
-public:
+private:
+    Bisect_Phase phase;
+
     unsigned int session_count;
+    Session current_session;
+    Session last_session;
+    std::set<Session> past_sessions;
+
+    Version bisect_version;
+
+    Version finding_version;
+    Version guilty_version;
+    Version merge_commit;
+
+    int kernel_index;
+    int syzkaller_index;
 
     int left;
     int right;
@@ -20,10 +41,71 @@ public:
     Date low_date;
     Date find_date;
 
-    int init();
+    std::vector<Version> gcc_versions;
+    std::vector<Version> clang_versions;
+
+    bool infer_stability_kernel(const int);
+    int skip_commit_kernel(const int);
+
+    int next_stable_binary_syzkaller();
+    int next_stable_binary_kernel();
+    int next_stable_binary();
+
+    int init_syzkaller_phase();
+    int init_kernel_phase();
+
+    bool already_fuzzed(const Session &) const;
+    bool session_was_found(const Session &) const;
+    bool session_was_stable(const Session &) const;
+
+    int goto_finding_session(std::ofstream &, const Environment &, const InspectorConfig &, const Bug_Info &);
+    int goto_syzkaller_session(std::ofstream &, const Environment &, const InspectorConfig &, const Bug_Info &);
+    int goto_kernel_session(std::ofstream &, const Environment &, const InspectorConfig &, const Bug_Info &);
+
+    Test_Result test_finding(std::ofstream &, Environment &, InspectorConfig &, Bug_Info &);
+    Test_Result test_syzkaller(std::ofstream &, Environment &, InspectorConfig &, Bug_Info &);
+    Test_Result test_kernel(std::ofstream &, Environment &, InspectorConfig &, Bug_Info &);
+
+    int record_syzkaller(const Test_Result &);
+    int record_kernel(const Test_Result &);
+
+public:
+    std::vector<Version> kernel_versions;
+    std::vector<Version> syzkaller_versions;
+
+    int init(const Environment &, const InspectorConfig &, const Bug_Info &, bool = false);
 
     int inc_session()
     { return ++session_count; }
+
+    Session this_session() const
+    { return current_session; }
+    Bisect_Phase this_phase() const
+    { return phase; }
+
+    std::string high_date_str() const
+    { return high_date.get_date(); }
+    std::string low_date_str() const
+    { return low_date.get_date(); }
+    int remaining() const
+    { return right - left; }
+
+    int gather_compiler_versions(const InspectorConfig &inspector);
+    Version find_merge_commit(const Environment &env, const Bug_Info &bug);
+
+    int next_phase(Bisect_Phase);
+
+    // Goto the next session. Build everything as needed
+    // Decide next session based on internal state
+    int next_session(std::ofstream &, const Environment &, const InspectorConfig &, const Bug_Info &);
+
+    // Fuzz and return a result
+    Test_Result test_current(std::ofstream &, Environment &, InspectorConfig &, Bug_Info &);
+
+    int record(const Test_Result &);
+    int archive_session(const Test_Result &);
+
+    std::string print_result(const Environment &, const Bug_Info &) const;
 };
 
 void log_safe_mode(std::ofstream &, int, int);
@@ -32,8 +114,6 @@ void log_safe_mode(std::ofstream &, int, int);
 void set_safe_mode(bool &, unsigned int &, unsigned int &);
 
 bool check_safe_mode(const Test_Result &, bool &, unsigned int &, unsigned int &);
-
-int get_next_commit_binary(const int, const int, std::vector<Version> &);
 
 void log_datetime(std::ofstream &);
 

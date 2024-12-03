@@ -1,9 +1,10 @@
 #ifndef FUZZ_PREP_H
 #define FUZZ_PREP_H
 
-#include <inspector_config.h>
 #include <bug_info.h>
 #include <date.h>
+#include <environment.h>
+#include <inspector_config.h>
 #include <version.h>
 
 #include <string>
@@ -31,27 +32,27 @@ int clean_path(const std::string &);
 
 // Grabs the correct kernel version, applies any patches needed,
 // copies the config in, and build the kernel
-int prep_kernel(const Bug_Info &, const InspectorConfig &, const Version &, const std::string &, const std::string &);
+int prep_kernel(const Environment &, const Bug_Info &, const InspectorConfig &, const Version &, const std::string &, const std::string &);
 
 // runs make clean
-int clean_kernel(const Bug_Info &);
+int clean_kernel(const Environment &);
 
 // grabs the correct syzkaller version, applies any patches
 // slims the template, and builds syzkaller
-int prep_syzkaller(const Bug_Info &, const InspectorConfig &, const Version &, const std::string & = "");
+int prep_syzkaller(const Environment &, const Bug_Info &, const InspectorConfig &, const Version &, const std::string & = "");
 
 // writes the syzkaller config to the config file.
 // also shifts the host port by one
-int write_syzkaller_config(const Bug_Info &, const InspectorConfig &, const Date &);
+int write_syzkaller_config(const Environment &, const Bug_Info &, const InspectorConfig &, const Date &);
 
 // Takes the POC file and the corpus file. calls syz-db to insert
 // the POC into the corpus.
-int insert_POC_as_seed(const Bug_Info &);
+int insert_POC_as_seed(const Environment &, const Bug_Info &);
 
 // cleans files when we switch syzkaller versions.
 // Simply removes any non-hidden file.
 // Same behavior as rm -r *
-int clean_syzkaller(const Bug_Info &);
+int clean_syzkaller(const Environment &);
 
 // calculates the bloat in the template.
 // syscalls in template - syscalls in reproducer

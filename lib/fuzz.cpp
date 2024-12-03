@@ -1,6 +1,7 @@
 #include <fuzz.h>
 #include <consts.h>
 #include <exec_api.h>
+#include <environment.h>
 #include <shell_api.h>
 #include <file_api.h>
 #include <bug_info.h>
@@ -93,7 +94,7 @@ void reset_kaller_wd(const string &wd)
 
 // The time is rough here and rounds up to the nearest time increment (usually 1 minute)
 // result.ttf is the time it took to find the bug, or the max_time
-Syzkaller_Result run_syzkaller(ofstream &logfile, const Bug_Info &bug, const InspectorConfig &inspector, const vector<string> &dups, const int max_time, bool poc)
+Syzkaller_Result run_syzkaller(ofstream &logfile, const Environment &env,const Bug_Info &bug, const InspectorConfig &inspector)
 {
     Syzkaller_Result result;
     int time = 0, to_add = 0, i = 0;
@@ -104,24 +105,24 @@ Syzkaller_Result run_syzkaller(ofstream &logfile, const Bug_Info &bug, const Ins
     vector<Crash_Report> checked_crashes;
     string crash_name;
 
-    reset_kaller_wd(bug.syzwd);
-    if (poc)
-        insert_POC_as_seed(bug);
+    reset_kaller_wd(env.syzwd);
+    if (env.use_poc)
+        insert_POC_as_seed(env, bug);
 
     // run syzkaller
-    cd(bug.syzdir);
+    cd(env.syzdir);
 
     char command[] = "./bin/syz-manager";
-    string configArg = "-config=" + bug.syzconfig;
+    string configArg = "-config=" + env.syzconfig;
     char * arg1 = new char[configArg.size() + 1];
     strcpy(arg1, configArg.c_str());
     char * arg_list[] = {command, arg1, nullptr};
 
     cout << "Running Syzkaller...\n";
-    int pid = exec_and_continue("./bin/syz-manager", arg_list, bug.syzkaller_log, bug.syzkaller_log);
+    int pid = exec_and_continue("./bin/syz-manager", arg_list, env.syzkaller_log, env.syzkaller_log);
 
     // watch syzkaller's progress
-    while (time < max_time && !result.found)
+    while (time < env.max_time && !result.found)
     {
         sleep(60*TIME_INCREMENT);
         time += TIME_INCREMENT;
@@ -131,7 +132,7 @@ Syzkaller_Result run_syzkaller(ofstream &logfile, const Bug_Info &bug, const Ins
             handle_syzkaller_crash(logfile);
 
         // check crashes
-        crash_hashes = list_dir(bug.syzwd + "/crashes");
+        crash_hashes = list_dir(env.syzwd + "/crashes");
         for (string hash : crash_hashes)
         {
             to_add = 0;
@@ -155,7 +156,7 @@ Syzkaller_Result run_syzkaller(ofstream &logfile, const Bug_Info &bug, const Ins
                 continue;
             
             crash_name = get_crash_name(hash);
-            result.found = fuzz_is_in(crash_name, dups) ? true : result.found;
+            result.found = fuzz_is_in(crash_name, bug.duplicates) ? true : result.found;
             for (int j = 0; j < to_add; j++)
                 result.reports.push_back({crash_name, time});
 
@@ -163,12 +164,12 @@ Syzkaller_Result run_syzkaller(ofstream &logfile, const Bug_Info &bug, const Ins
                 result.bad_crashes += to_add;
         }
 
-        if (wc_l(bug.syzkaller_log) > 5000)
+        if (wc_l(env.syzkaller_log) > 5000)
         {
             cout << "Warning: Syzkaller log file exceeded 5000 lines. Assuming boot failure\n";
             logfile << "Warning: Syzkaller log file exceeded 5000 lines.\n"
-                    << "Saved at " << bug.wd + "/log/bug" + to_string(bug.number) + "-boot_failure.log" << ".\n" << flush;
-            copy(bug.syzkaller_log, bug.wd + "/log/bug" + to_string(bug.number) + "-boot_failure.log");
+                    << "Saved at " << env.wd + "/log/bug" + to_string(bug.number) + "-boot_failure.log" << ".\n" << flush;
+            copy(env.syzkaller_log, env.wd + "/log/bug" + to_string(bug.number) + "-boot_failure.log");
             result.bad_crashes++;
             result.reports.push_back({"boot failure", time});
             break;
@@ -186,50 +187,50 @@ Syzkaller_Result run_syzkaller(ofstream &logfile, const Bug_Info &bug, const Ins
     return result;
 }
 
-Test_Result fuzz_loop_finding(ofstream &logfile, const Bug_Info &bug, InspectorConfig &inspector, const vector<string> &dups,
-                            const int max_time, const int fuzztimes, const Date &syz_date, bool poc, bool find_only)
+Test_Result fuzz_loop_finding(ofstream &logfile, const Environment &env, const Bug_Info &bug, InspectorConfig &inspector,
+                            const Date &syz_date)
 {
     Test_Result result;
     result.found = false;
     int retries = 0, unstable_count = 0;
-    for (int i = 0; i < fuzztimes + retries && unstable_count < fuzztimes; i++)
+    for (int i = 0; i < env.fuzztimes + retries && unstable_count < env.fuzztimes; i++)
     {
         inspector.port.inc();
-        write_syzkaller_config(bug, inspector, syz_date);
-        result.attempts.push_back(run_syzkaller(logfile, bug, inspector, dups, max_time, poc));
+        write_syzkaller_config(env, bug, inspector, syz_date);
+        result.attempts.push_back(run_syzkaller(logfile, env, bug, inspector));
         result.found = result.attempts.back().found ? true : result.found;
-        if (result.attempts.back().bad_crashes > 0 && retries < fuzztimes)
+        if (result.attempts.back().bad_crashes > 0 && retries < env.fuzztimes)
         {
             retries++;
             unstable_count++;
         }
-        log_attempt_result(logfile, result.attempts.back(), i + 1, dups, fuzztimes);
+        log_attempt_result(logfile, result.attempts.back(), i + 1, bug.duplicates, env.fuzztimes);
     }
 
     result.stable = unstable_count < result.attempts.size() / 2 || result.found;
-    result.suggest_ttf = (find_only ? find_average_time(result.attempts) : find_max_time(result.attempts));
+    result.suggest_ttf = (env.find_only ? find_average_time(result.attempts) : find_max_time(result.attempts));
 
     return result;
 }
 
-Test_Result fuzz_loop(ofstream &logfile, const Bug_Info &bug, InspectorConfig &inspector, const vector<string> &dups,
-                    const int max_time, const int fuzztimes, const Date &syz_date, bool poc)
+Test_Result fuzz_loop(ofstream &logfile, const Environment &env, const Bug_Info &bug, InspectorConfig &inspector,
+                    const Date &syz_date)
 {
     Test_Result result;
     result.found = false;
     int retries = 0, unstable_count = 0;
-    for (int i = 0; i < fuzztimes + retries && !result.found  && unstable_count < fuzztimes; i++)
+    for (int i = 0; i < env.fuzztimes + retries && !result.found  && unstable_count < env.fuzztimes; i++)
     {
         inspector.port.inc();
-        write_syzkaller_config(bug, inspector, syz_date);
-        result.attempts.push_back(run_syzkaller(logfile, bug, inspector, dups, max_time, poc));
+        write_syzkaller_config(env, bug, inspector, syz_date);
+        result.attempts.push_back(run_syzkaller(logfile, env, bug, inspector));
         result.found = result.attempts.back().found;
-        if (result.attempts.back().bad_crashes > 0 && retries < fuzztimes)
+        if (result.attempts.back().bad_crashes > 0 && retries < env.fuzztimes)
         {
             retries++;
             unstable_count++;
         }
-        log_attempt_result(logfile, result.attempts.back(), i + 1, dups, fuzztimes);
+        log_attempt_result(logfile, result.attempts.back(), i + 1, bug.duplicates, env.fuzztimes);
     }
 
     result.stable = unstable_count < result.attempts.size() / 2 || result.found;

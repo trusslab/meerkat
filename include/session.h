@@ -22,10 +22,12 @@ public:
     {
         return;
     }
-};
 
-bool already_fuzzed(const std::vector<Session> &, const Session &);
-int session_get_result(const std::vector<Session> &, const Session &);
-int session_get_stable(const std::vector<Session> &, const Session &);
+    bool operator==(const Session &other)
+    { return kernel == other.kernel && syzkaller == other.syzkaller; }
+
+    bool operator<(const Session &other) const
+    { return (kernel.name + syzkaller.name) < (other.kernel.name + other.syzkaller.name); }
+};
 
 #endif

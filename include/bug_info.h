@@ -1,6 +1,9 @@
 #ifndef BUG_INFO_H
 #define BUG_INFO_H
 
+#include <blocking_bugs.h>
+#include <date.h>
+
 #include <string>
 #include <vector>
 
@@ -16,16 +19,14 @@ public:
     std::string kconfig;                // the config file for the kernel
     std::string reproducer;             // the directory with all of the PoCs
     std::string allreproducer;          // the file with all PoCs concatenated
-    std::string syzwd;                  // wd-kaller
-    std::string syzconfig;              // the config for syzkaller. We write this ourselves
-    std::string wd;                     // wd-inspector-[id]
-    std::string syzdir;                 // the directory that houses syzkaller
-    std::string kerneldir;              // the directory that houses the kernel
     std::string buglink;                // the link to the bug in syzbot
 
-    std::vector<std::string> duplicates;
+    std::string guilty_hash;
+    std::string find_hash;
+    Date find_date;
 
-    std::string syzkaller_log;          // the log file to hold syzkaller output
+    std::vector<std::string> duplicates;
+    Blocking_Bugs blocking_bugs;
 
     Bug_Info()
     { return; }

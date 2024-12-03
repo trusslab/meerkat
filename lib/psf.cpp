@@ -1,3 +1,4 @@
+#include <environment.h>
 #include <psf.h>
 #include <bug_info.h>
 #include <inspector_config.h>
@@ -253,9 +254,9 @@ vector<string> parse_manual_duplicates(const string &filename, const string &bug
     return dups;
 }
 
-vector<string> gather_duplicates(Bug_Info &bug, const InspectorConfig &inspector)
+vector<string> gather_duplicates(const Environment &env, Bug_Info &bug, const InspectorConfig &inspector)
 {
-    string tmp_snapshotfile = bug.wd + "/snapshot";
+    string tmp_snapshotfile = env.wd + "/snapshot";
     vector<string> duplicates;
 
     lynx_dump(SYZBOT_FIXED_LINK, tmp_snapshotfile);

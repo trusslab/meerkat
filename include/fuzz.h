@@ -2,6 +2,7 @@
 #define FUZZ_H
 
 #include <bug_info.h>
+#include <environment.h>
 #include <inspector_config.h>
 #include <date.h>
 #include <result.h>
@@ -16,15 +17,15 @@ void reset_kaller_wd(const std::string &wd);
 
 // runs syzkaller once. Returns a data structure with
 // time to find and bugs found.
-Syzkaller_Result run_syzkaller(std::ofstream &, const Bug_Info &, const InspectorConfig &, const std::vector<std::string> &, const int, bool = true);
+Syzkaller_Result run_syzkaller(std::ofstream &, const Environment &, const Bug_Info &, const InspectorConfig &);
 
 // Runs Syzkaller fuzztimes times. Returns the new max time
 // to use. Intended to be run on the finding commit.
-Test_Result fuzz_loop_finding(std::ofstream &, const Bug_Info &, InspectorConfig &, const std::vector<std::string> &, const int, const int, const Date &, bool = true, bool = true);
+Test_Result fuzz_loop_finding(std::ofstream &, const Environment &, const Bug_Info &, InspectorConfig &, const Date &);
 
 // Runs syzkaller fuzztimes times. Returns the culmination
 // of the results.
-Test_Result fuzz_loop(std::ofstream &, const Bug_Info &, InspectorConfig &, const std::vector<std::string> &, const int, const int, const Date &, bool = true);
+Test_Result fuzz_loop(std::ofstream &, const Environment &, const Bug_Info &, InspectorConfig &, const Date &);
 
 // Checks against heuristics to see if the resulting kernel
 // commit is faulty. Returns true if it is.
