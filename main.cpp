@@ -86,7 +86,7 @@ int bisect(Argparse &args, Environment &env, InspectorConfig &inspector, Bug_Inf
     Bisect bisector;
     Test_Result result;
 
-    env.logfilename = env.wd + "/log/bug" + to_string(bug.number) + ".log";
+    env.logfilename = env.wd + "/log/" + bug.numName + ".log";
     logfile.open(env.logfilename);
     if(!logfile)
     {
@@ -378,6 +378,8 @@ int main(int argc, char ** argv)
     }
 
     set_timezone("UTC0");
+
+    env.fuzztimes = 3;
 
     if (args.is_set('F'))
         bug.find_hash = args.get_arg_as_string('F');

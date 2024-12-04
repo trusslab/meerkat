@@ -23,6 +23,9 @@ void Bug_Info::parse_config_file(const std::string & filename)
             pos0 = line.find_first_of("0123456789");
             pos1 = line.find_last_of("0123456789");
             number = std::stoi(line.substr(pos0, pos1 - pos0 + 1));
+            pos0 = line.find_first_of("\"") + 1;
+            pos1 = line.find_last_of("\"");
+            numName = line.substr(pos0, pos1 - pos0);
         }
         else if (line.find("bugname=") != std::string::npos)
         {

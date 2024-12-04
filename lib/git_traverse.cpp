@@ -20,8 +20,7 @@ using namespace std;
 vector<Version> get_kernel_versions(const Environment &env, const Bug_Info &bug)
 {
     string outfile = env.wd + "/tmp_kernel_versions.txt";
-    
-    cout << "Listing...\n";
+
     if (git_rev_list_topo(env.kerneldir, bug.guilty_hash, bug.find_hash, outfile) < 0)
     {
         return vector<Version>();
@@ -40,7 +39,6 @@ vector<Version> get_kernel_versions(const Environment &env, const Bug_Info &bug)
     vector<Version> kernel_versions;
     Version_p vp;
     int pos0 = 0, pos1 = 0, count = 0;
-    cout << "Reading...\n";
     while(getline(inf, line))
     {
         vp.parents.clear();
@@ -72,7 +70,6 @@ vector<Version> get_kernel_versions(const Environment &env, const Bug_Info &bug)
 
     // now draw a single line using first-parent (except for the merge including the guilty commit)
     string cur_hash = bug.find_hash;
-    cout << "Parsing...\n";
     kernel_versions.push_back(kernel_versions_raw.at(cur_hash).v);
     while (kernel_versions.back().name != bug.guilty_hash)
     {
@@ -102,9 +99,9 @@ vector<Version> get_kernel_versions(const Environment &env, const Bug_Info &bug)
 vector<Version> get_syzkaller_versions(const Environment &env)
 {
     int k;
-    string outfile = env.wd + "/tmp_template_changes.txt";
+    string outfile = env.wd + "/tmp_syz_versions.txt";
 
-    string latest_syzkaller_hash = get_current_commit_hash(env.syzdir);
+    string latest_syzkaller_hash = get_latest_commit_hash(env.syzdir);
     git_rev_list(env.syzdir, OLDEST_SYZKALLER_HASH, latest_syzkaller_hash, outfile);
 
     ifstream inf;

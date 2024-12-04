@@ -12,6 +12,7 @@ class Bug_Info
 public:
     int number;                         // the bug number
     std::string name;                   // the name of the bug given by syzbot
+    std::string numName;                // the number name given by inspector-manager.sh (i.e. bug0003)
 
     std::string kpreface;               // the preface of the repository (linux, linux-next, net, etc..)
     std::string arch;                   // either amd64 or i386 for 64 or 32 bit POC 

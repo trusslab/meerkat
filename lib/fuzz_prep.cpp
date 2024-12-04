@@ -51,7 +51,7 @@ int get_procs_from_repro(const string & repro)
 
 VMConfig determine_threadedness(InspectorConfig &inspector, const Bug_Info &bug, std::ostream &logfile)
 {
-    string reproducer = bug.reproducer + "/repro-bug" + to_string(bug.number) + "-1.prog";
+    string reproducer = bug.reproducer + "/repro-" + bug.numName + "-1.prog";
     int procs = get_procs_from_repro(reproducer);
     switch (procs)
     {

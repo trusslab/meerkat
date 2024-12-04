@@ -354,3 +354,29 @@ string get_current_commit_hash(const string &repo)
 
     return ret;
 }
+
+string get_latest_commit_hash(const string &repo)
+{
+    int index;
+    string old_dir = pwd();
+    cd(repo);
+    char command[] = "git";
+    char arg1[] = "show";
+    char arg2[] = "master";
+    char arg3[] = "-s";
+    char arg4[] = "--format=%H";
+
+    char * arg_list[] = {command, arg1, arg2, arg3, arg4, nullptr};
+
+    string ret = exec_and_read("git", arg_list);
+    if (ret == "")
+        cerr << "Warning: Failed to read hash in " << repo << ".\n";
+
+    cd(old_dir);
+    
+    index = ret.find("\n");
+    if (index != string::npos)
+        ret = ret.substr(0, index);
+
+    return ret;
+}

@@ -41,7 +41,7 @@ void Environment::parse_config_file(const Bug_Info &bug, const std::string & fil
         }
     }
 
-    syzkaller_log = wd + "/log/bug" + std::to_string(bug.number) + "-kaller.log";
+    syzkaller_log = wd + "/log/" + bug.numName + "-kaller.log";
     kerneldir = wd + "/kernel";
 
     inf.close();
