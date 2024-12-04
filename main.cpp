@@ -146,10 +146,7 @@ int bisect(Argparse &args, Environment &env, InspectorConfig &inspector, Bug_Inf
     cout << "Initializing Bisector...\n";
     if (args.is_set("known-syz"))
     {
-        Version known_syz;
-        known_syz.name = args.get_arg_as_string("known-syz");
-        known_syz.date = Date(args.get_arg_as_string("known-syz-date"));
-        bisector.init(env, inspector, bug, args.is_set('f'), known_syz);
+        bisector.init(env, inspector, bug, args.is_set('f'), args.get_arg_as_string("known-syz"));
     }
     else
     {
@@ -158,6 +155,11 @@ int bisect(Argparse &args, Environment &env, InspectorConfig &inspector, Bug_Inf
     if (bisector.kernel_versions.size() == 0)
     {
         logfile << "Error: Failed to gather kernel versions.\n" << flush;
+        goto finish;
+    }
+    else if (bisector.syzkaller_versions.size() == 0)
+    {
+        logfile << "Error: Failed to gather syzkaller versions.\n" << flush;
         goto finish;
     }
     cout << "Found " << bisector.kernel_versions.size() << " kernel commits.\n";
@@ -348,7 +350,8 @@ void print_help()
         << "    --no-poc: fuzz without the poc.\n"
         << "    --find-only: only fuzz at the finding commit.\n"
         << "    --safe-mode: use safe mode.\n"
-        << endl;
+        << "    --known-syz: use a specific syzkaller hash.\n"
+        << endl << flush;
 }
 
 void handle_bug_config(Environment &env, Bug_Info &bug)
@@ -366,7 +369,7 @@ int main(int argc, char ** argv)
     Bug_Info bug;
 
     args.expect("FGfmidh");
-    args.expect(vector<string>({ "setup-only", "help", "no-merge", "no-poc", "find-only", "safe-mode", "known-syz", "known-syz-date" }));
+    args.expect(vector<string>({ "setup-only", "help", "no-merge", "no-poc", "find-only", "safe-mode", "known-syz" }));
     args.parse(argc, argv);
     if (args.is_set('h') || args.is_set("help"))
     {
@@ -389,12 +392,6 @@ int main(int argc, char ** argv)
     else
     {
         cout << "Error: No guilty commit given. Please use -G [hash].\n";
-        return -1;
-    }
-
-    if (args.is_set("known-syz") != args.is_set("known-syz-date"))
-    {
-        cout << "Error: known-syz and known-syz-date must be used together.\n";
         return -1;
     }
 

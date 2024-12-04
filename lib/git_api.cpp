@@ -16,6 +16,7 @@
 
 using namespace std;
 
+// Get the date of the commit based on the wd, local repository dir, and hash
 Date git_get_commit_date(const string &wd, const string &local_repo, const string &hash)
 {
     string outfile = wd + "/tmp_commit_date.txt";

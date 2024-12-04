@@ -70,7 +70,7 @@ public:
     std::vector<Version> syzkaller_versions;
 
     int init(const Environment &, const InspectorConfig &, const Bug_Info &, bool);
-    int init(const Environment &, const InspectorConfig &, const Bug_Info &, bool, const Version&);
+    int init(const Environment &, const InspectorConfig &, const Bug_Info &, bool, const std::string &);
 
     int inc_session()
     { return ++session_count; }

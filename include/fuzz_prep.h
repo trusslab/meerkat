@@ -54,8 +54,4 @@ int insert_POC_as_seed(const Environment &, const Bug_Info &);
 // Same behavior as rm -r *
 int clean_syzkaller(const Environment &);
 
-// calculates the bloat in the template.
-// syscalls in template - syscalls in reproducer
-int calc_bloat();
-
 #endif

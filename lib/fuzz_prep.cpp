@@ -624,8 +624,3 @@ int clean_syzkaller(const Environment &env)
 
     return 0;
 }
-
-int calc_bloat()
-{
-    return 0;
-}

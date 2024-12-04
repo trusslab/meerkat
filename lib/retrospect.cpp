@@ -46,6 +46,8 @@ int Bisect::init(const Environment &env, const InspectorConfig &inspector, const
 
     // commits are arranged newest (low index) to oldest (high index)
     syzkaller_versions = get_syzkaller_versions(env);
+    if (syzkaller_versions.size() == 0)
+        return -1;
 
     last_session.kernel.name.clear();
     last_session.syzkaller.name.clear();
@@ -53,10 +55,14 @@ int Bisect::init(const Environment &env, const InspectorConfig &inspector, const
     return 0;
 }
 
-int Bisect::init(const Environment &env, const InspectorConfig &inspector, const Bug_Info &bug, bool have_fdate, const Version &known_syzkaller)
+int Bisect::init(const Environment &env, const InspectorConfig &inspector, const Bug_Info &bug, bool have_fdate, const std::string &known_syzkaller)
 {
-    bisect_version = known_syzkaller;
-    return init(env, inspector, bug, have_fdate);
+    int err = init(env, inspector, bug, have_fdate);
+    if (err < 0)
+        return err;
+    bisect_version = Version(known_syzkaller, git_get_commit_date(env.wd, env.syzdir, known_syzkaller));
+    return err;
+
 }
 
 int Bisect::gather_compiler_versions(const InspectorConfig &inspector)
@@ -100,10 +106,17 @@ int Bisect::init_kernel_phase()
     // right is the starting date. older date (lower date). higher index
     // left is the ending date. recent date (higher date). lower index
     if (!merge_commit.name.empty())
+    {
         right = get_starting_index(kernel_versions, merge_commit.date);
+        low_date = merge_commit.date;
+    }
     else
+    {
         right = get_starting_index(kernel_versions, guilty_version.date);
+        low_date = guilty_version.date;
+    }
     left = get_ending_index(kernel_versions, bisect_version.date);
+    high_date = bisect_version.date;
     bisect_version = kernel_versions.at(left);
     return 0;
 }
@@ -143,7 +156,6 @@ int Bisect::skip_syzkaller()
     if (phase != Bisect_Finding)
         return -1;
     phase = Bisect_Syzkaller;
-    high_date = bisect_version.date;
     return 0;
 }
 
@@ -530,9 +542,6 @@ int Bisect::record(const Test_Result &result)
     int err = 0;
     switch(phase)
     {
-    case Bisect_Init:
-        err = -1;
-        break;
     case Bisect_Finding:
         err = archive_session(result);
         break;
@@ -543,6 +552,7 @@ int Bisect::record(const Test_Result &result)
         err = record_kernel(result);
         break;
     default:
+        err = -1;
         break;
     }
 

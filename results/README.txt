@@ -22,7 +22,7 @@ Batch1: 104         104     0
 Batch2: 1197        1040    157
 Batch3: 413         263     150
 
-Total:              1407
+Total:  1714        1407    307
 
 There are additional READMEs in each batch explaining any irregularities.
 
