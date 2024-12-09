@@ -5,11 +5,12 @@
 
 #include <string>
 #include <vector>
+#include <map>
 
 class Blocking_Bugs
 {
 public:
-    std::vector<Crash_Report> bugs;
+    std::map<std::string, int> bugs;
     int count_not_found;
 
     Blocking_Bugs()
@@ -17,11 +18,16 @@ public:
     { return; }
 
     Blocking_Bugs(std::vector<Crash_Report> b, int c)
-        : bugs(b), count_not_found(c)
-    { return; }
+    {
+        count_not_found = c;
+        for (Crash_Report cr : b)
+            bugs.insert({cr.name, cr.time});
+    }
 
     void count_blocking_bugs(const Test_Result &);
     std::vector<std::string> list_blocking_bugs();
 };
+
+std::vector<std::string> get_prominent_blocking_bugs(const Test_Result &);
 
 #endif

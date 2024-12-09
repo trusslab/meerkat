@@ -12,4 +12,6 @@ std::vector<std::string> split(std::string, char);
 bool starts_with(const std::string &, const std::string &);
 bool ends_with(const std::string &, const std::string &);
 
+std::string chomp(const std::string &);
+
 #endif

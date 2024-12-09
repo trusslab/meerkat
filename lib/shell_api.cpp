@@ -116,7 +116,7 @@ bool grep_to_find(const string &expr, const string &file)
     return ret == 0 ? true : false;
 }
 
-int make(unsigned int procs, const vector<string> &opts)
+int make(unsigned int procs, const vector<string> &opts, const string &outfile)
 {
     std::string argstr = "make -j" + to_string(procs) + " -f Makefile";
     vector<string> spl = split(argstr, ' ');
@@ -131,7 +131,7 @@ int make(unsigned int procs, const vector<string> &opts)
 
     arg_list[spl.size()] = nullptr;
 
-    int err = exec_and_wait("make", (char **)arg_list);
+    int err = exec_and_wait("make", (char **)arg_list, outfile, outfile);
     if (err != 0)
         cerr << "Warning: make exited with error status 0x" << hex << err << endl << dec << flush;
 
@@ -139,7 +139,7 @@ int make(unsigned int procs, const vector<string> &opts)
     return (err == 0 ? 0 : -1);
 }
 
-int make(unsigned int procs, const string &option)
+int make(unsigned int procs, const string &option, const string &outfile)
 {
     string argstr = "make -j" + to_string(procs) + " -f Makefile";
     vector<string> spl = split(argstr, ' ');
@@ -153,7 +153,7 @@ int make(unsigned int procs, const string &option)
 
     arg_list[spl.size()] = nullptr;
 
-    int err = exec_and_wait("make", (char **)arg_list);
+    int err = exec_and_wait("make", (char **)arg_list, outfile, outfile);
     if (err != 0)
         cerr << "Warning: make exited with error status 0x" << hex << err << endl << dec << flush;
 
@@ -161,7 +161,7 @@ int make(unsigned int procs, const string &option)
     return (err == 0 ? 0 : -1);
 }
 
-int syz_env_cross_compile(const string &syz_env, const Bug_Info &bug)
+int syz_env_cross_compile(const string &syz_env, const Bug_Info &bug, const string &outfile)
 {
     char command[] = "sudo";
     char * arg1 = new char[syz_env.size() + 1];
@@ -172,7 +172,7 @@ int syz_env_cross_compile(const string &syz_env, const Bug_Info &bug)
 
     char * arg_list[] = {command, arg1, arg2, arg3, arg4, nullptr};
 
-    int err = exec_and_wait("sudo", arg_list);
+    int err = exec_and_wait("sudo", arg_list, outfile, outfile);
 
     delete[] arg1;
     return (err != 0 ? -1 : 0);

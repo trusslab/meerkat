@@ -140,6 +140,75 @@ int clean_path(const string &old_path)
     return export_env("PATH=" + old_path);
 }
 
+// sets the specified config "con" in the config file "lines"
+int set_config(const string &con, vector<string> &lines)
+{
+    string yes = con + "=y";
+    for (int i = 0; i < lines.size(); i++)
+    {
+        if (lines.at(i).find(yes) != string::npos)
+            return 0;
+        else if (lines.at(i).find("# " + con) != string::npos)
+        {
+            lines.at(i) = yes;
+            return 0;
+        }
+    }
+    // This only works because make olddefconfig saves me (moves configs to correct spots)
+    lines.push_back(yes);
+    return 0;
+}
+
+// sets the specified config "con" in the config file "lines"
+int unset_config(const string &con, vector<string> &lines)
+{
+    string yes = con + "=y";
+    string unset = "# " + con + " is not set";
+    for (int i = 0; i < lines.size(); i++)
+    {
+        if (lines.at(i).find(unset) != string::npos)
+            return 0;
+        else if (lines.at(i).find(yes) != string::npos)
+        {
+            lines.at(i) = unset;
+            return 0;
+        }
+    }
+    return 0;
+}
+
+int set_kernel_config(const string &config, const vector<string> &config_to_set)
+{
+    int err = 0;
+    vector<string> lines;
+
+    err = load_file(config, lines);
+    if (err < 0)
+        return err;
+
+    for (string con : config_to_set)
+        set_config(con, lines);
+
+    err = write_file(config, lines);
+    return err;
+}
+
+int unset_kernel_config(const string &config, const vector<string> &config_to_set)
+{
+    int err = 0;
+    vector<string> lines;
+
+    err = load_file(config, lines);
+    if (err < 0)
+        return err;
+
+    for (string con : config_to_set)
+        unset_config(con, lines);
+
+    err = write_file(config, lines);
+    return err;
+}
+
 void patch_kernel(const Environment &env, const InspectorConfig &inspector, const Version &linux_version)
 {
     string old_dir = pwd();
@@ -236,10 +305,7 @@ int prep_kernel(const Environment &env, const Bug_Info &bug, const InspectorConf
 {
     int err = 0;
     cd(inspector.get_inspect_dir());
-
-    cout << "Cleaning the kernel.\n";
     clean_kernel(env);
-    cout << SPACER;
 
     // downloads the kernel version (does not decide)
     err = git_fetch_and_checkout(env.kerneldir, repo, linux_version.name);
@@ -253,12 +319,13 @@ int prep_kernel(const Environment &env, const Bug_Info &bug, const InspectorConf
     patch_kernel(env, inspector, linux_version);
 
     // build the kernel
+    cout << "Building the kernel...\n" << flush;
+    string outfile = env.wd + "/log/" + bug.numName + "-kbuild.log";
     cd(env.kerneldir);
-    err = make(inspector.get_makeprocs(), {"olddefconfig", "CC="+compiler});
+    err = make(inspector.get_makeprocs(), {"olddefconfig", "CC="+compiler}, outfile);
     if (err < 0)
         return err;
-    cout << SPACER;
-    err = make(inspector.get_makeprocs(), "CC="+compiler);
+    err = make(inspector.get_makeprocs(), "CC="+compiler, outfile);
     if (err < 0)
     {
         cerr << "Error: The kernel failed to make.\n";
@@ -374,6 +441,7 @@ void patch_syzkaller(const Environment &env, const Bug_Info &bug, const Inspecto
 int prep_syzkaller(const Environment &env, const Bug_Info &bug, const InspectorConfig &inspector, const Version &syzkaller_version, const string &use_template)
 {
     int err = 0;
+    string outfile = env.wd + "/log/" + bug.numName + "-syzbuild.log";
     if (bug.arch == "i386")
     {
         if(syzkaller_version.date <= Date(2020,5,18))
@@ -436,15 +504,13 @@ int prep_syzkaller(const Environment &env, const Bug_Info &bug, const InspectorC
             cout << "Error: failed to slim the template.\n";
             return err;
         }
-        remove_template_files(template_files);
-        copy(new_template, full_template);
-        cout << SPACER;
     }
     else
     {
-        remove_template_files(template_files);
-        copy(use_template, full_template);
+        new_template = use_template;
     }
+    remove_template_files(template_files);
+    copy(new_template, full_template);
 
     // Remove the flags that check for unused functions
     // Also remember to build execcutor with 32 bit flags for i386
@@ -497,17 +563,15 @@ int prep_syzkaller(const Environment &env, const Bug_Info &bug, const InspectorC
 
     if (syzkaller_version.date <= Date(2017,7,28))
     {
-        cout << "Making all-tools.\n";
         cd(env.syzdir);
         make(inspector.get_makeprocs(), "all-tools");
         cd(inspector.get_inspect_dir());
     }
 
     // Build syzkaller
-    cout << "Making Syzkaller.\n";
     cd(env.syzdir);
     if (bug.arch == "amd64")
-        err = make(inspector.get_makeprocs());
+        err = make(inspector.get_makeprocs(), "", outfile);
     else
     {
         if(syzkaller_version.date <= Date(2020,5,18))
@@ -580,32 +644,98 @@ int write_syzkaller_config(const Environment &env, const Bug_Info &bug, const In
     return 0;
 }
 
-int insert_POC_as_seed(const Environment &env, const Bug_Info &bug)
+void reset_kaller_wd(const Environment &env)
 {
-    string corpus = env.syzwd + "/corpus.db";
-    // make sure to clear out the old corpus
-    if (check_file(corpus))
-        remove_file(corpus);
+    if (check_file(env.syzwd))
+    {
+        cout << "Reseting Syzkaller's working directory.\n";
+        remove_dir(env.syzwd);
+    }
 
-    // assumes syzkaller has already been made
+    make_dir(env.syzwd);
+    make_dir(env.syzwd + "/crashes");
+    return;
+}
+
+// Calls syz-db (up)pack src dest.
+// assumes syzkaller has already been made.
+int syz_db(const Environment &env, const string &opt, const string &src, const string &dest)
+{
     string com = env.syzdir + "/bin/syz-db";
     char * command = new char[com.size() + 1];
     strcpy(command, com.c_str());
-    char arg1[] = "pack";
-    char * arg2 = new char[bug.reproducer.size() + 1];
-    strcpy(arg2, bug.reproducer.c_str());
-    
-    char * arg3 = new char[corpus.size() + 1];
-    strcpy(arg3, corpus.c_str());
+    char * arg1 = new char[opt.size() + 1];
+    strcpy(arg1, opt.c_str());
+    char * arg2 = new char[src.size() + 1];
+    strcpy(arg2, src.c_str());
+    char * arg3 = new char[dest.size() + 1];
+    strcpy(arg3, dest.c_str());
 
     char * arg_list[] = {command, arg1, arg2, arg3, nullptr};
 
     int ret = exec_and_wait(com, arg_list);
 
     delete[] command;
+    delete[] arg1;
     delete[] arg2;
     delete[] arg3;
     return ret;
+}
+
+int syz_db_pack_corpus(const Environment &env, const string &corpusdir, const string &corpus)
+{
+    return syz_db(env, "pack", corpusdir, corpus);
+}
+
+int syz_db_unpack_corpus(const Environment &env, const string &corpusdir, const string &corpus)
+{
+    return syz_db(env, "unpack", corpus, corpusdir);
+}
+
+// Does the following as needed:
+// Unpack the previous corpus
+// Reset the working directory
+// Filter/Clear the previous corpus
+// Adds the PoCs to the corpus
+// Packs the corpus
+int prepare_kaller_wd(const Environment &env, const Bug_Info &bug)
+{
+    bool do_pack = false;
+    int err = 0;
+    string corpus = env.syzwd + "/corpus.db";
+    string corpusdir = env.wd + "/corpus";
+
+    if (check_file(corpusdir))
+        remove_dir(corpusdir);
+    make_dir(corpusdir);
+
+    // TODO: If needed
+    if (env.stateful_corpus && check_file(corpus))
+    {
+        err = syz_db_unpack_corpus(env, corpusdir, corpus);
+        do_pack = true;
+        if (err < 0)
+            goto exit;
+    }
+
+    reset_kaller_wd(env);
+    // if (env.prune_corpus) prune_corpus();
+
+    // Copy the reproducers into the corpus directory
+    if (env.use_poc)
+    {
+        for (string repro : list_dir(bug.reproducer))
+            copy(repro, corpusdir);
+        do_pack = true;
+    }
+
+    if (do_pack)
+        err = syz_db_pack_corpus(env, corpusdir, corpus);
+
+exit:
+    if (check_file(corpusdir))
+        remove_dir(corpusdir);
+    return err;
 }
 
 int clean_syzkaller(const Environment &env)

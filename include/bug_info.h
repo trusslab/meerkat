@@ -3,6 +3,7 @@
 
 #include <blocking_bugs.h>
 #include <date.h>
+#include <result.h>
 
 #include <string>
 #include <vector>
@@ -35,5 +36,7 @@ public:
     // takes in a filename and parses it into the data structure
     void parse_config_file(const std::string &);
 };
+
+int patch_blocking_bugs(const Test_Result &, const Bug_Info &);
 
 #endif

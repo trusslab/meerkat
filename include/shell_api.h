@@ -28,11 +28,11 @@ int sed_i(const std::string &, const std::string &);
 bool grep_to_find(const std::string &, const std::string &);
 
 // runs make for the current directory
-int make(unsigned int, const std::string & = "");
-int make(unsigned int, const std::vector<std::string> &);
+int make(unsigned int, const std::string & = "", const std::string & = "");
+int make(unsigned int, const std::vector<std::string> &, const std::string & = "");
 
 // builds syzkaller for 386 POCs using syz-env
-int syz_env_cross_compile(const std::string &, const Bug_Info &);
+int syz_env_cross_compile(const std::string &, const Bug_Info &, const std::string & = "");
 
 // cleans up after syz-env because sudo
 int syz_env_clean(const std::string &, const Bug_Info &);

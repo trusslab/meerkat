@@ -33,6 +33,8 @@ private:
     int kernel_index;
     int syzkaller_index;
 
+    // right is the older date (lower date). higher index
+    // left is the recent date (higher date). lower index
     int left;
     int right;
     int middle;
@@ -54,6 +56,9 @@ private:
     bool session_was_found(const Session &) const;
     bool session_was_stable(const Session &) const;
 
+    int build_current_kernel(std::ofstream &, const Environment &, const InspectorConfig &, const Bug_Info &);
+    int build_current_syzkaller(const Environment &, const InspectorConfig &, const Bug_Info &);
+
     int goto_finding_session(std::ofstream &, const Environment &, const InspectorConfig &, const Bug_Info &);
     int goto_syzkaller_session(std::ofstream &, const Environment &, const InspectorConfig &, const Bug_Info &);
     int goto_kernel_session(std::ofstream &, const Environment &, const InspectorConfig &, const Bug_Info &);
@@ -64,6 +69,7 @@ private:
 
     int record_syzkaller(const Test_Result &);
     int record_kernel(const Test_Result &);
+    int archive_current_session();
 
 public:
     std::vector<Version> kernel_versions;
@@ -86,6 +92,7 @@ public:
     { return low_date.get_date(); }
     int remaining() const
     { return right - left; }
+    int stable_remaining() const;
 
     int gather_compiler_versions(const InspectorConfig &inspector);
     Version find_merge_commit(const Environment &env, const Bug_Info &bug);

@@ -57,13 +57,15 @@ printhelp () {
 
 setuponly=""
 nopoc=""
+stateful_corpus=""
+prune_corpus=""
 mtime=""
 findonly=""
 safemode=""
 targetarch="amd64" # i386
 
 # get the start and end lines from the arguments
-while getopts "s:e:i:b:m:a:xpfdS" flag
+while getopts "s:e:i:b:m:a:xnkpfdS" flag
 do
     case $flag in
         s)
@@ -78,8 +80,12 @@ do
             mtime="-m ${OPTARG}" ;;
         a)
             targetarch="${OPTARG}" ;;
-        p)
+        n)
             nopoc="--no-poc" ;;
+        k)
+            stateful_corpus="--stateful-corpus" ;;
+        p)
+            prune_corpus="--prune-corpus" ;;
         f)
             findonly="--find-only"
             setuponly="" ;;
@@ -225,7 +231,7 @@ while (( $line <= $endLine )); do
 
         guiltylink=$(echo "$linetext" | awk -F',' '{ print $10; }')
 
-        # clean up the bug name if it is a duplicate name
+        # clean up the bug name if it is a duplicate name (i.e. "bugname (2)")
         if [[ $(echo "$bugName" | grep "([0-9]*)$" | cat) != "" ]]; then
             bugName=${bugName::-4}
         fi
@@ -238,12 +244,10 @@ while (( $line <= $endLine )); do
             writebugconfig
 
             echo ",good fuzz,$findDate,$findDate,$startDate" >> $logfile
-            echo "./$retrospector -F $findhash -f $findDate -G $guiltyhash -i $id $mtime $nopoc $findonly $setuponly $safemode" >> $logfile
-            # run inspector on the bug
-            # using finding date as the ending date
+            echo "./$retrospector -F $findhash -f $findDate -G $guiltyhash -i $id --known-syz $knownSyzHash $mtime $nopoc $findonly $setuponly $safemode" >> $logfile
             echo "Fuzzing. finding: $findhash; guilty: $guiltyhash"
             set +e
-            ./$retrospector -F $findhash -f $findDate -G $guiltyhash -i $id --known_syz $knownSyzHash $mtime $nopoc $findonly $setuponly $safemode
+            ./$retrospector -F $findhash -f $findDate -G $guiltyhash -i $id --known-syz $knownSyzHash $mtime $nopoc $findonly $setuponly $safemode $stateful_corpus $prune_corpus
             set -e
             number=$(( $number + 1 ))
         else

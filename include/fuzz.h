@@ -11,10 +11,6 @@
 #include <string>
 #include <vector>
 
-// deletes the syzkaller working directory and
-// recreates it.
-void reset_kaller_wd(const std::string &wd);
-
 // runs syzkaller once. Returns a data structure with
 // time to find and bugs found.
 Syzkaller_Result run_syzkaller(std::ofstream &, const Environment &, const Bug_Info &, const InspectorConfig &);

@@ -31,4 +31,7 @@ std::vector<std::string> list_dir(const std::string &);
 
 bool compare_files(const std::string &, const std::string &);
 
+bool load_file(const std::string &, std::vector<std::string> &);
+bool write_file(const std::string &, const std::vector<std::string> &);
+
 #endif

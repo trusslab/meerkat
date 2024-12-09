@@ -1,3 +1,4 @@
+#include <my_string.h>
 #include <result.h>
 
 #include <vector>
@@ -5,11 +6,18 @@
 
 using namespace std;
 
-// Quick and dirty search function for string vectors
-bool fuzz_is_in(const string &s, const vector<string> &v)
+bool crash_name_eq(const string &c1, const string &c2)
 {
-    for (string str : v)
-        if (str == s)
+    vector<string> c1_spl = split(c1, ' ');
+    vector<string> c2_spl = split(c2, ' ');
+    return c1_spl.front() == c2_spl.front() && c1_spl.back() == c2_spl.back();
+}
+
+// Quick and dirty search function for string vectors
+bool fuzz_is_crash_in(const string &crash, const vector<string> &dups)
+{
+    for (string dup : dups)
+        if (crash_name_eq(crash, dup))
             return true;
     
     return false;
@@ -18,7 +26,9 @@ bool fuzz_is_in(const string &s, const vector<string> &v)
 int cr_find(const string &s, const vector<Crash_Report> &v)
 {
     int i = 0;
-    for (i = 0; i < v.size() && v.at(i).name != s; i++);
+    for (i = 0; i < v.size(); i++)
+        if (crash_name_eq(s, v.at(i).name))
+            break;
     return i < v.size() ? i : -1;
 }
 

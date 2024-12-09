@@ -105,15 +105,16 @@ int bisect(Argparse &args, Environment &env, InspectorConfig &inspector, Bug_Inf
         goto finish;
 
     // begin logging
-    logfile << bug.name << "," << bug.buglink << endl
-            << "Repository: " << bug.kpreface << endl
-            << "Arch: " << bug.arch << endl
-            << "Finding: " << git_get_commit_date(env.wd, env.kerneldir, bug.find_hash).get_date() << " - " << bug.find_hash << endl
-            << "Guilty:  " << git_get_commit_date(env.wd, env.kerneldir, bug.guilty_hash).get_date() << " - " << bug.guilty_hash << endl << flush;
+    logfile << "Bisecting: " << bug.name << "," << bug.buglink << endl
+            << args.origin() << "\n\n"
+            << "Repository:      " << bug.kpreface << endl
+            << "Arch:            " << bug.arch << endl
+            << "Finding:         " << git_get_commit_date(env.wd, env.kerneldir, bug.find_hash).get_date() << " - " << bug.find_hash << endl
+            << "Guilty:          " << git_get_commit_date(env.wd, env.kerneldir, bug.guilty_hash).get_date() << " - " << bug.guilty_hash << endl 
+            << "Using Syzkaller: " << git_get_commit_date(env.wd, env.syzdir, args.get_arg_as_string("known-syz")).get_date() << " - " << args.get_arg_as_string("known-syz") << endl << flush;
 
     // Parse Syzbot for duplicate bugs
     cout << "Gathering bug fixes from Syzbot.\n";
-
     gather_duplicates(env, bug, inspector);
 
     if (bug.duplicates.size() > 1)
@@ -136,8 +137,8 @@ int bisect(Argparse &args, Environment &env, InspectorConfig &inspector, Bug_Inf
 
     determine_threadedness(inspector, bug, logfile);
 
-    logfile << "Max time:" << env.max_time << endl 
-            << "Max attempts:" << env.fuzztimes << endl << flush;
+    logfile << "Max time:        " << env.max_time << endl 
+            << "Max attempts:    " << env.fuzztimes << endl << flush;
     
     // ======================================================================================================
     // Begin Bisection
@@ -168,6 +169,7 @@ int bisect(Argparse &args, Environment &env, InspectorConfig &inspector, Bug_Inf
     // ======================================================================================================
     // Fuzz at the finding commit
     
+    reset_kaller_wd(env);
     bisector.next_phase(Bisect_Finding);
     if (err < 0)
     {
@@ -175,9 +177,7 @@ int bisect(Argparse &args, Environment &env, InspectorConfig &inspector, Bug_Inf
         goto finish;
     }
 
-    cout << SPACER
-         << "Testing the finding commit.\n";
-    logfile << "Testing the finding commit.\n" << flush;
+    logfile << "\n==== Finding Commit ====\n" << flush;
 
     bisector.next_session(logfile, env, inspector, bug);
 
@@ -185,7 +185,6 @@ int bisect(Argparse &args, Environment &env, InspectorConfig &inspector, Bug_Inf
     if (args.is_set("setup-only"))
     {
         write_syzkaller_config(env, bug, inspector, bisector.this_session().syzkaller.date);
-        reset_kaller_wd(env.syzwd);
         logfile << "Setup-only complete.\n" << flush;
         cout << "Setup complete.\n";
         goto setup_only_finish;
@@ -208,7 +207,7 @@ int bisect(Argparse &args, Environment &env, InspectorConfig &inspector, Bug_Inf
     }
     else
     {
-        logfile << "\nNew Max Time: " << env.max_time << ".\n" << flush;
+        logfile << "\nNew Max Time: " << env.max_time << "\n" << flush;
     }
 
     bisector.record(result);
@@ -253,13 +252,14 @@ int bisect(Argparse &args, Environment &env, InspectorConfig &inspector, Bug_Inf
     }
 
     logfile << "\n==== Syzkaller Bisection ====\n" 
-            << bisector.syzkaller_versions.size() << " Syzkaller commit" << (bisector.syzkaller_versions.size() == 1 ? "" : "s") << " in ["
+            << bisector.remaining() << " Syzkaller commit" << (bisector.syzkaller_versions.size() == 1 ? "" : "s") << " in ["
             << bisector.low_date_str() << ", " << bisector.high_date_str() << "].\n" << flush;
 
     while ((err = bisector.next_session(logfile, env, inspector, bug)) == 0)
     {
         result = bisector.test_current(logfile, env, inspector, bug);
         bisector.record(result);
+        logfile << "About " << bisector.remaining() << " commits remaining\n" << flush;
     }
     if (err < 0)
     {
@@ -282,12 +282,14 @@ skip_syzkaller:
     }
 
     logfile << "\n==== Kernel Bisection ====\n"
-            << bisector.remaining() << " Linux commit" << (bisector.remaining() == 1 ? "" : "s") << " in [" << bisector.low_date_str() << ", " << bisector.high_date_str() << "].\n" << flush;
+            << bisector.remaining() << " Linux commit" << (bisector.remaining() == 1 ? "" : "s") << " in [" << bisector.low_date_str() << ", " << bisector.high_date_str() << "].\n"
+            << "Syzkaller Version: " << bisector.this_session().syzkaller.date.get_date() << " - " << bisector.this_session().syzkaller.name << endl << flush;
 
     while ((err = bisector.next_session(logfile, env, inspector, bug)) == 0)
     {
-        bisector.test_current(logfile, env, inspector, bug);
+        result = bisector.test_current(logfile, env, inspector, bug);
         bisector.record(result);
+        logfile << "About " << bisector.stable_remaining() << " commits remaining\n" << flush;
     }
     if (err < 0)
     {
@@ -348,6 +350,8 @@ void print_help()
         << "    --setup-only: download and build all the parts, but don't actually fuzz.\n"
         << "    --no-merge: don't use the merge commit as a revealing factor.\n"
         << "    --no-poc: fuzz without the poc.\n"
+        << "    --stateful-corpus: keep the syzkaller corpus between runs\n"
+        << "    --prune-corpus: keep only useful test cases in corpus between runs\n"
         << "    --find-only: only fuzz at the finding commit.\n"
         << "    --safe-mode: use safe mode.\n"
         << "    --known-syz: use a specific syzkaller hash.\n"
@@ -368,8 +372,8 @@ int main(int argc, char ** argv)
     InspectorConfig inspector;
     Bug_Info bug;
 
-    args.expect("FGfmidh");
-    args.expect(vector<string>({ "setup-only", "help", "no-merge", "no-poc", "find-only", "safe-mode", "known-syz" }));
+    args.expect("FGfmih");
+    args.expect(vector<string>({ "setup-only", "help", "no-merge", "no-poc", "find-only", "safe-mode", "known-syz", "stateful-corpus", "prune-corpus" }));
     args.parse(argc, argv);
     if (args.is_set('h') || args.is_set("help"))
     {
@@ -377,10 +381,13 @@ int main(int argc, char ** argv)
         return 0;
     }
 
+    // This clarifies some nonsense with commit times
     set_timezone("UTC0");
 
     env.fuzztimes = 3;
 
+    // TODO: Pass a config file rather than this mess
+    // TODO: Put this stuff in the bug config file, and make that file a json
     if (args.is_set('F'))
         bug.find_hash = args.get_arg_as_string('F');
     else
@@ -432,8 +439,10 @@ int main(int argc, char ** argv)
     export_go(inspector);
     env.origin_path = get_path();
 
-    // allow for fuzzing without the poc
+    // Corpus options
     env.use_poc = !args.is_set("no-poc");
+    env.stateful_corpus = args.is_set("stateful-corpus") || args.is_set("prune-corpus");
+    env.prune_corpus = args.is_set("prune-corpus");
 
     // allow for fuzzing only at the finding commit
     env.find_only = args.is_set("find-only");
@@ -445,8 +454,7 @@ int main(int argc, char ** argv)
         set_safe_mode(env.safe_mode, env.max_time, env.fuzztimes);
 
     // make sure all of the needed files are here.
-    cout << SPACER
-        << "Checking files.\n";
+    cout << "Checking files.\n";
     if (!check_file(env.wd + "/log"))
     {
         cout << "Creating log directory.\n";

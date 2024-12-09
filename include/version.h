@@ -6,6 +6,8 @@
 #include <string>
 #include <vector>
 
+#define STABLE_INFER_SIZE 50
+
 // A class to store information about versions of 
 // gcc, linux, or syzkaller (or anything else).
 // Stores an identifying value and the assiciated
@@ -36,7 +38,11 @@ public:
     std::vector<std::string> parents;
 };
 
+void infer_stability(std::vector<Version> &, bool = false);
+std::vector<Version> get_only_stable(const std::vector<Version> &);
+
 Version get_version_by_date(const std::vector<Version> &, const Date &);
+Version get_stable_version_by_date(const std::vector<Version> &, const Date &);
 
 int get_index_by_name(const std::vector<Version> &, const std::string &, const int pos = 0);
 

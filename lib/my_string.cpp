@@ -52,3 +52,8 @@ bool ends_with(const std::string &str, const std::string &postfix)
     }
     return j < 0;
 }
+
+std::string chomp(const std::string &str)
+{
+    return ends_with(str, "\n") ? str.substr(0, str.size() - 1) : str;
+}

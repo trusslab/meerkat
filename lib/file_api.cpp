@@ -128,3 +128,43 @@ bool compare_files(const string &file1, const string &file2)
     inf2.close();
     return ret;
 }
+
+// Loads each line from file "filename" into the vector "lines"
+bool load_file(const std::string &filename, std::vector<std::string> &lines)
+{
+    std::ifstream inf;
+
+    inf.open(filename);
+    if (!inf)
+    {
+        std::cerr << "Could not open file: " << filename << std::endl << std::flush;
+        return false;
+    }
+
+    std::string l;
+    while (getline(inf, l))
+    {
+        lines.push_back(l);
+    }
+    inf.close();
+    return true;
+}
+
+// writes vector "lines" to the file "filename", adds newlines
+bool write_file(const std::string &filename, const std::vector<std::string> &lines)
+{
+    std::ofstream outf;
+
+    outf.open(filename, std::ofstream::out | std::ofstream::trunc);
+    if (!outf)
+    {
+        std::cerr << "Could not open file: " << filename << std::endl << std::flush;
+        return false;
+    }
+
+    for (std::string l : lines)
+        outf << l << std::endl;
+
+    outf.close();
+    return true;
+}

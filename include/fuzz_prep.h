@@ -30,6 +30,9 @@ std::string get_compiler(const std::vector<Version> &, const std::vector<Version
 // removes gcc from the path (actually just resets the path)
 int clean_path(const std::string &);
 
+int set_kernel_config(const std::string &, const std::vector<std::string> &);
+int unset_kernel_config(const std::string &, const std::vector<std::string> &);
+
 // Grabs the correct kernel version, applies any patches needed,
 // copies the config in, and build the kernel
 int prep_kernel(const Environment &, const Bug_Info &, const InspectorConfig &, const Version &, const std::string &, const std::string &);
@@ -45,9 +48,9 @@ int prep_syzkaller(const Environment &, const Bug_Info &, const InspectorConfig 
 // also shifts the host port by one
 int write_syzkaller_config(const Environment &, const Bug_Info &, const InspectorConfig &, const Date &);
 
-// Takes the POC file and the corpus file. calls syz-db to insert
-// the POC into the corpus.
-int insert_POC_as_seed(const Environment &, const Bug_Info &);
+// deletes the syzkaller working directory and recreates it.
+void reset_kaller_wd(const Environment &);
+int prepare_kaller_wd(const Environment &, const Bug_Info &);
 
 // cleans files when we switch syzkaller versions.
 // Simply removes any non-hidden file.

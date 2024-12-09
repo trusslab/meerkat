@@ -14,6 +14,7 @@
 #include <fstream>
 #include <string>
 #include <vector>
+#include <map>
 #include <fstream>
 #include <cmath>
 
@@ -79,35 +80,20 @@ string get_crash_name(const string &hash)
     return line;
 }
 
-void reset_kaller_wd(const string &wd)
-{
-    if (check_file(wd))
-    {
-        cout << "Reseting Syzkaller's working directory.\n";
-        remove_dir(wd);
-    }
-
-    make_dir(wd);
-    make_dir(wd + "/crashes");
-    return;
-}
-
 // The time is rough here and rounds up to the nearest time increment (usually 1 minute)
 // result.ttf is the time it took to find the bug, or the max_time
 Syzkaller_Result run_syzkaller(ofstream &logfile, const Environment &env,const Bug_Info &bug, const InspectorConfig &inspector)
 {
     Syzkaller_Result result;
-    int time = 0, to_add = 0, i = 0;
+    int time = 0, to_add = 0;
     result.ttf = 0;
     result.found = false;
     result.bad_crashes = 0;
     vector<string> crash_hashes;
-    vector<Crash_Report> checked_crashes;
+    map<string, int> checked_crashes;
     string crash_name;
 
-    reset_kaller_wd(env.syzwd);
-    if (env.use_poc)
-        insert_POC_as_seed(env, bug);
+    prepare_kaller_wd(env, bug);
 
     // run syzkaller
     cd(env.syzdir);
@@ -131,32 +117,28 @@ Syzkaller_Result run_syzkaller(ofstream &logfile, const Environment &env,const B
         if (!check_alive(pid))
             handle_syzkaller_crash(logfile);
 
-        // check crashes
+        // list the unique crashes Syzkaller has found
         crash_hashes = list_dir(env.syzwd + "/crashes");
         for (string hash : crash_hashes)
         {
             to_add = 0;
-            i = cr_find(hash, checked_crashes);
-            if (i < 0)
+            if (checked_crashes.find(hash) == checked_crashes.end())
             {
                 to_add = 1;
-                checked_crashes.push_back({hash, 1});
-                i = checked_crashes.size() - 1;
+                checked_crashes.insert({hash, 1});
             }
 
-            // reusing crash_report becuase it has the same data layout that I need, even if it is the wrong name.
-            // The hash string here has the whole path in it. Realistically this deserves a fix, but this will work for now.
-            while (check_file(hash + "/log" + to_string(checked_crashes.at(i).time)))
+            while (check_file(hash + "/log" + to_string(checked_crashes.at(hash))))
             {
                 to_add++;
-                checked_crashes.at(i).time++;
+                checked_crashes.at(hash)++;
             }
 
             if (to_add == 0)
                 continue;
             
             crash_name = get_crash_name(hash);
-            result.found = fuzz_is_in(crash_name, bug.duplicates) ? true : result.found;
+            result.found = fuzz_is_crash_in(crash_name, bug.duplicates) ? true : result.found;
             for (int j = 0; j < to_add; j++)
                 result.reports.push_back({crash_name, time});
 
@@ -192,6 +174,7 @@ Test_Result fuzz_loop_finding(ofstream &logfile, const Environment &env, const B
 {
     Test_Result result;
     result.found = false;
+    result.retry = false;
     int retries = 0, unstable_count = 0;
     for (int i = 0; i < env.fuzztimes + retries && unstable_count < env.fuzztimes; i++)
     {
@@ -218,6 +201,7 @@ Test_Result fuzz_loop(ofstream &logfile, const Environment &env, const Bug_Info 
 {
     Test_Result result;
     result.found = false;
+    result.retry = false;
     int retries = 0, unstable_count = 0;
     for (int i = 0; i < env.fuzztimes + retries && !result.found  && unstable_count < env.fuzztimes; i++)
     {

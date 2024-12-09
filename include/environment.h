@@ -9,6 +9,8 @@ class Environment
 {
 public:
     bool use_poc;
+    bool stateful_corpus;
+    bool prune_corpus;
     bool find_only;
     bool no_merge;
     bool safe_mode;
