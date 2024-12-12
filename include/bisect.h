@@ -1,6 +1,7 @@
 #ifndef BISECT_H
 #define BISECT_H
 
+#include <bug_info.h>
 #include <date.h>
 #include <environment.h>
 #include <result.h>

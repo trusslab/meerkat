@@ -1,3 +1,5 @@
+#include <bisect.h>
+#include <bug_info.h>
 #include <consts.h>
 #include <environment.h>
 #include <fuzz.h>
@@ -6,7 +8,6 @@
 #include <git_traverse.h>
 #include <my_string.h>
 #include <result.h>
-#include <bisect.h>
 #include <session.h>
 #include <shell_api.h>
 #include <version.h>

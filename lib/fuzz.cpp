@@ -149,8 +149,8 @@ Syzkaller_Result run_syzkaller(ofstream &logfile, const Environment &env,const B
         {
             cout << "Warning: Syzkaller log file exceeded 5000 lines. Assuming boot failure\n";
             logfile << "Warning: Syzkaller log file exceeded 5000 lines.\n"
-                    << "Saved at " << env.wd + "/log/" + bug.numName + "-boot_failure.log" << ".\n" << flush;
-            copy(env.syzkaller_log, env.wd + "/log/" + bug.numName + "-boot_failure.log");
+                    << "Saved at " << env.logdir + bug.numName + "-boot_failure.log" << ".\n" << flush;
+            copy(env.syzkaller_log, env.logdir + bug.numName + "-boot_failure.log");
             result.bad_crashes++;
             result.reports.push_back({"boot failure", time});
             break;

@@ -22,20 +22,21 @@ retrospector=bin/syzInspector
 # Functions
 
 writebugconfig () {
-    echo -n "" > $inspectorconfig
-    echo "curBug=\"$curBug\"" >> $inspectorconfig
-    echo "bugname=\"$bugName\"" >> $inspectorconfig
-    echo "kpref=\"$kpref\"" >> $inspectorconfig
-    echo "arch=$arch" >> $inspectorconfig
-    echo "repo=$repo" >> $inspectorconfig
-    echo "kconfig=$inspectdir/$wd/config-$curBug.txt" >> $inspectorconfig
-    echo "repro=$inspectdir/$wd/reproducers" >> $inspectorconfig
-    echo "reproall=$inspectdir/$wd/repro-$curBug-all.prog" >> $inspectorconfig
-    echo "kallerwd=$inspectdir/$wd/wd-kaller" >> $inspectorconfig
-    echo "syzconfig=$inspectdir/$wd/syzkaller.cfg" >> $inspectorconfig
-    echo "managerwd=$inspectdir/$wd" >> $inspectorconfig
-    echo "syzdir=$inspectdir/$wd/syzkaller" >> $inspectorconfig
-    echo "buglink=\"$buglink\"" >> $inspectorconfig
+    echo "{" > $inspectorconfig
+    echo "    \"bugID\": \"${curBug}\","  >> $inspectorconfig
+    echo "    \"bug_name\": \"${bugName}\"," >> $inspectorconfig
+    echo "    \"bug_link\": \"${buglink}\"," >> $inspectorconfig
+    echo "    \"arch\": \"${arch}\"," >> $inspectorconfig
+    echo "    \"kernel_branch\": \"${kpref}\"," >> $inspectorconfig
+    echo "    \"short_repository\": \"${repo}\"," >> $inspectorconfig
+    echo "    \"finding_hash\": \"${findhash}\"," >> $inspectorconfig
+    echo "    \"finding_date\": \"${findDate}\"," >> $inspectorconfig
+    echo "    \"guilty_hash\": \"${guiltyhash}\"," >> $inspectorconfig
+    echo "    \"kernel_config\": \"config-${curBug}.txt\"," >> $inspectorconfig
+    echo "    \"reproducers\": \"reproducers/\"," >> $inspectorconfig
+    echo "    \"all_reproducers\": \"repro-${curBug}-all.prog\"," >> $inspectorconfig
+    echo "    \"wd\": \"${inspectdir}/${wd}\"" >> $inspectorconfig
+    echo "}" >> $inspectorconfig    
 }
 
 printhelp () {
@@ -241,10 +242,10 @@ while (( $line <= $endLine )); do
             writebugconfig
 
             echo ",good fuzz,$findDate,$findDate,$startDate" >> $logfile
-            echo "./$retrospector -F $findhash -f $findDate -G $guiltyhash -i $id --known-syz $knownSyzHash $mtime $nopoc $findonly $setuponly $safemode" >> $logfile
+            echo "./$retrospector -i $id -c $inspectorconfig --known-syz $knownSyzHash $mtime $nopoc $findonly $setuponly $safemode $stateful_corpus $prune_corpus" >> $logfile
             echo "Fuzzing. finding: $findhash; guilty: $guiltyhash"
             set +e
-            ./$retrospector -F $findhash -f $findDate -G $guiltyhash -i $id --known-syz $knownSyzHash $mtime $nopoc $findonly $setuponly $safemode $stateful_corpus $prune_corpus
+            ./$retrospector -i $id -c $inspectorconfig --known-syz $knownSyzHash $mtime $nopoc $findonly $setuponly $safemode $stateful_corpus $prune_corpus
             set -e
             number=$(( $number + 1 ))
         else

@@ -319,7 +319,7 @@ int prep_kernel(const Environment &env, const Bug_Info &bug, const Version &linu
 
     // build the kernel
     cout << "Building the kernel...\n" << flush;
-    string outfile = env.wd + "/log/" + bug.numName + "-kbuild.log";
+    string outfile = env.logdir + bug.numName + "-kbuild.log";
     cd(env.kerneldir);
     err = make(env.makeprocs, {"olddefconfig", "CC="+compiler}, outfile);
     if (err < 0)
@@ -440,7 +440,7 @@ void patch_syzkaller(const Environment &env, const Bug_Info &bug, const Version 
 int prep_syzkaller(const Environment &env, const Bug_Info &bug, const Version &syzkaller_version, const string &use_template)
 {
     int err = 0;
-    string outfile = env.wd + "/log/" + bug.numName + "-syzbuild.log";
+    string outfile = env.logdir + bug.numName + "-syzbuild.log";
     if (bug.arch == "i386")
     {
         if(syzkaller_version.date <= Date(2020,5,18))
@@ -491,7 +491,7 @@ int prep_syzkaller(const Environment &env, const Bug_Info &bug, const Version &s
 
     // Slim the template if needed, otherwise copy over the one given
     string full_template = syzkaller_version.date < Date(2017,9,15) ? env.syzdir + "/sys" : env.syzdir + "/sys/linux";
-    string new_template = env.wd + "/my_template.txt";
+    string new_template = env.wd + "my_template.txt";
     vector<string> template_files = list_template_files(full_template);
 
     if (use_template.empty())
@@ -701,8 +701,8 @@ int prepare_kaller_wd(const Environment &env, const Bug_Info &bug)
 {
     bool do_pack = false;
     int err = 0;
-    string corpus = env.syzwd + "/corpus.db";
-    string corpusdir = env.wd + "/corpus";
+    string corpus = env.syzwd + "corpus.db";
+    string corpusdir = env.wd + "corpus";
 
     if (check_file(corpusdir))
         remove_dir(corpusdir);

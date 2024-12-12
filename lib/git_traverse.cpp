@@ -19,7 +19,7 @@ using namespace std;
 
 vector<Version> get_kernel_versions(const Environment &env, const Bug_Info &bug)
 {
-    string outfile = env.wd + "/tmp_kernel_versions.txt";
+    string outfile = env.wd + "tmp_kernel_versions.txt";
 
     if (git_rev_list_topo(env.kerneldir, bug.guilty_hash, bug.find_hash, outfile) < 0)
     {
@@ -99,7 +99,7 @@ vector<Version> get_kernel_versions(const Environment &env, const Bug_Info &bug)
 vector<Version> get_syzkaller_versions(const Environment &env)
 {
     int k;
-    string outfile = env.wd + "/tmp_syz_versions.txt";
+    string outfile = env.wd + "tmp_syz_versions.txt";
 
     string latest_syzkaller_hash = get_latest_commit_hash(env.syzdir);
     git_rev_list(env.syzdir, OLDEST_SYZKALLER_HASH, latest_syzkaller_hash, outfile);

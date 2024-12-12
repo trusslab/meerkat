@@ -1,8 +1,6 @@
 #ifndef ENVIRONMENT_H
 #define ENVIRONMENT_H
 
-#include <bug_info.h>
-
 #include <string>
 
 enum Compiler_Setting {COMPILER_GCC = 0, COMPILER_CLANG, COMPILER_CLANG_14};
@@ -60,18 +58,19 @@ public:
     std::string logfilename;
     std::string linux_repo_remote;
 
+    std::string home;                   // SyzInspector/
+    std::string gcc_dir;                // the directory housing all of the gcc compilers
+    std::string go_dir;                 // the directory housing go
+    std::string image_dir;              // directory of the os images
+
     std::string wd;                     // wd-inspector-[id]
+    std::string logdir;                 // directory to put all the logs in
     std::string syzdir;                 // the directory that houses syzkaller
     std::string kerneldir;              // the directory that houses the kernel
 
     std::string syzwd;                  // wd-kaller
     std::string syzconfig;              // the config for syzkaller. We write this ourselves
     std::string syzkaller_log;          // the log file to hold syzkaller output
-
-    std::string home;                   // SyzInspector/
-    std::string gcc_dir;                // the directory housing all of the gcc compilers
-    std::string go_dir;                 // the directory housing go
-    std::string image_dir;              // directory of the os images
 
     Compiler_Setting compiler_setting;
     
@@ -82,10 +81,11 @@ public:
 
     Port_Info port;
 
-    // parses the parameters.cfg into the data structure
-    void parse_parameters_file(const std::string &);
+    // parses the parameters/config.cfg
+    int parse_parameters_file(const std::string &);
 
-    void parse_config_file(const Bug_Info &, const std::string &);
+    // parses unique bug config to get filenames
+    int parse_config_file(const std::string &);
 };
 
 #endif

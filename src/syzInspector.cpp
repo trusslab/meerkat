@@ -34,7 +34,7 @@ int prep_syzkaller_local_repo(const Environment &env)
     else
         cout << "Found Syzkaller directory.\n";
 
-    if (!check_file(env.syzdir + "/.git"))
+    if (!check_file(env.syzdir + ".git"))
     {
         cout << "Cloning Syzkaller repository...\n";
         if (git_clone(SYZKALLER_REPO_REMOTE, env.syzdir) < 0)
@@ -62,7 +62,7 @@ int prep_kernel_local_repo(Environment &env, const Bug_Info &bug)
         cout << "Found kernel directory.\n";
 
     // this may cause issues when the repository opened is not the one we want
-    if (!check_file(env.kerneldir + "/.git"))
+    if (!check_file(env.kerneldir + ".git"))
     {
         cout << "Cloning Linux repository...\n";
         if (git_clone(env.linux_repo_remote, env.kerneldir) < 0)
@@ -85,7 +85,7 @@ int bisect(Argparse &args, Environment &env, Bug_Info &bug)
     Bisect bisector;
     Test_Result result;
 
-    env.logfilename = env.wd + "/log/" + bug.numName + ".log";
+    env.logfilename = env.logdir + bug.numName + ".log";
     logfile.open(env.logfilename);
     if(!logfile)
     {
@@ -109,8 +109,9 @@ int bisect(Argparse &args, Environment &env, Bug_Info &bug)
             << "Repository:      " << bug.kpreface << endl
             << "Arch:            " << bug.arch << endl
             << "Finding:         " << git_get_commit_date(env.wd, env.kerneldir, bug.find_hash).get_date() << " - " << bug.find_hash << endl
-            << "Guilty:          " << git_get_commit_date(env.wd, env.kerneldir, bug.guilty_hash).get_date() << " - " << bug.guilty_hash << endl 
-            << "Using Syzkaller: " << git_get_commit_date(env.wd, env.syzdir, args.get_arg_as_string("known-syz")).get_date() << " - " << args.get_arg_as_string("known-syz") << endl << flush;
+            << "Guilty:          " << git_get_commit_date(env.wd, env.kerneldir, bug.guilty_hash).get_date() << " - " << bug.guilty_hash << endl  << flush;
+    if (args.is_set("known-syz"))
+            logfile << "Using Syzkaller: " << git_get_commit_date(env.wd, env.syzdir, args.get_arg_as_string("known-syz")).get_date() << " - " << args.get_arg_as_string("known-syz") << endl << flush;
 
     // Parse Syzbot for duplicate bugs
     cout << "Gathering bug fixes from Syzbot.\n";
@@ -314,14 +315,14 @@ finish:
         << "Cleaning up...";
 
     // clean up reproducer and config
-    if (!check_file(env.wd + "/old"))
-        make_dir(env.wd + "/old");
+    if (!check_file(env.wd + "old/"))
+        make_dir(env.wd + "old/");
 
     if (check_file(bug.kconfig))
-        move(bug.kconfig, env.wd + "/old");
+        move(bug.kconfig, env.wd + "old/");
     
     if (check_file(bug.allreproducer))
-        move(bug.allreproducer, env.wd + "/old");
+        move(bug.allreproducer, env.wd + "old/");
 
     remove_files_in_dir(bug.reproducer);
 
@@ -339,13 +340,9 @@ setup_only_finish:
 void print_help()
 {
     cout << "Help:\n"
-        << "Short Ticks:\n"
-        << "    -F [find_hash]: the hash of the finding commit.\n"
-        << "    -G [guilty_hash]: the hash of the guilty commit.\n"
-        << "    -f [find_date]: the date the bug was found on.\n"
-        << "    -m [max_time]: the maximum time allowed when fuzzing.\n"
-        << "    -i [id]: REQUIRED. The id of the inspector.\n"
-        << "Long Ticks:\n"
+        << "    -m [max_time]: the maximum time (minutes) allowed when fuzzing (default 30).\n"
+        << "    -i [id]: REQUIRED. The id of the inspector (i.e. 1).\n"
+        << "    --config (c): [config]: REQUIRED. The config file containing the bug information.\n"
         << "    --setup-only: download and build all the parts, but don't actually fuzz.\n"
         << "    --no-merge: don't use the merge commit as a revealing factor.\n"
         << "    --no-poc: fuzz without the poc.\n"
@@ -357,11 +354,29 @@ void print_help()
         << endl << flush;
 }
 
-void handle_bug_config(Environment &env, Bug_Info &bug)
+int handle_bug_config(Environment &env, Bug_Info &bug, const Argparse &args)
 {
-    string filename = "wd-inspector-" + to_string(env.id) + "/" + "bug.cfg";
-    bug.parse_config_file(filename);
-    env.parse_config_file(bug, filename);
+    int err = 0;
+    string filename;
+    if (args.is_set("config"))
+        filename = args.get_arg_as_string("config");
+    else if (args.is_set('c'))
+        filename = args.get_arg_as_string('c');
+    else
+    {
+        cerr << "Error: No config file given (use --config)\n" << flush;
+        return -1;
+    }
+
+    err = env.parse_config_file(filename);
+    if (err < 0)
+        return err;
+    err = bug.parse_config_file(env, filename);
+    if (err < 0)
+        return err;
+    
+    env.syzkaller_log = env.logdir + bug.numName + "-kaller.log";
+    return err;
 }
 
 int main(int argc, char ** argv)
@@ -370,8 +385,8 @@ int main(int argc, char ** argv)
     Environment env;
     Bug_Info bug;
 
-    args.expect("FGfmih");
-    args.expect(vector<string>({ "setup-only", "help", "no-merge", "no-poc", "find-only", "safe-mode", "known-syz", "stateful-corpus", "prune-corpus" }));
+    args.expect("mihc");
+    args.expect(vector<string>({ "help", "config", "setup-only", "no-merge", "no-poc", "find-only", "safe-mode", "known-syz", "stateful-corpus", "prune-corpus" }));
     args.parse(argc, argv);
     if (args.is_set('h') || args.is_set("help"))
     {
@@ -383,24 +398,6 @@ int main(int argc, char ** argv)
     set_timezone("UTC0");
 
     env.fuzztimes = 3;
-
-    // TODO: Pass a config file rather than this mess
-    // TODO: Put this stuff in the bug config file, and make that file a json
-    if (args.is_set('F'))
-        bug.find_hash = args.get_arg_as_string('F');
-    else
-    {
-        cout << "Error: No finding commit given. Please use -F [hash].\n";
-        return -1;
-    }
-
-    if (args.is_set('G'))
-        bug.guilty_hash = args.get_arg_as_string('G');
-    else
-    {
-        cout << "Error: No guilty commit given. Please use -G [hash].\n";
-        return -1;
-    }
 
     if (args.is_set('m'))
         env.max_time = args.get_arg_as_int('m');
@@ -415,19 +412,15 @@ int main(int argc, char ** argv)
         return -1;
     }
 
-    if (args.is_set('f'))
-    {
-        bug.find_date = Date(args.get_arg_as_string('f'));
-        bug.find_date.set_delim('-');
-    }
-
     // get config for how to run
     cout << SPACER
          << "Parsing configs.\n";
-    env.parse_parameters_file("parameters/config.cfg");
+    if (env.parse_parameters_file("parameters/config.cfg") < 0)
+        return -1;
 
     // get information about the bug
-    handle_bug_config(env, bug);
+    if (handle_bug_config(env, bug, args) < 0)
+        return -1;
 
     if (bug.name.find("KMSAN") != string::npos)
         env.compiler_setting = COMPILER_CLANG_14;
@@ -453,10 +446,10 @@ int main(int argc, char ** argv)
 
     // make sure all of the needed files are here.
     cout << "Checking files.\n";
-    if (!check_file(env.wd + "/log"))
+    if (!check_file(env.logdir))
     {
         cout << "Creating log directory.\n";
-        make_dir(env.wd + "/log");
+        make_dir(env.logdir);
     }
     else
         cout << "Found log directory.\n";
@@ -477,7 +470,7 @@ int main(int argc, char ** argv)
     else
         cout << "Found kernel config.\n";
 
-    if (!check_file(env.image_dir + "/stretch/stretch.img"))
+    if (!check_file(env.image_dir + "stretch/stretch.img"))
     {
         cerr << "Error: No image file for stretch.\n";
         return -1;
@@ -485,7 +478,7 @@ int main(int argc, char ** argv)
     else
         cout << "Found stretch image.\n";
 
-    if (!check_file(env.image_dir + "/wheezy/wheezy.img"))
+    if (!check_file(env.image_dir + "wheezy/wheezy.img"))
     {
         cerr << "Error: No image file for wheezy.\n";
         return -1;

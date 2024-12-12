@@ -1,6 +1,7 @@
-#include <bug_info.h>
 #include <consts.h>
 #include <environment.h>
+#include <json.h>
+#include <my_string.h>
 
 #include <string>
 #include <fstream>
@@ -20,14 +21,14 @@ int Port_Info::inc()
     return port;
 }
 
-void Environment::parse_parameters_file(const std::string & filename)
+int Environment::parse_parameters_file(const std::string & filename)
 {
     std::ifstream inf;
     inf.open(filename);
     if (!inf)
     {
         std::cerr << "Error: could not open file " << filename << std::endl;
-        return;
+        return -1;
     }
 
     std::string line;
@@ -42,18 +43,22 @@ void Environment::parse_parameters_file(const std::string & filename)
         if (line.find("inspectdir=") != std::string::npos)
         {
             home = line.substr(pos0);
+            home = ends_with(home, "/") ? home : home + "/";
         }
         else if (line.find("gccdir=") != std::string::npos)
         {
             gcc_dir = line.substr(pos0);
+            gcc_dir = ends_with(gcc_dir, "/") ? gcc_dir : gcc_dir + "/";
         }
         else if (line.find("godir=") != std::string::npos)
         {
             go_dir = line.substr(pos0);
+            go_dir = ends_with(go_dir, "/") ? go_dir : go_dir + "/";
         }
         else if (line.find("imagedir=") != std::string::npos)
         {
             image_dir = line.substr(pos0);
+            image_dir = ends_with(image_dir, "/") ? image_dir : image_dir + "/";
         }
         else if (line.find("numVMd=") != std::string::npos)
         {
@@ -102,48 +107,43 @@ void Environment::parse_parameters_file(const std::string & filename)
     }
 
     inf.close();
-    return;
+    return 0;
 }
 
-void Environment::parse_config_file(const Bug_Info &bug, const std::string & filename)
+int Environment::parse_config_file(const std::string & filename)
 {
-    std::ifstream inf;
-    inf.open(filename);
-    if (!inf)
+    JSON json;
+    if (!json.parse(filename))
     {
-        std::cerr << "Error: could not open file " << filename << std::endl;
-        return;
+        std::cerr << "Error: (environment) Failed to parse json file " << filename << "\n" << std::flush;
+        return -1;
     }
 
-    std::string line;
-    int pos0, pos1;
-    while (std::getline(inf, line))
+    if (json.has_name("wd") && json.is_type("wd", JSON_Val_string))
     {
-        if (line.find("kallerwd=") != std::string::npos)
-        {
-            pos0 = line.find_first_of("=") + 1;
-            syzwd = line.substr(pos0);
-        }
-        else if (line.find("syzconfig=") != std::string::npos)
-        {
-            pos0 = line.find_first_of("=") + 1;
-            syzconfig = line.substr(pos0);
-        }
-        else if (line.find("managerwd=") != std::string::npos)
-        {
-            pos0 = line.find_first_of("=") + 1;
-            wd = line.substr(pos0);
-        }
-        else if (line.find("syzdir=") != std::string::npos)
-        {
-            pos0 = line.find_first_of("=") + 1;
-            syzdir = line.substr(pos0);
-        }
+        wd = json.get_string("wd");
+        wd = ends_with(wd, "/") ? wd : wd + "/";
+    }
+    else
+    {
+        std::cerr << "Error: No working directory was given (\"wd\": /path/to/wd/)\n" << std::flush;
+        return -1;
     }
 
-    syzkaller_log = wd + "/log/" + bug.numName + "-kaller.log";
-    kerneldir = wd + "/kernel";
+    if (json.has_name("syzconfig") && json.is_type("syzconfig", JSON_Val_string))
+    {
+        syzconfig = json.get_string("syzconfig");
+        syzconfig = starts_with(syzconfig, "/") ? syzconfig : wd + syzconfig;
+    }
+    else
+    {
+        syzconfig = wd + "syzkaller.cfg";
+    }
 
-    inf.close();
-    return;
+    kerneldir = wd + "kernel/";
+    syzdir = wd + "syzkaller/";
+    syzwd = wd + "wd-kaller/";
+    logdir = wd + "log/";
+
+    return 0;
 }

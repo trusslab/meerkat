@@ -19,7 +19,8 @@ using namespace std;
 // Get the date of the commit based on the wd, local repository dir, and hash
 Date git_get_commit_date(const string &wd, const string &local_repo, const string &hash)
 {
-    string outfile = wd + "/tmp_commit_date.txt";
+    string outfile = wd + "tmp_commit_date.txt";
+    string old_dir = pwd();
     cd(local_repo);
 
     // git show -s --date=format:'%Y-%m-%d' --format=%cd hash
@@ -39,7 +40,7 @@ Date git_get_commit_date(const string &wd, const string &local_repo, const strin
         return Date();
     }
 
-    cd(wd);
+    cd(old_dir);
 
     Date date;
     ifstream inf;
@@ -62,7 +63,7 @@ Date git_get_commit_date(const string &wd, const string &local_repo, const strin
 
 vector<string> git_get_parents(const string &local_repo, const string &hash)
 {
-    string wd = pwd();
+    string old_dir = pwd();
     cd(local_repo);
 
     char command[] = "git";
@@ -81,7 +82,7 @@ vector<string> git_get_parents(const string &local_repo, const string &hash)
         exit(-1);
     }
 
-    cd(wd);
+    cd(old_dir);
     delete[] arg4;
 
     vector<string> parents;
@@ -98,7 +99,8 @@ vector<string> git_get_parents(const string &local_repo, const string &hash)
 
 bool git_check_modified_file(const string &wd, const string &local_repo, const string &hash, const string &file)
 {
-    string outfile = wd + "/tmp_git_check_file.txt";
+    string outfile = wd + "tmp_git_check_file.txt";
+    string old_dir = pwd();
     cd(local_repo);
 
     char command[] = "git";
@@ -112,7 +114,7 @@ bool git_check_modified_file(const string &wd, const string &local_repo, const s
     char * arg_list[] = {command, arg1, arg2, arg3, arg4, arg5, nullptr};
     int ret = exec_and_wait("git", arg_list, outfile);
 
-    cd(wd);
+    cd(old_dir);
     delete[] arg5;
     
     bool r = grep_to_find(file, outfile);
