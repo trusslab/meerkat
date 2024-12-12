@@ -16,7 +16,7 @@ wd=""
 startLine=1
 endLine=0
 
-retrospector=syzInspector
+retrospector=bin/syzInspector
 
 # =================================================================================================
 # Functions
@@ -65,7 +65,7 @@ safemode=""
 targetarch="amd64" # i386
 
 # get the start and end lines from the arguments
-while getopts "s:e:i:b:m:a:xnkpfdS" flag
+while getopts "s:e:i:b:m:a:xnkpfS" flag
 do
     case $flag in
         s)
@@ -92,9 +92,6 @@ do
         x)
             setuponly="--setup-only"
             findonly="" ;;
-        d)
-            retrospector=syzInspector-debug
-            make -f Makefile debug ;;
         S)
             safemode="--safe-mode" ;;
         *)

@@ -7,7 +7,7 @@
 #include <bug_info.h>
 #include <inspector_config.h>
 #include <fuzz_prep.h>
-#include <retrospect.h>
+#include <bisect.h>
 #include <result.h>
 
 #include <iostream>

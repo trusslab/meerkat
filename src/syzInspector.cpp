@@ -12,7 +12,7 @@
 #include <git_api.h>
 #include <session.h>
 #include <git_traverse.h>
-#include <retrospect.h>
+#include <bisect.h>
 #include <result.h>
 #include <blocking_bugs.h>
 #include <environment.h>
