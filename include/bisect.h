@@ -3,7 +3,6 @@
 
 #include <date.h>
 #include <environment.h>
-#include <inspector_config.h>
 #include <result.h>
 #include <session.h>
 #include <version.h>
@@ -56,16 +55,16 @@ private:
     bool session_was_found(const Session &) const;
     bool session_was_stable(const Session &) const;
 
-    int build_current_kernel(std::ofstream &, const Environment &, const InspectorConfig &, const Bug_Info &);
-    int build_current_syzkaller(const Environment &, const InspectorConfig &, const Bug_Info &);
+    int build_current_kernel(std::ofstream &, const Environment &, const Bug_Info &);
+    int build_current_syzkaller(const Environment &, const Bug_Info &);
 
-    int goto_finding_session(std::ofstream &, const Environment &, const InspectorConfig &, const Bug_Info &);
-    int goto_syzkaller_session(std::ofstream &, const Environment &, const InspectorConfig &, const Bug_Info &);
-    int goto_kernel_session(std::ofstream &, const Environment &, const InspectorConfig &, const Bug_Info &);
+    int goto_finding_session(std::ofstream &, const Environment &, const Bug_Info &);
+    int goto_syzkaller_session(std::ofstream &, const Environment &, const Bug_Info &);
+    int goto_kernel_session(std::ofstream &, const Environment &, const Bug_Info &);
 
-    Test_Result test_finding(std::ofstream &, Environment &, InspectorConfig &, Bug_Info &);
-    Test_Result test_syzkaller(std::ofstream &, Environment &, InspectorConfig &, Bug_Info &);
-    Test_Result test_kernel(std::ofstream &, Environment &, InspectorConfig &, Bug_Info &);
+    Test_Result test_finding(std::ofstream &, Environment &, Bug_Info &);
+    Test_Result test_syzkaller(std::ofstream &, Environment &, Bug_Info &);
+    Test_Result test_kernel(std::ofstream &, Environment &, Bug_Info &);
 
     int record_syzkaller(const Test_Result &);
     int record_kernel(const Test_Result &);
@@ -75,8 +74,8 @@ public:
     std::vector<Version> kernel_versions;
     std::vector<Version> syzkaller_versions;
 
-    int init(const Environment &, const InspectorConfig &, const Bug_Info &, bool);
-    int init(const Environment &, const InspectorConfig &, const Bug_Info &, bool, const std::string &);
+    int init(const Environment &, const Bug_Info &, bool);
+    int init(const Environment &, const Bug_Info &, bool, const std::string &);
 
     int inc_session()
     { return ++session_count; }
@@ -94,18 +93,18 @@ public:
     { return right - left; }
     int stable_remaining() const;
 
-    int gather_compiler_versions(const InspectorConfig &inspector);
-    Version find_merge_commit(const Environment &env, const Bug_Info &bug);
+    int gather_compiler_versions(const Environment &);
+    Version find_merge_commit(const Environment &, const Bug_Info &);
 
     int next_phase(Bisect_Phase);
     int skip_syzkaller();
 
     // Goto the next session. Build everything as needed
     // Decide next session based on internal state
-    int next_session(std::ofstream &, const Environment &, const InspectorConfig &, const Bug_Info &);
+    int next_session(std::ofstream &, const Environment &, const Bug_Info &);
 
     // Fuzz and return a result
-    Test_Result test_current(std::ofstream &, Environment &, InspectorConfig &, Bug_Info &);
+    Test_Result test_current(std::ofstream &, Environment &, Bug_Info &);
 
     int record(const Test_Result &);
     int archive_session(const Test_Result &);

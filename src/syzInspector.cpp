@@ -1,21 +1,20 @@
-#include <date.h>
 #include <argparse.h>
+#include <bisect.h>
+#include <blocking_bugs.h>
 #include <bug_info.h>
-#include <inspector_config.h>
+#include <consts.h>
+#include <date.h>
+#include <environment.h>
 #include <file_api.h>
-#include <shell_api.h>
-#include <psf.h>
 #include <fuzz_prep.h>
 #include <fuzz.h>
-#include <consts.h>
-#include <template_parse.h>
 #include <git_api.h>
-#include <session.h>
 #include <git_traverse.h>
-#include <bisect.h>
+#include <psf.h>
 #include <result.h>
-#include <blocking_bugs.h>
-#include <environment.h>
+#include <session.h>
+#include <shell_api.h>
+#include <template_parse.h>
 
 #include <string>
 #include <vector>
@@ -78,7 +77,7 @@ int prep_kernel_local_repo(Environment &env, const Bug_Info &bug)
     return 0;
 }
 
-int bisect(Argparse &args, Environment &env, InspectorConfig &inspector, Bug_Info &bug)
+int bisect(Argparse &args, Environment &env, Bug_Info &bug)
 {
     int err = 0, git_err = 0;
     string starttime = date("%Y-%m-%d %T");
@@ -115,7 +114,7 @@ int bisect(Argparse &args, Environment &env, InspectorConfig &inspector, Bug_Inf
 
     // Parse Syzbot for duplicate bugs
     cout << "Gathering bug fixes from Syzbot.\n";
-    gather_duplicates(env, bug, inspector);
+    gather_duplicates(env, bug);
 
     if (bug.duplicates.size() > 1)
     {
@@ -133,9 +132,9 @@ int bisect(Argparse &args, Environment &env, InspectorConfig &inspector, Bug_Inf
         logfile << "No Duplicates\n";
     }
 
-    inspector.port.init(START_PORT, env.id, 5);
+    env.port.init(START_PORT, env.id, 5);
 
-    determine_threadedness(inspector, bug, logfile);
+    determine_threadedness(env, bug, logfile);
 
     logfile << "Max time:        " << env.max_time << endl 
             << "Max attempts:    " << env.fuzztimes << endl << flush;
@@ -147,11 +146,11 @@ int bisect(Argparse &args, Environment &env, InspectorConfig &inspector, Bug_Inf
     cout << "Initializing Bisector...\n";
     if (args.is_set("known-syz"))
     {
-        bisector.init(env, inspector, bug, args.is_set('f'), args.get_arg_as_string("known-syz"));
+        bisector.init(env, bug, args.is_set('f'), args.get_arg_as_string("known-syz"));
     }
     else
     {
-        bisector.init(env, inspector, bug, args.is_set('f'));
+        bisector.init(env, bug, args.is_set('f'));
     }
     if (bisector.kernel_versions.size() == 0)
     {
@@ -179,18 +178,18 @@ int bisect(Argparse &args, Environment &env, InspectorConfig &inspector, Bug_Inf
 
     logfile << "\n==== Finding Commit ====\n" << flush;
 
-    bisector.next_session(logfile, env, inspector, bug);
+    bisector.next_session(logfile, env, bug);
 
     cout << SPACER;
     if (args.is_set("setup-only"))
     {
-        write_syzkaller_config(env, bug, inspector, bisector.this_session().syzkaller.date);
+        write_syzkaller_config(env, bug, bisector.this_session().syzkaller.date);
         logfile << "Setup-only complete.\n" << flush;
         cout << "Setup complete.\n";
         goto setup_only_finish;
     }
 
-    result = bisector.test_current(logfile, env, inspector, bug);
+    result = bisector.test_current(logfile, env, bug);
 
     if (env.find_only)
     {
@@ -255,9 +254,9 @@ int bisect(Argparse &args, Environment &env, InspectorConfig &inspector, Bug_Inf
             << bisector.remaining() << " Syzkaller commit" << (bisector.syzkaller_versions.size() == 1 ? "" : "s") << " in ["
             << bisector.low_date_str() << ", " << bisector.high_date_str() << "].\n" << flush;
 
-    while ((err = bisector.next_session(logfile, env, inspector, bug)) == 0)
+    while ((err = bisector.next_session(logfile, env, bug)) == 0)
     {
-        result = bisector.test_current(logfile, env, inspector, bug);
+        result = bisector.test_current(logfile, env, bug);
         bisector.record(result);
         logfile << "About " << bisector.remaining() << " commits remaining\n" << flush;
     }
@@ -285,9 +284,9 @@ skip_syzkaller:
             << bisector.remaining() << " Linux commit" << (bisector.remaining() == 1 ? "" : "s") << " in [" << bisector.low_date_str() << ", " << bisector.high_date_str() << "].\n"
             << "Syzkaller Version: " << bisector.this_session().syzkaller.date.get_date() << " - " << bisector.this_session().syzkaller.name << endl << flush;
 
-    while ((err = bisector.next_session(logfile, env, inspector, bug)) == 0)
+    while ((err = bisector.next_session(logfile, env, bug)) == 0)
     {
-        result = bisector.test_current(logfile, env, inspector, bug);
+        result = bisector.test_current(logfile, env, bug);
         bisector.record(result);
         logfile << "About " << bisector.stable_remaining() << " commits remaining\n" << flush;
     }
@@ -369,7 +368,6 @@ int main(int argc, char ** argv)
 {
     Argparse args;
     Environment env;
-    InspectorConfig inspector;
     Bug_Info bug;
 
     args.expect("FGfmih");
@@ -426,17 +424,17 @@ int main(int argc, char ** argv)
     // get config for how to run
     cout << SPACER
          << "Parsing configs.\n";
-    inspector.parse_config_file("parameters/config.cfg");
+    env.parse_parameters_file("parameters/config.cfg");
 
     // get information about the bug
     handle_bug_config(env, bug);
 
     if (bug.name.find("KMSAN") != string::npos)
-        inspector.compiler_setting = COMPILER_CLANG_14;
+        env.compiler_setting = COMPILER_CLANG_14;
     else
-        inspector.compiler_setting = COMPILER_GCC;
+        env.compiler_setting = COMPILER_GCC;
 
-    export_go(inspector);
+    export_go(env);
     env.origin_path = get_path();
 
     // Corpus options
@@ -479,7 +477,7 @@ int main(int argc, char ** argv)
     else
         cout << "Found kernel config.\n";
 
-    if (!check_file(inspector.get_image_dir() + "/stretch/stretch.img"))
+    if (!check_file(env.image_dir + "/stretch/stretch.img"))
     {
         cerr << "Error: No image file for stretch.\n";
         return -1;
@@ -487,7 +485,7 @@ int main(int argc, char ** argv)
     else
         cout << "Found stretch image.\n";
 
-    if (!check_file(inspector.get_image_dir() + "/wheezy/wheezy.img"))
+    if (!check_file(env.image_dir + "/wheezy/wheezy.img"))
     {
         cerr << "Error: No image file for wheezy.\n";
         return -1;
@@ -495,5 +493,5 @@ int main(int argc, char ** argv)
     else
         cout << "Found wheezy image.\n";
 
-    return bisect(args, env, inspector, bug);
+    return bisect(args, env, bug);
 }

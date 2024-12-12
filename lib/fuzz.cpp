@@ -5,7 +5,6 @@
 #include <shell_api.h>
 #include <file_api.h>
 #include <bug_info.h>
-#include <inspector_config.h>
 #include <fuzz_prep.h>
 #include <bisect.h>
 #include <result.h>
@@ -82,7 +81,7 @@ string get_crash_name(const string &hash)
 
 // The time is rough here and rounds up to the nearest time increment (usually 1 minute)
 // result.ttf is the time it took to find the bug, or the max_time
-Syzkaller_Result run_syzkaller(ofstream &logfile, const Environment &env,const Bug_Info &bug, const InspectorConfig &inspector)
+Syzkaller_Result run_syzkaller(ofstream &logfile, const Environment &env,const Bug_Info &bug)
 {
     Syzkaller_Result result;
     int time = 0, to_add = 0;
@@ -164,13 +163,12 @@ Syzkaller_Result run_syzkaller(ofstream &logfile, const Environment &env,const B
     else
         handle_syzkaller_crash(logfile);
 
-    cd(inspector.get_inspect_dir());
+    cd(env.home);
     delete[] arg1;
     return result;
 }
 
-Test_Result fuzz_loop_finding(ofstream &logfile, const Environment &env, const Bug_Info &bug, InspectorConfig &inspector,
-                            const Date &syz_date)
+Test_Result fuzz_loop_finding(ofstream &logfile, Environment &env, const Bug_Info &bug, const Date &syz_date)
 {
     Test_Result result;
     result.found = false;
@@ -178,9 +176,9 @@ Test_Result fuzz_loop_finding(ofstream &logfile, const Environment &env, const B
     int retries = 0, unstable_count = 0;
     for (int i = 0; i < env.fuzztimes + retries && unstable_count < env.fuzztimes; i++)
     {
-        inspector.port.inc();
-        write_syzkaller_config(env, bug, inspector, syz_date);
-        result.attempts.push_back(run_syzkaller(logfile, env, bug, inspector));
+        env.port.inc();
+        write_syzkaller_config(env, bug, syz_date);
+        result.attempts.push_back(run_syzkaller(logfile, env, bug));
         result.found = result.attempts.back().found ? true : result.found;
         if (result.attempts.back().bad_crashes > 0 && retries < env.fuzztimes)
         {
@@ -196,8 +194,7 @@ Test_Result fuzz_loop_finding(ofstream &logfile, const Environment &env, const B
     return result;
 }
 
-Test_Result fuzz_loop(ofstream &logfile, const Environment &env, const Bug_Info &bug, InspectorConfig &inspector,
-                    const Date &syz_date)
+Test_Result fuzz_loop(ofstream &logfile, Environment &env, const Bug_Info &bug,  const Date &syz_date)
 {
     Test_Result result;
     result.found = false;
@@ -205,9 +202,9 @@ Test_Result fuzz_loop(ofstream &logfile, const Environment &env, const Bug_Info 
     int retries = 0, unstable_count = 0;
     for (int i = 0; i < env.fuzztimes + retries && !result.found  && unstable_count < env.fuzztimes; i++)
     {
-        inspector.port.inc();
-        write_syzkaller_config(env, bug, inspector, syz_date);
-        result.attempts.push_back(run_syzkaller(logfile, env, bug, inspector));
+        env.port.inc();
+        write_syzkaller_config(env, bug, syz_date);
+        result.attempts.push_back(run_syzkaller(logfile, env, bug));
         result.found = result.attempts.back().found;
         if (result.attempts.back().bad_crashes > 0 && retries < env.fuzztimes)
         {

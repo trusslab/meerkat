@@ -1,8 +1,8 @@
 #ifndef SHELL_API_H
 #define SHELL_API_H
 
-#include <inspector_config.h>
 #include <bug_info.h>
+#include <environment.h>
 
 #include <string>
 #include <vector>
@@ -48,7 +48,7 @@ int wc_l(const std::string &);
 // Go Interface functions
 
 // exports go to the path
-int export_go(const InspectorConfig &);
+int export_go(const Environment &);
 
 // go mod calls
 int go_mod_init();

@@ -1,6 +1,5 @@
 #include <shell_api.h>
 #include <exec_api.h>
-#include <inspector_config.h>
 #include <my_string.h>
 
 #include <string>
@@ -246,14 +245,14 @@ int wc_l(const string &filename)
     return ret;
 }
 
-int export_go(const InspectorConfig &inspector)
+int export_go(const Environment &env)
 {
-    string goroot = "GOROOT=" + inspector.get_go_dir();
+    string goroot = "GOROOT=" + env.go_dir;
     int err = export_env(goroot);
     if (err < 0)
         return err;
 
-    string path = "PATH=" + inspector.get_go_dir() + "/bin:" + get_path();
+    string path = "PATH=" + env.go_dir + "/bin:" + get_path();
     err = export_env(path);
 
     return err;

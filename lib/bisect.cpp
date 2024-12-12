@@ -4,7 +4,6 @@
 #include <fuzz_prep.h>
 #include <git_api.h>
 #include <git_traverse.h>
-#include <inspector_config.h>
 #include <my_string.h>
 #include <result.h>
 #include <bisect.h>
@@ -20,12 +19,12 @@
 
 using namespace std;
 
-int Bisect::init(const Environment &env, const InspectorConfig &inspector, const Bug_Info &bug, bool have_fdate)
+int Bisect::init(const Environment &env, const Bug_Info &bug, bool have_fdate)
 {
     session_count = 0;
     phase = Bisect_Init;
 
-    gather_compiler_versions(inspector);
+    gather_compiler_versions(env);
 
     // commits are arranged newest (low index) to oldest (high index)
     // Back is guilty, front is finding
@@ -56,9 +55,9 @@ int Bisect::init(const Environment &env, const InspectorConfig &inspector, const
     return 0;
 }
 
-int Bisect::init(const Environment &env, const InspectorConfig &inspector, const Bug_Info &bug, bool have_fdate, const string &known_syzkaller)
+int Bisect::init(const Environment &env, const Bug_Info &bug, bool have_fdate, const string &known_syzkaller)
 {
-    int err = init(env, inspector, bug, have_fdate);
+    int err = init(env, bug, have_fdate);
     if (err < 0)
         return err;
     bisect_version = Version(known_syzkaller, git_get_commit_date(env.wd, env.syzdir, known_syzkaller));
@@ -73,10 +72,10 @@ int Bisect::stable_remaining() const
     return get_only_stable(versions).size();
 }
 
-int Bisect::gather_compiler_versions(const InspectorConfig &inspector)
+int Bisect::gather_compiler_versions(const Environment &env)
 {
-    gcc_versions = grab_compiler_versions(inspector.get_gcc_dir() + "/gccVersions.csv");
-    clang_versions = grab_compiler_versions(inspector.get_gcc_dir() + "/clangVersions.csv");
+    gcc_versions = grab_compiler_versions(env.gcc_dir + "/gccVersions.csv");
+    clang_versions = grab_compiler_versions(env.gcc_dir + "/clangVersions.csv");
     return (gcc_versions.size() + clang_versions.size() != 0);
 }
 
@@ -252,24 +251,24 @@ bool Bisect::session_was_stable(const Session &session) const
     return past_sessions.find(session)->stable;
 }
 
-int Bisect::build_current_kernel(ofstream &logfile, const Environment &env, const InspectorConfig &inspector, const Bug_Info &bug)
+int Bisect::build_current_kernel(ofstream &logfile, const Environment &env, const Bug_Info &bug)
 {
     string compiler;
     cout << SPACER
          << "Prepping the kernel\n";
-    compiler = get_compiler(gcc_versions, clang_versions, current_session.kernel.date, inspector);
+    compiler = get_compiler(gcc_versions, clang_versions, current_session.kernel.date, env);
     log_session_compiler(logfile, compiler);
-    return prep_kernel(env, bug, inspector, current_session.kernel, env.linux_repo_remote, compiler);
+    return prep_kernel(env, bug, current_session.kernel, env.linux_repo_remote, compiler);
 }
 
-int Bisect::build_current_syzkaller(const Environment &env, const InspectorConfig &inspector, const Bug_Info &bug)
+int Bisect::build_current_syzkaller(const Environment &env, const Bug_Info &bug)
 {
     cout << SPACER
         << "Prepping Syzkaller\n";
-    return prep_syzkaller(env, bug, inspector, current_session.syzkaller);
+    return prep_syzkaller(env, bug, current_session.syzkaller);
 }
 
-int Bisect::goto_finding_session(ofstream &logfile, const Environment &env, const InspectorConfig &inspector, const Bug_Info &bug)
+int Bisect::goto_finding_session(ofstream &logfile, const Environment &env, const Bug_Info &bug)
 {
     int err = 0;
     string compiler;
@@ -288,14 +287,14 @@ int Bisect::goto_finding_session(ofstream &logfile, const Environment &env, cons
     current_session = Session(linux_version, syzkaller_version, false);
     log_session_info(logfile, this_session(), inc_session());
 
-    err = build_current_kernel(logfile, env, inspector, bug);
+    err = build_current_kernel(logfile, env, bug);
     if (err < 0)
     {
         log_kernel_build_error(logfile);
         return -1;
     }
 
-    err = build_current_syzkaller(env, inspector, bug);
+    err = build_current_syzkaller(env, bug);
     if (err < 0)
     {
         log_syzkaller_build_error(logfile);
@@ -305,7 +304,7 @@ int Bisect::goto_finding_session(ofstream &logfile, const Environment &env, cons
     return 0;
 }
 
-int Bisect::goto_syzkaller_session(ofstream &logfile, const Environment &env, const InspectorConfig &inspector, const Bug_Info &bug)
+int Bisect::goto_syzkaller_session(ofstream &logfile, const Environment &env, const Bug_Info &bug)
 {
     if (left > right)
         return 1;
@@ -327,7 +326,7 @@ retry_kernel:
         // There's a chance the kernel is already built. Take advantage of this.
         if (last_session.kernel != current_session.kernel)
         {
-            err = build_current_kernel(logfile, env, inspector, bug);
+            err = build_current_kernel(logfile, env, bug);
             if (err < 0)
             {
                 log_kernel_build_error(logfile);
@@ -338,7 +337,7 @@ retry_kernel:
             }
         }
 
-        err = build_current_syzkaller(env, inspector, bug);
+        err = build_current_syzkaller(env, bug);
         if (err < 0)
         {
             log_syzkaller_build_error(logfile);
@@ -348,7 +347,7 @@ retry_kernel:
     return err;
 }
 
-int Bisect::goto_kernel_session(ofstream &logfile, const Environment &env, const InspectorConfig &inspector, const Bug_Info &bug)
+int Bisect::goto_kernel_session(ofstream &logfile, const Environment &env, const Bug_Info &bug)
 {
     if (left > right)
         return 1;
@@ -372,7 +371,7 @@ retry:
 
     if (!already_fuzzed(this_session()))
     {
-        err = build_current_kernel(logfile, env, inspector, bug);
+        err = build_current_kernel(logfile, env, bug);
         if (err < 0)
         {
             log_kernel_build_error(logfile);
@@ -385,7 +384,7 @@ retry:
         // if syzkaller version is locked, no need to build it all the time
         if (last_session.syzkaller.name != current_session.syzkaller.name)
         {
-            err = build_current_syzkaller(env, inspector, bug);
+            err = build_current_syzkaller(env, bug);
             if (err < 0)
             {
                 log_syzkaller_build_error(logfile);
@@ -401,19 +400,19 @@ retry:
 // update internal indices as needed
 // build kernel and syzkaller
 // return 0 to continue same phase, return 1 to indicate phase is done.
-int Bisect::next_session(ofstream &outf, const Environment &env, const InspectorConfig &inspector, const Bug_Info &bug)
+int Bisect::next_session(ofstream &outf, const Environment &env, const Bug_Info &bug)
 {
     int err = 0;
     switch(phase)
     {
     case Bisect_Finding:
-        err = goto_finding_session(outf, env, inspector, bug);
+        err = goto_finding_session(outf, env, bug);
         break;
     case Bisect_Syzkaller:
-        err = goto_syzkaller_session(outf, env, inspector, bug);
+        err = goto_syzkaller_session(outf, env, bug);
         break;
     case Bisect_Kernel:
-        err = goto_kernel_session(outf, env, inspector, bug);
+        err = goto_kernel_session(outf, env, bug);
         break;
     default:
         err = -1;
@@ -423,23 +422,23 @@ int Bisect::next_session(ofstream &outf, const Environment &env, const Inspector
     return err;
 }
 
-Test_Result Bisect::test_finding(std::ofstream &logfile, Environment &env, InspectorConfig &inspector, Bug_Info &bug)
+Test_Result Bisect::test_finding(std::ofstream &logfile, Environment &env, Bug_Info &bug)
 {
     Test_Result result;
-    result = fuzz_loop_finding(logfile, env, bug, inspector, current_session.syzkaller.date);
+    result = fuzz_loop_finding(logfile, env, bug, current_session.syzkaller.date);
     env.max_time = (env.safe_mode ? env.max_time : result.suggest_ttf);
     log_session_result(logfile, result, bug.duplicates);
     bug.blocking_bugs.count_blocking_bugs(result);
     return result;
 }
 
-Test_Result Bisect::test_syzkaller(std::ofstream &logfile, Environment &env, InspectorConfig &inspector, Bug_Info &bug)
+Test_Result Bisect::test_syzkaller(std::ofstream &logfile, Environment &env, Bug_Info &bug)
 {
     Test_Result result;
     if (!already_fuzzed(this_session()))
     {
         cout << SPACER;
-        result = fuzz_loop(logfile, env, bug, inspector, current_session.syzkaller.date);
+        result = fuzz_loop(logfile, env, bug, current_session.syzkaller.date);
         log_session_result(logfile, result, bug.duplicates);
         bug.blocking_bugs.count_blocking_bugs(result);
         if (check_safe_mode(result, env.safe_mode, env.max_time, env.fuzztimes))
@@ -456,13 +455,13 @@ Test_Result Bisect::test_syzkaller(std::ofstream &logfile, Environment &env, Ins
     return result;
 }
 
-Test_Result Bisect::test_kernel(std::ofstream &logfile, Environment &env, InspectorConfig &inspector, Bug_Info &bug)
+Test_Result Bisect::test_kernel(std::ofstream &logfile, Environment &env, Bug_Info &bug)
 {
     Test_Result result;
     if (!already_fuzzed(this_session()))
     {
         cout << SPACER;
-        result = fuzz_loop(logfile, env, bug, inspector, current_session.syzkaller.date);
+        result = fuzz_loop(logfile, env, bug, current_session.syzkaller.date);
         log_session_result(logfile, result, bug.duplicates);
         bug.blocking_bugs.count_blocking_bugs(result);
         if (patch_blocking_bugs(result, bug) > 0)
@@ -483,7 +482,7 @@ Test_Result Bisect::test_kernel(std::ofstream &logfile, Environment &env, Inspec
     return result;
 }
 
-Test_Result Bisect::test_current(std::ofstream &outf, Environment &env, InspectorConfig &inspector, Bug_Info &bug)
+Test_Result Bisect::test_current(std::ofstream &outf, Environment &env, Bug_Info &bug)
 {
     Test_Result res;
     res.retry = false;
@@ -491,13 +490,13 @@ retry:
     switch(phase)
     {
     case Bisect_Finding:
-        res = test_finding(outf, env, inspector, bug);
+        res = test_finding(outf, env, bug);
         break;
     case Bisect_Syzkaller:
-        res = test_syzkaller(outf, env, inspector, bug);
+        res = test_syzkaller(outf, env, bug);
         break;
     case Bisect_Kernel:
-        res = test_kernel(outf, env, inspector, bug);
+        res = test_kernel(outf, env, bug);
         break;
     default:
         break;
@@ -506,7 +505,7 @@ retry:
     {
         // In the case a blocking bug is found and removed, rebuild and go again
         log_session_info(outf, current_session, inc_session());
-        build_current_kernel(outf, env, inspector, bug);
+        build_current_kernel(outf, env, bug);
         goto retry;
     }
 

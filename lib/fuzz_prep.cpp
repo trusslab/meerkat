@@ -7,7 +7,6 @@
 #include <fuzz.h>
 #include <fuzz_prep.h>
 #include <git_api.h>
-#include <inspector_config.h>
 #include <shell_api.h>
 #include <template_parse.h>
 #include <version.h>
@@ -49,7 +48,7 @@ int get_procs_from_repro(const string & repro)
     return p;
 }
 
-VMConfig determine_threadedness(InspectorConfig &inspector, const Bug_Info &bug, std::ostream &logfile)
+VMConfig determine_threadedness(Environment &env, const Bug_Info &bug, std::ostream &logfile)
 {
     string reproducer = bug.reproducer + "/repro-" + bug.numName + "-1.prog";
     int procs = get_procs_from_repro(reproducer);
@@ -58,27 +57,27 @@ VMConfig determine_threadedness(InspectorConfig &inspector, const Bug_Info &bug,
     case 1:
         cout << "Using resource allocation for a single proc bug.\n";
         logfile << "Single Proc Allocation\n";
-        inspector.vmc = inspector.get_vmst();
+        env.vmc = env.vmst;
         break;
     case 6:
         cout << "Using default resource allocation.\n";
         logfile << "Default Allocation.\n";
-        inspector.vmc = inspector.get_vmd();
+        env.vmc = env.vmd;
         break;
     case 8:
         cout << "Using resource allocation for a multi-proc bug.\n";
         logfile << "Multi-Proc Allocation.\n";
-        inspector.vmc = inspector.get_vmr();
+        env.vmc = env.vmr;
         break;
     default:
         cerr << "Warning: Could not retrieve number of procs from reproducer " << reproducer << ". Using Default.\n";
-        inspector.vmc = inspector.get_vmd();
+        env.vmc = env.vmd;
     }
-    logfile << "VMs:" << inspector.vmc.numVM << endl
-            << "CPUs:" << inspector.vmc.numCPU << endl
-            << "Procs:" << inspector.vmc.numProcs << endl;
+    logfile << "VMs:" << env.vmc.numVM << endl
+            << "CPUs:" << env.vmc.numCPU << endl
+            << "Procs:" << env.vmc.numProcs << endl;
 
-    return inspector.vmc;
+    return env.vmc;
 }
 
 vector<Version> grab_compiler_versions(const string &filename)
@@ -110,24 +109,24 @@ vector<Version> grab_compiler_versions(const string &filename)
     return versions;
 }
 
-string compiler_mux(const vector<Version> &versions, const Date &kernel_date, const InspectorConfig &inspector)
+string compiler_mux(const vector<Version> &versions, const Date &kernel_date, const Environment &env)
 {
     int i;
     // Assumes list of versions is sorted least to greatest
     for (i = versions.size() - 1; i >= 0 && kernel_date < versions.at(i).date; i--);
     i = i < 0 ? 0 : i;
 
-    return inspector.get_gcc_dir() + "/" + versions.at(i).name;
+    return env.gcc_dir + "/" + versions.at(i).name;
 }
 
-string get_compiler(const vector<Version> &gcc_versions, const vector<Version> &clang_versions, const Date &kernel_date, const InspectorConfig &inspector)
+string get_compiler(const vector<Version> &gcc_versions, const vector<Version> &clang_versions, const Date &kernel_date, const Environment &env)
 {
-    switch (inspector.compiler_setting)
+    switch (env.compiler_setting)
     {
         case COMPILER_GCC:
-            return compiler_mux(gcc_versions, kernel_date, inspector)+"/bin/gcc";
+            return compiler_mux(gcc_versions, kernel_date, env)+"/bin/gcc";
         case COMPILER_CLANG:
-            return compiler_mux(clang_versions, kernel_date, inspector)+"/bin/clang";
+            return compiler_mux(clang_versions, kernel_date, env)+"/bin/clang";
         case COMPILER_CLANG_14:
             return "clang-14";
     }
@@ -209,10 +208,10 @@ int unset_kernel_config(const string &config, const vector<string> &config_to_se
     return err;
 }
 
-void patch_kernel(const Environment &env, const InspectorConfig &inspector, const Version &linux_version)
+void patch_kernel(const Environment &env, const Version &linux_version)
 {
     string old_dir = pwd();
-    cd(inspector.get_inspect_dir());
+    cd(env.home);
 
     // apply patch from 760f8522ce08
     // Fixes "error: #error New address family defined, please update secclass_map."
@@ -301,10 +300,10 @@ void patch_kernel(const Environment &env, const InspectorConfig &inspector, cons
     cd(old_dir);
 }
 
-int prep_kernel(const Environment &env, const Bug_Info &bug, const InspectorConfig &inspector, const Version &linux_version, const string &repo, const string &compiler)
+int prep_kernel(const Environment &env, const Bug_Info &bug, const Version &linux_version, const string &repo, const string &compiler)
 {
     int err = 0;
-    cd(inspector.get_inspect_dir());
+    cd(env.home);
     clean_kernel(env);
 
     // downloads the kernel version (does not decide)
@@ -316,22 +315,22 @@ int prep_kernel(const Environment &env, const Bug_Info &bug, const InspectorConf
     copy(bug.kconfig, env.kerneldir + "/.config");
 
     // Handle Patches
-    patch_kernel(env, inspector, linux_version);
+    patch_kernel(env, linux_version);
 
     // build the kernel
     cout << "Building the kernel...\n" << flush;
     string outfile = env.wd + "/log/" + bug.numName + "-kbuild.log";
     cd(env.kerneldir);
-    err = make(inspector.get_makeprocs(), {"olddefconfig", "CC="+compiler}, outfile);
+    err = make(env.makeprocs, {"olddefconfig", "CC="+compiler}, outfile);
     if (err < 0)
         return err;
-    err = make(inspector.get_makeprocs(), "CC="+compiler, outfile);
+    err = make(env.makeprocs, "CC="+compiler, outfile);
     if (err < 0)
     {
         cerr << "Error: The kernel failed to make.\n";
         return err;
     }
-    cd(inspector.get_inspect_dir());
+    cd(env.home);
     return err;
 }
 
@@ -347,10 +346,10 @@ int clean_kernel(const Environment &env)
     return (err == 0 ? 0 : -1);
 }
 
-void patch_syzkaller(const Environment &env, const Bug_Info &bug, const InspectorConfig &inspector, const Version &syzkaller_version)
+void patch_syzkaller(const Environment &env, const Bug_Info &bug, const Version &syzkaller_version)
 {
     string old_dir = pwd();
-    cd(inspector.get_inspect_dir());
+    cd(env.home);
 
     // Patch a boot error related to kvm
     if (syzkaller_version.date < Date(2021,1,1) && syzkaller_version.date >= Date(2020,5,1))
@@ -438,7 +437,7 @@ void patch_syzkaller(const Environment &env, const Bug_Info &bug, const Inspecto
     cd(old_dir);
 }
 
-int prep_syzkaller(const Environment &env, const Bug_Info &bug, const InspectorConfig &inspector, const Version &syzkaller_version, const string &use_template)
+int prep_syzkaller(const Environment &env, const Bug_Info &bug, const Version &syzkaller_version, const string &use_template)
 {
     int err = 0;
     string outfile = env.wd + "/log/" + bug.numName + "-syzbuild.log";
@@ -446,16 +445,16 @@ int prep_syzkaller(const Environment &env, const Bug_Info &bug, const InspectorC
     {
         if(syzkaller_version.date <= Date(2020,5,18))
         {
-            cout << "Copying syz-env from " << inspector.get_inspect_dir() + "/tools/syz-env" << " to " << env.syzdir + "/tools/" << endl;
+            cout << "Copying syz-env from " << env.home + "/tools/syz-env" << " to " << env.syzdir + "/tools/" << endl;
             move(env.syzdir + "/tools/syz-env/env.go", env.syzdir + "/tools/syz-env/make.go");
             move(env.syzdir + "/tools/syz-env", env.syzdir + "/tools/syz-make");
             sed_i("s/go run tools\\/syz-env\\/env\\.go))/go run tools\\/syz-make\\/make\\.go))/", env.syzdir + "/Makefile");
-            copy(inspector.get_inspect_dir() + "/tools/syz-env", env.syzdir + "/tools/");
+            copy(env.home + "/tools/syz-env", env.syzdir + "/tools/");
         }
 
         cd(env.syzdir);
         err = syz_env_clean(env.syzdir + "/tools/syz-env", bug);
-        cd(inspector.get_inspect_dir());
+        cd(env.home);
     }
     
     err = clean_syzkaller(env);
@@ -481,7 +480,7 @@ int prep_syzkaller(const Environment &env, const Bug_Info &bug, const InspectorC
         go_mod_init();
         go_mod_tidy();
         go_mod_vendor();
-        cd(inspector.get_inspect_dir());
+        cd(env.home);
         dangerzone = true;
     }
 
@@ -530,7 +529,7 @@ int prep_syzkaller(const Environment &env, const Bug_Info &bug, const InspectorC
     sed_i("s/-pthread -Wall -Wframe-larger-than=8192 -Wparentheses -Werror/-pthread -Wall -Wframe-larger-than=8192 -Wparentheses/",
             env.syzdir + "/Makefile");
 
-    patch_syzkaller(env, bug, inspector, syzkaller_version);
+    patch_syzkaller(env, bug, syzkaller_version);
 
     // Handle old go mod
     if (check_file(env.syzdir + "/Godeps/Godeps.json") && !dangerzone)
@@ -539,7 +538,7 @@ int prep_syzkaller(const Environment &env, const Bug_Info &bug, const InspectorC
         go_mod_init();
         go_mod_tidy();
         go_mod_vendor();
-        cd(inspector.get_inspect_dir());
+        cd(env.home);
     }
 
     // Fix issue with earlier versions of syzkaller
@@ -552,35 +551,35 @@ int prep_syzkaller(const Environment &env, const Bug_Info &bug, const InspectorC
     if (!grep_to_find("descriptions:", env.syzdir + "/Makefile"))
     {
         cd(env.syzdir);
-        make(inspector.get_makeprocs(), "bin/syz-sysgen");
+        make(env.makeprocs, "bin/syz-sysgen");
         char command[] = "./bin/syz-sysgen";
         char * arg_list[] = {command, nullptr};
         err = exec_and_wait("./bin/syz-sysgen", arg_list);
         if (err != 0)
             return -1;
-        cd(inspector.get_inspect_dir());
+        cd(env.home);
     }
 
     if (syzkaller_version.date <= Date(2017,7,28))
     {
         cd(env.syzdir);
-        make(inspector.get_makeprocs(), "all-tools");
-        cd(inspector.get_inspect_dir());
+        make(env.makeprocs, "all-tools");
+        cd(env.home);
     }
 
     // Build syzkaller
     cd(env.syzdir);
     if (bug.arch == "amd64")
-        err = make(inspector.get_makeprocs(), "", outfile);
+        err = make(env.makeprocs, "", outfile);
     else
     {
         if(syzkaller_version.date <= Date(2020,5,18))
         {
-            cout << "Copying syz-env from " << inspector.get_inspect_dir() + "/tools/syz-env" << " to " << env.syzdir + "/tools/" << endl;
+            cout << "Copying syz-env from " << env.home + "/tools/syz-env" << " to " << env.syzdir + "/tools/" << endl;
             move(env.syzdir + "/tools/syz-env/env.go", env.syzdir + "/tools/syz-env/make.go");
             move(env.syzdir + "/tools/syz-env", env.syzdir + "/tools/syz-make");
             sed_i("s/go run tools\\/syz-env\\/env\\.go))/go run tools\\/syz-make\\/make\\.go))/", env.syzdir + "/Makefile");
-            copy(inspector.get_inspect_dir() + "/tools/syz-env", env.syzdir + "/tools/");
+            copy(env.home + "/tools/syz-env", env.syzdir + "/tools/");
         }
 
         err = syz_env_cross_compile(env.syzdir + "/tools/syz-env", bug);
@@ -588,12 +587,12 @@ int prep_syzkaller(const Environment &env, const Bug_Info &bug, const InspectorC
 
     if (err < 0)
         cerr << "Error: Syzkaller failed to make.\n";
-    cd(inspector.get_inspect_dir());
+    cd(env.home);
 
     return err;
 }
 
-int write_syzkaller_config(const Environment &env, const Bug_Info &bug, const InspectorConfig &inspector, const Date &syz_date)
+int write_syzkaller_config(const Environment &env, const Bug_Info &bug, const Date &syz_date)
 {
     ofstream outf;
     outf.open(env.syzconfig);
@@ -611,7 +610,7 @@ int write_syzkaller_config(const Environment &env, const Bug_Info &bug, const In
         outf << "    \"target\": \"linux/amd64" << (bug.arch == "i386" ? "/386" : "") << "\",\n";
     }
 
-    outf << "    \"http\": \"127.0.0.1:" << inspector.port.port << "\",\n"
+    outf << "    \"http\": \"127.0.0.1:" << env.port.port << "\",\n"
          << "    \"workdir\": \"" << env.syzwd << "\",\n";
 
     // "vmlinux" until 2018-06-27, then "kernel_obj" starting on 2018-06-28
@@ -622,21 +621,21 @@ int write_syzkaller_config(const Environment &env, const Bug_Info &bug, const In
 
     // change image when syzkaller did. It shouldn't matter, but who knows.
     if (syz_date >= Date(2018,9,4))
-        outf << "    \"image\": \"" << inspector.get_image_dir() << "/stretch/stretch.img\",\n"
-             << "    \"sshkey\": \"" << inspector.get_image_dir() << "/stretch/stretch.id_rsa\",\n";
+        outf << "    \"image\": \"" << env.image_dir << "/stretch/stretch.img\",\n"
+             << "    \"sshkey\": \"" << env.image_dir << "/stretch/stretch.id_rsa\",\n";
     else
-        outf << "    \"image\": \"" << inspector.get_image_dir() << "/wheezy/wheezy.img\",\n"
-             << "    \"sshkey\": \"" << inspector.get_image_dir() << "/wheezy/ssh/id_rsa\",\n";
+        outf << "    \"image\": \"" << env.image_dir << "/wheezy/wheezy.img\",\n"
+             << "    \"sshkey\": \"" << env.image_dir << "/wheezy/ssh/id_rsa\",\n";
 
     outf << "    \"syzkaller\": \"" << env.syzdir << "\",\n"
-         << "    \"procs\": " << inspector.vmc.numProcs << ",\n"
+         << "    \"procs\": " << env.vmc.numProcs << ",\n"
          << "    \"type\": \"qemu\",\n"
          << "    \"reproduce\": false,\n"
          << "    \"vm\": {\n"
-         << "        \"count\": " << inspector.vmc.numVM << ",\n"
+         << "        \"count\": " << env.vmc.numVM << ",\n"
          << "        \"kernel\": \"" << env.kerneldir << "/arch/x86/boot/bzImage\",\n"
-         << "        \"cpu\": " << inspector.vmc.numCPU << ",\n"
-         << "        \"mem\": " << inspector.get_mem() << "\n"
+         << "        \"cpu\": " << env.vmc.numCPU << ",\n"
+         << "        \"mem\": " << env.memory << "\n"
          << "    }\n"
          << "}\n";
 
