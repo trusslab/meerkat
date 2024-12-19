@@ -57,3 +57,13 @@ std::string chomp(const std::string &str)
 {
     return ends_with(str, "\n") ? str.substr(0, str.size() - 1) : str;
 }
+
+bool is_hash(const std::string &str)
+{
+    bool ishash = true;
+    for (char a : str)
+        if (!isxdigit(a))
+            return false;
+    
+    return true;
+}

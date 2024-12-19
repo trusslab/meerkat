@@ -40,11 +40,7 @@ public:
 class Environment
 {
 public:
-    bool use_poc;
-    bool stateful_corpus;
-    bool prune_corpus;
-    bool find_only;
-    bool no_merge;
+    bool try_patch;
     bool safe_mode;
 
     unsigned int max_time;
@@ -56,6 +52,7 @@ public:
 
     std::string origin_path;
     std::string logfilename;
+    // TODO: remove this (redundant with Git)
     std::string linux_repo_remote;
 
     std::string home;                   // SyzInspector/

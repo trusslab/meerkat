@@ -22,6 +22,26 @@
 
 using namespace std;
 
+std::string make_repro_log(const Environment &env, const Bug_Info &bug)
+{
+    std::string reprolog = env.wd+bug.numName+"-reprolog.prog";
+
+    std::vector<std::string> out;
+    for (std::string file : list_dir(bug.reproducer))
+    {
+        // This lets syz-repro see when a program begins
+        out.push_back("executing program 0:");
+        std::vector<std::string> lines;
+        load_file(file, lines);
+        for (std::string line : lines)
+            out.push_back(line);
+        out.push_back("");
+    }
+
+    write_file(reprolog, out);
+    return reprolog;
+}
+
 int find_max_time(const vector<Syzkaller_Result> &times)
 {
     // time = mean + 1 * std
@@ -81,7 +101,7 @@ string get_crash_name(const string &hash)
 
 // The time is rough here and rounds up to the nearest time increment (usually 1 minute)
 // result.ttf is the time it took to find the bug, or the max_time
-Syzkaller_Result run_syzkaller(ofstream &logfile, const Environment &env,const Bug_Info &bug)
+Syzkaller_Result run_syzkaller(ofstream &logfile, const Environment &env, const Bug_Info &bug, bool keep_corpus)
 {
     Syzkaller_Result result;
     int time = 0, to_add = 0;
@@ -92,7 +112,7 @@ Syzkaller_Result run_syzkaller(ofstream &logfile, const Environment &env,const B
     map<string, int> checked_crashes;
     string crash_name;
 
-    prepare_kaller_wd(env, bug);
+    prepare_kaller_wd(env, bug, keep_corpus);
 
     // run syzkaller
     cd(env.syzdir);
@@ -168,7 +188,75 @@ Syzkaller_Result run_syzkaller(ofstream &logfile, const Environment &env,const B
     return result;
 }
 
-Test_Result fuzz_loop_finding(ofstream &logfile, Environment &env, const Bug_Info &bug, const Date &syz_date)
+Syzkaller_Result run_syz_repro(std::ofstream &logfile, const Environment &env, const Bug_Info &bug, const std::string &reprolog)
+{
+    Syzkaller_Result result;
+    int time = 0, to_add = 0;
+    result.ttf = 0;
+    result.found = false;
+    result.bad_crashes = 0;
+
+    std::string old_dir = pwd();
+    cd(env.syzdir);
+
+    std::vector<std::string> cmd = {"./bin/syz-repro", "-config", env.syzconfig, reprolog};
+    const char ** arg_list = new const char*[cmd.size()+1];
+    for (int i = 0; i < cmd.size(); i++)
+        arg_list[i] = cmd.at(i).c_str();
+
+    arg_list[cmd.size()] = nullptr;
+
+    cout << "Running syz-repro...\n";
+    int pid = exec_and_continue("./bin/syz-repro", (char **)arg_list, env.syzkaller_log, env.syzkaller_log);
+
+    int i = 0;
+    while (time < env.max_time && !result.found)
+    {
+        sleep(60*TIME_INCREMENT);
+        time += TIME_INCREMENT;
+
+        std::vector<std::string> loglines;
+        load_file(env.syzkaller_log, loglines);
+        for (; i < loglines.size(); i++)
+        {
+            int pos = loglines.at(i).find("program crashed: ");
+            if (pos == std::string::npos)
+                continue;
+
+            std::string crash_name = loglines.at(i).substr(pos+18);
+
+            result.found = fuzz_is_crash_in(crash_name, bug.duplicates) ? true : result.found;
+            for (int j = 0; j < to_add; j++)
+                result.reports.push_back({crash_name, time});
+
+            if (fuzz_is_bad_crash(crash_name))
+                result.bad_crashes += to_add;
+        }
+
+        if (wc_l(env.syzkaller_log) > 5000)
+        {
+            cout << "Warning: syz-repro log file exceeded 5000 lines. Assuming boot failure\n";
+            logfile << "Warning: syz-repro log file exceeded 5000 lines.\n"
+                    << "Saved at " << env.logdir + bug.numName + "-boot_failure.log" << ".\n" << flush;
+            copy(env.syzkaller_log, env.logdir + bug.numName + "-boot_failure.log");
+            result.bad_crashes++;
+            result.reports.push_back({"boot failure", time});
+            break;
+        }
+        // syz-repro stopping is normal
+        if (!check_alive(pid))
+            break;
+    }
+    result.ttf = time;
+
+    if (check_alive(pid))
+        kill_child(pid);
+
+    cd(old_dir);
+    return result;
+}
+
+Test_Result fuzz_loop_finding(ofstream &logfile, Environment &env, const Bug_Info &bug, const Date &syz_date, bool keep_corpus)
 {
     Test_Result result;
     result.found = false;
@@ -178,7 +266,7 @@ Test_Result fuzz_loop_finding(ofstream &logfile, Environment &env, const Bug_Inf
     {
         env.port.inc();
         write_syzkaller_config(env, bug, syz_date);
-        result.attempts.push_back(run_syzkaller(logfile, env, bug));
+        result.attempts.push_back(run_syzkaller(logfile, env, bug, keep_corpus));
         result.found = result.attempts.back().found ? true : result.found;
         if (result.attempts.back().bad_crashes > 0 && retries < env.fuzztimes)
         {
@@ -189,12 +277,11 @@ Test_Result fuzz_loop_finding(ofstream &logfile, Environment &env, const Bug_Inf
     }
 
     result.stable = unstable_count < result.attempts.size() / 2 || result.found;
-    result.suggest_ttf = (env.find_only ? find_average_time(result.attempts) : find_max_time(result.attempts));
-
+    result.suggest_ttf = (false ? find_average_time(result.attempts) : find_max_time(result.attempts));
     return result;
 }
 
-Test_Result fuzz_loop(ofstream &logfile, Environment &env, const Bug_Info &bug,  const Date &syz_date)
+Test_Result fuzz_loop(ofstream &logfile, Environment &env, const Bug_Info &bug,  const Date &syz_date, bool keep_corpus)
 {
     Test_Result result;
     result.found = false;
@@ -204,7 +291,7 @@ Test_Result fuzz_loop(ofstream &logfile, Environment &env, const Bug_Info &bug, 
     {
         env.port.inc();
         write_syzkaller_config(env, bug, syz_date);
-        result.attempts.push_back(run_syzkaller(logfile, env, bug));
+        result.attempts.push_back(run_syzkaller(logfile, env, bug, keep_corpus));
         result.found = result.attempts.back().found;
         if (result.attempts.back().bad_crashes > 0 && retries < env.fuzztimes)
         {
@@ -216,7 +303,34 @@ Test_Result fuzz_loop(ofstream &logfile, Environment &env, const Bug_Info &bug, 
 
     result.stable = unstable_count < result.attempts.size() / 2 || result.found;
     result.suggest_ttf = find_max_time(result.attempts);
+    return result;
+}
 
+Test_Result repro_loop_finding(ofstream &logfile, Environment &env, const Bug_Info &bug, const Date &syz_date)
+{
+    Test_Result result;
+    result.found = false;
+    result.retry = false;
+
+    std::string reprolog = make_repro_log(env, bug);
+
+    int retries = 0, unstable_count = 0;
+    for (int i = 0; i < env.fuzztimes + retries && unstable_count < env.fuzztimes; i++)
+    {
+        env.port.inc();
+        write_syzkaller_config(env, bug, syz_date);
+        result.attempts.push_back(run_syz_repro(logfile, env, bug, reprolog));
+        result.found = result.attempts.back().found ? true : result.found;
+        if (result.attempts.back().bad_crashes > 0 && retries < env.fuzztimes)
+        {
+            retries++;
+            unstable_count++;
+        }
+        log_attempt_result(logfile, result.attempts.back(), i + 1, bug.duplicates, env.fuzztimes);
+    }
+
+    result.stable = unstable_count < result.attempts.size() / 2 || result.found;
+    result.suggest_ttf = (false ? find_average_time(result.attempts) : find_max_time(result.attempts));
     return result;
 }
 

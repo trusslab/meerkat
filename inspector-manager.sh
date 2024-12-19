@@ -47,26 +47,25 @@ printhelp () {
     echo "    b - determine the name of the bug file in parse"
     echo "    m - the maximum time to fuzz at the finding commit"
     echo "    a - the arch to build on (amd64/i386)"
-    echo "    p - fuzz without the poc as a seed"
-    echo "    f - fuzz only at the finding commit"
-    echo "    x - only set up the kernel and syzkaller. Do not fuzz"
-    echo "    d - build and use a debug version of SyzInspector"
+    echo "    A - the algorith to use (1, 2...)"
+    echo "        1 - focused-fuzz-stateful"
+    echo "        2 - focused-fuzz-clean"
+    echo "        3 - poc-ff-backup"
+    echo "        4 - syz-bisect"
+    echo "        5 - setup-only"
+    echo "        6 - finding-only"
     echo "    S - run in safe mode"
 }
 
 # =================================================================================================
 
-setuponly=""
-nopoc=""
-stateful_corpus=""
-prune_corpus=""
 mtime=""
-findonly=""
 safemode=""
 targetarch="amd64" # i386
+algnum=""
 
 # get the start and end lines from the arguments
-while getopts "s:e:i:b:m:a:xnkpfS" flag
+while getopts "s:e:i:b:m:a:A:S" flag
 do
     case $flag in
         s)
@@ -81,18 +80,8 @@ do
             mtime="-m ${OPTARG}" ;;
         a)
             targetarch="${OPTARG}" ;;
-        n)
-            nopoc="--no-poc" ;;
-        k)
-            stateful_corpus="--stateful-corpus" ;;
-        p)
-            prune_corpus="--prune-corpus" ;;
-        f)
-            findonly="--find-only"
-            setuponly="" ;;
-        x)
-            setuponly="--setup-only"
-            findonly="" ;;
+        A)
+            algnum="${OPTARG}" ;;
         S)
             safemode="--safe-mode" ;;
         *)
@@ -108,6 +97,24 @@ fi
 if [[ $id == "" ]]; then
     echo "No id given. Use -i <id>"
     exit
+fi
+
+algorithm=""
+if [[ ${algnum} == "" ]]; then
+    echo "No algorithm given. Use -A <num>"
+    exit
+elif [[ ${algnum} == "1" ]]; then
+    algorithm="focused-fuzz-stateful"
+elif [[ ${algnum} == "2" ]]; then
+    algorithm="focused-fuzz-clean"
+elif [[ ${algnum} == "3" ]]; then
+    algorithm="poc-ff-backup"
+elif [[ ${algnum} == "4" ]]; then
+    algorithm="syz-bisect"
+elif [[ ${algnum} == "5" ]]; then
+    algorithm="setup-only"
+elif [[ ${algnum} == "6" ]]; then
+    algorithm="finding-only"
 fi
 
 echo "Starting at: $(date)"
@@ -242,10 +249,12 @@ while (( $line <= $endLine )); do
             writebugconfig
 
             echo ",good fuzz,$findDate,$findDate,$startDate" >> $logfile
-            echo "./$retrospector -i $id -c $inspectorconfig --known-syz $knownSyzHash $mtime $nopoc $findonly $setuponly $safemode $stateful_corpus $prune_corpus" >> $logfile
+            # --known-syz $knownSyzHash
+            echo "./$retrospector -i $id -c $inspectorconfig $mtime $safemode" >> $logfile
             echo "Fuzzing. finding: $findhash; guilty: $guiltyhash"
             set +e
-            ./$retrospector -i $id -c $inspectorconfig --known-syz $knownSyzHash $mtime $nopoc $findonly $setuponly $safemode $stateful_corpus $prune_corpus
+            # --known-syz $knownSyzHash
+            ./$retrospector -i $id -c $inspectorconfig --algorithm ${algorithm} $mtime $safemode
             set -e
             number=$(( $number + 1 ))
         else

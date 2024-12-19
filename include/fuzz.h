@@ -10,17 +10,14 @@
 #include <string>
 #include <vector>
 
-// runs syzkaller once. Returns a data structure with
-// time to find and bugs found.
-Syzkaller_Result run_syzkaller(std::ofstream &, const Environment &, const Bug_Info &);
-
 // Runs Syzkaller fuzztimes times. Returns the new max time
 // to use. Intended to be run on the finding commit.
-Test_Result fuzz_loop_finding(std::ofstream &, Environment &, const Bug_Info &, const Date &);
+Test_Result fuzz_loop_finding(std::ofstream &, Environment &, const Bug_Info &, const Date &, bool);
+Test_Result repro_loop_finding(std::ofstream &, Environment &, const Bug_Info &, const Date &);
 
 // Runs syzkaller fuzztimes times. Returns the culmination
 // of the results.
-Test_Result fuzz_loop(std::ofstream &, Environment &, const Bug_Info &, const Date &);
+Test_Result fuzz_loop(std::ofstream &, Environment &, const Bug_Info &, const Date &, bool);
 
 // Checks against heuristics to see if the resulting kernel
 // commit is faulty. Returns true if it is.

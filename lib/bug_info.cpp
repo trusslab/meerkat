@@ -91,20 +91,12 @@ int Bug_Info::parse_config_file(const Environment &env, const std::string & file
         return -1;
     }
 
+    have_fdate = false;
     if (json.has_name("finding_date") && json.is_type("finding_date", JSON_Val_string))
     {
         find_date = Date(json.get_string("finding_date"));
         find_date.set_delim('-');
-    }
-
-    if (json.has_name("guilty_hash") && json.is_type("guilty_hash", JSON_Val_string))
-    {
-        guilty_hash = json.get_string("guilty_hash");
-    }
-    else
-    {
-        std::cerr << "Error: Guilty Hash was not given (\"guilty_hash\": \"03ad...\")\n" << std::flush;
-        return -1;
+        have_fdate = true;
     }
 
     if (json.has_name("kernel_config") && json.is_type("kernel_config", JSON_Val_string))

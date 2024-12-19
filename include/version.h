@@ -15,6 +15,7 @@
 class Version
 {
 public:
+    std::string tag;
     std::string name;
     Date date;
     bool skipped;
@@ -25,6 +26,10 @@ public:
 
     Version(const std::string &n, const Date &d)
         : name(n), date(d), skipped(false)
+    { return; }
+
+    Version(const std::string &t, const std::string &n, const Date &d)
+        : tag(t), name(n), date(d), skipped(false)
     { return; }
 
     bool operator==(const Version &);

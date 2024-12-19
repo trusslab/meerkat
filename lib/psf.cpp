@@ -255,7 +255,7 @@ vector<string> parse_manual_duplicates(const string &filename, const string &bug
 
 vector<string> gather_duplicates(const Environment &env, Bug_Info &bug)
 {
-    string tmp_snapshotfile = env.wd + "/snapshot";
+    string tmp_snapshotfile = env.wd + "snapshot";
     vector<string> duplicates;
 
     lynx_dump(SYZBOT_FIXED_LINK, tmp_snapshotfile);

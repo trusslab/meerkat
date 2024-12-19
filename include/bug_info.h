@@ -12,6 +12,8 @@
 class Bug_Info
 {
 public:
+    bool have_fdate;
+
     int number;                         // the bug number
     std::string name;                   // the name of the bug given by syzbot
     std::string numName;                // the number name given by inspector-manager.sh (i.e. bug0003)
@@ -24,7 +26,6 @@ public:
     std::string allreproducer;          // the file with all PoCs concatenated
     std::string buglink;                // the link to the bug in syzbot
 
-    std::string guilty_hash;
     std::string find_hash;
     Date find_date;
 

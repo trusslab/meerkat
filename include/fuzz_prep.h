@@ -4,6 +4,7 @@
 #include <bug_info.h>
 #include <date.h>
 #include <environment.h>
+#include <git.h>
 #include <version.h>
 
 #include <string>
@@ -34,14 +35,14 @@ int unset_kernel_config(const std::string &, const std::vector<std::string> &);
 
 // Grabs the correct kernel version, applies any patches needed,
 // copies the config in, and build the kernel
-int prep_kernel(const Environment &, const Bug_Info &, const Version &, const std::string &, const std::string &);
+int prep_kernel(const Environment &, const Bug_Info &, Git &, const Version &, const std::string &);
 
 // runs make clean
 int clean_kernel(const Environment &);
 
 // grabs the correct syzkaller version, applies any patches
 // slims the template, and builds syzkaller
-int prep_syzkaller(const Environment &, const Bug_Info &, const Version &, const std::string & = "");
+int prep_syzkaller(const Environment &, const Bug_Info &, Git &, const Version &, bool = true);
 
 // writes the syzkaller config to the config file.
 // also shifts the host port by one
@@ -49,7 +50,7 @@ int write_syzkaller_config(const Environment &, const Bug_Info &, const Date &);
 
 // deletes the syzkaller working directory and recreates it.
 void reset_kaller_wd(const Environment &);
-int prepare_kaller_wd(const Environment &, const Bug_Info &);
+int prepare_kaller_wd(const Environment &, const Bug_Info &, bool);
 
 // cleans files when we switch syzkaller versions.
 // Simply removes any non-hidden file.

@@ -6,7 +6,7 @@
 #include <file_api.h>
 #include <fuzz.h>
 #include <fuzz_prep.h>
-#include <git_api.h>
+#include <git.h>
 #include <shell_api.h>
 #include <template_parse.h>
 #include <version.h>
@@ -116,7 +116,7 @@ string compiler_mux(const vector<Version> &versions, const Date &kernel_date, co
     for (i = versions.size() - 1; i >= 0 && kernel_date < versions.at(i).date; i--);
     i = i < 0 ? 0 : i;
 
-    return env.gcc_dir + "/" + versions.at(i).name;
+    return env.gcc_dir + versions.at(i).name;
 }
 
 string get_compiler(const vector<Version> &gcc_versions, const vector<Version> &clang_versions, const Date &kernel_date, const Environment &env)
@@ -300,16 +300,20 @@ void patch_kernel(const Environment &env, const Version &linux_version)
     cd(old_dir);
 }
 
-int prep_kernel(const Environment &env, const Bug_Info &bug, const Version &linux_version, const string &repo, const string &compiler)
+int prep_kernel(const Environment &env, const Bug_Info &bug, Git &linux_git, const Version &linux_version, const std::string &compiler)
 {
     int err = 0;
     cd(env.home);
     clean_kernel(env);
+    linux_git.cleanup();
 
     // downloads the kernel version (does not decide)
-    err = git_fetch_and_checkout(env.kerneldir, repo, linux_version.name);
+    err = linux_git.fetch_and_checkout(linux_version.name);
     if (err < 0)
-        return err;
+    {
+        std::cerr << "Error: Failed to fetch/checkout linux finding commit\n" << std::flush;
+        return -1;
+    }
 
     // copy over the config
     copy(bug.kconfig, env.kerneldir + "/.config");
@@ -350,6 +354,24 @@ void patch_syzkaller(const Environment &env, const Bug_Info &bug, const Version 
 {
     string old_dir = pwd();
     cd(env.home);
+
+    // Remove the flags that check for unused functions
+    // Also remember to build execcutor with 32 bit flags for i386
+    if (bug.arch == "i386")
+    {
+        sed_i("s/$(ADDCFLAGS) $(CFLAGS) -DGOOS_$(TARGETOS)=1 -DGOARCH_$(TARGETARCH)=1/-m32 -O2 -pthread -Wall -static-pie -DGOOS_$(TARGETOS)=1 -DGOARCH_$(TARGETARCH)=1/",
+                env.syzdir + "/Makefile");
+    }
+    else
+    {
+        sed_i("s/$(ADDCFLAGS) $(CFLAGS) -DGOOS_$(TARGETOS)=1 -DGOARCH_$(TARGETARCH)=1/-m64 -O2 -pthread -Wall -static-pie -DGOOS_$(TARGETOS)=1 -DGOARCH_$(TARGETARCH)=1/",
+                env.syzdir + "/Makefile");
+    }
+
+    // This sed is for older versions before e935237c9c7214eb37cb35a93c9930b590016094 (2019-01-19)
+    // thankfully no overlap between the two checks, so we can just run both.
+    sed_i("s/-pthread -Wall -Wframe-larger-than=8192 -Wparentheses -Werror/-pthread -Wall -Wframe-larger-than=8192 -Wparentheses/",
+            env.syzdir + "/Makefile");
 
     // Patch a boot error related to kvm
     if (syzkaller_version.date < Date(2021,1,1) && syzkaller_version.date >= Date(2020,5,1))
@@ -437,10 +459,30 @@ void patch_syzkaller(const Environment &env, const Bug_Info &bug, const Version 
     cd(old_dir);
 }
 
-int prep_syzkaller(const Environment &env, const Bug_Info &bug, const Version &syzkaller_version, const string &use_template)
+int slim_syzkaller_template(const Environment &env, const Bug_Info &bug, const Version &syzkaller_version)
+{
+    int err = 0;
+    string full_template = syzkaller_version.date < Date(2017,9,15) ? env.syzdir + "/sys" : env.syzdir + "/sys/linux";
+    string new_template = env.wd + "my_template.txt";
+    vector<string> template_files = list_template_files(full_template);
+    cout << "Slimming the template.\n";
+    err = slim_template(bug.allreproducer, new_template, template_files, syzkaller_version.date < OLD_INOUT_DATE);
+    if (err < 0)
+    {
+        cout << "Error: failed to slim the template.\n";
+        return err;
+    }
+    remove_template_files(template_files);
+    copy(new_template, full_template);
+    return err;
+}
+
+int prep_syzkaller(const Environment &env, const Bug_Info &bug, Git &syzkaller, const Version &syzkaller_version, bool do_slim)
 {
     int err = 0;
     string outfile = env.logdir + bug.numName + "-syzbuild.log";
+
+    syzkaller.cleanup();
     if (bug.arch == "i386")
     {
         if(syzkaller_version.date <= Date(2020,5,18))
@@ -456,9 +498,10 @@ int prep_syzkaller(const Environment &env, const Bug_Info &bug, const Version &s
         err = syz_env_clean(env.syzdir + "/tools/syz-env", bug);
         cd(env.home);
     }
+    else
+        err = clean_syzkaller(env);
     
-    err = clean_syzkaller(env);
-    if (err < 0)
+    if (err < 0 || syzkaller.error() < 0)
         return err;
 
     // export targetvmarch and target arch if building for 386
@@ -472,7 +515,7 @@ int prep_syzkaller(const Environment &env, const Bug_Info &bug, const Version &s
     bool dangerzone = false;
     if (syzkaller_version.date < Date(2020,7,4) && syzkaller_version.date >= Date(2020,4,30))
     {
-        err = git_fetch_and_checkout(env.syzdir, SYZKALLER_REPO_REMOTE, "136082ab38d86932bc3ed0087694e99d0e55491b");
+        err = syzkaller.fetch_and_checkout("136082ab38d86932bc3ed0087694e99d0e55491b");
         if (err < 0)
             return err;
 
@@ -485,49 +528,12 @@ int prep_syzkaller(const Environment &env, const Bug_Info &bug, const Version &s
     }
 
     // download syzkaller (does not decide)
-    err = git_fetch_and_checkout(env.syzdir, SYZKALLER_REPO_REMOTE, syzkaller_version.name);
+    err = syzkaller.fetch_and_checkout(syzkaller_version.name);
     if (err < 0)
         return err;
 
-    // Slim the template if needed, otherwise copy over the one given
-    string full_template = syzkaller_version.date < Date(2017,9,15) ? env.syzdir + "/sys" : env.syzdir + "/sys/linux";
-    string new_template = env.wd + "my_template.txt";
-    vector<string> template_files = list_template_files(full_template);
-
-    if (use_template.empty())
-    {
-        cout << "Slimming the template.\n";
-        err = slim_template(bug.allreproducer, new_template, template_files, syzkaller_version.date < OLD_INOUT_DATE);
-        if (err < 0)
-        {
-            cout << "Error: failed to slim the template.\n";
-            return err;
-        }
-    }
-    else
-    {
-        new_template = use_template;
-    }
-    remove_template_files(template_files);
-    copy(new_template, full_template);
-
-    // Remove the flags that check for unused functions
-    // Also remember to build execcutor with 32 bit flags for i386
-    if (bug.arch == "i386")
-    {
-        sed_i("s/$(ADDCFLAGS) $(CFLAGS) -DGOOS_$(TARGETOS)=1 -DGOARCH_$(TARGETARCH)=1/-m32 -O2 -pthread -Wall -static-pie -DGOOS_$(TARGETOS)=1 -DGOARCH_$(TARGETARCH)=1/",
-                env.syzdir + "/Makefile");
-    }
-    else
-    {
-        sed_i("s/$(ADDCFLAGS) $(CFLAGS) -DGOOS_$(TARGETOS)=1 -DGOARCH_$(TARGETARCH)=1/-m64 -O2 -pthread -Wall -static-pie -DGOOS_$(TARGETOS)=1 -DGOARCH_$(TARGETARCH)=1/",
-                env.syzdir + "/Makefile");
-    }
-
-    // This sed is for older versions before e935237c9c7214eb37cb35a93c9930b590016094 (2019-01-19)
-    // thankfully no overlap between the two checks, so we can just run both.
-    sed_i("s/-pthread -Wall -Wframe-larger-than=8192 -Wparentheses -Werror/-pthread -Wall -Wframe-larger-than=8192 -Wparentheses/",
-            env.syzdir + "/Makefile");
+    if (do_slim)
+        slim_syzkaller_template(env, bug, syzkaller_version);
 
     patch_syzkaller(env, bug, syzkaller_version);
 
@@ -697,7 +703,7 @@ int syz_db_unpack_corpus(const Environment &env, const string &corpusdir, const 
 // Filter/Clear the previous corpus
 // Adds the PoCs to the corpus
 // Packs the corpus
-int prepare_kaller_wd(const Environment &env, const Bug_Info &bug)
+int prepare_kaller_wd(const Environment &env, const Bug_Info &bug, bool keep_corpus)
 {
     bool do_pack = false;
     int err = 0;
@@ -708,8 +714,7 @@ int prepare_kaller_wd(const Environment &env, const Bug_Info &bug)
         remove_dir(corpusdir);
     make_dir(corpusdir);
 
-    // TODO: If needed
-    if (env.stateful_corpus && check_file(corpus))
+    if (keep_corpus && check_file(corpus))
     {
         err = syz_db_unpack_corpus(env, corpusdir, corpus);
         do_pack = true;
@@ -718,15 +723,11 @@ int prepare_kaller_wd(const Environment &env, const Bug_Info &bug)
     }
 
     reset_kaller_wd(env);
-    // if (env.prune_corpus) prune_corpus();
 
     // Copy the reproducers into the corpus directory
-    if (env.use_poc)
-    {
-        for (string repro : list_dir(bug.reproducer))
-            copy(repro, corpusdir);
-        do_pack = true;
-    }
+    for (string repro : list_dir(bug.reproducer))
+        copy(repro, corpusdir);
+    do_pack = true;
 
     if (do_pack)
         err = syz_db_pack_corpus(env, corpusdir, corpus);
@@ -739,6 +740,16 @@ exit:
 
 int clean_syzkaller(const Environment &env)
 {
+    string old_dir = pwd();
+    int err = 0;
+
+    cd(env.syzdir);
+    err = make(1, "clean");
+    cd(old_dir);
+
+    return (err == 0 ? 0 : -1);
+
+    /*
     int pos0, err = 0;
     for (string file : list_dir(env.syzdir))
     {
@@ -750,6 +761,6 @@ int clean_syzkaller(const Environment &env)
                 return err;
         }
     }
-
-    return 0;
+    */
+    //return 0;
 }

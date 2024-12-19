@@ -8,7 +8,7 @@
 #include <file_api.h>
 #include <fuzz_prep.h>
 #include <fuzz.h>
-#include <git_api.h>
+#include <git.h>
 #include <git_traverse.h>
 #include <psf.h>
 #include <result.h>
@@ -24,62 +24,214 @@
 
 using namespace std;
 
-int prep_syzkaller_local_repo(const Environment &env)
+Git prep_syzkaller_local_repo(const Environment &env)
 {
-    if (!check_file(env.syzdir))
-    {
-        cout << "Creating Syzkaller directory.\n";
-        make_dir(env.syzdir);
-    }
-    else
-        cout << "Found Syzkaller directory.\n";
-
-    if (!check_file(env.syzdir + ".git"))
-    {
-        cout << "Cloning Syzkaller repository...\n";
-        if (git_clone(SYZKALLER_REPO_REMOTE, env.syzdir) < 0)
-        {
-            cerr << "Error: Git clone failed.\n";
-            return -1;
-        }
-    }
-    else
-        cout << "Found Syzkaller local repository.\n";
-    
-    return 0;
+    Git syzkaller_git(env.syzdir, SYZKALLER_REPO_REMOTE, "master");
+    return syzkaller_git;
 }
 
-int prep_kernel_local_repo(Environment &env, const Bug_Info &bug)
+Git prep_kernel_local_repo(Environment &env, const Bug_Info &bug)
 {
     env.linux_repo_remote = LINUX_REPO_REMOTE + bug.repository;
 
-    if (!check_file(env.kerneldir))
-    {
-        cout << "Creating kernel directory.\n";
-        make_dir(env.kerneldir);
-    }
-    else
-        cout << "Found kernel directory.\n";
+    Git linux_git(env.kerneldir, env.linux_repo_remote, "master");
+    return linux_git;
+}
 
-    // this may cause issues when the repository opened is not the one we want
-    if (!check_file(env.kerneldir + ".git"))
+int focused_fuzz_bisection(ofstream &logfile, Argparse &args, Environment &env, Bug_Info &bug, Bisect &bisector, Git &linux_git, Git &syzkaller_git)
+{
+    int err = 0;
+    Test_Result result;
+    // ======================================================================================================
+    // Major Release Search
+
+    bisector.next_phase(Bisect_Releases, env, linux_git, syzkaller_git);
+    if (err < 0)
     {
-        cout << "Cloning Linux repository...\n";
-        if (git_clone(env.linux_repo_remote, env.kerneldir) < 0)
+        cerr << "Failed to advance to Release search phase.\n" << flush;
+        return -1;
+    }
+
+    // for known syzkaller, start with kernel bisection (major releases again)
+    // finding -> major releases -> syzkaller bisection -> major releases -> kernel bisection
+    if (args.is_set("known-syz"))
+    {
+        if ((err = bisector.skip_syzkaller(args.get_arg_as_string("known-syz"), syzkaller_git)) < 0)
         {
-            cerr << "Error: Git clone failed.\n";
+            cerr << "Could not advance to syzkaller phase via skip.\n" << flush;
             return -1;
         }
+        goto skip_syzkaller;
     }
-    else
-        cout << "Found Linux local repository.\n";
-    
+
+    logfile << "\n==== Major Release Search ====\n" 
+            << bisector.remaining() << " Release" << (bisector.remaining() == 1 ? "" : "s") << "\n" << flush;
+
+    while ((err = bisector.next_session(logfile, env, bug, linux_git, syzkaller_git)) == 0)
+    {
+        result = bisector.test_current(logfile, env, bug, linux_git);
+        bisector.record(result, linux_git);
+        logfile << "About " << bisector.remaining() << " releases remaining\n" << flush;
+    }
+    if (err < 0)
+    {
+        cerr << "Failed to get or build next session.\n" << flush;
+        return -1;
+    }
+
+    // Result: a bisect session and index into the releases.
+    // Bisect session is the oldest release where the bug reproduced. Index points to it in the releases array.
+
+    // ======================================================================================================
+    // Syzkaller Bisection
+
+    err = bisector.next_phase(Bisect_Syzkaller, env, linux_git, syzkaller_git);
+    if (err < 0)
+    {
+        cerr << "Failed to advance to Syzkaller bisection phase.\n" << flush;
+        return -1;
+    }
+
+    logfile << "\n==== Syzkaller Bisection ====\n" 
+            << bisector.remaining() << " Syzkaller commit" << (bisector.syzkaller_versions.size() == 1 ? "" : "s") << "\n" << flush;
+
+    while ((err = bisector.next_session(logfile, env, bug, linux_git, syzkaller_git)) == 0)
+    {
+        result = bisector.test_current(logfile, env, bug, linux_git);
+        bisector.record(result, linux_git);
+        logfile << "About " << bisector.remaining() << " commits remaining\n" << flush;
+    }
+    if (err < 0)
+    {
+        cerr << "Failed to get or build next session.\n" << flush;
+        return -1;
+    }
+
+    bisector.lock_syzkaller();
+
+    // ======================================================================================================
+    // Major Release Search (This time for kernel commits)
+
+skip_syzkaller:
+    bisector.next_phase(Bisect_Releases, env, linux_git, syzkaller_git);
+    if (err < 0)
+    {
+        cerr << "Failed to advance to Release search phase.\n" << flush;
+        return -1;
+    }
+
+    logfile << "\n==== Major Release Search ====\n" 
+            << bisector.remaining() << " Release" << (bisector.remaining() == 1 ? "" : "s") << "\n" << flush;
+
+    while ((err = bisector.next_session(logfile, env, bug, linux_git, syzkaller_git)) == 0)
+    {
+        result = bisector.test_current(logfile, env, bug, linux_git);
+        bisector.record(result, linux_git);
+        logfile << "About " << bisector.remaining() << " releases remaining\n" << flush;
+    }
+    if (err < 0)
+    {
+        cerr << "Failed to get or build next session.\n" << flush;
+        return -1;
+    }
+
+    // ======================================================================================================
+    // Kernel Bisection
+
+    err = bisector.next_phase(Bisect_Kernel, env, linux_git, syzkaller_git);
+    if (err < 0)
+    {
+        cerr << "Failed to advance to kernel bisection phase.\n" << flush;
+        return -1;
+    }
+
+    logfile << "\n==== Kernel Bisection ====\n"
+            << bisector.remaining() << " Linux commit" << (bisector.remaining() == 1 ? "" : "s") << endl
+            << "Syzkaller Version: " << bisector.this_session().syzkaller.date.get_date() << " - " << bisector.this_session().syzkaller.name << endl << flush;
+
+    while ((err = bisector.next_session(logfile, env, bug, linux_git, syzkaller_git)) == 0)
+    {
+        result = bisector.test_current(logfile, env, bug, linux_git);
+        bisector.record(result, linux_git);
+        logfile << "About " << bisector.stable_remaining() << " commits remaining\n" << flush;
+    }
+    if (err < 0)
+    {
+        cerr << "Failed to get or build next session.\n" << flush;
+        return -1;
+    }
+
+    return 0;
+}
+
+int poc_bisection(ofstream &logfile, Argparse &args, Environment &env, Bug_Info &bug, Bisect &bisector, Git &linux_git, Git &syzkaller_git)
+{
+    int err = 0;
+    Test_Result result;
+
+    // ======================================================================================================
+    // Major Release Search
+
+    bisector.next_phase(Bisect_Releases, env, linux_git, syzkaller_git);
+    if (err < 0)
+    {
+        cerr << "Failed to advance to Release search phase.\n" << flush;
+        return -1;
+    }
+
+    logfile << "\n==== Major Release Search ====\n" 
+            << bisector.remaining() << " Release" << (bisector.remaining() == 1 ? "" : "s") << "\n" << flush;
+
+    while ((err = bisector.next_session(logfile, env, bug, linux_git, syzkaller_git)) == 0)
+    {
+        result = bisector.test_current(logfile, env, bug, linux_git);
+        bisector.record(result, linux_git);
+        logfile << "About " << bisector.remaining() << " releases remaining\n" << flush;
+    }
+    if (err < 0)
+    {
+        cerr << "Failed to get or build next session.\n" << flush;
+        return -1;
+    }
+
+    // ======================================================================================================
+    // Kernel Bisection
+
+    err = bisector.next_phase(Bisect_Kernel, env, linux_git, syzkaller_git);
+    if (err < 0)
+    {
+        cerr << "Failed to advance to kernel bisection phase.\n" << flush;
+        return -1;
+    }
+
+    logfile << "\n==== Kernel Bisection ====\n"
+            << bisector.remaining() << " Linux commit" << (bisector.remaining() == 1 ? "" : "s") << endl << flush;
+
+    while ((err = bisector.next_session(logfile, env, bug, linux_git, syzkaller_git)) == 0)
+    {
+        result = bisector.test_current(logfile, env, bug, linux_git);
+        bisector.record(result, linux_git);
+        logfile << "About " << bisector.stable_remaining() << " commits remaining\n" << flush;
+    }
+    if (err < 0)
+    {
+        cerr << "Failed to get or build next session.\n" << flush;
+        return -1;
+    }
+
+    // Kernel bisection should give a bisect version and a good version (no bug).
+    // We fuzz on the good commit to try to find a repro, then restart if found.
+    // Otherwise, bisect version is the result
+
+    // ======================================================================================================
+    // Syzkaller Fuzz Test
+
     return 0;
 }
 
 int bisect(Argparse &args, Environment &env, Bug_Info &bug)
 {
-    int err = 0, git_err = 0;
+    int err = 0;
     string starttime = date("%Y-%m-%d %T");
     ofstream logfile;
     Bisect bisector;
@@ -93,14 +245,10 @@ int bisect(Argparse &args, Environment &env, Bug_Info &bug)
         return -1;
     }
 
-    // Set up syzkaller repository locally
-    err = prep_syzkaller_local_repo(env);
-    if (err < 0)
-        goto finish;
-
-    // Set up linux repository locally
-    err = prep_kernel_local_repo(env, bug);
-    if (err < 0)
+    // Set up syzkaller and linux repositories locally
+    Git syzkaller_git = prep_syzkaller_local_repo(env);
+    Git linux_git = prep_kernel_local_repo(env, bug);
+    if (linux_git.error() < 0 || syzkaller_git.error() < 0)
         goto finish;
 
     // begin logging
@@ -108,14 +256,21 @@ int bisect(Argparse &args, Environment &env, Bug_Info &bug)
             << args.origin() << "\n\n"
             << "Repository:      " << bug.kpreface << endl
             << "Arch:            " << bug.arch << endl
-            << "Finding:         " << git_get_commit_date(env.wd, env.kerneldir, bug.find_hash).get_date() << " - " << bug.find_hash << endl
-            << "Guilty:          " << git_get_commit_date(env.wd, env.kerneldir, bug.guilty_hash).get_date() << " - " << bug.guilty_hash << endl  << flush;
+            << "Finding:         " << linux_git.get_commit_date(bug.find_hash).get_date() << " - " << bug.find_hash << endl << flush;
     if (args.is_set("known-syz"))
-            logfile << "Using Syzkaller: " << git_get_commit_date(env.wd, env.syzdir, args.get_arg_as_string("known-syz")).get_date() << " - " << args.get_arg_as_string("known-syz") << endl << flush;
+            logfile << "Using Syzkaller: " << syzkaller_git.get_commit_date(args.get_arg_as_string("known-syz")).get_date() << " - " << args.get_arg_as_string("known-syz") << endl << flush;
 
-    // Parse Syzbot for duplicate bugs
-    cout << "Gathering bug fixes from Syzbot.\n";
-    gather_duplicates(env, bug);
+    if (false)
+    {
+        // Parse Syzbot for duplicate bugs
+        cout << "Gathering bug fixes from Syzbot.\n";
+        gather_duplicates(env, bug);
+    }
+    else
+    {
+        bug.duplicates.clear();
+        bug.duplicates.push_back(bug.name);
+    }
 
     if (bug.duplicates.size() > 1)
     {
@@ -145,32 +300,23 @@ int bisect(Argparse &args, Environment &env, Bug_Info &bug)
     // ======================================================================================================
 
     cout << "Initializing Bisector...\n";
-    if (args.is_set("known-syz"))
+    bisector.init(env, bug, linux_git);
+    if (bisector.releases.size() <= 1)
+        goto finish;
+    
+    cout << "Found " << bisector.releases.size() << " major releases\n" << flush;
+
+    if (!args.is_set("algorithm") || bisector.set_algorithm(args.get_arg_as_string("algorithm")) < 0)
     {
-        bisector.init(env, bug, args.is_set('f'), args.get_arg_as_string("known-syz"));
-    }
-    else
-    {
-        bisector.init(env, bug, args.is_set('f'));
-    }
-    if (bisector.kernel_versions.size() == 0)
-    {
-        logfile << "Error: Failed to gather kernel versions.\n" << flush;
+        cerr << "Error: invalid algorithm choice\n" << flush;
         goto finish;
     }
-    else if (bisector.syzkaller_versions.size() == 0)
-    {
-        logfile << "Error: Failed to gather syzkaller versions.\n" << flush;
-        goto finish;
-    }
-    cout << "Found " << bisector.kernel_versions.size() << " kernel commits.\n";
-    cout << "Found " << bisector.syzkaller_versions.size() << " Syzkaller commits.\n";
 
     // ======================================================================================================
     // Fuzz at the finding commit
     
     reset_kaller_wd(env);
-    bisector.next_phase(Bisect_Finding);
+    bisector.next_phase(Bisect_Finding, env, linux_git, syzkaller_git);
     if (err < 0)
     {
         cerr << "Failed to advance to finding commit phase.\n" << flush;
@@ -179,10 +325,15 @@ int bisect(Argparse &args, Environment &env, Bug_Info &bug)
 
     logfile << "\n==== Finding Commit ====\n" << flush;
 
-    bisector.next_session(logfile, env, bug);
+    // Begin with Syzkaller from finding date. This emulates Syzbot for any algorithm
+    if (bisector.next_session(logfile, env, bug, linux_git, syzkaller_git) < 0)
+    {
+        cerr << "Error: Failed to go to finding commit\n" << flush;
+        goto finish;
+    }
 
     cout << SPACER;
-    if (args.is_set("setup-only"))
+    if (bisector.algorithm() == ALG_SETUP)
     {
         write_syzkaller_config(env, bug, bisector.this_session().syzkaller.date);
         logfile << "Setup-only complete.\n" << flush;
@@ -190,9 +341,9 @@ int bisect(Argparse &args, Environment &env, Bug_Info &bug)
         goto setup_only_finish;
     }
 
-    result = bisector.test_current(logfile, env, bug);
+    result = bisector.test_current(logfile, env, bug, linux_git);
 
-    if (env.find_only)
+    if (bisector.algorithm() == ALG_FINDING)
     {
         logfile << "Average TTF: " << result.suggest_ttf << endl;
         cout << "Find-only complete.\n";
@@ -210,101 +361,32 @@ int bisect(Argparse &args, Environment &env, Bug_Info &bug)
         logfile << "\nNew Max Time: " << env.max_time << "\n" << flush;
     }
 
-    bisector.record(result);
-    
-    //  ======================================================================================================
-    // Find Merge Commit
-
-    if (!env.no_merge)
-    {
-        cout << "Looking for Merge Commit...\n";
-        Version merge_commit = bisector.find_merge_commit(env, bug);
-        if (!merge_commit.name.empty())
-        {
-            cout << "Merge commit found: " << merge_commit.name << ".\n";
-            logfile << "Merge Commit: " << merge_commit.date.get_date() << " - " << merge_commit.name << "\n" << flush;
-        }
-        else
-        {
-            cout << "No merge commit found.\n";
-            logfile << "No Merge Commit.\n" << flush;
-        }
-    }
+    bisector.record(result, linux_git);
 
     // ======================================================================================================
-    // Syzkaller Bisection
-
-    if (args.is_set("known-syz"))
+    // Break off here by bisection algorithm
+    switch(bisector.algorithm())
     {
-        if ((err = bisector.skip_syzkaller()) < 0)
-        {
-            cerr << "Could not advance to syzkaller phase via skip.\n" << flush;
-            goto finish;
-        }
-        goto skip_syzkaller;
-    }
-
-    err = bisector.next_phase(Bisect_Syzkaller);
-    if (err < 0)
-    {
-        cerr << "Failed to advance to Syzkaller bisection phase.\n" << flush;
-        goto finish;
-    }
-
-    logfile << "\n==== Syzkaller Bisection ====\n" 
-            << bisector.remaining() << " Syzkaller commit" << (bisector.syzkaller_versions.size() == 1 ? "" : "s") << " in ["
-            << bisector.low_date_str() << ", " << bisector.high_date_str() << "].\n" << flush;
-
-    while ((err = bisector.next_session(logfile, env, bug)) == 0)
-    {
-        result = bisector.test_current(logfile, env, bug);
-        bisector.record(result);
-        logfile << "About " << bisector.remaining() << " commits remaining\n" << flush;
+    case ALG_FF_CLEAN:
+    case ALG_FF_STATEFUL:
+        err = focused_fuzz_bisection(logfile, args, env, bug, bisector, linux_git, syzkaller_git);
+        break;
+    case ALG_BISECT_FF:
+    case ALG_SYZ_BISECT:
+        err = poc_bisection(logfile, args, env, bug, bisector, linux_git, syzkaller_git);
+        break;
     }
     if (err < 0)
-    {
-        cerr << "Failed to get or build next session.\n" << flush;
         goto finish;
-    }
-
-    // ======================================================================================================
-    // Kernel Bisection
-
-    // We will need to test the remainder of the kernel commits between the bisect date
-    // (whichever commit was tested alongside), and the earliest kernel commit testable.
-
-skip_syzkaller:
-    err = bisector.next_phase(Bisect_Kernel);
-    if (err < 0)
-    {
-        cerr << "Failed to advance to kernel bisection phase.\n" << flush;
-        goto finish;
-    }
-
-    logfile << "\n==== Kernel Bisection ====\n"
-            << bisector.remaining() << " Linux commit" << (bisector.remaining() == 1 ? "" : "s") << " in [" << bisector.low_date_str() << ", " << bisector.high_date_str() << "].\n"
-            << "Syzkaller Version: " << bisector.this_session().syzkaller.date.get_date() << " - " << bisector.this_session().syzkaller.name << endl << flush;
-
-    while ((err = bisector.next_session(logfile, env, bug)) == 0)
-    {
-        result = bisector.test_current(logfile, env, bug);
-        bisector.record(result);
-        logfile << "About " << bisector.stable_remaining() << " commits remaining\n" << flush;
-    }
-    if (err < 0)
-    {
-        cerr << "Failed to get or build next session.\n" << flush;
-        goto finish;
-    }
 
     // ======================================================================================================
     // Finish
     // ======================================================================================================
 
-    bisector.next_phase(Bisect_Done);
+    bisector.next_phase(Bisect_Done, env, linux_git, syzkaller_git);
 
     logfile << "\n" << SPACER
-            << bisector.print_result(env, bug, starttime) << flush;
+            << bisector.print_result(env, bug, linux_git, starttime) << flush;
 
     logfile << "\nPossible Blocking Bugs:\n";
     for (string b : bug.blocking_bugs.list_blocking_bugs())
@@ -339,16 +421,11 @@ setup_only_finish:
 
 void print_help()
 {
-    cout << "Help:\n"
+    cout << "Usage: ./bin/syzInspector -c [config] -i [id]\n"
         << "    -m [max_time]: the maximum time (minutes) allowed when fuzzing (default 30).\n"
         << "    -i [id]: REQUIRED. The id of the inspector (i.e. 1).\n"
         << "    --config (c): [config]: REQUIRED. The config file containing the bug information.\n"
-        << "    --setup-only: download and build all the parts, but don't actually fuzz.\n"
-        << "    --no-merge: don't use the merge commit as a revealing factor.\n"
-        << "    --no-poc: fuzz without the poc.\n"
-        << "    --stateful-corpus: keep the syzkaller corpus between runs\n"
-        << "    --prune-corpus: keep only useful test cases in corpus between runs\n"
-        << "    --find-only: only fuzz at the finding commit.\n"
+        << "    --algorithm: REQUIRED. the bisection algorithm to use.\n"
         << "    --safe-mode: use safe mode.\n"
         << "    --known-syz: use a specific syzkaller hash.\n"
         << endl << flush;
@@ -386,7 +463,7 @@ int main(int argc, char ** argv)
     Bug_Info bug;
 
     args.expect("mihc");
-    args.expect(vector<string>({ "help", "config", "setup-only", "no-merge", "no-poc", "find-only", "safe-mode", "known-syz", "stateful-corpus", "prune-corpus" }));
+    args.expect(vector<string>({ "help", "config", "algorithm", "safe-mode", "try-patch", "known-syz" }));
     args.parse(argc, argv);
     if (args.is_set('h') || args.is_set("help"))
     {
@@ -430,19 +507,10 @@ int main(int argc, char ** argv)
     export_go(env);
     env.origin_path = get_path();
 
-    // Corpus options
-    env.use_poc = !args.is_set("no-poc");
-    env.stateful_corpus = args.is_set("stateful-corpus") || args.is_set("prune-corpus");
-    env.prune_corpus = args.is_set("prune-corpus");
-
-    // allow for fuzzing only at the finding commit
-    env.find_only = args.is_set("find-only");
-
-    // allow for ignoring the merge as a revealing factor
-    env.no_merge = args.is_set("no-merge");
-    
-    if(args.is_set("safe-mode") || bug.name.substr(0, 11) == "memory leak")
+    if (args.is_set("safe-mode") || bug.name.substr(0, 11) == "memory leak")
         set_safe_mode(env.safe_mode, env.max_time, env.fuzztimes);
+
+    env.try_patch = args.is_set("try-patch");
 
     // make sure all of the needed files are here.
     cout << "Checking files.\n";

@@ -1,6 +1,8 @@
 #include <date.h>
+#include <my_string.h>
 
 #include <string>
+#include <vector>
 #include <cctype>
 #include <sstream>
 
@@ -97,50 +99,47 @@ Date::Date(const Date & other)
 
 bool Date::set_date(const std::string & s)
 {
-    bool ok = true;
+    bool nopunct = true;
     char de = '-';
 
-    if (s.size() != 10)
+    for (int i = 0; i < s.size(); i++)
+    {
+        if (isdigit(s.at(i)))
+            continue;
+        else if (ispunct(s.at(i)) && nopunct)
+        {
+            de = s.at(i);
+            nopunct = false;
+        }
+        else if (ispunct(s.at(i)) && s.at(i) != de)
+            return false;
+    }
+
+    std::vector<std::string> spl = split(s, de);
+
+    if (spl.size() != 3)
         return false;
 
     int d = 0, m = 0, y = 0;
 
-    for (int i = 0; i < 4 && ok; i++)
-    {
-        if (!isdigit(s.at(i)))
-            ok = false;
-        else
-            y = y * 10 + (s.at(i) - '0');
-    }
+    y = stoi(spl.at(0));
+    if (y < 0)
+        return false;
 
-    if (ispunct(s.at(4)))
-        de = s.at(4);
-    else
-        ok = false;
+    m = stoi(spl.at(1));
+    if (m < 0 || m > 12)
+        return false;
 
-    for (int i = 5; i < 7 && ok; i++)
-    {
-        if (!isdigit(s.at(i)))
-            ok = false;
-        else
-            m = m * 10 + (s.at(i) - '0');
-    }
-    ok = (s.at(7) == de) ? ok : false;
-
-    for (int i = 8; i < 10 && ok; i++)
-    {
-        if (!isdigit(s.at(i)))
-            ok = false;
-        else
-            d = d * 10 + (s.at(i) - '0');
-    }
+    d = stoi(spl.at(2));
+    if (d < 0 || d > 31)
+        return false;
 
     if (set_date(y, m, d))
         set_delim(de);
     else
-        ok = false;
+        return false;
 
-    return ok;
+    return true;
 }
 
 bool Date::set_date(unsigned int y, unsigned int m, unsigned int d)
