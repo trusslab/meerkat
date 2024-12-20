@@ -18,6 +18,7 @@ Test_Result repro_loop_finding(std::ofstream &, Environment &, const Bug_Info &,
 // Runs syzkaller fuzztimes times. Returns the culmination
 // of the results.
 Test_Result fuzz_loop(std::ofstream &, Environment &, const Bug_Info &, const Date &, bool);
+Test_Result repro_loop(std::ofstream &, Environment &, const Bug_Info &, const Date &);
 
 // Checks against heuristics to see if the resulting kernel
 // commit is faulty. Returns true if it is.

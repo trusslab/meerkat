@@ -26,6 +26,7 @@ private:
     Session current_session;
     Session last_session;
     Session bisect_session;
+    Session good_session;
     std::set<Session> past_sessions;
 
     Version finding_version;
@@ -51,9 +52,11 @@ private:
     int next_stable_binary_syzkaller();
     int next_stable_binary();
 
-    int init_releases_phase(Git &);
+    int init_releases_phase_ff(Git &);
     int init_syzkaller_phase(const Environment &, Git &, Git &);
     int init_kernel_phase(Git &);
+
+    int init_releases_phase_poc(Git &);
 
     int next_phase_ff(const Environment &, Git &, Git &);
     int next_phase_poc(const Environment &, Git &, Git &);
@@ -67,10 +70,12 @@ private:
 
     int goto_finding_session(std::ofstream &, const Environment &, const Bug_Info &, Git &, Git &);
     int goto_release_session_ff(std::ofstream &, const Environment &, const Bug_Info &, Git &, Git &);
-    int goto_syzkaller_session(std::ofstream &, const Environment &, const Bug_Info &, Git &, Git &);
-    int goto_kernel_session(std::ofstream &, const Environment &, const Bug_Info &, Git &, Git &);
+    int goto_syzkaller_session_ff(std::ofstream &, const Environment &, const Bug_Info &, Git &, Git &);
+    int goto_kernel_session_ff(std::ofstream &, const Environment &, const Bug_Info &, Git &, Git &);
 
     int goto_release_session_poc(std::ofstream &, const Environment &, const Bug_Info &, Git &, Git &);
+    int goto_kernel_session_poc(std::ofstream &, const Environment &, const Bug_Info &, Git &, Git &);
+    int goto_syzkaller_session_poc(std::ofstream &, const Environment &, const Bug_Info &, Git &, Git &);
 
     int next_session_ff(std::ofstream &, const Environment &, const Bug_Info &, Git &, Git &);
     int next_session_poc(std::ofstream &, const Environment &, const Bug_Info &, Git &, Git &);

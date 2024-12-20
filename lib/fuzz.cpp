@@ -334,6 +334,35 @@ Test_Result repro_loop_finding(ofstream &logfile, Environment &env, const Bug_In
     return result;
 }
 
+Test_Result repro_loop(ofstream &logfile, Environment &env, const Bug_Info &bug,  const Date &syz_date)
+{
+    Test_Result result;
+    result.found = false;
+    result.retry = false;
+
+    std::string reprolog = make_repro_log(env, bug);
+
+    int retries = 0, unstable_count = 0;
+    for (int i = 0; i < env.fuzztimes + retries && !result.found  && unstable_count < env.fuzztimes; i++)
+    {
+        env.port.inc();
+        write_syzkaller_config(env, bug, syz_date);
+        result.attempts.push_back(run_syz_repro(logfile, env, bug, reprolog));
+        result.found = result.attempts.back().found;
+        if (result.attempts.back().bad_crashes > 0 && retries < env.fuzztimes)
+        {
+            retries++;
+            unstable_count++;
+        }
+        log_attempt_result(logfile, result.attempts.back(), i + 1, bug.duplicates, env.fuzztimes);
+    }
+
+    result.stable = unstable_count < result.attempts.size() / 2 || result.found;
+    result.suggest_ttf = find_max_time(result.attempts);
+    return result;
+}
+
+
 bool check_faulty_result(const Bug_Info &bug)
 {
     bool fault = false;

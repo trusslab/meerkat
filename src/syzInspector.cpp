@@ -172,6 +172,7 @@ int poc_bisection(ofstream &logfile, Argparse &args, Environment &env, Bug_Info 
     // ======================================================================================================
     // Major Release Search
 
+restart:
     bisector.next_phase(Bisect_Releases, env, linux_git, syzkaller_git);
     if (err < 0)
     {
@@ -225,6 +226,30 @@ int poc_bisection(ofstream &logfile, Argparse &args, Environment &env, Bug_Info 
 
     // ======================================================================================================
     // Syzkaller Fuzz Test
+
+    err = bisector.next_phase(Bisect_Kernel, env, linux_git, syzkaller_git);
+    if (err < 0)
+    {
+        cerr << "Failed to advance to kernel bisection phase.\n" << flush;
+        return -1;
+    }
+
+    logfile << "\n==== Syzkaller Fuzzing ====\n" << flush;
+
+    err = bisector.next_session(logfile, env, bug, linux_git, syzkaller_git);
+    if (err < 0)
+    {
+        cerr << "Failed to get or build Syzkaller session.\n" << flush;
+        return -1;
+    }
+    result = bisector.test_current(logfile, env, bug, linux_git);
+    bisector.record(result, linux_git);
+
+    if (result.found)
+    {
+        bisector.lock_syzkaller();
+        goto restart;
+    }
 
     return 0;
 }
