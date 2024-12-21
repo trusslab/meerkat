@@ -93,7 +93,7 @@ int focused_fuzz_bisection(ofstream &logfile, Argparse &args, Environment &env, 
     }
 
     logfile << "\n==== Syzkaller Bisection ====\n" 
-            << bisector.remaining() << " Syzkaller commit" << (bisector.syzkaller_versions.size() == 1 ? "" : "s") << "\n" << flush;
+            << bisector.remaining() << " Syzkaller commit" << (bisector.remaining() == 1 ? "" : "s") << "\n" << flush;
 
     while ((err = bisector.next_session(logfile, env, bug, linux_git, syzkaller_git)) == 0)
     {
@@ -121,7 +121,8 @@ skip_syzkaller:
     }
 
     logfile << "\n==== Major Release Search ====\n" 
-            << bisector.remaining() << " Release" << (bisector.remaining() == 1 ? "" : "s") << "\n" << flush;
+            << bisector.remaining() << " Release" << (bisector.remaining() == 1 ? "" : "s") << endl
+            << "Syzkaller Version: " << bisector.this_session().syzkaller.date.get_date() << " - " << bisector.this_session().syzkaller.name << endl << flush;
 
     while ((err = bisector.next_session(logfile, env, bug, linux_git, syzkaller_git)) == 0)
     {
@@ -171,6 +172,8 @@ int poc_bisection(ofstream &logfile, Argparse &args, Environment &env, Bug_Info 
 
     // ======================================================================================================
     // Major Release Search
+
+    bisector.lock_syzkaller();
 
 restart:
     bisector.next_phase(Bisect_Releases, env, linux_git, syzkaller_git);

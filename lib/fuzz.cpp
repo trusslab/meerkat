@@ -223,11 +223,9 @@ Syzkaller_Result run_syz_repro(std::ofstream &logfile, const Environment &env, c
             if (pos == std::string::npos)
                 continue;
 
-            std::string crash_name = loglines.at(i).substr(pos+18);
-
+            std::string crash_name = loglines.at(i).substr(pos+17);
             result.found = fuzz_is_crash_in(crash_name, bug.duplicates) ? true : result.found;
-            for (int j = 0; j < to_add; j++)
-                result.reports.push_back({crash_name, time});
+            result.reports.push_back({crash_name, time});
 
             if (fuzz_is_bad_crash(crash_name))
                 result.bad_crashes += to_add;
@@ -331,6 +329,7 @@ Test_Result repro_loop_finding(ofstream &logfile, Environment &env, const Bug_In
 
     result.stable = unstable_count < result.attempts.size() / 2 || result.found;
     result.suggest_ttf = (false ? find_average_time(result.attempts) : find_max_time(result.attempts));
+    remove_file(reprolog);
     return result;
 }
 
@@ -359,6 +358,7 @@ Test_Result repro_loop(ofstream &logfile, Environment &env, const Bug_Info &bug,
 
     result.stable = unstable_count < result.attempts.size() / 2 || result.found;
     result.suggest_ttf = find_max_time(result.attempts);
+    remove_file(reprolog);
     return result;
 }
 

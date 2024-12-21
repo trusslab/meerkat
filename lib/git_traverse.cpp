@@ -18,6 +18,7 @@ std::vector<Version> get_kernel_versions(const Environment &env, Git &linux_git,
 {
     std::string outfile = env.wd + "tmp_kernel_versions.txt";
 
+    std::cout << "Getting kernel commits...\n" << std::flush;
     if (linux_git.revlist_topo(old_hash, new_hash, outfile) < 0)
         return std::vector<Version>();
 
@@ -88,15 +89,17 @@ std::vector<Version> get_kernel_versions(const Environment &env, Git &linux_git,
             kernel_versions.erase(kernel_versions.begin() + pos0);
     }
 
+    std::cout << "Found " << kernel_versions.size() << " kernel commits\n" << std::flush;
     return kernel_versions;
 }
 
 std::vector<Version> get_syzkaller_versions(const Environment &env, Git &syzkaller_git, const std::string &old_hash, const std::string &new_hash)
 {
-    int k;
     std::string outfile = env.wd + "tmp_syz_versions.txt";
 
-    syzkaller_git.revlist(old_hash, new_hash, outfile);
+    std::cout << "Getting syzkaller commits...\n" << std::flush;
+    if (syzkaller_git.revlist(old_hash, new_hash, outfile) < 0)
+        return std::vector<Version>();
 
     std::ifstream inf;
     inf.open(outfile);
@@ -122,6 +125,7 @@ std::vector<Version> get_syzkaller_versions(const Environment &env, Git &syzkall
     syzkaller_versions.push_back(v);
 
     // remove bad versions of syzkaller
+    int k;
     for (std::string h : SYZKALLER_BROKEN_VERSONS)
     {
         k = get_index_by_name(syzkaller_versions, h);
@@ -130,6 +134,7 @@ std::vector<Version> get_syzkaller_versions(const Environment &env, Git &syzkall
     }
 
     inf.close();
-    remove_file(outfile);
+    //remove_file(outfile);
+    std::cout << "Found " << syzkaller_versions.size() << " syzkaller commits\n" << std::flush;
     return syzkaller_versions;
 }

@@ -136,7 +136,7 @@ int Bisect::init_syzkaller_phase(const Environment &env, Git &linux_git, Git &sy
     // We are bisecting syzkaller. locking the version is impossible.
     lock_syz = false;
     // Coming off of a release search, we need to grab the kernel and syzkaller versions in between
-    std::string new_hash = bisect_index > 0 ? releases.at(bisect_index).name : finding_version.name;
+    std::string new_hash = bisect_index >= 0 ? releases.at(bisect_index).name : finding_version.name;
     std::string old_hash = releases.at(bisect_index + 1).name;
     kernel_versions = get_kernel_versions(env, linux_git, old_hash, new_hash);
 
@@ -148,7 +148,7 @@ int Bisect::init_syzkaller_phase(const Environment &env, Git &linux_git, Git &sy
     old_hash = syzkaller_git.get_commit_by_date_raw(old_date);
     syzkaller_versions = get_syzkaller_versions(env, syzkaller_git, old_hash, new_hash);
 
-    if (kernel_versions.empty() || syzkaller_versions.empty())
+    if (kernel_versions.size() <= 1 || syzkaller_versions.size() <= 1)
     {
         std::cerr << "Error: Failed to grab kernel and/or syzkaller versions\n" << std::flush;
         return -1;
@@ -168,8 +168,8 @@ int Bisect::init_syzkaller_phase(const Environment &env, Git &linux_git, Git &sy
 int Bisect::init_kernel_phase(Git &linux_git)
 {
     // Switch over to git bisect for this phase
-    std::string bad = bisect_session.kernel.tag;
-    std::string good = releases.at(bisect_index + 1).tag;
+    std::string bad = bisect_session.kernel.name;
+    std::string good = releases.at(bisect_index + 1).name;
     linux_git.bisect_reset();
     if (linux_git.error() < 0)
         return -1;
@@ -401,7 +401,7 @@ int Bisect::goto_release_session_ff(std::ofstream &logfile, const Environment &e
 
 retry:
     index++;
-    if (index >= releases.size() || (!last_session.found && last_session.stable))
+    if (index >= releases.size() || (index > 0 && !last_session.found && last_session.stable))
     {
         std::cout << "There are no more stable releases to test\n" << std::flush;
         return 1;
@@ -413,9 +413,8 @@ retry:
     }
 
     linux_version = releases.at(index);
-    // TODO: lock syzkaller
     old_date = linux_version.date > SYZBOT_BEGIN_DATE ? linux_version.date : SYZBOT_BEGIN_DATE;
-    syzkaller_version = syzkaller_git.get_version_by_date_raw(old_date);
+    syzkaller_version = lock_syz ? locked_syzkaller : syzkaller_git.get_version_by_date_raw(old_date);
     current_session = Session(linux_version, syzkaller_version, false);
     log_session_info(logfile, current_session, inc_session());
 
@@ -775,9 +774,8 @@ Test_Result Bisect::test_finding_poc(std::ofstream &logfile, Environment &env, B
 Test_Result Bisect::test_kernel_poc(std::ofstream &logfile, Environment &env, Bug_Info &bug)
 {
     Test_Result result;
-    /*
     std::cout << SPACER;
-    result = repro_loop(logfile, env, bug, current_session.syzkaller.date, alg == ALG_FF_STATEFUL);
+    result = repro_loop(logfile, env, bug, current_session.syzkaller.date);
     log_session_result(logfile, result, bug.duplicates);
     bug.blocking_bugs.count_blocking_bugs(result);
     if (env.try_patch && patch_blocking_bugs(result, bug) > 0)
@@ -787,7 +785,6 @@ Test_Result Bisect::test_kernel_poc(std::ofstream &logfile, Environment &env, Bu
     }
     if (check_safe_mode(result, env.safe_mode, env.max_time, env.fuzztimes))
         log_safe_mode(logfile, env.max_time, env.fuzztimes);
-    */
     return result;
 }
 
@@ -804,6 +801,7 @@ Test_Result Bisect::test_current_poc(std::ofstream &outf, Environment &env, Bug_
         res = test_kernel_poc(outf, env, bug);
         break;
     case Bisect_Syzkaller:
+        res = test_syzkaller(outf, env, bug);
         break;
     default:
         break;
@@ -908,13 +906,20 @@ int Bisect::record_release(const Test_Result &result)
     return 0;
 }
 
+int Bisect::record_finding(const Test_Result &result)
+{
+    bisect_session = current_session;
+    archive_session(result);
+    return 0;
+}
+
 int Bisect::record(const Test_Result &result, Git &linux_git)
 {
     int err = 0;
     switch(phase)
     {
     case Bisect_Finding:
-        err = archive_session(result);
+        err = record_finding(result);
         break;
     case Bisect_Releases:
         err = record_release(result);

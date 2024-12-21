@@ -90,9 +90,10 @@ private:
     Test_Result test_current_ff(std::ofstream &, Environment &, Bug_Info &);
     Test_Result test_current_poc(std::ofstream &, Environment &, Bug_Info &);
 
-    int record_syzkaller(const Test_Result &);
-    int record_kernel(const Test_Result &, Git &);
+    int record_finding(const Test_Result &);
     int record_release(const Test_Result &);
+    int record_kernel(const Test_Result &, Git &);
+    int record_syzkaller(const Test_Result &);
     int _archive_session();
 
 public:

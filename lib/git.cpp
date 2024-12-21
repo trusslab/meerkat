@@ -486,7 +486,7 @@ int Git::revlist_topo(const std::string &old_hash, const std::string &new_hash, 
 // git rev-list --ancestry-path --topo-order --date=format:'%Y-%m-%d' --format='%cd %P' old_hash..new_hash
 int Git::revlist(const std::string &old_hash, const std::string &new_hash, const std::string &outfile)
 {
-    err = git({"rev-list", "--ancestry-path", "--date=format-local:%Y-%m-%d", "--format=%cd", old_hash+".."+new_hash}, outfile);
+    err = git({"rev-list", "--ancestry-path", "--date=format-local:%Y-%m-%d", "--format=%cd %P", old_hash+".."+new_hash}, outfile);
     if (err != 0)
         std::cerr << "Error: git rev-list " << old_hash+".."+new_hash << " failed.\n" << std::flush;
     return err;
