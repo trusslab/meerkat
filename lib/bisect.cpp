@@ -144,6 +144,7 @@ int Bisect::init_syzkaller_phase(const Environment &env, Git &linux_git, Git &sy
     Date old_date = linux_git.get_commit_date(old_hash);
     if (old_date < SYZBOT_BEGIN_DATE)
         old_date = SYZBOT_BEGIN_DATE;
+    syzkaller_git.checkout("master");
     new_hash = syzkaller_git.get_commit_by_date_raw(new_date);
     old_hash = syzkaller_git.get_commit_by_date_raw(old_date);
     syzkaller_versions = get_syzkaller_versions(env, syzkaller_git, old_hash, new_hash);
@@ -170,6 +171,7 @@ int Bisect::init_kernel_phase(Git &linux_git)
     // Switch over to git bisect for this phase
     std::string bad = bisect_session.kernel.name;
     std::string good = releases.at(bisect_index + 1).name;
+    linux_git.cleanup();
     linux_git.bisect_reset();
     if (linux_git.error() < 0)
         return -1;
@@ -511,6 +513,7 @@ retry:
             logfile << "Attempting to recover.\n" << std::flush;
             current_session.stable = false;
             _archive_session();
+            linux_git.cleanup();
             if (linux_git.bisect_skip() == -2)
                 return 1;
             goto retry;
@@ -589,6 +592,7 @@ retry:
             logfile << "Attempting to recover.\n" << std::flush;
             current_session.stable = false;
             _archive_session();
+            linux_git.cleanup();
             if (linux_git.bisect_skip() == -2)
                 return 1;
             goto retry;
@@ -876,11 +880,13 @@ int Bisect::record_kernel(const Test_Result &result, Git &linux_git)
     
     if (result.found)
     {
+        linux_git.cleanup();
         git_remaining = linux_git.bisect_bad();
         bisect_session = current_session;
     }
     else if (result.stable)
     {
+        linux_git.cleanup();
         git_remaining = linux_git.bisect_good();
         good_session = current_session;
     }

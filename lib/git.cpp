@@ -248,10 +248,14 @@ int Git::bisect_start(const std::string &bad, const std::string &good)
     int rem = -1;
     std::string output = bisect_read({"start", bad, good});
     std::vector<std::string> spl = split(output, ' ');
-    if (spl.size() > 1 && spl.at(0).find("Bisecting:") != std::string::npos)
-        rem = stoi(spl.at(1));
-    else
-        err = -1;
+    for (int i = 0; i < spl.size(); i++)
+    {
+        if (spl.at(i).find("Bisecting:") != std::string::npos && i + 1 < spl.size())
+        {
+            rem = stoi(spl.at(i + 1));
+            break;
+        }
+    }
     
     return rem;
 }
@@ -263,20 +267,23 @@ int Git::bisect_good()
     int rem = -1;
     std::string output = bisect_read({"good"});
     std::vector<std::string> spl = split(output, ' ');
-    if (spl.size() > 1 && spl.at(0).find("Bisecting:") != std::string::npos)
+    for (int i = 0; i < spl.size(); i++)
     {
-        rem = stoi(spl.at(1));
+        if (spl.at(i).find("Bisecting:") != std::string::npos && i + 1 < spl.size())
+        {
+            rem = stoi(spl.at(i + 1));
+            break;
+        }
     }
-    else if (spl.size() > 1 && output.find("is the first bad commit") != std::string::npos
-            && is_hash(spl.at(0)))
+    if (rem == -1 && spl.size() > 1 && output.find("is the first bad commit") != std::string::npos)
     {
         rem = -2;
     }
-    else if (output.find("There are only 'skip'ped commits") != std::string::npos)
+    else if (rem == -1 && output.find("There are only 'skip'ped commits") != std::string::npos)
     {
         rem = -2;
     }
-    else
+    else if (rem == -1)
         err = -1;
     
     return rem;
@@ -287,20 +294,23 @@ int Git::bisect_bad()
     int rem = -1;
     std::string output = bisect_read({"bad"});
     std::vector<std::string> spl = split(output, ' ');
-    if (spl.size() > 1 && spl.at(0).find("Bisecting:") != std::string::npos)
+    for (int i = 0; i < spl.size(); i++)
     {
-        rem = stoi(spl.at(1));
+        if (spl.at(i).find("Bisecting:") != std::string::npos && i + 1 < spl.size())
+        {
+            rem = stoi(spl.at(i + 1));
+            break;
+        }
     }
-    else if (spl.size() > 1 && output.find("is the first bad commit") != std::string::npos
-            && is_hash(spl.at(0)))
+    if (rem == -1 && spl.size() > 1 && output.find("is the first bad commit") != std::string::npos)
     {
         rem = -2;
     }
-    else if (output.find("There are only 'skip'ped commits") != std::string::npos)
+    else if (rem == -1 && output.find("There are only 'skip'ped commits") != std::string::npos)
     {
         rem = -2;
     }
-    else
+    else if (rem == -1)
         err = -1;
     
     return rem;
@@ -311,24 +321,24 @@ int Git::bisect_skip()
     int rem = -1;
     std::string output = bisect_read({"skip"});
     std::vector<std::string> spl = split(output, ' ');
-    if (spl.size() > 1 && spl.at(0).find("Bisecting:") != std::string::npos)
+    for (int i = 0; i < spl.size(); i++)
     {
-        rem = stoi(spl.at(1));
+        if (spl.at(i).find("Bisecting:") != std::string::npos && i + 1 < spl.size())
+        {
+            rem = stoi(spl.at(i + 1));
+            break;
+        }
     }
-    else if (spl.size() > 1 && output.find("is the first bad commit") != std::string::npos
-            && is_hash(spl.at(0)))
+    if (rem == -1 && spl.size() > 1 && output.find("is the first bad commit") != std::string::npos)
     {
         rem = -2;
     }
-    else if (output.find("There are only 'skip'ped commits") != std::string::npos)
+    else if (rem == -1 && output.find("There are only 'skip'ped commits") != std::string::npos)
     {
         rem = -2;
     }
-    else
-    {
+    else if (rem == -1)
         err = -1;
-        rem = -1;
-    }
 
     return rem;
 }

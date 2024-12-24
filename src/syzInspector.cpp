@@ -230,7 +230,7 @@ restart:
     // ======================================================================================================
     // Syzkaller Fuzz Test
 
-    err = bisector.next_phase(Bisect_Kernel, env, linux_git, syzkaller_git);
+    err = bisector.next_phase(Bisect_Syzkaller, env, linux_git, syzkaller_git);
     if (err < 0)
     {
         cerr << "Failed to advance to kernel bisection phase.\n" << flush;
