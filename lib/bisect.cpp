@@ -40,6 +40,7 @@ int Bisect::init(const Environment &env, const Bug_Info &bug, Git &linux_git)
     session_count = 0;
     phase = Bisect_Init;
     lock_syz = false;
+    git_stop = false;
 
     gather_compiler_versions(env);
 
@@ -168,6 +169,7 @@ int Bisect::init_syzkaller_phase(const Environment &env, Git &linux_git, Git &sy
 
 int Bisect::init_kernel_phase(Git &linux_git)
 {
+    git_stop = false;
     // Switch over to git bisect for this phase
     std::string bad = bisect_session.kernel.name;
     std::string good = releases.at(bisect_index + 1).name;
