@@ -953,7 +953,7 @@ int Bisect::_archive_session()
         releases.at(index).skipped = !current_session.stable && !current_session.found;
         break;
     case Bisect_Kernel:
-        if (!(alg == ALG_FF_STATEFUL || alg == ALF_FF_CLEAN))
+        if (!(alg == ALG_FF_STATEFUL || alg == ALG_FF_CLEAN))
             break;
     case Bisect_Syzkaller:
         kernel_versions.at(index).skipped = !current_session.stable && !current_session.found;
