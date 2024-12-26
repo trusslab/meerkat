@@ -300,7 +300,7 @@ void patch_kernel(const Environment &env, const Version &linux_version)
     cd(old_dir);
 }
 
-int prep_kernel(const Environment &env, const Bug_Info &bug, Git &linux_git, const Version &linux_version, const std::string &compiler)
+int prep_kernel(const Environment &env, const Bug_Info &bug, Git &linux_git, const Version &linux_version, const std::string &compiler, bool bisecting)
 {
     int err = 0;
     cd(env.home);
@@ -308,12 +308,17 @@ int prep_kernel(const Environment &env, const Bug_Info &bug, Git &linux_git, con
     linux_git.cleanup();
 
     // downloads the kernel version (does not decide)
-    err = linux_git.fetch_and_checkout(linux_version.name);
-    if (err < 0)
+    // TODO: if bisecting, don't build
+    if (!bisecting)
     {
-        std::cerr << "Error: Failed to fetch/checkout linux finding commit\n" << std::flush;
-        return -1;
+        err = linux_git.fetch_and_checkout(linux_version.name);
+        if (err < 0)
+        {
+            std::cerr << "Error: Failed to fetch/checkout linux finding commit\n" << std::flush;
+            return -1;
+        }
     }
+    
 
     // copy over the config
     copy(bug.kconfig, env.kerneldir + "/.config");

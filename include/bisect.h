@@ -65,7 +65,7 @@ private:
     bool session_was_found(const Session &) const;
     bool session_was_stable(const Session &) const;
 
-    int build_current_kernel(std::ofstream &, const Environment &, const Bug_Info &, Git &);
+    int build_current_kernel(std::ofstream &, const Environment &, const Bug_Info &, Git &, bool = false);
     int build_current_syzkaller(const Environment &, const Bug_Info &, Git &, bool = true);
 
     int goto_finding_session(std::ofstream &, const Environment &, const Bug_Info &, Git &, Git &);

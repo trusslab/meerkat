@@ -340,14 +340,14 @@ bool Bisect::session_was_stable(const Session &session) const
     return past_sessions.find(session)->stable;
 }
 
-int Bisect::build_current_kernel(std::ofstream &logfile, const Environment &env, const Bug_Info &bug, Git &linux_git)
+int Bisect::build_current_kernel(std::ofstream &logfile, const Environment &env, const Bug_Info &bug, Git &linux_git, bool bisecting)
 {
     std::string compiler;
     std::cout << SPACER
          << "Prepping the kernel\n";
     compiler = get_compiler(gcc_versions, clang_versions, current_session.kernel.date, env);
     log_session_compiler(logfile, compiler);
-    return prep_kernel(env, bug, linux_git, current_session.kernel, compiler);
+    return prep_kernel(env, bug, linux_git, current_session.kernel, compiler, bisecting);
 }
 
 int Bisect::build_current_syzkaller(const Environment &env, const Bug_Info &bug, Git &syzkaller_git, bool do_slim)
@@ -504,11 +504,13 @@ int Bisect::goto_kernel_session_ff(std::ofstream &logfile, const Environment &en
 retry:
     // For git bisect, we should already be at the next commit to test
     current_session = Session(linux_git.get_current_version(), locked_syzkaller, false);
+    if (linux_git.error() < 0)
+        return -1;
     log_session_info(logfile, current_session, inc_session());
 
     if (!already_fuzzed(this_session()))
     {
-        err = build_current_kernel(logfile, env, bug, linux_git);
+        err = build_current_kernel(logfile, env, bug, linux_git, true);
         if (err < 0)
         {
             log_kernel_build_error(logfile);
@@ -583,11 +585,13 @@ int Bisect::goto_kernel_session_poc(std::ofstream &logfile, const Environment &e
 retry:
     // For git bisect, we should already be at the next commit to test
     current_session = Session(linux_git.get_current_version(), locked_syzkaller, false);
+    if (linux_git.error() < 0)
+        return -1;
     log_session_info(logfile, current_session, inc_session());
 
     if (!already_fuzzed(this_session()))
     {
-        err = build_current_kernel(logfile, env, bug, linux_git);
+        err = build_current_kernel(logfile, env, bug, linux_git, true);
         if (err < 0)
         {
             log_kernel_build_error(logfile);

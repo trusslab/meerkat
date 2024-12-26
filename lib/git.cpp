@@ -374,9 +374,10 @@ std::string Git::get_current_commit()
     return chomp(ret);
 }
 
+// git show -s --date=format:%Y-%m-%d --format='%H %cd'
 Version Git::get_current_version()
 {
-    std::string ret = git_read({"show", "-s", "--format=%H %cd"});
+    std::string ret = git_read({"show", "-s", "--date=format:%Y-%m-%d", "--format=%H %cd"});
     if (ret.empty())
         err = -1;
     std::vector<std::string> spl = split(ret, ' ');
@@ -391,7 +392,7 @@ Version Git::get_current_version()
 // git log -1 -s --until='date' --date=format:%Y-%m-%d --format=%H 
 std::string Git::get_commit_by_date_raw(const Date &date)
 {
-    std::string ret = git_read({"log", "-1", "--until="+date.get_date(), "-s", "--date=format:%Y-%m-%d", "--format=%H"});
+    std::string ret = git_read({"log", "-1", "--until="+date.get_date(), "-s", "--format=%H"});
     if (ret.empty())
         err = -1;
     return chomp(ret);
