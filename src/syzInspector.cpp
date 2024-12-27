@@ -154,7 +154,7 @@ skip_syzkaller:
     {
         result = bisector.test_current(logfile, env, bug, linux_git);
         bisector.record(result, linux_git);
-        logfile << "About " << bisector.stable_remaining() << " commits remaining\n" << flush;
+        logfile << "About " << bisector.remaining() << " commits remaining\n" << flush;
     }
     if (err < 0)
     {
@@ -215,7 +215,7 @@ restart:
     {
         result = bisector.test_current(logfile, env, bug, linux_git);
         bisector.record(result, linux_git);
-        logfile << "About " << bisector.stable_remaining() << " commits remaining\n" << flush;
+        logfile << "About " << bisector.remaining() << " commits remaining\n" << flush;
     }
     if (err < 0)
     {
