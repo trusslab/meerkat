@@ -275,7 +275,7 @@ Test_Result fuzz_loop_finding(ofstream &logfile, Environment &env, const Bug_Inf
     }
 
     result.stable = unstable_count < result.attempts.size() / 2 || result.found;
-    result.suggest_ttf = (false ? find_average_time(result.attempts) : find_max_time(result.attempts));
+    result.suggest_ttf = find_max_time(result.attempts);
     return result;
 }
 
@@ -328,7 +328,7 @@ Test_Result repro_loop_finding(ofstream &logfile, Environment &env, const Bug_In
     }
 
     result.stable = unstable_count < result.attempts.size() / 2 || result.found;
-    result.suggest_ttf = (false ? find_average_time(result.attempts) : find_max_time(result.attempts));
+    result.suggest_ttf = find_max_time(result.attempts);
     remove_file(reprolog);
     return result;
 }

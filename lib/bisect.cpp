@@ -896,6 +896,11 @@ int Bisect::record_kernel(const Test_Result &result, Git &linux_git)
         git_remaining = linux_git.bisect_good();
         good_session = current_session;
     }
+    else if (!result.stable)
+    {
+        linux_git.cleanup();
+        git_remaining = linux_git.bisect_skip();
+    }
     if (git_remaining == -2)
         git_stop = true;
 
@@ -957,9 +962,9 @@ int Bisect::_archive_session()
         releases.at(index).skipped = !current_session.stable && !current_session.found;
         break;
     case Bisect_Kernel:
+    case Bisect_Syzkaller:
         if (!(alg == ALG_FF_STATEFUL || alg == ALG_FF_CLEAN))
             break;
-    case Bisect_Syzkaller:
         kernel_versions.at(index).skipped = !current_session.stable && !current_session.found;
         break;
     default:

@@ -537,6 +537,8 @@ int main(int argc, char ** argv)
 
     if (args.is_set("safe-mode") || bug.name.substr(0, 11) == "memory leak")
         set_safe_mode(env.safe_mode, env.max_time, env.fuzztimes);
+    else
+        env.safe_mode = false;
 
     env.try_patch = args.is_set("try-patch");
 
