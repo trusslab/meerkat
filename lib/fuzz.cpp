@@ -79,7 +79,6 @@ void handle_syzkaller_crash(ostream &logfile)
 {
     cerr << "Error: Syzkaller has experienced a crash.\n" << flush;
     logfile << "Error: Syzkaller has experienced a crash.\n" << flush;
-    exit(-1);
 }
 
 string get_crash_name(const string &hash)
@@ -134,7 +133,8 @@ Syzkaller_Result run_syzkaller(ofstream &logfile, const Environment &env, const 
 
         // make sure syzkaller stays alive
         if (!check_alive(pid))
-            handle_syzkaller_crash(logfile);
+            break;
+            
 
         // list the unique crashes Syzkaller has found
         crash_hashes = list_dir(env.syzwd + "/crashes");
