@@ -79,6 +79,7 @@ public:
     JSON &operator=(const JSON_Object &);
 
     bool parse(const std::string &);
+    bool parse(const std::vector<std::string> &);
     void clear();
 
     bool has_name(const std::string &) const;

@@ -1,4 +1,5 @@
 #include <json.h>
+#include <file_api.h>
 
 #include <fstream>
 #include <string>
@@ -199,26 +200,28 @@ JSON &JSON::operator=(const JSON_Object &obj)
     return *this;
 }
 
-std::istream& json_getline(std::ifstream &inf, std::string &line, unsigned int &index)
+bool json_getline(const std::vector<std::string> &lines, unsigned int &lidx, std::string &line, unsigned int &index)
 {
     index = 0;
-    line.clear();
-    return getline(inf, line);
+    if (++lidx >= lines.size())
+        return false;
+    line = lines.at(lidx);
+    return true;
 }
 
-bool json_get_next(std::ifstream &inf, std::string &line, unsigned int &index)
+bool json_get_next(const std::vector<std::string> &lines, unsigned int &lidx, std::string &line, unsigned int &index)
 {
     // TODO: work with tabs
     do {
         for (; index < line.size() && isspace(line.at(index)); index++);
         if (index < line.size())
             break;
-    } while (json_getline(inf, line, index));
-    return inf.peek() != EOF;
+    } while (json_getline(lines, lidx, line, index));
+    return lidx < lines.size();
 }
 
-bool json_parse_list(std::ifstream &, std::string &, unsigned int &, JSON_List &);
-bool json_parse_object(std::ifstream &, std::string &, unsigned int &, JSON_Object &);
+bool json_parse_list(const std::vector<std::string> &, unsigned int &, std::string &, unsigned int &, JSON_List &);
+bool json_parse_object(const std::vector<std::string> &, unsigned int &, std::string &, unsigned int &, JSON_Object &);
 
 bool json_parse_bool(std::string &line, unsigned int &index, bool &val)
 {
@@ -325,7 +328,7 @@ JSON_Value_Type json_classify_value(std::string &line, unsigned int &index)
     return JSON_Val_uninit;
 }
 
-bool json_parse_value(std::ifstream &inf, std::string &line, unsigned int &index, JSON_Value &value)
+bool json_parse_value(const std::vector<std::string> &lines, unsigned int &lidx, std::string &line, unsigned int &index, JSON_Value &value)
 {
     JSON_Value_Type vtype = json_classify_value(line, index);
     if (vtype == JSON_Val_bool)
@@ -363,7 +366,7 @@ bool json_parse_value(std::ifstream &inf, std::string &line, unsigned int &index
     else if (vtype == JSON_Val_object)
     {
         JSON_Object oval;
-        if (!json_parse_object(inf, line, index, oval))
+        if (!json_parse_object(lines, lidx, line, index, oval))
             return false;
         value = oval;
         return true;
@@ -371,7 +374,7 @@ bool json_parse_value(std::ifstream &inf, std::string &line, unsigned int &index
     else if (vtype == JSON_Val_list)
     {
         JSON_List lval;
-        if (!json_parse_list(inf, line, index, lval))
+        if (!json_parse_list(lines, lidx, line, index, lval))
             return false;
         value = lval;
         return true;
@@ -384,7 +387,7 @@ bool json_parse_value(std::ifstream &inf, std::string &line, unsigned int &index
 
 // parse json file for a name-value pair starting at the '\"'
 // returns true on success, false on failure
-bool json_parse_data(std::ifstream &inf, std::string &line, unsigned int &index, JSON_Object &object)
+bool json_parse_data(const std::vector<std::string> &lines, unsigned int &lidx, std::string &line, unsigned int &index, JSON_Object &object)
 {
     bool err = false;
     std::string name;
@@ -396,16 +399,16 @@ bool json_parse_data(std::ifstream &inf, std::string &line, unsigned int &index,
     if (!json_parse_string(line, index, name))
         return false;
     
-    if (!json_get_next(inf, line, index))
+    if (!json_get_next(lines, lidx, line, index))
         return false;
 
     if (line.at(index) != ':')
         return false;
 
-    if (!json_get_next(inf, line, ++index))
+    if (!json_get_next(lines, lidx, line, ++index))
         return false;
 
-    if (!json_parse_value(inf, line, index, value))
+    if (!json_parse_value(lines, lidx, line, index, value))
         return false;
 
     object.insert({name, value});
@@ -415,21 +418,21 @@ bool json_parse_data(std::ifstream &inf, std::string &line, unsigned int &index,
 // parse json file for a list starting at the '['
 // returned index is just after the parsed list
 // returns true on success, false on failure
-bool json_parse_list(std::ifstream &inf, std::string &line, unsigned int &index, JSON_List &list)
+bool json_parse_list(const std::vector<std::string> &lines, unsigned int &lidx, std::string &line, unsigned int &index, JSON_List &list)
 {
     JSON_Value value;
     if (index >= line.size() || line.at(index) != '[')
         return false;
-    while (json_get_next(inf, line, ++index))
+    while (json_get_next(lines, lidx, line, ++index))
     {
         value.clear();
-        if (!json_parse_value(inf, line, index, value))
+        if (!json_parse_value(lines, lidx, line, index, value))
             return false;
         
         list.push_back(value);
 
         // find next ',' or ']'
-        if (!json_get_next(inf, line, index))
+        if (!json_get_next(lines, lidx, line, index))
             return false;
         
         switch (line.at(index))
@@ -449,17 +452,17 @@ bool json_parse_list(std::ifstream &inf, std::string &line, unsigned int &index,
 // parse json file for a specific object starting at the '{'
 // returned index is just after the parsed object
 // returns true on success, false on failure
-bool json_parse_object(std::ifstream &inf, std::string &line, unsigned int &index, JSON_Object &object)
+bool json_parse_object(const std::vector<std::string> &lines, unsigned int &lidx, std::string &line, unsigned int &index, JSON_Object &object)
 {
     if (index >= line.size() || line.at(index) != '{')
         return false;
-    while (json_get_next(inf, line, ++index))
+    while (json_get_next(lines, lidx, line, ++index))
     {
-        if (!json_parse_data(inf, line, index, object))
+        if (!json_parse_data(lines, lidx, line, index, object))
             return false;
         
         // find next ',' or '}'
-        json_get_next(inf, line, index);
+        json_get_next(lines, lidx, line, index);
         if (index >= line.size())
             return false;
         
@@ -482,24 +485,33 @@ bool json_parse_object(std::ifstream &inf, std::string &line, unsigned int &inde
 bool JSON::parse(const std::string &filename)
 {
     bool err = true;
-    unsigned int index = 0;
-    std::string line;
-    std::ifstream inf;
-    inf.open(filename);
-    if (!inf)
+    std::vector<std::string> lines;
+    if (!load_file(filename, lines))
         return false;
 
-    line.clear();
-    err = json_get_next(inf, line, index);
+    err = parse(lines);
     if (!err)
-        goto error;
-    err = json_parse_object(inf, line, index, object);
-    if (err) // clean exit
-        goto exit;
-error:
-    object.clear();
-exit:
-    inf.close();
+        object.clear();
+    
+    return err;
+}
+
+// Parse a vector of lines and store in the json object.
+// returns true on success, false on failure.
+bool JSON::parse(const std::vector<std::string> &raw)
+{
+    bool err = true;
+    unsigned int index = 0, lidx = 0;
+    std::string line;
+
+    if (raw.size() == 0)
+        return false;
+
+    line = raw.at(lidx);
+    err = json_get_next(raw, lidx, line, index);
+    if (!err)
+        return err;
+    err = json_parse_object(raw, lidx, line, index, object);
     return err;
 }
 
