@@ -43,6 +43,11 @@ void ProgOpts::reset()
     ieee802154 = false;
     sysctl = false;
     swap = false;
+
+    collide = false;
+    fault = false;
+    fault_call = -1;
+    fault_nth = -1;
 }
 
 // Read prog options from syz prog file
@@ -199,4 +204,74 @@ bool ProgOpts::all_enabled() const
     return tun && net_dev && net_reset && cgroups && binfmt_misc && close_fds
            && devlink_pci && nic_vf && usb && vhci && wifi && ieee802154 && sysctl
            && swap;
+}
+
+std::string ProgOpts::enable_string() const
+{
+    std::string enable = "-enable=";
+    enable += tun ? "tun," : "";
+    enable += net_dev ? "net_dev," : "";
+    enable += net_reset ? "net_reset," : "";
+    enable += cgroups ? "cgroups," : "";
+    enable += binfmt_misc ? "binfmt_misc," : "";
+    enable += close_fds ? "close_fds," : "";
+    enable += devlink_pci ? "devlink_pci," : "";
+    enable += nic_vf ? "nic_vf," : "";
+    enable += usb ? "usb," : "";
+    enable += vhci ? "vhci," : "";
+    enable += wifi ? "wifi," : "";
+    enable += ieee802154 ? "ieee802154," : "";
+    enable += sysctl ? "sysctl," : "";
+    enable += swap ? "swap," : "";
+    enable = enable.substr(0, enable.size()-1);
+    return enable;
+}
+
+void ProgOpts::compile_execopts(std::vector<std::string> &optv) const
+{
+    if (threaded)
+        optv.push_back("-threaded");
+    
+    optv.push_back("-repeat="+std::to_string(repeat));
+    optv.push_back("-procs="+std::to_string(procs));
+
+    if (slowdown != 1)
+        optv.push_back("-slowdown="+std::to_string(slowdown));
+
+    if (segv)
+        optv.push_back("-segv");
+
+    if (all_enabled())
+    {
+        optv.push_back("-enable=all");
+        optv.push_back("-sandbox="+(sandbox.empty() ? "none" : sandbox));
+        optv.push_back("-tmpdir");
+        return;
+    }
+
+    if (!sandbox.empty())
+    {
+        optv.push_back("-sandbox="+sandbox);
+        if (sandbox_arg != 0)
+            optv.push_back("-sandbox_arg="+std::to_string(sandbox_arg));
+    }
+
+    if (tmpdir)
+        optv.push_back("-tmpdir");
+    
+    if (any_enabled())
+        optv.push_back(enable_string());
+}
+
+std::string ProgOpts::execopts_string() const
+{
+    std::string ret = "";
+    std::vector<std::string> opts;
+    compile_execopts(opts);
+
+    for (std::string o : opts)
+        if (!o.empty())
+            ret += o + " ";
+    
+    return ret;
 }

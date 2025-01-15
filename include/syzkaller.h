@@ -4,6 +4,7 @@
 #include <json.h>
 
 #include <string>
+#include <vector>
 
 // Library for interfacing with syzkaller
 
@@ -53,6 +54,10 @@ public:
 
     bool any_enabled() const;
     bool all_enabled() const;
+
+    std::string enable_string() const;
+    void compile_execopts(std::vector<std::string> &) const;
+    std::string execopts_string() const;
 
 private:
     //std::string enable_string() const;
