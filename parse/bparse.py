@@ -360,10 +360,10 @@ def handle_multiple_result(line : str, bughtml : html, bug : Bugdata) -> Bisect_
     
     bug.bisectResult = bisect_log_best_guess(bug.name, bughtml, bug.bisectResult)
 
-    if (guilty_hash in hashes):
-        bug.bisectResult.date = guilty_date.isoformat()
+    if (bug.guiltyCommits[0].hash in hashes):
+        bug.bisectResult.date = bug.guiltyCommits[0].date
         bug.bisectResult.correct = "correct"
-        bug.bisectResult.hash = guilty_hash
+        bug.bisectResult.hash = bug.guiltyCommits[0].hash
     else:
         bisect_date = fetch_kcommit_date(linklist[0])
         bug.bisectResult.date = bisect_date.isoformat()
@@ -463,7 +463,12 @@ def fetch_bug(bug : Bugdata) -> Bugdata:
     for hash in guiltyhashes:
         # I think there is some issue here with too many requests or timeout or something. A problem for a later date.
         searchhtml = fetch_link("https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/log/?qt=range&q=" + hash)
-        guiltydate = searchhtml.xpath("//table[@class='list nowrap']/tr[2]/td[1]/span/text()")[0]
+        searchres = searchhtml.xpath("//table[@class='list nowrap']/tr[2]/td[1]/span/text()")
+        if len(searchres) <= 0:
+            bug.print()
+            print(bug.name + ": Guilty Commit Search Failed.")
+            return None
+        guiltydate = searchres[0]
         guiltylink = "https://git.kernel.org" + searchhtml.xpath("//table[@class='list nowrap']/tr[2]/td[2]/a/@href")[0]
         bug.guiltyCommits.append(Commit(guiltylink.split("=")[-1], guiltylink, guiltydate))
     
