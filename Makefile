@@ -7,7 +7,7 @@ LIBDIR := lib/
 SRCDIR := src/
 HELPERDIR := helpers/
 TOOLDIR := tools/
-PROJECTNAME := syzInspector
+PROJECTNAME := bisector
 
 .DEFAULT_GOAL := $(PROJECTNAME)
 
