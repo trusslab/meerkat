@@ -40,8 +40,6 @@ int prep_kernel(const Environment &, const Bug_Info &, Git &, const Version &, c
 // runs make clean
 int clean_kernel(const Environment &);
 
-std::vector<std::string> get_reproduer_syscall_descriptions(const Environment &, const Bug_Info &);
-
 // writes the syzkaller config to the config file.
 // also shifts the host port by one
 int write_syzkaller_config(const Environment &, const Bug_Info &);
@@ -49,5 +47,7 @@ int write_syzkaller_config(const Environment &, const Bug_Info &);
 // deletes the syzkaller working directory and recreates it.
 void reset_kaller_wd(const Environment &);
 int prepare_kaller_wd(const Environment &, const Bug_Info &, bool);
+
+int patch_blocking_bugs(const Test_Result &, const Bug_Info &);
 
 #endif

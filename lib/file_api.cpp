@@ -79,6 +79,12 @@ int cd(const string &dir)
 
 vector<string> list_dir(const string &dir)
 {
+    if (!check_file(dir))
+    {
+        cerr << "Error Trying to read a directory that does not exist: "
+             << dir << endl << flush;
+        return {};
+    }
     vector<string> files;
     for (const auto &file : filesystem::directory_iterator(dir))
         files.push_back(file.path().string());

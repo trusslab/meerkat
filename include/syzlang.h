@@ -311,6 +311,7 @@ public:
     std::vector<std::string>& get_sv();
 
     void push_depends(std::vector<TypeTag> &, const std::vector<TypeTag> &);
+    bool has_depends();
 };
 
 // ======================================================================================================

@@ -1,4 +1,6 @@
 #include <template_parse.h>
+#include <bug_info.h>
+#include <environment.h>
 #include <file_api.h>
 #include <syzlang.h>
 
@@ -614,7 +616,7 @@ vector<string> slim_template(const string &reproDir, const vector<string> &templ
                 parse_flag(items, flags, line);
             }
             else {
-                cerr << "Warning: Unknown line type: " << line << endl;
+                cerr << "Warning: Unknown line type in " << filename << ": " << line << endl;
             }
             line.clear();
             lines.clear();
@@ -684,9 +686,11 @@ vector<string> slim_template(const string &reproDir, const vector<string> &templ
         {
         case resourceClass:
             resources.at(index).push_depends(needed, items);
-            // TODO: modify this to only get base resource producers and consumers
-            get_one_user_syscall(needed.at(i), needed, items, syscalls, typeols, typemls, unions, structures);
-            get_one_producer_syscall(needed.at(i), needed, items, syscalls, typeols, typemls, unions, structures);
+            if (!resources.at(index).has_depends())
+            {
+                get_one_user_syscall(needed.at(i), needed, items, syscalls, typeols, typemls, unions, structures);
+                get_one_producer_syscall(needed.at(i), needed, items, syscalls, typeols, typemls, unions, structures);
+            }
             break;
         case typeolClass:
             typeols.at(index).push_depends(needed, items);
@@ -720,7 +724,7 @@ vector<string> slim_template(const string &reproDir, const vector<string> &templ
         //index = tt.get_index();
         if (tt.get_class() == syscallClass)
         {
-            cout << tt.get_name() /*syscalls.at(index).get_name()*/ << "\n";
+            /*syscalls.at(index).get_name()*/
             ret.push_back(tt.get_name());
         }
     }
@@ -734,8 +738,21 @@ vector<string> list_template_files(const string &template_dir)
 
     // traversing backwards so we don't mess up as we delete
     for (int i = files.size() - 1; i >= 0; i--)
-        if (files.at(i).find(".const") != string::npos || files.at(i).find(".warn") != string::npos || files.at(i).find(".txt") == string::npos)
+        if (files.at(i).find(".const") != string::npos || files.at(i).find(".warn") != string::npos || files.at(i).find(".info") != string::npos || files.at(i).find(".txt") == string::npos)
             files.erase(files.begin() + i);
 
     return files;
+}
+
+vector<string> get_reproduer_syscall_descriptions(const Environment &env, const Bug_Info &bug)
+{
+    string full_template = env.syzdir + "sys/linux";
+    vector<string> template_files = list_template_files(full_template);
+    vector<string> syscalls = slim_template(bug.reprodir, template_files);
+    if (syscalls.size() == 0)
+    {
+        cout << "Error: failed to slim the template.\n";
+        return {};
+    }
+    return syscalls;
 }

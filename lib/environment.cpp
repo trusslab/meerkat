@@ -149,8 +149,13 @@ int Environment::parse_config_file(const std::string & filename)
         syzconfig = wd + "syzkaller.cfg";
     }
 
+    if (json.has_name("syzkaller") && json.is_type("syzkaller", JSON_Val_string))
+    {
+        syzdir = json.get_string("syzkaller");
+        syzdir = starts_with(syzdir, "/") ? syzdir : wd + syzdir;
+    }
+
     kerneldir = wd + "kernel/";
-    syzdir = wd + "syzkaller/";
     syzwd = wd + "wd-kaller/";
     logdir = wd + "log/";
 

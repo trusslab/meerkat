@@ -367,6 +367,17 @@ void Resource::push_depends(vector<TypeTag> &needed, const vector<TypeTag> &item
     return;
 }
 
+bool Resource::has_depends()
+{ // This can be part of identifier if needed.
+    if (!checked_depends)
+    {
+        cerr << "Error: Tried to query depends before they were checked\n" << flush;
+        return 0;
+    }
+
+    return depends.size() > 0;
+}
+
 // ======================================================================================================
 // Union/Structure
 

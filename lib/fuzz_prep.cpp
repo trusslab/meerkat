@@ -7,6 +7,7 @@
 #include <fuzz.h>
 #include <fuzz_prep.h>
 #include <git.h>
+#include <my_string.h>
 #include <shell_api.h>
 #include <template_parse.h>
 #include <version.h>
@@ -349,19 +350,6 @@ int clean_kernel(const Environment &env)
     return (err == 0 ? 0 : -1);
 }
 
-vector<string> get_reproduer_syscall_descriptions(const Environment &env, const Bug_Info &bug)
-{
-    string full_template = env.syzdir + "/sys/linux";
-    vector<string> template_files = list_template_files(full_template);
-    vector<string> syscalls = slim_template(bug.reprodir, template_files);
-    if (syscalls.size() == 0)
-    {
-        cout << "Error: failed to slim the template.\n";
-        return {};
-    }
-    return syscalls;
-}
-
 int write_syzkaller_config(const Environment &env, const Bug_Info &bug)
 {
     ofstream outf;
@@ -489,6 +477,50 @@ exit:
     if (check_file(corpusdir))
         remove_dir(corpusdir);
     return err;
+}
+
+// Tries to remove the config related to the sanitizer finding the blocking bug
+int remove_related_config(const Bug_Info &bug, const std::string &bb)
+{
+    int err = 0;
+    std::string sanitizer = split(bb, ' ').front();
+    // If any duplicates need the sanitizer, don't remove it
+    for (std::string dup : bug.duplicates)
+        if (sanitizer.find(split(dup, ' ').front()) != std::string::npos)
+            return 0;
+
+    if (sanitizer.find("UBSAN") != std::string::npos)
+    {
+        err = unset_kernel_config(bug.kconfig, {"CONFIG_UBSAN", "CONFIG_UBSAN_TRAP", "CONFIG_UBSAN_BOUNDS", "CONFIG_UBSAN_SHIFT"});
+        if (err >= 0)
+            return 1;
+    }
+    return 0;
+}
+
+// Tries to patch the given blocking bug
+int attempt_patch(const Bug_Info &bug, const std::string &bb)
+{
+    // TODO: find a backport for this bug
+    // try to remove a config related to the bug
+    if (remove_related_config(bug, bb) > 0)
+        return 1;
+        
+    return 0;
+}
+
+// Identifies blocking bugs from the result, then figures if they can be removed.
+// Returns the number of removed blocking bugs or -1 on error
+int patch_blocking_bugs(const Test_Result &result, const Bug_Info &bug)
+{
+    int count = 0;
+    if (result.found)
+        return 0;
+    
+    std::vector<std::string> bbs = get_prominent_blocking_bugs(result);
+    for (std::string b : bbs)
+        count += attempt_patch(bug, b);
+    return count;
 }
 
 /* Gonna keep this here on the off chance that I need it. It took a lot of work.

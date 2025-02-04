@@ -2,7 +2,6 @@
 #define BUG_INFO_H
 
 #include <blocking_bugs.h>
-#include <date.h>
 #include <environment.h>
 #include <result.h>
 
@@ -31,7 +30,5 @@ public:
     // takes in a filename and parses it into the data structure
     int parse_config_file(const Environment &, const std::string &);
 };
-
-int patch_blocking_bugs(const Test_Result &, const Bug_Info &);
 
 #endif

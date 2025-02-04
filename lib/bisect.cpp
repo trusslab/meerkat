@@ -540,10 +540,9 @@ std::string runtime(const std::chrono::steady_clock::time_point &start)
     return pretty.str();
 }
 
-void log_safe_mode(std::ofstream &logfile, int max_time, int fuzztimes)
+void log_safe_mode(int max_time, int fuzztimes)
 {
     std::cout << "Switching to Safe Mode: Fuzzing " << fuzztimes << " times at " << max_time << " minutes\n";
-    logfile << "Switching to Safe Mode: Fuzzing " << fuzztimes << " times at " << max_time << " minutes\n";
 }
 
 void set_safe_mode(bool &safe_mode, unsigned int &max_time, unsigned int &fuzztimes)
