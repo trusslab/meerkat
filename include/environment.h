@@ -78,6 +78,9 @@ public:
 
     Port_Info port;
 
+    // Bug Info
+    std::string working_name;
+
     // parses the parameters/config.cfg
     int parse_parameters_file(const std::string &);
 

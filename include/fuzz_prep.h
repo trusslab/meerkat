@@ -18,7 +18,7 @@ int get_procs_from_repro(const std::string &);
 
 // Outer function to determine the threadedness of the bug.
 // Returns the allocation to use.
-VMConfig determine_threadedness(Environment &, const Bug_Info &, std::ostream &);
+VMConfig determine_threadedness(Environment &, const Bug_Info &);
 
 // Reads the gcc version file and returns them
 // in vector form
@@ -40,21 +40,14 @@ int prep_kernel(const Environment &, const Bug_Info &, Git &, const Version &, c
 // runs make clean
 int clean_kernel(const Environment &);
 
-// grabs the correct syzkaller version, applies any patches
-// slims the template, and builds syzkaller
-int prep_syzkaller(const Environment &, const Bug_Info &, Git &, const Version &, bool = true);
+std::vector<std::string> get_reproduer_syscall_descriptions(const Environment &, const Bug_Info &);
 
 // writes the syzkaller config to the config file.
 // also shifts the host port by one
-int write_syzkaller_config(const Environment &, const Bug_Info &, const Date &);
+int write_syzkaller_config(const Environment &, const Bug_Info &);
 
 // deletes the syzkaller working directory and recreates it.
 void reset_kaller_wd(const Environment &);
 int prepare_kaller_wd(const Environment &, const Bug_Info &, bool);
-
-// cleans files when we switch syzkaller versions.
-// Simply removes any non-hidden file.
-// Same behavior as rm -r *
-int clean_syzkaller(const Environment &);
 
 #endif

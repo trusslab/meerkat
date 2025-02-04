@@ -122,7 +122,7 @@ bool Argparse::is_set(const std::string & t) const
     return longTickArgs.count(t) > 0;
 }
 
-std::string Argparse::get_arg_as_string(char t) const
+std::string Argparse::get_string(char t) const
 {
     if (!is_set(t))
         return "";
@@ -130,7 +130,7 @@ std::string Argparse::get_arg_as_string(char t) const
     return tickArgs.at(t);
 }
 
-std::string Argparse::get_arg_as_string(const std::string & t) const
+std::string Argparse::get_string(const std::string & t) const
 {
     if (!is_set(t))
         return "";
@@ -138,7 +138,7 @@ std::string Argparse::get_arg_as_string(const std::string & t) const
     return longTickArgs.at(t);
 }
 
-char Argparse::get_arg_as_char(char t) const
+char Argparse::get_char(char t) const
 {
     if (!is_set(t))
         return '\0';
@@ -146,7 +146,7 @@ char Argparse::get_arg_as_char(char t) const
     return tickArgs.at(t).at(0);
 }
 
-char Argparse::get_arg_as_char(const std::string & t) const
+char Argparse::get_char(const std::string & t) const
 {
     if (!is_set(t))
         return '\0';
@@ -154,7 +154,7 @@ char Argparse::get_arg_as_char(const std::string & t) const
     return longTickArgs.at(t).at(0);
 }
 
-int Argparse::get_arg_as_int(char t) const
+int Argparse::get_int(char t) const
 {
     if (!is_set(t))
         return -1;
@@ -162,7 +162,7 @@ int Argparse::get_arg_as_int(char t) const
     return std::stoi(tickArgs.at(t));
 }
 
-int Argparse::get_arg_as_int(const std::string & t) const
+int Argparse::get_int(const std::string & t) const
 {
     if (!is_set(t))
         return -1;

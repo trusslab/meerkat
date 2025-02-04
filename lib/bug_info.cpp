@@ -17,20 +17,6 @@ int Bug_Info::parse_config_file(const Environment &env, const std::string & file
         return -1;
     }
     
-    if (json.has_name("bugID") && json.is_type("bugID", JSON_Val_string))
-    {
-        int pos0, pos1;
-        numName = json.get_string("bugID");
-        pos0 = numName.find_first_of("0123456789");
-        pos1 = numName.find_last_of("0123456789");
-        number = std::stoi(numName.substr(pos0, pos1 - pos0 + 1));
-    }
-    else
-    {
-        std::cerr << "Error: Bug ID was not given (\"bugID\": \"bug0001\")";
-        return -1;
-    }
-    
     if (json.has_name("bug_name") && json.is_type("bug_name", JSON_Val_string))
     {
         name = json.get_string("bug_name");
@@ -61,23 +47,13 @@ int Bug_Info::parse_config_file(const Environment &env, const std::string & file
         return -1;
     }
 
-    if (json.has_name("kernel_branch") && json.is_type("kernel_branch", JSON_Val_string))
+    if (json.has_name("repository") && json.is_type("repository", JSON_Val_string))
     {
-        kpreface = json.get_string("kernel_branch");
+        repository = json.get_string("repository");
     }
     else
     {
-        std::cerr << "Error: Kernel branch was not given (\"kernel_branch\": \"linux\")\n" << std::flush;
-        return -1;
-    }
-
-    if (json.has_name("short_repository") && json.is_type("short_repository", JSON_Val_string))
-    {
-        repository = json.get_string("short_repository");
-    }
-    else
-    {
-        std::cerr << "Error: Kernel Repository was not given (\"short_repository\": \"torvalds/linux.git\")\n" << std::flush;
+        std::cerr << "Error: Kernel Repository was not given\n" << std::flush;
         return -1;
     }
 
@@ -89,14 +65,6 @@ int Bug_Info::parse_config_file(const Environment &env, const std::string & file
     {
         std::cerr << "Error: Finding Hash was not given (\"finding_hash\": \"03ad...\")\n" << std::flush;
         return -1;
-    }
-
-    have_fdate = false;
-    if (json.has_name("finding_date") && json.is_type("finding_date", JSON_Val_string))
-    {
-        find_date = Date(json.get_string("finding_date"));
-        find_date.set_delim('-');
-        have_fdate = true;
     }
 
     if (json.has_name("kernel_config") && json.is_type("kernel_config", JSON_Val_string))
@@ -112,24 +80,13 @@ int Bug_Info::parse_config_file(const Environment &env, const std::string & file
 
     if (json.has_name("reproducers") && json.is_type("reproducers", JSON_Val_string))
     {
-        reproducer = json.get_string("reproducers");
-        reproducer = starts_with(reproducer, "/") ? reproducer : env.wd + reproducer;
-        reproducer = ends_with(reproducer, "/") ? reproducer : reproducer + "/";
+        reprodir = json.get_string("reproducers");
+        reprodir = starts_with(reprodir, "/") ? reprodir : env.wd + reprodir;
+        reprodir = ends_with(reprodir, "/") ? reprodir : reprodir + "/";
     }
     else
     {
         std::cerr << "Error: Reproducers Directory was not given (\"reproducers\": \"/path/to/reproducers/\")\n" << std::flush;
-        return -1;
-    }
-
-    if (json.has_name("all_reproducers") && json.is_type("all_reproducers", JSON_Val_string))
-    {
-        allreproducer = json.get_string("all_reproducers");
-        allreproducer = starts_with(allreproducer, "/") ? allreproducer : env.wd + allreproducer;
-    }
-    else
-    {
-        std::cerr << "Error: Concatenated Reproducers were not given (\"all_reproducers\": \"/path/to/all_reproducers.prog\")\n" << std::flush;
         return -1;
     }
 

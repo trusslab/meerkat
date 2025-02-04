@@ -41,14 +41,14 @@ public:
     bool is_set(char) const;                                    // checks if a certain tick is set
     bool is_set(const std::string &) const;                     // checks if a certain long tick is set
 
-    std::string get_arg_as_string(char) const;                  // gets the arg associated with tick and returns as the given type
-    std::string get_arg_as_string(const std::string &) const;   // same but for long ticks
+    std::string get_string(char) const;                  // gets the arg associated with tick and returns as the given type
+    std::string get_string(const std::string &) const;   // same but for long ticks
 
-    char get_arg_as_char(char) const;
-    char get_arg_as_char(const std::string &) const;
+    char get_char(char) const;
+    char get_char(const std::string &) const;
 
-    int get_arg_as_int(char) const;
-    int get_arg_as_int(const std::string &) const;
+    int get_int(char) const;
+    int get_int(const std::string &) const;
 
     void clear_expect();                                        // deletes the expected ticks
     void clear();                                               // deletes all local variables

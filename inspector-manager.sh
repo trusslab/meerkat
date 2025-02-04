@@ -16,7 +16,7 @@ wd=""
 startLine=1
 endLine=0
 
-retrospector=bin/syzInspector
+retrospector=bin/bisector
 
 # =================================================================================================
 # Functions
@@ -25,16 +25,13 @@ writebugconfig () {
     echo "{" > $inspectorconfig
     echo "    \"bugID\": \"${curBug}\","  >> $inspectorconfig
     echo "    \"bug_name\": \"${bugName}\"," >> $inspectorconfig
-    echo "    \"bug_link\": \"${buglink}\"," >> $inspectorconfig
+    #echo "    \"bug_link\": \"${buglink}\"," >> $inspectorconfig
     echo "    \"arch\": \"${arch}\"," >> $inspectorconfig
     echo "    \"kernel_branch\": \"${kpref}\"," >> $inspectorconfig
-    echo "    \"short_repository\": \"${repo}\"," >> $inspectorconfig
-    echo "    \"finding_hash\": \"${findhash}\"," >> $inspectorconfig
-    echo "    \"finding_date\": \"${findDate}\"," >> $inspectorconfig
-    echo "    \"guilty_hash\": \"${guiltyhash}\"," >> $inspectorconfig
+    echo "    \"repository\": \"${repo}\"," >> $inspectorconfig
+    echo "    \"anchor_hash\": \"${findhash}\"," >> $inspectorconfig
     echo "    \"kernel_config\": \"config-${curBug}.txt\"," >> $inspectorconfig
     echo "    \"reproducers\": \"reproducers/\"," >> $inspectorconfig
-    echo "    \"all_reproducers\": \"repro-${curBug}-all.prog\"," >> $inspectorconfig
     echo "    \"wd\": \"${inspectdir}/${wd}\"" >> $inspectorconfig
     echo "}" >> $inspectorconfig    
 }
@@ -47,7 +44,7 @@ printhelp () {
     echo "    b - determine the name of the bug file in parse"
     echo "    m - the maximum time to fuzz at the finding commit"
     echo "    a - the arch to build on (amd64/i386)"
-    echo "    A - the algorith to use (1, 2...)"
+    echo "    A - the algorithm to use (1, 2...)"
     echo "        1 - focused-fuzz-stateful"
     echo "        2 - focused-fuzz-clean"
     echo "        3 - poc-ff-backup"

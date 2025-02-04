@@ -119,6 +119,15 @@ int Environment::parse_config_file(const std::string & filename)
         return -1;
     }
 
+    if (json.has_name("bugID") && json.is_type("bugID", JSON_Val_string))
+    {
+        working_name = json.get_string("bugID");
+    }
+    else
+    {
+        working_name.clear();
+    }
+
     if (json.has_name("wd") && json.is_type("wd", JSON_Val_string))
     {
         wd = json.get_string("wd");

@@ -10,8 +10,6 @@
 
 using namespace std;
 
-const bool VERB = false;
-
 // parses a typeref: name<[typeref]>
 TypeRef parse_typeref(const string &typestring)
 {
@@ -404,7 +402,7 @@ void parse_flag(vector<TypeTag> &items, vector<Flag> &flags, const string &line)
 
 void get_one_user_syscall(const TypeTag &this_resource, vector<TypeTag> &needed, const vector<TypeTag> &items,
                         vector<Syscall> &syscalls, vector<TypeOneline> &typeols, vector<TypeMultiline> &typemls,
-                        vector<Union> &unions, vector<Structure> &structures, bool old_inout)
+                        vector<Union> &unions, vector<Structure> &structures)
 {
     // check the syscalls already in needed
     int index;
@@ -414,7 +412,7 @@ void get_one_user_syscall(const TypeTag &this_resource, vector<TypeTag> &needed,
         if (tt.get_class() == syscallClass)
         {
             used_recs.clear();
-            used_recs = syscalls.at(tt.get_index()).get_resources_used(items, typeols, typemls, unions, structures, old_inout);
+            used_recs = syscalls.at(tt.get_index()).get_resources_used(items, typeols, typemls, unions, structures);
             if (is_in_needed(used_recs, this_resource))
                 return;
         }
@@ -424,17 +422,17 @@ void get_one_user_syscall(const TypeTag &this_resource, vector<TypeTag> &needed,
     for (Syscall s : syscalls)
     {
         used_recs.clear();
-        used_recs = s.get_resources_used(items, typeols, typemls, unions, structures, old_inout);
+        used_recs = s.get_resources_used(items, typeols, typemls, unions, structures);
         if (is_in_needed(used_recs, this_resource))
         {
-            if (s.total_resources(items, typeols, typemls, unions, structures, old_inout) == 1)
+            if (s.total_resources(items, typeols, typemls, unions, structures) == 1)
             {
                 chosen_syscall = s;
                 break;
             }
             else if (chosen_syscall.get_text().empty() ||
-                        s.total_resources(items, typeols, typemls, unions, structures, old_inout)
-                        < chosen_syscall.total_resources(items, typeols, typemls, unions, structures, old_inout))
+                        s.total_resources(items, typeols, typemls, unions, structures)
+                        < chosen_syscall.total_resources(items, typeols, typemls, unions, structures))
                 chosen_syscall = s;
         }
     }
@@ -451,7 +449,7 @@ void get_one_user_syscall(const TypeTag &this_resource, vector<TypeTag> &needed,
 
 void get_one_producer_syscall(const TypeTag &this_resource, vector<TypeTag> &needed, const vector<TypeTag> &items,
                         vector<Syscall> &syscalls, const vector<TypeOneline> &typeols, const vector<TypeMultiline> &typemls,
-                        const vector<Union> &unions, const vector<Structure> &structures, bool old_inout)
+                        const vector<Union> &unions, const vector<Structure> &structures)
 {
     int index;
     // manual adding for uid and gid
@@ -470,7 +468,7 @@ void get_one_producer_syscall(const TypeTag &this_resource, vector<TypeTag> &nee
         if (tt.get_class() == syscallClass)
         {
             produced_recs.clear();
-            produced_recs = syscalls.at(tt.get_index()).get_resources_produced(items, typeols, typemls, unions, structures, old_inout);
+            produced_recs = syscalls.at(tt.get_index()).get_resources_produced(items, typeols, typemls, unions, structures);
             if (is_in_needed(produced_recs, this_resource))
                 return;
         }
@@ -480,17 +478,17 @@ void get_one_producer_syscall(const TypeTag &this_resource, vector<TypeTag> &nee
     for (Syscall s : syscalls)
     {
         produced_recs.clear();
-        produced_recs = s.get_resources_produced(items, typeols, typemls, unions, structures, old_inout);
+        produced_recs = s.get_resources_produced(items, typeols, typemls, unions, structures);
         if (is_in_needed(produced_recs, this_resource))
         {
-            if (s.total_resources(items, typeols, typemls, unions, structures, old_inout) == 1)
+            if (s.total_resources(items, typeols, typemls, unions, structures) == 1)
             {
                 chosen_syscall = s;
                 break;
             }
             else if (chosen_syscall.get_text().empty() ||
-                    s.total_resources(items, typeols, typemls, unions, structures, old_inout)
-                    < chosen_syscall.total_resources(items, typeols, typemls, unions, structures, old_inout))
+                    s.total_resources(items, typeols, typemls, unions, structures)
+                    < chosen_syscall.total_resources(items, typeols, typemls, unions, structures))
             {
                 chosen_syscall = s;
             }
@@ -507,8 +505,9 @@ void get_one_producer_syscall(const TypeTag &this_resource, vector<TypeTag> &nee
     return;
 }
 
-int slim_template(const string &reproFile, const string &outfilename, const vector<string> &templateFiles, bool old_inout)
+vector<string> slim_template(const string &reproDir, const vector<string> &templateFiles)
 {
+    // Wow this is all bad. But is works (mostly) and I don't want to touch it.
     int pos0, pos1, index;
 
     ifstream templateIn;
@@ -529,6 +528,7 @@ int slim_template(const string &reproFile, const string &outfilename, const vect
     vector<Flag> flags;
 
     vector<TypeTag> needed;
+    vector<string> ret;
 
     // ======================================================================================================
     // Parse the full template
@@ -538,11 +538,8 @@ int slim_template(const string &reproFile, const string &outfilename, const vect
         if (!templateIn)
         {
             cout << "Error: Failed to open file " << filename << ".\n";
-            return -1;
+            return ret;
         }
-
-        if (VERB)
-            cout << "Parsing " << filename << ".\n";
 
         line.clear();
         lines.clear();
@@ -556,22 +553,16 @@ int slim_template(const string &reproFile, const string &outfilename, const vect
             }
             else if (line.substr(0, 8) == "include " || line.substr(0, 7) == "incdir ")
             { // if it is an include or incdir
-                if (VERB)
-                    cout << "Found include.\n";
                 parse_include(includes, line);
             }
             else if (line.substr(0, 9) == "resource ")
             { // if it is a resource
-                if (VERB)
-                    cout << "Found resource.\n";
                 parse_resource(items, resources, line);
             }
             else if (line.substr(0, 5) == "type ")
             { // if it is a type
                 if (line.at(line.size() - 1) == '{' || line.at(line.size() - 1) == '[')
                 { // check for multi-line type
-                    if (VERB)
-                        cout << "Found multi-line type.\n";
                     do {
                         if (line.empty() || line.at(0) == '#')
                             continue;
@@ -583,30 +574,19 @@ int slim_template(const string &reproFile, const string &outfilename, const vect
                 }
                 else
                 {
-                    if (VERB)
-                        cout << "Found one-line type.\n";
                     parse_typeol(items, typeols, line);
                 }
             }
             else if (line.substr(0, 7) == "define ")
             { // if it is a define
-                if (VERB)
-                    cout << "Found definition.\n";
-                
                 parse_definition(items, definitions, line);
             }
             else if (line.find("(") != string::npos && line.find(" = ") == string::npos)
             { // if it is a syscall
-                if (VERB)
-                    cout << "Found syscall.\n";
-
                 parse_syscall(items, syscalls, line);
             }
             else if (line.at(line.size() - 1) == '{')
             { // if it is a struct
-                if (VERB)
-                    cout << "Found structure.\n";
-
                 do {
                     if (line.empty() || line.at(0) == '#')
                         continue;
@@ -619,8 +599,6 @@ int slim_template(const string &reproFile, const string &outfilename, const vect
             }
             else if (line.at(line.size() - 1) == '[')
             { // if it is a union
-                if (VERB)
-                    cout << "Found union.\n";
                 do {
                     if (line.empty() || line.at(0) == '#')
                         continue;
@@ -633,9 +611,6 @@ int slim_template(const string &reproFile, const string &outfilename, const vect
             }
             else if (line.find(" = ") != string::npos)
             { // if it is a flag
-                if (VERB)
-                    cout << "Found flag.\n";
-                
                 parse_flag(items, flags, line);
             }
             else {
@@ -650,31 +625,35 @@ int slim_template(const string &reproFile, const string &outfilename, const vect
 
     // ======================================================================================================
     // Read the reproducer to get syscalls
-    reproIn.open(reproFile);
-    if(!reproIn)
+
+    // For each repro
+    vector<string> reproducers = list_dir(reproDir);
+    vector<string> reproducer_syscalls;
+    for (string file : reproducers)
     {
-        cout << "Failed to open reproducer file!" << reproFile << endl;
-        return -1;
-    }
+        reproIn.open(file);
+        if(!reproIn)
+        {
+            cout << "Failed to open reproducer file!" << file << endl;
+            return ret;
+        }
 
-    // Always include a few syscalls that are needed for syzkaller to function.
-    vector<string> reproducer_syscalls = {"syz_execute_func", "mmap", "open"};
-
-    line.clear();
-    while (getline(reproIn, line))
-    {
-        if (line.empty() || line.at(0) == '#')
-            continue;
-
-        pos0 = line.find(" = ");
-        pos0 = (pos0 == string::npos) ? 0 : pos0 + 3;
-        pos1 = line.find("(");
-
-        if (!is_in_string(reproducer_syscalls, line.substr(pos0, pos1 - pos0)))
-            reproducer_syscalls.push_back(line.substr(pos0, pos1 - pos0));
         line.clear();
+        while (getline(reproIn, line))
+        {
+            if (line.empty() || line.at(0) == '#')
+                continue;
+
+            pos0 = line.find(" = ");
+            pos0 = (pos0 == string::npos) ? 0 : pos0 + 3;
+            pos1 = line.find("(");
+
+            if (!is_in_string(reproducer_syscalls, line.substr(pos0, pos1 - pos0)))
+                reproducer_syscalls.push_back(line.substr(pos0, pos1 - pos0));
+            line.clear();
+        }
+        reproIn.close();
     }
-    reproIn.close();
 
     // ======================================================================================================
     // Create the slimmed template
@@ -705,8 +684,9 @@ int slim_template(const string &reproFile, const string &outfilename, const vect
         {
         case resourceClass:
             resources.at(index).push_depends(needed, items);
-            get_one_user_syscall(needed.at(i), needed, items, syscalls, typeols, typemls, unions, structures, old_inout);
-            get_one_producer_syscall(needed.at(i), needed, items, syscalls, typeols, typemls, unions, structures, old_inout);
+            // TODO: modify this to only get base resource producers and consumers
+            get_one_user_syscall(needed.at(i), needed, items, syscalls, typeols, typemls, unions, structures);
+            get_one_producer_syscall(needed.at(i), needed, items, syscalls, typeols, typemls, unions, structures);
             break;
         case typeolClass:
             typeols.at(index).push_depends(needed, items);
@@ -735,59 +715,17 @@ int slim_template(const string &reproFile, const string &outfilename, const vect
         };
     }
 
-    // ======================================================================================================
-    // Print the template to the file
-
-    outf.open(outfilename);
-    if (!outf)
-    {
-        cout << "Failed to open output file: " << outfilename << endl;
-        return -1;
-    }
-
-    for (Include i : includes)
-        outf << i.get_text() << endl;
-
-    outf << "\n\n";
-
     for (TypeTag tt : needed)
     {
-        index = tt.get_index();
-        switch (tt.get_class())
+        //index = tt.get_index();
+        if (tt.get_class() == syscallClass)
         {
-        case resourceClass:
-            outf << resources.at(index).get_text() << "\n\n";
-            break;
-        case typeolClass:
-            outf << typeols.at(index).get_text() << "\n\n";
-            break;
-        case typemlClass:
-            outf << typemls.at(index).get_text() << "\n\n";
-            break;
-        case definitionClass:
-            outf << definitions.at(index).get_text() << "\n\n";
-            break;
-        case unionClass:
-            outf << unions.at(index).get_text() << "\n\n";
-            break;
-        case structureClass:
-            outf << structures.at(index).get_text() << "\n\n";
-            break;
-        case flagClass:
-            outf << flags.at(index).get_text() << "\n\n";
-            break;
-        case syscallClass:
-            outf << syscalls.at(index).get_text() << "\n\n";
-            break;
-        default:
-            cout << "Warning: Unknown class type found while printing.\n";
-            break;
-        };
+            cout << tt.get_name() /*syscalls.at(index).get_name()*/ << "\n";
+            ret.push_back(tt.get_name());
+        }
     }
 
-    outf << flush;
-    outf.close();
-    return 0;
+    return ret;
 }
 
 vector<string> list_template_files(const string &template_dir)
@@ -800,59 +738,4 @@ vector<string> list_template_files(const string &template_dir)
             files.erase(files.begin() + i);
 
     return files;
-}
-
-int remove_template_files(const vector<string> &template_files)
-{
-    for (string file : template_files)
-        remove_file(file);
-
-    return 0;
-}
-
-bool compare_templates(const string &template1, const string &template2)
-{
-    bool ok1, ok2, ret = true;
-    string line1, line2;
-    ifstream inf1, inf2;
-    inf1.open(template1);
-    inf2.open(template2);
-
-    if (!inf1 || !inf2)
-    {
-        cerr << "Error: Failed to open either " << template1 << " or " << template2 << ".\n";
-        return false;
-    }
-
-    // skip all of the includes
-    while (getline(inf1, line1) && line1.substr(0, 7) == "include");
-    while (getline(inf2, line2) && line2.substr(0, 7) == "include");
-
-    while (true)
-    {
-        ok1 = getline(inf1, line1) ? true : false;
-        ok2 = getline(inf2, line2) ? true : false;
-
-        if (ok1 && ok2)
-        {
-            if (line1 != line2)
-            {
-                ret = false;
-                break;
-            }
-        }
-        else if (!ok1 && !ok2)
-        {
-            break;
-        }
-        else
-        {
-            ret = false;
-            break;
-        }
-    }
-
-    inf1.close();
-    inf2.close();
-    return ret;
 }

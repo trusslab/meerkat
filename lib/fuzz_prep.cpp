@@ -48,34 +48,28 @@ int get_procs_from_repro(const string & repro)
     return p;
 }
 
-VMConfig determine_threadedness(Environment &env, const Bug_Info &bug, std::ostream &logfile)
+VMConfig determine_threadedness(Environment &env, const Bug_Info &bug)
 {
-    string reproducer = bug.reproducer + "/repro-" + bug.numName + "-1.prog";
+    string reproducer = bug.reprodir + "/repro-" + env.working_name + "-1.prog";
     int procs = get_procs_from_repro(reproducer);
     switch (procs)
     {
     case 1:
-        cout << "Using resource allocation for a single proc bug.\n";
-        logfile << "Single Proc Allocation\n";
         env.vmc = env.vmst;
         break;
     case 6:
-        cout << "Using default resource allocation.\n";
-        logfile << "Default Allocation.\n";
         env.vmc = env.vmd;
         break;
     case 8:
-        cout << "Using resource allocation for a multi-proc bug.\n";
-        logfile << "Multi-Proc Allocation.\n";
         env.vmc = env.vmr;
         break;
     default:
         cerr << "Warning: Could not retrieve number of procs from reproducer " << reproducer << ". Using Default.\n";
         env.vmc = env.vmd;
     }
-    logfile << "VMs:" << env.vmc.numVM << endl
-            << "CPUs:" << env.vmc.numCPU << endl
-            << "Procs:" << env.vmc.numProcs << endl;
+    cout << "VMs:" << env.vmc.numVM << endl
+         << "CPUs:" << env.vmc.numCPU << endl
+         << "Procs:" << env.vmc.numProcs << endl;
 
     return env.vmc;
 }
@@ -328,7 +322,7 @@ int prep_kernel(const Environment &env, const Bug_Info &bug, Git &linux_git, con
 
     // build the kernel
     cout << "Building the kernel...\n" << flush;
-    string outfile = env.logdir + bug.numName + "-kbuild.log";
+    string outfile = env.logdir + env.working_name + "-kbuild.log";
     cd(env.kerneldir);
     err = make(env.makeprocs, {"olddefconfig", "CC="+compiler}, outfile);
     if (err < 0)
@@ -355,6 +349,149 @@ int clean_kernel(const Environment &env)
     return (err == 0 ? 0 : -1);
 }
 
+vector<string> get_reproduer_syscall_descriptions(const Environment &env, const Bug_Info &bug)
+{
+    string full_template = env.syzdir + "/sys/linux";
+    vector<string> template_files = list_template_files(full_template);
+    vector<string> syscalls = slim_template(bug.reprodir, template_files);
+    if (syscalls.size() == 0)
+    {
+        cout << "Error: failed to slim the template.\n";
+        return {};
+    }
+    return syscalls;
+}
+
+int write_syzkaller_config(const Environment &env, const Bug_Info &bug)
+{
+    ofstream outf;
+    outf.open(env.syzconfig);
+    if (!outf)
+    {
+        cerr << "Error: Failed to open file " << env.syzconfig << ".\n";
+        return -1;
+    }
+
+    outf << "{\n"
+         << "    \"target\": \"linux/amd64" << (bug.arch == "i386" ? "/386" : "") << "\",\n"
+         << "    \"http\": \"127.0.0.1:" << env.port.port << "\",\n"
+         << "    \"workdir\": \"" << env.syzwd << "\",\n"
+         << "    \"kernel_obj\": \"" << env.kerneldir << "\",\n";
+
+    // change image when syzkaller did. It shouldn't matter, but who knows.
+    if (true /*syz_date >= Date(2018,9,4)*/)
+        outf << "    \"image\": \"" << env.image_dir << "/stretch/stretch.img\",\n"
+             << "    \"sshkey\": \"" << env.image_dir << "/stretch/stretch.id_rsa\",\n";
+    else
+        outf << "    \"image\": \"" << env.image_dir << "/wheezy/wheezy.img\",\n"
+             << "    \"sshkey\": \"" << env.image_dir << "/wheezy/ssh/id_rsa\",\n";
+
+    outf << "    \"syzkaller\": \"" << env.syzdir << "\",\n"
+         << "    \"procs\": " << env.vmc.numProcs << ",\n"
+         << "    \"type\": \"qemu\",\n"
+         << "    \"reproduce\": false,\n"
+         << "    \"vm\": {\n"
+         << "        \"count\": " << env.vmc.numVM << ",\n"
+         << "        \"kernel\": \"" << env.kerneldir << "/arch/x86/boot/bzImage\",\n"
+         << "        \"cpu\": " << env.vmc.numCPU << ",\n"
+         << "        \"mem\": " << env.memory << "\n"
+         << "    }\n"
+         << "}\n";
+
+    outf.close();
+    return 0;
+}
+
+void reset_kaller_wd(const Environment &env)
+{
+    if (check_file(env.syzwd))
+    {
+        cout << "Reseting Syzkaller's working directory.\n";
+        remove_dir(env.syzwd);
+    }
+
+    make_dir(env.syzwd);
+    make_dir(env.syzwd + "/crashes");
+    return;
+}
+
+// Calls syz-db (up)pack src dest.
+// assumes syzkaller has already been made.
+int syz_db(const Environment &env, const string &opt, const string &src, const string &dest)
+{
+    string com = env.syzdir + "/bin/syz-db";
+    char * command = new char[com.size() + 1];
+    strcpy(command, com.c_str());
+    char * arg1 = new char[opt.size() + 1];
+    strcpy(arg1, opt.c_str());
+    char * arg2 = new char[src.size() + 1];
+    strcpy(arg2, src.c_str());
+    char * arg3 = new char[dest.size() + 1];
+    strcpy(arg3, dest.c_str());
+
+    char * arg_list[] = {command, arg1, arg2, arg3, nullptr};
+
+    int ret = exec_and_wait(com, arg_list);
+
+    delete[] command;
+    delete[] arg1;
+    delete[] arg2;
+    delete[] arg3;
+    return ret;
+}
+
+int syz_db_pack_corpus(const Environment &env, const string &corpusdir, const string &corpus)
+{
+    return syz_db(env, "pack", corpusdir, corpus);
+}
+
+int syz_db_unpack_corpus(const Environment &env, const string &corpusdir, const string &corpus)
+{
+    return syz_db(env, "unpack", corpus, corpusdir);
+}
+
+// Does the following as needed:
+// Unpack the previous corpus
+// Reset the working directory
+// Filter/Clear the previous corpus
+// Adds the PoCs to the corpus
+// Packs the corpus
+int prepare_kaller_wd(const Environment &env, const Bug_Info &bug, bool keep_corpus)
+{
+    bool do_pack = false;
+    int err = 0;
+    string corpus = env.syzwd + "corpus.db";
+    string corpusdir = env.wd + "corpus";
+
+    if (check_file(corpusdir))
+        remove_dir(corpusdir);
+    make_dir(corpusdir);
+
+    if (keep_corpus && check_file(corpus))
+    {
+        err = syz_db_unpack_corpus(env, corpusdir, corpus);
+        do_pack = true;
+        if (err < 0)
+            goto exit;
+    }
+
+    reset_kaller_wd(env);
+
+    // Copy the reproducers into the corpus directory
+    for (string repro : list_dir(bug.reprodir))
+        copy(repro, corpusdir);
+    do_pack = true;
+
+    if (do_pack)
+        err = syz_db_pack_corpus(env, corpusdir, corpus);
+
+exit:
+    if (check_file(corpusdir))
+        remove_dir(corpusdir);
+    return err;
+}
+
+/* Gonna keep this here on the off chance that I need it. It took a lot of work.
 void patch_syzkaller(const Environment &env, const Bug_Info &bug, const Version &syzkaller_version)
 {
     string old_dir = pwd();
@@ -464,28 +601,10 @@ void patch_syzkaller(const Environment &env, const Bug_Info &bug, const Version 
     cd(old_dir);
 }
 
-int slim_syzkaller_template(const Environment &env, const Bug_Info &bug, const Version &syzkaller_version)
-{
-    int err = 0;
-    string full_template = syzkaller_version.date < Date(2017,9,15) ? env.syzdir + "/sys" : env.syzdir + "/sys/linux";
-    string new_template = env.wd + "my_template.txt";
-    vector<string> template_files = list_template_files(full_template);
-    cout << "Slimming the template.\n";
-    err = slim_template(bug.allreproducer, new_template, template_files, syzkaller_version.date < OLD_INOUT_DATE);
-    if (err < 0)
-    {
-        cout << "Error: failed to slim the template.\n";
-        return err;
-    }
-    remove_template_files(template_files);
-    copy(new_template, full_template);
-    return err;
-}
-
 int prep_syzkaller(const Environment &env, const Bug_Info &bug, Git &syzkaller, const Version &syzkaller_version, bool do_slim)
 {
     int err = 0;
-    string outfile = env.logdir + bug.numName + "-syzbuild.log";
+    string outfile = env.logdir + env.working_name + "-syzbuild.log";
 
     syzkaller.cleanup();
     if (bug.arch == "i386")
@@ -538,9 +657,9 @@ int prep_syzkaller(const Environment &env, const Bug_Info &bug, Git &syzkaller, 
         return err;
 
     if (do_slim)
-        slim_syzkaller_template(env, bug, syzkaller_version);
+        slim_syzkaller_template(env, bug);
 
-    patch_syzkaller(env, bug, syzkaller_version);
+    patch_syzkaller(env, bug);
 
     // Handle old go mod
     if (check_file(env.syzdir + "/Godeps/Godeps.json") && !dangerzone)
@@ -602,170 +721,4 @@ int prep_syzkaller(const Environment &env, const Bug_Info &bug, Git &syzkaller, 
 
     return err;
 }
-
-int write_syzkaller_config(const Environment &env, const Bug_Info &bug, const Date &syz_date)
-{
-    ofstream outf;
-    outf.open(env.syzconfig);
-    if (!outf)
-    {
-        cerr << "Error: Failed to open file " << env.syzconfig << ".\n";
-        return -1;
-    }
-
-    outf << "{\n";
-
-    // target was added on 2017-09-15
-    if(syz_date > Date(2017,9,15)) 
-    {
-        outf << "    \"target\": \"linux/amd64" << (bug.arch == "i386" ? "/386" : "") << "\",\n";
-    }
-
-    outf << "    \"http\": \"127.0.0.1:" << env.port.port << "\",\n"
-         << "    \"workdir\": \"" << env.syzwd << "\",\n";
-
-    // "vmlinux" until 2018-06-27, then "kernel_obj" starting on 2018-06-28
-    if (syz_date  >= Date(2018,6,28))
-        outf << "    \"kernel_obj\": \"" << env.kerneldir << "\",\n";
-    else
-        outf << "    \"vmlinux\": \"" << env.kerneldir << "/vmlinux\",\n";
-
-    // change image when syzkaller did. It shouldn't matter, but who knows.
-    if (syz_date >= Date(2018,9,4))
-        outf << "    \"image\": \"" << env.image_dir << "/stretch/stretch.img\",\n"
-             << "    \"sshkey\": \"" << env.image_dir << "/stretch/stretch.id_rsa\",\n";
-    else
-        outf << "    \"image\": \"" << env.image_dir << "/wheezy/wheezy.img\",\n"
-             << "    \"sshkey\": \"" << env.image_dir << "/wheezy/ssh/id_rsa\",\n";
-
-    outf << "    \"syzkaller\": \"" << env.syzdir << "\",\n"
-         << "    \"procs\": " << env.vmc.numProcs << ",\n"
-         << "    \"type\": \"qemu\",\n"
-         << "    \"reproduce\": false,\n"
-         << "    \"vm\": {\n"
-         << "        \"count\": " << env.vmc.numVM << ",\n"
-         << "        \"kernel\": \"" << env.kerneldir << "/arch/x86/boot/bzImage\",\n"
-         << "        \"cpu\": " << env.vmc.numCPU << ",\n"
-         << "        \"mem\": " << env.memory << "\n"
-         << "    }\n"
-         << "}\n";
-
-    outf.close();
-    return 0;
-}
-
-void reset_kaller_wd(const Environment &env)
-{
-    if (check_file(env.syzwd))
-    {
-        cout << "Reseting Syzkaller's working directory.\n";
-        remove_dir(env.syzwd);
-    }
-
-    make_dir(env.syzwd);
-    make_dir(env.syzwd + "/crashes");
-    return;
-}
-
-// Calls syz-db (up)pack src dest.
-// assumes syzkaller has already been made.
-int syz_db(const Environment &env, const string &opt, const string &src, const string &dest)
-{
-    string com = env.syzdir + "/bin/syz-db";
-    char * command = new char[com.size() + 1];
-    strcpy(command, com.c_str());
-    char * arg1 = new char[opt.size() + 1];
-    strcpy(arg1, opt.c_str());
-    char * arg2 = new char[src.size() + 1];
-    strcpy(arg2, src.c_str());
-    char * arg3 = new char[dest.size() + 1];
-    strcpy(arg3, dest.c_str());
-
-    char * arg_list[] = {command, arg1, arg2, arg3, nullptr};
-
-    int ret = exec_and_wait(com, arg_list);
-
-    delete[] command;
-    delete[] arg1;
-    delete[] arg2;
-    delete[] arg3;
-    return ret;
-}
-
-int syz_db_pack_corpus(const Environment &env, const string &corpusdir, const string &corpus)
-{
-    return syz_db(env, "pack", corpusdir, corpus);
-}
-
-int syz_db_unpack_corpus(const Environment &env, const string &corpusdir, const string &corpus)
-{
-    return syz_db(env, "unpack", corpus, corpusdir);
-}
-
-// Does the following as needed:
-// Unpack the previous corpus
-// Reset the working directory
-// Filter/Clear the previous corpus
-// Adds the PoCs to the corpus
-// Packs the corpus
-int prepare_kaller_wd(const Environment &env, const Bug_Info &bug, bool keep_corpus)
-{
-    bool do_pack = false;
-    int err = 0;
-    string corpus = env.syzwd + "corpus.db";
-    string corpusdir = env.wd + "corpus";
-
-    if (check_file(corpusdir))
-        remove_dir(corpusdir);
-    make_dir(corpusdir);
-
-    if (keep_corpus && check_file(corpus))
-    {
-        err = syz_db_unpack_corpus(env, corpusdir, corpus);
-        do_pack = true;
-        if (err < 0)
-            goto exit;
-    }
-
-    reset_kaller_wd(env);
-
-    // Copy the reproducers into the corpus directory
-    for (string repro : list_dir(bug.reproducer))
-        copy(repro, corpusdir);
-    do_pack = true;
-
-    if (do_pack)
-        err = syz_db_pack_corpus(env, corpusdir, corpus);
-
-exit:
-    if (check_file(corpusdir))
-        remove_dir(corpusdir);
-    return err;
-}
-
-int clean_syzkaller(const Environment &env)
-{
-    string old_dir = pwd();
-    int err = 0;
-
-    cd(env.syzdir);
-    err = make(1, "clean");
-    cd(old_dir);
-
-    return (err == 0 ? 0 : -1);
-
-    /*
-    int pos0, err = 0;
-    for (string file : list_dir(env.syzdir))
-    {
-        pos0 = file.find_last_of("/");
-        if (file.at(pos0 + 1) != '.')
-        {
-            err = remove_dir(file);
-            if (err != 0)
-                return err;
-        }
-    }
-    */
-    //return 0;
-}
+*/

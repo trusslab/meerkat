@@ -9,7 +9,6 @@ class Session
 {
 public:
     Version kernel;
-    Version syzkaller;
     bool found;
     bool stable;
 
@@ -17,17 +16,17 @@ public:
         : stable(true)
     { return; }
 
-    Session(const Version &k, const Version &syz, bool f)
-        : kernel(k), syzkaller(syz), found(f), stable(true)
+    Session(const Version &k, bool f)
+        : kernel(k), found(f), stable(true)
     {
         return;
     }
 
     bool operator==(const Session &other)
-    { return kernel == other.kernel && syzkaller == other.syzkaller; }
+    { return kernel == other.kernel; }
 
     bool operator<(const Session &other) const
-    { return (kernel.name + syzkaller.name) < (other.kernel.name + other.syzkaller.name); }
+    { return kernel.name < other.kernel.name; }
 };
 
 #endif

@@ -24,10 +24,10 @@ using namespace std;
 
 std::string make_repro_log(const Environment &env, const Bug_Info &bug)
 {
-    std::string reprolog = env.wd+bug.numName+"-reprolog.prog";
+    std::string reprolog = env.wd+"reprolog.prog";
 
     std::vector<std::string> out;
-    for (std::string file : list_dir(bug.reproducer))
+    for (std::string file : list_dir(bug.reprodir))
     {
         // This lets syz-repro see when a program begins
         out.push_back("executing program 0:");
@@ -75,10 +75,9 @@ int find_average_time(const vector<Syzkaller_Result> &times)
     return sum / times.size();
 }
 
-void handle_syzkaller_crash(ostream &logfile)
+void handle_syzkaller_crash()
 {
     cerr << "Error: Syzkaller has experienced a crash.\n" << flush;
-    logfile << "Error: Syzkaller has experienced a crash.\n" << flush;
 }
 
 string get_crash_name(const string &hash)
@@ -100,7 +99,7 @@ string get_crash_name(const string &hash)
 
 // The time is rough here and rounds up to the nearest time increment (usually 1 minute)
 // result.ttf is the time it took to find the bug, or the max_time
-Syzkaller_Result run_syzkaller(ofstream &logfile, const Environment &env, const Bug_Info &bug, bool keep_corpus)
+Syzkaller_Result run_syzkaller(const Environment &env, const Bug_Info &bug, bool keep_corpus)
 {
     Syzkaller_Result result;
     int time = 0, to_add = 0;
@@ -167,10 +166,9 @@ Syzkaller_Result run_syzkaller(ofstream &logfile, const Environment &env, const 
 
         if (wc_l(env.syzkaller_log) > 5000)
         {
-            cout << "Warning: Syzkaller log file exceeded 5000 lines. Assuming boot failure\n";
-            logfile << "Warning: Syzkaller log file exceeded 5000 lines.\n"
-                    << "Saved at " << env.logdir + bug.numName + "-boot_failure.log" << ".\n" << flush;
-            copy(env.syzkaller_log, env.logdir + bug.numName + "-boot_failure.log");
+            cout << "Warning: Syzkaller log file exceeded 5000 lines.\n"
+                 << "Saved at " << env.logdir + env.working_name + "-boot_failure.log" << ".\n" << flush;
+            copy(env.syzkaller_log, env.logdir + env.working_name + "-boot_failure.log");
             result.bad_crashes++;
             result.reports.push_back({"boot failure", time});
             break;
@@ -181,14 +179,14 @@ Syzkaller_Result run_syzkaller(ofstream &logfile, const Environment &env, const 
     if (check_alive(pid))
         kill_child(pid);
     else
-        handle_syzkaller_crash(logfile);
+        handle_syzkaller_crash();
 
     cd(env.home);
     delete[] arg1;
     return result;
 }
 
-Syzkaller_Result run_syz_repro(std::ofstream &logfile, const Environment &env, const Bug_Info &bug, const std::string &reprolog)
+Syzkaller_Result run_syz_repro(const Environment &env, const Bug_Info &bug, const std::string &reprolog)
 {
     Syzkaller_Result result;
     int time = 0, to_add = 0;
@@ -199,6 +197,7 @@ Syzkaller_Result run_syz_repro(std::ofstream &logfile, const Environment &env, c
     std::string old_dir = pwd();
     cd(env.syzdir);
 
+    // TODO: add --repro to output the reproducer
     std::vector<std::string> cmd = {"./bin/syz-repro", "-config", env.syzconfig, reprolog};
     const char ** arg_list = new const char*[cmd.size()+1];
     for (int i = 0; i < cmd.size(); i++)
@@ -206,7 +205,6 @@ Syzkaller_Result run_syz_repro(std::ofstream &logfile, const Environment &env, c
 
     arg_list[cmd.size()] = nullptr;
 
-    cout << "Running syz-repro...\n";
     int pid = exec_and_continue("./bin/syz-repro", (char **)arg_list, env.syzkaller_log, env.syzkaller_log);
 
     int i = 0;
@@ -233,10 +231,9 @@ Syzkaller_Result run_syz_repro(std::ofstream &logfile, const Environment &env, c
 
         if (wc_l(env.syzkaller_log) > 5000)
         {
-            cout << "Warning: syz-repro log file exceeded 5000 lines. Assuming boot failure\n";
-            logfile << "Warning: syz-repro log file exceeded 5000 lines.\n"
-                    << "Saved at " << env.logdir + bug.numName + "-boot_failure.log" << ".\n" << flush;
-            copy(env.syzkaller_log, env.logdir + bug.numName + "-boot_failure.log");
+            cout << "Warning: syz-repro log file exceeded 5000 lines.\n"
+                    << "Saved at " << env.logdir + env.working_name + "-boot_failure.log" << ".\n" << flush;
+            copy(env.syzkaller_log, env.logdir + env.working_name + "-boot_failure.log");
             result.bad_crashes++;
             result.reports.push_back({"boot failure", time});
             break;
@@ -254,7 +251,7 @@ Syzkaller_Result run_syz_repro(std::ofstream &logfile, const Environment &env, c
     return result;
 }
 
-Test_Result fuzz_loop_finding(ofstream &logfile, Environment &env, const Bug_Info &bug, const Date &syz_date, bool keep_corpus)
+Test_Result fuzz_loop_finding(Environment &env, const Bug_Info &bug, bool keep_corpus)
 {
     Test_Result result;
     result.found = false;
@@ -263,15 +260,15 @@ Test_Result fuzz_loop_finding(ofstream &logfile, Environment &env, const Bug_Inf
     for (int i = 0; i < env.fuzztimes + retries && unstable_count < env.fuzztimes; i++)
     {
         env.port.inc();
-        write_syzkaller_config(env, bug, syz_date);
-        result.attempts.push_back(run_syzkaller(logfile, env, bug, keep_corpus));
+        write_syzkaller_config(env, bug);
+        result.attempts.push_back(run_syzkaller(env, bug, keep_corpus));
         result.found = result.attempts.back().found ? true : result.found;
         if (result.attempts.back().bad_crashes > 0 && retries < env.fuzztimes)
         {
             retries++;
             unstable_count++;
         }
-        log_attempt_result(logfile, result.attempts.back(), i + 1, bug.duplicates, env.fuzztimes);
+        log_attempt_result(result.attempts.back(), i + 1, bug.duplicates, env.fuzztimes);
     }
 
     result.stable = unstable_count < result.attempts.size() / 2 || result.found;
@@ -279,7 +276,7 @@ Test_Result fuzz_loop_finding(ofstream &logfile, Environment &env, const Bug_Inf
     return result;
 }
 
-Test_Result fuzz_loop(ofstream &logfile, Environment &env, const Bug_Info &bug,  const Date &syz_date, bool keep_corpus)
+Test_Result fuzz_loop(Environment &env, const Bug_Info &bug, bool keep_corpus)
 {
     Test_Result result;
     result.found = false;
@@ -288,15 +285,15 @@ Test_Result fuzz_loop(ofstream &logfile, Environment &env, const Bug_Info &bug, 
     for (int i = 0; i < env.fuzztimes + retries && !result.found  && unstable_count < env.fuzztimes; i++)
     {
         env.port.inc();
-        write_syzkaller_config(env, bug, syz_date);
-        result.attempts.push_back(run_syzkaller(logfile, env, bug, keep_corpus));
+        write_syzkaller_config(env, bug);
+        result.attempts.push_back(run_syzkaller(env, bug, keep_corpus));
         result.found = result.attempts.back().found;
         if (result.attempts.back().bad_crashes > 0 && retries < env.fuzztimes)
         {
             retries++;
             unstable_count++;
         }
-        log_attempt_result(logfile, result.attempts.back(), i + 1, bug.duplicates, env.fuzztimes);
+        log_attempt_result(result.attempts.back(), i + 1, bug.duplicates, env.fuzztimes);
     }
 
     result.stable = unstable_count < result.attempts.size() / 2 || result.found;
@@ -304,7 +301,7 @@ Test_Result fuzz_loop(ofstream &logfile, Environment &env, const Bug_Info &bug, 
     return result;
 }
 
-Test_Result repro_loop_finding(ofstream &logfile, Environment &env, const Bug_Info &bug, const Date &syz_date)
+Test_Result poc_loop_finding(Environment &env, const Bug_Info &bug)
 {
     Test_Result result;
     result.found = false;
@@ -316,15 +313,14 @@ Test_Result repro_loop_finding(ofstream &logfile, Environment &env, const Bug_In
     for (int i = 0; i < env.fuzztimes + retries && unstable_count < env.fuzztimes; i++)
     {
         env.port.inc();
-        write_syzkaller_config(env, bug, syz_date);
-        result.attempts.push_back(run_syz_repro(logfile, env, bug, reprolog));
+        result.attempts.push_back(run_syz_repro(env, bug, reprolog));
         result.found = result.attempts.back().found ? true : result.found;
         if (result.attempts.back().bad_crashes > 0 && retries < env.fuzztimes)
         {
             retries++;
             unstable_count++;
         }
-        log_attempt_result(logfile, result.attempts.back(), i + 1, bug.duplicates, env.fuzztimes);
+        log_attempt_result(result.attempts.back(), i + 1, bug.duplicates, env.fuzztimes);
     }
 
     result.stable = unstable_count < result.attempts.size() / 2 || result.found;
@@ -333,7 +329,7 @@ Test_Result repro_loop_finding(ofstream &logfile, Environment &env, const Bug_In
     return result;
 }
 
-Test_Result repro_loop(ofstream &logfile, Environment &env, const Bug_Info &bug,  const Date &syz_date)
+Test_Result poc_loop(Environment &env, const Bug_Info &bug)
 {
     Test_Result result;
     result.found = false;
@@ -345,15 +341,14 @@ Test_Result repro_loop(ofstream &logfile, Environment &env, const Bug_Info &bug,
     for (int i = 0; i < env.fuzztimes + retries && !result.found  && unstable_count < env.fuzztimes; i++)
     {
         env.port.inc();
-        write_syzkaller_config(env, bug, syz_date);
-        result.attempts.push_back(run_syz_repro(logfile, env, bug, reprolog));
+        result.attempts.push_back(run_syz_repro(env, bug, reprolog));
         result.found = result.attempts.back().found;
         if (result.attempts.back().bad_crashes > 0 && retries < env.fuzztimes)
         {
             retries++;
             unstable_count++;
         }
-        log_attempt_result(logfile, result.attempts.back(), i + 1, bug.duplicates, env.fuzztimes);
+        log_attempt_result(result.attempts.back(), i + 1, bug.duplicates, env.fuzztimes);
     }
 
     result.stable = unstable_count < result.attempts.size() / 2 || result.found;
@@ -362,7 +357,7 @@ Test_Result repro_loop(ofstream &logfile, Environment &env, const Bug_Info &bug,
     return result;
 }
 
-
+/*
 bool check_faulty_result(const Bug_Info &bug)
 {
     bool fault = false;
@@ -373,3 +368,4 @@ bool check_faulty_result(const Bug_Info &bug)
 
     return fault;
 }
+*/

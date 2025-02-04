@@ -12,22 +12,15 @@
 class Bug_Info
 {
 public:
-    bool have_fdate;
-
-    int number;                         // the bug number
     std::string name;                   // the name of the bug given by syzbot
-    std::string numName;                // the number name given by inspector-manager.sh (i.e. bug0003)
 
-    std::string kpreface;               // the preface of the repository (linux, linux-next, net, etc..)
     std::string arch;                   // either amd64 or i386 for 64 or 32 bit POC 
-    std::string repository;             // the repository in a form that fits the link (torvalds/linux.git)
+    std::string repository;             // the kernel repository
     std::string kconfig;                // the config file for the kernel
-    std::string reproducer;             // the directory with all of the PoCs
-    std::string allreproducer;          // the file with all PoCs concatenated
+    std::string reprodir;               // the directory with all of the PoCs
     std::string buglink;                // the link to the bug in syzbot
 
     std::string find_hash;
-    Date find_date;
 
     std::vector<std::string> duplicates;
     Blocking_Bugs blocking_bugs;

@@ -450,14 +450,14 @@ public:
 
     std::vector<TypeTag> get_resources_used(const std::vector<TypeTag> &,
                         const std::vector<TypeOneline> &, const std::vector<TypeMultiline> &,
-                        const std::vector<Union> &, const std::vector<Structure> &, bool);
+                        const std::vector<Union> &, const std::vector<Structure> &);
     std::vector<TypeTag> get_resources_produced(const std::vector<TypeTag> &,
                         const std::vector<TypeOneline> &, const std::vector<TypeMultiline> &,
-                        const std::vector<Union> &, const std::vector<Structure> &, bool);
+                        const std::vector<Union> &, const std::vector<Structure> &);
 
     int total_resources(const std::vector<TypeTag> &, const std::vector<TypeOneline> &,
                             const std::vector<TypeMultiline> &, const std::vector<Union> &,
-                            const std::vector<Structure> &, bool);
+                            const std::vector<Structure> &);
 };
 
 // ======================================================================================================
