@@ -2,7 +2,6 @@
 #define TEMPLATE_PARSE_H
 
 #include <environment.h>
-#include <bug_info.h>
 
 #include <string>
 #include <vector>
@@ -13,6 +12,6 @@ std::vector<std::string> slim_template(const std::string &, const std::vector<st
 // creates a vector with a list of all the .txt files in the given template.
 std::vector<std::string> list_template_files(const std::string &);
 
-std::vector<std::string> get_reproduer_syscall_descriptions(const Environment &, const Bug_Info &);
+std::vector<std::string> get_reproduer_syscall_descriptions(const Environment &);
 
 #endif

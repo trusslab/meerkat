@@ -1,7 +1,6 @@
 #ifndef BISECT_H
 #define BISECT_H
 
-#include <bug_info.h>
 #include <date.h>
 #include <environment.h>
 #include <git.h>
@@ -57,20 +56,20 @@ private:
     bool session_was_found(const Session &) const;
     bool session_was_stable(const Session &) const;
 
-    int build_current_kernel(const Environment &, const Bug_Info &, Git &, bool = false);
+    int build_current_kernel(const Environment &, Git &, bool = false);
 
-    int goto_anchor_session(const Environment &, const Bug_Info &, Git &);
-    int goto_release_session(const Environment &, const Bug_Info &, Git &);
-    int goto_bisect_session(const Environment &, const Bug_Info &, Git &);
+    int goto_anchor_session(const Environment &, Git &);
+    int goto_release_session(const Environment &, Git &);
+    int goto_bisect_session(const Environment &, Git &);
 
-    Test_Result test_anchor_ff(Environment &, Bug_Info &);
-    Test_Result test_anchor_poc(Environment &, Bug_Info &);
+    Test_Result test_anchor_ff(Environment &);
+    Test_Result test_anchor_poc(Environment &);
 
-    Test_Result test_bisect_ff(Environment &, Bug_Info &);
-    Test_Result test_bisect_poc(Environment &, Bug_Info &);
+    Test_Result test_bisect_ff(Environment &);
+    Test_Result test_bisect_poc(Environment &);
 
-    Test_Result test_anchor(Environment &, Bug_Info &);
-    Test_Result test_bisect(Environment &, Bug_Info &);
+    Test_Result test_anchor(Environment &);
+    Test_Result test_bisect(Environment &);
 
     int record_anchor(const Test_Result &);
     int record_release(const Test_Result &);
@@ -82,7 +81,7 @@ public:
     std::vector<Version> kernel_versions;
     std::vector<Version> syzkaller_versions;
 
-    int init(const Environment &, const Bug_Info &, Git &);
+    int init(const Environment &, Git &);
 
     int set_mode(const Bisect_Mode &);
     Bisect_Mode mode() const
@@ -105,15 +104,15 @@ public:
 
     // Goto the next session. Build everything as needed
     // Decide next session based on internal state
-    int next_session(const Environment &, const Bug_Info &, Git &);
+    int next_session(const Environment &, Git &);
 
     // Fuzz and return a result
-    Test_Result test_current(Environment &, Bug_Info &, Git &);
+    Test_Result test_current(Environment &, Git &);
 
     int record(const Test_Result &, Git &);
     int archive_session(const Test_Result &);
 
-    std::string print_result(const Environment &, const Bug_Info &, Git &, const std::chrono::steady_clock::time_point &) const;
+    std::string print_result(const Environment &, Git &, const std::chrono::steady_clock::time_point &) const;
 };
 
 std::string runtime(const std::chrono::steady_clock::time_point &);

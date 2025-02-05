@@ -160,7 +160,7 @@ int make(unsigned int procs, const string &option, const string &outfile)
     return (err == 0 ? 0 : -1);
 }
 
-int syz_env_cross_compile(const string &syz_env, const Bug_Info &bug, const string &outfile)
+int syz_env_cross_compile(const string &syz_env, const string &outfile)
 {
     char command[] = "sudo";
     char * arg1 = new char[syz_env.size() + 1];
@@ -177,7 +177,7 @@ int syz_env_cross_compile(const string &syz_env, const Bug_Info &bug, const stri
     return (err != 0 ? -1 : 0);
 }
 
-int syz_env_clean(const string &syz_env, const Bug_Info &bug)
+int syz_env_clean(const string &syz_env)
 {
     char command[] = "sudo";
     char * arg1 = new char[syz_env.size() + 1];

@@ -1,5 +1,4 @@
 #include <argparse.h>
-#include <bug_info.h>
 #include <environment.h>
 #include <template_parse.h>
 
@@ -17,7 +16,7 @@ void print_help()
         << endl << flush;
 }
 
-int handle_bug_config(Environment &env, Bug_Info &bug, const Argparse &args)
+int handle_bug_config(Environment &env, const Argparse &args)
 {
     int err = 0;
     string filename;
@@ -34,9 +33,6 @@ int handle_bug_config(Environment &env, Bug_Info &bug, const Argparse &args)
     err = env.parse_config_file(filename);
     if (err < 0)
         return err;
-    err = bug.parse_config_file(env, filename);
-    if (err < 0)
-        return err;
 
     return err;
 }
@@ -45,7 +41,6 @@ int main(int argc, char ** argv)
 {
     Argparse args;
     Environment env;
-    Bug_Info bug;
 
     args.expect("hci");
     args.expect(vector<string>({ "help", "config" }));
@@ -56,13 +51,13 @@ int main(int argc, char ** argv)
         return 0;
     }
 
-    if (handle_bug_config(env, bug, args) < 0)
+    if (handle_bug_config(env, args) < 0)
     {
         cerr << "Failed to parse config.\n" << flush;
         return -1;
     }
 
-    vector<string> syscalls = get_reproduer_syscall_descriptions(env, bug);
+    vector<string> syscalls = get_reproduer_syscall_descriptions(env);
 
     for (string syscall : syscalls)
         cout << syscall << endl << flush;

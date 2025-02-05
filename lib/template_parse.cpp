@@ -1,5 +1,4 @@
 #include <template_parse.h>
-#include <bug_info.h>
 #include <environment.h>
 #include <file_api.h>
 #include <syzlang.h>
@@ -744,11 +743,11 @@ vector<string> list_template_files(const string &template_dir)
     return files;
 }
 
-vector<string> get_reproduer_syscall_descriptions(const Environment &env, const Bug_Info &bug)
+vector<string> get_reproduer_syscall_descriptions(const Environment &env)
 {
     string full_template = env.syzdir + "sys/linux";
     vector<string> template_files = list_template_files(full_template);
-    vector<string> syscalls = slim_template(bug.reprodir, template_files);
+    vector<string> syscalls = slim_template(env.reprodir, template_files);
     if (syscalls.size() == 0)
     {
         cout << "Error: failed to slim the template.\n";

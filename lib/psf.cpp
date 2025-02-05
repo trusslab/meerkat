@@ -1,6 +1,5 @@
 #include <environment.h>
 #include <psf.h>
-#include <bug_info.h>
 #include <shell_api.h>
 #include <file_api.h>
 #include <consts.h>
@@ -253,16 +252,16 @@ vector<string> parse_manual_duplicates(const string &filename, const string &bug
     return dups;
 }
 
-vector<string> gather_duplicates(const Environment &env, Bug_Info &bug)
+vector<string> gather_duplicates(Environment &env)
 {
-    string tmp_snapshotfile = env.wd + "snapshot";
+    //string tmp_snapshotfile = env.wd + "snapshot";
     vector<string> duplicates;
 
-    lynx_dump(SYZBOT_FIXED_LINK, tmp_snapshotfile);
-    trim_syzbot_fixes(tmp_snapshotfile);
-    parse_syzbot_fixes(tmp_snapshotfile, bug.name, bug.duplicates);
-    parse_manual_duplicates(env.home + "/parameters/manual_duplicates.txt", bug.name, bug.duplicates);
-    remove_file(tmp_snapshotfile);
+    //lynx_dump(SYZBOT_FIXED_LINK, tmp_snapshotfile);
+    //trim_syzbot_fixes(tmp_snapshotfile);
+    //parse_syzbot_fixes(tmp_snapshotfile, env.name, env.duplicates);
+    parse_manual_duplicates(env.home + "/parameters/manual_duplicates.txt", env.name, env.duplicates);
+    //remove_file(tmp_snapshotfile);
 
     return duplicates;
 }

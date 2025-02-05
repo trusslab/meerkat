@@ -4,7 +4,6 @@
 #include <environment.h>
 #include <shell_api.h>
 #include <file_api.h>
-#include <bug_info.h>
 #include <fuzz_prep.h>
 #include <bisect.h>
 #include <result.h>
@@ -22,12 +21,12 @@
 
 using namespace std;
 
-std::string make_repro_log(const Environment &env, const Bug_Info &bug)
+std::string make_repro_log(const Environment &env)
 {
     std::string reprolog = env.wd+"reprolog.prog";
 
     std::vector<std::string> out;
-    for (std::string file : list_dir(bug.reprodir))
+    for (std::string file : list_dir(env.reprodir))
     {
         // This lets syz-repro see when a program begins
         out.push_back("executing program 0:");
@@ -99,7 +98,7 @@ string get_crash_name(const string &hash)
 
 // The time is rough here and rounds up to the nearest time increment (usually 1 minute)
 // result.ttf is the time it took to find the bug, or the max_time
-Syzkaller_Result run_syzkaller(const Environment &env, const Bug_Info &bug, bool keep_corpus)
+Syzkaller_Result run_syzkaller(const Environment &env, bool keep_corpus)
 {
     Syzkaller_Result result;
     int time = 0, to_add = 0;
@@ -110,7 +109,7 @@ Syzkaller_Result run_syzkaller(const Environment &env, const Bug_Info &bug, bool
     map<string, int> checked_crashes;
     string crash_name;
 
-    prepare_kaller_wd(env, bug, keep_corpus);
+    prepare_kaller_wd(env, keep_corpus);
 
     // run syzkaller
     cd(env.syzdir);
@@ -156,7 +155,7 @@ Syzkaller_Result run_syzkaller(const Environment &env, const Bug_Info &bug, bool
                 continue;
             
             crash_name = get_crash_name(hash);
-            result.found = fuzz_is_crash_in(crash_name, bug.duplicates) ? true : result.found;
+            result.found = fuzz_is_crash_in(crash_name, env.duplicates) ? true : result.found;
             for (int j = 0; j < to_add; j++)
                 result.reports.push_back({crash_name, time});
 
@@ -186,7 +185,7 @@ Syzkaller_Result run_syzkaller(const Environment &env, const Bug_Info &bug, bool
     return result;
 }
 
-Syzkaller_Result run_syz_repro(const Environment &env, const Bug_Info &bug, const std::string &reprolog)
+Syzkaller_Result run_syz_repro(const Environment &env, const std::string &reprolog)
 {
     Syzkaller_Result result;
     int time = 0, to_add = 0;
@@ -222,7 +221,7 @@ Syzkaller_Result run_syz_repro(const Environment &env, const Bug_Info &bug, cons
                 continue;
 
             std::string crash_name = loglines.at(i).substr(pos+17);
-            result.found = fuzz_is_crash_in(crash_name, bug.duplicates) ? true : result.found;
+            result.found = fuzz_is_crash_in(crash_name, env.duplicates) ? true : result.found;
             result.reports.push_back({crash_name, time});
 
             if (fuzz_is_bad_crash(crash_name))
@@ -251,7 +250,7 @@ Syzkaller_Result run_syz_repro(const Environment &env, const Bug_Info &bug, cons
     return result;
 }
 
-Test_Result fuzz_loop_finding(Environment &env, const Bug_Info &bug, bool keep_corpus)
+Test_Result fuzz_loop_finding(Environment &env, bool keep_corpus)
 {
     Test_Result result;
     result.found = false;
@@ -260,15 +259,15 @@ Test_Result fuzz_loop_finding(Environment &env, const Bug_Info &bug, bool keep_c
     for (int i = 0; i < env.fuzztimes + retries && unstable_count < env.fuzztimes; i++)
     {
         env.port.inc();
-        write_syzkaller_config(env, bug);
-        result.attempts.push_back(run_syzkaller(env, bug, keep_corpus));
+        write_syzkaller_config(env);
+        result.attempts.push_back(run_syzkaller(env, keep_corpus));
         result.found = result.attempts.back().found ? true : result.found;
         if (result.attempts.back().bad_crashes > 0 && retries < env.fuzztimes)
         {
             retries++;
             unstable_count++;
         }
-        log_attempt_result(result.attempts.back(), i + 1, bug.duplicates, env.fuzztimes);
+        log_attempt_result(result.attempts.back(), i + 1, env.duplicates, env.fuzztimes);
     }
 
     result.stable = unstable_count < result.attempts.size() / 2 || result.found;
@@ -276,7 +275,7 @@ Test_Result fuzz_loop_finding(Environment &env, const Bug_Info &bug, bool keep_c
     return result;
 }
 
-Test_Result fuzz_loop(Environment &env, const Bug_Info &bug, bool keep_corpus)
+Test_Result fuzz_loop(Environment &env, bool keep_corpus)
 {
     Test_Result result;
     result.found = false;
@@ -285,15 +284,15 @@ Test_Result fuzz_loop(Environment &env, const Bug_Info &bug, bool keep_corpus)
     for (int i = 0; i < env.fuzztimes + retries && !result.found  && unstable_count < env.fuzztimes; i++)
     {
         env.port.inc();
-        write_syzkaller_config(env, bug);
-        result.attempts.push_back(run_syzkaller(env, bug, keep_corpus));
+        write_syzkaller_config(env);
+        result.attempts.push_back(run_syzkaller(env, keep_corpus));
         result.found = result.attempts.back().found;
         if (result.attempts.back().bad_crashes > 0 && retries < env.fuzztimes)
         {
             retries++;
             unstable_count++;
         }
-        log_attempt_result(result.attempts.back(), i + 1, bug.duplicates, env.fuzztimes);
+        log_attempt_result(result.attempts.back(), i + 1, env.duplicates, env.fuzztimes);
     }
 
     result.stable = unstable_count < result.attempts.size() / 2 || result.found;
@@ -301,26 +300,26 @@ Test_Result fuzz_loop(Environment &env, const Bug_Info &bug, bool keep_corpus)
     return result;
 }
 
-Test_Result poc_loop_finding(Environment &env, const Bug_Info &bug)
+Test_Result poc_loop_finding(Environment &env)
 {
     Test_Result result;
     result.found = false;
     result.retry = false;
 
-    std::string reprolog = make_repro_log(env, bug);
+    std::string reprolog = make_repro_log(env);
 
     int retries = 0, unstable_count = 0;
     for (int i = 0; i < env.fuzztimes + retries && unstable_count < env.fuzztimes; i++)
     {
         env.port.inc();
-        result.attempts.push_back(run_syz_repro(env, bug, reprolog));
+        result.attempts.push_back(run_syz_repro(env, reprolog));
         result.found = result.attempts.back().found ? true : result.found;
         if (result.attempts.back().bad_crashes > 0 && retries < env.fuzztimes)
         {
             retries++;
             unstable_count++;
         }
-        log_attempt_result(result.attempts.back(), i + 1, bug.duplicates, env.fuzztimes);
+        log_attempt_result(result.attempts.back(), i + 1, env.duplicates, env.fuzztimes);
     }
 
     result.stable = unstable_count < result.attempts.size() / 2 || result.found;
@@ -329,26 +328,26 @@ Test_Result poc_loop_finding(Environment &env, const Bug_Info &bug)
     return result;
 }
 
-Test_Result poc_loop(Environment &env, const Bug_Info &bug)
+Test_Result poc_loop(Environment &env)
 {
     Test_Result result;
     result.found = false;
     result.retry = false;
 
-    std::string reprolog = make_repro_log(env, bug);
+    std::string reprolog = make_repro_log(env);
 
     int retries = 0, unstable_count = 0;
     for (int i = 0; i < env.fuzztimes + retries && !result.found  && unstable_count < env.fuzztimes; i++)
     {
         env.port.inc();
-        result.attempts.push_back(run_syz_repro(env, bug, reprolog));
+        result.attempts.push_back(run_syz_repro(env, reprolog));
         result.found = result.attempts.back().found;
         if (result.attempts.back().bad_crashes > 0 && retries < env.fuzztimes)
         {
             retries++;
             unstable_count++;
         }
-        log_attempt_result(result.attempts.back(), i + 1, bug.duplicates, env.fuzztimes);
+        log_attempt_result(result.attempts.back(), i + 1, env.duplicates, env.fuzztimes);
     }
 
     result.stable = unstable_count < result.attempts.size() / 2 || result.found;
@@ -358,7 +357,7 @@ Test_Result poc_loop(Environment &env, const Bug_Info &bug)
 }
 
 /*
-bool check_faulty_result(const Bug_Info &bug)
+bool check_faulty_result()
 {
     bool fault = false;
 

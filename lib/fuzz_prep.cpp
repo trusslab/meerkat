@@ -1,4 +1,3 @@
-#include <bug_info.h>
 #include <consts.h>
 #include <date.h>
 #include <environment.h>
@@ -49,9 +48,9 @@ int get_procs_from_repro(const string & repro)
     return p;
 }
 
-VMConfig determine_threadedness(Environment &env, const Bug_Info &bug)
+VMConfig determine_threadedness(Environment &env)
 {
-    string reproducer = bug.reprodir + "/repro-" + env.working_name + "-1.prog";
+    string reproducer = env.reprodir + "/repro-" + env.working_name + "-1.prog";
     int procs = get_procs_from_repro(reproducer);
     switch (procs)
     {
@@ -295,7 +294,7 @@ void patch_kernel(const Environment &env, const Version &linux_version)
     cd(old_dir);
 }
 
-int prep_kernel(const Environment &env, const Bug_Info &bug, Git &linux_git, const Version &linux_version, const std::string &compiler, bool bisecting)
+int prep_kernel(const Environment &env, Git &linux_git, const Version &linux_version, const std::string &compiler, bool bisecting)
 {
     int err = 0;
     cd(env.home);
@@ -316,7 +315,7 @@ int prep_kernel(const Environment &env, const Bug_Info &bug, Git &linux_git, con
     
 
     // copy over the config
-    copy(bug.kconfig, env.kerneldir + "/.config");
+    copy(env.kconfig, env.kerneldir + "/.config");
 
     // Handle Patches
     patch_kernel(env, linux_version);
@@ -350,7 +349,7 @@ int clean_kernel(const Environment &env)
     return (err == 0 ? 0 : -1);
 }
 
-int write_syzkaller_config(const Environment &env, const Bug_Info &bug)
+int write_syzkaller_config(const Environment &env)
 {
     ofstream outf;
     outf.open(env.syzconfig);
@@ -361,7 +360,7 @@ int write_syzkaller_config(const Environment &env, const Bug_Info &bug)
     }
 
     outf << "{\n"
-         << "    \"target\": \"linux/amd64" << (bug.arch == "i386" ? "/386" : "") << "\",\n"
+         << "    \"target\": \"linux/amd64" << (env.arch == "i386" ? "/386" : "") << "\",\n"
          << "    \"http\": \"127.0.0.1:" << env.port.port << "\",\n"
          << "    \"workdir\": \"" << env.syzwd << "\",\n"
          << "    \"kernel_obj\": \"" << env.kerneldir << "\",\n";
@@ -444,7 +443,7 @@ int syz_db_unpack_corpus(const Environment &env, const string &corpusdir, const 
 // Filter/Clear the previous corpus
 // Adds the PoCs to the corpus
 // Packs the corpus
-int prepare_kaller_wd(const Environment &env, const Bug_Info &bug, bool keep_corpus)
+int prepare_kaller_wd(const Environment &env, bool keep_corpus)
 {
     bool do_pack = false;
     int err = 0;
@@ -466,7 +465,7 @@ int prepare_kaller_wd(const Environment &env, const Bug_Info &bug, bool keep_cor
     reset_kaller_wd(env);
 
     // Copy the reproducers into the corpus directory
-    for (string repro : list_dir(bug.reprodir))
+    for (string repro : list_dir(env.reprodir))
         copy(repro, corpusdir);
     do_pack = true;
 
@@ -480,18 +479,18 @@ exit:
 }
 
 // Tries to remove the config related to the sanitizer finding the blocking bug
-int remove_related_config(const Bug_Info &bug, const std::string &bb)
+int remove_related_config(const Environment &env, const std::string &bb)
 {
     int err = 0;
     std::string sanitizer = split(bb, ' ').front();
     // If any duplicates need the sanitizer, don't remove it
-    for (std::string dup : bug.duplicates)
+    for (std::string dup : env.duplicates)
         if (sanitizer.find(split(dup, ' ').front()) != std::string::npos)
             return 0;
 
     if (sanitizer.find("UBSAN") != std::string::npos)
     {
-        err = unset_kernel_config(bug.kconfig, {"CONFIG_UBSAN", "CONFIG_UBSAN_TRAP", "CONFIG_UBSAN_BOUNDS", "CONFIG_UBSAN_SHIFT"});
+        err = unset_kernel_config(env.kconfig, {"CONFIG_UBSAN", "CONFIG_UBSAN_TRAP", "CONFIG_UBSAN_BOUNDS", "CONFIG_UBSAN_SHIFT"});
         if (err >= 0)
             return 1;
     }
@@ -499,32 +498,18 @@ int remove_related_config(const Bug_Info &bug, const std::string &bb)
 }
 
 // Tries to patch the given blocking bug
-int attempt_patch(const Bug_Info &bug, const std::string &bb)
+int attempt_patch(const Environment &env, const std::string &bb)
 {
     // TODO: find a backport for this bug
     // try to remove a config related to the bug
-    if (remove_related_config(bug, bb) > 0)
+    if (remove_related_config(env, bb) > 0)
         return 1;
         
     return 0;
 }
 
-// Identifies blocking bugs from the result, then figures if they can be removed.
-// Returns the number of removed blocking bugs or -1 on error
-int patch_blocking_bugs(const Test_Result &result, const Bug_Info &bug)
-{
-    int count = 0;
-    if (result.found)
-        return 0;
-    
-    std::vector<std::string> bbs = get_prominent_blocking_bugs(result);
-    for (std::string b : bbs)
-        count += attempt_patch(bug, b);
-    return count;
-}
-
 /* Gonna keep this here on the off chance that I need it. It took a lot of work.
-void patch_syzkaller(const Environment &env, const Bug_Info &bug, const Version &syzkaller_version)
+void patch_syzkaller(const Environment &env, const Version &syzkaller_version)
 {
     string old_dir = pwd();
     cd(env.home);
@@ -633,7 +618,7 @@ void patch_syzkaller(const Environment &env, const Bug_Info &bug, const Version 
     cd(old_dir);
 }
 
-int prep_syzkaller(const Environment &env, const Bug_Info &bug, Git &syzkaller, const Version &syzkaller_version, bool do_slim)
+int prep_syzkaller(const Environment &env, Git &syzkaller, const Version &syzkaller_version, bool do_slim)
 {
     int err = 0;
     string outfile = env.logdir + env.working_name + "-syzbuild.log";

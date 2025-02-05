@@ -1,7 +1,6 @@
 #ifndef FUZZ_PREP_H
 #define FUZZ_PREP_H
 
-#include <bug_info.h>
 #include <date.h>
 #include <environment.h>
 #include <git.h>
@@ -18,7 +17,7 @@ int get_procs_from_repro(const std::string &);
 
 // Outer function to determine the threadedness of the bug.
 // Returns the allocation to use.
-VMConfig determine_threadedness(Environment &, const Bug_Info &);
+VMConfig determine_threadedness(Environment &);
 
 // Reads the gcc version file and returns them
 // in vector form
@@ -35,19 +34,17 @@ int unset_kernel_config(const std::string &, const std::vector<std::string> &);
 
 // Grabs the correct kernel version, applies any patches needed,
 // copies the config in, and build the kernel
-int prep_kernel(const Environment &, const Bug_Info &, Git &, const Version &, const std::string &, bool = false);
+int prep_kernel(const Environment &, Git &, const Version &, const std::string &, bool = false);
 
 // runs make clean
 int clean_kernel(const Environment &);
 
 // writes the syzkaller config to the config file.
 // also shifts the host port by one
-int write_syzkaller_config(const Environment &, const Bug_Info &);
+int write_syzkaller_config(const Environment &);
 
 // deletes the syzkaller working directory and recreates it.
 void reset_kaller_wd(const Environment &);
-int prepare_kaller_wd(const Environment &, const Bug_Info &, bool);
-
-int patch_blocking_bugs(const Test_Result &, const Bug_Info &);
+int prepare_kaller_wd(const Environment &, bool);
 
 #endif

@@ -1,7 +1,5 @@
 #include <argparse.h>
 #include <bisect.h>
-#include <blocking_bugs.h>
-#include <bug_info.h>
 #include <consts.h>
 #include <date.h>
 #include <environment.h>
@@ -26,9 +24,9 @@
 
 using namespace std;
 
-Git prep_kernel_local_repo(Environment &env, const Bug_Info &bug)
+Git prep_kernel_local_repo(Environment &env)
 {
-    env.linux_repo_remote = LINUX_REPO_REMOTE + bug.repository;
+    env.linux_repo_remote = LINUX_REPO_REMOTE + env.repository;
 
     Git linux_git(env.kerneldir, env.linux_repo_remote, "master");
     return linux_git;
@@ -87,7 +85,7 @@ Git prep_kernel_local_repo(Environment &env, const Bug_Info &bug)
  * Return Introducing Commit
  */
 
-int do_bisection(Argparse &args, Environment &env, Bug_Info &bug, Bisect &bisector, Git &linux_git)
+int do_bisection(Argparse &args, Environment &env, Bisect &bisector, Git &linux_git)
 {
     int err = 0;
     Test_Result result;
@@ -106,7 +104,7 @@ int do_bisection(Argparse &args, Environment &env, Bug_Info &bug, Bisect &bisect
     cout << "\n==== Anchor Commit ====\n" << flush;
 
     // Begin with Syzkaller from finding date. This emulates Syzbot for any algorithm
-    if (bisector.next_session(env, bug, linux_git) < 0)
+    if (bisector.next_session(env, linux_git) < 0)
     {
         cerr << "Error: Failed to go to anchor commit\n" << flush;
         return err;
@@ -114,12 +112,12 @@ int do_bisection(Argparse &args, Environment &env, Bug_Info &bug, Bisect &bisect
 
     if (false /* TODO: Make a feature */)
     {
-        write_syzkaller_config(env, bug);
+        write_syzkaller_config(env);
         cout << "Setup-only complete.\n" << flush;
         return 1;
     }
 
-    result = bisector.test_current(env, bug, linux_git);
+    result = bisector.test_current(env, linux_git);
 
     if (false /* TODO: Make a feature */)
     {
@@ -153,9 +151,9 @@ int do_bisection(Argparse &args, Environment &env, Bug_Info &bug, Bisect &bisect
     cout << "\n==== Major Release Search ====\n" 
          << bisector.remaining() << " Release" << (bisector.remaining() == 1 ? "" : "s") << "\n" << flush;
 
-    while ((err = bisector.next_session(env, bug, linux_git)) == 0)
+    while ((err = bisector.next_session(env, linux_git)) == 0)
     {
-        result = bisector.test_current(env, bug, linux_git);
+        result = bisector.test_current(env, linux_git);
         bisector.record(result, linux_git);
         cout << "About " << bisector.remaining() << " releases remaining\n" << flush;
     }
@@ -182,9 +180,9 @@ skip_syzkaller:
     cout << "\n==== Major Release Search ====\n" 
          << bisector.remaining() << " Release" << (bisector.remaining() == 1 ? "" : "s") << endl << flush;
 
-    while ((err = bisector.next_session(env, bug, linux_git)) == 0)
+    while ((err = bisector.next_session(env, linux_git)) == 0)
     {
-        result = bisector.test_current(env, bug, linux_git);
+        result = bisector.test_current(env, linux_git);
         bisector.record(result, linux_git);
         cout << "About " << bisector.remaining() << " releases remaining\n" << flush;
     }
@@ -207,9 +205,9 @@ skip_syzkaller:
     cout << "\n==== Kernel Bisection ====\n"
          << bisector.remaining() << " Linux commit" << (bisector.remaining() == 1 ? "" : "s") << endl << flush;
 
-    while ((err = bisector.next_session(env, bug, linux_git)) == 0)
+    while ((err = bisector.next_session(env, linux_git)) == 0)
     {
-        result = bisector.test_current(env, bug, linux_git);
+        result = bisector.test_current(env, linux_git);
         bisector.record(result, linux_git);
         cout << "About " << bisector.remaining() << " commits remaining\n" << flush;
     }
@@ -222,7 +220,7 @@ skip_syzkaller:
     return 0;
 }
 
-int bisect(Argparse &args, Environment &env, Bug_Info &bug)
+int bisect(Argparse &args, Environment &env)
 {
     int err = 0;
     Bisect bisector;
@@ -230,26 +228,26 @@ int bisect(Argparse &args, Environment &env, Bug_Info &bug)
 
     chrono::steady_clock::time_point starttime = chrono::steady_clock::now();
 
-    Git linux_git = prep_kernel_local_repo(env, bug);
+    Git linux_git = prep_kernel_local_repo(env);
     if (linux_git.error() < 0)
         goto finish;
 
     // begin logging
-    cout << "Bisecting:       " << bug.name << endl
-         << "Syzbot Link:     " << bug.buglink << endl
+    cout << "Bisecting:       " << env.name << endl
+         << "Syzbot Link:     " << env.buglink << endl
          << args.origin() << "\n\n"
-         << "Repository:      " << bug.repository << endl
-         << "Arch:            " << bug.arch << endl
-         << "anchor:          " << linux_git.get_commit_date(bug.find_hash).get_date() << " - " << bug.find_hash << endl << flush;
+         << "Repository:      " << env.repository << endl
+         << "Arch:            " << env.arch << endl
+         << "anchor:          " << linux_git.get_commit_date(env.find_hash).get_date() << " - " << env.find_hash << endl << flush;
 
-    bug.duplicates.clear();
-    bug.duplicates.push_back(bug.name);
+    env.duplicates.clear();
+    env.duplicates.push_back(env.name);
     // Manual aliases would go here
 
-    if (bug.duplicates.size() > 1)
+    if (env.duplicates.size() > 1)
     {
         cout << "Duplicate Bugs:\n";
-        for (string s : bug.duplicates)
+        for (string s : env.duplicates)
             cout << "    " << s << endl;
     }
     else
@@ -259,7 +257,7 @@ int bisect(Argparse &args, Environment &env, Bug_Info &bug)
     env.port.init(START_PORT, env.id, 5);
 
     // TODO: Maybe don't need this
-    determine_threadedness(env, bug);
+    determine_threadedness(env);
 
     cout << "Max time:        " << env.max_time << endl 
          << "Max attempts:    " << env.fuzztimes << endl << flush;
@@ -268,7 +266,7 @@ int bisect(Argparse &args, Environment &env, Bug_Info &bug)
     // Begin Bisection
     // ======================================================================================================
 
-    bisector.init(env, bug, linux_git);
+    bisector.init(env, linux_git);
     if (bisector.releases.size() <= 1)
         goto finish;
     
@@ -301,24 +299,17 @@ int bisect(Argparse &args, Environment &env, Bug_Info &bug)
     bisector.next_phase(Bisect_Done, env, linux_git);
 
     cout << "\n" << SPACER
-         << bisector.print_result(env, bug, linux_git, starttime) << flush;
-
-    if (bug.blocking_bugs.list_blocking_bugs().size() > 0)
-    {
-        cout << "\nPossible Blocking Bugs:\n";
-        for (string b : bug.blocking_bugs.list_blocking_bugs())
-            cout << "    " << b << endl;
-    }
+         << bisector.print_result(env, linux_git, starttime) << flush;
 
 finish:
     // clean up reproducer and config
     if (!check_file(env.wd + "old/"))
         make_dir(env.wd + "old/");
 
-    if (check_file(bug.kconfig))
-        move(bug.kconfig, env.wd + "old/");
+    if (check_file(env.kconfig))
+        move(env.kconfig, env.wd + "old/");
 
-    remove_files_in_dir(bug.reprodir);
+    remove_files_in_dir(env.reprodir);
 
 setup_only_finish:
     return err;
@@ -335,7 +326,7 @@ void print_help()
         << endl << flush;
 }
 
-int handle_bug_config(Environment &env, Bug_Info &bug, const Argparse &args)
+int handle_bug_config(Environment &env, const Argparse &args)
 {
     int err = 0;
     string filename;
@@ -350,9 +341,6 @@ int handle_bug_config(Environment &env, Bug_Info &bug, const Argparse &args)
     }
 
     err = env.parse_config_file(filename);
-    if (err < 0)
-        return err;
-    err = bug.parse_config_file(env, filename);
     if (err < 0)
         return err;
 
@@ -422,7 +410,6 @@ int main(int argc, char ** argv)
 {
     Argparse args;
     Environment env;
-    Bug_Info bug;
 
     args.expect("mihcaF");
     args.expect(vector<string>({ "help", "config", "feature", "anchor", "safe-mode" }));
@@ -452,18 +439,18 @@ int main(int argc, char ** argv)
         return -1;
 
     // get information about the bug
-    if (handle_bug_config(env, bug, args) < 0)
+    if (handle_bug_config(env, args) < 0)
         return -1;
 
     if (handle_features(args, env) < 0)
         return -1;
 
-    if (bug.name.find("KMSAN") != string::npos)
+    if (env.name.find("KMSAN") != string::npos)
         env.compiler_setting = COMPILER_CLANG_14;
     else
         env.compiler_setting = COMPILER_GCC;
 
-    if (args.is_set("safe-mode") || bug.name.substr(0, 11) == "memory leak")
+    if (args.is_set("safe-mode") || env.name.substr(0, 11) == "memory leak")
         set_safe_mode(env.safe_mode, env.max_time, env.fuzztimes);
     else
         env.safe_mode = false;
@@ -474,9 +461,9 @@ int main(int argc, char ** argv)
         make_dir(env.logdir);
     }
 
-    if (!check_file(bug.kconfig))
+    if (!check_file(env.kconfig))
     {
-        cerr << "Error: No kernel config file " << bug.kconfig << " exists.\n";
+        cerr << "Error: No kernel config file " << env.kconfig << " exists.\n";
         return -1;
     }
 
@@ -492,5 +479,5 @@ int main(int argc, char ** argv)
         return -1;
     }
 
-    return bisect(args, env, bug);
+    return bisect(args, env);
 }

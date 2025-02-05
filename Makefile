@@ -23,12 +23,12 @@ $(BUILDDIR)file_api.o: $(LIBDIR)file_api.cpp $(INCDIR)file_api.h | $(BUILDDIR)
 	@echo "  CC     $@"
 	@$(CC) -I $(INCDIR) -std=c++17 -lstdc++fs -c $< -o $@
 
-ALL_OBJS = $(BUILDDIR)argparse.o $(BUILDDIR)blocking_bugs.o $(BUILDDIR)bug_info.o \
+ALL_OBJS = $(BUILDDIR)argparse.o $(BUILDDIR)version.o $(BUILDDIR)template_parse.o\
 			$(BUILDDIR)date.o $(BUILDDIR)environment.o $(BUILDDIR)exec_api.o \
 			$(BUILDDIR)file_api.o $(BUILDDIR)fuzz_prep.o $(BUILDDIR)fuzz.o $(BUILDDIR)git.o \
 			$(BUILDDIR)git_traverse.o $(BUILDDIR)my_string.o $(BUILDDIR)psf.o \
 			$(BUILDDIR)result.o $(BUILDDIR)bisect.o $(BUILDDIR)shell_api.o $(BUILDDIR)json.o \
-			$(BUILDDIR)syzlang.o $(BUILDDIR)template_parse.o $(BUILDDIR)version.o
+			$(BUILDDIR)syzlang.o
 
 $(PROJECTNAME): $(SRCDIR)$(PROJECTNAME).cpp $(ALL_OBJS) | $(BINDIR) $(BUILDDIR)
 	@echo "  CC     $(BUILDDIR)$(PROJECTNAME).o"
@@ -57,8 +57,7 @@ git_test: $(TOOLDIR)git_test.cpp $(GT_OBJS) | $(BINDIR) $(BUILDDIR)
 
 DT_OBJS = $(BUILDDIR)syzlang.o $(BUILDDIR)template_parse.o $(BUILDDIR)file_api.o \
 			$(BUILDDIR)argparse.o $(BUILDDIR)environment.o $(BUILDDIR)json.o \
-			$(BUILDDIR)my_string.o $(BUILDDIR)bug_info.o $(BUILDDIR)exec_api.o \
-			$(BUILDDIR)date.o
+			$(BUILDDIR)my_string.o $(BUILDDIR)exec_api.o $(BUILDDIR)date.o\
 
 description_test: $(TOOLDIR)description_test.cpp $(DT_OBJS) | $(BINDIR) $(BUILDDIR)
 	@echo "  CC     $(BUILDDIR)description_test.o"

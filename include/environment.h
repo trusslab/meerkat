@@ -2,6 +2,7 @@
 #define ENVIRONMENT_H
 
 #include <string>
+#include <vector>
 
 enum Compiler_Setting {COMPILER_GCC = 0, COMPILER_CLANG, COMPILER_CLANG_14};
 
@@ -79,7 +80,18 @@ public:
     Port_Info port;
 
     // Bug Info
-    std::string working_name;
+    std::string name;                   // the name of the bug given by syzbot
+    std::string working_name;           // bug0001
+
+    std::string arch;                   // either amd64 or i386 for 64 or 32 bit POC 
+    std::string repository;             // the kernel repository
+    std::string kconfig;                // the config file for the kernel
+    std::string reprodir;               // the directory with all of the PoCs
+    std::string buglink;                // the link to the bug in syzbot
+
+    std::string find_hash;
+
+    std::vector<std::string> duplicates;
 
     // parses the parameters/config.cfg
     int parse_parameters_file(const std::string &);
