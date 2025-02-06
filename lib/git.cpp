@@ -155,7 +155,7 @@ int Git::setup()
 
     if (get_url() != link)
     {
-        git({"remote", "remove", "origin"});
+        git({"remote", "remove", "origin"}, "/dev/null");
         err = add_remote();
     }
 
@@ -165,34 +165,34 @@ int Git::setup()
 
 int Git::init()
 {
-    err = git({"init"});
+    err = git({"init"}, "/dev/null");
     return err;
 }
 
 int Git::add_remote()
 {
-    err = git({"remote", "add", "origin", link});
+    err = git({"remote", "add", "origin", link}, "/dev/null");
     return err;
 }
 
 // git pull --force --tags origin branch
 int Git::pull()
 {
-    err = git({"pull", "--force", "--tags", "origin", branch});
+    err = git({"pull", "--force", "--tags", "origin", branch}, "/dev/null");
     return err;
 }
 
 // git fetch --force origin hash
 int Git::fetch(const std::string &hash)
 {
-    err = git({"fetch", "--force", "origin", hash});
+    err = git({"fetch", "--force", "origin", hash}, "/dev/null");
     return err;
 }
 
 // git checkout --force commit
 int Git::checkout(const std::string &commit)
 {
-    err = git({"checkout", "--force", commit});
+    err = git({"checkout", "--force", commit}, "/dev/null");
     return err;
 }
 
@@ -216,13 +216,13 @@ int Git::fetch_and_checkout(const std::string &hash)
 
 int Git::reset_hard()
 {
-    err = git({"reset", "--hard"});
+    err = git({"reset", "--hard"}, "/dev/null");
     return err;
 }
 
 int Git::clean()
 {
-    err = git({"clean", "-fdx"});
+    err = git({"clean", "-fdx"}, "/dev/null");
     return err;
 }
 

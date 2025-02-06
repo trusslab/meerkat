@@ -25,14 +25,20 @@ writebugconfig () {
     echo "{" > $inspectorconfig
     echo "    \"bugID\": \"${curBug}\","  >> $inspectorconfig
     echo "    \"bug_name\": \"${bugName}\"," >> $inspectorconfig
-    #echo "    \"bug_link\": \"${buglink}\"," >> $inspectorconfig
-    echo "    \"arch\": \"${arch}\"," >> $inspectorconfig
-    echo "    \"kernel_branch\": \"${kpref}\"," >> $inspectorconfig
-    echo "    \"repository\": \"${repo}\"," >> $inspectorconfig
+    echo "    \"bug_link\": \"${buglink}\"," >> $inspectorconfig
+    # extra config are just ignored, so anchor hash is fine
     echo "    \"anchor_hash\": \"${findhash}\"," >> $inspectorconfig
-    echo "    \"kernel_config\": \"config-${curBug}.txt\"," >> $inspectorconfig
-    echo "    \"reproducers\": \"reproducers/\"," >> $inspectorconfig
-    echo "    \"wd\": \"${inspectdir}/${wd}\"" >> $inspectorconfig
+    echo "    \"arch\": \"${arch}\"," >> $inspectorconfig
+    echo "    \"repository\": \"${repo}\"," >> $inspectorconfig
+    echo "    \"branch\": \"${branch}\"," >> $inspectorconfig
+    echo "    \"kernel_config\": \"${wd}config-${curBug}.txt\"," >> $inspectorconfig
+    echo "    \"reproducers\": \"${wd}reproducers/\"," >> $inspectorconfig
+    echo "    \"wd\": \"${wd}\"," >> $inspectorconfig
+    echo "    \"home\": \"${inspectdir}\"," >> $inspectorconfig
+    echo "    \"syzkaller\": \"${inspectdir}syzkaller/\"," >> $inspectorconfig
+    echo "    \"compilers\": \"${gccdir}\"," >> $inspectorconfig
+    # TODO: Maybe change this to image and key
+    echo "    \"images\": \"${imagedir}\"" >> $inspectorconfig
     echo "}" >> $inspectorconfig    
 }
 
@@ -44,25 +50,19 @@ printhelp () {
     echo "    b - determine the name of the bug file in parse"
     echo "    m - the maximum time to fuzz at the finding commit"
     echo "    a - the arch to build on (amd64/i386)"
-    echo "    A - the algorithm to use (1, 2...)"
-    echo "        1 - focused-fuzz-stateful"
-    echo "        2 - focused-fuzz-clean"
-    echo "        3 - poc-ff-backup"
-    echo "        4 - syz-bisect"
-    echo "        5 - setup-only"
-    echo "        6 - finding-only"
+    echo "    F - The feature string"
     echo "    S - run in safe mode"
 }
 
 # =================================================================================================
 
 mtime=""
+feature=""
 safemode=""
 targetarch="amd64" # i386
-algnum=""
 
 # get the start and end lines from the arguments
-while getopts "s:e:i:b:m:a:A:S" flag
+while getopts "s:e:i:b:m:a:F:S" flag
 do
     case $flag in
         s)
@@ -77,8 +77,8 @@ do
             mtime="-m ${OPTARG}" ;;
         a)
             targetarch="${OPTARG}" ;;
-        A)
-            algnum="${OPTARG}" ;;
+        F)
+            feature="-F ${OPTARG}" ;;
         S)
             safemode="--safe-mode" ;;
         *)
@@ -96,43 +96,25 @@ if [[ $id == "" ]]; then
     exit
 fi
 
-algorithm=""
-if [[ ${algnum} == "" ]]; then
-    echo "No algorithm given. Use -A <num>"
-    exit
-elif [[ ${algnum} == "1" ]]; then
-    algorithm="focused-fuzz-stateful"
-elif [[ ${algnum} == "2" ]]; then
-    algorithm="focused-fuzz-clean"
-elif [[ ${algnum} == "3" ]]; then
-    algorithm="poc-ff-backup"
-elif [[ ${algnum} == "4" ]]; then
-    algorithm="syz-bisect"
-elif [[ ${algnum} == "5" ]]; then
-    algorithm="setup-only"
-elif [[ ${algnum} == "6" ]]; then
-    algorithm="finding-only"
-fi
-
 echo "Starting at: $(date)"
 
-wd="wd-inspector-$id"
-inspectorconfig=$wd/bug.cfg
-logfile=$wd/log/manager.log
+wd="${inspectdir}wd-inspector-${id}/"
+inspectorconfig=${wd}bisector.cfg
+logfile=${wd}log/manager.log
 
 if [ ! -d $wd ]; then
     echo "Making the working directory: $wd"
     mkdir $wd
 fi
 
-if [ ! -d $wd/reproducers ]; then
-    echo "Making the reproducer directory: $wd/reproducers"
-    mkdir $wd/reproducers
+if [ ! -d ${wd}reproducers ]; then
+    echo "Making the reproducer directory: ${wd}reproducers"
+    mkdir ${wd}reproducers
 fi
 
-if [ ! -d $wd/log ]; then
+if [ ! -d ${wd}log ]; then
     echo "Making the log directory"
-    mkdir $wd/log
+    mkdir ${wd}log
 fi
 
 totallines=$(cat $bugfile | wc -l)
@@ -146,18 +128,25 @@ line=$startLine
 echo "file: $bugfile startline: $startLine endline: $endLine arch: $targetarch" >> $logfile
 echo "" >> $logfile
 
-# "$bugnum,$link,$name,$truefinddate,$fixlink,$fixdate,$config,$findlink,$finddate,$guiltylink,$guiltydate,$knownSyzHash,$bit32,${allrepro[@]}"
-#  $1      $2    $3    $4            $5       $6       $7      $8        $9        $10         $11         $12           $13    $14
+# TODO: Move/Remove old files from previous bugs
+
+# TODO: map out new csv layout
+
+# batch 2, 3
+# "$l,$name,$truefinddate,$fixlink,$fixdate,$config,$findlink,$finddate,$guiltylink,$guiltydate,$bit32,     ${allrepro[@]}"
+# batch 1
+# "$l,$name,$truefinddate,$fixlink,$fixdate,$repro, $config,  $findlink,$finddate,  $guiltylink,$guiltydate,$bit32"
+#  $1,$2,   $3,           $4,      $5,      $6,     $7,       $8,       $9,         $10,        $11,        $12
 while (( $line <= $endLine )); do
     linetext=$(sed -n ${line}p $bugfile)
-    fixDate=$(echo "$linetext" | awk -F',' '{ print $6; }')
-    findDate=$(echo "$linetext" | awk -F',' '{ print $9; }')
-    guiltyDate=$(echo "$linetext" | awk -F',' '{ print $11; }')
-    knownSyzHash=$(echo "$linetext" | awk -F',' '{ print $12; }')
-    echo -n "${line},${fixDate},${findDate},${guiltyDate},${knownSyzHash}" >> $logfile
+    fixDate=$(echo "$linetext" | awk -F',' '{ print $5; }')
+    findDate=$(echo "$linetext" | awk -F',' '{ print $8; }')
+    guiltyDate=$(echo "$linetext" | awk -F',' '{ print $10; }')
+    echo -n "${line},${fixDate},${findDate},${guiltyDate}" >> $logfile
 
-    arch=$(echo "$linetext" | awk -F',' '{ print $13; }')
+    arch=$(echo "$linetext" | awk -F',' '{ print $11; }')
 
+    # TODO: filter bugs so these checks are not necessary
     # if the bug is older than syzbot, use syzbot as the starting date
     syzbotAge=$(( $($inspectdir/helpers/diffdate $guiltyDate $syzbotDate) ))
     if (( $syzbotAge < 0 )); then
@@ -170,7 +159,7 @@ while (( $line <= $endLine )); do
     fixAge=$(( $($inspectdir/helpers/diffdate $fixDate $findDate) ))
     if (( $fixAge < 0 )); then
         # sed at the end because shell script is weird about what is escaped in urls...
-        findlink=$(echo "$linetext" | awk -F',' '{ print $8; }' | sed 's/\\//' | sed 's/log/commit/')
+        findlink=$(echo "$linetext" | awk -F',' '{ print $7; }' | sed 's/\\//' | sed 's/log/commit/')
         snapshot=$(lynx -dump -dont_wrap_pre -width=300 $findlink)
         findDate=$(echo "$snapshot" | grep -m 1 "^[ ]*committer " | grep -o "20[0-9][0-9]-[0-9][0-9]-[0-9][0-9]" | cat)
         fixAge=$(( $($inspectdir/helpers/diffdate $fixDate $findDate) ))
@@ -184,9 +173,9 @@ while (( $line <= $endLine )); do
 
     if (( $findAge > 1 && $fixAge >= 0 )) && [[ $arch == $targetarch ]] && (( $elfutilAge > 0 )); then
         # bug number and name
-        bugNum="$(printf "%04d" $(echo "$linetext" | awk -F',' '{ print $1; }'))"
+        bugNum=${line} #"$(printf "%04d" $(echo "$linetext" | awk -F',' '{ print $1; }'))"
         curBug="bug${bugNum}"
-        bugName="$(echo "$linetext" | awk -F',' '{ print $3; }')"
+        bugName="$(echo "$linetext" | awk -F',' '{ print $2; }')"
         if [[ $(echo "${bugName}" | grep "^KMSAN" | cat) != "" ]]; then
             echo ",KMSAN bug. Skip until clang" >> $logfile
             echo "KMSAN bug on line ${line}"
@@ -195,43 +184,30 @@ while (( $line <= $endLine )); do
         fi
 
         # kernel config - download it
-        configlink=$(echo "$linetext" | awk -F',' '{ print $7; }')
-        wget $configlink -O $wd/config-$curBug.txt
+        configlink=$(echo "$linetext" | awk -F',' '{ print $6; }')
+        rm -f ${wd}config-*
+        wget $configlink -O ${wd}config-${curBug}.txt 2> /dev/null
 
         # reproducers - download them
-        rm -rf $wd/reproducers/*
-        allrepro=($(echo "$linetext" | awk -F',' '{ print $14; }'))
+        rm -rf ${wd}reproducers/*
+        allrepro=($(echo "$linetext" | awk -F',' '{ print $12; }'))
         reprocount=0
         for reprolink in ${allrepro[@]}; do
             reprocount=$(( $reprocount + 1 ))
-            wget $reprolink -O $wd/reproducers/repro-$curBug-$reprocount.prog
+            wget $reprolink -O ${wd}reproducers/repro-${curBug}-${reprocount}.prog 2> /dev/null
         done
-        cat $wd/reproducers/repro-$curBug-*.prog > $wd/repro-$curBug-all.prog
 
         # linux kernel repository
         # the link to the finding commit has what we need
-        findlink=$(echo "$linetext" | awk -F',' '{ print $8; }')
-        repo=$(echo "$findlink" | grep "https://git.kernel" | awk -F'/' '{ print $9"/"$10; }' | cat)
-        if [[ $repo == "bpf/bpf.git" ]]; then
-            kpref="bpf"
-        elif [[ $repo == "bpf/bpf-next.git" ]]; then
-            kpref="bpf-next"
-        elif [[ $repo == "davem/net.git" ]]; then
-            kpref="net"
-        elif [[ $repo == "davem/net-next.git" ]]; then
-            kpref="net-next"
-        elif [[ $repo == "gregkh/usb.git" ]]; then
-            kpref="usb"
-        elif [[ $repo == "next/linux-next.git" ]]; then
-            kpref="linux-next"
-        elif [[ $repo == "torvalds/linux.git" ]]; then
-            kpref="linux"
+        findlink=$(echo "$linetext" | awk -F',' '{ print $7; }')
+        repo=$(echo "$findlink" | grep -o "https://git\.kernel.*\.git" | cat)
+        shortrepo=$(echo "$repo" | awk -F'/' '{ print $9"/"$10; }' | cat)
+        if [[ $shortrepo == "torvalds/linux.git" ]]; then
+            branch="master"
         else
             echo "Bad repository on line $line: $repo"
-            kpref=""
+            branch=""
         fi
-
-        guiltylink=$(echo "$linetext" | awk -F',' '{ print $10; }')
 
         # clean up the bug name if it is a duplicate name (i.e. "bugname (2)")
         if [[ $(echo "$bugName" | grep "([0-9]*)$" | cat) != "" ]]; then
@@ -239,19 +215,15 @@ while (( $line <= $endLine )); do
         fi
 
         findhash=$(echo $findlink | grep -o "[0-9a-f]*$" | cat)
-        buglink=$(echo "$linetext" | awk -F',' '{ print $2; }')
-        guiltyhash=$(echo $guiltylink | grep -o "[0-9a-f]*$" | cat)
+        buglink=$(echo "$linetext" | awk -F',' '{ print $1; }')
 
-        if [[ $reprolink != "" && $configlink != "" && $bugName != "" && $findlink != "" && $repo != "" && $kpref != "" ]]; then
+        if [[ $configlink != "" && $bugName != "" && $findlink != "" && $repo != "" && $branch != "" ]]; then
             writebugconfig
 
-            echo ",good fuzz,$findDate,$findDate,$startDate" >> $logfile
-            # --known-syz $knownSyzHash
-            echo "./$retrospector -i $id -c $inspectorconfig $mtime $safemode" >> $logfile
-            echo "Fuzzing. finding: $findhash; guilty: $guiltyhash"
+            echo ",good fuzz,$findDate" >> $logfile
+            echo "./$retrospector -i $id -c $inspectorconfig -a ${findhash} $mtime $safemode" >> $logfile
             set +e
-            # --known-syz $knownSyzHash
-            ./$retrospector -i $id -c $inspectorconfig --algorithm ${algorithm} $mtime $safemode
+            ./$retrospector -i $id -c $inspectorconfig -a ${findhash} ${feature} $mtime $safemode
             set -e
             number=$(( $number + 1 ))
         else

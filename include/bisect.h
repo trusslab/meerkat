@@ -14,7 +14,7 @@
 #include <chrono>
 
 enum Bisect_Mode {Mode_PoC, Mode_FF};
-enum Bisect_Phase {Bisect_Init, Bisect_Finding, Bisect_Releases, Bisect_Kernel, Bisect_Done};
+enum Bisect_Phase {Bisect_Init, Bisect_Anchor, Bisect_Releases, Bisect_Kernel, Bisect_Done};
 
 class Bisect
 {
@@ -29,7 +29,7 @@ private:
     Session good_session;
     std::set<Session> past_sessions;
 
-    Version finding_version;
+    Version anchor_version;
 
     int index;
     int bisect_index;

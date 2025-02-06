@@ -7,7 +7,6 @@
 #include <fuzz_prep.h>
 #include <fuzz.h>
 #include <git.h>
-#include <git_traverse.h>
 #include <my_string.h>
 #include <psf.h>
 #include <result.h>
@@ -19,6 +18,7 @@
 #include <vector>
 #include <sstream>
 #include <iostream>
+#include <iomanip>
 #include <fstream>
 #include <chrono>
 
@@ -26,10 +26,56 @@ using namespace std;
 
 Git prep_kernel_local_repo(Environment &env)
 {
-    env.linux_repo_remote = LINUX_REPO_REMOTE + env.repository;
-
-    Git linux_git(env.kerneldir, env.linux_repo_remote, "master");
+    Git linux_git(env.kerneldir, env.repository, env.branch);
     return linux_git;
+}
+
+int check_syzkaller(const Environment &env)
+{
+    vector<string> syzbins = { "syz-sysgen", "syz-symbolize", "syz-repro", "syz-prog2c", "syz-mutate", "syz-manager", "syz-db", "linux_amd64/syz-execprog", "linux_amd64/syz-executor" };
+    for (string bin : syzbins)
+    {
+        if (!check_file(env.syzdir + "bin/" + bin))
+        {
+            cerr << "Error: ";
+            return -1;
+        }
+    }
+    return 0;
+}
+
+int uniqify_reproducers(const Environment &env)
+{
+    vector<string> repros = list_dir(env.reprodir);
+    if (repros.size() <= 0)
+    {
+        cerr << "Error: No reproducer files found.\n" << flush;
+        return -1;
+    }
+
+    vector<string> keep, remove;
+    bool removed = false;
+    keep.push_back(repros.front());
+    for (int i = 1; i < repros.size(); i++)
+    {
+        removed = false;
+        for (string kept : keep)
+        {
+            if (compare_files(kept, repros.at(i)))
+            {
+                remove.push_back(repros.at(i));
+                removed = true;
+                break;
+            }
+        }
+        if (!removed)
+            keep.push_back(repros.at(i));
+    }
+
+    for (string r : remove)
+        remove_file(r);
+
+    return 0;
 }
 
 /* Bisection Workflow
@@ -85,7 +131,7 @@ Git prep_kernel_local_repo(Environment &env)
  * Return Introducing Commit
  */
 
-int do_bisection(Argparse &args, Environment &env, Bisect &bisector, Git &linux_git)
+int do_bisection(Environment &env, Bisect &bisector, Git &linux_git)
 {
     int err = 0;
     Test_Result result;
@@ -94,7 +140,7 @@ int do_bisection(Argparse &args, Environment &env, Bisect &bisector, Git &linux_
     // Fuzz at the anchor commit
 
     reset_kaller_wd(env);
-    bisector.next_phase(Bisect_Finding, env, linux_git);
+    bisector.next_phase(Bisect_Anchor, env, linux_git);
     if (err < 0)
     {
         cerr << "Failed to advance to anchor commit phase.\n" << flush;
@@ -110,7 +156,7 @@ int do_bisection(Argparse &args, Environment &env, Bisect &bisector, Git &linux_
         return err;
     }
 
-    if (false /* TODO: Make a feature */)
+    if (env.feats.setup_only)
     {
         write_syzkaller_config(env);
         cout << "Setup-only complete.\n" << flush;
@@ -119,7 +165,7 @@ int do_bisection(Argparse &args, Environment &env, Bisect &bisector, Git &linux_
 
     result = bisector.test_current(env, linux_git);
 
-    if (false /* TODO: Make a feature */)
+    if (env.feats.find_only)
     {
         cout << "Average TTF: " << result.suggest_ttf << endl;
         cout << "Find-only complete.\n";
@@ -169,7 +215,6 @@ int do_bisection(Argparse &args, Environment &env, Bisect &bisector, Git &linux_
     // ======================================================================================================
     // Major Release Search (This time for kernel commits)
 
-skip_syzkaller:
     bisector.next_phase(Bisect_Releases, env, linux_git);
     if (err < 0)
     {
@@ -220,7 +265,7 @@ skip_syzkaller:
     return 0;
 }
 
-int bisect(Argparse &args, Environment &env)
+int bisect(Environment &env)
 {
     int err = 0;
     Bisect bisector;
@@ -233,25 +278,11 @@ int bisect(Argparse &args, Environment &env)
         goto finish;
 
     // begin logging
-    cout << "Bisecting:       " << env.name << endl
-         << "Syzbot Link:     " << env.buglink << endl
-         << args.origin() << "\n\n"
-         << "Repository:      " << env.repository << endl
-         << "Arch:            " << env.arch << endl
-         << "anchor:          " << linux_git.get_commit_date(env.find_hash).get_date() << " - " << env.find_hash << endl << flush;
+    cout << left << setw(CONFW) << "Bisecting:" << env.name << endl;
 
     env.duplicates.clear();
     env.duplicates.push_back(env.name);
     // Manual aliases would go here
-
-    if (env.duplicates.size() > 1)
-    {
-        cout << "Duplicate Bugs:\n";
-        for (string s : env.duplicates)
-            cout << "    " << s << endl;
-    }
-    else
-        cout << "No duplicate bugs found.\n";
 
     // TODO: handle port a different way (we will have multiple vms)
     env.port.init(START_PORT, env.id, 5);
@@ -259,34 +290,51 @@ int bisect(Argparse &args, Environment &env)
     // TODO: Maybe don't need this
     determine_threadedness(env);
 
-    cout << "Max time:        " << env.max_time << endl 
-         << "Max attempts:    " << env.fuzztimes << endl << flush;
-    
     // ======================================================================================================
     // Begin Bisection
     // ======================================================================================================
 
     bisector.init(env, linux_git);
     if (bisector.releases.size() <= 1)
+    {
+        cerr << "Failed to find Linux releases.\n" << flush;
         goto finish;
-    
-    cout << "Found " << bisector.releases.size() << " major releases\n" << flush;
+    }
 
-    // TODO: set bisector mode
+    if (check_syzkaller(env) < 0)
+        goto finish;
 
-    // TODO: Make sure Syzkaller is built (find all executables needed)
+    if (uniqify_reproducers(env) < 0)
+        goto finish;
+
+    if (env.feats.ff_test)
+        bisector.set_mode(Mode_FF);
+    else if (env.feats.poc_test)
+        bisector.set_mode(Mode_PoC);
+    else
+    {
+        cerr << "Error: Invalid bisection mode state.\n" << flush;
+        goto finish;
+    }
+
+    env.print();
+    return 0;
 
     // ======================================================================================================
-    // Break off here by bisection mode
+    // Break off here by mode
     
     if (bisector.mode() == Mode_FF)
     {
-        // Do FF bisection
+        env.required_syscalls = get_reproduer_syscall_descriptions(env);
+        do_bisection(env, bisector, linux_git);
     }
+
+    if (env.feats.poc_test)
+        bisector.set_mode(Mode_PoC);
 
     if (bisector.mode() == Mode_PoC)
     {
-        // Do PoC bisection
+        do_bisection(env, bisector, linux_git);
     }
 
     if (err < 0)
@@ -302,31 +350,21 @@ int bisect(Argparse &args, Environment &env)
          << bisector.print_result(env, linux_git, starttime) << flush;
 
 finish:
-    // clean up reproducer and config
-    if (!check_file(env.wd + "old/"))
-        make_dir(env.wd + "old/");
-
-    if (check_file(env.kconfig))
-        move(env.kconfig, env.wd + "old/");
-
-    remove_files_in_dir(env.reprodir);
-
-setup_only_finish:
     return err;
 }
 
 void print_help()
 {
-    cout << "Usage: ./bin/bisector -c [config] -i [id]\n"
+    cout << "Usage: ./bin/" << PROJECT_NAME << " -c [config] -i [id]\n"
         << "    -m [max time]: the maximum time (minutes) allowed when fuzzing (default 30).\n"
         << "    -i [id]: REQUIRED. The id of the inspector (i.e. 1).\n"
         << "    --config (c) [config.cfg]: [config]: REQUIRED. The config file containing the bug information.\n"
-        << "    --anchor (a) [hash]: the hash of the commit where the bug was found.\n"
+        << "    --anchor (a) [hash]: REQUIRED. the hash of the commit where the bug was found.\n"
         << "    --feature (F) [feature list]: extra features to use.\n"
         << endl << flush;
 }
 
-int handle_bug_config(Environment &env, const Argparse &args)
+int handle_config(Environment &env, const Argparse &args)
 {
     int err = 0;
     string filename;
@@ -347,63 +385,19 @@ int handle_bug_config(Environment &env, const Argparse &args)
     return err;
 }
 
-int default_features(Environment &env)
-{
-    return 0;
-}
-
 int handle_features(Argparse &args, Environment &env)
 {
-    if (!args.is_set("feature") && !args.is_set('F'))
+    string flist;
+    if (args.is_set("feature") || args.is_set('F'))
     {
-        default_features(env);
+        flist = args.is_set("feature") ? args.get_string("feature") : args.get_string('F');
     }
 
-    string flist = args.is_set("feature") ? args.get_string("feature") : args.get_string('f');
     set<string> features;
     for (string feat : split(flist, ','))
         features.insert(feat);
 
-    // PoC usage will be determined in manager/by user
-
-    if (features.find("all") != features.end())
-    {
-
-    }
-    
-    if (features.find("poc-test") != features.end())
-    {
-
-    }
-
-    if (features.find("ff-test") != features.end())
-    {
-
-    }
-
-    if (features.find("stateful-corpus") != features.end())
-    {
-
-    }
-
-    if (features.find("deduplication") != features.end())
-    {
-
-    }
-
-    if (features.find("optimize-syzkaller") != features.end())
-    {
-
-    }
-
-    if (features.find("patch-kernel") != features.end())
-    {
-
-    }
-
-    // check that at least one feature is set
-
-    return 0;
+    return env.handle_features(features);
 }
 
 int main(int argc, char ** argv)
@@ -420,7 +414,7 @@ int main(int argc, char ** argv)
         return 0;
     }
 
-    env.fuzztimes = 3;
+    env.init();
 
     if (args.is_set('m'))
         env.max_time = args.get_int('m');
@@ -431,15 +425,19 @@ int main(int argc, char ** argv)
         env.id = args.get_int('i');
     else
     {
-        cout << "Error: No id given. Please use -i [id]\n";
+        cerr << "Error: No id was given. Please use -i [id]\n" << flush;
         return -1;
     }
 
-    if (env.parse_parameters_file("parameters/config.cfg") < 0)
-        return -1;
+    if (args.is_set('a') || args.is_set("anchor"))
+        env.anchor_hash = args.is_set('a') ? args.get_string('a') : args.get_string("anchor");
+    else
+    {
+        cerr << "Error: No anchor commit was given. Use -a [hash]\n" << flush;
+    }
 
     // get information about the bug
-    if (handle_bug_config(env, args) < 0)
+    if (handle_config(env, args) < 0)
         return -1;
 
     if (handle_features(args, env) < 0)
@@ -479,5 +477,6 @@ int main(int argc, char ** argv)
         return -1;
     }
 
-    return bisect(args, env);
+    cout << args.origin() << endl;
+    return bisect(env);
 }

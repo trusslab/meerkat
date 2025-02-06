@@ -92,6 +92,7 @@ vector<string> list_dir(const string &dir)
     return files;
 }
 
+// Compares 2 files. returns true if they have no differences, false otherwise
 bool compare_files(const string &file1, const string &file2)
 {
     bool ok1, ok2, ret = true;

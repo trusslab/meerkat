@@ -26,9 +26,8 @@ $(BUILDDIR)file_api.o: $(LIBDIR)file_api.cpp $(INCDIR)file_api.h | $(BUILDDIR)
 ALL_OBJS = $(BUILDDIR)argparse.o $(BUILDDIR)version.o $(BUILDDIR)template_parse.o\
 			$(BUILDDIR)date.o $(BUILDDIR)environment.o $(BUILDDIR)exec_api.o \
 			$(BUILDDIR)file_api.o $(BUILDDIR)fuzz_prep.o $(BUILDDIR)fuzz.o $(BUILDDIR)git.o \
-			$(BUILDDIR)git_traverse.o $(BUILDDIR)my_string.o $(BUILDDIR)psf.o \
-			$(BUILDDIR)result.o $(BUILDDIR)bisect.o $(BUILDDIR)shell_api.o $(BUILDDIR)json.o \
-			$(BUILDDIR)syzlang.o
+			$(BUILDDIR)my_string.o $(BUILDDIR)psf.o $(BUILDDIR)syzlang.o $(BUILDDIR)json.o \
+			$(BUILDDIR)result.o $(BUILDDIR)bisect.o $(BUILDDIR)shell_api.o
 
 $(PROJECTNAME): $(SRCDIR)$(PROJECTNAME).cpp $(ALL_OBJS) | $(BINDIR) $(BUILDDIR)
 	@echo "  CC     $(BUILDDIR)$(PROJECTNAME).o"

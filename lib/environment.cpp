@@ -4,8 +4,11 @@
 #include <my_string.h>
 
 #include <string>
+#include <vector>
+#include <set>
 #include <fstream>
 #include <iostream>
+#include <iomanip>
 
 int Port_Info::init(const int base, const int offset, const int r = 0)
 {
@@ -21,96 +24,33 @@ int Port_Info::inc()
     return port;
 }
 
-int Environment::parse_parameters_file(const std::string & filename)
+int Environment::init()
 {
-    std::ifstream inf;
-    inf.open(filename);
-    if (!inf)
-    {
-        std::cerr << "Error: could not open file " << filename << std::endl;
-        return -1;
-    }
+    fuzztimes = 3;
 
-    std::string line;
-    int pos0, pos1;
-    while (std::getline(inf, line))
-    {
-        if (line.empty() || line.at(0) == '#' )
-            continue;
+    vmd.numVM = NUM_VM_DEFAULT;
+    vmd.numCPU = NUM_CPU_DEFAULT;
+    vmd.numProcs = NUM_PROCS_DEFAULT;
+    vmr.numVM = NUM_VM_MT;
+    vmr.numCPU = NUM_CPU_MT;
+    vmr.numProcs = NUM_PROCS_MT;
+    vmst.numVM = NUM_VM_ST;
+    vmst.numCPU = NUM_CPU_ST;
+    vmst.numProcs = NUM_PROCS_ST;
+    memory = VM_MEM;
+    makeprocs = MAKE_PROCS;
 
-        pos0 = line.find_first_of("=") + 1;
-        pos1 = line.find_first_of("0123456789");
-        if (line.find("inspectdir=") != std::string::npos)
-        {
-            home = line.substr(pos0);
-            home = ends_with(home, "/") ? home : home + "/";
-        }
-        else if (line.find("gccdir=") != std::string::npos)
-        {
-            gcc_dir = line.substr(pos0);
-            gcc_dir = ends_with(gcc_dir, "/") ? gcc_dir : gcc_dir + "/";
-        }
-        else if (line.find("godir=") != std::string::npos)
-        {
-            go_dir = line.substr(pos0);
-            go_dir = ends_with(go_dir, "/") ? go_dir : go_dir + "/";
-        }
-        else if (line.find("imagedir=") != std::string::npos)
-        {
-            image_dir = line.substr(pos0);
-            image_dir = ends_with(image_dir, "/") ? image_dir : image_dir + "/";
-        }
-        else if (line.find("numVMd=") != std::string::npos)
-        {
-            vmd.numVM = std::stoi(line.substr(pos1));
-        }
-        else if (line.find("numCPUd=") != std::string::npos)
-        {
-            vmd.numCPU = std::stoi(line.substr(pos1));
-        }
-        else if (line.find("numProcsd=") != std::string::npos)
-        {
-            vmd.numProcs = std::stoi(line.substr(pos1));
-        }
-        else if (line.find("numVMr=") != std::string::npos)
-        {
-            vmr.numVM = std::stoi(line.substr(pos1));
-        }
-        else if (line.find("numCPUr=") != std::string::npos)
-        {
-            vmr.numCPU = std::stoi(line.substr(pos1));
-        }
-        else if (line.find("numProcsr=") != std::string::npos)
-        {
-            vmr.numProcs = std::stoi(line.substr(pos1));
-        }
-        else if (line.find("numVMst=") != std::string::npos)
-        {
-            vmst.numVM = std::stoi(line.substr(pos1));
-        }
-        else if (line.find("numCPUst=") != std::string::npos)
-        {
-            vmst.numCPU = std::stoi(line.substr(pos1));
-        }
-        else if (line.find("numProcsst=") != std::string::npos)
-        {
-            vmst.numProcs = std::stoi(line.substr(pos1));
-        }
-        else if (line.find("mem=") != std::string::npos)
-        {
-            memory = std::stoi(line.substr(pos1));
-        }
-        else if (line.find("makeproc=") != std::string::npos)
-        {
-            makeprocs = std::stoi(line.substr(pos1));
-        }
-    }
+    feats.poc_test = false;
+    feats.ff_test = false;
+    feats.setup_only = false;
+    feats.find_only = false;
+    feats.stateful_corpus = false;
+    feats.patch_kernel = false;
 
-    inf.close();
     return 0;
 }
 
-int Environment::parse_config_file(const std::string & filename)
+int Environment::parse_config_file(const std::string &filename)
 {
     JSON json;
     if (!json.parse(filename))
@@ -133,11 +73,6 @@ int Environment::parse_config_file(const std::string & filename)
     {
         buglink = json.get_string("bug_link");
     }
-    else
-    {
-        std::cerr << "Error: Bug Link was not given (\"bug_link\": \"https://...\")\n" << std::flush;
-        return -1;
-    }
 
     if (json.has_name("arch") && json.is_type("arch", JSON_Val_string))
     {
@@ -159,14 +94,13 @@ int Environment::parse_config_file(const std::string & filename)
         return -1;
     }
 
-    if (json.has_name("finding_hash") && json.is_type("finding_hash", JSON_Val_string))
+    if (json.has_name("branch") && json.is_type("branch", JSON_Val_string))
     {
-        find_hash = json.get_string("finding_hash");
+        branch = json.get_string("branch");
     }
     else
     {
-        std::cerr << "Error: Finding Hash was not given (\"finding_hash\": \"03ad...\")\n" << std::flush;
-        return -1;
+        branch = "master";
     }
 
     if (json.has_name("kernel_config") && json.is_type("kernel_config", JSON_Val_string))
@@ -222,15 +156,168 @@ int Environment::parse_config_file(const std::string & filename)
         syzconfig = wd + "syzkaller.cfg";
     }
 
+    if (json.has_name("home") && json.is_type("home", JSON_Val_string))
+    {
+        home = json.get_string("home");
+    }
+    else
+    {
+        std::cerr << "Error: No home directory was given (\"home\": \"/path/to/Bisector/\")\n" << std::flush;
+        return -1;
+    }
+
     if (json.has_name("syzkaller") && json.is_type("syzkaller", JSON_Val_string))
     {
         syzdir = json.get_string("syzkaller");
-        syzdir = starts_with(syzdir, "/") ? syzdir : wd + syzdir;
+        syzdir = starts_with(syzdir, "/") ? syzdir : home + syzdir;
+    }
+    else
+    {
+        std::cerr << "Error: No Syzkaller was given (\"syzkaller\": \"/path/to/syzkaller/\")\n" << std::flush;
+        return -1;
+    }
+
+    if (json.has_name("compilers") && json.is_type("compilers", JSON_Val_string))
+    {
+        gcc_dir = json.get_string("compilers");
+        gcc_dir = starts_with(gcc_dir, "/") ? gcc_dir : home + gcc_dir;
+    }
+    else
+    {
+        std::cerr << "Error: No Compiler Directory was given (\"compilers\": \"/path/to/compilers/\")\n" << std::flush;
+        return -1;
+    }
+
+    if (json.has_name("images") && json.is_type("images", JSON_Val_string))
+    {
+        image_dir = json.get_string("images");
+        image_dir = starts_with(image_dir, "/") ? image_dir : home + image_dir;
+    }
+    else
+    {
+        std::cerr << "Error: No Image Directory was given (\"images\": \"/path/to/images/\")\n" << std::flush;
+        return -1;
     }
 
     kerneldir = wd + "kernel/";
     syzwd = wd + "wd-kaller/";
     logdir = wd + "log/";
+    syzkaller_log = logdir + (working_name.empty() ? "" : working_name + "-") + "syzkaller.log";
 
     return 0;
+}
+
+void Environment::default_features()
+{
+    feats.poc_test = true;
+    feats.ff_test = true;
+    feats.stateful_corpus = true;
+    return;
+}
+
+int Environment::handle_features(const std::set<std::string> &features)
+{
+    if (features.size() == 0)
+    {
+        default_features();
+        return 0;
+    }
+
+    // PoC usage will be determined in manager/by user (?)
+
+    if (features.find("all") != features.end())
+    {
+        feats.ff_test = true;
+        feats.poc_test = true;
+        feats.stateful_corpus = true;
+        feats.patch_kernel = true;
+    }
+    
+    if (features.find("poc-test") != features.end())
+    {
+        feats.poc_test = true;
+    }
+
+    if (features.find("ff-test") != features.end())
+    {
+        feats.ff_test = true;
+    }
+
+    if (features.find("setup-only") != features.end())
+    {
+        feats.setup_only = true;
+    }
+
+    if (features.find("find-only") != features.end())
+    {
+        feats.find_only = true;
+    }
+
+    if (!feats.ff_test && !feats.poc_test)
+    {
+        std::cerr << "Error: At least one of poc-test and ff-test must be set.\n" << std::flush;
+        return -1;
+    }
+
+    if (features.find("stateful-corpus") != features.end())
+    {
+        if (feats.ff_test)
+            feats.stateful_corpus = true;
+        else
+            std::cerr << "Info: stateful-corpus requires ff-test. Skipping.\n" << std::flush;
+        
+    }
+
+    if (features.find("patch-kernel") != features.end())
+    {
+        feats.patch_kernel = true;
+    }
+
+    // check that at least one feature is set
+    return 0;
+}
+
+void Environment::config_print(const std::string &label, const std::string &config) const
+{
+    std::cout << std::left << std::setw(CONFW) << (label + ":") << config << std::endl << std::flush;
+}
+
+void Environment::print() const
+{
+    config_print("Link", buglink);
+
+    if (duplicates.size() > 1)
+    {
+        std::cout << "\nAliases:\n";
+        for (std::string s : duplicates)
+            std::cout << "    " << s << std::endl;
+    }
+    else
+        std::cout << "\nNo aliases given.\n";
+    
+    std::cout << std::endl;
+    config_print("Anchor Commit", anchor_hash);
+    config_print("Repository", repository);
+    config_print("Arch", arch);
+    std::cout << std::endl;
+    config_print(PROJECT_NAME, home);
+    config_print("Kernel", kerneldir);
+    config_print("Syzkaller", syzdir);
+    config_print("Compilers", gcc_dir);
+    config_print("Images", image_dir);
+    std::cout << std::endl;
+    config_print("Workdir", wd);
+    config_print("Kconfig", kconfig);
+    config_print("Reproducers", reprodir);
+    config_print("Syzkaller Workdir", syzwd);
+    std::cout << std::endl;
+    config_print("VM Count", std::to_string(vmc.numVM));
+    config_print("CPU Count", std::to_string(vmc.numCPU));
+    config_print("Procs", std::to_string(vmc.numProcs));
+    config_print("Memory", std::to_string(memory));
+    config_print("Make Procs", std::to_string(makeprocs));
+    config_print("Max Time", std::to_string(max_time));
+    config_print("Max Attempts", std::to_string(fuzztimes));
+
+    return;
 }

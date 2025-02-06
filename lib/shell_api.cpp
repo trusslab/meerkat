@@ -61,24 +61,6 @@ string date(const string &format)
     return ret;
 }
 
-// lynx -dump -dont_wrap_pre -width=1000 link
-int lynx_dump(const std::string &link, const string &dumpfile)
-{
-    char command[] = "lynx";
-    char arg1[] = "-dump";
-    char arg2[] = "-dont_wrap_pre";
-    char arg3[] = "-width=1000";
-    char * arg4 = new char[link.size() + 1];
-    strcpy(arg4, link.c_str());
-
-    char * arg_list[] = {command, arg1, arg2, arg3, arg4, nullptr};
-
-    int ret = exec_and_wait("lynx", arg_list, dumpfile);
-
-    delete[] arg4;
-    return ret;
-}
-
 int sed_i(const string &regex, const string &filename)
 {
     char command[] = "sed";
@@ -243,47 +225,4 @@ int wc_l(const string &filename)
 
     delete[] arg2;
     return ret;
-}
-
-int export_go(const Environment &env)
-{
-    string goroot = "GOROOT=" + env.go_dir;
-    int err = export_env(goroot);
-    if (err < 0)
-        return err;
-
-    string path = "PATH=" + env.go_dir + "/bin:" + get_path();
-    err = export_env(path);
-
-    return err;
-}
-
-int go_mod_init()
-{
-    char command[] = "go";
-    char arg1[] = "mod";
-    char arg2[] = "init";
-    char * arg_list[] = {command, arg1, arg2, nullptr};
-
-    return exec_and_wait("go", arg_list);
-}
-
-int go_mod_tidy()
-{
-    char command[] = "go";
-    char arg1[] = "mod";
-    char arg2[] = "tidy";
-    char * arg_list[] = {command, arg1, arg2, nullptr};
-
-    return exec_and_wait("go", arg_list);
-}
-
-int go_mod_vendor()
-{
-    char command[] = "go";
-    char arg1[] = "mod";
-    char arg2[] = "vendor";
-    char * arg_list[] = {command, arg1, arg2, nullptr};
-
-    return exec_and_wait("go", arg_list);
 }

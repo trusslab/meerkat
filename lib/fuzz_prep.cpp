@@ -50,7 +50,8 @@ int get_procs_from_repro(const string & repro)
 
 VMConfig determine_threadedness(Environment &env)
 {
-    string reproducer = env.reprodir + "/repro-" + env.working_name + "-1.prog";
+    // Choose arbitrarily the first repro file
+    string reproducer = list_dir(env.reprodir).front();
     int procs = get_procs_from_repro(reproducer);
     switch (procs)
     {
@@ -67,9 +68,6 @@ VMConfig determine_threadedness(Environment &env)
         cerr << "Warning: Could not retrieve number of procs from reproducer " << reproducer << ". Using Default.\n";
         env.vmc = env.vmd;
     }
-    cout << "VMs:" << env.vmc.numVM << endl
-         << "CPUs:" << env.vmc.numCPU << endl
-         << "Procs:" << env.vmc.numProcs << endl;
 
     return env.vmc;
 }
@@ -322,7 +320,7 @@ int prep_kernel(const Environment &env, Git &linux_git, const Version &linux_ver
 
     // build the kernel
     cout << "Building the kernel...\n" << flush;
-    string outfile = env.logdir + env.working_name + "-kbuild.log";
+    string outfile = env.logdir + (env.working_name.empty() ? "" : env.working_name + "-") + "kbuild.log";
     cd(env.kerneldir);
     err = make(env.makeprocs, {"olddefconfig", "CC="+compiler}, outfile);
     if (err < 0)
@@ -375,8 +373,16 @@ int write_syzkaller_config(const Environment &env)
 
     outf << "    \"syzkaller\": \"" << env.syzdir << "\",\n"
          << "    \"procs\": " << env.vmc.numProcs << ",\n"
-         << "    \"type\": \"qemu\",\n"
-         << "    \"reproduce\": false,\n"
+         << "    \"type\": \"qemu\",\n";
+    
+    outf << "    \"enable_syscalls\": [ ";
+    for (int i = 0; i < env.required_syscalls.size(); i++)
+    {
+        outf << "\"" << env.required_syscalls.at(i) << "\"" << (i < env.required_syscalls.size() - 1 ? ", " : " ");
+    }
+    outf << "],\n";
+
+    outf << "    \"reproduce\": false,\n"
          << "    \"vm\": {\n"
          << "        \"count\": " << env.vmc.numVM << ",\n"
          << "        \"kernel\": \"" << env.kerneldir << "/arch/x86/boot/bzImage\",\n"
@@ -621,7 +627,7 @@ void patch_syzkaller(const Environment &env, const Version &syzkaller_version)
 int prep_syzkaller(const Environment &env, Git &syzkaller, const Version &syzkaller_version, bool do_slim)
 {
     int err = 0;
-    string outfile = env.logdir + env.working_name + "-syzbuild.log";
+    string outfile = env.logdir + (env.working_name.empty() ? "" : env.working_name + "-") + "syzbuild.log";
 
     syzkaller.cleanup();
     if (bug.arch == "i386")

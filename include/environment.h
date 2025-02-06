@@ -3,6 +3,7 @@
 
 #include <string>
 #include <vector>
+#include <set>
 
 enum Compiler_Setting {COMPILER_GCC = 0, COMPILER_CLANG, COMPILER_CLANG_14};
 
@@ -38,8 +39,23 @@ public:
     int numProcs;
 };
 
+class Features
+{
+public:
+    bool poc_test;
+    bool ff_test;
+    bool setup_only;
+    bool find_only;
+    bool stateful_corpus;
+    bool patch_kernel;
+};
+
 class Environment
 {
+private:
+    void default_features();
+    void config_print(const std::string &, const std::string &) const;
+
 public:
     bool try_patch;
     bool safe_mode;
@@ -51,23 +67,17 @@ public:
     int memory;                         // memory per vm in MB
     int makeprocs;                      // number of threads to using while making
 
-    std::string origin_path;
-    std::string logfilename;
-    // TODO: remove this (redundant with Git)
-    std::string linux_repo_remote;
-
     std::string home;                   // SyzInspector/
     std::string gcc_dir;                // the directory housing all of the gcc compilers
-    std::string go_dir;                 // the directory housing go
     std::string image_dir;              // directory of the os images
+    std::string syzdir;                 // the directory that houses syzkaller
 
     std::string wd;                     // wd-inspector-[id]
-    std::string logdir;                 // directory to put all the logs in
-    std::string syzdir;                 // the directory that houses syzkaller
     std::string kerneldir;              // the directory that houses the kernel
-
     std::string syzwd;                  // wd-kaller
     std::string syzconfig;              // the config for syzkaller. We write this ourselves
+    
+    std::string logdir;                 // directory to put all the logs in
     std::string syzkaller_log;          // the log file to hold syzkaller output
 
     Compiler_Setting compiler_setting;
@@ -85,19 +95,28 @@ public:
 
     std::string arch;                   // either amd64 or i386 for 64 or 32 bit POC 
     std::string repository;             // the kernel repository
+    std::string branch;                 // The kernel branch
     std::string kconfig;                // the config file for the kernel
     std::string reprodir;               // the directory with all of the PoCs
     std::string buglink;                // the link to the bug in syzbot
 
-    std::string find_hash;
+    std::string anchor_hash;
 
     std::vector<std::string> duplicates;
 
-    // parses the parameters/config.cfg
-    int parse_parameters_file(const std::string &);
+    std::vector<std::string> required_syscalls;
+
+    Features feats;
+
+    // Read some default configs from consts.h
+    int init();
 
     // parses unique bug config to get filenames
     int parse_config_file(const std::string &);
+    int handle_features(const std::set<std::string> &);
+
+    // Pretty-print
+    void print() const;
 };
 
 #endif

@@ -1,10 +1,10 @@
 #include <bisect.h>
 #include <consts.h>
 #include <environment.h>
+#include <file_api.h>
 #include <fuzz.h>
 #include <fuzz_prep.h>
 #include <git.h>
-#include <git_traverse.h>
 #include <my_string.h>
 #include <result.h>
 #include <session.h>
@@ -32,6 +32,7 @@ std::vector<Version> gather_release_tags(const Environment &env, Git &linux_git)
         releases.push_back(Version(tag, linux_git.get_tag_hash(tag), linux_git.get_tag_date(tag)));
     }
     inf.close();
+    remove_file(tagfile);
     return releases;
 }
 
@@ -43,8 +44,8 @@ int Bisect::init(const Environment &env, Git &linux_git)
 
     gather_compiler_versions(env);
 
-    finding_version.name = env.find_hash;
-    finding_version.date = linux_git.get_commit_date(env.find_hash);
+    anchor_version.name = env.anchor_hash;
+    anchor_version.date = linux_git.get_commit_date(env.anchor_hash);
     
     // Gather linux release tags, dates, and hashes
     releases = gather_release_tags(env, linux_git);
@@ -64,7 +65,7 @@ int Bisect::remaining() const
 {
     switch(phase)
     {
-    case Bisect_Finding:
+    case Bisect_Anchor:
         return 1;
     case Bisect_Releases:
         return releases.size() - index;
@@ -93,7 +94,7 @@ int Bisect::gather_compiler_versions(const Environment &env)
 int Bisect::init_releases_phase_ff()
 {
     // We can get here by the first release search, or after syzkaller version is known.
-    Version anchor = false ? bisect_session.kernel : finding_version;
+    Version anchor = false ? bisect_session.kernel : anchor_version;
 
     // Cut out any releases from after the finding date. This helps line up the index.
     int i = 0;
@@ -132,7 +133,7 @@ int Bisect::init_gb_phase(Git &linux_git)
 int Bisect::init_releases_phase_poc(Git &syzkaller_git)
 {
     // We can get here by the first release search, or after syzkaller version is known.
-    Version anchor = false ? bisect_session.kernel : finding_version;
+    Version anchor = false ? bisect_session.kernel : anchor_version;
 
     // Cut out any releases from after the finding date. This helps line up the index.
     int i = 0;
@@ -182,8 +183,6 @@ bool Bisect::session_was_stable(const Session &session) const
 int Bisect::build_current_kernel(const Environment &env, Git &linux_git, bool bisecting)
 {
     std::string compiler;
-    std::cout << SPACER
-         << "Prepping the kernel\n";
     compiler = get_compiler(gcc_versions, clang_versions, current_session.kernel.date, env);
     log_session_compiler(compiler);
     return prep_kernel(env, linux_git, current_session.kernel, compiler, bisecting);
@@ -198,7 +197,7 @@ int Bisect::goto_anchor_session(const Environment &env, Git &linux_git)
         return -1;
 
     // Fetch the finding commit
-    linux_version = finding_version;
+    linux_version = anchor_version;
 
     current_session = Session(linux_version, false);
     log_session_info(this_session(), inc_session());
@@ -296,7 +295,7 @@ int Bisect::next_session(const Environment &env, Git &linux_git)
     int err = 0;
     switch(phase)
     {
-    case Bisect_Finding:
+    case Bisect_Anchor:
         err = goto_anchor_session(env, linux_git);
         break;
     case Bisect_Releases:
@@ -382,7 +381,7 @@ Test_Result Bisect::test_current(Environment &env, Git &linux_git)
 retry:
         switch (phase)
         {
-        case Bisect_Finding:
+        case Bisect_Anchor:
             res = test_anchor(env);
             break;
         case Bisect_Releases:
@@ -467,7 +466,7 @@ int Bisect::record(const Test_Result &result, Git &linux_git)
     int err = 0;
     switch(phase)
     {
-    case Bisect_Finding:
+    case Bisect_Anchor:
         err = record_anchor(result);
         break;
     case Bisect_Releases:
@@ -511,7 +510,7 @@ std::string Bisect::print_result(const Environment &env, Git &linux_git, const s
     ss << "Run Time:             " << runtime(start) << "\n";
     ss << "Arch:                 " << env.arch << "\n\n";
 
-    ss << "Finding Commit:       " << finding_version.date.get_date() << " - " << finding_version.name << "\n";
+    ss << "Finding Commit:       " << anchor_version.date.get_date() << " - " << anchor_version.name << "\n";
     ss << "Bisection Result:     " << bisect_session.kernel.date.get_date() << " - " << bisect_session.kernel.name << "\n";
 
     return ss.str();

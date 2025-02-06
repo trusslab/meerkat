@@ -44,14 +44,4 @@ int move(const std::string &, const std::string &);
 
 int wc_l(const std::string &);
 
-// Go Interface functions
-
-// exports go to the path
-int export_go(const Environment &);
-
-// go mod calls
-int go_mod_init();
-int go_mod_tidy();
-int go_mod_vendor();
-
 #endif

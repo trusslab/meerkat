@@ -120,7 +120,6 @@ Syzkaller_Result run_syzkaller(const Environment &env, bool keep_corpus)
     strcpy(arg1, configArg.c_str());
     char * arg_list[] = {command, arg1, nullptr};
 
-    cout << "Running Syzkaller...\n";
     int pid = exec_and_continue("./bin/syz-manager", arg_list, env.syzkaller_log, env.syzkaller_log);
 
     // watch syzkaller's progress
@@ -165,9 +164,10 @@ Syzkaller_Result run_syzkaller(const Environment &env, bool keep_corpus)
 
         if (wc_l(env.syzkaller_log) > 5000)
         {
+            string logfile = env.logdir + (env.working_name.empty() ? "" : env.working_name + "-") + "boot_failure.log";
             cout << "Warning: Syzkaller log file exceeded 5000 lines.\n"
-                 << "Saved at " << env.logdir + env.working_name + "-boot_failure.log" << ".\n" << flush;
-            copy(env.syzkaller_log, env.logdir + env.working_name + "-boot_failure.log");
+                 << "Saved at " << logfile << ".\n" << flush;
+            copy(env.syzkaller_log, logfile);
             result.bad_crashes++;
             result.reports.push_back({"boot failure", time});
             break;
@@ -230,9 +230,10 @@ Syzkaller_Result run_syz_repro(const Environment &env, const std::string &reprol
 
         if (wc_l(env.syzkaller_log) > 5000)
         {
+            string logfile = env.logdir + (env.working_name.empty() ? "" : env.working_name + "-") + "boot_failure.log";
             cout << "Warning: syz-repro log file exceeded 5000 lines.\n"
-                    << "Saved at " << env.logdir + env.working_name + "-boot_failure.log" << ".\n" << flush;
-            copy(env.syzkaller_log, env.logdir + env.working_name + "-boot_failure.log");
+                    << "Saved at " << logfile << ".\n" << flush;
+            copy(env.syzkaller_log, logfile);
             result.bad_crashes++;
             result.reports.push_back({"boot failure", time});
             break;
