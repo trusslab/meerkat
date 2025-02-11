@@ -1,34 +1,11 @@
 #ifndef ENVIRONMENT_H
 #define ENVIRONMENT_H
 
+#include <port.h>
+
 #include <string>
 #include <vector>
 #include <set>
-
-enum Compiler_Setting {COMPILER_GCC = 0, COMPILER_CLANG, COMPILER_CLANG_14};
-
-// stores info about the host port for easy arithmetic
-// The port must change in between runs of Syzkaller in
-// case the previous port was not freed yet.
-class Port_Info
-{
-public:
-    int port;
-    int port_count;
-    int start_port;
-    int range;
-
-    Port_Info()
-        : port(0), port_count(0), start_port(0), range(3)
-    { return; }
-    
-    Port_Info(int p, int pc, int sp, int r)
-        : port(p), port_count(pc), start_port(sp), range(r)
-    { return; }
-
-    int init(const int, const int, const int);
-    int inc();
-};
 
 // stores vm resource allocation
 class VMConfig
@@ -69,18 +46,19 @@ public:
 
     std::string home;                   // SyzInspector/
     std::string gcc_dir;                // the directory housing all of the gcc compilers
-    std::string image_dir;              // directory of the os images
+    std::string ccache;                 // location of ccache to use
+    std::string image;                  // path to the image
+    std::string image_key;              // path to the image key
     std::string syzdir;                 // the directory that houses syzkaller
 
-    std::string wd;                     // wd-inspector-[id]
+    std::string wd;                     // wd-bisector-[id]
     std::string kerneldir;              // the directory that houses the kernel
     std::string syzwd;                  // wd-kaller
     std::string syzconfig;              // the config for syzkaller. We write this ourselves
+    std::string vmwd;
     
     std::string logdir;                 // directory to put all the logs in
     std::string syzkaller_log;          // the log file to hold syzkaller output
-
-    Compiler_Setting compiler_setting;
     
     VMConfig vmd;                       // vm resource allocations for default, race, and single-thread
     VMConfig vmr;
@@ -98,6 +76,7 @@ public:
     std::string branch;                 // The kernel branch
     std::string kconfig;                // the config file for the kernel
     std::string reprodir;               // the directory with all of the PoCs
+    std::string champion_repro;         // the repro to be used in PoC testing
     std::string buglink;                // the link to the bug in syzbot
 
     std::string anchor_hash;
@@ -114,6 +93,14 @@ public:
     // parses unique bug config to get filenames
     int parse_config_file(const std::string &);
     int handle_features(const std::set<std::string> &);
+
+    std::string syscall_string() const;
+
+    std::string kbuildlog() const
+    { return logdir + (working_name.empty() ? "" : working_name + "-") + "kbuild.log"; }
+
+    std::string bootfaillog() const
+    { return logdir + (working_name.empty() ? "" : working_name + "-") + "boot_failure.log"; }
 
     // Pretty-print
     void print() const;

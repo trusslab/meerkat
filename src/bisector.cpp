@@ -10,7 +10,6 @@
 #include <my_string.h>
 #include <psf.h>
 #include <result.h>
-#include <session.h>
 #include <shell_api.h>
 #include <template_parse.h>
 
@@ -37,14 +36,14 @@ int check_syzkaller(const Environment &env)
     {
         if (!check_file(env.syzdir + "bin/" + bin))
         {
-            cerr << "Error: ";
+            cerr << "Error: Syzkaller binary " << env.syzdir + "bin/" + bin << " was not found.\n" << flush;
             return -1;
         }
     }
     return 0;
 }
 
-int uniqify_reproducers(const Environment &env)
+int uniqify_reproducers(Environment &env)
 {
     vector<string> repros = list_dir(env.reprodir);
     if (repros.size() <= 0)
@@ -55,6 +54,7 @@ int uniqify_reproducers(const Environment &env)
 
     vector<string> keep, remove;
     bool removed = false;
+    bool saved_champion = false;
     keep.push_back(repros.front());
     for (int i = 1; i < repros.size(); i++)
     {
@@ -63,6 +63,12 @@ int uniqify_reproducers(const Environment &env)
         {
             if (compare_files(kept, repros.at(i)))
             {
+                if (!saved_champion && !env.champion_repro.empty()
+                    && repros.at(i).find(env.champion_repro) != std::string::npos)
+                {
+                    saved_champion = true;
+                    env.champion_repro = kept;
+                }
                 remove.push_back(repros.at(i));
                 removed = true;
                 break;
@@ -77,59 +83,6 @@ int uniqify_reproducers(const Environment &env)
 
     return 0;
 }
-
-/* Bisection Workflow
- * 
- * Input:
- *  Bug Name
- *  Bug Aliases (Duplicates, optional)
- *  Anchor (Finding Commit)
- *  Linux Repository
- *  Kernel Config
- *  1 or more syz reproducers
- * 
- *  Features
- * 
- *  Workdir
- *  Built Syzkaller (Custom)
- *  Compilers
- *  
- * 
- * Features:
- *  PoC Mode (default)
- *  Focused Fuzzing (req. dedup)
- *  Stateful Corpus (req. FF)
- *  Deduplication
- *  All PoCs
- *  Optimize Fuzzer (procs, no gen, etc.)
- *  Optimize Repro (procs)
- *  Kernel Patches (will be off for experiment)
- *
- * Setup:
- *  Read features and config files.
- *  Check all files.
- *      Pull linux
- *      Make sure Syzkaller is built
- *  Keep only unique reproducers.
- * 
- * Finding Commit:
- *  Test with FF first (if FF feature)
- * 
- * FF Bisection:
- *  Do FF bisection. (release and then git)
- *  Every X tests run syz-repro to find champion PoC (add to corpus)
- *  Return Introducing commit (first bad commit) and last good commit
- * 
- * PoC Test:
- *  Attempt to reproduce the bug with champion PoC
- *  Commit is either last good commit from FF or Finding commit
- * 
- * PoC Bisection:
- *  Do PoC bisection
- *  Return introducing commit
- * 
- * Return Introducing Commit
- */
 
 int do_bisection(Environment &env, Bisect &bisector, Git &linux_git)
 {
@@ -167,7 +120,8 @@ int do_bisection(Environment &env, Bisect &bisector, Git &linux_git)
 
     if (env.feats.find_only)
     {
-        cout << "Average TTF: " << result.suggest_ttf << endl;
+        if (bisector.mode() == Mode_FF)
+            cout << "Average TTF: " << result.suggest_ttf << endl;
         cout << "Find-only complete.\n";
         return 1;
     }
@@ -177,7 +131,7 @@ int do_bisection(Environment &env, Bisect &bisector, Git &linux_git)
         cout << "\nFailure: This bug cannot be found at the anchor commit.\n" << flush;
         return 1;
     }
-    else
+    else if (bisector.mode() == Mode_FF)
     {
         cout << "\nNew Max Time: " << env.max_time << "\n" << flush;
     }
@@ -211,31 +165,6 @@ int do_bisection(Environment &env, Bisect &bisector, Git &linux_git)
 
     // Result: a bisect session and index into the releases.
     // Bisect session is the oldest release where the bug reproduced. Index points to it in the releases array.
-
-    // ======================================================================================================
-    // Major Release Search (This time for kernel commits)
-
-    bisector.next_phase(Bisect_Releases, env, linux_git);
-    if (err < 0)
-    {
-        cerr << "Failed to advance to Release search phase.\n" << flush;
-        return -1;
-    }
-
-    cout << "\n==== Major Release Search ====\n" 
-         << bisector.remaining() << " Release" << (bisector.remaining() == 1 ? "" : "s") << endl << flush;
-
-    while ((err = bisector.next_session(env, linux_git)) == 0)
-    {
-        result = bisector.test_current(env, linux_git);
-        bisector.record(result, linux_git);
-        cout << "About " << bisector.remaining() << " releases remaining\n" << flush;
-    }
-    if (err < 0)
-    {
-        cerr << "Failed to get or build next session.\n" << flush;
-        return -1;
-    }
 
     // ======================================================================================================
     // Kernel Bisection
@@ -277,29 +206,16 @@ int bisect(Environment &env)
     if (linux_git.error() < 0)
         goto finish;
 
-    // begin logging
     cout << left << setw(CONFW) << "Bisecting:" << env.name << endl;
 
     env.duplicates.clear();
     env.duplicates.push_back(env.name);
-    // Manual aliases would go here
 
-    // TODO: handle port a different way (we will have multiple vms)
-    env.port.init(START_PORT, env.id, 5);
+    env.port.init(START_PORT, env.id*env.vmst.numVM, PORT_RANGE);
 
-    // TODO: Maybe don't need this
     determine_threadedness(env);
 
-    // ======================================================================================================
-    // Begin Bisection
-    // ======================================================================================================
-
     bisector.init(env, linux_git);
-    if (bisector.releases.size() <= 1)
-    {
-        cerr << "Failed to find Linux releases.\n" << flush;
-        goto finish;
-    }
 
     if (check_syzkaller(env) < 0)
         goto finish;
@@ -317,16 +233,19 @@ int bisect(Environment &env)
         goto finish;
     }
 
+    if (bisector.mode() == Mode_FF)
+        env.required_syscalls = get_reproduer_syscall_descriptions(env);
+
     env.print();
-    return 0;
 
     // ======================================================================================================
     // Break off here by mode
     
     if (bisector.mode() == Mode_FF)
     {
-        env.required_syscalls = get_reproduer_syscall_descriptions(env);
-        do_bisection(env, bisector, linux_git);
+        err = do_bisection(env, bisector, linux_git);
+        if (err < 0 || env.feats.setup_only || env.feats.find_only)
+            goto finish;
     }
 
     if (env.feats.poc_test)
@@ -334,11 +253,15 @@ int bisect(Environment &env)
 
     if (bisector.mode() == Mode_PoC)
     {
-        do_bisection(env, bisector, linux_git);
-    }
+        // Use more vms at 2 cpus during poc bisection. Simlar to SB.
+        env.vmc = env.vmst;
+        if (env.champion_repro.empty())
+            env.champion_repro = list_dir(env.reprodir).front();
 
-    if (err < 0)
-        goto finish;
+        err = do_bisection(env, bisector, linux_git);
+        if (err < 0 || env.feats.setup_only || env.feats.find_only)
+            goto finish;
+    }
 
     // ======================================================================================================
     // Finish
@@ -357,10 +280,10 @@ void print_help()
 {
     cout << "Usage: ./bin/" << PROJECT_NAME << " -c [config] -i [id]\n"
         << "    -m [max time]: the maximum time (minutes) allowed when fuzzing (default 30).\n"
-        << "    -i [id]: REQUIRED. The id of the inspector (i.e. 1).\n"
+        << "    -i [id]: REQUIRED. The id of the bisector (i.e. 1).\n"
         << "    --config (c) [config.cfg]: [config]: REQUIRED. The config file containing the bug information.\n"
         << "    --anchor (a) [hash]: REQUIRED. the hash of the commit where the bug was found.\n"
-        << "    --feature (F) [feature list]: extra features to use.\n"
+        << "    --feature (F) [feature list]: features to use.\n"
         << endl << flush;
 }
 
@@ -443,10 +366,7 @@ int main(int argc, char ** argv)
     if (handle_features(args, env) < 0)
         return -1;
 
-    if (env.name.find("KMSAN") != string::npos)
-        env.compiler_setting = COMPILER_CLANG_14;
-    else
-        env.compiler_setting = COMPILER_GCC;
+    // TODO: set compiler mode here if needed
 
     if (args.is_set("safe-mode") || env.name.substr(0, 11) == "memory leak")
         set_safe_mode(env.safe_mode, env.max_time, env.fuzztimes);
@@ -459,21 +379,26 @@ int main(int argc, char ** argv)
         make_dir(env.logdir);
     }
 
+    if (!check_file(env.vmwd))
+    {
+        make_dir(env.vmwd);
+    }
+
     if (!check_file(env.kconfig))
     {
         cerr << "Error: No kernel config file " << env.kconfig << " exists.\n";
         return -1;
     }
 
-    if (!check_file(env.image_dir + "stretch/stretch.img"))
+    if (!check_file(env.image))
     {
-        cerr << "Error: No image file for stretch.\n";
+        cerr << "Error: No image file found.\n";
         return -1;
     }
 
-    if (!check_file(env.image_dir + "wheezy/wheezy.img"))
+    if (!check_file(env.image_key))
     {
-        cerr << "Error: No image file for wheezy.\n";
+        cerr << "Error: No image key file found.\n";
         return -1;
     }
 

@@ -31,6 +31,7 @@
 
 #define SPACER "====================================================================================================================================================\n"
 #define CONFW 20
+#define SESHW 11
 
 #define TIME_INCREMENT 1    // Number of minutes per time increment
 #define START_PORT 12000

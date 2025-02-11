@@ -3,9 +3,16 @@
 
 #include <vector>
 #include <string>
+#include <sstream>
 #include <iostream>
 
-using namespace std;
+// 2024-03-23 - deadbeefbadc0ffee (v6.9)
+std::string Version::string() const
+{
+    std::stringstream ss;
+    ss << date.get_date() << " - " << name << (tag.empty() ? "" : " ("+tag+")");
+    return ss.str();
+}
 
 bool Version::operator==(const Version &other)
 {
@@ -20,7 +27,7 @@ bool Version::operator!=(const Version &other)
 // Mark commits between unstable versions as unstable.
 // Infer some buffer around unstable ranges to be unstable as well.
 // Works in-place on the vector
-void infer_stability(vector<Version> &versions, bool use_buf)
+void infer_stability(std::vector<Version> &versions, bool use_buf)
 {
     for (int i = 0; i < versions.size(); i++)
     {
@@ -69,9 +76,9 @@ void infer_stability(vector<Version> &versions, bool use_buf)
     }
 }
 
-vector<Version> get_only_stable(const vector<Version> &versions)
+std::vector<Version> get_only_stable(const std::vector<Version> &versions)
 {
-    vector<Version> versions2;
+    std::vector<Version> versions2;
     for (int i = 0; i < versions.size(); i++)
         if (!versions.at(i).skipped)
             versions2.push_back(versions.at(i));
@@ -79,7 +86,7 @@ vector<Version> get_only_stable(const vector<Version> &versions)
 }
 
 // Returns the most recent version on or before the given date
-Version get_version_by_date(const vector<Version> &versions, const Date &date)
+Version get_version_by_date(const std::vector<Version> &versions, const Date &date)
 {
     int i;
     for (i = 0; i < versions.size() && date < versions.at(i).date; i++);
@@ -89,21 +96,21 @@ Version get_version_by_date(const vector<Version> &versions, const Date &date)
 
 // Returns the most recent stable version on or before the given date.
 // There must be at least one stable version remaining for this to work.
-Version get_stable_version_by_date(const vector<Version> &versions, const Date &date)
+Version get_stable_version_by_date(const std::vector<Version> &versions, const Date &date)
 {
-    vector<Version> versions2 = versions;
+    std::vector<Version> versions2 = versions;
     infer_stability(versions2);
     return get_version_by_date(get_only_stable(versions2), date);
 }
 
-int get_index_by_name(const vector<Version> &versions, const string &name, const int pos)
+int get_index_by_name(const std::vector<Version> &versions, const std::string &name, const int pos)
 {
     int i = (pos < versions.size() ? pos : 0);
     for (; i < versions.size() && name != versions.at(i).name; i++);
     return i < versions.size() ? i : -1;
 }
 
-int get_index_by_name(const vector<Version_p> &versions, const string &name, const int pos)
+int get_index_by_name(const std::vector<Version_p> &versions, const std::string &name, const int pos)
 {
     int i = (pos < versions.size() ? pos : 0);
     for (; i < versions.size() && name != versions.at(i).v.name; i++);

@@ -11,13 +11,14 @@
 
 // Runs Syzkaller fuzztimes times. Returns the new max time
 // to use. Intended to be run on the finding commit.
-Test_Result fuzz_loop_finding(Environment &, bool);
-Test_Result poc_loop_finding(Environment &);
+Test_Result fuzz_loop_finding(Environment &);
 
 // Runs syzkaller fuzztimes times. Returns the culmination
 // of the results.
-Test_Result fuzz_loop(Environment &, bool);
+Test_Result fuzz_loop(Environment &);
 Test_Result poc_loop(Environment &);
+
+Syzkaller_Result symbolize(Environment &, const std::string &);
 
 // Checks against heuristics to see if the resulting kernel
 // commit is faulty. Returns true if it is.

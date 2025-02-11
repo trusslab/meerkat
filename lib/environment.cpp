@@ -1,28 +1,17 @@
 #include <consts.h>
 #include <environment.h>
+#include <file_api.h>
 #include <json.h>
 #include <my_string.h>
+#include <port.h>
 
 #include <string>
 #include <vector>
 #include <set>
+#include <sstream>
 #include <fstream>
 #include <iostream>
 #include <iomanip>
-
-int Port_Info::init(const int base, const int offset, const int r = 0)
-{
-    range = (r > 0 ? r : range);
-    start_port = base + offset * range;
-    return start_port;
-}
-
-int Port_Info::inc()
-{
-    port_count = (port_count + 1) % range;
-    port = start_port + port_count;
-    return port;
-}
 
 int Environment::init()
 {
@@ -126,6 +115,12 @@ int Environment::parse_config_file(const std::string &filename)
         return -1;
     }
 
+    if (json.has_name("reproducer") && json.is_type("reproducer", JSON_Val_string))
+    {
+        champion_repro = json.get_string("reproducer");
+        champion_repro = starts_with(champion_repro, "/") ? champion_repro : reprodir + champion_repro;
+    }
+
     if (json.has_name("bugID") && json.is_type("bugID", JSON_Val_string))
     {
         working_name = json.get_string("bugID");
@@ -188,21 +183,42 @@ int Environment::parse_config_file(const std::string &filename)
         return -1;
     }
 
-    if (json.has_name("images") && json.is_type("images", JSON_Val_string))
+    if (json.has_name("ccache") && json.is_type("ccache", JSON_Val_string))
     {
-        image_dir = json.get_string("images");
-        image_dir = starts_with(image_dir, "/") ? image_dir : home + image_dir;
+        ccache = json.get_string("ccache");
     }
     else
     {
-        std::cerr << "Error: No Image Directory was given (\"images\": \"/path/to/images/\")\n" << std::flush;
+        ccache.clear();
+    }
+
+    if (json.has_name("image") && json.is_type("image", JSON_Val_string))
+    {
+        image = json.get_string("image");
+        image = starts_with(image, "/") ? image : home + image;
+    }
+    else
+    {
+        std::cerr << "Error: No Image was given (\"image\": \"/path/to/image.img\")\n" << std::flush;
+        return -1;
+    }
+
+    if (json.has_name("image_key") && json.is_type("image_key", JSON_Val_string))
+    {
+        image_key = json.get_string("image_key");
+        image_key = starts_with(image_key, "/") ? image_key : home + image_key;
+    }
+    else
+    {
+        std::cerr << "Error: No Image Key was given (\"image_key\": \"/path/to/image.id_rsa\")\n" << std::flush;
         return -1;
     }
 
     kerneldir = wd + "kernel/";
     syzwd = wd + "wd-kaller/";
+    vmwd = wd + "wd-runner/";
     logdir = wd + "log/";
-    syzkaller_log = logdir + (working_name.empty() ? "" : working_name + "-") + "syzkaller.log";
+    syzkaller_log = logdir + (working_name.empty() ? "" : working_name + "-") + "kaller.log";
 
     return 0;
 }
@@ -217,7 +233,7 @@ void Environment::default_features()
 
 int Environment::handle_features(const std::set<std::string> &features)
 {
-    if (features.size() == 0)
+    if (features.size() == 0 || features.find("default") != features.end())
     {
         default_features();
         return 0;
@@ -277,6 +293,21 @@ int Environment::handle_features(const std::set<std::string> &features)
     return 0;
 }
 
+std::string Environment::syscall_string() const
+{
+    if (required_syscalls.size() <= 0)
+        return "";
+
+    std::stringstream ss;
+    ss << "[";
+    for (int i = 0; i < required_syscalls.size(); i++)
+    {
+        ss << "\"" << required_syscalls.at(i) << "\"" << (i < required_syscalls.size() - 1 ? ", " : "");
+    }
+    ss << "]";
+    return ss.str();
+}
+
 void Environment::config_print(const std::string &label, const std::string &config) const
 {
     std::cout << std::left << std::setw(CONFW) << (label + ":") << config << std::endl << std::flush;
@@ -298,19 +329,28 @@ void Environment::print() const
     std::cout << std::endl;
     config_print("Anchor Commit", anchor_hash);
     config_print("Repository", repository);
+    config_print("Branch", branch);
     config_print("Arch", arch);
     std::cout << std::endl;
     config_print(PROJECT_NAME, home);
     config_print("Kernel", kerneldir);
     config_print("Syzkaller", syzdir);
     config_print("Compilers", gcc_dir);
-    config_print("Images", image_dir);
+    config_print("Ccache", ccache);
+    config_print("Image", image);
+    config_print("Image Key", image_key);
     std::cout << std::endl;
     config_print("Workdir", wd);
     config_print("Kconfig", kconfig);
-    config_print("Reproducers", reprodir);
+    if (!reprodir.empty())
+        config_print("Reproducers", (reprodir + " (" + std::to_string(list_dir(reprodir).size()) + ")"));
+    if (!champion_repro.empty())
+        config_print("Reproducer", champion_repro);
     config_print("Syzkaller Workdir", syzwd);
+    config_print("Log Directory", logdir);
     std::cout << std::endl;
+    if (required_syscalls.size() > 0)
+        config_print("Syscalls", syscall_string());
     config_print("VM Count", std::to_string(vmc.numVM));
     config_print("CPU Count", std::to_string(vmc.numCPU));
     config_print("Procs", std::to_string(vmc.numProcs));

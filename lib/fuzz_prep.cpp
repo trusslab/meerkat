@@ -65,7 +65,6 @@ VMConfig determine_threadedness(Environment &env)
         env.vmc = env.vmr;
         break;
     default:
-        cerr << "Warning: Could not retrieve number of procs from reproducer " << reproducer << ". Using Default.\n";
         env.vmc = env.vmd;
     }
 
@@ -111,19 +110,12 @@ string compiler_mux(const vector<Version> &versions, const Date &kernel_date, co
     return env.gcc_dir + versions.at(i).name;
 }
 
-string get_compiler(const vector<Version> &gcc_versions, const vector<Version> &clang_versions, const Date &kernel_date, const Environment &env)
+string get_compiler(const vector<Version> &gcc_versions, const Date &kernel_date, const Environment &env)
 {
-    switch (env.compiler_setting)
-    {
-        case COMPILER_GCC:
-            return compiler_mux(gcc_versions, kernel_date, env)+"/bin/gcc";
-        case COMPILER_CLANG:
-            return compiler_mux(clang_versions, kernel_date, env)+"/bin/clang";
-        case COMPILER_CLANG_14:
-            return "clang-14";
-    }
-    
-    return "";
+    string compiler = compiler_mux(gcc_versions, kernel_date, env)+"/bin/gcc";
+    if (!env.ccache.empty())
+        compiler = env.ccache + " " + compiler;
+    return compiler;
 }
 
 int clean_path(const string &old_path)
@@ -200,11 +192,9 @@ int unset_kernel_config(const string &config, const vector<string> &config_to_se
     return err;
 }
 
+// Applies patches if config is set, otherwise just logs
 void patch_kernel(const Environment &env, const Version &linux_version)
 {
-    string old_dir = pwd();
-    cd(env.home);
-
     // apply patch from 760f8522ce08
     // Fixes "error: #error New address family defined, please update secclass_map."
     if (grep_to_find("#include <sys/socket.h>", env.kerneldir + "/scripts/selinux/mdp/mdp.c") &&
@@ -212,18 +202,24 @@ void patch_kernel(const Environment &env, const Version &linux_version)
         !grep_to_find("#include <sys/socket.h>", env.kerneldir + "/security/selinux/include/classmap.h"))
     {
         cout << "PATCH: Fixing includes in selinux/mpd and selinux/genheaders.\n";
-        sed_i("s/#include <sys\\/socket.h>//", env.kerneldir + "/scripts/selinux/mdp/mdp.c");
-        sed_i("s/#include <sys\\/socket.h>//", env.kerneldir + "/scripts/selinux/genheaders/genheaders.c");
-        sed_i("s/#include <linux\\/capability.h>/#include <linux\\/capability.h>\\n#include <linux\\/socket.h>/", env.kerneldir + "/security/selinux/include/classmap.h");
+        if (env.feats.patch_kernel)
+        {
+            sed_i("s/#include <sys\\/socket.h>//", env.kerneldir + "/scripts/selinux/mdp/mdp.c");
+            sed_i("s/#include <sys\\/socket.h>//", env.kerneldir + "/scripts/selinux/genheaders/genheaders.c");
+            sed_i("s/#include <linux\\/capability.h>/#include <linux\\/capability.h>\\n#include <linux\\/socket.h>/", env.kerneldir + "/security/selinux/include/classmap.h");
+        }
     }
 
     // Add a patch for all of 14 commits
     if (linux_version.date == Date(2019,12,1))
     {
         cout << "PATCH: Fixing page size references in mm/userfaultfd.c.\n";
-        sed_i("s/VM_BUG_ON(dst_addr \\& ~huge_page_mask(h));/VM_BUG_ON(dst_addr \\& (vma_hpagesize - 1));/", env.kerneldir + "/mm/userfaultfd.c");
-        sed_i("s/dst_pte = huge_pte_alloc(dst_mm, dst_addr, huge_page_size(h));/dst_pte = huge_pte_alloc(dst_mm, dst_addr, vma_hpagesize);/", env.kerneldir + "/mm/userfaultfd.c");
-        sed_i("s/pages_per_huge_page(h), true);/vma_hpagesize \\/ PAGE_SIZE, true);/", env.kerneldir + "/mm/userfaultfd.c");
+        if (env.feats.patch_kernel)
+        {
+            sed_i("s/VM_BUG_ON(dst_addr \\& ~huge_page_mask(h));/VM_BUG_ON(dst_addr \\& (vma_hpagesize - 1));/", env.kerneldir + "/mm/userfaultfd.c");
+            sed_i("s/dst_pte = huge_pte_alloc(dst_mm, dst_addr, huge_page_size(h));/dst_pte = huge_pte_alloc(dst_mm, dst_addr, vma_hpagesize);/", env.kerneldir + "/mm/userfaultfd.c");
+            sed_i("s/pages_per_huge_page(h), true);/vma_hpagesize \\/ PAGE_SIZE, true);/", env.kerneldir + "/mm/userfaultfd.c");
+        }
     }
 
     // the date here gives rough estimate. Fix works before that date.
@@ -231,7 +227,8 @@ void patch_kernel(const Environment &env, const Version &linux_version)
         linux_version.date <= Date(2018,6,9))
     {
         cout << "PATCH: Forcing 2MB page size in arch/x86/Makefile.\n";
-        sed_i("s/LDFLAGS := \\-m elf_$(UTS_MACHINE)/LDFLAGS := \\-m elf_$(UTS_MACHINE)\\nifdef CONFIG_X86_64\\nLDFLAGS += $(call ld\\-option, \\-z max\\-page\\-size=0x200000)\\nendif\\n/",
+        if (env.feats.patch_kernel)
+            sed_i("s/LDFLAGS := \\-m elf_$(UTS_MACHINE)/LDFLAGS := \\-m elf_$(UTS_MACHINE)\\nifdef CONFIG_X86_64\\nLDFLAGS += $(call ld\\-option, \\-z max\\-page\\-size=0x200000)\\nendif\\n/",
                 env.kerneldir + "/arch/x86/Makefile");
         
     }
@@ -243,7 +240,8 @@ void patch_kernel(const Environment &env, const Version &linux_version)
         && !grep_to_find("#include <linux\\/acpi\\.h>", env.kerneldir + "/arch/x86/kernel/setup.c"))
     {
         cout << "PATCH: Explicitly include acpi.h\n";
-        sed_i("s/#include <linux\\/console.h>/#include <linux\\/acpi.h>\\n#include <linux\\/console.h>/", env.kerneldir + "/arch/x86/kernel/setup.c");
+        if (env.feats.patch_kernel)
+            sed_i("s/#include <linux\\/console.h>/#include <linux\\/acpi.h>\\n#include <linux\\/console.h>/", env.kerneldir + "/arch/x86/kernel/setup.c");
     }
 
     // Apply patch from bd74708cd979f4934f0744055ce3b47da68733ce
@@ -252,15 +250,18 @@ void patch_kernel(const Environment &env, const Version &linux_version)
         && grep_to_find("struct inet6_dev \\*idev, \\*bdev;", env.kerneldir + "/net/ipv6/addrconf.c"))
     {
         cout << "PATCH: Fix regression in blackhole_netdev\n";
-        sed_i("s/struct inet6_dev \\*idev, \\*bdev;/struct inet6_dev \\*idev;/", env.kerneldir + "/net/ipv6/addrconf.c");
-        sed_i("/bdev = ipv6_add_dev(blackhole_netdev);/ d", env.kerneldir + "/net/ipv6/addrconf.c");
-        sed_i("/} else if (IS_ERR(bdev)) {/,+2 d", env.kerneldir + "/net/ipv6/addrconf.c");
-        sed_i("/addrconf_ifdown(blackhole_netdev, 2);/ d", env.kerneldir + "/net/ipv6/addrconf.c");
+        if (env.feats.patch_kernel)
+        {
+            sed_i("s/struct inet6_dev \\*idev, \\*bdev;/struct inet6_dev \\*idev;/", env.kerneldir + "/net/ipv6/addrconf.c");
+            sed_i("/bdev = ipv6_add_dev(blackhole_netdev);/ d", env.kerneldir + "/net/ipv6/addrconf.c");
+            sed_i("/} else if (IS_ERR(bdev)) {/,+2 d", env.kerneldir + "/net/ipv6/addrconf.c");
+            sed_i("/addrconf_ifdown(blackhole_netdev, 2);/ d", env.kerneldir + "/net/ipv6/addrconf.c");
 
-        sed_i("s/if (dev == net->loopback_dev)/struct net_device \\*loopback_dev = net->loopback_dev;\\nif (dev == loopback_dev)/", env.kerneldir + "/net/ipv6/route.c");
-        sed_i("s/rt->rt6i_idev = in6_dev_get(blackhole_netdev);/rt->rt6i_idev = in6_dev_get(loopback_dev);/", env.kerneldir + "/net/ipv6/route.c");
-        sed_i("/if (idev \\&\\& idev->dev != dev_net(dev)->loopback_dev) {/, +3 d", env.kerneldir + "/net/ipv6/route.c");
-        sed_i("/struct inet6_dev \\*idev = rt->rt6i_idev;/r patches/linux-1.txt", env.kerneldir + "/net/ipv6/route.c");
+            sed_i("s/if (dev == net->loopback_dev)/struct net_device \\*loopback_dev = net->loopback_dev;\\nif (dev == loopback_dev)/", env.kerneldir + "/net/ipv6/route.c");
+            sed_i("s/rt->rt6i_idev = in6_dev_get(blackhole_netdev);/rt->rt6i_idev = in6_dev_get(loopback_dev);/", env.kerneldir + "/net/ipv6/route.c");
+            sed_i("/if (idev \\&\\& idev->dev != dev_net(dev)->loopback_dev) {/, +3 d", env.kerneldir + "/net/ipv6/route.c");
+            sed_i("/struct inet6_dev \\*idev = rt->rt6i_idev;/r patches/linux-1.txt", env.kerneldir + "/net/ipv6/route.c");
+        }
     }
 
     // Apply Patch to fix boot error "VFS: Unable to mount root fs on unknown-block(8,0)"
@@ -269,7 +270,8 @@ void patch_kernel(const Environment &env, const Version &linux_version)
         && grep_to_find("LSM_HOOK(int, 0, fs_context_parse_param, struct fs_context \\*fc,", env.kerneldir + "/include/linux/lsm_hook_defs.h"))
     {
         cout << "PATCH: Fix boot error \"VFS: Unable to mount root fs on unknown-block(8,0)\"\n";
-        sed_i("s/LSM_HOOK(int, 0, fs_context_parse_param, struct fs_context \\*fc,/LSM_HOOK(int, -ENOPARAM, fs_context_parse_param, struct fs_context \\*fc,/",
+        if (env.feats.patch_kernel)
+            sed_i("s/LSM_HOOK(int, 0, fs_context_parse_param, struct fs_context \\*fc,/LSM_HOOK(int, -ENOPARAM, fs_context_parse_param, struct fs_context \\*fc,/",
                 env.kerneldir + "/include/linux/lsm_hook_defs.h");
     }
 
@@ -280,27 +282,28 @@ void patch_kernel(const Environment &env, const Version &linux_version)
         && grep_to_find("\\/\\* We charge the parent cgroup, never the current task \\*\\/", env.kerneldir + "/mm/memcontrol.c"))
     {
         cout << "PATCH: Remove warning when allocating the root cgroup\n";
-        sed_i("/\\/\\* We charge the parent cgroup, never the current task \\*\\//,+1 d", env.kerneldir + "/mm/memcontrol.c");
-        sed_i("/\\/\\* We charge the parent cgroup, never the current task \\*\\//,+1 d", env.kerneldir + "/mm/memcontrol.c");
+        if (env.feats.patch_kernel)
+        {
+            sed_i("/\\/\\* We charge the parent cgroup, never the current task \\*\\//,+1 d", env.kerneldir + "/mm/memcontrol.c");
+            sed_i("/\\/\\* We charge the parent cgroup, never the current task \\*\\//,+1 d", env.kerneldir + "/mm/memcontrol.c");
+        }
     }
 
     // KASAN: slab-out-of-bounds in hpet_alloc is known to trigger in the range 2020-01-23 to 2020-02-03
     // Patch: https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=98c49f1746ac44ccc164e914b9a44183fad09f51
     // Guilty: https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=987f028b8637cfa7658aa456ae73f8f21a7a7f6f
     // If it becomes a big issue, we can patch it.
-
-    cd(old_dir);
 }
 
 int prep_kernel(const Environment &env, Git &linux_git, const Version &linux_version, const std::string &compiler, bool bisecting)
 {
     int err = 0;
-    cd(env.home);
+    std::string old_dir = pwd();
     clean_kernel(env);
     linux_git.cleanup();
 
     // downloads the kernel version (does not decide)
-    // TODO: if bisecting, don't build
+    // if Bisecting, git bisect has already checked out the version
     if (!bisecting)
     {
         err = linux_git.fetch_and_checkout(linux_version.name);
@@ -313,25 +316,23 @@ int prep_kernel(const Environment &env, Git &linux_git, const Version &linux_ver
     
 
     // copy over the config
-    copy(env.kconfig, env.kerneldir + "/.config");
+    copy(env.kconfig, env.kerneldir + ".config");
 
     // Handle Patches
     patch_kernel(env, linux_version);
 
     // build the kernel
-    cout << "Building the kernel...\n" << flush;
-    string outfile = env.logdir + (env.working_name.empty() ? "" : env.working_name + "-") + "kbuild.log";
     cd(env.kerneldir);
-    err = make(env.makeprocs, {"olddefconfig", "CC="+compiler}, outfile);
+    err = make(env.makeprocs, {"olddefconfig", "CC="+compiler}, env.kbuildlog());
     if (err < 0)
         return err;
-    err = make(env.makeprocs, "CC="+compiler, outfile);
+    err = make(env.makeprocs, "CC="+compiler, env.kbuildlog());
     if (err < 0)
     {
         cerr << "Error: The kernel failed to make.\n";
         return err;
     }
-    cd(env.home);
+    cd(old_dir);
     return err;
 }
 
@@ -363,24 +364,14 @@ int write_syzkaller_config(const Environment &env)
          << "    \"workdir\": \"" << env.syzwd << "\",\n"
          << "    \"kernel_obj\": \"" << env.kerneldir << "\",\n";
 
-    // change image when syzkaller did. It shouldn't matter, but who knows.
-    if (true /*syz_date >= Date(2018,9,4)*/)
-        outf << "    \"image\": \"" << env.image_dir << "/stretch/stretch.img\",\n"
-             << "    \"sshkey\": \"" << env.image_dir << "/stretch/stretch.id_rsa\",\n";
-    else
-        outf << "    \"image\": \"" << env.image_dir << "/wheezy/wheezy.img\",\n"
-             << "    \"sshkey\": \"" << env.image_dir << "/wheezy/ssh/id_rsa\",\n";
+    outf << "    \"image\": \"" << env.image << "\",\n"
+         << "    \"sshkey\": \"" << env.image_key << "\",\n";
 
     outf << "    \"syzkaller\": \"" << env.syzdir << "\",\n"
          << "    \"procs\": " << env.vmc.numProcs << ",\n"
          << "    \"type\": \"qemu\",\n";
     
-    outf << "    \"enable_syscalls\": [ ";
-    for (int i = 0; i < env.required_syscalls.size(); i++)
-    {
-        outf << "\"" << env.required_syscalls.at(i) << "\"" << (i < env.required_syscalls.size() - 1 ? ", " : " ");
-    }
-    outf << "],\n";
+    outf << "    \"enable_syscalls\": " << env.syscall_string() << ",\n";
 
     outf << "    \"reproduce\": false,\n"
          << "    \"vm\": {\n"
@@ -398,13 +389,10 @@ int write_syzkaller_config(const Environment &env)
 void reset_kaller_wd(const Environment &env)
 {
     if (check_file(env.syzwd))
-    {
-        cout << "Reseting Syzkaller's working directory.\n";
         remove_dir(env.syzwd);
-    }
 
     make_dir(env.syzwd);
-    make_dir(env.syzwd + "/crashes");
+    make_dir(env.syzwd + "crashes");
     return;
 }
 
@@ -412,7 +400,7 @@ void reset_kaller_wd(const Environment &env)
 // assumes syzkaller has already been made.
 int syz_db(const Environment &env, const string &opt, const string &src, const string &dest)
 {
-    string com = env.syzdir + "/bin/syz-db";
+    string com = env.syzdir + "bin/syz-db";
     char * command = new char[com.size() + 1];
     strcpy(command, com.c_str());
     char * arg1 = new char[opt.size() + 1];
@@ -424,7 +412,7 @@ int syz_db(const Environment &env, const string &opt, const string &src, const s
 
     char * arg_list[] = {command, arg1, arg2, arg3, nullptr};
 
-    int ret = exec_and_wait(com, arg_list);
+    int ret = exec_and_wait(com, arg_list, "/dev/null", "/dev/null");
 
     delete[] command;
     delete[] arg1;
@@ -449,7 +437,7 @@ int syz_db_unpack_corpus(const Environment &env, const string &corpusdir, const 
 // Filter/Clear the previous corpus
 // Adds the PoCs to the corpus
 // Packs the corpus
-int prepare_kaller_wd(const Environment &env, bool keep_corpus)
+int prepare_kaller_wd(const Environment &env)
 {
     bool do_pack = false;
     int err = 0;
@@ -460,7 +448,7 @@ int prepare_kaller_wd(const Environment &env, bool keep_corpus)
         remove_dir(corpusdir);
     make_dir(corpusdir);
 
-    if (keep_corpus && check_file(corpus))
+    if (env.feats.stateful_corpus && check_file(corpus))
     {
         err = syz_db_unpack_corpus(env, corpusdir, corpus);
         do_pack = true;

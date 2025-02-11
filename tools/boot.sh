@@ -10,14 +10,14 @@ args="$defaultargs nmi_watchdog=panic ftrace_dump_on_oops=orig_cpu rodata=n vsys
 kvmargs="$args kvm-intel.nested=1 kvm-intel.unrestricted_guest=1 kvm-intel.vmm_exclusive=1 kvm-intel.fasteoi=1 kvm-intel.ept=1 kvm-intel.flexpriority=1 kvm-intel.vpid=1 kvm-intel.emulate_invalid_guest_state=1 kvm-intel.eptad=1 kvm-intel.enable_shadow_vmcs=1 kvm-intel.pml=1 kvm-intel.enable_apicv=1"
 
 crashargs="earlyprintk=serial oops=panic nmi_watchdog=panic panic_on_warn=1 panic=1 ftrace_dump_on_oops=orig_cpu rodata=n vsyscall=native net.ifnames=0 biosdevname=0 root=/dev/sda console=ttyS0 kvm-intel.nested=1 kvm-intel.unrestricted_guest=1 kvm-intel.vmm_exclusive=1 kvm-intel.fasteoi=1 kvm-intel.ept=1 kvm-intel.flexpriority=1 kvm-intel.vpid=1 kvm-intel.emulate_invalid_guest_state=1 kvm-intel.eptad=1 kvm-intel.enable_shadow_vmcs=1 kvm-intel.pml=1 kvm-intel.enable_apicv=1"
-image=/absolute/path/to/SyzInspector/image/stretch/stretch.img
-kernel=/absolute/path/to/kernel/arch/x86/boot/bzImage
+image=/mnt/sda/jtbursey/SyzInspector/image/stretch/stretch.img
+kernel=/mnt/sdd/jtbursey/SyzInspector/wd-inspector-5/kernel/arch/x86/boot/bzImage
 
 # Debugged:
 # qemu-system-x86_64 -m 2G -smp 2 -display none -serial stdio -no-reboot -enable-kvm -cpu host -net nic,model=e1000 -net user,host=10.0.2.10,hostfwd=tcp::1569-:22 -hda $image -snapshot -kernel $kernel -append "$crashargs"
 
 # Raw from Syzkaller:
-qemu-system-x86_64 -m 4096 -smp 2 -display none -serial stdio -no-reboot -enable-kvm -cpu host,migratable=off -net nic,model=e1000 -net user,host=10.0.2.10,hostfwd=tcp::12000-:22 -hda $image -snapshot -kernel $kernel -append "$crashargs"
+qemu-system-x86_64 -m 4096 -smp 2 -display none -serial stdio -no-reboot -enable-kvm -cpu host,migratable=off -net nic,model=e1000 -net user,host=10.0.2.10,hostfwd=tcp::12001-:22 -hda $image -snapshot -kernel $kernel -append "$crashargs"
 
 # qemu runs on port 12000
 # ssh -i image/stretch/stretch.id_rsa -p 12000 -o "StrictHostKeyChecking no" root@localhost

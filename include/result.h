@@ -9,6 +9,14 @@ class Crash_Report
 public:
     std::string name;
     int time;
+
+    Crash_Report(const std::string &n, int t)
+        : name(n), time(t)
+    { return; }
+
+    Crash_Report()
+    { Crash_Report("", 0); }
+    
 };
 
 class Syzkaller_Result

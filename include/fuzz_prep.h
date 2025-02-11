@@ -19,12 +19,11 @@ int get_procs_from_repro(const std::string &);
 // Returns the allocation to use.
 VMConfig determine_threadedness(Environment &);
 
-// Reads the gcc version file and returns them
-// in vector form
+// Reads the gcc version file and returns them in vector form
 std::vector<Version> grab_compiler_versions(const std::string &);
 
 // returns the name of the compiler to be used
-std::string get_compiler(const std::vector<Version> &, const std::vector<Version> &, const Date &, const Environment &);
+std::string get_compiler(const std::vector<Version> &, const Date &, const Environment &);
 
 // removes gcc from the path (actually just resets the path)
 int clean_path(const std::string &);
@@ -45,6 +44,6 @@ int write_syzkaller_config(const Environment &);
 
 // deletes the syzkaller working directory and recreates it.
 void reset_kaller_wd(const Environment &);
-int prepare_kaller_wd(const Environment &, bool);
+int prepare_kaller_wd(const Environment &);
 
 #endif

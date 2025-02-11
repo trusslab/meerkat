@@ -15,7 +15,7 @@ private:
     std::string link;       // https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
     std::string branch;     // master
 
-    int git(const std::vector<std::string> &, const std::string & = "");
+    int git(const std::vector<std::string> &, const std::string & = "", bool = false);
     std::string git_read(const std::vector<std::string> &);
 
     int bisect(const std::vector<std::string> &, const std::string & = "");
@@ -69,6 +69,8 @@ public:
 
     int revlist_topo(const std::string &, const std::string &, const std::string &);
     int revlist(const std::string &, const std::string &, const std::string &);
+
+    bool is_ancestor(const std::string &, const std::string &);
 };
 
 #endif

@@ -32,6 +32,8 @@ public:
         : tag(t), name(n), date(d), skipped(false)
     { return; }
 
+    std::string string() const;
+
     bool operator==(const Version &);
     bool operator!=(const Version &);
 };

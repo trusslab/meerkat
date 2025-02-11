@@ -5,7 +5,7 @@ set -e
 source ../parameters/config.cfg
 
 # input file. Made by parse/bparse.sh
-bugfile=$inspectdir/parse/bugs.csv
+bugfile=$bisectdir/parse/bugs.csv
 
 # the date that syzbot started fuzzing
 syzbotDate="2017-07-22"
@@ -20,19 +20,19 @@ endLine=0
 # Functions
 
 writebugconfig () {
-    echo -n "" > $inspectorconfig
-    echo "curBug=\"$curBug\"" >> $inspectorconfig
-    echo "bugname=\"$bugName\"" >> $inspectorconfig
-    echo "kpref=\"$kpref\"" >> $inspectorconfig
-    echo "arch=$arch" >> $inspectorconfig
-    echo "repo=$repo" >> $inspectorconfig
-    echo "kconfig=$inspectdir/$wd/config-$curBug.txt" >> $inspectorconfig
-    echo "repro=$inspectdir/$wd/repro-$curBug.prog" >> $inspectorconfig
-    echo "kallerwd=$inspectdir/$wd/wd-kaller" >> $inspectorconfig
-    echo "syzconfig=$inspectdir/$wd/syzkaller.cfg" >> $inspectorconfig
-    echo "managerwd=$inspectdir/$wd" >> $inspectorconfig
-    echo "syzdir=$inspectdir/$wd/syzkaller" >> $inspectorconfig
-    echo "buglink=\"$buglink\"" >> $inspectorconfig
+    echo -n "" > $bisectorconfig
+    echo "curBug=\"$curBug\"" >> $bisectorconfig
+    echo "bugname=\"$bugName\"" >> $bisectorconfig
+    echo "kpref=\"$kpref\"" >> $bisectorconfig
+    echo "arch=$arch" >> $bisectorconfig
+    echo "repo=$repo" >> $bisectorconfig
+    echo "kconfig=$bisectdir/$wd/config-$curBug.txt" >> $bisectorconfig
+    echo "repro=$bisectdir/$wd/repro-$curBug.prog" >> $bisectorconfig
+    echo "kallerwd=$bisectdir/$wd/wd-kaller" >> $bisectorconfig
+    echo "syzconfig=$bisectdir/$wd/syzkaller.cfg" >> $bisectorconfig
+    echo "managerwd=$bisectdir/$wd" >> $bisectorconfig
+    echo "syzdir=$bisectdir/$wd/syzkaller" >> $bisectorconfig
+    echo "buglink=\"$buglink\"" >> $bisectorconfig
 }
 
 printhelp () {
@@ -61,7 +61,7 @@ do
         i)
             id="${OPTARG}" ;;
         b)
-            bugfile="$inspectdir/parse/${OPTARG}" ;;
+            bugfile="$bisectdir/parse/${OPTARG}" ;;
         *)
             printhelp
             exit
@@ -77,8 +77,8 @@ if [[ $id == "" ]]; then
     exit
 fi
 
-wd="wd-inspector-$id"
-inspectorconfig=../$wd/bug.cfg
+wd="wd-bisector-$id"
+bisectorconfig=../$wd/bug.cfg
 logfile=../$wd/log/merges.log
 
 if [ ! -d ../$wd ]; then
@@ -111,7 +111,7 @@ while (( $line <= $endLine )); do
     arch=$(echo "$linetext" | awk -F',' '{ print $12; }')
 
     # if the bug is older than syzbot, use syzbot as the starting date
-    syzbotAge=$(( $($inspectdir/helpers/diffdate $guiltyDate $syzbotDate) ))
+    syzbotAge=$(( $($bisectdir/helpers/diffdate $guiltyDate $syzbotDate) ))
     if (( $syzbotAge < 0 )); then
         startDate=$syzbotDate
     else
@@ -119,17 +119,17 @@ while (( $line <= $endLine )); do
     fi
 
     # check that the fixing date is not bogus
-    fixAge=$(( $($inspectdir/helpers/diffdate $fixDate $findDate) ))
+    fixAge=$(( $($bisectdir/helpers/diffdate $fixDate $findDate) ))
     if (( $fixAge < 0 )); then
         # sed at the end because shell script is weird about what is escaped in urls...
         findlink=$(echo "$linetext" | awk -F',' '{ print $8; }' | sed 's/\\//' | sed 's/log/commit/')
         snapshot=$(lynx -dump -dont_wrap_pre -width=300 $findlink)
         findDate=$(echo "$snapshot" | grep -m 1 "^[ ]*committer " | grep -o "20[0-9][0-9]-[0-9][0-9]-[0-9][0-9]" | cat)
-        fixAge=$(( $($inspectdir/helpers/diffdate $fixDate $findDate) ))
+        fixAge=$(( $($bisectdir/helpers/diffdate $fixDate $findDate) ))
     fi
 
     # check that the time to find is good and interesting
-    findAge=$(( $($inspectdir/helpers/diffdate $findDate $startDate) ))
+    findAge=$(( $($bisectdir/helpers/diffdate $findDate $startDate) ))
 
     if (( $findAge > 1 && $fixAge >= 0 )) && [[ $arch == "amd64" ]]; then
         # bug number and name

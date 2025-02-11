@@ -5,7 +5,6 @@
 #include <environment.h>
 #include <git.h>
 #include <result.h>
-#include <session.h>
 #include <version.h>
 
 #include <fstream>
@@ -16,6 +15,31 @@
 enum Bisect_Mode {Mode_PoC, Mode_FF};
 enum Bisect_Phase {Bisect_Init, Bisect_Anchor, Bisect_Releases, Bisect_Kernel, Bisect_Done};
 
+class Session
+{
+public:
+    Version kernel;
+    Bisect_Mode mode;
+    bool found;
+    bool stable;
+
+    Session()
+        : stable(true)
+    { return; }
+
+    Session(const Version &k, Bisect_Mode m, bool f)
+        : kernel(k), mode(m), found(f), stable(true)
+    {
+        return;
+    }
+
+    bool operator==(const Session &other)
+    { return kernel == other.kernel && mode == other.mode; }
+
+    bool operator<(const Session &other) const
+    { return kernel.name + std::to_string(mode) < other.kernel.name + std::to_string(other.mode); }
+};
+
 class Bisect
 {
 private:
@@ -25,32 +49,23 @@ private:
     unsigned int session_count;
     Session current_session;
     Session last_session;
-    Session bisect_session;
-    Session good_session;
     std::set<Session> past_sessions;
 
     Version anchor_version;
+    Version bisect_version;
+    Version good_version;
 
     int index;
     int bisect_index;
-
-    // right is the older date (lower date). higher index
-    // left is the recent date (higher date). lower index
-    int left;
-    int right;
 
     int git_remaining;
     bool git_stop;
 
     std::vector<Version> gcc_versions;
-    std::vector<Version> clang_versions;
 
-    int init_releases_phase_ff();
-    int init_gb_phase(Git &);
-
-    int init_releases_phase_poc(Git &);
-
-    int next_phase(const Environment &, Git &);
+    int init_anchor_phase(Git &);
+    int init_releases_phase(const Environment &, Git &);
+    int init_bisect_phase(Git &);
 
     bool already_fuzzed(const Session &) const;
     bool session_was_found(const Session &) const;
@@ -96,7 +111,6 @@ public:
     { return phase; }
 
     int remaining() const;
-    int stable_remaining() const;
 
     int gather_compiler_versions(const Environment &);
 
@@ -131,6 +145,7 @@ void log_kernel_build_error();
 void log_syzkaller_build_error();
 
 void log_attempt_result(const Syzkaller_Result &, int, const std::vector<std::string> &, int);
+void log_attempt_result_poc(const Syzkaller_Result &, int, const std::vector<std::string> &);
 void log_session_result(const Test_Result &, const std::vector<std::string> &);
 
 #endif

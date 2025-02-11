@@ -1,23 +1,26 @@
-#include <vm.h>
 #include <exec_api.h>
+#include <file_api.h>
 #include <my_string.h>
+#include <port.h>
+#include <vm.h>
 
 #include <iostream>
+#include <iomanip>
 #include <string>
+#include <sstream>
 #include <vector>
 
 #include <string.h>
 #include <unistd.h>
 
-VM::VM(const std::string &k, const std::string &i, const std::string &ik, const std::string &wd)
+VM::VM(const unsigned int p, const std::string &k, const std::string &i, const std::string &ik, const std::string &lf)
 {
-    n = 0;
     pid = 0;
-    port = 12800;
+    port.init(p);
     kernel_path = k;
     image_path = i;
     image_key = ik;
-    wd_path = wd;
+    logfile = lf;
 }
 
 int VM::boot()
@@ -33,7 +36,7 @@ int VM::boot()
     // https://groups.google.com/u/1/g/syzkaller/c/H8gmw9_JRoY/m/dQc5n5_6AAAJ
     std::string argstr = "qemu-system-x86_64 "
                         "-m 4096 -smp 2,sockets=2,cores=1 -display none -serial stdio -no-reboot -enable-kvm -cpu host,migratable=off "
-                        "-net nic,model=e1000 -net user,host=10.0.2.10,hostfwd=tcp::" + std::to_string(port) + "-:22 -hda "
+                        "-net nic,model=e1000 -net user,host=10.0.2.10,hostfwd=tcp::" + std::to_string(port.port) + "-:22 -hda "
                         + image_path + " -snapshot -kernel " + kernel + " -append";
 
     std::vector<std::string> spl = split(argstr, ' ');
@@ -46,7 +49,7 @@ int VM::boot()
 
     arg_list[spl.size()] = nullptr;
 
-    int err = exec_and_continue("qemu-system-x86_64", (char**)arg_list, log_file(), "/dev/null");
+    int err = exec_and_continue("qemu-system-x86_64", (char**)arg_list, log_file(), log_file());
 
     if (err > 0)
         pid = err;
@@ -61,7 +64,7 @@ int VM::setup()
     if (err < 0)
         return -1;
     sleep(60);
-    return check_booted();
+    return check_booted_loop();
 }
 
 bool VM::is_alive() const
@@ -69,17 +72,22 @@ bool VM::is_alive() const
     return pid != 0 && check_alive(pid);
 }
 
-int VM::check_booted() const
+int VM::check_booted_once() const
+{
+    return run("exit", false, true) == 0 ? 0 : -1;
+}
+
+int VM::check_booted_loop() const
 {
     int err;
-    for (int i = 0; i < RETRIES; i++)
+    for (int i = 0; i < VM_RETRIES; i++)
     {
-        err = run("exit", false, true);
+        err = check_booted_once();
         if (err == 0)
             return 0;
         sleep(30);
     }
-    std::cerr << "Warning: VM has not responded after " << RETRIES << " attempts.\n" << std::flush;
+    std::cerr << "Warning: VM has not responded after " << VM_RETRIES << " attempts.\n" << std::flush;
     return -1;
 }
 
@@ -98,8 +106,7 @@ int VM::reboot()
     if (is_alive())
         res = kill();
     pid = 0;
-    n++;
-    port++;
+    port.inc();
 
     return res;
 }
@@ -111,8 +118,7 @@ int VM::reset()
     if (is_alive())
         res = kill();
     pid = 0;
-    n = 0;
-    port++;
+    port.inc();
 
     return res;
 }
@@ -120,7 +126,7 @@ int VM::reset()
 // scp -P port -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i ../../images/bullseye/bullseye.id_rsa file root@localhost:/root
 int VM::scp(const std::string &file, const std::string &dest) const
 {
-    std::string argstr = "scp -P " + std::to_string(port) + " -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null "
+    std::string argstr = "scp -P " + std::to_string(port.port) + " -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null "
                         "-i " + image_key + " " + file + " root@localhost:" + dest;
     std::vector<std::string> spl = split(argstr, ' ');
 
@@ -140,7 +146,7 @@ int VM::scp(const std::string &file, const std::string &dest) const
 
 int VM::run(const std::string &cmd, const std::string &outfile, const std::string &errfile, bool bg, bool quiet) const
 {
-    std::string argstr = "ssh -i " + image_key + " -q -p " + std::to_string(port) + " -o";
+    std::string argstr = "ssh -i " + image_key + " -q -p " + std::to_string(port.port) + " -o";
     std::vector<std::string> spl = split(argstr, ' ');
     spl.push_back("StrictHostKeyChecking no");
     spl.push_back("root@localhost");
@@ -185,13 +191,198 @@ int VM::kill_proc(const std::string &prog) const
 
 std::string VM::log_file() const
 {
-    return wd_path + "vm-" + std::to_string(n) + ".log";
+    return logfile;// wd_path + "vm-" + std::to_string(n) + ".log"
 }
+
+#define VMW 12
 
 std::string VM::debug() const
 {
-    return "Kernel: " + kernel_path + "\n"
-            + "Port: " + std::to_string(port) + "\n"
-            + "PID: " + std::to_string(pid) + "\n"
-            + "Log: " + log_file();
+    std::stringstream ss;
+    ss << std::left << std::setw(VMW) << "Kernel:" << kernel_path << std::endl
+        << std::left << std::setw(VMW) << "Port:" << std::to_string(port.port) << std::endl
+        << std::left << std::setw(VMW) << "PID:" << std::to_string(pid) << std::endl
+        << std::left << std::setw(VMW) << "Log:" << log_file() << std::endl;
+    return  ss.str();
+}
+
+std::string VM::debug_full() const
+{
+    std::stringstream ss;
+    ss << std::left << std::setw(VMW) << "Kernel:" << kernel_path << std::endl
+        << std::left << std::setw(VMW) << "Image:" << image_path << std::endl
+        << std::left << std::setw(VMW) << "Image Key:" << image_key << std::endl
+        << std::left << std::setw(VMW) << "Port:" << std::to_string(port.port) << std::endl
+        << std::left << std::setw(VMW) << "PID:" << std::to_string(pid) << std::endl
+        << std::left << std::setw(VMW) << "Log:" << log_file() << std::endl;
+    return  ss.str();
+}
+
+VMPool::VMPool(const unsigned int num, const VM_Config &cfg)
+{
+    unsigned int port = cfg.port;
+    for (int i = 0; i < num; i++)
+    {
+        vms.push_back(VM(port, cfg.kernel_path, cfg.image_path, cfg.image_key, cfg.wd_path + "vm-" + std::to_string(i) + ".log"));
+        port += PORT_RANGE;
+        status.push_back(VM_Idle);
+    }
+}
+
+int VMPool::boot_and_check_all()
+{
+    int count = 0, expected = vms.size();
+    // boot
+    for (int i =0; i < vms.size(); i++)
+    {
+        if (status.at(i) == VM_Idle)
+        {
+            status.at(i) = VM_Boot;
+            vms.at(i).boot();
+        }
+        else
+        {
+            std::cerr << "Error: Could not boot vm " << i << ". Unexpected Status " << status.at(i) << ".\n" << std::flush;
+            expected--;
+        }
+    }
+
+    if (expected == 0)
+        return -1;
+
+    // check booted
+    for (int r = 0; r < VM_RETRIES; r++)
+    {
+        sleep(15);
+        for (int i = 0; i < vms.size(); i++)
+        {
+            if (status.at(i) == VM_Boot)
+            {
+                if (vms.at(i).check_booted_once() == 0)
+                {
+                    status.at(i) = VM_Ready;
+                    count++;
+                }
+            }
+        }
+        if (count == expected)
+            break;
+    }
+    if (count != expected)
+        std::cerr << "Warning: VM has not responded after " << VM_RETRIES << " attempts.\n" << std::flush;
+    return count;
+}
+
+int VMPool::copy_all(const std::string &file)
+{
+    int err = 0;
+    if (!check_file(file))
+        return -1;
+
+    for (int i = 0; i < vms.size(); i++)
+    {
+        if (status.at(i) == VM_Ready)
+        {
+            if (vms.at(i).scp(file) < 0)
+            {
+                status.at(i) = VM_Err;
+            }
+        }
+    }
+    return 0;
+}
+
+int VMPool::run_all(const std::string &cmd)
+{
+    int err = 0;
+    child_pids.clear();
+    child_pids.resize(vms.size());
+    for (int i = 0; i < vms.size(); i++)
+    {
+        if (status.at(i) == VM_Ready)
+        {
+            err = vms.at(i).run(cmd, true);
+            if (err < 0)
+            {
+                status.at(i) = VM_Err;
+                continue;
+            }
+            child_pids.at(i) = err;
+            status.at(i) = VM_Running;
+        }
+    }
+    return 0;
+}
+
+// Wait for child procs to finish or crash or timeout.
+// Timeout is given in seconds
+int VMPool::wait_loop(unsigned int timeout)
+{
+    int expect = 0;
+    for (int i = 0; i < status.size(); i++)
+        expect += status.at(i) == VM_Running ? 1 : 0;
+    
+    int count = 0, time = 0;
+    while (expect > 0 && count < expect && time < timeout)
+    {
+        sleep(5);
+        for (int i = 0; i < vms.size(); i++)
+        {
+            if (status.at(i) != VM_Running)
+                continue;
+
+            if (!vms.at(i).is_alive())
+            {
+                status.at(i) = VM_Crash;
+                count++;
+                continue;
+            }
+            if (!check_alive(child_pids.at(i)))
+            {
+                status.at(i) = VM_Done;
+                count++;
+                continue;
+            }
+        }
+        time += 5;
+    }
+    return 0;
+}
+
+int VMPool::kill_all()
+{
+    for (int i =0; i < vms.size(); i++)
+    {
+        if (status.at(i) == VM_Ready || status.at(i) == VM_Running || status.at(i) == VM_Err)
+        {
+            vms.at(i).kill();
+            status.at(i) = VM_Done;
+        }
+    }
+    return 0;
+}
+
+void VMPool::debug() const
+{
+    std::cout << "VMPool Debug:\n\n" << std::flush;
+    for (int i = 0; i < vms.size(); i++)
+        std::cout << "VM " << i << ":\n" << vms.at(i).debug_full() 
+                << std::left << std::setw(VMW) << "Status:" << status.at(i) << std::endl << std::endl << std::flush;
+}
+
+std::vector<std::string> VMPool::log_files() const
+{
+    std::vector<std::string> files;
+    for (VM vm : vms)
+        files.push_back(vm.log_file());
+    return files;
+}
+
+std::vector<std::string> VMPool::to_symbolize() const
+{
+    std::vector<std::string> files;
+    for (int i = 0; i < vms.size(); i++)
+        if (status.at(i) == VM_Ready || status.at(i) == VM_Crash)
+            files.push_back(vms.at(i).log_file());
+    return files;
 }

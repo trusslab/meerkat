@@ -48,6 +48,7 @@ class Bisect_Result:
         self.best_date = ""     # the date of the above hash
         self.correct = ""       # correct/incorrect
         self.err = ""           # err.what
+        self.syz_repro = ""     # the repro used in bisection
     
     def reset(self) -> None:
         self.converge = ""
@@ -68,6 +69,7 @@ class Bisect_Result:
         print("Date:      ", self.date)
         print("Repro Hash:", self.best_hash)
         print("Repro Date:", self.best_date)
+        print("Syz Repro: ", self.syz_repro)
         print("Err Msg:   ", self.err)
 
 class Bugdata:
@@ -317,8 +319,16 @@ def bisect_log_best_guess(bugname : str, bughtml : html, result : Bisect_Result)
     
     return result
 
+def repro_link(bughtml : html) -> str:
+    reprolink = bughtml.xpath("//body/div/div[@class='bug-bisection-info']/a[text() ='syz']/@href")
+    if len(reprolink) == 0:
+        print("Failed to find syz repro from bisection result", flush=True)
+        return ""
+    return syzbotlink + reprolink[0]
+
 def handle_good_result(line : str, bughtml : html, bug : Bugdata) -> Bisect_Result:
     bug.bisectResult.converge = "good"
+    bug.bisectResult.syz_repro = repro_link(bughtml)
     
     kcommit_link = bughtml.xpath("//body/div/div[@class='bug-bisection-info']/span[@class='mono']/a/@href")
     if (len(kcommit_link) == 0):
@@ -348,6 +358,7 @@ def handle_good_result(line : str, bughtml : html, bug : Bugdata) -> Bisect_Resu
 
 def handle_multiple_result(line : str, bughtml : html, bug : Bugdata) -> Bisect_Result:
     bug.bisectResult.converge = "multiple"
+    bug.bisectResult.syz_repro = repro_link(bughtml)
     linklist = bughtml.xpath("//body/div/div[@class='bug-bisection-info']/span[@class='mono']/a/@href")
     if (len(linklist) == 0):
         print("Failed to find bisect commit link", flush=True)
@@ -400,6 +411,7 @@ def handle_error_result(line : str, bughtml : html, bug : Bugdata) -> Bisect_Res
 def handle_oldest_result(line : str, bughtml : html, bug : Bugdata) -> Bisect_Result:
     bug.bisectResult.converge = "error"
     bug.bisectResult.err = "the issue happens on the oldest tested release"
+    bug.bisectResult.syz_repro = repro_link(bughtml)
     bug.bisectResult = bisect_log_best_guess(bug.name, bughtml, bug.bisectResult)
     return bug.bisectResult
 
@@ -534,7 +546,8 @@ def links2bugs(filename : str) -> List[Bugdata]:
     return bugs
 
 def bug2csv(bug : Bugdata) -> str:
-    return ",".join([str(bug.number), bug.link, bug.name, bug.truefind, bug.anchor.config, bug.anchor.kernel, bug.anchor.date, bug.fixCommits[0].link, bug.fixCommits[0].date, bug.guiltyCommits[0].link, bug.guiltyCommits[0].date, bug.bisectResult.converge, bug.bisectResult.hash, bug.bisectResult.date, bug.bisectResult.best_hash, bug.bisectResult.best_date, bug.bisectResult.err, " ".join(bug.reproducers())]) + "\n"
+    # bug.bit32 is left out of this because they are all amd64
+    return ",".join([str(bug.number), bug.link, bug.name, bug.truefind, bug.anchor.config, bug.anchor.kernel, bug.anchor.date, bug.fixCommits[0].link, bug.fixCommits[0].date, bug.guiltyCommits[0].link, bug.guiltyCommits[0].date, bug.bisectResult.converge, bug.bisectResult.hash, bug.bisectResult.date, bug.bisectResult.best_hash, bug.bisectResult.best_date, bug.bisectResult.syz_repro, bug.bisectResult.err, " ".join(bug.reproducers())]) + "\n"
 
 def main():
     # read list of bug links

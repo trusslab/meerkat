@@ -7,7 +7,6 @@
 #include <git.h>
 #include <my_string.h>
 #include <result.h>
-#include <session.h>
 #include <shell_api.h>
 #include <version.h>
 
@@ -42,14 +41,14 @@ int Bisect::init(const Environment &env, Git &linux_git)
     phase = Bisect_Init;
     git_stop = false;
 
-    gather_compiler_versions(env);
+    if (gather_compiler_versions(env) < 0)
+        return -1;
 
     anchor_version.name = env.anchor_hash;
     anchor_version.date = linux_git.get_commit_date(env.anchor_hash);
     
-    // Gather linux release tags, dates, and hashes
-    releases = gather_release_tags(env, linux_git);
-
+    bisect_version.name.clear();
+    good_version.name.clear();
     last_session.kernel.name.clear();
 
     return 0;
@@ -68,7 +67,7 @@ int Bisect::remaining() const
     case Bisect_Anchor:
         return 1;
     case Bisect_Releases:
-        return releases.size() - index;
+        return releases.size() - index; // TODO: Might change
     case Bisect_Kernel:
         return git_remaining;
     default:
@@ -77,44 +76,91 @@ int Bisect::remaining() const
     return -1;
 }
 
-int Bisect::stable_remaining() const
-{
-    std::vector<Version> versions(kernel_versions.begin() + left, kernel_versions.begin() + right);
-    infer_stability(versions);
-    return get_only_stable(versions).size();
-}
-
 int Bisect::gather_compiler_versions(const Environment &env)
 {
     gcc_versions = grab_compiler_versions(env.gcc_dir + "/gccVersions.csv");
-    clang_versions = grab_compiler_versions(env.gcc_dir + "/clangVersions.csv");
-    return (gcc_versions.size() + clang_versions.size() != 0);
+    return gcc_versions.size();
 }
 
-int Bisect::init_releases_phase_ff()
+int Bisect::init_anchor_phase(Git &linux_git)
 {
-    // We can get here by the first release search, or after syzkaller version is known.
-    Version anchor = false ? bisect_session.kernel : anchor_version;
+    return 0;
+}
+
+int find_first_ancestor(Git &linux_git, const std::string &child, const std::vector<Version> &list)
+{
+    int r = 0, l = list.size() - 1;
+    int m, best = -1;
+
+    while (r < l)
+    {
+        m = (r + l)/2;
+        if (linux_git.is_ancestor(child, list.at(m).name))
+        {
+            l = m - 1;
+            best = m;
+        }
+        else
+        {
+            r = m + 1;
+        }
+    }
+    return best;
+}
+
+int skip_tags(std::vector<Version> &releases)
+{
+    int inc = 1;
+    std::vector<Version> tmp = releases;
+    releases.clear();
+    for (int i = 0; i < tmp.size(); i += inc)
+    {
+        releases.push_back(tmp.at(i));
+        if (i == 3 || i == 15 || i == 33)
+            inc++;
+    }
+    return 0;
+}
+
+int Bisect::init_releases_phase(const Environment &env, Git &linux_git)
+{
+    // We can get here after first or second anchor test.
+    Version anchor = good_version.name.empty() ? anchor_version : good_version;
+
+    // Gather linux release tags, dates, and hashes
+    releases = gather_release_tags(env, linux_git);
+    if (releases.size() <= 0)
+    {
+        std::cerr << "Error: Failed to get Linux release tags.\n" << std::flush;
+        return -1;
+    }
 
     // Cut out any releases from after the finding date. This helps line up the index.
-    int i = 0;
-    for (i = 0; i < releases.size() && releases.at(i).date > anchor.date; i++);
+    int i = find_first_ancestor(linux_git, anchor.name, releases);
+    if (i < 0)
+    {
+        std::cerr << "Error: Failed to find first ancestor tag.\n" << std::flush;
+        return -1;
+    }
+
     releases = std::vector<Version>(releases.begin() + i, releases.end());
+    skip_tags(releases);
     if (releases.size() <= 0)
         return -1;
+    
     // Set index to -1 here so it is 0 when we increment the first time.
     index = -1;
 
-    bisect_session = Session(anchor, true);
+    bisect_version = anchor;
     bisect_index = -1;
     return 0;
 }
 
-int Bisect::init_gb_phase(Git &linux_git)
+int Bisect::init_bisect_phase(Git &linux_git)
 {
     git_stop = false;
     // Switch over to git bisect for this phase
-    std::string bad = bisect_session.kernel.name;
+    std::string bad = bisect_version.name;
     std::string good = releases.at(bisect_index + 1).name;
     linux_git.cleanup();
     linux_git.bisect_reset();
@@ -130,31 +176,25 @@ int Bisect::init_gb_phase(Git &linux_git)
     return 0;
 }
 
-int Bisect::init_releases_phase_poc(Git &syzkaller_git)
-{
-    // We can get here by the first release search, or after syzkaller version is known.
-    Version anchor = false ? bisect_session.kernel : anchor_version;
-
-    // Cut out any releases from after the finding date. This helps line up the index.
-    int i = 0;
-    for (i = 0; i < releases.size() && releases.at(i).date > anchor.date; i++);
-    releases = std::vector<Version>(releases.begin() + i, releases.end());
-    if (releases.size() <= 0)
-        return -1;
-    // Set index to -1 here so it is 0 when we increment the first time.
-    index = -1;
-
-    bisect_session = Session(anchor, true);
-    bisect_index = -1;
-    return 0;
-}
-
 int Bisect::next_phase(const Bisect_Phase next, const Environment &env, Git &linux_git)
 {
     int err = 0;
     phase = next;
 
-    // TODO: phase stuff
+    switch (phase)
+    {
+    case Bisect_Anchor:
+        err = init_anchor_phase(linux_git);
+        break;
+    case Bisect_Releases:
+        err = init_releases_phase(env, linux_git);
+        break;
+    case Bisect_Kernel:
+        err = init_bisect_phase(linux_git);
+        break;
+    default:
+        err = -1;
+    }
 
     return err;
 }
@@ -183,7 +223,7 @@ bool Bisect::session_was_stable(const Session &session) const
 int Bisect::build_current_kernel(const Environment &env, Git &linux_git, bool bisecting)
 {
     std::string compiler;
-    compiler = get_compiler(gcc_versions, clang_versions, current_session.kernel.date, env);
+    compiler = get_compiler(gcc_versions, current_session.kernel.date, env);
     log_session_compiler(compiler);
     return prep_kernel(env, linux_git, current_session.kernel, compiler, bisecting);
 }
@@ -191,15 +231,13 @@ int Bisect::build_current_kernel(const Environment &env, Git &linux_git, bool bi
 int Bisect::goto_anchor_session(const Environment &env, Git &linux_git)
 {
     int err = 0;
-    Version linux_version;
-
     if (linux_git.cleanup() < 0)
         return -1;
 
-    // Fetch the finding commit
-    linux_version = anchor_version;
+    // Choose the anchor commit if this is the first round, or good versino if second round
+    Version linux_version = good_version.name.empty() ? anchor_version : good_version;
 
-    current_session = Session(linux_version, false);
+    current_session = Session(linux_version, mode(), false);
     log_session_info(this_session(), inc_session());
 
     err = build_current_kernel(env, linux_git);
@@ -231,7 +269,7 @@ retry:
     }
 
     linux_version = releases.at(index);
-    current_session = Session(linux_version, false);
+    current_session = Session(linux_version, mode(), false);
     log_session_info(current_session, inc_session());
 
     if (!already_fuzzed(this_session()))
@@ -262,7 +300,7 @@ int Bisect::goto_bisect_session(const Environment &env, Git &linux_git)
 
 retry:
     // For git bisect, we should already be at the next commit to test
-    current_session = Session(linux_git.get_current_version(), false);
+    current_session = Session(linux_git.get_current_version(), mode(), false);
     if (linux_git.error() < 0)
         return -1;
     log_session_info(current_session, inc_session());
@@ -312,13 +350,13 @@ int Bisect::next_session(const Environment &env, Git &linux_git)
 
 Test_Result Bisect::test_anchor_ff(Environment &env)
 {
-    Test_Result result = fuzz_loop_finding(env, false /* env feature sc */);
+    Test_Result result = fuzz_loop_finding(env);
     return result;
 }
 
 Test_Result Bisect::test_anchor_poc(Environment &env)
 {
-    Test_Result result = poc_loop_finding(env);
+    Test_Result result = poc_loop(env);
     return result;
 }
 
@@ -328,28 +366,26 @@ Test_Result Bisect::test_anchor(Environment &env)
     if (mode() == Mode_FF)
     {
         result = test_anchor_ff(env);
+        env.max_time = (env.safe_mode ? env.max_time : result.suggest_ttf);
     }
     else if (mode() == Mode_PoC)
     {
         result = test_anchor_poc(env);
     }
 
-    env.max_time = (env.safe_mode ? env.max_time : result.suggest_ttf);
     log_session_result(result, env.duplicates);
     return result;
 }
 
 Test_Result Bisect::test_bisect_ff(Environment &env)
 {
-    Test_Result result;
-    result = fuzz_loop(env, false /* env feature sc */);
+    Test_Result result = fuzz_loop(env);
     return result;
 }
 
 Test_Result Bisect::test_bisect_poc(Environment &env)
 {
-    Test_Result result;
-    result = poc_loop(env);
+    Test_Result result = poc_loop(env);
     return result;
 }
 
@@ -404,7 +440,7 @@ retry:
     {
         res.found = session_was_found(this_session()) == 1 ? true : false;
         res.stable = session_was_stable(this_session()) == 1 ? true : false;
-        std::cout << "The bug was " << (res.found ? "found " : "not found ") << "in a previous identical fuzzing session.\n" << std::flush;
+        std::cout << "The bug was " << (res.found ? "found " : "not found ") << "in a previous identical session.\n" << std::flush;
     }
 
     return res;
@@ -419,13 +455,13 @@ int Bisect::record_kernel(const Test_Result &result, Git &linux_git)
     {
         linux_git.cleanup();
         git_remaining = linux_git.bisect_bad();
-        bisect_session = current_session;
+        bisect_version = current_session.kernel;
     }
     else if (result.stable)
     {
         linux_git.cleanup();
         git_remaining = linux_git.bisect_good();
-        good_session = current_session;
+        good_version = current_session.kernel;
     }
     else if (!result.stable)
     {
@@ -445,18 +481,18 @@ int Bisect::record_release(const Test_Result &result)
     
     if (result.found)
     {
-        bisect_session = current_session;
+        bisect_version = current_session.kernel;
         bisect_index = index;
     }
     else if (result.stable)
-        good_session = current_session;
+        good_version = current_session.kernel;
     
     return 0;
 }
 
 int Bisect::record_anchor(const Test_Result &result)
 {
-    bisect_session = current_session;
+    bisect_version = current_session.kernel;
     archive_session(result);
     return 0;
 }
@@ -505,13 +541,13 @@ std::string Bisect::print_result(const Environment &env, Git &linux_git, const s
     std::stringstream ss;
     ss << "Bug Name:             " << env.name << "\n";
     ss << "Bug Link:             " << env.buglink << "\n";
-    ss << "Bisection Result:     " << bisect_session.kernel.date.get_date() << " - " << bisect_session.kernel.name << "\n";
-    ss << "Bisected Commit Name: " << linux_git.get_commit_name(bisect_session.kernel.name) << "\n";
+    ss << "Bisection Result:     " << bisect_version.date.get_date() << " - " << bisect_version.name << "\n";
+    ss << "Bisected Commit Name: " << linux_git.get_commit_name(bisect_version.name) << "\n";
     ss << "Run Time:             " << runtime(start) << "\n";
     ss << "Arch:                 " << env.arch << "\n\n";
 
-    ss << "Finding Commit:       " << anchor_version.date.get_date() << " - " << anchor_version.name << "\n";
-    ss << "Bisection Result:     " << bisect_session.kernel.date.get_date() << " - " << bisect_session.kernel.name << "\n";
+    ss << "Anchor Commit:        " << anchor_version.date.get_date() << " - " << anchor_version.name << "\n";
+    ss << "Bisection Result:     " << bisect_version.date.get_date() << " - " << bisect_version.name << "\n";
 
     return ss.str();
 }
@@ -569,14 +605,13 @@ void log_session_info(const Session &session, const int count)
 {
     // date puts an endline there on its own
     std::cout << "\n" << get_datetime() << ""
-              << "Session:   " << count << "\n"
-              << "Kernel:    " << session.kernel.date.get_date() << " - " << session.kernel.name
-              << (session.kernel.tag.empty() ? "" : " ("+session.kernel.tag+")") << "\n" << std::flush;
+              << std::left << std::setw(SESHW) << "Session:" << count << "\n"
+              << std::left << std::setw(SESHW) << "Kernel:" << session.kernel.string() << "\n" << std::flush;
 }
 
 void log_session_compiler(const std::string &compiler)
 {
-    std::cout << "Compiler:  " << compiler << "\n" << std::flush;
+    std::cout << std::left << std::setw(SESHW) << "Compiler:" << compiler << "\n" << std::flush;
 }
 
 void log_kernel_build_error()
@@ -608,6 +643,17 @@ void log_attempt_result(const Syzkaller_Result &attempt, int i, const std::vecto
     
     for (Crash_Report cr : attempt.reports)
         std::cout << (fuzz_is_crash_in(cr.name, dups) ? "*** " : "    ") << std::right << std::setw(4) << cr.time << "  " << cr.name << std::endl << std::flush;
+}
+
+void log_attempt_result_poc(const Syzkaller_Result &attempt, int i, const std::vector<std::string> &dups)
+{
+    std::cout << "Attempt " << i << ":\n";
+
+    if (attempt.reports.size() == 0)
+        std::cout << "    No crashes found.\n" << std::flush;
+    
+    for (Crash_Report cr : attempt.reports)
+        std::cout << (fuzz_is_crash_in(cr.name, dups) ? "*** " : "    ") << cr.name << std::endl << std::flush;
 }
 
 void log_session_result(const Test_Result &result, const std::vector<std::string> &dups)

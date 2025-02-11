@@ -506,7 +506,7 @@ void get_one_producer_syscall(const TypeTag &this_resource, vector<TypeTag> &nee
     return;
 }
 
-vector<string> slim_template(const string &reproDir, const vector<string> &templateFiles)
+vector<string> slim_template(const string &reproDir, const string &full_template)
 {
     // Wow this is all bad. But is works (mostly) and I don't want to touch it.
     int pos0, pos1, index;
@@ -530,6 +530,49 @@ vector<string> slim_template(const string &reproDir, const vector<string> &templ
 
     vector<TypeTag> needed;
     vector<string> ret;
+
+    // ======================================================================================================
+    // Read the reproducer to get syscalls
+
+    // For each repro
+    vector<string> reproducers = list_dir(reproDir);
+    vector<string> reproducer_syscalls;
+    for (string file : reproducers)
+    {
+        reproIn.open(file);
+        if(!reproIn)
+        {
+            cout << "Failed to open reproducer file!" << file << endl;
+            return ret;
+        }
+
+        line.clear();
+        while (getline(reproIn, line))
+        {
+            if (line.empty() || line.at(0) == '#')
+                continue;
+
+            pos0 = line.find(" = ");
+            pos0 = (pos0 == string::npos) ? 0 : pos0 + 3;
+            pos1 = line.find("(");
+
+            if (!is_in_string(reproducer_syscalls, line.substr(pos0, pos1 - pos0)))
+                reproducer_syscalls.push_back(line.substr(pos0, pos1 - pos0));
+            line.clear();
+        }
+        reproIn.close();
+    }
+
+    bool hasauto = false;
+    for (string s : reproducer_syscalls)
+    {
+        if (s.find("auto") != string::npos)
+        {
+            hasauto = true;
+            break;
+        }
+    }
+    vector<string> templateFiles = list_template_files(full_template, hasauto);
 
     // ======================================================================================================
     // Parse the full template
@@ -625,38 +668,6 @@ vector<string> slim_template(const string &reproDir, const vector<string> &templ
     }
 
     // ======================================================================================================
-    // Read the reproducer to get syscalls
-
-    // For each repro
-    vector<string> reproducers = list_dir(reproDir);
-    vector<string> reproducer_syscalls;
-    for (string file : reproducers)
-    {
-        reproIn.open(file);
-        if(!reproIn)
-        {
-            cout << "Failed to open reproducer file!" << file << endl;
-            return ret;
-        }
-
-        line.clear();
-        while (getline(reproIn, line))
-        {
-            if (line.empty() || line.at(0) == '#')
-                continue;
-
-            pos0 = line.find(" = ");
-            pos0 = (pos0 == string::npos) ? 0 : pos0 + 3;
-            pos1 = line.find("(");
-
-            if (!is_in_string(reproducer_syscalls, line.substr(pos0, pos1 - pos0)))
-                reproducer_syscalls.push_back(line.substr(pos0, pos1 - pos0));
-            line.clear();
-        }
-        reproIn.close();
-    }
-
-    // ======================================================================================================
     // Create the slimmed template
     // grab everything first, then print it all to the file
 
@@ -688,8 +699,8 @@ vector<string> slim_template(const string &reproDir, const vector<string> &templ
             if (!resources.at(index).has_depends())
             {
                 get_one_user_syscall(needed.at(i), needed, items, syscalls, typeols, typemls, unions, structures);
-                get_one_producer_syscall(needed.at(i), needed, items, syscalls, typeols, typemls, unions, structures);
             }
+            get_one_producer_syscall(needed.at(i), needed, items, syscalls, typeols, typemls, unions, structures);
             break;
         case typeolClass:
             typeols.at(index).push_depends(needed, items);
@@ -731,13 +742,15 @@ vector<string> slim_template(const string &reproDir, const vector<string> &templ
     return ret;
 }
 
-vector<string> list_template_files(const string &template_dir)
+vector<string> list_template_files(const string &template_dir, bool hasauto)
 {
     vector<string> files = list_dir(template_dir);
 
     // traversing backwards so we don't mess up as we delete
     for (int i = files.size() - 1; i >= 0; i--)
-        if (files.at(i).find(".const") != string::npos || files.at(i).find(".warn") != string::npos || files.at(i).find(".info") != string::npos || files.at(i).find(".txt") == string::npos)
+        if (files.at(i).find(".const") != string::npos || files.at(i).find(".warn") != string::npos
+        || files.at(i).find(".info") != string::npos || (!hasauto && files.at(i).find("auto") != string::npos)
+        || files.at(i).find(".txt") == string::npos)
             files.erase(files.begin() + i);
 
     return files;
@@ -746,8 +759,7 @@ vector<string> list_template_files(const string &template_dir)
 vector<string> get_reproduer_syscall_descriptions(const Environment &env)
 {
     string full_template = env.syzdir + "sys/linux";
-    vector<string> template_files = list_template_files(full_template);
-    vector<string> syscalls = slim_template(env.reprodir, template_files);
+    vector<string> syscalls = slim_template(env.reprodir, full_template);
     if (syscalls.size() == 0)
     {
         cout << "Error: failed to slim the template.\n";

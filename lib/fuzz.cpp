@@ -1,18 +1,22 @@
-#include <fuzz.h>
-#include <consts.h>
-#include <exec_api.h>
-#include <environment.h>
-#include <shell_api.h>
-#include <file_api.h>
-#include <fuzz_prep.h>
 #include <bisect.h>
+#include <consts.h>
+#include <environment.h>
+#include <exec_api.h>
+#include <file_api.h>
+#include <fuzz.h>
+#include <fuzz_prep.h>
+#include <my_string.h>
 #include <result.h>
+#include <shell_api.h>
+#include <syzkaller.h>
+#include <vm.h>
 
 #include <iostream>
 #include <fstream>
 #include <string>
 #include <vector>
 #include <map>
+#include <set>
 #include <fstream>
 #include <cmath>
 
@@ -96,9 +100,32 @@ string get_crash_name(const string &hash)
     return line;
 }
 
+// Reads the syzkaller log to see if any syscalls were disabled
+bool check_enabled_syscalls(const Environment &env)
+{
+    std::vector<std::string> loglines, disabled;
+    load_file(env.syzkaller_log, loglines);
+
+    std::set<std::string> syscalls(env.required_syscalls.begin(), env.required_syscalls.end());
+    for (int i = 0; i < loglines.size(); i++)
+    {
+        if (loglines.at(i).find("transitively disabled the following syscalls") != std::string::npos)
+        {
+            for (i++; i < loglines.size() && !loglines.at(i).empty(); i++)
+            {
+                std::string sys = split(loglines.at(i), ' ').front();
+                if (syscalls.find(sys) != syscalls.end())
+                    std::cout << "Warning: " << sys << " was disabled by Syzkaller.\n" << std::flush;
+            }
+            return true;
+        }
+    }
+    return false;
+}
+
 // The time is rough here and rounds up to the nearest time increment (usually 1 minute)
 // result.ttf is the time it took to find the bug, or the max_time
-Syzkaller_Result run_syzkaller(const Environment &env, bool keep_corpus)
+Syzkaller_Result run_syzkaller(const Environment &env)
 {
     Syzkaller_Result result;
     int time = 0, to_add = 0;
@@ -109,29 +136,29 @@ Syzkaller_Result run_syzkaller(const Environment &env, bool keep_corpus)
     map<string, int> checked_crashes;
     string crash_name;
 
-    prepare_kaller_wd(env, keep_corpus);
+    string managerbin = env.syzdir + "bin/syz-manager";
+    vector<string> spl = {managerbin, "-config=" + env.syzconfig};
+    const char ** arg_list = new const char*[spl.size()+1];
+    for (int i = 0; i < spl.size(); i++)
+        arg_list[i] = spl.at(i).c_str();
 
-    // run syzkaller
-    cd(env.syzdir);
+    arg_list[spl.size()] = nullptr;
 
-    char command[] = "./bin/syz-manager";
-    string configArg = "-config=" + env.syzconfig;
-    char * arg1 = new char[configArg.size() + 1];
-    strcpy(arg1, configArg.c_str());
-    char * arg_list[] = {command, arg1, nullptr};
-
-    int pid = exec_and_continue("./bin/syz-manager", arg_list, env.syzkaller_log, env.syzkaller_log);
+    int pid = exec_and_continue(managerbin, (char **)arg_list, env.syzkaller_log, env.syzkaller_log);
 
     // watch syzkaller's progress
+    bool checked_syscalls = false;
     while (time < env.max_time && !result.found)
     {
         sleep(60*TIME_INCREMENT);
         time += TIME_INCREMENT;
 
+        if (!checked_syscalls)
+            checked_syscalls = check_enabled_syscalls(env);
+
         // make sure syzkaller stays alive
         if (!check_alive(pid))
             break;
-            
 
         // list the unique crashes Syzkaller has found
         crash_hashes = list_dir(env.syzwd + "/crashes");
@@ -164,7 +191,7 @@ Syzkaller_Result run_syzkaller(const Environment &env, bool keep_corpus)
 
         if (wc_l(env.syzkaller_log) > 5000)
         {
-            string logfile = env.logdir + (env.working_name.empty() ? "" : env.working_name + "-") + "boot_failure.log";
+            string logfile = env.bootfaillog();
             cout << "Warning: Syzkaller log file exceeded 5000 lines.\n"
                  << "Saved at " << logfile << ".\n" << flush;
             copy(env.syzkaller_log, logfile);
@@ -180,8 +207,7 @@ Syzkaller_Result run_syzkaller(const Environment &env, bool keep_corpus)
     else
         handle_syzkaller_crash();
 
-    cd(env.home);
-    delete[] arg1;
+    delete[] arg_list;
     return result;
 }
 
@@ -230,7 +256,7 @@ Syzkaller_Result run_syz_repro(const Environment &env, const std::string &reprol
 
         if (wc_l(env.syzkaller_log) > 5000)
         {
-            string logfile = env.logdir + (env.working_name.empty() ? "" : env.working_name + "-") + "boot_failure.log";
+            std::string logfile = env.bootfaillog();
             cout << "Warning: syz-repro log file exceeded 5000 lines.\n"
                     << "Saved at " << logfile << ".\n" << flush;
             copy(env.syzkaller_log, logfile);
@@ -247,11 +273,12 @@ Syzkaller_Result run_syz_repro(const Environment &env, const std::string &reprol
     if (check_alive(pid))
         kill_child(pid);
 
+    delete[] arg_list;
     cd(old_dir);
     return result;
 }
 
-Test_Result fuzz_loop_finding(Environment &env, bool keep_corpus)
+Test_Result fuzz_loop_finding(Environment &env)
 {
     Test_Result result;
     result.found = false;
@@ -261,7 +288,8 @@ Test_Result fuzz_loop_finding(Environment &env, bool keep_corpus)
     {
         env.port.inc();
         write_syzkaller_config(env);
-        result.attempts.push_back(run_syzkaller(env, keep_corpus));
+        prepare_kaller_wd(env);
+        result.attempts.push_back(run_syzkaller(env));
         result.found = result.attempts.back().found ? true : result.found;
         if (result.attempts.back().bad_crashes > 0 && retries < env.fuzztimes)
         {
@@ -276,7 +304,7 @@ Test_Result fuzz_loop_finding(Environment &env, bool keep_corpus)
     return result;
 }
 
-Test_Result fuzz_loop(Environment &env, bool keep_corpus)
+Test_Result fuzz_loop(Environment &env)
 {
     Test_Result result;
     result.found = false;
@@ -286,7 +314,7 @@ Test_Result fuzz_loop(Environment &env, bool keep_corpus)
     {
         env.port.inc();
         write_syzkaller_config(env);
-        result.attempts.push_back(run_syzkaller(env, keep_corpus));
+        result.attempts.push_back(run_syzkaller(env));
         result.found = result.attempts.back().found;
         if (result.attempts.back().bad_crashes > 0 && retries < env.fuzztimes)
         {
@@ -298,63 +326,106 @@ Test_Result fuzz_loop(Environment &env, bool keep_corpus)
 
     result.stable = unstable_count < result.attempts.size() / 2 || result.found;
     result.suggest_ttf = find_max_time(result.attempts);
-    return result;
-}
-
-Test_Result poc_loop_finding(Environment &env)
-{
-    Test_Result result;
-    result.found = false;
-    result.retry = false;
-
-    std::string reprolog = make_repro_log(env);
-
-    int retries = 0, unstable_count = 0;
-    for (int i = 0; i < env.fuzztimes + retries && unstable_count < env.fuzztimes; i++)
-    {
-        env.port.inc();
-        result.attempts.push_back(run_syz_repro(env, reprolog));
-        result.found = result.attempts.back().found ? true : result.found;
-        if (result.attempts.back().bad_crashes > 0 && retries < env.fuzztimes)
-        {
-            retries++;
-            unstable_count++;
-        }
-        log_attempt_result(result.attempts.back(), i + 1, env.duplicates, env.fuzztimes);
-    }
-
-    result.stable = unstable_count < result.attempts.size() / 2 || result.found;
-    result.suggest_ttf = find_max_time(result.attempts);
-    remove_file(reprolog);
     return result;
 }
 
 Test_Result poc_loop(Environment &env)
 {
+    int err = 0;
     Test_Result result;
     result.found = false;
+    result.stable = true;
     result.retry = false;
 
-    std::string reprolog = make_repro_log(env);
+    ProgOpts opts;
+    opts.from_prog(env.champion_repro);
 
-    int retries = 0, unstable_count = 0;
-    for (int i = 0; i < env.fuzztimes + retries && !result.found  && unstable_count < env.fuzztimes; i++)
+    VM_Config vmc;
+    vmc.port = env.port.inc();
+    vmc.image_path = env.image;
+    vmc.image_key = env.image_key;
+    vmc.kernel_path = env.kerneldir;
+    vmc.wd_path = env.vmwd;
+    // Prep the vms
+    VMPool vmpool(env.vmc.numVM, vmc);
+
+    err = vmpool.boot_and_check_all();
+    if (err < env.vmc.numVM)
+        std::cerr << "Warning: Only booted " << err << " VMs.\n" << std::flush;
+
+    // Run the prog
+    vmpool.copy_all(env.champion_repro);
+    vmpool.copy_all(env.syzdir + "bin/linux_amd64/syz-execprog");
+    vmpool.copy_all(env.syzdir + "bin/linux_amd64/syz-executor");
+    std::string cmd = "./syz-execprog -executor=./syz-executor " + opts.execopts_string() + " " + split(env.champion_repro, '/').back();
+    vmpool.run_all(cmd);
+    // timeout used by syzkaller
+    // https://github.com/google/syzkaller/blob/master/sys/targets/targets.go#L834
+    int timeout = (5 * opts.slowdown) + 1;
+    vmpool.wait_loop(timeout*60);
+    std::vector<std::string> logs = vmpool.log_files();
+    vmpool.kill_all();
+
+    int unstable_count = 0;
+    for (int i = 0; i < logs.size(); i++)
     {
-        env.port.inc();
-        result.attempts.push_back(run_syz_repro(env, reprolog));
-        result.found = result.attempts.back().found;
-        if (result.attempts.back().bad_crashes > 0 && retries < env.fuzztimes)
-        {
-            retries++;
+        result.attempts.push_back(symbolize(env, logs.at(i)));
+        log_attempt_result_poc(result.attempts.back(), i, env.duplicates);
+        result.found = result.attempts.back().found ? true : result.found;
+        if (result.attempts.back().bad_crashes > 0)
             unstable_count++;
-        }
-        log_attempt_result(result.attempts.back(), i + 1, env.duplicates, env.fuzztimes);
     }
 
-    result.stable = unstable_count < result.attempts.size() / 2 || result.found;
-    result.suggest_ttf = find_max_time(result.attempts);
-    remove_file(reprolog);
+    //result.stable = unstable_count < result.attempts.size() / 2 || result.found;
     return result;
+}
+
+Syzkaller_Result symbolize(Environment &env, const std::string &file)
+{
+    Syzkaller_Result res;
+    res.found = false;
+    res.bad_crashes = 0;
+    res.ttf = 0;
+
+    std::string tmp = env.wd + "tmp_symbolize.txt";
+    std::string symbolizebin = env.syzdir + "bin/syz-symbolize";
+    std::string cmd = symbolizebin + " --kernel_obj " + env.kerneldir + " " + file;
+
+    vector<string> spl = split(cmd, ' ');
+    const char ** arg_list = new const char*[spl.size()+1];
+    for (int i = 0; i < spl.size(); i++)
+        arg_list[i] = spl.at(i).c_str();
+
+    arg_list[spl.size()] = nullptr;
+
+    int pid = exec_and_wait(symbolizebin, (char **)arg_list, tmp, tmp);
+
+    std::vector<string> ignore = {"unexpected kernel reboot", "kernel panic: panic_on_warn set", "kernel panic: hung_task: blocked tasks"};
+    bool do_ignore = false;
+    std::vector<string> lines;
+    load_file(tmp, lines);
+    for (std::string line : lines)
+    {
+        if (starts_with(line, "TITLE: "))
+        {
+            do_ignore = false;
+            std::string name = line.substr(7);
+            for (std::string ign : ignore)
+                if (name == ign)
+                    do_ignore = true;
+            
+            if (!do_ignore)
+            {
+                res.reports.push_back(Crash_Report(name, 0));
+                res.found = fuzz_is_crash_in(name, env.duplicates);
+                res.bad_crashes += fuzz_is_bad_crash(name) ? 1 : 0;
+            }
+        }
+    }
+
+    remove_file(tmp);
+    delete[] arg_list;
+    return res;
 }
 
 /*

@@ -11,7 +11,7 @@ using namespace std;
 void print_help()
 {
     cout << "Usage: ./bin/description_test -c [config] -i [id]\n"
-        << "    -i [id]: REQUIRED. The id of the inspector (i.e. 1).\n"
+        << "    -i [id]: REQUIRED. The id of the bisector (i.e. 1).\n"
         << "    --config (c) [config.cfg]: [config]: REQUIRED. The config file containing the bug information.\n"
         << endl << flush;
 }

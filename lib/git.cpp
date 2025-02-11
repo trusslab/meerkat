@@ -14,7 +14,7 @@
 
 #include <string.h>
 
-int Git::git(const std::vector<std::string> &args, const std::string &outfile)
+int Git::git(const std::vector<std::string> &args, const std::string &outfile, bool quiet)
 {
     std::string old_dir = pwd();
     cd (local);
@@ -31,7 +31,7 @@ int Git::git(const std::vector<std::string> &args, const std::string &outfile)
     arg_list[cmd.size()] = nullptr;
 
     err = exec_and_wait("git", (char **)arg_list, outfile, outfile);
-    if (err != 0)
+    if (!quiet && err != 0)
         std::cerr << "Warning: git exited with error status 0x" << std::hex << err << std::endl << std::dec << std::flush;
 
     delete[] arg_list;
@@ -345,7 +345,7 @@ int Git::bisect_skip()
 
 int Git::bisect_reset()
 {
-    err = bisect({"reset"});
+    err = bisect({"reset"}, "/dev/null");
     return err;
 }
 
@@ -501,4 +501,10 @@ int Git::revlist(const std::string &old_hash, const std::string &new_hash, const
     if (err != 0)
         std::cerr << "Error: git rev-list " << old_hash+".."+new_hash << " failed.\n" << std::flush;
     return err;
+}
+
+bool Git::is_ancestor(const std::string &child, const std::string &maybe_parent)
+{
+    err = git({"merge-base", child, "--is-ancestor", maybe_parent}, "/dev/null", true);
+    return (err == 1);
 }
