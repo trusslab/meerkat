@@ -92,7 +92,8 @@ int do_bisection(Environment &env, Bisect &bisector, Git &linux_git)
     // ======================================================================================================
     // Fuzz at the anchor commit
 
-    reset_kaller_wd(env);
+    if (bisector.mode() == Mode_FF)
+        reset_kaller_wd(env);
     bisector.next_phase(Bisect_Anchor, env, linux_git);
     if (err < 0)
     {
@@ -141,7 +142,7 @@ int do_bisection(Environment &env, Bisect &bisector, Git &linux_git)
     // ======================================================================================================
     // Major Release Search
 
-    bisector.next_phase(Bisect_Releases, env, linux_git);
+    err = bisector.next_phase(Bisect_Releases, env, linux_git);
     if (err < 0)
     {
         cerr << "Failed to advance to Release search phase.\n" << flush;
@@ -199,13 +200,13 @@ int bisect(Environment &env)
     int err = 0;
     Bisect bisector;
     Test_Result result;
-
-    chrono::steady_clock::time_point starttime = chrono::steady_clock::now();
+    chrono::steady_clock::time_point starttime;
 
     Git linux_git = prep_kernel_local_repo(env);
     if (linux_git.error() < 0)
         goto finish;
-
+    
+    starttime = chrono::steady_clock::now();
     cout << left << setw(CONFW) << "Bisecting:" << env.name << endl;
 
     env.duplicates.clear();

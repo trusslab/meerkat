@@ -138,10 +138,7 @@ while (( $line <= $endLine )); do
     # ignore most recent bugs as they are broken to my elfutils
     #elfutilAge=$(( $($bisectdir/helpers/diffdate "2024-01-01" $findDate) ))
 
-    # check that the time to find is good and interesting
-    findAge=$(( $($bisectdir/helpers/diffdate $findDate $startDate) ))
-
-    #if (( $findAge > 1 && $fixAge >= 0 )) && (( $elfutilAge > 0 )); then
+    #if (( $elfutilAge > 0 )); then
     # bug number and name
     bugNum="$(printf "%04d" $(echo "$linetext" | awk -F',' '{ print $1; }'))"
     curBug="bug${bugNum}"

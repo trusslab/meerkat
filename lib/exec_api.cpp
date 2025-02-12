@@ -31,7 +31,7 @@ bool check_alive(int pid)
     return false;
 }
 
-int exec_and_wait(const string & prog, char ** args, const string & outfile, const string &errfile)
+int exec_and_wait(const string & prog, char ** args, const string & outfile, const string &errfile, bool quiet)
 {
     int ret, ret_status = 0;
     pid_t pid = fork();
@@ -78,7 +78,7 @@ int exec_and_wait(const string & prog, char ** args, const string & outfile, con
         if (WIFEXITED(ret))
             ret_status = WEXITSTATUS(ret);
 
-        if (ret_status != 0 && prog != "grep" && !(prog == "ssh" && ret_status == 255))
+        if (!quiet && ret_status != 0 && prog != "grep" && !(prog == "ssh" && ret_status == 255))
             cerr << "Warning: Child process " << prog << " exited with error status " << ret_status << ".\n";
     }
 

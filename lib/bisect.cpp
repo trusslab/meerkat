@@ -556,7 +556,7 @@ std::string runtime(const std::chrono::steady_clock::time_point &start)
 {
     std::stringstream pretty;
     std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
-    auto diff = start - end;
+    auto diff = end - start;
 
     auto hours = std::chrono::duration_cast<std::chrono::hours>(diff);
     auto minutes = std::chrono::duration_cast<std::chrono::minutes>(diff - hours);

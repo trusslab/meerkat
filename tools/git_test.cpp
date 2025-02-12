@@ -9,7 +9,7 @@ using namespace std;
 
 int main(void)
 {
-    string local = "/mnt/sdd/jtbursey/SyzInspector/wd-inspector-1/kernel/";
+    string local = "/mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/kernel/";
     string remote = "https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git";
     string branch = "master";
     Git git(local, remote, branch);

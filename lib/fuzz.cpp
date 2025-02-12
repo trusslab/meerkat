@@ -314,6 +314,7 @@ Test_Result fuzz_loop(Environment &env)
     {
         env.port.inc();
         write_syzkaller_config(env);
+        prepare_kaller_wd(env);
         result.attempts.push_back(run_syzkaller(env));
         result.found = result.attempts.back().found;
         if (result.attempts.back().bad_crashes > 0 && retries < env.fuzztimes)

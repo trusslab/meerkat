@@ -25,9 +25,6 @@ std::vector<Version> grab_compiler_versions(const std::string &);
 // returns the name of the compiler to be used
 std::string get_compiler(const std::vector<Version> &, const Date &, const Environment &);
 
-// removes gcc from the path (actually just resets the path)
-int clean_path(const std::string &);
-
 int set_kernel_config(const std::string &, const std::vector<std::string> &);
 int unset_kernel_config(const std::string &, const std::vector<std::string> &);
 

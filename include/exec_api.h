@@ -11,7 +11,7 @@ bool check_alive(int);
 // Execs the process and waits for it to finish. Returns
 // the return value of the child. Dups the filenames to 
 // stdout and stderr if given.
-int exec_and_wait(const std::string &, char **, const std::string & = "", const std::string & = "");
+int exec_and_wait(const std::string &, char **, const std::string & = "", const std::string & = "", bool = false);
 
 // Takes a program name, argv, stdout dup, and stderr dup.
 // Execs the process and returns the pid of the child.

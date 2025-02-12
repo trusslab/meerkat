@@ -118,11 +118,6 @@ string get_compiler(const vector<Version> &gcc_versions, const Date &kernel_date
     return compiler;
 }
 
-int clean_path(const string &old_path)
-{
-    return export_env("PATH=" + old_path);
-}
-
 // sets the specified config "con" in the config file "lines"
 int set_config(const string &con, vector<string> &lines)
 {
@@ -342,7 +337,7 @@ int clean_kernel(const Environment &env)
     int err = 0;
 
     cd(env.kerneldir);
-    err = make(1, "clean");
+    err = make(1, "clean", env.kbuildlog());
     cd(old_dir);
 
     return (err == 0 ? 0 : -1);

@@ -30,13 +30,13 @@ int Git::git(const std::vector<std::string> &args, const std::string &outfile, b
 
     arg_list[cmd.size()] = nullptr;
 
-    err = exec_and_wait("git", (char **)arg_list, outfile, outfile);
+    err = exec_and_wait("git", (char **)arg_list, outfile, outfile, quiet);
     if (!quiet && err != 0)
         std::cerr << "Warning: git exited with error status 0x" << std::hex << err << std::endl << std::dec << std::flush;
 
     delete[] arg_list;
     cd(old_dir);
-    return (err == 0 ? 0 : -1);
+    return err;
 }
 
 std::string Git::git_read(const std::vector<std::string> &args)
@@ -68,7 +68,7 @@ int Git::bisect(const std::vector<std::string> &args, const std::string & outfil
     for (std::string a : args)
         newargs.push_back(a);
     
-    return git(newargs, outfile);
+    return git(newargs, outfile) == 0 ? 0 : -1;
 }
 
 std::string Git::bisect_read(const std::vector<std::string> &args)
@@ -165,34 +165,34 @@ int Git::setup()
 
 int Git::init()
 {
-    err = git({"init"}, "/dev/null");
+    err = git({"init"}, "/dev/null") == 0 ? 0 : -1;
     return err;
 }
 
 int Git::add_remote()
 {
-    err = git({"remote", "add", "origin", link}, "/dev/null");
+    err = git({"remote", "add", "origin", link}, "/dev/null") == 0 ? 0 : -1;
     return err;
 }
 
 // git pull --force --tags origin branch
 int Git::pull()
 {
-    err = git({"pull", "--force", "--tags", "origin", branch}, "/dev/null");
+    err = git({"pull", "--force", "--tags", "origin", branch}, "/dev/null") == 0 ? 0 : -1;
     return err;
 }
 
 // git fetch --force origin hash
 int Git::fetch(const std::string &hash)
 {
-    err = git({"fetch", "--force", "origin", hash}, "/dev/null");
+    err = git({"fetch", "--force", "origin", hash}, "/dev/null") == 0 ? 0 : -1;
     return err;
 }
 
 // git checkout --force commit
 int Git::checkout(const std::string &commit)
 {
-    err = git({"checkout", "--force", commit}, "/dev/null");
+    err = git({"checkout", "--force", commit}, "/dev/null") == 0 ? 0 : -1;
     return err;
 }
 
@@ -216,13 +216,13 @@ int Git::fetch_and_checkout(const std::string &hash)
 
 int Git::reset_hard()
 {
-    err = git({"reset", "--hard"}, "/dev/null");
+    err = git({"reset", "--hard"}, "/dev/null") == 0 ? 0 : -1;
     return err;
 }
 
 int Git::clean()
 {
-    err = git({"clean", "-fdx"}, "/dev/null");
+    err = git({"clean", "-fdx"}, "/dev/null") == 0 ? 0 : -1;
     return err;
 }
 
@@ -362,7 +362,7 @@ std::string Git::get_url()
 int Git::dump_tags(const std::string &filename)
 {
     // For now stop at 4.0
-    err = git({"tag", "-l", "v[4-9].[0-9]", "v[4-9].[0-9][0-9]", "--sort=-taggerdate"}, filename);
+    err = git({"tag", "-l", "v[4-9].[0-9]", "v[4-9].[0-9][0-9]", "--sort=-taggerdate"}, filename) == 0 ? 0 : -1;
     return err;
 }
 
@@ -497,7 +497,7 @@ int Git::revlist_topo(const std::string &old_hash, const std::string &new_hash, 
 // git rev-list --ancestry-path --topo-order --date=format:'%Y-%m-%d' --format='%cd %P' old_hash..new_hash
 int Git::revlist(const std::string &old_hash, const std::string &new_hash, const std::string &outfile)
 {
-    err = git({"rev-list", "--ancestry-path", "--date=format-local:%Y-%m-%d", "--format=%cd %P", old_hash+".."+new_hash}, outfile);
+    err = git({"rev-list", "--ancestry-path", "--date=format-local:%Y-%m-%d", "--format=%cd %P", old_hash+".."+new_hash}, outfile) == 0 ? 0 : -1;
     if (err != 0)
         std::cerr << "Error: git rev-list " << old_hash+".."+new_hash << " failed.\n" << std::flush;
     return err;

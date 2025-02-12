@@ -315,7 +315,7 @@ void Environment::config_print(const std::string &label, const std::string &conf
 
 void Environment::print() const
 {
-    config_print("Link", buglink);
+    config_print("Syzbot Link", buglink);
 
     if (duplicates.size() > 1)
     {
