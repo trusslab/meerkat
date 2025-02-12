@@ -1,0 +1,174 @@
+# Copyright 2025 syzkaller project authors. All rights reserved.
+# Use of this source code is governed by Apache 2 LICENSE that can be found in the LICENSE file.
+
+apiVersion: argoproj.io/v1alpha1
+kind: Workflow
+metadata:
+  generateName: series-workflow
+spec:
+  entrypoint: main
+  arguments:
+    parameters:
+      - name: session-id
+        value: "some-session-id"
+# TODO: there seems to be no way to pass env variables into the GC workflow.
+# Set ARGO_ARTIFACT_GC_ENABLED=0 for the local setup?
+#  artifactGC:
+#    strategy: OnWorkflowCompletion
+  templates:
+    - name: main
+      # Don't schedule new steps if any of the previous steps failed.
+      failFast: true
+      # Note that failFast and parallelism only affect this template's steps.
+      parallelism: 1
+      steps:
+        - - name: run-triage
+            templateRef:
+              name: triage-step-template
+              template: triage-step
+        - - name: abort-on-skip-outcome
+            template: exit-workflow
+            when: "{{=jsonpath(steps['run-triage'].outputs.parameters.result, '$.skip') != nil}}"
+        - - name: iterate-fuzz
+            template: process-fuzz-wrapper
+            arguments:
+              parameters:
+                - name: element
+                  value: "{{item}}"
+            # Because of parallelism=1, the steps will be scheduled one after another.
+            # Because of failFast=True, the Failed status acts as the "break" operation.
+            withParam: "{{=jsonpath(steps['run-triage'].outputs.parameters.result, '$.fuzz')}}"
+            # Ignoge the (fake) Failed status to still keep the overall workflow status a Success.
+            continueOn:
+              failed: true
+    # The wrapper inverts the process-fuzz status in order to let iterate-fuzz iterate until a success.
+    - name: process-fuzz-wrapper
+      inputs:
+        parameters:
+          - name: element
+      steps:
+        - - name: run-process-fuzz
+            template: process-fuzz
+            arguments:
+              parameters:
+                - name: element
+                  value: "{{inputs.parameters.element}}"
+            continueOn:
+              failed: true
+        - - name: break-if-succeeded
+            template: exit-workflow
+            when: "{{steps['run-process-fuzz'].status}} == Succeeded"
+    - name: process-fuzz
+      inputs:
+        parameters:
+          - name: element
+      steps:
+        - - name: save-base-req
+            template: extract-request
+            arguments:
+              parameters:
+                - name: data
+                  value: "{{=jsonpath(inputs.parameters.element, '$.base')}}"
+        - - name: base-build
+            templateRef:
+              name: build-step-template
+              template: build-step
+            arguments:
+              parameters:
+                - name: test-name
+                  value: "Build Base"
+              artifacts:
+                - name: request
+                  from: "{{steps.save-base-req.outputs.artifacts.request}}"
+        - - name: continue-if-base-build-failed
+            template: exit-workflow
+            when: "{{=jsonpath(steps['base-build'].outputs.parameters.result, '$.success') == false}}"
+        - - name: save-patched-req
+            template: extract-request
+            arguments:
+              parameters:
+                - name: data
+                  value: "{{=jsonpath(inputs.parameters.element, '$.patched')}}"
+        - - name: patched-build
+            templateRef:
+              name: build-step-template
+              template: build-step
+            arguments:
+              parameters:
+                - name: test-name
+                  value: "Build Patched"
+                - name: findings
+                  value: "true"
+              artifacts:
+                - name: request
+                  from: "{{steps.save-patched-req.outputs.artifacts.request}}"
+        - - name: continue-if-patched-build-failed
+            template: exit-workflow
+            when: "{{=jsonpath(steps['patched-build'].outputs.parameters.result, '$.success') == false}}"
+        - - name: boot-test-base
+            templateRef:
+              name: boot-step-template
+              template: boot-step
+            arguments:
+              artifacts:
+                - name: kernel
+                  from: "{{steps.base-build.outputs.artifacts.kernel}}"
+              parameters:
+                - name: config
+                  value: "{{=jsonpath(inputs.parameters.element, '$.config')}}"
+                - name: base-build-id
+                  value: "{{=jsonpath(steps['base-build'].outputs.parameters.result, '$.build_id')}}"
+                - name: test-name
+                  value: "Boot test: Base"
+          - name: boot-test-patched
+            templateRef:
+              name: boot-step-template
+              template: boot-step
+            arguments:
+              artifacts:
+                - name: kernel
+                  from: "{{steps.patched-build.outputs.artifacts.kernel}}"
+              parameters:
+                - name: config
+                  value: "{{=jsonpath(inputs.parameters.element, '$.config')}}"
+                - name: patched-build-id
+                  value: "{{=jsonpath(steps['patched-build'].outputs.parameters.result, '$.build_id')}}"
+                - name: report-findings
+                  value: "true"
+                - name: test-name
+                  value: "Boot test: Patched"
+        - - name: break-if-base-boot-failed
+            template: exit-workflow
+            arguments:
+              parameters:
+                - name: code
+                  value: 0
+            when: "{{=jsonpath(steps['boot-test-base'].outputs.parameters.result, '$.success') == false}}"
+        - - name: break-if-patched-boot-failed
+            template: exit-workflow
+            arguments:
+              parameters:
+                - name: code
+                  value: 0
+            when: "{{=jsonpath(steps['boot-test-patched'].outputs.parameters.result, '$.success') == false}}"
+    - name: extract-request
+      inputs:
+        parameters:
+          - name: data
+      outputs:
+        artifacts:
+          - name: request
+            path: /tmp/request.json
+      container:
+        image: alpine:latest
+        command: [sh, -c]
+        args: ["echo '{{inputs.parameters.data}}' > /tmp/request.json"]
+    - name: exit-workflow
+      inputs:
+        parameters:
+          - name: code
+            value: 1
+      container:
+        image: alpine:latest
+        command: ['/bin/sh', '-c']
+        args: ["exit {{inputs.parameters.code}}"]
