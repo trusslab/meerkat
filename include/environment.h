@@ -102,6 +102,9 @@ public:
     std::string bootfaillog() const
     { return logdir + (working_name.empty() ? "" : working_name + "-") + "boot_failure.log"; }
 
+    std::string reprolog() const
+    { return logdir + (working_name.empty() ? "" : working_name + "-") + "repro.log"; }
+
     // Pretty-print
     void print() const;
 };

@@ -15,6 +15,8 @@
 enum Bisect_Mode {Mode_PoC, Mode_FF};
 enum Bisect_Phase {Bisect_Init, Bisect_Anchor, Bisect_Releases, Bisect_Kernel, Bisect_Done};
 
+#define REPRO_FREQ 3
+
 class Session
 {
 public:
@@ -60,6 +62,8 @@ private:
 
     int git_remaining;
     bool git_stop;
+
+    unsigned int repro_count;
 
     std::vector<Version> gcc_versions;
 

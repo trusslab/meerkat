@@ -38,6 +38,7 @@ std::vector<Version> gather_release_tags(const Environment &env, Git &linux_git)
 int Bisect::init(const Environment &env, Git &linux_git)
 {
     session_count = 0;
+    repro_count = 0;
     phase = Bisect_Init;
     git_stop = false;
 
@@ -380,6 +381,10 @@ Test_Result Bisect::test_anchor(Environment &env)
 Test_Result Bisect::test_bisect_ff(Environment &env)
 {
     Test_Result result = fuzz_loop(env);
+    // Run syz-repro here
+    if (repro_count % REPRO_FREQ == 0)
+    {}
+    repro_count += result.found ? 1 : 0;
     return result;
 }
 

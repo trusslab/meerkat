@@ -211,71 +211,52 @@ Syzkaller_Result run_syzkaller(const Environment &env)
     return result;
 }
 
-Syzkaller_Result run_syz_repro(const Environment &env, const std::string &reprolog)
+// Runs syz-repro. Returns true if it was successful at reproducing the bug
+bool run_syz_repro(const Environment &env)
 {
-    Syzkaller_Result result;
+    bool ret;
     int time = 0, to_add = 0;
-    result.ttf = 0;
-    result.found = false;
-    result.bad_crashes = 0;
-
-    std::string old_dir = pwd();
-    cd(env.syzdir);
 
     // TODO: add --repro to output the reproducer
-    std::vector<std::string> cmd = {"./bin/syz-repro", "-config", env.syzconfig, reprolog};
+    std::string reprobin = env.syzdir + "bin/syz-repro";
+    std::vector<std::string> cmd = {reprobin, "-config", env.syzconfig /*, crash log */};
     const char ** arg_list = new const char*[cmd.size()+1];
     for (int i = 0; i < cmd.size(); i++)
         arg_list[i] = cmd.at(i).c_str();
 
     arg_list[cmd.size()] = nullptr;
 
-    int pid = exec_and_continue("./bin/syz-repro", (char **)arg_list, env.syzkaller_log, env.syzkaller_log);
+    int pid = exec_and_continue(reprobin, (char **)arg_list, env.reprolog(), env.reprolog());
 
     int i = 0;
-    while (time < env.max_time && !result.found)
+    std::string crash_name;
+    std::vector<std::string> loglines, crashes;
+    while (true)
     {
         sleep(60*TIME_INCREMENT);
         time += TIME_INCREMENT;
 
-        std::vector<std::string> loglines;
-        load_file(env.syzkaller_log, loglines);
+        load_file(env.reprolog(), loglines);
         for (; i < loglines.size(); i++)
         {
             int pos = loglines.at(i).find("program crashed: ");
             if (pos == std::string::npos)
                 continue;
 
-            std::string crash_name = loglines.at(i).substr(pos+17);
-            result.found = fuzz_is_crash_in(crash_name, env.duplicates) ? true : result.found;
-            result.reports.push_back({crash_name, time});
-
-            if (fuzz_is_bad_crash(crash_name))
-                result.bad_crashes += to_add;
+            crash_name = loglines.at(i).substr(pos+17);
+            ret = fuzz_is_crash_in(crash_name, env.duplicates) ? true : ret;
         }
 
-        if (wc_l(env.syzkaller_log) > 5000)
-        {
-            std::string logfile = env.bootfaillog();
-            cout << "Warning: syz-repro log file exceeded 5000 lines.\n"
-                    << "Saved at " << logfile << ".\n" << flush;
-            copy(env.syzkaller_log, logfile);
-            result.bad_crashes++;
-            result.reports.push_back({"boot failure", time});
-            break;
-        }
         // syz-repro stopping is normal
         if (!check_alive(pid))
             break;
     }
-    result.ttf = time;
 
     if (check_alive(pid))
         kill_child(pid);
 
     delete[] arg_list;
-    cd(old_dir);
-    return result;
+    return ret;
 }
 
 Test_Result fuzz_loop_finding(Environment &env)
