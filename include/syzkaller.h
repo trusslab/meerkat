@@ -46,6 +46,7 @@ public:
     ProgOpts(const std::string &);
 
     void reset();
+    int from_syz_repro(const std::string &);
     int from_prog(const std::string &);
     int from_json(const JSON &);
 
@@ -63,5 +64,6 @@ private:
     //std::string enable_string() const;
 };
 
+std::string opts_from_syz_repro(const std::string &);
 
 #endif

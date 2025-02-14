@@ -64,6 +64,7 @@ private:
     bool git_stop;
 
     unsigned int repro_count;
+    bool defer_repro;
 
     std::vector<Version> gcc_versions;
 
@@ -80,6 +81,8 @@ private:
     int goto_anchor_session(const Environment &, Git &);
     int goto_release_session(const Environment &, Git &);
     int goto_bisect_session(const Environment &, Git &);
+
+    int do_syz_repro(Environment &);
 
     Test_Result test_anchor_ff(Environment &);
     Test_Result test_anchor_poc(Environment &);

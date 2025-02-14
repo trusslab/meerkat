@@ -8,6 +8,7 @@
 #include <my_string.h>
 #include <result.h>
 #include <shell_api.h>
+#include <syzkaller.h>
 #include <version.h>
 
 #include <iostream>
@@ -41,6 +42,7 @@ int Bisect::init(const Environment &env, Git &linux_git)
     repro_count = 0;
     phase = Bisect_Init;
     git_stop = false;
+    defer_repro = false;
 
     if (gather_compiler_versions(env) < 0)
         return -1;
@@ -51,6 +53,11 @@ int Bisect::init(const Environment &env, Git &linux_git)
     bisect_version.name.clear();
     good_version.name.clear();
     last_session.kernel.name.clear();
+
+    if (mode() == Mode_FF)
+        reset_kaller_wd(env);
+    else if (mode() == Mode_PoC)
+        reset_runner_wd(env);
 
     return 0;
 }
@@ -85,6 +92,7 @@ int Bisect::gather_compiler_versions(const Environment &env)
 
 int Bisect::init_anchor_phase(Git &linux_git)
 {
+    // Turns out there's nothing to do here.
     return 0;
 }
 
@@ -117,7 +125,8 @@ int skip_tags(std::vector<Version> &releases)
     for (int i = 0; i < tmp.size(); i += inc)
     {
         releases.push_back(tmp.at(i));
-        if (i == 3 || i == 15 || i == 33)
+        // This mimics how Syz-Bisect skips some releases as it goes back
+        if (i == 2 || i == 14 || i == 32)
             inc++;
     }
     return 0;
@@ -136,7 +145,7 @@ int Bisect::init_releases_phase(const Environment &env, Git &linux_git)
         return -1;
     }
 
-    // Cut out any releases from after the finding date. This helps line up the index.
+    // Using commit date may be flakey here, so use git.
     int i = find_first_ancestor(linux_git, anchor.name, releases);
     if (i < 0)
     {
@@ -260,7 +269,6 @@ retry:
     index++;
     if (index >= releases.size() || (index > 0 && !last_session.found && last_session.stable))
     {
-        std::cout << "There are no more stable releases to test\n" << std::flush;
         return 1;
     }
     else if (index < 0)
@@ -349,6 +357,64 @@ int Bisect::next_session(const Environment &env, Git &linux_git)
     return err;
 }
 
+std::string viable_repro_name(const Environment &env)
+{
+    std::string base_filename = "repro-" + env.working_name + "-";
+    std::string filename;
+    int n;
+    for (n = 0; n < 1000; n++)
+    {
+        filename = env.reprodir + base_filename + std::to_string(n) + ".prog";
+        if (!check_file(filename))
+            break;
+    }
+
+    if (n >= 1000)
+        std::cerr << "Warning: Ran out of PoC filenames!\n" << std::flush;
+
+    return filename;
+}
+
+std::string find_crash_log(const Environment &env)
+{
+    std::string crash_name;
+    std::vector<std::string> crash_hashes = list_dir(env.syzwd + "/crashes");
+    for (std::string hash : crash_hashes)
+    {
+        crash_name = get_crash_name(hash);
+        if (fuzz_is_crash_in(crash_name, env.duplicates))
+            return hash + "log0";
+    }
+
+    std::cerr << "Error: Failed to find expected syzkaller crash for syz-repro.\n" << std::flush;
+    return "";
+}
+
+int Bisect::do_syz_repro(Environment &env)
+{
+    std::string prog = viable_repro_name(env);
+    std::string crash_log = find_crash_log(env);
+    if (crash_log.empty())
+        return -1;
+    if (run_syz_repro(env, prog, crash_log))
+    {
+        // Get the opts and prepend to the repro file
+        // TODO: Make syz-repro do this
+        // std::string opts = opts_from_syz_repro(env.reprolog());
+        // std::vector<std::string> tmpLines;
+        // if (!load_file(prog, tmpLines))
+        //     return -1;
+        // tmpLines.insert(tmpLines.begin(), {"#" + opts});
+        // write_file(prog, tmpLines);
+        env.champion_repro = prog;
+        defer_repro = false;
+    }
+    else
+        defer_repro = true;
+    
+    return 0;
+}
+
 Test_Result Bisect::test_anchor_ff(Environment &env)
 {
     Test_Result result = fuzz_loop_finding(env);
@@ -381,10 +447,10 @@ Test_Result Bisect::test_anchor(Environment &env)
 Test_Result Bisect::test_bisect_ff(Environment &env)
 {
     Test_Result result = fuzz_loop(env);
-    // Run syz-repro here
-    if (repro_count % REPRO_FREQ == 0)
-    {}
-    repro_count += result.found ? 1 : 0;
+    if (repro_count % REPRO_FREQ == 0 || defer_repro)
+        do_syz_repro(env);
+
+    repro_count += result.found && !defer_repro ? 1 : 0;
     return result;
 }
 

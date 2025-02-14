@@ -92,8 +92,6 @@ int do_bisection(Environment &env, Bisect &bisector, Git &linux_git)
     // ======================================================================================================
     // Fuzz at the anchor commit
 
-    if (bisector.mode() == Mode_FF)
-        reset_kaller_wd(env);
     bisector.next_phase(Bisect_Anchor, env, linux_git);
     if (err < 0)
     {
@@ -247,6 +245,8 @@ int bisect(Environment &env)
         err = do_bisection(env, bisector, linux_git);
         if (err < 0 || env.feats.setup_only || env.feats.find_only)
             goto finish;
+        if (err == 1 && env.feats.ff_no_find_backup)
+            goto finish;
     }
 
     if (env.feats.poc_test)
@@ -285,6 +285,7 @@ void print_help()
         << "    --config (c) [config.cfg]: [config]: REQUIRED. The config file containing the bug information.\n"
         << "    --anchor (a) [hash]: REQUIRED. the hash of the commit where the bug was found.\n"
         << "    --feature (F) [feature list]: features to use.\n"
+        << "         [ all, default, poc-test, ff-test, setup-only, find-only, ff-no-find-backup, stateful-corpus, patch-kernel ]"
         << endl << flush;
 }
 
@@ -378,11 +379,6 @@ int main(int argc, char ** argv)
     if (!check_file(env.logdir))
     {
         make_dir(env.logdir);
-    }
-
-    if (!check_file(env.vmwd))
-    {
-        make_dir(env.vmwd);
     }
 
     if (!check_file(env.kconfig))

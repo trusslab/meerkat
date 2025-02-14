@@ -11,9 +11,9 @@ PROJECTNAME := bisector
 
 .DEFAULT_GOAL := $(PROJECTNAME)
 
-.phony: all $(PROJECTNAME) $(BINDIR) helpers tools
+.phony: all $(PROJECTNAME) $(BINDIR) helpers tools syzkaller
 
-all: $(PROJECTNAME) helpers tools
+all: $(PROJECTNAME) helpers tools syzkaller
 
 $(BUILDDIR)%.o: $(LIBDIR)%.cpp $(INCDIR)%.h | $(BUILDDIR)
 	@echo "  CC     $@"
@@ -85,6 +85,10 @@ $(BUILDDIR):
 $(BINDIR):
 	@echo "DIR    $(BINDIR)"
 	@mkdir $(BINDIR)
+
+syzkaller:
+	make -C syzkaller/
+	make -C syzkaller/ symbolize
 
 clean:
 	$(RM) -r $(BINDIR) $(BUILDDIR)

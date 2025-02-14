@@ -23,6 +23,7 @@ public:
     bool ff_test;
     bool setup_only;
     bool find_only;
+    bool ff_no_find_backup;
     bool stateful_corpus;
     bool patch_kernel;
 };

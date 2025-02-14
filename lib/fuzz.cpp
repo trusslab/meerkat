@@ -212,14 +212,11 @@ Syzkaller_Result run_syzkaller(const Environment &env)
 }
 
 // Runs syz-repro. Returns true if it was successful at reproducing the bug
-bool run_syz_repro(const Environment &env)
+bool run_syz_repro(const Environment &env, const std::string &dest_prog, const std::string &crash_log)
 {
-    bool ret;
-    int time = 0, to_add = 0;
-
-    // TODO: add --repro to output the reproducer
+    int time = 0;
     std::string reprobin = env.syzdir + "bin/syz-repro";
-    std::vector<std::string> cmd = {reprobin, "-config", env.syzconfig /*, crash log */};
+    std::vector<std::string> cmd = {reprobin, "-config", env.syzconfig, "--repro", dest_prog, crash_log};
     const char ** arg_list = new const char*[cmd.size()+1];
     for (int i = 0; i < cmd.size(); i++)
         arg_list[i] = cmd.at(i).c_str();
@@ -228,24 +225,10 @@ bool run_syz_repro(const Environment &env)
 
     int pid = exec_and_continue(reprobin, (char **)arg_list, env.reprolog(), env.reprolog());
 
-    int i = 0;
-    std::string crash_name;
-    std::vector<std::string> loglines, crashes;
-    while (true)
+    while (time < 60)
     {
         sleep(60*TIME_INCREMENT);
         time += TIME_INCREMENT;
-
-        load_file(env.reprolog(), loglines);
-        for (; i < loglines.size(); i++)
-        {
-            int pos = loglines.at(i).find("program crashed: ");
-            if (pos == std::string::npos)
-                continue;
-
-            crash_name = loglines.at(i).substr(pos+17);
-            ret = fuzz_is_crash_in(crash_name, env.duplicates) ? true : ret;
-        }
 
         // syz-repro stopping is normal
         if (!check_alive(pid))
@@ -256,7 +239,7 @@ bool run_syz_repro(const Environment &env)
         kill_child(pid);
 
     delete[] arg_list;
-    return ret;
+    return check_file(dest_prog);
 }
 
 Test_Result fuzz_loop_finding(Environment &env)

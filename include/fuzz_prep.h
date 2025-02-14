@@ -43,4 +43,6 @@ int write_syzkaller_config(const Environment &);
 void reset_kaller_wd(const Environment &);
 int prepare_kaller_wd(const Environment &);
 
+void reset_runner_wd(const Environment &);
+
 #endif

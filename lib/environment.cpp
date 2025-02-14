@@ -33,6 +33,7 @@ int Environment::init()
     feats.ff_test = false;
     feats.setup_only = false;
     feats.find_only = false;
+    feats.ff_no_find_backup = false;
     feats.stateful_corpus = false;
     feats.patch_kernel = false;
 
@@ -267,6 +268,11 @@ int Environment::handle_features(const std::set<std::string> &features)
     if (features.find("find-only") != features.end())
     {
         feats.find_only = true;
+    }
+
+    if (features.find("ff-no-find-backup") != features.end())
+    {
+        feats.ff_no_find_backup = true;
     }
 
     if (!feats.ff_test && !feats.poc_test)

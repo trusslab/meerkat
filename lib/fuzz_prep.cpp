@@ -391,6 +391,15 @@ void reset_kaller_wd(const Environment &env)
     return;
 }
 
+void reset_runner_wd(const Environment &env)
+{
+    if (check_file(env.vmwd))
+        remove_dir(env.vmwd);
+
+    make_dir(env.vmwd);
+    return;
+}
+
 // Calls syz-db (up)pack src dest.
 // assumes syzkaller has already been made.
 int syz_db(const Environment &env, const string &opt, const string &src, const string &dest)

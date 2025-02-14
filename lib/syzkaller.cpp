@@ -50,6 +50,36 @@ void ProgOpts::reset()
     fault_nth = -1;
 }
 
+std::string opts_from_syz_repro(const std::string &reprolog)
+{
+    std::vector<std::string> lines;
+    if (!load_file(reprolog, lines))
+    {
+        std::cerr << "Failed to load prog file " << reprolog << std::endl << std::flush;
+        return "";
+    }
+
+    int lidx = 0;
+    for (lidx = 0; lidx < lines.size() && !starts_with(lines.at(lidx), "Final opts: "); lidx++);
+    if (lidx >= lines.size())
+        return "";
+    
+    return lines.at(lidx).substr(12);
+}
+
+// This function expects output from a modified Syzkaller. It will not work in general.
+int ProgOpts::from_syz_repro(const std::string &reprolog)
+{
+    std::string opts_string = opts_from_syz_repro(reprolog);
+    reset();
+
+    JSON json;
+    if (!json.parse(std::vector<std::string>({opts_string})))
+        return -1;
+
+    return from_json(json);
+}
+
 // Read prog options from syz prog file
 int ProgOpts::from_prog(const std::string &progfile)
 {
@@ -66,6 +96,7 @@ int ProgOpts::from_prog(const std::string &progfile)
         return 0;
 
     std::string rawopts = proglines.at(lidx).substr(1);
+    reset();
 
     JSON json;
     if (!json.parse(std::vector<std::string>({rawopts})))

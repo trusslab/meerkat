@@ -9,6 +9,12 @@
 #include <string>
 #include <vector>
 
+std::string get_crash_name(const std::string &);
+
+// Run syz-repro, return true if successful.
+// Takes env, the destination prog file, and the crash log
+bool run_syz_repro(const Environment &, const std::string &, const std::string &);
+
 // Runs Syzkaller fuzztimes times. Returns the new max time
 // to use. Intended to be run on the finding commit.
 Test_Result fuzz_loop_finding(Environment &);
