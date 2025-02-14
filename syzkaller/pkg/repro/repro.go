@@ -154,22 +154,18 @@ func (ctx *reproContext) run() (*Result, *Stats, error) {
 		return nil, nil, err
 	}
 	if res != nil {
-		ctx.reproLogf(3, "repro crashed as (corrupted=%v):\n%s",
-			ctx.report.Corrupted, ctx.report.Report)
+		ctx.reproLogf(3, "repro crashed as (corrupted=%v): %s",
+			ctx.report.Corrupted, ctx.report.Title)
 		// Try to rerun the repro if the report is corrupted.
 		for attempts := 0; ctx.report.Corrupted && attempts < 3; attempts++ {
 			ctx.reproLogf(3, "report is corrupted, running repro again")
-			if res.CRepro {
-				_, err = ctx.testCProg(res.Prog, res.Duration, res.Opts, false)
-			} else {
-				_, err = ctx.testProg(res.Prog, res.Duration, res.Opts, false)
-			}
+			_, err = ctx.testProg(res.Prog, res.Duration, res.Opts, true)
 			if err != nil {
 				return nil, nil, err
 			}
 		}
-		ctx.reproLogf(3, "final repro crashed as (corrupted=%v):\n%s",
-			ctx.report.Corrupted, ctx.report.Report)
+		ctx.reproLogf(3, "final repro crashed as (corrupted=%v): %s",
+			ctx.report.Corrupted, ctx.report.Title)
 		res.Report = ctx.report
 	}
 	return res, ctx.stats, nil
@@ -238,29 +234,6 @@ func (ctx *reproContext) repro() (*Result, error) {
 		return nil, err
 	}
 
-	// Try extracting C repro without simplifying options first.
-	if !ctx.fast {
-		res, err = ctx.extractC(res)
-		if err != nil {
-			return nil, err
-		}
-
-		// Simplify options and try extracting C repro.
-		if !res.CRepro {
-			res, err = ctx.simplifyProg(res)
-			if err != nil {
-				return nil, err
-			}
-		}
-
-		// Simplify C related options.
-		if res.CRepro {
-			res, err = ctx.simplifyC(res)
-			if err != nil {
-				return nil, err
-			}
-		}
-	}
 	return res, nil
 }
 
@@ -388,7 +361,7 @@ func (ctx *reproContext) extractProgBisect(entries []*prog.LogEntry, baseDuratio
 
 	// Bisect the log to find multiple guilty programs.
 	entries, err = ctx.bisectProgs(entries, func(progs []*prog.LogEntry) (bool, error) {
-		ret, err := ctx.testProgs(progs, duration(len(progs)), opts, false)
+		ret, err := ctx.testProgs(progs, duration(len(progs)), opts, true)
 		return ret.Crashed, err
 	})
 	if err != nil {
@@ -431,7 +404,7 @@ func (ctx *reproContext) concatenateProgs(entries []*prog.LogEntry, dur time.Dur
 					if i+1 < len(entries) {
 						newEntries = append(newEntries, entries[i+1:]...)
 					}
-					ret, err := ctx.testProgs(newEntries, dur, ctx.startOpts, false)
+					ret, err := ctx.testProgs(newEntries, dur, ctx.startOpts, true)
 					if err != nil {
 						ctx.reproLogf(0, "concatenation step failed with %v", err)
 						return false
@@ -451,7 +424,7 @@ func (ctx *reproContext) concatenateProgs(entries []*prog.LogEntry, dur time.Dur
 		ctx.reproLogf(2, "bisect: concatenated prog still exceeds %d calls", prog.MaxCalls)
 		return nil, nil
 	}
-	ret, err := ctx.testProg(p, dur, ctx.startOpts, false)
+	ret, err := ctx.testProg(p, dur, ctx.startOpts, true)
 	if err != nil {
 		ctx.reproLogf(3, "bisect: error during concatenation testing: %v", err)
 		return nil, err
@@ -487,7 +460,7 @@ func (ctx *reproContext) minimizeProg(res *Result) (*Result, error) {
 			// will immediately exit.
 			return false
 		}
-		ret, err := ctx.testProg(p1, res.Duration, res.Opts, false)
+		ret, err := ctx.testProg(p1, res.Duration, res.Opts, true)
 		if err != nil {
 			ctx.reproLogf(2, "minimization failed with %v", err)
 			return false
@@ -613,8 +586,8 @@ type verdict struct {
 
 func titleCompare(t1 string, t2 string) (bool) {
     spl := strings.Split(t1, " ")
-    t11 := spl[len(spl)-1]
-    t12 := spl[0]
+	t11 := spl[0]
+    t12 := spl[len(spl)-1]
     return strings.HasPrefix(t2, t11) && strings.HasSuffix(t2, t12)
 }
 
@@ -691,7 +664,7 @@ func (ctx *reproContext) testProgs(entries []*prog.LogEntry, duration time.Durat
 		}
 		program += "]"
 	}
-	ctx.reproLogf(2, "testing program (duration=%v, %+v): %s", duration, opts, program)
+	ctx.reproLogf(2, "testing program (duration=%v, %s): %s", duration, opts.Serialize(), program)
 	ctx.reproLogf(3, "detailed listing:\n%s", pstr)
 	return ctx.getVerdict(func() (*instance.RunResult, error) {
 		return ctx.exec.Run(ctx.ctx, instance.ExecParams{

@@ -358,7 +358,7 @@ func RunManager(mode *Mode, cfg *mgrconfig.Config) {
 	}
 	mgr.pool = vm.NewDispatcher(mgr.vmPool, mgr.fuzzerInstance)
 	mgr.http.Pool = mgr.pool
-	mgr.reproLoop = manager.NewReproLoop(mgr, mgr.vmPool.Count()-mgr.cfg.FuzzingVMs, mgr.cfg.DashboardOnlyRepro)
+	mgr.reproLoop = manager.NewReproLoop(mgr, 0, mgr.cfg.DashboardOnlyRepro)
 	mgr.http.ReproLoop = mgr.reproLoop
 	mgr.http.TogglePause = mgr.pool.TogglePause
 

@@ -80,17 +80,15 @@ func main() {
 			fmt.Printf("extracting prog: %v\n", stats.ExtractProgTime)
 			fmt.Printf("minimizing prog: %v\n", stats.MinimizeProgTime)
 			fmt.Printf("simplifying prog options: %v\n", stats.SimplifyProgTime)
-			fmt.Printf("extracting C: %v\n", stats.ExtractCTime)
-			fmt.Printf("simplifying C: %v\n", stats.SimplifyCTime)
 		}
 		if res == nil {
 			return
 		}
 
-		fmt.Printf("opts: %+v crepro: %v\n\n", res.Opts, res.CRepro)
+		fmt.Printf("Final opts: %s\n\n", res.Opts.Serialize())
 		progSerialized := res.Prog.Serialize()
 		fmt.Printf("%s\n", progSerialized)
-		if err = osutil.WriteFile(*flagOutput, progSerialized); err == nil {
+		if err = osutil.WriteFile(*flagOutput, []byte("#" + string(res.Opts.Serialize()) + "\n" + string(progSerialized))); err == nil {
 			fmt.Printf("program saved to %s\n", *flagOutput)
 		} else {
 			log.Logf(0, "failed to write prog to file: %v", err)
@@ -98,9 +96,6 @@ func main() {
 
 		if res.Report != nil && *flagTitle != "" {
 			recordTitle(res, *flagTitle)
-		}
-		if res.CRepro {
-			recordCRepro(res, *flagCRepro)
 		}
 		if *flagStrace != "" {
 			result := repro.RunStrace(res, cfg, reporter, pool)
