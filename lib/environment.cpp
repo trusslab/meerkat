@@ -348,6 +348,7 @@ void Environment::print() const
     config_print("Arch", arch);
     std::cout << std::endl;
     config_print(PROJECT_NAME, home);
+    config_print("Version", REVISION);
     config_print("Kernel", kerneldir);
     config_print("Syzkaller", syzdir);
     config_print("Compilers", gcc_dir);
