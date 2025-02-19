@@ -284,7 +284,7 @@ void print_help()
         << "    --config (c) [config.cfg]: [config]: REQUIRED. The config file containing the bug information.\n"
         << "    --anchor (a) [hash]: REQUIRED. the hash of the commit where the bug was found.\n"
         << "    --feature (F) [feature list]: features to use.\n"
-        << "         [ all, default, poc-test, ff-test, setup-only, find-only, ff-no-find-backup, stateful-corpus, patch-kernel ]"
+        << "         [ all, default, poc-test, ff-test, setup-only, find-only, poc-all-pocs, ff-no-find-backup, stateful-corpus, patch-kernel ]"
         << endl << flush;
 }
 

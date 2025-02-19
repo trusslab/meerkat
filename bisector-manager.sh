@@ -49,7 +49,7 @@ printhelp () {
     echo "    b - determine the name of the bug file in parse"
     echo "    m - the maximum time to fuzz at the finding commit"
     echo "    F - The feature string"
-    echo "        [ all, default, poc-test, ff-test, setup-only, find-only, ff-no-find-backup, stateful-corpus, patch-kernel ]"
+    echo "        [ all, default, poc-test, ff-test, setup-only, find-only, poc-all-pocs, ff-no-find-backup, stateful-corpus, patch-kernel ]"
     echo "    S - run in safe mode"
 }
 
