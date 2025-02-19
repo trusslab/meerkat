@@ -111,6 +111,10 @@ if [ ! -d ${wd}log ]; then
     mkdir ${wd}log
 fi
 
+if [ ! -d ${wd}old ]; then
+    mkdir ${wd}old
+fi
+
 totallines=$(cat $bugfile | wc -l)
 if (( $endLine > $totallines || $startLine < 1 || $startLine > $endLine )); then
     echo "Bad start and/or end lines!"
@@ -192,6 +196,7 @@ while (( $line <= $endLine )); do
         set +e
         ./$bisector -i $id -c $bisectorconfig -a ${findhash} ${feature} $mtime $safemode 2>&1 | tee ${wd}log/${curBug}.log
         set -e
+        cp ${wd}reproducers/* ${wd}old/
         number=$(( $number + 1 ))
     else
         echo "Possible bad parse on line $line"
