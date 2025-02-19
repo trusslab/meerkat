@@ -24,6 +24,7 @@ public:
     bool setup_only;
     bool find_only;
     bool ff_no_find_backup;
+    bool poc_all_pocs;
     bool stateful_corpus;
     bool patch_kernel;
 };

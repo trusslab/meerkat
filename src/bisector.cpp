@@ -43,6 +43,17 @@ int check_syzkaller(const Environment &env)
     return 0;
 }
 
+vector<string> order_pocs(const Environment &env)
+{
+    vector<string> ret;
+    // PoCs can go in an arbitrary order, but leave out the primary poc
+    for (string file : list_dir(env.reprodir))
+        if (file != env.primary_repro)
+            ret.push_back(file);
+
+    return ret;
+}
+
 int do_bisection(Environment &env, Bisect &bisector, Git &linux_git)
 {
     int err = 0;
@@ -155,9 +166,10 @@ int do_bisection(Environment &env, Bisect &bisector, Git &linux_git)
 int bisect(Environment &env)
 {
     int err = 0;
+    string stage_title;
     Bisect bisector;
     Test_Result result;
-    chrono::steady_clock::time_point starttime;
+    chrono::steady_clock::time_point starttime, stagetime;
 
     Git linux_git = prep_kernel_local_repo(env);
     if (linux_git.error() < 0)
@@ -201,11 +213,17 @@ int bisect(Environment &env)
     
     if (bisector.mode() == Mode_FF)
     {
+        stagetime = chrono::steady_clock::now();
+        stage_title = "Focused Fuzzing";
+
         err = do_bisection(env, bisector, linux_git);
         if (err < 0 || env.feats.setup_only || env.feats.find_only)
             goto finish;
         if (err == 1 && env.feats.ff_no_find_backup)
             goto finish;
+        
+        if (env.feats.poc_test)
+            cout << bisector.print_partial_result(env, linux_git, starttime, stagetime, stage_title, env.primary_repro) << flush;
     }
 
     if (env.feats.poc_test)
@@ -213,20 +231,42 @@ int bisect(Environment &env)
 
     if (bisector.mode() == Mode_PoC)
     {
+        vector<string> ordered_pocs = order_pocs(env);
+        stage_title = "Primary PoC Test";
+
         // Use more vms at 2 cpus during poc bisection. Simlar to SB.
         env.vmc = env.vmst;
         if (env.primary_repro.empty())
             env.primary_repro = list_dir(env.reprodir).front();
 
+redo_poc:
+        stagetime = chrono::steady_clock::now();
         err = do_bisection(env, bisector, linux_git);
         if (err < 0 || env.feats.setup_only || env.feats.find_only)
             goto finish;
+
+        if (env.feats.poc_all_pocs)
+        {
+            if (ordered_pocs.empty())
+                goto print_result;
+
+            if (err == 1)
+                cout << bisector.print_anchor_fail(env, starttime, stagetime, stage_title, env.primary_repro) << flush;
+            else
+                cout << bisector.print_partial_result(env, linux_git, starttime, stagetime, stage_title, env.primary_repro) << flush;
+
+            env.primary_repro = ordered_pocs.back();
+            ordered_pocs.pop_back();
+            stage_title = "Subsequent PoC Test";
+            goto redo_poc;
+        }
     }
 
     // ======================================================================================================
     // Finish
     // ======================================================================================================
 
+print_result:
     bisector.next_phase(Bisect_Done, env, linux_git);
 
     cout << "\n" << SPACER

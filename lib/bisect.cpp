@@ -606,6 +606,41 @@ int Bisect::archive_session(const Test_Result &result)
     return _archive_session();
 }
 
+std::string Bisect::print_anchor_fail(const Environment &env, const std::chrono::steady_clock::time_point &start,
+                                        const std::chrono::steady_clock::time_point &stage_start, const std::string &stage_title, const std::string &repro) const
+{
+    // TODO: iomanip this
+    std::stringstream ss;
+    std::string title = "==== Partial Result" + (!stage_title.empty() ? ": " + stage_title : "") + " ====";
+    ss << "\n" << title << "\n";
+    if (!repro.empty())
+        ss << "Reproducer:           " << repro << "\n";
+    ss << "Bisection Result:     Failed to reproduce at the anchor commit.\n";
+    ss << "Stage Time:           " << runtime(stage_start) << "\n";
+    ss << "Run Time:             " << runtime(start) << "\n";
+    ss << std::setw(title.size()) << std::setfill('=') << "=" << "\n";
+
+    return ss.str();
+}
+
+std::string Bisect::print_partial_result(const Environment &env, Git &linux_git, const std::chrono::steady_clock::time_point &start,
+                                        const std::chrono::steady_clock::time_point &stage_start, const std::string &stage_title, const std::string &repro) const
+{
+    // TODO: iomanip this
+    std::stringstream ss;
+    std::string title = "==== Partial Result" + (!stage_title.empty() ? ": " + stage_title : "") + " ====";
+    ss << "\n" << title << "\n";
+    if (!repro.empty())
+        ss << "Reproducer:           " << repro << "\n";
+    ss << "Bisection Result:     " << bisect_version.date.get_date() << " - " << bisect_version.name << "\n";
+    ss << "Bisected Commit Name: " << linux_git.get_commit_name(bisect_version.name) << "\n";
+    ss << "Stage Time:           " << runtime(stage_start) << "\n";
+    ss << "Run Time:             " << runtime(start) << "\n";
+    ss << std::setw(title.size()) << std::setfill('=') << "=" << "\n";
+
+    return ss.str();
+}
+
 std::string Bisect::print_result(const Environment &env, Git &linux_git, const std::chrono::steady_clock::time_point &start) const
 {
     // TODO: iomanip this

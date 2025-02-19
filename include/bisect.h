@@ -133,6 +133,8 @@ public:
     int record(const Test_Result &, Git &);
     int archive_session(const Test_Result &);
 
+    std::string print_anchor_fail(const Environment &, const std::chrono::steady_clock::time_point &, const std::chrono::steady_clock::time_point &, const std::string & = "", const std::string & = "") const;
+    std::string print_partial_result(const Environment &, Git &, const std::chrono::steady_clock::time_point &, const std::chrono::steady_clock::time_point &, const std::string & = "", const std::string & = "") const;
     std::string print_result(const Environment &, Git &, const std::chrono::steady_clock::time_point &) const;
 };
 
