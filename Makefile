@@ -44,7 +44,7 @@ diffdate: $(HELPERDIR)diffdate.cpp | $(BINDIR) $(BUILDDIR)
 	@echo "  LN     $(HELPERDIR)diffdate"
 	@$(CC) $(BUILDDIR)diffdate.o $(DD_OBJS) -o $(HELPERDIR)diffdate
 
-tools: git_test description_test
+tools: git_test description_test runner
 
 GT_OBJS = $(BUILDDIR)git.o $(BUILDDIR)shell_api.o $(BUILDDIR)date.o $(BUILDDIR)file_api.o \
 			$(BUILDDIR)exec_api.o $(BUILDDIR)my_string.o $(BUILDDIR)version.o
