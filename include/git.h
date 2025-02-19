@@ -52,6 +52,7 @@ public:
     int bisect_bad();
     int bisect_skip();
     int bisect_reset();
+    int bisect_remaining(const std::string &, const std::string &);
 
     std::string get_url();
     int dump_tags(const std::string &);

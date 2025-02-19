@@ -47,7 +47,6 @@ public:
     int check_booted_loop() const;
     int kill();
 
-    int reboot();
     int reset();
 
     int scp(const std::string &, const std::string & = "/root") const;

@@ -63,7 +63,7 @@ int VM::setup()
     int err = boot();
     if (err < 0)
         return -1;
-    sleep(60);
+    sleep(15);
     return check_booted_loop();
 }
 
@@ -99,18 +99,6 @@ int VM::kill()
         return -1;
 }
 
-// To use the VM again for the same test case (does not actually boot again. TODO: rename better)
-int VM::reboot()
-{
-    int res = 0;
-    if (is_alive())
-        res = kill();
-    pid = 0;
-    port.inc();
-
-    return res;
-}
-
 // Reset the vm and vm log number. For use with a new test case.
 int VM::reset()
 {
@@ -138,7 +126,7 @@ int VM::scp(const std::string &file, const std::string &dest) const
 
     int err = exec_and_wait("scp", (char**)arg_list, "/dev/null", "/dev/null");
     if (err != 0)
-        std::cerr << "Warning: scp exited with error status 0x" << std::hex << err << std::endl << std::dec << std::flush;
+        std::cerr << "Warning: scp " << file << " exited with error status 0x" << std::hex << err << std::endl << std::dec << std::flush;
 
     delete[] arg_list;
     return (err != 0 ? -1 : 0);
@@ -191,7 +179,7 @@ int VM::kill_proc(const std::string &prog) const
 
 std::string VM::log_file() const
 {
-    return logfile;// wd_path + "vm-" + std::to_string(n) + ".log"
+    return logfile;
 }
 
 #define VMW 12
@@ -352,12 +340,9 @@ int VMPool::wait_loop(unsigned int timeout)
 int VMPool::kill_all()
 {
     for (int i =0; i < vms.size(); i++)
-    {
-        if (status.at(i) == VM_Ready || status.at(i) == VM_Running || status.at(i) == VM_Err)
-        {
-            vms.at(i).kill();
-            status.at(i) = VM_Done;
-        }
+    {  
+        vms.at(i).kill();
+        status.at(i) = VM_Done;
     }
     return 0;
 }

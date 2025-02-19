@@ -32,7 +32,7 @@ class Environment
 {
 private:
     void default_features();
-    void config_print(const std::string &, const std::string &) const;
+    void config_print(const std::string &, const std::string &, const int = -1) const;
 
 public:
     bool try_patch;
@@ -77,13 +77,14 @@ public:
     std::string branch;                 // The kernel branch
     std::string kconfig;                // the config file for the kernel
     std::string reprodir;               // the directory with all of the PoCs
-    std::string champion_repro;         // the repro to be used in PoC testing
+    std::string primary_repro;          // the repro to be used in PoC testing
     std::string buglink;                // the link to the bug in syzbot
 
     std::string anchor_hash;
 
     std::vector<std::string> duplicates;
 
+    std::vector<std::string> base_syscalls;
     std::vector<std::string> required_syscalls;
 
     Features feats;

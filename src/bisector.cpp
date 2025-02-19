@@ -43,47 +43,6 @@ int check_syzkaller(const Environment &env)
     return 0;
 }
 
-int uniqify_reproducers(Environment &env)
-{
-    vector<string> repros = list_dir(env.reprodir);
-    if (repros.size() <= 0)
-    {
-        cerr << "Error: No reproducer files found.\n" << flush;
-        return -1;
-    }
-
-    vector<string> keep, remove;
-    bool removed = false;
-    bool saved_champion = false;
-    keep.push_back(repros.front());
-    for (int i = 1; i < repros.size(); i++)
-    {
-        removed = false;
-        for (string kept : keep)
-        {
-            if (compare_files(kept, repros.at(i)))
-            {
-                if (!saved_champion && !env.champion_repro.empty()
-                    && repros.at(i).find(env.champion_repro) != std::string::npos)
-                {
-                    saved_champion = true;
-                    env.champion_repro = kept;
-                }
-                remove.push_back(repros.at(i));
-                removed = true;
-                break;
-            }
-        }
-        if (!removed)
-            keep.push_back(repros.at(i));
-    }
-
-    for (string r : remove)
-        remove_file(r);
-
-    return 0;
-}
-
 int do_bisection(Environment &env, Bisect &bisector, Git &linux_git)
 {
     int err = 0;
@@ -148,13 +107,13 @@ int do_bisection(Environment &env, Bisect &bisector, Git &linux_git)
     }
 
     cout << "\n==== Major Release Search ====\n" 
-         << bisector.remaining() << " Release" << (bisector.remaining() == 1 ? "" : "s") << "\n" << flush;
+         << bisector.remaining(linux_git) << " Release" << (bisector.remaining(linux_git) == 1 ? "" : "s") << "\n" << flush;
 
     while ((err = bisector.next_session(env, linux_git)) == 0)
     {
         result = bisector.test_current(env, linux_git);
         bisector.record(result, linux_git);
-        cout << "About " << bisector.remaining() << " releases remaining\n" << flush;
+        cout << "About " << bisector.remaining(linux_git) << " releases remaining\n" << flush;
     }
     if (err < 0)
     {
@@ -176,13 +135,13 @@ int do_bisection(Environment &env, Bisect &bisector, Git &linux_git)
     }
 
     cout << "\n==== Kernel Bisection ====\n"
-         << bisector.remaining() << " Linux commit" << (bisector.remaining() == 1 ? "" : "s") << endl << flush;
+         << bisector.remaining(linux_git) << " Linux commit" << (bisector.remaining(linux_git) == 1 ? "" : "s") << endl << flush;
 
     while ((err = bisector.next_session(env, linux_git)) == 0)
     {
         result = bisector.test_current(env, linux_git);
         bisector.record(result, linux_git);
-        cout << "About " << bisector.remaining() << " commits remaining\n" << flush;
+        cout << "About " << bisector.remaining(linux_git) << " commits remaining\n" << flush;
     }
     if (err < 0)
     {
@@ -256,8 +215,8 @@ int bisect(Environment &env)
     {
         // Use more vms at 2 cpus during poc bisection. Simlar to SB.
         env.vmc = env.vmst;
-        if (env.champion_repro.empty())
-            env.champion_repro = list_dir(env.reprodir).front();
+        if (env.primary_repro.empty())
+            env.primary_repro = list_dir(env.reprodir).front();
 
         err = do_bisection(env, bisector, linux_git);
         if (err < 0 || env.feats.setup_only || env.feats.find_only)

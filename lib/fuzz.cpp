@@ -106,7 +106,7 @@ bool check_enabled_syscalls(const Environment &env)
     std::vector<std::string> loglines, disabled;
     load_file(env.syzkaller_log, loglines);
 
-    std::set<std::string> syscalls(env.required_syscalls.begin(), env.required_syscalls.end());
+    std::set<std::string> syscalls(env.base_syscalls.begin(), env.base_syscalls.end());
     for (int i = 0; i < loglines.size(); i++)
     {
         if (loglines.at(i).find("transitively disabled the following syscalls") != std::string::npos)
@@ -216,7 +216,7 @@ bool run_syz_repro(const Environment &env, const std::string &dest_prog, const s
 {
     int time = 0;
     std::string reprobin = env.syzdir + "bin/syz-repro";
-    std::vector<std::string> cmd = {reprobin, "-config", env.syzconfig, "--repro", dest_prog, crash_log};
+    std::vector<std::string> cmd = {reprobin, "-config", env.syzconfig, "-output", dest_prog, crash_log};
     const char ** arg_list = new const char*[cmd.size()+1];
     for (int i = 0; i < cmd.size(); i++)
         arg_list[i] = cmd.at(i).c_str();
@@ -231,11 +231,11 @@ bool run_syz_repro(const Environment &env, const std::string &dest_prog, const s
         time += TIME_INCREMENT;
 
         // syz-repro stopping is normal
-        if (!check_alive(pid))
+        if (!check_alive(pid, true))
             break;
     }
 
-    if (check_alive(pid))
+    if (check_alive(pid, true))
         kill_child(pid);
 
     delete[] arg_list;
@@ -247,6 +247,9 @@ Test_Result fuzz_loop_finding(Environment &env)
     Test_Result result;
     result.found = false;
     result.retry = false;
+
+    reset_kaller_wd(env);
+
     int retries = 0, unstable_count = 0;
     for (int i = 0; i < env.fuzztimes + retries && unstable_count < env.fuzztimes; i++)
     {
@@ -303,7 +306,7 @@ Test_Result poc_loop(Environment &env)
     result.retry = false;
 
     ProgOpts opts;
-    opts.from_prog(env.champion_repro);
+    opts.from_prog(env.primary_repro);
 
     VM_Config vmc;
     vmc.port = env.port.inc();
@@ -319,10 +322,10 @@ Test_Result poc_loop(Environment &env)
         std::cerr << "Warning: Only booted " << err << " VMs.\n" << std::flush;
 
     // Run the prog
-    vmpool.copy_all(env.champion_repro);
+    vmpool.copy_all(env.primary_repro);
     vmpool.copy_all(env.syzdir + "bin/linux_amd64/syz-execprog");
     vmpool.copy_all(env.syzdir + "bin/linux_amd64/syz-executor");
-    std::string cmd = "./syz-execprog -executor=./syz-executor " + opts.execopts_string() + " " + split(env.champion_repro, '/').back();
+    std::string cmd = "./syz-execprog -executor=./syz-executor " + opts.execopts_string() + " " + split(env.primary_repro, '/').back();
     vmpool.run_all(cmd);
     // timeout used by syzkaller
     // https://github.com/google/syzkaller/blob/master/sys/targets/targets.go#L834

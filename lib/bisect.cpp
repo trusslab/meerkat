@@ -68,7 +68,14 @@ int Bisect::set_mode(const Bisect_Mode &m)
     return 0;
 }
 
-int Bisect::remaining() const
+int Bisect::bisect_remaining(Git &linux_git) const
+{
+    if (bisect_version.name.empty() || good_version.name.empty())
+        return -1;
+    return linux_git.bisect_remaining(bisect_version.name, good_version.name);
+}
+
+int Bisect::remaining(Git &linux_git) const
 {
     switch(phase)
     {
@@ -77,7 +84,7 @@ int Bisect::remaining() const
     case Bisect_Releases:
         return releases.size() - index; // TODO: Might change
     case Bisect_Kernel:
-        return git_remaining;
+        return bisect_remaining(linux_git);
     default:
         return -1;
     }
@@ -135,7 +142,7 @@ int skip_tags(std::vector<Version> &releases)
 int Bisect::init_releases_phase(const Environment &env, Git &linux_git)
 {
     // We can get here after first or second anchor test.
-    Version anchor = good_version.name.empty() ? anchor_version : good_version;
+    Version anchor = good_version.name.empty() ? bisect_version : good_version;
 
     // Gather linux release tags, dates, and hashes
     releases = gather_release_tags(env, linux_git);
@@ -160,9 +167,6 @@ int Bisect::init_releases_phase(const Environment &env, Git &linux_git)
     
     // Set index to -1 here so it is 0 when we increment the first time.
     index = -1;
-
-    bisect_version = anchor;
-    bisect_index = -1;
     return 0;
 }
 
@@ -171,12 +175,12 @@ int Bisect::init_bisect_phase(Git &linux_git)
     git_stop = false;
     // Switch over to git bisect for this phase
     std::string bad = bisect_version.name;
-    std::string good = releases.at(bisect_index + 1).name;
+    std::string good = good_version.name;
     linux_git.cleanup();
     linux_git.bisect_reset();
     if (linux_git.error() < 0)
         return -1;
-    git_remaining = linux_git.bisect_start(bad, good);
+    linux_git.bisect_start(bad, good);
     if (linux_git.error() < 0)
     {
         std::cerr << "Error: git bisect start " << bad << " " << good << " failed\n" << std::flush;
@@ -284,17 +288,17 @@ retry:
     if (!already_fuzzed(this_session()))
     {
         // May be no need to rebuild kernel version
-        if (last_session.kernel.name != current_session.kernel.name)
+        if (last_session.kernel.name == current_session.kernel.name)
+            return err;
+
+        err = build_current_kernel(env, linux_git);
+        if (err < 0)
         {
-            err = build_current_kernel(env, linux_git);
-            if (err < 0)
-            {
-                log_kernel_build_error();
-                std::cout << "Attempting to recover.\n" << std::flush;
-                current_session.stable = false;
-                _archive_session();
-                goto retry;
-            }
+            log_kernel_build_error();
+            std::cout << "Attempting to recover.\n" << std::flush;
+            current_session.stable = false;
+            _archive_session();
+            goto retry;
         }
     }
 
@@ -383,7 +387,7 @@ std::string find_crash_log(const Environment &env)
     {
         crash_name = get_crash_name(hash);
         if (fuzz_is_crash_in(crash_name, env.duplicates))
-            return hash + "log0";
+            return hash + "/log0";
     }
 
     std::cerr << "Error: Failed to find expected syzkaller crash for syz-repro.\n" << std::flush;
@@ -396,17 +400,13 @@ int Bisect::do_syz_repro(Environment &env)
     std::string crash_log = find_crash_log(env);
     if (crash_log.empty())
         return -1;
+    std::cout << "Running syz-repro.\n" << std::flush;
     if (run_syz_repro(env, prog, crash_log))
     {
-        // Get the opts and prepend to the repro file
-        // TODO: Make syz-repro do this
-        // std::string opts = opts_from_syz_repro(env.reprolog());
-        // std::vector<std::string> tmpLines;
-        // if (!load_file(prog, tmpLines))
-        //     return -1;
-        // tmpLines.insert(tmpLines.begin(), {"#" + opts});
-        // write_file(prog, tmpLines);
-        env.champion_repro = prog;
+        std::cout << "New PoC saved at " << prog << std::endl << std::flush;
+        env.primary_repro = prog;
+        uniqify_reproducers(env);
+        std::cout << "Primary PoC: " << env.primary_repro << std::endl << std::flush;
         defer_repro = false;
     }
     else
@@ -440,14 +440,14 @@ Test_Result Bisect::test_anchor(Environment &env)
         result = test_anchor_poc(env);
     }
 
-    log_session_result(result, env.duplicates);
+    log_session_result(result);
     return result;
 }
 
 Test_Result Bisect::test_bisect_ff(Environment &env)
 {
     Test_Result result = fuzz_loop(env);
-    if (repro_count % REPRO_FREQ == 0 || defer_repro)
+    if (result.found && (repro_count % REPRO_FREQ == 0 || defer_repro))
         do_syz_repro(env);
 
     repro_count += result.found && !defer_repro ? 1 : 0;
@@ -472,7 +472,7 @@ Test_Result Bisect::test_bisect(Environment &env)
         result = test_bisect_poc(env);
     }
 
-    log_session_result(result, env.duplicates);
+    log_session_result(result);
     if (check_safe_mode(result, env.safe_mode, env.max_time, env.fuzztimes))
         log_safe_mode(env.max_time, env.fuzztimes);
 
@@ -522,24 +522,25 @@ int Bisect::record_kernel(const Test_Result &result, Git &linux_git)
     if (!already_fuzzed(current_session))
         archive_session(result);
     
+    int res = 0;
     if (result.found)
     {
         linux_git.cleanup();
-        git_remaining = linux_git.bisect_bad();
+        res = linux_git.bisect_bad();
         bisect_version = current_session.kernel;
     }
     else if (result.stable)
     {
         linux_git.cleanup();
-        git_remaining = linux_git.bisect_good();
+        res = linux_git.bisect_good();
         good_version = current_session.kernel;
     }
     else if (!result.stable)
     {
         linux_git.cleanup();
-        git_remaining = linux_git.bisect_skip();
+        res = linux_git.bisect_skip();
     }
-    if (git_remaining == -2)
+    if (res == -2)
         git_stop = true;
 
     return 0;
@@ -553,7 +554,6 @@ int Bisect::record_release(const Test_Result &result)
     if (result.found)
     {
         bisect_version = current_session.kernel;
-        bisect_index = index;
     }
     else if (result.stable)
         good_version = current_session.kernel;
@@ -614,8 +614,7 @@ std::string Bisect::print_result(const Environment &env, Git &linux_git, const s
     ss << "Bug Link:             " << env.buglink << "\n";
     ss << "Bisection Result:     " << bisect_version.date.get_date() << " - " << bisect_version.name << "\n";
     ss << "Bisected Commit Name: " << linux_git.get_commit_name(bisect_version.name) << "\n";
-    ss << "Run Time:             " << runtime(start) << "\n";
-    ss << "Arch:                 " << env.arch << "\n\n";
+    ss << "Run Time:             " << runtime(start) << "\n\n";
 
     ss << "Anchor Commit:        " << anchor_version.date.get_date() << " - " << anchor_version.name << "\n";
     ss << "Bisection Result:     " << bisect_version.date.get_date() << " - " << bisect_version.name << "\n";
@@ -623,10 +622,9 @@ std::string Bisect::print_result(const Environment &env, Git &linux_git, const s
     return ss.str();
 }
 
-std::string runtime(const std::chrono::steady_clock::time_point &start)
+std::string runtime(const std::chrono::steady_clock::time_point &start, const std::chrono::steady_clock::time_point &end)
 {
     std::stringstream pretty;
-    std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
     auto diff = end - start;
 
     auto hours = std::chrono::duration_cast<std::chrono::hours>(diff);
@@ -636,6 +634,53 @@ std::string runtime(const std::chrono::steady_clock::time_point &start)
     pretty << hours.count() << "h" << minutes.count() << "m" << seconds.count() << "s";
 
     return pretty.str();
+}
+
+std::string runtime(const std::chrono::steady_clock::time_point &start)
+{
+    std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
+    return runtime(start, end);
+}
+
+int uniqify_reproducers(Environment &env)
+{
+    std::vector<std::string> repros = list_dir(env.reprodir);
+    if (repros.size() <= 0)
+    {
+        std::cerr << "Error: No reproducer files found.\n" << std::flush;
+        return -1;
+    }
+
+    std::vector<std::string> keep, remove;
+    bool removed = false;
+    bool saved_primary = false;
+    keep.push_back(repros.front());
+    for (int i = 1; i < repros.size(); i++)
+    {
+        removed = false;
+        for (std::string kept : keep)
+        {
+            if (compare_files(kept, repros.at(i)))
+            {
+                if (!saved_primary && !env.primary_repro.empty()
+                    && repros.at(i).find(env.primary_repro) != std::string::npos)
+                {
+                    saved_primary = true;
+                    env.primary_repro = kept;
+                }
+                remove.push_back(repros.at(i));
+                removed = true;
+                break;
+            }
+        }
+        if (!removed)
+            keep.push_back(repros.at(i));
+    }
+
+    for (std::string r : remove)
+        remove_file(r);
+
+    return 0;
 }
 
 void log_safe_mode(int max_time, int fuzztimes)
@@ -727,10 +772,10 @@ void log_attempt_result_poc(const Syzkaller_Result &attempt, int i, const std::v
         std::cout << (fuzz_is_crash_in(cr.name, dups) ? "*** " : "    ") << cr.name << std::endl << std::flush;
 }
 
-void log_session_result(const Test_Result &result, const std::vector<std::string> &dups)
+void log_session_result(const Test_Result &result)
 {
     std::cout << "The bug was " << (result.found ? "" : "not ") << "found.\n" << std::flush;
 
     if (!result.stable)
-        std::cout << "Warning: This session is unstable.\n" << std::flush;
+        std::cout << "This commit is flagged as unstable.\n" << std::flush;
 }

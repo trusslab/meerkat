@@ -22,7 +22,7 @@ void print_help()
         << "    -i [id]: REQUIRED. The id of the bisector (i.e. 1).\n"
         << "    --config (c) [config.cfg]: [config]: REQUIRED. The config file containing the bug information.\n"
         << endl
-        << "This Program assumes there is at least reproducer and both Linux and Syzkaller are built.\n"
+        << "This Program assumes there is at least one reproducer and both Linux and Syzkaller are built.\n"
         << endl << flush;
 }
 
@@ -79,10 +79,18 @@ int main(int argc, char ** argv)
     }
 
     // read the execprog options
-    std::vector<std::string> progs = list_dir(env.reprodir);
-    if (progs.empty())
-        return -1;
-    std::string prog = progs.front();
+    std::string prog;
+    if (env.primary_repro.empty())
+    {
+        std::vector<std::string> progs = list_dir(env.reprodir);
+        if (progs.empty())
+            return -1;
+        prog = progs.front();
+    }
+    else
+    {
+        prog = env.primary_repro;
+    }
     ProgOpts opts;
     opts.from_prog(prog);
 
@@ -128,7 +136,7 @@ int main(int argc, char ** argv)
         log_attempt_result_poc(res.attempts.back(), i, env.duplicates);
         res.found = res.attempts.back().found ? true : res.found;
     }
-    log_session_result(res, env.duplicates);
+    log_session_result(res);
 
     return 0;
 }

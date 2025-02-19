@@ -443,7 +443,6 @@ int syz_db_unpack_corpus(const Environment &env, const string &corpusdir, const 
 // Packs the corpus
 int prepare_kaller_wd(const Environment &env)
 {
-    bool do_pack = false;
     int err = 0;
     string corpus = env.syzwd + "corpus.db";
     string corpusdir = env.wd + "corpus";
@@ -455,7 +454,6 @@ int prepare_kaller_wd(const Environment &env)
     if (env.feats.stateful_corpus && check_file(corpus))
     {
         err = syz_db_unpack_corpus(env, corpusdir, corpus);
-        do_pack = true;
         if (err < 0)
             goto exit;
     }
@@ -465,10 +463,7 @@ int prepare_kaller_wd(const Environment &env)
     // Copy the reproducers into the corpus directory
     for (string repro : list_dir(env.reprodir))
         copy(repro, corpusdir);
-    do_pack = true;
-
-    if (do_pack)
-        err = syz_db_pack_corpus(env, corpusdir, corpus);
+    err = syz_db_pack_corpus(env, corpusdir, corpus);
 
 exit:
     if (check_file(corpusdir))

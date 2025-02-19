@@ -506,7 +506,7 @@ void get_one_producer_syscall(const TypeTag &this_resource, vector<TypeTag> &nee
     return;
 }
 
-vector<string> slim_template(const string &reproDir, const string &full_template)
+vector<string> slim_template(Environment &env, const string &full_template)
 {
     // Wow this is all bad. But is works (mostly) and I don't want to touch it.
     int pos0, pos1, index;
@@ -535,8 +535,7 @@ vector<string> slim_template(const string &reproDir, const string &full_template
     // Read the reproducer to get syscalls
 
     // For each repro
-    vector<string> reproducers = list_dir(reproDir);
-    vector<string> reproducer_syscalls;
+    vector<string> reproducers = list_dir(env.reprodir);
     for (string file : reproducers)
     {
         reproIn.open(file);
@@ -556,15 +555,15 @@ vector<string> slim_template(const string &reproDir, const string &full_template
             pos0 = (pos0 == string::npos) ? 0 : pos0 + 3;
             pos1 = line.find("(");
 
-            if (!is_in_string(reproducer_syscalls, line.substr(pos0, pos1 - pos0)))
-                reproducer_syscalls.push_back(line.substr(pos0, pos1 - pos0));
+            if (!is_in_string(env.base_syscalls, line.substr(pos0, pos1 - pos0)))
+                env.base_syscalls.push_back(line.substr(pos0, pos1 - pos0));
             line.clear();
         }
         reproIn.close();
     }
 
     bool hasauto = false;
-    for (string s : reproducer_syscalls)
+    for (string s : env.base_syscalls)
     {
         if (s.find("auto") != string::npos)
         {
@@ -672,7 +671,7 @@ vector<string> slim_template(const string &reproDir, const string &full_template
     // grab everything first, then print it all to the file
 
     // initial syscalls
-    for (string s : reproducer_syscalls)
+    for (string s : env.base_syscalls)
     {
         index = find_in_syscalls(syscalls, s);
         if (!is_in_needed(needed, TypeTag(syscallClass ,s)) && index >= 0)
@@ -756,10 +755,10 @@ vector<string> list_template_files(const string &template_dir, bool hasauto)
     return files;
 }
 
-vector<string> get_reproduer_syscall_descriptions(const Environment &env)
+vector<string> get_reproduer_syscall_descriptions(Environment &env)
 {
     string full_template = env.syzdir + "sys/linux";
-    vector<string> syscalls = slim_template(env.reprodir, full_template);
+    vector<string> syscalls = slim_template(env, full_template);
     if (syscalls.size() == 0)
     {
         cout << "Error: failed to slim the template.\n";

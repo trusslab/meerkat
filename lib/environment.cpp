@@ -118,8 +118,8 @@ int Environment::parse_config_file(const std::string &filename)
 
     if (json.has_name("reproducer") && json.is_type("reproducer", JSON_Val_string))
     {
-        champion_repro = json.get_string("reproducer");
-        champion_repro = starts_with(champion_repro, "/") ? champion_repro : reprodir + champion_repro;
+        primary_repro = json.get_string("reproducer");
+        primary_repro = starts_with(primary_repro, "/") ? primary_repro : reprodir + primary_repro;
     }
 
     if (json.has_name("bugID") && json.is_type("bugID", JSON_Val_string))
@@ -314,14 +314,17 @@ std::string Environment::syscall_string() const
     return ss.str();
 }
 
-void Environment::config_print(const std::string &label, const std::string &config) const
+void Environment::config_print(const std::string &label, const std::string &config, const int n) const
 {
-    std::cout << std::left << std::setw(CONFW) << (label + ":") << config << std::endl << std::flush;
+    std::cout << std::left << std::setw(CONFW) << (label + ":" + (n != -1 ? " (" + std::to_string(n) + ")" : ""))
+              << config << std::endl << std::flush;
 }
 
 void Environment::print() const
 {
     config_print("Syzbot Link", buglink);
+    if (!working_name.empty())
+        config_print("Working Name", working_name);
 
     if (duplicates.size() > 1)
     {
@@ -349,14 +352,14 @@ void Environment::print() const
     config_print("Workdir", wd);
     config_print("Kconfig", kconfig);
     if (!reprodir.empty())
-        config_print("Reproducers", (reprodir + " (" + std::to_string(list_dir(reprodir).size()) + ")"));
-    if (!champion_repro.empty())
-        config_print("Reproducer", champion_repro);
+        config_print("Reproducers", reprodir, list_dir(reprodir).size());
+    if (!primary_repro.empty())
+        config_print("Primary PoC", primary_repro);
     config_print("Syzkaller Workdir", syzwd);
     config_print("Log Directory", logdir);
     std::cout << std::endl;
     if (required_syscalls.size() > 0)
-        config_print("Syscalls", syscall_string());
+        config_print("Syscalls", syscall_string(), required_syscalls.size());
     config_print("VM Count", std::to_string(vmc.numVM));
     config_print("CPU Count", std::to_string(vmc.numCPU));
     config_print("Procs", std::to_string(vmc.numProcs));

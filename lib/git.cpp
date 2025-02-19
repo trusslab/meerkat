@@ -343,6 +343,16 @@ int Git::bisect_skip()
     return rem;
 }
 
+int Git::bisect_remaining(const std::string &bad, const std::string &good)
+{
+    std::string ret = git_read({"rev-list", "--count", good + ".." + bad});
+    int count = std::stoi(ret);
+    if (count >= 0)
+        return count + 1;
+    
+    return -1;
+}
+
 int Git::bisect_reset()
 {
     err = bisect({"reset"}, "/dev/null");

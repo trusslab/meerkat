@@ -30,7 +30,7 @@ writebugconfig () {
     echo "    \"branch\": \"${branch}\"," >> $bisectorconfig
     echo "    \"kernel_config\": \"${wd}config-${curBug}.txt\"," >> $bisectorconfig
     echo "    \"reproducers\": \"${wd}reproducers/\"," >> $bisectorconfig
-    echo "    \"reproducer\": \"${championrepro}\"," >> $bisectorconfig
+    echo "    \"reproducer\": \"${primaryrepro}\"," >> $bisectorconfig
     echo "    \"wd\": \"${wd}\"," >> $bisectorconfig
     echo "    \"home\": \"${bisectdir}\"," >> $bisectorconfig
     echo "    \"syzkaller\": \"${bisectdir}syzkaller/\"," >> $bisectorconfig
@@ -154,13 +154,13 @@ while (( $line <= $endLine )); do
     rm -rf ${wd}reproducers/*
     allrepro=$(echo "$linetext" | awk -F',' '{ print $19; }')
     bisectrepro=$(echo "$linetext" | awk -F',' '{ print $17; }')
-    championrepro=""
+    primaryrepro=""
     reprocount=0
     for reprolink in ${allrepro[@]}; do
         reprocount=$(( $reprocount + 1 ))
         wget $reprolink -O ${wd}reproducers/repro-${curBug}-${reprocount}.prog 2> /dev/null
-        if [[ $championrepro == "" && $reprolink == $bisectrepro ]]; then
-            championrepro=repro-${curBug}-${reprocount}.prog
+        if [[ $primaryrepro == "" && $reprolink == $bisectrepro ]]; then
+            primaryrepro=repro-${curBug}-${reprocount}.prog
         fi
     done
 

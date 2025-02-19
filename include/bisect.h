@@ -58,9 +58,7 @@ private:
     Version good_version;
 
     int index;
-    int bisect_index;
 
-    int git_remaining;
     bool git_stop;
 
     unsigned int repro_count;
@@ -93,6 +91,8 @@ private:
     Test_Result test_anchor(Environment &);
     Test_Result test_bisect(Environment &);
 
+    int bisect_remaining(Git &) const;
+
     int record_anchor(const Test_Result &);
     int record_release(const Test_Result &);
     int record_kernel(const Test_Result &, Git &);
@@ -117,7 +117,7 @@ public:
     Bisect_Phase this_phase() const
     { return phase; }
 
-    int remaining() const;
+    int remaining(Git &) const;
 
     int gather_compiler_versions(const Environment &);
 
@@ -138,6 +138,8 @@ public:
 
 std::string runtime(const std::chrono::steady_clock::time_point &);
 
+int uniqify_reproducers(Environment &);
+
 bool check_safe_mode(const Test_Result &, bool &, unsigned int &, unsigned int &);
 // switch to fuzzing in safe mode. More fuzzing attempts and for longer.
 void set_safe_mode(bool &, unsigned int &, unsigned int &);
@@ -153,6 +155,6 @@ void log_syzkaller_build_error();
 
 void log_attempt_result(const Syzkaller_Result &, int, const std::vector<std::string> &, int);
 void log_attempt_result_poc(const Syzkaller_Result &, int, const std::vector<std::string> &);
-void log_session_result(const Test_Result &, const std::vector<std::string> &);
+void log_session_result(const Test_Result &);
 
 #endif
