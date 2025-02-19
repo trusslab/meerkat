@@ -231,13 +231,14 @@ int bisect(Environment &env)
 
     if (bisector.mode() == Mode_PoC)
     {
+        if (env.primary_repro.empty())
+            env.primary_repro = list_dir(env.reprodir).front();
+
         vector<string> ordered_pocs = order_pocs(env);
         stage_title = "Primary PoC Test";
 
         // Use more vms at 2 cpus during poc bisection. Simlar to SB.
         env.vmc = env.vmst;
-        if (env.primary_repro.empty())
-            env.primary_repro = list_dir(env.reprodir).front();
 
 redo_poc:
         stagetime = chrono::steady_clock::now();

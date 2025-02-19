@@ -372,8 +372,12 @@ void Environment::print() const
     config_print("Procs", std::to_string(vmc.numProcs));
     config_print("Memory", std::to_string(memory));
     config_print("Make Procs", std::to_string(makeprocs));
-    config_print("Max Time", std::to_string(max_time));
-    config_print("Max Attempts", std::to_string(fuzztimes));
+    if (feats.ff_test)
+    {
+        config_print("Max Time", std::to_string(max_time));
+        config_print("Max Attempts", std::to_string(fuzztimes));
+    }
+    
 
     return;
 }
