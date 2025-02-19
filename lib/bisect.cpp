@@ -54,11 +54,6 @@ int Bisect::init(const Environment &env, Git &linux_git)
     good_version.name.clear();
     last_session.kernel.name.clear();
 
-    if (mode() == Mode_FF)
-        reset_kaller_wd(env);
-    else if (mode() == Mode_PoC)
-        reset_runner_wd(env);
-
     return 0;
 }
 

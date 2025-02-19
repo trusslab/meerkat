@@ -317,6 +317,7 @@ Test_Result poc_loop(Environment &env)
     // Prep the vms
     VMPool vmpool(env.vmc.numVM, vmc);
 
+    reset_runner_wd(env);
     err = vmpool.boot_and_check_all();
     if (err < env.vmc.numVM)
         std::cerr << "Warning: Only booted " << err << " VMs.\n" << std::flush;
