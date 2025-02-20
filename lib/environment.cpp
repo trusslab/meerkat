@@ -120,7 +120,7 @@ int Environment::parse_config_file(const std::string &filename)
     if (json.has_name("reproducer") && json.is_type("reproducer", JSON_Val_string))
     {
         primary_repro = json.get_string("reproducer");
-        primary_repro = starts_with(primary_repro, "/") ? primary_repro : reprodir + primary_repro;
+        primary_repro = !primary_repro.empty() && starts_with(primary_repro, "/") ? primary_repro : reprodir + primary_repro;
     }
 
     if (json.has_name("bugID") && json.is_type("bugID", JSON_Val_string))
