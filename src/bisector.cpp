@@ -237,6 +237,8 @@ int bisect(Environment &env)
             env.primary_repro = list_dir(env.reprodir).front();
 
         vector<string> ordered_pocs = order_pocs(env);
+        int numPoCs = ordered_pocs.size() + 1;
+        bool found = false;
         stage_title = "Primary PoC Test";
 
         // Use more vms at 2 cpus during poc bisection. Simlar to SB.
@@ -250,13 +252,27 @@ redo_poc:
 
         if (env.feats.poc_all_pocs)
         {
-            if (ordered_pocs.empty())
-                goto print_result;
+            if (numPoCs <= 1)
+            {
+                if (err != 1)
+                    goto print_result;
+                
+                cout << bisector.print_anchor_fail(env, starttime, stagetime, stage_title, env.primary_repro) << flush;
+                goto finish;
+            }
 
             if (err == 1)
                 cout << bisector.print_anchor_fail(env, starttime, stagetime, stage_title, env.primary_repro) << flush;
             else
+            {
                 cout << bisector.print_partial_result(env, linux_git, starttime, stagetime, stage_title, env.primary_repro) << flush;
+                found = true;
+            }
+
+            if (ordered_pocs.empty() && found)
+                goto print_result;
+            else if (ordered_pocs.empty())
+                goto finish;
 
             env.primary_repro = ordered_pocs.back();
             ordered_pocs.pop_back();

@@ -2,7 +2,7 @@
 #define CONSTS_H
 
 #define PROJECT_NAME "Bisector"
-#define REVISION "1.0.1"
+#define REVISION "1.0.2"
 
 // Resource Allocation for a single instance of Syzkaller
 // VM -> the number of VMs to be given to syzkaller

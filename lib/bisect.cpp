@@ -280,21 +280,18 @@ retry:
     current_session = Session(linux_version, mode(), false);
     log_session_info(current_session, inc_session());
 
-    if (!already_fuzzed(this_session()))
-    {
-        // May be no need to rebuild kernel version
-        if (last_session.kernel.name == current_session.kernel.name)
-            return err;
+    // May be no need to rebuild kernel version
+    if (last_session.kernel.name == current_session.kernel.name)
+        return err;
 
-        err = build_current_kernel(env, linux_git);
-        if (err < 0)
-        {
-            log_kernel_build_error();
-            std::cout << "Attempting to recover.\n" << std::flush;
-            current_session.stable = false;
-            _archive_session();
-            goto retry;
-        }
+    err = build_current_kernel(env, linux_git);
+    if (err < 0)
+    {
+        log_kernel_build_error();
+        std::cout << "Attempting to recover.\n" << std::flush;
+        current_session.stable = false;
+        _archive_session();
+        goto retry;
     }
 
     return err;
@@ -313,24 +310,21 @@ retry:
         return -1;
     log_session_info(current_session, inc_session());
 
-    if (!already_fuzzed(this_session()))
+    err = build_current_kernel(env, linux_git, true);
+    if (err < 0)
     {
-        err = build_current_kernel(env, linux_git, true);
-        if (err < 0)
-        {
-            log_kernel_build_error();
-            std::cout << "Attempting to recover.\n" << std::flush;
-            current_session.stable = false;
-            _archive_session();
-            linux_git.cleanup();
-            err = linux_git.bisect_skip();
-            // TODO: Fix this return value nonsense to better handle multiple guilty commits
-            if (err == -3)
-                std::cout << "Git bisect reported multiple guilty commits\n" << std::flush;
-            if (err <= -2)
-                return 1;
-            goto retry;
-        }
+        log_kernel_build_error();
+        std::cout << "Attempting to recover.\n" << std::flush;
+        current_session.stable = false;
+        _archive_session();
+        linux_git.cleanup();
+        err = linux_git.bisect_skip();
+        // TODO: Fix this return value nonsense to better handle multiple guilty commits
+        if (err == -3)
+            std::cout << "Git bisect reported multiple guilty commits\n" << std::flush;
+        if (err <= -2)
+            return 1;
+        goto retry;
     }
 
     return err;
@@ -484,35 +478,26 @@ Test_Result Bisect::test_current(Environment &env, Git &linux_git)
 {
     Test_Result res;
 
-    if (!already_fuzzed(this_session()))
-    {
 retry:
-        switch (phase)
-        {
-        case Bisect_Anchor:
-            res = test_anchor(env);
-            break;
-        case Bisect_Releases:
-        case Bisect_Kernel:
-            res = test_bisect(env);
-            break;
-        default:
-            break;
-        }
-
-        if (res.retry && env.try_patch)
-        {
-            // In the case a blocking bug is found and removed, rebuild and go again
-            log_session_info(current_session, inc_session());
-            build_current_kernel(env, linux_git);
-            goto retry;
-        }
-    }
-    else
+    switch (phase)
     {
-        res.found = session_was_found(this_session()) == 1 ? true : false;
-        res.stable = session_was_stable(this_session()) == 1 ? true : false;
-        std::cout << "The bug was " << (res.found ? "found " : "not found ") << "in a previous identical session.\n" << std::flush;
+    case Bisect_Anchor:
+        res = test_anchor(env);
+        break;
+    case Bisect_Releases:
+    case Bisect_Kernel:
+        res = test_bisect(env);
+        break;
+    default:
+        break;
+    }
+
+    if (res.retry && env.try_patch)
+    {
+        // In the case a blocking bug is found and removed, rebuild and go again
+        log_session_info(current_session, inc_session());
+        build_current_kernel(env, linux_git);
+        goto retry;
     }
 
     return res;
