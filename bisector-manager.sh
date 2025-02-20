@@ -198,6 +198,7 @@ while (( $line <= $endLine )); do
         set -e
         cp ${wd}reproducers/* ${wd}old/
         number=$(( $number + 1 ))
+        echo "================================================="
     else
         echo "Possible bad parse on line $line"
         echo ",bad parse" >> $logfile
