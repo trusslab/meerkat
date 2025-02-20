@@ -386,7 +386,7 @@ Syzkaller_Result symbolize(Environment &env, const std::string &file)
             if (!do_ignore)
             {
                 res.reports.push_back(Crash_Report(name, 0));
-                res.found = res.found ? fuzz_is_crash_in(name, env.duplicates) : res.found;
+                res.found = fuzz_is_crash_in(name, env.duplicates) ? true : res.found;
                 res.bad_crashes += fuzz_is_bad_crash(name) ? 1 : 0;
             }
         }
