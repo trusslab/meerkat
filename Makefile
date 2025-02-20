@@ -11,7 +11,7 @@ PROJECTNAME := bisector
 
 .DEFAULT_GOAL := $(PROJECTNAME)
 
-.phony: all $(PROJECTNAME) $(BINDIR) helpers tools syzkaller
+.PHONY: all $(PROJECTNAME) $(BINDIR) helpers tools syzkaller
 
 all: $(PROJECTNAME) helpers tools syzkaller
 
@@ -87,9 +87,10 @@ $(BINDIR):
 	@mkdir $(BINDIR)
 
 syzkaller:
-	make -C syzkaller/
-	make -C syzkaller/ symbolize
+	$(MAKE) -C syzkaller/
+	$(MAKE) -C syzkaller/ symbolize
 
 clean:
 	$(RM) -r $(BINDIR) $(BUILDDIR)
 	$(RM) $(HELPERDIR)diffdate
+	$(MAKE) -C syzkaller/ clean
