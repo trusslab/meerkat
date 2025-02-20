@@ -151,8 +151,10 @@ int do_bisection(Environment &env, Bisect &bisector, Git &linux_git)
     while ((err = bisector.next_session(env, linux_git)) == 0)
     {
         result = bisector.test_current(env, linux_git);
-        bisector.record(result, linux_git);
+        err = bisector.record(result, linux_git);
         cout << "About " << bisector.remaining(linux_git) << " commits remaining\n" << flush;
+        if (err == -3)
+            cout << "Git bisect reported multiple guilty commits\n" << flush;
     }
     if (err < 0)
     {

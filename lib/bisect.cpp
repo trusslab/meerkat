@@ -323,7 +323,11 @@ retry:
             current_session.stable = false;
             _archive_session();
             linux_git.cleanup();
-            if (linux_git.bisect_skip() == -2)
+            err = linux_git.bisect_skip();
+            // TODO: Fix this return value nonsense to better handle multiple guilty commits
+            if (err == -3)
+                std::cout << "Git bisect reported multiple guilty commits\n" << std::flush;
+            if (err <= -2)
                 return 1;
             goto retry;
         }
@@ -396,12 +400,14 @@ int Bisect::do_syz_repro(Environment &env)
     if (crash_log.empty())
         return -1;
     std::cout << "Running syz-repro.\n" << std::flush;
+    std::chrono::steady_clock::time_point start = std::chrono::steady_clock::now();
     if (run_syz_repro(env, prog, crash_log))
     {
         std::cout << "New PoC saved at " << prog << std::endl << std::flush;
         env.primary_repro = prog;
         uniqify_reproducers(env);
-        std::cout << "Primary PoC: " << env.primary_repro << std::endl << std::flush;
+        std::cout << "Primary PoC:     " << env.primary_repro << std::endl
+                  << "Run Time:        " << runtime(start) << std::endl << std::flush;
         defer_repro = false;
     }
     else
@@ -535,10 +541,10 @@ int Bisect::record_kernel(const Test_Result &result, Git &linux_git)
         linux_git.cleanup();
         res = linux_git.bisect_skip();
     }
-    if (res == -2)
+    if (res <= -2)
         git_stop = true;
 
-    return 0;
+    return res;
 }
 
 int Bisect::record_release(const Test_Result &result)

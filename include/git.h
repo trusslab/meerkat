@@ -23,6 +23,8 @@ private:
 
     int create_repo();
 
+    int handle_bisect(const std::string &);
+
 public:
     Git(const std::string &, const std::string &, const std::string &);
     int error() const

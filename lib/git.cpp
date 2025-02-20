@@ -260,13 +260,12 @@ int Git::bisect_start(const std::string &bad, const std::string &good)
     return rem;
 }
 
-// git bisect good
-// returns number of remaining commits, -1 on error, -2 on stop
-int Git::bisect_good()
+// returns number of remaining commits, -1 on error, -2 on stop, -3 on multiple results
+int Git::handle_bisect(const std::string &output)
 {
     int rem = -1;
-    std::string output = bisect_read({"good"});
     std::vector<std::string> spl = split(output, ' ');
+
     for (int i = 0; i < spl.size(); i++)
     {
         if (spl.at(i).find("Bisecting:") != std::string::npos && i + 1 < spl.size())
@@ -281,66 +280,31 @@ int Git::bisect_good()
     }
     else if (rem == -1 && output.find("There are only 'skip'ped commits") != std::string::npos)
     {
-        rem = -2;
+        rem = -3;
     }
     else if (rem == -1)
         err = -1;
     
     return rem;
+}
+
+// git bisect good
+int Git::bisect_good()
+{
+    std::string output = bisect_read({"good"});
+    return handle_bisect(output);
 }
 
 int Git::bisect_bad()
 {
-    int rem = -1;
     std::string output = bisect_read({"bad"});
-    std::vector<std::string> spl = split(output, ' ');
-    for (int i = 0; i < spl.size(); i++)
-    {
-        if (spl.at(i).find("Bisecting:") != std::string::npos && i + 1 < spl.size())
-        {
-            rem = stoi(spl.at(i + 1));
-            break;
-        }
-    }
-    if (rem == -1 && spl.size() > 1 && output.find("is the first bad commit") != std::string::npos)
-    {
-        rem = -2;
-    }
-    else if (rem == -1 && output.find("There are only 'skip'ped commits") != std::string::npos)
-    {
-        rem = -2;
-    }
-    else if (rem == -1)
-        err = -1;
-    
-    return rem;
+    return handle_bisect(output);
 }
 
 int Git::bisect_skip()
 {
-    int rem = -1;
     std::string output = bisect_read({"skip"});
-    std::vector<std::string> spl = split(output, ' ');
-    for (int i = 0; i < spl.size(); i++)
-    {
-        if (spl.at(i).find("Bisecting:") != std::string::npos && i + 1 < spl.size())
-        {
-            rem = stoi(spl.at(i + 1));
-            break;
-        }
-    }
-    if (rem == -1 && spl.size() > 1 && output.find("is the first bad commit") != std::string::npos)
-    {
-        rem = -2;
-    }
-    else if (rem == -1 && output.find("There are only 'skip'ped commits") != std::string::npos)
-    {
-        rem = -2;
-    }
-    else if (rem == -1)
-        err = -1;
-
-    return rem;
+    return handle_bisect(output);
 }
 
 int Git::bisect_remaining(const std::string &bad, const std::string &good)
