@@ -236,7 +236,11 @@ bool run_syz_repro(const Environment &env, const std::string &dest_prog, const s
     }
 
     if (check_alive(pid, true))
+    {
         kill_child(pid);
+        std::cout << "syz-repro was terminated after " << time << " minutes\n" << std::flush;
+    }
+        
 
     delete[] arg_list;
     return check_file(dest_prog);
