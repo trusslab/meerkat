@@ -11,7 +11,7 @@ PROJECTNAME := bisector
 
 .DEFAULT_GOAL := $(PROJECTNAME)
 
-.PHONY: all $(PROJECTNAME) $(BINDIR) helpers tools syzkaller
+.PHONY: all $(PROJECTNAME) helpers tools syzkaller
 
 all: $(PROJECTNAME) helpers tools syzkaller
 
