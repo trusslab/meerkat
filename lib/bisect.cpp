@@ -400,13 +400,13 @@ int Bisect::do_syz_repro(Environment &env)
         std::cout << "New PoC saved at " << prog << std::endl << std::flush;
         env.primary_repro = prog;
         uniqify_reproducers(env);
-        std::cout << "Primary PoC:     " << env.primary_repro << std::endl
-                  << "Run Time:        " << runtime(start) << std::endl << std::flush;
+        std::cout << "Primary PoC:     " << env.primary_repro << std::endl;
         defer_repro = false;
     }
     else
         defer_repro = true;
-    
+
+    std::cout << "Run Time:        " << runtime(start) << std::endl << std::flush;
     return 0;
 }
 
