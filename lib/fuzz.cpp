@@ -202,10 +202,10 @@ Syzkaller_Result run_syzkaller(const Environment &env)
     }
     result.ttf = time;
 
-    if (check_alive(pid))
-        kill_child(pid);
-    else
+    if (!check_alive(pid))
         handle_syzkaller_crash();
+
+    kill_child(pid, SIGKILL);
 
     delete[] arg_list;
     return result;
@@ -239,7 +239,7 @@ bool run_syz_repro(const Environment &env, const std::string &dest_prog, const s
     {
         std::cout << "syz-repro was terminated after " << time << " minutes\n" << std::flush;
     }
-    kill_child(pid);
+    kill_child(pid, SIGKILL);
 
     delete[] arg_list;
     return check_file(dest_prog);

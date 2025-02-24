@@ -179,10 +179,10 @@ std::string exec_and_read(const std::string &prog, char **args)
     return output;
 }
 
-int kill_child(int pid, bool quiet)
+int kill_child(int pid, int sig, bool quiet)
 {
     int ret, ret_status;
-    kill(pid, SIGINT);
+    kill(pid, sig);
     waitpid(pid, &ret, 0);
     if (WIFEXITED(ret))
         ret_status = WEXITSTATUS(ret);
