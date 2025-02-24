@@ -17,7 +17,7 @@ kernel=/mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/arch/x86/boot/bzImage
 # qemu-system-x86_64 -m 2G -smp 2 -display none -serial stdio -no-reboot -enable-kvm -cpu host -net nic,model=e1000 -net user,host=10.0.2.10,hostfwd=tcp::1569-:22 -hda $image -snapshot -kernel $kernel -append "$crashargs"
 
 # Raw from Syzkaller:
-qemu-system-x86_64 -m 4096 -smp 2 -display none -serial stdio -no-reboot -enable-kvm -cpu host,migratable=off -net nic,model=e1000 -net user,host=10.0.2.10,hostfwd=tcp::12001-:22 -hda $image -snapshot -kernel $kernel -append "$crashargs"
+qemu-system-x86_64 -m 4096 -smp 2,sockets=2,cores=1 -display none -serial stdio -no-reboot -enable-kvm -cpu host,migratable=off -net nic,model=e1000 -net user,host=10.0.2.10,hostfwd=tcp::12001-:22 -hda $image -snapshot -kernel $kernel -append "$crashargs"
 
 # qemu runs on port 12000
 # ssh -i image/stretch/stretch.id_rsa -p 12000 -o "StrictHostKeyChecking no" root@localhost
