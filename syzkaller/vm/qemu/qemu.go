@@ -487,17 +487,11 @@ func (inst *instance) boot() error {
 }
 
 func (inst *instance) buildQemuArgs() ([]string, error) {
-	numSock := 1
+	numSock := inst.cfg.CPU
 	numCore := 1
-	if inst.cfg.CPU >= 2 {
-		numSock = 2
-	}
-	if inst.cfg.CPU > 2 {
-		numCore = inst.cfg.CPU / 2
-	}
 	args := []string{
 		"-m", strconv.Itoa(inst.cfg.Mem),
-		"-smp", strconv.Itoa(inst.cfg.CPU) + ",sockets="+strconv.Itoa(numSock)+",cores="+strconv.Itoa(numCore),
+		"-smp", strconv.Itoa(inst.cfg.CPU)+",sockets="+strconv.Itoa(numSock)+",cores="+strconv.Itoa(numCore),
 		"-chardev", fmt.Sprintf("socket,id=SOCKSYZ,server=on,wait=off,host=localhost,port=%v", inst.monport),
 		"-mon", "chardev=SOCKSYZ,mode=control",
 		"-display", "none",
