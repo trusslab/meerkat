@@ -503,6 +503,15 @@ retry:
     return res;
 }
 
+// Set good_version to be the parent of the bisect_commit
+int Bisect::set_good_version(Git &linux_git)
+{
+    std::string parent = linux_git.get_first_parent(bisect_version.name);
+    Date parent_date = linux_git.get_commit_date(parent);
+    good_version = Version(parent, parent_date);
+    return 0;
+}
+
 int Bisect::record_kernel(const Test_Result &result, Git &linux_git)
 {
     if (!already_fuzzed(current_session))

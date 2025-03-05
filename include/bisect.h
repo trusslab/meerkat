@@ -129,6 +129,7 @@ public:
     // Fuzz and return a result
     Test_Result test_current(Environment &, Git &);
 
+    int set_good_version(Git &);
     int record(const Test_Result &, Git &);
     int archive_session(const Test_Result &);
 

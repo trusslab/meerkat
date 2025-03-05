@@ -477,6 +477,14 @@ int Git::revlist(const std::string &old_hash, const std::string &new_hash, const
     return err;
 }
 
+std::string Git::get_first_parent(const std::string &hash)
+{
+    // git show -s --oneline --format=%P
+    std::string res = git_read({"show", "-s", "--oneline", "--format=%P", hash});
+    res = split(res, ' ').at(0);
+    return res;
+}
+
 bool Git::is_ancestor(const std::string &child, const std::string &maybe_parent)
 {
     err = git({"merge-base", child, "--is-ancestor", maybe_parent}, "/dev/null", true);

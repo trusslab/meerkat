@@ -162,6 +162,9 @@ int do_bisection(Environment &env, Bisect &bisector, Git &linux_git)
         return -1;
     }
 
+    // set bisector.good_version to bisector.bisect_version.first_parent()
+    bisector.set_good_version(linux_git);
+
     return 0;
 }
 

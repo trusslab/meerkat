@@ -73,6 +73,7 @@ public:
     int revlist_topo(const std::string &, const std::string &, const std::string &);
     int revlist(const std::string &, const std::string &, const std::string &);
 
+    std::string get_first_parent(const std::string &);
     bool is_ancestor(const std::string &, const std::string &);
 };
 
