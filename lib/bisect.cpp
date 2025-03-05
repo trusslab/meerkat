@@ -712,8 +712,8 @@ void log_safe_mode(int max_time, int fuzztimes)
 void set_safe_mode(bool &safe_mode, unsigned int &max_time, unsigned int &fuzztimes)
 {
     safe_mode = true;
-    fuzztimes = 5;
-    max_time = max_time > 30 ? max_time : 30;
+    fuzztimes = MAX_FUZZ_TIMES;
+    max_time = max_time > DEFAULT_MAX_TIME ? max_time : DEFAULT_MAX_TIME;
 }
 
 // Checks the given result to see if SyzInspector should switch to safe mode.

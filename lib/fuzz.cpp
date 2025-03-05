@@ -47,25 +47,15 @@ std::string make_repro_log(const Environment &env)
 
 int find_max_time(const vector<Syzkaller_Result> &times)
 {
-    // time = mean + 1 * std
-    int time = 0;
-    double mean = 0;
-    double std = 0;
+    // simplify. Find the max time and add 2 minutes to it
+    int max = 0;
 
     for (Syzkaller_Result sr : times)
-        mean += sr.ttf;
-    mean = mean / times.size();
+        max += sr.ttf > max ? sr.ttf : max;
 
-    for (Syzkaller_Result sr : times)
-        std += pow((sr.ttf - mean), 2);
+    max = (max + 2 < 10 ? 10 : max + 2);
 
-    std = std / times.size();
-    std = sqrt(std);
-
-    time = mean + 1 * std;
-    time = (time < 10 ? 10 : time);
-
-    return time;
+    return max;
 }
 
 int find_average_time(const vector<Syzkaller_Result> &times)
@@ -250,26 +240,21 @@ Test_Result fuzz_loop_finding(Environment &env)
     Test_Result result;
     result.found = false;
     result.retry = false;
+    result.stable = true;
 
     reset_kaller_wd(env);
 
-    int retries = 0, unstable_count = 0;
-    for (int i = 0; i < env.fuzztimes + retries && unstable_count < env.fuzztimes; i++)
+    int retries = 0;
+    for (int i = 0; i < 3 /* hardcoded fuzztimes */; i++)
     {
         env.port.inc();
         write_syzkaller_config(env);
         prepare_kaller_wd(env);
         result.attempts.push_back(run_syzkaller(env));
         result.found = result.attempts.back().found ? true : result.found;
-        if (result.attempts.back().bad_crashes > 0 && retries < env.fuzztimes)
-        {
-            retries++;
-            unstable_count++;
-        }
         log_attempt_result(result.attempts.back(), i + 1, env.duplicates, env.fuzztimes);
     }
 
-    result.stable = unstable_count < result.attempts.size() / 2 || result.found;
     result.suggest_ttf = find_max_time(result.attempts);
     return result;
 }

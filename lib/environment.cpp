@@ -15,7 +15,7 @@
 
 int Environment::init()
 {
-    fuzztimes = 3;
+    fuzztimes = DEFAULT_FUZZ_TIMES;
 
     vmd.numVM = NUM_VM_DEFAULT;
     vmd.numCPU = NUM_CPU_DEFAULT;

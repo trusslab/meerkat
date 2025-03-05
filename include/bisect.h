@@ -1,6 +1,7 @@
 #ifndef BISECT_H
 #define BISECT_H
 
+#include <consts.h>
 #include <date.h>
 #include <environment.h>
 #include <git.h>
@@ -14,8 +15,6 @@
 
 enum Bisect_Mode {Mode_PoC, Mode_FF};
 enum Bisect_Phase {Bisect_Init, Bisect_Anchor, Bisect_Releases, Bisect_Kernel, Bisect_Done};
-
-#define REPRO_FREQ 3
 
 class Session
 {

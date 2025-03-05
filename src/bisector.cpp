@@ -298,7 +298,7 @@ finish:
 void print_help()
 {
     cout << "Usage: ./bin/" << PROJECT_NAME << " -c [config] -i [id]\n"
-        << "    -m [max time]: the maximum time (minutes) allowed when fuzzing (default 30).\n"
+        << "    -m [max time]: the maximum time (minutes) allowed when fuzzing (default " << DEFAULT_MAX_TIME << ").\n"
         << "    -i [id]: REQUIRED. The id of the bisector (i.e. 1).\n"
         << "    --config (c) [config.cfg]: [config]: REQUIRED. The config file containing the bug information.\n"
         << "    --anchor (a) [hash]: REQUIRED. the hash of the commit where the bug was found.\n"
@@ -362,7 +362,7 @@ int main(int argc, char ** argv)
     if (args.is_set('m'))
         env.max_time = args.get_int('m');
     else
-        env.max_time = 30;
+        env.max_time = DEFAULT_MAX_TIME;
 
     if (args.is_set('i'))
         env.id = args.get_int('i');

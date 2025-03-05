@@ -2,7 +2,12 @@
 #define CONSTS_H
 
 #define PROJECT_NAME "Bisector"
-#define REVISION "1.0.3"
+#define REVISION "1.0.4"
+
+#define REPRO_FREQ 3
+#define DEFAULT_MAX_TIME 10
+#define DEFAULT_FUZZ_TIMES 1
+#define MAX_FUZZ_TIMES 3
 
 // Resource Allocation for a single instance of Syzkaller
 // VM -> the number of VMs to be given to syzkaller
