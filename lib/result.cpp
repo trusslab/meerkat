@@ -34,8 +34,7 @@ int cr_find(const string &s, const vector<Crash_Report> &v)
 
 bool fuzz_is_bad_crash(const string &crash_name)
 {
-    return crash_name == "suppressed report" || crash_name == "panic: disabled syscall"
-            || crash_name == "lost connection to test machine" || crash_name.find("SYZFATAL") != string::npos
+    return crash_name.find("SYZFATAL") != string::npos
             || crash_name.find("SYZFAIL:") != string::npos || crash_name == "boot failure";
 }
 
