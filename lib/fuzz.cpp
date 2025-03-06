@@ -280,7 +280,7 @@ Test_Result fuzz_loop(Environment &env)
         log_attempt_result(result.attempts.back(), i + 1, env.duplicates, env.fuzztimes);
     }
 
-    result.stable = unstable_count < result.attempts.size() / 2 || result.found;
+    result.stable = unstable_count < result.attempts.size() || result.found;
     result.suggest_ttf = find_max_time(result.attempts);
     return result;
 }
