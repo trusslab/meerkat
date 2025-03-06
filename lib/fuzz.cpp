@@ -51,7 +51,7 @@ int find_max_time(const vector<Syzkaller_Result> &times)
     int max = 0;
 
     for (Syzkaller_Result sr : times)
-        max += sr.ttf > max ? sr.ttf : max;
+        max = sr.ttf > max ? sr.ttf : max;
 
     max = (max + 2 < 10 ? 10 : max + 2);
 
