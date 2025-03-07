@@ -482,6 +482,7 @@ std::string Git::get_first_parent(const std::string &hash)
     // git show -s --oneline --format=%P
     std::string res = git_read({"show", "-s", "--oneline", "--format=%P", hash});
     res = split(res, ' ').at(0);
+    res = split(res, '\n').at(0);
     return res;
 }
 
