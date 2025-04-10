@@ -548,6 +548,7 @@ def links2bugs(filename : str) -> List[Bugdata]:
 def bug2csv(bug : Bugdata) -> str:
     # bug.bit32 is left out of this because they are all amd64
     return ",".join([str(bug.number), bug.link, bug.name, bug.truefind, bug.anchor.config, bug.anchor.kernel, bug.anchor.date, bug.fixCommits[0].link, bug.fixCommits[0].date, bug.guiltyCommits[0].link, bug.guiltyCommits[0].date, bug.bisectResult.converge, bug.bisectResult.hash, bug.bisectResult.date, bug.bisectResult.best_hash, bug.bisectResult.best_date, bug.bisectResult.syz_repro, bug.bisectResult.err, " ".join(bug.reproducers())]) + "\n"
+    #               $1                $2        $3        $4            $5                 $6                 $7               $8                      $9                      $10                        $11                        $12                        $13                    $14                    $15                         $16                         $17                         $18                   $19
 
 def main():
     # read list of bug links
