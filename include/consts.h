@@ -2,7 +2,7 @@
 #define CONSTS_H
 
 #define PROJECT_NAME "Bisector"
-#define REVISION "1.0.4"
+#define REVISION "1.0.5"
 
 #define REPRO_FREQ 3
 #define DEFAULT_MAX_TIME 10

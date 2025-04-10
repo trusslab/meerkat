@@ -105,6 +105,20 @@ int ProgOpts::from_prog(const std::string &progfile)
     return from_json(json);
 }
 
+// Check the additional features to see if the format is for enable or disable
+// return true for enable, false for disable
+bool ProgOpts::enable_format(const JSON &json)
+{
+    std::vector<std::string> feat_strs = {"tun", "netdev", "resetnet", "cgroups", "binfmt_misc", "close_fds",
+                                        "devlink_pci", "nic_vf", "usb", "vhci", "wifi", "ieee802154", "sysctl", "swap"};
+
+    for (std::string feat : feat_strs)
+        if (json.has_name(feat) && json.is_type(feat, JSON_Val_bool))
+            return json.get_bool(feat);
+        
+    return true;
+}
+
 int ProgOpts::from_json(const JSON &json)
 {
     if (json.has_name("threaded") && json.is_type("threaded", JSON_Val_bool))
@@ -134,47 +148,76 @@ int ProgOpts::from_json(const JSON &json)
         tmpdir = json.get_bool("tmpdir");
     
     // addtl. features
+    bool doing_enable = !enable_format(json);
     if (json.has_name("tun") && json.is_type("tun", JSON_Val_bool))
         tun = json.get_bool("tun");
+    else
+        tun = doing_enable;
 
     if (json.has_name("netdev") && json.is_type("netdev", JSON_Val_bool))
         net_dev = json.get_bool("netdev");
+    else
+        net_dev = doing_enable;
     
     if (json.has_name("resetnet") && json.is_type("resetnet", JSON_Val_bool))
         net_reset = json.get_bool("resetnet");
+    else
+        net_reset = doing_enable;
     
     if (json.has_name("cgroups") && json.is_type("cgroups", JSON_Val_bool))
         cgroups = json.get_bool("cgroups");
+    else
+        cgroups = doing_enable;
     
     if (json.has_name("binfmt_misc") && json.is_type("binfmt_misc", JSON_Val_bool))
         binfmt_misc = json.get_bool("binfmt_misc");
+    else
+        binfmt_misc = doing_enable;
     
     if (json.has_name("close_fds") && json.is_type("close_fds", JSON_Val_bool))
         close_fds = json.get_bool("close_fds");
+    else
+        close_fds = doing_enable;
     
     if (json.has_name("devlink_pci") && json.is_type("devlink_pci", JSON_Val_bool))
         devlink_pci = json.get_bool("devlink_pci");
+    else
+        devlink_pci = doing_enable;
     
     if (json.has_name("nic_vf") && json.is_type("nic_vf", JSON_Val_bool))
         nic_vf = json.get_bool("nic_vf");
+    else
+        nic_vf = doing_enable;
     
     if (json.has_name("usb") && json.is_type("usb", JSON_Val_bool))
         usb = json.get_bool("usb");
+    else
+        usb = doing_enable;
     
     if (json.has_name("vhci") && json.is_type("vhci", JSON_Val_bool))
         vhci = json.get_bool("vhci");
+    else
+        vhci = doing_enable;
     
     if (json.has_name("wifi") && json.is_type("wifi", JSON_Val_bool))
         wifi = json.get_bool("wifi");
+    else
+        wifi = doing_enable;
     
     if (json.has_name("ieee802154") && json.is_type("ieee802154", JSON_Val_bool))
         ieee802154 = json.get_bool("ieee802154");
+    else
+        ieee802154 = doing_enable;
     
     if (json.has_name("sysctl") && json.is_type("sysctl", JSON_Val_bool))
         sysctl = json.get_bool("sysctl");
+    else
+        sysctl = doing_enable;
     
     if (json.has_name("swap") && json.is_type("swap", JSON_Val_bool))
         swap = json.get_bool("swap");
+    else
+        swap = doing_enable;
     
     // legacy features:
     if (json.has_name("collide") && json.is_type("collide", JSON_Val_bool))

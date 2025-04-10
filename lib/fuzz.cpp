@@ -309,6 +309,12 @@ Test_Result poc_loop(Environment &env)
     err = vmpool.boot_and_check_all();
     if (err < env.vmc.numVM)
         std::cerr << "Warning: Only booted " << err << " VMs.\n" << std::flush;
+    if (err == 0)
+    {
+        vmpool.kill_all();
+        result.stable = false;
+        return result;
+    }
 
     // Run the prog
     vmpool.copy_all(env.primary_repro);

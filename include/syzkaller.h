@@ -62,6 +62,7 @@ public:
 
 private:
     //std::string enable_string() const;
+    bool enable_format(const JSON &);
 };
 
 std::string opts_from_syz_repro(const std::string &);

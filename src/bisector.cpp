@@ -62,11 +62,10 @@ int do_bisection(Environment &env, Bisect &bisector, Git &linux_git)
     // ======================================================================================================
     // Fuzz at the anchor commit
 
-    bisector.next_phase(Bisect_Anchor, env, linux_git);
-    if (err < 0)
+    if (bisector.next_phase(Bisect_Anchor, env, linux_git) < 0)
     {
         cerr << "Failed to advance to anchor commit phase.\n" << flush;
-        return err;
+        return -1;
     }
 
     cout << "\n==== Anchor Commit ====\n" << flush;
@@ -75,7 +74,7 @@ int do_bisection(Environment &env, Bisect &bisector, Git &linux_git)
     if (bisector.next_session(env, linux_git) < 0)
     {
         cerr << "Error: Failed to go to anchor commit\n" << flush;
-        return err;
+        return -1;
     }
 
     if (env.feats.setup_only)
@@ -170,6 +169,7 @@ int do_bisection(Environment &env, Bisect &bisector, Git &linux_git)
 
 int bisect(Environment &env)
 {
+    bool found = false;
     int err = 0;
     string stage_title;
     Bisect bisector;
@@ -227,6 +227,8 @@ int bisect(Environment &env)
         if (err == 1 && env.feats.ff_no_find_backup)
             goto finish;
         
+        if (err == 0)
+            found = true;
         if (env.feats.poc_test)
             cout << bisector.print_partial_result(env, linux_git, starttime, stagetime, stage_title, env.primary_repro) << flush;
     }
@@ -241,7 +243,6 @@ int bisect(Environment &env)
 
         vector<string> ordered_pocs = order_pocs(env);
         int numPoCs = ordered_pocs.size() + 1;
-        bool found = false;
         stage_title = "Primary PoC Test";
 
         // Use more vms at 2 cpus during poc bisection. Simlar to SB.
