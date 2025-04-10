@@ -1,0 +1,327 @@
+./bin/bisector -i 1 -c /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/bisector.cfg -a 9d004b2f4fea97cde123e7f1939b80e77bf2e695 -F ff-test,poc-test,stateful-corpus,ff-no-find-backup
+Bisecting:          INFO: task hung in hci_dev_close_sync
+Syzbot Link:        https://syzkaller.appspot.com/bug?id=8137f770127ad3ae80cc615fbb3b3bdf71c5e17e
+Working Name:       bug0101
+
+No aliases given.
+
+Anchor Commit:      9d004b2f4fea97cde123e7f1939b80e77bf2e695
+Repository:         https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
+Branch:             master
+Arch:               amd64
+
+Bisector:           /mnt/sdd/jtbursey/SyzInspector/
+Version:            1.0.4
+Kernel:             /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/kernel/
+Syzkaller:          /mnt/sdd/jtbursey/SyzInspector/syzkaller/
+Compilers:          /mnt/sda/jtbursey/SyzInspector/compilers/
+Ccache:             ccache
+Image:              /mnt/sda/jtbursey/SyzInspector/image/stretch/stretch.img
+Image Key:          /mnt/sda/jtbursey/SyzInspector/image/stretch/stretch.id_rsa
+
+Workdir:            /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/
+Kconfig:            /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/config-bug0101.txt
+Reproducers: (2)    /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/reproducers/
+Primary PoC:        /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/reproducers/repro-bug0101-1.prog
+Syzkaller Workdir:  /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/wd-kaller/
+Log Directory:      /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/log/
+
+Syscalls: (5)       ["openat$rfkill", "syz_emit_vhci", "write$rfkill", "ioctl$EXT4_IOC_GROUP_EXTEND", "openat$sw_sync_info"]
+VM Count:           4
+CPU Count:          4
+Procs:              24
+Memory:             4096
+Make Procs:         16
+Max Time:           10
+Max Attempts:       1
+
+==== Anchor Commit ====
+
+2025-03-07 14:04:19
+Session:   1
+Kernel:    2022-05-27 - 9d004b2f4fea97cde123e7f1939b80e77bf2e695
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    4  INFO: task hung in hci_dev_close_sync
+***    4  INFO: task hung in hci_dev_close_sync
+***    4  INFO: task hung in hci_dev_close_sync
+Attempt 2: (RETRY)
+    Time  Bug Name
+***    4  INFO: task hung in hci_dev_close_sync
+Attempt 3: (RETRY)
+    Time  Bug Name
+***    4  INFO: task hung in hci_dev_close_sync
+       4  suppressed report
+The bug was found.
+
+New Max Time: 10
+
+==== Major Release Search ====
+17 Releases
+
+2025-03-07 14:30:24
+Session:   2
+Kernel:    2022-03-20 - f443e374ae131c168a065ea1748feac6b2e76613 (v5.17)
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       7  INFO: task hung in rfkill_global_led_trigger_worker
+       7  INFO: task hung in scan_update_work
+       7  INFO: task hung in rfkill_unregister
+      10  SYZFAIL: initialize_wifi_devices: failed set up IBSS network
+The bug was not found.
+This commit is flagged as unstable.
+About 16 releases remaining
+
+2025-03-07 14:53:36
+Session:   3
+Kernel:    2022-01-09 - df0cc57e057f18e44dac8e6c18aba47ab53202f9 (v5.16)
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       3  WARNING in hci_recv_frame
+The bug was not found.
+About 15 releases remaining
+
+==== Kernel Bisection ====
+41048 Linux commits
+
+2025-03-07 15:18:18
+Session:   4
+Kernel:    2022-03-24 - 169e77764adc041b1dacba84ea90516a895d43b2
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       5  INFO: task hung in scan_update_work
+       5  INFO: task hung in rfkill_unregister
+       7  suppressed report
+      10  INFO: task hung in scan_update_work
+The bug was not found.
+About 19298 commits remaining
+
+2025-03-07 15:41:41
+Session:   5
+Kernel:    2022-05-23 - 95fbef17e8253775876a08ec2011d3665b86a55f
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       3  suppressed report
+       7  suppressed report
+      10  suppressed report
+The bug was not found.
+About 9649 commits remaining
+
+2025-03-07 16:06:58
+Session:   6
+Kernel:    2022-05-25 - 86c87bea6b42100c67418af690919c44de6ede6e
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    4  INFO: task hung in hci_dev_close_sync
+***    4  INFO: task hung in hci_dev_close_sync
+Running syz-repro.
+New PoC saved at /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/reproducers/repro-bug0101-0.prog
+Primary PoC:     /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/reproducers/repro-bug0101-0.prog
+Run Time:        0h53m0s
+The bug was found.
+About 4175 commits remaining
+
+2025-03-07 17:20:01
+Session:   7
+Kernel:    2022-05-24 - 57d7becda9c9e612e6b00676f2eecfac3e719e88
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    4  INFO: task hung in hci_dev_close_sync
+The bug was found.
+About 2000 commits remaining
+
+2025-03-07 17:40:33
+Session:   8
+Kernel:    2022-05-03 - f43f0cd2d9b07caf38d744701b0b54d4244da8cc
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       5  suppressed report
+       8  suppressed report
+The bug was not found.
+About 1730 commits remaining
+
+2025-03-07 18:06:36
+Session:   9
+Kernel:    2022-05-19 - 1a6dd9996699889313327be03981716a8337656b
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       4  suppressed report
+       6  suppressed report
+       7  suppressed report
+       8  suppressed report
+       9  suppressed report
+       9  suppressed report
+The bug was not found.
+About 471 commits remaining
+
+2025-03-07 18:32:04
+Session:   10
+Kernel:    2022-05-22 - cf0005d2b07b6eccc8d4f3f3c4faee59e7409a95
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       4  suppressed report
+       4  suppressed report
+       4  suppressed report
+       9  suppressed report
+       9  suppressed report
+      10  suppressed report
+The bug was not found.
+About 236 commits remaining
+
+2025-03-07 18:56:08
+Session:   11
+Kernel:    2022-05-23 - aadd1b678ebef81cc3ed23663253ae3749cdc673
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       4  suppressed report
+       5  suppressed report
+       9  suppressed report
+The bug was not found.
+About 2372 commits remaining
+
+2025-03-07 19:20:05
+Session:   12
+Kernel:    2022-05-23 - b1e6738a2185fd7626a6187050a3edf9c38c2afe
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    5  INFO: task hung in hci_dev_close_sync
+***    5  INFO: task hung in hci_dev_close_sync
+       5  suppressed report
+       5  suppressed report
+The bug was found.
+About 2318 commits remaining
+
+2025-03-07 19:41:34
+Session:   13
+Kernel:    2022-05-23 - c295f9831f1db12330d6a28a1cb2bd2562535e37
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       6  suppressed report
+The bug was not found.
+About 33 commits remaining
+
+2025-03-07 20:06:19
+Session:   14
+Kernel:    2022-05-13 - 247f226adadfb7be09dd537f177429f4415aef8e
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       4  suppressed report
+***    5  INFO: task hung in hci_dev_close_sync
+       5  suppressed report
+       5  suppressed report
+Running syz-repro.
+syz-repro was terminated after 60 minutes
+Warning: Child process exited with error status 32764.
+Run Time:        1h0m0s
+The bug was found.
+About 17 commits remaining
+
+2025-03-07 21:25:17
+Session:   15
+Kernel:    2022-05-13 - 6b5c1cdac44f3bcd0bd1514eed6b8b9ad141a404
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       5  suppressed report
+       5  suppressed report
+       9  suppressed report
+       9  suppressed report
+The bug was not found.
+About 9 commits remaining
+
+2025-03-07 21:51:32
+Session:   16
+Kernel:    2022-05-13 - fb048cae51bacdfbbda2954af3c213fdb1d484f4
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       4  suppressed report
+       7  suppressed report
+       9  suppressed report
+The bug was not found.
+About 5 commits remaining
+
+2025-03-07 22:17:14
+Session:   17
+Kernel:    2022-05-13 - 4622594766d0bc96d04079a96e13eb58f3f799f2
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       4  suppressed report
+       5  suppressed report
+       6  suppressed report
+       8  suppressed report
+The bug was not found.
+About 3 commits remaining
+
+2025-03-07 22:42:09
+Session:   18
+Kernel:    2022-05-13 - ff7f2926114d3a50f5ffe461a9bce8d761748da5
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    4  INFO: task hung in hci_dev_close_sync
+Running syz-repro.
+syz-repro was terminated after 60 minutes
+Warning: Child process exited with error status 32764.
+Run Time:        1h0m0s
+The bug was found.
+About 2 commits remaining
+
+==== Partial Result: Focused Fuzzing ====
+Reproducer:           /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/reproducers/repro-bug0101-0.prog
+Bisection Result:     2022-05-13 - ff7f2926114d3a50f5ffe461a9bce8d761748da5
+Bisected Commit Name: Bluetooth: core: Fix missing power_on work cancel on HCI close
+Stage Time:           9h56m48s
+Run Time:             9h56m50s
+=========================================
+
+==== Anchor Commit ====
+
+2025-03-08 00:01:08
+Session:   19
+Kernel:    2022-05-13 - 4622594766d0bc96d04079a96e13eb58f3f799f2
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+
+Failure: This bug cannot be found at the anchor commit.
+
+====================================================================================================================================================
+Bug Name:             INFO: task hung in hci_dev_close_sync
+Bug Link:             https://syzkaller.appspot.com/bug?id=8137f770127ad3ae80cc615fbb3b3bdf71c5e17e
+Bisection Result:     2022-05-13 - ff7f2926114d3a50f5ffe461a9bce8d761748da5
+Bisected Commit Name: Bluetooth: core: Fix missing power_on work cancel on HCI close
+Run Time:             10h14m3s
+
+Anchor Commit:        2022-05-27 - 9d004b2f4fea97cde123e7f1939b80e77bf2e695
+Bisection Result:     2022-05-13 - ff7f2926114d3a50f5ffe461a9bce8d761748da5

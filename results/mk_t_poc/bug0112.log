@@ -1,0 +1,583 @@
+./bin/bisector -i 2 -c /mnt/sdd/jtbursey/SyzInspector/wd-bisector-2/bisector.cfg -a ff83fec8179e392be2f472f0a9ec3da8f6d529c6 -F poc-test,poc-all-pocs
+Bisecting:          BUG: scheduling while atomic in msleep
+Syzbot Link:        https://syzkaller.appspot.com/bug?id=a1f37cddedf0664dddc8b42c26e248051691b834
+Working Name:       bug0112
+
+No aliases given.
+
+Anchor Commit:      ff83fec8179e392be2f472f0a9ec3da8f6d529c6
+Repository:         https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
+Branch:             master
+Arch:               amd64
+
+Bisector:           /mnt/sdd/jtbursey/SyzInspector/
+Version:            1.0.3
+Kernel:             /mnt/sdd/jtbursey/SyzInspector/wd-bisector-2/kernel/
+Syzkaller:          /mnt/sdd/jtbursey/SyzInspector/syzkaller/
+Compilers:          /mnt/sda/jtbursey/SyzInspector/compilers/
+Ccache:             ccache
+Image:              /mnt/sda/jtbursey/SyzInspector/image/stretch/stretch.img
+Image Key:          /mnt/sda/jtbursey/SyzInspector/image/stretch/stretch.id_rsa
+
+Workdir:            /mnt/sdd/jtbursey/SyzInspector/wd-bisector-2/
+Kconfig:            /mnt/sdd/jtbursey/SyzInspector/wd-bisector-2/config-bug0112.txt
+Reproducers: (1)    /mnt/sdd/jtbursey/SyzInspector/wd-bisector-2/reproducers/
+Primary PoC:        /mnt/sdd/jtbursey/SyzInspector/wd-bisector-2/reproducers/repro-bug0112-2.prog
+Syzkaller Workdir:  /mnt/sdd/jtbursey/SyzInspector/wd-bisector-2/wd-kaller/
+Log Directory:      /mnt/sdd/jtbursey/SyzInspector/wd-bisector-2/log/
+
+VM Count:           8
+CPU Count:          2
+Procs:              16
+Memory:             4096
+Make Procs:         16
+
+==== Anchor Commit ====
+
+2025-02-27 12:35:25
+Session:   1
+Kernel:    2023-01-20 - ff83fec8179e392be2f472f0a9ec3da8f6d529c6
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 0:
+*** BUG: scheduling while atomic in msleep
+    kernel panic: scheduling while atomic: panic_on_warn set ...
+Attempt 1:
+*** BUG: scheduling while atomic in msleep
+    kernel panic: scheduling while atomic: panic_on_warn set ...
+Attempt 2:
+*** BUG: scheduling while atomic in msleep
+    kernel panic: scheduling while atomic: panic_on_warn set ...
+Attempt 3:
+*** BUG: scheduling while atomic in msleep
+    kernel panic: scheduling while atomic: panic_on_warn set ...
+Attempt 4:
+*** BUG: scheduling while atomic in msleep
+    kernel panic: scheduling while atomic: panic_on_warn set ...
+Attempt 5:
+*** BUG: scheduling while atomic in msleep
+    kernel panic: scheduling while atomic: panic_on_warn set ...
+Attempt 6:
+*** BUG: scheduling while atomic in msleep
+    kernel panic: scheduling while atomic: panic_on_warn set ...
+Attempt 7:
+*** BUG: scheduling while atomic in msleep
+    kernel panic: scheduling while atomic: panic_on_warn set ...
+The bug was found.
+
+==== Major Release Search ====
+18 Releases
+
+2025-02-27 12:58:03
+Session:   2
+Kernel:    2022-10-02 - 4fe89d07dcc2804c8b562f6c7896a45643d34b2f (v6.0)
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 0:
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in corrupted
+Attempt 1:
+    INFO: rcu detected stall in smp_call_function
+Attempt 2:
+    INFO: rcu detected stall in smp_call_function
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in cleanup_net
+    INFO: task hung in devlink_unregister
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    INFO: rcu detected stall in corrupted
+Attempt 6:
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in devlink_unregister
+Attempt 7:
+    INFO: rcu detected stall in cleanup_net
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in cleanup_net
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in devlink_unregister
+The bug was not found.
+About 17 releases remaining
+
+==== Kernel Bisection ====
+30774 Linux commits
+
+2025-02-27 13:36:41
+Session:   3
+Kernel:    2022-12-02 - d03407183d97554dfffea70f385b5bdd520f846c
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Warning: VM has not responded after 5 attempts.
+Warning: Only booted 6 VMs.
+Attempt 0:
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in devlink_unregister
+Attempt 1:
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in devlink_unregister
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in devlink_unregister
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+About 15415 commits remaining
+
+2025-02-27 14:20:53
+Session:   4
+Kernel:    2022-12-13 - 531d2644f3b10098dadb25b2c26cf19ec0330f90
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in devlink_unregister
+Attempt 4:
+    INFO: rcu detected stall in corrupted
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in cleanup_net
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in devlink_unregister
+Attempt 7:
+    No crashes found.
+The bug was not found.
+About 9004 commits remaining
+
+2025-02-27 15:00:42
+Session:   5
+Kernel:    2022-12-16 - 58bcac11fd94f950abc7b8466c5ceac7be07a00e
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in devlink_unregister
+Attempt 2:
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in devlink_unregister
+Attempt 3:
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in cleanup_net
+    INFO: task hung in devlink_unregister
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in devlink_unregister
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in cleanup_net
+    INFO: task hung in devlink_unregister
+The bug was not found.
+About 3832 commits remaining
+
+2025-02-27 15:29:11
+Session:   6
+Kernel:    2022-12-19 - 9322af3e6aeae04c7eda3e6a0c977e97a13cf6ed
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 0:
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in devlink_unregister
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in devlink_unregister
+Attempt 7:
+    No crashes found.
+The bug was not found.
+About 1938 commits remaining
+
+2025-02-27 16:42:07
+Session:   7
+Kernel:    2023-01-01 - 8b41948296b76588f5ebaf7cbc5be5c803ece70a
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in cleanup_net
+    INFO: task hung in devlink_unregister
+Attempt 4:
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in devlink_unregister
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+About 967 commits remaining
+
+2025-02-27 17:12:59
+Session:   8
+Kernel:    2023-01-12 - d9fc1511728c15df49ff18e49a494d00f78b7cd4
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 0:
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in cleanup_net
+    INFO: task hung in devlink_unregister
+Attempt 1:
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in cleanup_net
+    INFO: task hung in devlink_unregister
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in cleanup_net
+    INFO: task hung in devlink_unregister
+Attempt 7:
+    No crashes found.
+The bug was not found.
+About 467 commits remaining
+
+2025-02-27 17:40:29
+Session:   9
+Kernel:    2023-01-17 - dc74a9e8a8c57966a563ab078ba91c8b2c0d0a72
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in devlink_unregister
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+About 234 commits remaining
+
+2025-02-27 18:21:28
+Session:   10
+Kernel:    2023-01-20 - 45a919bbb21c642e0c34dac483d1e003560159dc
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 0:
+*** BUG: scheduling while atomic in msleep
+    kernel panic: scheduling while atomic: panic_on_warn set ...
+Attempt 1:
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in devlink_unregister
+Attempt 2:
+*** BUG: scheduling while atomic in msleep
+    kernel panic: scheduling while atomic: panic_on_warn set ...
+Attempt 3:
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in cleanup_net
+    INFO: task hung in devlink_unregister
+Attempt 4:
+*** BUG: scheduling while atomic in msleep
+    kernel panic: scheduling while atomic: panic_on_warn set ...
+Attempt 5:
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in cleanup_net
+    INFO: task hung in devlink_unregister
+Attempt 6:
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in devlink_unregister
+Attempt 7:
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in devlink_unregister
+The bug was found.
+About 100 commits remaining
+
+2025-02-27 18:47:19
+Session:   11
+Kernel:    2023-01-17 - 010a74f52203eae037dd6aa111ba371f6a2dedc5
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 0:
+*** BUG: scheduling while atomic in msleep
+    kernel panic: scheduling while atomic: panic_on_warn set ...
+Attempt 1:
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in devlink_unregister
+Attempt 2:
+*** BUG: scheduling while atomic in msleep
+    kernel panic: scheduling while atomic: panic_on_warn set ...
+Attempt 3:
+*** BUG: scheduling while atomic in msleep
+    kernel panic: scheduling while atomic: panic_on_warn set ...
+Attempt 4:
+*** BUG: scheduling while atomic in msleep
+    kernel panic: scheduling while atomic: panic_on_warn set ...
+Attempt 5:
+*** BUG: scheduling while atomic in msleep
+    kernel panic: scheduling while atomic: panic_on_warn set ...
+Attempt 6:
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in cleanup_net
+    INFO: task hung in devlink_unregister
+Attempt 7:
+*** BUG: scheduling while atomic in msleep
+    kernel panic: scheduling while atomic: panic_on_warn set ...
+The bug was found.
+About 55 commits remaining
+
+2025-02-27 19:10:51
+Session:   12
+Kernel:    2023-01-16 - 21705c771934f24cab8beb554e3b7f40e3511ad7
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in devlink_unregister
+Attempt 2:
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in devlink_unregister
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in devlink_unregister
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+About 28 commits remaining
+
+2025-02-27 19:37:20
+Session:   13
+Kernel:    2023-01-17 - 1ed8b37cbaf14574c779064ef1372af62e8ba6aa
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 0:
+*** BUG: scheduling while atomic in msleep
+    kernel panic: scheduling while atomic: panic_on_warn set ...
+Attempt 1:
+*** BUG: scheduling while atomic in msleep
+    kernel panic: scheduling while atomic: panic_on_warn set ...
+Attempt 2:
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in devlink_unregister
+Attempt 3:
+*** BUG: scheduling while atomic in msleep
+    kernel panic: scheduling while atomic: panic_on_warn set ...
+Attempt 4:
+*** BUG: scheduling while atomic in msleep
+    kernel panic: scheduling while atomic: panic_on_warn set ...
+Attempt 5:
+*** BUG: scheduling while atomic in msleep
+    kernel panic: scheduling while atomic: panic_on_warn set ...
+Attempt 6:
+*** BUG: scheduling while atomic in msleep
+    kernel panic: scheduling while atomic: panic_on_warn set ...
+Attempt 7:
+*** BUG: scheduling while atomic in msleep
+    kernel panic: scheduling while atomic: panic_on_warn set ...
+The bug was found.
+About 14 commits remaining
+
+2025-02-27 19:54:37
+Session:   14
+Kernel:    2023-01-17 - ecf7cf8efb59789e2b21d2f9ab926142579092b2
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 0:
+*** BUG: scheduling while atomic in msleep
+    kernel panic: scheduling while atomic: panic_on_warn set ...
+Attempt 1:
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in devlink_unregister
+Attempt 2:
+*** BUG: scheduling while atomic in msleep
+    kernel panic: scheduling while atomic: panic_on_warn set ...
+Attempt 3:
+*** BUG: scheduling while atomic in msleep
+    kernel panic: scheduling while atomic: panic_on_warn set ...
+Attempt 4:
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in cleanup_net
+    INFO: task hung in devlink_unregister
+Attempt 5:
+*** BUG: scheduling while atomic in msleep
+    kernel panic: scheduling while atomic: panic_on_warn set ...
+Attempt 6:
+*** BUG: scheduling while atomic in msleep
+    kernel panic: scheduling while atomic: panic_on_warn set ...
+Attempt 7:
+*** BUG: scheduling while atomic in msleep
+    kernel panic: scheduling while atomic: panic_on_warn set ...
+The bug was found.
+About 7 commits remaining
+
+2025-02-27 20:19:22
+Session:   15
+Kernel:    2023-01-16 - 0b2c59720e65885a394a017d0cf9cab118914682
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 0:
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in cleanup_net
+    INFO: task hung in devlink_unregister
+Attempt 1:
+*** BUG: scheduling while atomic in msleep
+    kernel panic: scheduling while atomic: panic_on_warn set ...
+Attempt 2:
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in devlink_unregister
+Attempt 3:
+*** BUG: scheduling while atomic in msleep
+    kernel panic: scheduling while atomic: panic_on_warn set ...
+Attempt 4:
+*** BUG: scheduling while atomic in msleep
+    kernel panic: scheduling while atomic: panic_on_warn set ...
+Attempt 5:
+*** BUG: scheduling while atomic in msleep
+    kernel panic: scheduling while atomic: panic_on_warn set ...
+Attempt 6:
+*** BUG: scheduling while atomic in msleep
+    kernel panic: scheduling while atomic: panic_on_warn set ...
+Attempt 7:
+*** BUG: scheduling while atomic in msleep
+    kernel panic: scheduling while atomic: panic_on_warn set ...
+The bug was found.
+About 4 commits remaining
+
+2025-02-27 20:37:07
+Session:   16
+Kernel:    2023-01-16 - c4d48a58f32c5972174a1d01c33b296fe378cce0
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 0:
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in cleanup_net
+    INFO: task hung in devlink_unregister
+Attempt 1:
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in devlink_unregister
+Attempt 2:
+*** BUG: scheduling while atomic in msleep
+    kernel panic: scheduling while atomic: panic_on_warn set ...
+Attempt 3:
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in cleanup_net
+    INFO: task hung in devlink_unregister
+Attempt 4:
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in devlink_unregister
+Attempt 5:
+*** BUG: scheduling while atomic in msleep
+    kernel panic: scheduling while atomic: panic_on_warn set ...
+Attempt 6:
+*** BUG: scheduling while atomic in msleep
+    kernel panic: scheduling while atomic: panic_on_warn set ...
+Attempt 7:
+*** BUG: scheduling while atomic in msleep
+    kernel panic: scheduling while atomic: panic_on_warn set ...
+The bug was found.
+About 3 commits remaining
+
+2025-02-27 21:01:54
+Session:   17
+Kernel:    2023-01-16 - 3a415d59c1dbec9d772dbfab2d2520d98360caae
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 0:
+*** BUG: scheduling while atomic in msleep
+    kernel panic: scheduling while atomic: panic_on_warn set ...
+Attempt 1:
+*** BUG: scheduling while atomic in msleep
+    kernel panic: scheduling while atomic: panic_on_warn set ...
+Attempt 2:
+*** BUG: scheduling while atomic in msleep
+    kernel panic: scheduling while atomic: panic_on_warn set ...
+Attempt 3:
+*** BUG: scheduling while atomic in msleep
+    kernel panic: scheduling while atomic: panic_on_warn set ...
+Attempt 4:
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in devlink_unregister
+Attempt 5:
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in devlink_unregister
+Attempt 6:
+*** BUG: scheduling while atomic in msleep
+    kernel panic: scheduling while atomic: panic_on_warn set ...
+Attempt 7:
+*** BUG: scheduling while atomic in msleep
+    kernel panic: scheduling while atomic: panic_on_warn set ...
+The bug was found.
+About 2 commits remaining
+
+====================================================================================================================================================
+Bug Name:             BUG: scheduling while atomic in msleep
+Bug Link:             https://syzkaller.appspot.com/bug?id=a1f37cddedf0664dddc8b42c26e248051691b834
+Bisection Result:     2023-01-16 - 3a415d59c1dbec9d772dbfab2d2520d98360caae
+Bisected Commit Name: net/sched: sch_taprio: fix possible use-after-free
+Run Time:             8h51m17s
+
+Anchor Commit:        2023-01-20 - ff83fec8179e392be2f472f0a9ec3da8f6d529c6
+Bisection Result:     2023-01-16 - 3a415d59c1dbec9d772dbfab2d2520d98360caae

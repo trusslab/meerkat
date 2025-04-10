@@ -1,0 +1,774 @@
+./bin/bisector -i 1 -c /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/bisector.cfg -a 15b3f48a4339e3c16acf18624e2b7f60bc5e9a2c -F ff-test,poc-test,stateful-corpus,ff-no-find-backup
+Bisecting:          INFO: task hung in scsi_remove_host
+Syzbot Link:        https://syzkaller.appspot.com/bug?id=7c7fab3677f7e27e026384d4fb34cc1adf6059fa
+Working Name:       bug0080
+
+No aliases given.
+
+Anchor Commit:      15b3f48a4339e3c16acf18624e2b7f60bc5e9a2c
+Repository:         https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
+Branch:             master
+Arch:               amd64
+
+Bisector:           /mnt/sdd/jtbursey/SyzInspector/
+Version:            1.0.3
+Kernel:             /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/kernel/
+Syzkaller:          /mnt/sdd/jtbursey/SyzInspector/syzkaller/
+Compilers:          /mnt/sda/jtbursey/SyzInspector/compilers/
+Ccache:             ccache
+Image:              /mnt/sda/jtbursey/SyzInspector/image/stretch/stretch.img
+Image Key:          /mnt/sda/jtbursey/SyzInspector/image/stretch/stretch.id_rsa
+
+Workdir:            /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/
+Kconfig:            /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/config-bug0080.txt
+Reproducers: (2)    /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/reproducers/
+Primary PoC:        /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/reproducers/repro-bug0080-2.prog
+Syzkaller Workdir:  /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/wd-kaller/
+Log Directory:      /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/log/
+
+Syscalls: (8)       ["syz_usb_connect", "syz_usb_control_io", "syz_usb_control_io$cdc_ncm", "syz_usb_control_io$hid", "syz_usb_control_io$uac1", "syz_usb_connect$cdc_ncm", "syz_usb_connect$hid", "syz_usb_connect$uac1"]
+VM Count:           4
+CPU Count:          4
+Procs:              24
+Memory:             4096
+Make Procs:         16
+Max Time:           30
+Max Attempts:       3
+
+==== Anchor Commit ====
+
+2025-03-02 04:49:06
+Session:   1
+Kernel:    2022-08-20 - 15b3f48a4339e3c16acf18624e2b7f60bc5e9a2c
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       2  INFO: rcu detected stall in corrupted
+       8  WARNING in firmware_fallback_sysfs
+      15  SYZFAIL: repeatedly failed to execute the program
+      15  SYZFAIL: repeatedly failed to execute the program
+      17  SYZFAIL: repeatedly failed to execute the program
+      30  SYZFAIL: repeatedly failed to execute the program
+Attempt 2:
+    Time  Bug Name
+       2  INFO: rcu detected stall in corrupted
+***   18  INFO: task hung in scsi_remove_host
+Attempt 3:
+    Time  Bug Name
+       2  INFO: rcu detected stall in corrupted
+       6  INFO: rcu detected stall in corrupted
+      18  SYZFAIL: repeatedly failed to execute the program
+      19  SYZFAIL: repeatedly failed to execute the program
+      25  SYZFAIL: repeatedly failed to execute the program
+      25  SYZFAIL: repeatedly failed to execute the program
+      27  SYZFAIL: repeatedly failed to execute the program
+      28  INFO: rcu detected stall in corrupted
+Attempt 4: (RETRY)
+    Time  Bug Name
+       2  INFO: rcu detected stall in corrupted
+      11  INFO: rcu detected stall in corrupted
+      11  suppressed report
+      11  suppressed report
+***   20  INFO: task hung in scsi_remove_host
+The bug was found.
+
+New Max Time: 30
+
+==== Major Release Search ====
+18 Releases
+
+2025-03-02 06:45:25
+Session:   2
+Kernel:    2022-07-31 - 3d7cb6b04c3f3115719235cc6866b10326de34cd (v5.19)
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       9  WARNING in firmware_fallback_sysfs
+      10  WARNING in firmware_fallback_sysfs
+      25  SYZFAIL: repeatedly failed to execute the program
+      25  SYZFAIL: repeatedly failed to execute the program
+      26  SYZFAIL: repeatedly failed to execute the program
+Attempt 2:
+    Time  Bug Name
+      26  SYZFAIL: repeatedly failed to execute the program
+Attempt 3:
+    Time  Bug Name
+      24  SYZFAIL: repeatedly failed to execute the program
+The bug was not found.
+This commit is flagged as unstable.
+About 17 releases remaining
+
+2025-03-02 08:32:14
+Session:   3
+Kernel:    2022-05-22 - 4b0986a3613c92f4ec1bdc7f60ec66fea135991f (v5.18)
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+      21  SYZFAIL: repeatedly failed to execute the program
+      21  SYZFAIL: repeatedly failed to execute the program
+Attempt 2:
+    Time  Bug Name
+      19  SYZFAIL: repeatedly failed to execute the program
+      25  SYZFAIL: repeatedly failed to execute the program
+      25  SYZFAIL: repeatedly failed to execute the program
+Attempt 3:
+    Time  Bug Name
+      22  SYZFAIL: repeatedly failed to execute the program
+      30  SYZFAIL: repeatedly failed to execute the program
+The bug was not found.
+This commit is flagged as unstable.
+About 16 releases remaining
+
+2025-03-02 10:17:26
+Session:   4
+Kernel:    2022-03-20 - f443e374ae131c168a065ea1748feac6b2e76613 (v5.17)
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+      21  SYZFAIL: repeatedly failed to execute the program
+      21  SYZFAIL: repeatedly failed to execute the program
+      22  SYZFAIL: repeatedly failed to execute the program
+Attempt 2:
+    Time  Bug Name
+      20  SYZFAIL: repeatedly failed to execute the program
+      20  SYZFAIL: repeatedly failed to execute the program
+      20  SYZFAIL: repeatedly failed to execute the program
+      21  SYZFAIL: repeatedly failed to execute the program
+Attempt 3:
+    Time  Bug Name
+      22  SYZFAIL: repeatedly failed to execute the program
+      23  SYZFAIL: repeatedly failed to execute the program
+      23  SYZFAIL: repeatedly failed to execute the program
+      23  SYZFAIL: repeatedly failed to execute the program
+The bug was not found.
+This commit is flagged as unstable.
+About 15 releases remaining
+
+2025-03-02 12:02:16
+Session:   5
+Kernel:    2021-10-31 - 8bb7eca972ad531c9b149c0a51ab43a417385813 (v5.15)
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+      15  WARNING in firmware_fallback_sysfs
+      19  SYZFAIL: repeatedly failed to execute the program
+      21  SYZFAIL: repeatedly failed to execute the program
+      23  SYZFAIL: repeatedly failed to execute the program
+      24  SYZFAIL: repeatedly failed to execute the program
+Attempt 2:
+    Time  Bug Name
+      12  INFO: task hung in del_device_store
+      12  INFO: task hung in del_device_store
+      12  INFO: task hung in nsim_dev_trap_report_work
+      14  SYZFAIL: repeatedly failed to execute the program
+      24  SYZFAIL: repeatedly failed to execute the program
+      25  SYZFAIL: repeatedly failed to execute the program
+      25  SYZFAIL: repeatedly failed to execute the program
+      30  SYZFAIL: repeatedly failed to execute the program
+Attempt 3:
+    Time  Bug Name
+      22  SYZFAIL: repeatedly failed to execute the program
+      22  SYZFAIL: repeatedly failed to execute the program
+      29  SYZFAIL: repeatedly failed to execute the program
+The bug was not found.
+This commit is flagged as unstable.
+About 14 releases remaining
+
+2025-03-02 13:47:12
+Session:   6
+Kernel:    2021-06-27 - 62fb9874f5da54fdb243003b386128037319b219 (v5.13)
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+      14  BUG: sleeping function called from invalid context in lock_sock_nested
+      14  BUG: sleeping function called from invalid context in lock_sock_nested
+      14  BUG: sleeping function called from invalid context in lock_sock_nested
+      15  BUG: sleeping function called from invalid context in lock_sock_nested
+      20  BUG: sleeping function called from invalid context in lock_sock_nested
+      20  BUG: sleeping function called from invalid context in lock_sock_nested
+      21  BUG: sleeping function called from invalid context in lock_sock_nested
+      21  BUG: sleeping function called from invalid context in lock_sock_nested
+      24  WARNING in pvr2_i2c_core_done
+      26  BUG: sleeping function called from invalid context in lock_sock_nested
+      27  BUG: sleeping function called from invalid context in lock_sock_nested
+      27  BUG: sleeping function called from invalid context in lock_sock_nested
+      30  BUG: sleeping function called from invalid context in lock_sock_nested
+Attempt 2:
+    Time  Bug Name
+      10  BUG: sleeping function called from invalid context in lock_sock_nested
+      10  BUG: sleeping function called from invalid context in lock_sock_nested
+      10  BUG: sleeping function called from invalid context in lock_sock_nested
+      11  BUG: sleeping function called from invalid context in lock_sock_nested
+      16  BUG: sleeping function called from invalid context in lock_sock_nested
+      16  BUG: sleeping function called from invalid context in lock_sock_nested
+      16  BUG: sleeping function called from invalid context in lock_sock_nested
+      17  BUG: sleeping function called from invalid context in lock_sock_nested
+      22  BUG: sleeping function called from invalid context in lock_sock_nested
+      22  BUG: sleeping function called from invalid context in lock_sock_nested
+      23  BUG: sleeping function called from invalid context in lock_sock_nested
+      23  BUG: sleeping function called from invalid context in lock_sock_nested
+      28  BUG: sleeping function called from invalid context in lock_sock_nested
+      28  BUG: sleeping function called from invalid context in lock_sock_nested
+      28  BUG: sleeping function called from invalid context in lock_sock_nested
+      29  BUG: sleeping function called from invalid context in lock_sock_nested
+Attempt 3:
+    Time  Bug Name
+       1  BUG: sleeping function called from invalid context in lock_sock_nested
+       8  WARNING in firmware_fallback_sysfs
+      19  BUG: sleeping function called from invalid context in lock_sock_nested
+      19  BUG: sleeping function called from invalid context in lock_sock_nested
+      19  BUG: sleeping function called from invalid context in lock_sock_nested
+      24  BUG: sleeping function called from invalid context in lock_sock_nested
+      25  BUG: sleeping function called from invalid context in lock_sock_nested
+      25  BUG: sleeping function called from invalid context in lock_sock_nested
+      27  BUG: sleeping function called from invalid context in lock_sock_nested
+      30  BUG: sleeping function called from invalid context in lock_sock_nested
+The bug was not found.
+About 13 releases remaining
+
+==== Kernel Bisection ====
+106309 Linux commits
+
+2025-03-02 15:33:49
+Session:   7
+Kernel:    2022-01-14 - e1a7aa25ff45636a6c1930bf2430c8b802e93d9c
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+      27  SYZFAIL: repeatedly failed to execute the program
+      28  SYZFAIL: repeatedly failed to execute the program
+Attempt 2:
+    Time  Bug Name
+      27  SYZFAIL: repeatedly failed to execute the program
+      28  SYZFAIL: repeatedly failed to execute the program
+Attempt 3:
+    Time  Bug Name
+      28  SYZFAIL: repeatedly failed to execute the program
+      29  SYZFAIL: repeatedly failed to execute the program
+The bug was not found.
+This commit is flagged as unstable.
+About 106309 commits remaining
+
+2025-03-02 17:18:42
+Session:   8
+Kernel:    2022-03-09 - 353bb6a5f2ac495f289b7c7a528c7d134c9a8ec4
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       3  WARNING in firmware_fallback_sysfs
+      30  SYZFAIL: repeatedly failed to execute the program
+      30  SYZFAIL: repeatedly failed to execute the program
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    Time  Bug Name
+      21  SYZFAIL: repeatedly failed to execute the program
+      21  SYZFAIL: repeatedly failed to execute the program
+      25  SYZFAIL: repeatedly failed to execute the program
+Attempt 4: (RETRY)
+    Time  Bug Name
+      26  SYZFAIL: repeatedly failed to execute the program
+      26  SYZFAIL: repeatedly failed to execute the program
+The bug was not found.
+This commit is flagged as unstable.
+About 106309 commits remaining
+
+2025-03-02 19:33:41
+Session:   9
+Kernel:    2022-01-25 - 809232619f5b15e31fb3563985e705454f32621f
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+      20  SYZFAIL: repeatedly failed to execute the program
+      21  SYZFAIL: repeatedly failed to execute the program
+      26  SYZFAIL: repeatedly failed to execute the program
+Attempt 2:
+    Time  Bug Name
+      24  SYZFAIL: repeatedly failed to execute the program
+      25  SYZFAIL: repeatedly failed to execute the program
+      26  SYZFAIL: repeatedly failed to execute the program
+      29  SYZFAIL: repeatedly failed to execute the program
+Attempt 3:
+    Time  Bug Name
+      17  SYZFAIL: repeatedly failed to execute the program
+      23  SYZFAIL: repeatedly failed to execute the program
+      27  SYZFAIL: repeatedly failed to execute the program
+      29  SYZFAIL: repeatedly failed to execute the program
+The bug was not found.
+This commit is flagged as unstable.
+About 106309 commits remaining
+
+2025-03-02 21:18:14
+Session:   10
+Kernel:    2021-12-23 - c48b9ef1f7949e9024121702031775735e5d7418
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+      24  SYZFAIL: repeatedly failed to execute the program
+      25  SYZFAIL: repeatedly failed to execute the program
+      26  WARNING in firmware_fallback_sysfs
+      30  SYZFAIL: repeatedly failed to execute the program
+Attempt 2:
+    Time  Bug Name
+      17  SYZFAIL: repeatedly failed to execute the program
+      18  SYZFAIL: repeatedly failed to execute the program
+      24  SYZFAIL: repeatedly failed to execute the program
+      29  SYZFAIL: repeatedly failed to execute the program
+Attempt 3:
+    Time  Bug Name
+      24  SYZFAIL: repeatedly failed to execute the program
+      25  SYZFAIL: repeatedly failed to execute the program
+The bug was not found.
+This commit is flagged as unstable.
+About 106309 commits remaining
+
+2025-03-02 23:06:27
+Session:   11
+Kernel:    2022-01-26 - c5de60cd622a2607c043ba65e25a6e9998a369f9
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+      16  SYZFAIL: repeatedly failed to execute the program
+      16  SYZFAIL: repeatedly failed to execute the program
+      20  SYZFAIL: repeatedly failed to execute the program
+      28  SYZFAIL: repeatedly failed to execute the program
+      28  SYZFAIL: repeatedly failed to execute the program
+      30  SYZFAIL: repeatedly failed to execute the program
+Attempt 2:
+    Time  Bug Name
+      21  SYZFAIL: repeatedly failed to execute the program
+      29  SYZFAIL: repeatedly failed to execute the program
+      30  SYZFAIL: repeatedly failed to execute the program
+Attempt 3:
+    Time  Bug Name
+      26  SYZFAIL: repeatedly failed to execute the program
+      26  SYZFAIL: repeatedly failed to execute the program
+      30  SYZFAIL: repeatedly failed to execute the program
+The bug was not found.
+This commit is flagged as unstable.
+About 106309 commits remaining
+
+2025-03-03 00:51:01
+Session:   12
+Kernel:    2022-01-05 - 0d43bff5196d2d2c00055470281a11ccfafa740f
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+      27  SYZFAIL: repeatedly failed to execute the program
+      27  SYZFAIL: repeatedly failed to execute the program
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    Time  Bug Name
+       4  WARNING in firmware_fallback_sysfs
+      27  SYZFAIL: repeatedly failed to execute the program
+      29  SYZFAIL: repeatedly failed to execute the program
+Attempt 4: (RETRY)
+    Time  Bug Name
+      30  SYZFAIL: repeatedly failed to execute the program
+      30  SYZFAIL: repeatedly failed to execute the program
+      30  SYZFAIL: repeatedly failed to execute the program
+The bug was not found.
+This commit is flagged as unstable.
+About 106309 commits remaining
+
+2025-03-03 03:06:27
+Session:   13
+Kernel:    2022-01-18 - 0e3872499de1a1230cef5221607d71aa09264bd5
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+      29  SYZFAIL: repeatedly failed to execute the program
+      30  SYZFAIL: repeatedly failed to execute the program
+Attempt 2:
+    Time  Bug Name
+      29  SYZFAIL: repeatedly failed to execute the program
+Attempt 3:
+    Time  Bug Name
+      29  SYZFAIL: repeatedly failed to execute the program
+      30  SYZFAIL: repeatedly failed to execute the program
+The bug was not found.
+This commit is flagged as unstable.
+About 106309 commits remaining
+
+2025-03-03 04:51:16
+Session:   14
+Kernel:    2022-05-10 - a3c09346734fd58fa6eff9205eee55628e11ca47
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+      22  SYZFAIL: repeatedly failed to execute the program
+      28  SYZFAIL: repeatedly failed to execute the program
+      28  SYZFAIL: repeatedly failed to execute the program
+Attempt 2:
+    Time  Bug Name
+      21  SYZFAIL: repeatedly failed to execute the program
+      28  SYZFAIL: repeatedly failed to execute the program
+Attempt 3:
+    Time  Bug Name
+      20  SYZFAIL: repeatedly failed to execute the program
+      21  SYZFAIL: repeatedly failed to execute the program
+      21  SYZFAIL: repeatedly failed to execute the program
+The bug was not found.
+This commit is flagged as unstable.
+About 106309 commits remaining
+
+2025-03-03 06:37:07
+Session:   15
+Kernel:    2022-01-20 - 46cdc45acb089c811d9a54fd50af33b96e5fae9d
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+      20  SYZFAIL: repeatedly failed to execute the program
+      20  SYZFAIL: repeatedly failed to execute the program
+      24  SYZFAIL: repeatedly failed to execute the program
+      29  SYZFAIL: repeatedly failed to execute the program
+Attempt 2:
+    Time  Bug Name
+      26  SYZFAIL: repeatedly failed to execute the program
+      30  SYZFAIL: repeatedly failed to execute the program
+Attempt 3:
+    Time  Bug Name
+      24  SYZFAIL: repeatedly failed to execute the program
+      24  SYZFAIL: repeatedly failed to execute the program
+The bug was not found.
+This commit is flagged as unstable.
+About 106309 commits remaining
+
+2025-03-03 08:21:22
+Session:   16
+Kernel:    2022-03-14 - 4a51c297f8ffd1621828b856ab89f01d1a2eec81
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+      28  WARNING in firmware_fallback_sysfs
+      28  SYZFAIL: repeatedly failed to execute the program
+      29  SYZFAIL: repeatedly failed to execute the program
+Attempt 2:
+    Time  Bug Name
+      28  SYZFAIL: repeatedly failed to execute the program
+      28  SYZFAIL: repeatedly failed to execute the program
+Attempt 3:
+    Time  Bug Name
+      27  SYZFAIL: repeatedly failed to execute the program
+The bug was not found.
+This commit is flagged as unstable.
+About 106309 commits remaining
+
+2025-03-03 10:05:56
+Session:   17
+Kernel:    2022-01-19 - 73031f761cb7c2397d73957d14d041c31fe58c34
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+      28  SYZFAIL: repeatedly failed to execute the program
+      29  SYZFAIL: repeatedly failed to execute the program
+      29  SYZFAIL: repeatedly failed to execute the program
+      30  SYZFAIL: repeatedly failed to execute the program
+Attempt 2:
+    Time  Bug Name
+      29  SYZFAIL: repeatedly failed to execute the program
+      29  SYZFAIL: repeatedly failed to execute the program
+      30  SYZFAIL: repeatedly failed to execute the program
+Attempt 3:
+    Time  Bug Name
+      27  SYZFAIL: repeatedly failed to execute the program
+      27  SYZFAIL: repeatedly failed to execute the program
+The bug was not found.
+This commit is flagged as unstable.
+About 106309 commits remaining
+
+2025-03-03 11:50:27
+Session:   18
+Kernel:    2022-02-16 - ed7208706448953c6f15009cf139135776c15713
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Warning: Child process make exited with error status 2.
+Warning: make exited with error status 0x2
+Error: The kernel failed to make.
+Error: The kernel failed to make.
+Attempting to recover.
+
+2025-03-03 12:03:21
+Session:   19
+Kernel:    2022-01-26 - 961c39121759ad09a89598ec4ccdd34ae0468a19
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+      28  SYZFAIL: repeatedly failed to execute the program
+Attempt 2:
+    Time  Bug Name
+      27  SYZFAIL: repeatedly failed to execute the program
+      27  SYZFAIL: repeatedly failed to execute the program
+      28  SYZFAIL: repeatedly failed to execute the program
+Attempt 3:
+    Time  Bug Name
+      29  SYZFAIL: repeatedly failed to execute the program
+      30  SYZFAIL: repeatedly failed to execute the program
+The bug was not found.
+This commit is flagged as unstable.
+About 106309 commits remaining
+
+2025-03-03 13:47:56
+Session:   20
+Kernel:    2022-03-21 - c9b8fecddb5bb4b67e351bbaeaa648a6f7456912
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+      27  SYZFAIL: repeatedly failed to execute the program
+      28  SYZFAIL: repeatedly failed to execute the program
+      28  SYZFAIL: repeatedly failed to execute the program
+      29  SYZFAIL: repeatedly failed to execute the program
+Attempt 2:
+    Time  Bug Name
+      29  SYZFAIL: repeatedly failed to execute the program
+      29  SYZFAIL: repeatedly failed to execute the program
+      30  SYZFAIL: repeatedly failed to execute the program
+Attempt 3:
+    No crashes found.
+Attempt 4: (RETRY)
+    No crashes found.
+Attempt 5: (RETRY)
+    No crashes found.
+The bug was not found.
+This commit is flagged as unstable.
+About 106309 commits remaining
+
+2025-03-03 16:32:55
+Session:   21
+Kernel:    2022-01-20 - 3ee859e384d453d6ac68bfd5971f630d9fa46ad3
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+      27  SYZFAIL: repeatedly failed to execute the program
+Attempt 2:
+    Time  Bug Name
+      18  WARNING in firmware_fallback_sysfs
+      24  WARNING in firmware_fallback_sysfs
+Attempt 3:
+    Time  Bug Name
+      19  SYZFAIL: repeatedly failed to execute the program
+Attempt 4: (RETRY)
+    Time  Bug Name
+      16  SYZFAIL: repeatedly failed to execute the program
+      21  SYZFAIL: repeatedly failed to execute the program
+      25  SYZFAIL: repeatedly failed to execute the program
+      26  SYZFAIL: repeatedly failed to execute the program
+      28  SYZFAIL: repeatedly failed to execute the program
+      30  WARNING in firmware_fallback_sysfs
+The bug was not found.
+This commit is flagged as unstable.
+About 106309 commits remaining
+
+2025-03-03 18:49:02
+Session:   22
+Kernel:    2022-02-11 - 420f63cb6d2a691b94662f50e07dc3c9a851bc69
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+      25  SYZFAIL: repeatedly failed to execute the program
+      30  SYZFAIL: repeatedly failed to execute the program
+Attempt 2:
+    Time  Bug Name
+      24  SYZFAIL: repeatedly failed to execute the program
+      25  SYZFAIL: repeatedly failed to execute the program
+      29  SYZFAIL: repeatedly failed to execute the program
+Attempt 3:
+    Time  Bug Name
+      30  SYZFAIL: repeatedly failed to execute the program
+The bug was not found.
+This commit is flagged as unstable.
+About 106309 commits remaining
+
+2025-03-03 20:34:10
+Session:   23
+Kernel:    2022-01-18 - 7e406d1ff39b8ee574036418a5043c86723170cf
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+      22  SYZFAIL: repeatedly failed to execute the program
+      25  SYZFAIL: failed to recv rpc
+      30  WARNING in firmware_fallback_sysfs
+Attempt 2:
+    Time  Bug Name
+       3  WARNING in firmware_fallback_sysfs
+      12  SYZFAIL: repeatedly failed to execute the program
+      18  SYZFAIL: repeatedly failed to execute the program
+      25  SYZFAIL: repeatedly failed to execute the program
+      25  SYZFAIL: repeatedly failed to execute the program
+Attempt 3:
+    Time  Bug Name
+      24  SYZFAIL: repeatedly failed to execute the program
+      24  SYZFAIL: repeatedly failed to execute the program
+The bug was not found.
+This commit is flagged as unstable.
+About 106309 commits remaining
+
+2025-03-03 22:19:22
+Session:   24
+Kernel:    2022-03-10 - 6b6bb5e26222021abe1c5360f43b4c2ff1dd012f
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+      22  SYZFAIL: failed to recv rpc
+      28  SYZFAIL: repeatedly failed to execute the program
+Attempt 2:
+    Time  Bug Name
+       3  WARNING in firmware_fallback_sysfs
+      20  SYZFAIL: repeatedly failed to execute the program
+      30  SYZFAIL: repeatedly failed to execute the program
+      30  SYZFAIL: repeatedly failed to execute the program
+Attempt 3:
+    Time  Bug Name
+      22  INFO: task hung in del_device_store
+      28  INFO: task hung in new_device_store
+      28  SYZFAIL: repeatedly failed to execute the program
+The bug was not found.
+This commit is flagged as unstable.
+About 106309 commits remaining
+
+2025-03-04 00:04:32
+Session:   25
+Kernel:    2022-01-18 - 8c16dc047b5dd8f7b3bf4584fa75733ea0dde7dc
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       4  WARNING in process_one_work
+      25  SYZFAIL: repeatedly failed to execute the program
+      28  SYZFAIL: repeatedly failed to execute the program
+      30  SYZFAIL: repeatedly failed to execute the program
+Attempt 2:
+    Time  Bug Name
+      25  SYZFAIL: repeatedly failed to execute the program
+      26  SYZFAIL: repeatedly failed to execute the program
+      26  SYZFAIL: repeatedly failed to execute the program
+      30  SYZFAIL: repeatedly failed to execute the program
+Attempt 3:
+    Time  Bug Name
+      22  SYZFAIL: repeatedly failed to execute the program
+      27  SYZFAIL: repeatedly failed to execute the program
+      28  SYZFAIL: repeatedly failed to execute the program
+The bug was not found.
+This commit is flagged as unstable.
+About 106309 commits remaining
+
+2025-03-04 01:50:51
+Session:   26
+Kernel:    2022-03-11 - 6f22931bbf7546d7a4bac35830b2918b4642b0e3
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+      24  SYZFAIL: repeatedly failed to execute the program
+      28  SYZFAIL: repeatedly failed to execute the program
+      28  SYZFAIL: repeatedly failed to execute the program
+Attempt 2:
+    Time  Bug Name
+      26  SYZFAIL: repeatedly failed to execute the program
+      27  SYZFAIL: repeatedly failed to execute the program
+Attempt 3:
+    Time  Bug Name
+       9  SYZFAIL: writev failed
+      25  WARNING in firmware_fallback_sysfs
+      30  SYZFAIL: repeatedly failed to execute the program
+The bug was not found.
+This commit is flagged as unstable.
+About 106309 commits remaining
+
+2025-03-04 03:37:26
+Session:   27
+Kernel:    2021-10-22 - 6aed787cf7461462eeb03edbcf56fa149ef6ea93
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    Time  Bug Name
+      26  SYZFAIL: repeatedly failed to execute the program
+Attempt 3:
+    Time  Bug Name
+      18  WARNING in firmware_fallback_sysfs
+      26  SYZFAIL: repeatedly failed to execute the program
+Attempt 4: (RETRY)
+    Time  Bug Name
+      22  INFO: task hung in linkwatch_event
+      22  INFO: task hung in rtnetlink_rcv_msg
+      25  SYZFAIL: failed to mkdtemp
+The bug was not found.
+This commit is flagged as unstable.
+About 106309 commits remaining
+
+2025-03-04 05:54:54
+Session:   28
+Kernel:    2022-01-23 - ac178a21754cf720b27e82965c2f11e71e9e5968
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+      22  SYZFAIL: repeatedly failed to execute the program
+      28  SYZFAIL: repeatedly failed to execute the program
+Attempt 2:
+    Time  Bug Name
+      26  SYZFAIL: repeatedly failed to execute the program
+      30  SYZFAIL: repeatedly failed to execute the program
+Attempt 3:
+    Time  Bug Name
+      18  INFO: task hung in linkwatch_event
+      18  INFO: task hung in new_device_store
+      18  SYZFAIL: repeatedly failed to execute the program
+      24  SYZFAIL: repeatedly failed to execute the program
+The bug was not found.
+This commit is flagged as unstable.
+About 106309 commits remaining
+
+2025-03-04 07:39:31
+Session:   29
+Kernel:    2021-10-20 - 3d9c64ca52d5a94a49df900e53ff1e60895720dd
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+      16  SYZFAIL: repeatedly failed to execute the program
+      23  SYZFAIL: repeatedly failed to execute the program
+      29  INFO: task hung in rtl871x_load_fw_cb
+      29  SYZFAIL: repeatedly failed to execute the program
+      29  SYZFAIL: repeatedly failed to execute the program
+Attempt 2:
+    Time  Bug Name
+      28  SYZFAIL: repeatedly failed to execute the program
+      28  SYZFAIL: repeatedly failed to execute the program
+      28  SYZFAIL: repeatedly failed to execute the program
+Attempt 3:
+    Time  Bug Name
+      28  SYZFAIL: repeatedly failed to execute the program
+      28  SYZFAIL: repeatedly failed to execute the program
+      28  SYZFAIL: repeatedly failed to execute the program
+      28  SYZFAIL: repeatedly failed to execute the program
+The bug was not found.
+This commit is flagged as unstable.
+About 106309 commits remaining
+
+2025-03-04 09:24:33
+Session:   30
+Kernel:    2022-02-15 - e831c7aba950f3ae94002b10321279654525e5ec
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+      12  SYZFAIL: repeatedly failed to execute the program
+      26  SYZFAIL: repeatedly failed to execute the program
+      26  SYZFAIL: repeatedly failed to execute the program
+Attempt 2:
+    Time  Bug Name
+      24  SYZFAIL: repeatedly failed to execute the program
+      24  SYZFAIL: repeatedly failed to execute the program
+      29  SYZFAIL: repeatedly failed to execute the program
+Attempt 3:
+    No crashes found.
+Attempt 4: (RETRY)
+    Time  Bug Name
+       3  SYZFAIL: shmem open failed
+      11  SYZFAIL: failed to recv rpc
+      28  SYZFAIL: repeatedly failed to execute the program
+The bug was not found.
+This commit is flagged as unstable.
+About 106309 commits remaining
+
+2025-03-04 11:41:32
+Session:   31
+Kernel:    2022-05-18 - f4162eb1e2fc9b423dfb8f3a7b2b55a337efcc60
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc

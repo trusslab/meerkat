@@ -1,0 +1,699 @@
+./bin/bisector -i 1 -c /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/bisector.cfg -a 75acfdb6fd922598a408a0d864486aeb167c1a97 -F ff-test,poc-test,stateful-corpus,ff-no-find-backup
+Bisecting:          WARNING in tcp_enter_loss
+Warning: No syscall found that produces tail_call_map.
+Warning: No syscall found that produces fd_bpf_const_str.
+Syzbot Link:        https://syzkaller.appspot.com/bug?id=de88544daafacdbc8ec3b2d75ca9e7e0f03346e0
+Working Name:       bug0075
+
+No aliases given.
+
+Anchor Commit:      75acfdb6fd922598a408a0d864486aeb167c1a97
+Repository:         https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
+Branch:             master
+Arch:               amd64
+
+Bisector:           /mnt/sdd/jtbursey/SyzInspector/
+Version:            1.0.3
+Kernel:             /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/kernel/
+Syzkaller:          /mnt/sdd/jtbursey/SyzInspector/syzkaller/
+Compilers:          /mnt/sda/jtbursey/SyzInspector/compilers/
+Ccache:             ccache
+Image:              /mnt/sda/jtbursey/SyzInspector/image/stretch/stretch.img
+Image Key:          /mnt/sda/jtbursey/SyzInspector/image/stretch/stretch.id_rsa
+
+Workdir:            /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/
+Kconfig:            /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/config-bug0075.txt
+Reproducers: (2)    /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/reproducers/
+Primary PoC:        /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/reproducers/repro-bug0075-1.prog
+Syzkaller Workdir:  /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/wd-kaller/
+Log Directory:      /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/log/
+
+Syscalls: (26)      ["bind$inet", "connect$inet", "perf_event_open", "sendto$inet", "setsockopt$inet_tcp_TCP_REPAIR", "setsockopt$inet_tcp_TCP_REPAIR_OPTIONS", "setsockopt$inet_tcp_int", "socket$inet_tcp", "splice", "socket$inet", "syz_clone", "openat$sw_sync_info", "socket", "bpf$BPF_RAW_TRACEPOINT_OPEN_UNNAMED", "bpf$BPF_PROG_WITH_BTFID_LOAD", "bpf$OBJ_GET_PROG", "syz_btf_id_by_name$bpf_lsm", "ioctl$sock_SIOCGIFINDEX", "bpf$BPF_BTF_LOAD", "bpf$OBJ_GET_MAP", "bpf$BPF_BTF_GET_FD_BY_ID", "bpf$BPF_BTF_GET_NEXT_ID", "bpf$BPF_MAP_CONST_STR_FREEZE", "bpf$MAP_CREATE_RINGBUF", "bpf$MAP_CREATE_TAIL_CALL", "bpf$MAP_CREATE_CONST_STR"]
+VM Count:           8
+CPU Count:          2
+Procs:              16
+Memory:             4096
+Make Procs:         16
+Max Time:           30
+Max Attempts:       3
+
+==== Anchor Commit ====
+
+2025-03-01 08:39:36
+Session:   1
+Kernel:    2022-01-05 - 75acfdb6fd922598a408a0d864486aeb167c1a97
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    2  WARNING in tcp_enter_loss
+***    2  WARNING in tcp_enter_loss
+***    2  WARNING in tcp_enter_loss
+***    2  WARNING in tcp_enter_loss
+Attempt 2:
+    Time  Bug Name
+***    2  WARNING in tcp_enter_loss
+***    2  WARNING in tcp_enter_loss
+***    2  WARNING in tcp_enter_loss
+Attempt 3:
+    Time  Bug Name
+***    2  WARNING in tcp_enter_loss
+***    2  WARNING in tcp_enter_loss
+***    2  WARNING in tcp_enter_loss
+***    2  WARNING in tcp_enter_loss
+The bug was found.
+
+New Max Time: 10
+
+==== Major Release Search ====
+17 Releases
+
+2025-03-01 09:01:37
+Session:   2
+Kernel:    2021-10-31 - 8bb7eca972ad531c9b149c0a51ab43a417385813 (v5.15)
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    2  WARNING in tcp_enter_loss
+***    2  WARNING in tcp_enter_loss
+***    2  WARNING in tcp_enter_loss
+***    2  WARNING in tcp_enter_loss
+Running syz-repro.
+New PoC saved at /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/reproducers/repro-bug0075-0.prog
+Primary PoC:     /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/reproducers/repro-bug0075-0.prog
+Run Time:        0h40m0s
+The bug was found.
+About 16 releases remaining
+
+2025-03-01 09:59:11
+Session:   3
+Kernel:    2021-08-29 - 7d2a07b769330c34b4deabeed939325c77a7ec2f (v5.14)
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    2  WARNING in tcp_enter_loss
+***    2  WARNING in tcp_enter_loss
+The bug was found.
+About 15 releases remaining
+
+2025-03-01 10:16:41
+Session:   4
+Kernel:    2021-06-27 - 62fb9874f5da54fdb243003b386128037319b219 (v5.13)
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    2  WARNING in tcp_enter_loss
+***    2  WARNING in tcp_enter_loss
+The bug was found.
+About 14 releases remaining
+
+2025-03-01 10:32:56
+Session:   5
+Kernel:    2021-02-14 - f40ddce88593482919761f74910f42f4b84c004b (v5.11)
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    2  WARNING in tcp_enter_loss
+***    2  WARNING in tcp_enter_loss
+Running syz-repro.
+New PoC saved at /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/reproducers/repro-bug0075-2.prog
+Primary PoC:     /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/reproducers/repro-bug0075-2.prog
+Run Time:        0h25m0s
+The bug was found.
+About 13 releases remaining
+
+2025-03-01 11:14:36
+Session:   6
+Kernel:    2020-10-11 - bbf5c979011a099af5dc76498918ed7df445635b (v5.9)
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.1.0-syz/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    2  WARNING in tcp_enter_loss
+***    2  WARNING in tcp_enter_loss
+***    2  WARNING in tcp_enter_loss
+***    2  WARNING in tcp_enter_loss
+The bug was found.
+About 12 releases remaining
+
+2025-03-01 11:29:07
+Session:   7
+Kernel:    2020-05-31 - 3d77e6a8804abcc0504c904bd6e5cdf3a5cf8162 (v5.7)
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.1.0-syz/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    3  WARNING in tcp_enter_loss
+***    3  WARNING in tcp_enter_loss
+***    3  WARNING in tcp_enter_loss
+***    3  WARNING in tcp_enter_loss
+***    3  WARNING in tcp_enter_loss
+***    3  WARNING in tcp_enter_loss
+***    3  WARNING in tcp_enter_loss
+The bug was found.
+About 11 releases remaining
+
+2025-03-01 11:45:35
+Session:   8
+Kernel:    2020-01-26 - d5226fa6dbae0569ee43ecfc08bdcd6770fc4755 (v5.5)
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-9.0.0-20181231/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    2  WARNING in tcp_enter_loss
+***    2  WARNING in tcp_enter_loss
+***    2  WARNING in tcp_enter_loss
+***    2  WARNING in tcp_enter_loss
+***    2  WARNING in tcp_enter_loss
+Running syz-repro.
+New PoC saved at /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/reproducers/repro-bug0075-4.prog
+Primary PoC:     /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/reproducers/repro-bug0075-4.prog
+Run Time:        0h38m0s
+The bug was found.
+About 10 releases remaining
+
+2025-03-01 12:39:44
+Session:   9
+Kernel:    2019-09-15 - 4d856f72c10ecb060868ed10ff1b1453943fc6c8 (v5.3)
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-9.0.0-20181231/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    2  WARNING in tcp_enter_loss
+The bug was found.
+About 9 releases remaining
+
+2025-03-01 12:55:12
+Session:   10
+Kernel:    2019-05-05 - e93c9c99a629c61837d5a7fc2120cd2b6c70dbdd (v5.1)
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-9.0.0-20181231/bin/gcc
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+The bug was not found.
+About 8 releases remaining
+
+==== Kernel Bisection ====
+30874 Linux commits
+
+2025-03-01 13:39:17
+Session:   11
+Kernel:    2019-07-09 - d8d051df9f906232715282cc0570c94273b197bc
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-9.0.0-20181231/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    2  WARNING in tcp_enter_loss
+The bug was found.
+About 15437 commits remaining
+
+2025-03-01 13:55:07
+Session:   12
+Kernel:    2019-05-08 - a2d635decbfa9c1e4ae15cb05b68b2559f7f827c
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-9.0.0-20181231/bin/gcc
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+The bug was not found.
+About 7315 commits remaining
+
+2025-03-01 14:38:31
+Session:   13
+Kernel:    2019-05-16 - e8a1d70117116c8d96c266f0b99e931717670eaf
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-9.0.0-20181231/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    2  WARNING in tcp_enter_loss
+***    2  WARNING in tcp_enter_loss
+Running syz-repro.
+New PoC saved at /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/reproducers/repro-bug0075-0.prog
+Primary PoC:     /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/reproducers/repro-bug0075-4.prog
+Run Time:        0h23m0s
+The bug was found.
+About 3821 commits remaining
+
+2025-03-01 15:17:30
+Session:   14
+Kernel:    2019-05-13 - 55472bae5331f33582d9f0e8919fed8bebcda0da
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-9.0.0-20181231/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    2  WARNING in tcp_enter_loss
+***    2  WARNING in tcp_enter_loss
+The bug was found.
+About 1964 commits remaining
+
+2025-03-01 15:32:46
+Session:   15
+Kernel:    2019-05-09 - 8e4ff713ce313dcabbb60e6ede1ffc193e67631f
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-9.0.0-20181231/bin/gcc
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+The bug was not found.
+About 968 commits remaining
+
+2025-03-01 16:15:28
+Session:   16
+Kernel:    2019-05-10 - cece6460c24386d15503ad4e07f740a88f3c8403
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-9.0.0-20181231/bin/gcc
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+The bug was not found.
+About 491 commits remaining
+
+2025-03-01 16:58:30
+Session:   17
+Kernel:    2019-05-12 - 983dfa4b6ee556563f7963348e4e2f97fc8a15b8
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-9.0.0-20181231/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    2  WARNING in tcp_enter_loss
+***    2  WARNING in tcp_enter_loss
+The bug was found.
+About 239 commits remaining
+
+2025-03-01 17:15:28
+Session:   18
+Kernel:    2019-05-11 - c367dc8d0dd2a1e1ed9fdc2dd831053bdfdf0968
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-9.0.0-20181231/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    2  WARNING in tcp_enter_loss
+Running syz-repro.
+New PoC saved at /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/reproducers/repro-bug0075-0.prog
+Primary PoC:     /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/reproducers/repro-bug0075-4.prog
+Run Time:        0h26m0s
+The bug was found.
+About 117 commits remaining
+
+2025-03-01 17:57:21
+Session:   19
+Kernel:    2019-05-10 - 7817ffd20a0f7fbd5971643b5ef1f577703dad11
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-9.0.0-20181231/bin/gcc
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+The bug was not found.
+About 50 commits remaining
+
+2025-03-01 18:41:31
+Session:   20
+Kernel:    2019-05-08 - 1c65b4e0f27f3688d95de59cbdfa076270251f3c
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-9.0.0-20181231/bin/gcc
+PATCH: Fixing includes in selinux/mpd and selinux/genheaders.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+The bug was not found.
+About 11676 commits remaining
+
+2025-03-01 19:25:04
+Session:   21
+Kernel:    2019-05-10 - 1fb3b526df3bd7647e7854915ae6b22299408baf
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-9.0.0-20181231/bin/gcc
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+The bug was not found.
+About 14 commits remaining
+
+2025-03-01 20:10:06
+Session:   22
+Kernel:    2019-05-07 - f7c34874f04a80d6c39a32f08da2529e59602d3c
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-9.0.0-20181231/bin/gcc
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+The bug was not found.
+About 9706 commits remaining
+
+2025-03-01 20:53:19
+Session:   23
+Kernel:    2019-05-10 - 27df4b4a1b5fe2bef54ebc49d64bf5b39125f26a
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-9.0.0-20181231/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       1  WARNING: Domain '<kernel> /sbin/init /usr/sbin/sshd /usr/sbin/sshd /bin/bash /syz-executor' has too many ACLs to hold. S
+       1  WARNING: Domain '<kernel> /sbin/init /usr/sbin/sshd /usr/sbin/sshd /bin/bash /syz-executor' has too many ACLs to hold. S
+       1  WARNING: Domain '<kernel> /sbin/init /usr/sbin/sshd /usr/sbin/sshd /bin/bash /syz-executor' has too many ACLs to hold. S
+       1  WARNING: Domain '<kernel> /sbin/init /usr/sbin/sshd /usr/sbin/sshd /bin/bash /syz-executor' has too many ACLs to hold. S
+       1  WARNING: Domain '<kernel> /sbin/init /usr/sbin/sshd /usr/sbin/sshd /bin/bash /syz-executor' has too many ACLs to hold. S
+       1  WARNING: Domain '<kernel> /sbin/init /lib/systemd/systemd-rfkill' has too many ACLs to hold. Stopped learning mode.
+       1  WARNING: Domain '<kernel> /sbin/init /lib/systemd/systemd-rfkill' has too many ACLs to hold. Stopped learning mode.
+       1  WARNING: Domain '<kernel> /sbin/init /sbin/agetty' has too many ACLs to hold. Stopped learning mode.
+       2  WARNING: Domain '<kernel> /sbin/init /usr/sbin/sshd /usr/sbin/sshd /bin/bash /syz-executor' has too many ACLs to hold. S
+       2  WARNING: Domain '<kernel> /sbin/init /usr/sbin/sshd /usr/sbin/sshd /bin/bash /syz-executor' has too many ACLs to hold. S
+       2  WARNING: Domain '<kernel> /sbin/init /usr/sbin/sshd /usr/sbin/sshd /bin/bash /syz-executor' has too many ACLs to hold. S
+       2  WARNING: Domain '<kernel> /sbin/init /usr/sbin/sshd /usr/sbin/sshd /bin/bash /syz-executor' has too many ACLs to hold. S
+       2  WARNING: Domain '<kernel> /sbin/init /usr/sbin/sshd /usr/sbin/sshd /bin/bash /syz-executor' has too many ACLs to hold. S
+       2  WARNING: Domain '<kernel> /sbin/init /lib/systemd/systemd-rfkill' has too many ACLs to hold. Stopped learning mode.
+       2  WARNING: Domain '<kernel> /sbin/init /lib/systemd/systemd-rfkill' has too many ACLs to hold. Stopped learning mode.
+       2  WARNING: Domain '<kernel> /sbin/init /lib/systemd/systemd-rfkill' has too many ACLs to hold. Stopped learning mode.
+       3  WARNING: Domain '<kernel> /sbin/init /usr/sbin/sshd /usr/sbin/sshd /bin/bash /syz-executor' has too many ACLs to hold. S
+       3  WARNING: Domain '<kernel> /sbin/init /usr/sbin/sshd /usr/sbin/sshd /bin/bash /syz-executor' has too many ACLs to hold. S
+       3  WARNING: Domain '<kernel> /sbin/init /usr/sbin/sshd /usr/sbin/sshd /bin/bash /syz-executor' has too many ACLs to hold. S
+       3  WARNING: Domain '<kernel> /sbin/init /usr/sbin/sshd /usr/sbin/sshd /bin/bash /syz-executor' has too many ACLs to hold. S
+       3  WARNING: Domain '<kernel> /sbin/init /usr/sbin/sshd /usr/sbin/sshd /bin/bash /syz-executor' has too many ACLs to hold. S
+       3  WARNING: Domain '<kernel> /sbin/init /usr/sbin/sshd /usr/sbin/sshd /bin/bash /syz-executor' has too many ACLs to hold. S
+       3  WARNING: Domain '<kernel> /sbin/init /lib/systemd/systemd-rfkill' has too many ACLs to hold. Stopped learning mode.
+       3  WARNING: Domain '<kernel> /sbin/init /lib/systemd/systemd-rfkill' has too many ACLs to hold. Stopped learning mode.
+       4  WARNING: Domain '<kernel> /sbin/init /usr/sbin/sshd /usr/sbin/sshd /bin/bash /syz-executor' has too many ACLs to hold. S
+       4  WARNING: Domain '<kernel> /sbin/init /usr/sbin/sshd /usr/sbin/sshd /bin/bash /syz-executor' has too many ACLs to hold. S
+       4  WARNING: Domain '<kernel> /sbin/init /usr/sbin/sshd /usr/sbin/sshd /bin/bash /syz-executor' has too many ACLs to hold. S
+       4  WARNING: Domain '<kernel> /sbin/init /usr/sbin/sshd /usr/sbin/sshd /bin/bash /syz-executor' has too many ACLs to hold. S
+       4  WARNING: Domain '<kernel> /sbin/init /usr/sbin/sshd /usr/sbin/sshd /bin/bash /syz-executor' has too many ACLs to hold. S
+       4  WARNING: Domain '<kernel> /sbin/init /usr/sbin/sshd /usr/sbin/sshd /bin/bash /syz-executor' has too many ACLs to hold. S
+       4  WARNING: Domain '<kernel> /sbin/init /lib/systemd/systemd-rfkill' has too many ACLs to hold. Stopped learning mode.
+       4  WARNING: Domain '<kernel> /sbin/init /lib/systemd/systemd-rfkill' has too many ACLs to hold. Stopped learning mode.
+       4  WARNING: Domain '<kernel> /sbin/init /sbin/agetty' has too many ACLs to hold. Stopped learning mode.
+       4  WARNING: Domain '<kernel> /sbin/init /sbin/agetty' has too many ACLs to hold. Stopped learning mode.
+       5  WARNING: Domain '<kernel> /sbin/init /usr/sbin/sshd /usr/sbin/sshd /bin/bash /syz-executor' has too many ACLs to hold. S
+       5  WARNING: Domain '<kernel> /sbin/init /usr/sbin/sshd /usr/sbin/sshd /bin/bash /syz-executor' has too many ACLs to hold. S
+       5  WARNING: Domain '<kernel> /sbin/init /usr/sbin/sshd /usr/sbin/sshd /bin/bash /syz-executor' has too many ACLs to hold. S
+       5  WARNING: Domain '<kernel> /sbin/init /usr/sbin/sshd /usr/sbin/sshd /bin/bash /syz-executor' has too many ACLs to hold. S
+       5  WARNING: Domain '<kernel> /sbin/init /usr/sbin/sshd /usr/sbin/sshd /bin/bash /syz-executor' has too many ACLs to hold. S
+       5  WARNING: Domain '<kernel> /sbin/init /usr/sbin/sshd /usr/sbin/sshd /bin/bash /syz-executor' has too many ACLs to hold. S
+       5  WARNING: Domain '<kernel> /sbin/init /usr/sbin/sshd /usr/sbin/sshd /bin/bash /syz-executor' has too many ACLs to hold. S
+       5  WARNING: Domain '<kernel> /sbin/init /usr/sbin/sshd /usr/sbin/sshd /bin/bash /syz-executor' has too many ACLs to hold. S
+       5  WARNING: Domain '<kernel> /sbin/init /lib/systemd/systemd-rfkill' has too many ACLs to hold. Stopped learning mode.
+       5  WARNING: Domain '<kernel> /sbin/init /lib/systemd/systemd-rfkill' has too many ACLs to hold. Stopped learning mode.
+       5  WARNING: Domain '<kernel> /sbin/init /lib/systemd/systemd-rfkill' has too many ACLs to hold. Stopped learning mode.
+       5  WARNING: Domain '<kernel> /sbin/init /lib/systemd/systemd-udevd /lib/udev/ifupdown-hotplug /bin/grep' has too many ACLs
+       5  WARNING: Domain '<kernel> /sbin/init /sbin/agetty' has too many ACLs to hold. Stopped learning mode.
+       5  WARNING: Domain '<kernel> /sbin/init /lib/systemd/systemd-udevd /lib/udev/ifupdown-hotplug' has too many ACLs to hold. S
+       6  WARNING: Domain '<kernel> /sbin/init /usr/sbin/sshd /usr/sbin/sshd /bin/bash /syz-executor' has too many ACLs to hold. S
+       6  WARNING: Domain '<kernel> /sbin/init /usr/sbin/sshd /usr/sbin/sshd /bin/bash /syz-executor' has too many ACLs to hold. S
+       6  WARNING: Domain '<kernel> /sbin/init /usr/sbin/sshd /usr/sbin/sshd /bin/bash /syz-executor' has too many ACLs to hold. S
+       6  WARNING: Domain '<kernel> /sbin/init /usr/sbin/sshd /usr/sbin/sshd /bin/bash /syz-executor' has too many ACLs to hold. S
+       6  WARNING: Domain '<kernel> /sbin/init /usr/sbin/sshd /usr/sbin/sshd /bin/bash /syz-executor' has too many ACLs to hold. S
+       6  WARNING: Domain '<kernel> /sbin/init /lib/systemd/systemd-rfkill' has too many ACLs to hold. Stopped learning mode.
+       6  WARNING: Domain '<kernel> /sbin/init /lib/systemd/systemd-rfkill' has too many ACLs to hold. Stopped learning mode.
+       6  WARNING: Domain '<kernel> /sbin/init /lib/systemd/systemd-rfkill' has too many ACLs to hold. Stopped learning mode.
+       7  WARNING: Domain '<kernel> /sbin/init /usr/sbin/sshd /usr/sbin/sshd /bin/bash /syz-executor' has too many ACLs to hold. S
+       7  WARNING: Domain '<kernel> /sbin/init /usr/sbin/sshd /usr/sbin/sshd /bin/bash /syz-executor' has too many ACLs to hold. S
+       7  WARNING: Domain '<kernel> /sbin/init /usr/sbin/sshd /usr/sbin/sshd /bin/bash /syz-executor' has too many ACLs to hold. S
+       7  WARNING: Domain '<kernel> /sbin/init /lib/systemd/systemd-rfkill' has too many ACLs to hold. Stopped learning mode.
+       7  WARNING: Domain '<kernel> /sbin/init /lib/systemd/systemd-rfkill' has too many ACLs to hold. Stopped learning mode.
+       7  WARNING: Domain '<kernel> /sbin/init /lib/systemd/systemd-rfkill' has too many ACLs to hold. Stopped learning mode.
+       7  WARNING: Domain '<kernel> /sbin/init /lib/systemd/systemd-rfkill' has too many ACLs to hold. Stopped learning mode.
+       7  WARNING: Domain '<kernel> /sbin/init /lib/systemd/systemd-rfkill' has too many ACLs to hold. Stopped learning mode.
+       7  WARNING: Domain '<kernel> /sbin/init /lib/systemd/systemd-udevd /lib/udev/ifupdown-hotplug /bin/grep' has too many ACLs
+       8  WARNING: Domain '<kernel> /sbin/init /usr/sbin/sshd /usr/sbin/sshd /bin/bash /syz-executor' has too many ACLs to hold. S
+       8  WARNING: Domain '<kernel> /sbin/init /usr/sbin/sshd /usr/sbin/sshd /bin/bash /syz-executor' has too many ACLs to hold. S
+       8  WARNING: Domain '<kernel> /sbin/init /usr/sbin/sshd /usr/sbin/sshd /bin/bash /syz-executor' has too many ACLs to hold. S
+       8  WARNING: Domain '<kernel> /sbin/init /usr/sbin/sshd /usr/sbin/sshd /bin/bash /syz-executor' has too many ACLs to hold. S
+       8  WARNING: Domain '<kernel> /sbin/init /usr/sbin/sshd /usr/sbin/sshd /bin/bash /syz-executor' has too many ACLs to hold. S
+       8  WARNING: Domain '<kernel> /sbin/init /usr/sbin/sshd /usr/sbin/sshd /bin/bash /syz-executor' has too many ACLs to hold. S
+       8  WARNING: Domain '<kernel> /sbin/init /lib/systemd/systemd-rfkill' has too many ACLs to hold. Stopped learning mode.
+       8  WARNING: Domain '<kernel> /sbin/init /lib/systemd/systemd-rfkill' has too many ACLs to hold. Stopped learning mode.
+       8  WARNING: Domain '<kernel> /sbin/init /lib/systemd/systemd-rfkill' has too many ACLs to hold. Stopped learning mode.
+       8  WARNING: Domain '<kernel> /sbin/init /sbin/agetty' has too many ACLs to hold. Stopped learning mode.
+       9  WARNING: Domain '<kernel> /sbin/init /usr/sbin/sshd /usr/sbin/sshd /bin/bash /syz-executor' has too many ACLs to hold. S
+       9  WARNING: Domain '<kernel> /sbin/init /usr/sbin/sshd /usr/sbin/sshd /bin/bash /syz-executor' has too many ACLs to hold. S
+       9  WARNING: Domain '<kernel> /sbin/init /usr/sbin/sshd /usr/sbin/sshd /bin/bash /syz-executor' has too many ACLs to hold. S
+       9  WARNING: Domain '<kernel> /sbin/init /usr/sbin/sshd /usr/sbin/sshd /bin/bash /syz-executor' has too many ACLs to hold. S
+       9  WARNING: Domain '<kernel> /sbin/init /usr/sbin/sshd /usr/sbin/sshd /bin/bash /syz-executor' has too many ACLs to hold. S
+       9  WARNING: Domain '<kernel> /sbin/init /usr/sbin/sshd /usr/sbin/sshd /bin/bash /syz-executor' has too many ACLs to hold. S
+       9  WARNING: Domain '<kernel> /sbin/init /lib/systemd/systemd-rfkill' has too many ACLs to hold. Stopped learning mode.
+       9  WARNING: Domain '<kernel> /sbin/init /lib/systemd/systemd-rfkill' has too many ACLs to hold. Stopped learning mode.
+       9  WARNING: Domain '<kernel> /sbin/init /lib/systemd/systemd-rfkill' has too many ACLs to hold. Stopped learning mode.
+       9  WARNING: Domain '<kernel> /sbin/init /lib/systemd/systemd-rfkill' has too many ACLs to hold. Stopped learning mode.
+       9  WARNING: Domain '<kernel> /sbin/init /lib/systemd/systemd-rfkill' has too many ACLs to hold. Stopped learning mode.
+       9  WARNING: Domain '<kernel> /sbin/init /sbin/agetty' has too many ACLs to hold. Stopped learning mode.
+       9  WARNING: Domain '<kernel> /sbin/init /sbin/agetty' has too many ACLs to hold. Stopped learning mode.
+      10  WARNING: Domain '<kernel> /sbin/init /usr/sbin/cron' has too many ACLs to hold. Stopped learning mode.
+      10  WARNING: Domain '<kernel> /sbin/init /usr/sbin/sshd /usr/sbin/sshd /bin/bash /syz-executor' has too many ACLs to hold. S
+      10  WARNING: Domain '<kernel> /sbin/init /usr/sbin/sshd /usr/sbin/sshd /bin/bash /syz-executor' has too many ACLs to hold. S
+      10  WARNING: Domain '<kernel> /sbin/init /usr/sbin/sshd /usr/sbin/sshd /bin/bash /syz-executor' has too many ACLs to hold. S
+      10  WARNING: Domain '<kernel> /sbin/init /usr/sbin/sshd /usr/sbin/sshd /bin/bash /syz-executor' has too many ACLs to hold. S
+      10  WARNING: Domain '<kernel> /sbin/init /usr/sbin/sshd /usr/sbin/sshd /bin/bash /syz-executor' has too many ACLs to hold. S
+      10  WARNING: Domain '<kernel> /sbin/init /usr/sbin/sshd /usr/sbin/sshd /bin/bash /syz-executor' has too many ACLs to hold. S
+      10  WARNING: Domain '<kernel> /sbin/init /usr/sbin/sshd /usr/sbin/sshd /bin/bash /syz-executor' has too many ACLs to hold. S
+      10  WARNING: Domain '<kernel> /sbin/init /usr/sbin/sshd /usr/sbin/sshd /bin/bash /syz-executor' has too many ACLs to hold. S
+      10  WARNING: Domain '<kernel> /sbin/init /lib/systemd/systemd-rfkill' has too many ACLs to hold. Stopped learning mode.
+Attempt 2:
+    Time  Bug Name
+       1  WARNING: Domain '<kernel> /sbin/init /usr/sbin/sshd /usr/sbin/sshd /bin/bash /syz-executor' has too many ACLs to hold. S
+       1  WARNING: Domain '<kernel> /sbin/init /usr/sbin/sshd /usr/sbin/sshd /bin/bash /syz-executor' has too many ACLs to hold. S
+       1  WARNING: Domain '<kernel> /sbin/init /usr/sbin/sshd /usr/sbin/sshd /bin/bash /syz-executor' has too many ACLs to hold. S
+       1  WARNING: Domain '<kernel> /sbin/init /usr/sbin/sshd /usr/sbin/sshd /bin/bash /syz-executor' has too many ACLs to hold. S
+       1  WARNING: Domain '<kernel> /sbin/init /usr/sbin/sshd /usr/sbin/sshd /bin/bash /syz-executor' has too many ACLs to hold. S
+       1  WARNING: Domain '<kernel> /sbin/init /lib/systemd/systemd-rfkill' has too many ACLs to hold. Stopped learning mode.
+       1  WARNING: Domain '<kernel> /sbin/init /sbin/agetty' has too many ACLs to hold. Stopped learning mode.
+       1  WARNING: Domain '<kernel> /sbin/init /sbin/agetty' has too many ACLs to hold. Stopped learning mode.
+       2  WARNING: Domain '<kernel> /sbin/init /usr/sbin/sshd /usr/sbin/sshd /bin/bash /syz-executor' has too many ACLs to hold. S
+       2  WARNING: Domain '<kernel> /sbin/init /usr/sbin/sshd /usr/sbin/sshd /bin/bash /syz-executor' has too many ACLs to hold. S
+       2  WARNING: Domain '<kernel> /sbin/init /usr/sbin/sshd /usr/sbin/sshd /bin/bash /syz-executor' has too many ACLs to hold. S
+       2  WARNING: Domain '<kernel> /sbin/init /usr/sbin/sshd /usr/sbin/sshd /bin/bash /syz-executor' has too many ACLs to hold. S
+       2  WARNING: Domain '<kernel> /sbin/init /usr/sbin/sshd /usr/sbin/sshd /bin/bash /syz-executor' has too many ACLs to hold. S
+       2  WARNING: Domain '<kernel> /sbin/init /lib/systemd/systemd-rfkill' has too many ACLs to hold. Stopped learning mode.
+       2  WARNING: Domain '<kernel> /sbin/init /lib/systemd/systemd-rfkill' has too many ACLs to hold. Stopped learning mode.
+       3  WARNING: Domain '<kernel> /sbin/init /sbin/agetty' has too many ACLs to hold. Stopped learning mode.
+       4  WARNING: Domain '<kernel> /sbin/init /usr/sbin/sshd /usr/sbin/sshd /bin/bash /syz-executor' has too many ACLs to hold. S
+       4  WARNING: Domain '<kernel> /sbin/init /usr/sbin/sshd /usr/sbin/sshd /bin/bash /syz-executor' has too many ACLs to hold. S
+       4  WARNING: Domain '<kernel> /sbin/init /usr/sbin/sshd /usr/sbin/sshd /bin/bash /syz-executor' has too many ACLs to hold. S
+       4  WARNING: Domain '<kernel> /sbin/init /lib/systemd/systemd-rfkill' has too many ACLs to hold. Stopped learning mode.
+       4  WARNING: Domain '<kernel> /sbin/init /lib/systemd/systemd-rfkill' has too many ACLs to hold. Stopped learning mode.
+       4  WARNING: Domain '<kernel> /sbin/init /lib/systemd/systemd-rfkill' has too many ACLs to hold. Stopped learning mode.
+       4  WARNING: Domain '<kernel> /sbin/init /lib/systemd/systemd-udevd /lib/udev/ifupdown-hotplug' has too many ACLs to hold. S
+       4  WARNING: Domain '<kernel> /sbin/init /lib/systemd/systemd-udevd /lib/udev/ifupdown-hotplug' has too many ACLs to hold. S
+       5  WARNING: Domain '<kernel> /sbin/init /usr/sbin/sshd /usr/sbin/sshd /bin/bash /syz-executor' has too many ACLs to hold. S
+       5  WARNING: Domain '<kernel> /sbin/init /usr/sbin/sshd /usr/sbin/sshd /bin/bash /syz-executor' has too many ACLs to hold. S
+       5  WARNING: Domain '<kernel> /sbin/init /usr/sbin/sshd /usr/sbin/sshd /bin/bash /syz-executor' has too many ACLs to hold. S
+       5  WARNING: Domain '<kernel> /sbin/init /usr/sbin/sshd /usr/sbin/sshd /bin/bash /syz-executor' has too many ACLs to hold. S
+       5  WARNING: Domain '<kernel> /sbin/init /usr/sbin/sshd /usr/sbin/sshd /bin/bash /syz-executor' has too many ACLs to hold. S
+       5  WARNING: Domain '<kernel> /sbin/init /usr/sbin/sshd /usr/sbin/sshd /bin/bash /syz-executor' has too many ACLs to hold. S
+       5  WARNING: Domain '<kernel> /sbin/init /lib/systemd/systemd-rfkill' has too many ACLs to hold. Stopped learning mode.
+       6  WARNING: Domain '<kernel> /sbin/init /usr/sbin/sshd /usr/sbin/sshd /bin/bash /syz-executor' has too many ACLs to hold. S
+       6  WARNING: Domain '<kernel> /sbin/init /usr/sbin/sshd /usr/sbin/sshd /bin/bash /syz-executor' has too many ACLs to hold. S
+       6  WARNING: Domain '<kernel> /sbin/init /usr/sbin/sshd /usr/sbin/sshd /bin/bash /syz-executor' has too many ACLs to hold. S
+       6  WARNING: Domain '<kernel> /sbin/init /lib/systemd/systemd-rfkill' has too many ACLs to hold. Stopped learning mode.
+       7  WARNING: Domain '<kernel> /sbin/init /usr/sbin/sshd /usr/sbin/sshd /bin/bash /syz-executor' has too many ACLs to hold. S
+       7  WARNING: Domain '<kernel> /sbin/init /usr/sbin/sshd /usr/sbin/sshd /bin/bash /syz-executor' has too many ACLs to hold. S
+       7  WARNING: Domain '<kernel> /sbin/init /usr/sbin/sshd /usr/sbin/sshd /bin/bash /syz-executor' has too many ACLs to hold. S
+       7  WARNING: Domain '<kernel> /sbin/init /usr/sbin/sshd /usr/sbin/sshd /bin/bash /syz-executor' has too many ACLs to hold. S
+       7  WARNING: Domain '<kernel> /sbin/init /usr/sbin/sshd /usr/sbin/sshd /bin/bash /syz-executor' has too many ACLs to hold. S
+       7  WARNING: Domain '<kernel> /sbin/init /lib/systemd/systemd-rfkill' has too many ACLs to hold. Stopped learning mode.
+       7  WARNING: Domain '<kernel> /sbin/init /lib/systemd/systemd-rfkill' has too many ACLs to hold. Stopped learning mode.
+       7  WARNING: Domain '<kernel> /sbin/init /lib/systemd/systemd-rfkill' has too many ACLs to hold. Stopped learning mode.
+       7  WARNING: Domain '<kernel> /sbin/init /lib/systemd/systemd-rfkill' has too many ACLs to hold. Stopped learning mode.
+       7  WARNING: Domain '<kernel> /sbin/init /sbin/agetty' has too many ACLs to hold. Stopped learning mode.
+       8  WARNING: Domain '<kernel> /sbin/init /usr/sbin/sshd /usr/sbin/sshd /bin/bash /syz-executor' has too many ACLs to hold. S
+       8  WARNING: Domain '<kernel> /sbin/init /usr/sbin/sshd /usr/sbin/sshd /bin/bash /syz-executor' has too many ACLs to hold. S
+       8  WARNING: Domain '<kernel> /sbin/init /usr/sbin/sshd /usr/sbin/sshd /bin/bash /syz-executor' has too many ACLs to hold. S
+       8  WARNING: Domain '<kernel> /sbin/init /usr/sbin/sshd /usr/sbin/sshd /bin/bash /syz-executor' has too many ACLs to hold. S
+       8  WARNING: Domain '<kernel> /sbin/init /usr/sbin/sshd /usr/sbin/sshd /bin/bash /syz-executor' has too many ACLs to hold. S
+       8  WARNING: Domain '<kernel> /sbin/init /lib/systemd/systemd-rfkill' has too many ACLs to hold. Stopped learning mode.
+       9  WARNING: Domain '<kernel> /sbin/init /usr/sbin/sshd /usr/sbin/sshd /bin/bash /syz-executor' has too many ACLs to hold. S
+       9  WARNING: Domain '<kernel> /sbin/init /usr/sbin/sshd /usr/sbin/sshd /bin/bash /syz-executor' has too many ACLs to hold. S
+       9  WARNING: Domain '<kernel> /sbin/init /usr/sbin/sshd /usr/sbin/sshd /bin/bash /syz-executor' has too many ACLs to hold. S
+       9  WARNING: Domain '<kernel> /sbin/init /usr/sbin/sshd /usr/sbin/sshd /bin/bash /syz-executor' has too many ACLs to hold. S
+       9  WARNING: Domain '<kernel> /sbin/init /usr/sbin/sshd /usr/sbin/sshd /bin/bash /syz-executor' has too many ACLs to hold. S
+       9  WARNING: Domain '<kernel> /sbin/init /lib/systemd/systemd-rfkill' has too many ACLs to hold. Stopped learning mode.
+       9  WARNING: Domain '<kernel> /sbin/init /lib/systemd/systemd-rfkill' has too many ACLs to hold. Stopped learning mode.
+       9  WARNING: Domain '<kernel> /sbin/init /lib/systemd/systemd-rfkill' has too many ACLs to hold. Stopped learning mode.
+       9  WARNING: Domain '<kernel> /sbin/init /lib/systemd/systemd-rfkill' has too many ACLs to hold. Stopped learning mode.
+       9  WARNING: Domain '<kernel> /sbin/init /lib/systemd/systemd-rfkill' has too many ACLs to hold. Stopped learning mode.
+       9  WARNING: Domain '<kernel> /sbin/init /lib/systemd/systemd-rfkill' has too many ACLs to hold. Stopped learning mode.
+       9  WARNING: Domain '<kernel> /sbin/init /lib/systemd/systemd-rfkill' has too many ACLs to hold. Stopped learning mode.
+       9  WARNING: Domain '<kernel> /sbin/init /lib/systemd/systemd-rfkill' has too many ACLs to hold. Stopped learning mode.
+       9  WARNING: Domain '<kernel> /sbin/init /lib/systemd/systemd-rfkill' has too many ACLs to hold. Stopped learning mode.
+      10  WARNING: Domain '<kernel> /sbin/init /usr/sbin/sshd /usr/sbin/sshd /bin/bash /syz-executor' has too many ACLs to hold. S
+      10  WARNING: Domain '<kernel> /sbin/init /usr/sbin/sshd /usr/sbin/sshd /bin/bash /syz-executor' has too many ACLs to hold. S
+      10  WARNING: Domain '<kernel> /sbin/init /usr/sbin/sshd /usr/sbin/sshd /bin/bash /syz-executor' has too many ACLs to hold. S
+      10  WARNING: Domain '<kernel> /sbin/init /usr/sbin/sshd /usr/sbin/sshd /bin/bash /syz-executor' has too many ACLs to hold. S
+      10  WARNING: Domain '<kernel> /sbin/init /usr/sbin/sshd /usr/sbin/sshd /bin/bash /syz-executor' has too many ACLs to hold. S
+      10  WARNING: Domain '<kernel> /sbin/init /lib/systemd/systemd-rfkill' has too many ACLs to hold. Stopped learning mode.
+      10  WARNING: Domain '<kernel> /sbin/init /lib/systemd/systemd-rfkill' has too many ACLs to hold. Stopped learning mode.
+      10  WARNING: Domain '<kernel> /sbin/init /lib/systemd/systemd-rfkill' has too many ACLs to hold. Stopped learning mode.
+      10  WARNING: Domain '<kernel> /sbin/init /sbin/agetty' has too many ACLs to hold. Stopped learning mode.
+Attempt 3:
+    Time  Bug Name
+       1  WARNING: Domain '<kernel> /sbin/init /usr/sbin/sshd /usr/sbin/sshd /bin/bash /syz-executor' has too many ACLs to hold. S
+       1  WARNING: Domain '<kernel> /sbin/init /usr/sbin/sshd /usr/sbin/sshd /bin/bash /syz-executor' has too many ACLs to hold. S
+       1  WARNING: Domain '<kernel> /sbin/init /usr/sbin/sshd /usr/sbin/sshd /bin/bash /syz-executor' has too many ACLs to hold. S
+       1  WARNING: Domain '<kernel> /sbin/init /usr/sbin/sshd /usr/sbin/sshd /bin/bash /syz-executor' has too many ACLs to hold. S
+       1  WARNING: Domain '<kernel> /sbin/init /usr/sbin/sshd /usr/sbin/sshd /bin/bash /syz-executor' has too many ACLs to hold. S
+       1  WARNING: Domain '<kernel> /sbin/init /lib/systemd/systemd-rfkill' has too many ACLs to hold. Stopped learning mode.
+       1  WARNING: Domain '<kernel> /sbin/init /sbin/agetty' has too many ACLs to hold. Stopped learning mode.
+       1  WARNING: Domain '<kernel> /sbin/init /sbin/agetty' has too many ACLs to hold. Stopped learning mode.
+       2  WARNING: Domain '<kernel> /sbin/init /usr/sbin/sshd /usr/sbin/sshd /bin/bash /syz-executor' has too many ACLs to hold. S
+       2  WARNING: Domain '<kernel> /sbin/init /usr/sbin/sshd /usr/sbin/sshd /bin/bash /syz-executor' has too many ACLs to hold. S
+       2  WARNING: Domain '<kernel> /sbin/init /usr/sbin/sshd /usr/sbin/sshd /bin/bash /syz-executor' has too many ACLs to hold. S
+       2  WARNING: Domain '<kernel> /sbin/init /usr/sbin/sshd /usr/sbin/sshd /bin/bash /syz-executor' has too many ACLs to hold. S
+       2  WARNING: Domain '<kernel> /sbin/init /usr/sbin/sshd /usr/sbin/sshd /bin/bash /syz-executor' has too many ACLs to hold. S
+       2  WARNING: Domain '<kernel> /sbin/init /lib/systemd/systemd-rfkill' has too many ACLs to hold. Stopped learning mode.
+       2  WARNING: Domain '<kernel> /sbin/init /lib/systemd/systemd-rfkill' has too many ACLs to hold. Stopped learning mode.
+       2  WARNING: Domain '<kernel> /sbin/init /lib/systemd/systemd-rfkill' has too many ACLs to hold. Stopped learning mode.
+       3  WARNING: Domain '<kernel> /sbin/init /usr/sbin/sshd /usr/sbin/sshd /bin/bash /syz-executor' has too many ACLs to hold. S
+       3  WARNING: Domain '<kernel> /sbin/init /lib/systemd/systemd-rfkill' has too many ACLs to hold. Stopped learning mode.
+       3  WARNING: Domain '<kernel> /sbin/init /lib/systemd/systemd-rfkill' has too many ACLs to hold. Stopped learning mode.
+       3  WARNING: Domain '<kernel> /sbin/init /lib/systemd/systemd-rfkill' has too many ACLs to hold. Stopped learning mode.
+       3  WARNING: Domain '<kernel> /sbin/init /lib/systemd/systemd-rfkill' has too many ACLs to hold. Stopped learning mode.
+       3  WARNING: Domain '<kernel> /sbin/init /lib/systemd/systemd-rfkill' has too many ACLs to hold. Stopped learning mode.
+       3  WARNING: Domain '<kernel> /sbin/init /lib/systemd/systemd-rfkill' has too many ACLs to hold. Stopped learning mode.
+       3  WARNING: Domain '<kernel> /sbin/init /lib/systemd/systemd-rfkill' has too many ACLs to hold. Stopped learning mode.
+       4  WARNING: Domain '<kernel> /sbin/init /usr/sbin/sshd /usr/sbin/sshd /bin/bash /syz-executor' has too many ACLs to hold. S
+       4  WARNING: Domain '<kernel> /sbin/init /usr/sbin/sshd /usr/sbin/sshd /bin/bash /syz-executor' has too many ACLs to hold. S
+       4  WARNING: Domain '<kernel> /sbin/init /usr/sbin/sshd /usr/sbin/sshd /bin/bash /syz-executor' has too many ACLs to hold. S
+       4  WARNING: Domain '<kernel> /sbin/init /usr/sbin/sshd /usr/sbin/sshd /bin/bash /syz-executor' has too many ACLs to hold. S
+       4  WARNING: Domain '<kernel> /sbin/init /usr/sbin/sshd /usr/sbin/sshd /bin/bash /syz-executor' has too many ACLs to hold. S
+       4  WARNING: Domain '<kernel> /sbin/init /usr/sbin/sshd /usr/sbin/sshd /bin/bash /syz-executor' has too many ACLs to hold. S
+       4  WARNING: Domain '<kernel> /sbin/init /usr/sbin/sshd /usr/sbin/sshd /bin/bash /syz-executor' has too many ACLs to hold. S
+       4  WARNING: Domain '<kernel> /sbin/init /usr/sbin/sshd /usr/sbin/sshd /bin/bash /syz-executor' has too many ACLs to hold. S
+       4  WARNING: Domain '<kernel> /sbin/init /usr/sbin/sshd /usr/sbin/sshd /bin/bash /syz-executor' has too many ACLs to hold. S
+       4  WARNING: Domain '<kernel> /sbin/init /usr/sbin/sshd /usr/sbin/sshd /bin/bash /syz-executor' has too many ACLs to hold. S
+       4  WARNING: Domain '<kernel> /sbin/init /lib/systemd/systemd-rfkill' has too many ACLs to hold. Stopped learning mode.
+       4  WARNING: Domain '<kernel> /sbin/init /lib/systemd/systemd-rfkill' has too many ACLs to hold. Stopped learning mode.
+       4  WARNING: Domain '<kernel> /sbin/init /lib/systemd/systemd-udevd /lib/udev/ifupdown-hotplug' has too many ACLs to hold. S
+       5  WARNING: Domain '<kernel> /sbin/init /usr/sbin/sshd /usr/sbin/sshd /bin/bash /syz-executor' has too many ACLs to hold. S
+       5  WARNING: Domain '<kernel> /sbin/init /usr/sbin/sshd /usr/sbin/sshd /bin/bash /syz-executor' has too many ACLs to hold. S
+       5  WARNING: Domain '<kernel> /sbin/init /usr/sbin/sshd /usr/sbin/sshd /bin/bash /syz-executor' has too many ACLs to hold. S
+       5  WARNING: Domain '<kernel> /sbin/init /usr/sbin/sshd /usr/sbin/sshd /bin/bash /syz-executor' has too many ACLs to hold. S
+       5  WARNING: Domain '<kernel> /sbin/init /usr/sbin/sshd /usr/sbin/sshd /bin/bash /syz-executor' has too many ACLs to hold. S
+       5  WARNING: Domain '<kernel> /sbin/init /usr/sbin/sshd /usr/sbin/sshd /bin/bash /syz-executor' has too many ACLs to hold. S
+       5  WARNING: Domain '<kernel> /sbin/init /usr/sbin/sshd /usr/sbin/sshd /bin/bash /syz-executor' has too many ACLs to hold. S
+       5  WARNING: Domain '<kernel> /sbin/init /lib/systemd/systemd-rfkill' has too many ACLs to hold. Stopped learning mode.
+       5  WARNING: Domain '<kernel> /sbin/init /lib/systemd/systemd-rfkill' has too many ACLs to hold. Stopped learning mode.
+       5  WARNING: Domain '<kernel> /sbin/init /lib/systemd/systemd-rfkill' has too many ACLs to hold. Stopped learning mode.
+       5  WARNING: Domain '<kernel> /sbin/init /lib/systemd/systemd-rfkill' has too many ACLs to hold. Stopped learning mode.
+       6  WARNING: Domain '<kernel> /sbin/init /lib/systemd/systemd-rfkill' has too many ACLs to hold. Stopped learning mode.
+       6  WARNING: Domain '<kernel> /sbin/init /lib/systemd/systemd-rfkill' has too many ACLs to hold. Stopped learning mode.
+       6  WARNING: Domain '<kernel> /sbin/init /lib/systemd/systemd-rfkill' has too many ACLs to hold. Stopped learning mode.
+       6  WARNING: Domain '<kernel> /sbin/init /lib/systemd/systemd-rfkill' has too many ACLs to hold. Stopped learning mode.
+       6  WARNING: Domain '<kernel> /sbin/init /lib/systemd/systemd-rfkill' has too many ACLs to hold. Stopped learning mode.
+       6  WARNING: Domain '<kernel> /sbin/init /lib/systemd/systemd-udevd /lib/udev/ifupdown-hotplug /bin/grep' has too many ACLs
+       6  WARNING: Domain '<kernel> /sbin/init /lib/systemd/systemd-udevd /lib/udev/ifupdown-hotplug /bin/grep' has too many ACLs
+       6  WARNING: Domain '<kernel> /sbin/init /sbin/agetty' has too many ACLs to hold. Stopped learning mode.
+       7  WARNING: Domain '<kernel> /sbin/init /usr/sbin/sshd /usr/sbin/sshd /bin/bash /syz-executor' has too many ACLs to hold. S
+       7  WARNING: Domain '<kernel> /sbin/init /usr/sbin/sshd /usr/sbin/sshd /bin/bash /syz-executor' has too many ACLs to hold. S
+       7  WARNING: Domain '<kernel> /sbin/init /usr/sbin/sshd /usr/sbin/sshd /bin/bash /syz-executor' has too many ACLs to hold. S
+       7  WARNING: Domain '<kernel> /sbin/init /usr/sbin/sshd /usr/sbin/sshd /bin/bash /syz-executor' has too many ACLs to hold. S
+       7  WARNING: Domain '<kernel> /sbin/init /usr/sbin/sshd /usr/sbin/sshd /bin/bash /syz-executor' has too many ACLs to hold. S
+       7  WARNING: Domain '<kernel> /sbin/init /usr/sbin/sshd /usr/sbin/sshd /bin/bash /syz-executor' has too many ACLs to hold. S
+       7  WARNING: Domain '<kernel> /sbin/init /lib/systemd/systemd-rfkill' has too many ACLs to hold. Stopped learning mode.
+       7  WARNING: Domain '<kernel> /sbin/init /lib/systemd/systemd-rfkill' has too many ACLs to hold. Stopped learning mode.
+       7  WARNING: Domain '<kernel> /sbin/init /lib/systemd/systemd-rfkill' has too many ACLs to hold. Stopped learning mode.
+       7  WARNING: Domain '<kernel> /sbin/init /lib/systemd/systemd-udevd /lib/udev/ifupdown-hotplug' has too many ACLs to hold. S
+       7  WARNING: Domain '<kernel> /sbin/init /lib/systemd/systemd-udevd /lib/udev/ifupdown-hotplug' has too many ACLs to hold. S
+       8  WARNING: Domain '<kernel> /sbin/init /usr/sbin/sshd /usr/sbin/sshd /bin/bash /syz-executor' has too many ACLs to hold. S
+       8  WARNING: Domain '<kernel> /sbin/init /usr/sbin/sshd /usr/sbin/sshd /bin/bash /syz-executor' has too many ACLs to hold. S
+       8  WARNING: Domain '<kernel> /sbin/init /usr/sbin/sshd /usr/sbin/sshd /bin/bash /syz-executor' has too many ACLs to hold. S
+       8  WARNING: Domain '<kernel> /sbin/init /usr/sbin/sshd /usr/sbin/sshd /bin/bash /syz-executor' has too many ACLs to hold. S
+       8  WARNING: Domain '<kernel> /sbin/init /usr/sbin/sshd /usr/sbin/sshd /bin/bash /syz-executor' has too many ACLs to hold. S
+       8  WARNING: Domain '<kernel> /sbin/init /lib/systemd/systemd-rfkill' has too many ACLs to hold. Stopped learning mode.
+       8  WARNING: Domain '<kernel> /sbin/init /lib/systemd/systemd-rfkill' has too many ACLs to hold. Stopped learning mode.
+       8  WARNING: Domain '<kernel> /sbin/init /lib/systemd/systemd-rfkill' has too many ACLs to hold. Stopped learning mode.
+       8  WARNING: Domain '<kernel> /sbin/init /lib/systemd/systemd-rfkill' has too many ACLs to hold. Stopped learning mode.
+       8  WARNING: Domain '<kernel> /sbin/init /lib/systemd/systemd-udevd /lib/udev/ifupdown-hotplug /bin/grep' has too many ACLs
+       8  WARNING: Domain '<kernel> /sbin/init /sbin/agetty' has too many ACLs to hold. Stopped learning mode.
+       9  WARNING: Domain '<kernel> /sbin/init /usr/sbin/sshd /usr/sbin/sshd /bin/bash /syz-executor' has too many ACLs to hold. S
+       9  WARNING: Domain '<kernel> /sbin/init /usr/sbin/sshd /usr/sbin/sshd /bin/bash /syz-executor' has too many ACLs to hold. S
+       9  WARNING: Domain '<kernel> /sbin/init /usr/sbin/sshd /usr/sbin/sshd /bin/bash /syz-executor' has too many ACLs to hold. S
+       9  WARNING: Domain '<kernel> /sbin/init /usr/sbin/sshd /usr/sbin/sshd /bin/bash /syz-executor' has too many ACLs to hold. S
+       9  WARNING: Domain '<kernel> /sbin/init /usr/sbin/sshd /usr/sbin/sshd /bin/bash /syz-executor' has too many ACLs to hold. S
+       9  WARNING: Domain '<kernel> /sbin/init /usr/sbin/sshd /usr/sbin/sshd /bin/bash /syz-executor' has too many ACLs to hold. S
+       9  WARNING: Domain '<kernel> /sbin/init /usr/sbin/sshd /usr/sbin/sshd /bin/bash /syz-executor' has too many ACLs to hold. S
+       9  WARNING: Domain '<kernel> /sbin/init /usr/sbin/sshd /usr/sbin/sshd /bin/bash /syz-executor' has too many ACLs to hold. S
+       9  WARNING: Domain '<kernel> /sbin/init /usr/sbin/sshd /usr/sbin/sshd /bin/bash /syz-executor' has too many ACLs to hold. S
+       9  WARNING: Domain '<kernel> /sbin/init /lib/systemd/systemd-rfkill' has too many ACLs to hold. Stopped learning mode.
+      10  WARNING: Domain '<kernel> /sbin/init /usr/sbin/sshd /usr/sbin/sshd /bin/bash /syz-executor' has too many ACLs to hold. S
+      10  WARNING: Domain '<kernel> /sbin/init /usr/sbin/sshd /usr/sbin/sshd /bin/bash /syz-executor' has too many ACLs to hold. S
+      10  WARNING: Domain '<kernel> /sbin/init /usr/sbin/sshd /usr/sbin/sshd /bin/bash /syz-executor' has too many ACLs to hold. S
+      10  WARNING: Domain '<kernel> /sbin/init /usr/sbin/sshd /usr/sbin/sshd /bin/bash /syz-executor' has too many ACLs to hold. S
+      10  WARNING: Domain '<kernel> /sbin/init /usr/sbin/sshd /usr/sbin/sshd /bin/bash /syz-executor' has too many ACLs to hold. S
+      10  WARNING: Domain '<kernel> /sbin/init /usr/sbin/sshd /usr/sbin/sshd /bin/bash /syz-executor' has too many ACLs to hold. S
+      10  WARNING: Domain '<kernel> /sbin/init /usr/sbin/sshd /usr/sbin/sshd /bin/bash /syz-executor' has too many ACLs to hold. S
+      10  WARNING: Domain '<kernel> /sbin/init /usr/sbin/sshd /usr/sbin/sshd /bin/bash /syz-executor' has too many ACLs to hold. S
+      10  WARNING: Domain '<kernel> /sbin/init /usr/sbin/sshd /usr/sbin/sshd /bin/bash /syz-executor' has too many ACLs to hold. S
+The bug was not found.
+About 11 commits remaining
+
+2025-03-01 21:37:51
+Session:   24
+Kernel:    2019-05-11 - 7a5575212ce4b6a41581b92fe03b6be1134793ba
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-9.0.0-20181231/bin/gcc
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+The bug was not found.
+About 6 commits remaining
+
+2025-03-01 22:21:38
+Session:   25
+Kernel:    2019-05-10 - 4ad98ac46490d5f8441025930070eaf028cfd0f2
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-9.0.0-20181231/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    2  WARNING in tcp_enter_loss
+The bug was found.
+About 5 commits remaining
+
+==== Partial Result: Focused Fuzzing ====
+Reproducer:           /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/reproducers/repro-bug0075-4.prog
+Bisection Result:     2019-05-10 - 4ad98ac46490d5f8441025930070eaf028cfd0f2
+Bisected Commit Name: tomoyo: Don't emit WARNING: string while fuzzing testing.
+Stage Time:           13h56m52s
+Run Time:             13h56m57s
+=========================================
+
+==== Anchor Commit ====
+
+2025-03-01 22:36:28
+Session:   26
+Kernel:    2019-05-11 - 7a5575212ce4b6a41581b92fe03b6be1134793ba
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-9.0.0-20181231/bin/gcc
+Warning: VM has not responded after 5 attempts.
+Warning: Only booted 0 VMs.
+Attempt 0:
+    kernel panic: STOP!
+Attempt 1:
+    kernel panic: STOP!
+Attempt 2:
+    kernel panic: STOP!
+Attempt 3:
+    kernel panic: STOP!
+Attempt 4:
+    kernel panic: STOP!
+Attempt 5:
+    kernel panic: STOP!
+Attempt 6:
+    kernel panic: STOP!
+Attempt 7:
+    kernel panic: STOP!
+The bug was not found.
+
+Failure: This bug cannot be found at the anchor commit.
+
+====================================================================================================================================================
+Bug Name:             WARNING in tcp_enter_loss
+Bug Link:             https://syzkaller.appspot.com/bug?id=de88544daafacdbc8ec3b2d75ca9e7e0f03346e0
+Bisection Result:     2019-05-10 - 4ad98ac46490d5f8441025930070eaf028cfd0f2
+Bisected Commit Name: tomoyo: Don't emit WARNING: string while fuzzing testing.
+Run Time:             14h12m32s
+
+Anchor Commit:        2022-01-05 - 75acfdb6fd922598a408a0d864486aeb167c1a97
+Bisection Result:     2019-05-10 - 4ad98ac46490d5f8441025930070eaf028cfd0f2

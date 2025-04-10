@@ -1,0 +1,556 @@
+./bin/bisector -i 2 -c /mnt/sdd/jtbursey/SyzInspector/wd-bisector-2/bisector.cfg -a 9f3ebbef746f89f860a90ced99a359202ea86fde -F poc-test,poc-all-pocs
+Bisecting:          general protection fault in io_get_cqe_overflow
+Syzbot Link:        https://syzkaller.appspot.com/bug?extid=efc45d4e7ba6ab4ef1eb
+Working Name:       bug0805
+
+No aliases given.
+
+Anchor Commit:      9f3ebbef746f89f860a90ced99a359202ea86fde
+Repository:         https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
+Branch:             master
+Arch:               amd64
+
+Bisector:           /mnt/sdd/jtbursey/SyzInspector/
+Version:            1.0.4
+Kernel:             /mnt/sdd/jtbursey/SyzInspector/wd-bisector-2/kernel/
+Syzkaller:          /mnt/sdd/jtbursey/SyzInspector/syzkaller/
+Compilers:          /mnt/sda/jtbursey/SyzInspector/compilers/
+Ccache:             ccache
+Image:              /mnt/sda/jtbursey/SyzInspector/image/stretch/stretch.img
+Image Key:          /mnt/sda/jtbursey/SyzInspector/image/stretch/stretch.id_rsa
+
+Workdir:            /mnt/sdd/jtbursey/SyzInspector/wd-bisector-2/
+Kconfig:            /mnt/sdd/jtbursey/SyzInspector/wd-bisector-2/config-bug0805.txt
+Reproducers: (1)    /mnt/sdd/jtbursey/SyzInspector/wd-bisector-2/reproducers/
+Primary PoC:        /mnt/sdd/jtbursey/SyzInspector/wd-bisector-2/reproducers/repro-bug0805-1.prog
+Syzkaller Workdir:  /mnt/sdd/jtbursey/SyzInspector/wd-bisector-2/wd-kaller/
+Log Directory:      /mnt/sdd/jtbursey/SyzInspector/wd-bisector-2/log/
+
+VM Count:           8
+CPU Count:          2
+Procs:              16
+Memory:             4096
+Make Procs:         16
+
+==== Anchor Commit ====
+
+2025-03-21 17:34:41
+Session:   1
+Kernel:    2023-09-29 - 9f3ebbef746f89f860a90ced99a359202ea86fde
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 0:
+*** general protection fault in io_get_cqe_overflow
+    kernel panic: Fatal exception
+Attempt 1:
+*** general protection fault in io_get_cqe_overflow
+    kernel panic: Fatal exception
+Attempt 2:
+*** general protection fault in io_get_cqe_overflow
+    kernel panic: Fatal exception
+Attempt 3:
+*** general protection fault in io_get_cqe_overflow
+    kernel panic: Fatal exception
+Attempt 4:
+*** general protection fault in io_get_cqe_overflow
+    kernel panic: Fatal exception
+Attempt 5:
+*** general protection fault in io_get_cqe_overflow
+    kernel panic: Fatal exception
+Attempt 6:
+*** general protection fault in io_get_cqe_overflow
+    kernel panic: Fatal exception
+Attempt 7:
+*** general protection fault in io_get_cqe_overflow
+    kernel panic: Fatal exception
+The bug was found.
+
+==== Major Release Search ====
+19 Releases
+
+2025-03-21 18:04:28
+Session:   2
+Kernel:    2023-06-25 - 6995e2de6891c724bfeb2db33d7b87775f913ad1 (v6.4)
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 0:
+*** general protection fault in io_get_cqe_overflow
+    kernel panic: Fatal exception
+Attempt 1:
+*** general protection fault in io_get_cqe_overflow
+    kernel panic: Fatal exception
+Attempt 2:
+*** general protection fault in io_get_cqe_overflow
+    kernel panic: Fatal exception
+Attempt 3:
+*** general protection fault in io_get_cqe_overflow
+    kernel panic: Fatal exception
+Attempt 4:
+*** general protection fault in io_get_cqe_overflow
+    kernel panic: Fatal exception
+Attempt 5:
+*** general protection fault in io_get_cqe_overflow
+    kernel panic: Fatal exception
+Attempt 6:
+*** general protection fault in io_get_cqe_overflow
+    kernel panic: Fatal exception
+Attempt 7:
+*** general protection fault in io_get_cqe_overflow
+    kernel panic: Fatal exception
+The bug was found.
+About 18 releases remaining
+
+2025-03-21 18:37:13
+Session:   3
+Kernel:    2023-04-23 - 457391b0380335d5e9a5babdec90ac53928b23b4 (v6.3)
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 0:
+    general protection fault in io_fill_cqe_aux
+    kernel panic: Fatal exception
+Attempt 1:
+    general protection fault in io_fill_cqe_aux
+    general protection fault in io_fill_cqe_aux
+    kernel panic: Fatal exception
+Attempt 2:
+    general protection fault in io_fill_cqe_aux
+    kernel panic: Fatal exception
+Attempt 3:
+    general protection fault in io_fill_cqe_aux
+    general protection fault in io_fill_cqe_aux
+    kernel panic: Fatal exception
+Attempt 4:
+    general protection fault in io_fill_cqe_aux
+    general protection fault in io_fill_cqe_aux
+    kernel panic: Fatal exception
+Attempt 5:
+    general protection fault in io_fill_cqe_aux
+    kernel panic: Fatal exception
+Attempt 6:
+    general protection fault in io_fill_cqe_aux
+    kernel panic: Fatal exception
+Attempt 7:
+    general protection fault in io_fill_cqe_aux
+    kernel panic: Fatal exception
+The bug was not found.
+About 17 releases remaining
+
+==== Kernel Bisection ====
+16012 Linux commits
+
+2025-03-21 19:10:30
+Session:   4
+Kernel:    2023-04-27 - d42b1c47570eb2ed818dc3fe94b2678124af109d
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 0:
+*** general protection fault in io_get_cqe_overflow
+    kernel panic: Fatal exception
+Attempt 1:
+*** general protection fault in io_get_cqe_overflow
+    kernel panic: Fatal exception
+Attempt 2:
+*** general protection fault in io_get_cqe_overflow
+    kernel panic: Fatal exception
+Attempt 3:
+*** general protection fault in io_get_cqe_overflow
+    kernel panic: Fatal exception
+Attempt 4:
+*** general protection fault in io_get_cqe_overflow
+    kernel panic: Fatal exception
+Attempt 5:
+*** general protection fault in io_get_cqe_overflow
+    kernel panic: Fatal exception
+Attempt 6:
+*** general protection fault in io_get_cqe_overflow
+    kernel panic: Fatal exception
+Attempt 7:
+*** general protection fault in io_get_cqe_overflow
+    kernel panic: Fatal exception
+The bug was found.
+About 7999 commits remaining
+
+2025-03-21 19:43:23
+Session:   5
+Kernel:    2023-04-25 - 088e0c188513b58a0056a488cf5b7df094a8a48a
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 0:
+    general protection fault in io_fill_cqe_aux
+    kernel panic: Fatal exception
+Attempt 1:
+    general protection fault in io_fill_cqe_aux
+    kernel panic: Fatal exception
+Attempt 2:
+    general protection fault in io_fill_cqe_aux
+    kernel panic: Fatal exception
+Attempt 3:
+    general protection fault in io_fill_cqe_aux
+    kernel panic: Fatal exception
+Attempt 4:
+    general protection fault in io_fill_cqe_aux
+    kernel panic: Fatal exception
+Attempt 5:
+    general protection fault in io_fill_cqe_aux
+    kernel panic: Fatal exception
+Attempt 6:
+    general protection fault in io_fill_cqe_aux
+    kernel panic: Fatal exception
+Attempt 7:
+    general protection fault in io_fill_cqe_aux
+    kernel panic: Fatal exception
+The bug was not found.
+About 4007 commits remaining
+
+2025-03-21 20:16:35
+Session:   6
+Kernel:    2023-04-22 - 28339b21a365a8cb9edc6956cbfd679f569daa81
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 0:
+    general protection fault in io_fill_cqe_aux
+    kernel panic: Fatal exception
+Attempt 1:
+    general protection fault in io_fill_cqe_aux
+    kernel panic: Fatal exception
+Attempt 2:
+    general protection fault in io_fill_cqe_aux
+    general protection fault in io_fill_cqe_aux
+    kernel panic: Fatal exception
+Attempt 3:
+    general protection fault in io_fill_cqe_aux
+    kernel panic: Fatal exception
+Attempt 4:
+    general protection fault in io_fill_cqe_aux
+    kernel panic: Fatal exception
+Attempt 5:
+    general protection fault in io_fill_cqe_aux
+    general protection fault in io_fill_cqe_aux
+    kernel panic: Fatal exception
+Attempt 6:
+    general protection fault in io_fill_cqe_aux
+    general protection fault in io_fill_cqe_aux
+    kernel panic: Fatal exception
+Attempt 7:
+    general protection fault in io_fill_cqe_aux
+    general protection fault in io_fill_cqe_aux
+    kernel panic: Fatal exception
+The bug was not found.
+About 6062 commits remaining
+
+2025-03-21 20:46:11
+Session:   7
+Kernel:    2023-04-26 - 85d7ab2463822a4ab096c0b7b59feec962552572
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 0:
+    general protection fault in io_fill_cqe_aux
+    kernel panic: Fatal exception
+Attempt 1:
+    general protection fault in io_fill_cqe_aux
+    kernel panic: Fatal exception
+Attempt 2:
+    general protection fault in io_fill_cqe_aux
+    general protection fault in io_fill_cqe_aux
+    kernel panic: Fatal exception
+Attempt 3:
+    general protection fault in io_fill_cqe_aux
+    kernel panic: Fatal exception
+Attempt 4:
+    general protection fault in io_fill_cqe_aux
+    kernel panic: Fatal exception
+Attempt 5:
+    general protection fault in io_fill_cqe_aux
+    kernel panic: Fatal exception
+Attempt 6:
+    general protection fault in io_fill_cqe_aux
+    kernel panic: Fatal exception
+Attempt 7:
+    general protection fault in io_fill_cqe_aux
+    general protection fault in io_fill_cqe_aux
+    kernel panic: Fatal exception
+The bug was not found.
+About 2950 commits remaining
+
+2025-03-21 21:20:34
+Session:   8
+Kernel:    2023-04-26 - 36006b1d5c04692924f011aa949e8788f1c604de
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 0:
+*** general protection fault in io_get_cqe_overflow
+    kernel panic: Fatal exception
+Attempt 1:
+*** general protection fault in io_get_cqe_overflow
+    kernel panic: Fatal exception
+Attempt 2:
+*** general protection fault in io_get_cqe_overflow
+    kernel panic: Fatal exception
+Attempt 3:
+*** general protection fault in io_get_cqe_overflow
+    kernel panic: Fatal exception
+Attempt 4:
+*** general protection fault in io_get_cqe_overflow
+    kernel panic: Fatal exception
+Attempt 5:
+*** general protection fault in io_get_cqe_overflow
+    kernel panic: Fatal exception
+Attempt 6:
+*** general protection fault in io_get_cqe_overflow
+    kernel panic: Fatal exception
+Attempt 7:
+*** general protection fault in io_get_cqe_overflow
+    kernel panic: Fatal exception
+The bug was found.
+About 371 commits remaining
+
+2025-03-21 21:53:41
+Session:   9
+Kernel:    2023-04-26 - 5b9a7bb72fddbc5247f56ede55d485fab7abdf92
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 0:
+*** general protection fault in io_get_cqe_overflow
+    kernel panic: Fatal exception
+Attempt 1:
+*** general protection fault in io_get_cqe_overflow
+    kernel panic: Fatal exception
+Attempt 2:
+*** general protection fault in io_get_cqe_overflow
+    kernel panic: Fatal exception
+Attempt 3:
+*** general protection fault in io_get_cqe_overflow
+    kernel panic: Fatal exception
+Attempt 4:
+*** general protection fault in io_get_cqe_overflow
+    kernel panic: Fatal exception
+Attempt 5:
+*** general protection fault in io_get_cqe_overflow
+    kernel panic: Fatal exception
+Attempt 6:
+*** general protection fault in io_get_cqe_overflow
+    kernel panic: Fatal exception
+Attempt 7:
+*** general protection fault in io_get_cqe_overflow
+    kernel panic: Fatal exception
+The bug was found.
+About 151 commits remaining
+
+2025-03-21 22:18:21
+Session:   10
+Kernel:    2023-04-26 - 5c7ecada25d2086aee607ff7deb69e77faa4aa92
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 0:
+    general protection fault in io_fill_cqe_aux
+    kernel panic: Fatal exception
+Attempt 1:
+    general protection fault in io_fill_cqe_aux
+    kernel panic: Fatal exception
+Attempt 2:
+    general protection fault in io_fill_cqe_aux
+    general protection fault in io_fill_cqe_aux
+    kernel panic: Fatal exception
+Attempt 3:
+    general protection fault in io_fill_cqe_aux
+    kernel panic: Fatal exception
+Attempt 4:
+    general protection fault in io_fill_cqe_aux
+    kernel panic: Fatal exception
+Attempt 5:
+    general protection fault in io_fill_cqe_aux
+    kernel panic: Fatal exception
+Attempt 6:
+    general protection fault in io_fill_cqe_aux
+    kernel panic: Fatal exception
+Attempt 7:
+    general protection fault in io_fill_cqe_aux
+    kernel panic: Fatal exception
+The bug was not found.
+About 73 commits remaining
+
+2025-03-21 22:50:18
+Session:   11
+Kernel:    2023-04-06 - 6e7248adf8f7adb5e36ec1e91efcc85a83bf8aeb
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 0:
+    general protection fault in io_fill_cqe_aux
+    kernel panic: Fatal exception
+Attempt 1:
+    general protection fault in io_fill_cqe_aux
+    kernel panic: Fatal exception
+Attempt 2:
+    general protection fault in io_fill_cqe_aux
+    kernel panic: Fatal exception
+Attempt 3:
+    general protection fault in io_fill_cqe_aux
+    kernel panic: Fatal exception
+Attempt 4:
+    general protection fault in io_fill_cqe_aux
+    kernel panic: Fatal exception
+Attempt 5:
+    general protection fault in io_fill_cqe_aux
+    kernel panic: Fatal exception
+Attempt 6:
+    general protection fault in io_fill_cqe_aux
+    kernel panic: Fatal exception
+Attempt 7:
+    general protection fault in io_fill_cqe_aux
+    kernel panic: Fatal exception
+The bug was not found.
+About 5843 commits remaining
+
+2025-03-21 23:17:34
+Session:   12
+Kernel:    2023-04-15 - eef81fcaa61e1bc6b7735be65f41bbf1a8efd133
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 0:
+*** general protection fault in io_get_cqe_overflow
+    kernel panic: Fatal exception
+Attempt 1:
+*** general protection fault in io_get_cqe_overflow
+    kernel panic: Fatal exception
+Attempt 2:
+*** general protection fault in io_get_cqe_overflow
+    kernel panic: Fatal exception
+Attempt 3:
+*** general protection fault in io_get_cqe_overflow
+    kernel panic: Fatal exception
+Attempt 4:
+*** general protection fault in io_get_cqe_overflow
+    kernel panic: Fatal exception
+Attempt 5:
+*** general protection fault in io_get_cqe_overflow
+    kernel panic: Fatal exception
+Attempt 6:
+*** general protection fault in io_get_cqe_overflow
+    kernel panic: Fatal exception
+Attempt 7:
+*** general protection fault in io_get_cqe_overflow
+    kernel panic: Fatal exception
+The bug was found.
+About 19 commits remaining
+
+2025-03-21 23:33:09
+Session:   13
+Kernel:    2023-04-12 - 8ce4269eeedc5b31f5817f610b42cba8be8fa9de
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 0:
+*** general protection fault in io_get_cqe_overflow
+    kernel panic: Fatal exception
+Attempt 1:
+*** general protection fault in io_get_cqe_overflow
+    kernel panic: Fatal exception
+Attempt 2:
+*** general protection fault in io_get_cqe_overflow
+    kernel panic: Fatal exception
+Attempt 3:
+*** general protection fault in io_get_cqe_overflow
+    kernel panic: Fatal exception
+Attempt 4:
+*** general protection fault in io_get_cqe_overflow
+    kernel panic: Fatal exception
+Attempt 5:
+*** general protection fault in io_get_cqe_overflow
+    kernel panic: Fatal exception
+Attempt 6:
+*** general protection fault in io_get_cqe_overflow
+    kernel panic: Fatal exception
+Attempt 7:
+*** general protection fault in io_get_cqe_overflow
+    kernel panic: Fatal exception
+The bug was found.
+About 10 commits remaining
+
+2025-03-21 23:48:14
+Session:   14
+Kernel:    2023-04-06 - c66ae3ec38f946edb1776d25c1c8cd63803b8ec3
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 0:
+    general protection fault in io_fill_cqe_aux
+    kernel panic: Fatal exception
+Attempt 1:
+    general protection fault in io_fill_cqe_aux
+    kernel panic: Fatal exception
+Attempt 2:
+    general protection fault in io_fill_cqe_aux
+    kernel panic: Fatal exception
+Attempt 3:
+    general protection fault in io_fill_cqe_aux
+    kernel panic: Fatal exception
+Attempt 4:
+    general protection fault in io_fill_cqe_aux
+    kernel panic: Fatal exception
+Attempt 5:
+    general protection fault in io_fill_cqe_aux
+    kernel panic: Fatal exception
+Attempt 6:
+    general protection fault in io_fill_cqe_aux
+    kernel panic: Fatal exception
+Attempt 7:
+    general protection fault in io_fill_cqe_aux
+    kernel panic: Fatal exception
+The bug was not found.
+About 6 commits remaining
+
+2025-03-22 00:02:27
+Session:   15
+Kernel:    2023-04-12 - 27a67079c0e548d5c3232c40951517cfa630fe51
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 0:
+    general protection fault in io_fill_cqe_aux
+    kernel panic: Fatal exception
+Attempt 1:
+    general protection fault in io_fill_cqe_aux
+    kernel panic: Fatal exception
+Attempt 2:
+    general protection fault in io_fill_cqe_aux
+    kernel panic: Fatal exception
+Attempt 3:
+    general protection fault in io_fill_cqe_aux
+    kernel panic: Fatal exception
+Attempt 4:
+    general protection fault in io_fill_cqe_aux
+    kernel panic: Fatal exception
+Attempt 5:
+    general protection fault in io_fill_cqe_aux
+    kernel panic: Fatal exception
+Attempt 6:
+    general protection fault in io_fill_cqe_aux
+    kernel panic: Fatal exception
+Attempt 7:
+    general protection fault in io_fill_cqe_aux
+    kernel panic: Fatal exception
+The bug was not found.
+About 4 commits remaining
+
+2025-03-22 00:10:11
+Session:   16
+Kernel:    2023-04-12 - ceac766a5581e4e671ec8e5236b8fdaed8e4c8c9
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 0:
+    general protection fault in io_fill_cqe_aux
+    kernel panic: Fatal exception
+Attempt 1:
+    general protection fault in io_fill_cqe_aux
+    kernel panic: Fatal exception
+Attempt 2:
+    general protection fault in io_fill_cqe_aux
+    kernel panic: Fatal exception
+Attempt 3:
+    general protection fault in io_fill_cqe_aux
+    kernel panic: Fatal exception
+Attempt 4:
+    general protection fault in io_fill_cqe_aux
+    kernel panic: Fatal exception
+Attempt 5:
+    general protection fault in io_fill_cqe_aux
+    kernel panic: Fatal exception
+Attempt 6:
+    general protection fault in io_fill_cqe_aux
+    kernel panic: Fatal exception
+Attempt 7:
+    general protection fault in io_fill_cqe_aux
+    kernel panic: Fatal exception
+The bug was not found.
+About 2 commits remaining
+
+====================================================================================================================================================
+Bug Name:             general protection fault in io_get_cqe_overflow
+Bug Link:             https://syzkaller.appspot.com/bug?extid=efc45d4e7ba6ab4ef1eb
+Bisection Result:     2023-04-12 - 8ce4269eeedc5b31f5817f610b42cba8be8fa9de
+Bisected Commit Name: io_uring: add irq lockdep checks
+Run Time:             6h49m15s
+
+Anchor Commit:        2023-09-29 - 9f3ebbef746f89f860a90ced99a359202ea86fde
+Bisection Result:     2023-04-12 - 8ce4269eeedc5b31f5817f610b42cba8be8fa9de

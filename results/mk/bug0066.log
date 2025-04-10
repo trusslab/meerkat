@@ -1,0 +1,430 @@
+./bin/bisector -i 1 -c /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/bisector.cfg -a d888c83fcec75194a8a48ccd283953bdba7b2550 -F ff-test,poc-test,stateful-corpus,ff-no-find-backup
+Bisecting:          KASAN: slab-out-of-bounds Read in vxlan_vnifilter_dump_dev
+Syzbot Link:        https://syzkaller.appspot.com/bug?id=d894f245105f59f788177ae2f53df8ffce3ec1ac
+Working Name:       bug0066
+
+No aliases given.
+
+Anchor Commit:      d888c83fcec75194a8a48ccd283953bdba7b2550
+Repository:         https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
+Branch:             master
+Arch:               amd64
+
+Bisector:           /mnt/sdd/jtbursey/SyzInspector/
+Version:            1.0.3
+Kernel:             /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/kernel/
+Syzkaller:          /mnt/sdd/jtbursey/SyzInspector/syzkaller/
+Compilers:          /mnt/sda/jtbursey/SyzInspector/compilers/
+Ccache:             ccache
+Image:              /mnt/sda/jtbursey/SyzInspector/image/stretch/stretch.img
+Image Key:          /mnt/sda/jtbursey/SyzInspector/image/stretch/stretch.id_rsa
+
+Workdir:            /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/
+Kconfig:            /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/config-bug0066.txt
+Reproducers: (17)   /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/reproducers/
+Primary PoC:        /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/reproducers/repro-bug0066-13.prog
+Syzkaller Workdir:  /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/wd-kaller/
+Log Directory:      /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/log/
+
+Syscalls: (22)      ["ioctl$ifreq_SIOCGIFINDEX_team", "sendmsg$nl_route", "sendmsg$nl_route_sched", "socket$netlink", "socket$nl_route", "socket", "ioctl$EXT4_IOC_GROUP_EXTEND", "openat$sw_sync_info", "ioctl$sock_SIOCGIFINDEX", "move_pages", "syz_clone", "syz_open_procfs$namespace", "mount$9p_tcp", "getuid", "ioctl$ifreq_SIOCGIFINDEX_vcan", "bpf$OBJ_GET_PROG", "socket$inet_udp", "socket$inet6_udp", "socket$inet", "socket$inet6", "setgid", "getgid"]
+VM Count:           4
+CPU Count:          4
+Procs:              24
+Memory:             4096
+Make Procs:         16
+Max Time:           30
+Max Attempts:       3
+
+==== Anchor Commit ====
+
+2025-02-28 09:34:48
+Session:   1
+Kernel:    2022-03-29 - d888c83fcec75194a8a48ccd283953bdba7b2550
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    5  KASAN: slab-out-of-bounds Read in vxlan_vnifilter_dump_dev
+***    5  KASAN: use-after-free Read in vxlan_vnifilter_dump_dev
+Attempt 2:
+    Time  Bug Name
+***    3  KASAN: slab-out-of-bounds Read in vxlan_vnifilter_dump_dev
+***    3  KASAN: slab-out-of-bounds Read in vxlan_vnifilter_dump_dev
+***    3  KASAN: use-after-free Read in vxlan_vnifilter_dump_dev
+Attempt 3:
+    Time  Bug Name
+***    2  KASAN: slab-out-of-bounds Read in vxlan_vnifilter_dump_dev
+***    2  KASAN: slab-out-of-bounds Read in vxlan_vnifilter_dump_dev
+The bug was found.
+
+New Max Time: 10
+
+==== Major Release Search ====
+17 Releases
+
+2025-02-28 10:02:04
+Session:   2
+Kernel:    2022-03-20 - f443e374ae131c168a065ea1748feac6b2e76613 (v5.17)
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+The bug was not found.
+About 16 releases remaining
+
+==== Kernel Bisection ====
+13035 Linux commits
+
+2025-02-28 10:48:42
+Session:   3
+Kernel:    2022-03-24 - 169e77764adc041b1dacba84ea90516a895d43b2
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    2  KASAN: slab-out-of-bounds Read in vxlan_vnifilter_dump_dev
+***    2  KASAN: use-after-free Read in vxlan_vnifilter_dump_dev
+***    2  KASAN: use-after-free Read in vxlan_vnifilter_dump_dev
+Running syz-repro.
+New PoC saved at /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/reproducers/repro-bug0066-0.prog
+Primary PoC:     /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/reproducers/repro-bug0066-0.prog
+Run Time:        0h12m0s
+The bug was found.
+About 7552 commits remaining
+
+2025-02-28 11:18:26
+Session:   4
+Kernel:    2022-03-23 - b4bc93bd76d4da32600795cd323c971f00a2e788
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+      10  WARNING in fib6_add
+      10  WARNING in fib6_add
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+The bug was not found.
+About 3790 commits remaining
+
+2025-02-28 12:05:24
+Session:   5
+Kernel:    2022-03-10 - 4c7d2e179576e821b461bb4a58d0a834916601fa
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    3  KASAN: slab-out-of-bounds Read in vxlan_vnifilter_dump_dev
+The bug was found.
+About 1896 commits remaining
+
+2025-02-28 12:22:29
+Session:   6
+Kernel:    2022-02-11 - b96a79253fff1cd2c928b379eadd8c7a6f8055e1
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       1  WARNING: suspicious RCU usage in hsr_node_get_first
+       2  WARNING: suspicious RCU usage in hsr_node_get_first
+       2  WARNING: suspicious RCU usage in hsr_node_get_first
+       2  WARNING: suspicious RCU usage in hsr_node_get_first
+       2  WARNING: suspicious RCU usage in hsr_node_get_first
+       2  WARNING: suspicious RCU usage in hsr_node_get_first
+       3  WARNING: suspicious RCU usage in hsr_node_get_first
+       3  WARNING: suspicious RCU usage in hsr_node_get_first
+       3  WARNING: suspicious RCU usage in hsr_node_get_first
+       3  WARNING: suspicious RCU usage in hsr_node_get_first
+       3  WARNING: suspicious RCU usage in hsr_node_get_first
+       4  WARNING: suspicious RCU usage in hsr_node_get_first
+       4  WARNING: suspicious RCU usage in hsr_node_get_first
+       4  WARNING: suspicious RCU usage in hsr_node_get_first
+       4  WARNING: suspicious RCU usage in hsr_node_get_first
+       4  WARNING: suspicious RCU usage in hsr_node_get_first
+       5  WARNING: suspicious RCU usage in hsr_node_get_first
+       5  WARNING: suspicious RCU usage in hsr_node_get_first
+       5  WARNING: suspicious RCU usage in hsr_node_get_first
+       5  WARNING: suspicious RCU usage in hsr_node_get_first
+       5  WARNING: suspicious RCU usage in hsr_node_get_first
+       6  WARNING: suspicious RCU usage in hsr_node_get_first
+       6  WARNING: suspicious RCU usage in hsr_node_get_first
+       6  WARNING: suspicious RCU usage in hsr_node_get_first
+       6  WARNING: suspicious RCU usage in hsr_node_get_first
+       6  WARNING: suspicious RCU usage in hsr_node_get_first
+       6  WARNING: suspicious RCU usage in hsr_node_get_first
+       7  WARNING: suspicious RCU usage in hsr_node_get_first
+       7  WARNING: suspicious RCU usage in hsr_node_get_first
+       7  WARNING: suspicious RCU usage in hsr_node_get_first
+       7  WARNING: suspicious RCU usage in hsr_node_get_first
+       7  WARNING: suspicious RCU usage in hsr_node_get_first
+       8  WARNING: suspicious RCU usage in hsr_node_get_first
+       8  WARNING: suspicious RCU usage in hsr_node_get_first
+       8  WARNING: suspicious RCU usage in hsr_node_get_first
+       8  WARNING: suspicious RCU usage in hsr_node_get_first
+       8  WARNING: suspicious RCU usage in hsr_node_get_first
+       9  WARNING: suspicious RCU usage in hsr_node_get_first
+       9  WARNING: suspicious RCU usage in hsr_node_get_first
+       9  WARNING: suspicious RCU usage in hsr_node_get_first
+       9  WARNING: suspicious RCU usage in hsr_node_get_first
+       9  WARNING: suspicious RCU usage in hsr_node_get_first
+      10  WARNING: suspicious RCU usage in hsr_node_get_first
+      10  WARNING: suspicious RCU usage in hsr_node_get_first
+      10  WARNING: suspicious RCU usage in hsr_node_get_first
+      10  WARNING: suspicious RCU usage in hsr_node_get_first
+      10  WARNING: suspicious RCU usage in hsr_node_get_first
+Attempt 2:
+    Time  Bug Name
+       1  WARNING: suspicious RCU usage in hsr_node_get_first
+       2  WARNING: suspicious RCU usage in hsr_node_get_first
+       2  WARNING: suspicious RCU usage in hsr_node_get_first
+       2  WARNING: suspicious RCU usage in hsr_node_get_first
+       2  WARNING: suspicious RCU usage in hsr_node_get_first
+       2  WARNING: suspicious RCU usage in hsr_node_get_first
+       3  WARNING: suspicious RCU usage in hsr_node_get_first
+       3  WARNING: suspicious RCU usage in hsr_node_get_first
+       3  WARNING: suspicious RCU usage in hsr_node_get_first
+       3  WARNING: suspicious RCU usage in hsr_node_get_first
+       3  WARNING: suspicious RCU usage in hsr_node_get_first
+       4  WARNING: suspicious RCU usage in hsr_node_get_first
+       4  WARNING: suspicious RCU usage in hsr_node_get_first
+       4  WARNING: suspicious RCU usage in hsr_node_get_first
+       4  WARNING: suspicious RCU usage in hsr_node_get_first
+       4  WARNING: suspicious RCU usage in hsr_node_get_first
+       5  WARNING: suspicious RCU usage in hsr_node_get_first
+       5  WARNING: suspicious RCU usage in hsr_node_get_first
+       5  WARNING: suspicious RCU usage in hsr_node_get_first
+       5  WARNING: suspicious RCU usage in hsr_node_get_first
+       5  WARNING: suspicious RCU usage in hsr_node_get_first
+       6  WARNING: suspicious RCU usage in hsr_node_get_first
+       6  WARNING: suspicious RCU usage in hsr_node_get_first
+       6  WARNING: suspicious RCU usage in hsr_node_get_first
+       6  WARNING: suspicious RCU usage in hsr_node_get_first
+       6  WARNING: suspicious RCU usage in hsr_node_get_first
+       6  WARNING: suspicious RCU usage in hsr_node_get_first
+       7  WARNING: suspicious RCU usage in hsr_node_get_first
+       7  WARNING: suspicious RCU usage in hsr_node_get_first
+       7  WARNING: suspicious RCU usage in hsr_node_get_first
+       7  WARNING: suspicious RCU usage in hsr_node_get_first
+       7  WARNING: suspicious RCU usage in hsr_node_get_first
+       8  WARNING: suspicious RCU usage in hsr_node_get_first
+       8  WARNING: suspicious RCU usage in hsr_node_get_first
+       8  WARNING: suspicious RCU usage in hsr_node_get_first
+       8  WARNING: suspicious RCU usage in hsr_node_get_first
+       8  WARNING: suspicious RCU usage in hsr_node_get_first
+       9  WARNING: suspicious RCU usage in hsr_node_get_first
+       9  WARNING: suspicious RCU usage in hsr_node_get_first
+       9  WARNING: suspicious RCU usage in hsr_node_get_first
+       9  WARNING: suspicious RCU usage in hsr_node_get_first
+       9  WARNING: suspicious RCU usage in hsr_node_get_first
+      10  WARNING: suspicious RCU usage in hsr_node_get_first
+      10  WARNING: suspicious RCU usage in hsr_node_get_first
+      10  WARNING: suspicious RCU usage in hsr_node_get_first
+      10  WARNING: suspicious RCU usage in hsr_node_get_first
+      10  WARNING: suspicious RCU usage in hsr_node_get_first
+Attempt 3:
+    Time  Bug Name
+       1  WARNING: suspicious RCU usage in hsr_node_get_first
+       2  WARNING: suspicious RCU usage in hsr_node_get_first
+       2  WARNING: suspicious RCU usage in hsr_node_get_first
+       2  WARNING: suspicious RCU usage in hsr_node_get_first
+       2  WARNING: suspicious RCU usage in hsr_node_get_first
+       2  WARNING: suspicious RCU usage in hsr_node_get_first
+       3  WARNING: suspicious RCU usage in hsr_node_get_first
+       3  WARNING: suspicious RCU usage in hsr_node_get_first
+       3  WARNING: suspicious RCU usage in hsr_node_get_first
+       3  WARNING: suspicious RCU usage in hsr_node_get_first
+       3  WARNING: suspicious RCU usage in hsr_node_get_first
+       4  WARNING: suspicious RCU usage in hsr_node_get_first
+       4  WARNING: suspicious RCU usage in hsr_node_get_first
+       4  WARNING: suspicious RCU usage in hsr_node_get_first
+       4  WARNING: suspicious RCU usage in hsr_node_get_first
+       4  WARNING: suspicious RCU usage in hsr_node_get_first
+       5  WARNING: suspicious RCU usage in hsr_node_get_first
+       5  WARNING: suspicious RCU usage in hsr_node_get_first
+       5  WARNING: suspicious RCU usage in hsr_node_get_first
+       5  WARNING: suspicious RCU usage in hsr_node_get_first
+       5  WARNING: suspicious RCU usage in hsr_node_get_first
+       6  WARNING: suspicious RCU usage in hsr_node_get_first
+       6  WARNING: suspicious RCU usage in hsr_node_get_first
+       6  WARNING: suspicious RCU usage in hsr_node_get_first
+       6  WARNING: suspicious RCU usage in hsr_node_get_first
+       6  WARNING: suspicious RCU usage in hsr_node_get_first
+       6  WARNING: suspicious RCU usage in hsr_node_get_first
+       7  WARNING: suspicious RCU usage in hsr_node_get_first
+       7  WARNING: suspicious RCU usage in hsr_node_get_first
+       7  WARNING: suspicious RCU usage in hsr_node_get_first
+       7  WARNING: suspicious RCU usage in hsr_node_get_first
+       7  WARNING: suspicious RCU usage in hsr_node_get_first
+       8  WARNING: suspicious RCU usage in hsr_node_get_first
+       8  WARNING: suspicious RCU usage in hsr_node_get_first
+       8  WARNING: suspicious RCU usage in hsr_node_get_first
+       8  WARNING: suspicious RCU usage in hsr_node_get_first
+       8  WARNING: suspicious RCU usage in hsr_node_get_first
+       9  WARNING: suspicious RCU usage in hsr_node_get_first
+       9  WARNING: suspicious RCU usage in hsr_node_get_first
+       9  WARNING: suspicious RCU usage in hsr_node_get_first
+       9  WARNING: suspicious RCU usage in hsr_node_get_first
+       9  WARNING: suspicious RCU usage in hsr_node_get_first
+      10  WARNING: suspicious RCU usage in hsr_node_get_first
+      10  WARNING: suspicious RCU usage in hsr_node_get_first
+      10  WARNING: suspicious RCU usage in hsr_node_get_first
+      10  WARNING: suspicious RCU usage in hsr_node_get_first
+      10  WARNING: suspicious RCU usage in hsr_node_get_first
+The bug was not found.
+About 2194 commits remaining
+
+2025-02-28 13:07:09
+Session:   7
+Kernel:    2022-02-28 - f2b77012ddd5b2532d262f100be3394ceae3ea59
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+The bug was not found.
+About 1097 commits remaining
+
+2025-02-28 13:53:22
+Session:   8
+Kernel:    2022-03-04 - 6646dc241dd09e1e6141b32cd72e5b59c17c0ce5
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    3  KASAN: slab-out-of-bounds Read in vxlan_vnifilter_dump_dev
+***    3  KASAN: use-after-free Read in vxlan_vnifilter_dump_dev
+The bug was found.
+About 586 commits remaining
+
+2025-02-28 14:12:28
+Session:   9
+Kernel:    2022-03-03 - cd14e9b7b8d312dfbf75ce1f78552902e51b9045
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    3  KASAN: slab-out-of-bounds Read in vxlan_vnifilter_dump_dev
+***    3  KASAN: slab-out-of-bounds Read in vxlan_vnifilter_dump_dev
+***    3  KASAN: use-after-free Read in vxlan_vnifilter_dump_dev
+Running syz-repro.
+New PoC saved at /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/reproducers/repro-bug0066-18.prog
+Primary PoC:     /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/reproducers/repro-bug0066-18.prog
+Run Time:        0h13m0s
+The bug was found.
+About 111 commits remaining
+
+2025-02-28 14:44:51
+Session:   10
+Kernel:    2022-03-02 - 42f0c1934c7cb3e94c2fe8f5771245fa5631d0e7
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    3  KASAN: slab-out-of-bounds Read in vxlan_vnifilter_dump_dev
+The bug was found.
+About 56 commits remaining
+
+2025-02-28 15:03:08
+Session:   11
+Kernel:    2022-03-01 - 8fc16be67dbaf46d96dc96390c727bc76a12f07c
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    3  KASAN: use-after-free Read in vxlan_vnifilter_dump_dev
+The bug was found.
+About 28 commits remaining
+
+2025-02-28 15:20:24
+Session:   12
+Kernel:    2022-03-01 - 1e385c08249e4822e0f425efde1896d3933d1471
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    3  KASAN: slab-out-of-bounds Read in vxlan_vnifilter_dump_dev
+***    3  KASAN: slab-out-of-bounds Read in vxlan_vnifilter_dump_dev
+***    3  KASAN: use-after-free Read in vxlan_vnifilter_dump_dev
+Running syz-repro.
+New PoC saved at /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/reproducers/repro-bug0066-0.prog
+Primary PoC:     /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/reproducers/repro-bug0066-18.prog
+Run Time:        0h14m0s
+The bug was found.
+About 14 commits remaining
+
+2025-02-28 15:52:52
+Session:   13
+Kernel:    2022-03-01 - efe0f94b333bf73dae0649937d40fbb15b3165e1
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+The bug was not found.
+About 8 commits remaining
+
+2025-02-28 16:39:42
+Session:   14
+Kernel:    2022-03-01 - f9c4bb0b245cee35ef66f75bf409c9573d934cf9
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    3  KASAN: slab-out-of-bounds Read in vxlan_vnifilter_dump_dev
+***    3  KASAN: slab-out-of-bounds Read in vxlan_vnifilter_dump_dev
+The bug was found.
+About 4 commits remaining
+
+2025-02-28 16:57:54
+Session:   15
+Kernel:    2022-03-01 - a498c5953a9cdadcc1479c07d5b04c1afa3f53dc
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+The bug was not found.
+About 2 commits remaining
+
+==== Partial Result: Focused Fuzzing ====
+Reproducer:           /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/reproducers/repro-bug0066-18.prog
+Bisection Result:     2022-03-01 - f9c4bb0b245cee35ef66f75bf409c9573d934cf9
+Bisected Commit Name: vxlan: vni filtering support on collect metadata device
+Stage Time:           8h8m30s
+Run Time:             8h8m34s
+=========================================
+
+==== Anchor Commit ====
+
+2025-02-28 17:43:18
+Session:   16
+Kernel:    2022-03-01 - a498c5953a9cdadcc1479c07d5b04c1afa3f53dc
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+
+Failure: This bug cannot be found at the anchor commit.
+
+====================================================================================================================================================
+Bug Name:             KASAN: slab-out-of-bounds Read in vxlan_vnifilter_dump_dev
+Bug Link:             https://syzkaller.appspot.com/bug?id=d894f245105f59f788177ae2f53df8ffce3ec1ac
+Bisection Result:     2022-03-01 - f9c4bb0b245cee35ef66f75bf409c9573d934cf9
+Bisected Commit Name: vxlan: vni filtering support on collect metadata device
+Run Time:             8h26m2s
+
+Anchor Commit:        2022-03-29 - d888c83fcec75194a8a48ccd283953bdba7b2550
+Bisection Result:     2022-03-01 - f9c4bb0b245cee35ef66f75bf409c9573d934cf9

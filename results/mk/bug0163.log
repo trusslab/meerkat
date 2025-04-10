@@ -1,0 +1,298 @@
+./bin/bisector -i 1 -c /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/bisector.cfg -a 8379c0b31fbc5d20946f617f8e2fe4791e6f58c1 -F ff-test,poc-test,stateful-corpus,ff-no-find-backup
+Bisecting:          KASAN: slab-out-of-bounds Read in __fscache_acquire_volume
+Syzbot Link:        https://syzkaller.appspot.com/bug?id=cb9bdbd80adefc7da4aa5c2894a9c89f3bafd60c
+Working Name:       bug0163
+
+No aliases given.
+
+Anchor Commit:      8379c0b31fbc5d20946f617f8e2fe4791e6f58c1
+Repository:         https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
+Branch:             master
+Arch:               amd64
+
+Bisector:           /mnt/sdd/jtbursey/SyzInspector/
+Version:            1.0.4
+Kernel:             /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/kernel/
+Syzkaller:          /mnt/sdd/jtbursey/SyzInspector/syzkaller/
+Compilers:          /mnt/sda/jtbursey/SyzInspector/compilers/
+Ccache:             ccache
+Image:              /mnt/sda/jtbursey/SyzInspector/image/stretch/stretch.img
+Image Key:          /mnt/sda/jtbursey/SyzInspector/image/stretch/stretch.id_rsa
+
+Workdir:            /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/
+Kconfig:            /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/config-bug0163.txt
+Reproducers: (1)    /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/reproducers/
+Primary PoC:        /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/reproducers/repro-bug0163-1.prog
+Syzkaller Workdir:  /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/wd-kaller/
+Log Directory:      /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/log/
+
+Syscalls: (12)      ["mount$9p_fd", "pipe2$9p", "syz_mount_image$tmpfs", "write$FUSE_BMAP", "openat$fuse", "ioctl$EXT4_IOC_GROUP_EXTEND", "openat$sw_sync_info", "getuid", "setgid", "getgid", "read$FUSE", "move_pages"]
+VM Count:           4
+CPU Count:          4
+Procs:              24
+Memory:             4096
+Make Procs:         16
+Max Time:           10
+Max Attempts:       1
+
+==== Anchor Commit ====
+
+2025-03-18 13:18:30
+Session:   1
+Kernel:    2022-08-28 - 8379c0b31fbc5d20946f617f8e2fe4791e6f58c1
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       2  INFO: rcu detected stall in corrupted
+***    2  KASAN: slab-out-of-bounds Read in __fscache_acquire_volume
+***    2  KASAN: slab-out-of-bounds Read in __fscache_acquire_volume
+***    2  KASAN: slab-out-of-bounds Read in __fscache_acquire_volume
+Attempt 2: (RETRY)
+    Time  Bug Name
+       2  INFO: rcu detected stall in corrupted
+***    2  KASAN: slab-out-of-bounds Read in __fscache_acquire_volume
+Attempt 3: (RETRY)
+    Time  Bug Name
+***    2  KASAN: slab-out-of-bounds Read in __fscache_acquire_volume
+***    2  KASAN: slab-out-of-bounds Read in __fscache_acquire_volume
+***    2  KASAN: slab-out-of-bounds Read in __fscache_acquire_volume
+***    2  KASAN: slab-out-of-bounds Read in __fscache_acquire_volume
+The bug was found.
+
+New Max Time: 10
+
+==== Major Release Search ====
+18 Releases
+
+2025-03-18 13:39:19
+Session:   2
+Kernel:    2022-07-31 - 3d7cb6b04c3f3115719235cc6866b10326de34cd (v5.19)
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    2  KASAN: slab-out-of-bounds Read in __fscache_acquire_volume
+***    2  KASAN: slab-out-of-bounds Read in __fscache_acquire_volume
+***    2  KASAN: slab-out-of-bounds Read in __fscache_acquire_volume
+Running syz-repro.
+New PoC saved at /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/reproducers/repro-bug0163-0.prog
+Primary PoC:     /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/reproducers/repro-bug0163-0.prog
+Run Time:        0h7m0s
+The bug was found.
+About 17 releases remaining
+
+2025-03-18 14:01:57
+Session:   3
+Kernel:    2022-05-22 - 4b0986a3613c92f4ec1bdc7f60ec66fea135991f (v5.18)
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    2  KASAN: slab-out-of-bounds Read in __fscache_acquire_volume
+***    2  KASAN: slab-out-of-bounds Read in __fscache_acquire_volume
+***    2  KASAN: slab-out-of-bounds Read in __fscache_acquire_volume
+***    2  KASAN: slab-out-of-bounds Read in __fscache_acquire_volume
+The bug was found.
+About 16 releases remaining
+
+2025-03-18 14:17:38
+Session:   4
+Kernel:    2022-03-20 - f443e374ae131c168a065ea1748feac6b2e76613 (v5.17)
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    2  KASAN: slab-out-of-bounds Read in __fscache_acquire_volume
+***    2  KASAN: slab-out-of-bounds Read in __fscache_acquire_volume
+The bug was found.
+About 15 releases remaining
+
+2025-03-18 14:32:54
+Session:   5
+Kernel:    2021-10-31 - 8bb7eca972ad531c9b149c0a51ab43a417385813 (v5.15)
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       5  general protection fault in fscache_free_cookie
+       6  suppressed report
+       6  suppressed report
+       6  suppressed report
+The bug was not found.
+About 14 releases remaining
+
+==== Kernel Bisection ====
+29584 Linux commits
+
+2025-03-18 14:56:44
+Session:   6
+Kernel:    2021-12-03 - 119c1a336d8e92df059a86302e7f11f9262bbc00
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       6  WARNING: ODEBUG bug in netdev_run_todo
+       8  suppressed report
+      10  WARNING in send_hsr_supervision_frame
+The bug was not found.
+About 14792 commits remaining
+
+2025-03-18 15:20:40
+Session:   7
+Kernel:    2022-01-12 - e3084ed48fd6b661fe434da0cb36d7d6706cf27f
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       8  WARNING in new_slab
+       8  suppressed report
+       8  suppressed report
+       8  suppressed report
+The bug was not found.
+About 7351 commits remaining
+
+2025-03-18 15:43:34
+Session:   8
+Kernel:    2022-01-17 - 35ce8ae9ae2e471f92759f9d6880eab42cc1c3b6
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       8  suppressed report
+       8  suppressed report
+       8  suppressed report
+       9  suppressed report
+The bug was not found.
+About 3657 commits remaining
+
+2025-03-18 16:06:30
+Session:   9
+Kernel:    2022-02-03 - 551007a8f10afdc45959ad637d6bee816716769f
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    2  KASAN: slab-out-of-bounds Read in __fscache_acquire_volume
+***    2  KASAN: slab-out-of-bounds Read in __fscache_acquire_volume
+Running syz-repro.
+New PoC saved at /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/reproducers/repro-bug0163-2.prog
+Primary PoC:     /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/reproducers/repro-bug0163-0.prog
+Run Time:        0h7m0s
+The bug was found.
+About 1810 commits remaining
+
+2025-03-18 16:28:22
+Session:   10
+Kernel:    2022-01-27 - 9e0db41e7a0b6f1271cbcfb16dbf5b8641b4e440
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    2  KASAN: slab-out-of-bounds Read in __fscache_acquire_volume
+***    2  KASAN: slab-out-of-bounds Read in __fscache_acquire_volume
+The bug was found.
+About 905 commits remaining
+
+2025-03-18 16:43:10
+Session:   11
+Kernel:    2022-01-18 - fe81ba137ebcc7f236780996a0b375732c07e85c
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    5  KASAN: slab-out-of-bounds Read in __fscache_acquire_volume
+The bug was found.
+About 454 commits remaining
+
+2025-03-18 17:01:03
+Session:   12
+Kernel:    2022-01-18 - 57d17378a4a042401b0c2fe211e5a0e3a276cb3d
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    2  KASAN: slab-out-of-bounds Read in __fscache_acquire_volume
+***    2  KASAN: slab-out-of-bounds Read in __fscache_acquire_volume
+Running syz-repro.
+New PoC saved at /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/reproducers/repro-bug0163-2.prog
+Primary PoC:     /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/reproducers/repro-bug0163-0.prog
+Run Time:        0h8m0s
+The bug was found.
+About 242 commits remaining
+
+2025-03-18 17:23:57
+Session:   13
+Kernel:    2022-01-18 - f0033681f0fe8421baf8db125e57fa6157824c2d
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       8  suppressed report
+       9  suppressed report
+      10  suppressed report
+      10  suppressed report
+The bug was not found.
+About 122 commits remaining
+
+2025-03-18 17:37:00
+Session:   14
+Kernel:    2022-01-12 - 88031a0de7d68d132014154b9e5307428e8ed70d
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+      10  suppressed report
+The bug was not found.
+About 9735 commits remaining
+
+2025-03-18 18:00:11
+Session:   15
+Kernel:    2022-01-12 - 7ac0089d138f80dcd7ba8ca368a9b2bdfe780b16
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       9  suppressed report
+The bug was not found.
+About 9705 commits remaining
+
+2025-03-18 18:13:14
+Session:   16
+Kernel:    2022-01-12 - 6dd8646939a770e4ec0220c1c19d6af25c5877b7
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 9690 commits remaining
+
+2025-03-18 18:26:09
+Session:   17
+Kernel:    2022-01-14 - 46f57d2410150985f81da7cbbb5fdcda01d02ac2
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    2  KASAN: slab-out-of-bounds Read in __fscache_acquire_volume
+The bug was found.
+About 7069 commits remaining
+
+2025-03-18 18:41:03
+Session:   18
+Kernel:    2022-01-13 - 35cb8c713a496e8c114eed5e2a5a30b359876df2
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    3  KASAN: slab-out-of-bounds Read in __fscache_acquire_volume
+The bug was found.
+About 7065 commits remaining
+
+2025-03-18 18:47:04
+Session:   19
+Kernel:    2022-01-12 - c0dd94558d0e473aa92254e1c48a47900c911e69
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 7063 commits remaining
+
+2025-03-18 19:10:16
+Session:   20
+Kernel:    2022-01-13 - 1aa77e716c6f2332f2d4664f747ff4eba731825b
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    2  KASAN: slab-out-of-bounds Read in __fscache_acquire_volume
+Running syz-repro.
+New PoC saved at /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/reproducers/repro-bug0163-2.prog
+Primary PoC:     /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/reproducers/repro-bug0163-0.prog
+Run Time:        0h7m0s
+The bug was found.
+
+JTBURSEY: Git hanged at this point. Manual inspection of the bisect log shows that 1aa77e716c6f
+is the first bad commit.
+JTBURSEY: runtime ~6h10m

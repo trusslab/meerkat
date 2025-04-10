@@ -1,0 +1,597 @@
+./bin/bisector -i 1 -c /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/bisector.cfg -a eb7081409f94a9a8608593d0fb63a1aa3d6f95d8 -F ff-test,poc-test,stateful-corpus,ff-no-find-backup
+Bisecting:          inconsistent lock state in smc_fback_state_change
+Syzbot Link:        https://syzkaller.appspot.com/bug?id=90aba1c33ce6a38bac825f68d4287f31a1aee56c
+Working Name:       bug0137
+
+No aliases given.
+
+Anchor Commit:      eb7081409f94a9a8608593d0fb63a1aa3d6f95d8
+Repository:         https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
+Branch:             master
+Arch:               amd64
+
+Bisector:           /mnt/sdd/jtbursey/SyzInspector/
+Version:            1.0.4
+Kernel:             /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/kernel/
+Syzkaller:          /mnt/sdd/jtbursey/SyzInspector/syzkaller/
+Compilers:          /mnt/sda/jtbursey/SyzInspector/compilers/
+Ccache:             ccache
+Image:              /mnt/sda/jtbursey/SyzInspector/image/stretch/stretch.img
+Image Key:          /mnt/sda/jtbursey/SyzInspector/image/stretch/stretch.id_rsa
+
+Workdir:            /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/
+Kconfig:            /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/config-bug0137.txt
+Reproducers: (4)    /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/reproducers/
+Syzkaller Workdir:  /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/wd-kaller/
+Log Directory:      /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/log/
+
+Syscalls: (22)      ["sendmsg$L2TP_CMD_TUNNEL_CREATE", "sendmsg$NL80211_CMD_FRAME", "sendmsg$inet", "socket$kcm", "socket$nl_generic", "syz_genetlink_get_family_id$l2tp", "socket", "socket$netlink", "ioctl$EXT4_IOC_GROUP_EXTEND", "openat$sw_sync_info", "syz_genetlink_get_family_id$nl80211", "sendmsg$NL80211_CMD_GET_INTERFACE", "ioctl$sock_SIOCGIFINDEX_80211", "socket$inet_udp", "socket$inet6_udp", "socket$l2tp", "socket$l2tp6", "sendmsg$TCPDIAG_GETSOCK", "ioctl$sock_SIOCGIFINDEX", "socket$inet", "socket$inet6", "socket$nl_sock_diag"]
+VM Count:           4
+CPU Count:          4
+Procs:              24
+Memory:             4096
+Make Procs:         16
+Max Time:           10
+Max Attempts:       1
+
+==== Anchor Commit ====
+
+2025-03-13 09:58:30
+Session:   1
+Kernel:    2022-11-20 - eb7081409f94a9a8608593d0fb63a1aa3d6f95d8
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       2  INFO: rcu detected stall in corrupted
+***    3  inconsistent lock state in smc_fback_state_change
+***    3  inconsistent lock state in smc_fback_state_change
+***    3  inconsistent lock state in smc_fback_state_change
+Attempt 2: (RETRY)
+    Time  Bug Name
+***    2  inconsistent lock state in smc_fback_state_change
+       2  inconsistent lock state in l2tp_tunnel_register
+       2  inconsistent lock state in l2tp_tunnel_register
+       2  inconsistent lock state in l2tp_tunnel_register
+Attempt 3: (RETRY)
+    Time  Bug Name
+       2  INFO: rcu detected stall in corrupted
+       2  possible deadlock in tcp_delack_timer
+       2  possible deadlock in tcp_delack_timer
+       2  inconsistent lock state in l2tp_tunnel_register
+***    3  inconsistent lock state in smc_fback_state_change
+       3  inconsistent lock state in l2tp_tunnel_register
+       3  inconsistent lock state in l2tp_tunnel_register
+       3  inconsistent lock state in l2tp_tunnel_register
+The bug was found.
+
+New Max Time: 10
+
+==== Major Release Search ====
+18 Releases
+
+2025-03-13 10:24:23
+Session:   2
+Kernel:    2022-10-02 - 4fe89d07dcc2804c8b562f6c7896a45643d34b2f (v6.0)
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       2  INFO: rcu detected stall in corrupted
+The bug was not found.
+About 17 releases remaining
+
+==== Kernel Bisection ====
+14355 Linux commits
+
+2025-03-13 10:51:51
+Session:   3
+Kernel:    2022-10-07 - e08466a7c00733a501d3c5328d29ec974478d717
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       1  WARNING in wireless_send_event
+       1  WARNING in wireless_send_event
+       2  WARNING in wireless_send_event
+       2  WARNING in wireless_send_event
+       2  WARNING in wireless_send_event
+       2  WARNING in wireless_send_event
+       2  WARNING in wireless_send_event
+       2  WARNING in wireless_send_event
+       3  WARNING in wireless_send_event
+       3  WARNING in wireless_send_event
+       3  WARNING in wireless_send_event
+       3  WARNING in wireless_send_event
+       3  WARNING in wireless_send_event
+       3  WARNING in wireless_send_event
+       4  WARNING in wireless_send_event
+       4  WARNING in wireless_send_event
+       4  WARNING in wireless_send_event
+       4  WARNING in wireless_send_event
+       4  WARNING in wireless_send_event
+       4  WARNING in wireless_send_event
+       5  WARNING in wireless_send_event
+       5  WARNING in wireless_send_event
+       5  WARNING in wireless_send_event
+       5  WARNING in wireless_send_event
+       5  WARNING in wireless_send_event
+       5  WARNING in wireless_send_event
+       6  WARNING in wireless_send_event
+       6  WARNING in wireless_send_event
+       6  WARNING in wireless_send_event
+       6  WARNING in wireless_send_event
+       6  WARNING in wireless_send_event
+       6  WARNING in wireless_send_event
+       7  WARNING in wireless_send_event
+       7  WARNING in wireless_send_event
+       7  WARNING in wireless_send_event
+       7  WARNING in wireless_send_event
+       7  WARNING in wireless_send_event
+       7  WARNING in wireless_send_event
+       8  WARNING in wireless_send_event
+       8  WARNING in wireless_send_event
+       8  WARNING in wireless_send_event
+       8  WARNING in wireless_send_event
+       8  WARNING in wireless_send_event
+       8  WARNING in wireless_send_event
+       9  WARNING in wireless_send_event
+       9  WARNING in wireless_send_event
+       9  WARNING in wireless_send_event
+       9  WARNING in wireless_send_event
+       9  WARNING in wireless_send_event
+       9  WARNING in wireless_send_event
+      10  WARNING in wireless_send_event
+      10  WARNING in wireless_send_event
+      10  WARNING in wireless_send_event
+      10  WARNING in wireless_send_event
+      10  WARNING in wireless_send_event
+      10  WARNING in wireless_send_event
+The bug was not found.
+About 7135 commits remaining
+
+2025-03-13 11:18:50
+Session:   4
+Kernel:    2022-10-10 - 00833408bb164342990102f272c77983f1ca5e94
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       1  WARNING in c_start
+       1  WARNING in c_start
+       1  WARNING in c_start
+       1  WARNING in c_start
+       2  WARNING in c_start
+       2  WARNING in c_start
+       2  WARNING in c_start
+       2  WARNING in c_start
+       2  WARNING in c_start
+       2  WARNING in c_start
+       2  WARNING in c_start
+       3  WARNING in c_start
+       3  WARNING in c_start
+       3  WARNING in c_start
+       3  WARNING in c_start
+       3  WARNING in c_start
+       4  WARNING in c_start
+       4  WARNING in c_start
+       4  WARNING in c_start
+       4  WARNING in c_start
+       4  WARNING in c_start
+       4  WARNING in c_start
+       4  WARNING in c_start
+       4  WARNING in c_start
+       5  WARNING in c_start
+       5  WARNING in c_start
+       5  WARNING in c_start
+       5  WARNING in c_start
+       5  WARNING in c_start
+       5  WARNING in c_start
+       5  WARNING in c_start
+       6  WARNING in c_start
+       6  WARNING in c_start
+       6  WARNING in c_start
+       6  WARNING in c_start
+       6  WARNING in c_start
+       7  WARNING in c_start
+       7  WARNING in c_start
+       7  WARNING in c_start
+       7  WARNING in c_start
+       7  WARNING in c_start
+       7  WARNING in c_start
+       7  WARNING in c_start
+       7  WARNING in c_start
+       8  WARNING in c_start
+       8  WARNING in c_start
+       8  WARNING in c_start
+       8  WARNING in c_start
+       8  WARNING in c_start
+       8  WARNING in c_start
+       8  WARNING in c_start
+       9  WARNING in c_start
+       9  WARNING in c_start
+       9  WARNING in c_start
+       9  WARNING in c_start
+       9  WARNING in c_start
+      10  WARNING in c_start
+      10  WARNING in c_start
+      10  WARNING in c_start
+      10  WARNING in c_start
+      10  WARNING in c_start
+      10  WARNING in c_start
+      10  WARNING in c_start
+      10  WARNING in c_start
+The bug was not found.
+About 3581 commits remaining
+
+2025-03-13 11:46:25
+Session:   5
+Kernel:    2022-10-21 - 4da34b7d175dc99b8befebd69e96546c960d526c
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       2  INFO: rcu detected stall in corrupted
+The bug was not found.
+About 1818 commits remaining
+
+2025-03-13 12:14:06
+Session:   6
+Kernel:    2022-11-07 - 89bbe785b4d196cc3d00056adc58da8484a824a1
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 909 commits remaining
+
+2025-03-13 12:41:12
+Session:   7
+Kernel:    2022-11-11 - 74bd160fd59f104ca15f4582fee97807146a3a7e
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       2  INFO: rcu detected stall in corrupted
+The bug was not found.
+About 455 commits remaining
+
+2025-03-13 13:08:35
+Session:   8
+Kernel:    2022-11-17 - 84368d882b9688bfac77ce48d33b1e20a4e4a787
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       2  inconsistent lock state in l2tp_tunnel_register
+       2  inconsistent lock state in l2tp_tunnel_register
+       2  inconsistent lock state in l2tp_tunnel_register
+       2  inconsistent lock state in l2tp_tunnel_register
+       3  BUG: sleeping function called from invalid context in static_key_slow_inc
+       3  BUG: sleeping function called from invalid context in static_key_slow_inc
+       3  BUG: sleeping function called from invalid context in static_key_slow_inc
+       4  possible deadlock in l2tp_tunnel_register
+       4  inconsistent lock state in l2tp_tunnel_register
+       4  inconsistent lock state in l2tp_tunnel_register
+       5  inconsistent lock state in l2tp_tunnel_register
+       5  inconsistent lock state in l2tp_tunnel_register
+       5  inconsistent lock state in l2tp_tunnel_register
+       6  inconsistent lock state in l2tp_tunnel_register
+       6  inconsistent lock state in l2tp_tunnel_register
+       6  inconsistent lock state in l2tp_tunnel_register
+       7  BUG: sleeping function called from invalid context in static_key_slow_inc
+       7  inconsistent lock state in l2tp_tunnel_register
+       7  inconsistent lock state in l2tp_tunnel_register
+       7  inconsistent lock state in l2tp_tunnel_register
+       8  inconsistent lock state in l2tp_tunnel_register
+       8  inconsistent lock state in l2tp_tunnel_register
+       8  inconsistent lock state in l2tp_tunnel_register
+       9  possible deadlock in l2tp_tunnel_register
+       9  inconsistent lock state in l2tp_tunnel_register
+       9  inconsistent lock state in l2tp_tunnel_register
+      10  inconsistent lock state in l2tp_tunnel_register
+      10  inconsistent lock state in l2tp_tunnel_register
+The bug was not found.
+About 221 commits remaining
+
+2025-03-13 13:35:29
+Session:   9
+Kernel:    2022-11-18 - ab290eaddc4c41b237b9a366fa6a5527be890b84
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       2  INFO: rcu detected stall in corrupted
+       2  inconsistent lock state in l2tp_tunnel_register
+       2  inconsistent lock state in l2tp_tunnel_register
+       2  inconsistent lock state in l2tp_tunnel_register
+       3  inconsistent lock state in l2tp_tunnel_register
+       3  inconsistent lock state in l2tp_tunnel_register
+       3  inconsistent lock state in l2tp_tunnel_register
+       4  inconsistent lock state in l2tp_tunnel_register
+       4  inconsistent lock state in l2tp_tunnel_register
+       5  possible deadlock in l2tp_tunnel_register
+       5  inconsistent lock state in l2tp_tunnel_register
+       5  inconsistent lock state in l2tp_tunnel_register
+       6  possible deadlock in l2tp_tunnel_register
+       6  inconsistent lock state in l2tp_tunnel_register
+       6  inconsistent lock state in l2tp_tunnel_register
+       6  inconsistent lock state in l2tp_tunnel_register
+       7  inconsistent lock state in l2tp_tunnel_register
+       7  inconsistent lock state in l2tp_tunnel_register
+       7  inconsistent lock state in l2tp_tunnel_register
+       8  inconsistent lock state in l2tp_tunnel_register
+       8  inconsistent lock state in l2tp_tunnel_register
+       8  inconsistent lock state in l2tp_tunnel_register
+       9  BUG: sleeping function called from invalid context in static_key_slow_inc
+       9  inconsistent lock state in l2tp_tunnel_register
+       9  inconsistent lock state in l2tp_tunnel_register
+      10  possible deadlock in l2tp_tunnel_register
+      10  BUG: sleeping function called from invalid context in static_key_slow_inc
+      10  inconsistent lock state in l2tp_tunnel_register
+The bug was not found.
+About 124 commits remaining
+
+2025-03-13 14:02:48
+Session:   10
+Kernel:    2022-11-18 - bf5003a0dc5024987eb3193a19aa802fc6235af0
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       2  INFO: rcu detected stall in corrupted
+       2  inconsistent lock state in l2tp_tunnel_register
+       2  inconsistent lock state in l2tp_tunnel_register
+       2  inconsistent lock state in l2tp_tunnel_register
+       4  possible deadlock in l2tp_tunnel_register
+       4  possible deadlock in l2tp_tunnel_register
+       4  inconsistent lock state in l2tp_tunnel_register
+       4  inconsistent lock state in l2tp_tunnel_register
+       5  inconsistent lock state in l2tp_tunnel_register
+       5  inconsistent lock state in l2tp_tunnel_register
+       5  inconsistent lock state in l2tp_tunnel_register
+***    6  inconsistent lock state in smc_fback_state_change
+       6  inconsistent lock state in l2tp_tunnel_register
+       6  inconsistent lock state in l2tp_tunnel_register
+       6  inconsistent lock state in l2tp_tunnel_register
+Running syz-repro.
+syz-repro was terminated after 60 minutes
+Warning: Child process exited with error status 32764.
+Run Time:        1h0m0s
+The bug was found.
+About 58 commits remaining
+
+2025-03-13 15:26:17
+Session:   11
+Kernel:    2022-11-18 - 585f2bc8fe692d31593633df99090a1039e789bb
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       2  INFO: rcu detected stall in corrupted
+The bug was not found.
+About 269 commits remaining
+
+2025-03-13 15:53:43
+Session:   12
+Kernel:    2022-11-18 - f4408c3dfcbcc7669caa48786973e88635f3d5e8
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    2  inconsistent lock state in smc_fback_state_change
+       2  inconsistent lock state in l2tp_tunnel_register
+       2  inconsistent lock state in l2tp_tunnel_register
+       2  inconsistent lock state in l2tp_tunnel_register
+Running syz-repro.
+syz-repro was terminated after 60 minutes
+Warning: Child process exited with error status 32764.
+Run Time:        1h0m0s
+The bug was found.
+About 257 commits remaining
+
+2025-03-13 17:13:26
+Session:   13
+Kernel:    2022-11-16 - 50a893359cd2643ee1afc96eedc9e7084cab49fa
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       1  WARNING in wireless_send_event
+       1  WARNING in wireless_send_event
+       2  WARNING in wireless_send_event
+       2  WARNING in wireless_send_event
+       2  WARNING in wireless_send_event
+       2  WARNING in wireless_send_event
+       2  WARNING in wireless_send_event
+       2  WARNING in wireless_send_event
+       3  WARNING in wireless_send_event
+       3  WARNING in wireless_send_event
+       3  WARNING in wireless_send_event
+       3  WARNING in wireless_send_event
+       3  WARNING in wireless_send_event
+       3  WARNING in wireless_send_event
+       4  WARNING in wireless_send_event
+       4  WARNING in wireless_send_event
+       4  WARNING in wireless_send_event
+       4  WARNING in wireless_send_event
+       4  WARNING in wireless_send_event
+       4  WARNING in wireless_send_event
+       5  WARNING in wireless_send_event
+       5  WARNING in wireless_send_event
+       5  WARNING in wireless_send_event
+       5  WARNING in wireless_send_event
+       5  WARNING in wireless_send_event
+       5  WARNING in wireless_send_event
+       6  WARNING in wireless_send_event
+       6  WARNING in wireless_send_event
+       6  WARNING in wireless_send_event
+       6  WARNING in wireless_send_event
+       6  WARNING in wireless_send_event
+       7  WARNING in wireless_send_event
+       7  WARNING in wireless_send_event
+       7  WARNING in wireless_send_event
+       7  WARNING in wireless_send_event
+       7  WARNING in wireless_send_event
+       7  WARNING in wireless_send_event
+       8  WARNING in wireless_send_event
+       8  WARNING in wireless_send_event
+       8  WARNING in wireless_send_event
+       8  WARNING in wireless_send_event
+       8  WARNING in wireless_send_event
+       8  WARNING in wireless_send_event
+       9  WARNING in wireless_send_event
+       9  WARNING in wireless_send_event
+       9  WARNING in wireless_send_event
+       9  WARNING in wireless_send_event
+       9  WARNING in wireless_send_event
+       9  WARNING in wireless_send_event
+      10  WARNING in wireless_send_event
+      10  WARNING in wireless_send_event
+      10  WARNING in wireless_send_event
+      10  WARNING in wireless_send_event
+      10  WARNING in wireless_send_event
+      10  WARNING in wireless_send_event
+The bug was not found.
+About 4796 commits remaining
+
+2025-03-13 17:40:53
+Session:   14
+Kernel:    2022-11-18 - 5c59789ce7ce994e1d9db1973a21f15481bd8513
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       1  WARNING in wireless_send_event
+       1  WARNING in wireless_send_event
+       2  WARNING in wireless_send_event
+       2  WARNING in wireless_send_event
+       2  WARNING in wireless_send_event
+       2  WARNING in wireless_send_event
+       2  WARNING in wireless_send_event
+       2  WARNING in wireless_send_event
+       3  WARNING in wireless_send_event
+       3  WARNING in wireless_send_event
+       3  WARNING in wireless_send_event
+       3  WARNING in wireless_send_event
+       3  WARNING in wireless_send_event
+       3  WARNING in wireless_send_event
+       4  WARNING in wireless_send_event
+       4  WARNING in wireless_send_event
+       4  WARNING in wireless_send_event
+       4  WARNING in wireless_send_event
+       4  WARNING in wireless_send_event
+       4  WARNING in wireless_send_event
+       5  WARNING in wireless_send_event
+       5  WARNING in wireless_send_event
+       5  WARNING in wireless_send_event
+       5  WARNING in wireless_send_event
+       5  WARNING in wireless_send_event
+       5  WARNING in wireless_send_event
+       6  WARNING in wireless_send_event
+       6  WARNING in wireless_send_event
+       6  WARNING in wireless_send_event
+       6  WARNING in wireless_send_event
+       6  WARNING in wireless_send_event
+       6  WARNING in wireless_send_event
+       7  WARNING in wireless_send_event
+       7  WARNING in wireless_send_event
+       7  WARNING in wireless_send_event
+       7  WARNING in wireless_send_event
+       7  WARNING in wireless_send_event
+       7  WARNING in wireless_send_event
+       8  WARNING in wireless_send_event
+       8  WARNING in wireless_send_event
+       8  WARNING in wireless_send_event
+       8  WARNING in wireless_send_event
+       8  WARNING in wireless_send_event
+       8  WARNING in wireless_send_event
+       9  WARNING in wireless_send_event
+       9  WARNING in wireless_send_event
+       9  WARNING in wireless_send_event
+       9  WARNING in wireless_send_event
+       9  WARNING in wireless_send_event
+       9  WARNING in wireless_send_event
+      10  WARNING in wireless_send_event
+      10  WARNING in wireless_send_event
+      10  WARNING in wireless_send_event
+      10  WARNING in wireless_send_event
+      10  WARNING in wireless_send_event
+      10  WARNING in wireless_send_event
+The bug was not found.
+About 4792 commits remaining
+
+2025-03-13 18:08:15
+Session:   15
+Kernel:    2022-11-19 - b1010b93fe9074f965ebf86e0e382a8a7a71500d
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 255 commits remaining
+
+2025-03-13 18:35:16
+Session:   16
+Kernel:    2022-11-18 - b5bf1d8a23a683d56be574a934a8296912efc758
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       2  possible deadlock in l2tp_tunnel_register
+       2  INFO: rcu detected stall in corrupted
+       2  inconsistent lock state in l2tp_tunnel_register
+       2  inconsistent lock state in l2tp_tunnel_register
+       3  inconsistent lock state in l2tp_tunnel_register
+       4  possible deadlock in l2tp_tunnel_register
+       4  possible deadlock in l2tp_tunnel_register
+       4  inconsistent lock state in l2tp_tunnel_register
+       4  inconsistent lock state in l2tp_tunnel_register
+       5  possible deadlock in l2tp_tunnel_register
+       5  inconsistent lock state in l2tp_tunnel_register
+       5  inconsistent lock state in l2tp_tunnel_register
+       6  possible deadlock in l2tp_tunnel_register
+       6  inconsistent lock state in l2tp_tunnel_register
+       6  inconsistent lock state in l2tp_tunnel_register
+       6  inconsistent lock state in l2tp_tunnel_register
+       7  inconsistent lock state in l2tp_tunnel_register
+       7  inconsistent lock state in l2tp_tunnel_register
+       8  inconsistent lock state in l2tp_tunnel_register
+       8  inconsistent lock state in l2tp_tunnel_register
+       9  inconsistent lock state in l2tp_tunnel_register
+       9  inconsistent lock state in l2tp_tunnel_register
+       9  inconsistent lock state in l2tp_tunnel_register
+       9  inconsistent lock state in l2tp_tunnel_register
+      10  BUG: sleeping function called from invalid context in static_key_slow_inc
+      10  inconsistent lock state in l2tp_tunnel_register
+      10  inconsistent lock state in l2tp_tunnel_register
+      10  inconsistent lock state in l2tp_tunnel_register
+The bug was not found.
+About 13 commits remaining
+
+==== Partial Result: Focused Fuzzing ====
+Bisection Result:     2022-11-18 - f4408c3dfcbcc7669caa48786973e88635f3d5e8
+Bisected Commit Name: Merge tag 'block-6.1-2022-11-18' of git://git.kernel.dk/linux
+Stage Time:           9h3m58s
+Run Time:             9h4m3s
+=========================================
+
+==== Anchor Commit ====
+
+2025-03-13 19:02:28
+Session:   17
+Kernel:    2022-11-18 - b5bf1d8a23a683d56be574a934a8296912efc758
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+
+Failure: This bug cannot be found at the anchor commit.
+
+====================================================================================================================================================
+Bug Name:             inconsistent lock state in smc_fback_state_change
+Bug Link:             https://syzkaller.appspot.com/bug?id=90aba1c33ce6a38bac825f68d4287f31a1aee56c
+Bisection Result:     2022-11-18 - f4408c3dfcbcc7669caa48786973e88635f3d5e8
+Bisected Commit Name: Merge tag 'block-6.1-2022-11-18' of git://git.kernel.dk/linux
+Run Time:             9h23m7s
+
+Anchor Commit:        2022-11-20 - eb7081409f94a9a8608593d0fb63a1aa3d6f95d8
+Bisection Result:     2022-11-18 - f4408c3dfcbcc7669caa48786973e88635f3d5e8

@@ -1,0 +1,441 @@
+./bin/bisector -i 1 -c /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/bisector.cfg -a 4312098baf37ee17a8350725e6e0d0e8590252d4 -F ff-test,poc-test,stateful-corpus,ff-no-find-backup
+Bisecting:          KASAN: slab-out-of-bounds Write in hfs_asc2mac
+Syzbot Link:        https://syzkaller.appspot.com/bug?id=67d3719a7490d99812faae7f9c2c26e9f386c1a6
+Working Name:       bug0159
+
+No aliases given.
+
+Anchor Commit:      4312098baf37ee17a8350725e6e0d0e8590252d4
+Repository:         https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
+Branch:             master
+Arch:               amd64
+
+Bisector:           /mnt/sdd/jtbursey/SyzInspector/
+Version:            1.0.4
+Kernel:             /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/kernel/
+Syzkaller:          /mnt/sdd/jtbursey/SyzInspector/syzkaller/
+Compilers:          /mnt/sda/jtbursey/SyzInspector/compilers/
+Ccache:             ccache
+Image:              /mnt/sda/jtbursey/SyzInspector/image/stretch/stretch.img
+Image Key:          /mnt/sda/jtbursey/SyzInspector/image/stretch/stretch.id_rsa
+
+Workdir:            /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/
+Kconfig:            /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/config-bug0159.txt
+Reproducers: (6)    /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/reproducers/
+Syzkaller Workdir:  /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/wd-kaller/
+Log Directory:      /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/log/
+
+Syscalls: (15)      ["mknod", "mmap", "mount", "open", "open_tree", "openat$cgroup_ro", "syz_mount_image$hfs", "write$binfmt_script", "writev", "openat$cgroup_root", "openat$binfmt", "getuid", "setgid", "getgid", "syz_create_resource$binfmt"]
+VM Count:           8
+CPU Count:          2
+Procs:              16
+Memory:             4096
+Make Procs:         16
+Max Time:           10
+Max Attempts:       1
+
+==== Anchor Commit ====
+
+2025-03-17 21:56:17
+Session:   1
+Kernel:    2022-11-23 - 4312098baf37ee17a8350725e6e0d0e8590252d4
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    2  KASAN: slab-out-of-bounds Write in hfs_asc2mac
+***    2  KASAN: slab-out-of-bounds Write in hfs_asc2mac
+***    2  KASAN: slab-out-of-bounds Write in hfs_asc2mac
+***    2  KASAN: slab-out-of-bounds Write in hfs_asc2mac
+***    2  KASAN: slab-out-of-bounds Write in hfs_asc2mac
+***    2  KASAN: slab-out-of-bounds Write in hfs_asc2mac
+***    2  KASAN: slab-out-of-bounds Write in hfs_asc2mac
+       2  INFO: rcu detected stall in corrupted
+Attempt 2: (RETRY)
+    Time  Bug Name
+***    2  KASAN: slab-out-of-bounds Write in hfs_asc2mac
+***    2  KASAN: slab-out-of-bounds Write in hfs_asc2mac
+***    2  KASAN: slab-out-of-bounds Write in hfs_asc2mac
+***    2  KASAN: slab-out-of-bounds Write in hfs_asc2mac
+***    2  KASAN: slab-out-of-bounds Write in hfs_asc2mac
+***    2  KASAN: slab-out-of-bounds Write in hfs_asc2mac
+***    2  KASAN: slab-out-of-bounds Write in hfs_asc2mac
+       2  INFO: rcu detected stall in corrupted
+Attempt 3: (RETRY)
+    Time  Bug Name
+***    2  KASAN: slab-out-of-bounds Write in hfs_asc2mac
+***    2  KASAN: slab-out-of-bounds Write in hfs_asc2mac
+***    2  KASAN: slab-out-of-bounds Write in hfs_asc2mac
+***    2  KASAN: slab-out-of-bounds Write in hfs_asc2mac
+***    2  KASAN: slab-out-of-bounds Write in hfs_asc2mac
+***    2  KASAN: slab-out-of-bounds Write in hfs_asc2mac
+***    2  KASAN: slab-out-of-bounds Write in hfs_asc2mac
+***    2  KASAN: slab-out-of-bounds Write in hfs_asc2mac
+The bug was found.
+
+New Max Time: 10
+
+==== Major Release Search ====
+18 Releases
+
+2025-03-17 22:18:27
+Session:   2
+Kernel:    2022-10-02 - 4fe89d07dcc2804c8b562f6c7896a45643d34b2f (v6.0)
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    2  KASAN: slab-out-of-bounds Write in hfs_asc2mac
+***    2  KASAN: slab-out-of-bounds Write in hfs_asc2mac
+***    2  KASAN: slab-out-of-bounds Write in hfs_asc2mac
+***    2  KASAN: slab-out-of-bounds Write in hfs_asc2mac
+***    2  KASAN: slab-out-of-bounds Write in hfs_asc2mac
+***    2  KASAN: slab-out-of-bounds Write in hfs_asc2mac
+***    2  KASAN: slab-out-of-bounds Write in hfs_asc2mac
+       2  INFO: rcu detected stall in corrupted
+Running syz-repro.
+New PoC saved at /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/reproducers/repro-bug0159-0.prog
+Primary PoC:     /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/reproducers/repro-bug0159-0.prog
+Run Time:        0h5m0s
+The bug was found.
+About 17 releases remaining
+
+2025-03-17 22:41:15
+Session:   3
+Kernel:    2022-07-31 - 3d7cb6b04c3f3115719235cc6866b10326de34cd (v5.19)
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    2  KASAN: slab-out-of-bounds Write in hfs_asc2mac
+***    2  KASAN: slab-out-of-bounds Write in hfs_asc2mac
+***    2  KASAN: slab-out-of-bounds Write in hfs_asc2mac
+***    2  KASAN: slab-out-of-bounds Write in hfs_asc2mac
+***    2  KASAN: slab-out-of-bounds Write in hfs_asc2mac
+***    2  KASAN: slab-out-of-bounds Write in hfs_asc2mac
+***    2  KASAN: slab-out-of-bounds Write in hfs_asc2mac
+***    2  KASAN: slab-out-of-bounds Write in hfs_asc2mac
+The bug was found.
+About 16 releases remaining
+
+2025-03-17 22:57:24
+Session:   4
+Kernel:    2022-05-22 - 4b0986a3613c92f4ec1bdc7f60ec66fea135991f (v5.18)
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    2  KASAN: slab-out-of-bounds Write in hfs_asc2mac
+***    2  KASAN: slab-out-of-bounds Write in hfs_asc2mac
+***    2  KASAN: slab-out-of-bounds Write in hfs_asc2mac
+***    2  KASAN: slab-out-of-bounds Write in hfs_asc2mac
+***    2  KASAN: slab-out-of-bounds Write in hfs_asc2mac
+***    2  KASAN: slab-out-of-bounds Write in hfs_asc2mac
+***    2  KASAN: slab-out-of-bounds Write in hfs_asc2mac
+***    2  KASAN: slab-out-of-bounds Write in hfs_asc2mac
+The bug was found.
+About 15 releases remaining
+
+2025-03-17 23:12:49
+Session:   5
+Kernel:    2022-01-09 - df0cc57e057f18e44dac8e6c18aba47ab53202f9 (v5.16)
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    2  KASAN: slab-out-of-bounds Write in hfs_asc2mac
+***    2  KASAN: slab-out-of-bounds Write in hfs_asc2mac
+***    2  KASAN: slab-out-of-bounds Write in hfs_asc2mac
+***    2  KASAN: slab-out-of-bounds Write in hfs_asc2mac
+***    2  KASAN: slab-out-of-bounds Write in hfs_asc2mac
+***    2  KASAN: slab-out-of-bounds Write in hfs_asc2mac
+***    2  KASAN: slab-out-of-bounds Write in hfs_asc2mac
+***    2  KASAN: slab-out-of-bounds Write in hfs_asc2mac
+Running syz-repro.
+New PoC saved at /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/reproducers/repro-bug0159-4.prog
+Primary PoC:     /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/reproducers/repro-bug0159-4.prog
+Run Time:        0h5m0s
+The bug was found.
+About 14 releases remaining
+
+2025-03-17 23:33:26
+Session:   6
+Kernel:    2021-08-29 - 7d2a07b769330c34b4deabeed939325c77a7ec2f (v5.14)
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    2  KASAN: slab-out-of-bounds Write in hfs_asc2mac
+***    2  KASAN: slab-out-of-bounds Write in hfs_asc2mac
+***    2  KASAN: slab-out-of-bounds Write in hfs_asc2mac
+***    2  KASAN: slab-out-of-bounds Write in hfs_asc2mac
+***    2  KASAN: slab-out-of-bounds Write in hfs_asc2mac
+***    2  KASAN: slab-out-of-bounds Write in hfs_asc2mac
+***    2  KASAN: slab-out-of-bounds Write in hfs_asc2mac
+***    2  KASAN: slab-out-of-bounds Write in hfs_asc2mac
+The bug was found.
+About 13 releases remaining
+
+2025-03-17 23:48:48
+Session:   7
+Kernel:    2021-04-25 - 9f4ad9e425a1d3b6a34617b8ea226d56a119a717 (v5.12)
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    2  KASAN: slab-out-of-bounds Write in hfs_asc2mac
+***    2  KASAN: slab-out-of-bounds Write in hfs_asc2mac
+***    2  KASAN: slab-out-of-bounds Write in hfs_asc2mac
+***    2  KASAN: slab-out-of-bounds Write in hfs_asc2mac
+***    2  KASAN: slab-out-of-bounds Write in hfs_asc2mac
+***    2  KASAN: slab-out-of-bounds Write in hfs_asc2mac
+***    2  KASAN: slab-out-of-bounds Write in hfs_asc2mac
+***    2  KASAN: slab-out-of-bounds Write in hfs_asc2mac
+The bug was found.
+About 12 releases remaining
+
+2025-03-18 00:03:46
+Session:   8
+Kernel:    2020-12-13 - 2c85ebc57b3e1817b6ce1a6b703928e113a90442 (v5.10)
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.1.0-syz/bin/gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 11 releases remaining
+
+==== Kernel Bisection ====
+29645 Linux commits
+
+2025-03-18 00:27:06
+Session:   9
+Kernel:    2021-01-22 - e87e4b5caa5db4ab14508e75ec5926a1c05020ac
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 14823 commits remaining
+
+2025-03-18 00:49:54
+Session:   10
+Kernel:    2021-02-21 - d99676af540c2dc829999928fb81c58c80a1dce4
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 6800 commits remaining
+
+2025-03-18 01:12:46
+Session:   11
+Kernel:    2021-03-09 - 69264b4a43aff7307283e2bae29e9305ab6b7d47
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 3478 commits remaining
+
+2025-03-18 01:35:39
+Session:   12
+Kernel:    2021-03-12 - f296bfd5cd04cbb49b8fc9585adc280ab2b58624
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    2  KASAN: slab-out-of-bounds Write in hfs_asc2mac
+***    2  KASAN: slab-out-of-bounds Write in hfs_asc2mac
+***    2  KASAN: slab-out-of-bounds Write in hfs_asc2mac
+Running syz-repro.
+New PoC saved at /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/reproducers/repro-bug0159-6.prog
+Primary PoC:     /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/reproducers/repro-bug0159-6.prog
+Run Time:        0h13m0s
+The bug was found.
+About 1740 commits remaining
+
+2025-03-18 02:03:31
+Session:   13
+Kernel:    2021-02-26 - efba6d3a7c4bb59f0750609fae0f9644d82304b6
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       1  WARNING in kvm_wait
+       2  WARNING in kvm_wait
+***    2  KASAN: slab-out-of-bounds Write in hfs_asc2mac
+***    2  KASAN: slab-out-of-bounds Write in hfs_asc2mac
+***    2  KASAN: slab-out-of-bounds Write in hfs_asc2mac
+The bug was found.
+About 864 commits remaining
+
+2025-03-18 02:18:21
+Session:   14
+Kernel:    2021-02-26 - 64427985c76fcb54c783de617edf353009499a03
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 433 commits remaining
+
+2025-03-18 02:41:15
+Session:   15
+Kernel:    2021-02-26 - 1c9077cdecd027714736e70704da432ee2b946bb
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    2  KASAN: slab-out-of-bounds Write in hfs_asc2mac
+***    2  KASAN: slab-out-of-bounds Write in hfs_asc2mac
+***    2  KASAN: slab-out-of-bounds Write in hfs_asc2mac
+***    2  KASAN: slab-out-of-bounds Write in hfs_asc2mac
+***    2  KASAN: slab-out-of-bounds Write in hfs_asc2mac
+The bug was found.
+About 219 commits remaining
+
+2025-03-18 02:56:05
+Session:   16
+Kernel:    2021-02-25 - fdce29602f865b016012eadeaec99800da916d3d
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 85 commits remaining
+
+2025-03-18 03:11:13
+Session:   17
+Kernel:    2021-02-25 - ffc1759676bed0bff046427dd7d00cb68660190d
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       2  WARNING in kvm_wait
+***    2  KASAN: slab-out-of-bounds Write in hfs_asc2mac
+***    2  KASAN: slab-out-of-bounds Write in hfs_asc2mac
+Running syz-repro.
+New PoC saved at /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/reproducers/repro-bug0159-0.prog
+Primary PoC:     /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/reproducers/repro-bug0159-0.prog
+Run Time:        0h11m0s
+The bug was found.
+About 47 commits remaining
+
+2025-03-18 03:28:22
+Session:   18
+Kernel:    2021-02-23 - 8000a6b602a4aec0f54a9131623a407d6d44a605
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    2  KASAN: slab-out-of-bounds Write in hfs_asc2mac
+***    2  KASAN: slab-out-of-bounds Write in hfs_asc2mac
+***    2  KASAN: slab-out-of-bounds Write in hfs_asc2mac
+***    2  KASAN: slab-out-of-bounds Write in hfs_asc2mac
+***    2  KASAN: slab-out-of-bounds Write in hfs_asc2mac
+***    2  KASAN: slab-out-of-bounds Write in hfs_asc2mac
+***    2  KASAN: slab-out-of-bounds Write in hfs_asc2mac
+***    2  KASAN: slab-out-of-bounds Write in hfs_asc2mac
+The bug was found.
+About 24 commits remaining
+
+2025-03-18 03:43:03
+Session:   19
+Kernel:    2021-02-23 - 117a9de2826ccb0d338afb03f07223b3cb789371
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    2  KASAN: slab-out-of-bounds Write in hfs_asc2mac
+***    2  KASAN: slab-out-of-bounds Write in hfs_asc2mac
+***    2  KASAN: slab-out-of-bounds Write in hfs_asc2mac
+***    2  KASAN: slab-out-of-bounds Write in hfs_asc2mac
+***    2  KASAN: slab-out-of-bounds Write in hfs_asc2mac
+***    2  KASAN: slab-out-of-bounds Write in hfs_asc2mac
+***    2  KASAN: slab-out-of-bounds Write in hfs_asc2mac
+***    2  KASAN: slab-out-of-bounds Write in hfs_asc2mac
+The bug was found.
+About 12 commits remaining
+
+2025-03-18 03:48:09
+Session:   20
+Kernel:    2021-02-23 - 903f7bcaedb84ca47998e609015a34ddde93742e
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 7 commits remaining
+
+2025-03-18 04:01:12
+Session:   21
+Kernel:    2021-02-23 - 489084dd3f7e4bd649814bd62839aef4456659e8
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    2  KASAN: slab-out-of-bounds Write in hfs_asc2mac
+***    2  KASAN: slab-out-of-bounds Write in hfs_asc2mac
+***    2  KASAN: slab-out-of-bounds Write in hfs_asc2mac
+***    2  KASAN: slab-out-of-bounds Write in hfs_asc2mac
+***    2  KASAN: slab-out-of-bounds Write in hfs_asc2mac
+***    2  KASAN: slab-out-of-bounds Write in hfs_asc2mac
+***    2  KASAN: slab-out-of-bounds Write in hfs_asc2mac
+***    2  KASAN: slab-out-of-bounds Write in hfs_asc2mac
+Running syz-repro.
+New PoC saved at /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/reproducers/repro-bug0159-8.prog
+Primary PoC:     /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/reproducers/repro-bug0159-4.prog
+Run Time:        0h4m0s
+The bug was found.
+About 4 commits remaining
+
+2025-03-18 04:10:18
+Session:   22
+Kernel:    2021-02-23 - a3c06ae158dd6fa8336157c31d9234689d068d02
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    2  KASAN: slab-out-of-bounds Write in hfs_asc2mac
+***    2  KASAN: slab-out-of-bounds Write in hfs_asc2mac
+***    2  KASAN: slab-out-of-bounds Write in hfs_asc2mac
+***    2  KASAN: slab-out-of-bounds Write in hfs_asc2mac
+***    2  KASAN: slab-out-of-bounds Write in hfs_asc2mac
+***    2  KASAN: slab-out-of-bounds Write in hfs_asc2mac
+***    2  KASAN: slab-out-of-bounds Write in hfs_asc2mac
+***    2  KASAN: slab-out-of-bounds Write in hfs_asc2mac
+The bug was found.
+About 3 commits remaining
+
+2025-03-18 04:15:12
+Session:   23
+Kernel:    2021-02-23 - bc0d90ee021f1baecd6aaa010d787eb373aa74dd
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 2 commits remaining
+
+==== Partial Result: Focused Fuzzing ====
+Reproducer:           /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/reproducers/repro-bug0159-4.prog
+Bisection Result:     2021-02-23 - a3c06ae158dd6fa8336157c31d9234689d068d02
+Bisected Commit Name: vdpa_sim_net: Add support for user supported devices
+Stage Time:           6h32m3s
+Run Time:             6h32m5s
+=========================================
+
+==== Anchor Commit ====
+
+2025-03-18 04:28:20
+Session:   24
+Kernel:    2021-02-23 - bc0d90ee021f1baecd6aaa010d787eb373aa74dd
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Warning: VM has not responded after 5 attempts.
+Warning: Only booted 0 VMs.
+Attempt 0:
+    inconsistent lock state in vdpasim_map_page
+Attempt 1:
+    inconsistent lock state in vdpasim_map_page
+Attempt 2:
+    inconsistent lock state in vdpasim_map_page
+Attempt 3:
+    inconsistent lock state in vdpasim_map_page
+Attempt 4:
+    inconsistent lock state in vdpasim_map_page
+Attempt 5:
+    inconsistent lock state in vdpasim_map_page
+Attempt 6:
+    inconsistent lock state in vdpasim_map_page
+Attempt 7:
+    inconsistent lock state in vdpasim_map_page
+The bug was not found.
+
+Failure: This bug cannot be found at the anchor commit.
+
+====================================================================================================================================================
+Bug Name:             KASAN: slab-out-of-bounds Write in hfs_asc2mac
+Bug Link:             https://syzkaller.appspot.com/bug?id=67d3719a7490d99812faae7f9c2c26e9f386c1a6
+Bisection Result:     2021-02-23 - a3c06ae158dd6fa8336157c31d9234689d068d02
+Bisected Commit Name: vdpa_sim_net: Add support for user supported devices
+Run Time:             7h27m15s
+
+Anchor Commit:        2022-11-23 - 4312098baf37ee17a8350725e6e0d0e8590252d4
+Bisection Result:     2021-02-23 - a3c06ae158dd6fa8336157c31d9234689d068d02

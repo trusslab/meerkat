@@ -1,0 +1,359 @@
+./bin/bisector -i 1 -c /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/bisector.cfg -a f1b45d8ccb9839b48e5884664470e54520e17f4c -F ff-test,poc-test,stateful-corpus,ff-no-find-backup
+Bisecting:          general protection fault in smc_pnet_add
+Syzbot Link:        https://syzkaller.appspot.com/bug?id=4710b830601445fbfcee1d0bc64531b13b9ca57f
+Working Name:       bug0111
+
+No aliases given.
+
+Anchor Commit:      f1b45d8ccb9839b48e5884664470e54520e17f4c
+Repository:         https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
+Branch:             master
+Arch:               amd64
+
+Bisector:           /mnt/sdd/jtbursey/SyzInspector/
+Version:            1.0.4
+Kernel:             /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/kernel/
+Syzkaller:          /mnt/sdd/jtbursey/SyzInspector/syzkaller/
+Compilers:          /mnt/sda/jtbursey/SyzInspector/compilers/
+Ccache:             ccache
+Image:              /mnt/sda/jtbursey/SyzInspector/image/stretch/stretch.img
+Image Key:          /mnt/sda/jtbursey/SyzInspector/image/stretch/stretch.id_rsa
+
+Workdir:            /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/
+Kconfig:            /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/config-bug0111.txt
+Reproducers: (1)    /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/reproducers/
+Primary PoC:        /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/reproducers/repro-bug0111-1.prog
+Syzkaller Workdir:  /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/wd-kaller/
+Log Directory:      /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/log/
+
+Syscalls: (10)      ["sendmsg$RDMA_NLDEV_CMD_NEWLINK", "sendmsg$SMC_PNETID_DEL", "socket$nl_rdma", "syz_genetlink_get_family_id$smc", "syz_init_net_socket$nl_rdma", "socket$nl_generic", "socket$netlink", "socket", "ioctl$EXT4_IOC_GROUP_EXTEND", "openat$sw_sync_info"]
+VM Count:           8
+CPU Count:          2
+Procs:              16
+Memory:             4096
+Make Procs:         16
+Max Time:           10
+Max Attempts:       1
+
+==== Anchor Commit ====
+
+2025-03-08 20:02:08
+Session:   1
+Kernel:    2022-04-08 - f1b45d8ccb9839b48e5884664470e54520e17f4c
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    4  general protection fault in smc_pnet_add
+***    4  general protection fault in smc_pnet_add
+Attempt 2: (RETRY)
+    Time  Bug Name
+***    3  general protection fault in smc_pnet_add
+***    3  general protection fault in smc_pnet_add
+Attempt 3: (RETRY)
+    Time  Bug Name
+       6  no output from test machine
+       6  no output from test machine
+       7  no output from test machine
+       7  no output from test machine
+       7  no output from test machine
+***    8  general protection fault in smc_pnet_add
+The bug was found.
+
+New Max Time: 10
+
+==== Major Release Search ====
+17 Releases
+
+2025-03-08 20:33:03
+Session:   2
+Kernel:    2022-03-20 - f443e374ae131c168a065ea1748feac6b2e76613 (v5.17)
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       5  unregister_netdevice: waiting for DEV to become free
+       7  unregister_netdevice: waiting for DEV to become free
+       9  unregister_netdevice: waiting for DEV to become free
+       9  unregister_netdevice: waiting for DEV to become free
+       9  SYZFAIL: tun: ioctl(TUNSETIFF) failed
+       9  SYZFAIL: tun: ioctl(TUNSETIFF) failed
+      10  unregister_netdevice: waiting for DEV to become free
+The bug was not found.
+This commit is flagged as unstable.
+About 16 releases remaining
+
+2025-03-08 20:58:30
+Session:   3
+Kernel:    2022-01-09 - df0cc57e057f18e44dac8e6c18aba47ab53202f9 (v5.16)
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    3  general protection fault in smc_pnet_add
+***    3  general protection fault in smc_pnet_add
+Running syz-repro.
+New PoC saved at /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/reproducers/repro-bug0111-0.prog
+Primary PoC:     /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/reproducers/repro-bug0111-0.prog
+Run Time:        0h12m0s
+The bug was found.
+About 15 releases remaining
+
+2025-03-08 21:28:35
+Session:   4
+Kernel:    2021-10-31 - 8bb7eca972ad531c9b149c0a51ab43a417385813 (v5.15)
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    4  general protection fault in smc_pnet_add
+***    4  general protection fault in smc_pnet_add
+***    4  general protection fault in smc_pnet_add
+The bug was found.
+About 14 releases remaining
+
+2025-03-08 21:47:04
+Session:   5
+Kernel:    2021-06-27 - 62fb9874f5da54fdb243003b386128037319b219 (v5.13)
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       5  BUG: sleeping function called from invalid context in lock_sock_nested
+       6  unregister_netdevice: waiting for DEV to become free
+       6  BUG: sleeping function called from invalid context in lock_sock_nested
+       6  BUG: sleeping function called from invalid context in lock_sock_nested
+       7  unregister_netdevice: waiting for DEV to become free
+       7  BUG: sleeping function called from invalid context in lock_sock_nested
+       8  unregister_netdevice: waiting for DEV to become free
+       8  unregister_netdevice: waiting for DEV to become free
+       9  BUG: sleeping function called from invalid context in lock_sock_nested
+      10  BUG: sleeping function called from invalid context in lock_sock_nested
+The bug was not found.
+About 13 releases remaining
+
+==== Kernel Bisection ====
+29345 Linux commits
+
+2025-03-08 22:12:48
+Session:   6
+Kernel:    2021-08-21 - 0c283b47539ab11f9efb46800f2a9dd63a48d825
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       2  BUG: sleeping function called from invalid context in smc_pnet_apply_ib
+***    2  general protection fault in smc_pnet_add
+The bug was found.
+About 14673 commits remaining
+
+2025-03-08 22:30:47
+Session:   7
+Kernel:    2021-07-01 - 514798d36572fb8eba6ccff3de10c9615063a7f5
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    2  general protection fault in smc_pnet_add
+***    2  general protection fault in smc_pnet_add
+***    2  general protection fault in smc_pnet_add
+Running syz-repro.
+New PoC saved at /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/reproducers/repro-bug0111-2.prog
+Primary PoC:     /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/reproducers/repro-bug0111-0.prog
+Run Time:        0h8m0s
+The bug was found.
+About 7303 commits remaining
+
+2025-03-08 22:56:02
+Session:   8
+Kernel:    2021-06-30 - a6eaf3850cb171c328a8b0db6d3c79286a1eba9d
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    2  general protection fault in smc_pnet_add
+       2  possible deadlock in fs_reclaim_acquire
+The bug was found.
+About 2986 commits remaining
+
+2025-03-08 23:12:39
+Session:   9
+Kernel:    2021-06-28 - 31e798fd6f0ff0acdc49c1a358b581730936a09a
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    3  general protection fault in smc_pnet_add
+***    3  general protection fault in smc_pnet_add
+***    3  general protection fault in smc_pnet_add
+       3  BUG: sleeping function called from invalid context in lock_sock_nested
+The bug was found.
+About 1496 commits remaining
+
+2025-03-08 23:31:04
+Session:   10
+Kernel:    2021-06-28 - 9840cfcb97fc8b6aa7b36cec3cc3fd763f14052e
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       6  unregister_netdevice: waiting for DEV to become free
+       6  unregister_netdevice: waiting for DEV to become free
+       7  unregister_netdevice: waiting for DEV to become free
+       7  BUG: sleeping function called from invalid context in lock_sock_nested
+       9  unregister_netdevice: waiting for DEV to become free
+      10  unregister_netdevice: waiting for DEV to become free
+      10  unregister_netdevice: waiting for DEV to become free
+      10  unregister_netdevice: waiting for DEV to become free
+The bug was not found.
+About 725 commits remaining
+
+2025-03-08 23:55:27
+Session:   11
+Kernel:    2021-06-17 - 5d11e6aad1811ea293ee2996cec9124f7fccb661
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       6  unregister_netdevice: waiting for DEV to become free
+       6  unregister_netdevice: waiting for DEV to become free
+       6  INFO: task hung in register_netdevice_notifier
+       6  INFO: task hung in isotp_release
+       7  unregister_netdevice: waiting for DEV to become free
+       7  INFO: task hung in bcm_release
+       7  INFO: task hung in isotp_release
+       7  INFO: task hung in isotp_release
+The bug was not found.
+About 2124 commits remaining
+
+2025-03-09 00:20:56
+Session:   12
+Kernel:    2021-06-24 - e5830fb13b8cad5e3bdf84f0f7a3dcb4f4d9bcbb
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    3  general protection fault in smc_pnet_add
+Running syz-repro.
+New PoC saved at /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/reproducers/repro-bug0111-2.prog
+Primary PoC:     /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/reproducers/repro-bug0111-0.prog
+Run Time:        0h13m0s
+The bug was found.
+About 201 commits remaining
+
+2025-03-09 00:53:19
+Session:   13
+Kernel:    2021-06-17 - 0f85722341b0e3a67d0f2d2ae943b9193cb3e1b0
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       2  BUG: sleeping function called from invalid context in smc_pnet_apply_ib
+***    3  general protection fault in smc_pnet_add
+The bug was found.
+About 110 commits remaining
+
+2025-03-09 01:10:56
+Session:   14
+Kernel:    2021-06-17 - 0128116550acf52043a0aa5cca3caa85e3853aca
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    2  general protection fault in smc_pnet_add
+The bug was found.
+About 65 commits remaining
+
+2025-03-09 01:26:35
+Session:   15
+Kernel:    2021-06-17 - edcfe54058114cb3782cd2e919c224e14420e76e
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       6  INFO: task hung in raw_release
+       7  unregister_netdevice: waiting for DEV to become free
+       7  INFO: task hung in register_netdevice_notifier
+       7  INFO: task hung in new_device_store
+       7  INFO: task hung in bcm_release
+The bug was not found.
+About 24 commits remaining
+
+2025-03-09 01:50:42
+Session:   16
+Kernel:    2021-06-17 - 4c63c923408595eede59ce9fef6f4ab868928549
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 13 commits remaining
+
+2025-03-09 03:11:24
+Session:   17
+Kernel:    2021-06-17 - 25b17226cd9a77982fc8c915d4118d7238a0f079
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    3  general protection fault in smc_pnet_add
+Running syz-repro.
+New PoC saved at /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/reproducers/repro-bug0111-2.prog
+Primary PoC:     /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/reproducers/repro-bug0111-0.prog
+Run Time:        0h13m0s
+The bug was found.
+About 7 commits remaining
+
+2025-03-09 03:32:31
+Session:   18
+Kernel:    2021-06-17 - 7d62874f69d7e5c1c1063a5848075bd1adff3998
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       3  BUG: sleeping function called from invalid context in smc_pnet_apply_ib
+***    3  general protection fault in smc_pnet_add
+The bug was found.
+About 4 commits remaining
+
+2025-03-09 03:49:41
+Session:   19
+Kernel:    2021-06-17 - 2fdef3a2ae01dfd928c4b42c5a3b76546170a74c
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       6  INFO: task hung in raw_release
+       6  INFO: task hung in register_netdevice_notifier
+       6  INFO: task hung in register_netdevice_notifier
+       6  INFO: task hung in bcm_release
+       6  INFO: task hung in bcm_release
+       6  INFO: task hung in isotp_release
+       7  INFO: task hung in register_netdevice_notifier
+The bug was not found.
+About 2 commits remaining
+
+==== Partial Result: Focused Fuzzing ====
+Reproducer:           /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/reproducers/repro-bug0111-0.prog
+Bisection Result:     2021-06-17 - 7d62874f69d7e5c1c1063a5848075bd1adff3998
+Bisected Commit Name: kvm: x86: implement KVM PM-notifier
+Stage Time:           7h12m7s
+Run Time:             7h12m9s
+=========================================
+
+==== Anchor Commit ====
+
+2025-03-09 04:14:15
+Session:   20
+Kernel:    2021-06-17 - 2fdef3a2ae01dfd928c4b42c5a3b76546170a74c
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+
+Failure: This bug cannot be found at the anchor commit.
+
+====================================================================================================================================================
+Bug Name:             general protection fault in smc_pnet_add
+Bug Link:             https://syzkaller.appspot.com/bug?id=4710b830601445fbfcee1d0bc64531b13b9ca57f
+Bisection Result:     2021-06-17 - 7d62874f69d7e5c1c1063a5848075bd1adff3998
+Bisected Commit Name: kvm: x86: implement KVM PM-notifier
+Run Time:             7h28m55s
+
+Anchor Commit:        2022-04-08 - f1b45d8ccb9839b48e5884664470e54520e17f4c
+Bisection Result:     2021-06-17 - 7d62874f69d7e5c1c1063a5848075bd1adff3998

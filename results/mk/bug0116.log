@@ -1,0 +1,356 @@
+./bin/bisector -i 1 -c /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/bisector.cfg -a 15b3f48a4339e3c16acf18624e2b7f60bc5e9a2c -F ff-test,poc-test,stateful-corpus,ff-no-find-backup
+Bisecting:          WARNING in __dev_queue_xmit
+Warning: No syscall found that produces tail_call_map.
+Warning: No syscall found that produces fd_bpf_const_str.
+Syzbot Link:        https://syzkaller.appspot.com/bug?id=8a47019c46b0fcffca58d29c2b8edbe7f1b999f9
+Working Name:       bug0116
+
+No aliases given.
+
+Anchor Commit:      15b3f48a4339e3c16acf18624e2b7f60bc5e9a2c
+Repository:         https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
+Branch:             master
+Arch:               amd64
+
+Bisector:           /mnt/sdd/jtbursey/SyzInspector/
+Version:            1.0.4
+Kernel:             /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/kernel/
+Syzkaller:          /mnt/sdd/jtbursey/SyzInspector/syzkaller/
+Compilers:          /mnt/sda/jtbursey/SyzInspector/compilers/
+Ccache:             ccache
+Image:              /mnt/sda/jtbursey/SyzInspector/image/stretch/stretch.img
+Image Key:          /mnt/sda/jtbursey/SyzInspector/image/stretch/stretch.id_rsa
+
+Workdir:            /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/
+Kconfig:            /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/config-bug0116.txt
+Reproducers: (5)    /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/reproducers/
+Primary PoC:        /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/reproducers/repro-bug0116-1.prog
+Syzkaller Workdir:  /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/wd-kaller/
+Log Directory:      /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/log/
+
+Syscalls: (26)      ["bpf$BPF_PROG_TEST_RUN", "bpf$PROG_LOAD", "sendmmsg", "sendmmsg$inet", "sendmsg$kcm", "sendmsg$nl_generic", "socket$inet", "socket$kcm", "socket$netlink", "syz_init_net_socket$802154_raw", "socket", "socket$nl_generic", "bpf$BPF_BTF_GET_NEXT_ID", "openat$sw_sync_info", "ioctl$sock_SIOCGIFINDEX", "bpf$BPF_BTF_LOAD", "bpf$OBJ_GET_MAP", "ioctl$ifreq_SIOCGIFINDEX_vcan", "ioctl$IOCTL_GET_NCIDEV_IDX", "syz_clone", "getuid", "openat$nci", "bpf$BPF_MAP_CONST_STR_FREEZE", "bpf$MAP_CREATE_RINGBUF", "bpf$MAP_CREATE_TAIL_CALL", "bpf$MAP_CREATE_CONST_STR"]
+VM Count:           8
+CPU Count:          2
+Procs:              16
+Memory:             4096
+Make Procs:         16
+Max Time:           10
+Max Attempts:       1
+
+==== Anchor Commit ====
+
+2025-03-10 07:21:18
+Session:   1
+Kernel:    2022-08-20 - 15b3f48a4339e3c16acf18624e2b7f60bc5e9a2c
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Warning: bpf$BPF_PROG_TEST_RUN was disabled by Syzkaller.
+Warning: bpf$PROG_LOAD was disabled by Syzkaller.
+Attempt 1:
+    Time  Bug Name
+***    2  WARNING in __dev_queue_xmit
+***    2  WARNING in __dev_queue_xmit
+***    2  WARNING in __dev_queue_xmit
+       2  INFO: rcu detected stall in corrupted
+Warning: bpf$BPF_PROG_TEST_RUN was disabled by Syzkaller.
+Warning: bpf$PROG_LOAD was disabled by Syzkaller.
+Attempt 2: (RETRY)
+    Time  Bug Name
+***    2  WARNING in __dev_queue_xmit
+Warning: bpf$BPF_PROG_TEST_RUN was disabled by Syzkaller.
+Warning: bpf$PROG_LOAD was disabled by Syzkaller.
+Attempt 3: (RETRY)
+    Time  Bug Name
+***    2  WARNING in __dev_queue_xmit
+***    2  WARNING in __dev_queue_xmit
+***    2  WARNING in __dev_queue_xmit
+The bug was found.
+
+New Max Time: 10
+
+==== Major Release Search ====
+18 Releases
+
+2025-03-10 07:42:40
+Session:   2
+Kernel:    2022-07-31 - 3d7cb6b04c3f3115719235cc6866b10326de34cd (v5.19)
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Warning: bpf$BPF_PROG_TEST_RUN was disabled by Syzkaller.
+Warning: bpf$PROG_LOAD was disabled by Syzkaller.
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 17 releases remaining
+
+==== Kernel Bisection ====
+14778 Linux commits
+
+2025-03-10 08:07:12
+Session:   3
+Kernel:    2022-08-04 - 798cd57cd5f871452461746032cf6ee50b0fd69a
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Warning: bpf$BPF_PROG_TEST_RUN was disabled by Syzkaller.
+Warning: bpf$PROG_LOAD was disabled by Syzkaller.
+Attempt 1:
+    Time  Bug Name
+       2  WARNING: ODEBUG bug in mgmt_index_removed
+***    2  WARNING in __dev_queue_xmit
+***    2  WARNING in __dev_queue_xmit
+***    2  WARNING in __dev_queue_xmit
+***    2  WARNING in __dev_queue_xmit
+***    2  WARNING in __dev_queue_xmit
+***    2  WARNING in __dev_queue_xmit
+       2  INFO: rcu detected stall in corrupted
+Running syz-repro.
+Run Time:        0h4m0s
+The bug was found.
+About 7282 commits remaining
+
+2025-03-10 08:27:43
+Session:   4
+Kernel:    2022-08-03 - 526942b8134cc34d25d27f95dfff98b8ce2f6fcd
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Warning: bpf$BPF_PROG_TEST_RUN was disabled by Syzkaller.
+Warning: bpf$PROG_LOAD was disabled by Syzkaller.
+Attempt 1:
+    Time  Bug Name
+       8  INFO: task hung in linkwatch_event
+       8  INFO: task hung in addrconf_dad_work
+       8  INFO: task hung in nsim_dev_trap_report_work
+       8  INFO: task hung in new_device_store
+The bug was not found.
+About 4074 commits remaining
+
+2025-03-10 08:52:34
+Session:   5
+Kernel:    2022-08-01 - 4ff7c8fc81cec31c852833b00afe9c85f9086b5d
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Warning: bpf$BPF_PROG_TEST_RUN was disabled by Syzkaller.
+Warning: bpf$PROG_LOAD was disabled by Syzkaller.
+Attempt 1:
+    Time  Bug Name
+       1  WARNING: ODEBUG bug in mgmt_index_removed
+***    2  WARNING in __dev_queue_xmit
+***    2  WARNING in __dev_queue_xmit
+***    2  WARNING in __dev_queue_xmit
+***    2  WARNING in __dev_queue_xmit
+***    2  WARNING in __dev_queue_xmit
+***    2  WARNING in __dev_queue_xmit
+***    2  WARNING in __dev_queue_xmit
+Running syz-repro.
+Run Time:        0h4m0s
+The bug was found.
+About 2037 commits remaining
+
+2025-03-10 09:12:21
+Session:   6
+Kernel:    2022-07-22 - ea2babac63d40e59926dc5de4550dac94cc3c6d2
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Warning: bpf$BPF_PROG_TEST_RUN was disabled by Syzkaller.
+Warning: bpf$PROG_LOAD was disabled by Syzkaller.
+Attempt 1:
+    Time  Bug Name
+***    2  WARNING in __dev_queue_xmit
+***    2  WARNING in __dev_queue_xmit
+***    2  WARNING in __dev_queue_xmit
+***    2  WARNING in __dev_queue_xmit
+***    2  WARNING in __dev_queue_xmit
+***    2  WARNING in __dev_queue_xmit
+***    2  WARNING in __dev_queue_xmit
+***    2  WARNING in __dev_queue_xmit
+Running syz-repro.
+New PoC saved at /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/reproducers/repro-bug0116-0.prog
+Primary PoC:     /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/reproducers/repro-bug0116-0.prog
+Run Time:        0h5m0s
+The bug was found.
+About 992 commits remaining
+
+2025-03-10 09:36:29
+Session:   7
+Kernel:    2022-06-27 - 9dd094ee142b8dfd649df2d43c71a2ac7536b9ea
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Warning: bpf$BPF_PROG_TEST_RUN was disabled by Syzkaller.
+Warning: bpf$PROG_LOAD was disabled by Syzkaller.
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 1236 commits remaining
+
+2025-03-10 10:02:35
+Session:   8
+Kernel:    2022-07-06 - 60ec393117503e97a59ff9545b1b5be1a875c1c7
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Warning: bpf$BPF_PROG_TEST_RUN was disabled by Syzkaller.
+Warning: bpf$PROG_LOAD was disabled by Syzkaller.
+Attempt 1:
+    Time  Bug Name
+       9  WARNING: ODEBUG bug in netdev_run_todo
+The bug was not found.
+About 547 commits remaining
+
+2025-03-10 10:26:46
+Session:   9
+Kernel:    2022-07-08 - 24bdfdd2ec343c94adf38fb5bc699f12e543713b
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Warning: bpf$BPF_PROG_TEST_RUN was disabled by Syzkaller.
+Warning: bpf$PROG_LOAD was disabled by Syzkaller.
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 1627 commits remaining
+
+2025-03-10 10:50:51
+Session:   10
+Kernel:    2022-07-11 - efc9909fdce00a827a37609628223cd45bf95d0b
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Warning: bpf$BPF_PROG_TEST_RUN was disabled by Syzkaller.
+Warning: bpf$PROG_LOAD was disabled by Syzkaller.
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 74 commits remaining
+
+2025-03-10 11:16:03
+Session:   11
+Kernel:    2022-07-19 - 63b8ce77b15ebf69c4b0ef4b87451e2626aa3c43
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Warning: bpf$BPF_PROG_TEST_RUN was disabled by Syzkaller.
+Warning: bpf$PROG_LOAD was disabled by Syzkaller.
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 38 commits remaining
+
+2025-03-10 11:42:39
+Session:   12
+Kernel:    2022-07-21 - ef2c6f370a637e6f84c813f31fe0ebb4ced2ed69
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Warning: bpf$BPF_PROG_TEST_RUN was disabled by Syzkaller.
+Warning: bpf$PROG_LOAD was disabled by Syzkaller.
+Attempt 1:
+    Time  Bug Name
+***    2  WARNING in __dev_queue_xmit
+***    2  WARNING in __dev_queue_xmit
+***    2  WARNING in __dev_queue_xmit
+***    2  WARNING in __dev_queue_xmit
+***    2  WARNING in __dev_queue_xmit
+***    2  WARNING in __dev_queue_xmit
+***    2  WARNING in __dev_queue_xmit
+***    2  WARNING in __dev_queue_xmit
+The bug was found.
+About 19 commits remaining
+
+2025-03-10 11:57:57
+Session:   13
+Kernel:    2022-07-19 - c5d22f4cfe8dfb93f1db0a1e7e2e7ebc41395d98
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Warning: bpf$BPF_PROG_TEST_RUN was disabled by Syzkaller.
+Warning: bpf$PROG_LOAD was disabled by Syzkaller.
+Attempt 1:
+    Time  Bug Name
+***    3  WARNING in __dev_queue_xmit
+***    3  WARNING in __dev_queue_xmit
+***    3  WARNING in __dev_queue_xmit
+***    3  WARNING in __dev_queue_xmit
+***    3  WARNING in __dev_queue_xmit
+***    3  WARNING in __dev_queue_xmit
+***    3  WARNING in __dev_queue_xmit
+***    3  WARNING in __dev_queue_xmit
+The bug was found.
+About 10 commits remaining
+
+2025-03-10 12:14:47
+Session:   14
+Kernel:    2022-07-19 - a1ac9fd6c6504aa1838930bbfae6217ab6b95945
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Warning: bpf$BPF_PROG_TEST_RUN was disabled by Syzkaller.
+Warning: bpf$PROG_LOAD was disabled by Syzkaller.
+Attempt 1:
+    Time  Bug Name
+***    3  WARNING in __dev_queue_xmit
+***    3  WARNING in __dev_queue_xmit
+***    3  WARNING in __dev_queue_xmit
+***    3  WARNING in __dev_queue_xmit
+***    3  WARNING in __dev_queue_xmit
+***    3  WARNING in __dev_queue_xmit
+***    3  WARNING in __dev_queue_xmit
+***    3  WARNING in __dev_queue_xmit
+Running syz-repro.
+New PoC saved at /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/reproducers/repro-bug0116-2.prog
+Primary PoC:     /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/reproducers/repro-bug0116-2.prog
+Run Time:        0h6m0s
+The bug was found.
+About 5 commits remaining
+
+2025-03-10 12:29:23
+Session:   15
+Kernel:    2022-07-19 - 92f619735b7c4269fc6349a7ec13f09ffb558f77
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Warning: bpf$BPF_PROG_TEST_RUN was disabled by Syzkaller.
+Warning: bpf$PROG_LOAD was disabled by Syzkaller.
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 3 commits remaining
+
+2025-03-10 12:49:06
+Session:   16
+Kernel:    2022-07-19 - fd1894224407c484f652ad456e1ce423e89bb3eb
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Warning: bpf$BPF_PROG_TEST_RUN was disabled by Syzkaller.
+Warning: bpf$PROG_LOAD was disabled by Syzkaller.
+Attempt 1:
+    Time  Bug Name
+***    2  WARNING in __dev_queue_xmit
+***    2  WARNING in __dev_queue_xmit
+***    2  WARNING in __dev_queue_xmit
+***    2  WARNING in __dev_queue_xmit
+***    2  WARNING in __dev_queue_xmit
+***    2  WARNING in __dev_queue_xmit
+***    2  WARNING in __dev_queue_xmit
+***    2  WARNING in __dev_queue_xmit
+The bug was found.
+About 2 commits remaining
+
+==== Partial Result: Focused Fuzzing ====
+Reproducer:           /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/reproducers/repro-bug0116-2.prog
+Bisection Result:     2022-07-19 - fd1894224407c484f652ad456e1ce423e89bb3eb
+Bisected Commit Name: bpf: Don't redirect packets with invalid pkt_len
+Stage Time:           5h40m13s
+Run Time:             5h40m16s
+=========================================
+
+==== Anchor Commit ====
+
+2025-03-10 13:01:31
+Session:   17
+Kernel:    2022-07-19 - 92f619735b7c4269fc6349a7ec13f09ffb558f77
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+
+Failure: This bug cannot be found at the anchor commit.
+
+====================================================================================================================================================
+Bug Name:             WARNING in __dev_queue_xmit
+Bug Link:             https://syzkaller.appspot.com/bug?id=8a47019c46b0fcffca58d29c2b8edbe7f1b999f9
+Bisection Result:     2022-07-19 - fd1894224407c484f652ad456e1ce423e89bb3eb
+Bisected Commit Name: bpf: Don't redirect packets with invalid pkt_len
+Run Time:             5h56m53s
+
+Anchor Commit:        2022-08-20 - 15b3f48a4339e3c16acf18624e2b7f60bc5e9a2c
+Bisection Result:     2022-07-19 - fd1894224407c484f652ad456e1ce423e89bb3eb

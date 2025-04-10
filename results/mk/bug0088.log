@@ -1,0 +1,71 @@
+./bin/bisector -i 1 -c /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/bisector.cfg -a b229b6ca5abbd63ff40c1396095b1b36b18139c3 -F ff-test,poc-test,stateful-corpus,ff-no-find-backup
+Bisecting:          BUG: unable to handle kernel NULL pointer dereference in lock_page
+Syzbot Link:        https://syzkaller.appspot.com/bug?id=c7c4748e11ffcc367cef04f76e02e931833cbd24
+Working Name:       bug0088
+
+No aliases given.
+
+Anchor Commit:      b229b6ca5abbd63ff40c1396095b1b36b18139c3
+Repository:         https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
+Branch:             master
+Arch:               amd64
+
+Bisector:           /mnt/sdd/jtbursey/SyzInspector/
+Version:            1.0.4
+Kernel:             /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/kernel/
+Syzkaller:          /mnt/sdd/jtbursey/SyzInspector/syzkaller/
+Compilers:          /mnt/sda/jtbursey/SyzInspector/compilers/
+Ccache:             ccache
+Image:              /mnt/sda/jtbursey/SyzInspector/image/stretch/stretch.img
+Image Key:          /mnt/sda/jtbursey/SyzInspector/image/stretch/stretch.id_rsa
+
+Workdir:            /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/
+Kconfig:            /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/config-bug0088.txt
+Reproducers: (1)    /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/reproducers/
+Syzkaller Workdir:  /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/wd-kaller/
+Log Directory:      /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/log/
+
+Syscalls: (11)      ["openat$cgroup_ro", "syz_mount_image$nilfs2", "write$binfmt_script", "openat$cgroup_root", "ioctl$EXT4_IOC_GROUP_EXTEND", "openat$binfmt", "mount$9p_tcp", "getuid", "syz_create_resource$binfmt", "setgid", "getgid"]
+VM Count:           8
+CPU Count:          2
+Procs:              16
+Memory:             4096
+Make Procs:         16
+Max Time:           10
+Max Attempts:       1
+
+==== Anchor Commit ====
+
+2025-03-05 13:55:40
+Session:   1
+Kernel:    2022-10-26 - b229b6ca5abbd63ff40c1396095b1b36b18139c3
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       6  INFO: task hung in synchronize_rcu
+       7  INFO: rcu detected stall in corrupted
+       9  WARNING in nilfs_dat_prepare_end
+       9  WARNING in nilfs_dat_prepare_end
+       9  WARNING in nilfs_dat_prepare_end
+       9  WARNING in nilfs_dat_prepare_end
+      10  WARNING in nilfs_dat_prepare_end
+Attempt 2: (RETRY)
+    Time  Bug Name
+       3  KASAN: use-after-free Read in try_to_wake_up
+       6  KASAN: use-after-free Read in try_to_wake_up
+       8  WARNING in nilfs_dat_commit_end
+Attempt 3: (RETRY)
+    Time  Bug Name
+       3  KASAN: use-after-free Read in nilfs_segctor_sync
+       4  INFO: rcu detected stall in corrupted
+       4  INFO: rcu detected stall in corrupted
+       5  KASAN: use-after-free Read in nilfs_segctor_sync
+       5  INFO: rcu detected stall in corrupted
+       5  INFO: rcu detected stall in corrupted
+       7  INFO: rcu detected stall in corrupted
+       7  INFO: rcu detected stall in corrupted
+       7  INFO: rcu detected stall in corrupted
+       9  KASAN: use-after-free Read in try_to_wake_up
+The bug was not found.
+
+Failure: This bug cannot be found at the anchor commit.

@@ -1,0 +1,382 @@
+./bin/bisector -i 1 -c /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/bisector.cfg -a c5d9ae265b105d9a67575fb67bd4650a6fc08e25 -F ff-test,poc-test,stateful-corpus,ff-no-find-backup
+Bisecting:          KASAN: slab-out-of-bounds Read in thrustmaster_probe
+Syzbot Link:        https://syzkaller.appspot.com/bug?id=e1c3525a4f4e2e4b6c1f73611ceaf61ef462700c
+Working Name:       bug0133
+
+No aliases given.
+
+Anchor Commit:      c5d9ae265b105d9a67575fb67bd4650a6fc08e25
+Repository:         https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
+Branch:             master
+Arch:               amd64
+
+Bisector:           /mnt/sdd/jtbursey/SyzInspector/
+Version:            1.0.4
+Kernel:             /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/kernel/
+Syzkaller:          /mnt/sdd/jtbursey/SyzInspector/syzkaller/
+Compilers:          /mnt/sda/jtbursey/SyzInspector/compilers/
+Ccache:             ccache
+Image:              /mnt/sda/jtbursey/SyzInspector/image/stretch/stretch.img
+Image Key:          /mnt/sda/jtbursey/SyzInspector/image/stretch/stretch.id_rsa
+
+Workdir:            /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/
+Kconfig:            /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/config-bug0133.txt
+Reproducers: (2)    /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/reproducers/
+Primary PoC:        /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/reproducers/repro-bug0133-1.prog
+Syzkaller Workdir:  /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/wd-kaller/
+Log Directory:      /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/log/
+
+Syscalls: (4)       ["syz_usb_connect$hid", "syz_usb_control_io", "syz_usb_control_io$hid", "syz_usb_connect"]
+VM Count:           8
+CPU Count:          2
+Procs:              16
+Memory:             4096
+Make Procs:         16
+Max Time:           10
+Max Attempts:       1
+
+==== Anchor Commit ====
+
+2025-03-12 17:46:48
+Session:   1
+Kernel:    2022-02-15 - c5d9ae265b105d9a67575fb67bd4650a6fc08e25
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    2  KASAN: slab-out-of-bounds Read in thrustmaster_probe
+Attempt 2: (RETRY)
+    Time  Bug Name
+***    2  KASAN: slab-out-of-bounds Read in thrustmaster_probe
+***    2  KASAN: slab-out-of-bounds Read in thrustmaster_probe
+Attempt 3: (RETRY)
+    Time  Bug Name
+       3  WARNING in firmware_fallback_sysfs
+The bug was found.
+
+New Max Time: 12
+
+==== Major Release Search ====
+17 Releases
+
+2025-03-12 18:14:35
+Session:   2
+Kernel:    2021-10-31 - 8bb7eca972ad531c9b149c0a51ab43a417385813 (v5.15)
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    2  KASAN: slab-out-of-bounds Read in thrustmaster_probe
+***    2  KASAN: slab-out-of-bounds Read in thrustmaster_probe
+Running syz-repro.
+New PoC saved at /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/reproducers/repro-bug0133-0.prog
+Primary PoC:     /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/reproducers/repro-bug0133-0.prog
+Run Time:        0h9m0s
+The bug was found.
+About 16 releases remaining
+
+2025-03-12 18:39:28
+Session:   3
+Kernel:    2021-08-29 - 7d2a07b769330c34b4deabeed939325c77a7ec2f (v5.14)
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    2  KASAN: slab-out-of-bounds Read in thrustmaster_probe
+The bug was found.
+About 15 releases remaining
+
+2025-03-12 18:55:09
+Session:   4
+Kernel:    2021-06-27 - 62fb9874f5da54fdb243003b386128037319b219 (v5.13)
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    2  KASAN: slab-out-of-bounds Read in thrustmaster_probe
+The bug was found.
+About 14 releases remaining
+
+2025-03-12 19:10:29
+Session:   5
+Kernel:    2021-02-14 - f40ddce88593482919761f74910f42f4b84c004b (v5.11)
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       5  WARNING in put_i2c_dev
+       5  WARNING in pvr2_i2c_core_done
+      10  WARNING in firmware_fallback_sysfs
+The bug was not found.
+About 13 releases remaining
+
+==== Kernel Bisection ====
+31355 Linux commits
+
+2025-03-12 19:35:56
+Session:   6
+Kernel:    2021-04-16 - 26b67f5a1e067605d5db3062090618ca542115b8
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+      11  can't ssh into the instance
+      11  can't ssh into the instance
+      11  can't ssh into the instance
+      11  can't ssh into the instance
+      11  can't ssh into the instance
+      11  can't ssh into the instance
+      11  can't ssh into the instance
+      11  can't ssh into the instance
+The bug was not found.
+About 15678 commits remaining
+
+2025-03-12 20:01:18
+Session:   7
+Kernel:    2021-04-28 - 71a5cc28e88b0db69c3f83d4061ad4cc684af09f
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       6  WARNING in firmware_fallback_sysfs
+      12  WARNING in put_i2c_dev
+The bug was not found.
+About 9623 commits remaining
+
+2025-03-12 20:26:11
+Session:   8
+Kernel:    2021-05-01 - 152d32aa846835987966fd20ee1143b0e05036a0
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       2  WARNING in __nf_unregister_net_hook
+      11  WARNING in __nf_unregister_net_hook
+      11  WARNING in __nf_unregister_net_hook
+      11  WARNING in __nf_unregister_net_hook
+      11  WARNING in __nf_unregister_net_hook
+      11  WARNING in __nf_unregister_net_hook
+      11  WARNING in __nf_unregister_net_hook
+      11  WARNING in __nf_unregister_net_hook
+      11  WARNING in __nf_unregister_net_hook
+The bug was not found.
+About 3814 commits remaining
+
+2025-03-12 20:51:26
+Session:   9
+Kernel:    2021-05-15 - f36edc5533b2653a2d3df2d38cbef25cfd37e32e
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    2  KASAN: slab-out-of-bounds Read in thrustmaster_probe
+Running syz-repro.
+New PoC saved at /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/reproducers/repro-bug0133-3.prog
+Primary PoC:     /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/reproducers/repro-bug0133-0.prog
+Run Time:        0h8m0s
+The bug was found.
+About 1903 commits remaining
+
+2025-03-12 21:14:26
+Session:   10
+Kernel:    2021-05-05 - 8404c9fbc84b741f66cff7d4934a25dd2c344452
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       2  WARNING in __nf_unregister_net_hook
+       3  WARNING in firmware_fallback_sysfs
+       4  WARNING in firmware_fallback_sysfs
+       5  WARNING in firmware_fallback_sysfs
+       5  WARNING in firmware_fallback_sysfs
+       5  WARNING in firmware_fallback_sysfs
+       7  WARNING in firmware_fallback_sysfs
+       7  WARNING in firmware_fallback_sysfs
+       7  WARNING in firmware_fallback_sysfs
+       9  WARNING in firmware_fallback_sysfs
+       9  WARNING in firmware_fallback_sysfs
+       9  WARNING in firmware_fallback_sysfs
+       9  WARNING in __nf_unregister_net_hook
+      10  WARNING in firmware_fallback_sysfs
+      10  WARNING in firmware_fallback_sysfs
+      10  WARNING in firmware_fallback_sysfs
+      11  WARNING in firmware_fallback_sysfs
+      12  WARNING in firmware_fallback_sysfs
+The bug was not found.
+About 899 commits remaining
+
+2025-03-12 21:39:04
+Session:   11
+Kernel:    2021-05-07 - bd313968fd22f9e20b858e80424fa04bbcca7467
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       2  WARNING in __nf_unregister_net_hook
+       9  WARNING in __nf_unregister_net_hook
+       9  WARNING in __nf_unregister_net_hook
+       9  WARNING in __nf_unregister_net_hook
+       9  WARNING in __nf_unregister_net_hook
+       9  WARNING in __nf_unregister_net_hook
+       9  WARNING in __nf_unregister_net_hook
+       9  WARNING in __nf_unregister_net_hook
+       9  WARNING in __nf_unregister_net_hook
+The bug was not found.
+About 450 commits remaining
+
+2025-03-12 22:03:43
+Session:   12
+Kernel:    2021-05-09 - 506c30790f5409ce58aa21c14d7c2aa86df328f5
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       3  WARNING in firmware_fallback_sysfs
+       3  WARNING in firmware_fallback_sysfs
+       9  WARNING in firmware_fallback_sysfs
+      11  WARNING in firmware_fallback_sysfs
+The bug was not found.
+About 234 commits remaining
+
+2025-03-12 22:28:48
+Session:   13
+Kernel:    2021-05-12 - c06a2ba62fc401b7aaefd23f5d0bc06d2457ccc1
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    2  KASAN: slab-out-of-bounds Read in thrustmaster_probe
+***    2  KASAN: slab-out-of-bounds Read in thrustmaster_probe
+The bug was found.
+About 119 commits remaining
+
+2025-03-12 22:43:27
+Session:   14
+Kernel:    2021-05-07 - ce7ea0cfdc2e9ff31d12da31c3226deddb9644f5
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    2  KASAN: slab-out-of-bounds Read in thrustmaster_probe
+***    2  KASAN: slab-out-of-bounds Read in thrustmaster_probe
+       2  WARNING in __nf_unregister_net_hook
+The bug was found.
+About 49 commits remaining
+
+2025-03-12 22:58:33
+Session:   15
+Kernel:    2021-05-07 - 8aec21c04caa2000f91cf8822ae0811e4b0c3971
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    2  KASAN: slab-out-of-bounds Read in thrustmaster_probe
+***    2  KASAN: slab-out-of-bounds Read in thrustmaster_probe
+       2  WARNING in __nf_unregister_net_hook
+Running syz-repro.
+Run Time:        0h21m0s
+The bug was found.
+About 25 commits remaining
+
+2025-03-12 23:34:10
+Session:   16
+Kernel:    2021-05-07 - c02027b5742b5aa804ef08a4a9db433295533046
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    2  KASAN: slab-out-of-bounds Read in thrustmaster_probe
+       2  WARNING in __nf_unregister_net_hook
+Running syz-repro.
+Run Time:        0h21m0s
+The bug was found.
+About 13 commits remaining
+
+2025-03-13 00:01:16
+Session:   17
+Kernel:    2021-05-03 - c74ad08f3333db2e44d3346b863f6d10d35e37dd
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    2  KASAN: slab-out-of-bounds Read in thrustmaster_probe
+***    2  KASAN: slab-out-of-bounds Read in thrustmaster_probe
+       2  WARNING in __nf_unregister_net_hook
+Running syz-repro.
+Run Time:        0h14m0s
+The bug was found.
+About 7 commits remaining
+
+2025-03-13 00:29:57
+Session:   18
+Kernel:    2021-05-03 - d981dd15498b188636ec5a7d8ad485e650f63d8d
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       2  WARNING in __nf_unregister_net_hook
+       9  WARNING in __nf_unregister_net_hook
+       9  WARNING in __nf_unregister_net_hook
+       9  WARNING in __nf_unregister_net_hook
+       9  WARNING in __nf_unregister_net_hook
+       9  WARNING in __nf_unregister_net_hook
+       9  WARNING in __nf_unregister_net_hook
+       9  WARNING in __nf_unregister_net_hook
+       9  WARNING in __nf_unregister_net_hook
+The bug was not found.
+About 4 commits remaining
+
+2025-03-13 00:48:34
+Session:   19
+Kernel:    2021-05-03 - deee59bacb2402c20e6b1b6800f9a5127367eb2a
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    2  KASAN: slab-out-of-bounds Read in thrustmaster_probe
+***    2  KASAN: slab-out-of-bounds Read in thrustmaster_probe
+       2  WARNING in __nf_unregister_net_hook
+Running syz-repro.
+Run Time:        0h21m0s
+The bug was found.
+About 3 commits remaining
+
+2025-03-13 01:24:34
+Session:   20
+Kernel:    2021-05-03 - 262de4102c7bb8e59f26a967a8ffe8cce85cc537
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    2  KASAN: slab-out-of-bounds Read in thrustmaster_probe
+***    2  KASAN: slab-out-of-bounds Read in thrustmaster_probe
+***    2  KASAN: slab-out-of-bounds Read in thrustmaster_probe
+       2  WARNING in __nf_unregister_net_hook
+Running syz-repro.
+Run Time:        0h16m0s
+The bug was found.
+About 2 commits remaining
+
+==== Partial Result: Focused Fuzzing ====
+Reproducer:           /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/reproducers/repro-bug0133-0.prog
+Bisection Result:     2021-05-03 - 262de4102c7bb8e59f26a967a8ffe8cce85cc537
+Bisected Commit Name: kvm: exit halt polling on need_resched() as well
+Stage Time:           8h8m22s
+Run Time:             8h8m23s
+=========================================
+
+==== Anchor Commit ====
+
+2025-03-13 01:55:09
+Session:   21
+Kernel:    2021-05-03 - d981dd15498b188636ec5a7d8ad485e650f63d8d
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+
+Failure: This bug cannot be found at the anchor commit.
+
+====================================================================================================================================================
+Bug Name:             KASAN: slab-out-of-bounds Read in thrustmaster_probe
+Bug Link:             https://syzkaller.appspot.com/bug?id=e1c3525a4f4e2e4b6c1f73611ceaf61ef462700c
+Bisection Result:     2021-05-03 - 262de4102c7bb8e59f26a967a8ffe8cce85cc537
+Bisected Commit Name: kvm: exit halt polling on need_resched() as well
+Run Time:             8h13m22s
+
+Anchor Commit:        2022-02-15 - c5d9ae265b105d9a67575fb67bd4650a6fc08e25
+Bisection Result:     2021-05-03 - 262de4102c7bb8e59f26a967a8ffe8cce85cc537

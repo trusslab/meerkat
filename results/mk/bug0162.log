@@ -1,0 +1,499 @@
+./bin/bisector -i 1 -c /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/bisector.cfg -a eb7081409f94a9a8608593d0fb63a1aa3d6f95d8 -F ff-test,poc-test,stateful-corpus,ff-no-find-backup
+Bisecting:          WARNING in notify_change
+Syzbot Link:        https://syzkaller.appspot.com/bug?id=8dc7a6aed7b8ead4c982ecdf2cd1ea5a4c3b57bb
+Working Name:       bug0162
+
+No aliases given.
+
+Anchor Commit:      eb7081409f94a9a8608593d0fb63a1aa3d6f95d8
+Repository:         https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
+Branch:             master
+Arch:               amd64
+
+Bisector:           /mnt/sdd/jtbursey/SyzInspector/
+Version:            1.0.4
+Kernel:             /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/kernel/
+Syzkaller:          /mnt/sdd/jtbursey/SyzInspector/syzkaller/
+Compilers:          /mnt/sda/jtbursey/SyzInspector/compilers/
+Ccache:             ccache
+Image:              /mnt/sda/jtbursey/SyzInspector/image/stretch/stretch.img
+Image Key:          /mnt/sda/jtbursey/SyzInspector/image/stretch/stretch.id_rsa
+
+Workdir:            /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/
+Kconfig:            /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/config-bug0162.txt
+Reproducers: (1)    /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/reproducers/
+Primary PoC:        /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/reproducers/repro-bug0162-1.prog
+Syzkaller Workdir:  /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/wd-kaller/
+Log Directory:      /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/log/
+
+Syscalls: (13)      ["ioctl$FS_IOC_RESVSP", "mknodat", "mount$fuse", "openat", "openat$fuse", "read$FUSE", "syz_fuse_handle_req", "write$FUSE_INIT", "syz_mount_image$bfs", "getuid", "setgid", "getgid", "move_pages"]
+VM Count:           8
+CPU Count:          2
+Procs:              16
+Memory:             4096
+Make Procs:         16
+Max Time:           10
+Max Attempts:       1
+
+==== Anchor Commit ====
+
+2025-03-18 06:08:12
+Session:   1
+Kernel:    2022-11-20 - eb7081409f94a9a8608593d0fb63a1aa3d6f95d8
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    2  WARNING in notify_change
+***    2  WARNING in notify_change
+***    2  WARNING in notify_change
+Attempt 2: (RETRY)
+    Time  Bug Name
+       2  INFO: rcu detected stall in corrupted
+***    2  WARNING in notify_change
+***    2  WARNING in notify_change
+Attempt 3: (RETRY)
+    Time  Bug Name
+***    2  WARNING in notify_change
+***    2  WARNING in notify_change
+***    2  WARNING in notify_change
+The bug was found.
+
+New Max Time: 10
+
+==== Major Release Search ====
+18 Releases
+
+2025-03-18 06:31:27
+Session:   2
+Kernel:    2022-10-02 - 4fe89d07dcc2804c8b562f6c7896a45643d34b2f (v6.0)
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       2  INFO: rcu detected stall in corrupted
+       7  INFO: task hung in path_openat
+       7  INFO: task hung in walk_component
+       8  INFO: task hung in path_openat
+       8  INFO: task hung in bfs_lookup
+       9  INFO: task hung in d_alloc_parallel
+      10  INFO: task hung in path_openat
+The bug was not found.
+About 17 releases remaining
+
+==== Kernel Bisection ====
+14355 Linux commits
+
+2025-03-18 06:57:51
+Session:   3
+Kernel:    2022-10-07 - e08466a7c00733a501d3c5328d29ec974478d717
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       1  WARNING in wireless_send_event
+       1  WARNING in wireless_send_event
+       2  WARNING in wireless_send_event
+       2  WARNING in wireless_send_event
+       2  WARNING in wireless_send_event
+       2  WARNING in wireless_send_event
+       2  WARNING in wireless_send_event
+       2  WARNING in wireless_send_event
+       3  WARNING in wireless_send_event
+       3  WARNING in wireless_send_event
+       3  WARNING in wireless_send_event
+       3  WARNING in wireless_send_event
+       3  WARNING in wireless_send_event
+       3  WARNING in wireless_send_event
+       4  WARNING in wireless_send_event
+       4  WARNING in wireless_send_event
+       4  WARNING in wireless_send_event
+       4  WARNING in wireless_send_event
+       4  WARNING in wireless_send_event
+       4  WARNING in wireless_send_event
+       5  WARNING in wireless_send_event
+       5  WARNING in wireless_send_event
+       5  WARNING in wireless_send_event
+       5  WARNING in wireless_send_event
+       5  WARNING in wireless_send_event
+       5  WARNING in wireless_send_event
+       6  WARNING in wireless_send_event
+       6  WARNING in wireless_send_event
+       6  WARNING in wireless_send_event
+       6  WARNING in wireless_send_event
+       6  WARNING in wireless_send_event
+       7  WARNING in wireless_send_event
+       7  WARNING in wireless_send_event
+       7  WARNING in wireless_send_event
+       7  WARNING in wireless_send_event
+       7  WARNING in wireless_send_event
+       7  WARNING in wireless_send_event
+       8  WARNING in wireless_send_event
+       8  WARNING in wireless_send_event
+       8  WARNING in wireless_send_event
+       8  WARNING in wireless_send_event
+       8  WARNING in wireless_send_event
+       8  WARNING in wireless_send_event
+       9  WARNING in wireless_send_event
+       9  WARNING in wireless_send_event
+       9  WARNING in wireless_send_event
+       9  WARNING in wireless_send_event
+       9  WARNING in wireless_send_event
+       9  WARNING in wireless_send_event
+      10  WARNING in wireless_send_event
+      10  WARNING in wireless_send_event
+      10  WARNING in wireless_send_event
+      10  WARNING in wireless_send_event
+      10  WARNING in wireless_send_event
+      10  WARNING in wireless_send_event
+The bug was not found.
+About 7135 commits remaining
+
+2025-03-18 07:24:08
+Session:   4
+Kernel:    2022-10-10 - 00833408bb164342990102f272c77983f1ca5e94
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       1  WARNING in c_start
+       1  WARNING in c_start
+       1  WARNING in c_start
+       1  WARNING in c_start
+       1  WARNING in c_start
+       1  WARNING in c_start
+       1  WARNING in c_start
+       1  WARNING in c_start
+       2  WARNING in c_start
+       2  WARNING in c_start
+       2  WARNING in c_start
+       2  WARNING in c_start
+       2  WARNING in c_start
+       2  WARNING in c_start
+       2  WARNING in c_start
+       2  WARNING in c_start
+       3  WARNING in c_start
+       3  WARNING in c_start
+       3  WARNING in c_start
+       3  WARNING in c_start
+       3  WARNING in c_start
+       3  WARNING in c_start
+       3  WARNING in c_start
+       3  WARNING in c_start
+       3  WARNING in c_start
+       3  WARNING in c_start
+       3  WARNING in c_start
+       3  WARNING in c_start
+       3  WARNING in c_start
+       3  WARNING in c_start
+       3  WARNING in c_start
+       3  WARNING in c_start
+       4  WARNING in c_start
+       4  WARNING in c_start
+       4  WARNING in c_start
+       4  WARNING in c_start
+       4  WARNING in c_start
+       4  WARNING in c_start
+       4  WARNING in c_start
+       4  WARNING in c_start
+       5  WARNING in c_start
+       5  WARNING in c_start
+       5  WARNING in c_start
+       5  WARNING in c_start
+       5  WARNING in c_start
+       5  WARNING in c_start
+       5  WARNING in c_start
+       5  WARNING in c_start
+       5  WARNING in c_start
+       5  WARNING in c_start
+       5  WARNING in c_start
+       5  WARNING in c_start
+       5  WARNING in c_start
+       5  WARNING in c_start
+       5  WARNING in c_start
+       5  WARNING in c_start
+       6  WARNING in c_start
+       6  WARNING in c_start
+       6  WARNING in c_start
+       6  WARNING in c_start
+       6  WARNING in c_start
+       6  WARNING in c_start
+       6  WARNING in c_start
+       6  WARNING in c_start
+       6  WARNING in c_start
+       7  WARNING in c_start
+       7  WARNING in c_start
+       7  WARNING in c_start
+       7  WARNING in c_start
+       7  WARNING in c_start
+       7  WARNING in c_start
+       7  WARNING in c_start
+       7  WARNING in c_start
+       7  WARNING in c_start
+       7  WARNING in c_start
+       7  WARNING in c_start
+       7  WARNING in c_start
+       7  WARNING in c_start
+       7  WARNING in c_start
+       7  WARNING in c_start
+       8  WARNING in c_start
+       8  WARNING in c_start
+       8  WARNING in c_start
+       8  WARNING in c_start
+       8  WARNING in c_start
+       8  WARNING in c_start
+       8  WARNING in c_start
+       8  WARNING in c_start
+       9  WARNING in c_start
+       9  WARNING in c_start
+       9  WARNING in c_start
+       9  WARNING in c_start
+       9  WARNING in c_start
+       9  WARNING in c_start
+       9  WARNING in c_start
+       9  WARNING in c_start
+       9  WARNING in c_start
+       9  WARNING in c_start
+       9  WARNING in c_start
+       9  WARNING in c_start
+The bug was not found.
+About 3581 commits remaining
+
+2025-03-18 07:50:34
+Session:   5
+Kernel:    2022-10-21 - 4da34b7d175dc99b8befebd69e96546c960d526c
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       2  INFO: rcu detected stall in corrupted
+       5  INFO: task hung in walk_component
+       6  INFO: task hung in path_openat
+       6  INFO: task hung in path_openat
+       6  INFO: task hung in walk_component
+       6  INFO: task hung in walk_component
+       6  INFO: task hung in filename_create
+       7  WARNING: ODEBUG bug in netdev_run_todo
+       8  KASAN: stack-out-of-bounds Read in profile_pc
+       8  KASAN: stack-out-of-bounds Read in profile_pc
+       9  INFO: task hung in d_alloc_parallel
+The bug was not found.
+About 1818 commits remaining
+
+2025-03-18 08:16:56
+Session:   6
+Kernel:    2022-11-07 - 89bbe785b4d196cc3d00056adc58da8484a824a1
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       6  INFO: task hung in d_alloc_parallel
+       7  INFO: task hung in path_openat
+       7  INFO: task hung in d_alloc_parallel
+       8  INFO: task hung in path_openat
+      10  INFO: task hung in path_openat
+The bug was not found.
+About 909 commits remaining
+
+2025-03-18 08:43:10
+Session:   7
+Kernel:    2022-11-11 - 74bd160fd59f104ca15f4582fee97807146a3a7e
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    2  WARNING in notify_change
+***    2  WARNING in notify_change
+Running syz-repro.
+New PoC saved at /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/reproducers/repro-bug0162-0.prog
+Primary PoC:     /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/reproducers/repro-bug0162-0.prog
+Run Time:        0h25m0s
+The bug was found.
+About 455 commits remaining
+
+2025-03-18 09:26:41
+Session:   8
+Kernel:    2022-11-06 - 16c7a368c8ba9aba3b0e0ae5ec0a64be9fb45665
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    2  WARNING in notify_change
+***    2  WARNING in notify_change
+***    2  WARNING in notify_change
+***    2  WARNING in notify_change
+The bug was found.
+About 228 commits remaining
+
+2025-03-18 09:45:10
+Session:   9
+Kernel:    2022-11-04 - 5d8401be15a9e59af701db08fc0f973c3587f2ae
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       2  INFO: rcu detected stall in corrupted
+***    2  WARNING in notify_change
+***    2  WARNING in notify_change
+***    2  WARNING in notify_change
+***    2  WARNING in notify_change
+The bug was found.
+About 111 commits remaining
+
+2025-03-18 09:57:39
+Session:   10
+Kernel:    2022-11-04 - fde25beb382b7dd6f2eab8022ab017cbdfaa3ff6
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    2  WARNING in notify_change
+***    2  WARNING in notify_change
+***    2  WARNING in notify_change
+Running syz-repro.
+New PoC saved at /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/reproducers/repro-bug0162-2.prog
+Primary PoC:     /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/reproducers/repro-bug0162-2.prog
+Run Time:        0h26m0s
+The bug was found.
+About 70 commits remaining
+
+2025-03-18 10:42:25
+Session:   11
+Kernel:    2022-11-04 - 980a2ff2cb987e2177a1bd02633f4259a0d1daab
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 178 commits remaining
+
+2025-03-18 11:04:14
+Session:   12
+Kernel:    2022-11-03 - ee6050c8af96bba2f81e8b0793a1fc2f998fcd20
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    2  WARNING in notify_change
+***    2  WARNING in notify_change
+***    2  WARNING in notify_change
+The bug was found.
+About 159 commits remaining
+
+2025-03-18 11:17:38
+Session:   13
+Kernel:    2022-11-02 - eb81b682b131642405a05c627ab08cf0967b3dd8
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       2  INFO: rcu detected stall in corrupted
+       5  INFO: task hung in path_openat
+       6  INFO: task hung in path_openat
+       6  INFO: task hung in path_openat
+       6  INFO: task hung in d_alloc_parallel
+       7  INFO: task hung in walk_component
+       8  INFO: task hung in d_alloc_parallel
+       9  INFO: task hung in path_openat
+      10  INFO: task hung in path_openat
+The bug was not found.
+About 13458 commits remaining
+
+2025-03-18 11:43:55
+Session:   14
+Kernel:    2022-11-03 - f2f32f8af2b0ca9d619e5183eae3eed431793baf
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       6  INFO: task hung in path_openat
+       6  INFO: task hung in walk_component
+       6  INFO: task hung in d_alloc_parallel
+       7  INFO: task hung in path_openat
+       7  INFO: task hung in path_openat
+      10  INFO: task hung in path_openat
+The bug was not found.
+About 7 commits remaining
+
+2025-03-18 12:10:11
+Session:   15
+Kernel:    2022-11-03 - 7f7bac08d9e31cd6e2c0ea1685c86ec6f1e7e03c
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       2  INFO: rcu detected stall in corrupted
+***    2  WARNING in notify_change
+***    2  WARNING in notify_change
+***    2  WARNING in notify_change
+***    2  WARNING in notify_change
+***    2  WARNING in notify_change
+***    2  WARNING in notify_change
+The bug was found.
+About 4 commits remaining
+
+2025-03-18 12:18:11
+Session:   16
+Kernel:    2022-10-28 - 4a6f278d4827b59ba26ceae0ff4529ee826aa258
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       2  INFO: rcu detected stall in corrupted
+***    2  WARNING in notify_change
+***    2  WARNING in notify_change
+***    2  WARNING in notify_change
+***    2  WARNING in notify_change
+***    2  WARNING in notify_change
+***    2  WARNING in notify_change
+Running syz-repro.
+New PoC saved at /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/reproducers/repro-bug0162-3.prog
+Primary PoC:     /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/reproducers/repro-bug0162-3.prog
+Run Time:        0h19m0s
+The bug was found.
+About 3 commits remaining
+
+2025-03-18 12:55:37
+Session:   17
+Kernel:    2022-10-20 - 9fa248c65bdbf5af0a2f74dd38575acfc8dfd2bf
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       5  INFO: task hung in path_openat
+       6  INFO: task hung in path_openat
+       7  KASAN: stack-out-of-bounds Read in profile_pc
+       8  INFO: task hung in path_openat
+       9  INFO: task hung in path_openat
+       9  INFO: task hung in path_openat
+       9  INFO: rcu detected stall in corrupted
+      10  INFO: task hung in walk_component
+The bug was not found.
+About 2 commits remaining
+
+==== Partial Result: Focused Fuzzing ====
+Reproducer:           /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/reproducers/repro-bug0162-3.prog
+Bisection Result:     2022-10-28 - 4a6f278d4827b59ba26ceae0ff4529ee826aa258
+Bisected Commit Name: fuse: add file_modified() to fallocate
+Stage Time:           7h2m55s
+Run Time:             7h2m57s
+=========================================
+
+==== Anchor Commit ====
+
+2025-03-18 13:11:07
+Session:   18
+Kernel:    2022-10-20 - 9fa248c65bdbf5af0a2f74dd38575acfc8dfd2bf
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 0:
+    possible deadlock in vivid_update_format_cap
+Attempt 1:
+    possible deadlock in vivid_update_format_cap
+Attempt 2:
+    possible deadlock in vivid_update_format_cap
+Attempt 3:
+    possible deadlock in vivid_update_format_cap
+Attempt 4:
+    possible deadlock in vivid_update_format_cap
+Attempt 5:
+    possible deadlock in vivid_update_format_cap
+Attempt 6:
+    possible deadlock in vivid_update_format_cap
+Attempt 7:
+    possible deadlock in vivid_update_format_cap
+The bug was not found.
+
+Failure: This bug cannot be found at the anchor commit.
+
+====================================================================================================================================================
+Bug Name:             WARNING in notify_change
+Bug Link:             https://syzkaller.appspot.com/bug?id=8dc7a6aed7b8ead4c982ecdf2cd1ea5a4c3b57bb
+Bisection Result:     2022-10-28 - 4a6f278d4827b59ba26ceae0ff4529ee826aa258
+Bisected Commit Name: fuse: add file_modified() to fallocate
+Run Time:             7h9m41s
+
+Anchor Commit:        2022-11-20 - eb7081409f94a9a8608593d0fb63a1aa3d6f95d8
+Bisection Result:     2022-10-28 - 4a6f278d4827b59ba26ceae0ff4529ee826aa258
