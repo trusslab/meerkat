@@ -74,7 +74,7 @@ public:
 
     int boot_and_check_all();
 
-    int copy_all(const std::string &);
+    int copy_all(const std::string &, const std::string & = "/root");
     int run_all(const std::string &);
     int wait_loop(unsigned int);
 

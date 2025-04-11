@@ -51,6 +51,7 @@ int get_procs_from_repro(const string & repro)
 VMConfig determine_threadedness(Environment &env)
 {
     // Choose arbitrarily the first repro file
+
     string reproducer = list_dir(env.reprodir).front();
     int procs = get_procs_from_repro(reproducer);
     switch (procs)
@@ -65,9 +66,8 @@ VMConfig determine_threadedness(Environment &env)
         env.vmc = env.vmr;
         break;
     default:
-        env.vmc = env.vmd;
+        env.vmc = env.vmst;
     }
-
     return env.vmc;
 }
 

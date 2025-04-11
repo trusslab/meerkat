@@ -261,7 +261,7 @@ int VMPool::boot_and_check_all()
     return count;
 }
 
-int VMPool::copy_all(const std::string &file)
+int VMPool::copy_all(const std::string &file, const std::string &dest)
 {
     int err = 0;
     if (!check_file(file))
@@ -271,7 +271,7 @@ int VMPool::copy_all(const std::string &file)
     {
         if (status.at(i) == VM_Ready)
         {
-            if (vms.at(i).scp(file) < 0)
+            if (vms.at(i).scp(file, dest) < 0)
             {
                 status.at(i) = VM_Err;
             }

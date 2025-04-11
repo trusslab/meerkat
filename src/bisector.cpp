@@ -54,6 +54,24 @@ vector<string> order_pocs(const Environment &env)
     return ret;
 }
 
+// thought I would have needed this, but I guess not.
+int make_repro_opts(const Environment &env)
+{
+    vector<string> inlines, outlines;
+    load_file(env.primary_repro, inlines);
+    for (string l : inlines)
+    {
+        if (starts_with(l, "#{"))
+        {
+            outlines.push_back(l.substr(1));
+            break;
+        }
+    }
+
+    write_file(env.repro_opts_file(), outlines);
+    return 0;
+}
+
 int do_bisection(Environment &env, Bisect &bisector, Git &linux_git)
 {
     int err = 0;

@@ -99,6 +99,9 @@ public:
 
     std::string syscall_string() const;
 
+    std::string repro_opts_file() const
+    { return reprodir + "repro.opts"; }
+
     std::string kbuildlog() const
     { return logdir + (working_name.empty() ? "" : working_name + "-") + "kbuild.log"; }
 
