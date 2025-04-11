@@ -1,0 +1,354 @@
+./bin/bisector -i 5 -c /home/syzretrospector/syzinspector/wd-bisector-5/bisector.cfg -a 25aa0bebba72b318e71fe205bfd1236550cc9534 -F ff-test,poc-test,stateful-corpus,ff-no-find-backup
+Bisecting:          WARNING in rtnl_dellink
+Syzbot Link:        https://syzkaller.appspot.com/bug?extid=4b4f06495414e92701d5
+Working Name:       bug0827
+
+No aliases given.
+
+Anchor Commit:      25aa0bebba72b318e71fe205bfd1236550cc9534
+Repository:         https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
+Branch:             master
+Arch:               amd64
+
+Bisector:           /home/syzretrospector/syzinspector/
+Version:            1.0.4
+Kernel:             /home/syzretrospector/syzinspector/wd-bisector-5/kernel/
+Syzkaller:          /home/syzretrospector/syzinspector/syzkaller/
+Compilers:          /home/syzretrospector/compilers/
+Ccache:             ccache
+Image:              /home/syzretrospector/images/stretch/stretch.img
+Image Key:          /home/syzretrospector/images/stretch/stretch.id_rsa
+
+Workdir:            /home/syzretrospector/syzinspector/wd-bisector-5/
+Kconfig:            /home/syzretrospector/syzinspector/wd-bisector-5/config-bug0827.txt
+Reproducers: (8)    /home/syzretrospector/syzinspector/wd-bisector-5/reproducers/
+Primary PoC:        /home/syzretrospector/syzinspector/wd-bisector-5/reproducers/repro-bug0827-1.prog
+Syzkaller Workdir:  /home/syzretrospector/syzinspector/wd-bisector-5/wd-kaller/
+Log Directory:      /home/syzretrospector/syzinspector/wd-bisector-5/log/
+
+Syscalls: (37)      ["getsockname$packet", "sendmsg$DEVLINK_CMD_SB_OCC_MAX_CLEAR", "sendmsg$NBD_CMD_DISCONNECT", "sendmsg$nl_route", "sendmsg$nl_route_sched", "setsockopt$packet_drop_memb", "socket", "socket$netlink", "socket$nl_route", "socket$packet", "syz_genetlink_get_family_id$mptcp", "syz_genetlink_get_family_id$nl80211", "socket$nl_generic", "syz_init_net_socket$nl_generic", "sendmsg$MPTCP_PM_CMD_ADD_ADDR", "sendmsg$NL80211_CMD_GET_WIPHY", "syz_genetlink_get_family_id$devlink", "syz_genetlink_get_family_id$nbd", "ioctl$F2FS_IOC_START_ATOMIC_WRITE", "openat$selinux_enforce", "socketpair$nbd", "get_robust_list", "syz_clone", "ioctl$TUNGETDEVNETNS", "mount$bpf", "getuid", "ioctl$ifreq_SIOCGIFINDEX_vcan", "bpf$OBJ_GET_PROG", "openat$tun", "sendmsg$NL80211_CMD_GET_INTERFACE", "ioctl$sock_SIOCGIFINDEX_80211", "socket$inet_udp", "socket$inet6_udp", "setgid", "getgid", "socket$inet", "socket$inet6"]
+VM Count:           8
+CPU Count:          2
+Procs:              16
+Memory:             4096
+Make Procs:         16
+Max Time:           10
+Max Attempts:       1
+
+==== Anchor Commit ====
+
+2025-03-23 06:03:00
+Session:   1
+Kernel:    2023-08-10 - 25aa0bebba72b318e71fe205bfd1236550cc9534
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    2  WARNING in rtnl_dellink
+Attempt 2: (RETRY)
+    Time  Bug Name
+***    2  WARNING in rtnl_dellink
+Attempt 3: (RETRY)
+    Time  Bug Name
+***    6  WARNING in rtnl_dellink
+The bug was found.
+
+New Max Time: 10
+
+==== Major Release Search ====
+19 Releases
+
+2025-03-23 06:25:48
+Session:   2
+Kernel:    2023-06-25 - 6995e2de6891c724bfeb2db33d7b87775f913ad1 (v6.4)
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 18 releases remaining
+
+==== Kernel Bisection ====
+14007 Linux commits
+
+2025-03-23 06:49:24
+Session:   3
+Kernel:    2023-06-29 - 1b722407a13b7f8658d2e26917791f32805980a2
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       1  UBSAN: array-index-out-of-bounds in corrupted
+       1  UBSAN: array-index-out-of-bounds in corrupted
+       1  UBSAN: array-index-out-of-bounds in copy_process
+       2  UBSAN: array-index-out-of-bounds in corrupted
+       2  UBSAN: array-index-out-of-bounds in corrupted
+       2  UBSAN: array-index-out-of-bounds in corrupted
+       2  UBSAN: array-index-out-of-bounds in corrupted
+       2  UBSAN: array-index-out-of-bounds in corrupted
+       2  UBSAN: array-index-out-of-bounds in corrupted
+       2  UBSAN: array-index-out-of-bounds in corrupted
+       2  UBSAN: array-index-out-of-bounds in alloc_pid
+       2  UBSAN: array-index-out-of-bounds in alloc_pid
+       2  UBSAN: array-index-out-of-bounds in alloc_pid
+       2  UBSAN: array-index-out-of-bounds in copy_process
+       2  UBSAN: array-index-out-of-bounds in copy_process
+       2  UBSAN: array-index-out-of-bounds in copy_process
+       3  UBSAN: array-index-out-of-bounds in corrupted
+       3  UBSAN: array-index-out-of-bounds in corrupted
+       3  UBSAN: array-index-out-of-bounds in corrupted
+       3  UBSAN: array-index-out-of-bounds in corrupted
+       3  UBSAN: array-index-out-of-bounds in alloc_pid
+       3  UBSAN: array-index-out-of-bounds in copy_process
+       3  UBSAN: array-index-out-of-bounds in copy_process
+       3  UBSAN: array-index-out-of-bounds in copy_process
+       4  UBSAN: array-index-out-of-bounds in corrupted
+       4  UBSAN: array-index-out-of-bounds in corrupted
+       4  UBSAN: array-index-out-of-bounds in corrupted
+       4  UBSAN: array-index-out-of-bounds in corrupted
+       4  UBSAN: array-index-out-of-bounds in corrupted
+       4  UBSAN: array-index-out-of-bounds in corrupted
+       4  UBSAN: array-index-out-of-bounds in corrupted
+       4  UBSAN: array-index-out-of-bounds in corrupted
+       4  UBSAN: array-index-out-of-bounds in corrupted
+       4  UBSAN: array-index-out-of-bounds in copy_process
+       4  UBSAN: array-index-out-of-bounds in copy_process
+       5  UBSAN: array-index-out-of-bounds in corrupted
+       5  UBSAN: array-index-out-of-bounds in corrupted
+       5  UBSAN: array-index-out-of-bounds in corrupted
+       5  UBSAN: array-index-out-of-bounds in corrupted
+       5  UBSAN: array-index-out-of-bounds in corrupted
+       5  UBSAN: array-index-out-of-bounds in corrupted
+       5  UBSAN: array-index-out-of-bounds in corrupted
+       5  UBSAN: array-index-out-of-bounds in corrupted
+       5  UBSAN: array-index-out-of-bounds in alloc_pid
+       5  UBSAN: array-index-out-of-bounds in alloc_pid
+       5  UBSAN: array-index-out-of-bounds in copy_process
+       5  UBSAN: array-index-out-of-bounds in copy_process
+       5  UBSAN: array-index-out-of-bounds in copy_process
+       6  UBSAN: array-index-out-of-bounds in corrupted
+       6  UBSAN: array-index-out-of-bounds in corrupted
+       6  UBSAN: array-index-out-of-bounds in corrupted
+       6  UBSAN: array-index-out-of-bounds in corrupted
+       6  UBSAN: array-index-out-of-bounds in corrupted
+       6  UBSAN: array-index-out-of-bounds in copy_process
+       6  UBSAN: array-index-out-of-bounds in copy_process
+       6  UBSAN: array-index-out-of-bounds in copy_process
+       7  UBSAN: array-index-out-of-bounds in corrupted
+       7  UBSAN: array-index-out-of-bounds in corrupted
+       7  UBSAN: array-index-out-of-bounds in corrupted
+       7  UBSAN: array-index-out-of-bounds in corrupted
+       7  UBSAN: array-index-out-of-bounds in corrupted
+       7  UBSAN: array-index-out-of-bounds in corrupted
+       7  UBSAN: array-index-out-of-bounds in corrupted
+       7  UBSAN: array-index-out-of-bounds in corrupted
+       7  UBSAN: array-index-out-of-bounds in corrupted
+       7  UBSAN: array-index-out-of-bounds in corrupted
+       7  UBSAN: array-index-out-of-bounds in alloc_pid
+       7  UBSAN: array-index-out-of-bounds in alloc_pid
+       7  UBSAN: array-index-out-of-bounds in copy_process
+       7  UBSAN: array-index-out-of-bounds in copy_process
+       8  UBSAN: array-index-out-of-bounds in corrupted
+       8  UBSAN: array-index-out-of-bounds in corrupted
+       8  UBSAN: array-index-out-of-bounds in corrupted
+       8  UBSAN: array-index-out-of-bounds in corrupted
+       8  UBSAN: array-index-out-of-bounds in corrupted
+       8  UBSAN: array-index-out-of-bounds in corrupted
+       8  UBSAN: array-index-out-of-bounds in corrupted
+       8  UBSAN: array-index-out-of-bounds in alloc_pid
+       8  UBSAN: array-index-out-of-bounds in copy_process
+       8  UBSAN: array-index-out-of-bounds in copy_process
+       9  UBSAN: array-index-out-of-bounds in corrupted
+       9  UBSAN: array-index-out-of-bounds in corrupted
+       9  UBSAN: array-index-out-of-bounds in corrupted
+       9  UBSAN: array-index-out-of-bounds in corrupted
+       9  UBSAN: array-index-out-of-bounds in corrupted
+       9  UBSAN: array-index-out-of-bounds in corrupted
+       9  UBSAN: array-index-out-of-bounds in alloc_pid
+       9  UBSAN: array-index-out-of-bounds in copy_process
+       9  UBSAN: array-index-out-of-bounds in copy_process
+       9  UBSAN: array-index-out-of-bounds in copy_process
+      10  UBSAN: array-index-out-of-bounds in corrupted
+      10  UBSAN: array-index-out-of-bounds in corrupted
+      10  UBSAN: array-index-out-of-bounds in corrupted
+      10  UBSAN: array-index-out-of-bounds in corrupted
+      10  UBSAN: array-index-out-of-bounds in corrupted
+      10  UBSAN: array-index-out-of-bounds in corrupted
+      10  UBSAN: array-index-out-of-bounds in alloc_pid
+      10  UBSAN: array-index-out-of-bounds in copy_process
+      10  UBSAN: array-index-out-of-bounds in copy_process
+      10  UBSAN: array-index-out-of-bounds in copy_process
+      10  UBSAN: array-index-out-of-bounds in copy_process
+      10  UBSAN: array-index-out-of-bounds in copy_process
+The bug was not found.
+About 6941 commits remaining
+
+2025-03-23 07:11:38
+Session:   4
+Kernel:    2023-07-03 - 44aeec836da880c73a8deb2c7735c6e7c36f47c3
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 3427 commits remaining
+
+2025-03-23 07:33:35
+Session:   5
+Kernel:    2023-07-07 - 22dcc7d77fa463914bc2a2fb4580e6d183ca415d
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 1717 commits remaining
+
+2025-03-23 07:55:36
+Session:   6
+Kernel:    2023-07-23 - 8266f53b39087c195f0d011dc5696cb2e6155242
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       4  possible deadlock in bcm_notifier
+       6  possible deadlock in bcm_notifier
+       6  possible deadlock in bcm_notifier
+       7  possible deadlock in bcm_notifier
+       8  possible deadlock in bcm_notifier
+      10  possible deadlock in bcm_notifier
+The bug was not found.
+About 864 commits remaining
+
+2025-03-23 08:17:31
+Session:   7
+Kernel:    2023-08-01 - 6a35f22d222528e1b157c6978c9424d2f8cbe0a1
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 433 commits remaining
+
+2025-03-23 08:39:19
+Session:   8
+Kernel:    2023-08-09 - 718cb09aaa6fa78cc8124e9517efbc6c92665384
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    2  WARNING in rtnl_dellink
+***    2  WARNING in rtnl_dellink
+Running syz-repro.
+New PoC saved at /home/syzretrospector/syzinspector/wd-bisector-5/reproducers/repro-bug0827-0.prog
+Primary PoC:     /home/syzretrospector/syzinspector/wd-bisector-5/reproducers/repro-bug0827-0.prog
+Run Time:        0h5m0s
+The bug was found.
+About 217 commits remaining
+
+2025-03-23 08:58:13
+Session:   9
+Kernel:    2023-08-03 - 3932f2272313fc79c3166cceb886c9697c00ff86
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 376 commits remaining
+
+2025-03-23 09:20:15
+Session:   10
+Kernel:    2023-08-03 - 1696ec8654016dad3b1baf6c024303e584400453
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 55 commits remaining
+
+2025-03-23 09:34:55
+Session:   11
+Kernel:    2023-08-07 - 86ed7b773c01ba71617538b3b107c33fd9cf90b8
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 28 commits remaining
+
+2025-03-23 09:49:28
+Session:   12
+Kernel:    2023-08-08 - 81f3768d91ac535528e9a7ad07cfefe5c705629f
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 23 commits remaining
+
+2025-03-23 10:04:08
+Session:   13
+Kernel:    2023-08-09 - 1a8c251cff2052b60009a070173308322e9600d3
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 8 commits remaining
+
+2025-03-23 10:18:37
+Session:   14
+Kernel:    2023-08-09 - d0378ae6d16cac86579c0350d275741fd898ba08
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 5 commits remaining
+
+2025-03-23 10:32:57
+Session:   15
+Kernel:    2023-08-09 - 30c3c4a4497c3765bf6b298f5072c8165aeaf7cc
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 3 commits remaining
+
+2025-03-23 10:47:31
+Session:   16
+Kernel:    2023-08-09 - c992fde9f977da9beec584528f9026d21c27a053
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 2 commits remaining
+
+==== Partial Result: Focused Fuzzing ====
+Reproducer:           /home/syzretrospector/syzinspector/wd-bisector-5/reproducers/repro-bug0827-0.prog
+Bisection Result:     2023-08-09 - 718cb09aaa6fa78cc8124e9517efbc6c92665384
+Bisected Commit Name: vlan: Fix VLAN 0 memory leak
+Stage Time:           4h58m55s
+Run Time:             4h58m59s
+=========================================
+
+==== Anchor Commit ====
+
+2025-03-23 11:01:55
+Session:   17
+Kernel:    2023-08-09 - c992fde9f977da9beec584528f9026d21c27a053
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+
+Failure: This bug cannot be found at the anchor commit.
+
+====================================================================================================================================================
+Bug Name:             WARNING in rtnl_dellink
+Bug Link:             https://syzkaller.appspot.com/bug?extid=4b4f06495414e92701d5
+Bisection Result:     2023-08-09 - 718cb09aaa6fa78cc8124e9517efbc6c92665384
+Bisected Commit Name: vlan: Fix VLAN 0 memory leak
+Run Time:             5h5m19s
+
+Anchor Commit:        2023-08-10 - 25aa0bebba72b318e71fe205bfd1236550cc9534
+Bisection Result:     2023-08-09 - 718cb09aaa6fa78cc8124e9517efbc6c92665384

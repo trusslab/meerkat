@@ -1,4 +1,4 @@
-./bin/bisector -i 1 -c /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/bisector.cfg -a 81ac25651a62c958bb0e074e0d4e25060ea557dd -F ff-test,poc-test,stateful-corpus,ff-no-find-backup
+./bin/bisector -i 5 -c /home/syzretrospector/syzinspector/wd-bisector-5/bisector.cfg -a 81ac25651a62c958bb0e074e0d4e25060ea557dd -F ff-test,poc-test,stateful-corpus,ff-no-find-backup
 Bisecting:          possible deadlock in dccp_v4_ctl_send_reset
 Syzbot Link:        https://syzkaller.appspot.com/bug?id=f545f7c3545aae6dabe7070d64a4172ed79a9354
 Working Name:       bug0135
@@ -10,23 +10,23 @@ Repository:         https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/lin
 Branch:             master
 Arch:               amd64
 
-Bisector:           /mnt/sdd/jtbursey/SyzInspector/
+Bisector:           /home/syzretrospector/syzinspector/
 Version:            1.0.4
-Kernel:             /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/kernel/
-Syzkaller:          /mnt/sdd/jtbursey/SyzInspector/syzkaller/
-Compilers:          /mnt/sda/jtbursey/SyzInspector/compilers/
+Kernel:             /home/syzretrospector/syzinspector/wd-bisector-5/kernel/
+Syzkaller:          /home/syzretrospector/syzinspector/syzkaller/
+Compilers:          /home/syzretrospector/compilers/
 Ccache:             ccache
-Image:              /mnt/sda/jtbursey/SyzInspector/image/stretch/stretch.img
-Image Key:          /mnt/sda/jtbursey/SyzInspector/image/stretch/stretch.id_rsa
+Image:              /home/syzretrospector/images/stretch/stretch.img
+Image Key:          /home/syzretrospector/images/stretch/stretch.id_rsa
 
-Workdir:            /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/
-Kconfig:            /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/config-bug0135.txt
-Reproducers: (1)    /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/reproducers/
-Primary PoC:        /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/reproducers/repro-bug0135-1.prog
-Syzkaller Workdir:  /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/wd-kaller/
-Log Directory:      /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/log/
+Workdir:            /home/syzretrospector/syzinspector/wd-bisector-5/
+Kconfig:            /home/syzretrospector/syzinspector/wd-bisector-5/config-bug0135.txt
+Reproducers: (1)    /home/syzretrospector/syzinspector/wd-bisector-5/reproducers/
+Primary PoC:        /home/syzretrospector/syzinspector/wd-bisector-5/reproducers/repro-bug0135-1.prog
+Syzkaller Workdir:  /home/syzretrospector/syzinspector/wd-bisector-5/wd-kaller/
+Log Directory:      /home/syzretrospector/syzinspector/wd-bisector-5/log/
 
-Syscalls: (17)      ["connect$inet", "sendmsg$L2TP_CMD_TUNNEL_CREATE", "socket$inet_dccp", "socket$inet_mptcp", "socket$nl_generic", "syz_genetlink_get_family_id$l2tp", "socket$inet", "socket", "socket$netlink", "socket$inet_tcp", "ioctl$EXT4_IOC_GROUP_EXTEND", "openat$sw_sync_info", "socket$inet_udp", "socket$inet6_udp", "socket$l2tp", "socket$l2tp6", "socket$inet6"]
+Syscalls: (17)      ["connect$inet", "sendmsg$L2TP_CMD_TUNNEL_CREATE", "socket$inet_dccp", "socket$inet_mptcp", "socket$nl_generic", "syz_genetlink_get_family_id$l2tp", "socket$inet", "socket", "socket$netlink", "socket$inet_tcp", "ioctl$F2FS_IOC_START_ATOMIC_WRITE", "openat$selinux_enforce", "socket$inet_udp", "socket$inet6_udp", "socket$l2tp", "socket$l2tp6", "socket$inet6"]
 VM Count:           8
 CPU Count:          2
 Procs:              16
@@ -37,49 +37,29 @@ Max Attempts:       1
 
 ==== Anchor Commit ====
 
-2025-03-13 02:00:58
+2025-03-06 22:40:51
 Session:   1
 Kernel:    2022-11-17 - 81ac25651a62c958bb0e074e0d4e25060ea557dd
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
 Attempt 1:
     Time  Bug Name
-       2  possible deadlock in l2tp_tunnel_register
-       2  possible deadlock in l2tp_tunnel_register
-       2  possible deadlock in l2tp_tunnel_register
-       2  possible deadlock in l2tp_tunnel_register
        2  INFO: rcu detected stall in corrupted
-      10  INFO: rcu detected stall in corrupted
+       2  possible deadlock in l2tp_tunnel_register
+       2  possible deadlock in l2tp_tunnel_register
 Attempt 2: (RETRY)
     Time  Bug Name
        2  possible deadlock in l2tp_tunnel_register
        2  possible deadlock in l2tp_tunnel_register
        2  possible deadlock in l2tp_tunnel_register
-       6  possible deadlock in l2tp_tunnel_register
-       8  possible deadlock in l2tp_tunnel_register
-       8  possible deadlock in l2tp_tunnel_register
-      10  possible deadlock in l2tp_tunnel_register
 Attempt 3: (RETRY)
     Time  Bug Name
        2  possible deadlock in l2tp_tunnel_register
        2  possible deadlock in l2tp_tunnel_register
        2  possible deadlock in l2tp_tunnel_register
-       2  possible deadlock in l2tp_tunnel_register
-       2  INFO: rcu detected stall in corrupted
        3  possible deadlock in l2tp_tunnel_register
        5  possible deadlock in l2tp_tunnel_register
-       6  possible deadlock in l2tp_tunnel_register
-       7  possible deadlock in l2tp_tunnel_register
-       7  possible deadlock in l2tp_tunnel_register
-       8  possible deadlock in l2tp_tunnel_register
-       9  possible deadlock in l2tp_tunnel_register
-       9  possible deadlock in l2tp_tunnel_register
-       9  possible deadlock in l2tp_tunnel_register
-       9  possible deadlock in l2tp_tunnel_register
-       9  possible deadlock in l2tp_tunnel_register
-       9  possible deadlock in l2tp_tunnel_register
-      10  possible deadlock in l2tp_tunnel_register
-      10  possible deadlock in l2tp_tunnel_register
-      10  possible deadlock in l2tp_tunnel_register
+       5  possible deadlock in l2tp_tunnel_register
+      10  INFO: rcu detected stall in corrupted
 The bug was not found.
 
 Failure: This bug cannot be found at the anchor commit.

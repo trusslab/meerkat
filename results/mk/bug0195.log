@@ -1,0 +1,373 @@
+./bin/bisector -i 5 -c /home/syzretrospector/syzinspector/wd-bisector-5/bisector.cfg -a b6bb9676f2165d518b35ba3bea5f1fcfc0d969bf -F ff-test,poc-test,stateful-corpus,ff-no-find-backup
+Bisecting:          general protection fault in start_transaction
+Syzbot Link:        https://syzkaller.appspot.com/bug?id=724cf869d3bb512081588651530d8071a4b61ceb
+Working Name:       bug0195
+
+No aliases given.
+
+Anchor Commit:      b6bb9676f2165d518b35ba3bea5f1fcfc0d969bf
+Repository:         https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
+Branch:             master
+Arch:               amd64
+
+Bisector:           /home/syzretrospector/syzinspector/
+Version:            1.0.4
+Kernel:             /home/syzretrospector/syzinspector/wd-bisector-5/kernel/
+Syzkaller:          /home/syzretrospector/syzinspector/syzkaller/
+Compilers:          /home/syzretrospector/compilers/
+Ccache:             ccache
+Image:              /home/syzretrospector/images/stretch/stretch.img
+Image Key:          /home/syzretrospector/images/stretch/stretch.id_rsa
+
+Workdir:            /home/syzretrospector/syzinspector/wd-bisector-5/
+Kconfig:            /home/syzretrospector/syzinspector/wd-bisector-5/config-bug0195.txt
+Reproducers: (2)    /home/syzretrospector/syzinspector/wd-bisector-5/reproducers/
+Syzkaller Workdir:  /home/syzretrospector/syzinspector/wd-bisector-5/wd-kaller/
+Log Directory:      /home/syzretrospector/syzinspector/wd-bisector-5/log/
+
+Syscalls: (15)      ["creat", "ioctl$BTRFS_IOC_QUOTA_CTL", "ioctl$BTRFS_IOC_QUOTA_RESCAN", "open", "openat", "openat$cgroup_ro", "poll", "syz_mount_image$btrfs", "write$FUSE_ENTRY", "openat$cgroup_root", "openat$fuse", "read$FUSE", "getuid", "getgid", "get_robust_list"]
+VM Count:           4
+CPU Count:          4
+Procs:              24
+Memory:             4096
+Make Procs:         16
+Max Time:           10
+Max Attempts:       1
+
+==== Anchor Commit ====
+
+2025-03-13 04:02:22
+Session:   1
+Kernel:    2022-12-20 - b6bb9676f2165d518b35ba3bea5f1fcfc0d969bf
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       2  INFO: rcu detected stall in corrupted
+***    2  general protection fault in start_transaction
+***    2  general protection fault in start_transaction
+Attempt 2: (RETRY)
+    Time  Bug Name
+***    3  general protection fault in start_transaction
+***    3  general protection fault in start_transaction
+Attempt 3: (RETRY)
+    Time  Bug Name
+       2  INFO: rcu detected stall in corrupted
+***    2  general protection fault in start_transaction
+The bug was found.
+
+New Max Time: 10
+
+==== Major Release Search ====
+18 Releases
+
+2025-03-13 04:23:01
+Session:   2
+Kernel:    2022-10-02 - 4fe89d07dcc2804c8b562f6c7896a45643d34b2f (v6.0)
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       2  INFO: rcu detected stall in corrupted
+***    3  general protection fault in start_transaction
+***    3  general protection fault in start_transaction
+Running syz-repro.
+syz-repro was terminated after 60 minutes
+Run Time:        1h0m0s
+The bug was found.
+About 17 releases remaining
+
+2025-03-13 05:36:43
+Session:   3
+Kernel:    2022-07-31 - 3d7cb6b04c3f3115719235cc6866b10326de34cd (v5.19)
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    2  general protection fault in start_transaction
+***    2  general protection fault in start_transaction
+Running syz-repro.
+syz-repro was terminated after 60 minutes
+Run Time:        1h0m0s
+The bug was found.
+About 16 releases remaining
+
+2025-03-13 06:49:04
+Session:   4
+Kernel:    2022-05-22 - 4b0986a3613c92f4ec1bdc7f60ec66fea135991f (v5.18)
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    2  general protection fault in start_transaction
+***    2  general protection fault in start_transaction
+Running syz-repro.
+syz-repro was terminated after 60 minutes
+Run Time:        1h0m0s
+The bug was found.
+About 15 releases remaining
+
+2025-03-13 08:00:47
+Session:   5
+Kernel:    2022-01-09 - df0cc57e057f18e44dac8e6c18aba47ab53202f9 (v5.16)
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       2  general protection fault in ulist_reinit
+***    4  general protection fault in start_transaction
+Running syz-repro.
+syz-repro was terminated after 60 minutes
+Run Time:        1h0m0s
+The bug was found.
+About 14 releases remaining
+
+2025-03-13 09:14:37
+Session:   6
+Kernel:    2021-08-29 - 7d2a07b769330c34b4deabeed939325c77a7ec2f (v5.14)
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    2  general protection fault in start_transaction
+***    2  general protection fault in start_transaction
+Running syz-repro.
+syz-repro was terminated after 60 minutes
+Run Time:        1h0m0s
+The bug was found.
+About 13 releases remaining
+
+2025-03-13 10:26:25
+Session:   7
+Kernel:    2021-04-25 - 9f4ad9e425a1d3b6a34617b8ea226d56a119a717 (v5.12)
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    3  general protection fault in start_transaction
+Running syz-repro.
+syz-repro was terminated after 60 minutes
+Run Time:        1h0m0s
+The bug was found.
+About 12 releases remaining
+
+2025-03-13 11:39:00
+Session:   8
+Kernel:    2020-12-13 - 2c85ebc57b3e1817b6ce1a6b703928e113a90442 (v5.10)
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.1.0-syz/bin/gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 11 releases remaining
+
+==== Kernel Bisection ====
+29645 Linux commits
+
+2025-03-13 11:58:59
+Session:   9
+Kernel:    2021-01-22 - 5225d5f57b3574c0954f03d8d21dfac92ea7e729
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 14821 commits remaining
+
+2025-03-13 12:18:44
+Session:   10
+Kernel:    2021-02-21 - d99676af540c2dc829999928fb81c58c80a1dce4
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 6800 commits remaining
+
+2025-03-13 12:38:34
+Session:   11
+Kernel:    2021-03-09 - 69264b4a43aff7307283e2bae29e9305ab6b7d47
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 3478 commits remaining
+
+2025-03-13 12:58:28
+Session:   12
+Kernel:    2021-03-12 - f296bfd5cd04cbb49b8fc9585adc280ab2b58624
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       2  WARNING in kvm_wait
+The bug was not found.
+About 1739 commits remaining
+
+2025-03-13 13:18:00
+Session:   13
+Kernel:    2021-04-07 - a975d7d8a356ce92872af0b007b101183f0224e2
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    2  general protection fault in start_transaction
+Running syz-repro.
+syz-repro was terminated after 60 minutes
+Run Time:        1h0m0s
+The bug was found.
+About 870 commits remaining
+
+2025-03-13 14:29:29
+Session:   14
+Kernel:    2021-03-21 - 3001c3554f1dfac3f2561a6b34c5d209e3592dc0
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    3  general protection fault in start_transaction
+Running syz-repro.
+syz-repro was terminated after 60 minutes
+Run Time:        1h0m0s
+The bug was found.
+About 440 commits remaining
+
+2025-03-13 15:41:57
+Session:   15
+Kernel:    2021-03-18 - c73891c922f5934b826fe5eb743fbdb28aee3f99
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 221 commits remaining
+
+2025-03-13 16:01:37
+Session:   16
+Kernel:    2021-03-19 - ecd8ee7f9c1af253738ca4321509ddee727d468d
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    2  general protection fault in start_transaction
+***    2  general protection fault in start_transaction
+Running syz-repro.
+syz-repro was terminated after 60 minutes
+Run Time:        1h0m0s
+The bug was found.
+About 116 commits remaining
+
+2025-03-13 17:07:06
+Session:   17
+Kernel:    2021-03-18 - 50b1affc891cbc103a2334ce909a026e25f4c84d
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 758 commits remaining
+
+2025-03-13 17:27:38
+Session:   18
+Kernel:    2021-03-19 - 769e155c5395100fc468aa87703c486f276c16cd
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       2  WARNING in kvm_wait
+The bug was not found.
+About 36 commits remaining
+
+2025-03-13 17:40:47
+Session:   19
+Kernel:    2021-03-19 - 3149860dc717e8dd339d89d17ebe615cb09e158b
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       2  WARNING in kvm_wait
+The bug was not found.
+About 18 commits remaining
+
+2025-03-13 17:54:01
+Session:   20
+Kernel:    2021-03-18 - 0469f2f7ab4c6a6cae4b74c4f981c4da6d909411
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       2  WARNING in kvm_wait
+       2  WARNING in kvm_wait
+The bug was not found.
+About 149 commits remaining
+
+2025-03-13 18:13:53
+Session:   21
+Kernel:    2021-03-18 - 3df2252436c08028a549e27ed7f097974e21d17b
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 145 commits remaining
+
+2025-03-13 18:27:01
+Session:   22
+Kernel:    2021-03-18 - c2162e13d6e2f43e5001a356196871642de070ba
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 143 commits remaining
+
+2025-03-13 18:40:36
+Session:   23
+Kernel:    2021-03-19 - 9ce3746d64132a561bceab6421715e7c04e85074
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    3  general protection fault in start_transaction
+Running syz-repro.
+syz-repro was terminated after 60 minutes
+Run Time:        1h0m0s
+The bug was found.
+About 3 commits remaining
+
+2025-03-13 19:47:00
+Session:   24
+Kernel:    2021-03-18 - f4e61f0c9add3b00bd5f2df3c814d688849b8707
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    3  general protection fault in start_transaction
+***    3  general protection fault in start_transaction
+Running syz-repro.
+syz-repro was terminated after 60 minutes
+Run Time:        1h0m0s
+The bug was found.
+About 2 commits remaining
+
+==== Partial Result: Focused Fuzzing ====
+Bisection Result:     2021-03-18 - f4e61f0c9add3b00bd5f2df3c814d688849b8707
+Bisected Commit Name: x86/kvm: Fix broken irq restoration in kvm_wait
+Stage Time:           16h51m3s
+Run Time:             16h51m4s
+=========================================
+
+==== Anchor Commit ====
+
+2025-03-13 20:53:25
+Session:   25
+Kernel:    2021-03-18 - c2162e13d6e2f43e5001a356196871642de070ba
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Warning: VM has not responded after 5 attempts.
+Warning: Only booted 5 VMs.
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    WARNING in kvm_wait
+Attempt 3:
+    WARNING in kvm_wait
+Attempt 4:
+    WARNING in kvm_wait
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+
+Failure: This bug cannot be found at the anchor commit.
+
+====================================================================================================================================================
+Bug Name:             general protection fault in start_transaction
+Bug Link:             https://syzkaller.appspot.com/bug?id=724cf869d3bb512081588651530d8071a4b61ceb
+Bisection Result:     2021-03-18 - f4e61f0c9add3b00bd5f2df3c814d688849b8707
+Bisected Commit Name: x86/kvm: Fix broken irq restoration in kvm_wait
+Run Time:             16h57m56s
+
+Anchor Commit:        2022-12-20 - b6bb9676f2165d518b35ba3bea5f1fcfc0d969bf
+Bisection Result:     2021-03-18 - f4e61f0c9add3b00bd5f2df3c814d688849b8707

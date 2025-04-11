@@ -1,0 +1,96 @@
+./bin/bisector -i 5 -c /home/syzretrospector/syzinspector/wd-bisector-5/bisector.cfg -a 0a924817d2ed9396401e0557c6134276d2e26382 -F ff-test,poc-test,stateful-corpus,ff-no-find-backup
+Bisecting:          BUG: unable to handle kernel NULL pointer dereference in gfs2_rgrp_dump
+Syzbot Link:        https://syzkaller.appspot.com/bug?extid=da0fc229cc1ff4bb2e6d
+Working Name:       bug0761
+
+No aliases given.
+
+Anchor Commit:      0a924817d2ed9396401e0557c6134276d2e26382
+Repository:         https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
+Branch:             master
+Arch:               amd64
+
+Bisector:           /home/syzretrospector/syzinspector/
+Version:            1.0.4
+Kernel:             /home/syzretrospector/syzinspector/wd-bisector-5/kernel/
+Syzkaller:          /home/syzretrospector/syzinspector/syzkaller/
+Compilers:          /home/syzretrospector/compilers/
+Ccache:             ccache
+Image:              /home/syzretrospector/images/stretch/stretch.img
+Image Key:          /home/syzretrospector/images/stretch/stretch.id_rsa
+
+Workdir:            /home/syzretrospector/syzinspector/wd-bisector-5/
+Kconfig:            /home/syzretrospector/syzinspector/wd-bisector-5/config-bug0761.txt
+Reproducers: (1)    /home/syzretrospector/syzinspector/wd-bisector-5/reproducers/
+Primary PoC:        /home/syzretrospector/syzinspector/wd-bisector-5/reproducers/repro-bug0761-3.prog
+Syzkaller Workdir:  /home/syzretrospector/syzinspector/wd-bisector-5/wd-kaller/
+Log Directory:      /home/syzretrospector/syzinspector/wd-bisector-5/log/
+
+Syscalls: (7)       ["syz_mount_image$gfs2", "ioctl$F2FS_IOC_START_ATOMIC_WRITE", "openat$selinux_enforce", "mount$bpf", "getuid", "setgid", "getgid"]
+VM Count:           8
+CPU Count:          2
+Procs:              16
+Memory:             4096
+Make Procs:         16
+Max Time:           10
+Max Attempts:       1
+
+==== Anchor Commit ====
+
+2025-03-16 21:56:54
+Session:   1
+Kernel:    2022-12-21 - 0a924817d2ed9396401e0557c6134276d2e26382
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       2  INFO: rcu detected stall in corrupted
+       3  general protection fault in gfs2_rgrp_dump
+       4  kernel BUG in gfs2_glock_nq
+       4  WARNING in __folio_mark_dirty
+       5  INFO: task hung in gfs2_jhead_process_page
+       6  INFO: task hung in gfs2_jhead_process_page
+       7  kernel BUG in gfs2_glock_nq
+       7  INFO: task hung in gfs2_jhead_process_page
+       7  INFO: task hung in gfs2_jhead_process_page
+       8  INFO: task hung in gfs2_jhead_process_page
+       8  INFO: task hung in gfs2_jhead_process_page
+       8  INFO: task hung in gfs2_jhead_process_page
+       8  WARNING in __folio_mark_dirty
+Attempt 2: (RETRY)
+    Time  Bug Name
+       2  general protection fault in gfs2_rgrp_dump
+       2  general protection fault in gfs2_rgrp_dump
+       4  WARNING in __folio_mark_dirty
+       5  WARNING in __folio_mark_dirty
+       6  INFO: task hung in gfs2_jhead_process_page
+       6  WARNING in __folio_mark_dirty
+       6  kernel BUG in gfs2_withdraw
+       7  INFO: task hung in gfs2_jhead_process_page
+       7  WARNING in __folio_mark_dirty
+       7  WARNING in __folio_mark_dirty
+       8  WARNING in __folio_mark_dirty
+       8  WARNING in __folio_mark_dirty
+       9  WARNING in __folio_mark_dirty
+       9  WARNING in __folio_mark_dirty
+      10  INFO: task hung in gfs2_jhead_process_page
+      10  WARNING in __folio_mark_dirty
+Attempt 3: (RETRY)
+    Time  Bug Name
+       2  INFO: rcu detected stall in corrupted
+       2  general protection fault in gfs2_rgrp_dump
+       2  general protection fault in gfs2_rgrp_dump
+       2  general protection fault in gfs2_rgrp_dump
+       3  WARNING in __folio_mark_dirty
+       3  general protection fault in gfs2_rgrp_dump
+       5  WARNING in __folio_mark_dirty
+       6  INFO: task hung in gfs2_jhead_process_page
+       7  INFO: task hung in gfs2_jhead_process_page
+       7  WARNING in __folio_mark_dirty
+       9  INFO: task hung in gfs2_jhead_process_page
+       9  WARNING in __folio_mark_dirty
+       9  WARNING in __folio_mark_dirty
+      10  INFO: task hung in gfs2_jhead_process_page
+      10  WARNING in __folio_mark_dirty
+The bug was not found.
+
+Failure: This bug cannot be found at the anchor commit.

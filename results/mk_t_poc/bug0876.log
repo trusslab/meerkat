@@ -1,0 +1,655 @@
+./bin/bisector -i 5 -c /home/syzretrospector/syzinspector/wd-bisector-5/bisector.cfg -a 1b929c02afd37871d5afb9d498426f83432e71c2 -F poc-test,poc-all-pocs
+Bisecting:          KASAN: use-after-free Read in ext4_find_extent
+Syzbot Link:        https://syzkaller.appspot.com/bug?extid=bf4bb7731ef73b83a3b4
+Working Name:       bug0876
+
+No aliases given.
+
+Anchor Commit:      1b929c02afd37871d5afb9d498426f83432e71c2
+Repository:         https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
+Branch:             master
+Arch:               amd64
+
+Bisector:           /home/syzretrospector/syzinspector/
+Version:            1.0.4
+Kernel:             /home/syzretrospector/syzinspector/wd-bisector-5/kernel/
+Syzkaller:          /home/syzretrospector/syzinspector/syzkaller/
+Compilers:          /home/syzretrospector/compilers/
+Ccache:             ccache
+Image:              /home/syzretrospector/images/stretch/stretch.img
+Image Key:          /home/syzretrospector/images/stretch/stretch.id_rsa
+
+Workdir:            /home/syzretrospector/syzinspector/wd-bisector-5/
+Kconfig:            /home/syzretrospector/syzinspector/wd-bisector-5/config-bug0876.txt
+Reproducers: (1)    /home/syzretrospector/syzinspector/wd-bisector-5/reproducers/
+Syzkaller Workdir:  /home/syzretrospector/syzinspector/wd-bisector-5/wd-kaller/
+Log Directory:      /home/syzretrospector/syzinspector/wd-bisector-5/log/
+
+VM Count:           8
+CPU Count:          2
+Procs:              16
+Memory:             4096
+Make Procs:         16
+
+==== Anchor Commit ====
+
+2025-03-22 05:03:14
+Session:   1
+Kernel:    2022-12-25 - 1b929c02afd37871d5afb9d498426f83432e71c2
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 0:
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in devlink_unregister
+Attempt 1:
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in cleanup_net
+    INFO: task hung in devlink_unregister
+Attempt 2:
+*** KASAN: slab-out-of-bounds Read in ext4_find_extent
+    kernel panic: KASAN: panic_on_warn set ...
+Attempt 3:
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in cleanup_net
+    INFO: task hung in devlink_unregister
+Attempt 4:
+*** KASAN: use-after-free Read in ext4_find_extent
+    kernel panic: KASAN: panic_on_warn set ...
+Attempt 5:
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in cleanup_net
+    INFO: task hung in devlink_unregister
+Attempt 6:
+*** KASAN: use-after-free Read in ext4_find_extent
+    kernel panic: KASAN: panic_on_warn set ...
+Attempt 7:
+*** KASAN: slab-out-of-bounds Read in ext4_find_extent
+    kernel panic: KASAN: panic_on_warn set ...
+The bug was found.
+
+==== Major Release Search ====
+18 Releases
+
+2025-03-22 05:32:09
+Session:   2
+Kernel:    2022-10-02 - 4fe89d07dcc2804c8b562f6c7896a45643d34b2f (v6.0)
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 0:
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in cleanup_net
+    INFO: task hung in devlink_unregister
+Attempt 1:
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in devlink_unregister
+Attempt 2:
+*** KASAN: slab-out-of-bounds Read in ext4_find_extent
+Attempt 3:
+*** KASAN: use-after-free Read in ext4_find_extent
+Attempt 4:
+*** KASAN: use-after-free Read in ext4_find_extent
+Attempt 5:
+*** KASAN: use-after-free Read in ext4_find_extent
+Attempt 6:
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in cleanup_net
+    INFO: task hung in devlink_unregister
+Attempt 7:
+*** KASAN: use-after-free Read in ext4_find_extent
+The bug was found.
+About 17 releases remaining
+
+2025-03-22 05:57:11
+Session:   3
+Kernel:    2022-07-31 - 3d7cb6b04c3f3115719235cc6866b10326de34cd (v5.19)
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 0:
+*** KASAN: use-after-free Read in ext4_find_extent
+Attempt 1:
+*** KASAN: use-after-free Read in ext4_find_extent
+Attempt 2:
+*** KASAN: use-after-free Read in ext4_find_extent
+Attempt 3:
+*** KASAN: use-after-free Read in ext4_find_extent
+Attempt 4:
+*** KASAN: use-after-free Read in ext4_find_extent
+Attempt 5:
+*** KASAN: use-after-free Read in ext4_find_extent
+Attempt 6:
+*** KASAN: use-after-free Read in ext4_find_extent
+Attempt 7:
+*** KASAN: use-after-free Read in ext4_find_extent
+The bug was found.
+About 16 releases remaining
+
+2025-03-22 06:18:23
+Session:   4
+Kernel:    2022-05-22 - 4b0986a3613c92f4ec1bdc7f60ec66fea135991f (v5.18)
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 0:
+*** KASAN: use-after-free Read in ext4_find_extent
+Attempt 1:
+*** KASAN: use-after-free Read in ext4_find_extent
+Attempt 2:
+*** KASAN: use-after-free Read in ext4_find_extent
+Attempt 3:
+*** KASAN: use-after-free Read in ext4_find_extent
+Attempt 4:
+*** KASAN: slab-out-of-bounds Read in ext4_find_extent
+Attempt 5:
+*** KASAN: slab-out-of-bounds Read in ext4_find_extent
+Attempt 6:
+*** KASAN: use-after-free Read in ext4_find_extent
+Attempt 7:
+*** KASAN: use-after-free Read in ext4_find_extent
+The bug was found.
+About 15 releases remaining
+
+2025-03-22 06:38:21
+Session:   5
+Kernel:    2022-01-09 - df0cc57e057f18e44dac8e6c18aba47ab53202f9 (v5.16)
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 0:
+*** KASAN: slab-out-of-bounds Read in ext4_find_extent
+Attempt 1:
+*** KASAN: use-after-free Read in ext4_find_extent
+Attempt 2:
+*** KASAN: use-after-free Read in ext4_find_extent
+Attempt 3:
+*** KASAN: slab-out-of-bounds Read in ext4_find_extent
+Attempt 4:
+*** KASAN: slab-out-of-bounds Read in ext4_find_extent
+Attempt 5:
+*** KASAN: use-after-free Read in ext4_find_extent
+Attempt 6:
+*** KASAN: use-after-free Read in ext4_find_extent
+Attempt 7:
+*** KASAN: use-after-free Read in ext4_find_extent
+The bug was found.
+About 14 releases remaining
+
+2025-03-22 06:58:52
+Session:   6
+Kernel:    2021-08-29 - 7d2a07b769330c34b4deabeed939325c77a7ec2f (v5.14)
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 0:
+*** KASAN: use-after-free Read in ext4_find_extent
+Attempt 1:
+*** KASAN: use-after-free Read in ext4_find_extent
+Attempt 2:
+*** KASAN: use-after-free Read in ext4_find_extent
+Attempt 3:
+*** KASAN: use-after-free Read in ext4_find_extent
+Attempt 4:
+*** KASAN: use-after-free Read in ext4_find_extent
+Attempt 5:
+*** KASAN: use-after-free Read in ext4_find_extent
+Attempt 6:
+*** KASAN: use-after-free Read in ext4_find_extent
+Attempt 7:
+*** KASAN: use-after-free Read in ext4_find_extent
+The bug was found.
+About 13 releases remaining
+
+2025-03-22 07:18:56
+Session:   7
+Kernel:    2021-04-25 - 9f4ad9e425a1d3b6a34617b8ea226d56a119a717 (v5.12)
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 0:
+*** KASAN: slab-out-of-bounds Read in ext4_find_extent
+Attempt 1:
+*** KASAN: use-after-free Read in ext4_find_extent
+Attempt 2:
+*** KASAN: use-after-free Read in ext4_find_extent
+Attempt 3:
+*** KASAN: use-after-free Read in ext4_find_extent
+Attempt 4:
+*** KASAN: use-after-free Read in ext4_find_extent
+Attempt 5:
+*** KASAN: use-after-free Read in ext4_find_extent
+Attempt 6:
+*** KASAN: slab-out-of-bounds Read in ext4_find_extent
+Attempt 7:
+*** KASAN: use-after-free Read in ext4_find_extent
+The bug was found.
+About 12 releases remaining
+
+2025-03-22 07:38:43
+Session:   8
+Kernel:    2020-12-13 - 2c85ebc57b3e1817b6ce1a6b703928e113a90442 (v5.10)
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.1.0-syz/bin/gcc
+Warning: VM has not responded after 5 attempts.
+Warning: Only booted 0 VMs.
+Attempt 0:
+    inconsistent lock state in vdpasim_map_page
+Attempt 1:
+    inconsistent lock state in vdpasim_map_page
+Attempt 2:
+    inconsistent lock state in vdpasim_map_page
+Attempt 3:
+    inconsistent lock state in vdpasim_map_page
+Attempt 4:
+    inconsistent lock state in vdpasim_map_page
+Attempt 5:
+    inconsistent lock state in vdpasim_map_page
+Attempt 6:
+    inconsistent lock state in vdpasim_map_page
+Attempt 7:
+    inconsistent lock state in vdpasim_map_page
+The bug was not found.
+About 11 releases remaining
+
+==== Kernel Bisection ====
+29645 Linux commits
+
+2025-03-22 08:48:13
+Session:   9
+Kernel:    2021-01-22 - 5225d5f57b3574c0954f03d8d21dfac92ea7e729
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Warning: VM has not responded after 5 attempts.
+Warning: Only booted 0 VMs.
+Attempt 0:
+    inconsistent lock state in vdpasim_map_page
+    kernel panic: System is deadlocked on memory
+Attempt 1:
+    inconsistent lock state in vdpasim_map_page
+    kernel panic: System is deadlocked on memory
+Attempt 2:
+    inconsistent lock state in vdpasim_map_page
+    kernel panic: System is deadlocked on memory
+Attempt 3:
+    inconsistent lock state in vdpasim_map_page
+    kernel panic: System is deadlocked on memory
+Attempt 4:
+    inconsistent lock state in vdpasim_map_page
+    kernel panic: System is deadlocked on memory
+Attempt 5:
+    inconsistent lock state in vdpasim_map_page
+    kernel panic: System is deadlocked on memory
+Attempt 6:
+    inconsistent lock state in vdpasim_map_page
+    kernel panic: System is deadlocked on memory
+Attempt 7:
+    inconsistent lock state in vdpasim_map_page
+    kernel panic: System is deadlocked on memory
+The bug was not found.
+About 14821 commits remaining
+
+2025-03-22 09:31:44
+Session:   10
+Kernel:    2021-02-21 - d99676af540c2dc829999928fb81c58c80a1dce4
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Warning: VM has not responded after 5 attempts.
+Warning: Only booted 0 VMs.
+Attempt 0:
+    WARNING in kvm_wait
+Attempt 1:
+    inconsistent lock state in vdpasim_map_page
+Attempt 2:
+    inconsistent lock state in vdpasim_map_page
+Attempt 3:
+    WARNING in kvm_wait
+Attempt 4:
+    inconsistent lock state in vdpasim_map_page
+Attempt 5:
+    inconsistent lock state in vdpasim_map_page
+Attempt 6:
+    WARNING in kvm_wait
+Attempt 7:
+    inconsistent lock state in vdpasim_map_page
+The bug was not found.
+About 6800 commits remaining
+
+2025-03-22 10:21:42
+Session:   11
+Kernel:    2021-03-09 - 69264b4a43aff7307283e2bae29e9305ab6b7d47
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Warning: VM has not responded after 5 attempts.
+Warning: Only booted 0 VMs.
+Attempt 0:
+    inconsistent lock state in vdpasim_map_page
+    WARNING in kvm_wait
+Attempt 1:
+    inconsistent lock state in vdpasim_map_page
+Attempt 2:
+    inconsistent lock state in vdpasim_map_page
+Attempt 3:
+    WARNING in kvm_wait
+Attempt 4:
+    inconsistent lock state in vdpasim_map_page
+Attempt 5:
+    WARNING in kvm_wait
+Attempt 6:
+    WARNING in kvm_wait
+Attempt 7:
+    possible deadlock in virtnet_poll_tx
+The bug was not found.
+About 3478 commits remaining
+
+2025-03-22 11:06:00
+Session:   12
+Kernel:    2021-03-12 - f296bfd5cd04cbb49b8fc9585adc280ab2b58624
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Warning: VM has not responded after 5 attempts.
+Warning: Only booted 4 VMs.
+Attempt 0:
+    WARNING in kvm_wait
+Attempt 1:
+    WARNING in kvm_wait
+Attempt 2:
+    WARNING in kvm_wait
+Attempt 3:
+    WARNING in kvm_wait
+Attempt 4:
+*** KASAN: use-after-free Read in ext4_find_extent
+Attempt 5:
+    WARNING in kvm_wait
+Attempt 6:
+    WARNING in kvm_wait
+Attempt 7:
+*** KASAN: use-after-free Read in ext4_find_extent
+The bug was found.
+About 1740 commits remaining
+
+2025-03-22 11:25:48
+Session:   13
+Kernel:    2021-02-26 - efba6d3a7c4bb59f0750609fae0f9644d82304b6
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Warning: VM has not responded after 5 attempts.
+Warning: Only booted 6 VMs.
+Attempt 0:
+*** KASAN: use-after-free Read in ext4_find_extent
+Attempt 1:
+*** KASAN: use-after-free Read in ext4_find_extent
+Attempt 2:
+    WARNING in corrupted
+Attempt 3:
+*** KASAN: slab-out-of-bounds Read in ext4_find_extent
+Attempt 4:
+*** KASAN: use-after-free Read in ext4_find_extent
+Attempt 5:
+    WARNING in kvm_wait
+Attempt 6:
+    WARNING in kvm_wait
+Attempt 7:
+*** KASAN: use-after-free Read in ext4_find_extent
+The bug was found.
+About 864 commits remaining
+
+2025-03-22 11:45:53
+Session:   14
+Kernel:    2021-02-26 - 64427985c76fcb54c783de617edf353009499a03
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Warning: VM has not responded after 5 attempts.
+Warning: Only booted 0 VMs.
+Attempt 0:
+    possible deadlock in virtnet_poll_tx
+Attempt 1:
+    WARNING in kvm_wait
+Attempt 2:
+    inconsistent lock state in vdpasim_map_page
+Attempt 3:
+    inconsistent lock state in vdpasim_map_page
+Attempt 4:
+    WARNING in kvm_wait
+Attempt 5:
+    inconsistent lock state in vdpasim_map_page
+Attempt 6:
+    inconsistent lock state in vdpasim_map_page
+Attempt 7:
+    inconsistent lock state in vdpasim_map_page
+The bug was not found.
+About 433 commits remaining
+
+2025-03-22 12:42:12
+Session:   15
+Kernel:    2021-02-26 - 1c9077cdecd027714736e70704da432ee2b946bb
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Warning: VM has not responded after 5 attempts.
+Warning: Only booted 2 VMs.
+Attempt 0:
+    WARNING in kvm_wait
+Attempt 1:
+    WARNING in kvm_wait
+Attempt 2:
+    WARNING in kvm_wait
+Attempt 3:
+    WARNING in kvm_wait
+Attempt 4:
+    WARNING in kvm_wait
+Attempt 5:
+    WARNING in kvm_wait
+Attempt 6:
+    WARNING in kvm_wait
+Attempt 7:
+    WARNING in kvm_wait
+The bug was not found.
+About 311 commits remaining
+
+2025-03-22 13:01:27
+Session:   16
+Kernel:    2021-02-26 - 8f47d753d4ecc6d3e306e22d885d6772625a3423
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Warning: VM has not responded after 5 attempts.
+Warning: Only booted 4 VMs.
+Attempt 0:
+    WARNING in kvm_wait
+Attempt 1:
+*** KASAN: use-after-free Read in ext4_find_extent
+Attempt 2:
+    WARNING in kvm_wait
+Attempt 3:
+    WARNING in kvm_wait
+Attempt 4:
+    WARNING in kvm_wait
+Attempt 5:
+    WARNING in kvm_wait
+Attempt 6:
+*** KASAN: use-after-free Read in ext4_find_extent
+Attempt 7:
+*** KASAN: use-after-free Read in ext4_find_extent
+The bug was found.
+About 178 commits remaining
+
+2025-03-22 13:20:30
+Session:   17
+Kernel:    2021-02-26 - d94d14008efed91a6de5de03627e0cdadb32c588
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Warning: VM has not responded after 5 attempts.
+Warning: Only booted 6 VMs.
+Attempt 0:
+    WARNING in kvm_wait
+Attempt 1:
+    WARNING in kvm_wait
+Attempt 2:
+*** KASAN: use-after-free Read in ext4_find_extent
+Attempt 3:
+*** KASAN: use-after-free Read in ext4_find_extent
+Attempt 4:
+    WARNING in kvm_wait
+Attempt 5:
+    WARNING in kvm_wait
+Attempt 6:
+    WARNING in kvm_wait
+Attempt 7:
+    WARNING in kvm_wait
+The bug was found.
+About 149 commits remaining
+
+2025-03-22 13:29:53
+Session:   18
+Kernel:    2021-02-22 - 4a42d848db9544e3108875390886dc490d9c101e
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Warning: VM has not responded after 5 attempts.
+Warning: Only booted 0 VMs.
+Attempt 0:
+    inconsistent lock state in vdpasim_map_page
+    kernel panic: System is deadlocked on memory
+Attempt 1:
+    inconsistent lock state in vdpasim_map_page
+    kernel panic: System is deadlocked on memory
+Attempt 2:
+    inconsistent lock state in vdpasim_map_page
+    kernel panic: System is deadlocked on memory
+Attempt 3:
+    inconsistent lock state in vdpasim_map_page
+    kernel panic: System is deadlocked on memory
+Attempt 4:
+    inconsistent lock state in vdpasim_map_page
+    kernel panic: System is deadlocked on memory
+Attempt 5:
+    inconsistent lock state in vdpasim_map_page
+    kernel panic: System is deadlocked on memory
+Attempt 6:
+    inconsistent lock state in vdpasim_map_page
+    kernel panic: System is deadlocked on memory
+Attempt 7:
+    inconsistent lock state in vdpasim_map_page
+    kernel panic: System is deadlocked on memory
+The bug was not found.
+About 12343 commits remaining
+
+2025-03-22 14:13:29
+Session:   19
+Kernel:    2021-02-26 - a5a673f7312253a842f3da8c60c980461cc269ec
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Warning: VM has not responded after 5 attempts.
+Warning: Only booted 0 VMs.
+Attempt 0:
+    inconsistent lock state in vdpasim_map_page
+Attempt 1:
+    inconsistent lock state in vdpasim_map_page
+Attempt 2:
+    inconsistent lock state in vdpasim_map_page
+    WARNING in kvm_wait
+Attempt 3:
+    WARNING in kvm_wait
+Attempt 4:
+    WARNING in kvm_wait
+Attempt 5:
+    inconsistent lock state in vdpasim_map_page
+Attempt 6:
+    inconsistent lock state in vdpasim_map_page
+Attempt 7:
+    possible deadlock in virtnet_poll_tx
+The bug was not found.
+About 258 commits remaining
+
+2025-03-22 14:58:38
+Session:   20
+Kernel:    2021-02-26 - d54ce6158e354f5358a547b96299ecd7f3725393
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Warning: VM has not responded after 5 attempts.
+Warning: Only booted 0 VMs.
+Attempt 0:
+    inconsistent lock state in vdpasim_map_page
+Attempt 1:
+    WARNING in kvm_wait
+Attempt 2:
+    inconsistent lock state in vdpasim_map_page
+Attempt 3:
+    inconsistent lock state in vdpasim_map_page
+Attempt 4:
+    inconsistent lock state in vdpasim_map_page
+Attempt 5:
+    inconsistent lock state in vdpasim_map_page
+Attempt 6:
+    WARNING in kvm_wait
+Attempt 7:
+    inconsistent lock state in vdpasim_map_page
+The bug was not found.
+About 252 commits remaining
+
+2025-03-22 15:44:54
+Session:   21
+Kernel:    2021-02-26 - f685a533a7fab35c5d069dcd663f59c8e4171a75
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Warning: VM has not responded after 5 attempts.
+Warning: Only booted 0 VMs.
+Attempt 0:
+    WARNING in kvm_wait
+Attempt 1:
+    inconsistent lock state in vdpasim_map_page
+Attempt 2:
+    WARNING in kvm_wait
+Attempt 3:
+    WARNING in kvm_wait
+Attempt 4:
+    inconsistent lock state in vdpasim_map_page
+Attempt 5:
+    inconsistent lock state in vdpasim_map_page
+Attempt 6:
+    inconsistent lock state in vdpasim_map_page
+Attempt 7:
+    WARNING in kvm_wait
+The bug was not found.
+About 249 commits remaining
+
+2025-03-22 16:24:33
+Session:   22
+Kernel:    2021-02-25 - 2df8d3807ce7f75bb975f1aeae8fc6757527c62d
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Warning: VM has not responded after 5 attempts.
+Warning: Only booted 0 VMs.
+Attempt 0:
+    inconsistent lock state in vdpasim_map_page
+    kernel panic: System is deadlocked on memory
+Attempt 1:
+    inconsistent lock state in vdpasim_map_page
+    kernel panic: System is deadlocked on memory
+Attempt 2:
+    inconsistent lock state in vdpasim_map_page
+    kernel panic: System is deadlocked on memory
+Attempt 3:
+    inconsistent lock state in vdpasim_map_page
+    kernel panic: System is deadlocked on memory
+Attempt 4:
+    inconsistent lock state in vdpasim_map_page
+    kernel panic: System is deadlocked on memory
+Attempt 5:
+    inconsistent lock state in vdpasim_map_page
+    kernel panic: System is deadlocked on memory
+Attempt 6:
+    inconsistent lock state in vdpasim_map_page
+    kernel panic: System is deadlocked on memory
+Attempt 7:
+    inconsistent lock state in vdpasim_map_page
+    WARNING: suspicious RCU usage in security_prepare_creds
+    kernel panic: System is deadlocked on memory
+The bug was not found.
+About 12341 commits remaining
+
+2025-03-22 16:57:32
+Session:   23
+Kernel:    2021-02-26 - 245137cdf0cd92077dad37868fe4859c90dada36
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Warning: VM has not responded after 5 attempts.
+Warning: Only booted 4 VMs.
+Attempt 0:
+    WARNING in kvm_wait
+Attempt 1:
+    WARNING in kvm_wait
+Attempt 2:
+*** KASAN: use-after-free Read in ext4_find_extent
+Attempt 3:
+    WARNING in kvm_wait
+Attempt 4:
+    WARNING in kvm_wait
+Attempt 5:
+    WARNING in kvm_wait
+Attempt 6:
+*** KASAN: use-after-free Read in ext4_find_extent
+Attempt 7:
+    WARNING in kvm_wait
+The bug was found.
+About 12340 commits remaining
+
+====================================================================================================================================================
+Bug Name:             KASAN: use-after-free Read in ext4_find_extent
+Bug Link:             https://syzkaller.appspot.com/bug?extid=bf4bb7731ef73b83a3b4
+Bisection Result:     2021-02-26 - 245137cdf0cd92077dad37868fe4859c90dada36
+Bisected Commit Name: Merge branch 'akpm' (patches from Andrew)
+Run Time:             12h3m57s
+
+Anchor Commit:        2022-12-25 - 1b929c02afd37871d5afb9d498426f83432e71c2
+Bisection Result:     2021-02-26 - 245137cdf0cd92077dad37868fe4859c90dada36

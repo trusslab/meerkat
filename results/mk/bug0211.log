@@ -1,0 +1,76 @@
+./bin/bisector -i 5 -c /home/syzretrospector/syzinspector/wd-bisector-5/bisector.cfg -a 555f3d7be91a873114c9656069f1a9fa476ec41a -F ff-test,poc-test,stateful-corpus,ff-no-find-backup
+Bisecting:          BUG: corrupted list in rdma_listen
+Warning: No syscall found that produces rdma_cm_id.
+Syzbot Link:        https://syzkaller.appspot.com/bug?id=362b5b49fced29361c0ba3007a2b3e5cd13776b5
+Working Name:       bug0211
+
+No aliases given.
+
+Anchor Commit:      555f3d7be91a873114c9656069f1a9fa476ec41a
+Repository:         https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
+Branch:             master
+Arch:               amd64
+
+Bisector:           /home/syzretrospector/syzinspector/
+Version:            1.0.4
+Kernel:             /home/syzretrospector/syzinspector/wd-bisector-5/kernel/
+Syzkaller:          /home/syzretrospector/syzinspector/syzkaller/
+Compilers:          /home/syzretrospector/compilers/
+Ccache:             ccache
+Image:              /home/syzretrospector/images/stretch/stretch.img
+Image Key:          /home/syzretrospector/images/stretch/stretch.id_rsa
+
+Workdir:            /home/syzretrospector/syzinspector/wd-bisector-5/
+Kconfig:            /home/syzretrospector/syzinspector/wd-bisector-5/config-bug0211.txt
+Reproducers: (1)    /home/syzretrospector/syzinspector/wd-bisector-5/reproducers/
+Primary PoC:        /home/syzretrospector/syzinspector/wd-bisector-5/reproducers/repro-bug0211-2.prog
+Syzkaller Workdir:  /home/syzretrospector/syzinspector/wd-bisector-5/wd-kaller/
+Log Directory:      /home/syzretrospector/syzinspector/wd-bisector-5/log/
+
+Syscalls: (6)       ["openat$rdma_cm", "write$RDMA_USER_CM_CMD_CREATE_ID", "write$RDMA_USER_CM_CMD_LISTEN", "write$RDMA_USER_CM_CMD_RESOLVE_IP", "ioctl$F2FS_IOC_START_ATOMIC_WRITE", "openat$selinux_enforce"]
+VM Count:           8
+CPU Count:          2
+Procs:              16
+Memory:             4096
+Make Procs:         16
+Max Time:           10
+Max Attempts:       1
+
+==== Anchor Commit ====
+
+2025-03-14 16:40:55
+Session:   1
+Kernel:    2022-02-07 - 555f3d7be91a873114c9656069f1a9fa476ec41a
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    No crashes found.
+Attempt 2: (RETRY)
+    Time  Bug Name
+       2  KASAN: use-after-free Read in rdma_listen
+       2  KASAN: use-after-free Read in rdma_listen
+       2  KASAN: use-after-free Read in rdma_listen
+       2  KASAN: use-after-free Read in rdma_listen
+       2  KASAN: use-after-free Read in rdma_listen
+       2  KASAN: use-after-free Read in rdma_listen
+       2  KASAN: use-after-free Read in rdma_listen
+       4  KASAN: use-after-free Read in _cma_cancel_listens
+       7  KASAN: use-after-free Read in rdma_listen
+       9  KASAN: use-after-free Read in rdma_listen
+       9  KASAN: use-after-free Read in rdma_listen
+      10  KASAN: use-after-free Read in _cma_cancel_listens
+      10  KASAN: use-after-free Read in rdma_listen
+Attempt 3: (RETRY)
+    Time  Bug Name
+       2  KASAN: use-after-free Read in rdma_listen
+       2  KASAN: use-after-free Read in rdma_listen
+       2  KASAN: use-after-free Read in rdma_listen
+       2  KASAN: use-after-free Read in rdma_listen
+       3  KASAN: use-after-free Read in rdma_listen
+       6  KASAN: use-after-free Read in rdma_listen
+       7  KASAN: use-after-free Read in _cma_cancel_listens
+       7  KASAN: use-after-free Read in rdma_listen
+       8  KASAN: use-after-free Read in rdma_listen
+       9  KASAN: use-after-free Read in rdma_listen
+The bug was not found.
+
+Failure: This bug cannot be found at the anchor commit.

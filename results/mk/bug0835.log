@@ -1,0 +1,308 @@
+./bin/bisector -i 5 -c /home/syzretrospector/syzinspector/wd-bisector-5/bisector.cfg -a b229b6ca5abbd63ff40c1396095b1b36b18139c3 -F ff-test,poc-test,stateful-corpus,ff-no-find-backup
+Bisecting:          KASAN: use-after-free Read in gsm_cleanup_mux
+Syzbot Link:        https://syzkaller.appspot.com/bug?extid=893c55305230e719a203
+Working Name:       bug0835
+
+No aliases given.
+
+Anchor Commit:      b229b6ca5abbd63ff40c1396095b1b36b18139c3
+Repository:         https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
+Branch:             master
+Arch:               amd64
+
+Bisector:           /home/syzretrospector/syzinspector/
+Version:            1.0.4
+Kernel:             /home/syzretrospector/syzinspector/wd-bisector-5/kernel/
+Syzkaller:          /home/syzretrospector/syzinspector/syzkaller/
+Compilers:          /home/syzretrospector/compilers/
+Ccache:             ccache
+Image:              /home/syzretrospector/images/stretch/stretch.img
+Image Key:          /home/syzretrospector/images/stretch/stretch.id_rsa
+
+Workdir:            /home/syzretrospector/syzinspector/wd-bisector-5/
+Kconfig:            /home/syzretrospector/syzinspector/wd-bisector-5/config-bug0835.txt
+Reproducers: (4)    /home/syzretrospector/syzinspector/wd-bisector-5/reproducers/
+Primary PoC:        /home/syzretrospector/syzinspector/wd-bisector-5/reproducers/repro-bug0835-3.prog
+Syzkaller Workdir:  /home/syzretrospector/syzinspector/wd-bisector-5/wd-kaller/
+Log Directory:      /home/syzretrospector/syzinspector/wd-bisector-5/log/
+
+Syscalls: (10)      ["ioctl$TCSETSF2", "ioctl$TIOCSETD", "syz_genetlink_get_family_id$tipc", "syz_open_dev$tty20", "socket$nl_generic", "sendmsg$TIPC_CMD_SET_LINK_TOL", "ioctl$F2FS_IOC_START_ATOMIC_WRITE", "openat$selinux_enforce", "socket$netlink", "socket"]
+VM Count:           8
+CPU Count:          2
+Procs:              16
+Memory:             4096
+Make Procs:         16
+Max Time:           10
+Max Attempts:       1
+
+==== Anchor Commit ====
+
+2025-03-24 08:36:07
+Session:   1
+Kernel:    2022-10-26 - b229b6ca5abbd63ff40c1396095b1b36b18139c3
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       2  INFO: rcu detected stall in corrupted
+***    2  KASAN: use-after-free Read in gsm_cleanup_mux
+***    2  KASAN: use-after-free Read in gsm_cleanup_mux
+***    2  KASAN: use-after-free Read in gsm_cleanup_mux
+Attempt 2: (RETRY)
+    Time  Bug Name
+       2  INFO: rcu detected stall in corrupted
+***    2  KASAN: use-after-free Read in gsm_cleanup_mux
+***    2  KASAN: use-after-free Read in gsm_cleanup_mux
+***    2  KASAN: use-after-free Read in gsm_cleanup_mux
+***    2  KASAN: use-after-free Read in gsm_cleanup_mux
+***    2  KASAN: use-after-free Read in gsm_cleanup_mux
+Attempt 3: (RETRY)
+    Time  Bug Name
+       2  INFO: rcu detected stall in corrupted
+***    2  KASAN: use-after-free Read in gsm_cleanup_mux
+***    2  KASAN: use-after-free Read in gsm_cleanup_mux
+The bug was found.
+
+New Max Time: 10
+
+==== Major Release Search ====
+18 Releases
+
+2025-03-24 08:53:27
+Session:   2
+Kernel:    2022-10-02 - 4fe89d07dcc2804c8b562f6c7896a45643d34b2f (v6.0)
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       2  INFO: rcu detected stall in corrupted
+***    3  KASAN: use-after-free Read in gsm_cleanup_mux
+***    3  KASAN: use-after-free Read in gsm_cleanup_mux
+***    3  KASAN: use-after-free Read in gsm_cleanup_mux
+***    3  KASAN: use-after-free Read in gsm_cleanup_mux
+Running syz-repro.
+Run Time:        0h25m0s
+The bug was found.
+About 17 releases remaining
+
+2025-03-24 09:31:59
+Session:   3
+Kernel:    2022-07-31 - 3d7cb6b04c3f3115719235cc6866b10326de34cd (v5.19)
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       4  KASAN: use-after-free Read in hci_cmd_timeout
+The bug was not found.
+About 16 releases remaining
+
+==== Kernel Bisection ====
+16585 Linux commits
+
+2025-03-24 09:52:25
+Session:   4
+Kernel:    2022-08-04 - 78acd4ca433425e6dd4032cfc2156c60e34931f2
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       1  WARNING: ODEBUG bug in mgmt_index_removed
+       4  WARNING: ODEBUG bug in mgmt_index_removed
+       4  WARNING: ODEBUG bug in mgmt_index_removed
+       4  WARNING: ODEBUG bug in mgmt_index_removed
+       5  WARNING: ODEBUG bug in mgmt_index_removed
+       5  WARNING: ODEBUG bug in mgmt_index_removed
+       5  WARNING: ODEBUG bug in mgmt_index_removed
+       5  WARNING: ODEBUG bug in mgmt_index_removed
+***    6  KASAN: use-after-free Read in gsm_cleanup_mux
+       6  WARNING: ODEBUG bug in mgmt_index_removed
+Running syz-repro.
+Run Time:        0h3m0s
+The bug was found.
+About 8200 commits remaining
+
+2025-03-24 10:11:35
+Session:   5
+Kernel:    2022-08-03 - 526942b8134cc34d25d27f95dfff98b8ce2f6fcd
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       4  KASAN: use-after-free Read in hci_cmd_timeout
+***    6  KASAN: use-after-free Read in gsm_cleanup_mux
+Running syz-repro.
+New PoC saved at /home/syzretrospector/syzinspector/wd-bisector-5/reproducers/repro-bug0835-0.prog
+Primary PoC:     /home/syzretrospector/syzinspector/wd-bisector-5/reproducers/repro-bug0835-0.prog
+Run Time:        0h10m0s
+The bug was found.
+About 3209 commits remaining
+
+2025-03-24 10:37:38
+Session:   6
+Kernel:    2022-08-02 - 2e7a95156d64667a8ded606829d57c6fc92e41df
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    2  KASAN: use-after-free Read in gsm_cleanup_mux
+***    2  KASAN: use-after-free Read in gsm_cleanup_mux
+The bug was found.
+About 1607 commits remaining
+
+2025-03-24 10:49:38
+Session:   7
+Kernel:    2022-07-19 - 26c350fe7ae013dda37b6a7771e5a67062bfe7c8
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    2  KASAN: use-after-free Read in gsm_cleanup_mux
+The bug was found.
+About 804 commits remaining
+
+2025-03-24 11:01:38
+Session:   8
+Kernel:    2022-07-11 - 8128bfe3d7dc84c5896b77338babcd2197977776
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    2  KASAN: use-after-free Read in gsm_cleanup_mux
+Running syz-repro.
+New PoC saved at /home/syzretrospector/syzinspector/wd-bisector-5/reproducers/repro-bug0835-1.prog
+Primary PoC:     /home/syzretrospector/syzinspector/wd-bisector-5/reproducers/repro-bug0835-1.prog
+Run Time:        0h6m0s
+The bug was found.
+About 400 commits remaining
+
+2025-03-24 11:13:03
+Session:   9
+Kernel:    2022-07-06 - ec21041bb35fa32b4fb9748211db34305afb3cd5
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    3  KASAN: use-after-free Read in gsm_cleanup_mux
+***    3  KASAN: use-after-free Read in gsm_cleanup_mux
+***    3  KASAN: use-after-free Read in gsm_cleanup_mux
+***    3  KASAN: use-after-free Read in gsm_cleanup_mux
+The bug was found.
+About 199 commits remaining
+
+2025-03-24 11:19:30
+Session:   10
+Kernel:    2022-07-01 - 5d16aa7458a4b1c5f9d939f3e25353ade733d053
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    3  KASAN: use-after-free Read in gsm_cleanup_mux
+***    3  KASAN: use-after-free Read in gsm_cleanup_mux
+The bug was found.
+About 92 commits remaining
+
+2025-03-24 11:25:53
+Session:   11
+Kernel:    2022-07-01 - 813b0808907511ea30a7c648a52ccf625b4d5f6d
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    3  KASAN: use-after-free Read in gsm_cleanup_mux
+Running syz-repro.
+New PoC saved at /home/syzretrospector/syzinspector/wd-bisector-5/reproducers/repro-bug0835-0.prog
+Primary PoC:     /home/syzretrospector/syzinspector/wd-bisector-5/reproducers/repro-bug0835-1.prog
+Run Time:        0h11m0s
+The bug was found.
+About 38 commits remaining
+
+2025-03-24 11:43:16
+Session:   12
+Kernel:    2022-06-22 - 99f6b77f74c88ac1bc4c81e089dd0cbbf882aea6
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       4  KASAN: use-after-free Read in hci_cmd_timeout
+       4  KASAN: use-after-free Read in hci_cmd_timeout
+***    4  KASAN: use-after-free Read in gsm_cleanup_mux
+The bug was found.
+About 19 commits remaining
+
+2025-03-24 11:57:27
+Session:   13
+Kernel:    2022-06-15 - 8b86f733c0e512f92e43a9db1559498ef64d244e
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    3  KASAN: use-after-free Read in gsm_cleanup_mux
+The bug was found.
+About 10 commits remaining
+
+2025-03-24 12:03:45
+Session:   14
+Kernel:    2022-06-07 - 729abb9b376efef58d4d5b77f1ce06ce197f459e
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       5  KASAN: use-after-free Read in hci_cmd_timeout
+       7  INFO: trying to register non-static key in hci_uart_send_frame
+***    7  KASAN: use-after-free Read in gsm_cleanup_mux
+Running syz-repro.
+New PoC saved at /home/syzretrospector/syzinspector/wd-bisector-5/reproducers/repro-bug0835-0.prog
+Primary PoC:     /home/syzretrospector/syzinspector/wd-bisector-5/reproducers/repro-bug0835-0.prog
+Run Time:        0h11m0s
+The bug was found.
+About 5 commits remaining
+
+2025-03-24 12:25:32
+Session:   15
+Kernel:    2022-06-07 - 3b0a91e586dc92da738af9eb35352d5897b8b279
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    3  KASAN: use-after-free Read in gsm_cleanup_mux
+The bug was found.
+About 3 commits remaining
+
+2025-03-24 12:31:59
+Session:   16
+Kernel:    2022-06-06 - 6c52573bf4c3a0f6e7142264fb36b31ae2c3707a
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    2  KASAN: use-after-free Read in gsm_cleanup_mux
+The bug was found.
+About 2 commits remaining
+
+==== Partial Result: Focused Fuzzing ====
+Reproducer:           /home/syzretrospector/syzinspector/wd-bisector-5/reproducers/repro-bug0835-0.prog
+Bisection Result:     2022-06-06 - 6c52573bf4c3a0f6e7142264fb36b31ae2c3707a
+Bisected Commit Name: ARM: dts: exynos: add panel and backlight to p4note
+Stage Time:           4h1m14s
+Run Time:             4h1m15s
+=========================================
+
+==== Anchor Commit ====
+
+2025-03-24 12:37:21
+Session:   17
+Kernel:    2022-06-05 - f2906aa863381afb0015a9eb7fefad885d4e5a56
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+
+Failure: This bug cannot be found at the anchor commit.
+
+====================================================================================================================================================
+Bug Name:             KASAN: use-after-free Read in gsm_cleanup_mux
+Bug Link:             https://syzkaller.appspot.com/bug?extid=893c55305230e719a203
+Bisection Result:     2022-06-06 - 6c52573bf4c3a0f6e7142264fb36b31ae2c3707a
+Bisected Commit Name: ARM: dts: exynos: add panel and backlight to p4note
+Run Time:             4h6m39s
+
+Anchor Commit:        2022-10-26 - b229b6ca5abbd63ff40c1396095b1b36b18139c3
+Bisection Result:     2022-06-06 - 6c52573bf4c3a0f6e7142264fb36b31ae2c3707a

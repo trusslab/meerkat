@@ -1,0 +1,322 @@
+./bin/bisector -i 5 -c /home/syzretrospector/syzinspector/wd-bisector-5/bisector.cfg -a 888cf78c29e223fd808682f477c18cf8f61ad995 -F ff-test,poc-test,stateful-corpus,ff-no-find-backup
+Bisecting:          general protection fault in hugetlb_vma_lock_write
+Warning: No syscall found that produces drm_obj_id.
+Warning: No syscall found that produces drm_prop_id.
+Syzbot Link:        https://syzkaller.appspot.com/bug?extid=6ada951e7c0f7bc8a71e
+Working Name:       bug0774
+
+No aliases given.
+
+Anchor Commit:      888cf78c29e223fd808682f477c18cf8f61ad995
+Repository:         https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
+Branch:             master
+Arch:               amd64
+
+Bisector:           /home/syzretrospector/syzinspector/
+Version:            1.0.4
+Kernel:             /home/syzretrospector/syzinspector/wd-bisector-5/kernel/
+Syzkaller:          /home/syzretrospector/syzinspector/syzkaller/
+Compilers:          /home/syzretrospector/compilers/
+Ccache:             ccache
+Image:              /home/syzretrospector/images/stretch/stretch.img
+Image Key:          /home/syzretrospector/images/stretch/stretch.id_rsa
+
+Workdir:            /home/syzretrospector/syzinspector/wd-bisector-5/
+Kconfig:            /home/syzretrospector/syzinspector/wd-bisector-5/config-bug0774.txt
+Reproducers: (14)   /home/syzretrospector/syzinspector/wd-bisector-5/reproducers/
+Primary PoC:        /home/syzretrospector/syzinspector/wd-bisector-5/reproducers/repro-bug0774-1.prog
+Syzkaller Workdir:  /home/syzretrospector/syzinspector/wd-bisector-5/wd-kaller/
+Log Directory:      /home/syzretrospector/syzinspector/wd-bisector-5/log/
+
+Syscalls: (34)      ["fsetxattr$trusted_overlay_upper", "ioctl$DRM_IOCTL_MODE_RMFB", "memfd_create", "mmap", "openat$rdma_cm", "pipe", "process_vm_writev", "seccomp$SECCOMP_SET_MODE_FILTER_LISTENER", "sendfile", "sendmmsg$inet6", "setsockopt$IPT_SO_SET_REPLACE", "statx", "syz_clone", "syz_clone3", "timer_create", "syz_open_dev$dri", "ioctl$DRM_IOCTL_MODE_GETCRTC", "socket$inet6", "socket$inet", "syz_mount_image$bfs", "timer_getoverrun", "ioctl$DRM_IOCTL_MODE_OBJ_GETPROPERTIES", "socket", "mount$bpf", "getuid", "setgid", "getgid", "openat$pidfd", "openat$cgroup_root", "ioctl$DRM_IOCTL_I915_GET_PIPE_FROM_CRTC_ID", "setsockopt$inet_mreqn", "ioctl$sock_SIOCGIFINDEX", "openat$i915", "bpf$OBJ_GET_PROG"]
+VM Count:           8
+CPU Count:          2
+Procs:              16
+Memory:             4096
+Make Procs:         16
+Max Time:           10
+Max Attempts:       1
+
+==== Anchor Commit ====
+
+2025-03-18 03:44:24
+Session:   1
+Kernel:    2023-10-27 - 888cf78c29e223fd808682f477c18cf8f61ad995
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Warning: ioctl$DRM_IOCTL_MODE_RMFB was disabled by Syzkaller.
+Warning: statx was disabled by Syzkaller.
+Attempt 1:
+    Time  Bug Name
+       4  WARNING in mark_buffer_dirty
+       9  general protection fault in hugetlb_vma_lock_read
+Warning: ioctl$DRM_IOCTL_MODE_RMFB was disabled by Syzkaller.
+Warning: statx was disabled by Syzkaller.
+Attempt 2: (RETRY)
+    Time  Bug Name
+       3  WARNING in hugetlb_vma_assert_locked
+       3  general protection fault in hugetlb_vma_lock_read
+       3  general protection fault in hugetlb_vma_lock_read
+***    3  general protection fault in hugetlb_vma_lock_write
+***    3  general protection fault in hugetlb_vma_lock_write
+***    3  general protection fault in hugetlb_vma_lock_write
+***    3  general protection fault in hugetlb_vma_lock_write
+***    3  general protection fault in hugetlb_vma_lock_write
+Warning: ioctl$DRM_IOCTL_MODE_RMFB was disabled by Syzkaller.
+Warning: statx was disabled by Syzkaller.
+Attempt 3: (RETRY)
+    Time  Bug Name
+***    2  general protection fault in hugetlb_vma_lock_write
+The bug was found.
+
+New Max Time: 12
+
+==== Major Release Search ====
+19 Releases
+
+2025-03-18 04:12:00
+Session:   2
+Kernel:    2023-06-25 - 6995e2de6891c724bfeb2db33d7b87775f913ad1 (v6.4)
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Warning: ioctl$DRM_IOCTL_MODE_RMFB was disabled by Syzkaller.
+Warning: statx was disabled by Syzkaller.
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 18 releases remaining
+
+==== Kernel Bisection ====
+29910 Linux commits
+
+2025-03-18 04:37:18
+Session:   3
+Kernel:    2023-08-28 - 6016fc9162245c5b109305841f76cca59c20a273
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Warning: ioctl$DRM_IOCTL_MODE_RMFB was disabled by Syzkaller.
+Warning: statx was disabled by Syzkaller.
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 14945 commits remaining
+
+2025-03-18 05:01:18
+Session:   4
+Kernel:    2023-08-30 - a1c19328a160c80251868dbd80066dce23d07995
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Warning: ioctl$DRM_IOCTL_MODE_RMFB was disabled by Syzkaller.
+Warning: statx was disabled by Syzkaller.
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 7830 commits remaining
+
+2025-03-18 05:25:29
+Session:   5
+Kernel:    2023-09-03 - 708283abf896dd4853e673cc8cba70acaf9bf4ea
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Warning: ioctl$DRM_IOCTL_MODE_RMFB was disabled by Syzkaller.
+Warning: statx was disabled by Syzkaller.
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 3907 commits remaining
+
+2025-03-18 05:49:41
+Session:   6
+Kernel:    2023-09-15 - 63a2de8d16b3ecd607c077c98f8d6cd0147ec099
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Warning: ioctl$DRM_IOCTL_MODE_RMFB was disabled by Syzkaller.
+Warning: statx was disabled by Syzkaller.
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 1954 commits remaining
+
+2025-03-18 06:13:54
+Session:   7
+Kernel:    2023-10-06 - f200bab3756fe81493a1b280180dafa1d9ccdcf7
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Warning: ioctl$DRM_IOCTL_MODE_RMFB was disabled by Syzkaller.
+Warning: statx was disabled by Syzkaller.
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 978 commits remaining
+
+2025-03-18 06:37:51
+Session:   8
+Kernel:    2023-10-16 - e4078ebbddf69f5a82f164dc07d50321b7f641cf
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Warning: ioctl$DRM_IOCTL_MODE_RMFB was disabled by Syzkaller.
+Warning: statx was disabled by Syzkaller.
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 489 commits remaining
+
+2025-03-18 07:01:47
+Session:   9
+Kernel:    2023-10-20 - c3200081020d63f6c6bfd8a6db2ae8a5b99b348a
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Warning: ioctl$DRM_IOCTL_MODE_RMFB was disabled by Syzkaller.
+Warning: statx was disabled by Syzkaller.
+Attempt 1:
+    Time  Bug Name
+       8  INFO: task hung in do_unlinkat
+The bug was not found.
+About 255 commits remaining
+
+2025-03-18 07:25:39
+Session:   10
+Kernel:    2023-10-23 - 7c14564010fc1d0f16ca7d39b0ff948b43344209
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Warning: ioctl$DRM_IOCTL_MODE_RMFB was disabled by Syzkaller.
+Warning: statx was disabled by Syzkaller.
+Attempt 1:
+    Time  Bug Name
+       9  INFO: task hung in do_unlinkat
+The bug was not found.
+About 133 commits remaining
+
+2025-03-18 07:44:51
+Session:   11
+Kernel:    2023-10-25 - 53798666648af3aa0dd512c2380576627237a800
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Warning: ioctl$DRM_IOCTL_MODE_RMFB was disabled by Syzkaller.
+Warning: statx was disabled by Syzkaller.
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 270 commits remaining
+
+2025-03-18 08:01:58
+Session:   12
+Kernel:    2023-10-26 - c17cda15cc86e65e9725641daddcd7a63cc9ad01
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Warning: ioctl$DRM_IOCTL_MODE_RMFB was disabled by Syzkaller.
+Warning: statx was disabled by Syzkaller.
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 54 commits remaining
+
+2025-03-18 08:20:12
+Session:   13
+Kernel:    2023-10-26 - 736a4aad8a9fdcf577ffa33b33df240c67557af8
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Warning: ioctl$DRM_IOCTL_MODE_RMFB was disabled by Syzkaller.
+Warning: statx was disabled by Syzkaller.
+Attempt 1:
+    Time  Bug Name
+       5  WARNING in mark_buffer_dirty
+The bug was not found.
+About 466 commits remaining
+
+2025-03-18 08:36:38
+Session:   14
+Kernel:    2023-10-27 - 5679dd241bbf36492d8fcddb99af48b22a5f99ec
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Warning: ioctl$DRM_IOCTL_MODE_RMFB was disabled by Syzkaller.
+Warning: statx was disabled by Syzkaller.
+Attempt 1:
+    Time  Bug Name
+       7  INFO: task hung in d_alloc_parallel
+      11  INFO: task hung in path_openat
+The bug was not found.
+About 132 commits remaining
+
+2025-03-18 08:53:20
+Session:   15
+Kernel:    2023-10-26 - 750b95887e567848ac2c851dae47922cac6db946
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Warning: ioctl$DRM_IOCTL_MODE_RMFB was disabled by Syzkaller.
+Warning: statx was disabled by Syzkaller.
+Attempt 1:
+    Time  Bug Name
+       5  general protection fault in hugetlb_vma_lock_read
+       6  general protection fault in hugetlb_vma_lock_read
+      11  INFO: task hung in d_alloc_parallel
+The bug was not found.
+About 6 commits remaining
+
+2025-03-18 09:10:01
+Session:   16
+Kernel:    2023-10-25 - 47b8def9358c5eb888e78b24b7e5b7f2e2e97b8e
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Warning: ioctl$DRM_IOCTL_MODE_RMFB was disabled by Syzkaller.
+Warning: statx was disabled by Syzkaller.
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 1785 commits remaining
+
+2025-03-18 09:34:05
+Session:   17
+Kernel:    2023-10-27 - 6e6c6d6bc6c96c2477ddfea24a121eb5ee12b7a3
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Warning: ioctl$DRM_IOCTL_MODE_RMFB was disabled by Syzkaller.
+Warning: statx was disabled by Syzkaller.
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 142 commits remaining
+
+2025-03-18 09:50:31
+Session:   18
+Kernel:    2023-10-27 - 09a4a03c073bab5b375b71769f708d6932b370f7
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Warning: ioctl$DRM_IOCTL_MODE_RMFB was disabled by Syzkaller.
+Warning: statx was disabled by Syzkaller.
+Attempt 1:
+    Time  Bug Name
+***    5  general protection fault in hugetlb_vma_lock_write
+***    5  general protection fault in hugetlb_vma_lock_write
+Running syz-repro.
+New PoC saved at /home/syzretrospector/syzinspector/wd-bisector-5/reproducers/repro-bug0774-0.prog
+Primary PoC:     /home/syzretrospector/syzinspector/wd-bisector-5/reproducers/repro-bug0774-0.prog
+Run Time:        0h10m0s
+The bug was found.
+About 141 commits remaining
+
+==== Partial Result: Focused Fuzzing ====
+Reproducer:           /home/syzretrospector/syzinspector/wd-bisector-5/reproducers/repro-bug0774-0.prog
+Bisection Result:     2023-10-27 - 09a4a03c073bab5b375b71769f708d6932b370f7
+Bisected Commit Name: Merge tag 'powerpc-6.6-6' of git://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux
+Stage Time:           6h25m32s
+Run Time:             6h25m35s
+=========================================
+
+==== Anchor Commit ====
+
+2025-03-18 10:09:56
+Session:   19
+Kernel:    2023-10-26 - 750b95887e567848ac2c851dae47922cac6db946
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+
+Failure: This bug cannot be found at the anchor commit.
+
+====================================================================================================================================================
+Bug Name:             general protection fault in hugetlb_vma_lock_write
+Bug Link:             https://syzkaller.appspot.com/bug?extid=6ada951e7c0f7bc8a71e
+Bisection Result:     2023-10-27 - 09a4a03c073bab5b375b71769f708d6932b370f7
+Bisected Commit Name: Merge tag 'powerpc-6.6-6' of git://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux
+Run Time:             6h31m55s
+
+Anchor Commit:        2023-10-27 - 888cf78c29e223fd808682f477c18cf8f61ad995
+Bisection Result:     2023-10-27 - 09a4a03c073bab5b375b71769f708d6932b370f7

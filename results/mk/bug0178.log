@@ -1,0 +1,77 @@
+./bin/bisector -i 5 -c /home/syzretrospector/syzinspector/wd-bisector-5/bisector.cfg -a 032dcf09e2bf7c822be25b4abef7a6c913870d98 -F ff-test,poc-test,stateful-corpus,ff-no-find-backup
+Bisecting:          WARNING: ODEBUG bug in kvm_xen_vcpu_set_attr
+Syzbot Link:        https://syzkaller.appspot.com/bug?id=8234a9dfd3aafbf092cc5a7cd9842e3ebc45fc42
+Working Name:       bug0178
+
+No aliases given.
+
+Anchor Commit:      032dcf09e2bf7c822be25b4abef7a6c913870d98
+Repository:         https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
+Branch:             master
+Arch:               amd64
+
+Bisector:           /home/syzretrospector/syzinspector/
+Version:            1.0.4
+Kernel:             /home/syzretrospector/syzinspector/wd-bisector-5/kernel/
+Syzkaller:          /home/syzretrospector/syzinspector/syzkaller/
+Compilers:          /home/syzretrospector/compilers/
+Ccache:             ccache
+Image:              /home/syzretrospector/images/stretch/stretch.img
+Image Key:          /home/syzretrospector/images/stretch/stretch.id_rsa
+
+Workdir:            /home/syzretrospector/syzinspector/wd-bisector-5/
+Kconfig:            /home/syzretrospector/syzinspector/wd-bisector-5/config-bug0178.txt
+Reproducers: (1)    /home/syzretrospector/syzinspector/wd-bisector-5/reproducers/
+Primary PoC:        /home/syzretrospector/syzinspector/wd-bisector-5/reproducers/repro-bug0178-1.prog
+Syzkaller Workdir:  /home/syzretrospector/syzinspector/wd-bisector-5/wd-kaller/
+Log Directory:      /home/syzretrospector/syzinspector/wd-bisector-5/log/
+
+Syscalls: (39)      ["ioctl$KVM_CREATE_VCPU", "ioctl$KVM_CREATE_VM", "ioctl$KVM_GET_NESTED_STATE", "memfd_secret", "mmap", "openat$cgroup_ro", "openat$kvm", "openat$vimc2", "preadv", "sendmsg$netlink", "socket$netlink", "syz_io_uring_setup", "syz_io_uring_submit", "write$binfmt_script", "openat$cgroup_root", "openat$binfmt", "socket", "statx", "syz_mount_image$bfs", "syz_create_resource$binfmt", "syz_clone", "getuid", "io_uring_register$IORING_UNREGISTER_PERSONALITY", "io_uring_register$IORING_REGISTER_PERSONALITY", "futex", "getrusage", "clock_gettime", "setgid", "getgid", "epoll_create", "setsockopt$inet_mreqn", "ioctl$sock_SIOCGIFINDEX", "ioctl$ifreq_SIOCGIFINDEX_vcan", "bind$nfc_llcp", "ioctl$IOCTL_GET_NCIDEV_IDX", "socket$inet", "syz_init_net_socket$nfc_llcp", "openat$nci", "utimes"]
+VM Count:           8
+CPU Count:          2
+Procs:              16
+Memory:             4096
+Make Procs:         16
+Max Time:           10
+Max Attempts:       1
+
+==== Anchor Commit ====
+
+2025-03-13 00:14:17
+Session:   1
+Kernel:    2022-06-03 - 032dcf09e2bf7c822be25b4abef7a6c913870d98
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Warning: syz_io_uring_submit was disabled by Syzkaller.
+Attempt 1:
+    Time  Bug Name
+       2  WARNING in mark_buffer_dirty
+       6  WARNING in mark_buffer_dirty
+Warning: syz_io_uring_submit was disabled by Syzkaller.
+Attempt 2: (RETRY)
+    Time  Bug Name
+       5  WARNING in mark_buffer_dirty
+       6  WARNING in mark_buffer_dirty
+       6  WARNING in mark_buffer_dirty
+       7  general protection fault in bfs_get_block
+       8  INFO: task hung in path_openat
+       8  INFO: task hung in path_openat
+       9  WARNING in mark_buffer_dirty
+       9  WARNING: ODEBUG bug in netdev_run_todo
+      10  WARNING in mark_buffer_dirty
+Warning: syz_io_uring_submit was disabled by Syzkaller.
+Attempt 3: (RETRY)
+    Time  Bug Name
+       4  WARNING in mark_buffer_dirty
+       4  WARNING in mark_buffer_dirty
+       5  WARNING in mark_buffer_dirty
+       5  WARNING in mark_buffer_dirty
+       5  WARNING: ODEBUG bug in netdev_run_todo
+       7  INFO: task hung in path_openat
+       8  INFO: task hung in d_alloc_parallel
+       8  WARNING in mark_buffer_dirty
+       8  INFO: task hung in walk_component
+      10  WARNING in mark_buffer_dirty
+      10  WARNING in mark_buffer_dirty
+The bug was not found.
+
+Failure: This bug cannot be found at the anchor commit.

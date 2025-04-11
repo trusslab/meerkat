@@ -1,0 +1,528 @@
+./bin/bisector -i 5 -c /home/syzretrospector/syzinspector/wd-bisector-5/bisector.cfg -a a6afa4199d3d038fbfdff5511f7523b0e30cb774 -F ff-test,poc-test,stateful-corpus,ff-no-find-backup
+Bisecting:          WARNING in __kernel_write_iter
+Syzbot Link:        https://syzkaller.appspot.com/bug?extid=12e098239d20385264d3
+Working Name:       bug0782
+
+No aliases given.
+
+Anchor Commit:      a6afa4199d3d038fbfdff5511f7523b0e30cb774
+Repository:         https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
+Branch:             master
+Arch:               amd64
+
+Bisector:           /home/syzretrospector/syzinspector/
+Version:            1.0.4
+Kernel:             /home/syzretrospector/syzinspector/wd-bisector-5/kernel/
+Syzkaller:          /home/syzretrospector/syzinspector/syzkaller/
+Compilers:          /home/syzretrospector/compilers/
+Ccache:             ccache
+Image:              /home/syzretrospector/images/stretch/stretch.img
+Image Key:          /home/syzretrospector/images/stretch/stretch.id_rsa
+
+Workdir:            /home/syzretrospector/syzinspector/wd-bisector-5/
+Kconfig:            /home/syzretrospector/syzinspector/wd-bisector-5/config-bug0782.txt
+Reproducers: (7)    /home/syzretrospector/syzinspector/wd-bisector-5/reproducers/
+Primary PoC:        /home/syzretrospector/syzinspector/wd-bisector-5/reproducers/repro-bug0782-27.prog
+Syzkaller Workdir:  /home/syzretrospector/syzinspector/wd-bisector-5/wd-kaller/
+Log Directory:      /home/syzretrospector/syzinspector/wd-bisector-5/log/
+
+Syscalls: (13)      ["dup", "ioctl$BTRFS_IOC_BALANCE_V2", "ioctl$BTRFS_IOC_SEND", "ioctl$BTRFS_IOC_SUBVOL_SETFLAGS", "openat$mice", "openat$ppp", "syz_mount_image$btrfs", "ioctl$BTRFS_IOC_RESIZE", "ioctl$BTRFS_IOC_BALANCE_PROGRESS", "mount$bpf", "getuid", "setgid", "getgid"]
+VM Count:           8
+CPU Count:          2
+Procs:              16
+Memory:             4096
+Make Procs:         16
+Max Time:           10
+Max Attempts:       1
+
+==== Anchor Commit ====
+
+2025-03-19 00:10:41
+Session:   1
+Kernel:    2022-10-08 - a6afa4199d3d038fbfdff5511f7523b0e30cb774
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       1  WARNING in wireless_send_event
+       1  WARNING in wireless_send_event
+       2  WARNING in wireless_send_event
+       2  WARNING in wireless_send_event
+       2  WARNING in wireless_send_event
+       2  WARNING in wireless_send_event
+       2  WARNING in wireless_send_event
+       2  WARNING in wireless_send_event
+       3  INFO: rcu detected stall in corrupted
+***    3  WARNING in __kernel_write_iter
+***    3  WARNING in __kernel_write_iter
+***    3  WARNING in __kernel_write_iter
+***    3  WARNING in __kernel_write_iter
+***    3  WARNING in __kernel_write_iter
+       3  WARNING in wireless_send_event
+Attempt 2: (RETRY)
+    Time  Bug Name
+       1  WARNING in wireless_send_event
+       1  WARNING in wireless_send_event
+***    2  WARNING in __kernel_write_iter
+***    2  WARNING in __kernel_write_iter
+***    2  WARNING in __kernel_write_iter
+***    2  WARNING in __kernel_write_iter
+       2  WARNING in wireless_send_event
+       2  WARNING in wireless_send_event
+       2  WARNING in wireless_send_event
+Attempt 3: (RETRY)
+    Time  Bug Name
+       1  WARNING in wireless_send_event
+       1  WARNING in wireless_send_event
+       2  WARNING in wireless_send_event
+       2  WARNING in wireless_send_event
+       2  WARNING in wireless_send_event
+       2  WARNING in wireless_send_event
+       2  WARNING in wireless_send_event
+       2  WARNING in wireless_send_event
+       3  WARNING in wireless_send_event
+       3  WARNING in wireless_send_event
+       3  WARNING in wireless_send_event
+       3  WARNING in wireless_send_event
+       3  WARNING in wireless_send_event
+       3  WARNING in wireless_send_event
+       4  WARNING in wireless_send_event
+       4  WARNING in wireless_send_event
+       4  WARNING in wireless_send_event
+       4  WARNING in wireless_send_event
+       4  WARNING in wireless_send_event
+       5  WARNING in wireless_send_event
+       5  WARNING in wireless_send_event
+       5  WARNING in wireless_send_event
+       5  WARNING in wireless_send_event
+       5  WARNING in wireless_send_event
+       5  WARNING in wireless_send_event
+***    6  WARNING in __kernel_write_iter
+***    6  WARNING in __kernel_write_iter
+***    6  WARNING in __kernel_write_iter
+       6  WARNING in wireless_send_event
+       6  WARNING in wireless_send_event
+       6  WARNING in wireless_send_event
+       6  WARNING in wireless_send_event
+The bug was found.
+
+New Max Time: 10
+
+==== Major Release Search ====
+18 Releases
+
+2025-03-19 00:32:57
+Session:   2
+Kernel:    2022-10-02 - 4fe89d07dcc2804c8b562f6c7896a45643d34b2f (v6.0)
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    2  WARNING in __kernel_write_iter
+***    2  WARNING in __kernel_write_iter
+***    2  WARNING in __kernel_write_iter
+***    2  WARNING in __kernel_write_iter
+***    2  WARNING in __kernel_write_iter
+***    2  WARNING in __kernel_write_iter
+***    2  WARNING in __kernel_write_iter
+***    2  WARNING in __kernel_write_iter
+Running syz-repro.
+Run Time:        0h6m0s
+The bug was found.
+About 17 releases remaining
+
+2025-03-19 00:51:28
+Session:   3
+Kernel:    2022-07-31 - 3d7cb6b04c3f3115719235cc6866b10326de34cd (v5.19)
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       2  WARNING in __kernel_write
+       2  WARNING in __kernel_write
+       2  WARNING in __kernel_write
+       2  WARNING in __kernel_write
+       2  WARNING in __kernel_write
+       2  WARNING in __kernel_write
+       2  WARNING in __kernel_write
+       3  WARNING in __kernel_write
+       3  WARNING in __kernel_write
+       3  WARNING in __kernel_write
+       3  WARNING in __kernel_write
+       3  WARNING in __kernel_write
+       3  WARNING in __kernel_write
+       4  WARNING in __kernel_write
+       4  WARNING in __kernel_write
+The bug was not found.
+About 16 releases remaining
+
+==== Kernel Bisection ====
+16585 Linux commits
+
+2025-03-19 01:11:52
+Session:   4
+Kernel:    2022-08-04 - 78acd4ca433425e6dd4032cfc2156c60e34931f2
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       1  WARNING: ODEBUG bug in mgmt_index_removed
+       2  WARNING in __kernel_write
+       2  WARNING in __kernel_write
+       2  WARNING in __kernel_write
+       2  WARNING in __kernel_write
+       2  WARNING in __kernel_write
+       2  WARNING in __kernel_write
+       2  WARNING in __kernel_write
+       2  WARNING in __kernel_write
+       3  WARNING in __kernel_write
+       3  WARNING in __kernel_write
+       3  WARNING in __kernel_write
+       3  WARNING in __kernel_write
+       3  WARNING in __kernel_write
+       3  WARNING in __kernel_write
+       3  WARNING in __kernel_write
+       4  WARNING in __kernel_write
+       9  kernel BUG in btrfs_global_root_insert
+The bug was not found.
+About 8386 commits remaining
+
+2025-03-19 01:31:59
+Session:   5
+Kernel:    2022-08-12 - 5cef38dd03f33ef206eb792df0fb3b200d762546
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       1  WARNING: ODEBUG bug in mgmt_index_removed
+       2  WARNING in __kernel_write
+       2  WARNING in __kernel_write
+       2  WARNING in __kernel_write
+       2  WARNING in __kernel_write
+       2  WARNING in __kernel_write
+       2  WARNING in __kernel_write
+       2  WARNING in __kernel_write
+       3  WARNING in __kernel_write
+       3  WARNING in __kernel_write
+       3  WARNING in __kernel_write
+       3  WARNING in __kernel_write
+       3  WARNING in __kernel_write
+       4  WARNING: ODEBUG bug in mgmt_index_removed
+The bug was not found.
+About 4255 commits remaining
+
+2025-03-19 01:52:02
+Session:   6
+Kernel:    2022-08-18 - 90b6b686c1e0273ce6d1724fab9b9651a276217e
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       2  INFO: rcu detected stall in corrupted
+       2  WARNING in __kernel_write
+       2  WARNING in __kernel_write
+       2  WARNING in __kernel_write
+       2  WARNING in __kernel_write
+       2  WARNING in __kernel_write
+       2  WARNING in __kernel_write
+       2  WARNING in __kernel_write
+       2  WARNING in __kernel_write
+       3  WARNING in __kernel_write
+       3  WARNING in __kernel_write
+       3  WARNING in __kernel_write
+       3  WARNING in __kernel_write
+       3  WARNING in __kernel_write
+       3  WARNING in __kernel_write
+       3  WARNING in __kernel_write
+       6  WARNING in btrfs_destroy_inode
+The bug was not found.
+About 2133 commits remaining
+
+2025-03-19 02:12:28
+Session:   7
+Kernel:    2022-09-03 - 65eea2c060aee3bf6d27ea365360059fbd4eeff4
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       2  WARNING in __kernel_write
+       2  WARNING in __kernel_write
+       2  WARNING in __kernel_write
+       2  WARNING in __kernel_write
+       2  WARNING in __kernel_write
+       2  WARNING in __kernel_write
+       2  WARNING in __kernel_write
+       2  WARNING in __kernel_write
+       3  WARNING in __kernel_write
+       3  WARNING in __kernel_write
+       3  WARNING in __kernel_write
+       3  WARNING in __kernel_write
+       3  WARNING in __kernel_write
+       3  WARNING in __kernel_write
+       3  WARNING in __kernel_write
+       5  kernel BUG in btrfs_global_root_insert
+       7  kernel BUG in dev_args_match_device
+       8  kernel BUG in btrfs_global_root_insert
+The bug was not found.
+About 1069 commits remaining
+
+2025-03-19 02:32:48
+Session:   8
+Kernel:    2022-09-22 - 5e0a93e42756fa93b69fe8848cf8dda7cee5d13a
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       2  WARNING in __kernel_write
+       2  WARNING in __kernel_write
+       2  WARNING in __kernel_write
+       2  WARNING in __kernel_write
+       2  WARNING in __kernel_write
+       2  WARNING in __kernel_write
+       2  WARNING in __kernel_write
+       2  WARNING in __kernel_write
+       3  WARNING in __kernel_write
+       3  WARNING in __kernel_write
+       3  WARNING in __kernel_write
+       3  WARNING in __kernel_write
+       3  WARNING in __kernel_write
+       8  kernel BUG in btrfs_global_root_insert
+The bug was not found.
+About 534 commits remaining
+
+2025-03-19 02:51:38
+Session:   9
+Kernel:    2022-09-25 - f0cc7c00089bf923259370fefc1d4f48d7252fc5
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       2  INFO: rcu detected stall in corrupted
+       2  WARNING in __kernel_write
+       2  WARNING in __kernel_write
+       2  WARNING in __kernel_write
+       2  WARNING in __kernel_write
+       2  WARNING in __kernel_write
+       2  WARNING in __kernel_write
+       2  WARNING in __kernel_write
+       3  WARNING in __kernel_write
+       3  WARNING in __kernel_write
+       3  WARNING in __kernel_write
+       3  WARNING in __kernel_write
+       3  WARNING in __kernel_write
+       3  WARNING in __kernel_write
+       3  WARNING in __kernel_write
+       3  WARNING in __kernel_write
+       4  WARNING in __kernel_write
+       5  kernel BUG in dev_args_match_device
+       6  kernel BUG in btrfs_global_root_insert
+       7  kernel BUG in dev_args_match_device
+       8  kernel BUG in btrfs_global_root_insert
+       8  kernel BUG in btrfs_global_root_insert
+The bug was not found.
+About 268 commits remaining
+
+2025-03-19 03:06:51
+Session:   10
+Kernel:    2022-09-29 - 511cce163b75bc3933fa3de769a82bb7e8663f2b
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       2  WARNING in __kernel_write
+       2  WARNING in __kernel_write
+       2  WARNING in __kernel_write
+       2  WARNING in __kernel_write
+       2  WARNING in __kernel_write
+       2  WARNING in __kernel_write
+       2  WARNING in __kernel_write
+       2  WARNING in __kernel_write
+       3  WARNING in __kernel_write
+       3  WARNING in __kernel_write
+       3  WARNING in __kernel_write
+       3  WARNING in __kernel_write
+       3  WARNING in __kernel_write
+       3  WARNING in __kernel_write
+       3  WARNING in __kernel_write
+       3  WARNING in __kernel_write
+       4  WARNING in __kernel_write
+       4  WARNING in __kernel_write
+       6  WARNING in btrfs_destroy_inode
+      10  kernel BUG in dev_args_match_device
+The bug was not found.
+About 122 commits remaining
+
+2025-03-19 03:26:43
+Session:   11
+Kernel:    2022-09-30 - 920541bb0b9bf08d1455890694fbb2bbffb7a12b
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    2  WARNING in __kernel_write_iter
+***    2  WARNING in __kernel_write_iter
+***    2  WARNING in __kernel_write_iter
+***    2  WARNING in __kernel_write_iter
+***    2  WARNING in __kernel_write_iter
+***    2  WARNING in __kernel_write_iter
+***    2  WARNING in __kernel_write_iter
+***    2  WARNING in __kernel_write_iter
+Running syz-repro.
+New PoC saved at /home/syzretrospector/syzinspector/wd-bisector-5/reproducers/repro-bug0782-0.prog
+Primary PoC:     /home/syzretrospector/syzinspector/wd-bisector-5/reproducers/repro-bug0782-0.prog
+Run Time:        0h34m0s
+The bug was found.
+About 58 commits remaining
+
+2025-03-19 04:06:23
+Session:   12
+Kernel:    2022-09-30 - 6643b3836f3908c4f77883b2fae72451e85cf3ca
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       2  WARNING in __kernel_write
+       2  WARNING in __kernel_write
+       2  WARNING in __kernel_write
+       2  WARNING in __kernel_write
+       2  WARNING in __kernel_write
+       2  WARNING in __kernel_write
+       2  WARNING in __kernel_write
+       2  WARNING in __kernel_write
+       3  WARNING in __kernel_write
+       3  WARNING in __kernel_write
+       3  WARNING in __kernel_write
+       3  WARNING in __kernel_write
+       3  WARNING in __kernel_write
+       3  WARNING in __kernel_write
+       3  WARNING in __kernel_write
+       6  WARNING in btrfs_destroy_inode
+       7  kernel BUG in btrfs_global_root_insert
+       8  kernel BUG in btrfs_global_root_insert
+       9  kernel BUG in btrfs_global_root_insert
+       9  kernel BUG in dev_args_match_device
+The bug was not found.
+About 159 commits remaining
+
+2025-03-19 04:21:13
+Session:   13
+Kernel:    2022-09-30 - 7bc6e90d7aa4170039abe80b9f4e8c8e4eb35091
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    2  WARNING in __kernel_write_iter
+***    2  WARNING in __kernel_write_iter
+***    2  WARNING in __kernel_write_iter
+***    2  WARNING in __kernel_write_iter
+***    2  WARNING in __kernel_write_iter
+***    2  WARNING in __kernel_write_iter
+***    2  WARNING in __kernel_write_iter
+***    2  WARNING in __kernel_write_iter
+The bug was found.
+About 145 commits remaining
+
+2025-03-19 04:26:49
+Session:   14
+Kernel:    2022-09-30 - d649d2c49baa4336bf65a02fc8e9d42c8ef2db6b
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       2  INFO: rcu detected stall in corrupted
+***    2  WARNING in __kernel_write_iter
+***    2  WARNING in __kernel_write_iter
+***    2  WARNING in __kernel_write_iter
+***    2  WARNING in __kernel_write_iter
+***    2  WARNING in __kernel_write_iter
+***    2  WARNING in __kernel_write_iter
+***    2  WARNING in __kernel_write_iter
+The bug was found.
+About 138 commits remaining
+
+2025-03-19 04:32:26
+Session:   15
+Kernel:    2022-09-30 - 5a77386984b513ebfb2700e70dac44509fc81aa9
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       2  INFO: rcu detected stall in corrupted
+***    2  WARNING in __kernel_write_iter
+***    2  WARNING in __kernel_write_iter
+***    2  WARNING in __kernel_write_iter
+***    2  WARNING in __kernel_write_iter
+***    2  WARNING in __kernel_write_iter
+***    2  WARNING in __kernel_write_iter
+***    2  WARNING in __kernel_write_iter
+Running syz-repro.
+Run Time:        0h14m0s
+The bug was found.
+About 134 commits remaining
+
+2025-03-19 04:52:00
+Session:   16
+Kernel:    2022-09-29 - 987a926c1d8a40e4256953b04771fbdb63bc7938
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    2  WARNING in __kernel_write_iter
+***    2  WARNING in __kernel_write_iter
+***    2  WARNING in __kernel_write_iter
+***    2  WARNING in __kernel_write_iter
+***    2  WARNING in __kernel_write_iter
+***    2  WARNING in __kernel_write_iter
+***    2  WARNING in __kernel_write_iter
+***    2  WARNING in __kernel_write_iter
+Running syz-repro.
+New PoC saved at /home/syzretrospector/syzinspector/wd-bisector-5/reproducers/repro-bug0782-1.prog
+Primary PoC:     /home/syzretrospector/syzinspector/wd-bisector-5/reproducers/repro-bug0782-1.prog
+Run Time:        0h19m0s
+The bug was found.
+About 133 commits remaining
+
+2025-03-19 05:16:28
+Session:   17
+Kernel:    2022-09-28 - 06bbaa6dc53cb72040db952053432541acb9adc7
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    2  WARNING in __kernel_write_iter
+***    2  WARNING in __kernel_write_iter
+***    2  WARNING in __kernel_write_iter
+***    2  WARNING in __kernel_write_iter
+***    2  WARNING in __kernel_write_iter
+***    2  WARNING in __kernel_write_iter
+***    2  WARNING in __kernel_write_iter
+***    2  WARNING in __kernel_write_iter
+The bug was found.
+About 2 commits remaining
+
+==== Partial Result: Focused Fuzzing ====
+Reproducer:           /home/syzretrospector/syzinspector/wd-bisector-5/reproducers/repro-bug0782-1.prog
+Bisection Result:     2022-09-28 - 06bbaa6dc53cb72040db952053432541acb9adc7
+Bisected Commit Name: [coredump] don't use __kernel_write() on kmap_local_page()
+Stage Time:           5h13m14s
+Run Time:             5h13m15s
+=========================================
+
+==== Anchor Commit ====
+
+2025-03-19 05:23:55
+Session:   18
+Kernel:    2022-09-12 - bfbfb6182ad1d7d184b16f25165faad879147f79
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+
+Failure: This bug cannot be found at the anchor commit.
+
+====================================================================================================================================================
+Bug Name:             WARNING in __kernel_write_iter
+Bug Link:             https://syzkaller.appspot.com/bug?extid=12e098239d20385264d3
+Bisection Result:     2022-09-28 - 06bbaa6dc53cb72040db952053432541acb9adc7
+Bisected Commit Name: [coredump] don't use __kernel_write() on kmap_local_page()
+Run Time:             5h18m39s
+
+Anchor Commit:        2022-10-08 - a6afa4199d3d038fbfdff5511f7523b0e30cb774
+Bisection Result:     2022-09-28 - 06bbaa6dc53cb72040db952053432541acb9adc7

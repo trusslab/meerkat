@@ -1,0 +1,327 @@
+./bin/bisector -i 4 -c /home/syzretrospector/syzinspector/wd-bisector-4/bisector.cfg -a 2eb29d59ddf02e39774abfb60b2030b0b7e27c1f -F ff-test,poc-test,stateful-corpus,ff-no-find-backup
+Bisecting:          BUG: bad usercopy in con_font_op
+Syzbot Link:        https://syzkaller.appspot.com/bug?extid=3af17071816b61e807ed
+Working Name:       bug0896
+
+No aliases given.
+
+Anchor Commit:      2eb29d59ddf02e39774abfb60b2030b0b7e27c1f
+Repository:         https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
+Branch:             master
+Arch:               amd64
+
+Bisector:           /home/syzretrospector/syzinspector/
+Version:            1.0.4
+Kernel:             /home/syzretrospector/syzinspector/wd-bisector-4/kernel/
+Syzkaller:          /home/syzretrospector/syzinspector/syzkaller/
+Compilers:          /home/syzretrospector/compilers/
+Ccache:             ccache
+Image:              /home/syzretrospector/images/stretch/stretch.img
+Image Key:          /home/syzretrospector/images/stretch/stretch.id_rsa
+
+Workdir:            /home/syzretrospector/syzinspector/wd-bisector-4/
+Kconfig:            /home/syzretrospector/syzinspector/wd-bisector-4/config-bug0896.txt
+Reproducers: (1)    /home/syzretrospector/syzinspector/wd-bisector-4/reproducers/
+Primary PoC:        /home/syzretrospector/syzinspector/wd-bisector-4/reproducers/repro-bug0896-1.prog
+Syzkaller Workdir:  /home/syzretrospector/syzinspector/wd-bisector-4/wd-kaller/
+Log Directory:      /home/syzretrospector/syzinspector/wd-bisector-4/log/
+
+Syscalls: (4)       ["ioctl$FIOCLEX", "ioctl$KDFONTOP_SET", "syz_open_dev$tty1", "openat$selinux_enforce"]
+VM Count:           8
+CPU Count:          2
+Procs:              16
+Memory:             4096
+Make Procs:         16
+Max Time:           10
+Max Attempts:       1
+
+==== Anchor Commit ====
+
+2025-03-16 12:43:17
+Session:   1
+Kernel:    2023-03-02 - 2eb29d59ddf02e39774abfb60b2030b0b7e27c1f
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    3  BUG: bad usercopy in con_font_op
+***    3  BUG: bad usercopy in con_font_op
+       3  general protection fault in ieee80211_queue_skb
+Attempt 2: (RETRY)
+    Time  Bug Name
+***    3  BUG: bad usercopy in con_font_op
+***    3  BUG: bad usercopy in con_font_op
+Attempt 3: (RETRY)
+    Time  Bug Name
+***    2  BUG: bad usercopy in con_font_op
+The bug was found.
+
+New Max Time: 10
+
+==== Major Release Search ====
+18 Releases
+
+2025-03-16 13:13:02
+Session:   2
+Kernel:    2023-02-19 - c9c3395d5e3dcc6daee66c6908354d47bf98cb0c (v6.2)
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       3  INFO: rcu detected stall in corrupted
+The bug was not found.
+About 17 releases remaining
+
+==== Kernel Bisection ====
+13278 Linux commits
+
+2025-03-16 13:44:29
+Session:   3
+Kernel:    2023-02-22 - 9fc2f99030b55027d84723b0dcbbe9f7e21b9c6c
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 6609 commits remaining
+
+2025-03-16 14:15:29
+Session:   4
+Kernel:    2023-02-24 - 693fed981eb9bf6e70bfda66bb872e2bb8155671
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    3  BUG: bad usercopy in con_font_op
+***    3  BUG: bad usercopy in con_font_op
+***    3  BUG: bad usercopy in con_font_op
+Running syz-repro.
+New PoC saved at /home/syzretrospector/syzinspector/wd-bisector-4/reproducers/repro-bug0896-0.prog
+Primary PoC:     /home/syzretrospector/syzinspector/wd-bisector-4/reproducers/repro-bug0896-0.prog
+Run Time:        0h7m0s
+The bug was found.
+About 3422 commits remaining
+
+2025-03-16 14:46:32
+Session:   5
+Kernel:    2023-02-23 - b72b5fecc1b8a2e595bd03d7d257c88ea3f9fd45
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 1720 commits remaining
+
+2025-03-16 15:17:01
+Session:   6
+Kernel:    2023-02-23 - d2980d8d826554fa6981d621e569a453787472f8
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+      10  WARNING: ODEBUG bug in netdev_run_todo
+The bug was not found.
+About 853 commits remaining
+
+2025-03-16 15:47:57
+Session:   7
+Kernel:    2023-02-24 - 17cd4d6f05087ea1ae5c1416ef260e5b7fc5d5c9
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    2  BUG: bad usercopy in con_font_op
+The bug was found.
+About 393 commits remaining
+
+2025-03-16 16:10:16
+Session:   8
+Kernel:    2023-02-06 - e16cab9c1596e251761d2bfb5e1467950d616963
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 9822 commits remaining
+
+2025-03-16 16:41:21
+Session:   9
+Kernel:    2023-01-31 - 96f54fd4894711b0dce6a1c8c26c882295dc9234
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       2  KASAN: use-after-free Write in fbcon_get_font
+       3  UBSAN: shift-out-of-bounds in fbcon_set_font
+       3  KASAN: use-after-free Write in fbcon_get_font
+       3  KASAN: use-after-free Write in fbcon_get_font
+       3  KASAN: use-after-free Write in fbcon_get_font
+       3  KASAN: use-after-free Write in fbcon_get_font
+       3  KASAN: use-after-free Write in fbcon_get_font
+       3  KASAN: use-after-free Write in fbcon_get_font
+       4  UBSAN: shift-out-of-bounds in fbcon_set_font
+       5  UBSAN: shift-out-of-bounds in fbcon_set_font
+       5  UBSAN: shift-out-of-bounds in fbcon_set_font
+       5  UBSAN: shift-out-of-bounds in fbcon_set_font
+       5  UBSAN: shift-out-of-bounds in fbcon_set_font
+       5  UBSAN: shift-out-of-bounds in fbcon_set_font
+       5  UBSAN: shift-out-of-bounds in fbcon_set_font
+       6  UBSAN: shift-out-of-bounds in fbcon_set_font
+       6  UBSAN: shift-out-of-bounds in fbcon_set_font
+       6  UBSAN: shift-out-of-bounds in fbcon_set_font
+       6  UBSAN: shift-out-of-bounds in fbcon_set_font
+       7  UBSAN: shift-out-of-bounds in fbcon_set_font
+       7  UBSAN: shift-out-of-bounds in fbcon_set_font
+       7  UBSAN: shift-out-of-bounds in fbcon_set_font
+       7  UBSAN: shift-out-of-bounds in fbcon_set_font
+       7  UBSAN: shift-out-of-bounds in fbcon_set_font
+       8  UBSAN: shift-out-of-bounds in fbcon_set_font
+       8  UBSAN: shift-out-of-bounds in fbcon_set_font
+       8  UBSAN: shift-out-of-bounds in fbcon_set_font
+       9  UBSAN: shift-out-of-bounds in fbcon_set_font
+       9  UBSAN: shift-out-of-bounds in fbcon_set_font
+       9  UBSAN: shift-out-of-bounds in fbcon_set_font
+      10  UBSAN: shift-out-of-bounds in fbcon_set_font
+      10  UBSAN: shift-out-of-bounds in fbcon_set_font
+      10  UBSAN: shift-out-of-bounds in fbcon_set_font
+      10  UBSAN: shift-out-of-bounds in fbcon_set_font
+      10  UBSAN: shift-out-of-bounds in fbcon_set_font
+      10  UBSAN: shift-out-of-bounds in fbcon_set_font
+The bug was not found.
+About 10480 commits remaining
+
+2025-03-16 17:12:21
+Session:   10
+Kernel:    2023-02-16 - 1243741f6b02b5f2c06bca910f894c333838f994
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       4  INFO: trying to register non-static key in net_free
+       9  INFO: trying to register non-static key in net_free
+       9  INFO: trying to register non-static key in net_free
+       9  INFO: trying to register non-static key in net_free
+       9  INFO: trying to register non-static key in net_free
+       9  INFO: trying to register non-static key in net_free
+      10  INFO: trying to register non-static key in net_free
+      10  INFO: trying to register non-static key in net_free
+The bug was not found.
+About 9539 commits remaining
+
+2025-03-16 17:37:14
+Session:   11
+Kernel:    2023-02-08 - 3a8d3b366ce47024bf274eac783f8af5df2780f5
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       2  KASAN: use-after-free Write in fbcon_get_font
+       3  INFO: rcu detected stall in corrupted
+       3  KASAN: use-after-free Write in fbcon_get_font
+       3  KASAN: use-after-free Write in fbcon_get_font
+       3  KASAN: use-after-free Write in fbcon_get_font
+       3  KASAN: use-after-free Write in fbcon_get_font
+       3  KASAN: use-after-free Write in fbcon_get_font
+       3  KASAN: use-after-free Write in fbcon_get_font
+The bug was not found.
+About 9895 commits remaining
+
+2025-03-16 18:08:09
+Session:   12
+Kernel:    2023-02-08 - 0fbca4798af88c20a2b9e4c98ac762408a24b668
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       3  KASAN: use-after-free Write in fbcon_get_font
+       3  KASAN: use-after-free Write in fbcon_get_font
+       3  KASAN: use-after-free Write in fbcon_get_font
+       3  KASAN: use-after-free Write in fbcon_get_font
+       3  KASAN: use-after-free Write in fbcon_get_font
+       3  KASAN: use-after-free Write in fbcon_get_font
+       3  KASAN: use-after-free Write in fbcon_get_font
+       3  KASAN: use-after-free Write in fbcon_get_font
+The bug was not found.
+About 9883 commits remaining
+
+2025-03-16 18:29:01
+Session:   13
+Kernel:    2023-02-08 - 684ae4f9513c2bb9443794608b7fc754c4ca2483
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       2  KASAN: use-after-free Write in fbcon_get_font
+       2  KASAN: use-after-free Write in fbcon_get_font
+       3  KASAN: use-after-free Write in fbcon_get_font
+       3  KASAN: use-after-free Write in fbcon_get_font
+       3  KASAN: use-after-free Write in fbcon_get_font
+       3  KASAN: use-after-free Write in fbcon_get_font
+       3  KASAN: use-after-free Write in fbcon_get_font
+       3  KASAN: use-after-free Write in fbcon_get_font
+The bug was not found.
+About 9877 commits remaining
+
+2025-03-16 18:47:46
+Session:   14
+Kernel:    2023-02-16 - 3f92730eed57f8057e1e120a0a2e8ad04ba155d4
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       2  KASAN: use-after-free Write in fbcon_get_font
+***    3  BUG: bad usercopy in con_font_op
+       3  KASAN: use-after-free Write in fbcon_get_font
+       3  KASAN: use-after-free Write in fbcon_get_font
+       3  KASAN: use-after-free Write in fbcon_get_font
+       3  KASAN: use-after-free Write in fbcon_get_font
+       3  KASAN: use-after-free Write in fbcon_get_font
+       3  KASAN: use-after-free Write in fbcon_get_font
+The bug was found.
+About 4 commits remaining
+
+2025-03-16 18:58:54
+Session:   15
+Kernel:    2023-02-09 - 370f696e44745b321054496fa351dade03fc4bd9
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       3  KASAN: use-after-free Write in fbcon_get_font
+       3  KASAN: use-after-free Write in fbcon_get_font
+       3  KASAN: use-after-free Write in fbcon_get_font
+       3  KASAN: use-after-free Write in fbcon_get_font
+       3  KASAN: use-after-free Write in fbcon_get_font
+       3  KASAN: use-after-free Write in fbcon_get_font
+       3  KASAN: use-after-free Write in fbcon_get_font
+The bug was not found.
+About 2 commits remaining
+
+==== Partial Result: Focused Fuzzing ====
+Reproducer:           /home/syzretrospector/syzinspector/wd-bisector-4/reproducers/repro-bug0896-0.prog
+Bisection Result:     2023-02-16 - 3f92730eed57f8057e1e120a0a2e8ad04ba155d4
+Bisected Commit Name: serial: imx: remove a redundant check
+Stage Time:           6h33m34s
+Run Time:             6h33m36s
+=========================================
+
+==== Anchor Commit ====
+
+2025-03-16 19:16:51
+Session:   16
+Kernel:    2023-02-09 - 370f696e44745b321054496fa351dade03fc4bd9
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+
+Failure: This bug cannot be found at the anchor commit.
+
+====================================================================================================================================================
+Bug Name:             BUG: bad usercopy in con_font_op
+Bug Link:             https://syzkaller.appspot.com/bug?extid=3af17071816b61e807ed
+Bisection Result:     2023-02-16 - 3f92730eed57f8057e1e120a0a2e8ad04ba155d4
+Bisected Commit Name: serial: imx: remove a redundant check
+Run Time:             6h44m37s
+
+Anchor Commit:        2023-03-02 - 2eb29d59ddf02e39774abfb60b2030b0b7e27c1f
+Bisection Result:     2023-02-16 - 3f92730eed57f8057e1e120a0a2e8ad04ba155d4

@@ -1,0 +1,387 @@
+./bin/bisector -i 4 -c /home/syzretrospector/syzinspector/wd-bisector-4/bisector.cfg -a 1b929c02afd37871d5afb9d498426f83432e71c2 -F ff-test,poc-test,stateful-corpus,ff-no-find-backup
+Bisecting:          KASAN: use-after-free Read in ext4_find_extent
+Syzbot Link:        https://syzkaller.appspot.com/bug?extid=bf4bb7731ef73b83a3b4
+Working Name:       bug0876
+
+No aliases given.
+
+Anchor Commit:      1b929c02afd37871d5afb9d498426f83432e71c2
+Repository:         https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
+Branch:             master
+Arch:               amd64
+
+Bisector:           /home/syzretrospector/syzinspector/
+Version:            1.0.4
+Kernel:             /home/syzretrospector/syzinspector/wd-bisector-4/kernel/
+Syzkaller:          /home/syzretrospector/syzinspector/syzkaller/
+Compilers:          /home/syzretrospector/compilers/
+Ccache:             ccache
+Image:              /home/syzretrospector/images/stretch/stretch.img
+Image Key:          /home/syzretrospector/images/stretch/stretch.id_rsa
+
+Workdir:            /home/syzretrospector/syzinspector/wd-bisector-4/
+Kconfig:            /home/syzretrospector/syzinspector/wd-bisector-4/config-bug0876.txt
+Reproducers: (1)    /home/syzretrospector/syzinspector/wd-bisector-4/reproducers/
+Syzkaller Workdir:  /home/syzretrospector/syzinspector/wd-bisector-4/wd-kaller/
+Log Directory:      /home/syzretrospector/syzinspector/wd-bisector-4/log/
+
+Syscalls: (10)      ["creat", "syz_mount_image$ext4", "write$cgroup_type", "ioctl$F2FS_IOC_START_ATOMIC_WRITE", "openat$cgroup_type", "setgid", "getgid", "mount$bpf", "getuid", "openat$cgroup_root"]
+VM Count:           8
+CPU Count:          2
+Procs:              16
+Memory:             4096
+Make Procs:         16
+Max Time:           10
+Max Attempts:       1
+
+==== Anchor Commit ====
+
+2025-03-10 18:39:26
+Session:   1
+Kernel:    2022-12-25 - 1b929c02afd37871d5afb9d498426f83432e71c2
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       3  INFO: rcu detected stall in corrupted
+***    3  KASAN: use-after-free Read in ext4_find_extent
+***    3  KASAN: use-after-free Read in ext4_find_extent
+***    3  KASAN: slab-out-of-bounds Read in ext4_find_extent
+***    3  KASAN: slab-out-of-bounds Read in ext4_find_extent
+Attempt 2: (RETRY)
+    Time  Bug Name
+***    2  KASAN: slab-out-of-bounds Read in ext4_find_extent
+Attempt 3: (RETRY)
+    Time  Bug Name
+       3  INFO: rcu detected stall in corrupted
+***    3  KASAN: use-after-free Read in ext4_find_extent
+***    3  KASAN: slab-out-of-bounds Read in ext4_find_extent
+***    3  KASAN: slab-out-of-bounds Read in ext4_find_extent
+The bug was found.
+
+New Max Time: 10
+
+==== Major Release Search ====
+18 Releases
+
+2025-03-10 19:09:30
+Session:   2
+Kernel:    2022-10-02 - 4fe89d07dcc2804c8b562f6c7896a45643d34b2f (v6.0)
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    2  KASAN: slab-out-of-bounds Read in ext4_find_extent
+Running syz-repro.
+New PoC saved at /home/syzretrospector/syzinspector/wd-bisector-4/reproducers/repro-bug0876-0.prog
+Primary PoC:     /home/syzretrospector/syzinspector/wd-bisector-4/reproducers/repro-bug0876-0.prog
+Run Time:        0h7m0s
+The bug was found.
+About 17 releases remaining
+
+2025-03-10 19:36:21
+Session:   3
+Kernel:    2022-07-31 - 3d7cb6b04c3f3115719235cc6866b10326de34cd (v5.19)
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    2  KASAN: use-after-free Read in ext4_find_extent
+The bug was found.
+About 16 releases remaining
+
+2025-03-10 19:55:20
+Session:   4
+Kernel:    2022-05-22 - 4b0986a3613c92f4ec1bdc7f60ec66fea135991f (v5.18)
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    3  KASAN: use-after-free Read in ext4_find_extent
+***    3  KASAN: slab-out-of-bounds Read in ext4_find_extent
+***    3  KASAN: slab-out-of-bounds Read in ext4_find_extent
+***    3  KASAN: slab-out-of-bounds Read in ext4_find_extent
+The bug was found.
+About 15 releases remaining
+
+2025-03-10 20:14:04
+Session:   5
+Kernel:    2022-01-09 - df0cc57e057f18e44dac8e6c18aba47ab53202f9 (v5.16)
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    3  KASAN: use-after-free Read in ext4_find_extent
+***    3  KASAN: use-after-free Read in ext4_find_extent
+***    3  KASAN: use-after-free Read in ext4_find_extent
+***    3  KASAN: slab-out-of-bounds Read in ext4_find_extent
+Running syz-repro.
+New PoC saved at /home/syzretrospector/syzinspector/wd-bisector-4/reproducers/repro-bug0876-2.prog
+Primary PoC:     /home/syzretrospector/syzinspector/wd-bisector-4/reproducers/repro-bug0876-0.prog
+Run Time:        0h7m0s
+The bug was found.
+About 14 releases remaining
+
+2025-03-10 20:40:06
+Session:   6
+Kernel:    2021-08-29 - 7d2a07b769330c34b4deabeed939325c77a7ec2f (v5.14)
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    3  KASAN: use-after-free Read in ext4_find_extent
+***    3  KASAN: slab-out-of-bounds Read in ext4_find_extent
+***    3  KASAN: slab-out-of-bounds Read in ext4_find_extent
+***    3  KASAN: slab-out-of-bounds Read in ext4_find_extent
+The bug was found.
+About 13 releases remaining
+
+2025-03-10 20:58:51
+Session:   7
+Kernel:    2021-04-25 - 9f4ad9e425a1d3b6a34617b8ea226d56a119a717 (v5.12)
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    3  KASAN: use-after-free Read in ext4_find_extent
+***    3  KASAN: use-after-free Read in ext4_find_extent
+***    3  KASAN: use-after-free Read in ext4_find_extent
+***    3  KASAN: slab-out-of-bounds Read in ext4_find_extent
+The bug was found.
+About 12 releases remaining
+
+2025-03-10 21:17:11
+Session:   8
+Kernel:    2020-12-13 - 2c85ebc57b3e1817b6ce1a6b703928e113a90442 (v5.10)
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.1.0-syz/bin/gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 11 releases remaining
+
+==== Kernel Bisection ====
+29645 Linux commits
+
+2025-03-10 21:42:54
+Session:   9
+Kernel:    2021-01-22 - 5225d5f57b3574c0954f03d8d21dfac92ea7e729
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 14821 commits remaining
+
+2025-03-10 22:08:01
+Session:   10
+Kernel:    2021-02-21 - d99676af540c2dc829999928fb81c58c80a1dce4
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 6800 commits remaining
+
+2025-03-10 22:33:10
+Session:   11
+Kernel:    2021-03-09 - 69264b4a43aff7307283e2bae29e9305ab6b7d47
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 3478 commits remaining
+
+2025-03-10 22:58:18
+Session:   12
+Kernel:    2021-03-12 - f296bfd5cd04cbb49b8fc9585adc280ab2b58624
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       2  WARNING in kvm_wait
+       2  WARNING in kvm_wait
+       2  WARNING in kvm_wait
+***    4  KASAN: use-after-free Read in ext4_find_extent
+Running syz-repro.
+New PoC saved at /home/syzretrospector/syzinspector/wd-bisector-4/reproducers/repro-bug0876-2.prog
+Primary PoC:     /home/syzretrospector/syzinspector/wd-bisector-4/reproducers/repro-bug0876-0.prog
+Run Time:        0h14m0s
+The bug was found.
+About 1740 commits remaining
+
+2025-03-10 23:31:32
+Session:   13
+Kernel:    2021-02-26 - efba6d3a7c4bb59f0750609fae0f9644d82304b6
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Error: Waitpid on pid 1640187 failed.
+Error: Syzkaller has experienced a crash.
+Warning: Child process exited with error status 32764.
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 891 commits remaining
+
+2025-03-10 23:48:35
+Session:   14
+Kernel:    2021-03-06 - 513068f2b1fe39a60d89f6f8afbdd79c2534889c
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       2  WARNING in kvm_wait
+       2  WARNING in kvm_wait
+       2  WARNING in kvm_wait
+       2  WARNING in kvm_wait
+***    3  KASAN: use-after-free Read in ext4_find_extent
+       3  WARNING in kvm_wait
+The bug was found.
+About 439 commits remaining
+
+2025-03-11 00:06:37
+Session:   15
+Kernel:    2021-03-04 - 8629397e6e2753bb4cc62ba48a12e1d4d912b6a4
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       2  WARNING in kvm_wait
+       2  WARNING in kvm_wait
+       2  WARNING in kvm_wait
+***    3  KASAN: use-after-free Read in ext4_find_extent
+       3  WARNING in kvm_wait
+       3  WARNING in kvm_wait
+The bug was found.
+About 220 commits remaining
+
+2025-03-11 00:24:18
+Session:   16
+Kernel:    2021-02-27 - 5695e51619745d4fe3ec2506a2f0cd982c5e27a4
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       2  WARNING in kvm_wait
+***    3  KASAN: use-after-free Read in ext4_find_extent
+Running syz-repro.
+New PoC saved at /home/syzretrospector/syzinspector/wd-bisector-4/reproducers/repro-bug0876-2.prog
+Primary PoC:     /home/syzretrospector/syzinspector/wd-bisector-4/reproducers/repro-bug0876-0.prog
+Run Time:        0h14m0s
+The bug was found.
+About 108 commits remaining
+
+2025-03-11 00:53:48
+Session:   17
+Kernel:    2021-02-26 - a3905af5be36b9aa9f17657a02eeb2a08e939c13
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       3  WARNING: ODEBUG bug in ext4_fill_super
+***    3  KASAN: slab-out-of-bounds Read in ext4_find_extent
+       3  WARNING in kvm_wait
+       3  WARNING in kvm_wait
+The bug was found.
+About 54 commits remaining
+
+2025-03-11 01:05:33
+Session:   18
+Kernel:    2021-02-25 - cf0604a686b11175d8beae60281c4ccc95aaa5c2
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 11567 commits remaining
+
+2025-03-11 01:30:32
+Session:   19
+Kernel:    2021-02-24 - cf6acb8bdb1d829b85a4daa2944bf9e71c93f4b9
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 6485 commits remaining
+
+2025-03-11 01:55:48
+Session:   20
+Kernel:    2021-01-14 - 4f70d150294b3ddfbe4be7130ca53898cd5b91be
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 13802 commits remaining
+
+2025-03-11 02:20:54
+Session:   21
+Kernel:    2021-02-09 - 8f722f67452f4b28cd8d7acf1658daa5796437c2
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 13158 commits remaining
+
+2025-03-11 02:45:52
+Session:   22
+Kernel:    2021-02-26 - c19798af2e66d9d3eb1060873bb435ea8bf4ad2e
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       2  WARNING in kvm_wait
+       2  WARNING in kvm_wait
+       2  WARNING in kvm_wait
+       3  WARNING in kvm_wait
+       4  WARNING in kvm_wait
+       4  WARNING in kvm_wait
+The bug was not found.
+About 26 commits remaining
+
+2025-03-11 03:11:01
+Session:   23
+Kernel:    2021-02-26 - e7270e47a09e83051da7b2bee71be00741860ec4
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       2  WARNING in kvm_wait
+       2  WARNING in kvm_wait
+       2  WARNING in kvm_wait
+       2  WARNING in kvm_wait
+       2  WARNING in kvm_wait
+       2  WARNING in kvm_wait
+***    4  KASAN: use-after-free Read in ext4_find_extent
+       4  WARNING in kvm_wait
+       4  WARNING in kvm_wait
+       4  WARNING in kvm_wait
+       4  WARNING in kvm_wait
+The bug was found.
+About 14 commits remaining
+
+==== Partial Result: Focused Fuzzing ====
+Reproducer:           /home/syzretrospector/syzinspector/wd-bisector-4/reproducers/repro-bug0876-0.prog
+Bisection Result:     2021-02-26 - e7270e47a09e83051da7b2bee71be00741860ec4
+Bisected Commit Name: Merge tag 's390-5.12-2' of git://git.kernel.org/pub/scm/linux/kernel/git/s390/linux
+Stage Time:           8h43m41s
+Run Time:             8h43m43s
+=========================================
+
+==== Anchor Commit ====
+
+2025-03-11 03:23:07
+Session:   24
+Kernel:    2021-02-26 - c19798af2e66d9d3eb1060873bb435ea8bf4ad2e
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Warning: VM has not responded after 5 attempts.
+Warning: Only booted 5 VMs.
+Attempt 0:
+    WARNING in kvm_wait
+Attempt 1:
+    WARNING in kvm_wait
+Attempt 2:
+    WARNING in kvm_wait
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+
+Failure: This bug cannot be found at the anchor commit.
+
+====================================================================================================================================================
+Bug Name:             KASAN: use-after-free Read in ext4_find_extent
+Bug Link:             https://syzkaller.appspot.com/bug?extid=bf4bb7731ef73b83a3b4
+Bisection Result:     2021-02-26 - e7270e47a09e83051da7b2bee71be00741860ec4
+Bisected Commit Name: Merge tag 's390-5.12-2' of git://git.kernel.org/pub/scm/linux/kernel/git/s390/linux
+Run Time:             8h51m41s
+
+Anchor Commit:        2022-12-25 - 1b929c02afd37871d5afb9d498426f83432e71c2
+Bisection Result:     2021-02-26 - e7270e47a09e83051da7b2bee71be00741860ec4

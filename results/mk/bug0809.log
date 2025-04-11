@@ -1,0 +1,440 @@
+./bin/bisector -i 5 -c /home/syzretrospector/syzinspector/wd-bisector-5/bisector.cfg -a 92901222f83d988617aee37680cb29e1a743b5e4 -F ff-test,poc-test,stateful-corpus,ff-no-find-backup
+Bisecting:          BUG: sleeping function called from invalid context in __hci_cmd_sync_sk
+Syzbot Link:        https://syzkaller.appspot.com/bug?extid=c715e1bd8dfbcb1ab176
+Working Name:       bug0809
+
+No aliases given.
+
+Anchor Commit:      92901222f83d988617aee37680cb29e1a743b5e4
+Repository:         https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
+Branch:             master
+Arch:               amd64
+
+Bisector:           /home/syzretrospector/syzinspector/
+Version:            1.0.4
+Kernel:             /home/syzretrospector/syzinspector/wd-bisector-5/kernel/
+Syzkaller:          /home/syzretrospector/syzinspector/syzkaller/
+Compilers:          /home/syzretrospector/compilers/
+Ccache:             ccache
+Image:              /home/syzretrospector/images/stretch/stretch.img
+Image Key:          /home/syzretrospector/images/stretch/stretch.id_rsa
+
+Workdir:            /home/syzretrospector/syzinspector/wd-bisector-5/
+Kconfig:            /home/syzretrospector/syzinspector/wd-bisector-5/config-bug0809.txt
+Reproducers: (2)    /home/syzretrospector/syzinspector/wd-bisector-5/reproducers/
+Primary PoC:        /home/syzretrospector/syzinspector/wd-bisector-5/reproducers/repro-bug0809-1.prog
+Syzkaller Workdir:  /home/syzretrospector/syzinspector/wd-bisector-5/wd-kaller/
+Log Directory:      /home/syzretrospector/syzinspector/wd-bisector-5/log/
+
+Syscalls: (1)       ["syz_emit_vhci"]
+VM Count:           8
+CPU Count:          2
+Procs:              16
+Memory:             4096
+Make Procs:         16
+Max Time:           10
+Max Attempts:       1
+
+==== Anchor Commit ====
+
+2025-03-21 05:31:11
+Session:   1
+Kernel:    2023-09-02 - 92901222f83d988617aee37680cb29e1a743b5e4
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    2  BUG: sleeping function called from invalid context in __hci_cmd_sync_sk
+***    2  BUG: sleeping function called from invalid context in __hci_cmd_sync_sk
+***    2  BUG: sleeping function called from invalid context in __hci_cmd_sync_sk
+***    2  BUG: sleeping function called from invalid context in __hci_cmd_sync_sk
+***    2  BUG: sleeping function called from invalid context in __hci_cmd_sync_sk
+       2  WARNING in hci_conn_timeout
+Attempt 2: (RETRY)
+    Time  Bug Name
+***    2  BUG: sleeping function called from invalid context in __hci_cmd_sync_sk
+***    2  BUG: sleeping function called from invalid context in __hci_cmd_sync_sk
+***    2  BUG: sleeping function called from invalid context in __hci_cmd_sync_sk
+       2  WARNING in hci_conn_timeout
+       2  WARNING in hci_conn_timeout
+Attempt 3: (RETRY)
+    Time  Bug Name
+***    2  BUG: sleeping function called from invalid context in __hci_cmd_sync_sk
+***    2  BUG: sleeping function called from invalid context in __hci_cmd_sync_sk
+***    2  BUG: sleeping function called from invalid context in __hci_cmd_sync_sk
+***    2  BUG: sleeping function called from invalid context in __hci_cmd_sync_sk
+       2  WARNING in hci_conn_timeout
+       2  WARNING in hci_conn_timeout
+The bug was found.
+
+New Max Time: 10
+
+==== Major Release Search ====
+19 Releases
+
+2025-03-21 05:49:48
+Session:   2
+Kernel:    2023-06-25 - 6995e2de6891c724bfeb2db33d7b87775f913ad1 (v6.4)
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       2  WARNING in hci_conn_timeout
+       2  WARNING in hci_conn_timeout
+       2  WARNING in hci_conn_timeout
+       2  WARNING in hci_conn_timeout
+       2  WARNING in hci_conn_timeout
+       3  WARNING in hci_conn_timeout
+       3  WARNING in hci_conn_timeout
+       3  WARNING in hci_conn_timeout
+       3  WARNING in hci_conn_timeout
+       3  WARNING in hci_conn_timeout
+       4  WARNING in hci_conn_timeout
+       4  WARNING in hci_conn_timeout
+       4  WARNING in hci_conn_timeout
+       4  WARNING in hci_conn_timeout
+       5  WARNING in hci_conn_timeout
+       5  WARNING in hci_conn_timeout
+       5  WARNING in hci_conn_timeout
+       6  WARNING in hci_conn_timeout
+       6  WARNING in hci_conn_timeout
+       7  WARNING in hci_conn_timeout
+       7  WARNING in hci_conn_timeout
+       8  KASAN: slab-use-after-free Read in hci_send_acl
+       8  WARNING in hci_conn_timeout
+       8  WARNING in hci_conn_timeout
+       8  WARNING in hci_conn_timeout
+       8  WARNING in hci_conn_timeout
+       9  WARNING in corrupted
+       9  WARNING in hci_conn_timeout
+      10  WARNING in hci_conn_timeout
+      10  WARNING in hci_conn_timeout
+      10  WARNING in hci_conn_timeout
+      10  WARNING in hci_conn_timeout
+      10  WARNING in hci_conn_timeout
+      10  WARNING in hci_conn_timeout
+The bug was not found.
+About 18 releases remaining
+
+==== Kernel Bisection ====
+25750 Linux commits
+
+2025-03-21 06:13:08
+Session:   3
+Kernel:    2023-07-19 - 09c4a16d020f0d8ad9160e6d4db47fb890e2e487
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       2  WARNING in hci_conn_timeout
+       2  WARNING in hci_conn_timeout
+       6  WARNING in hci_conn_timeout
+       7  WARNING in hci_conn_timeout
+       7  WARNING in hci_conn_timeout
+       7  WARNING in hci_conn_timeout
+       8  WARNING in hci_conn_timeout
+The bug was not found.
+About 12882 commits remaining
+
+2025-03-21 06:35:14
+Session:   4
+Kernel:    2023-08-29 - adfd671676c922bada16477eb68b5eb5f065addc
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    2  BUG: sleeping function called from invalid context in __hci_cmd_sync_sk
+***    2  BUG: sleeping function called from invalid context in __hci_cmd_sync_sk
+***    2  BUG: sleeping function called from invalid context in __hci_cmd_sync_sk
+***    2  BUG: sleeping function called from invalid context in __hci_cmd_sync_sk
+       2  WARNING in hci_conn_timeout
+Running syz-repro.
+Run Time:        0h18m0s
+The bug was found.
+About 6431 commits remaining
+
+2025-03-21 07:07:09
+Session:   5
+Kernel:    2023-08-28 - 1c59d383390f970b891b503b7f79b63a02db2ec5
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       2  WARNING in hci_conn_timeout
+       2  WARNING in hci_conn_timeout
+       2  WARNING in hci_conn_timeout
+       2  WARNING in hci_conn_timeout
+       3  WARNING in hci_conn_timeout
+       3  WARNING in hci_conn_timeout
+       6  WARNING in hci_conn_timeout
+       6  WARNING in hci_conn_timeout
+       7  WARNING in hci_conn_timeout
+       8  WARNING in hci_conn_timeout
+       8  WARNING in hci_conn_timeout
+       8  WARNING in hci_conn_timeout
+       9  WARNING in hci_conn_timeout
+      10  WARNING in hci_conn_timeout
+The bug was not found.
+About 3418 commits remaining
+
+2025-03-21 07:28:56
+Session:   6
+Kernel:    2023-08-25 - 1fa6ffad12753ea49e05f8ee1bc7e40684bdaca7
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    2  BUG: sleeping function called from invalid context in __hci_cmd_sync_sk
+***    2  BUG: sleeping function called from invalid context in __hci_cmd_sync_sk
+***    2  BUG: sleeping function called from invalid context in __hci_cmd_sync_sk
+***    2  BUG: sleeping function called from invalid context in __hci_cmd_sync_sk
+***    2  BUG: sleeping function called from invalid context in __hci_cmd_sync_sk
+***    2  BUG: sleeping function called from invalid context in __hci_cmd_sync_sk
+***    2  BUG: sleeping function called from invalid context in __hci_cmd_sync_sk
+***    2  BUG: sleeping function called from invalid context in __hci_cmd_sync_sk
+Running syz-repro.
+New PoC saved at /home/syzretrospector/syzinspector/wd-bisector-5/reproducers/repro-bug0809-0.prog
+Primary PoC:     /home/syzretrospector/syzinspector/wd-bisector-5/reproducers/repro-bug0809-0.prog
+Run Time:        0h3m0s
+The bug was found.
+About 1782 commits remaining
+
+2025-03-21 07:45:52
+Session:   7
+Kernel:    2023-08-06 - 66ce8e6b49df401854f0c98bed50a65e4167825b
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       2  WARNING in hci_conn_timeout
+       2  WARNING in hci_conn_timeout
+       2  WARNING in hci_conn_timeout
+       2  WARNING in hci_conn_timeout
+       2  WARNING in hci_conn_timeout
+       3  WARNING in hci_conn_timeout
+       3  WARNING in hci_conn_timeout
+       3  WARNING in hci_conn_timeout
+       3  WARNING in hci_conn_timeout
+       3  WARNING in hci_conn_timeout
+       4  WARNING in hci_conn_timeout
+       4  WARNING in hci_conn_timeout
+       5  WARNING in hci_conn_timeout
+       6  WARNING in hci_conn_timeout
+       7  WARNING in hci_conn_timeout
+       7  WARNING in hci_conn_timeout
+       8  WARNING in hci_conn_timeout
+       8  WARNING in hci_conn_timeout
+       8  WARNING in hci_conn_timeout
+       9  WARNING in hci_conn_timeout
+       9  WARNING in hci_conn_timeout
+       9  WARNING in hci_conn_timeout
+      10  WARNING in hci_conn_timeout
+      10  WARNING in hci_conn_timeout
+      10  WARNING in hci_conn_timeout
+      10  WARNING in hci_conn_timeout
+The bug was not found.
+About 1619 commits remaining
+
+2025-03-21 08:07:54
+Session:   8
+Kernel:    2023-08-16 - c274af2242693f59f00851b3660a21b10bcd76cc
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    2  BUG: sleeping function called from invalid context in __hci_cmd_sync_sk
+***    2  BUG: sleeping function called from invalid context in __hci_cmd_sync_sk
+***    2  BUG: sleeping function called from invalid context in __hci_cmd_sync_sk
+***    2  BUG: sleeping function called from invalid context in __hci_cmd_sync_sk
+       2  WARNING in hci_conn_timeout
+       2  WARNING in hci_conn_timeout
+The bug was found.
+About 675 commits remaining
+
+2025-03-21 08:21:44
+Session:   9
+Kernel:    2023-08-11 - 80f9ad046052509d0eee9b72e11d0e8ae31b665f
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       2  WARNING in hci_conn_timeout
+       2  WARNING in hci_conn_timeout
+       2  WARNING in hci_conn_timeout
+       2  WARNING in hci_conn_timeout
+       3  WARNING in hci_conn_timeout
+       3  WARNING in hci_conn_timeout
+       3  WARNING in hci_conn_timeout
+       3  WARNING in hci_conn_timeout
+       4  WARNING in hci_conn_timeout
+       4  WARNING in hci_conn_timeout
+The bug was not found.
+About 195 commits remaining
+
+2025-03-21 08:39:22
+Session:   10
+Kernel:    2023-08-14 - f0bc514bd5c1396d1f189e4aafd2c24372ce535a
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    2  BUG: sleeping function called from invalid context in __hci_cmd_sync_sk
+       2  WARNING in hci_conn_timeout
+       2  WARNING in hci_conn_timeout
+       2  WARNING in hci_conn_timeout
+       2  WARNING in hci_conn_timeout
+       2  WARNING in hci_conn_timeout
+       2  WARNING in hci_conn_timeout
+The bug was found.
+About 98 commits remaining
+
+2025-03-21 08:47:53
+Session:   11
+Kernel:    2023-08-11 - 69997d50ec574be816b4ee8f9cee52ebbd53f8bd
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    2  BUG: sleeping function called from invalid context in __hci_cmd_sync_sk
+***    2  BUG: sleeping function called from invalid context in __hci_cmd_sync_sk
+       2  WARNING in hci_conn_timeout
+       2  WARNING in hci_conn_timeout
+       2  WARNING in hci_conn_timeout
+Running syz-repro.
+New PoC saved at /home/syzretrospector/syzinspector/wd-bisector-5/reproducers/repro-bug0809-2.prog
+Primary PoC:     /home/syzretrospector/syzinspector/wd-bisector-5/reproducers/repro-bug0809-2.prog
+Run Time:        0h3m0s
+The bug was found.
+About 49 commits remaining
+
+2025-03-21 08:57:27
+Session:   12
+Kernel:    2023-08-11 - e160a8f4e920e5cf4e16a17f57367954c9436aea
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    2  BUG: sleeping function called from invalid context in __hci_cmd_sync_sk
+***    2  BUG: sleeping function called from invalid context in __hci_cmd_sync_sk
+***    2  BUG: sleeping function called from invalid context in __hci_cmd_sync_sk
+       2  WARNING in hci_conn_timeout
+       2  WARNING in hci_conn_timeout
+       2  WARNING in hci_conn_timeout
+       2  WARNING in hci_conn_timeout
+The bug was found.
+About 25 commits remaining
+
+2025-03-21 09:03:59
+Session:   13
+Kernel:    2023-08-11 - 8f0a3786f56d9fa4b308bdbd54757a51145dbb7a
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    2  BUG: sleeping function called from invalid context in __hci_cmd_sync_sk
+***    2  BUG: sleeping function called from invalid context in __hci_cmd_sync_sk
+       2  WARNING in hci_conn_timeout
+       2  WARNING in hci_conn_timeout
+       2  WARNING in hci_conn_timeout
+       2  WARNING in hci_conn_timeout
+The bug was found.
+About 13 commits remaining
+
+2025-03-21 09:10:34
+Session:   14
+Kernel:    2023-08-11 - 6bfa273e533d7b25eee3d74e28a7fe8e6a8e7a93
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    2  BUG: sleeping function called from invalid context in __hci_cmd_sync_sk
+***    2  BUG: sleeping function called from invalid context in __hci_cmd_sync_sk
+***    2  BUG: sleeping function called from invalid context in __hci_cmd_sync_sk
+***    2  BUG: sleeping function called from invalid context in __hci_cmd_sync_sk
+       2  WARNING in hci_conn_timeout
+       2  WARNING in hci_conn_timeout
+       2  WARNING in hci_conn_timeout
+       2  WARNING in hci_conn_timeout
+Running syz-repro.
+Run Time:        0h26m0s
+The bug was found.
+About 7 commits remaining
+
+2025-03-21 09:43:05
+Session:   15
+Kernel:    2023-08-11 - a0bfde167b506423111ddb8cd71930497a40fc54
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    2  BUG: sleeping function called from invalid context in __hci_cmd_sync_sk
+***    2  BUG: sleeping function called from invalid context in __hci_cmd_sync_sk
+***    2  BUG: sleeping function called from invalid context in __hci_cmd_sync_sk
+***    2  BUG: sleeping function called from invalid context in __hci_cmd_sync_sk
+       2  WARNING in hci_conn_timeout
+       2  WARNING in hci_conn_timeout
+       2  WARNING in hci_conn_timeout
+Running syz-repro.
+syz-repro was terminated after 60 minutes
+Run Time:        1h0m0s
+The bug was found.
+About 4 commits remaining
+
+2025-03-21 10:49:47
+Session:   16
+Kernel:    2023-08-11 - 044014ce85a17c0b7fab8e5df0925792010c29b2
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       2  WARNING in hci_conn_timeout
+       2  WARNING in hci_conn_timeout
+       2  WARNING in hci_conn_timeout
+       2  WARNING in hci_conn_timeout
+       2  WARNING in hci_conn_timeout
+       2  WARNING in hci_conn_timeout
+       3  WARNING in hci_conn_timeout
+       3  WARNING in hci_conn_timeout
+       3  WARNING in hci_conn_timeout
+       4  WARNING in hci_conn_timeout
+       8  WARNING in hci_conn_timeout
+       8  WARNING in hci_conn_timeout
+       8  WARNING in hci_conn_timeout
+       9  WARNING in hci_conn_timeout
+       9  WARNING in hci_conn_timeout
+       9  WARNING in hci_conn_timeout
+      10  WARNING in hci_conn_timeout
+      10  WARNING in hci_conn_timeout
+      10  WARNING in hci_conn_timeout
+      10  WARNING in hci_conn_timeout
+      10  WARNING in hci_conn_timeout
+The bug was not found.
+About 2 commits remaining
+
+==== Partial Result: Focused Fuzzing ====
+Reproducer:           /home/syzretrospector/syzinspector/wd-bisector-5/reproducers/repro-bug0809-2.prog
+Bisection Result:     2023-08-11 - a0bfde167b506423111ddb8cd71930497a40fc54
+Bisected Commit Name: Bluetooth: ISO: Add support for connecting multiple BISes
+Stage Time:           5h33m5s
+Run Time:             5h33m6s
+=========================================
+
+==== Anchor Commit ====
+
+2025-03-21 11:04:16
+Session:   17
+Kernel:    2023-08-11 - 044014ce85a17c0b7fab8e5df0925792010c29b2
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+
+Failure: This bug cannot be found at the anchor commit.
+
+====================================================================================================================================================
+Bug Name:             BUG: sleeping function called from invalid context in __hci_cmd_sync_sk
+Bug Link:             https://syzkaller.appspot.com/bug?extid=c715e1bd8dfbcb1ab176
+Bisection Result:     2023-08-11 - a0bfde167b506423111ddb8cd71930497a40fc54
+Bisected Commit Name: Bluetooth: ISO: Add support for connecting multiple BISes
+Run Time:             5h39m49s
+
+Anchor Commit:        2023-09-02 - 92901222f83d988617aee37680cb29e1a743b5e4
+Bisection Result:     2023-08-11 - a0bfde167b506423111ddb8cd71930497a40fc54

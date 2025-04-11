@@ -1,0 +1,306 @@
+./bin/bisector -i 4 -c /home/syzretrospector/syzinspector/wd-bisector-4/bisector.cfg -a 05ecb680708a1dbe6554d6fc17e5d9a8a7cb5e6a -F ff-test,poc-test,stateful-corpus,ff-no-find-backup
+Bisecting:          WARNING: suspicious RCU usage in mas_walk
+Syzbot Link:        https://syzkaller.appspot.com/bug?extid=2ee18845e89ae76342c5
+Working Name:       bug0895
+
+No aliases given.
+
+Anchor Commit:      05ecb680708a1dbe6554d6fc17e5d9a8a7cb5e6a
+Repository:         https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
+Branch:             master
+Arch:               amd64
+
+Bisector:           /home/syzretrospector/syzinspector/
+Version:            1.0.4
+Kernel:             /home/syzretrospector/syzinspector/wd-bisector-4/kernel/
+Syzkaller:          /home/syzretrospector/syzinspector/syzkaller/
+Compilers:          /home/syzretrospector/compilers/
+Ccache:             ccache
+Image:              /home/syzretrospector/images/stretch/stretch.img
+Image Key:          /home/syzretrospector/images/stretch/stretch.id_rsa
+
+Workdir:            /home/syzretrospector/syzinspector/wd-bisector-4/
+Kconfig:            /home/syzretrospector/syzinspector/wd-bisector-4/config-bug0895.txt
+Reproducers: (5)    /home/syzretrospector/syzinspector/wd-bisector-4/reproducers/
+Syzkaller Workdir:  /home/syzretrospector/syzinspector/wd-bisector-4/wd-kaller/
+Log Directory:      /home/syzretrospector/syzinspector/wd-bisector-4/log/
+
+Syscalls: (6)       ["madvise", "mremap", "openat$sysctl", "write$sysctl", "ioctl$F2FS_IOC_START_ATOMIC_WRITE", "openat$selinux_enforce"]
+VM Count:           4
+CPU Count:          4
+Procs:              24
+Memory:             4096
+Make Procs:         16
+Max Time:           10
+Max Attempts:       1
+
+==== Anchor Commit ====
+
+2025-03-16 04:20:33
+Session:   1
+Kernel:    2023-02-06 - 05ecb680708a1dbe6554d6fc17e5d9a8a7cb5e6a
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    3  WARNING: suspicious RCU usage in mas_walk
+***    3  WARNING: suspicious RCU usage in mas_walk
+***    3  WARNING: suspicious RCU usage in mas_walk
+Attempt 2: (RETRY)
+    Time  Bug Name
+       3  INFO: rcu detected stall in corrupted
+***    3  WARNING: suspicious RCU usage in mas_walk
+***    3  WARNING: suspicious RCU usage in mas_walk
+***    3  WARNING: suspicious RCU usage in mas_walk
+Attempt 3: (RETRY)
+    Time  Bug Name
+***    3  WARNING: suspicious RCU usage in mas_walk
+***    3  WARNING: suspicious RCU usage in mas_walk
+The bug was found.
+
+New Max Time: 10
+
+==== Major Release Search ====
+18 Releases
+
+2025-03-16 04:51:09
+Session:   2
+Kernel:    2022-10-02 - 4fe89d07dcc2804c8b562f6c7896a45643d34b2f (v6.0)
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       3  INFO: rcu detected stall in corrupted
+The bug was not found.
+About 17 releases remaining
+
+==== Kernel Bisection ====
+31574 Linux commits
+
+2025-03-16 05:19:13
+Session:   3
+Kernel:    2022-12-09 - 66efff515a6500d4b4976fbab3bee8b92a1137fb
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    3  WARNING: suspicious RCU usage in mas_walk
+Running syz-repro.
+Run Time:        0h7m0s
+The bug was found.
+About 15789 commits remaining
+
+2025-03-16 05:47:02
+Session:   4
+Kernel:    2022-10-07 - d3dcbe24a0fc6373ce7e4a65acd5c785aa8e2396
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       3  INFO: rcu detected stall in corrupted
+The bug was not found.
+About 7872 commits remaining
+
+2025-03-16 06:14:38
+Session:   5
+Kernel:    2022-10-17 - a887b59f6a168e13a7608c64b61e6d5b769f80ee
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 3937 commits remaining
+
+2025-03-16 06:42:17
+Session:   6
+Kernel:    2022-11-15 - 9d45921ee4cb364910097e7d1b7558559c2f9fd2
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    3  WARNING: suspicious RCU usage in mas_walk
+***    3  WARNING: suspicious RCU usage in mas_walk
+Running syz-repro.
+Run Time:        0h7m0s
+The bug was found.
+About 1968 commits remaining
+
+2025-03-16 07:09:51
+Session:   7
+Kernel:    2022-10-25 - 3e5b3418827cefb5e1cc658806f02965791b8f07
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       3  INFO: rcu detected stall in corrupted
+       3  WARNING in split_huge_page_to_list
+       4  WARNING in split_huge_page_to_list
+       6  WARNING in split_huge_page_to_list
+       7  kernel BUG in mas_store_prealloc
+       7  WARNING in split_huge_page_to_list
+       7  WARNING in split_huge_page_to_list
+       9  INFO: rcu detected stall in corrupted
+The bug was not found.
+About 985 commits remaining
+
+2025-03-16 07:37:34
+Session:   8
+Kernel:    2022-11-03 - 4d74039149e0062e4ed25738d6e3e06970a38809
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 492 commits remaining
+
+2025-03-16 08:05:11
+Session:   9
+Kernel:    2022-11-06 - 6e8c78d32b5c60737bcd71346130f0bf91d6e066
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       3  INFO: rcu detected stall in corrupted
+***    3  WARNING: suspicious RCU usage in mas_walk
+***    3  WARNING: suspicious RCU usage in mas_walk
+Running syz-repro.
+Run Time:        0h7m0s
+The bug was found.
+About 242 commits remaining
+
+2025-03-16 08:25:58
+Session:   10
+Kernel:    2022-11-04 - fde25beb382b7dd6f2eab8022ab017cbdfaa3ff6
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       3  INFO: rcu detected stall in corrupted
+***    3  WARNING: suspicious RCU usage in mas_walk
+***    3  WARNING: suspicious RCU usage in mas_walk
+Running syz-repro.
+syz-repro was terminated after 60 minutes
+Run Time:        1h0m0s
+The bug was found.
+About 131 commits remaining
+
+2025-03-16 09:34:32
+Session:   11
+Kernel:    2022-11-03 - 5fdf9c45473569e87cc4206e80f186fc85b9eff9
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    3  WARNING: suspicious RCU usage in mas_walk
+***    3  WARNING: suspicious RCU usage in mas_walk
+***    3  WARNING: suspicious RCU usage in mas_walk
+Running syz-repro.
+New PoC saved at /home/syzretrospector/syzinspector/wd-bisector-4/reproducers/repro-bug0895-0.prog
+Primary PoC:     /home/syzretrospector/syzinspector/wd-bisector-4/reproducers/repro-bug0895-0.prog
+Run Time:        0h10m0s
+The bug was found.
+About 66 commits remaining
+
+2025-03-16 09:53:03
+Session:   12
+Kernel:    2022-11-02 - ba9169f57090efdee6b13601fced57e123db8777
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       3  INFO: rcu detected stall in corrupted
+***    3  WARNING: suspicious RCU usage in mas_walk
+***    3  WARNING: suspicious RCU usage in mas_walk
+The bug was found.
+About 33 commits remaining
+
+2025-03-16 10:13:35
+Session:   13
+Kernel:    2022-10-30 - 93d904a734a74c54d945a9884b4962977f1176cd
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       3  INFO: rcu detected stall in corrupted
+***    3  WARNING: suspicious RCU usage in mas_walk
+The bug was found.
+About 17 commits remaining
+
+2025-03-16 10:26:08
+Session:   14
+Kernel:    2022-10-28 - e276d62dcfdee6582486e8b8344dd869518e14be
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    3  WARNING: suspicious RCU usage in mas_walk
+***    3  WARNING: suspicious RCU usage in mas_walk
+***    3  WARNING: suspicious RCU usage in mas_walk
+Running syz-repro.
+Run Time:        0h12m0s
+The bug was found.
+About 9 commits remaining
+
+2025-03-16 10:46:36
+Session:   15
+Kernel:    2022-10-28 - e4ba4554209f626c52e2e57f26cba49a62663c8b
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    3  WARNING: suspicious RCU usage in mas_walk
+       3  WARNING in split_huge_page_to_list
+Running syz-repro.
+syz-repro was terminated after 60 minutes
+Run Time:        1h0m0s
+The bug was found.
+About 5 commits remaining
+
+2025-03-16 11:58:51
+Session:   16
+Kernel:    2022-10-28 - 8fdf3f6aba7cfa0c0e2bf66ecca7bb5783acd0d6
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 3 commits remaining
+
+2025-03-16 12:18:29
+Session:   17
+Kernel:    2022-10-28 - 7354c9024f2835f6122ed9612e21ab379df050f9
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 2 commits remaining
+
+==== Partial Result: Focused Fuzzing ====
+Reproducer:           /home/syzretrospector/syzinspector/wd-bisector-4/reproducers/repro-bug0895-0.prog
+Bisection Result:     2022-10-28 - e4ba4554209f626c52e2e57f26cba49a62663c8b
+Bisected Commit Name: net: openvswitch: add missing .resv_start_op
+Stage Time:           8h13m15s
+Run Time:             8h13m16s
+=========================================
+
+==== Anchor Commit ====
+
+2025-03-16 12:33:48
+Session:   18
+Kernel:    2022-10-28 - 7354c9024f2835f6122ed9612e21ab379df050f9
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Warning: VM has not responded after 5 attempts.
+Warning: Only booted 0 VMs.
+Attempt 0:
+    WARNING in genl_register_family
+Attempt 1:
+    WARNING in genl_register_family
+Attempt 2:
+    WARNING in genl_register_family
+Attempt 3:
+    WARNING in genl_register_family
+Attempt 4:
+    WARNING in genl_register_family
+Attempt 5:
+    WARNING in genl_register_family
+Attempt 6:
+    WARNING in genl_register_family
+Attempt 7:
+    WARNING in genl_register_family
+The bug was not found.
+
+Failure: This bug cannot be found at the anchor commit.
+
+====================================================================================================================================================
+Bug Name:             WARNING: suspicious RCU usage in mas_walk
+Bug Link:             https://syzkaller.appspot.com/bug?extid=2ee18845e89ae76342c5
+Bisection Result:     2022-10-28 - e4ba4554209f626c52e2e57f26cba49a62663c8b
+Bisected Commit Name: net: openvswitch: add missing .resv_start_op
+Run Time:             8h21m52s
+
+Anchor Commit:        2023-02-06 - 05ecb680708a1dbe6554d6fc17e5d9a8a7cb5e6a
+Bisection Result:     2022-10-28 - e4ba4554209f626c52e2e57f26cba49a62663c8b

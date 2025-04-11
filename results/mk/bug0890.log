@@ -1,0 +1,334 @@
+./bin/bisector -i 4 -c /home/syzretrospector/syzinspector/wd-bisector-4/bisector.cfg -a 148341f0a2f53b5e8808d093333d85170586a15d -F ff-test,poc-test,stateful-corpus,ff-no-find-backup
+Bisecting:          KASAN: slab-use-after-free Read in mas_next_entry
+Syzbot Link:        https://syzkaller.appspot.com/bug?extid=a7c1ec5b1d71ceaa5186
+Working Name:       bug0890
+
+No aliases given.
+
+Anchor Commit:      148341f0a2f53b5e8808d093333d85170586a15d
+Repository:         https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
+Branch:             master
+Arch:               amd64
+
+Bisector:           /home/syzretrospector/syzinspector/
+Version:            1.0.4
+Kernel:             /home/syzretrospector/syzinspector/wd-bisector-4/kernel/
+Syzkaller:          /home/syzretrospector/syzinspector/syzkaller/
+Compilers:          /home/syzretrospector/compilers/
+Ccache:             ccache
+Image:              /home/syzretrospector/images/stretch/stretch.img
+Image Key:          /home/syzretrospector/images/stretch/stretch.id_rsa
+
+Workdir:            /home/syzretrospector/syzinspector/wd-bisector-4/
+Kconfig:            /home/syzretrospector/syzinspector/wd-bisector-4/config-bug0890.txt
+Reproducers: (1)    /home/syzretrospector/syzinspector/wd-bisector-4/reproducers/
+Syzkaller Workdir:  /home/syzretrospector/syzinspector/wd-bisector-4/wd-kaller/
+Log Directory:      /home/syzretrospector/syzinspector/wd-bisector-4/log/
+
+Syscalls: (29)      ["mbind", "set_mempolicy_home_node", "syz_io_uring_setup", "syz_memcpy_off$IO_URING_METADATA_GENERIC", "syz_io_uring_submit", "ioctl$F2FS_IOC_START_ATOMIC_WRITE", "openat$selinux_enforce", "statx", "socket", "syz_mount_image$bfs", "io_uring_register$IORING_UNREGISTER_PERSONALITY", "io_uring_register$IORING_REGISTER_PERSONALITY", "futex", "getrusage", "clock_gettime", "mount$bpf", "getuid", "setgid", "getgid", "epoll_create", "setsockopt$inet_mreqn", "ioctl$sock_SIOCGIFINDEX", "ioctl$ifreq_SIOCGIFINDEX_vcan", "bind$nfc_llcp", "ioctl$IOCTL_GET_NCIDEV_IDX", "socket$inet", "syz_init_net_socket$nfc_llcp", "openat$nci", "utimes"]
+VM Count:           4
+CPU Count:          4
+Procs:              24
+Memory:             4096
+Make Procs:         16
+Max Time:           10
+Max Attempts:       1
+
+==== Anchor Commit ====
+
+2025-03-14 14:01:46
+Session:   1
+Kernel:    2023-04-03 - 148341f0a2f53b5e8808d093333d85170586a15d
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    3  KASAN: slab-use-after-free Read in mas_next_entry
+***    3  KASAN: slab-use-after-free Read in mas_next_entry
+***    3  KASAN: slab-use-after-free Read in mas_next_entry
+Attempt 2: (RETRY)
+    Time  Bug Name
+***    3  KASAN: slab-use-after-free Read in mas_next_entry
+Attempt 3: (RETRY)
+    Time  Bug Name
+***    4  KASAN: slab-use-after-free Read in mas_next_entry
+The bug was found.
+
+New Max Time: 10
+
+==== Major Release Search ====
+18 Releases
+
+2025-03-14 14:32:58
+Session:   2
+Kernel:    2023-02-19 - c9c3395d5e3dcc6daee66c6908354d47bf98cb0c (v6.2)
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       3  KASAN: use-after-free Read in mas_next_nentry
+       4  KASAN: use-after-free Read in mas_next_nentry
+       4  KASAN: use-after-free Read in mas_next_nentry
+       4  KASAN: use-after-free Read in mas_next_nentry
+       5  KASAN: use-after-free Read in mas_next_nentry
+       6  KASAN: use-after-free Read in mas_next_nentry
+       7  KASAN: use-after-free Read in mas_next_nentry
+       7  KASAN: use-after-free Read in mas_next_nentry
+       8  KASAN: use-after-free Read in mas_next_nentry
+       9  KASAN: use-after-free Read in mas_next_nentry
+       9  KASAN: use-after-free Read in mas_next_nentry
+      10  KASAN: use-after-free Read in mas_next_nentry
+      10  KASAN: use-after-free Read in mas_next_nentry
+The bug was not found.
+About 17 releases remaining
+
+==== Kernel Bisection ====
+14964 Linux commits
+
+2025-03-14 15:04:23
+Session:   3
+Kernel:    2023-02-22 - 307e14c039063f0c9bd7a18a7add8f940580dcc9
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       4  KASAN: use-after-free Read in mas_next_nentry
+       4  KASAN: use-after-free Read in mas_next_nentry
+       4  KASAN: use-after-free Read in mas_next_nentry
+       4  KASAN: use-after-free Read in mas_next_nentry
+       6  KASAN: use-after-free Read in mas_next_nentry
+       6  KASAN: use-after-free Read in mas_next_nentry
+       7  KASAN: use-after-free Read in mas_next_nentry
+       7  KASAN: use-after-free Read in mas_next_nentry
+       8  KASAN: use-after-free Read in mas_next_nentry
+       9  KASAN: use-after-free Read in mas_next_nentry
+       9  KASAN: use-after-free Read in mas_next_nentry
+       9  KASAN: use-after-free Read in mas_next_nentry
+The bug was not found.
+About 8222 commits remaining
+
+2025-03-14 15:35:13
+Session:   4
+Kernel:    2023-02-25 - d8e473182ab9e85708067be81d20424045d939fa
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    3  KASAN: slab-use-after-free Read in mas_next_entry
+***    3  KASAN: slab-use-after-free Read in mas_next_entry
+Running syz-repro.
+New PoC saved at /home/syzretrospector/syzinspector/wd-bisector-4/reproducers/repro-bug0890-0.prog
+Primary PoC:     /home/syzretrospector/syzinspector/wd-bisector-4/reproducers/repro-bug0890-0.prog
+Run Time:        0h45m0s
+The bug was found.
+About 4095 commits remaining
+
+2025-03-14 16:44:01
+Session:   5
+Kernel:    2023-02-23 - e4bc15889506723d7b93c053ad4a75cd58248d74
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       3  KASAN: use-after-free Read in mas_next_nentry
+       3  KASAN: use-after-free Read in mas_next_nentry
+       3  KASAN: use-after-free Read in mas_next_nentry
+       5  KASAN: use-after-free Read in mas_next_nentry
+       5  KASAN: use-after-free Read in mas_next_nentry
+       5  KASAN: use-after-free Read in mas_next_nentry
+       6  KASAN: use-after-free Read in mas_next_nentry
+       7  KASAN: use-after-free Read in mas_next_nentry
+       7  KASAN: use-after-free Read in mas_next_nentry
+       7  KASAN: use-after-free Read in mas_next_nentry
+       9  KASAN: use-after-free Read in mas_next_nentry
+       9  KASAN: use-after-free Read in mas_next_nentry
+       9  KASAN: use-after-free Read in mas_next_nentry
+      10  KASAN: use-after-free Read in mas_next_nentry
+The bug was not found.
+About 2176 commits remaining
+
+2025-03-14 17:14:56
+Session:   6
+Kernel:    2023-02-24 - 0601f25d1c4937c678db786961705ce56fbd6bb6
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    4  KASAN: slab-use-after-free Read in mas_next_entry
+***    4  KASAN: slab-use-after-free Read in mas_next_entry
+The bug was found.
+About 1191 commits remaining
+
+2025-03-14 17:39:48
+Session:   7
+Kernel:    2023-02-24 - ab7362d04d7c14923420c1e19e889da512a65cd7
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    4  KASAN: slab-use-after-free Read in mas_next_entry
+The bug was found.
+About 579 commits remaining
+
+2025-03-14 18:04:47
+Session:   8
+Kernel:    2023-02-02 - 076cf7ea67010d11a97912423f4cdbeff1bd1f5f
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       3  KASAN: use-after-free Read in mas_next_nentry
+       3  KASAN: use-after-free Read in mas_next_nentry
+       4  KASAN: use-after-free Read in mas_next_nentry
+       5  KASAN: use-after-free Read in mas_next_nentry
+       5  KASAN: use-after-free Read in mas_next_nentry
+       6  KASAN: use-after-free Read in mas_next_nentry
+       7  KASAN: use-after-free Read in mas_next_nentry
+       8  KASAN: use-after-free Read in mas_next_nentry
+       8  KASAN: use-after-free Read in mas_next_nentry
+       9  suppressed report
+      10  KASAN: use-after-free Read in mas_next_nentry
+      10  KASAN: use-after-free Read in mas_next_nentry
+      10  KASAN: use-after-free Read in mas_next_nentry
+The bug was not found.
+About 10320 commits remaining
+
+2025-03-14 18:36:07
+Session:   9
+Kernel:    2023-02-09 - edad1bb1fbf7e28b49bf76b2aa66bfcaba00f627
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       3  INFO: rcu detected stall in corrupted
+***    4  KASAN: slab-use-after-free Read in mas_next_entry
+Running syz-repro.
+syz-repro was terminated after 60 minutes
+Run Time:        1h0m0s
+The bug was found.
+About 145 commits remaining
+
+2025-03-14 20:01:16
+Session:   10
+Kernel:    2023-02-09 - d60beb1f698a429825ea2c463ee9e3dc3b1a79b7
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 73 commits remaining
+
+2025-03-14 20:32:27
+Session:   11
+Kernel:    2023-02-09 - 06e78b614e3780f9ac32056f2861159fd19d9702
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    4  KASAN: use-after-free Read in mas_next_entry
+Running syz-repro.
+Run Time:        0h7m0s
+The bug was found.
+About 37 commits remaining
+
+2025-03-14 21:03:25
+Session:   12
+Kernel:    2023-02-09 - 9e56044625a1f472edc278105f41a60726991d89
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 19 commits remaining
+
+2025-03-14 21:33:26
+Session:   13
+Kernel:    2023-02-09 - 9303d3e1c3f8d8863d561a070489cf44ce5e4103
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 10 commits remaining
+
+2025-03-14 22:03:26
+Session:   14
+Kernel:    2023-02-09 - cf51e86dfbe39b7cae3a9de650d035af22dd5fb4
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 6 commits remaining
+
+2025-03-14 22:21:55
+Session:   15
+Kernel:    2023-02-09 - 287051b185048c4aabe666439e64232ac59135a6
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 4 commits remaining
+
+2025-03-14 22:40:27
+Session:   16
+Kernel:    2023-02-09 - 18b098af2890cdeab07368405409111197f190d2
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    3  KASAN: use-after-free Read in mas_next_entry
+Running syz-repro.
+New PoC saved at /home/syzretrospector/syzinspector/wd-bisector-4/reproducers/repro-bug0890-2.prog
+Primary PoC:     /home/syzretrospector/syzinspector/wd-bisector-4/reproducers/repro-bug0890-2.prog
+Run Time:        0h11m0s
+The bug was found.
+About 3 commits remaining
+
+2025-03-14 23:02:56
+Session:   17
+Kernel:    2023-02-09 - 0503ea8f5ba73eb3ab13a81c1eefbaf51405385a
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 2 commits remaining
+
+==== Partial Result: Focused Fuzzing ====
+Reproducer:           /home/syzretrospector/syzinspector/wd-bisector-4/reproducers/repro-bug0890-2.prog
+Bisection Result:     2023-02-09 - 18b098af2890cdeab07368405409111197f190d2
+Bisected Commit Name: vma_merge: set vma iterator to correct position.
+Stage Time:           9h19m51s
+Run Time:             9h20m0s
+=========================================
+
+==== Anchor Commit ====
+
+2025-03-14 23:21:37
+Session:   18
+Kernel:    2023-02-09 - 0503ea8f5ba73eb3ab13a81c1eefbaf51405385a
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Warning: VM has not responded after 5 attempts.
+Warning: Only booted 0 VMs.
+Attempt 0:
+    WARNING in vma_merge
+    kernel panic: kernel: panic_on_warn set ...
+Attempt 1:
+    WARNING in vma_merge
+    kernel panic: kernel: panic_on_warn set ...
+Attempt 2:
+    WARNING in vma_merge
+    kernel panic: kernel: panic_on_warn set ...
+Attempt 3:
+    WARNING in mprotect_fixup
+    kernel panic: kernel: panic_on_warn set ...
+Attempt 4:
+    WARNING in vma_merge
+    kernel panic: kernel: panic_on_warn set ...
+Attempt 5:
+    WARNING in vma_merge
+    kernel panic: kernel: panic_on_warn set ...
+Attempt 6:
+    WARNING in vma_merge
+    kernel panic: kernel: panic_on_warn set ...
+Attempt 7:
+    WARNING in vma_merge
+    kernel panic: kernel: panic_on_warn set ...
+The bug was not found.
+
+Failure: This bug cannot be found at the anchor commit.
+
+====================================================================================================================================================
+Bug Name:             KASAN: slab-use-after-free Read in mas_next_entry
+Bug Link:             https://syzkaller.appspot.com/bug?extid=a7c1ec5b1d71ceaa5186
+Bisection Result:     2023-02-09 - 18b098af2890cdeab07368405409111197f190d2
+Bisected Commit Name: vma_merge: set vma iterator to correct position.
+Run Time:             9h31m35s
+
+Anchor Commit:        2023-04-03 - 148341f0a2f53b5e8808d093333d85170586a15d
+Bisection Result:     2023-02-09 - 18b098af2890cdeab07368405409111197f190d2

@@ -1,0 +1,351 @@
+./bin/bisector -i 4 -c /home/syzretrospector/syzinspector/wd-bisector-4/bisector.cfg -a a9a01e1238cf5b477ec6aa54855356e518998991 -F ff-test,poc-test,stateful-corpus,ff-no-find-backup
+Bisecting:          WARNING in nla_get_range_unsigned
+Syzbot Link:        https://syzkaller.appspot.com/bug?id=b724247f95c68e1c380e6b9c48311e07ac1741fd
+Working Name:       bug0884
+
+No aliases given.
+
+Anchor Commit:      a9a01e1238cf5b477ec6aa54855356e518998991
+Repository:         https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
+Branch:             master
+Arch:               amd64
+
+Bisector:           /home/syzretrospector/syzinspector/
+Version:            1.0.4
+Kernel:             /home/syzretrospector/syzinspector/wd-bisector-4/kernel/
+Syzkaller:          /home/syzretrospector/syzinspector/syzkaller/
+Compilers:          /home/syzretrospector/compilers/
+Ccache:             ccache
+Image:              /home/syzretrospector/images/stretch/stretch.img
+Image Key:          /home/syzretrospector/images/stretch/stretch.id_rsa
+
+Workdir:            /home/syzretrospector/syzinspector/wd-bisector-4/
+Kconfig:            /home/syzretrospector/syzinspector/wd-bisector-4/config-bug0884.txt
+Reproducers: (1)    /home/syzretrospector/syzinspector/wd-bisector-4/reproducers/
+Primary PoC:        /home/syzretrospector/syzinspector/wd-bisector-4/reproducers/repro-bug0884-1.prog
+Syzkaller Workdir:  /home/syzretrospector/syzinspector/wd-bisector-4/wd-kaller/
+Log Directory:      /home/syzretrospector/syzinspector/wd-bisector-4/log/
+
+Syscalls: (9)       ["sendmsg$NL80211_CMD_SET_INTERFACE", "socket$nl_generic", "syz_genetlink_get_family_id$nl80211", "socket$netlink", "socket", "sendmsg$NL80211_CMD_GET_INTERFACE", "ioctl$sock_SIOCGIFINDEX_80211", "ioctl$F2FS_IOC_START_ATOMIC_WRITE", "openat$selinux_enforce"]
+VM Count:           8
+CPU Count:          2
+Procs:              16
+Memory:             4096
+Make Procs:         16
+Max Time:           10
+Max Attempts:       1
+
+==== Anchor Commit ====
+
+2025-03-13 15:28:54
+Session:   1
+Kernel:    2023-03-02 - a9a01e1238cf5b477ec6aa54855356e518998991
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    3  WARNING in nla_get_range_unsigned
+***    3  WARNING in nla_get_range_unsigned
+Attempt 2: (RETRY)
+    Time  Bug Name
+***    3  WARNING in nla_get_range_unsigned
+***    3  WARNING in nla_get_range_unsigned
+Attempt 3: (RETRY)
+    Time  Bug Name
+***    3  WARNING in nla_get_range_unsigned
+***    3  WARNING in nla_get_range_unsigned
+The bug was found.
+
+New Max Time: 10
+
+==== Major Release Search ====
+18 Releases
+
+2025-03-13 15:59:43
+Session:   2
+Kernel:    2023-02-19 - c9c3395d5e3dcc6daee66c6908354d47bf98cb0c (v6.2)
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       4  INFO: rcu detected stall in corrupted
+The bug was not found.
+About 17 releases remaining
+
+==== Kernel Bisection ====
+13220 Linux commits
+
+2025-03-13 16:30:56
+Session:   3
+Kernel:    2023-02-22 - 9fc2f99030b55027d84723b0dcbbe9f7e21b9c6c
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    3  WARNING in nla_get_range_unsigned
+***    3  WARNING in nla_get_range_unsigned
+***    3  WARNING in nla_get_range_unsigned
+Running syz-repro.
+New PoC saved at /home/syzretrospector/syzinspector/wd-bisector-4/reproducers/repro-bug0884-0.prog
+Primary PoC:     /home/syzretrospector/syzinspector/wd-bisector-4/reproducers/repro-bug0884-0.prog
+Run Time:        0h10m0s
+The bug was found.
+About 6670 commits remaining
+
+2025-03-13 17:04:40
+Session:   4
+Kernel:    2023-02-21 - 36289a03bcd3aabdf66de75cb6d1b4ee15726438
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       3  INFO: rcu detected stall in corrupted
+       4  WARNING: ODEBUG bug in netdev_run_todo
+       6  WARNING in ieee80211_bss_info_change_notify
+       6  WARNING in ieee80211_bss_info_change_notify
+       6  WARNING in ieee80211_bss_info_change_notify
+       6  WARNING in ieee80211_bss_info_change_notify
+       8  WARNING in ieee80211_bss_info_change_notify
+       8  WARNING in ieee80211_bss_info_change_notify
+       8  WARNING in ieee80211_bss_info_change_notify
+       8  WARNING in ieee80211_bss_info_change_notify
+       9  WARNING in ieee80211_bss_info_change_notify
+       9  WARNING in ieee80211_bss_info_change_notify
+       9  WARNING in ieee80211_bss_info_change_notify
+       9  WARNING in ieee80211_bss_info_change_notify
+      10  WARNING in ieee80211_bss_info_change_notify
+      10  WARNING in ieee80211_bss_info_change_notify
+      10  WARNING in ieee80211_bss_info_change_notify
+The bug was not found.
+About 3487 commits remaining
+
+2025-03-13 17:35:07
+Session:   5
+Kernel:    2023-02-16 - 1a30a6b25f263686dbf2028d56041ac012b10dcb
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    3  WARNING in nla_get_range_unsigned
+***    3  WARNING in nla_get_range_unsigned
+       3  WARNING in ieee80211_bss_info_change_notify
+The bug was found.
+About 1710 commits remaining
+
+2025-03-13 17:59:10
+Session:   6
+Kernel:    2023-01-28 - 2d104c390f0d3901c4915dcb141cb96da96cffe7
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       3  WARNING in ieee80211_bss_info_change_notify
+       3  WARNING in ieee80211_bss_info_change_notify
+       4  WARNING in ieee80211_bss_info_change_notify
+       4  WARNING in ieee80211_bss_info_change_notify
+       5  WARNING in ieee80211_bss_info_change_notify
+       5  WARNING in ieee80211_bss_info_change_notify
+       5  WARNING in ieee80211_bss_info_change_notify
+       5  WARNING in ieee80211_bss_info_change_notify
+       5  WARNING in ieee80211_bss_info_change_notify
+       6  WARNING in ieee80211_bss_info_change_notify
+       7  WARNING in ieee80211_bss_info_change_notify
+       7  WARNING in ieee80211_bss_info_change_notify
+       7  WARNING in ieee80211_bss_info_change_notify
+       8  WARNING in ieee80211_bss_info_change_notify
+       8  WARNING in ieee80211_bss_info_change_notify
+       8  WARNING in ieee80211_bss_info_change_notify
+       9  WARNING in ieee80211_link_release_channel
+       9  WARNING in ieee80211_bss_info_change_notify
+       9  WARNING in ieee80211_bss_info_change_notify
+       9  WARNING in ieee80211_bss_info_change_notify
+       9  WARNING in ieee80211_bss_info_change_notify
+      10  WARNING in ieee80211_bss_info_change_notify
+The bug was not found.
+About 1368 commits remaining
+
+2025-03-13 18:29:52
+Session:   7
+Kernel:    2023-02-08 - f2f527d595963aa86464ca3e05ec27dd5153d56e
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 679 commits remaining
+
+2025-03-13 19:00:49
+Session:   8
+Kernel:    2023-02-10 - 75da437a2f172759b2273091a938772e687242d0
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       3  WARNING in ieee80211_bss_info_change_notify
+       3  WARNING in ieee80211_bss_info_change_notify
+       4  INFO: trying to register non-static key in net_free
+       5  WARNING in ieee80211_bss_info_change_notify
+       5  WARNING in ieee80211_bss_info_change_notify
+       6  WARNING in ieee80211_bss_info_change_notify
+       6  WARNING in ieee80211_bss_info_change_notify
+       6  WARNING in ieee80211_bss_info_change_notify
+       7  WARNING in ieee80211_bss_info_change_notify
+       7  WARNING in ieee80211_bss_info_change_notify
+       8  WARNING in ieee80211_bss_info_change_notify
+       8  WARNING in ieee80211_bss_info_change_notify
+       9  WARNING in ieee80211_bss_info_change_notify
+       9  WARNING in ieee80211_bss_info_change_notify
+      10  INFO: trying to register non-static key in net_free
+      10  WARNING in ieee80211_bss_info_change_notify
+      10  WARNING in ieee80211_bss_info_change_notify
+      10  WARNING in ieee80211_bss_info_change_notify
+      10  WARNING in ieee80211_bss_info_change_notify
+      10  WARNING in ieee80211_bss_info_change_notify
+The bug was not found.
+About 211 commits remaining
+
+2025-03-13 19:19:57
+Session:   9
+Kernel:    2023-02-13 - 6d2a479c1f9e957908d0fc9d56b9831a48f5ce80
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       4  INFO: trying to register non-static key in net_free
+       5  WARNING in ieee80211_bss_info_change_notify
+The bug was not found.
+About 106 commits remaining
+
+2025-03-13 19:37:42
+Session:   10
+Kernel:    2023-02-13 - 3eea2c615e25f7a3a7b40912358ed54b5d2f0ff2
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       4  INFO: trying to register non-static key in net_free
+The bug was not found.
+About 44 commits remaining
+
+2025-03-13 19:56:12
+Session:   11
+Kernel:    2023-02-14 - 5c1e269aa5ebafeec69b68ff560522faa5bcb6c1
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    3  WARNING in nla_get_range_unsigned
+***    3  WARNING in nla_get_range_unsigned
+***    3  WARNING in nla_get_range_unsigned
+The bug was found.
+About 22 commits remaining
+
+2025-03-13 20:08:27
+Session:   12
+Kernel:    2023-02-14 - 08b74776a8acb02b7cabb77fc1ccbd93e147edfa
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       4  INFO: trying to register non-static key in net_free
+       9  INFO: trying to register non-static key in net_free
+      10  INFO: trying to register non-static key in net_free
+      10  INFO: trying to register non-static key in net_free
+      10  INFO: trying to register non-static key in net_free
+      10  INFO: trying to register non-static key in net_free
+      10  INFO: trying to register non-static key in net_free
+      10  INFO: trying to register non-static key in net_free
+      10  INFO: trying to register non-static key in net_free
+The bug was not found.
+About 12 commits remaining
+
+2025-03-13 20:27:09
+Session:   13
+Kernel:    2023-02-14 - 2cc25e4b2a04cdd90dbb2916678745565cc4aeed
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    3  WARNING in nla_get_range_unsigned
+***    3  WARNING in nla_get_range_unsigned
+***    3  WARNING in nla_get_range_unsigned
+Running syz-repro.
+Run Time:        0h12m0s
+The bug was found.
+About 6 commits remaining
+
+2025-03-13 20:50:51
+Session:   14
+Kernel:    2023-02-14 - b25413fed3d43e1ed3340df4d928971bb8639f66
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       4  INFO: trying to register non-static key in net_free
+       5  INFO: trying to register non-static key in net_free
+       5  INFO: trying to register non-static key in net_free
+      10  INFO: trying to register non-static key in net_free
+      10  INFO: trying to register non-static key in net_free
+      10  INFO: trying to register non-static key in net_free
+      10  INFO: trying to register non-static key in net_free
+      10  INFO: trying to register non-static key in net_free
+The bug was not found.
+About 4 commits remaining
+
+2025-03-13 21:09:44
+Session:   15
+Kernel:    2023-02-14 - b345f0637c0042f9e6b78378a32256d90f485774
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    3  WARNING in nla_get_range_unsigned
+***    3  WARNING in nla_get_range_unsigned
+***    3  WARNING in nla_get_range_unsigned
+Running syz-repro.
+Run Time:        0h12m0s
+The bug was found.
+About 3 commits remaining
+
+2025-03-13 21:33:39
+Session:   16
+Kernel:    2023-02-14 - d7c1a9a0ed180d8884798ce97afe7283622a484f
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    3  WARNING in nla_get_range_unsigned
+***    3  WARNING in nla_get_range_unsigned
+***    3  WARNING in nla_get_range_unsigned
+Running syz-repro.
+Run Time:        0h12m0s
+The bug was found.
+About 2 commits remaining
+
+==== Partial Result: Focused Fuzzing ====
+Reproducer:           /home/syzretrospector/syzinspector/wd-bisector-4/reproducers/repro-bug0884-0.prog
+Bisection Result:     2023-02-14 - d7c1a9a0ed180d8884798ce97afe7283622a484f
+Bisected Commit Name: wifi: nl80211: validate and configure puncturing bitmap
+Stage Time:           6h28m43s
+Run Time:             6h28m46s
+=========================================
+
+==== Anchor Commit ====
+
+2025-03-13 21:57:37
+Session:   17
+Kernel:    2023-02-14 - b25413fed3d43e1ed3340df4d928971bb8639f66
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+
+Failure: This bug cannot be found at the anchor commit.
+
+====================================================================================================================================================
+Bug Name:             WARNING in nla_get_range_unsigned
+Bug Link:             https://syzkaller.appspot.com/bug?id=b724247f95c68e1c380e6b9c48311e07ac1741fd
+Bisection Result:     2023-02-14 - d7c1a9a0ed180d8884798ce97afe7283622a484f
+Bisected Commit Name: wifi: nl80211: validate and configure puncturing bitmap
+Run Time:             6h39m29s
+
+Anchor Commit:        2023-03-02 - a9a01e1238cf5b477ec6aa54855356e518998991
+Bisection Result:     2023-02-14 - d7c1a9a0ed180d8884798ce97afe7283622a484f

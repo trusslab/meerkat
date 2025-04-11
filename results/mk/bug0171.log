@@ -1,0 +1,73 @@
+./bin/bisector -i 5 -c /home/syzretrospector/syzinspector/wd-bisector-5/bisector.cfg -a f76349cf41451c5c42a99f18a9163377e4b364ff -F ff-test,poc-test,stateful-corpus,ff-no-find-backup
+Bisecting:          KASAN: slab-out-of-bounds Read in ntfs_trim_fs
+Syzbot Link:        https://syzkaller.appspot.com/bug?id=45a4efa3f29d05eff1e3e56c440194d641505e61
+Working Name:       bug0171
+
+No aliases given.
+
+Anchor Commit:      f76349cf41451c5c42a99f18a9163377e4b364ff
+Repository:         https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
+Branch:             master
+Arch:               amd64
+
+Bisector:           /home/syzretrospector/syzinspector/
+Version:            1.0.4
+Kernel:             /home/syzretrospector/syzinspector/wd-bisector-5/kernel/
+Syzkaller:          /home/syzretrospector/syzinspector/syzkaller/
+Compilers:          /home/syzretrospector/compilers/
+Ccache:             ccache
+Image:              /home/syzretrospector/images/stretch/stretch.img
+Image Key:          /home/syzretrospector/images/stretch/stretch.id_rsa
+
+Workdir:            /home/syzretrospector/syzinspector/wd-bisector-5/
+Kconfig:            /home/syzretrospector/syzinspector/wd-bisector-5/config-bug0171.txt
+Reproducers: (4)    /home/syzretrospector/syzinspector/wd-bisector-5/reproducers/
+Primary PoC:        /home/syzretrospector/syzinspector/wd-bisector-5/reproducers/repro-bug0171-1.prog
+Syzkaller Workdir:  /home/syzretrospector/syzinspector/wd-bisector-5/wd-kaller/
+Log Directory:      /home/syzretrospector/syzinspector/wd-bisector-5/log/
+
+Syscalls: (8)       ["ioctl$EXT4_IOC_GROUP_ADD", "ioctl$FS_IOC_REMOVE_ENCRYPTION_KEY", "ioctl$FS_IOC_SET_ENCRYPTION_POLICY", "openat$incfs", "syz_mount_image$ntfs3", "getuid", "setgid", "getgid"]
+VM Count:           8
+CPU Count:          2
+Procs:              16
+Memory:             4096
+Make Procs:         16
+Max Time:           10
+Max Attempts:       1
+
+==== Anchor Commit ====
+
+2025-03-12 16:27:45
+Session:   1
+Kernel:    2022-09-25 - f76349cf41451c5c42a99f18a9163377e4b364ff
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Warning: ioctl$EXT4_IOC_GROUP_ADD was disabled by Syzkaller.
+Warning: ioctl$FS_IOC_REMOVE_ENCRYPTION_KEY was disabled by Syzkaller.
+Warning: ioctl$FS_IOC_SET_ENCRYPTION_POLICY was disabled by Syzkaller.
+Warning: openat$incfs was disabled by Syzkaller.
+Attempt 1:
+    Time  Bug Name
+       5  WARNING in wnd_init
+       5  WARNING in wnd_init
+       7  general protection fault in d_flags_for_inode
+       8  UBSAN: shift-out-of-bounds in ntfs_fill_super
+Warning: ioctl$EXT4_IOC_GROUP_ADD was disabled by Syzkaller.
+Warning: ioctl$FS_IOC_REMOVE_ENCRYPTION_KEY was disabled by Syzkaller.
+Warning: ioctl$FS_IOC_SET_ENCRYPTION_POLICY was disabled by Syzkaller.
+Warning: openat$incfs was disabled by Syzkaller.
+Attempt 2: (RETRY)
+    Time  Bug Name
+       2  INFO: rcu detected stall in corrupted
+Warning: ioctl$EXT4_IOC_GROUP_ADD was disabled by Syzkaller.
+Warning: ioctl$FS_IOC_REMOVE_ENCRYPTION_KEY was disabled by Syzkaller.
+Warning: ioctl$FS_IOC_SET_ENCRYPTION_POLICY was disabled by Syzkaller.
+Warning: openat$incfs was disabled by Syzkaller.
+Attempt 3: (RETRY)
+    Time  Bug Name
+       2  INFO: rcu detected stall in corrupted
+       3  WARNING in ntfs_fill_super
+       3  WARNING in ntfs_fill_super
+       7  WARNING in ntfs_fill_super
+The bug was not found.
+
+Failure: This bug cannot be found at the anchor commit.
