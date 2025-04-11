@@ -1,0 +1,575 @@
+./bin/bisector -i 5 -c /home/syzretrospector/syzinspector/wd-bisector-5/bisector.cfg -a 489fa31ea873282b41046d412ec741f93946fc2d -F ff-test,poc-test,stateful-corpus,ff-no-find-backup
+Bisecting:          WARNING in skb_warn_bad_offload
+Syzbot Link:        https://syzkaller.appspot.com/bug?extid=c99d835ff081ca30f986
+Working Name:       bug0798
+
+No aliases given.
+
+Anchor Commit:      489fa31ea873282b41046d412ec741f93946fc2d
+Repository:         https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
+Branch:             master
+Arch:               amd64
+
+Bisector:           /home/syzretrospector/syzinspector/
+Version:            1.0.4
+Kernel:             /home/syzretrospector/syzinspector/wd-bisector-5/kernel/
+Syzkaller:          /home/syzretrospector/syzinspector/syzkaller/
+Compilers:          /home/syzretrospector/compilers/
+Ccache:             ccache
+Image:              /home/syzretrospector/images/stretch/stretch.img
+Image Key:          /home/syzretrospector/images/stretch/stretch.id_rsa
+
+Workdir:            /home/syzretrospector/syzinspector/wd-bisector-5/
+Kconfig:            /home/syzretrospector/syzinspector/wd-bisector-5/config-bug0798.txt
+Reproducers: (3)    /home/syzretrospector/syzinspector/wd-bisector-5/reproducers/
+Primary PoC:        /home/syzretrospector/syzinspector/wd-bisector-5/reproducers/repro-bug0798-11.prog
+Syzkaller Workdir:  /home/syzretrospector/syzinspector/wd-bisector-5/wd-kaller/
+Log Directory:      /home/syzretrospector/syzinspector/wd-bisector-5/log/
+
+Syscalls: (9)       ["bind$packet", "ioctl$sock_SIOCGIFINDEX", "sendto$inet6", "setsockopt$packet_int", "socket$packet", "socket", "socket$inet6", "ioctl$F2FS_IOC_START_ATOMIC_WRITE", "openat$selinux_enforce"]
+VM Count:           8
+CPU Count:          2
+Procs:              16
+Memory:             4096
+Make Procs:         16
+Max Time:           10
+Max Attempts:       1
+
+==== Anchor Commit ====
+
+2025-03-20 05:00:25
+Session:   1
+Kernel:    2023-02-24 - 489fa31ea873282b41046d412ec741f93946fc2d
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    2  WARNING in skb_warn_bad_offload
+***    2  WARNING in skb_warn_bad_offload
+***    2  WARNING in skb_warn_bad_offload
+***    2  WARNING in skb_warn_bad_offload
+***    2  WARNING in skb_warn_bad_offload
+***    2  WARNING in skb_warn_bad_offload
+Attempt 2: (RETRY)
+    Time  Bug Name
+***    2  WARNING in skb_warn_bad_offload
+***    2  WARNING in skb_warn_bad_offload
+***    2  WARNING in skb_warn_bad_offload
+***    2  WARNING in skb_warn_bad_offload
+***    2  WARNING in skb_warn_bad_offload
+***    2  WARNING in skb_warn_bad_offload
+Attempt 3: (RETRY)
+    Time  Bug Name
+***    2  WARNING in skb_warn_bad_offload
+***    2  WARNING in skb_warn_bad_offload
+***    2  WARNING in skb_warn_bad_offload
+***    2  WARNING in skb_warn_bad_offload
+***    2  WARNING in skb_warn_bad_offload
+***    2  WARNING in skb_warn_bad_offload
+***    2  WARNING in skb_warn_bad_offload
+The bug was found.
+
+New Max Time: 10
+
+==== Major Release Search ====
+18 Releases
+
+2025-03-20 05:20:27
+Session:   2
+Kernel:    2023-02-19 - c9c3395d5e3dcc6daee66c6908354d47bf98cb0c (v6.2)
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       2  INFO: rcu detected stall in corrupted
+***    2  WARNING in skb_warn_bad_offload
+***    2  WARNING in skb_warn_bad_offload
+***    2  WARNING in skb_warn_bad_offload
+***    2  WARNING in skb_warn_bad_offload
+***    2  WARNING in skb_warn_bad_offload
+Running syz-repro.
+New PoC saved at /home/syzretrospector/syzinspector/wd-bisector-5/reproducers/repro-bug0798-0.prog
+Primary PoC:     /home/syzretrospector/syzinspector/wd-bisector-5/reproducers/repro-bug0798-0.prog
+Run Time:        0h17m0s
+The bug was found.
+About 17 releases remaining
+
+2025-03-20 05:52:53
+Session:   3
+Kernel:    2022-12-11 - 830b3c68c1fb1e9176028d02ef86f3cf76aa2476 (v6.1)
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       2  INFO: rcu detected stall in corrupted
+The bug was not found.
+About 16 releases remaining
+
+==== Kernel Bisection ====
+16841 Linux commits
+
+2025-03-20 06:17:00
+Session:   4
+Kernel:    2022-12-13 - 1ca06f1c1acecbe02124f14a37cce347b8c1a90c
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       2  INFO: rcu detected stall in corrupted
+       7  suppressed report
+The bug was not found.
+About 9431 commits remaining
+
+2025-03-20 06:40:31
+Session:   5
+Kernel:    2022-12-16 - b83a7080d30032cf70832bc2bb04cc342e203b88
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       2  KASAN: use-after-free Read in rxrpc_lookup_local
+       2  KASAN: use-after-free Read in rxrpc_lookup_local
+       2  KASAN: use-after-free Read in rxrpc_lookup_local
+       2  KASAN: use-after-free Read in rxrpc_lookup_local
+       2  general protection fault in rxrpc_lookup_local
+***    2  WARNING in skb_warn_bad_offload
+***    2  WARNING in skb_warn_bad_offload
+The bug was found.
+About 4678 commits remaining
+
+2025-03-20 06:55:51
+Session:   6
+Kernel:    2022-12-13 - 7e68dd7d07a28faa2e6574dd6b9dbd90cdeaae91
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       2  KASAN: use-after-free Read in rxrpc_lookup_local
+       2  KASAN: use-after-free Read in rxrpc_lookup_local
+       2  KASAN: use-after-free Read in rxrpc_lookup_local
+       2  KASAN: use-after-free Read in rxrpc_lookup_local
+       2  KASAN: use-after-free Read in rxrpc_lookup_local
+       2  general protection fault in rxrpc_lookup_local
+       2  general protection fault in rxrpc_lookup_local
+***    2  WARNING in skb_warn_bad_offload
+The bug was found.
+About 2215 commits remaining
+
+2025-03-20 07:10:53
+Session:   7
+Kernel:    2022-11-18 - c609d739947894d7370eae4cf04eb2c49e910bcf
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 9532 commits remaining
+
+2025-03-20 07:33:43
+Session:   8
+Kernel:    2022-12-03 - 32163491c0c205ffb1596baf9c308dee5338ae94
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       2  INFO: rcu detected stall in corrupted
+       8  INFO: task hung in lock_sock_nested
+      10  INFO: rcu detected stall in corrupted
+The bug was not found.
+About 8238 commits remaining
+
+2025-03-20 07:56:33
+Session:   9
+Kernel:    2022-12-12 - b2b509fb5a1e6af1e630a755b32c4658099df70b
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       2  KASAN: use-after-free Read in rxrpc_lookup_local
+       2  KASAN: use-after-free Read in rxrpc_lookup_local
+       2  KASAN: use-after-free Read in rxrpc_lookup_local
+       2  KASAN: use-after-free Read in rxrpc_lookup_local
+       2  KASAN: use-after-free Read in rxrpc_lookup_local
+       2  KASAN: use-after-free Read in rxrpc_lookup_local
+       2  general protection fault in rxrpc_lookup_local
+***    2  WARNING in skb_warn_bad_offload
+Running syz-repro.
+New PoC saved at /home/syzretrospector/syzinspector/wd-bisector-5/reproducers/repro-bug0798-2.prog
+Primary PoC:     /home/syzretrospector/syzinspector/wd-bisector-5/reproducers/repro-bug0798-2.prog
+Run Time:        0h19m0s
+The bug was found.
+About 524 commits remaining
+
+2025-03-20 08:30:32
+Session:   10
+Kernel:    2022-12-09 - 1933ea365aa7a48ce26bea2ea09c9f7cc48cc668
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       2  KASAN: use-after-free Read in rxrpc_lookup_local
+       2  KASAN: use-after-free Read in rxrpc_lookup_local
+       2  KASAN: use-after-free Read in rxrpc_lookup_local
+       2  KASAN: use-after-free Read in rxrpc_lookup_local
+       2  KASAN: use-after-free Read in rxrpc_lookup_local
+       2  KASAN: use-after-free Read in rxrpc_lookup_local
+       2  KASAN: use-after-free Read in rxrpc_lookup_local
+       2  general protection fault in rxrpc_lookup_local
+       3  KASAN: use-after-free Read in rxrpc_lookup_local
+       3  KASAN: use-after-free Read in rxrpc_lookup_local
+       3  KASAN: use-after-free Read in rxrpc_lookup_local
+       3  KASAN: use-after-free Read in rxrpc_lookup_local
+       3  KASAN: use-after-free Read in rxrpc_lookup_local
+       3  general protection fault in rxrpc_lookup_local
+       4  KASAN: use-after-free Read in rxrpc_lookup_local
+       4  general protection fault in rxrpc_lookup_local
+       5  KASAN: use-after-free Read in rxrpc_lookup_local
+       5  KASAN: use-after-free Read in rxrpc_lookup_local
+       5  KASAN: use-after-free Read in rxrpc_lookup_local
+       5  KASAN: use-after-free Read in rxrpc_lookup_local
+       5  KASAN: use-after-free Read in rxrpc_lookup_local
+       5  KASAN: use-after-free Read in rxrpc_lookup_local
+       5  general protection fault in rxrpc_lookup_local
+       6  KASAN: use-after-free Read in rxrpc_lookup_local
+       6  KASAN: use-after-free Read in rxrpc_lookup_local
+       6  KASAN: use-after-free Read in rxrpc_lookup_local
+       6  KASAN: use-after-free Read in rxrpc_lookup_local
+       6  general protection fault in rxrpc_lookup_local
+       6  general protection fault in rxrpc_lookup_local
+       7  KASAN: use-after-free Read in rxrpc_lookup_local
+       7  KASAN: use-after-free Read in rxrpc_lookup_local
+       7  KASAN: use-after-free Read in rxrpc_lookup_local
+       7  KASAN: use-after-free Read in rxrpc_lookup_local
+       8  KASAN: use-after-free Read in rxrpc_lookup_local
+       8  KASAN: use-after-free Read in rxrpc_lookup_local
+       8  KASAN: use-after-free Read in rxrpc_lookup_local
+       8  KASAN: use-after-free Read in rxrpc_lookup_local
+       8  KASAN: use-after-free Read in rxrpc_lookup_local
+       8  general protection fault in rxrpc_lookup_local
+       8  general protection fault in rxrpc_lookup_local
+       9  KASAN: use-after-free Read in rxrpc_lookup_local
+       9  KASAN: use-after-free Read in rxrpc_lookup_local
+       9  KASAN: use-after-free Read in rxrpc_lookup_local
+       9  KASAN: use-after-free Read in rxrpc_lookup_local
+       9  KASAN: use-after-free Read in rxrpc_lookup_local
+       9  general protection fault in rxrpc_lookup_local
+      10  KASAN: use-after-free Read in rxrpc_lookup_local
+      10  KASAN: use-after-free Read in rxrpc_lookup_local
+      10  KASAN: use-after-free Read in rxrpc_lookup_local
+The bug was not found.
+About 141 commits remaining
+
+2025-03-20 08:50:28
+Session:   11
+Kernel:    2022-12-09 - dd8b3a802b64adf059a49a68f1bdca7846e492fc
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       2  KASAN: use-after-free Read in rxrpc_lookup_local
+       2  KASAN: use-after-free Read in rxrpc_lookup_local
+       2  KASAN: use-after-free Read in rxrpc_lookup_local
+       2  INFO: rcu detected stall in corrupted
+       2  general protection fault in rxrpc_lookup_local
+       2  general protection fault in rxrpc_lookup_local
+       3  KASAN: use-after-free Read in rxrpc_lookup_local
+       3  KASAN: use-after-free Read in rxrpc_lookup_local
+       3  KASAN: use-after-free Read in rxrpc_lookup_local
+       3  general protection fault in rxrpc_lookup_local
+       4  KASAN: use-after-free Read in rxrpc_lookup_local
+       4  KASAN: use-after-free Read in rxrpc_lookup_local
+       4  KASAN: use-after-free Read in rxrpc_lookup_local
+       4  KASAN: use-after-free Read in rxrpc_lookup_local
+       4  KASAN: use-after-free Read in rxrpc_lookup_local
+       4  KASAN: use-after-free Read in rxrpc_lookup_local
+       4  general protection fault in rxrpc_lookup_local
+       5  KASAN: use-after-free Read in rxrpc_lookup_local
+       5  KASAN: use-after-free Read in rxrpc_lookup_local
+       5  KASAN: use-after-free Read in rxrpc_lookup_local
+       5  KASAN: use-after-free Read in rxrpc_lookup_local
+       5  general protection fault in rxrpc_lookup_local
+       5  general protection fault in rxrpc_lookup_local
+       6  KASAN: use-after-free Read in rxrpc_lookup_local
+       6  KASAN: use-after-free Read in rxrpc_lookup_local
+       6  KASAN: use-after-free Read in rxrpc_lookup_local
+       6  KASAN: use-after-free Read in rxrpc_lookup_local
+       6  KASAN: use-after-free Read in rxrpc_lookup_local
+       7  KASAN: use-after-free Read in rxrpc_lookup_local
+       7  KASAN: use-after-free Read in rxrpc_lookup_local
+       7  KASAN: use-after-free Read in rxrpc_lookup_local
+       8  KASAN: use-after-free Read in rxrpc_lookup_local
+       8  KASAN: use-after-free Read in rxrpc_lookup_local
+       8  KASAN: use-after-free Read in rxrpc_lookup_local
+       8  KASAN: use-after-free Read in rxrpc_lookup_local
+       8  KASAN: use-after-free Read in rxrpc_lookup_local
+       8  INFO: rcu detected stall in corrupted
+       8  general protection fault in rxrpc_lookup_local
+       8  general protection fault in rxrpc_lookup_local
+       9  KASAN: use-after-free Read in rxrpc_lookup_local
+       9  KASAN: use-after-free Read in rxrpc_lookup_local
+       9  KASAN: use-after-free Read in rxrpc_lookup_local
+       9  general protection fault in rxrpc_lookup_local
+       9  general protection fault in rxrpc_lookup_local
+      10  KASAN: use-after-free Read in rxrpc_lookup_local
+      10  KASAN: use-after-free Read in rxrpc_lookup_local
+      10  KASAN: use-after-free Read in rxrpc_lookup_local
+      10  KASAN: use-after-free Read in rxrpc_lookup_local
+      10  KASAN: use-after-free Read in rxrpc_lookup_local
+The bug was not found.
+About 62 commits remaining
+
+2025-03-20 09:07:07
+Session:   12
+Kernel:    2022-12-12 - 0826e82b8a32e646b7b32ba8b68ba30812028e47
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       2  KASAN: use-after-free Read in rxrpc_lookup_local
+       2  KASAN: use-after-free Read in rxrpc_lookup_local
+       2  KASAN: use-after-free Read in rxrpc_lookup_local
+       2  KASAN: use-after-free Read in rxrpc_lookup_local
+       2  KASAN: use-after-free Read in rxrpc_lookup_local
+       2  KASAN: use-after-free Read in rxrpc_lookup_local
+       2  KASAN: use-after-free Read in rxrpc_lookup_local
+       2  INFO: rcu detected stall in corrupted
+       3  KASAN: use-after-free Read in rxrpc_lookup_local
+       3  KASAN: use-after-free Read in rxrpc_lookup_local
+       3  KASAN: use-after-free Read in rxrpc_lookup_local
+       3  KASAN: use-after-free Read in rxrpc_lookup_local
+       3  general protection fault in rxrpc_lookup_local
+       4  KASAN: use-after-free Read in rxrpc_lookup_local
+       4  KASAN: use-after-free Read in rxrpc_lookup_local
+       4  KASAN: use-after-free Write in rxrpc_destroy_local
+       5  KASAN: use-after-free Read in rxrpc_lookup_local
+       5  KASAN: use-after-free Read in rxrpc_lookup_local
+       5  KASAN: use-after-free Read in rxrpc_lookup_local
+       5  KASAN: use-after-free Read in rxrpc_lookup_local
+       5  KASAN: use-after-free Read in rxrpc_lookup_local
+       6  KASAN: use-after-free Read in rxrpc_lookup_local
+       6  KASAN: use-after-free Read in rxrpc_lookup_local
+       6  KASAN: use-after-free Read in rxrpc_lookup_local
+       6  general protection fault in rxrpc_lookup_local
+       7  KASAN: use-after-free Read in rxrpc_lookup_local
+       7  KASAN: use-after-free Read in rxrpc_lookup_local
+       7  KASAN: use-after-free Read in rxrpc_lookup_local
+       7  KASAN: use-after-free Read in rxrpc_lookup_local
+       7  KASAN: use-after-free Write in rxrpc_destroy_local
+       8  KASAN: use-after-free Read in rxrpc_lookup_local
+       8  KASAN: use-after-free Read in rxrpc_lookup_local
+       8  KASAN: use-after-free Read in rxrpc_lookup_local
+       8  KASAN: use-after-free Read in rxrpc_lookup_local
+       8  KASAN: use-after-free Read in rxrpc_lookup_local
+       9  KASAN: use-after-free Read in rxrpc_lookup_local
+       9  KASAN: use-after-free Read in rxrpc_lookup_local
+       9  KASAN: use-after-free Read in rxrpc_lookup_local
+       9  KASAN: use-after-free Read in rxrpc_lookup_local
+       9  KASAN: use-after-free Read in rxrpc_lookup_local
+       9  general protection fault in rxrpc_lookup_local
+       9  no output from test machine
+      10  KASAN: use-after-free Read in rxrpc_lookup_local
+      10  KASAN: use-after-free Read in rxrpc_lookup_local
+      10  KASAN: use-after-free Read in rxrpc_lookup_local
+      10  KASAN: use-after-free Read in rxrpc_lookup_local
+      10  KASAN: use-after-free Read in rxrpc_lookup_local
+The bug was not found.
+About 32 commits remaining
+
+2025-03-20 09:22:52
+Session:   13
+Kernel:    2022-12-12 - 0564c3e51bc7bb200e76d0cad2d7067cc77cb83e
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       2  KASAN: use-after-free Read in rxrpc_lookup_local
+       2  KASAN: use-after-free Read in rxrpc_lookup_local
+       2  KASAN: use-after-free Read in rxrpc_lookup_local
+       2  KASAN: use-after-free Read in rxrpc_lookup_local
+       2  KASAN: use-after-free Read in rxrpc_lookup_local
+       2  INFO: rcu detected stall in corrupted
+       2  KASAN: use-after-free Write in rxrpc_lookup_local
+       2  general protection fault in rxrpc_lookup_local
+       3  KASAN: use-after-free Read in rxrpc_lookup_local
+       3  KASAN: use-after-free Read in rxrpc_lookup_local
+***    3  WARNING in skb_warn_bad_offload
+***    3  WARNING in skb_warn_bad_offload
+***    3  WARNING in skb_warn_bad_offload
+***    3  WARNING in skb_warn_bad_offload
+***    3  WARNING in skb_warn_bad_offload
+The bug was found.
+About 16 commits remaining
+
+2025-03-20 09:31:28
+Session:   14
+Kernel:    2022-12-12 - 93c60b597493d8875584385c90aa7933e92bf375
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       2  KASAN: use-after-free Read in rxrpc_lookup_local
+       2  KASAN: use-after-free Read in rxrpc_lookup_local
+       2  KASAN: use-after-free Read in rxrpc_lookup_local
+       2  KASAN: use-after-free Read in rxrpc_lookup_local
+       2  general protection fault in rxrpc_lookup_local
+       2  general protection fault in rxrpc_lookup_local
+       2  general protection fault in rxrpc_lookup_local
+***    2  WARNING in skb_warn_bad_offload
+The bug was found.
+About 8 commits remaining
+
+2025-03-20 09:38:57
+Session:   15
+Kernel:    2022-12-12 - 399e0827642f6a8bcae24277fe08e80e7e4bb891
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       2  KASAN: use-after-free Read in rxrpc_lookup_local
+       2  KASAN: use-after-free Read in rxrpc_lookup_local
+       2  KASAN: use-after-free Read in rxrpc_lookup_local
+       2  KASAN: use-after-free Read in rxrpc_lookup_local
+       2  KASAN: use-after-free Read in rxrpc_lookup_local
+       2  KASAN: use-after-free Read in rxrpc_lookup_local
+       2  KASAN: use-after-free Read in rxrpc_lookup_local
+       3  KASAN: use-after-free Read in rxrpc_lookup_local
+       3  KASAN: use-after-free Read in rxrpc_lookup_local
+       3  general protection fault in rxrpc_lookup_local
+       4  KASAN: use-after-free Read in rxrpc_lookup_local
+       4  KASAN: use-after-free Read in rxrpc_lookup_local
+       4  KASAN: use-after-free Read in rxrpc_lookup_local
+       4  KASAN: use-after-free Read in rxrpc_lookup_local
+       4  KASAN: use-after-free Read in rxrpc_lookup_local
+       4  general protection fault in rxrpc_lookup_local
+       5  KASAN: use-after-free Read in rxrpc_lookup_local
+       5  KASAN: use-after-free Read in rxrpc_lookup_local
+       5  general protection fault in rxrpc_lookup_local
+       6  KASAN: use-after-free Read in rxrpc_lookup_local
+       6  KASAN: use-after-free Read in rxrpc_lookup_local
+       6  KASAN: use-after-free Read in rxrpc_lookup_local
+       6  KASAN: use-after-free Read in rxrpc_lookup_local
+       7  KASAN: use-after-free Read in rxrpc_lookup_local
+       7  KASAN: use-after-free Read in rxrpc_lookup_local
+       7  KASAN: use-after-free Read in rxrpc_lookup_local
+       7  KASAN: use-after-free Read in rxrpc_lookup_local
+       7  KASAN: use-after-free Read in rxrpc_lookup_local
+       7  KASAN: use-after-free Read in rxrpc_lookup_local
+       8  KASAN: use-after-free Read in rxrpc_lookup_local
+       8  KASAN: use-after-free Read in rxrpc_lookup_local
+       8  KASAN: use-after-free Read in rxrpc_lookup_local
+       8  KASAN: use-after-free Read in rxrpc_lookup_local
+       8  KASAN: use-after-free Read in rxrpc_lookup_local
+       8  KASAN: use-after-free Read in rxrpc_lookup_local
+       9  KASAN: use-after-free Read in rxrpc_lookup_local
+       9  KASAN: use-after-free Read in rxrpc_lookup_local
+       9  KASAN: use-after-free Read in rxrpc_lookup_local
+       9  KASAN: use-after-free Read in rxrpc_lookup_local
+      10  KASAN: use-after-free Read in rxrpc_lookup_local
+      10  KASAN: use-after-free Read in rxrpc_lookup_local
+      10  KASAN: use-after-free Read in rxrpc_lookup_local
+      10  KASAN: slab-out-of-bounds Read in rxrpc_lookup_local
+The bug was not found.
+About 5 commits remaining
+
+2025-03-20 09:55:00
+Session:   16
+Kernel:    2022-12-12 - 860b7f27b8f78564ca5a2f607e0820b2d352a562
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       2  KASAN: use-after-free Read in rxrpc_lookup_local
+       2  KASAN: use-after-free Read in rxrpc_lookup_local
+       2  general protection fault in rxrpc_lookup_local
+       2  general protection fault in rxrpc_lookup_local
+***    2  WARNING in skb_warn_bad_offload
+***    2  WARNING in skb_warn_bad_offload
+***    2  WARNING in skb_warn_bad_offload
+Running syz-repro.
+New PoC saved at /home/syzretrospector/syzinspector/wd-bisector-5/reproducers/repro-bug0798-3.prog
+Primary PoC:     /home/syzretrospector/syzinspector/wd-bisector-5/reproducers/repro-bug0798-3.prog
+Run Time:        0h16m0s
+The bug was found.
+About 3 commits remaining
+
+2025-03-20 10:18:45
+Session:   17
+Kernel:    2022-12-12 - 34061b348ae912b9783fae7fabae69d46977a036
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       2  KASAN: use-after-free Read in rxrpc_lookup_local
+       2  KASAN: use-after-free Read in rxrpc_lookup_local
+       2  KASAN: use-after-free Read in rxrpc_lookup_local
+       2  KASAN: use-after-free Read in rxrpc_lookup_local
+       3  KASAN: use-after-free Read in rxrpc_lookup_local
+       3  KASAN: use-after-free Read in rxrpc_lookup_local
+       3  KASAN: use-after-free Read in rxrpc_lookup_local
+       3  KASAN: use-after-free Read in rxrpc_lookup_local
+       3  KASAN: use-after-free Read in rxrpc_lookup_local
+       4  KASAN: use-after-free Read in rxrpc_lookup_local
+       4  KASAN: use-after-free Read in rxrpc_lookup_local
+       4  KASAN: use-after-free Read in rxrpc_lookup_local
+       4  general protection fault in rxrpc_lookup_local
+       5  KASAN: use-after-free Read in rxrpc_lookup_local
+       5  KASAN: use-after-free Read in rxrpc_lookup_local
+       5  KASAN: use-after-free Read in rxrpc_lookup_local
+       5  KASAN: use-after-free Read in rxrpc_lookup_local
+       5  KASAN: use-after-free Read in rxrpc_lookup_local
+       5  KASAN: use-after-free Read in rxrpc_lookup_local
+       6  KASAN: use-after-free Read in rxrpc_lookup_local
+       6  KASAN: use-after-free Read in rxrpc_lookup_local
+       6  KASAN: use-after-free Read in rxrpc_lookup_local
+       6  KASAN: use-after-free Read in rxrpc_lookup_local
+       6  KFENCE: use-after-free in rxrpc_lookup_local
+       7  KASAN: use-after-free Read in rxrpc_lookup_local
+       7  KASAN: use-after-free Read in rxrpc_lookup_local
+       7  KASAN: use-after-free Read in rxrpc_lookup_local
+       7  general protection fault in rxrpc_lookup_local
+       8  KASAN: use-after-free Read in rxrpc_lookup_local
+       8  KASAN: use-after-free Read in rxrpc_lookup_local
+       8  KASAN: use-after-free Read in rxrpc_lookup_local
+       8  general protection fault in rxrpc_lookup_local
+       8  general protection fault in rxrpc_lookup_local
+       9  KASAN: use-after-free Read in rxrpc_lookup_local
+       9  KASAN: use-after-free Read in rxrpc_lookup_local
+       9  KASAN: use-after-free Read in rxrpc_lookup_local
+       9  KASAN: use-after-free Read in rxrpc_lookup_local
+       9  KASAN: use-after-free Read in rxrpc_lookup_local
+       9  KASAN: use-after-free Read in rxrpc_lookup_local
+      10  KASAN: use-after-free Read in rxrpc_lookup_local
+      10  KASAN: use-after-free Read in rxrpc_lookup_local
+      10  KASAN: use-after-free Read in rxrpc_lookup_local
+      10  KASAN: use-after-free Read in rxrpc_lookup_local
+      10  KASAN: use-after-free Read in rxrpc_lookup_local
+      10  general protection fault in rxrpc_lookup_local
+The bug was not found.
+About 2 commits remaining
+
+==== Partial Result: Focused Fuzzing ====
+Reproducer:           /home/syzretrospector/syzinspector/wd-bisector-5/reproducers/repro-bug0798-3.prog
+Bisection Result:     2022-12-12 - 860b7f27b8f78564ca5a2f607e0820b2d352a562
+Bisected Commit Name: linux/virtio_net.h: Support USO offload in vnet header.
+Stage Time:           5h34m6s
+Run Time:             5h34m7s
+=========================================
+
+==== Anchor Commit ====
+
+2025-03-20 10:34:31
+Session:   18
+Kernel:    2022-12-12 - 34061b348ae912b9783fae7fabae69d46977a036
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+
+Failure: This bug cannot be found at the anchor commit.
+
+====================================================================================================================================================
+Bug Name:             WARNING in skb_warn_bad_offload
+Bug Link:             https://syzkaller.appspot.com/bug?extid=c99d835ff081ca30f986
+Bisection Result:     2022-12-12 - 860b7f27b8f78564ca5a2f607e0820b2d352a562
+Bisected Commit Name: linux/virtio_net.h: Support USO offload in vnet header.
+Run Time:             5h41m39s
+
+Anchor Commit:        2023-02-24 - 489fa31ea873282b41046d412ec741f93946fc2d
+Bisection Result:     2022-12-12 - 860b7f27b8f78564ca5a2f607e0820b2d352a562

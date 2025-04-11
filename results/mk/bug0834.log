@@ -1,0 +1,898 @@
+./bin/bisector -i 5 -c /home/syzretrospector/syzinspector/wd-bisector-5/bisector.cfg -a 5d0c230f1de8c7515b6567d9afba1f196fb4e2f4 -F ff-test,poc-test,stateful-corpus,ff-no-find-backup
+Bisecting:          possible deadlock in lock_mm_and_find_vma
+Syzbot Link:        https://syzkaller.appspot.com/bug?extid=1741a5d9b79989c10bdc
+Working Name:       bug0834
+
+No aliases given.
+
+Anchor Commit:      5d0c230f1de8c7515b6567d9afba1f196fb4e2f4
+Repository:         https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
+Branch:             master
+Arch:               amd64
+
+Bisector:           /home/syzretrospector/syzinspector/
+Version:            1.0.4
+Kernel:             /home/syzretrospector/syzinspector/wd-bisector-5/kernel/
+Syzkaller:          /home/syzretrospector/syzinspector/syzkaller/
+Compilers:          /home/syzretrospector/compilers/
+Ccache:             ccache
+Image:              /home/syzretrospector/images/stretch/stretch.img
+Image Key:          /home/syzretrospector/images/stretch/stretch.id_rsa
+
+Workdir:            /home/syzretrospector/syzinspector/wd-bisector-5/
+Kconfig:            /home/syzretrospector/syzinspector/wd-bisector-5/config-bug0834.txt
+Reproducers: (1)    /home/syzretrospector/syzinspector/wd-bisector-5/reproducers/
+Syzkaller Workdir:  /home/syzretrospector/syzinspector/wd-bisector-5/wd-kaller/
+Log Directory:      /home/syzretrospector/syzinspector/wd-bisector-5/log/
+
+Syscalls: (11)      ["getdents64", "mmap", "openat", "openat$cgroup_ro", "syz_mount_image$exfat", "write$damon_contexts", "openat$cgroup_root", "openat$damon_mk_contexts", "getuid", "setgid", "getgid"]
+VM Count:           8
+CPU Count:          2
+Procs:              16
+Memory:             4096
+Make Procs:         16
+Max Time:           10
+Max Attempts:       1
+
+==== Anchor Commit ====
+
+2025-03-23 20:17:21
+Session:   1
+Kernel:    2023-07-30 - 5d0c230f1de8c7515b6567d9afba1f196fb4e2f4
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    3  possible deadlock in lock_mm_and_find_vma
+***    3  possible deadlock in lock_mm_and_find_vma
+Attempt 2: (RETRY)
+    Time  Bug Name
+       2  possible deadlock in filemap_fault
+***    5  possible deadlock in lock_mm_and_find_vma
+***    5  possible deadlock in lock_mm_and_find_vma
+***    5  possible deadlock in lock_mm_and_find_vma
+Attempt 3: (RETRY)
+    Time  Bug Name
+       9  WARNING: zero-size vmalloc in sel_write_load
+       9  WARNING: zero-size vmalloc in sel_write_load
+The bug was found.
+
+New Max Time: 12
+
+==== Major Release Search ====
+19 Releases
+
+2025-03-23 20:48:00
+Session:   2
+Kernel:    2023-06-25 - 6995e2de6891c724bfeb2db33d7b87775f913ad1 (v6.4)
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       6  possible deadlock in do_user_addr_fault
+      12  possible deadlock in do_user_addr_fault
+      12  possible deadlock in do_user_addr_fault
+The bug was not found.
+About 18 releases remaining
+
+==== Kernel Bisection ====
+13568 Linux commits
+
+2025-03-23 21:13:27
+Session:   3
+Kernel:    2023-06-29 - 1b722407a13b7f8658d2e26917791f32805980a2
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       1  UBSAN: array-index-out-of-bounds in corrupted
+       1  UBSAN: array-index-out-of-bounds in corrupted
+       1  UBSAN: array-index-out-of-bounds in corrupted
+       1  UBSAN: array-index-out-of-bounds in copy_process
+       1  UBSAN: array-index-out-of-bounds in copy_process
+       1  UBSAN: array-index-out-of-bounds in copy_process
+       2  UBSAN: array-index-out-of-bounds in corrupted
+       2  UBSAN: array-index-out-of-bounds in corrupted
+       2  UBSAN: array-index-out-of-bounds in corrupted
+       2  UBSAN: array-index-out-of-bounds in corrupted
+       2  UBSAN: array-index-out-of-bounds in corrupted
+       2  UBSAN: array-index-out-of-bounds in corrupted
+       2  UBSAN: array-index-out-of-bounds in corrupted
+       2  UBSAN: array-index-out-of-bounds in copy_process
+       2  UBSAN: array-index-out-of-bounds in copy_process
+       2  UBSAN: array-index-out-of-bounds in copy_process
+       3  UBSAN: array-index-out-of-bounds in corrupted
+       3  UBSAN: array-index-out-of-bounds in corrupted
+       3  UBSAN: array-index-out-of-bounds in corrupted
+       3  UBSAN: array-index-out-of-bounds in corrupted
+       3  UBSAN: array-index-out-of-bounds in corrupted
+       3  UBSAN: array-index-out-of-bounds in corrupted
+       3  UBSAN: array-index-out-of-bounds in corrupted
+       3  UBSAN: array-index-out-of-bounds in copy_process
+       4  UBSAN: array-index-out-of-bounds in corrupted
+       4  UBSAN: array-index-out-of-bounds in corrupted
+       4  UBSAN: array-index-out-of-bounds in corrupted
+       4  UBSAN: array-index-out-of-bounds in corrupted
+       4  UBSAN: array-index-out-of-bounds in corrupted
+       4  UBSAN: array-index-out-of-bounds in corrupted
+       4  UBSAN: array-index-out-of-bounds in corrupted
+       4  UBSAN: array-index-out-of-bounds in copy_process
+       5  UBSAN: array-index-out-of-bounds in corrupted
+       5  UBSAN: array-index-out-of-bounds in corrupted
+       5  UBSAN: array-index-out-of-bounds in corrupted
+       5  UBSAN: array-index-out-of-bounds in corrupted
+       5  UBSAN: array-index-out-of-bounds in corrupted
+       5  UBSAN: array-index-out-of-bounds in corrupted
+       5  UBSAN: array-index-out-of-bounds in corrupted
+       5  UBSAN: array-index-out-of-bounds in corrupted
+       5  UBSAN: array-index-out-of-bounds in copy_process
+       5  UBSAN: array-index-out-of-bounds in copy_process
+       5  UBSAN: array-index-out-of-bounds in copy_process
+       5  UBSAN: array-index-out-of-bounds in copy_process
+       5  UBSAN: array-index-out-of-bounds in copy_process
+       5  UBSAN: array-index-out-of-bounds in copy_process
+       6  UBSAN: array-index-out-of-bounds in corrupted
+       6  UBSAN: array-index-out-of-bounds in corrupted
+       6  UBSAN: array-index-out-of-bounds in corrupted
+       6  UBSAN: array-index-out-of-bounds in corrupted
+       6  UBSAN: array-index-out-of-bounds in corrupted
+       6  UBSAN: array-index-out-of-bounds in corrupted
+       6  UBSAN: array-index-out-of-bounds in corrupted
+       6  UBSAN: array-index-out-of-bounds in copy_process
+       6  UBSAN: array-index-out-of-bounds in copy_process
+       6  UBSAN: array-index-out-of-bounds in copy_process
+       7  UBSAN: array-index-out-of-bounds in corrupted
+       7  UBSAN: array-index-out-of-bounds in corrupted
+       7  UBSAN: array-index-out-of-bounds in corrupted
+       7  UBSAN: array-index-out-of-bounds in corrupted
+       7  UBSAN: array-index-out-of-bounds in corrupted
+       7  UBSAN: array-index-out-of-bounds in corrupted
+       7  UBSAN: array-index-out-of-bounds in alloc_pid
+       7  UBSAN: array-index-out-of-bounds in alloc_pid
+       8  UBSAN: array-index-out-of-bounds in corrupted
+       8  UBSAN: array-index-out-of-bounds in corrupted
+       8  UBSAN: array-index-out-of-bounds in corrupted
+       8  UBSAN: array-index-out-of-bounds in corrupted
+       8  UBSAN: array-index-out-of-bounds in corrupted
+       8  UBSAN: array-index-out-of-bounds in corrupted
+       8  UBSAN: array-index-out-of-bounds in copy_process
+       8  UBSAN: array-index-out-of-bounds in copy_process
+       8  UBSAN: array-index-out-of-bounds in copy_process
+       8  UBSAN: array-index-out-of-bounds in copy_process
+       9  UBSAN: array-index-out-of-bounds in corrupted
+       9  UBSAN: array-index-out-of-bounds in corrupted
+       9  UBSAN: array-index-out-of-bounds in corrupted
+       9  UBSAN: array-index-out-of-bounds in corrupted
+       9  UBSAN: array-index-out-of-bounds in corrupted
+       9  UBSAN: array-index-out-of-bounds in corrupted
+       9  UBSAN: array-index-out-of-bounds in corrupted
+       9  UBSAN: array-index-out-of-bounds in corrupted
+       9  UBSAN: array-index-out-of-bounds in corrupted
+       9  UBSAN: array-index-out-of-bounds in copy_process
+       9  UBSAN: array-index-out-of-bounds in copy_process
+       9  UBSAN: array-index-out-of-bounds in copy_process
+      10  UBSAN: array-index-out-of-bounds in corrupted
+      10  UBSAN: array-index-out-of-bounds in corrupted
+      10  UBSAN: array-index-out-of-bounds in corrupted
+      10  UBSAN: array-index-out-of-bounds in corrupted
+      10  UBSAN: array-index-out-of-bounds in corrupted
+      10  UBSAN: array-index-out-of-bounds in alloc_pid
+      10  UBSAN: array-index-out-of-bounds in copy_process
+      10  UBSAN: array-index-out-of-bounds in copy_process
+      10  UBSAN: array-index-out-of-bounds in copy_process
+      10  UBSAN: array-index-out-of-bounds in copy_process
+      11  UBSAN: array-index-out-of-bounds in corrupted
+      11  UBSAN: array-index-out-of-bounds in corrupted
+      11  UBSAN: array-index-out-of-bounds in corrupted
+      11  UBSAN: array-index-out-of-bounds in corrupted
+      11  UBSAN: array-index-out-of-bounds in corrupted
+      11  UBSAN: array-index-out-of-bounds in alloc_pid
+      11  UBSAN: array-index-out-of-bounds in alloc_pid
+      11  UBSAN: array-index-out-of-bounds in copy_process
+      12  UBSAN: array-index-out-of-bounds in corrupted
+      12  UBSAN: array-index-out-of-bounds in corrupted
+      12  UBSAN: array-index-out-of-bounds in corrupted
+      12  UBSAN: array-index-out-of-bounds in corrupted
+      12  UBSAN: array-index-out-of-bounds in corrupted
+      12  UBSAN: array-index-out-of-bounds in corrupted
+      12  UBSAN: array-index-out-of-bounds in corrupted
+      12  UBSAN: array-index-out-of-bounds in corrupted
+      12  UBSAN: array-index-out-of-bounds in corrupted
+      12  UBSAN: array-index-out-of-bounds in corrupted
+      12  UBSAN: array-index-out-of-bounds in corrupted
+      12  UBSAN: array-index-out-of-bounds in copy_process
+      12  UBSAN: array-index-out-of-bounds in copy_process
+      12  UBSAN: array-index-out-of-bounds in copy_process
+The bug was not found.
+About 6502 commits remaining
+
+2025-03-23 21:37:38
+Session:   4
+Kernel:    2023-07-03 - c156d4af4354091c38a1cbef62c0b1574e8c4394
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***   12  possible deadlock in lock_mm_and_find_vma
+Running syz-repro.
+syz-repro was terminated after 60 minutes
+Run Time:        1h0m0s
+The bug was found.
+Switching to Safe Mode: Fuzzing 3 times at 12 minutes
+About 3249 commits remaining
+
+2025-03-23 23:01:37
+Session:   5
+Kernel:    2023-06-30 - c6d96328fecdda16e12f3b3c33f3677f4bcef89f
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       1  UBSAN: array-index-out-of-bounds in corrupted
+       1  UBSAN: array-index-out-of-bounds in corrupted
+       1  UBSAN: array-index-out-of-bounds in corrupted
+       1  UBSAN: array-index-out-of-bounds in corrupted
+       1  UBSAN: array-index-out-of-bounds in copy_process
+       1  UBSAN: array-index-out-of-bounds in copy_process
+       2  UBSAN: array-index-out-of-bounds in corrupted
+       2  UBSAN: array-index-out-of-bounds in corrupted
+       2  UBSAN: array-index-out-of-bounds in corrupted
+       2  UBSAN: array-index-out-of-bounds in corrupted
+       2  UBSAN: array-index-out-of-bounds in corrupted
+       2  UBSAN: array-index-out-of-bounds in corrupted
+       2  UBSAN: array-index-out-of-bounds in corrupted
+       2  UBSAN: array-index-out-of-bounds in corrupted
+       2  UBSAN: array-index-out-of-bounds in copy_process
+       2  UBSAN: array-index-out-of-bounds in copy_process
+       3  UBSAN: array-index-out-of-bounds in corrupted
+       3  UBSAN: array-index-out-of-bounds in corrupted
+       3  UBSAN: array-index-out-of-bounds in corrupted
+       3  UBSAN: array-index-out-of-bounds in corrupted
+       3  UBSAN: array-index-out-of-bounds in corrupted
+       3  UBSAN: array-index-out-of-bounds in corrupted
+       3  UBSAN: array-index-out-of-bounds in copy_process
+       3  UBSAN: array-index-out-of-bounds in copy_process
+       4  UBSAN: array-index-out-of-bounds in corrupted
+       4  UBSAN: array-index-out-of-bounds in corrupted
+       4  UBSAN: array-index-out-of-bounds in corrupted
+       4  UBSAN: array-index-out-of-bounds in corrupted
+       4  UBSAN: array-index-out-of-bounds in corrupted
+       4  UBSAN: array-index-out-of-bounds in corrupted
+       4  UBSAN: array-index-out-of-bounds in copy_process
+       4  UBSAN: array-index-out-of-bounds in copy_process
+       4  UBSAN: array-index-out-of-bounds in copy_process
+       4  UBSAN: array-index-out-of-bounds in copy_process
+       5  UBSAN: array-index-out-of-bounds in corrupted
+       5  UBSAN: array-index-out-of-bounds in corrupted
+       5  UBSAN: array-index-out-of-bounds in corrupted
+       5  UBSAN: array-index-out-of-bounds in corrupted
+       5  UBSAN: array-index-out-of-bounds in corrupted
+       5  UBSAN: array-index-out-of-bounds in corrupted
+       5  UBSAN: array-index-out-of-bounds in corrupted
+       5  UBSAN: array-index-out-of-bounds in corrupted
+       5  UBSAN: array-index-out-of-bounds in corrupted
+       5  UBSAN: array-index-out-of-bounds in copy_process
+       5  UBSAN: array-index-out-of-bounds in copy_process
+       5  UBSAN: array-index-out-of-bounds in copy_process
+       6  UBSAN: array-index-out-of-bounds in corrupted
+       6  UBSAN: array-index-out-of-bounds in corrupted
+       6  UBSAN: array-index-out-of-bounds in corrupted
+       6  UBSAN: array-index-out-of-bounds in corrupted
+       6  UBSAN: array-index-out-of-bounds in corrupted
+       6  UBSAN: array-index-out-of-bounds in copy_process
+       6  UBSAN: array-index-out-of-bounds in copy_process
+       6  UBSAN: array-index-out-of-bounds in copy_process
+       6  UBSAN: array-index-out-of-bounds in copy_process
+       6  UBSAN: array-index-out-of-bounds in copy_process
+       7  UBSAN: array-index-out-of-bounds in corrupted
+       7  UBSAN: array-index-out-of-bounds in corrupted
+       7  UBSAN: array-index-out-of-bounds in corrupted
+       7  UBSAN: array-index-out-of-bounds in corrupted
+       7  UBSAN: array-index-out-of-bounds in corrupted
+       7  UBSAN: array-index-out-of-bounds in copy_process
+       7  UBSAN: array-index-out-of-bounds in copy_process
+       7  UBSAN: array-index-out-of-bounds in copy_process
+       8  UBSAN: array-index-out-of-bounds in corrupted
+       8  UBSAN: array-index-out-of-bounds in corrupted
+       8  UBSAN: array-index-out-of-bounds in corrupted
+       8  UBSAN: array-index-out-of-bounds in corrupted
+       8  UBSAN: array-index-out-of-bounds in corrupted
+       8  UBSAN: array-index-out-of-bounds in corrupted
+       8  UBSAN: array-index-out-of-bounds in corrupted
+       8  UBSAN: array-index-out-of-bounds in corrupted
+       8  UBSAN: array-index-out-of-bounds in alloc_pid
+       8  UBSAN: array-index-out-of-bounds in alloc_pid
+       8  UBSAN: array-index-out-of-bounds in copy_process
+       8  UBSAN: array-index-out-of-bounds in copy_process
+       9  UBSAN: array-index-out-of-bounds in corrupted
+       9  UBSAN: array-index-out-of-bounds in corrupted
+       9  UBSAN: array-index-out-of-bounds in corrupted
+       9  UBSAN: array-index-out-of-bounds in corrupted
+       9  UBSAN: array-index-out-of-bounds in corrupted
+       9  UBSAN: array-index-out-of-bounds in corrupted
+       9  UBSAN: array-index-out-of-bounds in corrupted
+       9  UBSAN: array-index-out-of-bounds in alloc_pid
+       9  UBSAN: array-index-out-of-bounds in copy_process
+       9  UBSAN: array-index-out-of-bounds in copy_process
+      10  UBSAN: array-index-out-of-bounds in corrupted
+      10  UBSAN: array-index-out-of-bounds in corrupted
+      10  UBSAN: array-index-out-of-bounds in corrupted
+      10  UBSAN: array-index-out-of-bounds in corrupted
+      10  UBSAN: array-index-out-of-bounds in alloc_pid
+      10  UBSAN: array-index-out-of-bounds in alloc_pid
+      10  UBSAN: array-index-out-of-bounds in alloc_pid
+      10  UBSAN: array-index-out-of-bounds in copy_process
+      10  UBSAN: array-index-out-of-bounds in copy_process
+      10  UBSAN: array-index-out-of-bounds in copy_process
+      11  UBSAN: array-index-out-of-bounds in corrupted
+      11  UBSAN: array-index-out-of-bounds in corrupted
+      11  UBSAN: array-index-out-of-bounds in corrupted
+      11  UBSAN: array-index-out-of-bounds in corrupted
+      11  UBSAN: array-index-out-of-bounds in corrupted
+      11  UBSAN: array-index-out-of-bounds in corrupted
+      11  UBSAN: array-index-out-of-bounds in corrupted
+      11  UBSAN: array-index-out-of-bounds in copy_process
+      12  UBSAN: array-index-out-of-bounds in corrupted
+      12  UBSAN: array-index-out-of-bounds in corrupted
+      12  UBSAN: array-index-out-of-bounds in corrupted
+      12  UBSAN: array-index-out-of-bounds in corrupted
+      12  UBSAN: array-index-out-of-bounds in corrupted
+      12  UBSAN: array-index-out-of-bounds in corrupted
+      12  UBSAN: array-index-out-of-bounds in corrupted
+      12  UBSAN: array-index-out-of-bounds in alloc_pid
+      12  UBSAN: array-index-out-of-bounds in alloc_pid
+      12  UBSAN: array-index-out-of-bounds in copy_process
+      12  UBSAN: array-index-out-of-bounds in copy_process
+      12  UBSAN: array-index-out-of-bounds in copy_process
+      12  UBSAN: array-index-out-of-bounds in copy_process
+Attempt 2:
+    Time  Bug Name
+       1  UBSAN: array-index-out-of-bounds in corrupted
+       1  UBSAN: array-index-out-of-bounds in corrupted
+       1  UBSAN: array-index-out-of-bounds in corrupted
+       1  UBSAN: array-index-out-of-bounds in corrupted
+       1  UBSAN: array-index-out-of-bounds in corrupted
+       1  UBSAN: array-index-out-of-bounds in corrupted
+       2  UBSAN: array-index-out-of-bounds in corrupted
+       2  UBSAN: array-index-out-of-bounds in corrupted
+       2  UBSAN: array-index-out-of-bounds in corrupted
+       2  UBSAN: array-index-out-of-bounds in corrupted
+       2  UBSAN: array-index-out-of-bounds in corrupted
+       2  UBSAN: array-index-out-of-bounds in alloc_pid
+       2  UBSAN: array-index-out-of-bounds in alloc_pid
+       2  UBSAN: array-index-out-of-bounds in copy_process
+       2  UBSAN: array-index-out-of-bounds in copy_process
+       2  UBSAN: array-index-out-of-bounds in copy_process
+       3  UBSAN: array-index-out-of-bounds in corrupted
+       3  UBSAN: array-index-out-of-bounds in corrupted
+       3  UBSAN: array-index-out-of-bounds in corrupted
+       3  UBSAN: array-index-out-of-bounds in corrupted
+       3  UBSAN: array-index-out-of-bounds in corrupted
+       3  UBSAN: array-index-out-of-bounds in corrupted
+       3  UBSAN: array-index-out-of-bounds in alloc_pid
+       3  UBSAN: array-index-out-of-bounds in copy_process
+       4  UBSAN: array-index-out-of-bounds in corrupted
+       4  UBSAN: array-index-out-of-bounds in corrupted
+       4  UBSAN: array-index-out-of-bounds in corrupted
+       4  UBSAN: array-index-out-of-bounds in alloc_pid
+       4  UBSAN: array-index-out-of-bounds in copy_process
+       4  UBSAN: array-index-out-of-bounds in copy_process
+       4  UBSAN: array-index-out-of-bounds in copy_process
+       4  UBSAN: array-index-out-of-bounds in copy_process
+       5  UBSAN: array-index-out-of-bounds in corrupted
+       5  UBSAN: array-index-out-of-bounds in corrupted
+       5  UBSAN: array-index-out-of-bounds in corrupted
+       5  UBSAN: array-index-out-of-bounds in corrupted
+       5  UBSAN: array-index-out-of-bounds in corrupted
+       5  UBSAN: array-index-out-of-bounds in corrupted
+       5  UBSAN: array-index-out-of-bounds in corrupted
+       5  UBSAN: array-index-out-of-bounds in corrupted
+       5  UBSAN: array-index-out-of-bounds in corrupted
+       5  UBSAN: array-index-out-of-bounds in corrupted
+       5  UBSAN: array-index-out-of-bounds in corrupted
+       5  UBSAN: array-index-out-of-bounds in corrupted
+       5  UBSAN: array-index-out-of-bounds in corrupted
+       5  UBSAN: array-index-out-of-bounds in corrupted
+       5  UBSAN: array-index-out-of-bounds in copy_process
+       6  UBSAN: array-index-out-of-bounds in corrupted
+       6  UBSAN: array-index-out-of-bounds in corrupted
+       6  UBSAN: array-index-out-of-bounds in corrupted
+       6  UBSAN: array-index-out-of-bounds in corrupted
+       6  UBSAN: array-index-out-of-bounds in corrupted
+       6  UBSAN: array-index-out-of-bounds in corrupted
+       6  UBSAN: array-index-out-of-bounds in corrupted
+       6  UBSAN: array-index-out-of-bounds in corrupted
+       7  UBSAN: array-index-out-of-bounds in corrupted
+       7  UBSAN: array-index-out-of-bounds in corrupted
+       7  UBSAN: array-index-out-of-bounds in corrupted
+       7  UBSAN: array-index-out-of-bounds in corrupted
+       7  UBSAN: array-index-out-of-bounds in corrupted
+       7  UBSAN: array-index-out-of-bounds in corrupted
+       7  UBSAN: array-index-out-of-bounds in corrupted
+       7  UBSAN: array-index-out-of-bounds in corrupted
+       7  UBSAN: array-index-out-of-bounds in copy_process
+       8  UBSAN: array-index-out-of-bounds in corrupted
+       8  UBSAN: array-index-out-of-bounds in corrupted
+       8  UBSAN: array-index-out-of-bounds in corrupted
+       8  UBSAN: array-index-out-of-bounds in corrupted
+       8  UBSAN: array-index-out-of-bounds in corrupted
+       8  UBSAN: array-index-out-of-bounds in corrupted
+       8  UBSAN: array-index-out-of-bounds in corrupted
+       8  UBSAN: array-index-out-of-bounds in corrupted
+       8  UBSAN: array-index-out-of-bounds in corrupted
+       8  UBSAN: array-index-out-of-bounds in corrupted
+       8  UBSAN: array-index-out-of-bounds in copy_process
+       8  UBSAN: array-index-out-of-bounds in copy_process
+       9  UBSAN: array-index-out-of-bounds in corrupted
+       9  UBSAN: array-index-out-of-bounds in corrupted
+       9  UBSAN: array-index-out-of-bounds in corrupted
+       9  UBSAN: array-index-out-of-bounds in corrupted
+       9  UBSAN: array-index-out-of-bounds in corrupted
+       9  UBSAN: array-index-out-of-bounds in corrupted
+       9  UBSAN: array-index-out-of-bounds in alloc_pid
+       9  UBSAN: array-index-out-of-bounds in copy_process
+       9  UBSAN: array-index-out-of-bounds in copy_process
+       9  UBSAN: array-index-out-of-bounds in copy_process
+      10  UBSAN: array-index-out-of-bounds in corrupted
+      10  UBSAN: array-index-out-of-bounds in corrupted
+      10  UBSAN: array-index-out-of-bounds in corrupted
+      10  UBSAN: array-index-out-of-bounds in corrupted
+      10  UBSAN: array-index-out-of-bounds in corrupted
+      10  UBSAN: array-index-out-of-bounds in corrupted
+      10  UBSAN: array-index-out-of-bounds in alloc_pid
+      10  UBSAN: array-index-out-of-bounds in copy_process
+      10  UBSAN: array-index-out-of-bounds in copy_process
+      11  UBSAN: array-index-out-of-bounds in corrupted
+      11  UBSAN: array-index-out-of-bounds in corrupted
+      11  UBSAN: array-index-out-of-bounds in corrupted
+      11  UBSAN: array-index-out-of-bounds in corrupted
+      11  UBSAN: array-index-out-of-bounds in corrupted
+      11  UBSAN: array-index-out-of-bounds in corrupted
+      11  UBSAN: array-index-out-of-bounds in corrupted
+      11  UBSAN: array-index-out-of-bounds in corrupted
+      11  UBSAN: array-index-out-of-bounds in alloc_pid
+      11  UBSAN: array-index-out-of-bounds in copy_process
+      12  UBSAN: array-index-out-of-bounds in corrupted
+      12  UBSAN: array-index-out-of-bounds in corrupted
+      12  UBSAN: array-index-out-of-bounds in corrupted
+      12  UBSAN: array-index-out-of-bounds in corrupted
+      12  UBSAN: array-index-out-of-bounds in corrupted
+      12  UBSAN: array-index-out-of-bounds in corrupted
+      12  UBSAN: array-index-out-of-bounds in corrupted
+      12  UBSAN: array-index-out-of-bounds in corrupted
+      12  UBSAN: array-index-out-of-bounds in alloc_pid
+      12  UBSAN: array-index-out-of-bounds in alloc_pid
+      12  UBSAN: array-index-out-of-bounds in copy_process
+      12  UBSAN: array-index-out-of-bounds in copy_process
+Attempt 3:
+    Time  Bug Name
+       1  UBSAN: array-index-out-of-bounds in corrupted
+       1  UBSAN: array-index-out-of-bounds in corrupted
+       1  UBSAN: array-index-out-of-bounds in corrupted
+       1  UBSAN: array-index-out-of-bounds in corrupted
+       1  UBSAN: array-index-out-of-bounds in corrupted
+       1  UBSAN: array-index-out-of-bounds in corrupted
+       2  UBSAN: array-index-out-of-bounds in corrupted
+       2  UBSAN: array-index-out-of-bounds in corrupted
+       2  UBSAN: array-index-out-of-bounds in corrupted
+       2  UBSAN: array-index-out-of-bounds in corrupted
+       2  UBSAN: array-index-out-of-bounds in corrupted
+       2  UBSAN: array-index-out-of-bounds in corrupted
+       2  UBSAN: array-index-out-of-bounds in corrupted
+       2  UBSAN: array-index-out-of-bounds in alloc_pid
+       2  UBSAN: array-index-out-of-bounds in alloc_pid
+       2  UBSAN: array-index-out-of-bounds in copy_process
+       3  UBSAN: array-index-out-of-bounds in corrupted
+       3  UBSAN: array-index-out-of-bounds in corrupted
+       3  UBSAN: array-index-out-of-bounds in corrupted
+       3  UBSAN: array-index-out-of-bounds in corrupted
+       3  UBSAN: array-index-out-of-bounds in corrupted
+       3  UBSAN: array-index-out-of-bounds in corrupted
+       3  UBSAN: array-index-out-of-bounds in alloc_pid
+       3  UBSAN: array-index-out-of-bounds in copy_process
+       4  UBSAN: array-index-out-of-bounds in corrupted
+       4  UBSAN: array-index-out-of-bounds in corrupted
+       4  UBSAN: array-index-out-of-bounds in corrupted
+       4  UBSAN: array-index-out-of-bounds in corrupted
+       4  UBSAN: array-index-out-of-bounds in corrupted
+       4  UBSAN: array-index-out-of-bounds in corrupted
+       4  UBSAN: array-index-out-of-bounds in corrupted
+       4  UBSAN: array-index-out-of-bounds in corrupted
+       5  UBSAN: array-index-out-of-bounds in corrupted
+       5  UBSAN: array-index-out-of-bounds in corrupted
+       5  UBSAN: array-index-out-of-bounds in corrupted
+       5  UBSAN: array-index-out-of-bounds in corrupted
+       5  UBSAN: array-index-out-of-bounds in corrupted
+       5  UBSAN: array-index-out-of-bounds in corrupted
+       5  UBSAN: array-index-out-of-bounds in corrupted
+       5  UBSAN: array-index-out-of-bounds in corrupted
+       5  UBSAN: array-index-out-of-bounds in corrupted
+       5  UBSAN: array-index-out-of-bounds in corrupted
+       5  UBSAN: array-index-out-of-bounds in corrupted
+       5  UBSAN: array-index-out-of-bounds in alloc_pid
+       5  UBSAN: array-index-out-of-bounds in alloc_pid
+       5  UBSAN: array-index-out-of-bounds in copy_process
+       6  UBSAN: array-index-out-of-bounds in corrupted
+       6  UBSAN: array-index-out-of-bounds in corrupted
+       6  UBSAN: array-index-out-of-bounds in corrupted
+       6  UBSAN: array-index-out-of-bounds in corrupted
+       6  UBSAN: array-index-out-of-bounds in corrupted
+       6  UBSAN: array-index-out-of-bounds in corrupted
+       6  UBSAN: array-index-out-of-bounds in corrupted
+       6  UBSAN: array-index-out-of-bounds in corrupted
+       6  UBSAN: array-index-out-of-bounds in corrupted
+       6  UBSAN: array-index-out-of-bounds in copy_process
+       7  UBSAN: array-index-out-of-bounds in corrupted
+       7  UBSAN: array-index-out-of-bounds in corrupted
+       7  UBSAN: array-index-out-of-bounds in corrupted
+       7  UBSAN: array-index-out-of-bounds in corrupted
+       7  UBSAN: array-index-out-of-bounds in corrupted
+       7  UBSAN: array-index-out-of-bounds in corrupted
+       7  UBSAN: array-index-out-of-bounds in corrupted
+       7  UBSAN: array-index-out-of-bounds in copy_process
+       8  UBSAN: array-index-out-of-bounds in corrupted
+       8  UBSAN: array-index-out-of-bounds in corrupted
+       8  UBSAN: array-index-out-of-bounds in corrupted
+       8  UBSAN: array-index-out-of-bounds in corrupted
+       8  UBSAN: array-index-out-of-bounds in corrupted
+       8  UBSAN: array-index-out-of-bounds in corrupted
+       8  UBSAN: array-index-out-of-bounds in corrupted
+       8  UBSAN: array-index-out-of-bounds in copy_process
+       9  UBSAN: array-index-out-of-bounds in corrupted
+       9  UBSAN: array-index-out-of-bounds in corrupted
+       9  UBSAN: array-index-out-of-bounds in corrupted
+       9  UBSAN: array-index-out-of-bounds in corrupted
+       9  UBSAN: array-index-out-of-bounds in corrupted
+       9  UBSAN: array-index-out-of-bounds in corrupted
+       9  UBSAN: array-index-out-of-bounds in corrupted
+       9  UBSAN: array-index-out-of-bounds in corrupted
+       9  UBSAN: array-index-out-of-bounds in corrupted
+       9  UBSAN: array-index-out-of-bounds in corrupted
+       9  UBSAN: array-index-out-of-bounds in corrupted
+       9  UBSAN: array-index-out-of-bounds in alloc_pid
+       9  UBSAN: array-index-out-of-bounds in copy_process
+       9  UBSAN: array-index-out-of-bounds in copy_process
+      10  UBSAN: array-index-out-of-bounds in corrupted
+      10  UBSAN: array-index-out-of-bounds in corrupted
+      10  UBSAN: array-index-out-of-bounds in corrupted
+      10  UBSAN: array-index-out-of-bounds in corrupted
+      10  UBSAN: array-index-out-of-bounds in corrupted
+      10  UBSAN: array-index-out-of-bounds in corrupted
+      10  UBSAN: array-index-out-of-bounds in copy_process
+      10  UBSAN: array-index-out-of-bounds in copy_process
+      10  UBSAN: array-index-out-of-bounds in copy_process
+      11  UBSAN: array-index-out-of-bounds in corrupted
+      11  UBSAN: array-index-out-of-bounds in corrupted
+      11  UBSAN: array-index-out-of-bounds in corrupted
+      11  UBSAN: array-index-out-of-bounds in corrupted
+      11  UBSAN: array-index-out-of-bounds in corrupted
+      11  UBSAN: array-index-out-of-bounds in corrupted
+      11  UBSAN: array-index-out-of-bounds in alloc_pid
+      11  UBSAN: array-index-out-of-bounds in copy_process
+      11  UBSAN: array-index-out-of-bounds in copy_process
+      12  UBSAN: array-index-out-of-bounds in corrupted
+      12  UBSAN: array-index-out-of-bounds in corrupted
+      12  UBSAN: array-index-out-of-bounds in corrupted
+      12  UBSAN: array-index-out-of-bounds in corrupted
+      12  UBSAN: array-index-out-of-bounds in corrupted
+      12  UBSAN: array-index-out-of-bounds in corrupted
+      12  UBSAN: array-index-out-of-bounds in corrupted
+      12  UBSAN: array-index-out-of-bounds in corrupted
+      12  UBSAN: array-index-out-of-bounds in alloc_pid
+      12  UBSAN: array-index-out-of-bounds in copy_process
+      12  UBSAN: array-index-out-of-bounds in copy_process
+The bug was not found.
+About 1626 commits remaining
+
+2025-03-23 23:50:20
+Session:   6
+Kernel:    2023-06-30 - 9c3255a8f3946a4c8844f1e2e093313f3b71cb30
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    7  possible deadlock in lock_mm_and_find_vma
+Running syz-repro.
+New PoC saved at /home/syzretrospector/syzinspector/wd-bisector-5/reproducers/repro-bug0834-0.prog
+Primary PoC:     /home/syzretrospector/syzinspector/wd-bisector-5/reproducers/repro-bug0834-0.prog
+Run Time:        0h59m0s
+The bug was found.
+About 855 commits remaining
+
+2025-03-24 01:08:25
+Session:   7
+Kernel:    2023-06-30 - b30d7a77c53ec04a6d94683d7680ec406b7f3ac8
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    5  possible deadlock in lock_mm_and_find_vma
+The bug was found.
+About 501 commits remaining
+
+2025-03-24 01:25:14
+Session:   8
+Kernel:    2023-06-20 - db1f5f1038a2df67f549e2657f56327e28127c27
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+The bug was not found.
+About 10262 commits remaining
+
+2025-03-24 02:14:52
+Session:   9
+Kernel:    2023-06-30 - d8b0bd57c2d68eb500f356f0f9228e6183da94ae
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       7  KASAN: stack-out-of-bounds Read in profile_pc
+       9  KASAN: stack-out-of-bounds Read in profile_pc
+       9  KASAN: stack-out-of-bounds Read in profile_pc
+      11  KASAN: stack-out-of-bounds Read in profile_pc
+Attempt 2:
+    Time  Bug Name
+       2  KASAN: stack-out-of-bounds Read in profile_pc
+       3  KASAN: stack-out-of-bounds Read in profile_pc
+       5  KASAN: stack-out-of-bounds Read in profile_pc
+       7  KASAN: stack-out-of-bounds Read in profile_pc
+Attempt 3:
+    Time  Bug Name
+       2  KASAN: stack-out-of-bounds Read in profile_pc
+       2  KASAN: stack-out-of-bounds Read in profile_pc
+       3  KASAN: stack-out-of-bounds Read in profile_pc
+       3  KASAN: stack-out-of-bounds Read in profile_pc
+       3  KASAN: stack-out-of-bounds Read in profile_pc
+The bug was not found.
+About 392 commits remaining
+
+2025-03-24 03:03:35
+Session:   10
+Kernel:    2023-06-20 - ee95b88d71b9cf7ac1085ebc014f161971e1be9a
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       3  KASAN: stack-out-of-bounds Read in profile_pc
+       5  KASAN: stack-out-of-bounds Read in profile_pc
+       6  KASAN: stack-out-of-bounds Read in profile_pc
+       8  KASAN: stack-out-of-bounds Read in profile_pc
+      10  KASAN: stack-out-of-bounds Read in profile_pc
+      11  KASAN: stack-out-of-bounds Read in profile_pc
+Attempt 2:
+    Time  Bug Name
+       3  KASAN: stack-out-of-bounds Read in profile_pc
+       3  KASAN: stack-out-of-bounds Read in profile_pc
+       4  KASAN: stack-out-of-bounds Read in profile_pc
+       6  KASAN: stack-out-of-bounds Read in profile_pc
+       8  possible deadlock in do_user_addr_fault
+Attempt 3:
+    Time  Bug Name
+       3  KASAN: stack-out-of-bounds Read in profile_pc
+       5  possible deadlock in do_user_addr_fault
+       6  KASAN: stack-out-of-bounds Read in profile_pc
+       8  KASAN: stack-out-of-bounds Read in profile_pc
+      10  KASAN: stack-out-of-bounds Read in profile_pc
+      11  KASAN: stack-out-of-bounds Read in profile_pc
+The bug was not found.
+About 11258 commits remaining
+
+2025-03-24 03:53:10
+Session:   11
+Kernel:    2023-06-30 - cccf0c2ee52d3bd710be3a3f865df1b869a68f11
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       2  KASAN: stack-out-of-bounds Read in profile_pc
+       2  KASAN: stack-out-of-bounds Read in profile_pc
+       3  KASAN: stack-out-of-bounds Read in profile_pc
+       5  KASAN: stack-out-of-bounds Read in profile_pc
+       7  KASAN: stack-out-of-bounds Read in profile_pc
+       9  KASAN: stack-out-of-bounds Read in profile_pc
+Attempt 2:
+    Time  Bug Name
+       3  KASAN: stack-out-of-bounds Read in profile_pc
+***    9  possible deadlock in lock_mm_and_find_vma
+The bug was found.
+About 10968 commits remaining
+
+2025-03-24 04:26:35
+Session:   12
+Kernel:    2023-06-23 - 488833ccdcac118da16701f4ee0673b20ba47fe3
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       2  KASAN: stack-out-of-bounds Read in profile_pc
+       6  KASAN: stack-out-of-bounds Read in profile_pc
+       8  KASAN: stack-out-of-bounds Read in profile_pc
+       9  KASAN: stack-out-of-bounds Read in profile_pc
+      10  KASAN: stack-out-of-bounds Read in profile_pc
+      12  KASAN: stack-out-of-bounds Read in profile_pc
+Attempt 2:
+    Time  Bug Name
+       4  KASAN: stack-out-of-bounds Read in profile_pc
+       5  KASAN: stack-out-of-bounds Read in profile_pc
+       7  INFO: task hung in path_openat
+Attempt 3:
+    Time  Bug Name
+       3  KASAN: stack-out-of-bounds Read in profile_pc
+       3  KASAN: stack-out-of-bounds Read in profile_pc
+       5  KASAN: stack-out-of-bounds Read in profile_pc
+       6  KASAN: stack-out-of-bounds Read in profile_pc
+       8  KASAN: stack-out-of-bounds Read in profile_pc
+       9  KASAN: stack-out-of-bounds Read in profile_pc
+      12  INFO: task hung in __fdget_pos
+The bug was not found.
+About 10952 commits remaining
+
+2025-03-24 05:08:45
+Session:   13
+Kernel:    2023-06-22 - 83f74441bcb16c324b7bdba0ab4261a44cb1ac21
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       2  KASAN: stack-out-of-bounds Read in profile_pc
+       3  KASAN: stack-out-of-bounds Read in profile_pc
+       3  KASAN: stack-out-of-bounds Read in profile_pc
+       7  KASAN: stack-out-of-bounds Read in profile_pc
+       8  KASAN: stack-out-of-bounds Read in profile_pc
+       8  KASAN: stack-out-of-bounds Read in profile_pc
+       9  KASAN: stack-out-of-bounds Read in profile_pc
+      10  KASAN: stack-out-of-bounds Read in profile_pc
+Attempt 2:
+    Time  Bug Name
+       2  KASAN: stack-out-of-bounds Read in profile_pc
+       3  KASAN: stack-out-of-bounds Read in profile_pc
+       6  KASAN: stack-out-of-bounds Read in profile_pc
+      12  INFO: task hung in exfat_write_inode
+Attempt 3:
+    Time  Bug Name
+       2  KASAN: stack-out-of-bounds Read in profile_pc
+       3  KASAN: stack-out-of-bounds Read in profile_pc
+       4  possible deadlock in do_user_addr_fault
+       8  possible deadlock in do_user_addr_fault
+The bug was not found.
+About 9722 commits remaining
+
+2025-03-24 05:58:18
+Session:   14
+Kernel:    2023-06-22 - 38638ffa6059049334b4d87bd4d85cf3418b5e27
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       2  KASAN: stack-out-of-bounds Read in profile_pc
+       3  KASAN: stack-out-of-bounds Read in profile_pc
+       3  KASAN: stack-out-of-bounds Read in profile_pc
+       4  KASAN: stack-out-of-bounds Read in profile_pc
+       5  possible deadlock in do_user_addr_fault
+Attempt 2:
+    Time  Bug Name
+       3  KASAN: stack-out-of-bounds Read in profile_pc
+       5  possible deadlock in do_user_addr_fault
+       6  KASAN: stack-out-of-bounds Read in profile_pc
+Attempt 3:
+    Time  Bug Name
+       3  KASAN: stack-out-of-bounds Read in profile_pc
+       3  KASAN: stack-out-of-bounds Read in profile_pc
+       3  KASAN: stack-out-of-bounds Read in profile_pc
+       4  KASAN: stack-out-of-bounds Read in profile_pc
+       5  KASAN: stack-out-of-bounds Read in profile_pc
+       6  KASAN: stack-out-of-bounds Read in profile_pc
+       6  KASAN: stack-out-of-bounds Read in profile_pc
+       7  KASAN: stack-out-of-bounds Read in profile_pc
+       7  KASAN: stack-out-of-bounds Read in profile_pc
+       9  KASAN: stack-out-of-bounds Read in profile_pc
+      12  possible deadlock in do_user_addr_fault
+      12  KASAN: stack-out-of-bounds Read in profile_pc
+The bug was not found.
+About 9718 commits remaining
+
+2025-03-24 06:40:25
+Session:   15
+Kernel:    2023-06-23 - fc30ace06f250f79381a8e3f6ed92dd68e25a9f5
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       3  KASAN: stack-out-of-bounds Read in profile_pc
+       3  KASAN: stack-out-of-bounds Read in profile_pc
+       6  KASAN: stack-out-of-bounds Read in profile_pc
+       7  KASAN: stack-out-of-bounds Read in profile_pc
+      12  INFO: task hung in iterate_supers
+Attempt 2:
+    Time  Bug Name
+       2  KASAN: stack-out-of-bounds Read in profile_pc
+       4  KASAN: stack-out-of-bounds Read in profile_pc
+       4  KASAN: stack-out-of-bounds Read in profile_pc
+       5  KASAN: stack-out-of-bounds Read in profile_pc
+       6  KASAN: stack-out-of-bounds Read in profile_pc
+       7  KASAN: stack-out-of-bounds Read in profile_pc
+       9  KASAN: stack-out-of-bounds Read in profile_pc
+      10  KASAN: stack-out-of-bounds Read in profile_pc
+      10  KASAN: stack-out-of-bounds Read in profile_pc
+      11  KASAN: stack-out-of-bounds Read in profile_pc
+      11  KASAN: stack-out-of-bounds Read in profile_pc
+      11  KASAN: stack-out-of-bounds Read in profile_pc
+      11  INFO: task hung in iterate_supers
+      12  KASAN: stack-out-of-bounds Read in profile_pc
+      12  INFO: task hung in __fdget_pos
+Attempt 3:
+    Time  Bug Name
+       2  KASAN: stack-out-of-bounds Read in profile_pc
+       3  KASAN: stack-out-of-bounds Read in profile_pc
+The bug was not found.
+About 9716 commits remaining
+
+2025-03-24 07:22:33
+Session:   16
+Kernel:    2023-06-30 - 533925cb760431cb496a8c965cfd765a1a21d37e
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       2  KASAN: stack-out-of-bounds Read in profile_pc
+       4  KASAN: stack-out-of-bounds Read in profile_pc
+       8  lost connection to test machine
+      10  INFO: task hung in iterate_supers
+Attempt 2:
+    Time  Bug Name
+       2  KASAN: stack-out-of-bounds Read in profile_pc
+       2  KASAN: stack-out-of-bounds Read in profile_pc
+       3  KASAN: stack-out-of-bounds Read in profile_pc
+       3  KASAN: stack-out-of-bounds Read in profile_pc
+       3  KASAN: stack-out-of-bounds Read in profile_pc
+       5  KASAN: stack-out-of-bounds Read in profile_pc
+       5  KASAN: stack-out-of-bounds Read in profile_pc
+       6  possible deadlock in page_cache_ra_unbounded
+       7  KASAN: stack-out-of-bounds Read in profile_pc
+       7  lost connection to test machine
+       8  KASAN: stack-out-of-bounds Read in profile_pc
+Attempt 3:
+    Time  Bug Name
+       2  KASAN: stack-out-of-bounds Read in profile_pc
+       3  KASAN: stack-out-of-bounds Read in profile_pc
+       5  KASAN: stack-out-of-bounds Read in profile_pc
+       6  KASAN: stack-out-of-bounds Read in profile_pc
+       8  KASAN: stack-out-of-bounds Read in profile_pc
+***    9  possible deadlock in lock_mm_and_find_vma
+Running syz-repro.
+Run Time:        0h19m0s
+The bug was found.
+About 9715 commits remaining
+
+==== Partial Result: Focused Fuzzing ====
+Reproducer:           /home/syzretrospector/syzinspector/wd-bisector-5/reproducers/repro-bug0834-0.prog
+Bisection Result:     2023-06-30 - 533925cb760431cb496a8c965cfd765a1a21d37e
+Bisected Commit Name: Merge tag 'riscv-for-linus-6.5-mw1' of git://git.kernel.org/pub/scm/linux/kernel/git/riscv/linux
+Stage Time:           12h4m4s
+Run Time:             12h4m5s
+=========================================
+
+==== Anchor Commit ====
+
+2025-03-24 08:21:25
+Session:   17
+Kernel:    2023-06-30 - d8b0bd57c2d68eb500f356f0f9228e6183da94ae
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+
+Failure: This bug cannot be found at the anchor commit.
+
+====================================================================================================================================================
+Bug Name:             possible deadlock in lock_mm_and_find_vma
+Bug Link:             https://syzkaller.appspot.com/bug?extid=1741a5d9b79989c10bdc
+Bisection Result:     2023-06-30 - 533925cb760431cb496a8c965cfd765a1a21d37e
+Bisected Commit Name: Merge tag 'riscv-for-linus-6.5-mw1' of git://git.kernel.org/pub/scm/linux/kernel/git/riscv/linux
+Run Time:             12h18m6s
+
+Anchor Commit:        2023-07-30 - 5d0c230f1de8c7515b6567d9afba1f196fb4e2f4
+Bisection Result:     2023-06-30 - 533925cb760431cb496a8c965cfd765a1a21d37e

@@ -1,0 +1,275 @@
+./bin/bisector -i 5 -c /home/syzretrospector/syzinspector/wd-bisector-5/bisector.cfg -a b57b17e88bf58860dad312d08db7d6708ee6d06d -F ff-test,poc-test,stateful-corpus,ff-no-find-backup
+Bisecting:          WARNING in kvm_mmu_notifier_invalidate_range_start
+Syzbot Link:        https://syzkaller.appspot.com/bug?extid=c74f40907a9c0479af10
+Working Name:       bug0750
+
+No aliases given.
+
+Anchor Commit:      b57b17e88bf58860dad312d08db7d6708ee6d06d
+Repository:         https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
+Branch:             master
+Arch:               amd64
+
+Bisector:           /home/syzretrospector/syzinspector/
+Version:            1.0.4
+Kernel:             /home/syzretrospector/syzinspector/wd-bisector-5/kernel/
+Syzkaller:          /home/syzretrospector/syzinspector/syzkaller/
+Compilers:          /home/syzretrospector/compilers/
+Ccache:             ccache
+Image:              /home/syzretrospector/images/stretch/stretch.img
+Image Key:          /home/syzretrospector/images/stretch/stretch.id_rsa
+
+Workdir:            /home/syzretrospector/syzinspector/wd-bisector-5/
+Kconfig:            /home/syzretrospector/syzinspector/wd-bisector-5/config-bug0750.txt
+Reproducers: (1)    /home/syzretrospector/syzinspector/wd-bisector-5/reproducers/
+Syzkaller Workdir:  /home/syzretrospector/syzinspector/wd-bisector-5/wd-kaller/
+Log Directory:      /home/syzretrospector/syzinspector/wd-bisector-5/log/
+
+Syscalls: (7)       ["ioctl$KVM_CREATE_VM", "ioctl$PAGEMAP_SCAN", "openat$kvm", "syz_open_procfs$pagemap", "syz_clone", "ioctl$F2FS_IOC_START_ATOMIC_WRITE", "openat$selinux_enforce"]
+VM Count:           8
+CPU Count:          2
+Procs:              16
+Memory:             4096
+Make Procs:         16
+Max Time:           10
+Max Attempts:       1
+
+==== Anchor Commit ====
+
+2025-03-16 04:09:56
+Session:   1
+Kernel:    2023-11-12 - b57b17e88bf58860dad312d08db7d6708ee6d06d
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    2  WARNING in kvm_mmu_notifier_invalidate_range_start
+***    2  WARNING in kvm_mmu_notifier_invalidate_range_start
+***    2  WARNING in kvm_mmu_notifier_invalidate_range_start
+***    2  WARNING in kvm_mmu_notifier_invalidate_range_start
+***    2  WARNING in kvm_mmu_notifier_invalidate_range_start
+***    2  WARNING in kvm_mmu_notifier_invalidate_range_start
+Attempt 2: (RETRY)
+    Time  Bug Name
+***    2  WARNING in kvm_mmu_notifier_invalidate_range_start
+***    2  WARNING in kvm_mmu_notifier_invalidate_range_start
+***    2  WARNING in kvm_mmu_notifier_invalidate_range_start
+***    2  WARNING in kvm_mmu_notifier_invalidate_range_start
+***    2  WARNING in kvm_mmu_notifier_invalidate_range_start
+***    2  WARNING in kvm_mmu_notifier_invalidate_range_start
+***    2  WARNING in kvm_mmu_notifier_invalidate_range_start
+***    2  WARNING in kvm_mmu_notifier_invalidate_range_start
+Attempt 3: (RETRY)
+    Time  Bug Name
+       2  WARNING in kvm_mmu_notifier_change_pte
+***    2  WARNING in kvm_mmu_notifier_invalidate_range_start
+***    2  WARNING in kvm_mmu_notifier_invalidate_range_start
+***    2  WARNING in kvm_mmu_notifier_invalidate_range_start
+***    2  WARNING in kvm_mmu_notifier_invalidate_range_start
+***    2  WARNING in kvm_mmu_notifier_invalidate_range_start
+The bug was found.
+
+New Max Time: 10
+
+==== Major Release Search ====
+19 Releases
+
+2025-03-16 04:29:52
+Session:   2
+Kernel:    2023-10-29 - ffc253263a1375a65fa6c9f62a893e9767fbebfa (v6.6)
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 18 releases remaining
+
+==== Kernel Bisection ====
+16202 Linux commits
+
+2025-03-16 04:52:48
+Session:   3
+Kernel:    2023-11-01 - 7d461b291e65938f15f56fe58da2303b07578a76
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 7553 commits remaining
+
+2025-03-16 05:15:57
+Session:   4
+Kernel:    2023-11-03 - 00657bb3dbecee324336e1da1ad71b670b6aee60
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    2  WARNING in kvm_mmu_notifier_invalidate_range_start
+***    2  WARNING in kvm_mmu_notifier_invalidate_range_start
+***    2  WARNING in kvm_mmu_notifier_invalidate_range_start
+***    2  WARNING in kvm_mmu_notifier_invalidate_range_start
+***    2  WARNING in kvm_mmu_notifier_invalidate_range_start
+***    2  WARNING in kvm_mmu_notifier_invalidate_range_start
+***    2  WARNING in kvm_mmu_notifier_invalidate_range_start
+Running syz-repro.
+New PoC saved at /home/syzretrospector/syzinspector/wd-bisector-5/reproducers/repro-bug0750-0.prog
+Primary PoC:     /home/syzretrospector/syzinspector/wd-bisector-5/reproducers/repro-bug0750-0.prog
+Run Time:        0h43m0s
+The bug was found.
+About 3769 commits remaining
+
+2025-03-16 06:14:22
+Session:   5
+Kernel:    2023-11-02 - 27beb3ca347fa29fef5c23b351120239b8cf0612
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       9  suppressed report
+The bug was not found.
+About 1896 commits remaining
+
+2025-03-16 06:37:37
+Session:   6
+Kernel:    2023-11-02 - 5be9911406ada8fe6187db7ce402f7ff4c21ebdf
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 960 commits remaining
+
+2025-03-16 06:53:03
+Session:   7
+Kernel:    2023-11-02 - bc3012f4e3a9765de81f454cb8f9bb16aafc6ff5
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 490 commits remaining
+
+2025-03-16 07:10:42
+Session:   8
+Kernel:    2023-10-18 - 279d5fc3227f04ef2c6125e5c440e7952173a89a
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    2  WARNING in kvm_mmu_notifier_invalidate_range_start
+***    2  WARNING in kvm_mmu_notifier_invalidate_range_start
+***    2  WARNING in kvm_mmu_notifier_invalidate_range_start
+***    2  WARNING in kvm_mmu_notifier_invalidate_range_start
+The bug was found.
+About 245 commits remaining
+
+2025-03-16 07:25:16
+Session:   9
+Kernel:    2023-10-04 - 8a83ac54940d27b8f56d766e1cb270d150fedd50
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 143 commits remaining
+
+2025-03-16 07:47:49
+Session:   10
+Kernel:    2023-10-16 - 0374af1da077573b2bea8ff70258d3537c5a1e79
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 82 commits remaining
+
+2025-03-16 08:10:24
+Session:   11
+Kernel:    2023-10-18 - 054a9f7ccd0a60607fb9bbe1e06ca671494971bf
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    3  WARNING in kvm_mmu_notifier_invalidate_range_start
+***    3  WARNING in kvm_mmu_notifier_invalidate_range_start
+***    3  WARNING in kvm_mmu_notifier_invalidate_range_start
+***    3  WARNING in kvm_mmu_notifier_invalidate_range_start
+***    3  WARNING in kvm_mmu_notifier_invalidate_range_start
+***    3  WARNING in kvm_mmu_notifier_invalidate_range_start
+***    3  WARNING in kvm_mmu_notifier_invalidate_range_start
+The bug was found.
+About 51 commits remaining
+
+2025-03-16 08:25:34
+Session:   12
+Kernel:    2023-10-18 - ff841a06c844b0556b434d67cfc43f4fda56ae7b
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 16 commits remaining
+
+2025-03-16 08:45:41
+Session:   13
+Kernel:    2023-10-18 - 46fd75d4a3c94dfa5dfcf113881c0c704036b2b2
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    2  WARNING in kvm_mmu_notifier_invalidate_range_start
+***    2  WARNING in kvm_mmu_notifier_invalidate_range_start
+Running syz-repro.
+New PoC saved at /home/syzretrospector/syzinspector/wd-bisector-5/reproducers/repro-bug0750-2.prog
+Primary PoC:     /home/syzretrospector/syzinspector/wd-bisector-5/reproducers/repro-bug0750-2.prog
+Run Time:        0h8m0s
+The bug was found.
+About 8 commits remaining
+
+2025-03-16 09:00:09
+Session:   14
+Kernel:    2023-10-18 - 52526ca7fdb905a768a93f8faa418e9b988fc34b
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    2  WARNING in kvm_mmu_notifier_invalidate_range_start
+The bug was found.
+About 4 commits remaining
+
+2025-03-16 09:06:37
+Session:   15
+Kernel:    2023-10-18 - d61ea1cb009532dcbd77a9d44b812704cec60146
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Warning: Child process make exited with error status 2.
+Warning: make exited with error status 0x2
+Error: The kernel failed to make.
+Error: The kernel failed to make.
+Attempting to recover.
+
+2025-03-16 09:08:26
+Session:   16
+Kernel:    2023-10-18 - 7bd5bc3ce9632aefd0eed33a19212a2e55c0f873
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+Warning: Child process git exited with error status 2.
+About 3 commits remaining
+Git bisect reported multiple guilty commits
+
+==== Partial Result: Focused Fuzzing ====
+Reproducer:           /home/syzretrospector/syzinspector/wd-bisector-5/reproducers/repro-bug0750-2.prog
+Bisection Result:     2023-10-18 - 52526ca7fdb905a768a93f8faa418e9b988fc34b
+Bisected Commit Name: fs/proc/task_mmu: implement IOCTL to get and optionally clear info about PTEs
+Stage Time:           5h12m50s
+Run Time:             5h12m51s
+=========================================
+
+==== Anchor Commit ====
+
+2025-03-16 09:22:47
+Session:   17
+Kernel:    2023-10-18 - d61ea1cb009532dcbd77a9d44b812704cec60146
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Warning: Child process make exited with error status 2.
+Warning: make exited with error status 0x2
+Error: The kernel failed to make.
+Error: The kernel failed to make.
+Error: Failed to go to anchor commit
+
+====================================================================================================================================================
+Bug Name:             WARNING in kvm_mmu_notifier_invalidate_range_start
+Bug Link:             https://syzkaller.appspot.com/bug?extid=c74f40907a9c0479af10
+Bisection Result:     2023-10-18 - 52526ca7fdb905a768a93f8faa418e9b988fc34b
+Bisected Commit Name: fs/proc/task_mmu: implement IOCTL to get and optionally clear info about PTEs
+Run Time:             5h14m28s
+
+Anchor Commit:        2023-11-12 - b57b17e88bf58860dad312d08db7d6708ee6d06d
+Bisection Result:     2023-10-18 - 52526ca7fdb905a768a93f8faa418e9b988fc34b

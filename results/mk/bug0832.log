@@ -1,0 +1,283 @@
+./bin/bisector -i 5 -c /home/syzretrospector/syzinspector/wd-bisector-5/bisector.cfg -a b25f62ccb490680a8cee755ac4528909395e0711 -F ff-test,poc-test,stateful-corpus,ff-no-find-backup
+Bisecting:          general protection fault in sys_finit_module
+Warning: No syscall found that produces sock_can.
+Syzbot Link:        https://syzkaller.appspot.com/bug?extid=9e4e94a2689427009d35
+Working Name:       bug0832
+
+No aliases given.
+
+Anchor Commit:      b25f62ccb490680a8cee755ac4528909395e0711
+Repository:         https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
+Branch:             master
+Arch:               amd64
+
+Bisector:           /home/syzretrospector/syzinspector/
+Version:            1.0.4
+Kernel:             /home/syzretrospector/syzinspector/wd-bisector-5/kernel/
+Syzkaller:          /home/syzretrospector/syzinspector/syzkaller/
+Compilers:          /home/syzretrospector/compilers/
+Ccache:             ccache
+Image:              /home/syzretrospector/images/stretch/stretch.img
+Image Key:          /home/syzretrospector/images/stretch/stretch.id_rsa
+
+Workdir:            /home/syzretrospector/syzinspector/wd-bisector-5/
+Kconfig:            /home/syzretrospector/syzinspector/wd-bisector-5/config-bug0832.txt
+Reproducers: (6)    /home/syzretrospector/syzinspector/wd-bisector-5/reproducers/
+Syzkaller Workdir:  /home/syzretrospector/syzinspector/wd-bisector-5/wd-kaller/
+Log Directory:      /home/syzretrospector/syzinspector/wd-bisector-5/log/
+
+Syscalls: (16)      ["finit_module", "madvise", "openat$sysfs", "openat$ttyprintk", "socket$can_bcm", "socket$inet6_sctp", "socket$inet6_udplite", "socket$nl_generic", "syz_clone", "openat$binfmt", "ioctl$F2FS_IOC_START_ATOMIC_WRITE", "get_robust_list", "socket$inet6", "socket$netlink", "syz_create_resource$binfmt", "socket"]
+VM Count:           8
+CPU Count:          2
+Procs:              16
+Memory:             4096
+Make Procs:         16
+Max Time:           10
+Max Attempts:       1
+
+==== Anchor Commit ====
+
+2025-03-23 18:50:48
+Session:   1
+Kernel:    2023-06-30 - b25f62ccb490680a8cee755ac4528909395e0711
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       2  BUG: unable to handle kernel paging request in init_module_from_file
+       2  BUG: unable to handle kernel paging request in init_module_from_file
+       2  BUG: unable to handle kernel paging request in init_module_from_file
+       2  BUG: unable to handle kernel paging request in init_module_from_file
+       2  kernel panic: stack is corrupted in do_epoll_wait
+       2  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
+       2  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
+       2  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
+       3  BUG: unable to handle kernel paging request in init_module_from_file
+       3  BUG: unable to handle kernel paging request in init_module_from_file
+       3  general protection fault in init_module_from_file
+       3  general protection fault in init_module_from_file
+       3  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
+       3  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
+       3  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
+       3  KASAN: slab-out-of-bounds Read in init_module_from_file
+       4  BUG: unable to handle kernel paging request in init_module_from_file
+       4  KASAN: stack-out-of-bounds Read in init_module_from_file
+       4  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
+       4  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
+       4  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
+       4  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
+       4  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
+       4  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
+       5  BUG: unable to handle kernel paging request in init_module_from_file
+       5  KASAN: stack-out-of-bounds Read in init_module_from_file
+       5  general protection fault in init_module_from_file
+       5  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
+       5  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
+       5  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
+       5  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
+       5  KASAN: slab-out-of-bounds Read in init_module_from_file
+       6  KASAN: stack-out-of-bounds Read in init_module_from_file
+       6  general protection fault in init_module_from_file
+       6  general protection fault in init_module_from_file
+       6  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
+       6  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
+       6  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
+       6  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
+       6  KASAN: slab-out-of-bounds Read in init_module_from_file
+       7  BUG: unable to handle kernel paging request in init_module_from_file
+       7  KASAN: stack-out-of-bounds Read in init_module_from_file
+       7  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
+       7  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
+       7  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
+       7  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
+       7  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
+       7  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
+       8  KASAN: stack-out-of-bounds Read in init_module_from_file
+       8  KASAN: stack-out-of-bounds Read in init_module_from_file
+       8  KASAN: stack-out-of-bounds Read in init_module_from_file
+       8  general protection fault in init_module_from_file
+       8  general protection fault in init_module_from_file
+       8  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
+       8  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
+       8  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
+       9  KASAN: stack-out-of-bounds Read in init_module_from_file
+       9  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
+       9  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
+       9  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
+       9  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
+       9  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
+       9  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
+       9  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
+       9  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
+      10  KASAN: stack-out-of-bounds Read in init_module_from_file
+      10  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
+      10  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
+      10  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
+      10  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
+      10  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
+      10  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
+      10  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
+Attempt 2: (RETRY)
+    Time  Bug Name
+       2  BUG: unable to handle kernel paging request in init_module_from_file
+       2  BUG: unable to handle kernel paging request in init_module_from_file
+       2  general protection fault in init_module_from_file
+       2  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
+       2  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
+       2  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
+       2  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
+       2  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
+       3  BUG: unable to handle kernel paging request in init_module_from_file
+       3  KASAN: stack-out-of-bounds Read in init_module_from_file
+       3  KASAN: stack-out-of-bounds Read in init_module_from_file
+       3  general protection fault in init_module_from_file
+       3  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
+       3  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
+       3  lost connection to test machine
+       3  KASAN: slab-out-of-bounds Read in init_module_from_file
+       4  BUG: unable to handle kernel paging request in init_module_from_file
+       4  KASAN: stack-out-of-bounds Read in init_module_from_file
+       4  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
+       4  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
+       4  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
+       4  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
+       4  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
+       4  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
+       4  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
+       5  general protection fault in init_module_from_file
+       5  general protection fault in init_module_from_file
+       5  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
+       5  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
+       5  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
+       5  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
+       5  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
+       5  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
+       6  general protection fault in init_module_from_file
+       6  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
+       6  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
+       6  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
+       6  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
+       6  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
+       6  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
+       6  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
+       6  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
+       7  KASAN: stack-out-of-bounds Read in init_module_from_file
+       7  KASAN: stack-out-of-bounds Read in init_module_from_file
+       7  general protection fault in init_module_from_file
+       7  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
+       7  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
+       7  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
+       7  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
+       7  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
+       7  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
+       7  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
+       7  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
+       7  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
+       7  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
+       8  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
+       8  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
+       8  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
+       8  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
+       8  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
+       8  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
+       8  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
+       8  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
+       8  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
+       9  general protection fault in init_module_from_file
+       9  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
+       9  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
+       9  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
+       9  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
+       9  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
+       9  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
+       9  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
+      10  KASAN: stack-out-of-bounds Read in init_module_from_file
+      10  general protection fault in init_module_from_file
+      10  general protection fault in init_module_from_file
+      10  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
+      10  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
+      10  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
+      10  KASAN: slab-out-of-bounds Read in init_module_from_file
+      10  KASAN: slab-out-of-bounds Read in init_module_from_file
+Attempt 3: (RETRY)
+    Time  Bug Name
+       2  BUG: unable to handle kernel paging request in init_module_from_file
+       2  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
+       2  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
+       2  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
+       2  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
+       2  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
+       2  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
+       2  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
+       3  BUG: unable to handle kernel paging request in init_module_from_file
+       3  general protection fault in init_module_from_file
+       3  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
+       3  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
+       3  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
+       3  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
+       3  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
+       3  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
+       4  KASAN: stack-out-of-bounds Read in init_module_from_file
+       4  KASAN: stack-out-of-bounds Read in init_module_from_file
+       4  KASAN: stack-out-of-bounds Read in init_module_from_file
+       4  KASAN: stack-out-of-bounds Read in init_module_from_file
+       4  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
+       4  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
+       4  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
+       4  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
+       4  KASAN: slab-out-of-bounds Read in init_module_from_file
+       5  KASAN: stack-out-of-bounds Read in init_module_from_file
+       5  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
+       5  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
+       5  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
+       5  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
+       5  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
+       5  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
+       5  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
+       5  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
+       5  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
+       6  KASAN: stack-out-of-bounds Read in init_module_from_file
+       6  KASAN: stack-out-of-bounds Read in init_module_from_file
+       6  general protection fault in init_module_from_file
+       6  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
+       6  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
+       6  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
+       6  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
+       6  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
+       7  BUG: unable to handle kernel paging request in init_module_from_file
+       7  KASAN: stack-out-of-bounds Read in init_module_from_file
+       7  KASAN: stack-out-of-bounds Read in init_module_from_file
+       7  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
+       7  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
+       7  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
+       7  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
+       7  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
+       7  KASAN: slab-out-of-bounds Read in init_module_from_file
+       8  INFO: rcu detected stall in corrupted
+       8  KASAN: stack-out-of-bounds Read in init_module_from_file
+       8  KASAN: stack-out-of-bounds Read in init_module_from_file
+       8  general protection fault in init_module_from_file
+       8  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
+       8  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
+       8  KASAN: slab-out-of-bounds Read in init_module_from_file
+       8  KASAN: slab-out-of-bounds Read in init_module_from_file
+       9  KASAN: stack-out-of-bounds Read in init_module_from_file
+       9  KASAN: stack-out-of-bounds Read in init_module_from_file
+       9  general protection fault in init_module_from_file
+       9  general protection fault in init_module_from_file
+       9  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
+       9  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
+       9  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
+       9  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
+       9  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
+      10  KASAN: stack-out-of-bounds Read in init_module_from_file
+      10  KASAN: stack-out-of-bounds Read in init_module_from_file
+      10  KASAN: stack-out-of-bounds Read in init_module_from_file
+      10  KASAN: stack-out-of-bounds Read in init_module_from_file
+      10  general protection fault in init_module_from_file
+      10  general protection fault in init_module_from_file
+      10  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
+      10  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
+      10  KASAN: slab-out-of-bounds Read in init_module_from_file
+The bug was not found.
+
+Failure: This bug cannot be found at the anchor commit.

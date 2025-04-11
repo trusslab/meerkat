@@ -1,11 +1,12 @@
-./bin/bisector -i 5 -c /home/syzretrospector/syzinspector/wd-bisector-5/bisector.cfg -a 200e340f2196d7fd427a5810d06e893b932f145a -F ff-test,poc-test,stateful-corpus,ff-no-find-backup
-Bisecting:          KASAN: use-after-free Read in ip6mr_sk_done
-Syzbot Link:        https://syzkaller.appspot.com/bug?id=23e5d83e4c0908d10d9e0cc1e779d05c43bf8ae2
-Working Name:       bug0150
+./bin/bisector -i 5 -c /home/syzretrospector/syzinspector/wd-bisector-5/bisector.cfg -a c40e8341e3b3bb27e3a65b06b5b454626234c4f0 -F ff-test,poc-test,stateful-corpus,ff-no-find-backup
+Bisecting:          WARNING in cpuset_attach
+Warning: No syscall found that produces fd_vhost.
+Syzbot Link:        https://syzkaller.appspot.com/bug?id=ebc211955b45979316c29fa25589c49160fa48cc
+Working Name:       bug0190
 
 No aliases given.
 
-Anchor Commit:      200e340f2196d7fd427a5810d06e893b932f145a
+Anchor Commit:      c40e8341e3b3bb27e3a65b06b5b454626234c4f0
 Repository:         https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
 Branch:             master
 Arch:               amd64
@@ -20,13 +21,12 @@ Image:              /home/syzretrospector/images/stretch/stretch.img
 Image Key:          /home/syzretrospector/images/stretch/stretch.id_rsa
 
 Workdir:            /home/syzretrospector/syzinspector/wd-bisector-5/
-Kconfig:            /home/syzretrospector/syzinspector/wd-bisector-5/config-bug0150.txt
-Reproducers: (4)    /home/syzretrospector/syzinspector/wd-bisector-5/reproducers/
-Primary PoC:        /home/syzretrospector/syzinspector/wd-bisector-5/reproducers/repro-bug0150-5.prog
+Kconfig:            /home/syzretrospector/syzinspector/wd-bisector-5/config-bug0190.txt
+Reproducers: (1)    /home/syzretrospector/syzinspector/wd-bisector-5/reproducers/
 Syzkaller Workdir:  /home/syzretrospector/syzinspector/wd-bisector-5/wd-kaller/
 Log Directory:      /home/syzretrospector/syzinspector/wd-bisector-5/log/
 
-Syscalls: (4)       ["ioctl$FS_IOC_RESVSP", "openat$cgroup_ro", "unshare", "openat$cgroup_root"]
+Syscalls: (4)       ["ioctl$VHOST_SET_VRING_BASE", "openat$vhost_vsock", "ioctl$F2FS_IOC_START_ATOMIC_WRITE", "openat$selinux_enforce"]
 VM Count:           8
 CPU Count:          2
 Procs:              16
@@ -37,16 +37,18 @@ Max Attempts:       1
 
 ==== Anchor Commit ====
 
-2025-03-09 20:22:40
+2025-03-13 02:40:17
 Session:   1
-Kernel:    2022-08-03 - 200e340f2196d7fd427a5810d06e893b932f145a
+Kernel:    2022-08-23 - c40e8341e3b3bb27e3a65b06b5b454626234c4f0
 Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
 Attempt 1:
     No crashes found.
 Attempt 2: (RETRY)
-    No crashes found.
+    Time  Bug Name
+       2  INFO: rcu detected stall in corrupted
 Attempt 3: (RETRY)
-    No crashes found.
+    Time  Bug Name
+       2  INFO: rcu detected stall in corrupted
 The bug was not found.
 
 Failure: This bug cannot be found at the anchor commit.

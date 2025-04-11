@@ -1,0 +1,331 @@
+./bin/bisector -i 5 -c /home/syzretrospector/syzinspector/wd-bisector-5/bisector.cfg -a 5a6a09e97199d6600d31383055f9d43fbbcbe86f -F ff-test,poc-test,stateful-corpus,ff-no-find-backup
+Bisecting:          KASAN: slab-use-after-free Read in btrfs_qgroup_account_extent
+Syzbot Link:        https://syzkaller.appspot.com/bug?extid=e0b615318f8fcfc01ceb
+Working Name:       bug0768
+
+No aliases given.
+
+Anchor Commit:      5a6a09e97199d6600d31383055f9d43fbbcbe86f
+Repository:         https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
+Branch:             master
+Arch:               amd64
+
+Bisector:           /home/syzretrospector/syzinspector/
+Version:            1.0.4
+Kernel:             /home/syzretrospector/syzinspector/wd-bisector-5/kernel/
+Syzkaller:          /home/syzretrospector/syzinspector/syzkaller/
+Compilers:          /home/syzretrospector/compilers/
+Ccache:             ccache
+Image:              /home/syzretrospector/images/stretch/stretch.img
+Image Key:          /home/syzretrospector/images/stretch/stretch.id_rsa
+
+Workdir:            /home/syzretrospector/syzinspector/wd-bisector-5/
+Kconfig:            /home/syzretrospector/syzinspector/wd-bisector-5/config-bug0768.txt
+Reproducers: (4)    /home/syzretrospector/syzinspector/wd-bisector-5/reproducers/
+Primary PoC:        /home/syzretrospector/syzinspector/wd-bisector-5/reproducers/repro-bug0768-3.prog
+Syzkaller Workdir:  /home/syzretrospector/syzinspector/wd-bisector-5/wd-kaller/
+Log Directory:      /home/syzretrospector/syzinspector/wd-bisector-5/log/
+
+Syscalls: (12)      ["ioctl$BTRFS_IOC_QGROUP_CREATE", "ioctl$BTRFS_IOC_QUOTA_CTL", "ioctl$BTRFS_IOC_SUBVOL_CREATE_V2", "open", "pwrite64", "syz_mount_image$btrfs", "ioctl$BTRFS_IOC_START_SYNC", "ioctl$BTRFS_IOC_BALANCE_PROGRESS", "mount$bpf", "getuid", "setgid", "getgid"]
+VM Count:           8
+CPU Count:          2
+Procs:              16
+Memory:             4096
+Make Procs:         16
+Max Time:           10
+Max Attempts:       1
+
+==== Anchor Commit ====
+
+2025-03-17 12:52:33
+Session:   1
+Kernel:    2023-10-30 - 5a6a09e97199d6600d31383055f9d43fbbcbe86f
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       6  BUG: MAX_LOCKDEP_KEYS too low!
+       6  BUG: MAX_LOCKDEP_KEYS too low!
+       6  BUG: MAX_LOCKDEP_KEYS too low!
+       6  BUG: MAX_LOCKDEP_KEYS too low!
+       6  BUG: MAX_LOCKDEP_KEYS too low!
+       6  BUG: MAX_LOCKDEP_KEYS too low!
+       6  BUG: MAX_LOCKDEP_KEYS too low!
+       6  BUG: MAX_LOCKDEP_KEYS too low!
+Attempt 2: (RETRY)
+    Time  Bug Name
+       6  BUG: MAX_LOCKDEP_KEYS too low!
+       6  BUG: MAX_LOCKDEP_KEYS too low!
+       6  BUG: MAX_LOCKDEP_KEYS too low!
+       6  BUG: MAX_LOCKDEP_KEYS too low!
+       6  BUG: MAX_LOCKDEP_KEYS too low!
+       6  BUG: MAX_LOCKDEP_KEYS too low!
+       6  BUG: MAX_LOCKDEP_KEYS too low!
+       6  BUG: MAX_LOCKDEP_KEYS too low!
+Attempt 3: (RETRY)
+    Time  Bug Name
+       6  BUG: MAX_LOCKDEP_KEYS too low!
+       6  BUG: MAX_LOCKDEP_KEYS too low!
+       6  BUG: MAX_LOCKDEP_KEYS too low!
+       6  BUG: MAX_LOCKDEP_KEYS too low!
+       6  BUG: MAX_LOCKDEP_KEYS too low!
+       6  BUG: MAX_LOCKDEP_KEYS too low!
+       6  BUG: MAX_LOCKDEP_KEYS too low!
+       6  BUG: MAX_LOCKDEP_KEYS too low!
+***   10  KASAN: slab-use-after-free Read in btrfs_qgroup_account_extent
+The bug was found.
+
+New Max Time: 12
+
+==== Major Release Search ====
+19 Releases
+
+2025-03-17 13:36:57
+Session:   2
+Kernel:    2023-10-29 - ffc253263a1375a65fa6c9f62a893e9767fbebfa (v6.6)
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       8  BUG: MAX_LOCKDEP_KEYS too low!
+       8  BUG: MAX_LOCKDEP_KEYS too low!
+       8  BUG: MAX_LOCKDEP_KEYS too low!
+       8  BUG: MAX_LOCKDEP_KEYS too low!
+       8  BUG: MAX_LOCKDEP_KEYS too low!
+       8  BUG: MAX_LOCKDEP_KEYS too low!
+       9  BUG: MAX_LOCKDEP_KEYS too low!
+       9  BUG: MAX_LOCKDEP_KEYS too low!
+The bug was not found.
+About 18 releases remaining
+
+==== Kernel Bisection ====
+3861 Linux commits
+
+2025-03-17 14:02:26
+Session:   3
+Kernel:    2023-10-22 - 17047fbced563cf5abe5aa546f6a92af48900b69
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 4060 commits remaining
+
+2025-03-17 14:27:32
+Session:   4
+Kernel:    2023-10-26 - b827ac419721a106ae2fccaa40576b0594edad92
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 3208 commits remaining
+
+2025-03-17 14:44:56
+Session:   5
+Kernel:    2023-10-30 - 9ab021a1b57007a22761f6f41d91eb4aae10d145
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       5  BUG: MAX_LOCKDEP_KEYS too low!
+       5  BUG: MAX_LOCKDEP_KEYS too low!
+       5  BUG: MAX_LOCKDEP_KEYS too low!
+       5  BUG: MAX_LOCKDEP_KEYS too low!
+       6  BUG: MAX_LOCKDEP_KEYS too low!
+       6  BUG: MAX_LOCKDEP_KEYS too low!
+       6  BUG: MAX_LOCKDEP_KEYS too low!
+       6  BUG: MAX_LOCKDEP_KEYS too low!
+      11  BUG: MAX_LOCKDEP_KEYS too low!
+      11  BUG: MAX_LOCKDEP_KEYS too low!
+      11  BUG: MAX_LOCKDEP_KEYS too low!
+      11  BUG: MAX_LOCKDEP_KEYS too low!
+      11  BUG: MAX_LOCKDEP_KEYS too low!
+      11  BUG: MAX_LOCKDEP_KEYS too low!
+      11  BUG: MAX_LOCKDEP_KEYS too low!
+      11  BUG: MAX_LOCKDEP_KEYS too low!
+The bug was not found.
+About 535 commits remaining
+
+2025-03-17 15:10:42
+Session:   6
+Kernel:    2023-10-30 - c891e98ab32d55b25d87e380d919c279a8b228e0
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       5  BUG: MAX_LOCKDEP_KEYS too low!
+       5  BUG: MAX_LOCKDEP_KEYS too low!
+       5  BUG: MAX_LOCKDEP_KEYS too low!
+       5  BUG: MAX_LOCKDEP_KEYS too low!
+       5  BUG: MAX_LOCKDEP_KEYS too low!
+       5  BUG: MAX_LOCKDEP_KEYS too low!
+       5  BUG: MAX_LOCKDEP_KEYS too low!
+       5  BUG: MAX_LOCKDEP_KEYS too low!
+      10  BUG: MAX_LOCKDEP_KEYS too low!
+      10  BUG: MAX_LOCKDEP_KEYS too low!
+      10  BUG: MAX_LOCKDEP_KEYS too low!
+      10  BUG: MAX_LOCKDEP_KEYS too low!
+      10  BUG: MAX_LOCKDEP_KEYS too low!
+      10  BUG: MAX_LOCKDEP_KEYS too low!
+      11  BUG: MAX_LOCKDEP_KEYS too low!
+      11  BUG: MAX_LOCKDEP_KEYS too low!
+The bug was not found.
+About 267 commits remaining
+
+2025-03-17 15:36:21
+Session:   7
+Kernel:    2023-10-30 - fdce8bd38037a4a2b2961ca4abffaab195690b30
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    5  KASAN: slab-use-after-free Read in btrfs_qgroup_account_extent
+       5  BUG: MAX_LOCKDEP_KEYS too low!
+       5  BUG: MAX_LOCKDEP_KEYS too low!
+       5  BUG: MAX_LOCKDEP_KEYS too low!
+       5  BUG: MAX_LOCKDEP_KEYS too low!
+       5  BUG: MAX_LOCKDEP_KEYS too low!
+       5  BUG: MAX_LOCKDEP_KEYS too low!
+       5  BUG: MAX_LOCKDEP_KEYS too low!
+Running syz-repro.
+New PoC saved at /home/syzretrospector/syzinspector/wd-bisector-5/reproducers/repro-bug0768-0.prog
+Primary PoC:     /home/syzretrospector/syzinspector/wd-bisector-5/reproducers/repro-bug0768-0.prog
+Run Time:        0h53m0s
+The bug was found.
+About 133 commits remaining
+
+2025-03-17 16:48:07
+Session:   8
+Kernel:    2023-10-30 - 6750f0de53b7d64a4deffa62944ea431a153ec48
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    4  KASAN: slab-use-after-free Read in btrfs_qgroup_account_extent
+       4  BUG: MAX_LOCKDEP_KEYS too low!
+       4  BUG: MAX_LOCKDEP_KEYS too low!
+The bug was found.
+About 67 commits remaining
+
+2025-03-17 17:04:57
+Session:   9
+Kernel:    2023-10-13 - 92fe9bb77b0c9fade150350fdb0629a662f0923f
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 5766 commits remaining
+
+2025-03-17 17:29:06
+Session:   10
+Kernel:    2023-10-30 - 943af0e73a370b0c856340fd873c140e42822ec7
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       5  BUG: MAX_LOCKDEP_KEYS too low!
+       5  BUG: MAX_LOCKDEP_KEYS too low!
+       5  BUG: MAX_LOCKDEP_KEYS too low!
+       5  BUG: MAX_LOCKDEP_KEYS too low!
+       5  BUG: MAX_LOCKDEP_KEYS too low!
+       5  BUG: MAX_LOCKDEP_KEYS too low!
+       5  BUG: MAX_LOCKDEP_KEYS too low!
+       5  BUG: MAX_LOCKDEP_KEYS too low!
+       9  BUG: MAX_LOCKDEP_KEYS too low!
+       9  BUG: MAX_LOCKDEP_KEYS too low!
+       9  BUG: MAX_LOCKDEP_KEYS too low!
+       9  BUG: MAX_LOCKDEP_KEYS too low!
+       9  BUG: MAX_LOCKDEP_KEYS too low!
+       9  BUG: MAX_LOCKDEP_KEYS too low!
+       9  BUG: MAX_LOCKDEP_KEYS too low!
+       9  BUG: MAX_LOCKDEP_KEYS too low!
+The bug was not found.
+About 44 commits remaining
+
+2025-03-17 17:51:09
+Session:   11
+Kernel:    2023-10-12 - 535b70c143dcca0e236c35cc32fac17a18697764
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 5776 commits remaining
+
+2025-03-17 18:15:00
+Session:   12
+Kernel:    2023-10-12 - 17362f3d0bd38fd5d152a370c110b0630ac4dc65
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 5771 commits remaining
+
+2025-03-17 18:31:16
+Session:   13
+Kernel:    2023-10-30 - c9049984f0e470af865c497c7f785fe895e5da9c
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       5  BUG: MAX_LOCKDEP_KEYS too low!
+       5  BUG: MAX_LOCKDEP_KEYS too low!
+       5  BUG: MAX_LOCKDEP_KEYS too low!
+       5  BUG: MAX_LOCKDEP_KEYS too low!
+       5  BUG: MAX_LOCKDEP_KEYS too low!
+       5  BUG: MAX_LOCKDEP_KEYS too low!
+       5  BUG: MAX_LOCKDEP_KEYS too low!
+       5  BUG: MAX_LOCKDEP_KEYS too low!
+       9  BUG: MAX_LOCKDEP_KEYS too low!
+      10  BUG: MAX_LOCKDEP_KEYS too low!
+      10  BUG: MAX_LOCKDEP_KEYS too low!
+      10  BUG: MAX_LOCKDEP_KEYS too low!
+      10  BUG: MAX_LOCKDEP_KEYS too low!
+      10  BUG: MAX_LOCKDEP_KEYS too low!
+      10  BUG: MAX_LOCKDEP_KEYS too low!
+      10  BUG: MAX_LOCKDEP_KEYS too low!
+The bug was not found.
+About 3 commits remaining
+
+2025-03-17 18:53:26
+Session:   14
+Kernel:    2023-10-09 - 1566bf4b13daa66e3de6fdbc77ee3995df5a9064
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 5788 commits remaining
+
+==== Partial Result: Focused Fuzzing ====
+Reproducer:           /home/syzretrospector/syzinspector/wd-bisector-5/reproducers/repro-bug0768-0.prog
+Bisection Result:     2023-10-30 - 6750f0de53b7d64a4deffa62944ea431a153ec48
+Bisected Commit Name: Merge tag 'lkmm.2023.10.28a' of git://git.kernel.org/pub/scm/linux/kernel/git/paulmck/linux-rcu
+Stage Time:           6h17m24s
+Run Time:             6h17m26s
+=========================================
+
+==== Anchor Commit ====
+
+2025-03-17 19:09:57
+Session:   15
+Kernel:    2023-10-30 - c9049984f0e470af865c497c7f785fe895e5da9c
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+
+Failure: This bug cannot be found at the anchor commit.
+
+====================================================================================================================================================
+Bug Name:             KASAN: slab-use-after-free Read in btrfs_qgroup_account_extent
+Bug Link:             https://syzkaller.appspot.com/bug?extid=e0b615318f8fcfc01ceb
+Bisection Result:     2023-10-30 - 6750f0de53b7d64a4deffa62944ea431a153ec48
+Bisected Commit Name: Merge tag 'lkmm.2023.10.28a' of git://git.kernel.org/pub/scm/linux/kernel/git/paulmck/linux-rcu
+Run Time:             6h24m15s
+
+Anchor Commit:        2023-10-30 - 5a6a09e97199d6600d31383055f9d43fbbcbe86f
+Bisection Result:     2023-10-30 - 6750f0de53b7d64a4deffa62944ea431a153ec48

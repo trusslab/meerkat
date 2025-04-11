@@ -1,4 +1,4 @@
-./bin/bisector -i 1 -c /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/bisector.cfg -a ca1fdab7fd27eb069df1384b2850dcd0c2bebe8d -F ff-test,poc-test,stateful-corpus,ff-no-find-backup
+./bin/bisector -i 5 -c /home/syzretrospector/syzinspector/wd-bisector-5/bisector.cfg -a ca1fdab7fd27eb069df1384b2850dcd0c2bebe8d -F ff-test,poc-test,stateful-corpus,ff-no-find-backup
 Bisecting:          KASAN: null-ptr-deref Write in kcm_tx_work
 Warning: No syscall found that produces tail_call_map.
 Warning: No syscall found that produces fd_bpf_const_str.
@@ -12,23 +12,23 @@ Repository:         https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/lin
 Branch:             master
 Arch:               amd64
 
-Bisector:           /mnt/sdd/jtbursey/SyzInspector/
+Bisector:           /home/syzretrospector/syzinspector/
 Version:            1.0.4
-Kernel:             /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/kernel/
-Syzkaller:          /mnt/sdd/jtbursey/SyzInspector/syzkaller/
-Compilers:          /mnt/sda/jtbursey/SyzInspector/compilers/
+Kernel:             /home/syzretrospector/syzinspector/wd-bisector-5/kernel/
+Syzkaller:          /home/syzretrospector/syzinspector/syzkaller/
+Compilers:          /home/syzretrospector/compilers/
 Ccache:             ccache
-Image:              /mnt/sda/jtbursey/SyzInspector/image/stretch/stretch.img
-Image Key:          /mnt/sda/jtbursey/SyzInspector/image/stretch/stretch.id_rsa
+Image:              /home/syzretrospector/images/stretch/stretch.img
+Image Key:          /home/syzretrospector/images/stretch/stretch.id_rsa
 
-Workdir:            /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/
-Kconfig:            /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/config-bug0142.txt
-Reproducers: (2)    /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/reproducers/
-Primary PoC:        /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/reproducers/repro-bug0142-1.prog
-Syzkaller Workdir:  /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/wd-kaller/
-Log Directory:      /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/log/
+Workdir:            /home/syzretrospector/syzinspector/wd-bisector-5/
+Kconfig:            /home/syzretrospector/syzinspector/wd-bisector-5/config-bug0142.txt
+Reproducers: (2)    /home/syzretrospector/syzinspector/wd-bisector-5/reproducers/
+Primary PoC:        /home/syzretrospector/syzinspector/wd-bisector-5/reproducers/repro-bug0142-1.prog
+Syzkaller Workdir:  /home/syzretrospector/syzinspector/wd-bisector-5/wd-kaller/
+Log Directory:      /home/syzretrospector/syzinspector/wd-bisector-5/log/
 
-Syscalls: (25)      ["bpf$PROG_LOAD", "connect$inet6", "ioctl$sock_kcm_SIOCKCMATTACH", "sendmmsg", "sendmsg$RDMA_NLDEV_CMD_NEWLINK", "sendmsg$rds", "socket", "socket$inet6", "socket$kcm", "socket$nl_rdma", "socket$rds", "bpf$BPF_BTF_GET_NEXT_ID", "ioctl$EXT4_IOC_GROUP_EXTEND", "openat$sw_sync_info", "socket$netlink", "ioctl$sock_SIOCGIFINDEX", "bpf$BPF_BTF_LOAD", "bpf$OBJ_GET_MAP", "ioctl$ifreq_SIOCGIFINDEX_vcan", "ioctl$IOCTL_GET_NCIDEV_IDX", "bpf$BPF_MAP_CONST_STR_FREEZE", "bpf$MAP_CREATE_RINGBUF", "openat$nci", "bpf$MAP_CREATE_TAIL_CALL", "bpf$MAP_CREATE_CONST_STR"]
+Syscalls: (25)      ["bpf$PROG_LOAD", "connect$inet6", "ioctl$sock_kcm_SIOCKCMATTACH", "sendmmsg", "sendmsg$RDMA_NLDEV_CMD_NEWLINK", "sendmsg$rds", "socket", "socket$inet6", "socket$kcm", "socket$nl_rdma", "socket$rds", "bpf$BPF_BTF_GET_NEXT_ID", "ioctl$F2FS_IOC_START_ATOMIC_WRITE", "openat$selinux_enforce", "socket$netlink", "ioctl$sock_SIOCGIFINDEX", "bpf$BPF_BTF_LOAD", "bpf$OBJ_GET_MAP", "ioctl$ifreq_SIOCGIFINDEX_vcan", "ioctl$IOCTL_GET_NCIDEV_IDX", "bpf$BPF_MAP_CONST_STR_FREEZE", "bpf$MAP_CREATE_RINGBUF", "openat$nci", "bpf$MAP_CREATE_TAIL_CALL", "bpf$MAP_CREATE_CONST_STR"]
 VM Count:           4
 CPU Count:          4
 Procs:              24
@@ -39,31 +39,34 @@ Max Attempts:       1
 
 ==== Anchor Commit ====
 
-2025-03-14 12:13:29
+2025-03-08 00:07:47
 Session:   1
 Kernel:    2022-06-21 - ca1fdab7fd27eb069df1384b2850dcd0c2bebe8d
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
 Warning: bpf$PROG_LOAD was disabled by Syzkaller.
 Warning: ioctl$sock_kcm_SIOCKCMATTACH was disabled by Syzkaller.
 Attempt 1:
     Time  Bug Name
+       5  SYZFAIL: tun: ioctl(TUNSETIFF) failed
+       5  SYZFAIL: tun: ioctl(TUNSETIFF) failed
+       5  SYZFAIL: tun: ioctl(TUNSETIFF) failed
        6  SYZFAIL: tun: ioctl(TUNSETIFF) failed
-       6  SYZFAIL: tun: ioctl(TUNSETIFF) failed
-       6  SYZFAIL: tun: ioctl(TUNSETIFF) failed
-       9  SYZFAIL: tun: ioctl(TUNSETIFF) failed
 Warning: bpf$PROG_LOAD was disabled by Syzkaller.
 Warning: ioctl$sock_kcm_SIOCKCMATTACH was disabled by Syzkaller.
 Attempt 2: (RETRY)
     Time  Bug Name
-       5  unregister_netdevice: waiting for DEV to become free
-       6  unregister_netdevice: waiting for DEV to become free
+       9  SYZFAIL: tun: ioctl(TUNSETIFF) failed
+       9  SYZFAIL: tun: ioctl(TUNSETIFF) failed
+       9  SYZFAIL: tun: ioctl(TUNSETIFF) failed
+       9  SYZFAIL: tun: ioctl(TUNSETIFF) failed
 Warning: bpf$PROG_LOAD was disabled by Syzkaller.
 Warning: ioctl$sock_kcm_SIOCKCMATTACH was disabled by Syzkaller.
 Attempt 3: (RETRY)
     Time  Bug Name
-      10  SYZFAIL: tun: ioctl(TUNSETIFF) failed
-      10  SYZFAIL: tun: ioctl(TUNSETIFF) failed
-      10  SYZFAIL: tun: ioctl(TUNSETIFF) failed
+       8  SYZFAIL: tun: ioctl(TUNSETIFF) failed
+       8  SYZFAIL: tun: ioctl(TUNSETIFF) failed
+       9  SYZFAIL: tun: ioctl(TUNSETIFF) failed
+       9  SYZFAIL: tun: ioctl(TUNSETIFF) failed
 The bug was not found.
 
 Failure: This bug cannot be found at the anchor commit.

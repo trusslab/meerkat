@@ -1,4 +1,4 @@
-./bin/bisector -i 1 -c /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/bisector.cfg -a fe24a97cf2543e8832e7a2124802e5c32aac05aa -F ff-test,poc-test,stateful-corpus,ff-no-find-backup
+./bin/bisector -i 5 -c /home/syzretrospector/syzinspector/wd-bisector-5/bisector.cfg -a fe24a97cf2543e8832e7a2124802e5c32aac05aa -F ff-test,poc-test,stateful-corpus,ff-no-find-backup
 Bisecting:          possible deadlock in l2tp_tunnel_register
 Warning: No syscall found that produces sock_pppox.
 Syzbot Link:        https://syzkaller.appspot.com/bug?id=dacc7707e9dc2ff70c53cb2ad92b4c675818ac68
@@ -11,22 +11,22 @@ Repository:         https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/lin
 Branch:             master
 Arch:               amd64
 
-Bisector:           /mnt/sdd/jtbursey/SyzInspector/
+Bisector:           /home/syzretrospector/syzinspector/
 Version:            1.0.4
-Kernel:             /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/kernel/
-Syzkaller:          /mnt/sdd/jtbursey/SyzInspector/syzkaller/
-Compilers:          /mnt/sda/jtbursey/SyzInspector/compilers/
+Kernel:             /home/syzretrospector/syzinspector/wd-bisector-5/kernel/
+Syzkaller:          /home/syzretrospector/syzinspector/syzkaller/
+Compilers:          /home/syzretrospector/compilers/
 Ccache:             ccache
-Image:              /mnt/sda/jtbursey/SyzInspector/image/stretch/stretch.img
-Image Key:          /mnt/sda/jtbursey/SyzInspector/image/stretch/stretch.id_rsa
+Image:              /home/syzretrospector/images/stretch/stretch.img
+Image Key:          /home/syzretrospector/images/stretch/stretch.id_rsa
 
-Workdir:            /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/
-Kconfig:            /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/config-bug0136.txt
-Reproducers: (23)   /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/reproducers/
-Syzkaller Workdir:  /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/wd-kaller/
-Log Directory:      /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/log/
+Workdir:            /home/syzretrospector/syzinspector/wd-bisector-5/
+Kconfig:            /home/syzretrospector/syzinspector/wd-bisector-5/config-bug0136.txt
+Reproducers: (23)   /home/syzretrospector/syzinspector/wd-bisector-5/reproducers/
+Syzkaller Workdir:  /home/syzretrospector/syzinspector/wd-bisector-5/wd-kaller/
+Log Directory:      /home/syzretrospector/syzinspector/wd-bisector-5/log/
 
-Syscalls: (17)      ["connect$pppl2tp", "listen", "sendmsg$L2TP_CMD_TUNNEL_CREATE", "socket$inet6_udp", "socket$inet_smc", "socket$l2tp6", "socket$nl_generic", "socket$pppl2tp", "syz_genetlink_get_family_id$l2tp", "socket", "ioctl$EXT4_IOC_GROUP_EXTEND", "openat$sw_sync_info", "socket$netlink", "socket$inet6", "socket$inet", "socket$inet_udp", "socket$l2tp"]
+Syscalls: (17)      ["connect$pppl2tp", "listen", "sendmsg$L2TP_CMD_TUNNEL_CREATE", "socket$inet6_udp", "socket$inet_smc", "socket$l2tp6", "socket$nl_generic", "socket$pppl2tp", "syz_genetlink_get_family_id$l2tp", "socket", "ioctl$F2FS_IOC_START_ATOMIC_WRITE", "openat$selinux_enforce", "socket$netlink", "socket$inet6", "socket$inet", "socket$inet_udp", "socket$l2tp"]
 VM Count:           8
 CPU Count:          2
 Procs:              16
@@ -37,10 +37,10 @@ Max Attempts:       1
 
 ==== Anchor Commit ====
 
-2025-03-13 02:49:33
+2025-03-06 23:27:06
 Session:   1
 Kernel:    2022-11-18 - fe24a97cf2543e8832e7a2124802e5c32aac05aa
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
 Attempt 1:
     Time  Bug Name
 ***    2  possible deadlock in l2tp_tunnel_register
@@ -50,7 +50,7 @@ Attempt 1:
 ***    2  possible deadlock in l2tp_tunnel_register
 ***    2  possible deadlock in l2tp_tunnel_register
 ***    2  possible deadlock in l2tp_tunnel_register
-       2  INFO: rcu detected stall in corrupted
+***    2  possible deadlock in l2tp_tunnel_register
 Attempt 2: (RETRY)
     Time  Bug Name
 ***    2  possible deadlock in l2tp_tunnel_register
@@ -60,17 +60,17 @@ Attempt 2: (RETRY)
 ***    2  possible deadlock in l2tp_tunnel_register
 ***    2  possible deadlock in l2tp_tunnel_register
 ***    2  possible deadlock in l2tp_tunnel_register
-       2  INFO: rcu detected stall in corrupted
+***    2  possible deadlock in l2tp_tunnel_register
 Attempt 3: (RETRY)
     Time  Bug Name
+       2  INFO: rcu detected stall in corrupted
 ***    2  possible deadlock in l2tp_tunnel_register
 ***    2  possible deadlock in l2tp_tunnel_register
 ***    2  possible deadlock in l2tp_tunnel_register
 ***    2  possible deadlock in l2tp_tunnel_register
 ***    2  possible deadlock in l2tp_tunnel_register
 ***    2  possible deadlock in l2tp_tunnel_register
-***    2  possible deadlock in l2tp_tunnel_register
-***    2  possible deadlock in l2tp_tunnel_register
+       2  BUG: sleeping function called from invalid context in static_key_slow_inc
 The bug was found.
 
 New Max Time: 10
@@ -78,27 +78,28 @@ New Max Time: 10
 ==== Major Release Search ====
 18 Releases
 
-2025-03-13 03:12:41
+2025-03-06 23:41:27
 Session:   2
 Kernel:    2022-10-02 - 4fe89d07dcc2804c8b562f6c7896a45643d34b2f (v6.0)
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
 Attempt 1:
-    Time  Bug Name
-       7  WARNING: ODEBUG bug in netdev_run_todo
+    No crashes found.
 The bug was not found.
 About 17 releases remaining
 
 ==== Kernel Bisection ====
 14298 Linux commits
 
-2025-03-13 03:39:11
+2025-03-07 00:06:00
 Session:   3
 Kernel:    2022-10-07 - 1227db9eab18f1ebaac990223d3f18eaddf1b442
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Error: Waitpid on pid 167263 failed.
+Error: Syzkaller has experienced a crash.
+Warning: Child process exited with error status 32765.
 Attempt 1:
     Time  Bug Name
        1  WARNING in wireless_send_event
-       1  WARNING in wireless_send_event
        2  WARNING in wireless_send_event
        2  WARNING in wireless_send_event
        2  WARNING in wireless_send_event
@@ -117,188 +118,52 @@ Attempt 1:
        4  WARNING in wireless_send_event
        4  WARNING in wireless_send_event
        4  WARNING in wireless_send_event
-       5  WARNING in wireless_send_event
-       5  WARNING in wireless_send_event
-       5  WARNING in wireless_send_event
-       5  WARNING in wireless_send_event
-       5  WARNING in wireless_send_event
-       5  WARNING in wireless_send_event
-       6  WARNING in wireless_send_event
-       6  WARNING in wireless_send_event
-       6  WARNING in wireless_send_event
-       6  WARNING in wireless_send_event
-       6  WARNING in wireless_send_event
-       7  WARNING in wireless_send_event
-       7  WARNING in wireless_send_event
-       7  WARNING in wireless_send_event
-       7  WARNING in wireless_send_event
-       7  WARNING in wireless_send_event
-       7  WARNING in wireless_send_event
-       8  WARNING in wireless_send_event
-       8  WARNING in wireless_send_event
-       8  WARNING in wireless_send_event
-       8  WARNING in wireless_send_event
-       8  WARNING in wireless_send_event
-       8  WARNING in wireless_send_event
-       9  WARNING in wireless_send_event
-       9  WARNING in wireless_send_event
-       9  WARNING in wireless_send_event
-       9  WARNING in wireless_send_event
-       9  WARNING in wireless_send_event
-       9  WARNING in wireless_send_event
-      10  WARNING in wireless_send_event
-      10  WARNING in wireless_send_event
-      10  WARNING in wireless_send_event
-      10  WARNING in wireless_send_event
-      10  WARNING in wireless_send_event
-      10  WARNING in wireless_send_event
 The bug was not found.
 About 7165 commits remaining
 
-2025-03-13 04:05:33
+2025-03-07 00:25:14
 Session:   4
 Kernel:    2022-10-10 - 27bc50fc90647bbf7b734c3fc306a5e61350da53
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
-Attempt 1:
-    Time  Bug Name
-       1  WARNING in c_start
-       1  WARNING in c_start
-       1  WARNING in c_start
-       1  WARNING in c_start
-       1  WARNING in c_start
-       1  WARNING in c_start
-       1  WARNING in c_start
-       1  WARNING in c_start
-       2  WARNING in c_start
-       2  WARNING in c_start
-       2  WARNING in c_start
-       2  WARNING in c_start
-       2  WARNING in c_start
-       2  WARNING in c_start
-       2  WARNING in c_start
-       2  WARNING in c_start
-       3  WARNING in c_start
-       3  WARNING in c_start
-       3  WARNING in c_start
-       3  WARNING in c_start
-       3  WARNING in c_start
-       3  WARNING in c_start
-       3  WARNING in c_start
-       3  WARNING in c_start
-       3  WARNING in c_start
-       3  WARNING in c_start
-       3  WARNING in c_start
-       3  WARNING in c_start
-       3  WARNING in c_start
-       3  WARNING in c_start
-       3  WARNING in c_start
-       3  WARNING in c_start
-       4  WARNING in c_start
-       4  WARNING in c_start
-       4  WARNING in c_start
-       4  WARNING in c_start
-       4  WARNING in c_start
-       4  WARNING in c_start
-       4  WARNING in c_start
-       4  WARNING in c_start
-       5  WARNING in c_start
-       5  WARNING in c_start
-       5  WARNING in c_start
-       5  WARNING in c_start
-       5  WARNING in c_start
-       5  WARNING in c_start
-       5  WARNING in c_start
-       5  WARNING in c_start
-       5  WARNING in c_start
-       5  WARNING in c_start
-       5  WARNING in c_start
-       5  WARNING in c_start
-       5  WARNING in c_start
-       5  WARNING in c_start
-       5  WARNING in c_start
-       5  WARNING in c_start
-       6  WARNING in c_start
-       6  WARNING in c_start
-       6  WARNING in c_start
-       6  WARNING in c_start
-       6  WARNING in c_start
-       6  WARNING in c_start
-       6  WARNING in c_start
-       6  WARNING in c_start
-       7  WARNING in c_start
-       7  WARNING in c_start
-       7  WARNING in c_start
-       7  WARNING in c_start
-       7  WARNING in c_start
-       7  WARNING in c_start
-       7  WARNING in c_start
-       7  WARNING in c_start
-       7  WARNING in c_start
-       7  WARNING in c_start
-       7  WARNING in c_start
-       7  WARNING in c_start
-       7  WARNING in c_start
-       7  WARNING in c_start
-       7  WARNING in c_start
-       7  WARNING in c_start
-       8  WARNING in c_start
-       8  WARNING in c_start
-       8  WARNING in c_start
-       8  WARNING in c_start
-       8  WARNING in c_start
-       8  WARNING in c_start
-       8  WARNING in c_start
-       8  WARNING in c_start
-       8  WARNING in c_start
-       9  WARNING in c_start
-       9  WARNING in c_start
-       9  WARNING in c_start
-       9  WARNING in c_start
-       9  WARNING in c_start
-       9  WARNING in c_start
-       9  WARNING in c_start
-       9  WARNING in c_start
-       9  WARNING in c_start
-       9  WARNING in c_start
-       9  WARNING in c_start
-The bug was not found.
-About 3586 commits remaining
-
-2025-03-13 04:31:49
-Session:   5
-Kernel:    2022-10-21 - 334fe5d3a99aea2e92b934b4c58fffee9b056c5d
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
 Attempt 1:
     No crashes found.
 The bug was not found.
+About 3586 commits remaining
+
+2025-03-07 00:49:32
+Session:   5
+Kernel:    2022-10-21 - 334fe5d3a99aea2e92b934b4c58fffee9b056c5d
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       7  INFO: rcu detected stall in corrupted
+The bug was not found.
 About 1794 commits remaining
 
-2025-03-13 04:58:29
+2025-03-07 01:13:41
 Session:   6
 Kernel:    2022-11-03 - f2f32f8af2b0ca9d619e5183eae3eed431793baf
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
 Attempt 1:
     Time  Bug Name
        2  INFO: rcu detected stall in corrupted
-       9  INFO: rcu detected stall in corrupted
 The bug was not found.
 About 896 commits remaining
 
-2025-03-13 05:25:57
+2025-03-07 01:37:49
 Session:   7
 Kernel:    2022-11-11 - a83e18ccc486dc20fdb46109944ea1b450ac771e
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
 Attempt 1:
     Time  Bug Name
-       2  INFO: rcu detected stall in corrupted
-       6  INFO: rcu detected stall in corrupted
+       2  WARNING: ODEBUG bug in netdev_run_todo
 The bug was not found.
 About 452 commits remaining
 
-2025-03-13 05:53:07
+2025-03-07 02:01:55
 Session:   8
 Kernel:    2022-11-17 - 847ccab8fdcf4a0cd85a278480fab1ccdc9f6136
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
 Attempt 1:
     Time  Bug Name
 ***    2  possible deadlock in l2tp_tunnel_register
@@ -308,63 +173,60 @@ Attempt 1:
 ***    2  possible deadlock in l2tp_tunnel_register
 ***    2  possible deadlock in l2tp_tunnel_register
 ***    2  possible deadlock in l2tp_tunnel_register
-***    2  possible deadlock in l2tp_tunnel_register
+       2  BUG: sleeping function called from invalid context in static_key_slow_inc
 Running syz-repro.
-New PoC saved at /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/reproducers/repro-bug0136-0.prog
-Primary PoC:     /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/reproducers/repro-bug0136-0.prog
-Run Time:        0h6m0s
+New PoC saved at /home/syzretrospector/syzinspector/wd-bisector-5/reproducers/repro-bug0136-0.prog
+Primary PoC:     /home/syzretrospector/syzinspector/wd-bisector-5/reproducers/repro-bug0136-0.prog
+Run Time:        0h5m0s
 The bug was found.
 About 246 commits remaining
 
-2025-03-13 06:18:42
+2025-03-07 02:23:01
 Session:   9
 Kernel:    2022-11-11 - d7c2b1f64e44c98206752a1599b0203ae5e92f27
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
 Attempt 1:
     Time  Bug Name
        2  INFO: rcu detected stall in corrupted
 The bug was not found.
 About 126 commits remaining
 
-2025-03-13 06:45:58
+2025-03-07 02:42:45
 Session:   10
 Kernel:    2022-11-16 - 31c9c4c54ea9902af4b01545d3a10acd3cf815a9
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
-Attempt 1:
-    Time  Bug Name
-       7  INFO: rcu detected stall in corrupted
-      10  INFO: rcu detected stall in corrupted
-The bug was not found.
-About 64 commits remaining
-
-2025-03-13 07:12:12
-Session:   11
-Kernel:    2022-11-14 - 3738d48b9b23f80a90f5de3ebeb0f044f80e9296
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
 Attempt 1:
     No crashes found.
 The bug was not found.
-About 285 commits remaining
+About 64 commits remaining
 
-2025-03-13 07:39:17
-Session:   12
-Kernel:    2022-11-16 - ba86af3733aece88dbcee0dfebf7e2dcfefb2be4
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+2025-03-07 03:00:29
+Session:   11
+Kernel:    2022-11-14 - 3738d48b9b23f80a90f5de3ebeb0f044f80e9296
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
 Attempt 1:
     Time  Bug Name
        2  INFO: rcu detected stall in corrupted
+The bug was not found.
+About 285 commits remaining
+
+2025-03-07 03:17:15
+Session:   12
+Kernel:    2022-11-16 - ba86af3733aece88dbcee0dfebf7e2dcfefb2be4
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
        7  INFO: rcu detected stall in corrupted
-       9  INFO: rcu detected stall in corrupted
 The bug was not found.
 About 269 commits remaining
 
-2025-03-13 08:06:18
+2025-03-07 03:33:04
 Session:   13
 Kernel:    2022-11-17 - 809ff97a677ff85dfb7ce2b63be261d1633dcf29
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
 Attempt 1:
     Time  Bug Name
-***    2  possible deadlock in l2tp_tunnel_register
+       2  INFO: rcu detected stall in corrupted
 ***    2  possible deadlock in l2tp_tunnel_register
 ***    2  possible deadlock in l2tp_tunnel_register
 ***    2  possible deadlock in l2tp_tunnel_register
@@ -375,10 +237,10 @@ Attempt 1:
 The bug was found.
 About 9 commits remaining
 
-2025-03-13 08:25:21
+2025-03-07 03:42:36
 Session:   14
 Kernel:    2022-11-16 - b68777d54fac21fc833ec26ea1a2a84f975ab035
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
 Attempt 1:
     Time  Bug Name
 ***    2  possible deadlock in l2tp_tunnel_register
@@ -387,73 +249,66 @@ Attempt 1:
 ***    2  possible deadlock in l2tp_tunnel_register
 ***    2  possible deadlock in l2tp_tunnel_register
 ***    2  possible deadlock in l2tp_tunnel_register
-       2  possible deadlock in __inet_inherit_port
-       2  INFO: rcu detected stall in corrupted
+***    2  possible deadlock in l2tp_tunnel_register
+***    2  possible deadlock in l2tp_tunnel_register
 The bug was found.
 About 5 commits remaining
 
-2025-03-13 08:44:12
+2025-03-07 03:50:51
 Session:   15
 Kernel:    2022-11-16 - e4aa85cf0d43e293f474e3b415ff44e49ef768ae
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
 Attempt 1:
     Time  Bug Name
        2  INFO: rcu detected stall in corrupted
-       9  INFO: rcu detected stall in corrupted
-      10  INFO: rcu detected stall in corrupted
 The bug was not found.
 About 3 commits remaining
 
-2025-03-13 09:11:15
+2025-03-07 04:06:36
 Session:   16
 Kernel:    2022-11-16 - f524b7289bbb0c8ffaa2ba3c34c146e43da54fb2
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
 Attempt 1:
-    Time  Bug Name
-       2  INFO: rcu detected stall in corrupted
+    No crashes found.
 The bug was not found.
 About 2 commits remaining
+fatal: ambiguous argument 'f524b7289bbb0c8ffaa2ba3c34c146e43da54fb2
+': unknown revision or path not in the working tree.
+Use '--' to separate paths from revisions, like this:
+'git <command> [<revision>...] -- [<file>...]'
+Warning: Child process git exited with error status 128.
+Failed to read commit date: f524b7289bbb0c8ffaa2ba3c34c146e43da54fb2
+
 
 ==== Partial Result: Focused Fuzzing ====
-Reproducer:           /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/reproducers/repro-bug0136-0.prog
+Reproducer:           /home/syzretrospector/syzinspector/wd-bisector-5/reproducers/repro-bug0136-0.prog
 Bisection Result:     2022-11-16 - b68777d54fac21fc833ec26ea1a2a84f975ab035
 Bisected Commit Name: l2tp: Serialize access to sk_user_data with sk_callback_lock
-Stage Time:           6h48m47s
-Run Time:             6h48m50s
+Stage Time:           4h55m19s
+Run Time:             4h55m21s
 =========================================
 
 ==== Anchor Commit ====
 
-2025-03-13 09:38:21
+2025-03-07 04:22:25
 Session:   17
 Kernel:    2022-11-16 - f524b7289bbb0c8ffaa2ba3c34c146e43da54fb2
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
-Attempt 0:
-    No crashes found.
-Attempt 1:
-    No crashes found.
-Attempt 2:
-    No crashes found.
-Attempt 3:
-    No crashes found.
-Attempt 4:
-    No crashes found.
-Attempt 5:
-    No crashes found.
-Attempt 6:
-    No crashes found.
-Attempt 7:
-    No crashes found.
-The bug was not found.
 
-Failure: This bug cannot be found at the anchor commit.
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Warning: Child process git exited with error status 128.
+Warning: git exited with error status 0x80
+Error: Failed to fetch f524b7289bbb0c8ffaa2ba3c34c146e43da54fb2
+ from https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
+Error: Failed to fetch/checkout linux finding commit
+Error: The kernel failed to make.
+Error: Failed to go to anchor commit
 
 ====================================================================================================================================================
 Bug Name:             possible deadlock in l2tp_tunnel_register
 Bug Link:             https://syzkaller.appspot.com/bug?id=dacc7707e9dc2ff70c53cb2ad92b4c675818ac68
 Bisection Result:     2022-11-16 - b68777d54fac21fc833ec26ea1a2a84f975ab035
 Bisected Commit Name: l2tp: Serialize access to sk_user_data with sk_callback_lock
-Run Time:             7h8m8s
+Run Time:             4h55m28s
 
 Anchor Commit:        2022-11-18 - fe24a97cf2543e8832e7a2124802e5c32aac05aa
 Bisection Result:     2022-11-16 - b68777d54fac21fc833ec26ea1a2a84f975ab035
