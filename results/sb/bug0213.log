@@ -1,0 +1,274 @@
+charm starts bisection 2025-04-10 09:48:49.086508114 -0700 PDT m=+10.967585985
+bisecting cause commit starting from ffb39098bf87db327b2be4b5c6f1087bcba94ce9
+building syzkaller on HEAD
+ensuring issue is reproducible on original commit ffb39098bf87db327b2be4b5c6f1087bcba94ce9
+
+testing commit ffb39098bf87db327b2be4b5c6f1087bcba94ce9 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: ab93898252b1a3a398b4ca50908dc328ee88371e9dc5b25dea810275768f3740
+run #0: crashed: INFO: rcu detected stall in corrupted
+run #1: crashed: KASAN: use-after-free Read in unregister_shrinker
+run #2: crashed: KASAN: use-after-free Read in unregister_shrinker
+run #3: crashed: KASAN: use-after-free Read in unregister_shrinker
+run #4: crashed: KASAN: use-after-free Read in unregister_shrinker
+run #5: OK
+run #6: OK
+run #7: OK
+representative crash: KASAN: use-after-free Read in unregister_shrinker, types: [KASAN]
+picked [v6.0 v5.19 v5.18 v5.16 v5.14 v5.12 v5.10 v5.8 v5.5 v5.2 v4.20 v4.19] out of 23 release tags
+testing release v6.0
+testing commit 4fe89d07dcc2804c8b562f6c7896a45643d34b2f gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 4cc94517134ad45765fa0960f8d8a3b0bdc2c3e1bb65f6bc855819ce50d59d39
+all runs: OK
+false negative chance: 0.000
+# git bisect start ffb39098bf87db327b2be4b5c6f1087bcba94ce9 4fe89d07dcc2804c8b562f6c7896a45643d34b2f
+Bisecting: 3127 revisions left to test after this (roughly 12 steps)
+[1c2daf52185bbc91421f0e84e6bf2706bb350cce] Merge tag 'tag-chrome-platform-for-v6.1' of git://git.kernel.org/pub/scm/linux/kernel/git/chrome-platform/linux
+
+testing commit 1c2daf52185bbc91421f0e84e6bf2706bb350cce gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 27092b95d87b1612506b4d99a5f20c901262ffd0ba70304cd8548c6d7e963a85
+run #0: crashed: KASAN: use-after-free Read in unregister_shrinker
+run #1: crashed: KASAN: use-after-free Read in unregister_shrinker
+run #2: crashed: INFO: rcu detected stall in corrupted
+run #3: crashed: INFO: rcu detected stall in corrupted
+run #4: crashed: INFO: rcu detected stall in corrupted
+run #5: crashed: INFO: rcu detected stall in corrupted
+run #6: crashed: INFO: rcu detected stall in corrupted
+run #7: crashed: INFO: rcu detected stall in corrupted
+representative crash: INFO: rcu detected stall in corrupted, types: [HANG]
+# git bisect bad 1c2daf52185bbc91421f0e84e6bf2706bb350cce
+Bisecting: 1647 revisions left to test after this (roughly 11 steps)
+[6690c2c4c4eaa2a01f1c50ccd35dbe479bba85e3] Merge branch 'mlx5-xsk-updates-part2-2022-09-28'
+
+testing commit 6690c2c4c4eaa2a01f1c50ccd35dbe479bba85e3 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 9c596777aa13ece5332c991b5be7fdcd200d284e6cdafc84a4d69b8392c555b1
+run #0: crashed: INFO: rcu detected stall in corrupted
+run #1: crashed: INFO: rcu detected stall in corrupted
+run #2: crashed: INFO: rcu detected stall in corrupted
+run #3: crashed: INFO: rcu detected stall in corrupted
+run #4: OK
+run #5: OK
+run #6: OK
+run #7: OK
+representative crash: INFO: rcu detected stall in corrupted, types: [HANG]
+# git bisect bad 6690c2c4c4eaa2a01f1c50ccd35dbe479bba85e3
+Bisecting: 714 revisions left to test after this (roughly 10 steps)
+[09a59001b0d6417214c86b69263f6b8981c7c2db] netfilter: conntrack: remove unneeded indent level
+
+testing commit 09a59001b0d6417214c86b69263f6b8981c7c2db gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 9e58b24c362307bef3fcfffafb8a37e63b90b6540692d97851301d826c7d5a5e
+run #0: crashed: INFO: rcu detected stall in corrupted
+run #1: crashed: INFO: rcu detected stall in corrupted
+run #2: crashed: INFO: rcu detected stall in corrupted
+run #3: crashed: INFO: rcu detected stall in corrupted
+run #4: crashed: INFO: rcu detected stall in corrupted
+run #5: OK
+run #6: OK
+run #7: OK
+representative crash: INFO: rcu detected stall in corrupted, types: [HANG]
+# git bisect bad 09a59001b0d6417214c86b69263f6b8981c7c2db
+Bisecting: 356 revisions left to test after this (roughly 9 steps)
+[214537cd8a175bd04fdbc3a4bcce1247996e1111] dt-bindings: net: dsa: mediatek,mt7530: make trivial changes
+
+testing commit 214537cd8a175bd04fdbc3a4bcce1247996e1111 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: e4825191d6b380b9df020d817d149247c2664a8e9fa8cbfc9dbe5272d76f044f
+run #0: crashed: INFO: rcu detected stall in corrupted
+run #1: crashed: INFO: rcu detected stall in corrupted
+run #2: crashed: INFO: rcu detected stall in corrupted
+run #3: crashed: INFO: rcu detected stall in corrupted
+run #4: crashed: INFO: rcu detected stall in corrupted
+run #5: OK
+run #6: OK
+run #7: OK
+representative crash: INFO: rcu detected stall in corrupted, types: [HANG]
+# git bisect bad 214537cd8a175bd04fdbc3a4bcce1247996e1111
+Bisecting: 178 revisions left to test after this (roughly 8 steps)
+[430e2d5e2a982e6f86866762e6d6eb78191f9677] net/mlx5: E-Switch, Move send to vport meta rule creation
+
+testing commit 430e2d5e2a982e6f86866762e6d6eb78191f9677 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: f3b27263c9658874d53651618fee3281f94a9d5991e87fd82d80c3d66cbef9a9
+run #0: crashed: INFO: rcu detected stall in corrupted
+run #1: crashed: INFO: rcu detected stall in corrupted
+run #2: crashed: INFO: rcu detected stall in corrupted
+run #3: crashed: INFO: rcu detected stall in corrupted
+run #4: OK
+run #5: OK
+run #6: OK
+run #7: OK
+representative crash: INFO: rcu detected stall in corrupted, types: [HANG]
+# git bisect bad 430e2d5e2a982e6f86866762e6d6eb78191f9677
+Bisecting: 88 revisions left to test after this (roughly 7 steps)
+[b7d852566a52b41e26f2da7c329816edacf69666] net: fman: Don't pass comm_mode to enable/disable
+
+testing commit b7d852566a52b41e26f2da7c329816edacf69666 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: c645d30782444cdb0319df2f121feac7e34170657b2ae823906818f1abe10ca0
+run #0: crashed: INFO: rcu detected stall in corrupted
+run #1: crashed: INFO: rcu detected stall in corrupted
+run #2: crashed: INFO: rcu detected stall in corrupted
+run #3: crashed: INFO: rcu detected stall in corrupted
+run #4: OK
+run #5: OK
+run #6: OK
+run #7: OK
+representative crash: INFO: rcu detected stall in corrupted, types: [HANG]
+# git bisect bad b7d852566a52b41e26f2da7c329816edacf69666
+Bisecting: 44 revisions left to test after this (roughly 6 steps)
+[d4e6d684f3bea46a2fc195765c77a3b26bcb080e] libbpf: Fix potential NULL dereference when parsing ELF
+
+testing commit d4e6d684f3bea46a2fc195765c77a3b26bcb080e gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: b53153e42937a5b4b616006981ecbb96d4d26dda2c3a9cae6a047558182d2d16
+2025/04/10 12:52:48 failed to symbolize report: failed to run ["scripts/get_maintainer.pl" "--git-min-percent=15" "-f" "mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/lib/debugobjects.c"]: exit status 2
+scripts/get_maintainer.pl: file 'mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/lib/debugobjects.c' not found
+2025/04/10 12:52:49 failed to symbolize report: failed to run ["scripts/get_maintainer.pl" "--git-min-percent=15" "-f" "mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/lib/debugobjects.c"]: exit status 2
+scripts/get_maintainer.pl: file 'mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/lib/debugobjects.c' not found
+2025/04/10 12:52:49 failed to symbolize report: failed to run ["scripts/get_maintainer.pl" "--git-min-percent=15" "-f" "mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/lib/debugobjects.c"]: exit status 2
+scripts/get_maintainer.pl: file 'mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/lib/debugobjects.c' not found
+2025/04/10 12:52:50 failed to symbolize report: failed to run ["scripts/get_maintainer.pl" "--git-min-percent=15" "-f" "mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/lib/debugobjects.c"]: exit status 2
+scripts/get_maintainer.pl: file 'mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/lib/debugobjects.c' not found
+2025/04/10 12:52:50 failed to symbolize report: failed to run ["scripts/get_maintainer.pl" "--git-min-percent=15" "-f" "mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/lib/debugobjects.c"]: exit status 2
+scripts/get_maintainer.pl: file 'mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/lib/debugobjects.c' not found
+2025/04/10 12:52:50 failed to symbolize report: failed to run ["scripts/get_maintainer.pl" "--git-min-percent=15" "-f" "mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/lib/debugobjects.c"]: exit status 2
+scripts/get_maintainer.pl: file 'mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/lib/debugobjects.c' not found
+2025/04/10 12:52:51 failed to symbolize report: failed to run ["scripts/get_maintainer.pl" "--git-min-percent=15" "-f" "mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/lib/debugobjects.c"]: exit status 2
+scripts/get_maintainer.pl: file 'mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/lib/debugobjects.c' not found
+2025/04/10 12:52:51 failed to symbolize report: failed to run ["scripts/get_maintainer.pl" "--git-min-percent=15" "-f" "mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/lib/debugobjects.c"]: exit status 2
+scripts/get_maintainer.pl: file 'mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/lib/debugobjects.c' not found
+all runs: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip d4e6d684f3bea46a2fc195765c77a3b26bcb080e
+Bisecting: 43 revisions left to test after this (roughly 6 steps)
+[813847a31447feba6119df4ee77a7c0c7a77fc72] libbpf: Streamline bpf_attr and perf_event_attr initialization
+
+testing commit 813847a31447feba6119df4ee77a7c0c7a77fc72 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 5ba43cfb0c5f71ceab7c68ab8f4759dcdbf048fc3a6fcd730bfe26481ab8f920
+2025/04/10 13:08:24 failed to symbolize report: failed to run ["scripts/get_maintainer.pl" "--git-min-percent=15" "-f" "mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/lib/debugobjects.c"]: exit status 2
+scripts/get_maintainer.pl: file 'mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/lib/debugobjects.c' not found
+2025/04/10 13:08:24 failed to symbolize report: failed to run ["scripts/get_maintainer.pl" "--git-min-percent=15" "-f" "mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/lib/debugobjects.c"]: exit status 2
+scripts/get_maintainer.pl: file 'mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/lib/debugobjects.c' not found
+2025/04/10 13:08:24 failed to symbolize report: failed to run ["scripts/get_maintainer.pl" "--git-min-percent=15" "-f" "mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/lib/debugobjects.c"]: exit status 2
+scripts/get_maintainer.pl: file 'mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/lib/debugobjects.c' not found
+2025/04/10 13:08:25 failed to symbolize report: failed to run ["scripts/get_maintainer.pl" "--git-min-percent=15" "-f" "mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/lib/debugobjects.c"]: exit status 2
+scripts/get_maintainer.pl: file 'mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/lib/debugobjects.c' not found
+2025/04/10 13:08:25 failed to symbolize report: failed to run ["scripts/get_maintainer.pl" "--git-min-percent=15" "-f" "mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/lib/debugobjects.c"]: exit status 2
+scripts/get_maintainer.pl: file 'mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/lib/debugobjects.c' not found
+2025/04/10 13:08:25 failed to symbolize report: failed to run ["scripts/get_maintainer.pl" "--git-min-percent=15" "-f" "mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/lib/debugobjects.c"]: exit status 2
+scripts/get_maintainer.pl: file 'mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/lib/debugobjects.c' not found
+2025/04/10 13:08:25 failed to symbolize report: failed to run ["scripts/get_maintainer.pl" "--git-min-percent=15" "-f" "mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/lib/debugobjects.c"]: exit status 2
+scripts/get_maintainer.pl: file 'mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/lib/debugobjects.c' not found
+2025/04/10 13:08:25 failed to symbolize report: failed to run ["scripts/get_maintainer.pl" "--git-min-percent=15" "-f" "mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/lib/debugobjects.c"]: exit status 2
+scripts/get_maintainer.pl: file 'mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/lib/debugobjects.c' not found
+all runs: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip 813847a31447feba6119df4ee77a7c0c7a77fc72
+Bisecting: 43 revisions left to test after this (roughly 6 steps)
+[95657e6a4b5411c7fa074e0459bf081f8c117537] Merge branch '100GbE' of git://git.kernel.org/pub/scm/linux/kernel/git/tnguy/nex t-queue
+
+testing commit 95657e6a4b5411c7fa074e0459bf081f8c117537 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 2441b390f133011586be6386d5af2a4eb80e35484ba93c2d39f2b417bc1259fe
+run #0: crashed: INFO: rcu detected stall in corrupted
+run #1: crashed: INFO: rcu detected stall in corrupted
+run #2: crashed: INFO: rcu detected stall in corrupted
+run #3: OK
+run #4: OK
+run #5: OK
+run #6: OK
+run #7: OK
+representative crash: INFO: rcu detected stall in corrupted, types: [HANG]
+# git bisect bad 95657e6a4b5411c7fa074e0459bf081f8c117537
+Bisecting: 5 revisions left to test after this (roughly 3 steps)
+[b1a582e64bf2229e1914068f8ee81a6f83eb0373] ice: introduce ice_ptp_reset_cached_phctime function
+
+testing commit b1a582e64bf2229e1914068f8ee81a6f83eb0373 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: bddae7e0a759033ec1dba639c67b560e76bfeaa0a180a5c07efffd4f97e3eb27
+run #0: crashed: INFO: rcu detected stall in corrupted
+run #1: crashed: INFO: rcu detected stall in corrupted
+run #2: OK
+run #3: OK
+run #4: OK
+run #5: OK
+run #6: OK
+run #7: OK
+representative crash: INFO: rcu detected stall in corrupted, types: [HANG]
+# git bisect bad b1a582e64bf2229e1914068f8ee81a6f83eb0373
+Bisecting: 2 revisions left to test after this (roughly 2 steps)
+[f020481be540cfed4747b966e5c603299856f291] ice: track Tx timestamp stats similar to other Intel drivers
+
+testing commit f020481be540cfed4747b966e5c603299856f291 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 44c240961569f07cd0057c0088f76b8948975522dacf5c0b41e5b8897cffe6de
+run #0: crashed: INFO: rcu detected stall in corrupted
+run #1: crashed: INFO: rcu detected stall in corrupted
+run #2: crashed: INFO: rcu detected stall in corrupted
+run #3: crashed: INFO: rcu detected stall in corrupted
+run #4: OK
+run #5: OK
+run #6: OK
+run #7: OK
+representative crash: INFO: rcu detected stall in corrupted, types: [HANG]
+# git bisect bad f020481be540cfed4747b966e5c603299856f291
+Bisecting: 1 revision left to test after this (roughly 1 step)
+[b3b173745c8cab1e24d6821488b60abed3acb24d] ice: set tx_tstamps when creating new Tx rings via ethtool
+
+testing commit b3b173745c8cab1e24d6821488b60abed3acb24d gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 825c1e08b60909a49f5cdf1b14521e9f32e988d2a82b9fce90e1aa2b4ac380bf
+run #0: crashed: INFO: rcu detected stall in corrupted
+run #1: crashed: INFO: rcu detected stall in corrupted
+run #2: crashed: INFO: rcu detected stall in corrupted
+run #3: OK
+run #4: OK
+run #5: OK
+run #6: OK
+run #7: OK
+representative crash: INFO: rcu detected stall in corrupted, types: [HANG]
+# git bisect bad b3b173745c8cab1e24d6821488b60abed3acb24d
+b3b173745c8cab1e24d6821488b60abed3acb24d is the first bad commit
+commit b3b173745c8cab1e24d6821488b60abed3acb24d
+Author: Jacob Keller <jacob.e.keller@intel.com>
+Date:   Wed Jul 27 16:15:57 2022 -0700
+
+    ice: set tx_tstamps when creating new Tx rings via ethtool
+    
+    When the user changes the number of queues via ethtool, the driver
+    allocates new rings. This allocation did not initialize tx_tstamps. This
+    results in the tx_tstamps field being zero (due to kcalloc allocation), and
+    would result in a NULL pointer dereference when attempting a transmit
+    timestamp on the new ring.
+    
+    Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
+    Tested-by: Gurucharan <gurucharanx.g@intel.com> (A Contingent worker at Intel)
+    Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+
+ drivers/net/ethernet/intel/ice/ice_ethtool.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+accumulated error probability: 0.00
+parent commit 7ebfc85e2cd7b08f518b526173e9a33b56b3913b wasn't tested
+testing commit 7ebfc85e2cd7b08f518b526173e9a33b56b3913b gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: ae22421a35d2d1bfe4c64043842fe958bd2165463d2152d55fc225bf1ab0fdc3
+culprit signature: 825c1e08b60909a49f5cdf1b14521e9f32e988d2a82b9fce90e1aa2b4ac380bf
+parent  signature: ae22421a35d2d1bfe4c64043842fe958bd2165463d2152d55fc225bf1ab0fdc3
+reproducer is flaky (0.35 repro chance estimate)
+revisions tested: 14, total time: 4h55m12.749763013s (build: 2h53m39.892028171s, test: 1h36m40.10606133s)
+first bad commit: b3b173745c8cab1e24d6821488b60abed3acb24d ice: set tx_tstamps when creating new Tx rings via ethtool
+recipients (to): ["anthony.l.nguyen@intel.com" "gurucharanx.g@intel.com" "jacob.e.keller@intel.com"]
+recipients (cc): []
+crash: INFO: rcu detected stall in corrupted
+rcu: INFO: rcu_preempt detected expedited stalls on CPUs/tasks: { P7181 } 2650 jiffies s: 2597 root: 0x0/T
+rcu: blocking rcu_node structures (internal RCU debug):
+
+
+KASAN: use-after-free Read in register_shrinker_prepared
+b3b173745c8cab1e24d6821488b60abed3acb24d

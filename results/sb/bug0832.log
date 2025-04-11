@@ -1,0 +1,656 @@
+charm starts bisection 2025-04-07 05:14:56.388452045 -0700 PDT m=+14.852483056
+bisecting cause commit starting from b25f62ccb490680a8cee755ac4528909395e0711
+building syzkaller on HEAD
+ensuring issue is reproducible on original commit b25f62ccb490680a8cee755ac4528909395e0711
+
+testing commit b25f62ccb490680a8cee755ac4528909395e0711 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: c9035996f2f547b1a0597a7a164be5ef774201acc873d7797ea444a050092eda
+run #0: crashed: KASAN: vmalloc-out-of-bounds Read in init_module_from_file
+run #1: crashed: KASAN: slab-out-of-bounds Read in init_module_from_file
+run #2: crashed: general protection fault in init_module_from_file
+run #3: crashed: KASAN: vmalloc-out-of-bounds Read in init_module_from_file
+run #4: crashed: general protection fault in init_module_from_file
+run #5: crashed: KASAN: vmalloc-out-of-bounds Read in init_module_from_file
+run #6: crashed: INFO: task hung in init_module_from_file
+run #7: crashed: INFO: task hung in init_module_from_file
+representative crash: KASAN: vmalloc-out-of-bounds Read in init_module_from_file, types: [KASAN UNKNOWN]
+picked [v6.4 v6.3 v6.2 v6.0 v5.18 v5.16 v5.14 v5.12 v5.9 v5.6 v5.3 v5.0 v4.19] out of 27 release tags
+testing release v6.4
+testing commit 6995e2de6891c724bfeb2db33d7b87775f913ad1 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: a28a688f70abe91a108c00742a56b1568bdb5ba5b20a15a999cc5190a3e59397
+all runs: OK
+false negative chance: 0.000
+# git bisect start b25f62ccb490680a8cee755ac4528909395e0711 6995e2de6891c724bfeb2db33d7b87775f913ad1
+Bisecting: 5143 revisions left to test after this (roughly 12 steps)
+[86e203edf24bb327ce8fcd3c5c8c6bf530a846df] Merge tag 'input-for-v6.5-rc0' of git://git.kernel.org/pub/scm/linux/kernel/git/dtor/input
+
+testing commit 86e203edf24bb327ce8fcd3c5c8c6bf530a846df gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 9654ed0717a8ab7626e81426513111795b2599c5621c4951d6d7c7b56e202268
+all runs: basic kernel testing failed: UBSAN: array-index-out-of-bounds in alloc_pid
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip 86e203edf24bb327ce8fcd3c5c8c6bf530a846df
+Bisecting: 5143 revisions left to test after this (roughly 12 steps)
+[bf5c04ddd378dbd62d41d9c5bd18cca03bee2946] EDAC/thunderx: Check debugfs file creation retval properly
+
+testing commit bf5c04ddd378dbd62d41d9c5bd18cca03bee2946 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 2507e51ea9927b44dd52555681bc023596c634a4cf64cb46a92e68bece1af85b
+all runs: OK
+false negative chance: 0.000
+# git bisect good bf5c04ddd378dbd62d41d9c5bd18cca03bee2946
+Bisecting: 5143 revisions left to test after this (roughly 12 steps)
+[8ad13cdc92f66333ae475251ae7722313f84e496] ASoC: soc-dapm.c: clean up debugfs for freed widget
+
+testing commit 8ad13cdc92f66333ae475251ae7722313f84e496 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 25489e9d0e1db657b1019095288f0168779ac17219b95155beaede36f72c253e
+all runs: OK
+false negative chance: 0.000
+# git bisect good 8ad13cdc92f66333ae475251ae7722313f84e496
+Bisecting: 4946 revisions left to test after this (roughly 12 steps)
+[f71be9d084c92e0ef36e248303f32f8e4cf623da] net: liquidio: fix mixed module-builtin object
+
+testing commit f71be9d084c92e0ef36e248303f32f8e4cf623da gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: c0756cb3a4d65e00e207a18bb292158897fbae59c816d63bdf6e559b508b19a7
+all runs: OK
+false negative chance: 0.000
+# git bisect good f71be9d084c92e0ef36e248303f32f8e4cf623da
+Bisecting: 4528 revisions left to test after this (roughly 12 steps)
+[f8824e151fbfa0ac0a258015d606ea6f4a10251b] Merge tag 'sound-6.5-rc1' of git://git.kernel.org/pub/scm/linux/kernel/git/tiwai/sound
+
+testing commit f8824e151fbfa0ac0a258015d606ea6f4a10251b gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: b108194dcb275320a51e5628397cb682cff43e7365711efaf1adf04375ecee87
+all runs: basic kernel testing failed: UBSAN: array-index-out-of-bounds in alloc_pid
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip f8824e151fbfa0ac0a258015d606ea6f4a10251b
+Bisecting: 4528 revisions left to test after this (roughly 12 steps)
+[bd780aea671eda9660837c05d9ba58de22ceecad] rust: sync: add `Arc::ptr_eq`
+
+testing commit bd780aea671eda9660837c05d9ba58de22ceecad gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 0a9d5e34e2e40550141a8664a39705d32f0abe7577acdf9e5425ada18f510a54
+all runs: OK
+false negative chance: 0.000
+# git bisect good bd780aea671eda9660837c05d9ba58de22ceecad
+Bisecting: 4528 revisions left to test after this (roughly 12 steps)
+[101827e13026a981e887527620fe9710adc0e481] drm/amdkfd: add debug wave launch override operation
+
+testing commit 101827e13026a981e887527620fe9710adc0e481 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 55e1faca955c97b41b1210b532f5bc700c97ec51b9e0ef9e22082e88258d2234
+all runs: OK
+false negative chance: 0.000
+# git bisect good 101827e13026a981e887527620fe9710adc0e481
+Bisecting: 4179 revisions left to test after this (roughly 12 steps)
+[9471f1f2f50282b9e8f59198ec6bb738b4ccc009] Merge branch 'expand-stack'
+
+testing commit 9471f1f2f50282b9e8f59198ec6bb738b4ccc009 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 7013e3d2583981ff22ed96257f6e5ed49acabf75e0429f4c282bd1975aafc843
+all runs: basic kernel testing failed: UBSAN: array-index-out-of-bounds in alloc_pid
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip 9471f1f2f50282b9e8f59198ec6bb738b4ccc009
+Bisecting: 4179 revisions left to test after this (roughly 12 steps)
+[3b67a20bb0cb9e2f03dbe0af2074b7f4aa5fa811] wifi: iwlwifi: mvm: offload BTM response during D3
+
+testing commit 3b67a20bb0cb9e2f03dbe0af2074b7f4aa5fa811 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 74583ba671b909f6ee6f91a5f1eafd62ca07ef66a1dff27b98a6e2e2323a0f1a
+all runs: basic kernel testing failed: WARNING in register_net_sysctl
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip 3b67a20bb0cb9e2f03dbe0af2074b7f4aa5fa811
+Bisecting: 4179 revisions left to test after this (roughly 12 steps)
+[47e0255989560fbfd6cd0e03407982f37fdabe5a] dt-bindings: spi: zynqmp-qspi: Add power-domains and iommus properties
+
+testing commit 47e0255989560fbfd6cd0e03407982f37fdabe5a gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 95dabf7fc651aa0e14d42f976c35aa442217321c1ecbf6db7bc41ee76ac23569
+all runs: OK
+false negative chance: 0.000
+# git bisect good 47e0255989560fbfd6cd0e03407982f37fdabe5a
+Bisecting: 4179 revisions left to test after this (roughly 12 steps)
+[b0cc5e89caadc21c2d8f7dc4c97947761b358876] mm/mlock: rename mlock_future_check() to mlock_future_ok()
+
+testing commit b0cc5e89caadc21c2d8f7dc4c97947761b358876 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 98b7c3023794e92d087bd00a47f07590be7d3143faf9f3f502aab02b788d8bcf
+all runs: OK
+false negative chance: 0.000
+# git bisect good b0cc5e89caadc21c2d8f7dc4c97947761b358876
+Bisecting: 4179 revisions left to test after this (roughly 12 steps)
+[b167b530eb83dfd791061e1d312236bffde772a4] perf evlist: Reduce scope of evlist__has_hybrid
+
+testing commit b167b530eb83dfd791061e1d312236bffde772a4 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: e47c136fa7cf184a1092c682b8a9ee942824135c84a16ef67160194740141fea
+all runs: OK
+false negative chance: 0.000
+# git bisect good b167b530eb83dfd791061e1d312236bffde772a4
+Bisecting: 4087 revisions left to test after this (roughly 12 steps)
+[e8c2af660ba0790afd14d5cbc2fd05c6dc85e207] wifi: cfg80211: fix regulatory disconnect with OCB/NAN
+
+testing commit e8c2af660ba0790afd14d5cbc2fd05c6dc85e207 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 3551b071cfa0b315a7d74ccfca9b76316eab2ba4a0cb6d770a5f2a4414e8880c
+all runs: OK
+false negative chance: 0.000
+# git bisect good e8c2af660ba0790afd14d5cbc2fd05c6dc85e207
+Bisecting: 3669 revisions left to test after this (roughly 12 steps)
+[50b5d1fc41da21a4ecf219f37fbca23c79020b08] btrfs: do not BUG_ON() on tree mod log failures at insert_ptr()
+
+testing commit 50b5d1fc41da21a4ecf219f37fbca23c79020b08 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 516bdd61b8227f9ece0fd252db9331b5b2abc4f20dbbe6a12aaea6cdee9fa28d
+all runs: OK
+false negative chance: 0.000
+# git bisect good 50b5d1fc41da21a4ecf219f37fbca23c79020b08
+Bisecting: 3669 revisions left to test after this (roughly 12 steps)
+[bfcd5714f6424c03e385e0e9296dcd69855cfea7] ARM: dts: lan966x: kontron-d10: fix board reset
+
+testing commit bfcd5714f6424c03e385e0e9296dcd69855cfea7 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: d22a7e06728b932a5f07405799703b5b5929c1b4f279a06272e7e3cec1075eca
+all runs: OK
+false negative chance: 0.000
+# git bisect good bfcd5714f6424c03e385e0e9296dcd69855cfea7
+Bisecting: 3659 revisions left to test after this (roughly 12 steps)
+[1b2b6039bd76f2ece9c0ba82b8116c4eb6ab2445] ARM: dts: imx7d-smegw01: Pass 'gpr' to the pinctrl groups
+
+testing commit 1b2b6039bd76f2ece9c0ba82b8116c4eb6ab2445 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: b3e5089f04227bfca09842179fdc7cbd1eaa98a0f20f2c8d9952bbc64eea8e96
+all runs: OK
+false negative chance: 0.000
+# git bisect good 1b2b6039bd76f2ece9c0ba82b8116c4eb6ab2445
+Bisecting: 3635 revisions left to test after this (roughly 12 steps)
+[6a80d794d796d22910c03d3e52a3bf0d885326a7] perf stat: New metricgroup output for the default mode
+
+testing commit 6a80d794d796d22910c03d3e52a3bf0d885326a7 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: fed69cd5d08daf5fcc7b5389d42e319ebd1c7582e66cff91913eb4cbaee1f8ba
+all runs: OK
+false negative chance: 0.000
+# git bisect good 6a80d794d796d22910c03d3e52a3bf0d885326a7
+Bisecting: 3491 revisions left to test after this (roughly 12 steps)
+[444f312a73f789bb9f10bbb423f7ae6c3aa76198] dt-bindings: misc: esm: Add ESM support for TI K3 devices
+
+testing commit 444f312a73f789bb9f10bbb423f7ae6c3aa76198 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 2a5839240db008884b637ebd4232a3f3f22ce2fec825a9f90a7c93b07d3ba21d
+all runs: OK
+false negative chance: 0.000
+# git bisect good 444f312a73f789bb9f10bbb423f7ae6c3aa76198
+Bisecting: 3351 revisions left to test after this (roughly 12 steps)
+[ec8bb9c5b1c6963db3ed09e4a9148ae85804b962] arm64: dts: qcom: sm8450: Add missing RPMhPD OPP levels
+
+testing commit ec8bb9c5b1c6963db3ed09e4a9148ae85804b962 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 22121d41ec70d489c4ffe1703c3bd007066dde23b70f2bba3e9350965426aedc
+all runs: OK
+false negative chance: 0.000
+# git bisect good ec8bb9c5b1c6963db3ed09e4a9148ae85804b962
+Bisecting: 3667 revisions left to test after this (roughly 12 steps)
+[d90171dd0da50212f5950cc708240831e82f2f91] scsi: qla2xxx: Multi-que support for TMF
+
+testing commit d90171dd0da50212f5950cc708240831e82f2f91 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 4165cdb9f6de0fc6a86f6ad510eceb596ab85eefd2bc4899aef02da4ae335d99
+all runs: OK
+false negative chance: 0.000
+# git bisect good d90171dd0da50212f5950cc708240831e82f2f91
+Bisecting: 3666 revisions left to test after this (roughly 12 steps)
+[3c435a0fe35c220bec442dffff04a64aacf952b0] filemap: add a kiocb_write_and_wait helper
+
+testing commit 3c435a0fe35c220bec442dffff04a64aacf952b0 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 37ddeb97a0280c35c566d805338f15f96364544ca5ffea6ad32ef03d5493519d
+all runs: OK
+false negative chance: 0.000
+# git bisect good 3c435a0fe35c220bec442dffff04a64aacf952b0
+Bisecting: 3248 revisions left to test after this (roughly 12 steps)
+[8a20b381644528794a78f791fd1a7ae87f3fc6ff] accel/habanalabs: fix bug of not fetching addr_dec info
+
+testing commit 8a20b381644528794a78f791fd1a7ae87f3fc6ff gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 575707116d9c8a462493e0a8d4088fdd10d7a0f7e973d3adbc435aca852a15c4
+all runs: OK
+false negative chance: 0.000
+# git bisect good 8a20b381644528794a78f791fd1a7ae87f3fc6ff
+Bisecting: 3276 revisions left to test after this (roughly 12 steps)
+[3a48d2127f4dbd767d43bf8280b67d585e701f75] regmap: Load register defaults in blocks rather than register by register
+
+testing commit 3a48d2127f4dbd767d43bf8280b67d585e701f75 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: c1a9266d63323f358d1d5462eb1dddef122f3c0b50ff5205fafa0e339960f8c5
+all runs: OK
+false negative chance: 0.000
+# git bisect good 3a48d2127f4dbd767d43bf8280b67d585e701f75
+Bisecting: 3276 revisions left to test after this (roughly 12 steps)
+[e0a9349b4c590145c6a83e6c9f7701cec42debbd] objtool: Allocate relocs in advance for new rela sections
+
+testing commit e0a9349b4c590145c6a83e6c9f7701cec42debbd gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: c4cd036ac4465f7363e70dc026dcb42cd0ebc20caa339842d897e96cb8b21472
+all runs: OK
+false negative chance: 0.000
+# git bisect good e0a9349b4c590145c6a83e6c9f7701cec42debbd
+Bisecting: 3276 revisions left to test after this (roughly 12 steps)
+[f40df95d375dc9c96da541a2c4ac0ce1e630309d] net: macb: update PCS driver to use neg_mode
+
+testing commit f40df95d375dc9c96da541a2c4ac0ce1e630309d gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: d0687b2eee54f9d01fc12b450b740c24743fbf5fc140ca0aae901b624ac362a7
+all runs: OK
+false negative chance: 0.000
+# git bisect good f40df95d375dc9c96da541a2c4ac0ce1e630309d
+Bisecting: 3276 revisions left to test after this (roughly 12 steps)
+[9dd5f6dba72928e1f16b259fb1c984f80bfa4120] arm64: dts: qcom: sm6115: Add USB SS qmp phy node
+
+testing commit 9dd5f6dba72928e1f16b259fb1c984f80bfa4120 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: fbdb821b1e5c4a7c172c65b967f6db0ef59e2bfadf7d05627756b32fdaa21fbc
+all runs: OK
+false negative chance: 0.000
+# git bisect good 9dd5f6dba72928e1f16b259fb1c984f80bfa4120
+Bisecting: 3198 revisions left to test after this (roughly 12 steps)
+[e774a7bc7f0adba785d814ce9a329b6c5c32706a] mm: zswap: remove page reclaim logic from z3fold
+
+testing commit e774a7bc7f0adba785d814ce9a329b6c5c32706a gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 6dd9fab221526e6a85ca1df816352b9fde2a70003a5bea4a85a76c4a33a0f213
+all runs: OK
+false negative chance: 0.000
+# git bisect good e774a7bc7f0adba785d814ce9a329b6c5c32706a
+Bisecting: 2780 revisions left to test after this (roughly 12 steps)
+[a31988510689e6116921d6c67521c6cf472737f6] clk: microchip: Use of_property_read_bool() for boolean properties
+
+testing commit a31988510689e6116921d6c67521c6cf472737f6 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 1713affaf9341ed261ccc0608909dd3067240fdd9850dafbf8203354794c35f6
+all runs: OK
+false negative chance: 0.000
+# git bisect good a31988510689e6116921d6c67521c6cf472737f6
+Bisecting: 2780 revisions left to test after this (roughly 12 steps)
+[d3369a4b6f0164b8869a097547846ed4e5c9c47f] memory: atmel-sdramc: remove the driver
+
+testing commit d3369a4b6f0164b8869a097547846ed4e5c9c47f gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 630fb159229a93b0217b521ff0b08fd4bc67249b4ca2cd5ebc2562e03fa54445
+all runs: OK
+false negative chance: 0.000
+# git bisect good d3369a4b6f0164b8869a097547846ed4e5c9c47f
+Bisecting: 2777 revisions left to test after this (roughly 12 steps)
+[3291e09a463870610b8227f32b16b19a587edf33] drm: convert drm_gem_put_pages() to use a folio_batch
+
+testing commit 3291e09a463870610b8227f32b16b19a587edf33 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 249a3081000c34e5df415c40a925da468997563af6011f9f5f374921918766d5
+all runs: OK
+false negative chance: 0.000
+# git bisect good 3291e09a463870610b8227f32b16b19a587edf33
+Bisecting: 2777 revisions left to test after this (roughly 12 steps)
+[7f91fe3a71aa43700eac2650e3b01d50cbbb6f48] clk: renesas: r8a779a0: Add PWM clock
+
+testing commit 7f91fe3a71aa43700eac2650e3b01d50cbbb6f48 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 496286863baaa62d6e7bf395c727af8dd6c675432e6e00cd69c6ec37725cc3a2
+all runs: OK
+false negative chance: 0.000
+# git bisect good 7f91fe3a71aa43700eac2650e3b01d50cbbb6f48
+Bisecting: 2777 revisions left to test after this (roughly 12 steps)
+[c467c8f081859d4f4ca4eee4fba54bb5d85d6c97] mmc: Add MMC_QUIRK_BROKEN_SD_CACHE for Kingston Canvas Go Plus from 11/2019
+
+testing commit c467c8f081859d4f4ca4eee4fba54bb5d85d6c97 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 1faa86eaa0bc9a5b3b077163e71b4f25df4898d777d7003867c52be2306cb823
+all runs: OK
+false negative chance: 0.000
+# git bisect good c467c8f081859d4f4ca4eee4fba54bb5d85d6c97
+Bisecting: 2777 revisions left to test after this (roughly 12 steps)
+[3186acba5cdc10b5eb0f45a5ff7ce8c1c6e8c16c] drm/msm/dpu: Add SM6350 support
+
+testing commit 3186acba5cdc10b5eb0f45a5ff7ce8c1c6e8c16c gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: fa22b811ca73b49c5e6e9d8357fedcb6352045d27180011757f5a14260b2594e
+2025/04/07 20:39:15 failed to symbolize report: failed to run ["scripts/get_maintainer.pl" "--git-min-percent=15" "-f" "mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/drivers/gpu/drm/tiny/bochs.c"]: exit status 2
+scripts/get_maintainer.pl: file 'mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/drivers/gpu/drm/tiny/bochs.c' not found
+2025/04/07 20:39:15 failed to symbolize report: failed to run ["scripts/get_maintainer.pl" "--git-min-percent=15" "-f" "mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/drivers/gpu/drm/tiny/bochs.c"]: exit status 2
+scripts/get_maintainer.pl: file 'mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/drivers/gpu/drm/tiny/bochs.c' not found
+2025/04/07 20:39:15 failed to symbolize report: failed to run ["scripts/get_maintainer.pl" "--git-min-percent=15" "-f" "mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/drivers/gpu/drm/tiny/bochs.c"]: exit status 2
+scripts/get_maintainer.pl: file 'mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/drivers/gpu/drm/tiny/bochs.c' not found
+2025/04/07 20:39:15 failed to symbolize report: failed to run ["scripts/get_maintainer.pl" "--git-min-percent=15" "-f" "mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/drivers/gpu/drm/tiny/bochs.c"]: exit status 2
+scripts/get_maintainer.pl: file 'mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/drivers/gpu/drm/tiny/bochs.c' not found
+2025/04/07 20:39:15 failed to symbolize report: failed to run ["scripts/get_maintainer.pl" "--git-min-percent=15" "-f" "mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/drivers/gpu/drm/tiny/bochs.c"]: exit status 2
+scripts/get_maintainer.pl: file 'mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/drivers/gpu/drm/tiny/bochs.c' not found
+2025/04/07 20:39:15 failed to symbolize report: failed to run ["scripts/get_maintainer.pl" "--git-min-percent=15" "-f" "mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/drivers/gpu/drm/tiny/bochs.c"]: exit status 2
+scripts/get_maintainer.pl: file 'mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/drivers/gpu/drm/tiny/bochs.c' not found
+2025/04/07 20:39:16 failed to symbolize report: failed to run ["scripts/get_maintainer.pl" "--git-min-percent=15" "-f" "mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/drivers/gpu/drm/tiny/bochs.c"]: exit status 2
+scripts/get_maintainer.pl: file 'mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/drivers/gpu/drm/tiny/bochs.c' not found
+2025/04/07 20:39:16 failed to symbolize report: failed to run ["scripts/get_maintainer.pl" "--git-min-percent=15" "-f" "mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/drivers/gpu/drm/tiny/bochs.c"]: exit status 2
+scripts/get_maintainer.pl: file 'mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/drivers/gpu/drm/tiny/bochs.c' not found
+all runs: boot failed: general protection fault in drm_crtc_next_vblank_start
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip 3186acba5cdc10b5eb0f45a5ff7ce8c1c6e8c16c
+Bisecting: 2777 revisions left to test after this (roughly 12 steps)
+[4bce37a68ff884e821a02a731897a8119e0c37b7] mips/mm: Convert to using lock_mm_and_find_vma()
+
+testing commit 4bce37a68ff884e821a02a731897a8119e0c37b7 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 073ce7261afc0a183bbee3937ea7b212c84c88a10882a61c807c0361d9f40eee
+all runs: OK
+false negative chance: 0.000
+# git bisect good 4bce37a68ff884e821a02a731897a8119e0c37b7
+Bisecting: 2777 revisions left to test after this (roughly 12 steps)
+[d24028606e7642261d33ad2a50aed940d35cfb66] ASoC: loongson: Add Loongson ASoC Sound Card Support
+
+testing commit d24028606e7642261d33ad2a50aed940d35cfb66 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: bb08bb44cd98d9fad142ae036b41a272169c23a13e1ec2f5bc1b37132dc5105e
+all runs: OK
+false negative chance: 0.000
+# git bisect good d24028606e7642261d33ad2a50aed940d35cfb66
+Bisecting: 2777 revisions left to test after this (roughly 12 steps)
+[3ba12d8de3faa666ba2d6d01863feca73518a743] ACPI: scan: Reduce overhead related to devices with dependencies
+
+testing commit 3ba12d8de3faa666ba2d6d01863feca73518a743 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 07bcc05e20b2179d705fde920d331c839613179bb4f0168c2ce334e18fc7df66
+all runs: OK
+false negative chance: 0.000
+# git bisect good 3ba12d8de3faa666ba2d6d01863feca73518a743
+Bisecting: 2777 revisions left to test after this (roughly 12 steps)
+[310ee0902b8d9d0a13a5a13e94688a5863fa29c2] ext4: allow concurrent unaligned dio overwrites
+
+testing commit 310ee0902b8d9d0a13a5a13e94688a5863fa29c2 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 62e052ae0b4a9a276dbb0675c35fd1fafcbc3c6c8519958ceb73a9cad3735403
+all runs: OK
+false negative chance: 0.000
+# git bisect good 310ee0902b8d9d0a13a5a13e94688a5863fa29c2
+Bisecting: 2736 revisions left to test after this (roughly 12 steps)
+[c07ce33a1ddd5a2e74ddcfc8cfcf7f94c3ee2347] gpio: synq: remove unused zynq_gpio_irq_reqres/zynq_gpio_irq_relres
+
+testing commit c07ce33a1ddd5a2e74ddcfc8cfcf7f94c3ee2347 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 988e9aed5d0aff165a68370c13fa8f30f22d4652871268029122079da1ece323
+all runs: OK
+false negative chance: 0.000
+# git bisect good c07ce33a1ddd5a2e74ddcfc8cfcf7f94c3ee2347
+Bisecting: 2736 revisions left to test after this (roughly 12 steps)
+[ca0b954a4315ca2228001c439ae1062561c81989] drm/amdgpu: make sure that BOs have a backing store
+
+testing commit ca0b954a4315ca2228001c439ae1062561c81989 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 101e0b035756c1a1ffd385b648e0c83bc0cb04b1c03e18f1cbe2e4e9ac2bd276
+all runs: OK
+false negative chance: 0.000
+# git bisect good ca0b954a4315ca2228001c439ae1062561c81989
+Bisecting: 2597 revisions left to test after this (roughly 11 steps)
+[6b164eaecd154930532afe8dce0d0562f629d23d] Merge branch 'topic/midi20' into for-next
+
+testing commit 6b164eaecd154930532afe8dce0d0562f629d23d gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 9f66e53ffed6fb0ae99c6373e6ee2339c7dd389086741bb322462c568271eabd
+all runs: OK
+false negative chance: 0.000
+# git bisect good 6b164eaecd154930532afe8dce0d0562f629d23d
+Bisecting: 2500 revisions left to test after this (roughly 11 steps)
+[675285ad819293844018aa8096ba9a6d7c77b90b] Merge tag 'fbdev-for-6.5-rc1' of git://git.kernel.org/pub/scm/linux/kernel/git/deller/linux-fbdev
+
+testing commit 675285ad819293844018aa8096ba9a6d7c77b90b gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: e84828b7bbaba3918befa2a4ef48df3625158aa78bc5186413b95c84f2ca5d6e
+all runs: basic kernel testing failed: UBSAN: array-index-out-of-bounds in alloc_pid
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip 675285ad819293844018aa8096ba9a6d7c77b90b
+Bisecting: 2500 revisions left to test after this (roughly 11 steps)
+[a19a3dcb0d190254ded4ac1cabb0f402e4b7c8c4] arm64: defconfig: Build SM6115 display and GPU clock controller drivers
+
+testing commit a19a3dcb0d190254ded4ac1cabb0f402e4b7c8c4 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 1363b6fe66d90c49685f0ba39e7215d720682f35f516abca2407921ccb18a52a
+all runs: OK
+false negative chance: 0.000
+# git bisect good a19a3dcb0d190254ded4ac1cabb0f402e4b7c8c4
+Bisecting: 2491 revisions left to test after this (roughly 11 steps)
+[fa375646241b5350f7326fd4d686891b95d9fbe5] dm thin: disable discards for thin-pool if no_discard_passdown
+
+testing commit fa375646241b5350f7326fd4d686891b95d9fbe5 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: a5d8bd362b3bba8ecef9d320b5f4d5bc9b820f85dd4d6bb6edeadcbab6811cc9
+all runs: OK
+false negative chance: 0.000
+# git bisect good fa375646241b5350f7326fd4d686891b95d9fbe5
+Bisecting: 2400 revisions left to test after this (roughly 11 steps)
+[1a2c4e5635177939a088d22fa35c6a7032725663] arm64: dts: renesas: ulcb-kf: Remove flow control for SCIF1
+
+testing commit 1a2c4e5635177939a088d22fa35c6a7032725663 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 1229ac87fd12ec6826e2925b20287c20a154ade19f77ab18508e788a90de6db9
+all runs: OK
+false negative chance: 0.000
+# git bisect good 1a2c4e5635177939a088d22fa35c6a7032725663
+Bisecting: 2383 revisions left to test after this (roughly 11 steps)
+[632c60ecd25dbacee54d5581fe3aeb834b57010a] clk: imx: scu: use _safe list iterator to avoid a use after free
+
+testing commit 632c60ecd25dbacee54d5581fe3aeb834b57010a gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 02b5881c538c11354a1ac3e788bf154c1eb1f8310a43100e73b745b0b226c63c
+all runs: OK
+false negative chance: 0.000
+# git bisect good 632c60ecd25dbacee54d5581fe3aeb834b57010a
+Bisecting: 2383 revisions left to test after this (roughly 11 steps)
+[616db8779b1e3f93075df691432cccc5ef3c3ba0] workqueue: Automatically mark CPU-hogging work items CPU_INTENSIVE
+
+testing commit 616db8779b1e3f93075df691432cccc5ef3c3ba0 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: ff9537916f1a16cced0949025febb1b4a0d81d8f7bd190bbe4c1990ab574a92b
+2025/04/08 02:27:14 failed to symbolize report: failed to run ["scripts/get_maintainer.pl" "--git-min-percent=15" "-f" "mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/kernel/workqueue.c"]: exit status 2
+scripts/get_maintainer.pl: file 'mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/kernel/workqueue.c' not found
+2025/04/08 02:27:27 failed to symbolize report: failed to run ["scripts/get_maintainer.pl" "--git-min-percent=15" "-f" "mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/kernel/workqueue.c"]: exit status 2
+scripts/get_maintainer.pl: file 'mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/kernel/workqueue.c' not found
+2025/04/08 02:29:29 failed to symbolize report: failed to run ["scripts/get_maintainer.pl" "--git-min-percent=15" "-f" "mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/kernel/sched/core.c"]: exit status 2
+scripts/get_maintainer.pl: file 'mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/kernel/sched/core.c' not found
+2025/04/08 02:35:05 failed to symbolize report: failed to run ["scripts/get_maintainer.pl" "--git-min-percent=15" "-f" "mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/kernel/workqueue.c"]: exit status 2
+scripts/get_maintainer.pl: file 'mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/kernel/workqueue.c' not found
+2025/04/08 02:35:06 failed to symbolize report: failed to run ["scripts/get_maintainer.pl" "--git-min-percent=15" "-f" "mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/kernel/sched/core.c"]: exit status 2
+scripts/get_maintainer.pl: file 'mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/kernel/sched/core.c' not found
+run #0: basic kernel testing failed: WARNING in worker_enter_idle
+run #1: basic kernel testing failed: WARNING in worker_enter_idle
+run #2: crashed: WARNING in worker_enter_idle
+run #3: basic kernel testing failed: INFO: task hung in synchronize_rcu
+run #4: OK
+run #5: OK
+run #6: boot failed: WARNING in worker_enter_idle
+run #7: boot failed: INFO: task hung in synchronize_rcu
+representative crash: WARNING in worker_enter_idle, types: [WARNING]
+unable to determine the verdict: 2 good runs (wanted 4), for bad wanted 4 in total, got 3
+# git bisect skip 616db8779b1e3f93075df691432cccc5ef3c3ba0
+Bisecting: 2383 revisions left to test after this (roughly 11 steps)
+[c6399b893043a5bb634de8677362f96684f1c0c8] riscv: hibernation: Remove duplicate call of suspend_restore_csrs
+
+testing commit c6399b893043a5bb634de8677362f96684f1c0c8 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: b05f05706d7866b042131f00efaccd1dd9706b23cf7e4b270a0ed33a68db145d
+all runs: OK
+false negative chance: 0.000
+# git bisect good c6399b893043a5bb634de8677362f96684f1c0c8
+Bisecting: 2326 revisions left to test after this (roughly 11 steps)
+[eb1cfd09f788e39948a82be8063e54e40dd018d9] lockdep: Add lock_set_cmp_fn() annotation
+
+testing commit eb1cfd09f788e39948a82be8063e54e40dd018d9 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 5624ac029b9f442d9c869c357f13421cbe8be866341be23b0800eca9ab5513dc
+all runs: OK
+false negative chance: 0.000
+# git bisect good eb1cfd09f788e39948a82be8063e54e40dd018d9
+Bisecting: 2326 revisions left to test after this (roughly 11 steps)
+[55b809df481ad862ec6b2081c658bd8bfdeec157] platform/x86: lenovo-yogabook: Store dev instead of wdev in drvdata struct
+
+testing commit 55b809df481ad862ec6b2081c658bd8bfdeec157 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 96c2794e9a87310a58831efcddd7069e3ba0a47db3c5360f639196c97af6ff43
+all runs: OK
+false negative chance: 0.000
+# git bisect good 55b809df481ad862ec6b2081c658bd8bfdeec157
+Bisecting: 2299 revisions left to test after this (roughly 11 steps)
+[888a325fe0a7d149828600c663869636ffdbe81f] wifi: ieee80211: reorder presence checks in MLE per-STA profile
+
+testing commit 888a325fe0a7d149828600c663869636ffdbe81f gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: ad8cc19ba2f5157571ae9e4f913ea4577ca054d66cac90f07b833b0a24743511
+all runs: OK
+false negative chance: 0.000
+# git bisect good 888a325fe0a7d149828600c663869636ffdbe81f
+Bisecting: 2299 revisions left to test after this (roughly 11 steps)
+[d9f12a3bbb6d1afe872425a8fa2612945975cfb8] Input: tps65219-pwrbutton - use regmap_set_bits()
+
+testing commit d9f12a3bbb6d1afe872425a8fa2612945975cfb8 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: e748fd239b77729fcc073bf6eeea58b779771a29321dda13f3230771d25835dd
+all runs: OK
+false negative chance: 0.000
+# git bisect good d9f12a3bbb6d1afe872425a8fa2612945975cfb8
+Bisecting: 2299 revisions left to test after this (roughly 11 steps)
+[d5a5a6e4d129f5b1167e8497155ada63b8c865b2] clk: versatile: sp810: Add a determine_rate hook
+
+testing commit d5a5a6e4d129f5b1167e8497155ada63b8c865b2 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 85504fb4a432014c78f1efd727517b16c12c91b053dcbb1a5bd3257aaa2f6533
+all runs: OK
+false negative chance: 0.000
+# git bisect good d5a5a6e4d129f5b1167e8497155ada63b8c865b2
+Bisecting: 2299 revisions left to test after this (roughly 11 steps)
+[6c0160aa6ecdbad091c6ef9da507511b3d06eaaa] arm64: dts: imx8mq-tqma8mq-mba8mx: Remove invalid properties
+
+testing commit 6c0160aa6ecdbad091c6ef9da507511b3d06eaaa gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 5edad321df8a680a1254871f1b11b0efce8e9644eaa6929193b9a12b70033183
+all runs: OK
+false negative chance: 0.000
+# git bisect good 6c0160aa6ecdbad091c6ef9da507511b3d06eaaa
+Bisecting: 2255 revisions left to test after this (roughly 11 steps)
+[924764aa5f2e705f46f548611e6a9d6b986ae880] pinctrl: rk805: Add rk806 pinctrl support
+
+testing commit 924764aa5f2e705f46f548611e6a9d6b986ae880 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 3f34179d6b857f483765476594c9b8ae8d131552041ad30d6b3bbe966faebb8d
+all runs: OK
+false negative chance: 0.000
+# git bisect good 924764aa5f2e705f46f548611e6a9d6b986ae880
+Bisecting: 2255 revisions left to test after this (roughly 11 steps)
+[5da4d7b8e6dfd5bd7d61f7fe1338b1e5d5b4f76c] libceph: Partially revert changes to support MSG_SPLICE_PAGES
+
+testing commit 5da4d7b8e6dfd5bd7d61f7fe1338b1e5d5b4f76c gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 407cb3bad54197b132d9bfec9c8d6d81376620e1cb7b0c81a07709b7b9df95c8
+all runs: OK
+false negative chance: 0.000
+# git bisect good 5da4d7b8e6dfd5bd7d61f7fe1338b1e5d5b4f76c
+Bisecting: 2143 revisions left to test after this (roughly 11 steps)
+[6ab11462c68499933bd9b5d52a710f4e18a9e43e] ASoC: fsl-asoc-card: Allow passing the number of slots in use
+
+testing commit 6ab11462c68499933bd9b5d52a710f4e18a9e43e gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: fb2719a9debbb077dde41c9e9b2557d9cbecacc8d3bad631cea0c2415904bf05
+all runs: OK
+false negative chance: 0.000
+# git bisect good 6ab11462c68499933bd9b5d52a710f4e18a9e43e
+Bisecting: 1905 revisions left to test after this (roughly 11 steps)
+[1b722407a13b7f8658d2e26917791f32805980a2] Merge tag 'drm-next-2023-06-29' of git://anongit.freedesktop.org/drm/drm
+
+testing commit 1b722407a13b7f8658d2e26917791f32805980a2 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: ded39af2879dd650b1d521f5e0b88e5540e6407ef6e80a48a6b2e98b2970f948
+all runs: basic kernel testing failed: UBSAN: array-index-out-of-bounds in alloc_pid
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip 1b722407a13b7f8658d2e26917791f32805980a2
+Bisecting: 1905 revisions left to test after this (roughly 11 steps)
+[62c68e7cee332e08e625af3bca3318814086490d] HID: ensure timely release of driver-allocated resources
+
+testing commit 62c68e7cee332e08e625af3bca3318814086490d gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: f73c9cb19e9e0385a32d8654fac5fe58fd334be7a16d5250097cde6b0ee1df5d
+all runs: OK
+false negative chance: 0.000
+# git bisect good 62c68e7cee332e08e625af3bca3318814086490d
+Bisecting: 1905 revisions left to test after this (roughly 11 steps)
+[c310ca82e229124e7b373125d82ea8fdbf2f9f81] arm64: dts: qcom: msm8916/39: Rename &blsp1_uartN -> &blsp_uartN
+
+testing commit c310ca82e229124e7b373125d82ea8fdbf2f9f81 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 755979301ab794c127da4b379359fd2f53587d00d1f4d6331ecd91fca9ee0350
+all runs: OK
+false negative chance: 0.000
+# git bisect good c310ca82e229124e7b373125d82ea8fdbf2f9f81
+Bisecting: 1902 revisions left to test after this (roughly 11 steps)
+[6322555dbeb46c512d6be42c3829087af4e4db9d] arm64: dts: mediatek: mt8173-elm: remove panel model number in DT
+
+testing commit 6322555dbeb46c512d6be42c3829087af4e4db9d gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 6ecc4278a30e4c1521b5ebf65cf6b0dcc42559de3d0d58df05485bf1657f50a7
+all runs: OK
+false negative chance: 0.000
+# git bisect good 6322555dbeb46c512d6be42c3829087af4e4db9d
+Bisecting: 1865 revisions left to test after this (roughly 11 steps)
+[c98c81a4ac37b651be7eb9d16f562fc4acc5f867] io_uring: merge conditional unlock flush helpers
+
+testing commit c98c81a4ac37b651be7eb9d16f562fc4acc5f867 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: c00ac3bfebcd9101b3f907c2ee572aa085091f615e160e339d7624c2adcf5c60
+all runs: OK
+false negative chance: 0.000
+# git bisect good c98c81a4ac37b651be7eb9d16f562fc4acc5f867
+Bisecting: 1865 revisions left to test after this (roughly 11 steps)
+[f7f567b95b12eda7a6a273b8cb82d152491bc0da] kexec: clear crashk_res if all its memory has been released
+
+testing commit f7f567b95b12eda7a6a273b8cb82d152491bc0da gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 7617e6cec9e31778d02086e1a9219aa29d5a486fe0e1a6164964867eff73ec4e
+all runs: OK
+false negative chance: 0.000
+# git bisect good f7f567b95b12eda7a6a273b8cb82d152491bc0da
+Bisecting: 1865 revisions left to test after this (roughly 11 steps)
+[098c5dd9cf96fc6d7f35429561ef58cd7c5fcecf] Merge tag 'erofs-for-6.5-rc1' of git://git.kernel.org/pub/scm/linux/kernel/git/xiang/erofs
+
+testing commit 098c5dd9cf96fc6d7f35429561ef58cd7c5fcecf gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 94af70443cd0d6c9e115b5d7dd2ed17f89dd743ad9435bc2566aee583784fe5f
+all runs: OK
+false negative chance: 0.000
+# git bisect good 098c5dd9cf96fc6d7f35429561ef58cd7c5fcecf
+Bisecting: 1865 revisions left to test after this (roughly 11 steps)
+[6d50eb4725934fd22f5eeccb401000687c790fd0] dm integrity: reduce vmalloc space footprint on 32-bit architectures
+
+testing commit 6d50eb4725934fd22f5eeccb401000687c790fd0 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 1c83251f3151c59a4f4100d62e291a092ae1ac56493b34d4c61a6e3f6817fc0f
+all runs: OK
+false negative chance: 0.000
+# git bisect good 6d50eb4725934fd22f5eeccb401000687c790fd0
+Bisecting: 1853 revisions left to test after this (roughly 11 steps)
+[3ad7092f5145aab4118f575b57f0ab1707b1cd36] perf test: Add metric value validation test
+
+testing commit 3ad7092f5145aab4118f575b57f0ab1707b1cd36 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 2a0523228e7b3a7f32a2336bf2dd7c0a1238387690f86cd43678427fb461e296
+all runs: OK
+false negative chance: 0.000
+# git bisect good 3ad7092f5145aab4118f575b57f0ab1707b1cd36
+Bisecting: 1830 revisions left to test after this (roughly 11 steps)
+[4f9b94d848696166011bead3109541ec2a523bb8] drm/scheduler: avoid infinite loop if entity's dependency is a scheduled error fence
+
+testing commit 4f9b94d848696166011bead3109541ec2a523bb8 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 1519c89bca47f65e6475b66f4bde1758b04bca09dec1512b5051dd1fbf9a8584
+all runs: OK
+false negative chance: 0.000
+# git bisect good 4f9b94d848696166011bead3109541ec2a523bb8
+Bisecting: 1830 revisions left to test after this (roughly 11 steps)
+[e38910c0072b541a91954682c8b074a93e57c09b] can: isotp: isotp_sendmsg(): fix return error fix on TX path
+

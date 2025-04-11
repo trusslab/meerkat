@@ -1,0 +1,265 @@
+charm starts bisection 2025-04-06 23:23:45.530197909 -0700 PDT m=+9.325273536
+bisecting cause commit starting from 533925cb760431cb496a8c965cfd765a1a21d37e
+building syzkaller on HEAD
+ensuring issue is reproducible on original commit 533925cb760431cb496a8c965cfd765a1a21d37e
+
+testing commit 533925cb760431cb496a8c965cfd765a1a21d37e gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 8bfa964210465294dcd9eb9dbe2b467697c19bc8db65cd449cad1ed82d4eeb8f
+all runs: crashed: INFO: task hung in pipe_release
+representative crash: INFO: task hung in pipe_release, types: [HANG]
+picked [v6.4 v6.3 v6.2 v6.0 v5.18 v5.16 v5.14 v5.12 v5.9 v5.6 v5.3 v5.0 v4.19] out of 27 release tags
+testing release v6.4
+testing commit 6995e2de6891c724bfeb2db33d7b87775f913ad1 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: f9b2a1eac03657bc5edec92c0bf94fba3115e03262900b190559c5f4f2045071
+all runs: OK
+false negative chance: 0.000
+# git bisect start 533925cb760431cb496a8c965cfd765a1a21d37e 6995e2de6891c724bfeb2db33d7b87775f913ad1
+Bisecting: 4401 revisions left to test after this (roughly 12 steps)
+[ff7ddcf0db48a7d9ae536eb0875428117be1d1f1] Merge tag 'clk-for-linus' of git://git.kernel.org/pub/scm/linux/kernel/git/clk/linux
+
+testing commit ff7ddcf0db48a7d9ae536eb0875428117be1d1f1 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: da64a83187afde479b0ef7dda0be9a770dce2325c55badcdf7a853a2b2834dc6
+all runs: basic kernel testing failed: UBSAN: array-index-out-of-bounds in alloc_pid
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip ff7ddcf0db48a7d9ae536eb0875428117be1d1f1
+Bisecting: 4401 revisions left to test after this (roughly 12 steps)
+[ec7023e6745e6fb34cd855522cb8f995194bdbf1] selftests: mlxsw: qos_ets_strict: Disable IPv6 autogen on bridges
+
+testing commit ec7023e6745e6fb34cd855522cb8f995194bdbf1 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: e52ce676fbb8acb8d1a68f520025db97e3d7f2112865f958f916afa7ea81a3eb
+all runs: crashed: INFO: task hung in pipe_release
+representative crash: INFO: task hung in pipe_release, types: [HANG]
+# git bisect bad ec7023e6745e6fb34cd855522cb8f995194bdbf1
+Bisecting: 596 revisions left to test after this (roughly 9 steps)
+[a395b8d1c7c3a074bfa83b9759a4a11901a295c5] selftests/tc-testing: replace mq with invalid parent ID
+
+testing commit a395b8d1c7c3a074bfa83b9759a4a11901a295c5 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 9de883915314bf7814e7a4698a313edde7071283a3548a27ccbf18109c06c9e6
+all runs: crashed: INFO: task hung in pipe_release
+representative crash: INFO: task hung in pipe_release, types: [HANG]
+# git bisect bad a395b8d1c7c3a074bfa83b9759a4a11901a295c5
+Bisecting: 298 revisions left to test after this (roughly 8 steps)
+[1ecaf17d097c91a7bd2979c57f7c81c5eeaf526b] Merge tag 'nf-next-2023-05-18' of https://git.kernel.org/pub/scm/linux/kernel/git/netfilter/nf-next
+
+testing commit 1ecaf17d097c91a7bd2979c57f7c81c5eeaf526b gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 5a2b29008494e5318c1478989a892dd816b436501a74ca92f11c8a5513be7efe
+all runs: OK
+false negative chance: 0.000
+# git bisect good 1ecaf17d097c91a7bd2979c57f7c81c5eeaf526b
+Bisecting: 175 revisions left to test after this (roughly 7 steps)
+[4781e965e655b0f1736856908f861939dac79b4e] net: phy: broadcom: Register dummy IRQ handler
+
+testing commit 4781e965e655b0f1736856908f861939dac79b4e gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 5788d772e022d8ffd0f559dba9e925fcdc54c4469b2f565ac5f0746cacfc051f
+all runs: crashed: INFO: task hung in pipe_release
+representative crash: INFO: task hung in pipe_release, types: [HANG]
+# git bisect bad 4781e965e655b0f1736856908f861939dac79b4e
+Bisecting: 60 revisions left to test after this (roughly 6 steps)
+[96449f90240713bd9bd653d6b15266a1044cfa7b] net: Pass max frags into skb_append_pagefrags()
+
+testing commit 96449f90240713bd9bd653d6b15266a1044cfa7b gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: ed7880d80eef1ef7f17c59a6921c4172c37b831484a1db6c2b8653401d355c4c
+all runs: OK
+false negative chance: 0.000
+# git bisect good 96449f90240713bd9bd653d6b15266a1044cfa7b
+Bisecting: 29 revisions left to test after this (roughly 5 steps)
+[dad987484eaaa7cd7f7f7459f4aee1470d8ec8ef] net: phylink: add function to resolve clause 73 negotiation
+
+testing commit dad987484eaaa7cd7f7f7459f4aee1470d8ec8ef gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 788c72935c25999e3743b05e1f0a2df1d08cbbcead6897016ccee3aa3f6ea97f
+all runs: crashed: INFO: task hung in pipe_release
+representative crash: INFO: task hung in pipe_release, types: [HANG]
+# git bisect bad dad987484eaaa7cd7f7f7459f4aee1470d8ec8ef
+Bisecting: 15 revisions left to test after this (roughly 4 steps)
+[51c78a4d532efe9543a4df019ff405f05c6157f6] Merge branch 'splice-net-replace-sendpage-with-sendmsg-msg_splice_pages-part-1'
+
+testing commit 51c78a4d532efe9543a4df019ff405f05c6157f6 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: b84cbaca2dee137cb34e07089d672b1891f2197a2ff2c7ba1a8c77d975b30a54
+all runs: crashed: INFO: task hung in pipe_release
+representative crash: INFO: task hung in pipe_release, types: [HANG]
+# git bisect bad 51c78a4d532efe9543a4df019ff405f05c6157f6
+Bisecting: 6 revisions left to test after this (roughly 3 steps)
+[5367f9bbb86a9fa377f8cfc673d9b8a446f3e917] tcp: Fold do_tcp_sendpages() into tcp_sendpage_locked()
+
+testing commit 5367f9bbb86a9fa377f8cfc673d9b8a446f3e917 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 5bacec38265186e95784dccf6cf3dca5731b20dcf7ff6b7fcc2758641f743c8a
+all runs: OK
+false negative chance: 0.000
+# git bisect good 5367f9bbb86a9fa377f8cfc673d9b8a446f3e917
+Bisecting: 3 revisions left to test after this (roughly 2 steps)
+[7ac7c987850c3ec617c778f7bd871804dc1c648d] udp: Convert udp_sendpage() to use MSG_SPLICE_PAGES
+
+testing commit 7ac7c987850c3ec617c778f7bd871804dc1c648d gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 29a5af31972ffb81506c040dc87be54c3854e90941892d43b23718d62d9fd2f0
+all runs: crashed: INFO: task hung in pipe_release
+representative crash: INFO: task hung in pipe_release, types: [HANG]
+# git bisect bad 7ac7c987850c3ec617c778f7bd871804dc1c648d
+Bisecting: 0 revisions left to test after this (roughly 1 step)
+[6d8192bd69bb431ef6b2558be3b5746b706cd252] ip6, udp6: Support MSG_SPLICE_PAGES
+
+testing commit 6d8192bd69bb431ef6b2558be3b5746b706cd252 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 17ad83e41e9a97f7cdc02594355c0bcc8a13af0fc8e74e40d4c30263f7fa50ad
+all runs: OK
+false negative chance: 0.000
+# git bisect good 6d8192bd69bb431ef6b2558be3b5746b706cd252
+7ac7c987850c3ec617c778f7bd871804dc1c648d is the first bad commit
+commit 7ac7c987850c3ec617c778f7bd871804dc1c648d
+Author: David Howells <dhowells@redhat.com>
+Date:   Mon May 22 13:11:22 2023 +0100
+
+    udp: Convert udp_sendpage() to use MSG_SPLICE_PAGES
+    
+    Convert udp_sendpage() to use sendmsg() with MSG_SPLICE_PAGES rather than
+    directly splicing in the pages itself.
+    
+    This allows ->sendpage() to be replaced by something that can handle
+    multiple multipage folios in a single transaction.
+    
+    Signed-off-by: David Howells <dhowells@redhat.com>
+    cc: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+    cc: David Ahern <dsahern@kernel.org>
+    cc: Jens Axboe <axboe@kernel.dk>
+    cc: Matthew Wilcox <willy@infradead.org>
+    Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+
+ net/ipv4/udp.c | 51 ++++++---------------------------------------------
+ 1 file changed, 6 insertions(+), 45 deletions(-)
+
+accumulated error probability: 0.00
+culprit signature: 29a5af31972ffb81506c040dc87be54c3854e90941892d43b23718d62d9fd2f0
+parent  signature: 17ad83e41e9a97f7cdc02594355c0bcc8a13af0fc8e74e40d4c30263f7fa50ad
+revisions tested: 13, total time: 5h49m59.138062499s (build: 4h7m42.350735732s, test: 1h19m29.591386097s)
+first bad commit: 7ac7c987850c3ec617c778f7bd871804dc1c648d udp: Convert udp_sendpage() to use MSG_SPLICE_PAGES
+recipients (to): ["davem@davemloft.net" "dhowells@redhat.com" "dsahern@kernel.org" "edumazet@google.com" "kuba@kernel.org" "kuba@kernel.org" "netdev@vger.kernel.org" "pabeni@redhat.com"]
+recipients (cc): ["linux-kernel@vger.kernel.org" "willemdebruijn.kernel@gmail.com"]
+crash: INFO: task hung in pipe_release
+INFO: task syz-executor.0:8948 blocked for more than 143 seconds.
+      Not tainted 6.4.0-rc2-syzkaller #0
+"echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
+task:syz-executor.0  state:D stack:28432 pid:8948  ppid:8581   flags:0x00000004
+Call Trace:
+ <TASK>
+ context_switch mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/kernel/sched/core.c:5343 [inline]
+ __schedule+0xc9a/0x5880 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/kernel/sched/core.c:6669
+ schedule+0xde/0x1a0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/kernel/sched/core.c:6745
+ schedule_preempt_disabled+0x13/0x20 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/kernel/sched/core.c:6804
+ __mutex_lock_common mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/kernel/locking/mutex.c:679 [inline]
+ __mutex_lock+0xa3b/0x1350 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/kernel/locking/mutex.c:747
+ __pipe_lock mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/fs/pipe.c:103 [inline]
+ pipe_release+0x4d/0x310 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/fs/pipe.c:721
+ __fput+0x27c/0xa90 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/fs/file_table.c:321
+ task_work_run+0x16f/0x270 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/kernel/task_work.c:179
+ resume_user_mode_work mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/./include/linux/resume_user_mode.h:49 [inline]
+ exit_to_user_mode_loop mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/kernel/entry/common.c:171 [inline]
+ exit_to_user_mode_prepare+0x210/0x240 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/kernel/entry/common.c:204
+ __syscall_exit_to_user_mode_work mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/kernel/entry/common.c:286 [inline]
+ syscall_exit_to_user_mode+0x1d/0x50 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/kernel/entry/common.c:297
+ do_syscall_64+0x46/0xb0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/arch/x86/entry/common.c:86
+ entry_SYSCALL_64_after_hwframe+0x63/0xcd
+RIP: 0033:0x7f0e742408ab
+RSP: 002b:00007ffdd5d90410 EFLAGS: 00000293 ORIG_RAX: 0000000000000003
+RAX: 0000000000000000 RBX: 0000000000000005 RCX: 00007f0e742408ab
+RDX: 0000001b2c020000 RSI: 0000000000000000 RDI: 0000000000000004
+RBP: 00007f0e743cd980 R08: 0000000000000000 R09: 00007ffdd5d93080
+R10: 00007ffdd5d93090 R11: 0000000000000293 R12: 00000000000251bb
+R13: 00007ffdd5d90510 R14: 00007ffdd5d90530 R15: 0000000000000032
+ </TASK>
+
+Showing all locks held in the system:
+1 lock held by rcu_tasks_kthre/14:
+ #0: ffffffff8c794330 (rcu_tasks.tasks_gp_mutex){+.+.}-{3:3}, at: rcu_tasks_one_gp+0x31/0xd80 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/kernel/rcu/tasks.h:518
+1 lock held by rcu_tasks_trace/15:
+ #0: ffffffff8c794030 (rcu_tasks_trace.tasks_gp_mutex){+.+.}-{3:3}, at: rcu_tasks_one_gp+0x31/0xd80 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/kernel/rcu/tasks.h:518
+1 lock held by khungtaskd/32:
+ #0: ffffffff8c794f40 (rcu_read_lock){....}-{1:2}, at: debug_show_all_locks+0x55/0x340 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/kernel/locking/lockdep.c:6545
+1 lock held by in:imklog/7643:
+ #0: ffff888108eb85e8 (&f->f_pos_lock){+.+.}-{3:3}, at: __fdget_pos+0xe7/0x100 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/fs/file.c:1047
+1 lock held by syz-executor.0/8948:
+ #0: ffff888025097468 (&pipe->mutex/1){+.+.}-{3:3}, at: __pipe_lock mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/fs/pipe.c:103 [inline]
+ #0: ffff888025097468 (&pipe->mutex/1){+.+.}-{3:3}, at: pipe_release+0x4d/0x310 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/fs/pipe.c:721
+2 locks held by syz-executor.0/8949:
+1 lock held by syz-executor.0/9311:
+ #0: ffff888021e03468 (&pipe->mutex/1){+.+.}-{3:3}, at: __pipe_lock mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/fs/pipe.c:103 [inline]
+ #0: ffff888021e03468 (&pipe->mutex/1){+.+.}-{3:3}, at: pipe_release+0x4d/0x310 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/fs/pipe.c:721
+2 locks held by syz-executor.0/9312:
+1 lock held by syz-executor.0/9676:
+ #0: ffff888021ff9c68 (&pipe->mutex/1){+.+.}-{3:3}, at: __pipe_lock mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/fs/pipe.c:103 [inline]
+ #0: ffff888021ff9c68 (&pipe->mutex/1){+.+.}-{3:3}, at: pipe_release+0x4d/0x310 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/fs/pipe.c:721
+2 locks held by syz-executor.0/9677:
+
+=============================================
+
+NMI backtrace for cpu 1
+CPU: 1 PID: 32 Comm: khungtaskd Not tainted 6.4.0-rc2-syzkaller #0
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.13.0-1ubuntu1.1 04/01/2014
+Call Trace:
+ <TASK>
+ __dump_stack mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/lib/dump_stack.c:88 [inline]
+ dump_stack_lvl+0xd9/0x150 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/lib/dump_stack.c:106
+ nmi_cpu_backtrace+0x29c/0x350 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/lib/nmi_backtrace.c:113
+ nmi_trigger_cpumask_backtrace+0x2a4/0x300 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/lib/nmi_backtrace.c:62
+ trigger_all_cpu_backtrace mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/./include/linux/nmi.h:148 [inline]
+ check_hung_uninterruptible_tasks mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/kernel/hung_task.c:222 [inline]
+ watchdog+0xe16/0x1090 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/kernel/hung_task.c:379
+ kthread+0x344/0x440 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/kernel/kthread.c:379
+ ret_from_fork+0x1f/0x30 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/arch/x86/entry/entry_64.S:308
+ </TASK>
+Sending NMI from CPU 1 to CPUs 0:
+NMI backtrace for cpu 0
+CPU: 0 PID: 4463 Comm: systemd-journal Not tainted 6.4.0-rc2-syzkaller #0
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.13.0-1ubuntu1.1 04/01/2014
+RIP: 0010:preempt_count_add+0x36/0x140 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/kernel/sched/core.c:5815
+Code: 48 ba 00 00 00 00 00 fc ff df 48 89 c1 53 83 e0 07 89 fb 48 c1 e9 03 83 c0 03 0f b6 14 11 38 d0 7c 08 84 d2 0f 85 e1 00 00 00 <8b> 15 b4 ef 85 10 65 01 1d 35 57 ac 7e 85 d2 75 11 65 8b 05 2a 57
+RSP: 0018:ffffc900029ffa20 EFLAGS: 00000297
+RAX: 0000000000000003 RBX: 0000000000000001 RCX: 1ffffffff23baa80
+RDX: 0000000000000004 RSI: ffffffff816f8e10 RDI: 0000000000000001
+RBP: ffffc900029ffaf0 R08: 0000000000000001 R09: ffffc900029fff08
+R10: ffffc900029ffaa8 R11: 0000000000094001 R12: ffffc900029ffb60
+R13: ffffc900029ffaa8 R14: ffff8881027a8000 R15: ffff888020e67400
+FS:  00007f3a02f568c0(0000) GS:ffff888063a00000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007f39fe6072c0 CR3: 0000000020df6000 CR4: 0000000000350ef0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+ <TASK>
+ unwind_next_frame+0xad/0x1e30 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/arch/x86/kernel/unwind_orc.c:451
+ arch_stack_walk+0x81/0xf0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/arch/x86/kernel/stacktrace.c:25
+ stack_trace_save+0x90/0xc0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/kernel/stacktrace.c:122
+ kasan_save_stack+0x22/0x40 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/kasan/common.c:45
+ __kasan_record_aux_stack+0xbc/0xd0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/kasan/generic.c:491
+ __call_rcu_common.constprop.0+0x99/0x7e0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/kernel/rcu/tree.c:2627
+ task_work_run+0x16f/0x270 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/kernel/task_work.c:179
+ resume_user_mode_work mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/./include/linux/resume_user_mode.h:49 [inline]
+ exit_to_user_mode_loop mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/kernel/entry/common.c:171 [inline]
+ exit_to_user_mode_prepare+0x210/0x240 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/kernel/entry/common.c:204
+ __syscall_exit_to_user_mode_work mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/kernel/entry/common.c:286 [inline]
+ syscall_exit_to_user_mode+0x1d/0x50 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/kernel/entry/common.c:297
+ do_syscall_64+0x46/0xb0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/arch/x86/entry/common.c:86
+ entry_SYSCALL_64_after_hwframe+0x63/0xcd
+RIP: 0033:0x7f3a01c10840
+Code: 73 01 c3 48 8b 0d 68 77 20 00 f7 d8 64 89 01 48 83 c8 ff c3 66 0f 1f 44 00 00 83 3d 89 bb 20 00 00 75 10 b8 02 00 00 00 0f 05 <48> 3d 01 f0 ff ff 73 31 c3 48 83 ec 08 e8 1e f6 ff ff 48 89 04 24
+RSP: 002b:00007ffc53e49168 EFLAGS: 00000246 ORIG_RAX: 0000000000000002
+RAX: fffffffffffffffe RBX: 00007ffc53e49470 RCX: 00007f3a01c10840
+RDX: 00000000000001a0 RSI: 0000000000080042 RDI: 0000561ca165c080
+RBP: 000000000000000d R08: 0000000000000000 R09: 00000000ffffffff
+R10: 0000000000000069 R11: 0000000000000246 R12: 00000000ffffffff
+R13: 0000561ca1658060 R14: 00007ffc53e49430 R15: 0000561ca1663b10
+ </TASK>
+
+
+INFO: task hung in pipe_release
+7ac7c987850c3ec617c778f7bd871804dc1c648d

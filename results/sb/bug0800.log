@@ -1,0 +1,297 @@
+charm starts bisection 2025-04-01 07:13:51.242776184 -0700 PDT m=+4.368255423
+bisecting cause commit starting from babe393974de0351c0e6cca50f5f84edaf8d7fa1
+building syzkaller on HEAD
+ensuring issue is reproducible on original commit babe393974de0351c0e6cca50f5f84edaf8d7fa1
+
+testing commit babe393974de0351c0e6cca50f5f84edaf8d7fa1 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 3f5e089b5591017a16d5d9f39e6786050f6617cee00fd9aa3cd771750a59f290
+run #0: crashed: BUG: corrupted list in ptp_release
+run #1: crashed: BUG: corrupted list in ptp_release
+run #2: crashed: KASAN: slab-use-after-free Read in ptp_release
+run #3: crashed: BUG: corrupted list in ptp_release
+run #4: crashed: KASAN: slab-use-after-free Read in ptp_release
+run #5: OK
+run #6: OK
+run #7: OK
+representative crash: BUG: corrupted list in ptp_release, types: [BUG KASAN]
+picked [v6.6 v6.5 v6.4 v6.2 v6.0 v5.18 v5.16 v5.14 v5.11 v5.8 v5.5 v5.2 v4.20 v4.19] out of 29 release tags
+testing release v6.6
+testing commit ffc253263a1375a65fa6c9f62a893e9767fbebfa gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: b4d1f44a5a2fe024f9306e7460f5d5a6c6ae3175016eb7ab2f67fa8d54f244fd
+all runs: OK
+false negative chance: 0.000
+# git bisect start babe393974de0351c0e6cca50f5f84edaf8d7fa1 ffc253263a1375a65fa6c9f62a893e9767fbebfa
+Bisecting: 4421 revisions left to test after this (roughly 12 steps)
+[89ed67ef126c4160349c1b96fdb775ea6170ac90] Merge tag 'net-next-6.7' of git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net-next
+
+testing commit 89ed67ef126c4160349c1b96fdb775ea6170ac90 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 0bdf03fda1749f4f9e780ec02d6b276d5290f9157e396ea15685613c141c657a
+run #0: crashed: BUG: corrupted list in ptp_release
+run #1: crashed: BUG: corrupted list in ptp_release
+run #2: crashed: BUG: corrupted list in ptp_release
+run #3: crashed: BUG: corrupted list in ptp_release
+run #4: crashed: BUG: corrupted list in ptp_release
+run #5: crashed: BUG: corrupted list in ptp_release
+run #6: crashed: BUG: corrupted list in ptp_release
+run #7: OK
+representative crash: BUG: corrupted list in ptp_release, types: [BUG]
+# git bisect bad 89ed67ef126c4160349c1b96fdb775ea6170ac90
+Bisecting: 3061 revisions left to test after this (roughly 12 steps)
+[b827ac419721a106ae2fccaa40576b0594edad92] exportfs: Change bcachefs fid_type enum to avoid conflicts
+
+testing commit b827ac419721a106ae2fccaa40576b0594edad92 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 85ccc3ab07d275c48d7b36d0a8ac0ef6c01052098e221993562fe6c796778c13
+all runs: OK
+false negative chance: 0.000
+# git bisect good b827ac419721a106ae2fccaa40576b0594edad92
+Bisecting: 1530 revisions left to test after this (roughly 11 steps)
+[d1a02ed66fe62aa2edd77bd54e270ebc33bd12ff] tcp: rename tcp_skb_timestamp()
+
+testing commit d1a02ed66fe62aa2edd77bd54e270ebc33bd12ff gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 75bcc8c9b590b3481db01a14cbe7a41f6cc5bc890865a81399bed41e82a73fdf
+run #0: crashed: BUG: corrupted list in ptp_release
+run #1: crashed: BUG: corrupted list in ptp_release
+run #2: crashed: BUG: corrupted list in ptp_release
+run #3: crashed: BUG: corrupted list in ptp_release
+run #4: crashed: BUG: corrupted list in ptp_release
+run #5: crashed: BUG: corrupted list in ptp_release
+run #6: crashed: BUG: corrupted list in ptp_release
+run #7: OK
+representative crash: BUG: corrupted list in ptp_release, types: [BUG]
+# git bisect bad d1a02ed66fe62aa2edd77bd54e270ebc33bd12ff
+Bisecting: 868 revisions left to test after this (roughly 10 steps)
+[3abbd0699b678fc48e0100704338cff9180fe4bb] net: phy: broadcom: add support for BCM5221 phy
+
+testing commit 3abbd0699b678fc48e0100704338cff9180fe4bb gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: f943a14c7607c9c0876848725a0d3b249c59c637af0a8b5ea403ae109b5708c4
+all runs: OK
+false negative chance: 0.000
+# git bisect good 3abbd0699b678fc48e0100704338cff9180fe4bb
+Bisecting: 434 revisions left to test after this (roughly 9 steps)
+[5a423552e0d9bb882f22cb0bf85f520ca2692706] i40e: Add handler for devlink .info_get
+
+testing commit 5a423552e0d9bb882f22cb0bf85f520ca2692706 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 965184d0f5e948f0ee796c7994c1991177334e616c0ddd2503a58183958a1c7b
+all runs: OK
+false negative chance: 0.000
+# git bisect good 5a423552e0d9bb882f22cb0bf85f520ca2692706
+Bisecting: 175 revisions left to test after this (roughly 8 steps)
+[56a7bb12c78ffa1b02e154b1d779ed2a1555fa3c] Merge tag 'wireless-next-2023-10-16' of git://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next
+
+testing commit 56a7bb12c78ffa1b02e154b1d779ed2a1555fa3c gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: b3d990ca781cc28b35977df4ffa6220b711b825944f70c8432798398919ccb7a
+run #0: crashed: BUG: corrupted list in ptp_release
+run #1: crashed: KASAN: slab-use-after-free Read in ptp_release
+run #2: crashed: BUG: corrupted list in ptp_release
+run #3: crashed: BUG: corrupted list in ptp_release
+run #4: crashed: BUG: corrupted list in ptp_release
+run #5: crashed: BUG: corrupted list in ptp_release
+run #6: crashed: BUG: corrupted list in ptp_release
+run #7: crashed: BUG: corrupted list in ptp_release
+representative crash: BUG: corrupted list in ptp_release, types: [BUG]
+# git bisect bad 56a7bb12c78ffa1b02e154b1d779ed2a1555fa3c
+Bisecting: 118 revisions left to test after this (roughly 7 steps)
+[a3c2dd96487f1dd734c9443a3472c8dafa689813] Merge tag 'for-netdev' of https://git.kernel.org/pub/scm/linux/kernel/git/bpf/bpf-next
+
+testing commit a3c2dd96487f1dd734c9443a3472c8dafa689813 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 37e0d5fb44e6e9347dbeb1a9dd36e15166335cb0fd3feadffb90141869c21c32
+run #0: crashed: BUG: corrupted list in ptp_release
+run #1: crashed: BUG: corrupted list in ptp_release
+run #2: crashed: BUG: corrupted list in ptp_release
+run #3: crashed: BUG: corrupted list in ptp_release
+run #4: crashed: BUG: corrupted list in ptp_release
+run #5: crashed: BUG: corrupted list in ptp_release
+run #6: OK
+run #7: OK
+representative crash: BUG: corrupted list in ptp_release, types: [BUG]
+# git bisect bad a3c2dd96487f1dd734c9443a3472c8dafa689813
+Bisecting: 69 revisions left to test after this (roughly 6 steps)
+[84cb9cbd911a3e06c1ff31572706ba0ee3499b19] bpf: Annotate struct bpf_stack_map with __counted_by
+
+testing commit 84cb9cbd911a3e06c1ff31572706ba0ee3499b19 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: dee06daf2437edb1e5371c6b4b39a2c2c7071c62a164598c45785f2df8b4bc0f
+all runs: OK
+false negative chance: 0.000
+# git bisect good 84cb9cbd911a3e06c1ff31572706ba0ee3499b19
+Bisecting: 34 revisions left to test after this (roughly 5 steps)
+[c60991f8e187eb73dbea2375c08ccba8f544bd49] cgroup, netclassid: on modifying netclassid in cgroup, only consider the main process.
+
+testing commit c60991f8e187eb73dbea2375c08ccba8f544bd49 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 17fa1d2ff426e6ad2bbce27bb9a71638f205c934bae4dc38e4752f375baace1d
+run #0: crashed: BUG: corrupted list in ptp_release
+run #1: crashed: BUG: corrupted list in ptp_release
+run #2: crashed: BUG: corrupted list in ptp_release
+run #3: crashed: BUG: corrupted list in ptp_release
+run #4: crashed: BUG: corrupted list in ptp_release
+run #5: crashed: BUG: corrupted list in ptp_release
+run #6: crashed: BUG: corrupted list in ptp_release
+run #7: OK
+representative crash: BUG: corrupted list in ptp_release, types: [BUG]
+# git bisect bad c60991f8e187eb73dbea2375c08ccba8f544bd49
+Bisecting: 17 revisions left to test after this (roughly 4 steps)
+[101c6032031f4dba72b91e6c766e958a5e429622] net: cxgb3: simplify logic for rspq_check_napi
+
+testing commit 101c6032031f4dba72b91e6c766e958a5e429622 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: e733f91018d731e1ccb58b5ba0aecda35b019ef90072f7131e0b2d787c655b9e
+run #0: crashed: BUG: corrupted list in ptp_release
+run #1: crashed: KASAN: slab-use-after-free Read in ptp_release
+run #2: crashed: BUG: corrupted list in ptp_release
+run #3: crashed: BUG: corrupted list in ptp_release
+run #4: crashed: BUG: corrupted list in ptp_release
+run #5: crashed: BUG: corrupted list in ptp_release
+run #6: crashed: BUG: corrupted list in ptp_release
+run #7: crashed: BUG: corrupted list in ptp_release
+representative crash: BUG: corrupted list in ptp_release, types: [BUG]
+# git bisect bad 101c6032031f4dba72b91e6c766e958a5e429622
+Bisecting: 7 revisions left to test after this (roughly 3 steps)
+[99620ea03327c5e73407f48a6994578f71951a87] Merge branch 'dpll-phase-offset-phase-adjust'
+
+testing commit 99620ea03327c5e73407f48a6994578f71951a87 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 31be3a9da2c290c38b3ab07b69f50bfd145a054101754778c049e7f6fb628d8e
+all runs: OK
+false negative chance: 0.000
+# git bisect good 99620ea03327c5e73407f48a6994578f71951a87
+Bisecting: 3 revisions left to test after this (roughly 2 steps)
+[c5a445b1e9347b14752b01f1a304bd7a2f260acc] ptp: support event queue reader channel masks
+
+testing commit c5a445b1e9347b14752b01f1a304bd7a2f260acc gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: dc116d9aebd27ee8dbb768670ea72c5271d24f24ed660815140b77a37fb73673
+run #0: crashed: BUG: corrupted list in ptp_release
+run #1: crashed: BUG: corrupted list in ptp_release
+run #2: crashed: KASAN: slab-use-after-free Read in ptp_release
+run #3: crashed: BUG: corrupted list in ptp_release
+run #4: crashed: KASAN: slab-use-after-free Read in ptp_open
+run #5: crashed: BUG: corrupted list in ptp_release
+run #6: crashed: BUG: corrupted list in ptp_release
+run #7: crashed: BUG: corrupted list in ptp_release
+representative crash: BUG: corrupted list in ptp_release, types: [BUG]
+# git bisect bad c5a445b1e9347b14752b01f1a304bd7a2f260acc
+Bisecting: 1 revision left to test after this (roughly 1 step)
+[d26ab5a35ad9920940a9e07665130d501b2ae1a3] ptp: Replace timestamp event queue with linked list
+
+testing commit d26ab5a35ad9920940a9e07665130d501b2ae1a3 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 1d49c39c7aa451ccdbad08b8102529c40104d419666661f3b5f93a6a04dbfc36
+all runs: OK
+false negative chance: 0.000
+# git bisect good d26ab5a35ad9920940a9e07665130d501b2ae1a3
+Bisecting: 0 revisions left to test after this (roughly 0 steps)
+[8f5de6fb245326704f37d91780b9a10253a8a100] ptp: support multiple timestamp event readers
+
+testing commit 8f5de6fb245326704f37d91780b9a10253a8a100 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: cd59d7ca38278faecd317a3a88bd334c3e815cdd97cfa5c086aeb52798fcf669
+run #0: crashed: BUG: corrupted list in ptp_release
+run #1: crashed: KASAN: slab-use-after-free Read in ptp_release
+run #2: crashed: BUG: corrupted list in ptp_release
+run #3: crashed: BUG: corrupted list in ptp_release
+run #4: crashed: BUG: corrupted list in ptp_release
+run #5: crashed: BUG: corrupted list in ptp_release
+run #6: crashed: BUG: corrupted list in ptp_release
+run #7: crashed: BUG: corrupted list in ptp_release
+representative crash: BUG: corrupted list in ptp_release, types: [BUG]
+# git bisect bad 8f5de6fb245326704f37d91780b9a10253a8a100
+8f5de6fb245326704f37d91780b9a10253a8a100 is the first bad commit
+commit 8f5de6fb245326704f37d91780b9a10253a8a100
+Author: Xabier Marquiegui <reibax@gmail.com>
+Date:   Thu Oct 12 00:39:55 2023 +0200
+
+    ptp: support multiple timestamp event readers
+    
+    Use linked lists to create one event queue per open file. This enables
+    simultaneous readers for timestamp event queues.
+    
+    Signed-off-by: Xabier Marquiegui <reibax@gmail.com>
+    Suggested-by: Richard Cochran <richardcochran@gmail.com>
+    Signed-off-by: David S. Miller <davem@davemloft.net>
+
+ drivers/ptp/ptp_chardev.c | 68 ++++++++++++++++++++++++++++++++++-------------
+ drivers/ptp/ptp_clock.c   |  6 ++---
+ drivers/ptp/ptp_private.h |  1 -
+ drivers/ptp/ptp_sysfs.c   |  9 +++----
+ 4 files changed, 55 insertions(+), 29 deletions(-)
+
+accumulated error probability: 0.00
+culprit signature: cd59d7ca38278faecd317a3a88bd334c3e815cdd97cfa5c086aeb52798fcf669
+parent  signature: 1d49c39c7aa451ccdbad08b8102529c40104d419666661f3b5f93a6a04dbfc36
+revisions tested: 16, total time: 6h19m39.460536808s (build: 3h40m30.124199239s, test: 2h19m43.142826256s)
+first bad commit: 8f5de6fb245326704f37d91780b9a10253a8a100 ptp: support multiple timestamp event readers
+recipients (to): ["davem@davemloft.net" "netdev@vger.kernel.org" "reibax@gmail.com" "richardcochran@gmail.com"]
+recipients (cc): ["linux-kernel@vger.kernel.org"]
+crash: BUG: corrupted list in ptp_release
+list_del corruption. prev->next should be ffff888118865048, but was ffff888013e8e5e8. (prev=ffff88810903d048)
+------------[ cut here ]------------
+kernel BUG at lib/list_debug.c:62!
+invalid opcode: 0000 [#1] PREEMPT SMP KASAN
+CPU: 1 PID: 12032 Comm: syz-executor.4 Not tainted 6.6.0-rc5-syzkaller #0
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.13.0-1ubuntu1.1 04/01/2014
+RIP: 0010:__list_del_entry_valid_or_report+0x11f/0x1b0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/lib/list_debug.c:62
+Code: 03 c7 8a e8 c3 f6 4d fd 0f 0b 48 89 ca 48 c7 c7 20 04 c7 8a e8 b2 f6 4d fd 0f 0b 4c 89 c2 48 c7 c7 80 04 c7 8a e8 a1 f6 4d fd <0f> 0b 48 89 d1 48 c7 c7 00 05 c7 8a 4c 89 c2 e8 8d f6 4d fd 0f 0b
+RSP: 0018:ffffc9000306fe00 EFLAGS: 00010082
+RAX: 000000000000006d RBX: ffff88810d1d22c0 RCX: 0000000000000000
+RDX: 0000000000000000 RSI: ffffffff816aa9de RDI: 0000000000000005
+RBP: ffff888118864000 R08: 0000000000000005 R09: 0000000000000000
+R10: 0000000080000001 R11: 0000000000000001 R12: 0000000000000293
+R13: ffff888118865048 R14: ffff888118865008 R15: ffff888118865050
+FS:  00005555566b0980(0000) GS:ffff888135c00000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007fbf4f7c8000 CR3: 000000001c401000 CR4: 0000000000350ee0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+ <TASK>
+ __list_del_entry_valid mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/./include/linux/list.h:124 [inline]
+ __list_del_entry mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/./include/linux/list.h:215 [inline]
+ list_del mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/./include/linux/list.h:229 [inline]
+ ptp_release+0x7b/0x210 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/drivers/ptp/ptp_chardev.c:127
+ posix_clock_release+0xa4/0x160 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/kernel/time/posix-clock.c:157
+ __fput+0x406/0xa70 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/fs/file_table.c:384
+ __fput_sync+0x45/0x50 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/fs/file_table.c:465
+ __do_sys_close mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/fs/open.c:1572 [inline]
+ __se_sys_close mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/fs/open.c:1557 [inline]
+ __x64_sys_close+0x8c/0x110 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/fs/open.c:1557
+ do_syscall_x64 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/arch/x86/entry/common.c:50 [inline]
+ do_syscall_64+0x39/0xb0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/arch/x86/entry/common.c:80
+ entry_SYSCALL_64_after_hwframe+0x63/0xcd
+RIP: 0033:0x7fbf4f6408ab
+Code: 03 00 00 00 0f 05 48 3d 00 f0 ff ff 77 41 c3 48 83 ec 18 89 7c 24 0c e8 63 fc ff ff 8b 7c 24 0c 41 89 c0 b8 03 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 2f 44 89 c7 89 44 24 0c e8 a1 fc ff ff 8b 44
+RSP: 002b:00007ffcfbe6e700 EFLAGS: 00000293 ORIG_RAX: 0000000000000003
+RAX: ffffffffffffffda RBX: 0000000000000004 RCX: 00007fbf4f6408ab
+RDX: 00007fbf4f2000a8 RSI: ffffffffffffffff RDI: 0000000000000003
+RBP: 00007fbf4f7cd980 R08: 0000000000000000 R09: 00007fbf4f200000
+R10: 00007fbf4f2000b0 R11: 0000000000000293 R12: 000000000003a346
+R13: 00007ffcfbe6e800 R14: 00007fbf4f7cbf80 R15: 0000000000000032
+ </TASK>
+Modules linked in:
+---[ end trace 0000000000000000 ]---
+RIP: 0010:__list_del_entry_valid_or_report+0x11f/0x1b0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/lib/list_debug.c:62
+Code: 03 c7 8a e8 c3 f6 4d fd 0f 0b 48 89 ca 48 c7 c7 20 04 c7 8a e8 b2 f6 4d fd 0f 0b 4c 89 c2 48 c7 c7 80 04 c7 8a e8 a1 f6 4d fd <0f> 0b 48 89 d1 48 c7 c7 00 05 c7 8a 4c 89 c2 e8 8d f6 4d fd 0f 0b
+RSP: 0018:ffffc9000306fe00 EFLAGS: 00010082
+RAX: 000000000000006d RBX: ffff88810d1d22c0 RCX: 0000000000000000
+RDX: 0000000000000000 RSI: ffffffff816aa9de RDI: 0000000000000005
+RBP: ffff888118864000 R08: 0000000000000005 R09: 0000000000000000
+R10: 0000000080000001 R11: 0000000000000001 R12: 0000000000000293
+R13: ffff888118865048 R14: ffff888118865008 R15: ffff888118865050
+FS:  00005555566b0980(0000) GS:ffff888135c00000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007fbf4f7c8000 CR3: 000000001c401000 CR4: 0000000000350ee0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+
+
+BUG: corrupted list in ptp_open
+8f5de6fb245326704f37d91780b9a10253a8a100

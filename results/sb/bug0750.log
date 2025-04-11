@@ -1,0 +1,157 @@
+TrussLab starts bisection 2025-03-21 20:29:22.79683135 -0700 PDT m=+4.277463415
+bisecting cause commit starting from b57b17e88bf58860dad312d08db7d6708ee6d06d
+building syzkaller on HEAD
+ensuring issue is reproducible on original commit b57b17e88bf58860dad312d08db7d6708ee6d06d
+
+testing commit b57b17e88bf58860dad312d08db7d6708ee6d06d gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 5ae49fc08942016ee2e7f11894565d3b61d134436b9eb87f5f75166d039e974f
+all runs: crashed: WARNING in kvm_mmu_notifier_invalidate_range_start
+representative crash: WARNING in kvm_mmu_notifier_invalidate_range_start, types: [WARNING]
+picked [v6.6 v6.5 v6.4 v6.2 v6.0 v5.18 v5.16 v5.14 v5.11 v5.8 v5.5 v5.2 v4.20 v4.19] out of 29 release tags
+testing release v6.6
+testing commit ffc253263a1375a65fa6c9f62a893e9767fbebfa gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 70b3e1125fa42a7b5796b5968a7a82fa21c1b9f8d7d1d56766624a0857711658
+all runs: OK
+false negative chance: 0.000
+# git bisect start b57b17e88bf58860dad312d08db7d6708ee6d06d ffc253263a1375a65fa6c9f62a893e9767fbebfa
+Bisecting: 7551 revisions left to test after this (roughly 13 steps)
+[7d461b291e65938f15f56fe58da2303b07578a76] Merge tag 'drm-next-2023-10-31-1' of git://anongit.freedesktop.org/drm/drm
+
+testing commit 7d461b291e65938f15f56fe58da2303b07578a76 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: dbbe92fe2a6397ce003fcc44b18bd2c8072916b98eec70c595dba6e3843e2f95
+all runs: OK
+false negative chance: 0.000
+# git bisect good 7d461b291e65938f15f56fe58da2303b07578a76
+Bisecting: 3783 revisions left to test after this (roughly 12 steps)
+[00657bb3dbecee324336e1da1ad71b670b6aee60] Merge tag 'livepatching-for-6.7' of git://git.kernel.org/pub/scm/linux/kernel/git/livepatching/livepatching
+
+testing commit 00657bb3dbecee324336e1da1ad71b670b6aee60 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: b6106fd54a70da117757743ccffebf2c0f632832f6e30e2b71e979112e9a21c4
+all runs: crashed: WARNING in kvm_mmu_notifier_invalidate_range_start
+representative crash: WARNING in kvm_mmu_notifier_invalidate_range_start, types: [WARNING]
+# git bisect bad 00657bb3dbecee324336e1da1ad71b670b6aee60
+Bisecting: 1894 revisions left to test after this (roughly 11 steps)
+[27beb3ca347fa29fef5c23b351120239b8cf0612] Merge tag 'pci-v6.7-changes' of git://git.kernel.org/pub/scm/linux/kernel/git/pci/pci
+
+testing commit 27beb3ca347fa29fef5c23b351120239b8cf0612 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 2d22cc4e96b313cdd356bb6d96a619db772411f50a17d7824d31458dc99b5986
+all runs: OK
+false negative chance: 0.000
+# git bisect good 27beb3ca347fa29fef5c23b351120239b8cf0612
+Bisecting: 958 revisions left to test after this (roughly 10 steps)
+[5be9911406ada8fe6187db7ce402f7ff4c21ebdf] Merge tag 'sh-for-v6.7-tag1' of git://git.kernel.org/pub/scm/linux/kernel/git/glaubitz/sh-linux
+
+testing commit 5be9911406ada8fe6187db7ce402f7ff4c21ebdf gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 85f0ca98badded936762beb6aa5c57a9cfe4c7cfd154ea9680cf4c8613837ab1
+all runs: OK
+false negative chance: 0.000
+# git bisect good 5be9911406ada8fe6187db7ce402f7ff4c21ebdf
+Bisecting: 488 revisions left to test after this (roughly 9 steps)
+[bc3012f4e3a9765de81f454cb8f9bb16aafc6ff5] Merge tag 'v6.7-p1' of git://git.kernel.org/pub/scm/linux/kernel/git/herbert/crypto-2.6
+
+testing commit bc3012f4e3a9765de81f454cb8f9bb16aafc6ff5 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 3b8da84db8d594795fdb7917edfb0139224c354dc78ce96b2ce4b94fd31213bc
+all runs: OK
+false negative chance: 0.000
+# git bisect good bc3012f4e3a9765de81f454cb8f9bb16aafc6ff5
+Bisecting: 244 revisions left to test after this (roughly 8 steps)
+[279d5fc3227f04ef2c6125e5c440e7952173a89a] iomap: hold state_lock over call to ifs_set_range_uptodate()
+
+testing commit 279d5fc3227f04ef2c6125e5c440e7952173a89a gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: cd20412ba0df7a7f0808144c045e3f6d3fd9af7b64dfc93d8ed85e0a4e7780aa
+all runs: crashed: WARNING in kvm_mmu_notifier_invalidate_range_start
+representative crash: WARNING in kvm_mmu_notifier_invalidate_range_start, types: [WARNING]
+# git bisect bad 279d5fc3227f04ef2c6125e5c440e7952173a89a
+Bisecting: 121 revisions left to test after this (roughly 7 steps)
+[8a83ac54940d27b8f56d766e1cb270d150fedd50] ext4: call bdev_getblk() from sb_getblk_gfp()
+
+testing commit 8a83ac54940d27b8f56d766e1cb270d150fedd50 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 6aaeac79e31b1b166c14c1ac6a60cf6b82217b24d803eaa930759e260e331ba8
+all runs: OK
+false negative chance: 0.000
+# git bisect good 8a83ac54940d27b8f56d766e1cb270d150fedd50
+Bisecting: 60 revisions left to test after this (roughly 6 steps)
+[0374af1da077573b2bea8ff70258d3537c5a1e79] mm/ksm: test case for prctl fork/exec workflow
+
+testing commit 0374af1da077573b2bea8ff70258d3537c5a1e79 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 72845a17465484d608194cd27484945835f8649458f7a9eefb839d474f0a08dc
+all runs: OK
+false negative chance: 0.000
+# git bisect good 0374af1da077573b2bea8ff70258d3537c5a1e79
+Bisecting: 30 revisions left to test after this (roughly 5 steps)
+[054a9f7ccd0a60607fb9bbe1e06ca671494971bf] shmem: move memcg charge out of shmem_add_to_page_cache()
+
+testing commit 054a9f7ccd0a60607fb9bbe1e06ca671494971bf gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 2527e2a7c8b6ce5b9a57beadb8f248f31be4db119c574f6e4dad333764bb0734
+all runs: crashed: WARNING in kvm_mmu_notifier_invalidate_range_start
+representative crash: WARNING in kvm_mmu_notifier_invalidate_range_start, types: [WARNING]
+# git bisect bad 054a9f7ccd0a60607fb9bbe1e06ca671494971bf
+Bisecting: 14 revisions left to test after this (roughly 4 steps)
+[ff841a06c844b0556b434d67cfc43f4fda56ae7b] mm: memcg: refactor page state unit helpers
+
+testing commit ff841a06c844b0556b434d67cfc43f4fda56ae7b gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 588a396da897fbe08b48a48cbe384c7a15bcc54dce75f16a41920d1343f493dc
+all runs: OK
+false negative chance: 0.000
+# git bisect good ff841a06c844b0556b434d67cfc43f4fda56ae7b
+Bisecting: 7 revisions left to test after this (roughly 3 steps)
+[46fd75d4a3c94dfa5dfcf113881c0c704036b2b2] selftests: mm: add pagemap ioctl tests
+
+testing commit 46fd75d4a3c94dfa5dfcf113881c0c704036b2b2 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 46993d49772e6aa1fd4752c069109ea915bb65b360bf4038070603d541b5dfc7
+all runs: crashed: WARNING in kvm_mmu_notifier_invalidate_range_start
+representative crash: WARNING in kvm_mmu_notifier_invalidate_range_start, types: [WARNING]
+# git bisect bad 46fd75d4a3c94dfa5dfcf113881c0c704036b2b2
+Bisecting: 3 revisions left to test after this (roughly 2 steps)
+[52526ca7fdb905a768a93f8faa418e9b988fc34b] fs/proc/task_mmu: implement IOCTL to get and optionally clear info about PTEs
+
+testing commit 52526ca7fdb905a768a93f8faa418e9b988fc34b gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 0878f82c26bd5563ba854952ce5d7e388bf1fb02146316901fbc3d85e889a4c5
+all runs: crashed: WARNING in kvm_mmu_notifier_invalidate_range_start
+representative crash: WARNING in kvm_mmu_notifier_invalidate_range_start, types: [WARNING]
+# git bisect bad 52526ca7fdb905a768a93f8faa418e9b988fc34b
+Bisecting: 0 revisions left to test after this (roughly 1 step)
+[d61ea1cb009532dcbd77a9d44b812704cec60146] userfaultfd: UFFD_FEATURE_WP_ASYNC
+
+testing commit d61ea1cb009532dcbd77a9d44b812704cec60146 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+failed building d61ea1cb009532dcbd77a9d44b812704cec60146: mm/hugetlb.c:6269:3: error: too few arguments to function 'set_huge_pte_at'
+# git bisect skip d61ea1cb009532dcbd77a9d44b812704cec60146
+Bisecting: 1 revision left to test after this (roughly 1 step)
+[7bd5bc3ce9632aefd0eed33a19212a2e55c0f873] mm: memcg: normalize the value passed into memcg_rstat_updated()
+
+testing commit 7bd5bc3ce9632aefd0eed33a19212a2e55c0f873 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: ab859adc732f5edef09f91fef796db1d40832406d9883ff4d23182c040c63e96
+all runs: OK
+false negative chance: 0.000
+# git bisect good 7bd5bc3ce9632aefd0eed33a19212a2e55c0f873
+There are only 'skip'ped commits left to test.
+The first bad commit could be any of:
+d61ea1cb009532dcbd77a9d44b812704cec60146
+52526ca7fdb905a768a93f8faa418e9b988fc34b
+We cannot bisect more!
+
+accumulated error probability: 0.00
+revisions tested: 15, total time: 4h39m14.57759394s (build: 3h2m53.766874223s, test: 1h16m33.351199797s)
+bisection is inconclusive, the first bad commit could be any of:
+d61ea1cb009532dcbd77a9d44b812704cec60146
+52526ca7fdb905a768a93f8faa418e9b988fc34b
+
+WARNING in kvm_mmu_notifier_invalidate_range_start
+d61ea1cb009532dcbd77a9d44b812704cec60146
+52526ca7fdb905a768a93f8faa418e9b988fc34b

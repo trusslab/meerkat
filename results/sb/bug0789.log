@@ -1,0 +1,356 @@
+TrussLab starts bisection 2025-03-30 15:41:33.723702356 -0700 PDT m=+15.092032160
+bisecting cause commit starting from 8ed710da2873c2aeb3bb805864a699affaf1d03b
+building syzkaller on HEAD
+ensuring issue is reproducible on original commit 8ed710da2873c2aeb3bb805864a699affaf1d03b
+
+testing commit 8ed710da2873c2aeb3bb805864a699affaf1d03b gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: bf2c6c3e8f78144839ffc2171df94edba60e2d2ae7a430f8ee79e72b0a50333e
+all runs: crashed: KASAN: slab-out-of-bounds Read in ntfs_listxattr
+representative crash: KASAN: slab-out-of-bounds Read in ntfs_listxattr, types: [KASAN]
+picked [v6.0 v5.19 v5.18 v5.16 v5.14 v5.12 v5.10 v5.8 v5.5 v5.2 v4.20 v4.19] out of 23 release tags
+testing release v6.0
+testing commit 4fe89d07dcc2804c8b562f6c7896a45643d34b2f gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: f70ef24407dcdc29f0699deea138f79bf11b200c554798ecacf19de89a99820f
+all runs: crashed: KASAN: slab-out-of-bounds Read in ntfs_listxattr
+representative crash: KASAN: slab-out-of-bounds Read in ntfs_listxattr, types: [KASAN]
+testing release v5.19
+testing commit 3d7cb6b04c3f3115719235cc6866b10326de34cd gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 870a9b07a0c4681cc8178bc359dc09b6c47176e34b15d181a615890a85b93728
+all runs: crashed: KASAN: slab-out-of-bounds Read in ntfs_listxattr
+representative crash: KASAN: slab-out-of-bounds Read in ntfs_listxattr, types: [KASAN]
+testing release v5.18
+testing commit 4b0986a3613c92f4ec1bdc7f60ec66fea135991f gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 263e1a683a83518df1c09ad7f7e5ce083a6a60d9a77901e945b7796d1616023a
+run #0: crashed: KASAN: slab-out-of-bounds Read in ntfs_listxattr
+run #1: crashed: KASAN: slab-out-of-bounds Read in ntfs_listxattr
+run #2: crashed: KASAN: slab-out-of-bounds Read in ntfs_listxattr
+run #3: crashed: KASAN: slab-out-of-bounds Read in ntfs_listxattr
+run #4: crashed: KASAN: slab-out-of-bounds Read in ntfs_listxattr
+run #5: crashed: KASAN: slab-out-of-bounds Read in ntfs_listxattr
+run #6: crashed: KASAN: slab-out-of-bounds Read in ntfs_listxattr
+run #7: boot failed: can't ssh into the instance
+representative crash: KASAN: slab-out-of-bounds Read in ntfs_listxattr, types: [KASAN]
+testing release v5.16
+testing commit df0cc57e057f18e44dac8e6c18aba47ab53202f9 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 023fb5fff6e0c5a9d078e0350b02426f91fc63daf0f89c5272a84ac2f9ea811d
+all runs: crashed: KASAN: slab-out-of-bounds Read in ntfs_listxattr
+representative crash: KASAN: slab-out-of-bounds Read in ntfs_listxattr, types: [KASAN]
+testing release v5.14
+testing commit 7d2a07b769330c34b4deabeed939325c77a7ec2f gcc
+compiler: gcc (GCC) 10.1.0-syz 20200507, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: ede7a79641a5ed4f0f9cb5c59d1b021489c281c32d570453afd5ab3523fec88a
+all runs: OK
+false negative chance: 0.000
+# git bisect start df0cc57e057f18e44dac8e6c18aba47ab53202f9 7d2a07b769330c34b4deabeed939325c77a7ec2f
+Bisecting: 14449 revisions left to test after this (roughly 14 steps)
+[970eae15600a883e4ad27dd0757b18871cc983ab] BackMerge tag 'v5.15-rc7' into drm-next
+
+testing commit 970eae15600a883e4ad27dd0757b18871cc983ab gcc
+compiler: gcc (GCC) 10.1.0-syz 20200507, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 3535b6af22b179757d37cb29167d04c12fafe8a224d938c3caf14ebdb17bd581
+all runs: crashed: KASAN: slab-out-of-bounds Read in ntfs_listxattr
+representative crash: KASAN: slab-out-of-bounds Read in ntfs_listxattr, types: [KASAN]
+# git bisect bad 970eae15600a883e4ad27dd0757b18871cc983ab
+Bisecting: 7342 revisions left to test after this (roughly 13 steps)
+[32b47072f319bb65e9afad59e78153d83496f1f5] Merge tag 'defconfig-5.15' of git://git.kernel.org/pub/scm/linux/kernel/git/soc/soc
+
+testing commit 32b47072f319bb65e9afad59e78153d83496f1f5 gcc
+compiler: gcc (GCC) 10.1.0-syz 20200507, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: adcede46b41a125b819205218b979c4b40373084da0e9a7721e969a30b7fac99
+all runs: OK
+false negative chance: 0.000
+# git bisect good 32b47072f319bb65e9afad59e78153d83496f1f5
+Bisecting: 3671 revisions left to test after this (roughly 12 steps)
+[43175623dd0dffccacbf014e368ee77f77c73898] Merge tag 'trace-v5.15-2' of git://git.kernel.org/pub/scm/linux/kernel/git/rostedt/linux-trace
+
+testing commit 43175623dd0dffccacbf014e368ee77f77c73898 gcc
+compiler: gcc (GCC) 10.1.0-syz 20200507, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 78901ee83f1a50445e144a2104c0a94d4fb3fbbd2fbf96bb6f04c84050780a6b
+all runs: crashed: KASAN: slab-out-of-bounds Read in ntfs_listxattr
+representative crash: KASAN: slab-out-of-bounds Read in ntfs_listxattr, types: [KASAN]
+# git bisect bad 43175623dd0dffccacbf014e368ee77f77c73898
+Bisecting: 1813 revisions left to test after this (roughly 11 steps)
+[14726903c835101cd8d0a703b609305094350d61] Merge branch 'akpm' (patches from Andrew)
+
+testing commit 14726903c835101cd8d0a703b609305094350d61 gcc
+compiler: gcc (GCC) 10.1.0-syz 20200507, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: bfcc3b28573b533f2df34b27a987632a0925d5829dc953713bf23f9ea3beab71
+all runs: OK
+false negative chance: 0.000
+# git bisect good 14726903c835101cd8d0a703b609305094350d61
+Bisecting: 908 revisions left to test after this (roughly 10 steps)
+[a2b28235335fee2586b4bd16448fb59ed6c80eef] Merge branch 'dmi-for-linus' of git://git.kernel.org/pub/scm/linux/kernel/git/jdelvare/staging
+
+testing commit a2b28235335fee2586b4bd16448fb59ed6c80eef gcc
+compiler: gcc (GCC) 10.1.0-syz 20200507, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: fbb41f97333419a4c37a2c972fcd5d81764412797cab596e86a019b791115937
+all runs: crashed: KASAN: slab-out-of-bounds Read in ntfs_listxattr
+representative crash: KASAN: slab-out-of-bounds Read in ntfs_listxattr, types: [KASAN]
+# git bisect bad a2b28235335fee2586b4bd16448fb59ed6c80eef
+Bisecting: 454 revisions left to test after this (roughly 9 steps)
+[6abaa83c7352b31450d7e8c173f674324c16b02b] Merge tag 'f2fs-for-5.15-rc1' of git://git.kernel.org/pub/scm/linux/kernel/git/jaegeuk/f2fs
+
+testing commit 6abaa83c7352b31450d7e8c173f674324c16b02b gcc
+compiler: gcc (GCC) 10.1.0-syz 20200507, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 51e90c7c8f61fa3cceafc67e130401accf45b22a89234dbc98074394b6660283
+run #0: OK
+run #1: OK
+run #2: OK
+run #3: OK
+run #4: OK
+run #5: OK
+run #6: OK
+run #7: basic kernel testing failed: failed to copy test binary to VM: timedout after 10m0s ["scp" "-P" "38232" "-F" "/dev/null" "-o" "UserKnownHostsFile=/dev/null" "-o" "BatchMode=yes" "-o" "IdentitiesOnly=yes" "-o" "StrictHostKeyChecking=no" "-o" "ConnectTimeout=10" "-i" "/mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/wd-kaller/image/key" "/mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/src/syzkaller/bin/linux_amd64/syz-fuzzer" "root@localhost:/syz-fuzzer"]
+Warning: Permanently added '[localhost]:38232' (ECDSA) to the list of known hosts.
+
+false negative chance: 0.000
+# git bisect good 6abaa83c7352b31450d7e8c173f674324c16b02b
+Bisecting: 271 revisions left to test after this (roughly 8 steps)
+[58ca24158758f1784400d32743373d7d6227d018] Merge tag 'trace-v5.15' of git://git.kernel.org/pub/scm/linux/kernel/git/rostedt/linux-trace
+
+testing commit 58ca24158758f1784400d32743373d7d6227d018 gcc
+compiler: gcc (GCC) 10.1.0-syz 20200507, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: fad49e5b0e655780b88e4e4830b1d47047dd2abd115506f1813c09e94d262b82
+2025/03/30 19:59:11 failed to symbolize report: failed to run ["scripts/get_maintainer.pl" "--git-min-percent=15" "-f" "mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/fs/dcache.c"]: exit status 2
+scripts/get_maintainer.pl: file 'mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/fs/dcache.c' not found
+run #0: crashed: KASAN: slab-out-of-bounds Read in ntfs_listxattr
+run #1: crashed: KASAN: slab-out-of-bounds Read in ntfs_listxattr
+run #2: crashed: KASAN: slab-out-of-bounds Read in ntfs_listxattr
+run #3: crashed: KASAN: slab-out-of-bounds Read in ntfs_listxattr
+run #4: crashed: KASAN: slab-out-of-bounds Read in ntfs_listxattr
+run #5: crashed: KASAN: slab-out-of-bounds Read in ntfs_listxattr
+run #6: crashed: KASAN: slab-out-of-bounds Read in ntfs_listxattr
+run #7: boot failed: KFENCE: use-after-free in kvm_fastop_exception
+representative crash: KASAN: slab-out-of-bounds Read in ntfs_listxattr, types: [KASAN]
+# git bisect bad 58ca24158758f1784400d32743373d7d6227d018
+Bisecting: 91 revisions left to test after this (roughly 7 steps)
+[3fe617ccafd6f5bb33c2391d6f4eeb41c1fd0151] Enable '-Werror' by default for all kernel builds
+
+testing commit 3fe617ccafd6f5bb33c2391d6f4eeb41c1fd0151 gcc
+compiler: gcc (GCC) 10.1.0-syz 20200507, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 0c266b41a3244a1396b17d686135fb0a1d7deed3df67bbef615ea369d5208de9
+2025/03/30 20:23:48 failed to symbolize report: failed to run ["scripts/get_maintainer.pl" "--git-min-percent=15" "-f" "mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/fs/dcache.c"]: exit status 2
+scripts/get_maintainer.pl: file 'mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/fs/dcache.c' not found
+run #0: crashed: KASAN: slab-out-of-bounds Read in ntfs_listxattr
+run #1: crashed: KASAN: slab-out-of-bounds Read in ntfs_listxattr
+run #2: crashed: KASAN: slab-out-of-bounds Read in ntfs_listxattr
+run #3: crashed: KASAN: slab-out-of-bounds Read in ntfs_listxattr
+run #4: crashed: KASAN: slab-out-of-bounds Read in ntfs_listxattr
+run #5: crashed: KASAN: slab-out-of-bounds Read in ntfs_listxattr
+run #6: crashed: KASAN: slab-out-of-bounds Read in ntfs_listxattr
+run #7: boot failed: KFENCE: use-after-free in kvm_fastop_exception
+representative crash: KASAN: slab-out-of-bounds Read in ntfs_listxattr, types: [KASAN]
+# git bisect bad 3fe617ccafd6f5bb33c2391d6f4eeb41c1fd0151
+Bisecting: 45 revisions left to test after this (roughly 6 steps)
+[49624efa65ac9889f4e7c7b2452b2e6ce42ba37d] Merge tag 'denywrite-for-5.15' of git://github.com/davidhildenbrand/linux
+
+testing commit 49624efa65ac9889f4e7c7b2452b2e6ce42ba37d gcc
+compiler: gcc (GCC) 10.1.0-syz 20200507, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: e052ff825252f44fde63fb8410283c3ff8aa6428f7755304a1b4f07dbe72aed6
+all runs: crashed: KASAN: slab-out-of-bounds Read in ntfs_listxattr
+representative crash: KASAN: slab-out-of-bounds Read in ntfs_listxattr, types: [KASAN]
+# git bisect bad 49624efa65ac9889f4e7c7b2452b2e6ce42ba37d
+Bisecting: 22 revisions left to test after this (roughly 5 steps)
+[195c52bdd5d5ecfdabf5a7c6159efe299e534f84] fs/ntfs3: Do not use driver own alloc wrappers
+
+testing commit 195c52bdd5d5ecfdabf5a7c6159efe299e534f84 gcc
+compiler: gcc (GCC) 10.1.0-syz 20200507, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: ef83be0be9a3d55bf72f730b732328d3dc2ba275d5725935ae10dbbd31769b2b
+all runs: crashed: KASAN: slab-out-of-bounds Read in ntfs_listxattr
+representative crash: KASAN: slab-out-of-bounds Read in ntfs_listxattr, types: [KASAN]
+# git bisect bad 195c52bdd5d5ecfdabf5a7c6159efe299e534f84
+Bisecting: 10 revisions left to test after this (roughly 4 steps)
+[11e4e66efd440216032f53ee7e5ca08cd263a292] Merge branch 'torvalds:master' into master
+
+testing commit 11e4e66efd440216032f53ee7e5ca08cd263a292 gcc
+compiler: gcc (GCC) 10.1.0-syz 20200507, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: a95cf91d73ab43dc354c16777d41a7fd5047708309974e1aa55a1fc263f05ed4
+all runs: crashed: KASAN: slab-out-of-bounds Read in ntfs_listxattr
+representative crash: KASAN: slab-out-of-bounds Read in ntfs_listxattr, types: [KASAN]
+# git bisect bad 11e4e66efd440216032f53ee7e5ca08cd263a292
+Bisecting: 5 revisions left to test after this (roughly 3 steps)
+[be71b5cba2e6485e8959da7a9f9a44461a1bb074] fs/ntfs3: Add attrib operations
+
+testing commit be71b5cba2e6485e8959da7a9f9a44461a1bb074 gcc
+compiler: gcc (GCC) 10.1.0-syz 20200507, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: db8c674a9a5472ca564fe6e190cf9203bad5ee752979cf3a6e639d860403fbd8
+all runs: OK
+false negative chance: 0.000
+# git bisect good be71b5cba2e6485e8959da7a9f9a44461a1bb074
+Bisecting: 2 revisions left to test after this (roughly 2 steps)
+[12dad495eaab95e0bb784c43869073617c513ea4] fs/ntfs3: Add Kconfig, Makefile and doc
+
+testing commit 12dad495eaab95e0bb784c43869073617c513ea4 gcc
+compiler: gcc (GCC) 10.1.0-syz 20200507, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: db8c674a9a5472ca564fe6e190cf9203bad5ee752979cf3a6e639d860403fbd8
+all runs: OK
+false negative chance: 0.000
+# git bisect good 12dad495eaab95e0bb784c43869073617c513ea4
+Bisecting: 0 revisions left to test after this (roughly 1 step)
+[96b18047a7172037ff4206720f4e889670030b41] fs/ntfs3: Add MAINTAINERS
+
+testing commit 96b18047a7172037ff4206720f4e889670030b41 gcc
+compiler: gcc (GCC) 10.1.0-syz 20200507, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 1624cc0fc33e6954a976c0e417c00398ad999839dc6bbae8bc632fe095a94d33
+all runs: crashed: KASAN: slab-out-of-bounds Read in ntfs_listxattr
+representative crash: KASAN: slab-out-of-bounds Read in ntfs_listxattr, types: [KASAN]
+# git bisect bad 96b18047a7172037ff4206720f4e889670030b41
+Bisecting: 0 revisions left to test after this (roughly 0 steps)
+[6e5be40d32fb1907285277c02e74493ed43d77fe] fs/ntfs3: Add NTFS3 in fs/Kconfig and fs/Makefile
+
+testing commit 6e5be40d32fb1907285277c02e74493ed43d77fe gcc
+compiler: gcc (GCC) 10.1.0-syz 20200507, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 1624cc0fc33e6954a976c0e417c00398ad999839dc6bbae8bc632fe095a94d33
+all runs: crashed: KASAN: slab-out-of-bounds Read in ntfs_listxattr
+representative crash: KASAN: slab-out-of-bounds Read in ntfs_listxattr, types: [KASAN]
+# git bisect bad 6e5be40d32fb1907285277c02e74493ed43d77fe
+6e5be40d32fb1907285277c02e74493ed43d77fe is the first bad commit
+commit 6e5be40d32fb1907285277c02e74493ed43d77fe
+Author: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+Date:   Fri Aug 13 17:21:30 2021 +0300
+
+    fs/ntfs3: Add NTFS3 in fs/Kconfig and fs/Makefile
+    
+    This adds NTFS3 in fs/Kconfig and fs/Makefile
+    
+    Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+
+ fs/Kconfig  | 1 +
+ fs/Makefile | 1 +
+ 2 files changed, 2 insertions(+)
+
+accumulated error probability: 0.00
+culprit signature: 1624cc0fc33e6954a976c0e417c00398ad999839dc6bbae8bc632fe095a94d33
+parent  signature: db8c674a9a5472ca564fe6e190cf9203bad5ee752979cf3a6e639d860403fbd8
+revisions tested: 21, total time: 7h1m15.947347819s (build: 4h48m3.458492558s, test: 1h48m41.203873473s)
+first bad commit: 6e5be40d32fb1907285277c02e74493ed43d77fe fs/ntfs3: Add NTFS3 in fs/Kconfig and fs/Makefile
+recipients (to): ["almaz.alexandrovich@paragon-software.com" "linux-kernel@vger.kernel.org"]
+recipients (cc): ["linux-fsdevel@vger.kernel.org" "viro@zeniv.linux.org.uk"]
+crash: KASAN: slab-out-of-bounds Read in ntfs_listxattr
+loop0: detected capacity change from 0 to 4096
+ntfs3: loop0: Different NTFS' sector size and media sector size
+==================================================================
+BUG: KASAN: slab-out-of-bounds in ntfs_list_ea mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/fs/ntfs3/xattr.c:183 [inline]
+BUG: KASAN: slab-out-of-bounds in ntfs_listxattr+0x3d5/0x420 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/fs/ntfs3/xattr.c:803
+Read of size 1 at addr ffff888105f4c0bd by task syz-executor.0/9095
+
+CPU: 1 PID: 9095 Comm: syz-executor.0 Not tainted 5.14.0-rc5-syzkaller #0
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.13.0-1ubuntu1.1 04/01/2014
+Call Trace:
+ __dump_stack mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/lib/dump_stack.c:88 [inline]
+ dump_stack_lvl+0xcd/0x134 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/lib/dump_stack.c:105
+ print_address_description.constprop.0.cold+0x6c/0x309 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/kasan/report.c:233
+ __kasan_report mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/kasan/report.c:419 [inline]
+ kasan_report.cold+0x83/0xdf mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/kasan/report.c:436
+ ntfs_list_ea mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/fs/ntfs3/xattr.c:183 [inline]
+ ntfs_listxattr+0x3d5/0x420 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/fs/ntfs3/xattr.c:803
+ vfs_listxattr+0x105/0x190 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/fs/xattr.c:446
+ listxattr+0xf6/0x180 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/fs/xattr.c:747
+ path_listxattr+0xae/0x140 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/fs/xattr.c:771
+ do_syscall_x64 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/arch/x86/entry/common.c:50 [inline]
+ do_syscall_64+0x35/0x80 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/arch/x86/entry/common.c:80
+ entry_SYSCALL_64_after_hwframe+0x44/0xae
+RIP: 0033:0x7fe08a630ced
+Code: c3 e8 17 32 00 00 0f 1f 80 00 00 00 00 f3 0f 1e fa 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 b8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007fe08999cbd8 EFLAGS: 00000246 ORIG_RAX: 00000000000000c3
+RAX: ffffffffffffffda RBX: 00007fe08a76af80 RCX: 00007fe08a630ced
+RDX: 0000000000000000 RSI: 0000000000000000 RDI: 00000000200000c0
+RBP: 00007fe08a68e4ac R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+R13: 00007ffd84e80e9f R14: 00007ffd84e81030 R15: 00007fe08999cd80
+
+Allocated by task 9095:
+ kasan_save_stack+0x1b/0x40 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/kasan/common.c:38
+ kasan_set_track mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/kasan/common.c:46 [inline]
+ set_alloc_info mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/kasan/common.c:434 [inline]
+ ____kasan_kmalloc mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/kasan/common.c:513 [inline]
+ ____kasan_kmalloc mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/kasan/common.c:472 [inline]
+ __kasan_kmalloc+0x9b/0xd0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/kasan/common.c:522
+ kmalloc mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/./include/linux/slab.h:596 [inline]
+ ntfs_read_ea+0x3d5/0x820 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/fs/ntfs3/xattr.c:113
+ ntfs_list_ea mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/fs/ntfs3/xattr.c:169 [inline]
+ ntfs_listxattr+0x167/0x420 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/fs/ntfs3/xattr.c:803
+ vfs_listxattr+0x105/0x190 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/fs/xattr.c:446
+ listxattr+0xf6/0x180 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/fs/xattr.c:747
+ path_listxattr+0xae/0x140 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/fs/xattr.c:771
+ do_syscall_x64 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/arch/x86/entry/common.c:50 [inline]
+ do_syscall_64+0x35/0x80 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/arch/x86/entry/common.c:80
+ entry_SYSCALL_64_after_hwframe+0x44/0xae
+
+The buggy address belongs to the object at ffff888105f4c080
+ which belongs to the cache kmalloc-64 of size 64
+The buggy address is located 61 bytes inside of
+ 64-byte region [ffff888105f4c080, ffff888105f4c0c0)
+The buggy address belongs to the page:
+page:ffffea000417d300 refcount:1 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x105f4c
+flags: 0x57ff00000000200(slab|node=1|zone=2|lastcpupid=0x7ff)
+raw: 057ff00000000200 ffffea0004027d00 0000001400000004 ffff888011841640
+raw: 0000000000000000 0000000080200020 00000001ffffffff 0000000000000000
+page dumped because: kasan: bad access detected
+page_owner tracks the page as allocated
+page last allocated via order 0, migratetype Unmovable, gfp_mask 0x12c40(GFP_NOFS|__GFP_NOWARN|__GFP_NORETRY), pid 6383, ts 91231103017, free_ts 91210295432
+ prep_new_page mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/page_alloc.c:2436 [inline]
+ get_page_from_freelist+0xa72/0x2f80 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/page_alloc.c:4169
+ __alloc_pages+0x1b2/0x500 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/page_alloc.c:5391
+ alloc_pages+0x18c/0x2a0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/mempolicy.c:2244
+ alloc_slab_page mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/slub.c:1688 [inline]
+ allocate_slab+0x32e/0x4b0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/slub.c:1828
+ new_slab mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/slub.c:1891 [inline]
+ new_slab_objects mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/slub.c:2637 [inline]
+ ___slab_alloc+0x4ba/0x820 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/slub.c:2800
+ __slab_alloc.constprop.0+0xa7/0xf0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/slub.c:2840
+ slab_alloc_node mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/slub.c:2922 [inline]
+ slab_alloc mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/slub.c:2964 [inline]
+ __kmalloc+0x312/0x330 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/slub.c:4108
+ kmalloc mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/./include/linux/slab.h:596 [inline]
+ kzalloc mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/./include/linux/slab.h:721 [inline]
+ tomoyo_encode2.part.0+0xe9/0x3a0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/security/tomoyo/realpath.c:45
+ tomoyo_encode2 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/security/tomoyo/realpath.c:31 [inline]
+ tomoyo_encode mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/security/tomoyo/realpath.c:80 [inline]
+ tomoyo_realpath_from_path+0x1a4/0x650 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/security/tomoyo/realpath.c:288
+ tomoyo_get_realpath mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/security/tomoyo/file.c:151 [inline]
+ tomoyo_path_perm+0x21b/0x430 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/security/tomoyo/file.c:822
+ security_inode_getattr+0xcf/0x140 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/security/security.c:1332
+ vfs_getattr mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/fs/stat.c:139 [inline]
+ vfs_fstat+0x43/0xb0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/fs/stat.c:164
+ __do_sys_newfstat+0x81/0x100 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/fs/stat.c:404
+ do_syscall_x64 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/arch/x86/entry/common.c:50 [inline]
+ do_syscall_64+0x35/0x80 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/arch/x86/entry/common.c:80
+ entry_SYSCALL_64_after_hwframe+0x44/0xae
+page last free stack trace:
+ reset_page_owner mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/./include/linux/page_owner.h:24 [inline]
+ free_pages_prepare mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/page_alloc.c:1346 [inline]
+ free_pcp_prepare+0x2c5/0x780 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/page_alloc.c:1397
+ free_unref_page_prepare mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/page_alloc.c:3332 [inline]
+ free_unref_page+0x19/0x690 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/page_alloc.c:3411
+ __put_single_page mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/swap.c:98 [inline]
+ __put_page+0xe3/0x3f0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/swap.c:129
+ put_page mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/./include/linux/mm.h:1246 [inline]
+ anon_pipe_buf_release+0x2ce/0x380 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/fs/pipe.c:137
+ pipe_buf_release mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/./include/linux/pipe_fs_i.h:201 [inline]
+ pipe_read+0x5b1/0x13b0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/fs/pipe.c:322
+ call_read_iter mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/./include/linux/fs.h:2108 [inline]
+ new_sync_read+0x5b7/0x6e0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/fs/read_write.c:415
+ vfs_read+0x35c/0x570 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/fs/read_write.c:496
+ ksys_read+0x1ee/0x250 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/fs/read_write.c:634
+ do_syscall_x64 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/arch/x86/entry/common.c:50 [inline]
+ do_syscall_64+0x35/0x80 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/arch/x86/entry/common.c:80
+ entry_SYSCALL_64_after_hwframe+0x44/0xae
+
+Memory state around the buggy address:
+ ffff888105f4bf80: 00 00 00 00 fc fc fc fc fc fc fc fc fc fc fc fc
+ ffff888105f4c000: fb fb fb fb fb fb fb fb fc fc fc fc fc fc fc fc
+>ffff888105f4c080: 00 00 00 00 00 00 00 04 fc fc fc fc fc fc fc fc
+                                        ^
+ ffff888105f4c100: fa fb fb fb fb fb fb fb fc fc fc fc fc fc fc fc
+ ffff888105f4c180: fa fb fb fb fb fb fb fb fc fc fc fc fc fc fc fc
+==================================================================
+
+
+KASAN: slab-out-of-bounds Read in ntfs_listxattr
+6e5be40d32fb1907285277c02e74493ed43d77fe

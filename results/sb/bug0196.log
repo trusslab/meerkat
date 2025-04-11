@@ -1,0 +1,294 @@
+charm starts bisection 2025-04-04 06:43:04.236950206 -0700 PDT m=+10.109525706
+bisecting cause commit starting from a70385240892bcbc6442b054e847c74100e72f1a
+building syzkaller on HEAD
+ensuring issue is reproducible on original commit a70385240892bcbc6442b054e847c74100e72f1a
+
+testing commit a70385240892bcbc6442b054e847c74100e72f1a gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 9c0b986bb79374b369f429764d0dbd5383b582b318a6cb754e8df82d1d0d1a89
+all runs: crashed: WARNING in btf_type_id_size
+representative crash: WARNING in btf_type_id_size, types: [WARNING]
+picked [v6.0 v5.19 v5.18 v5.16 v5.14 v5.12 v5.10 v5.8 v5.5 v5.2 v4.20 v4.19] out of 23 release tags
+testing release v6.0
+testing commit 4fe89d07dcc2804c8b562f6c7896a45643d34b2f gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: d72ddd5ff927bc7affcad703a3031b3eb4a686b60427d0c8e67ff12cfe0f8d54
+all runs: crashed: WARNING in btf_type_id_size
+representative crash: WARNING in btf_type_id_size, types: [WARNING]
+testing release v5.19
+testing commit 3d7cb6b04c3f3115719235cc6866b10326de34cd gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: cd72c05c4482f59a208e0c548597267350fd9d21e917876f6225c6ad253a0d34
+all runs: crashed: WARNING in btf_type_id_size
+representative crash: WARNING in btf_type_id_size, types: [WARNING]
+testing release v5.18
+testing commit 4b0986a3613c92f4ec1bdc7f60ec66fea135991f gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 5f065b41d4c64311cfb89fdfc5fcda668849ae53cc7759ee8fb85d2ead0226d6
+all runs: crashed: WARNING in btf_type_id_size
+representative crash: WARNING in btf_type_id_size, types: [WARNING]
+testing release v5.16
+testing commit df0cc57e057f18e44dac8e6c18aba47ab53202f9 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 0dfbe3dd1b83e895d9869f57624feca772c42d2eacbe02498522920df255246d
+all runs: crashed: WARNING in btf_type_id_size
+representative crash: WARNING in btf_type_id_size, types: [WARNING]
+testing release v5.14
+testing commit 7d2a07b769330c34b4deabeed939325c77a7ec2f gcc
+compiler: gcc (GCC) 10.1.0-syz 20200507, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: ae531598d98c1a3404e8fd80959a062c75667f3a9a6e25474fdefa75c92acbe3
+all runs: OK
+false negative chance: 0.000
+# git bisect start df0cc57e057f18e44dac8e6c18aba47ab53202f9 7d2a07b769330c34b4deabeed939325c77a7ec2f
+Bisecting: 14449 revisions left to test after this (roughly 14 steps)
+[970eae15600a883e4ad27dd0757b18871cc983ab] BackMerge tag 'v5.15-rc7' into drm-next
+
+testing commit 970eae15600a883e4ad27dd0757b18871cc983ab gcc
+compiler: gcc (GCC) 10.1.0-syz 20200507, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 6cc38e6159ceb1bfe929d328ca43c214005c58ba3807cd55e8a5cc4b4f2ec2c3
+all runs: OK
+false negative chance: 0.000
+# git bisect good 970eae15600a883e4ad27dd0757b18871cc983ab
+Bisecting: 7101 revisions left to test after this (roughly 13 steps)
+[ae45d84fc36d01dcb1007f4298871eec37907904] Merge tag 'dt-5.16' of git://git.kernel.org/pub/scm/linux/kernel/git/soc/soc
+
+testing commit ae45d84fc36d01dcb1007f4298871eec37907904 gcc
+compiler: gcc (GCC) 10.1.0-syz 20200507, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 2a986717c6f02972ce4c26299f37c96fa67ea3dadd9c7b65b5f55fdb3e6f3364
+all runs: crashed: WARNING in btf_type_id_size
+representative crash: WARNING in btf_type_id_size, types: [WARNING]
+# git bisect bad ae45d84fc36d01dcb1007f4298871eec37907904
+Bisecting: 2549 revisions left to test after this (roughly 12 steps)
+[fc02cb2b37fe2cbf1d3334b9f0f0eab9431766c4] Merge tag 'net-next-for-5.16' of git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net-next
+
+testing commit fc02cb2b37fe2cbf1d3334b9f0f0eab9431766c4 gcc
+compiler: gcc (GCC) 10.1.0-syz 20200507, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: ce79e625f4fb007deb2bd40d3b1020d1fd729ca1f50bf1d75e3c1877de65a0b7
+all runs: crashed: WARNING in btf_type_id_size
+representative crash: WARNING in btf_type_id_size, types: [WARNING]
+# git bisect bad fc02cb2b37fe2cbf1d3334b9f0f0eab9431766c4
+Bisecting: 2398 revisions left to test after this (roughly 11 steps)
+[d2fac0afe89fe30c39eaa98dda71f7c4cea190c2] Merge tag 'audit-pr-20211101' of git://git.kernel.org/pub/scm/linux/kernel/git/pcmoore/audit
+
+testing commit d2fac0afe89fe30c39eaa98dda71f7c4cea190c2 gcc
+compiler: gcc (GCC) 10.1.0-syz 20200507, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 2a942e9d62c190f73402d34354e15a41c8d81b0680cc6a57160056a83fc45927
+all runs: OK
+false negative chance: 0.000
+# git bisect good d2fac0afe89fe30c39eaa98dda71f7c4cea190c2
+Bisecting: 1199 revisions left to test after this (roughly 10 steps)
+[8e25a2bc6687cd45aef909d6d862718745b5a3fc] net/mlx5: Lag, add support to create TTC tables for LAG port selection
+
+testing commit 8e25a2bc6687cd45aef909d6d862718745b5a3fc gcc
+compiler: gcc (GCC) 10.1.0-syz 20200507, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 952280b7b378b5156676093be9a64f7e3aaa93ca8cd8d9884ec0d7aa88ce1340
+all runs: crashed: WARNING in btf_type_id_size
+representative crash: WARNING in btf_type_id_size, types: [WARNING]
+# git bisect bad 8e25a2bc6687cd45aef909d6d862718745b5a3fc
+Bisecting: 598 revisions left to test after this (roughly 9 steps)
+[cfbe9b002109621bf9a282a4a24f9415ef14b57b] Merge branch 'ipv6-ioam-encap'
+
+testing commit cfbe9b002109621bf9a282a4a24f9415ef14b57b gcc
+compiler: gcc (GCC) 10.1.0-syz 20200507, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 83cfcfeede0c9f49f1a362a37b496719365030c4bfc306d7325100e512399a17
+all runs: crashed: WARNING in btf_type_id_size
+representative crash: WARNING in btf_type_id_size, types: [WARNING]
+# git bisect bad cfbe9b002109621bf9a282a4a24f9415ef14b57b
+Bisecting: 299 revisions left to test after this (roughly 8 steps)
+[8765de69e7a18d7d17b9c367ae9ca653bc50e8b0] Merge tag 'mlx5-updates-2021-09-24' of git://git.kernel.org/pub/scm/linux/kernel/git/saeed/linux
+
+testing commit 8765de69e7a18d7d17b9c367ae9ca653bc50e8b0 gcc
+compiler: gcc (GCC) 10.1.0-syz 20200507, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: e749dbd759c137b2d5a008b169418486aa560d57b7bfe25a64299ef9f0a72f0d
+all runs: crashed: WARNING in btf_type_id_size
+representative crash: WARNING in btf_type_id_size, types: [WARNING]
+# git bisect bad 8765de69e7a18d7d17b9c367ae9ca653bc50e8b0
+Bisecting: 174 revisions left to test after this (roughly 7 steps)
+[f68d08c437f98ee19a14142b9de2d7afe2032d5c] net: phy: bcm7xxx: Add EPHY entry for 72165
+
+testing commit f68d08c437f98ee19a14142b9de2d7afe2032d5c gcc
+compiler: gcc (GCC) 10.1.0-syz 20200507, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 716bbf0b335550fa9ed5671a8a66b2d6d7e41da9e918cf1eb0c012f78c92868e
+all runs: OK
+false negative chance: 0.000
+# git bisect good f68d08c437f98ee19a14142b9de2d7afe2032d5c
+Bisecting: 87 revisions left to test after this (roughly 7 steps)
+[9ce4e3d6d85600153e61c4b8c3c346bd84d84470] virtio_net: use netdev_warn_once to output warn when without enough queues
+
+testing commit 9ce4e3d6d85600153e61c4b8c3c346bd84d84470 gcc
+compiler: gcc (GCC) 10.1.0-syz 20200507, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 86b6a9780fc2d68a8dc69d66f1ca22620e2405259974b957eb84bab370e6f6a5
+all runs: crashed: WARNING in btf_type_id_size
+representative crash: WARNING in btf_type_id_size, types: [WARNING]
+# git bisect bad 9ce4e3d6d85600153e61c4b8c3c346bd84d84470
+Bisecting: 43 revisions left to test after this (roughly 6 steps)
+[67dfac47dac67a44d5bbdab2541a35ce33a2729a] Merge branch 'libbpf: Streamline internal BPF program sections handling'
+
+testing commit 67dfac47dac67a44d5bbdab2541a35ce33a2729a gcc
+compiler: gcc (GCC) 10.1.0-syz 20200507, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 623c092d83fad9880b7de04fdaa89346a8cdbd67e32ec2fb3fa6f7b7e3bdc273
+all runs: OK
+false negative chance: 0.000
+# git bisect good 67dfac47dac67a44d5bbdab2541a35ce33a2729a
+Bisecting: 21 revisions left to test after this (roughly 5 steps)
+[60aed22076b0d0ec2b7c7f9dba3ccd642520e1f3] selftests/bpf: Switch fexit_bpf2bpf selftest to set_attach_target() API
+
+testing commit 60aed22076b0d0ec2b7c7f9dba3ccd642520e1f3 gcc
+compiler: gcc (GCC) 10.1.0-syz 20200507, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 1ce42341e96c4675c2343d5c71bcbe18e56748c82bd55e383a756f1ac207f827
+all runs: crashed: WARNING in btf_type_id_size
+representative crash: WARNING in btf_type_id_size, types: [WARNING]
+# git bisect bad 60aed22076b0d0ec2b7c7f9dba3ccd642520e1f3
+Bisecting: 10 revisions left to test after this (roughly 4 steps)
+[ad526474aec1d9abb9838e3fb1330bb991715c22] selftests/bpf: Test BTF_KIND_TAG for deduplication
+
+testing commit ad526474aec1d9abb9838e3fb1330bb991715c22 gcc
+compiler: gcc (GCC) 10.1.0-syz 20200507, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 0273b45408655a38e3caac31c48f2c98ee0661dc477a3bce3bb27ec65a7edc14
+all runs: crashed: WARNING in btf_type_id_size
+representative crash: WARNING in btf_type_id_size, types: [WARNING]
+# git bisect bad ad526474aec1d9abb9838e3fb1330bb991715c22
+Bisecting: 5 revisions left to test after this (roughly 3 steps)
+[30025e8bd80fdc5a4159ec7f9511121ea561f456] libbpf: Rename btf_{hash,equal}_int to btf_{hash,equal}_int_tag
+
+testing commit 30025e8bd80fdc5a4159ec7f9511121ea561f456 gcc
+compiler: gcc (GCC) 10.1.0-syz 20200507, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 01569c61cdf323eb71292cd7d3ada6b64d2a85c27d64a154d76f7963c761d1c5
+all runs: crashed: WARNING in btf_type_id_size
+representative crash: WARNING in btf_type_id_size, types: [WARNING]
+# git bisect bad 30025e8bd80fdc5a4159ec7f9511121ea561f456
+Bisecting: 2 revisions left to test after this (roughly 1 step)
+[8987ede3ed276f669eb88d952184e1d2bf42ea6b] selftests/bpf: Fix .gitignore to not ignore test_progs.c
+
+testing commit 8987ede3ed276f669eb88d952184e1d2bf42ea6b gcc
+compiler: gcc (GCC) 10.1.0-syz 20200507, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 31d2ded8e15dfdf2be7f795df227abc06c60641a70d89ab7fc43e32c20876c32
+2025/04/04 12:20:16 failed to symbolize report: failed to run ["scripts/get_maintainer.pl" "--git-min-percent=15" "-f" "mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/fs/dcache.c"]: exit status 2
+scripts/get_maintainer.pl: file 'mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/fs/dcache.c' not found
+run #0: OK
+run #1: OK
+run #2: OK
+run #3: OK
+run #4: OK
+run #5: OK
+run #6: OK
+run #7: boot failed: KFENCE: use-after-free in kvm_fastop_exception
+false negative chance: 0.000
+# git bisect good 8987ede3ed276f669eb88d952184e1d2bf42ea6b
+Bisecting: 0 revisions left to test after this (roughly 1 step)
+[b5ea834dde6b6e7f75e51d5f66dac8cd7c97b5ef] bpf: Support for new btf kind BTF_KIND_TAG
+
+testing commit b5ea834dde6b6e7f75e51d5f66dac8cd7c97b5ef gcc
+compiler: gcc (GCC) 10.1.0-syz 20200507, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: cac2219f281b55a34d5c52a543c72ef3da4cc4b56ee1f4d8ca16dc5a5d614433
+all runs: crashed: WARNING in btf_type_id_size
+representative crash: WARNING in btf_type_id_size, types: [WARNING]
+# git bisect bad b5ea834dde6b6e7f75e51d5f66dac8cd7c97b5ef
+Bisecting: 0 revisions left to test after this (roughly 0 steps)
+[41ced4cd88020c9d4b71ff7c50d020f081efa4a0] btf: Change BTF_KIND_* macros to enums
+
+testing commit 41ced4cd88020c9d4b71ff7c50d020f081efa4a0 gcc
+compiler: gcc (GCC) 10.1.0-syz 20200507, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 060b1c127973b51190787e149acb65a09ad9a653d0d1ad095560b556990d0c39
+all runs: OK
+false negative chance: 0.000
+# git bisect good 41ced4cd88020c9d4b71ff7c50d020f081efa4a0
+b5ea834dde6b6e7f75e51d5f66dac8cd7c97b5ef is the first bad commit
+commit b5ea834dde6b6e7f75e51d5f66dac8cd7c97b5ef
+Author: Yonghong Song <yhs@fb.com>
+Date:   Tue Sep 14 15:30:15 2021 -0700
+
+    bpf: Support for new btf kind BTF_KIND_TAG
+    
+    LLVM14 added support for a new C attribute ([1])
+      __attribute__((btf_tag("arbitrary_str")))
+    This attribute will be emitted to dwarf ([2]) and pahole
+    will convert it to BTF. Or for bpf target, this
+    attribute will be emitted to BTF directly ([3], [4]).
+    The attribute is intended to provide additional
+    information for
+      - struct/union type or struct/union member
+      - static/global variables
+      - static/global function or function parameter.
+    
+    For linux kernel, the btf_tag can be applied
+    in various places to specify user pointer,
+    function pre- or post- condition, function
+    allow/deny in certain context, etc. Such information
+    will be encoded in vmlinux BTF and can be used
+    by verifier.
+    
+    The btf_tag can also be applied to bpf programs
+    to help global verifiable functions, e.g.,
+    specifying preconditions, etc.
+    
+    This patch added basic parsing and checking support
+    in kernel for new BTF_KIND_TAG kind.
+    
+     [1] https://reviews.llvm.org/D106614
+     [2] https://reviews.llvm.org/D106621
+     [3] https://reviews.llvm.org/D106622
+     [4] https://reviews.llvm.org/D109560
+    
+    Signed-off-by: Yonghong Song <yhs@fb.com>
+    Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+    Acked-by: Andrii Nakryiko <andrii@kernel.org>
+    Link: https://lore.kernel.org/bpf/20210914223015.245546-1-yhs@fb.com
+
+ include/uapi/linux/btf.h       |  14 ++++-
+ kernel/bpf/btf.c               | 128 +++++++++++++++++++++++++++++++++++++++++
+ tools/include/uapi/linux/btf.h |  14 ++++-
+ 3 files changed, 154 insertions(+), 2 deletions(-)
+
+accumulated error probability: 0.00
+culprit signature: cac2219f281b55a34d5c52a543c72ef3da4cc4b56ee1f4d8ca16dc5a5d614433
+parent  signature: 060b1c127973b51190787e149acb65a09ad9a653d0d1ad095560b556990d0c39
+revisions tested: 22, total time: 6h15m8.640928852s (build: 4h12m15.517789038s, test: 1h36m36.09362051s)
+first bad commit: b5ea834dde6b6e7f75e51d5f66dac8cd7c97b5ef bpf: Support for new btf kind BTF_KIND_TAG
+recipients (to): ["andrii@kernel.org" "ast@kernel.org" "yhs@fb.com"]
+recipients (cc): []
+crash: WARNING in btf_type_id_size
+------------[ cut here ]------------
+WARNING: CPU: 1 PID: 9260 at kernel/bpf/btf.c:1828 btf_type_id_size+0x2bf/0x970 mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/kernel/bpf/btf.c:1828
+Modules linked in:
+CPU: 1 PID: 9260 Comm: syz-executor.0 Not tainted 5.14.0-syzkaller #0
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.13.0-1ubuntu1.1 04/01/2014
+RIP: 0010:btf_type_id_size+0x2bf/0x970 mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/kernel/bpf/btf.c:1828
+Code: 83 ff 03 0f 86 c4 00 00 00 e8 9d ec e6 ff 44 89 f6 bf 0e 00 00 00 e8 d0 f3 e6 ff 41 83 fe 0e 0f 84 a8 00 00 00 e8 81 ec e6 ff <0f> 0b 45 31 ff e8 77 ec e6 ff 4c 89 f8 48 83 c4 18 5b 5d 41 5c 41
+RSP: 0018:ffffc9000267fb18 EFLAGS: 00010293
+RAX: 0000000000000000 RBX: 0000000000000002 RCX: 0000000000000000
+RDX: ffff888106e61c80 RSI: ffffffff818f1fff RDI: 0000000000000003
+RBP: ffff888109713700 R08: 000000000000000e R09: ffffffff818f1f6a
+R10: ffffffff818f1ff0 R11: 0000000000000011 R12: 0000000000000000
+R13: 0000000000000000 R14: 0000000000000011 R15: 0000000000000009
+FS:  00007f40a78fe700(0000) GS:ffff888135c00000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007f40a86cd988 CR3: 00000001021ee000 CR4: 0000000000350ee0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+ btf_func_proto_check mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/kernel/bpf/btf.c:3958 [inline]
+ btf_check_all_types mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/kernel/bpf/btf.c:4232 [inline]
+ btf_parse_type_sec mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/kernel/bpf/btf.c:4267 [inline]
+ btf_parse mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/kernel/bpf/btf.c:4501 [inline]
+ btf_new_fd+0x1dc2/0x2480 mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/kernel/bpf/btf.c:5982
+ bpf_btf_load mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/kernel/bpf/syscall.c:3993 [inline]
+ __sys_bpf+0x1baf/0x5df0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/kernel/bpf/syscall.c:4632
+ __do_sys_bpf mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/kernel/bpf/syscall.c:4691 [inline]
+ __se_sys_bpf mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/kernel/bpf/syscall.c:4689 [inline]
+ __x64_sys_bpf+0x75/0xb0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/kernel/bpf/syscall.c:4689
+ do_syscall_x64 mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/arch/x86/entry/common.c:50 [inline]
+ do_syscall_64+0x35/0x80 mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/arch/x86/entry/common.c:80
+ entry_SYSCALL_64_after_hwframe+0x44/0xae
+RIP: 0033:0x7f40a8591ced
+Code: c3 e8 17 32 00 00 0f 1f 80 00 00 00 00 f3 0f 1e fa 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 b8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007f40a78fdbd8 EFLAGS: 00000246 ORIG_RAX: 0000000000000141
+RAX: ffffffffffffffda RBX: 00007f40a86cbf80 RCX: 00007f40a8591ced
+RDX: 0000000000000020 RSI: 0000000020000140 RDI: 0000000000000012
+RBP: 00007f40a85ef4ac R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+R13: 00007ffecb25943f R14: 00007ffecb2595d0 R15: 00007f40a78fdd80
+
+
+WARNING in btf_type_id_size
+b5ea834dde6b6e7f75e51d5f66dac8cd7c97b5ef

@@ -1,0 +1,539 @@
+charm starts bisection 2025-04-03 21:50:30.788355286 -0700 PDT m=+8.593073546
+bisecting cause commit starting from b6bb9676f2165d518b35ba3bea5f1fcfc0d969bf
+building syzkaller on HEAD
+ensuring issue is reproducible on original commit b6bb9676f2165d518b35ba3bea5f1fcfc0d969bf
+
+testing commit b6bb9676f2165d518b35ba3bea5f1fcfc0d969bf gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 096669a5a64fe5ec90cfd20d232c35384e70a400cdbfd90ba82a3829f73f7d75
+run #0: crashed: INFO: rcu detected stall in corrupted
+run #1: crashed: INFO: rcu detected stall in corrupted
+run #2: crashed: INFO: rcu detected stall in corrupted
+run #3: crashed: INFO: rcu detected stall in corrupted
+run #4: crashed: INFO: rcu detected stall in corrupted
+run #5: crashed: INFO: rcu detected stall in corrupted
+run #6: OK
+run #7: OK
+representative crash: INFO: rcu detected stall in corrupted, types: [HANG UNKNOWN]
+picked [v6.1 v6.0 v5.19 v5.17 v5.15 v5.13 v5.11 v5.9 v5.6 v5.3 v5.0 v4.19] out of 24 release tags
+testing release v6.1
+testing commit 830b3c68c1fb1e9176028d02ef86f3cf76aa2476 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: ee3215fe5a42f3d0b6a57230954955581f52396ecffc2619217b7856285a386e
+run #0: crashed: INFO: rcu detected stall in corrupted
+run #1: crashed: INFO: rcu detected stall in corrupted
+run #2: crashed: INFO: rcu detected stall in corrupted
+run #3: crashed: INFO: rcu detected stall in corrupted
+run #4: crashed: INFO: rcu detected stall in corrupted
+run #5: crashed: INFO: rcu detected stall in corrupted
+run #6: crashed: INFO: rcu detected stall in corrupted
+run #7: OK
+representative crash: INFO: rcu detected stall in corrupted, types: [HANG]
+testing release v6.0
+testing commit 4fe89d07dcc2804c8b562f6c7896a45643d34b2f gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: db50e593cafca625994591916456d8cfb2f13dc435d1d2133f21f2a913bb8ffe
+run #0: crashed: INFO: rcu detected stall in corrupted
+run #1: crashed: INFO: rcu detected stall in corrupted
+run #2: crashed: INFO: rcu detected stall in corrupted
+run #3: crashed: INFO: rcu detected stall in corrupted
+run #4: crashed: INFO: rcu detected stall in corrupted
+run #5: crashed: INFO: rcu detected stall in corrupted
+run #6: crashed: INFO: rcu detected stall in corrupted
+run #7: OK
+representative crash: INFO: rcu detected stall in corrupted, types: [HANG UNKNOWN]
+testing release v5.19
+testing commit 3d7cb6b04c3f3115719235cc6866b10326de34cd gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 1bd042b892709c4c43493b0acebf784765521a02a5d97678bd8970fafa4a63e1
+all runs: crashed: INFO: rcu detected stall in corrupted
+representative crash: INFO: rcu detected stall in corrupted, types: [HANG UNKNOWN]
+testing release v5.17
+testing commit f443e374ae131c168a065ea1748feac6b2e76613 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: a7452df888f59d07e1cb293d12ae29899b59251ea282f10c1a1fde979bc222d4
+run #0: crashed: general protection fault in ulist_reinit
+run #1: crashed: general protection fault in ulist_reinit
+run #2: OK
+run #3: OK
+run #4: OK
+run #5: OK
+run #6: OK
+run #7: OK
+representative crash: general protection fault in ulist_reinit, types: [UNKNOWN]
+testing release v5.15
+testing commit 8bb7eca972ad531c9b149c0a51ab43a417385813 gcc
+compiler: gcc (GCC) 10.1.0-syz 20200507, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: d42c4dc8b75f6ed5fd216799bd1ff468de4a49f959da6b07140ff897e7f30546
+run #0: crashed: KASAN: use-after-free Read in btrfs_get_global_root
+run #1: crashed: KASAN: use-after-free Read in btrfs_root_node
+run #2: crashed: general protection fault in ulist_reinit
+run #3: crashed: general protection fault in ulist_reinit
+run #4: crashed: INFO: task hung in btrfs_commit_transaction
+run #5: crashed: INFO: task hung in btrfs_commit_transaction
+run #6: crashed: INFO: task hung in btrfs_commit_transaction
+run #7: crashed: INFO: task hung in btrfs_commit_transaction
+representative crash: INFO: task hung in btrfs_commit_transaction, types: [HANG KASAN]
+testing release v5.13
+testing commit 62fb9874f5da54fdb243003b386128037319b219 gcc
+compiler: gcc (GCC) 10.1.0-syz 20200507, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 3f0293bf198021698d6bb8c4cda8cf0725af64cb99dff4c451b65b8c047a6d79
+run #0: crashed: general protection fault in ulist_reinit
+run #1: crashed: general protection fault in ulist_reinit
+run #2: crashed: KASAN: use-after-free Read in btrfs_root_node
+run #3: crashed: general protection fault in ulist_reinit
+run #4: crashed: KASAN: use-after-free Read in btrfs_get_global_root
+run #5: crashed: INFO: task hung in btrfs_commit_transaction
+run #6: crashed: INFO: task hung in btrfs_commit_transaction
+run #7: crashed: INFO: task hung in btrfs_quota_disable
+representative crash: general protection fault in ulist_reinit, types: [UNKNOWN KASAN]
+testing release v5.11
+testing commit f40ddce88593482919761f74910f42f4b84c004b gcc
+compiler: gcc (GCC) 10.1.0-syz 20200507, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 30b6d7e3a455b1c6d0632f4a096211357d423854dcbdfd30ea4eb76159a09d5b
+2025/04/04 00:30:02 failed to symbolize report: failed to run ["scripts/get_maintainer.pl" "--git-min-percent=15" "-f" "mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/drivers/vdpa/vdpa_sim/vdpa_sim.c"]: exit status 2
+scripts/get_maintainer.pl: file 'mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/drivers/vdpa/vdpa_sim/vdpa_sim.c' not found
+2025/04/04 00:30:02 failed to symbolize report: failed to run ["scripts/get_maintainer.pl" "--git-min-percent=15" "-f" "mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/drivers/vdpa/vdpa_sim/vdpa_sim.c"]: exit status 2
+scripts/get_maintainer.pl: file 'mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/drivers/vdpa/vdpa_sim/vdpa_sim.c' not found
+2025/04/04 00:30:02 failed to symbolize report: failed to run ["scripts/get_maintainer.pl" "--git-min-percent=15" "-f" "mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/drivers/vdpa/vdpa_sim/vdpa_sim.c"]: exit status 2
+scripts/get_maintainer.pl: file 'mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/drivers/vdpa/vdpa_sim/vdpa_sim.c' not found
+2025/04/04 00:30:02 failed to symbolize report: failed to run ["scripts/get_maintainer.pl" "--git-min-percent=15" "-f" "mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/drivers/vdpa/vdpa_sim/vdpa_sim.c"]: exit status 2
+scripts/get_maintainer.pl: file 'mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/drivers/vdpa/vdpa_sim/vdpa_sim.c' not found
+2025/04/04 00:30:02 failed to symbolize report: failed to run ["scripts/get_maintainer.pl" "--git-min-percent=15" "-f" "mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/drivers/vdpa/vdpa_sim/vdpa_sim.c"]: exit status 2
+scripts/get_maintainer.pl: file 'mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/drivers/vdpa/vdpa_sim/vdpa_sim.c' not found
+2025/04/04 00:30:02 failed to symbolize report: failed to run ["scripts/get_maintainer.pl" "--git-min-percent=15" "-f" "mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/drivers/vdpa/vdpa_sim/vdpa_sim.c"]: exit status 2
+scripts/get_maintainer.pl: file 'mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/drivers/vdpa/vdpa_sim/vdpa_sim.c' not found
+2025/04/04 00:30:02 failed to symbolize report: failed to run ["scripts/get_maintainer.pl" "--git-min-percent=15" "-f" "mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/drivers/vdpa/vdpa_sim/vdpa_sim.c"]: exit status 2
+scripts/get_maintainer.pl: file 'mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/drivers/vdpa/vdpa_sim/vdpa_sim.c' not found
+run #0: boot failed: WARNING: inconsistent lock state
+run #1: boot failed: inconsistent lock state in vdpasim_map_page
+run #2: boot failed: inconsistent lock state in vdpasim_map_page
+run #3: boot failed: inconsistent lock state in vdpasim_map_page
+run #4: boot failed: inconsistent lock state in vdpasim_map_page
+run #5: boot failed: inconsistent lock state in vdpasim_map_page
+run #6: boot failed: inconsistent lock state in vdpasim_map_page
+run #7: boot failed: inconsistent lock state in vdpasim_map_page
+unable to determine the verdict: 0 good runs (wanted 6), for bad wanted 4 in total, got 0
+testing release v5.9
+testing commit bbf5c979011a099af5dc76498918ed7df445635b gcc
+compiler: gcc (GCC) 10.1.0-syz 20200507, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: b28891228115d27d283ede703c96c0bdc3d0eb5675cdaeb39e7406b56dafa4d1
+2025/04/04 00:53:04 failed to symbolize report: failed to run ["scripts/get_maintainer.pl" "--git-min-percent=15" "-f" "mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/drivers/vdpa/vdpa_sim/vdpa_sim.c"]: exit status 2
+scripts/get_maintainer.pl: file 'mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/drivers/vdpa/vdpa_sim/vdpa_sim.c' not found
+2025/04/04 00:53:04 failed to symbolize report: failed to run ["scripts/get_maintainer.pl" "--git-min-percent=15" "-f" "mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/drivers/vdpa/vdpa_sim/vdpa_sim.c"]: exit status 2
+scripts/get_maintainer.pl: file 'mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/drivers/vdpa/vdpa_sim/vdpa_sim.c' not found
+2025/04/04 00:53:04 failed to symbolize report: failed to run ["scripts/get_maintainer.pl" "--git-min-percent=15" "-f" "mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/drivers/vdpa/vdpa_sim/vdpa_sim.c"]: exit status 2
+scripts/get_maintainer.pl: file 'mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/drivers/vdpa/vdpa_sim/vdpa_sim.c' not found
+2025/04/04 00:53:04 failed to symbolize report: failed to run ["scripts/get_maintainer.pl" "--git-min-percent=15" "-f" "mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/drivers/vdpa/vdpa_sim/vdpa_sim.c"]: exit status 2
+scripts/get_maintainer.pl: file 'mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/drivers/vdpa/vdpa_sim/vdpa_sim.c' not found
+2025/04/04 00:53:04 failed to symbolize report: failed to run ["scripts/get_maintainer.pl" "--git-min-percent=15" "-f" "mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/drivers/vdpa/vdpa_sim/vdpa_sim.c"]: exit status 2
+scripts/get_maintainer.pl: file 'mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/drivers/vdpa/vdpa_sim/vdpa_sim.c' not found
+2025/04/04 00:53:04 failed to symbolize report: failed to run ["scripts/get_maintainer.pl" "--git-min-percent=15" "-f" "mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/drivers/vdpa/vdpa_sim/vdpa_sim.c"]: exit status 2
+scripts/get_maintainer.pl: file 'mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/drivers/vdpa/vdpa_sim/vdpa_sim.c' not found
+2025/04/04 00:53:04 failed to symbolize report: failed to run ["scripts/get_maintainer.pl" "--git-min-percent=15" "-f" "mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/drivers/vdpa/vdpa_sim/vdpa_sim.c"]: exit status 2
+scripts/get_maintainer.pl: file 'mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/drivers/vdpa/vdpa_sim/vdpa_sim.c' not found
+2025/04/04 00:53:04 failed to symbolize report: failed to run ["scripts/get_maintainer.pl" "--git-min-percent=15" "-f" "mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/drivers/vdpa/vdpa_sim/vdpa_sim.c"]: exit status 2
+scripts/get_maintainer.pl: file 'mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/drivers/vdpa/vdpa_sim/vdpa_sim.c' not found
+all runs: boot failed: inconsistent lock state in vdpasim_map_page
+unable to determine the verdict: 0 good runs (wanted 6), for bad wanted 4 in total, got 0
+testing release v5.6
+testing commit 7111951b8d4973bda27ff663f2cf18b663d15b48 gcc
+compiler: gcc version 8.1.0 (GCC)
+kernel signature: fdd9b63d228a759b4211f9f5852c64bced3e85d2908d55165a8f213bf5339d50
+run #0: crashed: KASAN: use-after-free Read in start_transaction
+run #1: crashed: general protection fault in ulist_release
+run #2: crashed: KASAN: use-after-free Read in start_transaction
+run #3: crashed: KASAN: use-after-free Read in start_transaction
+run #4: crashed: KASAN: use-after-free Read in start_transaction
+run #5: crashed: general protection fault in ulist_release
+run #6: crashed: KASAN: use-after-free Read in commit_cowonly_roots
+run #7: crashed: KASAN: use-after-free Read in start_transaction
+representative crash: KASAN: use-after-free Read in start_transaction, types: [KASAN]
+testing release v5.3
+testing commit 4d856f72c10ecb060868ed10ff1b1453943fc6c8 gcc
+compiler: gcc version 8.1.0 (GCC)
+kernel signature: 8d8a15f221c65eac4e9e8b573a8132966fca6db5a57fdc3ad09211394994d1a4
+all runs: OK
+false negative chance: 0.000
+# git bisect start 7111951b8d4973bda27ff663f2cf18b663d15b48 4d856f72c10ecb060868ed10ff1b1453943fc6c8
+Bisecting: 22442 revisions left to test after this (roughly 15 steps)
+[9a3d7fd275be4559277667228902824165153c80] Merge tag 'driver-core-5.5-rc1' of git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/driver-core
+
+testing commit 9a3d7fd275be4559277667228902824165153c80 gcc
+compiler: gcc version 8.1.0 (GCC)
+kernel signature: eec61c8ac22837d02886e626f1ece9ba2d79f32df7e8874a6c78dcc206fbcc4f
+run #0: crashed: KASAN: use-after-free Read in commit_cowonly_roots
+run #1: crashed: general protection fault in ulist_release
+run #2: crashed: KASAN: use-after-free Read in start_transaction
+run #3: OK
+run #4: OK
+run #5: OK
+run #6: OK
+run #7: OK
+representative crash: KASAN: use-after-free Read in commit_cowonly_roots, types: [KASAN UNKNOWN]
+# git bisect bad 9a3d7fd275be4559277667228902824165153c80
+Bisecting: 11201 revisions left to test after this (roughly 14 steps)
+[10fd71780f7d155f4e35fecfad0ebd4a725a244b] Merge tag 'scsi-misc' of git://git.kernel.org/pub/scm/linux/kernel/git/jejb/scsi
+
+testing commit 10fd71780f7d155f4e35fecfad0ebd4a725a244b gcc
+compiler: gcc version 8.1.0 (GCC)
+kernel signature: 561eb4893864ff72882f4a9c743549748d712c4513f51b2b3bb91b15e1bcb01a
+all runs: OK
+false negative chance: 0.000
+# git bisect good 10fd71780f7d155f4e35fecfad0ebd4a725a244b
+Bisecting: 5570 revisions left to test after this (roughly 13 steps)
+[50bef71900d25433418529476e7ea8f5826f6c2d] Merge tag 'wireless-drivers-next-2019-11-15' of git://git.kernel.org/pub/scm/linux/kernel/git/kvalo/wireless-drivers-next
+
+testing commit 50bef71900d25433418529476e7ea8f5826f6c2d gcc
+compiler: gcc version 8.1.0 (GCC)
+kernel signature: 5fb1855dd9776f50daff5c34bc82719814bfb7b2f665b66db632db0d7764cf7e
+all runs: OK
+false negative chance: 0.000
+# git bisect good 50bef71900d25433418529476e7ea8f5826f6c2d
+Bisecting: 2644 revisions left to test after this (roughly 12 steps)
+[3f59dbcace56fae7e4ed303bab90f1bedadcfdf4] Merge branch 'perf-core-for-linus' of git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip
+
+testing commit 3f59dbcace56fae7e4ed303bab90f1bedadcfdf4 gcc
+compiler: gcc version 8.1.0 (GCC)
+kernel signature: e9aef71b6e02f8d5587269393694f8cd4f4149655e57380dbf7137b39a7067af
+run #0: crashed: KASAN: use-after-free Read in btrfs_root_node
+run #1: crashed: KASAN: use-after-free Read in resolve_indirect_refs
+run #2: crashed: KASAN: use-after-free Read in start_transaction
+run #3: crashed: INFO: task hung in btrfs_commit_transaction
+run #4: crashed: INFO: task hung in btrfs_commit_transaction
+run #5: crashed: INFO: task hung in btrfs_commit_transaction
+run #6: crashed: INFO: task hung in btrfs_quota_disable
+run #7: crashed: INFO: task hung in btrfs_commit_transaction
+representative crash: INFO: task hung in btrfs_commit_transaction, types: [HANG KASAN]
+# git bisect bad 3f59dbcace56fae7e4ed303bab90f1bedadcfdf4
+Bisecting: 1453 revisions left to test after this (roughly 11 steps)
+[1b96a41b420972f8ba563373de8154d59d5b2208] Merge branch 'for-5.5' of git://git.kernel.org/pub/scm/linux/kernel/git/tj/cgroup
+
+testing commit 1b96a41b420972f8ba563373de8154d59d5b2208 gcc
+compiler: gcc version 8.1.0 (GCC)
+kernel signature: f8ba5e4b9d153829a09618dc66ae10d97b8040b32aa1bd80abb1645811aecf6b
+run #0: crashed: KASAN: use-after-free Read in btrfs_root_node
+run #1: crashed: KASAN: use-after-free Read in btrfs_comp_cpu_keys
+run #2: crashed: KASAN: use-after-free Read in resolve_indirect_refs
+run #3: crashed: KASAN: use-after-free Read in btrfs_root_node
+run #4: crashed: KASAN: use-after-free Read in btrfs_root_node
+run #5: crashed: KASAN: use-after-free Read in start_transaction
+run #6: crashed: KASAN: use-after-free Read in commit_cowonly_roots
+run #7: crashed: KASAN: use-after-free Read in start_transaction
+representative crash: KASAN: use-after-free Read in btrfs_root_node, types: [KASAN]
+# git bisect bad 1b96a41b420972f8ba563373de8154d59d5b2208
+Bisecting: 768 revisions left to test after this (roughly 10 steps)
+[eeee2827ae75ca58a6965e1b6d208576a5a01920] Merge tag 'for-5.5/dm-changes' of git://git.kernel.org/pub/scm/linux/kernel/git/device-mapper/linux-dm
+
+testing commit eeee2827ae75ca58a6965e1b6d208576a5a01920 gcc
+compiler: gcc version 8.1.0 (GCC)
+kernel signature: e57b6c023b0d51988f9731bfeffcc1c9dce77d48925f5960532a24b788630f4a
+all runs: OK
+false negative chance: 0.000
+# git bisect good eeee2827ae75ca58a6965e1b6d208576a5a01920
+Bisecting: 399 revisions left to test after this (roughly 9 steps)
+[4ba380f61624113395bebdc2f9f6da990a0738f9] Merge tag 'arm64-upstream' of git://git.kernel.org/pub/scm/linux/kernel/git/arm64/linux
+
+testing commit 4ba380f61624113395bebdc2f9f6da990a0738f9 gcc
+compiler: gcc version 8.1.0 (GCC)
+kernel signature: 033dc710b1884e53b305fcd6909ae36f828d3653d0859f5202fe9d81c7873a86
+run #0: crashed: KASAN: use-after-free Read in resolve_indirect_refs
+run #1: crashed: KASAN: use-after-free Read in resolve_indirect_refs
+run #2: crashed: KASAN: use-after-free Read in resolve_indirect_refs
+run #3: crashed: KASAN: use-after-free Read in btrfs_root_node
+run #4: crashed: KASAN: use-after-free Read in btrfs_root_node
+run #5: crashed: KASAN: use-after-free Read in start_transaction
+run #6: crashed: INFO: task hung in btrfs_commit_transaction
+run #7: crashed: INFO: task hung in btrfs_commit_transaction
+representative crash: KASAN: use-after-free Read in resolve_indirect_refs, types: [KASAN UNKNOWN]
+# git bisect bad 4ba380f61624113395bebdc2f9f6da990a0738f9
+Bisecting: 153 revisions left to test after this (roughly 8 steps)
+[97d0bf96a0d0986f466c3ff59f2ace801e33dc69] Merge tag 'for-5.5-tag' of git://git.kernel.org/pub/scm/linux/kernel/git/kdave/linux
+
+testing commit 97d0bf96a0d0986f466c3ff59f2ace801e33dc69 gcc
+compiler: gcc version 8.1.0 (GCC)
+kernel signature: e5c208618f34efe8000341185c11ab3dbe4ede0daaaa7bb67e2f5cd2b345fb56
+run #0: crashed: KASAN: use-after-free Read in start_transaction
+run #1: crashed: KASAN: use-after-free Read in resolve_indirect_refs
+run #2: crashed: KASAN: use-after-free Read in start_transaction
+run #3: crashed: KASAN: use-after-free Read in switch_commit_roots
+run #4: crashed: KASAN: use-after-free Read in commit_cowonly_roots
+run #5: crashed: INFO: task hung in btrfs_commit_transaction
+run #6: crashed: INFO: task hung in btrfs_commit_transaction
+run #7: crashed: INFO: task hung in btrfs_commit_transaction
+representative crash: KASAN: use-after-free Read in start_transaction, types: [KASAN]
+# git bisect bad 97d0bf96a0d0986f466c3ff59f2ace801e33dc69
+Bisecting: 107 revisions left to test after this (roughly 7 steps)
+[260eb11bd42b4b5bcd671a1f8cb7d7b9a3e36b8d] btrfs: Remove unused next_root_backup function
+
+testing commit 260eb11bd42b4b5bcd671a1f8cb7d7b9a3e36b8d gcc
+compiler: gcc version 8.1.0 (GCC)
+kernel signature: 931c9a8621adbced51b1037b6a24f0b7a33f5aba5b632e333272837d6b54d87c
+run #0: crashed: KASAN: use-after-free Read in btrfs_root_node
+run #1: crashed: KASAN: use-after-free Read in btrfs_root_node
+run #2: crashed: KASAN: use-after-free Read in start_transaction
+run #3: crashed: KASAN: use-after-free Read in resolve_indirect_refs
+run #4: crashed: KASAN: use-after-free Read in start_transaction
+run #5: crashed: INFO: task hung in btrfs_commit_transaction
+run #6: crashed: INFO: task hung in btrfs_commit_transaction
+run #7: crashed: INFO: task hung in btrfs_commit_transaction
+representative crash: KASAN: use-after-free Read in btrfs_root_node, types: [KASAN UNKNOWN]
+# git bisect bad 260eb11bd42b4b5bcd671a1f8cb7d7b9a3e36b8d
+Bisecting: 53 revisions left to test after this (roughly 6 steps)
+[ce96b7ffd11e261ef2ecd6817b7572a77750170d] btrfs: use better definition of number of compression type
+
+testing commit ce96b7ffd11e261ef2ecd6817b7572a77750170d gcc
+compiler: gcc version 8.1.0 (GCC)
+kernel signature: 479943204c0b2e01c5ce3e576499667efa964fabc45ffc6e8f5ae6c9ea5bdbd0
+all runs: OK
+false negative chance: 0.000
+# git bisect good ce96b7ffd11e261ef2ecd6817b7572a77750170d
+Bisecting: 26 revisions left to test after this (roughly 5 steps)
+[9d6cb1b0f9dfefac9cf2f62c8582aa892770b34e] btrfs: raid56: reduce indentation in lock_stripe_add
+
+testing commit 9d6cb1b0f9dfefac9cf2f62c8582aa892770b34e gcc
+compiler: gcc version 8.1.0 (GCC)
+kernel signature: 50541449699328cbae2ea357918aaa8ef385232e0cc317de834326eaf53754c7
+all runs: OK
+false negative chance: 0.000
+# git bisect good 9d6cb1b0f9dfefac9cf2f62c8582aa892770b34e
+Bisecting: 13 revisions left to test after this (roughly 4 steps)
+[bf38be65f3703d5ef3661c0a2802bc28e76b8f19] btrfs: move block_group_item::used to block group
+
+testing commit bf38be65f3703d5ef3661c0a2802bc28e76b8f19 gcc
+compiler: gcc version 8.1.0 (GCC)
+kernel signature: a8453567b86373b47951df3fae053a70a4a1faf5a915d241d5e439f44e5dc11d
+all runs: crashed: INFO: task hung in btrfs_commit_transaction
+representative crash: INFO: task hung in btrfs_commit_transaction, types: [HANG]
+# git bisect bad bf38be65f3703d5ef3661c0a2802bc28e76b8f19
+Bisecting: 6 revisions left to test after this (roughly 3 steps)
+[3951e7f050ac6a38bbc859fc3cd6093890c31d1c] btrfs: add xxhash64 to checksumming algorithms
+
+testing commit 3951e7f050ac6a38bbc859fc3cd6093890c31d1c gcc
+compiler: gcc version 8.1.0 (GCC)
+kernel signature: e86e1e60ac263ab796255d5a7a56509a14427f61898d0bc2fa634ec15bededff
+all runs: OK
+false negative chance: 0.000
+# git bisect good 3951e7f050ac6a38bbc859fc3cd6093890c31d1c
+Bisecting: 3 revisions left to test after this (roughly 2 steps)
+[41e6d2a808ad89d34c662ba8dd1209c4fefb1416] btrfs: sysfs: show used checksum driver per filesystem
+
+testing commit 41e6d2a808ad89d34c662ba8dd1209c4fefb1416 gcc
+compiler: gcc version 8.1.0 (GCC)
+kernel signature: 8a839f9fb2b3bdc2866cfa712736c13960f28ce754ebb34400bfc7d54046dd05
+run #0: crashed: KASAN: use-after-free Read in resolve_indirect_refs
+run #1: crashed: general protection fault in ulist_release
+run #2: crashed: KASAN: use-after-free Read in start_transaction
+run #3: crashed: KASAN: use-after-free Read in resolve_indirect_refs
+run #4: crashed: KASAN: use-after-free Read in resolve_indirect_refs
+run #5: crashed: INFO: task hung in btrfs_commit_transaction
+run #6: crashed: INFO: task hung in btrfs_commit_transaction
+run #7: crashed: INFO: task hung in btrfs_commit_transaction
+representative crash: KASAN: use-after-free Read in resolve_indirect_refs, types: [KASAN UNKNOWN]
+# git bisect bad 41e6d2a808ad89d34c662ba8dd1209c4fefb1416
+Bisecting: 0 revisions left to test after this (roughly 1 step)
+[f7cea56c0fff95bd5a6cd21b9fa299f66193b604] btrfs: sysfs: export supported checksums
+
+testing commit f7cea56c0fff95bd5a6cd21b9fa299f66193b604 gcc
+compiler: gcc version 8.1.0 (GCC)
+kernel signature: 1c5244f37b7f16dbda49c28a48673ad03f4ecff39cdb8575cb1c00513e04d39e
+run #0: crashed: KASAN: use-after-free Read in start_transaction
+run #1: crashed: KASAN: use-after-free Read in start_transaction
+run #2: crashed: KASAN: use-after-free Read in start_transaction
+run #3: crashed: general protection fault in ulist_release
+run #4: crashed: KASAN: use-after-free Read in resolve_indirect_refs
+run #5: crashed: KASAN: use-after-free Read in start_transaction
+run #6: crashed: KASAN: use-after-free Read in resolve_indirect_refs
+run #7: crashed: INFO: task hung in btrfs_commit_transaction
+representative crash: KASAN: use-after-free Read in start_transaction, types: [KASAN UNKNOWN]
+# git bisect bad f7cea56c0fff95bd5a6cd21b9fa299f66193b604
+Bisecting: 0 revisions left to test after this (roughly 0 steps)
+[3831bf0094abed51e71cbeca8b6edf8b88c2644b] btrfs: add sha256 to checksumming algorithm
+
+testing commit 3831bf0094abed51e71cbeca8b6edf8b88c2644b gcc
+compiler: gcc version 8.1.0 (GCC)
+kernel signature: 13da39f56726f8a5b61ccfa5ff38b4cf9d7303bad0632a7dad8281ef3ed6a85b
+all runs: crashed: INFO: task hung in btrfs_commit_transaction
+representative crash: INFO: task hung in btrfs_commit_transaction, types: [HANG]
+# git bisect bad 3831bf0094abed51e71cbeca8b6edf8b88c2644b
+3831bf0094abed51e71cbeca8b6edf8b88c2644b is the first bad commit
+commit 3831bf0094abed51e71cbeca8b6edf8b88c2644b
+Author: Johannes Thumshirn <jthumshirn@suse.de>
+Date:   Mon Oct 7 11:11:02 2019 +0200
+
+    btrfs: add sha256 to checksumming algorithm
+    
+    Add sha256 to the list of possible checksumming algorithms used by BTRFS.
+    
+    Signed-off-by: Johannes Thumshirn <jthumshirn@suse.de>
+    Reviewed-by: David Sterba <dsterba@suse.com>
+    Signed-off-by: David Sterba <dsterba@suse.com>
+
+ fs/btrfs/Kconfig                | 1 +
+ fs/btrfs/ctree.c                | 1 +
+ fs/btrfs/disk-io.c              | 1 +
+ fs/btrfs/super.c                | 1 +
+ include/uapi/linux/btrfs_tree.h | 1 +
+ 5 files changed, 5 insertions(+)
+
+accumulated error probability: 0.00
+culprit signature: 13da39f56726f8a5b61ccfa5ff38b4cf9d7303bad0632a7dad8281ef3ed6a85b
+parent  signature: e86e1e60ac263ab796255d5a7a56509a14427f61898d0bc2fa634ec15bededff
+reproducer is flaky (0.75 repro chance estimate)
+revisions tested: 27, total time: 8h51m49.021005377s (build: 5h17m59.442487389s, test: 3h4m52.386617845s)
+first bad commit: 3831bf0094abed51e71cbeca8b6edf8b88c2644b btrfs: add sha256 to checksumming algorithm
+recipients (to): ["clm@fb.com" "dsterba@suse.com" "dsterba@suse.com" "josef@toxicpanda.com" "jthumshirn@suse.de" "linux-btrfs@vger.kernel.org"]
+recipients (cc): ["linux-kernel@vger.kernel.org"]
+crash: INFO: task hung in btrfs_commit_transaction
+INFO: task kworker/u4:1:3307 blocked for more than 143 seconds.
+      Not tainted 5.4.0-rc8-syzkaller #0
+"echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
+kworker/u4:1    D25912  3307      2 0x80084000
+Workqueue: btrfs-qgroup-rescan btrfs_work_helper
+Call Trace:
+ context_switch mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/kernel/sched/core.c:3384 [inline]
+ __schedule+0x935/0x1e30 mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/kernel/sched/core.c:4078
+ schedule+0xc0/0x260 mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/kernel/sched/core.c:4145
+ btrfs_commit_transaction+0x1c01/0x2a30 mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/fs/btrfs/transaction.c:2142
+ btrfs_qgroup_rescan_worker+0xb37/0x10c0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/fs/btrfs/qgroup.c:3160
+ btrfs_work_helper+0x1ee/0x1210 mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/fs/btrfs/async-thread.c:318
+ process_one_work+0x858/0x1700 mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/kernel/workqueue.c:2269
+ worker_thread+0x85/0xb60 mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/kernel/workqueue.c:2415
+ kthread+0x331/0x3f0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/kernel/kthread.c:255
+ ret_from_fork+0x24/0x30 mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/arch/x86/entry/entry_64.S:352
+INFO: task syz-executor.5:11241 blocked for more than 143 seconds.
+      Not tainted 5.4.0-rc8-syzkaller #0
+"echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
+syz-executor.5  D24600 11241   9062 0x00080004
+Call Trace:
+ context_switch mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/kernel/sched/core.c:3384 [inline]
+ __schedule+0x935/0x1e30 mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/kernel/sched/core.c:4078
+ schedule+0xc0/0x260 mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/kernel/sched/core.c:4145
+ schedule_timeout+0x75d/0x1140 mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/kernel/time/timer.c:1871
+ do_wait_for_common mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/kernel/sched/completion.c:83 [inline]
+ __wait_for_common mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/kernel/sched/completion.c:104 [inline]
+ wait_for_common mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/kernel/sched/completion.c:115 [inline]
+ wait_for_completion+0x28b/0x460 mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/kernel/sched/completion.c:136
+ btrfs_qgroup_wait_for_completion+0xb3/0xd0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/fs/btrfs/qgroup.c:3363
+ btrfs_quota_disable+0x13b/0x8e0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/fs/btrfs/qgroup.c:1079
+ btrfs_ioctl_quota_ctl mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/fs/btrfs/ioctl.c:4757 [inline]
+ btrfs_ioctl+0x28ed/0x8370 mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/fs/btrfs/ioctl.c:5541
+ vfs_ioctl mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/fs/ioctl.c:46 [inline]
+ file_ioctl mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/fs/ioctl.c:509 [inline]
+ do_vfs_ioctl+0x196/0x1150 mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/fs/ioctl.c:696
+ ksys_ioctl+0x62/0x90 mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/fs/ioctl.c:713
+ __do_sys_ioctl mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/fs/ioctl.c:720 [inline]
+ __se_sys_ioctl mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/fs/ioctl.c:718 [inline]
+ __x64_sys_ioctl+0x6e/0xb0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/fs/ioctl.c:718
+ do_syscall_64+0x99/0x4a0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/arch/x86/entry/common.c:290
+ entry_SYSCALL_64_after_hwframe+0x49/0xbe
+RIP: 0033:0x7fdc37f58ced
+Code: Bad RIP value.
+RSP: 002b:00007fdc372c4bd8 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
+RAX: ffffffffffffffda RBX: 00007fdc38092f80 RCX: 00007fdc37f58ced
+RDX: 0000000020000040 RSI: 00000000c0109428 RDI: 0000000000000005
+RBP: 00007fdc37fb64ac R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+R13: 00007ffc26a1c2df R14: 00007ffc26a1c470 R15: 00007fdc372c4d80
+
+Showing all locks held in the system:
+1 lock held by khungtaskd/1547:
+ #0: ffffffff8a6cd700 (rcu_read_lock){....}, at: debug_show_all_locks+0x5b/0x2a6 mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/kernel/locking/lockdep.c:5337
+3 locks held by kworker/u4:1/3307:
+ #0: ffff888131c81928 ((wq_completion)btrfs-qgroup-rescan){+.+.}, at: __write_once_size mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/./include/linux/compiler.h:226 [inline]
+ #0: ffff888131c81928 ((wq_completion)btrfs-qgroup-rescan){+.+.}, at: arch_atomic64_set mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/./arch/x86/include/asm/atomic64_64.h:34 [inline]
+ #0: ffff888131c81928 ((wq_completion)btrfs-qgroup-rescan){+.+.}, at: atomic64_set mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/./include/asm-generic/atomic-instrumented.h:855 [inline]
+ #0: ffff888131c81928 ((wq_completion)btrfs-qgroup-rescan){+.+.}, at: atomic_long_set mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/./include/asm-generic/atomic-long.h:40 [inline]
+ #0: ffff888131c81928 ((wq_completion)btrfs-qgroup-rescan){+.+.}, at: set_work_data mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/kernel/workqueue.c:620 [inline]
+ #0: ffff888131c81928 ((wq_completion)btrfs-qgroup-rescan){+.+.}, at: set_work_pool_and_clear_pending mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/kernel/workqueue.c:647 [inline]
+ #0: ffff888131c81928 ((wq_completion)btrfs-qgroup-rescan){+.+.}, at: process_one_work+0x771/0x1700 mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/kernel/workqueue.c:2240
+ #1: ffff88805da97de8 ((work_completion)(&work->normal_work)){+.+.}, at: process_one_work+0x7a1/0x1700 mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/kernel/workqueue.c:2244
+ #2: ffff888056fd8628 (sb_internal#2){.+.+}, at: sb_start_intwrite mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/./include/linux/fs.h:1697 [inline]
+ #2: ffff888056fd8628 (sb_internal#2){.+.+}, at: start_transaction+0x988/0xf80 mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/fs/btrfs/transaction.c:612
+1 lock held by in:imklog/8188:
+ #0: ffff888134cc8d60 (&f->f_pos_lock){+.+.}, at: __fdget_pos+0xa3/0xc0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/fs/file.c:801
+4 locks held by syz-executor.5/11241:
+ #0: ffff888056fd8428 (sb_writers#14){.+.+}, at: sb_start_write mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/./include/linux/fs.h:1650 [inline]
+ #0: ffff888056fd8428 (sb_writers#14){.+.+}, at: mnt_want_write_file+0x67/0x110 mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/fs/namespace.c:412
+ #1: ffff8880590d8b20 (&fs_info->subvol_sem){+.+.}, at: btrfs_ioctl_quota_ctl mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/fs/btrfs/ioctl.c:4750 [inline]
+ #1: ffff8880590d8b20 (&fs_info->subvol_sem){+.+.}, at: btrfs_ioctl+0x289d/0x8370 mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/fs/btrfs/ioctl.c:5541
+ #2: ffff8880590d98c8 (&fs_info->qgroup_ioctl_lock){+.+.}, at: btrfs_quota_disable+0x83/0x8e0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/fs/btrfs/qgroup.c:1062
+ #3: ffff888056fd8628 (sb_internal#2){.+.+}, at: sb_start_intwrite mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/./include/linux/fs.h:1697 [inline]
+ #3: ffff888056fd8628 (sb_internal#2){.+.+}, at: start_transaction+0x988/0xf80 mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/fs/btrfs/transaction.c:612
+1 lock held by btrfs-transacti/11306:
+ #0: ffff8880590d8780 (&fs_info->transaction_kthread_mutex){+.+.}, at: transaction_kthread+0xd8/0x3a2 mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/fs/btrfs/disk-io.c:1743
+2 locks held by systemd-udevd/16965:
+ #0: ffff88813540c878 (&bdev->bd_mutex){+.+.}, at: __blkdev_get+0x148/0x12b0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/fs/block_dev.c:1553
+ #1: ffffffff8b555860 (loop_ctl_mutex){+.+.}, at: lo_open+0x18/0xb0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/drivers/block/loop.c:1784
+2 locks held by systemd-udevd/16971:
+ #0: ffff88805fd27278 (&bdev->bd_mutex){+.+.}, at: __blkdev_get+0x148/0x12b0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/fs/block_dev.c:1553
+ #1: ffffffff8b555860 (loop_ctl_mutex){+.+.}, at: lo_open+0x18/0xb0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/drivers/block/loop.c:1784
+1 lock held by syz-executor.0/16998:
+ #0: ffffffff8b555860 (loop_ctl_mutex){+.+.}, at: __loop_clr_fd+0x80/0xb90 mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/drivers/block/loop.c:1093
+1 lock held by syz-executor.1/17004:
+ #0: ffffffff8aebf380 (uuid_mutex){+.+.}, at: btrfs_mount_root+0x212/0x1050 mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/fs/btrfs/super.c:1516
+1 lock held by syz-executor.3/17009:
+ #0: ffffffff8aebf380 (uuid_mutex){+.+.}, at: btrfs_mount_root+0x212/0x1050 mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/fs/btrfs/super.c:1516
+3 locks held by syz-executor.4/17017:
+ #0: ffffffff8aebf380 (uuid_mutex){+.+.}, at: btrfs_mount_root+0x212/0x1050 mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/fs/btrfs/super.c:1516
+ #1: ffff88805fd27878 (&bdev->bd_mutex){+.+.}, at: __blkdev_get+0x148/0x12b0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/fs/block_dev.c:1553
+ #2: ffffffff8b555860 (loop_ctl_mutex){+.+.}, at: lo_open+0x18/0xb0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/drivers/block/loop.c:1784
+2 locks held by systemd-udevd/17034:
+ #0: ffff888135409e78 (&bdev->bd_mutex){+.+.}, at: __blkdev_get+0x148/0x12b0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/fs/block_dev.c:1553
+ #1: ffffffff8b555860 (loop_ctl_mutex){+.+.}, at: lo_open+0x18/0xb0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/drivers/block/loop.c:1784
+
+=============================================
+
+NMI backtrace for cpu 0
+CPU: 0 PID: 1547 Comm: khungtaskd Not tainted 5.4.0-rc8-syzkaller #0
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.13.0-1ubuntu1.1 04/01/2014
+Call Trace:
+ __dump_stack mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/lib/dump_stack.c:77 [inline]
+ dump_stack+0xa0/0xea mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/lib/dump_stack.c:118
+ nmi_cpu_backtrace.cold.6+0x2e/0x33 mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/lib/nmi_backtrace.c:101
+ nmi_trigger_cpumask_backtrace+0x18c/0x1b8 mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/lib/nmi_backtrace.c:62
+ arch_trigger_cpumask_backtrace+0x14/0x20 mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/arch/x86/kernel/apic/hw_nmi.c:38
+ trigger_all_cpu_backtrace mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/./include/linux/nmi.h:146 [inline]
+ check_hung_uninterruptible_tasks mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/kernel/hung_task.c:205 [inline]
+ watchdog+0x70a/0xd00 mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/kernel/hung_task.c:289
+ kthread+0x331/0x3f0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/kernel/kthread.c:255
+ ret_from_fork+0x24/0x30 mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/arch/x86/entry/entry_64.S:352
+Sending NMI from CPU 0 to CPUs 1:
+NMI backtrace for cpu 1
+CPU: 1 PID: 17029 Comm: syz-executor.2 Not tainted 5.4.0-rc8-syzkaller #0
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.13.0-1ubuntu1.1 04/01/2014
+RIP: 0010:__lock_acquire+0x63/0x5180 mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/kernel/locking/lockdep.c:3816
+Code: 88 00 3c 51 81 65 4c 8b 1c 25 c0 ef 01 00 48 89 85 70 ff ff ff 48 8d 85 78 ff ff ff 48 c1 e8 03 48 89 85 68 ff ff ff 48 89 c6 <48> b8 00 00 00 00 00 fc ff df 48 8d 14 06 c7 02 f1 f1 f1 f1 c7 42
+RSP: 0000:ffff888046117d20 EFLAGS: 00000806
+RAX: 1ffff11008c22fb7 RBX: 0000000000000000 RCX: 0000000000000000
+RDX: 0000000000000000 RSI: 1ffff11008c22fb7 RDI: ffff88805f6aea28
+RBP: ffff888046117e40 R08: 0000000000000001 R09: 0000000000000001
+R10: fffffbfff19392f8 R11: ffff88805f6ae400 R12: 0000000000000000
+R13: 0000000000000001 R14: ffff88805f6aea28 R15: 0000000000000000
+FS:  00007f26da777700(0000) GS:ffff888135c00000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007f26d31a2000 CR3: 000000005e13f000 CR4: 0000000000340ee0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+ lock_acquire+0x127/0x350 mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/kernel/locking/lockdep.c:4487
+ write_seqcount_begin_nested mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/./include/linux/seqlock.h:377 [inline]
+ write_seqcount_begin mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/./include/linux/seqlock.h:382 [inline]
+ vtime_user_exit+0x69/0x190 mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/kernel/sched/cputime.c:764
+ __context_tracking_exit.part.3+0x81/0x230 mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/kernel/context_tracking.c:158
+ __context_tracking_exit+0x17/0x20 mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/kernel/context_tracking.c:147
+ user_exit_irqoff mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/./include/linux/context_tracking.h:45 [inline]
+ enter_from_user_mode+0x23/0x40 mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/arch/x86/entry/common.c:45
+ async_page_fault+0x25/0x50 mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/arch/x86/entry/entry_64.S:1205
+RIP: 0033:0x7f26db3a1c37
+Code: 78 48 63 d5 48 01 c2 49 3b 55 08 77 56 8d 55 ff 85 ed 74 35 0f 1f 80 00 00 00 00 48 39 c1 77 1c 49 8b 75 00 49 89 c1 49 29 c9 <46> 0f b6 0c 0e 45 84 c9 74 08 44 88 0c 06 49 8b 45 10 48 83 c0 01
+RSP: 002b:00007f26da776060 EFLAGS: 00010206 ORIG_RAX: 0000000000000004
+RAX: 0000000000e4b001 RBX: 00007f26da7760c0 RCX: 0000000000000001
+RDX: 0000000000000054 RSI: 00007f26d2357000 RDI: 00007f26da776160
+RBP: 0000000000000102 R08: 0000000000000055 R09: 0000000000e4b000
+R10: 0000000000000000 R11: 00007f26da7760d0 R12: 00007f26da7760d0
+R13: 00007f26da776160 R14: 0000000000000001 R15: 0000000000000000
+
+
+general protection fault in start_transaction
+3831bf0094abed51e71cbeca8b6edf8b88c2644b

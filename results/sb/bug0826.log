@@ -1,0 +1,260 @@
+charm starts bisection 2025-04-06 00:41:23.124325979 -0700 PDT m=+3.895932086
+bisecting cause commit starting from 5f63595ebd82f56a2dd36ca013dd7f5ff2e2416a
+building syzkaller on HEAD
+ensuring issue is reproducible on original commit 5f63595ebd82f56a2dd36ca013dd7f5ff2e2416a
+
+testing commit 5f63595ebd82f56a2dd36ca013dd7f5ff2e2416a gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 3293b498cfeb05ec5589a19274cbd0b23fefc37ac182452d15cee46fa4c2235d
+all runs: crashed: WARNING in mark_buffer_dirty
+representative crash: WARNING in mark_buffer_dirty, types: [WARNING]
+picked [v6.3 v6.2 v6.1 v5.19 v5.17 v5.15 v5.13 v5.11 v5.8 v5.5 v5.2 v4.20 v4.19] out of 26 release tags
+testing release v6.3
+testing commit 457391b0380335d5e9a5babdec90ac53928b23b4 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 7c3e7f5c0b1f21e923e74c10904d922806b07b77f45cf5e9c26cd9be9982160e
+all runs: OK
+false negative chance: 0.000
+# git bisect start 5f63595ebd82f56a2dd36ca013dd7f5ff2e2416a 457391b0380335d5e9a5babdec90ac53928b23b4
+Bisecting: 7282 revisions left to test after this (roughly 13 steps)
+[6e98b09da931a00bf4e0477d0fa52748bf28fcce] Merge tag 'net-next-6.4' of git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net-next
+
+testing commit 6e98b09da931a00bf4e0477d0fa52748bf28fcce gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 9b62c4a22b0ff44b550c306e839f5f991e1a9576cc30055b9a5c1a66baf7dff0
+run #0: crashed: WARNING in mark_buffer_dirty
+run #1: OK
+run #2: OK
+run #3: OK
+run #4: OK
+run #5: OK
+run #6: OK
+run #7: OK
+representative crash: WARNING in mark_buffer_dirty, types: [WARNING]
+# git bisect bad 6e98b09da931a00bf4e0477d0fa52748bf28fcce
+Bisecting: 3926 revisions left to test after this (roughly 12 steps)
+[088e0c188513b58a0056a488cf5b7df094a8a48a] Merge tag 'platform-drivers-x86-v6.4-1' of git://git.kernel.org/pub/scm/linux/kernel/git/pdx86/platform-drivers-x86
+
+testing commit 088e0c188513b58a0056a488cf5b7df094a8a48a gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: f6fd68961eff915d45b5b61500ab22f8636397bae9a7cbe14812c31bc864a7e1
+all runs: OK
+false negative chance: 0.001
+# git bisect good 088e0c188513b58a0056a488cf5b7df094a8a48a
+Bisecting: 1938 revisions left to test after this (roughly 11 steps)
+[ca288965801572fe41386560d4e6c5cc0e5cc56d] Merge tag 'wireless-next-2023-04-21' of git://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next
+
+testing commit ca288965801572fe41386560d4e6c5cc0e5cc56d gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 79a8602937b2f24bfb5417616aca514c7d6ee97472a8ec212527c8e4528a5a6b
+all runs: OK
+false negative chance: 0.001
+# git bisect good ca288965801572fe41386560d4e6c5cc0e5cc56d
+Bisecting: 1030 revisions left to test after this (roughly 10 steps)
+[94fc0792661a96d64a4bb79cf10d0793ecadf76e] Merge tag 'fs_for_v6.4-rc1' of git://git.kernel.org/pub/scm/linux/kernel/git/jack/linux-fs
+
+testing commit 94fc0792661a96d64a4bb79cf10d0793ecadf76e gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: ef1ef5dd408392ad94aca2c4afd71bc3815178aee0e329e0bf71a9a8074fb8ff
+run #0: crashed: WARNING in mark_buffer_dirty
+run #1: crashed: WARNING in mark_buffer_dirty
+run #2: crashed: WARNING in mark_buffer_dirty
+run #3: crashed: WARNING in mark_buffer_dirty
+run #4: crashed: WARNING in mark_buffer_dirty
+run #5: OK
+run #6: OK
+run #7: OK
+representative crash: WARNING in mark_buffer_dirty, types: [WARNING]
+# git bisect bad 94fc0792661a96d64a4bb79cf10d0793ecadf76e
+Bisecting: 461 revisions left to test after this (roughly 9 steps)
+[4173cf6fb6b7d1b4569cca08af318c4561356fb5] Merge tag 'hwmon-for-v6.4' of git://git.kernel.org/pub/scm/linux/kernel/git/groeck/linux-staging
+
+testing commit 4173cf6fb6b7d1b4569cca08af318c4561356fb5 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: c97c898db82bcba108a8f74a54ca940ce1d149a7a612a6e7b327d7be0efb96d3
+all runs: OK
+false negative chance: 0.001
+# git bisect good 4173cf6fb6b7d1b4569cca08af318c4561356fb5
+Bisecting: 270 revisions left to test after this (roughly 8 steps)
+[98f99e67a1dc456e9a542584819b2aa265ffc737] Merge tag 'flex-array-transformations-6.4-rc1' of git://git.kernel.org/pub/scm/linux/kernel/git/gustavoars/linux
+
+testing commit 98f99e67a1dc456e9a542584819b2aa265ffc737 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: e51f758d58950d179be1c60b98c9a8984b7ee71e9794eb0e14bcf1a77b9ee985
+all runs: crashed: WARNING in mark_buffer_dirty
+representative crash: WARNING in mark_buffer_dirty, types: [WARNING]
+# git bisect bad 98f99e67a1dc456e9a542584819b2aa265ffc737
+Bisecting: 121 revisions left to test after this (roughly 7 steps)
+[4f810294e00bd99da9ec3c8fe3185a73e39bcd6c] Merge branches 'acpi-utils' and 'acpi-docs'
+
+testing commit 4f810294e00bd99da9ec3c8fe3185a73e39bcd6c gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 9aa971d068a37d8261e4a1cae93b94ff36e40441cf2f74c66b59c46a52eb4ce6
+all runs: OK
+false negative chance: 0.001
+# git bisect good 4f810294e00bd99da9ec3c8fe3185a73e39bcd6c
+Bisecting: 62 revisions left to test after this (roughly 6 steps)
+[3d439b1a2ad36c8b4ea151c8de25309d60d17407] thermal/core: Alloc-copy-free the thermal zone parameters structure
+
+testing commit 3d439b1a2ad36c8b4ea151c8de25309d60d17407 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: f07b2c961236b672194fc3a3bfdf94e0f0a36f59c4d05f975b34626321ae1f17
+run #0: crashed: WARNING in mark_buffer_dirty
+run #1: crashed: WARNING in mark_buffer_dirty
+run #2: crashed: WARNING in mark_buffer_dirty
+run #3: OK
+run #4: OK
+run #5: OK
+run #6: OK
+run #7: OK
+representative crash: WARNING in mark_buffer_dirty, types: [WARNING]
+# git bisect bad 3d439b1a2ad36c8b4ea151c8de25309d60d17407
+Bisecting: 29 revisions left to test after this (roughly 5 steps)
+[311526b7e38fb35ab6dcdec290babda3d2b4f8d3] thermal/drivers/db8500: Use driver dev instead of tz->device
+
+testing commit 311526b7e38fb35ab6dcdec290babda3d2b4f8d3 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: e3376f983cafa21b72f579843ecf44e1a494e49241edbbac1e8ee86c9ba2e2db
+run #0: crashed: WARNING in mark_buffer_dirty
+run #1: crashed: WARNING in mark_buffer_dirty
+run #2: crashed: WARNING in mark_buffer_dirty
+run #3: OK
+run #4: OK
+run #5: OK
+run #6: OK
+run #7: OK
+representative crash: WARNING in mark_buffer_dirty, types: [WARNING]
+# git bisect bad 311526b7e38fb35ab6dcdec290babda3d2b4f8d3
+Bisecting: 14 revisions left to test after this (roughly 4 steps)
+[0adad0929621e1eb226b46eb3ac322a45da96c3c] thermal/drivers/da9062: Don't access the thermal zone device fields
+
+testing commit 0adad0929621e1eb226b46eb3ac322a45da96c3c gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: e7cc2be3ed10a9a87dc17e834af8f906b57039c7bcc43a1b71498bb84f8d51b4
+run #0: crashed: WARNING in mark_buffer_dirty
+run #1: crashed: WARNING in mark_buffer_dirty
+run #2: OK
+run #3: OK
+run #4: OK
+run #5: OK
+run #6: OK
+run #7: OK
+representative crash: WARNING in mark_buffer_dirty, types: [WARNING]
+# git bisect bad 0adad0929621e1eb226b46eb3ac322a45da96c3c
+Bisecting: 6 revisions left to test after this (roughly 3 steps)
+[8f3f4ad4ad45e2e30c814de42629ef4c9688e92c] thermal/hwmon: Do not set no_hwmon before calling thermal_add_hwmon_sysfs()
+
+testing commit 8f3f4ad4ad45e2e30c814de42629ef4c9688e92c gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: f5e23a6df919155b2109b1193ef144015cb4e7d83fcc2bf15492953dd6c34161
+all runs: OK
+false negative chance: 0.038
+# git bisect good 8f3f4ad4ad45e2e30c814de42629ef4c9688e92c
+Bisecting: 3 revisions left to test after this (roughly 2 steps)
+[072e35c98806100182c0a7263cf4cba09ce43463] thermal/core: Add thermal_zone_device structure 'type' accessor
+
+testing commit 072e35c98806100182c0a7263cf4cba09ce43463 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: f46389508752669e3f966a6b8b9d0d0dfc869bfa83f5eb5d8faf3be5e5d8a118
+run #0: crashed: WARNING in mark_buffer_dirty
+run #1: crashed: WARNING in mark_buffer_dirty
+run #2: crashed: WARNING in mark_buffer_dirty
+run #3: OK
+run #4: OK
+run #5: OK
+run #6: OK
+run #7: OK
+representative crash: WARNING in mark_buffer_dirty, types: [WARNING]
+# git bisect bad 072e35c98806100182c0a7263cf4cba09ce43463
+Bisecting: 0 revisions left to test after this (roughly 1 step)
+[dec07d399cc82e37681251775cdd924db455fdae] thermal: Don't use 'device' internal thermal zone structure field
+
+testing commit dec07d399cc82e37681251775cdd924db455fdae gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 88a1edcd86554e0e7bd7895574b4151315c10134c542c60cecaa8a6996c22bff
+all runs: OK
+false negative chance: 0.038
+# git bisect good dec07d399cc82e37681251775cdd924db455fdae
+072e35c98806100182c0a7263cf4cba09ce43463 is the first bad commit
+commit 072e35c98806100182c0a7263cf4cba09ce43463
+Author: Daniel Lezcano <daniel.lezcano@linaro.org>
+Date:   Wed Mar 1 21:14:38 2023 +0100
+
+    thermal/core: Add thermal_zone_device structure 'type' accessor
+    
+    The thermal zone device structure is exposed via the exported
+    thermal.h header. This structure should stay private the thermal core
+    code. In order to encapsulate the structure, let's add an accessor to
+    get the 'type' of the thermal zone.
+    
+    Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
+    Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+
+ drivers/thermal/thermal_core.c | 6 ++++++
+ include/linux/thermal.h        | 6 ++++++
+ 2 files changed, 12 insertions(+)
+
+accumulated error probability: 0.08
+culprit signature: f46389508752669e3f966a6b8b9d0d0dfc869bfa83f5eb5d8faf3be5e5d8a118
+parent  signature: 88a1edcd86554e0e7bd7895574b4151315c10134c542c60cecaa8a6996c22bff
+reproducer is flaky (0.34 repro chance estimate)
+revisions tested: 15, total time: 7h2m54.864163559s (build: 4h23m27.858871232s, test: 2h6m43.612323177s)
+first bad commit: 072e35c98806100182c0a7263cf4cba09ce43463 thermal/core: Add thermal_zone_device structure 'type' accessor
+recipients (to): ["daniel.lezcano@linaro.org" "daniel.lezcano@linaro.org" "linux-pm@vger.kernel.org" "rafael.j.wysocki@intel.com" "rafael@kernel.org"]
+recipients (cc): ["amitk@kernel.org" "linux-kernel@vger.kernel.org" "rui.zhang@intel.com"]
+crash: WARNING in mark_buffer_dirty
+------------[ cut here ]------------
+WARNING: CPU: 0 PID: 11358 at fs/buffer.c:1124 mark_buffer_dirty+0x4cd/0x570 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/fs/buffer.c:1124
+Modules linked in:
+CPU: 0 PID: 11358 Comm: syz-executor.1 Not tainted 6.2.0-syzkaller #0
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.13.0-1ubuntu1.1 04/01/2014
+RIP: 0010:mark_buffer_dirty+0x4cd/0x570 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/fs/buffer.c:1124
+Code: 00 48 c7 c7 40 3f 5c 8a c6 05 ea 27 69 0c 01 e8 29 33 71 ff e9 5e fe ff ff e8 ef 87 90 ff 0f 0b e9 2d fd ff ff e8 e3 87 90 ff <0f> 0b e9 64 fb ff ff e8 d7 87 90 ff 0f 0b e9 b6 fb ff ff 48 c7 c7
+RSP: 0018:ffffc900030ff5f0 EFLAGS: 00010293
+RAX: 0000000000000000 RBX: ffff8880233d5cb0 RCX: 0000000000000000
+RDX: ffff888101f59d40 RSI: ffffffff81f444dd RDI: 0000000000000001
+RBP: ffff8881169c2000 R08: 0000000000000001 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000000 R12: ffff88802d989490
+R13: ffffc900030ff6a8 R14: ffffc900030ff6b0 R15: ffff88801ea48000
+FS:  00007f0c8ce15700(0000) GS:ffff888063a00000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00005623eba40798 CR3: 00000001154c4000 CR4: 0000000000350ef0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+ <TASK>
+ nilfs_palloc_commit_free_entry+0x3b7/0x6b0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/fs/nilfs2/alloc.c:626
+ nilfs_ifile_delete_inode+0x288/0x330 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/fs/nilfs2/ifile.c:127
+ nilfs_evict_inode+0x1d0/0x440 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/fs/nilfs2/inode.c:937
+ evict+0x2ed/0x6b0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/fs/inode.c:665
+ iput_final mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/fs/inode.c:1748 [inline]
+ iput.part.0+0x59b/0x8a0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/fs/inode.c:1774
+ iput+0x5c/0x80 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/fs/inode.c:1764
+ nilfs_add_nondir mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/fs/nilfs2/namei.c:45 [inline]
+ nilfs_create mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/fs/nilfs2/namei.c:92 [inline]
+ nilfs_create+0x21f/0x300 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/fs/nilfs2/namei.c:75
+ lookup_open.isra.0+0x105a/0x1400 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/fs/namei.c:3416
+ open_last_lookups mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/fs/namei.c:3484 [inline]
+ path_openat+0x953/0x26c0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/fs/namei.c:3712
+ do_filp_open+0x1ba/0x410 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/fs/namei.c:3742
+ do_sys_openat2+0x16d/0x4c0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/fs/open.c:1348
+ do_sys_open mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/fs/open.c:1364 [inline]
+ __do_sys_openat mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/fs/open.c:1380 [inline]
+ __se_sys_openat mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/fs/open.c:1375 [inline]
+ __x64_sys_openat+0x143/0x1f0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/fs/open.c:1375
+ do_syscall_x64 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/arch/x86/entry/common.c:50 [inline]
+ do_syscall_64+0x39/0xb0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/arch/x86/entry/common.c:80
+ entry_SYSCALL_64_after_hwframe+0x63/0xcd
+RIP: 0033:0x7f0c8c091ced
+Code: c3 e8 17 32 00 00 0f 1f 80 00 00 00 00 f3 0f 1e fa 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 b8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007f0c8ce14bd8 EFLAGS: 00000246 ORIG_RAX: 0000000000000101
+RAX: ffffffffffffffda RBX: 00007f0c8c1cbf80 RCX: 00007f0c8c091ced
+RDX: 000000000000275a RSI: 0000000020006ac0 RDI: ffffffffffffff9c
+RBP: 00007f0c8c0ef4ac R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+R13: 00007fffc17140ff R14: 00007fffc1714290 R15: 00007f0c8ce14d80
+ </TASK>
+
+
+WARNING in mark_buffer_dirty
+072e35c98806100182c0a7263cf4cba09ce43463

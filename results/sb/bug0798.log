@@ -1,0 +1,228 @@
+charm starts bisection 2025-04-01 01:05:28.90882807 -0700 PDT m=+8.040532435
+bisecting cause commit starting from 489fa31ea873282b41046d412ec741f93946fc2d
+building syzkaller on HEAD
+ensuring issue is reproducible on original commit 489fa31ea873282b41046d412ec741f93946fc2d
+
+testing commit 489fa31ea873282b41046d412ec741f93946fc2d gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: a3b0151c00f5d5436847c2bd5c02e1b989986cc232442f5a75741419a86d6993
+all runs: crashed: WARNING in skb_warn_bad_offload
+representative crash: WARNING in skb_warn_bad_offload, types: [WARNING]
+picked [v6.2 v6.1 v6.0 v5.18 v5.16 v5.14 v5.12 v5.10 v5.7 v5.4 v5.1 v4.19] out of 25 release tags
+testing release v6.2
+testing commit c9c3395d5e3dcc6daee66c6908354d47bf98cb0c gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: ae73ad50ab6ea4e23017dc191dbc371bc95c5ce6d3ae2bde09be2f833962f6a6
+all runs: crashed: WARNING in skb_warn_bad_offload
+representative crash: WARNING in skb_warn_bad_offload, types: [WARNING]
+testing release v6.1
+testing commit 830b3c68c1fb1e9176028d02ef86f3cf76aa2476 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 0d8f46a75993dee1c8e05dd786a5f2c233e2130bda530628086e00cbf59e42ce
+all runs: OK
+false negative chance: 0.000
+# git bisect start c9c3395d5e3dcc6daee66c6908354d47bf98cb0c 830b3c68c1fb1e9176028d02ef86f3cf76aa2476
+Bisecting: 9429 revisions left to test after this (roughly 13 steps)
+[1ca06f1c1acecbe02124f14a37cce347b8c1a90c] Merge tag 'xtensa-20221213' of https://github.com/jcmvbkbc/linux-xtensa
+
+testing commit 1ca06f1c1acecbe02124f14a37cce347b8c1a90c gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 05f773e6f78ffba7ce748037d1c87726526c3e58ccebe012bcdbf2ac04abcf53
+all runs: OK
+false negative chance: 0.000
+# git bisect good 1ca06f1c1acecbe02124f14a37cce347b8c1a90c
+Bisecting: 4752 revisions left to test after this (roughly 12 steps)
+[b83a7080d30032cf70832bc2bb04cc342e203b88] Merge tag 'staging-6.2-rc1' of git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/staging
+
+testing commit b83a7080d30032cf70832bc2bb04cc342e203b88 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: dbcfb923415f93bca841509babfeab987145131956eea426f0fd8edc28bedb4e
+all runs: crashed: WARNING in skb_warn_bad_offload
+representative crash: WARNING in skb_warn_bad_offload, types: [WARNING]
+# git bisect bad b83a7080d30032cf70832bc2bb04cc342e203b88
+Bisecting: 2462 revisions left to test after this (roughly 11 steps)
+[7e68dd7d07a28faa2e6574dd6b9dbd90cdeaae91] Merge tag 'net-next-6.2' of git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net-next
+
+testing commit 7e68dd7d07a28faa2e6574dd6b9dbd90cdeaae91 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: c716bc74d97362f4daa335bf62ef01b4bc505143447c86766bdb2950e1a955bf
+all runs: crashed: WARNING in skb_warn_bad_offload
+representative crash: WARNING in skb_warn_bad_offload, types: [WARNING]
+# git bisect bad 7e68dd7d07a28faa2e6574dd6b9dbd90cdeaae91
+Bisecting: 1102 revisions left to test after this (roughly 10 steps)
+[c609d739947894d7370eae4cf04eb2c49e910bcf] Merge tag 'wireless-next-2022-11-18' of git://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next
+
+testing commit c609d739947894d7370eae4cf04eb2c49e910bcf gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: e247e7fd48aa0bde224a0aed6855ff4731875fdc06c74b1815385aeee92f2262
+all runs: OK
+false negative chance: 0.000
+# git bisect good c609d739947894d7370eae4cf04eb2c49e910bcf
+Bisecting: 550 revisions left to test after this (roughly 9 steps)
+[32163491c0c205ffb1596baf9c308dee5338ae94] Merge branch 'r8169-irq-coalesce'
+
+testing commit 32163491c0c205ffb1596baf9c308dee5338ae94 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: ce768cf98d03447591d4e9b71c2fac9ed4663cf53f79471f1a91ac8dd1e6436b
+all runs: OK
+false negative chance: 0.000
+# git bisect good 32163491c0c205ffb1596baf9c308dee5338ae94
+Bisecting: 270 revisions left to test after this (roughly 8 steps)
+[b2b509fb5a1e6af1e630a755b32c4658099df70b] Merge tag 'linux-can-next-for-6.2-20221212' of git://git.kernel.org/pub/scm/linux/kernel/git/mkl/linux-can-next
+
+testing commit b2b509fb5a1e6af1e630a755b32c4658099df70b gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 9e0350aa0df783353773d0ce4eb65af81fe4c18a183f58a5f515fd934210c2d3
+all runs: crashed: WARNING in skb_warn_bad_offload
+representative crash: WARNING in skb_warn_bad_offload, types: [WARNING]
+# git bisect bad b2b509fb5a1e6af1e630a755b32c4658099df70b
+Bisecting: 139 revisions left to test after this (roughly 7 steps)
+[1933ea365aa7a48ce26bea2ea09c9f7cc48cc668] net: openvswitch: Add support to count upcall packets
+
+testing commit 1933ea365aa7a48ce26bea2ea09c9f7cc48cc668 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: a50b89900a16513146c5710a0cc19c68f45745d9004bb0748b3d797ff7c49180
+all runs: OK
+false negative chance: 0.000
+# git bisect good 1933ea365aa7a48ce26bea2ea09c9f7cc48cc668
+Bisecting: 60 revisions left to test after this (roughly 6 steps)
+[dd8b3a802b64adf059a49a68f1bdca7846e492fc] Merge tag 'ipsec-next-2022-12-09' of git://git.kernel.org/pub/scm/linux/kernel/git/klassert/ipsec-next
+
+testing commit dd8b3a802b64adf059a49a68f1bdca7846e492fc gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: a593d7357655d1038bf74fa2eca67e1ed2d8ea166f4c94d46db2fab338b0e3fa
+all runs: OK
+false negative chance: 0.000
+# git bisect good dd8b3a802b64adf059a49a68f1bdca7846e492fc
+Bisecting: 30 revisions left to test after this (roughly 5 steps)
+[0826e82b8a32e646b7b32ba8b68ba30812028e47] can: raw: add support for SO_MARK
+
+testing commit 0826e82b8a32e646b7b32ba8b68ba30812028e47 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 74a8388ca90cd9f7a1d812a871e4b4119c8d17d92ecaced1864a401d88196d8b
+all runs: OK
+false negative chance: 0.000
+# git bisect good 0826e82b8a32e646b7b32ba8b68ba30812028e47
+Bisecting: 15 revisions left to test after this (roughly 4 steps)
+[0564c3e51bc7bb200e76d0cad2d7067cc77cb83e] net: sched: update the nat flag for icmp error packets in ct_nat_execute
+
+testing commit 0564c3e51bc7bb200e76d0cad2d7067cc77cb83e gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 10dcc69020a731efb1d80ddae74d5b54353466d2322f4e2a326a787a20a4ec30
+all runs: crashed: WARNING in skb_warn_bad_offload
+representative crash: WARNING in skb_warn_bad_offload, types: [WARNING]
+# git bisect bad 0564c3e51bc7bb200e76d0cad2d7067cc77cb83e
+Bisecting: 7 revisions left to test after this (roughly 3 steps)
+[93c60b597493d8875584385c90aa7933e92bf375] Merge branch 'tun-vnet-uso'
+
+testing commit 93c60b597493d8875584385c90aa7933e92bf375 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 90531bf7fb0b391c6c8e56f483a29a3ea06d22118bf1a27a30e8fb08fa2dfc08
+all runs: crashed: WARNING in skb_warn_bad_offload
+representative crash: WARNING in skb_warn_bad_offload, types: [WARNING]
+# git bisect bad 93c60b597493d8875584385c90aa7933e92bf375
+Bisecting: 3 revisions left to test after this (roughly 2 steps)
+[399e0827642f6a8bcae24277fe08e80e7e4bb891] driver/net/tun: Added features for USO.
+
+testing commit 399e0827642f6a8bcae24277fe08e80e7e4bb891 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 3bc3d22e14102f6c5b190f6af5b070b82f9edf6e4ba7feea2a286bc418438583
+all runs: OK
+false negative chance: 0.000
+# git bisect good 399e0827642f6a8bcae24277fe08e80e7e4bb891
+Bisecting: 1 revision left to test after this (roughly 1 step)
+[860b7f27b8f78564ca5a2f607e0820b2d352a562] linux/virtio_net.h: Support USO offload in vnet header.
+
+testing commit 860b7f27b8f78564ca5a2f607e0820b2d352a562 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 05591e0f0d224b9386a9c00fba023ce814508a0750d2166ebd603960af91aa29
+all runs: crashed: WARNING in skb_warn_bad_offload
+representative crash: WARNING in skb_warn_bad_offload, types: [WARNING]
+# git bisect bad 860b7f27b8f78564ca5a2f607e0820b2d352a562
+Bisecting: 0 revisions left to test after this (roughly 0 steps)
+[34061b348ae912b9783fae7fabae69d46977a036] uapi/linux/virtio_net.h: Added USO types.
+
+testing commit 34061b348ae912b9783fae7fabae69d46977a036 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 458c01ebb33168b706c518419e1a8bff0350784373fe4fa4d06f2a134ea3fb71
+all runs: OK
+false negative chance: 0.000
+# git bisect good 34061b348ae912b9783fae7fabae69d46977a036
+860b7f27b8f78564ca5a2f607e0820b2d352a562 is the first bad commit
+commit 860b7f27b8f78564ca5a2f607e0820b2d352a562
+Author: Andrew Melnychenko <andrew@daynix.com>
+Date:   Wed Dec 7 13:35:57 2022 +0200
+
+    linux/virtio_net.h: Support USO offload in vnet header.
+    
+    Now, it's possible to convert USO vnet packets from/to skb.
+    Added support for GSO_UDP_L4 offload.
+    
+    Signed-off-by: Andrew Melnychenko <andrew@daynix.com>
+    Signed-off-by: David S. Miller <davem@davemloft.net>
+
+ include/linux/virtio_net.h | 9 +++++++++
+ 1 file changed, 9 insertions(+)
+
+accumulated error probability: 0.00
+culprit signature: 05591e0f0d224b9386a9c00fba023ce814508a0750d2166ebd603960af91aa29
+parent  signature: 458c01ebb33168b706c518419e1a8bff0350784373fe4fa4d06f2a134ea3fb71
+revisions tested: 17, total time: 6h8m2.287958303s (build: 4h11m37.784845139s, test: 1h31m27.979204141s)
+first bad commit: 860b7f27b8f78564ca5a2f607e0820b2d352a562 linux/virtio_net.h: Support USO offload in vnet header.
+recipients (to): ["andrew@daynix.com" "davem@davemloft.net" "jasowang@redhat.com" "mst@redhat.com" "virtualization@lists.linux-foundation.org"]
+recipients (cc): ["linux-kernel@vger.kernel.org"]
+crash: WARNING in skb_warn_bad_offload
+skb linear:   00000110: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+skb linear:   00000120: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+------------[ cut here ]------------
+erspan0: caps=(0x0000000000006869, 0x0000000000000000)
+WARNING: CPU: 0 PID: 7484 at net/core/dev.c:3232 skb_warn_bad_offload+0x119/0x230 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/net/core/dev.c:3232
+Modules linked in:
+CPU: 0 PID: 7484 Comm: syz-executor.0 Not tainted 6.1.0-rc8-syzkaller #0
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.13.0-1ubuntu1.1 04/01/2014
+RIP: 0010:skb_warn_bad_offload+0x119/0x230 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/net/core/dev.c:3232
+Code: 70 03 00 00 e8 b8 f2 ca f9 4c 8d a5 e8 00 00 00 e8 ac f2 ca f9 4c 89 e9 4c 89 e2 4c 89 f6 48 c7 c7 80 49 5b 8b e8 53 c4 f4 01 <0f> 0b 5b 5d 41 5c 41 5d 41 5e e9 88 f2 ca f9 e8 83 f2 ca f9 48 89
+RSP: 0018:ffffc900063ef6f0 EFLAGS: 00010282
+RAX: 0000000000000000 RBX: ffff88801f406000 RCX: 0000000000000000
+RDX: ffff8880165857c0 RSI: ffffffff8165673c RDI: fffff52000c7ded0
+RBP: ffff88810ef2e000 R08: 0000000000000005 R09: 0000000000000000
+R10: 0000000000000201 R11: 0000000000000000 R12: ffff88810ef2e0e8
+R13: ffff88801f406370 R14: ffff88810ef2e000 R15: 000000000000000e
+FS:  00007fe3a8926700(0000) GS:ffff888063a00000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000000020001000 CR3: 000000001ceee000 CR4: 0000000000350ef0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+ <TASK>
+ __skb_gso_segment+0x3e7/0x6b0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/net/core/dev.c:3409
+ skb_gso_segment mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/./include/linux/netdevice.h:4808 [inline]
+ validate_xmit_skb+0x658/0xe90 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/net/core/dev.c:3664
+ validate_xmit_skb_list+0xc0/0x130 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/net/core/dev.c:3714
+ sch_direct_xmit+0x3d5/0xbe0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/net/sched/sch_generic.c:327
+ __dev_xmit_skb mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/net/core/dev.c:3810 [inline]
+ __dev_queue_xmit+0x1645/0x3ba0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/net/core/dev.c:4215
+ packet_snd mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/net/packet/af_packet.c:3073 [inline]
+ packet_sendmsg+0x33cf/0x5530 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/net/packet/af_packet.c:3104
+ sock_sendmsg_nosec mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/net/socket.c:714 [inline]
+ sock_sendmsg+0xd3/0x120 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/net/socket.c:734
+ __sys_sendto+0x23a/0x340 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/net/socket.c:2117
+ __do_sys_sendto mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/net/socket.c:2129 [inline]
+ __se_sys_sendto mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/net/socket.c:2125 [inline]
+ __x64_sys_sendto+0xe1/0x1b0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/net/socket.c:2125
+ do_syscall_x64 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/arch/x86/entry/common.c:50 [inline]
+ do_syscall_64+0x39/0xb0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/arch/x86/entry/common.c:80
+ entry_SYSCALL_64_after_hwframe+0x63/0xcd
+RIP: 0033:0x7fe3a7c91ced
+Code: c3 e8 17 32 00 00 0f 1f 80 00 00 00 00 f3 0f 1e fa 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 b8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007fe3a8925bd8 EFLAGS: 00000246 ORIG_RAX: 000000000000002c
+RAX: ffffffffffffffda RBX: 00007fe3a7dcbf80 RCX: 00007fe3a7c91ced
+RDX: 0000000000002378 RSI: 0000000020000080 RDI: 0000000000000003
+RBP: 00007fe3a7cef4ac R08: 0000000000000000 R09: 00000000000002ff
+R10: 0000000004000002 R11: 0000000000000246 R12: 0000000000000000
+R13: 00007ffd7050fa9f R14: 00007ffd7050fc30 R15: 00007fe3a8925d80
+ </TASK>
+
+
+WARNING in skb_warn_bad_offload
+860b7f27b8f78564ca5a2f607e0820b2d352a562

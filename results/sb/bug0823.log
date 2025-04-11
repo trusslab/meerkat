@@ -1,0 +1,253 @@
+charm starts bisection 2025-04-05 09:33:05.706602322 -0700 PDT m=+10.213574586
+bisecting cause commit starting from 06c2afb862f9da8dc5efa4b6076a0e48c3fbaaa5
+building syzkaller on HEAD
+ensuring issue is reproducible on original commit 06c2afb862f9da8dc5efa4b6076a0e48c3fbaaa5
+
+testing commit 06c2afb862f9da8dc5efa4b6076a0e48c3fbaaa5 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: c364751752c7be70a8f9e4b585ae0f116769184960319c8d620e6105ba4ceeb4
+all runs: crashed: WARNING in iommufd_access_destroy
+representative crash: WARNING in iommufd_access_destroy, types: [WARNING]
+picked [v6.4 v6.3 v6.2 v6.0 v5.18 v5.16 v5.14 v5.12 v5.9 v5.6 v5.3 v5.0 v4.19] out of 27 release tags
+testing release v6.4
+testing commit 6995e2de6891c724bfeb2db33d7b87775f913ad1 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 666bee7f3adecf243a58ef41ea8fb8d44b3dd62aa06c973f90cd1776837122bf
+run #0: crashed: WARNING in iommufd_access_destroy
+run #1: crashed: WARNING in iommufd_access_destroy
+run #2: crashed: WARNING in iommufd_access_destroy
+run #3: crashed: WARNING in iommufd_access_destroy
+run #4: crashed: WARNING in iommufd_access_destroy
+run #5: crashed: WARNING in iommufd_access_destroy
+run #6: crashed: WARNING in iommufd_access_destroy
+run #7: OK
+representative crash: WARNING in iommufd_access_destroy, types: [WARNING]
+testing release v6.3
+testing commit 457391b0380335d5e9a5babdec90ac53928b23b4 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: bdc739600b4ab8f712e4ba1485707d08758702d96128244c08770d0383289fdb
+all runs: OK
+false negative chance: 0.000
+# git bisect start 6995e2de6891c724bfeb2db33d7b87775f913ad1 457391b0380335d5e9a5babdec90ac53928b23b4
+Bisecting: 8012 revisions left to test after this (roughly 13 steps)
+[d42b1c47570eb2ed818dc3fe94b2678124af109d] Merge tag 'devicetree-for-6.4-1' of git://git.kernel.org/pub/scm/linux/kernel/git/robh/linux
+
+testing commit d42b1c47570eb2ed818dc3fe94b2678124af109d gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 27ee75e3b8b72c391c600afa13d1a8879f858f4414b67c1cf00deea637c14232
+all runs: crashed: WARNING in iommufd_access_destroy
+representative crash: WARNING in iommufd_access_destroy, types: [WARNING]
+# git bisect bad d42b1c47570eb2ed818dc3fe94b2678124af109d
+Bisecting: 4005 revisions left to test after this (roughly 12 steps)
+[088e0c188513b58a0056a488cf5b7df094a8a48a] Merge tag 'platform-drivers-x86-v6.4-1' of git://git.kernel.org/pub/scm/linux/kernel/git/pdx86/platform-drivers-x86
+
+testing commit 088e0c188513b58a0056a488cf5b7df094a8a48a gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 95cfc310d73da1d842c7b2b0f0a535aa79a7f9def83cc34afdc641f707d26ded
+all runs: OK
+false negative chance: 0.000
+# git bisect good 088e0c188513b58a0056a488cf5b7df094a8a48a
+Bisecting: 2002 revisions left to test after this (roughly 11 steps)
+[28339b21a365a8cb9edc6956cbfd679f569daa81] netfilter: nf_tables: do not send complete notification of deletions
+
+testing commit 28339b21a365a8cb9edc6956cbfd679f569daa81 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 7e19e6f60e0855c5ce0bd7d49fc98a12197a480f005ffb25ab2eb026b37b8f7a
+all runs: OK
+false negative chance: 0.000
+# git bisect good 28339b21a365a8cb9edc6956cbfd679f569daa81
+Bisecting: 946 revisions left to test after this (roughly 10 steps)
+[85d7ab2463822a4ab096c0b7b59feec962552572] Merge tag 'for-6.4-tag' of git://git.kernel.org/pub/scm/linux/kernel/git/kdave/linux
+
+testing commit 85d7ab2463822a4ab096c0b7b59feec962552572 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 73b290aaac08cc8611c44e45284b0b5bd9e650f35818aefd764471111ac3d402
+all runs: OK
+false negative chance: 0.000
+# git bisect good 85d7ab2463822a4ab096c0b7b59feec962552572
+Bisecting: 576 revisions left to test after this (roughly 9 steps)
+[36006b1d5c04692924f011aa949e8788f1c604de] Merge tag 'ata-6.4-rc1' of git://git.kernel.org/pub/scm/linux/kernel/git/dlemoal/libata
+
+testing commit 36006b1d5c04692924f011aa949e8788f1c604de gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: fa9d0331dbf3402556416e3605781333d74ffd5b27be5c8074f686cd9f577b83
+all runs: OK
+false negative chance: 0.000
+# git bisect good 36006b1d5c04692924f011aa949e8788f1c604de
+Bisecting: 300 revisions left to test after this (roughly 8 steps)
+[9b78d919632b7149d311aaad5a977e4b48b10321] net: phy: hide the PHYLIB_LEDS knob
+
+testing commit 9b78d919632b7149d311aaad5a977e4b48b10321 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 7e96de91a18f6fcff9924884aa0471bb75ec27e0cd918d32ed7d63d112f81dbb
+all runs: OK
+false negative chance: 0.000
+# git bisect good 9b78d919632b7149d311aaad5a977e4b48b10321
+Bisecting: 121 revisions left to test after this (roughly 7 steps)
+[62d15dba0aa4448c15da9c9443018c70fc2527b2] Merge patch series "Constify most SCSI host templates"
+
+testing commit 62d15dba0aa4448c15da9c9443018c70fc2527b2 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 2688824a5770a6c34a7ec9c8263ad738cd76865265102c3347578d90884a9cf0
+all runs: OK
+false negative chance: 0.000
+# git bisect good 62d15dba0aa4448c15da9c9443018c70fc2527b2
+Bisecting: 70 revisions left to test after this (roughly 6 steps)
+[32f7ad0fbe7521de2a5e8f79c33d46110247fd7c] Merge tag 'drm-next-2023-04-27' of git://anongit.freedesktop.org/drm/drm
+
+testing commit 32f7ad0fbe7521de2a5e8f79c33d46110247fd7c gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 4086cb049da6640e4a1a63221bb0edc11e9a54b755119bd80a7e0fee921fc323
+all runs: OK
+false negative chance: 0.000
+# git bisect good 32f7ad0fbe7521de2a5e8f79c33d46110247fd7c
+Bisecting: 35 revisions left to test after this (roughly 5 steps)
+[5c899820baaf4a5e9e027d5066c01c04afed290d] dt-bindings: reset: remove stih415/stih416 reset
+
+testing commit 5c899820baaf4a5e9e027d5066c01c04afed290d gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: f3e491915b7802ffa8c4a6854e3d57bcd5375f58c782f4b37a4463386556a3bf
+all runs: OK
+false negative chance: 0.000
+# git bisect good 5c899820baaf4a5e9e027d5066c01c04afed290d
+Bisecting: 15 revisions left to test after this (roughly 4 steps)
+[9fdf791612866da2ae09930774fe5c8604962691] Merge branch 'vfio_mdev_ops' into iommufd.git for-next
+
+testing commit 9fdf791612866da2ae09930774fe5c8604962691 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 605f8c122463b6c6233e5842b27b32f831d6a1f2f77754fb1d719d4b32284197
+all runs: crashed: WARNING in iommufd_access_destroy
+representative crash: WARNING in iommufd_access_destroy, types: [WARNING]
+# git bisect bad 9fdf791612866da2ae09930774fe5c8604962691
+Bisecting: 9 revisions left to test after this (roughly 3 steps)
+[f8406f65c1cfe4c8e3646ea66f5bac07b1f10b55] iommufd/selftest: Rename the remaining mock device_id's to stdev_id
+
+testing commit f8406f65c1cfe4c8e3646ea66f5bac07b1f10b55 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 2426a0fe4ded76159f3c2dc79599e70645c006b1bfe0669a7fc5eae3258cc90e
+all runs: OK
+false negative chance: 0.000
+# git bisect good f8406f65c1cfe4c8e3646ea66f5bac07b1f10b55
+Bisecting: 4 revisions left to test after this (roughly 2 steps)
+[0a782d15e1d406e8074954405b1dc143a7645344] vfio/mdev: Uses the vfio emulated iommufd ops set in the mdev sample drivers
+
+testing commit 0a782d15e1d406e8074954405b1dc143a7645344 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 434851395dfc70f0a5d0f84143b47c698a1c97105aaa77c5f5caef10d3f7bbc4
+run #0: crashed: WARNING in iommufd_access_destroy
+run #1: crashed: WARNING in iommufd_access_destroy
+run #2: crashed: WARNING in iommufd_access_destroy
+run #3: crashed: WARNING in iommufd_access_destroy
+run #4: crashed: WARNING in iommufd_access_destroy
+run #5: crashed: WARNING in iommufd_access_destroy
+run #6: crashed: WARNING in iommufd_access_destroy
+run #7: OK
+representative crash: WARNING in iommufd_access_destroy, types: [WARNING]
+# git bisect bad 0a782d15e1d406e8074954405b1dc143a7645344
+Bisecting: 2 revisions left to test after this (roughly 1 step)
+[54b47585db6658a5eb898d4d45be18d1e581c1bf] iommufd: Create access in vfio_iommufd_emulated_bind()
+
+testing commit 54b47585db6658a5eb898d4d45be18d1e581c1bf gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 51385000f35663220364047080810749b92660dfd2c6c4b9b5162e25f333b826
+all runs: crashed: WARNING in iommufd_access_destroy
+representative crash: WARNING in iommufd_access_destroy, types: [WARNING]
+# git bisect bad 54b47585db6658a5eb898d4d45be18d1e581c1bf
+Bisecting: 0 revisions left to test after this (roughly 0 steps)
+[325de950297b4295890715b041a143d152ea4971] iommu/iommufd: Pass iommufd_ctx pointer in iommufd_get_ioas()
+
+testing commit 325de950297b4295890715b041a143d152ea4971 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 0cc107a52420343a14416d3a70e098f692ac6a9db775ee18ad2bca68747595fd
+all runs: OK
+false negative chance: 0.000
+# git bisect good 325de950297b4295890715b041a143d152ea4971
+54b47585db6658a5eb898d4d45be18d1e581c1bf is the first bad commit
+commit 54b47585db6658a5eb898d4d45be18d1e581c1bf
+Author: Nicolin Chen <nicolinc@nvidia.com>
+Date:   Mon Mar 27 02:33:47 2023 -0700
+
+    iommufd: Create access in vfio_iommufd_emulated_bind()
+    
+    There are needs to created iommufd_access prior to have an IOAS and set
+    IOAS later. Like the vfio device cdev needs to have an iommufd object
+    to represent the bond (iommufd_access) and IOAS replacement.
+    
+    Moves the iommufd_access_create() call into vfio_iommufd_emulated_bind(),
+    making it symmetric with the __vfio_iommufd_access_destroy() call in the
+    vfio_iommufd_emulated_unbind(). This means an access is created/destroyed
+    by the bind()/unbind(), and the vfio_iommufd_emulated_attach_ioas() only
+    updates the access->ioas pointer.
+    
+    Since vfio_iommufd_emulated_bind() does not provide ioas_id, drop it from
+    the argument list of iommufd_access_create(). Instead, add a new access
+    API iommufd_access_attach() to set the access->ioas pointer. Also, set
+    vdev->iommufd_attached accordingly, similar to the physical pathway.
+    
+    Link: https://lore.kernel.org/r/20230327093351.44505-3-yi.l.liu@intel.com
+    Reviewed-by: Kevin Tian <kevin.tian@intel.com>
+    Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
+    Tested-by: Terrence Xu <terrence.xu@intel.com>
+    Tested-by: Nicolin Chen <nicolinc@nvidia.com>
+    Signed-off-by: Nicolin Chen <nicolinc@nvidia.com>
+    Signed-off-by: Yi Liu <yi.l.liu@intel.com>
+    Acked-by: Alex Williamson <alex.williamson@redhat.com>
+    Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+
+ drivers/iommu/iommufd/device.c   | 52 +++++++++++++++++++++++-----------------
+ drivers/iommu/iommufd/selftest.c |  5 +++-
+ drivers/vfio/iommufd.c           | 24 +++++++++++++------
+ include/linux/iommufd.h          |  3 ++-
+ 4 files changed, 53 insertions(+), 31 deletions(-)
+
+accumulated error probability: 0.00
+culprit signature: 51385000f35663220364047080810749b92660dfd2c6c4b9b5162e25f333b826
+parent  signature: 0cc107a52420343a14416d3a70e098f692ac6a9db775ee18ad2bca68747595fd
+revisions tested: 17, total time: 8h0m53.514837874s (build: 5h22m10.584188457s, test: 2h5m41.960375134s)
+first bad commit: 54b47585db6658a5eb898d4d45be18d1e581c1bf iommufd: Create access in vfio_iommufd_emulated_bind()
+recipients (to): ["alex.williamson@redhat.com" "jgg@nvidia.com" "kevin.tian@intel.com" "nicolinc@nvidia.com" "terrence.xu@intel.com" "yi.l.liu@intel.com"]
+recipients (cc): []
+crash: WARNING in iommufd_access_destroy
+------------[ cut here ]------------
+WARNING: CPU: 1 PID: 9088 at drivers/iommu/iommufd/device.c:477 iommufd_access_destroy+0x55/0x70 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/drivers/iommu/iommufd/device.c:477
+Modules linked in:
+CPU: 1 PID: 9088 Comm: syz-executor.0 Not tainted 6.3.0-rc1-syzkaller #0
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.13.0-1ubuntu1.1 04/01/2014
+RIP: 0010:iommufd_access_destroy+0x55/0x70 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/drivers/iommu/iommufd/device.c:477
+Code: 48 8b bd a8 00 00 00 48 89 ee e8 96 e8 00 00 31 ff 89 c5 89 c6 e8 eb 77 e6 fc 40 84 ed 74 06 5d e9 d0 7b e6 fc e8 cb 7b e6 fc <0f> 0b 5d e9 c3 7b e6 fc e8 1e 1c 37 fd eb c7 66 66 2e 0f 1f 84 00
+RSP: 0018:ffffc90003b0fce8 EFLAGS: 00010293
+RAX: 0000000000000000 RBX: ffffc90003b0fe50 RCX: 0000000000000000
+RDX: ffff888116ef2200 RSI: ffffffff849dbd95 RDI: 0000000000000001
+RBP: 0000000000000000 R08: 0000000000000001 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000000 R12: 0000000000000004
+R13: ffff88810fd08c00 R14: ffffc90003b0fe10 R15: 00000000fffffffe
+FS:  00007f91d91c1700(0000) GS:ffff888135c00000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007f91d91c0d78 CR3: 000000010325e000 CR4: 0000000000350ee0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+ <TASK>
+ iommufd_test_create_access mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/drivers/iommu/iommufd/selftest.c:596 [inline]
+ iommufd_test+0x140e/0x2770 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/drivers/iommu/iommufd/selftest.c:813
+ iommufd_fops_ioctl+0x317/0x4b0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/drivers/iommu/iommufd/main.c:337
+ vfs_ioctl mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/fs/ioctl.c:51 [inline]
+ __do_sys_ioctl mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/fs/ioctl.c:870 [inline]
+ __se_sys_ioctl mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/fs/ioctl.c:856 [inline]
+ __x64_sys_ioctl+0x197/0x210 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/fs/ioctl.c:856
+ do_syscall_x64 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/arch/x86/entry/common.c:50 [inline]
+ do_syscall_64+0x39/0xb0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/arch/x86/entry/common.c:80
+ entry_SYSCALL_64_after_hwframe+0x63/0xcd
+RIP: 0033:0x7f91d8491ced
+Code: c3 e8 17 32 00 00 0f 1f 80 00 00 00 00 f3 0f 1e fa 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 b8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007f91d91c0bd8 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
+RAX: ffffffffffffffda RBX: 00007f91d85cc050 RCX: 00007f91d8491ced
+RDX: 0000000020000080 RSI: 0000000000003ba0 RDI: 0000000000000003
+RBP: 00007f91d84ef4ac R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+R13: 00007ffe9c0f82ef R14: 00007ffe9c0f8480 R15: 00007f91d91c0d80
+ </TASK>
+
+
+WARNING in iommufd_access_destroy
+54b47585db6658a5eb898d4d45be18d1e581c1bf

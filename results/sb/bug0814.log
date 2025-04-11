@@ -1,0 +1,329 @@
+charm starts bisection 2025-04-04 17:01:03.623144303 -0700 PDT m=+101.646125212
+bisecting cause commit starting from 4a0fc73da97efd23a383ca839e6fe86410268f6b
+building syzkaller on HEAD
+ensuring issue is reproducible on original commit 4a0fc73da97efd23a383ca839e6fe86410268f6b
+
+testing commit 4a0fc73da97efd23a383ca839e6fe86410268f6b gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 38b9b8ee65518ef2d8aa03b60313ec0896281d1ef0869f15df7b360ff5989588
+all runs: crashed: KASAN: stack-out-of-bounds Write in end_buffer_read_sync
+representative crash: KASAN: stack-out-of-bounds Write in end_buffer_read_sync, types: [KASAN]
+picked [v6.5 v6.4 v6.3 v6.1 v5.19 v5.17 v5.15 v5.13 v5.10 v5.7 v5.4 v5.1 v4.19] out of 28 release tags
+testing release v6.5
+testing commit 2dde18cd1d8fac735875f2e4987f11817cc0bc2c gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 4e51caadcdf054fb686216e08c7cead0c3947114e7b1396d456a13489e414e42
+run #0: crashed: KASAN: stack-out-of-bounds Write in end_buffer_read_sync
+run #1: OK
+run #2: OK
+run #3: OK
+run #4: OK
+run #5: OK
+run #6: OK
+run #7: OK
+representative crash: KASAN: stack-out-of-bounds Write in end_buffer_read_sync, types: [KASAN]
+testing release v6.4
+testing commit 6995e2de6891c724bfeb2db33d7b87775f913ad1 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 39d63dea5cc976c724fbb233e18d60d6fa385af6702d92ae9060ad18e9c87cc7
+run #0: crashed: KASAN: stack-out-of-bounds Write in end_buffer_read_sync
+run #1: OK
+run #2: OK
+run #3: OK
+run #4: OK
+run #5: OK
+run #6: OK
+run #7: OK
+representative crash: KASAN: stack-out-of-bounds Write in end_buffer_read_sync, types: [KASAN]
+testing release v6.3
+testing commit 457391b0380335d5e9a5babdec90ac53928b23b4 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: aabff8c0954b19972cce38121a710f1602ac73f37cc5993ad279e9da9bbccb02
+all runs: OK
+false negative chance: 0.000
+# git bisect start 6995e2de6891c724bfeb2db33d7b87775f913ad1 457391b0380335d5e9a5babdec90ac53928b23b4
+Bisecting: 8012 revisions left to test after this (roughly 13 steps)
+[d42b1c47570eb2ed818dc3fe94b2678124af109d] Merge tag 'devicetree-for-6.4-1' of git://git.kernel.org/pub/scm/linux/kernel/git/robh/linux
+
+testing commit d42b1c47570eb2ed818dc3fe94b2678124af109d gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 0997840ce9f45f117a790daeb3362f5a89d85c9857293b345265bef390bd0729
+run #0: crashed: KASAN: stack-out-of-bounds Write in end_buffer_read_sync
+run #1: OK
+run #2: OK
+run #3: OK
+run #4: OK
+run #5: OK
+run #6: OK
+run #7: OK
+representative crash: KASAN: stack-out-of-bounds Write in end_buffer_read_sync, types: [KASAN]
+# git bisect bad d42b1c47570eb2ed818dc3fe94b2678124af109d
+Bisecting: 4005 revisions left to test after this (roughly 12 steps)
+[088e0c188513b58a0056a488cf5b7df094a8a48a] Merge tag 'platform-drivers-x86-v6.4-1' of git://git.kernel.org/pub/scm/linux/kernel/git/pdx86/platform-drivers-x86
+
+testing commit 088e0c188513b58a0056a488cf5b7df094a8a48a gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: dc2f4fe04c168bad9a49168c230a96dc6bcc2f862f0b81ff996aa1a43789551a
+all runs: OK
+false negative chance: 0.001
+# git bisect good 088e0c188513b58a0056a488cf5b7df094a8a48a
+Bisecting: 2002 revisions left to test after this (roughly 11 steps)
+[28339b21a365a8cb9edc6956cbfd679f569daa81] netfilter: nf_tables: do not send complete notification of deletions
+
+testing commit 28339b21a365a8cb9edc6956cbfd679f569daa81 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: b4d8f2b460d83fd470251dccc1d56e0b5dc2128ef07fabdaabafad493f63bf23
+all runs: OK
+false negative chance: 0.001
+# git bisect good 28339b21a365a8cb9edc6956cbfd679f569daa81
+Bisecting: 946 revisions left to test after this (roughly 10 steps)
+[85d7ab2463822a4ab096c0b7b59feec962552572] Merge tag 'for-6.4-tag' of git://git.kernel.org/pub/scm/linux/kernel/git/kdave/linux
+
+testing commit 85d7ab2463822a4ab096c0b7b59feec962552572 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 907710ba1e1c710616d4ca50bea74677fb436c02b7dc97af80fd025e56380139
+run #0: crashed: KASAN: stack-out-of-bounds Write in end_buffer_read_sync
+run #1: crashed: KASAN: stack-out-of-bounds Write in end_buffer_read_sync
+run #2: OK
+run #3: OK
+run #4: OK
+run #5: OK
+run #6: OK
+run #7: OK
+representative crash: KASAN: stack-out-of-bounds Write in end_buffer_read_sync, types: [KASAN]
+# git bisect bad 85d7ab2463822a4ab096c0b7b59feec962552572
+Bisecting: 544 revisions left to test after this (roughly 9 steps)
+[5e0ca0bfc33b7196ae3a5cbe26289a4025618f5a] Merge tag 'thermal-6.4-rc1' of git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm
+
+testing commit 5e0ca0bfc33b7196ae3a5cbe26289a4025618f5a gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 5be92bfc049329ab7f0961c08d92455ad328bd1b2f22a808ca6071b09459e1ef
+all runs: OK
+false negative chance: 0.015
+# git bisect good 5e0ca0bfc33b7196ae3a5cbe26289a4025618f5a
+Bisecting: 273 revisions left to test after this (roughly 8 steps)
+[dbe0e78d0e3a83dd924ea01bebf6c45313c81607] Merge tag 'fscrypt-for-linus' of git://git.kernel.org/pub/scm/fs/fscrypt/linux
+
+testing commit dbe0e78d0e3a83dd924ea01bebf6c45313c81607 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 49e70cd1756a80a49c8289082cdc63c95c44fcddd81efd0be043174104f9a2c9
+run #0: crashed: KASAN: stack-out-of-bounds Write in end_buffer_read_sync
+run #1: OK
+run #2: OK
+run #3: OK
+run #4: OK
+run #5: OK
+run #6: OK
+run #7: OK
+representative crash: KASAN: stack-out-of-bounds Write in end_buffer_read_sync, types: [KASAN]
+# git bisect bad dbe0e78d0e3a83dd924ea01bebf6c45313c81607
+Bisecting: 135 revisions left to test after this (roughly 7 steps)
+[ba24b8eb3ef676cb7d6cef4a2a53f3624f880d42] crypto: testmgr - Add some test vectors for cmac(camellia)
+
+testing commit ba24b8eb3ef676cb7d6cef4a2a53f3624f880d42 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: cbd95bb53826a1835cb400deab4260046928131115cebdc1175024e098670577
+all runs: OK
+false negative chance: 0.085
+# git bisect good ba24b8eb3ef676cb7d6cef4a2a53f3624f880d42
+Bisecting: 66 revisions left to test after this (roughly 6 steps)
+[4f810294e00bd99da9ec3c8fe3185a73e39bcd6c] Merge branches 'acpi-utils' and 'acpi-docs'
+
+testing commit 4f810294e00bd99da9ec3c8fe3185a73e39bcd6c gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 4664b2636efd09cd141aabfbe785f556255b6643a00896ebc799ee93f6872cd0
+all runs: OK
+false negative chance: 0.085
+# git bisect good 4f810294e00bd99da9ec3c8fe3185a73e39bcd6c
+Bisecting: 35 revisions left to test after this (roughly 5 steps)
+[0bdd95cede51d725c7f29c9787e62b77bfb0f034] Merge tag 'cpufreq-arm-updates-6.4' of git://git.kernel.org/pub/scm/linux/kernel/git/vireshk/pm
+
+testing commit 0bdd95cede51d725c7f29c9787e62b77bfb0f034 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: c0e9609b84de431a4a6ef8873a47b3595dc7f11ac368e93877adc56e34e58176
+run #0: crashed: KASAN: stack-out-of-bounds Write in end_buffer_read_sync
+run #1: OK
+run #2: OK
+run #3: OK
+run #4: OK
+run #5: OK
+run #6: OK
+run #7: OK
+representative crash: KASAN: stack-out-of-bounds Write in end_buffer_read_sync, types: [KASAN]
+# git bisect bad 0bdd95cede51d725c7f29c9787e62b77bfb0f034
+Bisecting: 15 revisions left to test after this (roughly 4 steps)
+[e2b47e585931a988c856fd4ba31e1296f749aee3] cpufreq: qcom-cpufreq-hw: Revert adding cpufreq qos
+
+testing commit e2b47e585931a988c856fd4ba31e1296f749aee3 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 6afebe0c6873ee0317ceda3943be8756f59d57d60df77db3781c2f084373c3b7
+run #0: crashed: BUG: unable to handle kernel paging request in flush_tlb_mm_range
+run #1: OK
+run #2: OK
+run #3: OK
+run #4: OK
+run #5: OK
+run #6: OK
+run #7: OK
+representative crash: BUG: unable to handle kernel paging request in flush_tlb_mm_range, types: [UNKNOWN]
+# git bisect bad e2b47e585931a988c856fd4ba31e1296f749aee3
+Bisecting: 7 revisions left to test after this (roughly 3 steps)
+[d51e106240bc755cbe59634b70d567c192b045b2] cpufreq: mediatek: fix KP caused by handler usage after regulator_put/clk_put
+
+testing commit d51e106240bc755cbe59634b70d567c192b045b2 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: ee07bd07893c37fc4a3d3d1044f0e6343ae117faeafdd9c6101145a421ac50c1
+all runs: OK
+false negative chance: 0.248
+# git bisect good d51e106240bc755cbe59634b70d567c192b045b2
+Bisecting: 3 revisions left to test after this (roughly 2 steps)
+[417598f998520b1484a7cef2ac0563de7d975937] cpufreq: Add SM7225 to cpufreq-dt-platdev blocklist
+
+testing commit 417598f998520b1484a7cef2ac0563de7d975937 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: a5755fb8e91593fa133f2c2a9f37c5da2faff852bd52268f09500a3f02e0a680
+all runs: OK
+false negative chance: 0.248
+# git bisect good 417598f998520b1484a7cef2ac0563de7d975937
+Bisecting: 1 revision left to test after this (roughly 1 step)
+[7ae24e054f753ff40ca1adaa631edd7476590a5f] dt-bindings: cpufreq: cpufreq-qcom-hw: Sanitize data per compatible
+
+testing commit 7ae24e054f753ff40ca1adaa631edd7476590a5f gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: a561c40cd1069e29648d3700ac554c31646609103313b4be874a34485a8bfe8e
+run #0: crashed: KASAN: stack-out-of-bounds Write in end_buffer_read_sync
+run #1: OK
+run #2: OK
+run #3: OK
+run #4: OK
+run #5: OK
+run #6: OK
+run #7: OK
+representative crash: KASAN: stack-out-of-bounds Write in end_buffer_read_sync, types: [KASAN]
+# git bisect bad 7ae24e054f753ff40ca1adaa631edd7476590a5f
+Bisecting: 0 revisions left to test after this (roughly 0 steps)
+[287143d886961194c23c98ebbde5c0fad39e12b8] dt-bindings: cpufreq: cpufreq-qcom-hw: Allow just 1 frequency domain
+
+testing commit 287143d886961194c23c98ebbde5c0fad39e12b8 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 1e298963fb0d8ec18d38e27877a81d306c361e46daf93138c001bfde67631fcd
+all runs: OK
+false negative chance: 0.292
+# git bisect good 287143d886961194c23c98ebbde5c0fad39e12b8
+7ae24e054f753ff40ca1adaa631edd7476590a5f is the first bad commit
+commit 7ae24e054f753ff40ca1adaa631edd7476590a5f
+Author: Konrad Dybcio <konrad.dybcio@linaro.org>
+Date:   Wed Mar 8 02:26:59 2023 +0100
+
+    dt-bindings: cpufreq: cpufreq-qcom-hw: Sanitize data per compatible
+    
+    Introduce per-SoC compatibles for OSM targets (read: pre-sm8250) and
+    sanitize the number of interrupt{s,-names} and reg/-names per-compatible.
+    
+    Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+    Reviewed-by: Rob Herring <robh@kernel.org>
+    Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
+
+ .../bindings/cpufreq/cpufreq-qcom-hw.yaml          | 90 +++++++++++++++++++++-
+ 1 file changed, 89 insertions(+), 1 deletion(-)
+
+accumulated error probability: 0.67
+culprit signature: a561c40cd1069e29648d3700ac554c31646609103313b4be874a34485a8bfe8e
+parent  signature: 1e298963fb0d8ec18d38e27877a81d306c361e46daf93138c001bfde67631fcd
+reproducer is flaky (0.14 repro chance estimate)
+revisions tested: 18, total time: 7h53m29.459251755s (build: 4h54m53.953860038s, test: 2h19m28.826958587s)
+first bad commit: 7ae24e054f753ff40ca1adaa631edd7476590a5f dt-bindings: cpufreq: cpufreq-qcom-hw: Sanitize data per compatible
+recipients (to): ["konrad.dybcio@linaro.org" "robh@kernel.org" "viresh.kumar@linaro.org"]
+recipients (cc): []
+crash: KASAN: stack-out-of-bounds Write in end_buffer_read_sync
+==================================================================
+BUG: KASAN: stack-out-of-bounds in instrument_atomic_read_write mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/./include/linux/instrumented.h:102 [inline]
+BUG: KASAN: stack-out-of-bounds in atomic_dec mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/./include/linux/atomic/atomic-instrumented.h:257 [inline]
+BUG: KASAN: stack-out-of-bounds in put_bh mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/./include/linux/buffer_head.h:323 [inline]
+BUG: KASAN: stack-out-of-bounds in end_buffer_read_sync+0x8f/0xe0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/fs/buffer.c:161
+Write of size 4 at addr ffffc9000610f978 by task ksoftirqd/1/23
+
+CPU: 1 PID: 23 Comm: ksoftirqd/1 Not tainted 6.3.0-rc1-syzkaller #0
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.13.0-1ubuntu1.1 04/01/2014
+Call Trace:
+ <TASK>
+ __dump_stack mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/lib/dump_stack.c:88 [inline]
+ dump_stack_lvl+0xd9/0x150 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/lib/dump_stack.c:106
+ print_address_description.constprop.0+0x2c/0x3c0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/kasan/report.c:319
+ print_report mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/kasan/report.c:430 [inline]
+ kasan_report+0x11c/0x130 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/kasan/report.c:536
+ check_region_inline mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/kasan/generic.c:181 [inline]
+ kasan_check_range+0x141/0x190 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/kasan/generic.c:187
+ instrument_atomic_read_write mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/./include/linux/instrumented.h:102 [inline]
+ atomic_dec mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/./include/linux/atomic/atomic-instrumented.h:257 [inline]
+ put_bh mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/./include/linux/buffer_head.h:323 [inline]
+ end_buffer_read_sync+0x8f/0xe0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/fs/buffer.c:161
+ end_bio_bh_io_sync+0xde/0x130 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/fs/buffer.c:2703
+ bio_endio+0x651/0x810 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/block/bio.c:1607
+ req_bio_endio mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/block/blk-mq.c:795 [inline]
+ blk_update_request+0x436/0x1650 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/block/blk-mq.c:927
+ blk_mq_end_request+0x4f/0x80 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/block/blk-mq.c:1054
+ lo_complete_rq+0x1c6/0x280 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/drivers/block/loop.c:370
+ blk_complete_reqs+0xad/0xe0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/block/blk-mq.c:1132
+ __do_softirq+0x2e3/0xae3 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/kernel/softirq.c:571
+ run_ksoftirqd mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/kernel/softirq.c:934 [inline]
+ run_ksoftirqd+0x31/0x60 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/kernel/softirq.c:926
+ smpboot_thread_fn+0x659/0xa20 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/kernel/smpboot.c:164
+ kthread+0x2ee/0x3a0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/kernel/kthread.c:376
+ ret_from_fork+0x1f/0x30 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/arch/x86/entry/entry_64.S:308
+ </TASK>
+
+The buggy address belongs to the virtual mapping at
+ [ffffc90006108000, ffffc90006111000) created by:
+ kernel_clone+0xeb/0x9a0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/kernel/fork.c:2684
+
+The buggy address belongs to the physical page:
+page:ffffea0004210dc0 refcount:1 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x108437
+flags: 0x57ff00000000000(node=1|zone=2|lastcpupid=0x7ff)
+raw: 057ff00000000000 0000000000000000 dead000000000122 0000000000000000
+raw: 0000000000000000 0000000000000000 00000001ffffffff 0000000000000000
+page dumped because: kasan: bad access detected
+page_owner tracks the page as allocated
+page last allocated via order 0, migratetype Unmovable, gfp_mask 0x2dc2(GFP_KERNEL|__GFP_HIGHMEM|__GFP_NOWARN|__GFP_ZERO), pid 14975, tgid 14975 (syz-executor.0), ts 327338553438, free_ts 327269848986
+ set_page_owner mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/./include/linux/page_owner.h:31 [inline]
+ post_alloc_hook+0x2db/0x350 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/page_alloc.c:2545
+ prep_new_page mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/page_alloc.c:2552 [inline]
+ get_page_from_freelist+0x1190/0x2f80 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/page_alloc.c:4325
+ __alloc_pages+0x1cb/0x5c0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/page_alloc.c:5591
+ alloc_pages+0x1aa/0x270 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/mempolicy.c:2283
+ vm_area_alloc_pages mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/vmalloc.c:2943 [inline]
+ __vmalloc_area_node mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/vmalloc.c:3011 [inline]
+ __vmalloc_node_range+0xb30/0x1300 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/vmalloc.c:3181
+ alloc_thread_stack_node mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/kernel/fork.c:311 [inline]
+ dup_task_struct mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/kernel/fork.c:984 [inline]
+ copy_process+0x1316/0x76b0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/kernel/fork.c:2100
+ kernel_clone+0xeb/0x9a0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/kernel/fork.c:2684
+ __do_sys_clone+0xba/0x100 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/kernel/fork.c:2825
+ do_syscall_x64 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/arch/x86/entry/common.c:50 [inline]
+ do_syscall_64+0x39/0xb0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/arch/x86/entry/common.c:80
+ entry_SYSCALL_64_after_hwframe+0x63/0xcd
+page last free stack trace:
+ reset_page_owner mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/./include/linux/page_owner.h:24 [inline]
+ free_pages_prepare mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/page_alloc.c:1453 [inline]
+ free_pcp_prepare+0x65f/0xb50 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/page_alloc.c:1503
+ free_unref_page_prepare mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/page_alloc.c:3387 [inline]
+ free_unref_page+0x1d/0x490 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/page_alloc.c:3482
+ vfree+0x180/0x7e0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/vmalloc.c:2742
+ delayed_vfree_work+0x57/0x70 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/vmalloc.c:2663
+ process_one_work+0x982/0x17b0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/kernel/workqueue.c:2390
+ worker_thread+0x669/0x1090 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/kernel/workqueue.c:2537
+ kthread+0x2ee/0x3a0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/kernel/kthread.c:376
+ ret_from_fork+0x1f/0x30 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/arch/x86/entry/entry_64.S:308
+
+Memory state around the buggy address:
+ ffffc9000610f800: f1 f1 f1 00 00 f2 f2 00 00 00 f3 f3 f3 f3 f3 00
+ ffffc9000610f880: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+>ffffc9000610f900: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 f1
+                                                                ^
+ ffffc9000610f980: f1 f1 f1 f1 f1 01 f2 00 f2 f2 f2 00 00 00 00 00
+ ffffc9000610fa00: 00 00 f3 f3 f3 f3 f3 00 00 00 00 00 00 00 00 00
+==================================================================
+
+
+KASAN: slab-use-after-free Read in ntfs_write_bh
+7ae24e054f753ff40ca1adaa631edd7476590a5f

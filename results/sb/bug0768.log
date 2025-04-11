@@ -1,0 +1,365 @@
+TrussLab starts bisection 2025-03-25 16:14:24.793371884 -0700 PDT m=+16.609330914
+bisecting cause commit starting from 5a6a09e97199d6600d31383055f9d43fbbcbe86f
+building syzkaller on HEAD
+ensuring issue is reproducible on original commit 5a6a09e97199d6600d31383055f9d43fbbcbe86f
+
+testing commit 5a6a09e97199d6600d31383055f9d43fbbcbe86f gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 7effc8252fe5e0f7032226f97b683addb314e8b797dec992c6e6bc8adb5abded
+run #0: crashed: KASAN: slab-use-after-free Read in btrfs_qgroup_account_extent
+run #1: crashed: KASAN: slab-use-after-free Read in btrfs_qgroup_account_extent
+run #2: crashed: KASAN: slab-use-after-free Read in btrfs_qgroup_account_extent
+run #3: OK
+run #4: OK
+run #5: OK
+run #6: OK
+run #7: OK
+representative crash: KASAN: slab-use-after-free Read in btrfs_qgroup_account_extent, types: [KASAN]
+picked [v6.6 v6.5 v6.4 v6.2 v6.0 v5.18 v5.16 v5.14 v5.11 v5.8 v5.5 v5.2 v4.20 v4.19] out of 29 release tags
+testing release v6.6
+testing commit ffc253263a1375a65fa6c9f62a893e9767fbebfa gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 0ceaa094ba2843c99d90571f03584330bd9b31f93a332a20fa54bd16cd98c4e1
+all runs: OK
+false negative chance: 0.023
+# git bisect start 5a6a09e97199d6600d31383055f9d43fbbcbe86f ffc253263a1375a65fa6c9f62a893e9767fbebfa
+Bisecting: 1929 revisions left to test after this (roughly 11 steps)
+[49e401fa55ab128461f84a4eeb1f2d974f3281c1] bcachefs: Tracepoint improvements
+
+testing commit 49e401fa55ab128461f84a4eeb1f2d974f3281c1 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: d1448d169b93f8b56284541558e86be96cd1cffcc2d1fbf6f61f5bc1f5573f51
+all runs: OK
+false negative chance: 0.023
+# git bisect good 49e401fa55ab128461f84a4eeb1f2d974f3281c1
+Bisecting: 1078 revisions left to test after this (roughly 10 steps)
+[b827ac419721a106ae2fccaa40576b0594edad92] exportfs: Change bcachefs fid_type enum to avoid conflicts
+
+testing commit b827ac419721a106ae2fccaa40576b0594edad92 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: f58b0a02159bf4a84563472337756590d5f2d5ee67b4d5ca0cd4787a799c5878
+all runs: OK
+false negative chance: 0.023
+# git bisect good b827ac419721a106ae2fccaa40576b0594edad92
+Bisecting: 533 revisions left to test after this (roughly 9 steps)
+[9ab021a1b57007a22761f6f41d91eb4aae10d145] Merge tag 'x86_cache_for_6.7_rc1' of git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip
+
+testing commit 9ab021a1b57007a22761f6f41d91eb4aae10d145 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: a2095e2821c2cd8ce91b5dddb9c081869f7788693f2f8061b3d811563d33fdae
+run #0: crashed: KASAN: slab-use-after-free Read in btrfs_qgroup_account_extent
+run #1: crashed: KASAN: slab-use-after-free Read in btrfs_qgroup_account_extent
+run #2: crashed: KASAN: slab-use-after-free Read in btrfs_qgroup_account_extent
+run #3: crashed: KASAN: slab-use-after-free Read in btrfs_qgroup_account_extent
+run #4: crashed: KASAN: slab-use-after-free Read in btrfs_qgroup_account_extent
+run #5: crashed: KASAN: slab-use-after-free Read in btrfs_qgroup_account_extent
+run #6: OK
+run #7: OK
+representative crash: KASAN: slab-use-after-free Read in btrfs_qgroup_account_extent, types: [KASAN]
+# git bisect bad 9ab021a1b57007a22761f6f41d91eb4aae10d145
+Bisecting: 209 revisions left to test after this (roughly 8 steps)
+[8b16da681eb0c9b9cb2f9abd0dade67559cfb48d] Merge tag 'nfsd-6.7' of git://git.kernel.org/pub/scm/linux/kernel/git/cel/linux
+
+testing commit 8b16da681eb0c9b9cb2f9abd0dade67559cfb48d gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: bc600728bfe6a84d7b295d8bdafe016cc09cab6a3bf3d7434d7f62847544f6f6
+all runs: OK
+false negative chance: 0.023
+# git bisect good 8b16da681eb0c9b9cb2f9abd0dade67559cfb48d
+Bisecting: 104 revisions left to test after this (roughly 7 steps)
+[07a274a8862dba86a270ced2a4c5ff3f7a01b66a] btrfs: remove redundant root argument from btrfs_update_inode_item()
+
+testing commit 07a274a8862dba86a270ced2a4c5ff3f7a01b66a gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 71228b4c9f40853b558922f7009f16183abd44943621cfa8daa9c06dba46962f
+run #0: crashed: KASAN: slab-use-after-free Read in btrfs_qgroup_account_extent
+run #1: crashed: KASAN: slab-use-after-free Read in btrfs_qgroup_account_extent
+run #2: crashed: KASAN: slab-use-after-free Read in btrfs_qgroup_account_extent
+run #3: crashed: KASAN: slab-use-after-free Read in btrfs_qgroup_account_extent
+run #4: OK
+run #5: OK
+run #6: OK
+run #7: OK
+representative crash: KASAN: slab-use-after-free Read in btrfs_qgroup_account_extent, types: [KASAN]
+# git bisect bad 07a274a8862dba86a270ced2a4c5ff3f7a01b66a
+Bisecting: 52 revisions left to test after this (roughly 6 steps)
+[3ee56a58ad8921cb43c49d56347a8e270871844c] btrfs: reserve space for delayed refs on a per ref basis
+
+testing commit 3ee56a58ad8921cb43c49d56347a8e270871844c gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: f59c7d2e1c43e3792a6cf92dd1cd6732820017bd3a15f3e0314daaaa6ed38356
+all runs: OK
+false negative chance: 0.023
+# git bisect good 3ee56a58ad8921cb43c49d56347a8e270871844c
+Bisecting: 26 revisions left to test after this (roughly 5 steps)
+[9f9918a8017b7925da2fad16b4ccf6a14630f03e] btrfs: sysfs: announce presence of raid-stripe-tree
+
+testing commit 9f9918a8017b7925da2fad16b4ccf6a14630f03e gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 904f62471511c17d6f890cf221af7d13c221bb496f83430eb3f2168aa756fb80
+all runs: OK
+false negative chance: 0.023
+# git bisect good 9f9918a8017b7925da2fad16b4ccf6a14630f03e
+Bisecting: 13 revisions left to test after this (roughly 4 steps)
+[457cb1ddf5e8d895e9c551cad6b84bafae41f32c] btrfs: track owning root in btrfs_ref
+
+testing commit 457cb1ddf5e8d895e9c551cad6b84bafae41f32c gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: da350872c98684d7667dd3efe221292eb7271e3b27989c5c5eadbc905da20bff
+run #0: crashed: KASAN: slab-use-after-free Read in btrfs_qgroup_account_extent
+run #1: crashed: KASAN: slab-use-after-free Read in btrfs_qgroup_account_extent
+run #2: OK
+run #3: OK
+run #4: OK
+run #5: OK
+run #6: OK
+run #7: OK
+representative crash: KASAN: slab-use-after-free Read in btrfs_qgroup_account_extent, types: [KASAN]
+# git bisect bad 457cb1ddf5e8d895e9c551cad6b84bafae41f32c
+Bisecting: 6 revisions left to test after this (roughly 3 steps)
+[182940f4f4dbd932776414744c8de64333957725] btrfs: qgroup: add new quota mode for simple quotas
+
+testing commit 182940f4f4dbd932776414744c8de64333957725 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 0e4adedd6d62ea526af9107a438245b29c62644f77d48b46f7d17dad24fff5b4
+run #0: crashed: KASAN: slab-use-after-free Read in btrfs_qgroup_account_extent
+run #1: crashed: KASAN: slab-use-after-free Read in btrfs_qgroup_account_extent
+run #2: crashed: KASAN: slab-use-after-free Read in btrfs_qgroup_account_extent
+run #3: OK
+run #4: OK
+run #5: OK
+run #6: OK
+run #7: OK
+representative crash: KASAN: slab-use-after-free Read in btrfs_qgroup_account_extent, types: [KASAN]
+# git bisect bad 182940f4f4dbd932776414744c8de64333957725
+Bisecting: 2 revisions left to test after this (roughly 2 steps)
+[e9b9b911e03c82afce7bb9e2f73c92202c95b62a] btrfs: add raid stripe tree to features enabled with debug config
+
+testing commit e9b9b911e03c82afce7bb9e2f73c92202c95b62a gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: a9923aa3d7c56add4eb13ff649ca4856798dde9ab1b89ce910b785620a526316
+run #0: crashed: KASAN: slab-use-after-free Read in btrfs_qgroup_account_extent
+run #1: OK
+run #2: OK
+run #3: OK
+run #4: OK
+run #5: OK
+run #6: OK
+run #7: OK
+representative crash: KASAN: slab-use-after-free Read in btrfs_qgroup_account_extent, types: [KASAN]
+# git bisect bad e9b9b911e03c82afce7bb9e2f73c92202c95b62a
+Bisecting: 0 revisions left to test after this (roughly 1 step)
+[e0b4077fcc4e132fa729a54183d0af58da6d1d39] btrfs: tree-checker: add support for raid stripe tree
+
+testing commit e0b4077fcc4e132fa729a54183d0af58da6d1d39 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 5680cc191974fdf78ba78bd4a31be6913d964e51533da7cc849200219e524c36
+run #0: crashed: KASAN: slab-use-after-free Read in btrfs_qgroup_account_extent
+run #1: crashed: KASAN: slab-use-after-free Read in btrfs_qgroup_account_extent
+run #2: OK
+run #3: OK
+run #4: OK
+run #5: OK
+run #6: OK
+run #7: OK
+representative crash: KASAN: slab-use-after-free Read in btrfs_qgroup_account_extent, types: [KASAN]
+# git bisect bad e0b4077fcc4e132fa729a54183d0af58da6d1d39
+Bisecting: 0 revisions left to test after this (roughly 0 steps)
+[b5e2c2ff67d2c88ee2b3f4f22ef4426cfb35ec06] btrfs: tracepoints: add events for raid stripe tree
+
+testing commit b5e2c2ff67d2c88ee2b3f4f22ef4426cfb35ec06 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 3e4e49ff3466d294d84a947eaf7b1165affc28f1bedd09a97ee35d9aafbe5a23
+all runs: OK
+false negative chance: 0.139
+# git bisect good b5e2c2ff67d2c88ee2b3f4f22ef4426cfb35ec06
+e0b4077fcc4e132fa729a54183d0af58da6d1d39 is the first bad commit
+commit e0b4077fcc4e132fa729a54183d0af58da6d1d39
+Author: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+Date:   Mon Sep 18 07:14:33 2023 -0700
+
+    btrfs: tree-checker: add support for raid stripe tree
+    
+    Add a tree checker support for RAID stripe tree items, verify:
+    
+    - alignment
+    - presence of the incompat bit
+    - supported encoding
+    
+    Signed-off-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+    Reviewed-by: David Sterba <dsterba@suse.com>
+    Signed-off-by: David Sterba <dsterba@suse.com>
+
+ fs/btrfs/tree-checker.c | 42 ++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 42 insertions(+)
+
+accumulated error probability: 0.23
+culprit signature: 5680cc191974fdf78ba78bd4a31be6913d964e51533da7cc849200219e524c36
+parent  signature: 3e4e49ff3466d294d84a947eaf7b1165affc28f1bedd09a97ee35d9aafbe5a23
+reproducer is flaky (0.22 repro chance estimate)
+revisions tested: 14, total time: 6h21m4.292011116s (build: 3h54m44.540937816s, test: 1h50m58.033014178s)
+first bad commit: e0b4077fcc4e132fa729a54183d0af58da6d1d39 btrfs: tree-checker: add support for raid stripe tree
+recipients (to): ["clm@fb.com" "dsterba@suse.com" "dsterba@suse.com" "johannes.thumshirn@wdc.com" "josef@toxicpanda.com" "linux-btrfs@vger.kernel.org"]
+recipients (cc): ["linux-kernel@vger.kernel.org"]
+crash: KASAN: slab-use-after-free Read in btrfs_qgroup_account_extent
+==================================================================
+BUG: KASAN: slab-use-after-free in __list_del_entry_valid_or_report+0x13e/0x1b0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/lib/list_debug.c:49
+Read of size 8 at addr ffff8880301234b0 by task kworker/u4:0/11
+
+CPU: 0 PID: 11 Comm: kworker/u4:0 Not tainted 6.6.0-rc5-syzkaller #0
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.13.0-1ubuntu1.1 04/01/2014
+Workqueue: btrfs-qgroup-rescan btrfs_work_helper
+Call Trace:
+ <TASK>
+ __dump_stack mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/lib/dump_stack.c:88 [inline]
+ dump_stack_lvl+0xd9/0x150 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/lib/dump_stack.c:106
+ print_address_description.constprop.0+0x2c/0x3c0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/kasan/report.c:364
+ print_report mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/kasan/report.c:475 [inline]
+ kasan_report+0x11d/0x130 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/kasan/report.c:588
+ __list_del_entry_valid_or_report+0x13e/0x1b0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/lib/list_debug.c:49
+ __list_del_entry_valid mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/./include/linux/list.h:124 [inline]
+ __list_del_entry mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/./include/linux/list.h:215 [inline]
+ list_del_init mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/./include/linux/list.h:287 [inline]
+ qgroup_iterator_nested_clean mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/fs/btrfs/qgroup.c:2535 [inline]
+ btrfs_qgroup_account_extent+0x789/0x1250 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/fs/btrfs/qgroup.c:2795
+ qgroup_rescan_leaf+0x626/0xbe0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/fs/btrfs/qgroup.c:3397
+ btrfs_qgroup_rescan_worker+0x2bf/0xa40 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/fs/btrfs/qgroup.c:3450
+ btrfs_work_helper+0x210/0xd90 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/fs/btrfs/async-thread.c:315
+ process_one_work+0x82e/0x1540 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/kernel/workqueue.c:2630
+ process_scheduled_works mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/kernel/workqueue.c:2703 [inline]
+ worker_thread+0x855/0x11f0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/kernel/workqueue.c:2784
+ kthread+0x346/0x450 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/kernel/kthread.c:388
+ ret_from_fork+0x45/0x80 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/arch/x86/kernel/process.c:147
+ ret_from_fork_asm+0x11/0x20 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/arch/x86/entry/entry_64.S:304
+ </TASK>
+
+Allocated by task 13004:
+ kasan_save_stack+0x22/0x40 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/kasan/common.c:45
+ kasan_set_track+0x25/0x30 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/kasan/common.c:52
+ ____kasan_kmalloc mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/kasan/common.c:374 [inline]
+ ____kasan_kmalloc mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/kasan/common.c:333 [inline]
+ __kasan_kmalloc+0xa2/0xb0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/kasan/common.c:383
+ kmalloc mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/./include/linux/slab.h:599 [inline]
+ kzalloc mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/./include/linux/slab.h:720 [inline]
+ btrfs_quota_enable+0xb16/0x1c80 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/fs/btrfs/qgroup.c:1173
+ btrfs_ioctl_quota_ctl mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/fs/btrfs/ioctl.c:3700 [inline]
+ btrfs_ioctl+0x722e/0x90f0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/fs/btrfs/ioctl.c:4663
+ vfs_ioctl mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/fs/ioctl.c:51 [inline]
+ __do_sys_ioctl mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/fs/ioctl.c:871 [inline]
+ __se_sys_ioctl mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/fs/ioctl.c:857 [inline]
+ __x64_sys_ioctl+0x19d/0x210 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/fs/ioctl.c:857
+ do_syscall_x64 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/arch/x86/entry/common.c:50 [inline]
+ do_syscall_64+0x39/0xb0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/arch/x86/entry/common.c:80
+ entry_SYSCALL_64_after_hwframe+0x63/0xcd
+
+Freed by task 13004:
+ kasan_save_stack+0x22/0x40 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/kasan/common.c:45
+ kasan_set_track+0x25/0x30 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/kasan/common.c:52
+ kasan_save_free_info+0x2b/0x40 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/kasan/generic.c:522
+ ____kasan_slab_free mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/kasan/common.c:236 [inline]
+ ____kasan_slab_free+0x15d/0x1c0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/kasan/common.c:200
+ kasan_slab_free mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/./include/linux/kasan.h:164 [inline]
+ slab_free_hook mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/slub.c:1800 [inline]
+ slab_free_freelist_hook+0x97/0x1d0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/slub.c:1826
+ slab_free mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/slub.c:3809 [inline]
+ __kmem_cache_free+0xb8/0x2d0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/slub.c:3822
+ btrfs_remove_qgroup+0x52a/0x7c0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/fs/btrfs/qgroup.c:1703
+ btrfs_ioctl_qgroup_create mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/fs/btrfs/ioctl.c:3806 [inline]
+ btrfs_ioctl+0x77fd/0x90f0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/fs/btrfs/ioctl.c:4667
+ vfs_ioctl mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/fs/ioctl.c:51 [inline]
+ __do_sys_ioctl mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/fs/ioctl.c:871 [inline]
+ __se_sys_ioctl mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/fs/ioctl.c:857 [inline]
+ __x64_sys_ioctl+0x19d/0x210 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/fs/ioctl.c:857
+ do_syscall_x64 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/arch/x86/entry/common.c:50 [inline]
+ do_syscall_64+0x39/0xb0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/arch/x86/entry/common.c:80
+ entry_SYSCALL_64_after_hwframe+0x63/0xcd
+
+Last potentially related work creation:
+ kasan_save_stack+0x22/0x40 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/kasan/common.c:45
+ __kasan_record_aux_stack+0xb9/0xd0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/kasan/generic.c:492
+ insert_work+0x38/0x230 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/kernel/workqueue.c:1647
+ __queue_work+0xdaf/0x1140 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/kernel/workqueue.c:1803
+ call_timer_fn+0x19e/0x580 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/kernel/time/timer.c:1700
+ expire_timers+0xbc/0x4b0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/kernel/time/timer.c:1746
+ __run_timers mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/kernel/time/timer.c:2022 [inline]
+ __run_timers mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/kernel/time/timer.c:1995 [inline]
+ run_timer_softirq+0x326/0x910 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/kernel/time/timer.c:2035
+ __do_softirq+0x1d4/0x905 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/kernel/softirq.c:553
+
+Second to last potentially related work creation:
+ kasan_save_stack+0x22/0x40 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/kasan/common.c:45
+ __kasan_record_aux_stack+0xb9/0xd0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/kasan/generic.c:492
+ __call_rcu_common.constprop.0+0x99/0x7e0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/kernel/rcu/tree.c:2653
+ fib6_info_release mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/./include/net/ip6_fib.h:332 [inline]
+ fib6_info_release mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/./include/net/ip6_fib.h:329 [inline]
+ ip6_route_info_create+0x19bf/0x1ea0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/net/ipv6/route.c:3829
+ ip6_route_add+0x28/0x150 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/net/ipv6/route.c:3843
+ addrconf_prefix_route+0x302/0x520 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/net/ipv6/addrconf.c:2434
+ inet6_addr_add+0x620/0xca0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/net/ipv6/addrconf.c:3000
+ inet6_rtm_newaddr+0x1174/0x1ae0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/net/ipv6/addrconf.c:4972
+ rtnetlink_rcv_msg+0x3c3/0xf10 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/net/core/rtnetlink.c:6444
+ netlink_rcv_skb+0x165/0x420 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/net/netlink/af_netlink.c:2545
+ netlink_unicast_kernel mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/net/netlink/af_netlink.c:1342 [inline]
+ netlink_unicast+0x548/0x800 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/net/netlink/af_netlink.c:1368
+ netlink_sendmsg+0x926/0xe40 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/net/netlink/af_netlink.c:1910
+ sock_sendmsg_nosec mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/net/socket.c:730 [inline]
+ __sock_sendmsg+0xda/0x180 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/net/socket.c:745
+ __sys_sendto+0x254/0x350 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/net/socket.c:2194
+ __do_sys_sendto mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/net/socket.c:2206 [inline]
+ __se_sys_sendto mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/net/socket.c:2202 [inline]
+ __x64_sys_sendto+0xe1/0x1b0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/net/socket.c:2202
+ do_syscall_x64 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/arch/x86/entry/common.c:50 [inline]
+ do_syscall_64+0x39/0xb0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/arch/x86/entry/common.c:80
+ entry_SYSCALL_64_after_hwframe+0x63/0xcd
+
+The buggy address belongs to the object at ffff888030123400
+ which belongs to the cache kmalloc-512 of size 512
+The buggy address is located 176 bytes inside of
+ freed 512-byte region [ffff888030123400, ffff888030123600)
+
+The buggy address belongs to the physical page:
+page:ffffea0000c04800 refcount:1 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x30120
+head:ffffea0000c04800 order:2 entire_mapcount:0 nr_pages_mapped:0 pincount:0
+flags: 0xfff00000000840(slab|head|node=0|zone=1|lastcpupid=0x7ff)
+page_type: 0xffffffff()
+raw: 00fff00000000840 ffff888012841c80 ffffea00044ab800 dead000000000002
+raw: 0000000000000000 0000000080100010 00000001ffffffff 0000000000000000
+page dumped because: kasan: bad access detected
+page_owner tracks the page as allocated
+page last allocated via order 2, migratetype Unmovable, gfp_mask 0xd20c0(__GFP_IO|__GFP_FS|__GFP_NOWARN|__GFP_NORETRY|__GFP_COMP|__GFP_NOMEMALLOC), pid 10232, tgid 10232 (kworker/u6:2), ts 107473769531, free_ts 0
+ set_page_owner mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/./include/linux/page_owner.h:31 [inline]
+ post_alloc_hook+0x2d8/0x350 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/page_alloc.c:1536
+ prep_new_page mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/page_alloc.c:1543 [inline]
+ get_page_from_freelist+0xf25/0x2e80 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/page_alloc.c:3170
+ __alloc_pages+0x1cb/0x4a0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/page_alloc.c:4426
+ alloc_pages+0x1aa/0x270 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/mempolicy.c:2297
+ alloc_slab_page mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/slub.c:1870 [inline]
+ allocate_slab+0x261/0x390 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/slub.c:2017
+ new_slab mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/slub.c:2070 [inline]
+ ___slab_alloc+0xbdc/0x15e0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/slub.c:3223
+ __slab_alloc.constprop.0+0x56/0xa0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/slub.c:3322
+ __slab_alloc_node mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/slub.c:3375 [inline]
+ slab_alloc_node mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/slub.c:3468 [inline]
+ __kmem_cache_alloc_node+0x13a/0x350 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/slub.c:3517
+ kmalloc_trace+0x26/0xe0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/slab_common.c:1114
+ kmalloc mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/./include/linux/slab.h:599 [inline]
+ kzalloc mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/./include/linux/slab.h:720 [inline]
+ alloc_bprm+0x51/0xba0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/fs/exec.c:1514
+ kernel_execve+0xaf/0x500 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/fs/exec.c:1989
+ call_usermodehelper_exec_async+0x25b/0x4d0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/kernel/umh.c:110
+ ret_from_fork+0x45/0x80 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/arch/x86/kernel/process.c:147
+ ret_from_fork_asm+0x11/0x20 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/arch/x86/entry/entry_64.S:304
+page_owner free stack trace missing
+
+Memory state around the buggy address:
+ ffff888030123380: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
+ ffff888030123400: fa fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+>ffff888030123480: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+                                     ^
+ ffff888030123500: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+ ffff888030123580: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+==================================================================
+
+
+KASAN: slab-use-after-free Read in btrfs_qgroup_account_extent
+e0b4077fcc4e132fa729a54183d0af58da6d1d39

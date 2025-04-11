@@ -1,0 +1,242 @@
+charm starts bisection 2025-04-05 02:08:02.048344991 -0700 PDT m=+21.793461934
+bisecting cause commit starting from 200e340f2196d7fd427a5810d06e893b932f145a
+building syzkaller on HEAD
+ensuring issue is reproducible on original commit 200e340f2196d7fd427a5810d06e893b932f145a
+
+testing commit 200e340f2196d7fd427a5810d06e893b932f145a gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: e318ac06398913b2422bf1fe1777320418a02520fb2a447aba41499f6ed9094f
+all runs: crashed: WARNING in blk_mq_release
+representative crash: WARNING in blk_mq_release, types: [WARNING]
+picked [v5.19 v5.18 v5.17 v5.15 v5.13 v5.11 v5.9 v5.7 v5.4 v5.1 v4.19] out of 22 release tags
+testing release v5.19
+testing commit 3d7cb6b04c3f3115719235cc6866b10326de34cd gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 46f1c2985534f9fb57cf133c56c6f6e18d6305edd05dc590d2f4930faa90a4e6
+all runs: OK
+false negative chance: 0.000
+# git bisect start 200e340f2196d7fd427a5810d06e893b932f145a 3d7cb6b04c3f3115719235cc6866b10326de34cd
+Bisecting: 1463 revisions left to test after this (roughly 11 steps)
+[3976d758e045ed0485e0e665fb3b6692572576d7] Merge tag 'arm-dt-6.0' of git://git.kernel.org/pub/scm/linux/kernel/git/soc/soc
+
+testing commit 3976d758e045ed0485e0e665fb3b6692572576d7 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: e34593b4265fbf83328963b0fbd61fd9d7fe258bfb875c24aef8b31883e3853f
+all runs: OK
+false negative chance: 0.000
+# git bisect good 3976d758e045ed0485e0e665fb3b6692572576d7
+Bisecting: 735 revisions left to test after this (roughly 10 steps)
+[42df1cbf6a4726934cc5dac12bf263aa73c49fa3] Merge tag 'for-5.20/io_uring-zerocopy-send-2022-07-29' of git://git.kernel.dk/linux-block
+
+testing commit 42df1cbf6a4726934cc5dac12bf263aa73c49fa3 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: a0b4dec8e6cd11f877300f2d0cd2f6ca119ac82ce177f8c3575f3c68cd961f10
+all runs: OK
+false negative chance: 0.000
+# git bisect good 42df1cbf6a4726934cc5dac12bf263aa73c49fa3
+Bisecting: 371 revisions left to test after this (roughly 9 steps)
+[c2a24a7a036b3bd3a2e6c66730dfc777cae6540a] Merge tag 'v5.20-p1' of git://git.kernel.org/pub/scm/linux/kernel/git/herbert/crypto-2.6
+
+testing commit c2a24a7a036b3bd3a2e6c66730dfc777cae6540a gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 374369f8a2c5dab4745dcac75708de85d188066695686d987e56b345fcc1b4e6
+run #0: crashed: WARNING in blk_mq_release
+run #1: crashed: WARNING in blk_mq_release
+run #2: crashed: WARNING in blk_mq_release
+run #3: crashed: WARNING in corrupted
+run #4: crashed: WARNING in blk_mq_release
+run #5: crashed: WARNING in blk_mq_release
+run #6: crashed: WARNING in blk_mq_release
+run #7: crashed: WARNING in blk_mq_release
+representative crash: WARNING in blk_mq_release, types: [WARNING]
+# git bisect bad c2a24a7a036b3bd3a2e6c66730dfc777cae6540a
+Bisecting: 184 revisions left to test after this (roughly 8 steps)
+[c013d0af81f60cc7dbe357c4e2a925fb6738dbfe] Merge tag 'for-5.20/block-2022-07-29' of git://git.kernel.dk/linux-block
+
+testing commit c013d0af81f60cc7dbe357c4e2a925fb6738dbfe gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 346c0bafb8f6a0a1f9631f398eaefe58a145a5cb99eabedcea2fc019379e54ab
+run #0: crashed: WARNING in blk_mq_release
+run #1: crashed: WARNING in blk_mq_release
+run #2: crashed: WARNING in blk_mq_release
+run #3: crashed: general protection fault in percpu_ref_kill_and_confirm
+run #4: crashed: WARNING in blk_mq_release
+run #5: crashed: WARNING in blk_mq_release
+run #6: crashed: WARNING in blk_mq_release
+run #7: crashed: WARNING in blk_mq_release
+representative crash: WARNING in blk_mq_release, types: [WARNING]
+# git bisect bad c013d0af81f60cc7dbe357c4e2a925fb6738dbfe
+Bisecting: 89 revisions left to test after this (roughly 7 steps)
+[4664954c9421ce326bb5c84f175902b03f17237e] ocfs2/cluster: remove the hr_dev_name field from struct o2hb_region
+
+testing commit 4664954c9421ce326bb5c84f175902b03f17237e gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 09f43af047c265b5bad1bf4ee26a359eee8987c61164d3f6b287302699a5dcaa
+all runs: crashed: WARNING in blk_mq_release
+representative crash: WARNING in blk_mq_release, types: [WARNING]
+# git bisect bad 4664954c9421ce326bb5c84f175902b03f17237e
+Bisecting: 44 revisions left to test after this (roughly 6 steps)
+[4a8d14bba486cca6880062f1ef240cf1d45f3367] block: use default groups to register the queue attributes
+
+testing commit 4a8d14bba486cca6880062f1ef240cf1d45f3367 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 4b6092cccde2532795e119d5d771e5825cf72c9b6f61c7fbd86a3b5469abc904
+all runs: crashed: WARNING in blk_mq_release
+representative crash: WARNING in blk_mq_release, types: [WARNING]
+# git bisect bad 4a8d14bba486cca6880062f1ef240cf1d45f3367
+Bisecting: 21 revisions left to test after this (roughly 5 steps)
+[6c77b152f5f1324972cdbdb71e9a6e02d601f49f] bfq: Remove useless code in bfq_lookup_next_entity
+
+testing commit 6c77b152f5f1324972cdbdb71e9a6e02d601f49f gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 493f9a1048601d3df764d05a18d0972bc543a30ebb993f4d045462ed9b5ab269
+all runs: OK
+false negative chance: 0.000
+# git bisect good 6c77b152f5f1324972cdbdb71e9a6e02d601f49f
+Bisecting: 10 revisions left to test after this (roughly 4 steps)
+[9c6227e04355a430aa59709bbf869d9126112d0d] block: Initialize bio priority earlier
+
+testing commit 9c6227e04355a430aa59709bbf869d9126112d0d gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 3706d1a771e3ef6965339fa778e4fd8c69bc6c8784438a20a6bac8387cf4ae53
+all runs: OK
+false negative chance: 0.000
+# git bisect good 9c6227e04355a430aa59709bbf869d9126112d0d
+Bisecting: 5 revisions left to test after this (roughly 3 steps)
+[1f90307e5f0d7bc9a336ead528f616a5df8e5944] block: remove QUEUE_FLAG_DEAD
+
+testing commit 1f90307e5f0d7bc9a336ead528f616a5df8e5944 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: d22600378b911d83ffe7dd5ae058c3a6ff89acd6007957fddae21d5d2f0ed9aa
+all runs: OK
+false negative chance: 0.000
+# git bisect good 1f90307e5f0d7bc9a336ead528f616a5df8e5944
+Bisecting: 2 revisions left to test after this (roughly 2 steps)
+[8b9ab62662048a3274361c7e5f64037c2c133e2c] block: remove blk_cleanup_disk
+
+testing commit 8b9ab62662048a3274361c7e5f64037c2c133e2c gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: fc350fbf8158d2c06eb0ea8b658def2a928cb1d6eb8e7be32f64f9e441182b30
+all runs: crashed: WARNING in blk_mq_release
+representative crash: WARNING in blk_mq_release, types: [WARNING]
+# git bisect bad 8b9ab62662048a3274361c7e5f64037c2c133e2c
+Bisecting: 0 revisions left to test after this (roughly 1 step)
+[6f8191fdf41d3a53cc1d63fe2234e812c55a0092] block: simplify disk shutdown
+
+testing commit 6f8191fdf41d3a53cc1d63fe2234e812c55a0092 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 1a720a4df2fa639a18b98d03306e72d5af85026f05723791eb5475a32b272635
+all runs: crashed: WARNING in blk_mq_release
+representative crash: WARNING in blk_mq_release, types: [WARNING]
+# git bisect bad 6f8191fdf41d3a53cc1d63fe2234e812c55a0092
+Bisecting: 0 revisions left to test after this (roughly 0 steps)
+[0e3534022f26ae51f7cf28347a253230604b6f4e] block: stop setting the nomerges flags in blk_cleanup_queue
+
+testing commit 0e3534022f26ae51f7cf28347a253230604b6f4e gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 011b00ebc7e62016ad7fb92f5dbd33187edc67a343096e479b16695d104028dd
+all runs: OK
+false negative chance: 0.000
+# git bisect good 0e3534022f26ae51f7cf28347a253230604b6f4e
+6f8191fdf41d3a53cc1d63fe2234e812c55a0092 is the first bad commit
+commit 6f8191fdf41d3a53cc1d63fe2234e812c55a0092
+Author: Christoph Hellwig <hch@lst.de>
+Date:   Sun Jun 19 08:05:51 2022 +0200
+
+    block: simplify disk shutdown
+    
+    Set the queue dying flag and call blk_mq_exit_queue from del_gendisk for
+    all disks that do not have separately allocated queues, and thus remove
+    the need to call blk_cleanup_queue for them.
+    
+    Rename blk_cleanup_disk to blk_mq_destroy_queue to make it clear that
+    this function is intended only for separately allocated blk-mq queues.
+    
+    This saves an extra queue freeze for devices without a separately
+    allocated queue.
+    
+    Signed-off-by: Christoph Hellwig <hch@lst.de>
+    Reviewed-by: Hannes Reinecke <hare@suse.de>
+    Link: https://lore.kernel.org/r/20220619060552.1850436-6-hch@lst.de
+    Signed-off-by: Jens Axboe <axboe@kernel.dk>
+
+ block/blk-core.c                    | 37 -------------------------------
+ block/blk-mq.c                      | 43 +++++++++++++++++++++++++++++++++++--
+ block/blk-sysfs.c                   |  5 -----
+ block/blk.h                         |  3 +++
+ block/bsg-lib.c                     |  4 ++--
+ block/genhd.c                       | 23 +++++++++++---------
+ drivers/block/ataflop.c             |  1 -
+ drivers/block/loop.c                |  1 -
+ drivers/block/mtip32xx/mtip32xx.c   |  2 --
+ drivers/block/rnbd/rnbd-clt.c       |  2 +-
+ drivers/block/sx8.c                 |  4 ++--
+ drivers/block/virtio_blk.c          |  1 -
+ drivers/block/z2ram.c               |  1 -
+ drivers/cdrom/gdrom.c               |  1 -
+ drivers/memstick/core/ms_block.c    |  1 -
+ drivers/memstick/core/mspro_block.c |  1 -
+ drivers/mmc/core/block.c            |  1 -
+ drivers/mmc/core/queue.c            |  1 -
+ drivers/nvme/host/apple.c           |  2 +-
+ drivers/nvme/host/core.c            |  1 -
+ drivers/nvme/host/fc.c              | 12 +++++------
+ drivers/nvme/host/pci.c             |  2 +-
+ drivers/nvme/host/rdma.c            | 12 +++++------
+ drivers/nvme/host/tcp.c             | 12 +++++------
+ drivers/nvme/target/loop.c          | 12 +++++------
+ drivers/s390/block/dasd.c           |  2 +-
+ drivers/s390/block/dasd_genhd.c     |  4 ++--
+ drivers/scsi/scsi_lib.c             |  6 +++---
+ drivers/scsi/scsi_sysfs.c           |  2 +-
+ drivers/scsi/sd.c                   |  4 ++--
+ drivers/scsi/sr.c                   |  4 ++--
+ drivers/ufs/core/ufshcd.c           |  4 ++--
+ include/linux/blk-mq.h              |  3 +++
+ include/linux/blkdev.h              |  4 +---
+ 34 files changed, 105 insertions(+), 113 deletions(-)
+
+accumulated error probability: 0.00
+culprit signature: 1a720a4df2fa639a18b98d03306e72d5af85026f05723791eb5475a32b272635
+parent  signature: 011b00ebc7e62016ad7fb92f5dbd33187edc67a343096e479b16695d104028dd
+revisions tested: 14, total time: 4h40m39.495623995s (build: 3h7m15.682225012s, test: 1h13m15.987439822s)
+first bad commit: 6f8191fdf41d3a53cc1d63fe2234e812c55a0092 block: simplify disk shutdown
+recipients (to): ["axboe@kernel.dk" "hare@suse.de" "hch@lst.de"]
+recipients (cc): []
+crash: WARNING in blk_mq_release
+------------[ cut here ]------------
+WARNING: CPU: 1 PID: 9119 at block/blk-mq.c:3876 blk_mq_release+0xf8/0x3e0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/block/blk-mq.c:3876
+Modules linked in:
+CPU: 1 PID: 9119 Comm: kworker/1:6 Not tainted 5.19.0-rc4-syzkaller #0
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.13.0-1ubuntu1.1 04/01/2014
+Workqueue: events blkg_free_workfn
+RIP: 0010:blk_mq_release+0xf8/0x3e0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/block/blk-mq.c:3876
+Code: fd 4c 8d a3 a8 02 00 00 4c 89 e0 48 c1 e8 03 80 3c 28 00 0f 85 14 02 00 00 48 8b 83 a8 02 00 00 49 39 c4 75 b1 e8 88 3d 96 fd <0f> 0b eb a8 e8 7f 3d 96 fd 48 8b 44 24 10 48 05 38 05 00 00 48 89
+RSP: 0018:ffffc9000e507ba0 EFLAGS: 00010293
+RAX: 0000000000000000 RBX: ffff888026d4a000 RCX: 0000000000000000
+RDX: ffff888103ba0000 RSI: ffffffff83e3f358 RDI: 0000000000000000
+RBP: dffffc0000000000 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000001 R11: 0000000000000001 R12: ffff888026d4a2a8
+R13: ffff8881092f2440 R14: ffff8881092f22f8 R15: 0000000000000000
+FS:  0000000000000000(0000) GS:ffff888135c00000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007f0373bc80c0 CR3: 000000010a060000 CR4: 0000000000350ee0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+ <TASK>
+ blk_release_queue+0x15b/0x280 mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/block/blk-sysfs.c:782
+ kobject_cleanup mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/lib/kobject.c:673 [inline]
+ kobject_release mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/lib/kobject.c:704 [inline]
+ kref_put mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/./include/linux/kref.h:65 [inline]
+ kobject_put+0x1c8/0x540 mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/lib/kobject.c:721
+ blkg_free_workfn+0x128/0x210 mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/block/blk-cgroup.c:96
+ process_one_work+0x95d/0x15c0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/kernel/workqueue.c:2289
+ worker_thread+0x665/0x1080 mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/kernel/workqueue.c:2436
+ kthread+0x2e9/0x3a0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/kernel/kthread.c:376
+ ret_from_fork+0x1f/0x30 mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/arch/x86/entry/entry_64.S:302
+ </TASK>
+
+
+WARNING in blk_mq_release
+6f8191fdf41d3a53cc1d63fe2234e812c55a0092

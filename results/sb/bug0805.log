@@ -1,0 +1,270 @@
+charm starts bisection 2025-04-01 19:22:04.674429935 -0700 PDT m=+6.616290955
+bisecting cause commit starting from 9f3ebbef746f89f860a90ced99a359202ea86fde
+building syzkaller on HEAD
+ensuring issue is reproducible on original commit 9f3ebbef746f89f860a90ced99a359202ea86fde
+
+testing commit 9f3ebbef746f89f860a90ced99a359202ea86fde gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: cb06b27b425263244c83445a130f59cf68d0e472940bd339c84cb3d59cc88367
+all runs: crashed: general protection fault in io_get_cqe_overflow
+representative crash: general protection fault in io_get_cqe_overflow, types: [UNKNOWN]
+picked [v6.5 v6.4 v6.3 v6.1 v5.19 v5.17 v5.15 v5.13 v5.10 v5.7 v5.4 v5.1 v4.19] out of 28 release tags
+testing release v6.5
+testing commit 2dde18cd1d8fac735875f2e4987f11817cc0bc2c gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 92f25ddf4772e2d8309d8fb771753e3c2c087f564ddd0259e4ffd327a6d36a12
+all runs: crashed: general protection fault in io_get_cqe_overflow
+representative crash: general protection fault in io_get_cqe_overflow, types: [UNKNOWN]
+testing release v6.4
+testing commit 6995e2de6891c724bfeb2db33d7b87775f913ad1 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 3808acd82ed874d3dee0b7f9688c9bc3d94df2aae30f1aa1ed7fa8ccef94d6ed
+all runs: crashed: general protection fault in io_get_cqe_overflow
+representative crash: general protection fault in io_get_cqe_overflow, types: [UNKNOWN]
+testing release v6.3
+testing commit 457391b0380335d5e9a5babdec90ac53928b23b4 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 20d142266ffd7714c07101a973d6d499ed2d3f66a91db119944055ebf303e1ce
+all runs: crashed: general protection fault in io_fill_cqe_aux
+representative crash: general protection fault in io_fill_cqe_aux, types: [UNKNOWN]
+testing release v6.1
+testing commit 830b3c68c1fb1e9176028d02ef86f3cf76aa2476 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: bfb990200352896c71fe83d8db27f975d51b8d627248b092794a2052b88185bf
+all runs: OK
+false negative chance: 0.000
+# git bisect start 457391b0380335d5e9a5babdec90ac53928b23b4 830b3c68c1fb1e9176028d02ef86f3cf76aa2476
+Bisecting: 16238 revisions left to test after this (roughly 14 steps)
+[62be69397e53ab14f607698bb41343ce576713e8] Merge tag 'wireless-next-2023-01-23' of git://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next
+
+testing commit 62be69397e53ab14f607698bb41343ce576713e8 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 1ed3dfc955b3d65f6358a27abd3cedc43cbfff8ce0f40edd856963c6ed23e990
+all runs: crashed: general protection fault in io_fill_cqe_aux
+representative crash: general protection fault in io_fill_cqe_aux, types: [UNKNOWN]
+# git bisect bad 62be69397e53ab14f607698bb41343ce576713e8
+Bisecting: 8827 revisions left to test after this (roughly 13 steps)
+[1ca06f1c1acecbe02124f14a37cce347b8c1a90c] Merge tag 'xtensa-20221213' of https://github.com/jcmvbkbc/linux-xtensa
+
+testing commit 1ca06f1c1acecbe02124f14a37cce347b8c1a90c gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 8589be386276f758906e28a0ffbf30d7707b5c0ac3b5db8df3a438e28bc66fcd
+all runs: OK
+false negative chance: 0.000
+# git bisect good 1ca06f1c1acecbe02124f14a37cce347b8c1a90c
+Bisecting: 4404 revisions left to test after this (roughly 12 steps)
+[58bcac11fd94f950abc7b8466c5ceac7be07a00e] Merge tag 'usb-6.2-rc1' of git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/usb
+
+testing commit 58bcac11fd94f950abc7b8466c5ceac7be07a00e gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 307b1e7280e39cd4d06675be682bd1febeaa6600cecf2ac3ad6b6683487c0f8d
+all runs: OK
+false negative chance: 0.000
+# git bisect good 58bcac11fd94f950abc7b8466c5ceac7be07a00e
+Bisecting: 2202 revisions left to test after this (roughly 11 steps)
+[59811faa2c54dbcf44d575b5a8f6e7077da88dc2] net: ena: Use bitmask to indicate packet redirection
+
+testing commit 59811faa2c54dbcf44d575b5a8f6e7077da88dc2 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 794bb41cf397f2d79aa1a416afb6a15ad24b7f673b2c0582bc808f0c023c2c92
+all runs: OK
+false negative chance: 0.000
+# git bisect good 59811faa2c54dbcf44d575b5a8f6e7077da88dc2
+Bisecting: 1109 revisions left to test after this (roughly 10 steps)
+[5be413a6e2a16e08c8f0f1b59794a7203b5eca2c] Merge tag 's390-6.2-2' of git://git.kernel.org/pub/scm/linux/kernel/git/s390/linux
+
+testing commit 5be413a6e2a16e08c8f0f1b59794a7203b5eca2c gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: ea3d9eaa1830941a85d43ecb5128f3df290dd1c878583f23f0bdd45446e910ff
+all runs: crashed: general protection fault in io_fill_cqe_aux
+representative crash: general protection fault in io_fill_cqe_aux, types: [UNKNOWN]
+# git bisect bad 5be413a6e2a16e08c8f0f1b59794a7203b5eca2c
+Bisecting: 543 revisions left to test after this (roughly 9 steps)
+[55c7d6a91d42ad98cbfb10da077ce8bb7084dc0e] Merge tag 'drm-next-2022-12-23' of git://anongit.freedesktop.org/drm/drm
+
+testing commit 55c7d6a91d42ad98cbfb10da077ce8bb7084dc0e gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 267ec0bf8a20c7ef95710b50a7c2dbeee8ba54be4851be4b38d2ab3fa9b7b198
+all runs: OK
+false negative chance: 0.000
+# git bisect good 55c7d6a91d42ad98cbfb10da077ce8bb7084dc0e
+Bisecting: 270 revisions left to test after this (roughly 8 steps)
+[5e9af4b42660b2a8db067db8ff03db8a268d6a95] Merge tag 'fbdev-for-6.2-rc3' of git://git.kernel.org/pub/scm/linux/kernel/git/deller/linux-fbdev
+
+testing commit 5e9af4b42660b2a8db067db8ff03db8a268d6a95 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: e16cf3e5ab85c066a6e8e7389d0937d8f99774166bfae3e667a9057b560793fb
+all runs: OK
+false negative chance: 0.000
+# git bisect good 5e9af4b42660b2a8db067db8ff03db8a268d6a95
+Bisecting: 133 revisions left to test after this (roughly 7 steps)
+[0a71553536d270e988580a3daa9fc87535908221] Merge tag 'drm-fixes-2023-01-06' of git://anongit.freedesktop.org/drm/drm
+
+testing commit 0a71553536d270e988580a3daa9fc87535908221 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 39224d08cca1625c2a0b3ea17a4736d5b9b0069c9667b15ff77439ecdf894f00
+all runs: crashed: general protection fault in io_fill_cqe_aux
+representative crash: general protection fault in io_fill_cqe_aux, types: [UNKNOWN]
+# git bisect bad 0a71553536d270e988580a3daa9fc87535908221
+Bisecting: 71 revisions left to test after this (roughly 6 steps)
+[d7a0853d650b381921732ff5bca618432a279033] Merge tag 'perf-urgent-2023-01-06' of git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip
+
+testing commit d7a0853d650b381921732ff5bca618432a279033 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 7fedfb069c370784647726d28b4a6b00e82d4bd1f1effd7093313d0d60d5f88c
+all runs: OK
+false negative chance: 0.000
+# git bisect good d7a0853d650b381921732ff5bca618432a279033
+Bisecting: 33 revisions left to test after this (roughly 5 steps)
+[ef1a4a770994b97a86988fd86f5a2784b87449f7] Merge tag 'io_uring-2023-01-06' of git://git.kernel.dk/linux
+
+testing commit ef1a4a770994b97a86988fd86f5a2784b87449f7 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: c3855b022010fb6e86ca0de910e811e2667ac04a57ff04aa60b06e3435f2304c
+all runs: crashed: general protection fault in io_fill_cqe_aux
+representative crash: general protection fault in io_fill_cqe_aux, types: [UNKNOWN]
+# git bisect bad ef1a4a770994b97a86988fd86f5a2784b87449f7
+Bisecting: 21 revisions left to test after this (roughly 4 steps)
+[a389e54642a86c91d683b2f0b248f1d2f4e52611] Merge tag 'riscv-for-linus-6.2-rc3' of git://git.kernel.org/pub/scm/linux/kernel/git/riscv/linux
+
+testing commit a389e54642a86c91d683b2f0b248f1d2f4e52611 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 588a96cfa5c97b805f56f9942dd61ed54c64b43053267f42be043b55ba248c27
+all runs: OK
+false negative chance: 0.000
+# git bisect good a389e54642a86c91d683b2f0b248f1d2f4e52611
+Bisecting: 10 revisions left to test after this (roughly 4 steps)
+[7b8c854cfe8c94b2ec382a3632b1bd7c970c80b4] Merge tag 'fixes_for_v6.2-rc3' of git://git.kernel.org/pub/scm/linux/kernel/git/jack/linux-fs
+
+testing commit 7b8c854cfe8c94b2ec382a3632b1bd7c970c80b4 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: c37b6dc73372507a59101611c030258b8aea880c75d483f66cc5e4b51f9f196e
+all runs: OK
+false negative chance: 0.000
+# git bisect good 7b8c854cfe8c94b2ec382a3632b1bd7c970c80b4
+Bisecting: 5 revisions left to test after this (roughly 3 steps)
+[93387d499e49429eef2c343ab6f9f5d92ec780a2] Merge tag 'tif-notify-signal-2023-01-06' of git://git.kernel.dk/linux
+
+testing commit 93387d499e49429eef2c343ab6f9f5d92ec780a2 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 17c3e57d17333391ea70e601a2db9d13d1e9de3eff949eba380a5f04d72f8dd9
+all runs: OK
+false negative chance: 0.000
+# git bisect good 93387d499e49429eef2c343ab6f9f5d92ec780a2
+Bisecting: 2 revisions left to test after this (roughly 2 steps)
+[f26cc9593581bd734c846bf827401350b36dc3c9] io_uring: lockdep annotate CQ locking
+
+testing commit f26cc9593581bd734c846bf827401350b36dc3c9 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: cd30c4e3261aab2fdb97e1c57fbb6117af55b9654adc928f588167d293f9cc5d
+all runs: crashed: general protection fault in io_fill_cqe_aux
+representative crash: general protection fault in io_fill_cqe_aux, types: [UNKNOWN]
+# git bisect bad f26cc9593581bd734c846bf827401350b36dc3c9
+Bisecting: 0 revisions left to test after this (roughly 1 step)
+[9ffa13ff78a0a55df968a72d6f0ebffccee5c9f4] io_uring: pin context while queueing deferred tw
+
+testing commit 9ffa13ff78a0a55df968a72d6f0ebffccee5c9f4 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: c7627b0dfe51300fda6aacc30c9c942e67f61a9e6ffd672b12624dd32e2fab0f
+all runs: OK
+false negative chance: 0.000
+# git bisect good 9ffa13ff78a0a55df968a72d6f0ebffccee5c9f4
+f26cc9593581bd734c846bf827401350b36dc3c9 is the first bad commit
+commit f26cc9593581bd734c846bf827401350b36dc3c9
+Author: Pavel Begunkov <asml.silence@gmail.com>
+Date:   Wed Jan 4 01:34:57 2023 +0000
+
+    io_uring: lockdep annotate CQ locking
+    
+    Locking around CQE posting is complex and depends on options the ring is
+    created with, add more thorough lockdep annotations checking all
+    invariants.
+    
+    Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
+    Link: https://lore.kernel.org/r/aa3770b4eacae3915d782cc2ab2f395a99b4b232.1672795976.git.asml.silence@gmail.com
+    Signed-off-by: Jens Axboe <axboe@kernel.dk>
+
+ io_uring/io_uring.c |  5 ++---
+ io_uring/io_uring.h | 15 +++++++++++++++
+ 2 files changed, 17 insertions(+), 3 deletions(-)
+
+accumulated error probability: 0.00
+culprit signature: cd30c4e3261aab2fdb97e1c57fbb6117af55b9654adc928f588167d293f9cc5d
+parent  signature: c7627b0dfe51300fda6aacc30c9c942e67f61a9e6ffd672b12624dd32e2fab0f
+revisions tested: 20, total time: 7h42m8.983733369s (build: 5h32m13.953988522s, test: 1h49m44.942780457s)
+first bad commit: f26cc9593581bd734c846bf827401350b36dc3c9 io_uring: lockdep annotate CQ locking
+recipients (to): ["asml.silence@gmail.com" "axboe@kernel.dk" "axboe@kernel.dk" "io-uring@vger.kernel.org"]
+recipients (cc): ["asml.silence@gmail.com" "linux-kernel@vger.kernel.org"]
+crash: general protection fault in io_fill_cqe_aux
+general protection fault, probably for non-canonical address 0xdffffc0000000005: 0000 [#1] PREEMPT SMP KASAN
+KASAN: null-ptr-deref in range [0x0000000000000028-0x000000000000002f]
+CPU: 1 PID: 24 Comm: kworker/1:0 Not tainted 6.1.0-syzkaller #0
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.13.0-1ubuntu1.1 04/01/2014
+Workqueue: events io_rsrc_put_work
+RIP: 0010:io_get_cqe_overflow mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/io_uring/io_uring.h:108 [inline]
+RIP: 0010:io_get_cqe mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/io_uring/io_uring.h:125 [inline]
+RIP: 0010:io_fill_cqe_aux+0x5a8/0x840 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/io_uring/io_uring.c:832
+Code: 48 c1 ea 03 80 3c 02 00 0f 85 a9 02 00 00 4c 8b ab d8 05 00 00 48 b8 00 00 00 00 00 fc ff df 49 8d 7d 2c 48 89 fa 48 c1 ea 03 <0f> b6 14 02 48 89 f8 83 e0 07 83 c0 03 38 d0 7c 08 84 d2 0f 85 d6
+RSP: 0018:ffffc900001bfc10 EFLAGS: 00010207
+RAX: dffffc0000000000 RBX: ffff88811491e000 RCX: 0000000000000000
+RDX: 0000000000000005 RSI: ffffffff83fba6ea RDI: 000000000000002c
+RBP: 0000000000000001 R08: 0000000000000001 R09: 0000000000000000
+R10: 0000000000000001 R11: 0000000000092081 R12: 0000000000000001
+R13: 0000000000000000 R14: 0000000000000000 R15: ffff88811491e018
+FS:  0000000000000000(0000) GS:ffff888135c00000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000559f8ec542e4 CR3: 0000000016791000 CR4: 0000000000350ee0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+ <TASK>
+ __io_post_aux_cqe mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/io_uring/io_uring.c:880 [inline]
+ io_post_aux_cqe+0x3b/0x90 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/io_uring/io_uring.c:890
+ __io_rsrc_put_work+0x2ca/0x420 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/io_uring/rsrc.c:176
+ io_rsrc_put_work+0x5d/0x80 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/io_uring/rsrc.c:202
+ process_one_work+0x982/0x16c0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/kernel/workqueue.c:2289
+ worker_thread+0x669/0x1090 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/kernel/workqueue.c:2436
+ kthread+0x2ee/0x3a0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/kernel/kthread.c:376
+ ret_from_fork+0x1f/0x30 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/arch/x86/entry/entry_64.S:306
+ </TASK>
+Modules linked in:
+---[ end trace 0000000000000000 ]---
+RIP: 0010:io_get_cqe_overflow mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/io_uring/io_uring.h:108 [inline]
+RIP: 0010:io_get_cqe mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/io_uring/io_uring.h:125 [inline]
+RIP: 0010:io_fill_cqe_aux+0x5a8/0x840 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/io_uring/io_uring.c:832
+Code: 48 c1 ea 03 80 3c 02 00 0f 85 a9 02 00 00 4c 8b ab d8 05 00 00 48 b8 00 00 00 00 00 fc ff df 49 8d 7d 2c 48 89 fa 48 c1 ea 03 <0f> b6 14 02 48 89 f8 83 e0 07 83 c0 03 38 d0 7c 08 84 d2 0f 85 d6
+RSP: 0018:ffffc900001bfc10 EFLAGS: 00010207
+RAX: dffffc0000000000 RBX: ffff88811491e000 RCX: 0000000000000000
+RDX: 0000000000000005 RSI: ffffffff83fba6ea RDI: 000000000000002c
+RBP: 0000000000000001 R08: 0000000000000001 R09: 0000000000000000
+R10: 0000000000000001 R11: 0000000000092081 R12: 0000000000000001
+R13: 0000000000000000 R14: 0000000000000000 R15: ffff88811491e018
+FS:  0000000000000000(0000) GS:ffff888135c00000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000559f8ec542e4 CR3: 000000000c48e000 CR4: 0000000000350ee0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+----------------
+Code disassembly (best guess):
+   0:	48 c1 ea 03          	shr    $0x3,%rdx
+   4:	80 3c 02 00          	cmpb   $0x0,(%rdx,%rax,1)
+   8:	0f 85 a9 02 00 00    	jne    0x2b7
+   e:	4c 8b ab d8 05 00 00 	mov    0x5d8(%rbx),%r13
+  15:	48 b8 00 00 00 00 00 	movabs $0xdffffc0000000000,%rax
+  1c:	fc ff df
+  1f:	49 8d 7d 2c          	lea    0x2c(%r13),%rdi
+  23:	48 89 fa             	mov    %rdi,%rdx
+  26:	48 c1 ea 03          	shr    $0x3,%rdx
+* 2a:	0f b6 14 02          	movzbl (%rdx,%rax,1),%edx <-- trapping instruction
+  2e:	48 89 f8             	mov    %rdi,%rax
+  31:	83 e0 07             	and    $0x7,%eax
+  34:	83 c0 03             	add    $0x3,%eax
+  37:	38 d0                	cmp    %dl,%al
+  39:	7c 08                	jl     0x43
+  3b:	84 d2                	test   %dl,%dl
+  3d:	0f                   	.byte 0xf
+  3e:	85 d6                	test   %edx,%esi
+
+
+general protection fault in io_get_cqe_overflow
+f26cc9593581bd734c846bf827401350b36dc3c9

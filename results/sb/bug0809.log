@@ -1,0 +1,351 @@
+charm starts bisection 2025-04-02 16:13:21.355595004 -0700 PDT m=+13.495934517
+bisecting cause commit starting from 92901222f83d988617aee37680cb29e1a743b5e4
+building syzkaller on HEAD
+ensuring issue is reproducible on original commit 92901222f83d988617aee37680cb29e1a743b5e4
+
+testing commit 92901222f83d988617aee37680cb29e1a743b5e4 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 81efcaa52ce34768fa5e86e9be7c9b94a878bc7c1c7cbd988bb869b1ec453cd7
+all runs: crashed: BUG: sleeping function called from invalid context in __hci_cmd_sync_sk
+representative crash: BUG: sleeping function called from invalid context in __hci_cmd_sync_sk, types: [ATOMIC_SLEEP]
+picked [v6.5 v6.4 v6.3 v6.1 v5.19 v5.17 v5.15 v5.13 v5.10 v5.7 v5.4 v5.1 v4.19] out of 28 release tags
+testing release v6.5
+testing commit 2dde18cd1d8fac735875f2e4987f11817cc0bc2c gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 3f0d3002328148f6bd300feedfff8e190336835f09c74dfab19a7f3ac673b3d7
+all runs: OK
+false negative chance: 0.000
+# git bisect start 92901222f83d988617aee37680cb29e1a743b5e4 2dde18cd1d8fac735875f2e4987f11817cc0bc2c
+Bisecting: 6053 revisions left to test after this (roughly 13 steps)
+[53ea7f624fb91074c2f9458832ed74975ee5d64c] Merge tag 'xfs-6.6-merge-1' of git://git.kernel.org/pub/scm/fs/xfs/xfs-linux
+
+testing commit 53ea7f624fb91074c2f9458832ed74975ee5d64c gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: c7dc8943bd0cf8dfd7cc55bfbb6d3e992d5544d21841daa2568678623b3f8bc0
+all runs: crashed: BUG: sleeping function called from invalid context in __hci_cmd_sync_sk
+representative crash: BUG: sleeping function called from invalid context in __hci_cmd_sync_sk, types: [ATOMIC_SLEEP]
+# git bisect bad 53ea7f624fb91074c2f9458832ed74975ee5d64c
+Bisecting: 3014 revisions left to test after this (roughly 11 steps)
+[c873512ef3a39cc1a605b7a5ff2ad0a33d619aa8] Merge git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net
+
+testing commit c873512ef3a39cc1a605b7a5ff2ad0a33d619aa8 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: d136572dd8ba859dcd4ff107aec529c5b7439715a140267a0b48f420743b4633
+all runs: crashed: BUG: sleeping function called from invalid context in __hci_cmd_sync_sk
+representative crash: BUG: sleeping function called from invalid context in __hci_cmd_sync_sk, types: [ATOMIC_SLEEP]
+# git bisect bad c873512ef3a39cc1a605b7a5ff2ad0a33d619aa8
+Bisecting: 1002 revisions left to test after this (roughly 10 steps)
+[6e97ba552b8d3dd074a28b8600740b8bed42267b] tcp: set TCP_DEFER_ACCEPT locklessly
+
+testing commit 6e97ba552b8d3dd074a28b8600740b8bed42267b gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: d0dfa290023f48a89cb9db143c9cdcd24e63a42313b38644f97d2fdc6115afe3
+all runs: OK
+false negative chance: 0.000
+# git bisect good 6e97ba552b8d3dd074a28b8600740b8bed42267b
+Bisecting: 500 revisions left to test after this (roughly 9 steps)
+[85c786340a65eb059183a5c3c6fab8664e1f6e8a] Merge branch 'vcap_get_rule-return-value'
+
+testing commit 85c786340a65eb059183a5c3c6fab8664e1f6e8a gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 6d459c7a5b0493532b79acbe3b9c0332e6cccec6ddab53140cfab7c7b46d6f6c
+all runs: crashed: BUG: sleeping function called from invalid context in __hci_cmd_sync_sk
+representative crash: BUG: sleeping function called from invalid context in __hci_cmd_sync_sk, types: [ATOMIC_SLEEP]
+# git bisect bad 85c786340a65eb059183a5c3c6fab8664e1f6e8a
+Bisecting: 250 revisions left to test after this (roughly 8 steps)
+[f88670161eb205f842989df555d0dd2f9fe2d4b5] Bluetooth: hci_core: Make hci_is_le_conn_scanning public
+
+testing commit f88670161eb205f842989df555d0dd2f9fe2d4b5 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 151f9b72bbd178d45fe04346527964b6af4038a4e1124920c2952c23b66c9283
+all runs: crashed: BUG: sleeping function called from invalid context in __hci_cmd_sync_sk
+representative crash: BUG: sleeping function called from invalid context in __hci_cmd_sync_sk, types: [ATOMIC_SLEEP]
+# git bisect bad f88670161eb205f842989df555d0dd2f9fe2d4b5
+Bisecting: 125 revisions left to test after this (roughly 7 steps)
+[e05a53ab867c106a3f21a806599ef885c67e59bd] Merge branch 'remove-redundant-functions-and-use-generic-functions'
+
+testing commit e05a53ab867c106a3f21a806599ef885c67e59bd gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: ba0834e04e3590b33def78fd7e86e587d74fbc9d76d3ca573bd486485d308c40
+all runs: OK
+false negative chance: 0.000
+# git bisect good e05a53ab867c106a3f21a806599ef885c67e59bd
+Bisecting: 62 revisions left to test after this (roughly 6 steps)
+[cc317ea3d9272fab4f6fef527c865f30ca479394] bonding: remove redundant NULL check in debugfs function
+
+testing commit cc317ea3d9272fab4f6fef527c865f30ca479394 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 57e153449e54439f6497e5485621e465eb0a9e91152dec4fd3023146f25a1849
+all runs: OK
+false negative chance: 0.000
+# git bisect good cc317ea3d9272fab4f6fef527c865f30ca479394
+Bisecting: 31 revisions left to test after this (roughly 5 steps)
+[9f78191cc9f1b34c2e2afd7b554a83bf034092dd] Bluetooth: hci_conn: Always allocate unique handles
+
+testing commit 9f78191cc9f1b34c2e2afd7b554a83bf034092dd gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 3703060e43ef2fae706eb88c95e1ff028210a2dd508419797d1ec9d4ef51a067
+all runs: crashed: BUG: sleeping function called from invalid context in __hci_cmd_sync_sk
+representative crash: BUG: sleeping function called from invalid context in __hci_cmd_sync_sk, types: [ATOMIC_SLEEP]
+# git bisect bad 9f78191cc9f1b34c2e2afd7b554a83bf034092dd
+Bisecting: 15 revisions left to test after this (roughly 4 steps)
+[464c702fb9374ff8f3f816f24fb7ac719dd20e1e] Bluetooth: Init sk_peer_* on bt_sock_alloc
+
+testing commit 464c702fb9374ff8f3f816f24fb7ac719dd20e1e gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: fc58bbaab1a4349d7f982401971d80260453bc414571be6c3ae4db4ef732e8b8
+all runs: crashed: BUG: sleeping function called from invalid context in __hci_cmd_sync_sk
+representative crash: BUG: sleeping function called from invalid context in __hci_cmd_sync_sk, types: [ATOMIC_SLEEP]
+# git bisect bad 464c702fb9374ff8f3f816f24fb7ac719dd20e1e
+Bisecting: 6 revisions left to test after this (roughly 3 steps)
+[80f9ad046052509d0eee9b72e11d0e8ae31b665f] Merge branch 'rzn1-a5psw-vlan-port_bridge_flags'
+
+testing commit 80f9ad046052509d0eee9b72e11d0e8ae31b665f gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 3f6b2c8112e440cf10a6aee261a09f71102a245cb6aac567121de8ed9dff90c7
+all runs: OK
+false negative chance: 0.000
+# git bisect good 80f9ad046052509d0eee9b72e11d0e8ae31b665f
+Bisecting: 3 revisions left to test after this (roughly 2 steps)
+[a0bfde167b506423111ddb8cd71930497a40fc54] Bluetooth: ISO: Add support for connecting multiple BISes
+
+testing commit a0bfde167b506423111ddb8cd71930497a40fc54 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 76cf70995eace5cb6c2260df50de150800b00910581c0af36c5b62738412097e
+all runs: crashed: BUG: sleeping function called from invalid context in __hci_cmd_sync_sk
+representative crash: BUG: sleeping function called from invalid context in __hci_cmd_sync_sk, types: [ATOMIC_SLEEP]
+# git bisect bad a0bfde167b506423111ddb8cd71930497a40fc54
+Bisecting: 0 revisions left to test after this (roughly 1 step)
+[044014ce85a17c0b7fab8e5df0925792010c29b2] Bluetooth: btrtl: Add Realtek devcoredump support
+
+testing commit 044014ce85a17c0b7fab8e5df0925792010c29b2 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 864ef238f5f3b1ea29e74783ebbdb1828dc5c01c9da9162c4a4f9eb37845aa5d
+all runs: OK
+false negative chance: 0.000
+# git bisect good 044014ce85a17c0b7fab8e5df0925792010c29b2
+a0bfde167b506423111ddb8cd71930497a40fc54 is the first bad commit
+commit a0bfde167b506423111ddb8cd71930497a40fc54
+Author: Iulia Tanasescu <iulia.tanasescu@nxp.com>
+Date:   Tue May 30 17:21:59 2023 +0300
+
+    Bluetooth: ISO: Add support for connecting multiple BISes
+    
+    It is required for some configurations to have multiple BISes as part
+    of the same BIG.
+    
+    Similar to the flow implemented for unicast, DEFER_SETUP will also be
+    used to bind multiple BISes for the same BIG, before starting Periodic
+    Advertising and creating the BIG.
+    
+    The user will have to open a new socket for each BIS. By setting the
+    BT_DEFER_SETUP socket option and calling connect, a new connection
+    will be added for the BIG and advertising handle set by the socket
+    QoS parameters. Since all BISes will be bound for the same BIG and
+    advertising handle, the socket QoS options and base parameters should
+    match for all connections.
+    
+    By calling connect on a socket that does not have the BT_DEFER_SETUP
+    option set, periodic advertising will be started and the BIG will
+    be created, with a BIS for each previously bound connection. Since
+    a BIG cannot be reconfigured with additional BISes after creation,
+    no more connections can be bound for the BIG after the start periodic
+    advertising and create BIG commands have been queued.
+    
+    The bis_cleanup function has also been updated, so that the advertising
+    set and the BIG will not be terminated unless there are no more
+    bound or connected BISes.
+    
+    The HCI_CONN_BIG_CREATED connection flag has been added to indicate
+    that the BIG has been successfully created. This flag is checked at
+    bis_cleanup, so that the BIG is only terminated if the
+    HCI_LE_Create_BIG_Complete has been received.
+    
+    This implementation has been tested on hardware, using the "isotest"
+    tool with an additional command line option, to specify the number of
+    BISes to create as part of the desired BIG:
+    
+        tools/isotest -i hci0 -s 00:00:00:00:00:00 -N 2 -G 1 -T 1
+    
+    The btmon log shows that a BIG containing 2 BISes has been created:
+    
+    < HCI Command: LE Create Broadcast Isochronous Group (0x08|0x0068) plen 31
+            Handle: 0x01
+            Advertising Handle: 0x01
+            Number of BIS: 2
+            SDU Interval: 10000 us (0x002710)
+            Maximum SDU size: 40
+            Maximum Latency: 10 ms (0x000a)
+            RTN: 0x02
+            PHY: LE 2M (0x02)
+            Packing: Sequential (0x00)
+            Framing: Unframed (0x00)
+            Encryption: 0x00
+            Broadcast Code: 00000000000000000000000000000000
+    
+    > HCI Event: Command Status (0x0f) plen 4
+          LE Create Broadcast Isochronous Group (0x08|0x0068) ncmd 1
+            Status: Success (0x00)
+    
+    > HCI Event: LE Meta Event (0x3e) plen 23
+          LE Broadcast Isochronous Group Complete (0x1b)
+            Status: Success (0x00)
+            Handle: 0x01
+            BIG Synchronization Delay: 1974 us (0x0007b6)
+            Transport Latency: 1974 us (0x0007b6)
+            PHY: LE 2M (0x02)
+            NSE: 3
+            BN: 1
+            PTO: 1
+            IRC: 3
+            Maximum PDU: 40
+            ISO Interval: 10.00 msec (0x0008)
+            Connection Handle #0: 10
+            Connection Handle #1: 11
+    
+    < HCI Command: LE Setup Isochronous Data Path (0x08|0x006e) plen 13
+            Handle: 10
+            Data Path Direction: Input (Host to Controller) (0x00)
+            Data Path: HCI (0x00)
+            Coding Format: Transparent (0x03)
+            Company Codec ID: Ericsson Technology Licensing (0)
+            Vendor Codec ID: 0
+            Controller Delay: 0 us (0x000000)
+            Codec Configuration Length: 0
+            Codec Configuration:
+    
+    > HCI Event: Command Complete (0x0e) plen 6
+          LE Setup Isochronous Data Path (0x08|0x006e) ncmd 1
+            Status: Success (0x00)
+            Handle: 10
+    
+    < HCI Command: LE Setup Isochronous Data Path (0x08|0x006e) plen 13
+            Handle: 11
+            Data Path Direction: Input (Host to Controller) (0x00)
+            Data Path: HCI (0x00)
+            Coding Format: Transparent (0x03)
+            Company Codec ID: Ericsson Technology Licensing (0)
+            Vendor Codec ID: 0
+            Controller Delay: 0 us (0x000000)
+            Codec Configuration Length: 0
+            Codec Configuration:
+    
+    > HCI Event: Command Complete (0x0e) plen 6
+          LE Setup Isochronous Data Path (0x08|0x006e) ncmd 1
+            Status: Success (0x00)
+            Handle: 11
+    
+    < ISO Data TX: Handle 10 flags 0x02 dlen 44
+    
+    < ISO Data TX: Handle 11 flags 0x02 dlen 44
+    
+    > HCI Event: Number of Completed Packets (0x13) plen 5
+            Num handles: 1
+            Handle: 10
+            Count: 1
+    
+    > HCI Event: Number of Completed Packets (0x13) plen 5
+            Num handles: 1
+            Handle: 11
+            Count: 1
+    
+    Signed-off-by: Iulia Tanasescu <iulia.tanasescu@nxp.com>
+    Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+
+ include/net/bluetooth/hci_core.h |  30 ++++++++
+ net/bluetooth/hci_conn.c         | 152 +++++++++++++++++++++++++++------------
+ net/bluetooth/hci_event.c        |  52 ++++++++------
+ net/bluetooth/iso.c              |  28 ++++++--
+ 4 files changed, 189 insertions(+), 73 deletions(-)
+
+accumulated error probability: 0.00
+culprit signature: 76cf70995eace5cb6c2260df50de150800b00910581c0af36c5b62738412097e
+parent  signature: 864ef238f5f3b1ea29e74783ebbdb1828dc5c01c9da9162c4a4f9eb37845aa5d
+revisions tested: 14, total time: 5h34m38.708669156s (build: 3h53m56.495015382s, test: 1h13m25.433342424s)
+first bad commit: a0bfde167b506423111ddb8cd71930497a40fc54 Bluetooth: ISO: Add support for connecting multiple BISes
+recipients (to): ["davem@davemloft.net" "edumazet@google.com" "iulia.tanasescu@nxp.com" "johan.hedberg@gmail.com" "kuba@kernel.org" "linux-bluetooth@vger.kernel.org" "luiz.dentz@gmail.com" "luiz.von.dentz@intel.com" "marcel@holtmann.org" "netdev@vger.kernel.org" "pabeni@redhat.com"]
+recipients (cc): ["linux-kernel@vger.kernel.org"]
+crash: BUG: sleeping function called from invalid context in __hci_cmd_sync_sk
+BUG: sleeping function called from invalid context at net/bluetooth/hci_sync.c:166
+in_atomic(): 0, irqs_disabled(): 0, non_block: 0, pid: 51, name: kworker/u7:0
+preempt_count: 0, expected: 0
+RCU nest depth: 1, expected: 0
+4 locks held by kworker/u7:0/51:
+ #0: ffff88810c2c8138 ((wq_completion)hci0#2){+.+.}-{0:0}, at: arch_atomic64_set mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/./arch/x86/include/asm/atomic64_64.h:20 [inline]
+ #0: ffff88810c2c8138 ((wq_completion)hci0#2){+.+.}-{0:0}, at: raw_atomic64_set mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/./include/linux/atomic/atomic-arch-fallback.h:2608 [inline]
+ #0: ffff88810c2c8138 ((wq_completion)hci0#2){+.+.}-{0:0}, at: raw_atomic_long_set mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/./include/linux/atomic/atomic-long.h:79 [inline]
+ #0: ffff88810c2c8138 ((wq_completion)hci0#2){+.+.}-{0:0}, at: atomic_long_set mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/./include/linux/atomic/atomic-instrumented.h:3196 [inline]
+ #0: ffff88810c2c8138 ((wq_completion)hci0#2){+.+.}-{0:0}, at: set_work_data mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/kernel/workqueue.c:678 [inline]
+ #0: ffff88810c2c8138 ((wq_completion)hci0#2){+.+.}-{0:0}, at: set_work_pool_and_clear_pending mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/kernel/workqueue.c:705 [inline]
+ #0: ffff88810c2c8138 ((wq_completion)hci0#2){+.+.}-{0:0}, at: process_one_work+0x8fb/0x16f0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/kernel/workqueue.c:2570
+ #1: ffffc90000dafd90 ((work_completion)(&hdev->rx_work)){+.+.}-{0:0}, at: process_one_work+0x92e/0x16f0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/kernel/workqueue.c:2574
+ #2: ffff888023928078 (&hdev->lock){+.+.}-{3:3}, at: hci_le_create_big_complete_evt+0xe9/0xab0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/net/bluetooth/hci_event.c:6947
+ #3: ffffffff8c9a3580 (rcu_read_lock){....}-{1:2}, at: hci_le_ev_skb_pull mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/net/bluetooth/hci_event.c:79 [inline]
+ #3: ffffffff8c9a3580 (rcu_read_lock){....}-{1:2}, at: hci_le_create_big_complete_evt+0xcc/0xab0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/net/bluetooth/hci_event.c:6943
+CPU: 0 PID: 51 Comm: kworker/u7:0 Not tainted 6.5.0-rc5-syzkaller #0
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.13.0-1ubuntu1.1 04/01/2014
+Workqueue: hci0 hci_rx_work
+Call Trace:
+ <TASK>
+ __dump_stack mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/lib/dump_stack.c:88 [inline]
+ dump_stack_lvl+0x136/0x150 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/lib/dump_stack.c:106
+ __might_resched+0x358/0x580 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/kernel/sched/core.c:10189
+ __hci_cmd_sync_sk+0x359/0xe30 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/net/bluetooth/hci_sync.c:166
+ __hci_cmd_sync_status_sk+0x45/0x160 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/net/bluetooth/hci_sync.c:247
+ __hci_cmd_sync_status mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/net/bluetooth/hci_sync.c:273 [inline]
+ hci_le_terminate_big_sync+0xa4/0xd0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/net/bluetooth/hci_sync.c:1671
+ hci_le_create_big_complete_evt+0x741/0xab0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/net/bluetooth/hci_event.c:6982
+ hci_le_meta_evt+0x2bc/0x510 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/net/bluetooth/hci_event.c:7182
+ hci_event_func mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/net/bluetooth/hci_event.c:7512 [inline]
+ hci_event_packet+0x641/0xfd0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/net/bluetooth/hci_event.c:7567
+ hci_rx_work+0xaeb/0x1340 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/net/bluetooth/hci_core.c:4090
+ process_one_work+0xa32/0x16f0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/kernel/workqueue.c:2600
+ worker_thread+0x67d/0x10c0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/kernel/workqueue.c:2751
+ kthread+0x344/0x440 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/kernel/kthread.c:389
+ ret_from_fork+0x2c/0x70 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/arch/x86/kernel/process.c:145
+ ret_from_fork_asm+0x11/0x20 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/arch/x86/entry/entry_64.S:304
+ </TASK>
+------------[ cut here ]------------
+Voluntary context switch within RCU read-side critical section!
+WARNING: CPU: 1 PID: 51 at kernel/rcu/tree_plugin.h:320 rcu_note_context_switch+0xbb9/0x1800 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/kernel/rcu/tree_plugin.h:320
+Modules linked in:
+CPU: 1 PID: 51 Comm: kworker/u7:0 Tainted: G        W          6.5.0-rc5-syzkaller #0
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.13.0-1ubuntu1.1 04/01/2014
+Workqueue: hci0 hci_rx_work
+RIP: 0010:rcu_note_context_switch+0xbb9/0x1800 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/kernel/rcu/tree_plugin.h:320
+Code: ad 54 69 00 4c 8b 4c 24 30 8b 4c 24 28 48 8b 54 24 20 e9 8f 03 00 00 48 c7 c7 a0 1e 6e 8a c6 05 07 58 25 0d 01 e8 77 8b dc ff <0f> 0b e9 4c f5 ff ff 81 e5 ff ff ff 7f 0f 84 d7 f6 ff ff 65 48 8b
+RSP: 0018:ffffc90000daf4a8 EFLAGS: 00010082
+RAX: 0000000000000000 RBX: ffff888135c3d2c0 RCX: 0000000000000000
+RDX: ffff888013bad940 RSI: ffffffff814c2f67 RDI: 0000000000000001
+RBP: ffff888013bad940 R08: 0000000000000001 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000001 R12: 0000000000000000
+R13: ffff888013bad940 R14: ffffffff8eab03f0 R15: ffff888135c3c3c0
+FS:  0000000000000000(0000) GS:ffff888135c00000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007f74de8aca50 CR3: 000000001d5c3000 CR4: 0000000000350ee0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+ <TASK>
+ __schedule+0x276/0x5880 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/kernel/sched/core.c:6610
+ schedule+0xde/0x1a0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/kernel/sched/core.c:6786
+ schedule_timeout+0x14e/0x2b0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/kernel/time/timer.c:2167
+ __hci_cmd_sync_sk+0xc1d/0xe30 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/net/bluetooth/hci_sync.c:166
+ __hci_cmd_sync_status_sk+0x45/0x160 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/net/bluetooth/hci_sync.c:247
+ __hci_cmd_sync_status mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/net/bluetooth/hci_sync.c:273 [inline]
+ hci_le_terminate_big_sync+0xa4/0xd0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/net/bluetooth/hci_sync.c:1671
+ hci_le_create_big_complete_evt+0x741/0xab0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/net/bluetooth/hci_event.c:6982
+ hci_le_meta_evt+0x2bc/0x510 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/net/bluetooth/hci_event.c:7182
+ hci_event_func mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/net/bluetooth/hci_event.c:7512 [inline]
+ hci_event_packet+0x641/0xfd0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/net/bluetooth/hci_event.c:7567
+ hci_rx_work+0xaeb/0x1340 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/net/bluetooth/hci_core.c:4090
+ process_one_work+0xa32/0x16f0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/kernel/workqueue.c:2600
+ worker_thread+0x67d/0x10c0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/kernel/workqueue.c:2751
+ kthread+0x344/0x440 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/kernel/kthread.c:389
+ ret_from_fork+0x2c/0x70 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/arch/x86/kernel/process.c:145
+ ret_from_fork_asm+0x11/0x20 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/arch/x86/entry/entry_64.S:304
+ </TASK>
+
+
+BUG: sleeping function called from invalid context in __hci_cmd_sync_sk
+a0bfde167b506423111ddb8cd71930497a40fc54

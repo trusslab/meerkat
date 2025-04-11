@@ -1,0 +1,218 @@
+TrussLab starts bisection 2025-03-30 10:42:00.77911793 -0700 PDT m=+3.617513672
+bisecting cause commit starting from a19944809fe9942e6a96292490717904d0690c21
+building syzkaller on HEAD
+ensuring issue is reproducible on original commit a19944809fe9942e6a96292490717904d0690c21
+
+testing commit a19944809fe9942e6a96292490717904d0690c21 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 50a9a46ce74c3cc3a9f9fcab880456d612b0996a44bc47d1c6968e7a115c652a
+all runs: crashed: WARNING in fuse_writepages_fill
+representative crash: WARNING in fuse_writepages_fill, types: [WARNING]
+picked [v5.17 v5.16 v5.15 v5.13 v5.11 v5.9 v5.7 v5.5 v5.2 v4.20 v4.19] out of 20 release tags
+testing release v5.17
+testing commit f443e374ae131c168a065ea1748feac6b2e76613 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: f8f9fd27aa3a33867a9263244f942eb4bd95349ce011a40d417eb708dda5fb2f
+all runs: crashed: WARNING in fuse_writepages_fill
+representative crash: WARNING in fuse_writepages_fill, types: [WARNING]
+testing release v5.16
+testing commit df0cc57e057f18e44dac8e6c18aba47ab53202f9 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 1fb4566dc557586b13cf45fd9a2e8ecde8a15f81f549dd0235f2262117bb2cc7
+all runs: crashed: WARNING in fuse_writepages_fill
+representative crash: WARNING in fuse_writepages_fill, types: [WARNING]
+testing release v5.15
+testing commit 8bb7eca972ad531c9b149c0a51ab43a417385813 gcc
+compiler: gcc (GCC) 10.1.0-syz 20200507, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 5de589e8524f5a6e8ff387f0a7e74349776136deffe8950a9d40d35d8df8bece
+all runs: OK
+false negative chance: 0.000
+# git bisect start df0cc57e057f18e44dac8e6c18aba47ab53202f9 8bb7eca972ad531c9b149c0a51ab43a417385813
+Bisecting: 7870 revisions left to test after this (roughly 13 steps)
+[2219b0ceefe835b92a8a74a73fe964aa052742a2] Merge tag 'soc-5.16' of git://git.kernel.org/pub/scm/linux/kernel/git/soc/soc
+
+testing commit 2219b0ceefe835b92a8a74a73fe964aa052742a2 gcc
+compiler: gcc (GCC) 10.1.0-syz 20200507, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 80614810310dc8fb67706ac264a0e46ded025d937b442e6c1e3a746314db77ab
+all runs: OK
+false negative chance: 0.000
+# git bisect good 2219b0ceefe835b92a8a74a73fe964aa052742a2
+Bisecting: 3942 revisions left to test after this (roughly 12 steps)
+[206825f50f908771934e1fba2bfc2e1f1138b36a] Merge tag 'mtd/for-5.16' of git://git.kernel.org/pub/scm/linux/kernel/git/mtd/linux
+
+testing commit 206825f50f908771934e1fba2bfc2e1f1138b36a gcc
+compiler: gcc (GCC) 10.1.0-syz 20200507, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: e0e3d81c6a2d4929003df0725cf890921d750c8c58086f137f58c2113a3a32f0
+all runs: OK
+false negative chance: 0.000
+# git bisect good 206825f50f908771934e1fba2bfc2e1f1138b36a
+Bisecting: 1971 revisions left to test after this (roughly 11 steps)
+[4e1fddc98d2585ddd4792b5e44433dcee7ece001] tcp_cubic: fix spurious Hystart ACK train detections for not-cwnd-limited flows
+
+testing commit 4e1fddc98d2585ddd4792b5e44433dcee7ece001 gcc
+compiler: gcc (GCC) 10.1.0-syz 20200507, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 73242608f762638066f7f22783c9cb15ab1b84b0a71ad2caa6767c80e249725a
+all runs: crashed: WARNING in fuse_writepages_fill
+representative crash: WARNING in fuse_writepages_fill, types: [WARNING]
+# git bisect bad 4e1fddc98d2585ddd4792b5e44433dcee7ece001
+Bisecting: 989 revisions left to test after this (roughly 10 steps)
+[dbf49896187fd58c577fa1574a338e4f3672b4b2] Merge branch 'akpm' (patches from Andrew)
+
+testing commit dbf49896187fd58c577fa1574a338e4f3672b4b2 gcc
+compiler: gcc (GCC) 10.1.0-syz 20200507, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: dd96dcc3b072a741efec0476b219b7a8f0e98d52f674ee481658b2310ec8a99a
+all runs: crashed: WARNING in fuse_writepages_fill
+representative crash: WARNING in fuse_writepages_fill, types: [WARNING]
+# git bisect bad dbf49896187fd58c577fa1574a338e4f3672b4b2
+Bisecting: 477 revisions left to test after this (roughly 9 steps)
+[89d714ab6043bca7356b5c823f5335f5dce1f930] Merge tag 'linux-watchdog-5.16-rc1' of git://www.linux-watchdog.org/linux-watchdog
+
+testing commit 89d714ab6043bca7356b5c823f5335f5dce1f930 gcc
+compiler: gcc (GCC) 10.1.0-syz 20200507, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 0d85a48367d2197a7457ffa154b719d3182f952c2d995854871b630b5e082c47
+all runs: crashed: WARNING in fuse_writepages_fill
+representative crash: WARNING in fuse_writepages_fill, types: [WARNING]
+# git bisect bad 89d714ab6043bca7356b5c823f5335f5dce1f930
+Bisecting: 210 revisions left to test after this (roughly 8 steps)
+[59a2ceeef6d6bb8f68550fdbd84246b74a99f06b] Merge branch 'akpm' (patches from Andrew)
+
+testing commit 59a2ceeef6d6bb8f68550fdbd84246b74a99f06b gcc
+compiler: gcc (GCC) 10.1.0-syz 20200507, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: edd4b74ce4c1ef4742e2e6f861c6d2a545cc68569e26ae7e0df83cf44c2a7290
+all runs: OK
+false negative chance: 0.000
+# git bisect good 59a2ceeef6d6bb8f68550fdbd84246b74a99f06b
+Bisecting: 116 revisions left to test after this (roughly 7 steps)
+[3e28850cbd359bed841b832200f9fc208a9ef040] Merge tag 'for-5.16/block-2021-11-09' of git://git.kernel.dk/linux-block
+
+testing commit 3e28850cbd359bed841b832200f9fc208a9ef040 gcc
+compiler: gcc (GCC) 10.1.0-syz 20200507, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: b5833893cae0d34b5fc381e21eda4d4004da0b66cb69aaa7cf66d390ac1bc1af
+all runs: crashed: WARNING in fuse_writepages_fill
+representative crash: WARNING in fuse_writepages_fill, types: [WARNING]
+# git bisect bad 3e28850cbd359bed841b832200f9fc208a9ef040
+Bisecting: 47 revisions left to test after this (roughly 6 steps)
+[1bdd629e5aa0e335504304be4208935948692549] Merge tag 'ovl-update-5.16' of git://git.kernel.org/pub/scm/linux/kernel/git/mszeredi/vfs
+
+testing commit 1bdd629e5aa0e335504304be4208935948692549 gcc
+compiler: gcc (GCC) 10.1.0-syz 20200507, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: d8f3661f47dedd54ef4c240c8e185d8f0fbace41069a31da5aaed0ab233973d6
+all runs: crashed: WARNING in fuse_writepages_fill
+representative crash: WARNING in fuse_writepages_fill, types: [WARNING]
+# git bisect bad 1bdd629e5aa0e335504304be4208935948692549
+Bisecting: 22 revisions left to test after this (roughly 5 steps)
+[712a951025c0667ff00b25afc360f74e639dfabe] fuse: fix page stealing
+
+testing commit 712a951025c0667ff00b25afc360f74e639dfabe gcc
+compiler: gcc (GCC) 10.1.0-syz 20200507, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 0b068e628407075e5da1a19ccf743e5535cd425bc53e6734128424bc783c835d
+all runs: crashed: WARNING in fuse_writepages_fill
+representative crash: WARNING in fuse_writepages_fill, types: [WARNING]
+# git bisect bad 712a951025c0667ff00b25afc360f74e639dfabe
+Bisecting: 11 revisions left to test after this (roughly 4 steps)
+[8c56e03d2e08d83776c89e4b6563ca8cfdf7da54] fuse: don't bump attr_version in cached write
+
+testing commit 8c56e03d2e08d83776c89e4b6563ca8cfdf7da54 gcc
+compiler: gcc (GCC) 10.1.0-syz 20200507, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 4cfa130c786e5b1c85aa78dc8aad1f27eaf457429a301b14ffd6a09ef2f90302
+all runs: crashed: WARNING in fuse_writepages_fill
+representative crash: WARNING in fuse_writepages_fill, types: [WARNING]
+# git bisect bad 8c56e03d2e08d83776c89e4b6563ca8cfdf7da54
+Bisecting: 5 revisions left to test after this (roughly 3 steps)
+[b5d9758297858288f1d8cd9b24a4e2f899f169e0] fuse: delete redundant code
+
+testing commit b5d9758297858288f1d8cd9b24a4e2f899f169e0 gcc
+compiler: gcc (GCC) 10.1.0-syz 20200507, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: fc8de516f2b8ee1846ba1b312d0de91c6023925cc1e32fa1dde49803c870fcf5
+all runs: crashed: WARNING in fuse_writepages_fill
+representative crash: WARNING in fuse_writepages_fill, types: [WARNING]
+# git bisect bad b5d9758297858288f1d8cd9b24a4e2f899f169e0
+Bisecting: 2 revisions left to test after this (roughly 1 step)
+[36ea23374d1f7b6a9d96a2b61d38830fdf23e45d] fuse: write inode in fuse_vma_close() instead of fuse_release()
+
+testing commit 36ea23374d1f7b6a9d96a2b61d38830fdf23e45d gcc
+compiler: gcc (GCC) 10.1.0-syz 20200507, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 110b2cbcdca49ba745761f0cd39c9dc4c1b567d07735992b8585fff13e91f834
+all runs: crashed: WARNING in fuse_writepages_fill
+representative crash: WARNING in fuse_writepages_fill, types: [WARNING]
+# git bisect bad 36ea23374d1f7b6a9d96a2b61d38830fdf23e45d
+Bisecting: 0 revisions left to test after this (roughly 0 steps)
+[5c791fe1e2a4f401f819065ea4fc0450849f1818] fuse: make sure reclaim doesn't write the inode
+
+testing commit 5c791fe1e2a4f401f819065ea4fc0450849f1818 gcc
+compiler: gcc (GCC) 10.1.0-syz 20200507, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 3e4828c19fa9aea391bbc765303f7a9bfa4785c8e38aaf6446cfff6737c1d754
+all runs: OK
+false negative chance: 0.000
+# git bisect good 5c791fe1e2a4f401f819065ea4fc0450849f1818
+36ea23374d1f7b6a9d96a2b61d38830fdf23e45d is the first bad commit
+commit 36ea23374d1f7b6a9d96a2b61d38830fdf23e45d
+Author: Miklos Szeredi <mszeredi@redhat.com>
+Date:   Fri Oct 22 17:03:01 2021 +0200
+
+    fuse: write inode in fuse_vma_close() instead of fuse_release()
+    
+    Fuse ->release() is otherwise asynchronous for the reason that it can
+    happen in contexts unrelated to close/munmap.
+    
+    Inode is already written back from fuse_flush().  Add it to
+    fuse_vma_close() as well to make sure inode dirtying from mmaps also get
+    written out before the file is released.
+    
+    Also add error handling.
+    
+    Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
+
+ fs/fuse/file.c | 15 ++++++---------
+ 1 file changed, 6 insertions(+), 9 deletions(-)
+
+accumulated error probability: 0.00
+culprit signature: 110b2cbcdca49ba745761f0cd39c9dc4c1b567d07735992b8585fff13e91f834
+parent  signature: 3e4828c19fa9aea391bbc765303f7a9bfa4785c8e38aaf6446cfff6737c1d754
+revisions tested: 17, total time: 5h9m33.607882953s (build: 3h25m12.444147125s, test: 1h25m39.943345992s)
+first bad commit: 36ea23374d1f7b6a9d96a2b61d38830fdf23e45d fuse: write inode in fuse_vma_close() instead of fuse_release()
+recipients (to): ["linux-fsdevel@vger.kernel.org" "miklos@szeredi.hu" "mszeredi@redhat.com"]
+recipients (cc): ["linux-kernel@vger.kernel.org"]
+crash: WARNING in fuse_writepages_fill
+------------[ cut here ]------------
+WARNING: CPU: 0 PID: 1253 at fs/fuse/file.c:1835 fuse_write_file_get mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/fs/fuse/file.c:1835 [inline]
+WARNING: CPU: 0 PID: 1253 at fs/fuse/file.c:1835 fuse_write_file_get mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/fs/fuse/file.c:1832 [inline]
+WARNING: CPU: 0 PID: 1253 at fs/fuse/file.c:1835 fuse_writepages_fill+0x1877/0x1dc0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/fs/fuse/file.c:2140
+Modules linked in:
+CPU: 0 PID: 1253 Comm: kworker/u5:4 Not tainted 5.15.0-rc6-syzkaller #0
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.13.0-1ubuntu1.1 04/01/2014
+Workqueue: writeback wb_workfn (flush-0:55)
+RIP: 0010:fuse_write_file_get mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/fs/fuse/file.c:1835 [inline]
+RIP: 0010:fuse_write_file_get mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/fs/fuse/file.c:1832 [inline]
+RIP: 0010:fuse_writepages_fill+0x1877/0x1dc0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/fs/fuse/file.c:2140
+Code: ff 4c 89 ef e8 8a 83 0c ff e9 8f e9 ff ff e8 80 83 0c ff e9 b0 e9 ff ff e8 06 3c c5 fe 4c 89 ef e8 ae a7 7d 06 e8 f9 3b c5 fe <0f> 0b 48 b8 00 00 00 00 00 fc ff df 48 8b 54 24 18 48 c1 ea 03 80
+RSP: 0018:ffffc900063ef3c0 EFLAGS: 00010293
+RAX: 0000000000000000 RBX: ffff88801f2be348 RCX: 0000000000000000
+RDX: ffff888018208000 RSI: ffffffff82b13567 RDI: 0000000000000001
+RBP: 0000000000000000 R08: 0000000000000000 R09: ffff88801f2be463
+R10: ffffed1003e57c8c R11: 0000000000000000 R12: ffffc900063ef630
+R13: ffff88801f2be460 R14: ffff888019c9f800 R15: ffffc900063ef620
+FS:  0000000000000000(0000) GS:ffff888063e00000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007fb01c03d0f8 CR3: 0000000017c15000 CR4: 0000000000350ef0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+ write_cache_pages+0x754/0x11c0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/mm/page-writeback.c:2255
+ fuse_writepages+0x1cd/0x320 mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/fs/fuse/file.c:2242
+ do_writepages+0x1ab/0x7b0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/mm/page-writeback.c:2364
+ __writeback_single_inode+0x126/0xff0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/fs/fs-writeback.c:1616
+ writeback_sb_inodes+0x53d/0xf00 mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/fs/fs-writeback.c:1881
+ __writeback_inodes_wb+0xc6/0x280 mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/fs/fs-writeback.c:1950
+ wb_writeback+0x7f8/0xc30 mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/fs/fs-writeback.c:2055
+ wb_check_background_flush mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/fs/fs-writeback.c:2121 [inline]
+ wb_do_writeback mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/fs/fs-writeback.c:2209 [inline]
+ wb_workfn+0xa4b/0x12d0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/fs/fs-writeback.c:2237
+ process_one_work+0x965/0x1660 mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/kernel/workqueue.c:2297
+ worker_thread+0x658/0x11f0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/kernel/workqueue.c:2444
+ kthread+0x3e5/0x4d0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/kernel/kthread.c:319
+ ret_from_fork+0x1f/0x30 mnt/sdd/jtbursey/SyzInspector/wd-bisector-7/kernel/arch/x86/entry/entry_64.S:295
+
+
+WARNING in fuse_write_file_get
+36ea23374d1f7b6a9d96a2b61d38830fdf23e45d

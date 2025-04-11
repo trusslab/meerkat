@@ -1,0 +1,520 @@
+charm starts bisection 2025-04-01 13:34:25.313411712 -0700 PDT m=+17.139175658
+bisecting cause commit starting from 3f86ed6ec0b390c033eae7f9c487a3fea268e027
+building syzkaller on HEAD
+ensuring issue is reproducible on original commit 3f86ed6ec0b390c033eae7f9c487a3fea268e027
+
+testing commit 3f86ed6ec0b390c033eae7f9c487a3fea268e027 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: c962abe633d4e3782d12a2b05bbfab66a69601d0484efb61f5fabe37a9b3faf0
+all runs: crashed: WARNING in try_grab_page
+representative crash: WARNING in try_grab_page, types: [WARNING]
+picked [v6.5 v6.4 v6.3 v6.1 v5.19 v5.17 v5.15 v5.13 v5.10 v5.7 v5.4 v5.1 v4.19] out of 28 release tags
+testing release v6.5
+testing commit 2dde18cd1d8fac735875f2e4987f11817cc0bc2c gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: f2169b6cbe09f145211cab4c40886831271d4e8101ced7bc4f2f8a2179cd963b
+all runs: OK
+false negative chance: 0.000
+# git bisect start 3f86ed6ec0b390c033eae7f9c487a3fea268e027 2dde18cd1d8fac735875f2e4987f11817cc0bc2c
+Bisecting: 5327 revisions left to test after this (roughly 13 steps)
+[461f35f014466c4e26dca6be0f431f57297df3f2] Merge tag 'drm-next-2023-08-30' of git://anongit.freedesktop.org/drm/drm
+
+testing commit 461f35f014466c4e26dca6be0f431f57297df3f2 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 72867608c1637489b054b0a38c501dc483e1d3febf97213c9d5c0073b569408e
+all runs: crashed: WARNING in try_grab_page
+representative crash: WARNING in try_grab_page, types: [WARNING]
+# git bisect bad 461f35f014466c4e26dca6be0f431f57297df3f2
+Bisecting: 2408 revisions left to test after this (roughly 12 steps)
+[bd6c11bc43c496cddfc6cf603b5d45365606dbd5] Merge tag 'net-next-6.6' of git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net-next
+
+testing commit bd6c11bc43c496cddfc6cf603b5d45365606dbd5 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 3c9ce7861aa0aa64cf1abca8a2411e889a829582302f6b3b767817c84c6fed98
+all runs: OK
+false negative chance: 0.000
+# git bisect good bd6c11bc43c496cddfc6cf603b5d45365606dbd5
+Bisecting: 1205 revisions left to test after this (roughly 10 steps)
+[ef35c7ba60410926d0501e45aad299656a83826c] Revert "Revert "drm/amdgpu/display: change pipe policy for DCN 2.0""
+
+testing commit ef35c7ba60410926d0501e45aad299656a83826c gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 1f75ae086f8223dac05d7a46b6602a8afeb95985c3264c37775b246bc6279d56
+all runs: OK
+false negative chance: 0.000
+# git bisect good ef35c7ba60410926d0501e45aad299656a83826c
+Bisecting: 580 revisions left to test after this (roughly 9 steps)
+[d68b4b6f307d155475cce541f2aee938032ed22e] Merge tag 'mm-nonmm-stable-2023-08-28-22-48' of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+
+testing commit d68b4b6f307d155475cce541f2aee938032ed22e gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: e4ada10793db307dea3ae3436e479f3a928f533fef635da93b33f6d6eefe418a
+all runs: crashed: WARNING in try_grab_page
+representative crash: WARNING in try_grab_page, types: [WARNING]
+# git bisect bad d68b4b6f307d155475cce541f2aee938032ed22e
+Bisecting: 312 revisions left to test after this (roughly 8 steps)
+[7545e2f20aebf4da413be00384c4245eda5beb4d] mm/compaction: skip page block marked skip in isolate_migratepages_block
+
+testing commit 7545e2f20aebf4da413be00384c4245eda5beb4d gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+failed building 7545e2f20aebf4da413be00384c4245eda5beb4d: mm/memory.c:5460:34: error: implicit declaration of function 'vma_is_tcp'; did you mean 'vma_is_dax'? [-Werror=implicit-function-declaration]
+# git bisect skip 7545e2f20aebf4da413be00384c4245eda5beb4d
+Bisecting: 311 revisions left to test after this (roughly 8 steps)
+[0aa8ea3c5d353d5f0aa1e607f8dc5f43bf6cdf05] mm/compaction: correct comment of fast_find_migrateblock in isolate_migratepages
+
+testing commit 0aa8ea3c5d353d5f0aa1e607f8dc5f43bf6cdf05 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+failed building 0aa8ea3c5d353d5f0aa1e607f8dc5f43bf6cdf05: mm/memory.c:5460:34: error: implicit declaration of function 'vma_is_tcp'; did you mean 'vma_is_dax'? [-Werror=implicit-function-declaration]
+# git bisect skip 0aa8ea3c5d353d5f0aa1e607f8dc5f43bf6cdf05
+Bisecting: 311 revisions left to test after this (roughly 8 steps)
+[c1dc69e6ce65d95e3d4d080868c3007f1a6fc4fe] mm/page_alloc: remove unneeded variable base
+
+testing commit c1dc69e6ce65d95e3d4d080868c3007f1a6fc4fe gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+failed building c1dc69e6ce65d95e3d4d080868c3007f1a6fc4fe: mm/memory.c:5460:34: error: implicit declaration of function 'vma_is_tcp'; did you mean 'vma_is_dax'? [-Werror=implicit-function-declaration]
+# git bisect skip c1dc69e6ce65d95e3d4d080868c3007f1a6fc4fe
+Bisecting: 311 revisions left to test after this (roughly 8 steps)
+[86f35f69db8e7d169c36472a349507ab0a461f49] rmap: add folio_add_file_rmap_range()
+
+testing commit 86f35f69db8e7d169c36472a349507ab0a461f49 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 252cbf8acec5f4a2468b92aaebe4230b6293e5f21cb3335902030fdb4acc4a1a
+all runs: OK
+false negative chance: 0.000
+# git bisect good 86f35f69db8e7d169c36472a349507ab0a461f49
+Bisecting: 79 revisions left to test after this (roughly 6 steps)
+[543cd4c5e78b15def9d7e8626d7592cb3097f75e] x86/crash: optimize CPU changes
+
+testing commit 543cd4c5e78b15def9d7e8626d7592cb3097f75e gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: ec8c3985d59fc2e77283b5537c3ec5dced551a73bfd0bb7c6fc5000f582f3ad7
+all runs: OK
+false negative chance: 0.000
+# git bisect good 543cd4c5e78b15def9d7e8626d7592cb3097f75e
+Bisecting: 38 revisions left to test after this (roughly 5 steps)
+[eaf9f4649cf03ba3442712497a30686380ba7c23] Merge tag 'csky-for-linus-6.6' of https://github.com/c-sky/csky-linux
+
+testing commit eaf9f4649cf03ba3442712497a30686380ba7c23 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 364cc5dfbd0a218bffaa9b6b70a5cec5304bd7625c0c1e00cbea86da0ec7ffb9
+all runs: OK
+false negative chance: 0.000
+# git bisect good eaf9f4649cf03ba3442712497a30686380ba7c23
+Bisecting: 19 revisions left to test after this (roughly 4 steps)
+[01a7eb3e20994701700631ec30462087c4ecf142] mm: fix clean_record_shared_mapping_range kernel-doc
+
+testing commit 01a7eb3e20994701700631ec30462087c4ecf142 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 1da9c6a25ccf127003b9015bf32469152dd4f1b9f85bc969295b0fd7ff5bdea3
+all runs: crashed: WARNING in try_grab_page
+representative crash: WARNING in try_grab_page, types: [WARNING]
+# git bisect bad 01a7eb3e20994701700631ec30462087c4ecf142
+Bisecting: 8 revisions left to test after this (roughly 3 steps)
+[3d2c908768877714a354ee6d7bf93e801400d5e2] mm/swap: inline folio_set_swap_entry() and folio_swap_entry()
+
+testing commit 3d2c908768877714a354ee6d7bf93e801400d5e2 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 9946e62e95a56857238681b12a5fff239bb76390509e0dff9f0ec5a22d638865
+all runs: crashed: WARNING in try_grab_page
+representative crash: WARNING in try_grab_page, types: [WARNING]
+# git bisect bad 3d2c908768877714a354ee6d7bf93e801400d5e2
+Bisecting: 4 revisions left to test after this (roughly 2 steps)
+[004a9a38e20da6eb88fbfb7eeff0f3dd8a01776a] mm: userfaultfd: remove stale comment about core dump locking
+
+testing commit 004a9a38e20da6eb88fbfb7eeff0f3dd8a01776a gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: c665870bebb98d54bf11f778b81a36154d05cab283fa3b7425b27fbc6d774ce0
+all runs: crashed: WARNING in try_grab_page
+representative crash: WARNING in try_grab_page, types: [WARNING]
+# git bisect bad 004a9a38e20da6eb88fbfb7eeff0f3dd8a01776a
+Bisecting: 1 revision left to test after this (roughly 1 step)
+[5003a2bdf6880dc9c301f555bece1154081158fe] mm: call update_mmu_cache_range() in more page fault handling paths
+
+testing commit 5003a2bdf6880dc9c301f555bece1154081158fe gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 583728fe8324d3d2c7c0daaaaa0eaafc72939a909a5e1b866c994bb054b75a2d
+all runs: crashed: WARNING in try_grab_page
+representative crash: WARNING in try_grab_page, types: [WARNING]
+# git bisect bad 5003a2bdf6880dc9c301f555bece1154081158fe
+Bisecting: 1 revision left to test after this (roughly 1 step)
+[3bd786f76de2e01745f462844fd1a206052ee8b8] mm: convert do_set_pte() to set_pte_range()
+
+testing commit 3bd786f76de2e01745f462844fd1a206052ee8b8 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 7954922a1b0ed5648cf2a3b5b9ee35a503e5b6e5f3b4637aef4d6505c5a529b6
+all runs: OK
+false negative chance: 0.000
+# git bisect good 3bd786f76de2e01745f462844fd1a206052ee8b8
+Bisecting: 0 revisions left to test after this (roughly 0 steps)
+[617c28ecab22d98a3809370eb6cb50fa24b7bfe1] filemap: batch PTE mappings
+
+testing commit 617c28ecab22d98a3809370eb6cb50fa24b7bfe1 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 54e0efc3b8b737894bc7ab2b4d15c1b4b4071a19e198d97611869f8d8d854c98
+all runs: crashed: WARNING in try_grab_page
+representative crash: WARNING in try_grab_page, types: [WARNING]
+# git bisect bad 617c28ecab22d98a3809370eb6cb50fa24b7bfe1
+617c28ecab22d98a3809370eb6cb50fa24b7bfe1 is the first bad commit
+commit 617c28ecab22d98a3809370eb6cb50fa24b7bfe1
+Author: Yin Fengwei <fengwei.yin@intel.com>
+Date:   Wed Aug 2 16:14:05 2023 +0100
+
+    filemap: batch PTE mappings
+    
+    Call set_pte_range() once per contiguous range of the folio instead of
+    once per page.  This batches the updates to mm counters and the rmap.
+    
+    With a will-it-scale.page_fault3 like app (change file write fault testing
+    to read fault testing.  Trying to upstream it to will-it-scale at [1]) got
+    15% performance gain on a 48C/96T Cascade Lake test box with 96 processes
+    running against xfs.
+    
+    Perf data collected before/after the change:
+      18.73%--page_add_file_rmap
+              |
+               --11.60%--__mod_lruvec_page_state
+                         |
+                         |--7.40%--__mod_memcg_lruvec_state
+                         |          |
+                         |           --5.58%--cgroup_rstat_updated
+                         |
+                          --2.53%--__mod_lruvec_state
+                                    |
+                                     --1.48%--__mod_node_page_state
+    
+      9.93%--page_add_file_rmap_range
+             |
+              --2.67%--__mod_lruvec_page_state
+                        |
+                        |--1.95%--__mod_memcg_lruvec_state
+                        |          |
+                        |           --1.57%--cgroup_rstat_updated
+                        |
+                         --0.61%--__mod_lruvec_state
+                                   |
+                                    --0.54%--__mod_node_page_state
+    
+    The running time of __mode_lruvec_page_state() is reduced about 9%.
+    
+    [1]: https://github.com/antonblanchard/will-it-scale/pull/37
+    
+    Link: https://lkml.kernel.org/r/20230802151406.3735276-38-willy@infradead.org
+    Signed-off-by: Yin Fengwei <fengwei.yin@intel.com>
+    Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+    Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+
+ mm/filemap.c | 43 +++++++++++++++++++++++++++++--------------
+ 1 file changed, 29 insertions(+), 14 deletions(-)
+
+accumulated error probability: 0.00
+culprit signature: 54e0efc3b8b737894bc7ab2b4d15c1b4b4071a19e198d97611869f8d8d854c98
+parent  signature: 7954922a1b0ed5648cf2a3b5b9ee35a503e5b6e5f3b4637aef4d6505c5a529b6
+revisions tested: 15, total time: 5h47m15.303438554s (build: 4h0m23.581656612s, test: 1h22m10.737337892s)
+first bad commit: 617c28ecab22d98a3809370eb6cb50fa24b7bfe1 filemap: batch PTE mappings
+recipients (to): ["akpm@linux-foundation.org" "fengwei.yin@intel.com" "willy@infradead.org"]
+recipients (cc): []
+crash: WARNING in try_grab_page
+WARNING in try_grab_page in process syz-executor.0  pte:ffffee3894120 pmd:1076b5067
+page:ffffea000471dac0 refcount:9 mapcount:-1 mapping:ffff88811650d190 index:0x3 pfn:0x11c76b
+head:ffffea000471da00 order:2 entire_mapcount:0 nr_pages_mapped:8388607 pincount:0
+memcg:ffff888101e4c000
+aops:xfs_address_space_operations ino:244a dentry name:"bus"
+flags: 0x57ff0000000816c(referenced|uptodate|lru|active|private|head|node=1|zone=2|lastcpupid=0x7ff)
+page_type: 0xffffffff()
+raw: 057ff00000000000 ffffea000471da01 dead000000000122 dead000000000400
+raw: 0000000000000001 0000000000000000 00000000fffffffe 0000000000000000
+head: 057ff0000000816c ffffea0004457788 ffff888101e60030 ffff88811650d190
+head: 0000000000000000 ffff88801df50780 00000009ffffffff ffff888101e4c000
+page dumped because: bad pte
+page_owner tracks the page as allocated
+page last allocated via order 2, migratetype Movable, gfp_mask 0x152c4a(GFP_NOFS|__GFP_HIGHMEM|__GFP_NOWARN|__GFP_NORETRY|__GFP_COMP|__GFP_HARDWALL|__GFP_MOVABLE), pid 8980, tgid 8979 (syz-executor.0), ts 60436352272, free_ts 57439697527
+ set_page_owner mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/./include/linux/page_owner.h:31 [inline]
+ post_alloc_hook+0x2d8/0x350 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/page_alloc.c:1536
+ prep_new_page mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/page_alloc.c:1543 [inline]
+ get_page_from_freelist+0xfec/0x2d40 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/page_alloc.c:3183
+ __alloc_pages+0x1cb/0x4a0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/page_alloc.c:4439
+ alloc_pages+0x1aa/0x270 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/mempolicy.c:2298
+ folio_alloc+0x20/0x70 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/mempolicy.c:2308
+ filemap_alloc_folio+0x3c1/0x470 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/filemap.c:979
+ ra_alloc_folio mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/readahead.c:481 [inline]
+ page_cache_ra_order+0x411/0xa00 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/readahead.c:537
+ do_sync_mmap_readahead mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/filemap.c:3197 [inline]
+ filemap_fault+0x187e/0x33c0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/filemap.c:3289
+ __xfs_filemap_fault+0x1b0/0x9e0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/fs/xfs/xfs_file.c:1354
+ __do_fault+0x107/0x600 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/memory.c:4218
+ do_read_fault mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/memory.c:4582 [inline]
+ do_fault mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/memory.c:4719 [inline]
+ do_pte_missing mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/memory.c:3683 [inline]
+ handle_pte_fault mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/memory.c:5010 [inline]
+ __handle_mm_fault+0x2d58/0x4200 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/memory.c:5150
+ handle_mm_fault+0x2b9/0x8d0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/memory.c:5315
+ faultin_page mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/gup.c:956 [inline]
+ __get_user_pages+0x4d6/0x1100 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/gup.c:1239
+ __get_user_pages_locked mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/gup.c:1504 [inline]
+ get_dump_page+0xff/0x210 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/gup.c:2018
+ dump_user_range+0x3e6/0x710 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/fs/coredump.c:913
+ elf_core_dump+0x27ac/0x3720 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/fs/binfmt_elf.c:2142
+page last free stack trace:
+ reset_page_owner mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/./include/linux/page_owner.h:24 [inline]
+ free_pages_prepare mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/page_alloc.c:1136 [inline]
+ free_unref_page_prepare+0x545/0xb60 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/page_alloc.c:2312
+ free_unref_page_list+0xe3/0xa70 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/page_alloc.c:2451
+ release_pages+0xcb9/0x1330 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/swap.c:1042
+ __folio_batch_release+0x77/0xe0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/swap.c:1062
+ folio_batch_release mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/./include/linux/pagevec.h:83 [inline]
+ truncate_inode_pages_range+0x2ec/0xfc0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/truncate.c:371
+ ext4_evict_inode+0x2c2/0x1a00 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/fs/ext4/inode.c:193
+ evict+0x2ed/0x6b0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/fs/inode.c:665
+ iput_final mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/fs/inode.c:1791 [inline]
+ iput.part.0+0x50a/0x740 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/fs/inode.c:1817
+ iput+0x5c/0x80 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/fs/inode.c:1807
+ do_unlinkat+0x432/0x680 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/fs/namei.c:4402
+ __do_sys_unlink mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/fs/namei.c:4443 [inline]
+ __se_sys_unlink mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/fs/namei.c:4441 [inline]
+ __x64_sys_unlink+0xca/0x110 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/fs/namei.c:4441
+ do_syscall_x64 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/arch/x86/entry/common.c:50 [inline]
+ do_syscall_64+0x39/0xb0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/arch/x86/entry/common.c:80
+ entry_SYSCALL_64_after_hwframe+0x63/0xcd
+addr:0000000020006000 vm_flags:080000d0 anon_vma:0000000000000000 mapping:ffff88811650d190 index:5
+file:bus fault:xfs_filemap_fault mmap:xfs_file_mmap read_folio:xfs_vm_read_folio
+CPU: 1 PID: 8979 Comm: syz-executor.0 Not tainted 6.5.0-rc4-syzkaller #0
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.13.0-1ubuntu1.1 04/01/2014
+Call Trace:
+ <TASK>
+ __dump_stack mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/lib/dump_stack.c:88 [inline]
+ dump_stack_lvl+0x136/0x150 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/lib/dump_stack.c:106
+ print_bad_pte+0x4f7/0x780 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/memory.c:535
+ zap_pte_range mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/memory.c:1457 [inline]
+ zap_pmd_range mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/memory.c:1572 [inline]
+ zap_pud_range mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/memory.c:1601 [inline]
+ zap_p4d_range mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/memory.c:1622 [inline]
+ unmap_page_range+0x1afb/0x2cc0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/memory.c:1643
+ unmap_single_vma+0x19a/0x2b0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/memory.c:1689
+ unmap_vmas+0x1b2/0x2f0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/memory.c:1730
+ exit_mmap+0x1a0/0xa60 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/mmap.c:3210
+ __mmput+0x128/0x4c0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/kernel/fork.c:1348
+ mmput+0x60/0x70 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/kernel/fork.c:1370
+ exit_mm mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/kernel/exit.c:567 [inline]
+ do_exit+0x9a7/0x29a0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/kernel/exit.c:861
+ do_group_exit+0xd4/0x2a0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/kernel/exit.c:1024
+ get_signal+0x23a3/0x2570 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/kernel/signal.c:2881
+ arch_do_signal_or_restart+0x79/0x5c0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/arch/x86/kernel/signal.c:308
+ exit_to_user_mode_loop mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/kernel/entry/common.c:168 [inline]
+ exit_to_user_mode_prepare+0x11f/0x240 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/kernel/entry/common.c:204
+ __syscall_exit_to_user_mode_work mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/kernel/entry/common.c:286 [inline]
+ syscall_exit_to_user_mode+0x1d/0x50 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/kernel/entry/common.c:297
+ do_syscall_64+0x46/0xb0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/arch/x86/entry/common.c:86
+ entry_SYSCALL_64_after_hwframe+0x63/0xcd
+RIP: 0033:0x7f7ce5691ced
+Code: Unable to access opcode bytes at 0x7f7ce5691cc3.
+RSP: 002b:00007ffd19d5c1f8 EFLAGS: 00000246 ORIG_RAX: 00000000000000ca
+RAX: fffffffffffffdfc RBX: 00007f7ce57cbf8c RCX: 00007f7ce5691ced
+RDX: 0000000000000000 RSI: 0000000000000080 RDI: 00007f7ce57cbf8c
+RBP: 00007f7ce57cbf80 R08: 00007ffd19d91080 R09: 0000000000000000
+R10: 00007ffd19d5c2e0 R11: 0000000000000246 R12: 000000000000ebea
+R13: 00007ffd19d5c2e0 R14: 00007ffd19d5c300 R15: 0000000000000032
+ </TASK>
+WARNING in try_grab_page in process syz-executor.0  pte:ffffee3895120 pmd:1076b5067
+page:ffffea000471da80 refcount:9 mapcount:-1 mapping:ffff88811650d190 index:0x2 pfn:0x11c76a
+head:ffffea000471da00 order:2 entire_mapcount:0 nr_pages_mapped:8388606 pincount:0
+memcg:ffff888101e4c000
+aops:xfs_address_space_operations ino:244a dentry name:"bus"
+flags: 0x57ff0000000816c(referenced|uptodate|lru|active|private|head|node=1|zone=2|lastcpupid=0x7ff)
+page_type: 0xffffffff()
+raw: 057ff00000000000 ffffea000471da01 ffffea000471da90 ffffea000471da90
+raw: 0000000000000001 0000000000000000 00000000fffffffe 0000000000000000
+head: 057ff0000000816c ffffea0004457788 ffff888101e60030 ffff88811650d190
+head: 0000000000000000 ffff88801df50780 00000009ffffffff ffff888101e4c000
+page dumped because: bad pte
+page_owner tracks the page as allocated
+page last allocated via order 2, migratetype Movable, gfp_mask 0x152c4a(GFP_NOFS|__GFP_HIGHMEM|__GFP_NOWARN|__GFP_NORETRY|__GFP_COMP|__GFP_HARDWALL|__GFP_MOVABLE), pid 8980, tgid 8979 (syz-executor.0), ts 60436352272, free_ts 57439702684
+ set_page_owner mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/./include/linux/page_owner.h:31 [inline]
+ post_alloc_hook+0x2d8/0x350 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/page_alloc.c:1536
+ prep_new_page mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/page_alloc.c:1543 [inline]
+ get_page_from_freelist+0xfec/0x2d40 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/page_alloc.c:3183
+ __alloc_pages+0x1cb/0x4a0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/page_alloc.c:4439
+ alloc_pages+0x1aa/0x270 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/mempolicy.c:2298
+ folio_alloc+0x20/0x70 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/mempolicy.c:2308
+ filemap_alloc_folio+0x3c1/0x470 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/filemap.c:979
+ ra_alloc_folio mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/readahead.c:481 [inline]
+ page_cache_ra_order+0x411/0xa00 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/readahead.c:537
+ do_sync_mmap_readahead mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/filemap.c:3197 [inline]
+ filemap_fault+0x187e/0x33c0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/filemap.c:3289
+ __xfs_filemap_fault+0x1b0/0x9e0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/fs/xfs/xfs_file.c:1354
+ __do_fault+0x107/0x600 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/memory.c:4218
+ do_read_fault mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/memory.c:4582 [inline]
+ do_fault mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/memory.c:4719 [inline]
+ do_pte_missing mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/memory.c:3683 [inline]
+ handle_pte_fault mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/memory.c:5010 [inline]
+ __handle_mm_fault+0x2d58/0x4200 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/memory.c:5150
+ handle_mm_fault+0x2b9/0x8d0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/memory.c:5315
+ faultin_page mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/gup.c:956 [inline]
+ __get_user_pages+0x4d6/0x1100 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/gup.c:1239
+ __get_user_pages_locked mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/gup.c:1504 [inline]
+ get_dump_page+0xff/0x210 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/gup.c:2018
+ dump_user_range+0x3e6/0x710 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/fs/coredump.c:913
+ elf_core_dump+0x27ac/0x3720 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/fs/binfmt_elf.c:2142
+page last free stack trace:
+ reset_page_owner mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/./include/linux/page_owner.h:24 [inline]
+ free_pages_prepare mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/page_alloc.c:1136 [inline]
+ free_unref_page_prepare+0x545/0xb60 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/page_alloc.c:2312
+ free_unref_page_list+0xe3/0xa70 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/page_alloc.c:2451
+ release_pages+0xcb9/0x1330 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/swap.c:1042
+ __folio_batch_release+0x77/0xe0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/swap.c:1062
+ folio_batch_release mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/./include/linux/pagevec.h:83 [inline]
+ truncate_inode_pages_range+0x2ec/0xfc0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/truncate.c:371
+ ext4_evict_inode+0x2c2/0x1a00 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/fs/ext4/inode.c:193
+ evict+0x2ed/0x6b0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/fs/inode.c:665
+ iput_final mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/fs/inode.c:1791 [inline]
+ iput.part.0+0x50a/0x740 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/fs/inode.c:1817
+ iput+0x5c/0x80 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/fs/inode.c:1807
+ do_unlinkat+0x432/0x680 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/fs/namei.c:4402
+ __do_sys_unlink mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/fs/namei.c:4443 [inline]
+ __se_sys_unlink mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/fs/namei.c:4441 [inline]
+ __x64_sys_unlink+0xca/0x110 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/fs/namei.c:4441
+ do_syscall_x64 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/arch/x86/entry/common.c:50 [inline]
+ do_syscall_64+0x39/0xb0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/arch/x86/entry/common.c:80
+ entry_SYSCALL_64_after_hwframe+0x63/0xcd
+addr:0000000020007000 vm_flags:080000d0 anon_vma:0000000000000000 mapping:ffff88811650d190 index:6
+file:bus fault:xfs_filemap_fault mmap:xfs_file_mmap read_folio:xfs_vm_read_folio
+CPU: 1 PID: 8979 Comm: syz-executor.0 Tainted: G    B              6.5.0-rc4-syzkaller #0
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.13.0-1ubuntu1.1 04/01/2014
+Call Trace:
+ <TASK>
+ __dump_stack mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/lib/dump_stack.c:88 [inline]
+ dump_stack_lvl+0x136/0x150 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/lib/dump_stack.c:106
+ print_bad_pte+0x4f7/0x780 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/memory.c:535
+ zap_pte_range mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/memory.c:1457 [inline]
+ zap_pmd_range mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/memory.c:1572 [inline]
+ zap_pud_range mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/memory.c:1601 [inline]
+ zap_p4d_range mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/memory.c:1622 [inline]
+ unmap_page_range+0x1afb/0x2cc0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/memory.c:1643
+ unmap_single_vma+0x19a/0x2b0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/memory.c:1689
+ unmap_vmas+0x1b2/0x2f0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/memory.c:1730
+ exit_mmap+0x1a0/0xa60 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/mmap.c:3210
+ __mmput+0x128/0x4c0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/kernel/fork.c:1348
+ mmput+0x60/0x70 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/kernel/fork.c:1370
+ exit_mm mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/kernel/exit.c:567 [inline]
+ do_exit+0x9a7/0x29a0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/kernel/exit.c:861
+ do_group_exit+0xd4/0x2a0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/kernel/exit.c:1024
+ get_signal+0x23a3/0x2570 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/kernel/signal.c:2881
+ arch_do_signal_or_restart+0x79/0x5c0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/arch/x86/kernel/signal.c:308
+ exit_to_user_mode_loop mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/kernel/entry/common.c:168 [inline]
+ exit_to_user_mode_prepare+0x11f/0x240 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/kernel/entry/common.c:204
+ __syscall_exit_to_user_mode_work mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/kernel/entry/common.c:286 [inline]
+ syscall_exit_to_user_mode+0x1d/0x50 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/kernel/entry/common.c:297
+ do_syscall_64+0x46/0xb0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/arch/x86/entry/common.c:86
+ entry_SYSCALL_64_after_hwframe+0x63/0xcd
+RIP: 0033:0x7f7ce5691ced
+Code: Unable to access opcode bytes at 0x7f7ce5691cc3.
+RSP: 002b:00007ffd19d5c1f8 EFLAGS: 00000246 ORIG_RAX: 00000000000000ca
+RAX: fffffffffffffdfc RBX: 00007f7ce57cbf8c RCX: 00007f7ce5691ced
+RDX: 0000000000000000 RSI: 0000000000000080 RDI: 00007f7ce57cbf8c
+RBP: 00007f7ce57cbf80 R08: 00007ffd19d91080 R09: 0000000000000000
+R10: 00007ffd19d5c2e0 R11: 0000000000000246 R12: 000000000000ebea
+R13: 00007ffd19d5c2e0 R14: 00007ffd19d5c300 R15: 0000000000000032
+ </TASK>
+WARNING in try_grab_page in process syz-executor.0  pte:ffffee3896120 pmd:1076b5067
+page:ffffea000471da40 refcount:9 mapcount:-1 mapping:ffff88811650d190 index:0x1 pfn:0x11c769
+head:ffffea000471da00 order:2 entire_mapcount:0 nr_pages_mapped:8388605 pincount:0
+memcg:ffff888101e4c000
+aops:xfs_address_space_operations ino:244a dentry name:"bus"
+flags: 0x57ff0000000816c(referenced|uptodate|lru|active|private|head|node=1|zone=2|lastcpupid=0x7ff)
+page_type: 0xffffffff()
+raw: 057ff00000000202 ffffea000471da01 dead000000000122 fffffffdffffffff
+raw: 0000000400000000 0000000000000000 00000000fffffffe 0000000000000000
+head: 057ff0000000816c ffffea0004457788 ffff888101e60030 ffff88811650d190
+head: 0000000000000000 ffff88801df50780 00000009ffffffff ffff888101e4c000
+page dumped because: bad pte
+page_owner tracks the page as allocated
+page last allocated via order 2, migratetype Movable, gfp_mask 0x152c4a(GFP_NOFS|__GFP_HIGHMEM|__GFP_NOWARN|__GFP_NORETRY|__GFP_COMP|__GFP_HARDWALL|__GFP_MOVABLE), pid 8980, tgid 8979 (syz-executor.0), ts 60436352272, free_ts 57439707175
+ set_page_owner mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/./include/linux/page_owner.h:31 [inline]
+ post_alloc_hook+0x2d8/0x350 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/page_alloc.c:1536
+ prep_new_page mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/page_alloc.c:1543 [inline]
+ get_page_from_freelist+0xfec/0x2d40 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/page_alloc.c:3183
+ __alloc_pages+0x1cb/0x4a0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/page_alloc.c:4439
+ alloc_pages+0x1aa/0x270 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/mempolicy.c:2298
+ folio_alloc+0x20/0x70 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/mempolicy.c:2308
+ filemap_alloc_folio+0x3c1/0x470 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/filemap.c:979
+ ra_alloc_folio mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/readahead.c:481 [inline]
+ page_cache_ra_order+0x411/0xa00 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/readahead.c:537
+ do_sync_mmap_readahead mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/filemap.c:3197 [inline]
+ filemap_fault+0x187e/0x33c0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/filemap.c:3289
+ __xfs_filemap_fault+0x1b0/0x9e0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/fs/xfs/xfs_file.c:1354
+ __do_fault+0x107/0x600 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/memory.c:4218
+ do_read_fault mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/memory.c:4582 [inline]
+ do_fault mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/memory.c:4719 [inline]
+ do_pte_missing mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/memory.c:3683 [inline]
+ handle_pte_fault mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/memory.c:5010 [inline]
+ __handle_mm_fault+0x2d58/0x4200 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/memory.c:5150
+ handle_mm_fault+0x2b9/0x8d0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/memory.c:5315
+ faultin_page mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/gup.c:956 [inline]
+ __get_user_pages+0x4d6/0x1100 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/gup.c:1239
+ __get_user_pages_locked mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/gup.c:1504 [inline]
+ get_dump_page+0xff/0x210 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/gup.c:2018
+ dump_user_range+0x3e6/0x710 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/fs/coredump.c:913
+ elf_core_dump+0x27ac/0x3720 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/fs/binfmt_elf.c:2142
+page last free stack trace:
+ reset_page_owner mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/./include/linux/page_owner.h:24 [inline]
+ free_pages_prepare mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/page_alloc.c:1136 [inline]
+ free_unref_page_prepare+0x545/0xb60 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/page_alloc.c:2312
+ free_unref_page_list+0xe3/0xa70 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/page_alloc.c:2451
+ release_pages+0xcb9/0x1330 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/swap.c:1042
+ __folio_batch_release+0x77/0xe0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/swap.c:1062
+ folio_batch_release mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/./include/linux/pagevec.h:83 [inline]
+ truncate_inode_pages_range+0x2ec/0xfc0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/truncate.c:371
+ ext4_evict_inode+0x2c2/0x1a00 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/fs/ext4/inode.c:193
+ evict+0x2ed/0x6b0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/fs/inode.c:665
+ iput_final mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/fs/inode.c:1791 [inline]
+ iput.part.0+0x50a/0x740 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/fs/inode.c:1817
+ iput+0x5c/0x80 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/fs/inode.c:1807
+ do_unlinkat+0x432/0x680 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/fs/namei.c:4402
+ __do_sys_unlink mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/fs/namei.c:4443 [inline]
+ __se_sys_unlink mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/fs/namei.c:4441 [inline]
+ __x64_sys_unlink+0xca/0x110 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/fs/namei.c:4441
+ do_syscall_x64 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/arch/x86/entry/common.c:50 [inline]
+ do_syscall_64+0x39/0xb0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/arch/x86/entry/common.c:80
+ entry_SYSCALL_64_after_hwframe+0x63/0xcd
+addr:0000000020008000 vm_flags:080000d0 anon_vma:0000000000000000 mapping:ffff88811650d190 index:7
+file:bus fault:xfs_filemap_fault mmap:xfs_file_mmap read_folio:xfs_vm_read_folio
+CPU: 1 PID: 8979 Comm: syz-executor.0 Tainted: G    B              6.5.0-rc4-syzkaller #0
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.13.0-1ubuntu1.1 04/01/2014
+Call Trace:
+ <TASK>
+ __dump_stack mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/lib/dump_stack.c:88 [inline]
+ dump_stack_lvl+0x136/0x150 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/lib/dump_stack.c:106
+ print_bad_pte+0x4f7/0x780 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/memory.c:535
+ zap_pte_range mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/memory.c:1457 [inline]
+ zap_pmd_range mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/memory.c:1572 [inline]
+ zap_pud_range mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/memory.c:1601 [inline]
+ zap_p4d_range mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/memory.c:1622 [inline]
+ unmap_page_range+0x1afb/0x2cc0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/memory.c:1643
+ unmap_single_vma+0x19a/0x2b0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/memory.c:1689
+ unmap_vmas+0x1b2/0x2f0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/memory.c:1730
+ exit_mmap+0x1a0/0xa60 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/mmap.c:3210
+ __mmput+0x128/0x4c0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/kernel/fork.c:1348
+ mmput+0x60/0x70 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/kernel/fork.c:1370
+ exit_mm mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/kernel/exit.c:567 [inline]
+ do_exit+0x9a7/0x29a0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/kernel/exit.c:861
+ do_group_exit+0xd4/0x2a0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/kernel/exit.c:1024
+ get_signal+0x23a3/0x2570 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/kernel/signal.c:2881
+ arch_do_signal_or_restart+0x79/0x5c0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/arch/x86/kernel/signal.c:308
+ exit_to_user_mode_loop mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/kernel/entry/common.c:168 [inline]
+ exit_to_user_mode_prepare+0x11f/0x240 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/kernel/entry/common.c:204
+ __syscall_exit_to_user_mode_work mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/kernel/entry/common.c:286 [inline]
+ syscall_exit_to_user_mode+0x1d/0x50 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/kernel/entry/common.c:297
+ do_syscall_64+0x46/0xb0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/arch/x86/entry/common.c:86
+ entry_SYSCALL_64_after_hwframe+0x63/0xcd
+RIP: 0033:0x7f7ce5691ced
+Code: Unable to access opcode bytes at 0x7f7ce5691cc3.
+RSP: 002b:00007ffd19d5c1f8 EFLAGS: 00000246 ORIG_RAX: 00000000000000ca
+RAX: fffffffffffffdfc RBX: 00007f7ce57cbf8c RCX: 00007f7ce5691ced
+RDX: 0000000000000000 RSI: 0000000000000080 RDI: 00007f7ce57cbf8c
+RBP: 00007f7ce57cbf80 R08: 00007ffd19d91080 R09: 0000000000000000
+R10: 00007ffd19d5c2e0 R11: 0000000000000246 R12: 000000000000ebea
+R13: 00007ffd19d5c2e0 R14: 00007ffd19d5c300 R15: 0000000000000032
+ </TASK>
+
+
+WARNING in try_grab_page
+617c28ecab22d98a3809370eb6cb50fa24b7bfe1
