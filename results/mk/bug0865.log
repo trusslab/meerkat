@@ -1,0 +1,319 @@
+./bin/bisector -i 4 -c /home/syzretrospector/syzinspector/wd-bisector-4/bisector.cfg -a 825a0714d2b3883d4f8ff64f6933fb73ee3f1834 -F ff-test,poc-test,stateful-corpus,ff-no-find-backup
+Bisecting:          kernel BUG in page_table_check_clear
+Syzbot Link:        https://syzkaller.appspot.com/bug?extid=fcf1a817ceb50935ce99
+Working Name:       bug0865
+
+No aliases given.
+
+Anchor Commit:      825a0714d2b3883d4f8ff64f6933fb73ee3f1834
+Repository:         https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
+Branch:             master
+Arch:               amd64
+
+Bisector:           /home/syzretrospector/syzinspector/
+Version:            1.0.4
+Kernel:             /home/syzretrospector/syzinspector/wd-bisector-4/kernel/
+Syzkaller:          /home/syzretrospector/syzinspector/syzkaller/
+Compilers:          /home/syzretrospector/compilers/
+Ccache:             ccache
+Image:              /home/syzretrospector/images/stretch/stretch.img
+Image Key:          /home/syzretrospector/images/stretch/stretch.id_rsa
+
+Workdir:            /home/syzretrospector/syzinspector/wd-bisector-4/
+Kconfig:            /home/syzretrospector/syzinspector/wd-bisector-4/config-bug0865.txt
+Reproducers: (3)    /home/syzretrospector/syzinspector/wd-bisector-4/reproducers/
+Syzkaller Workdir:  /home/syzretrospector/syzinspector/wd-bisector-4/wd-kaller/
+Log Directory:      /home/syzretrospector/syzinspector/wd-bisector-4/log/
+
+Syscalls: (3)       ["mmap", "syz_open_dev$usbfs", "openat$selinux_enforce"]
+VM Count:           4
+CPU Count:          4
+Procs:              24
+Memory:             4096
+Make Procs:         16
+Max Time:           10
+Max Attempts:       1
+
+==== Anchor Commit ====
+
+2025-03-10 04:51:18
+Session:   1
+Kernel:    2023-04-29 - 825a0714d2b3883d4f8ff64f6933fb73ee3f1834
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    3  kernel BUG in page_table_check_clear
+***    3  kernel BUG in page_table_check_clear
+***    3  kernel BUG in page_table_check_clear
+***    3  kernel BUG in page_table_check_clear
+Attempt 2: (RETRY)
+    Time  Bug Name
+       3  kernel BUG in __page_table_check_zero
+***    3  kernel BUG in page_table_check_clear
+***    3  kernel BUG in page_table_check_clear
+Attempt 3: (RETRY)
+    Time  Bug Name
+***    4  kernel BUG in page_table_check_clear
+***    4  kernel BUG in page_table_check_clear
+***    4  kernel BUG in page_table_check_clear
+***    4  kernel BUG in page_table_check_clear
+The bug was found.
+
+New Max Time: 10
+
+==== Major Release Search ====
+18 Releases
+
+2025-03-10 05:23:11
+Session:   2
+Kernel:    2023-02-19 - c9c3395d5e3dcc6daee66c6908354d47bf98cb0c (v6.2)
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       3  INFO: rcu detected stall in corrupted
+***    3  kernel BUG in page_table_check_clear
+Running syz-repro.
+New PoC saved at /home/syzretrospector/syzinspector/wd-bisector-4/reproducers/repro-bug0865-0.prog
+Primary PoC:     /home/syzretrospector/syzinspector/wd-bisector-4/reproducers/repro-bug0865-0.prog
+Run Time:        0h26m0s
+The bug was found.
+About 17 releases remaining
+
+2025-03-10 06:13:33
+Session:   3
+Kernel:    2022-12-11 - 830b3c68c1fb1e9176028d02ef86f3cf76aa2476 (v6.1)
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       7  suppressed report
+       9  suppressed report
+The bug was not found.
+About 16 releases remaining
+
+==== Kernel Bisection ====
+16841 Linux commits
+
+2025-03-10 06:44:36
+Session:   4
+Kernel:    2022-12-13 - 1ca06f1c1acecbe02124f14a37cce347b8c1a90c
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       3  INFO: rcu detected stall in corrupted
+***    3  kernel BUG in page_table_check_clear
+***    3  kernel BUG in page_table_check_clear
+The bug was found.
+About 7411 commits remaining
+
+2025-03-10 07:08:33
+Session:   5
+Kernel:    2022-12-13 - 8715c6d3100fc7c6edddf29af4a399a1c12d028c
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       3  INFO: rcu detected stall in corrupted
+***    3  kernel BUG in page_table_check_clear
+The bug was found.
+About 3656 commits remaining
+
+2025-03-10 07:32:05
+Session:   6
+Kernel:    2022-12-12 - f10bc40168032962ebee26894bdbdc972cde35bf
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       3  INFO: rcu detected stall in corrupted
+***    3  kernel BUG in page_table_check_clear
+Running syz-repro.
+syz-repro was terminated after 60 minutes
+Run Time:        1h0m0s
+The bug was found.
+About 1815 commits remaining
+
+2025-03-10 08:55:32
+Session:   7
+Kernel:    2022-12-07 - c24ba5964f040163bb1e9f248a7f7e2171f2c9e1
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       3  kernel BUG in __page_table_check_zero
+       3  kernel BUG in __page_table_check_zero
+       3  kernel BUG in __page_table_check_zero
+       4  kernel BUG in __page_table_check_zero
+       5  kernel BUG in __page_table_check_zero
+The bug was not found.
+About 3219 commits remaining
+
+2025-03-10 09:26:06
+Session:   8
+Kernel:    2022-12-12 - 5910b842c489ec40866182d1b2acf7d20c2bc83f
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       3  INFO: rcu detected stall in corrupted
+***    3  kernel BUG in page_table_check_clear
+Running syz-repro.
+Run Time:        0h7m0s
+The bug was found.
+About 2785 commits remaining
+
+2025-03-10 09:45:12
+Session:   9
+Kernel:    2022-12-12 - 7d62159919c90fbcd9ee808e9f1b776eae990d53
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       3  INFO: rcu detected stall in corrupted
+***    4  kernel BUG in page_table_check_clear
+Running syz-repro.
+New PoC saved at /home/syzretrospector/syzinspector/wd-bisector-4/reproducers/repro-bug0865-4.prog
+Primary PoC:     /home/syzretrospector/syzinspector/wd-bisector-4/reproducers/repro-bug0865-4.prog
+Run Time:        0h39m0s
+The bug was found.
+About 2559 commits remaining
+
+2025-03-10 10:38:24
+Session:   10
+Kernel:    2022-12-12 - 73fa58dca80293320f5cfeb06f5b2daeb8d97bd5
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       3  INFO: rcu detected stall in corrupted
+The bug was not found.
+About 118 commits remaining
+
+2025-03-10 11:09:12
+Session:   11
+Kernel:    2022-12-12 - 98d0052d0d9dcd5323833482712b5799ed0bbb0b
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       3  INFO: rcu detected stall in corrupted
+       6  kernel BUG in __page_table_check_zero
+      10  kernel BUG in __page_table_check_zero
+The bug was not found.
+About 69 commits remaining
+
+2025-03-10 11:39:40
+Session:   12
+Kernel:    2022-12-01 - dc19745ad0e46c1a069540973e376cff0130443c
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    2  kernel BUG in page_table_check_clear
+***    2  kernel BUG in page_table_check_clear
+The bug was found.
+About 41 commits remaining
+
+2025-03-10 12:02:43
+Session:   13
+Kernel:    2022-11-21 - 90e9b23a60d5b4c8317f58e01ed05d3bdf063440
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       3  INFO: rcu detected stall in corrupted
+***    3  kernel BUG in page_table_check_clear
+***    3  kernel BUG in page_table_check_clear
+***    3  kernel BUG in page_table_check_clear
+The bug was found.
+About 22 commits remaining
+
+2025-03-10 12:26:08
+Session:   14
+Kernel:    2022-11-21 - c64b95d3dd0236062ded3caa928175a3b5cc1f97
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       3  INFO: rcu detected stall in corrupted
+       5  kernel BUG in __page_table_check_zero
+       5  kernel BUG in __page_table_check_zero
+       7  kernel BUG in __page_table_check_zero
+       7  WARNING: ODEBUG bug in netdev_run_todo
+The bug was not found.
+About 11 commits remaining
+
+2025-03-10 12:56:28
+Session:   15
+Kernel:    2022-11-21 - 76537db3b95cbf5d0189ce185c16db9f93017021
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    2  kernel BUG in page_table_check_clear
+***    2  kernel BUG in page_table_check_clear
+***    2  kernel BUG in page_table_check_clear
+Running syz-repro.
+New PoC saved at /home/syzretrospector/syzinspector/wd-bisector-4/reproducers/repro-bug0865-5.prog
+Primary PoC:     /home/syzretrospector/syzinspector/wd-bisector-4/reproducers/repro-bug0865-5.prog
+Run Time:        0h24m0s
+The bug was found.
+About 7 commits remaining
+
+2025-03-10 13:30:46
+Session:   16
+Kernel:    2022-11-21 - 130d4df57390a29521cb7cccd1b3144c184c111c
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    2  kernel BUG in page_table_check_clear
+***    2  kernel BUG in page_table_check_clear
+***    2  kernel BUG in page_table_check_clear
+The bug was found.
+About 4 commits remaining
+
+2025-03-10 13:53:10
+Session:   17
+Kernel:    2022-11-21 - 8b8817630ae80032e80b2eaf334de756ac1ff6a3
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       3  INFO: rcu detected stall in corrupted
+       5  kernel BUG in __page_table_check_zero
+       5  kernel BUG in __page_table_check_zero
+       6  kernel BUG in __page_table_check_zero
+       6  kernel BUG in __page_table_check_zero
+The bug was not found.
+About 2 commits remaining
+
+==== Partial Result: Focused Fuzzing ====
+Reproducer:           /home/syzretrospector/syzinspector/wd-bisector-4/reproducers/repro-bug0865-5.prog
+Bisection Result:     2022-11-21 - 130d4df57390a29521cb7cccd1b3144c184c111c
+Bisected Commit Name: mm/sl[au]b: rearrange struct slab fields to allow larger rcu_head
+Stage Time:           9h19m28s
+Run Time:             9h19m30s
+=========================================
+
+==== Anchor Commit ====
+
+2025-03-10 14:10:46
+Session:   18
+Kernel:    2022-11-21 - 8b8817630ae80032e80b2eaf334de756ac1ff6a3
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 0:
+    possible deadlock in vivid_update_format_cap
+Attempt 1:
+    possible deadlock in vivid_update_format_cap
+Attempt 2:
+    possible deadlock in vivid_update_format_cap
+Attempt 3:
+    possible deadlock in vivid_update_format_cap
+Attempt 4:
+    possible deadlock in vivid_update_format_cap
+Attempt 5:
+    possible deadlock in vivid_update_format_cap
+Attempt 6:
+    possible deadlock in vivid_update_format_cap
+Attempt 7:
+    possible deadlock in vivid_update_format_cap
+The bug was not found.
+
+Failure: This bug cannot be found at the anchor commit.
+
+====================================================================================================================================================
+Bug Name:             kernel BUG in page_table_check_clear
+Bug Link:             https://syzkaller.appspot.com/bug?extid=fcf1a817ceb50935ce99
+Bisection Result:     2022-11-21 - 130d4df57390a29521cb7cccd1b3144c184c111c
+Bisected Commit Name: mm/sl[au]b: rearrange struct slab fields to allow larger rcu_head
+Run Time:             9h30m24s
+
+Anchor Commit:        2023-04-29 - 825a0714d2b3883d4f8ff64f6933fb73ee3f1834
+Bisection Result:     2022-11-21 - 130d4df57390a29521cb7cccd1b3144c184c111c

@@ -1,0 +1,1017 @@
+./bin/bisector -i 5 -c /home/syzretrospector/syzinspector/wd-bisector-5/bisector.cfg -a 7e364e56293bb98cae1b55fd835f5991c4e96e7d -F poc-test,poc-all-pocs
+Bisecting:          general protection fault in sctp_outq_tail
+Syzbot Link:        https://syzkaller.appspot.com/bug?extid=47c24ca20a2fa01f082e
+Working Name:       bug0904
+
+No aliases given.
+
+Anchor Commit:      7e364e56293bb98cae1b55fd835f5991c4e96e7d
+Repository:         https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
+Branch:             master
+Arch:               amd64
+
+Bisector:           /home/syzretrospector/syzinspector/
+Version:            1.0.4
+Kernel:             /home/syzretrospector/syzinspector/wd-bisector-5/kernel/
+Syzkaller:          /home/syzretrospector/syzinspector/syzkaller/
+Compilers:          /home/syzretrospector/compilers/
+Ccache:             ccache
+Image:              /home/syzretrospector/images/stretch/stretch.img
+Image Key:          /home/syzretrospector/images/stretch/stretch.id_rsa
+
+Workdir:            /home/syzretrospector/syzinspector/wd-bisector-5/
+Kconfig:            /home/syzretrospector/syzinspector/wd-bisector-5/config-bug0904.txt
+Reproducers: (2)    /home/syzretrospector/syzinspector/wd-bisector-5/reproducers/
+Syzkaller Workdir:  /home/syzretrospector/syzinspector/wd-bisector-5/wd-kaller/
+Log Directory:      /home/syzretrospector/syzinspector/wd-bisector-5/log/
+
+VM Count:           4
+CPU Count:          4
+Procs:              24
+Memory:             4096
+Make Procs:         16
+
+==== Anchor Commit ====
+
+2025-03-25 08:47:20
+Session:   1
+Kernel:    2023-04-02 - 7e364e56293bb98cae1b55fd835f5991c4e96e7d
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+
+Failure: This bug cannot be found at the anchor commit.
+
+==== Partial Result: Primary PoC Test ====
+Reproducer:           /home/syzretrospector/syzinspector/wd-bisector-5/reproducers/repro-bug0904-1.prog
+Bisection Result:     Failed to reproduce at the anchor commit.
+Stage Time:           0h23m54s
+Run Time:             0h23m54s
+==========================================
+
+==== Anchor Commit ====
+
+2025-03-25 09:11:18
+Session:   2
+Kernel:    2023-04-02 - 7e364e56293bb98cae1b55fd835f5991c4e96e7d
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 0:
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+Attempt 1:
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+Attempt 2:
+    No crashes found.
+Attempt 3:
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+Attempt 4:
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+Attempt 5:
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+Attempt 6:
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+Attempt 7:
+    No crashes found.
+The bug was found.
+
+==== Major Release Search ====
+18 Releases
+
+2025-03-25 09:27:54
+Session:   3
+Kernel:    2022-12-11 - 830b3c68c1fb1e9176028d02ef86f3cf76aa2476 (v6.1)
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 0:
+*** general protection fault in sctp_outq_tail
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+Attempt 1:
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in linkwatch_event
+    INFO: task hung in netdev_run_todo
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in new_device_store
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in del_device_store
+    INFO: task hung in devlink_unregister
+    INFO: task hung in synchronize_rcu
+Attempt 2:
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+Attempt 3:
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in netdev_run_todo
+    INFO: task hung in linkwatch_event
+    INFO: task hung in del_device_store
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in devlink_unregister
+Attempt 4:
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+Attempt 5:
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in cleanup_net
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in devlink_unregister
+    INFO: task hung in del_device_store
+    INFO: task hung in addrconf_dad_work
+*** general protection fault in sctp_outq_tail
+Attempt 6:
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in netdev_run_todo
+    INFO: task hung in linkwatch_event
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in devlink_unregister
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in del_device_store
+    INFO: task hung in new_device_store
+Attempt 7:
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in del_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in devlink_unregister
+    INFO: task hung in del_device_store
+    INFO: task hung in new_device_store
+The bug was found.
+About 17 releases remaining
+
+2025-03-25 09:56:08
+Session:   4
+Kernel:    2022-10-02 - 4fe89d07dcc2804c8b562f6c7896a45643d34b2f (v6.0)
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 0:
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in cleanup_net
+    INFO: task hung in del_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in devlink_unregister
+    INFO: task hung in del_device_store
+    INFO: task hung in del_device_store
+Attempt 1:
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in netdev_run_todo
+    INFO: task hung in linkwatch_event
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in devlink_unregister
+    INFO: task hung in del_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in rtnetlink_rcv_msg
+Attempt 2:
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in netdev_run_todo
+    INFO: task hung in linkwatch_event
+    INFO: task hung in devlink_unregister
+    INFO: task hung in del_device_store
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in del_device_store
+Attempt 3:
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in cleanup_net
+    INFO: task hung in del_device_store
+    INFO: task hung in devlink_unregister
+    INFO: task hung in del_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in del_device_store
+Attempt 4:
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in netdev_run_todo
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in new_device_store
+    INFO: task hung in devlink_unregister
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in linkwatch_event
+Attempt 5:
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in netdev_run_todo
+    INFO: task hung in linkwatch_event
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in del_device_store
+    INFO: task hung in devlink_unregister
+    INFO: task hung in new_device_store
+Attempt 6:
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in cleanup_net
+    INFO: task hung in devlink_unregister
+    INFO: task hung in del_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in del_device_store
+Attempt 7:
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in netdev_run_todo
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in linkwatch_event
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in del_device_store
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in devlink_unregister
+The bug was not found.
+About 16 releases remaining
+
+==== Kernel Bisection ====
+15110 Linux commits
+
+2025-03-25 10:25:11
+Session:   5
+Kernel:    2022-10-07 - 33e591dee915832c618cf68bb1058c8e7d296128
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 0:
+    possible deadlock in vivid_update_format_cap
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in netdev_run_todo
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in linkwatch_event
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in devlink_unregister
+    INFO: task hung in rtnetlink_rcv_msg
+Attempt 1:
+    possible deadlock in vivid_update_format_cap
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in del_device_store
+    INFO: task hung in devlink_unregister
+    INFO: task hung in del_device_store
+Attempt 2:
+    possible deadlock in vivid_update_format_cap
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in devlink_unregister
+    INFO: task hung in del_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in del_device_store
+Attempt 3:
+    possible deadlock in vivid_update_format_cap
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in netdev_run_todo
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in del_device_store
+    INFO: task hung in devlink_unregister
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in rtnetlink_rcv_msg
+Attempt 4:
+    possible deadlock in vivid_update_format_cap
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+Attempt 5:
+    possible deadlock in vivid_update_format_cap
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in netdev_run_todo
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in del_device_store
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in devlink_unregister
+    INFO: task hung in linkwatch_event
+    INFO: task hung in addrconf_dad_work
+Attempt 6:
+    possible deadlock in vivid_update_format_cap
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in netdev_run_todo
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in linkwatch_event
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in del_device_store
+    INFO: task hung in devlink_unregister
+    INFO: task hung in del_device_store
+    INFO: task hung in del_device_store
+Attempt 7:
+    possible deadlock in vivid_update_format_cap
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in netdev_run_todo
+    INFO: task hung in linkwatch_event
+    INFO: task hung in new_device_store
+    INFO: task hung in devlink_unregister
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in synchronize_rcu
+The bug was found.
+About 7595 commits remaining
+
+2025-03-25 10:53:41
+Session:   6
+Kernel:    2022-10-05 - a47e60729d9624e931f988709ab76e043e2ee8b9
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 0:
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in netdev_run_todo
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in new_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in devlink_unregister
+    INFO: task hung in del_device_store
+    INFO: task hung in rtnetlink_rcv_msg
+Attempt 1:
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in netdev_run_todo
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in del_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in devlink_unregister
+Attempt 2:
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in new_device_store
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in devlink_unregister
+Attempt 3:
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in netdev_run_todo
+    INFO: task hung in linkwatch_event
+    INFO: task hung in del_device_store
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in new_device_store
+    INFO: task hung in devlink_unregister
+    INFO: task hung in del_device_store
+Attempt 4:
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in netdev_run_todo
+    INFO: task hung in linkwatch_event
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in del_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in devlink_unregister
+Attempt 5:
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in netdev_run_todo
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in new_device_store
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in del_device_store
+    INFO: task hung in devlink_unregister
+Attempt 6:
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in netdev_run_todo
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in devlink_unregister
+    INFO: task hung in new_device_store
+    INFO: task hung in linkwatch_event
+Attempt 7:
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in netdev_run_todo
+    INFO: task hung in linkwatch_event
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in devlink_unregister
+    INFO: task hung in new_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in rtnetlink_rcv_msg
+The bug was not found.
+About 4356 commits remaining
+
+2025-03-25 11:22:28
+Session:   7
+Kernel:    2022-10-06 - ff6862c23d2e83d12d1759bf4337d41248fb4dc8
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 0:
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in netdev_run_todo
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in linkwatch_event
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in devlink_unregister
+    INFO: task hung in del_device_store
+    INFO: task hung in rtnetlink_rcv_msg
+Attempt 1:
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in netdev_run_todo
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in devlink_unregister
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in del_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in del_device_store
+Attempt 2:
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+Attempt 3:
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in netdev_run_todo
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in linkwatch_event
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in del_device_store
+    INFO: task hung in devlink_unregister
+Attempt 4:
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in netdev_run_todo
+    INFO: task hung in linkwatch_event
+    INFO: task hung in del_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in devlink_unregister
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in del_device_store
+Attempt 5:
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in netdev_run_todo
+    INFO: task hung in linkwatch_event
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in devlink_unregister
+    INFO: task hung in addrconf_dad_work
+Attempt 6:
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in cleanup_net
+    INFO: task hung in new_device_store
+    INFO: task hung in devlink_unregister
+    INFO: task hung in del_device_store
+Attempt 7:
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in netdev_run_todo
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in new_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in devlink_unregister
+The bug was found.
+About 2117 commits remaining
+
+2025-03-25 11:48:51
+Session:   8
+Kernel:    2022-09-28 - 95d8c67187bcfaa519bafcdef9091cd906505454
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 0:
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in del_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in devlink_unregister
+Attempt 1:
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in linkwatch_event
+    INFO: task hung in devlink_nl_port_fill
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in rtnetlink_rcv_msg
+Attempt 2:
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in netdev_run_todo
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in linkwatch_event
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in del_device_store
+    INFO: task hung in devlink_unregister
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in new_device_store
+Attempt 3:
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in netdev_run_todo
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in del_device_store
+    INFO: task hung in devlink_unregister
+Attempt 4:
+*** general protection fault in sctp_outq_tail
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+Attempt 5:
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit
+    inconsistent lock state in find_vmap_area
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in netdev_run_todo
+    INFO: task hung in linkwatch_event
+    INFO: task hung in del_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in devlink_unregister
+Attempt 6:
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+Attempt 7:
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit
+    inconsistent lock state in find_vmap_area
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in netdev_run_todo
+    INFO: task hung in linkwatch_event
+    INFO: task hung in new_device_store
+    INFO: task hung in devlink_unregister
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in synchronize_rcu
+The bug was found.
+About 1094 commits remaining
+
+2025-03-25 12:16:43
+Session:   9
+Kernel:    2022-09-12 - 6f3562b3bca078b40aa198db8fdc68439b7b0399
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 0:
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+Attempt 1:
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in netdev_run_todo
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in linkwatch_event
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in del_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in devlink_unregister
+Attempt 2:
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+Attempt 3:
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+Attempt 4:
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in del_device_store
+    INFO: task hung in devlink_unregister
+    INFO: task hung in del_device_store
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in synchronize_rcu
+Attempt 5:
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit
+    inconsistent lock state in find_vmap_area
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in netdev_run_todo
+    INFO: task hung in del_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in devlink_unregister
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in linkwatch_event
+Attempt 6:
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in cleanup_net
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in linkwatch_event
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in devlink_unregister
+    INFO: task hung in rtnetlink_rcv_msg
+Attempt 7:
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in cleanup_net
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in del_device_store
+    INFO: task hung in new_device_store
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in devlink_unregister
+    INFO: task hung in addrconf_dad_work
+The bug was found.
+About 608 commits remaining
+
+2025-03-25 12:33:25
+Session:   10
+Kernel:    2022-08-23 - dbaadb3cebaad49c37e3fec937e73e6e41054404
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 0:
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+Attempt 1:
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+Attempt 2:
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+Attempt 3:
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+Attempt 4:
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+Attempt 5:
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+Attempt 6:
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+Attempt 7:
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+The bug was found.
+About 304 commits remaining
+
+2025-03-25 12:57:45
+Session:   11
+Kernel:    2022-07-19 - de2b4917843cd433d0f1c279123f75801dcd0c1e
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 0:
+*** general protection fault in sctp_outq_tail
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+Attempt 1:
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+Attempt 2:
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+Attempt 3:
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+Attempt 4:
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+Attempt 5:
+*** general protection fault in sctp_outq_tail
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+Attempt 6:
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+Attempt 7:
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+The bug was found.
+About 152 commits remaining
+
+2025-03-25 13:17:22
+Session:   12
+Kernel:    2022-07-13 - 77932adf2a2c9625da8bc8885b626690ee500601
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 0:
+*** general protection fault in sctp_outq_tail
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+Attempt 1:
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+Attempt 2:
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+Attempt 3:
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+Attempt 4:
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+Attempt 5:
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+Attempt 6:
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+Attempt 7:
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+The bug was found.
+About 76 commits remaining
+
+2025-03-25 13:32:31
+Session:   13
+Kernel:    2022-07-11 - ba8f16cd081902350e2d2a00afcc6b77b1815d50
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 0:
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+Attempt 1:
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+Attempt 2:
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+Attempt 3:
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+Attempt 4:
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+Attempt 5:
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+Attempt 6:
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+Attempt 7:
+    No crashes found.
+The bug was found.
+About 38 commits remaining
+
+2025-03-25 14:01:13
+Session:   14
+Kernel:    2022-07-09 - 0a2486f85e0cfa6439116abb9078ab888a619746
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 0:
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+Attempt 1:
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+Attempt 2:
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+Attempt 3:
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+Attempt 4:
+*** general protection fault in sctp_outq_tail
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+Attempt 5:
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+Attempt 6:
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+Attempt 7:
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+The bug was found.
+About 19 commits remaining
+
+2025-03-25 14:17:47
+Session:   15
+Kernel:    2022-07-09 - d72ac4bbf4cc8f6b50526ce400861f176659884f
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 0:
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+Attempt 1:
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+Attempt 2:
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+Attempt 3:
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+Attempt 4:
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+Attempt 5:
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+Attempt 6:
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+Attempt 7:
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+The bug was found.
+About 10 commits remaining
+
+2025-03-25 14:33:33
+Session:   16
+Kernel:    2022-07-07 - 6dc548745d5b5102e3c53dc5097296ac270b6c69
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 0:
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+Attempt 1:
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+Attempt 2:
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+Attempt 3:
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+Attempt 4:
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+Attempt 5:
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+Attempt 6:
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+Attempt 7:
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+The bug was found.
+About 5 commits remaining
+
+2025-03-25 14:50:01
+Session:   17
+Kernel:    2022-07-07 - 40cdb02cb9f965732eb543d47f15bef8d10f0f5f
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 0:
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+Attempt 1:
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+Attempt 2:
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+Attempt 3:
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+Attempt 4:
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+Attempt 5:
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+Attempt 6:
+*** general protection fault in sctp_outq_tail
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+Attempt 7:
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+The bug was found.
+About 3 commits remaining
+
+2025-03-25 15:04:27
+Session:   18
+Kernel:    2022-07-07 - 1d22b6033ea113a4c3850dfa2c0770885c81aec8
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 0:
+*** general protection fault in sctp_outq_tail
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+Attempt 1:
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+Attempt 2:
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+Attempt 3:
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+Attempt 4:
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+Attempt 5:
+*** general protection fault in sctp_outq_tail
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+Attempt 6:
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+Attempt 7:
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+The bug was found.
+About 2 commits remaining
+
+==== Partial Result: Subsequent PoC Test ====
+Reproducer:           /home/syzretrospector/syzinspector/wd-bisector-5/reproducers/repro-bug0904-2.prog
+Bisection Result:     2022-07-07 - 1d22b6033ea113a4c3850dfa2c0770885c81aec8
+Bisected Commit Name: drm: bridge: adv7511: fix CEC power down control register offset
+Stage Time:           6h7m43s
+Run Time:             6h31m38s
+=============================================
+
+====================================================================================================================================================
+Bug Name:             general protection fault in sctp_outq_tail
+Bug Link:             https://syzkaller.appspot.com/bug?extid=47c24ca20a2fa01f082e
+Bisection Result:     2022-07-07 - 1d22b6033ea113a4c3850dfa2c0770885c81aec8
+Bisected Commit Name: drm: bridge: adv7511: fix CEC power down control register offset
+Run Time:             6h31m38s
+
+Anchor Commit:        2023-04-02 - 7e364e56293bb98cae1b55fd835f5991c4e96e7d
+Bisection Result:     2022-07-07 - 1d22b6033ea113a4c3850dfa2c0770885c81aec8

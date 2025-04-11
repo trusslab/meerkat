@@ -1,0 +1,468 @@
+./bin/bisector -i 4 -c /home/syzretrospector/syzinspector/wd-bisector-4/bisector.cfg -a 24625f7d91fb86b91e14749633a7f022f5866116 -F ff-test,poc-test,stateful-corpus,ff-no-find-backup
+Bisecting:          possible deadlock in j1939_sk_errqueue
+Warning: No syscall found that produces sock_can.
+Warning: No syscall found that produces fd_block_trace.
+Syzbot Link:        https://syzkaller.appspot.com/bug?extid=ee1cd780f69483a8616b
+Working Name:       bug0882
+
+No aliases given.
+
+Anchor Commit:      24625f7d91fb86b91e14749633a7f022f5866116
+Repository:         https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
+Branch:             master
+Arch:               amd64
+
+Bisector:           /home/syzretrospector/syzinspector/
+Version:            1.0.4
+Kernel:             /home/syzretrospector/syzinspector/wd-bisector-4/kernel/
+Syzkaller:          /home/syzretrospector/syzinspector/syzkaller/
+Compilers:          /home/syzretrospector/compilers/
+Ccache:             ccache
+Image:              /home/syzretrospector/images/stretch/stretch.img
+Image Key:          /home/syzretrospector/images/stretch/stretch.id_rsa
+
+Workdir:            /home/syzretrospector/syzinspector/wd-bisector-4/
+Kconfig:            /home/syzretrospector/syzinspector/wd-bisector-4/config-bug0882.txt
+Reproducers: (1)    /home/syzretrospector/syzinspector/wd-bisector-4/reproducers/
+Primary PoC:        /home/syzretrospector/syzinspector/wd-bisector-4/reproducers/repro-bug0882-1.prog
+Syzkaller Workdir:  /home/syzretrospector/syzinspector/wd-bisector-4/wd-kaller/
+Log Directory:      /home/syzretrospector/syzinspector/wd-bisector-4/log/
+
+Syscalls: (26)      ["bind$can_j1939", "close", "connect$can_j1939", "ioctl$ifreq_SIOCGIFINDEX_vcan", "openat$nullb", "sendfile", "sendmsg$nl_route", "socket", "socket$can_j1939", "socket$inet", "socket$nl_route", "openat$selinux_enforce", "ioctl$sock_SIOCGIFINDEX", "socket$netlink", "get_robust_list", "syz_clone", "ioctl$TUNGETDEVNETNS", "mount$bpf", "getuid", "bpf$OBJ_GET_PROG", "openat$tun", "socket$inet_udp", "socket$inet6_udp", "setgid", "getgid", "socket$inet6"]
+VM Count:           8
+CPU Count:          2
+Procs:              16
+Memory:             4096
+Make Procs:         16
+Max Time:           10
+Max Attempts:       1
+
+==== Anchor Commit ====
+
+2025-03-13 00:19:21
+Session:   1
+Kernel:    2022-06-14 - 24625f7d91fb86b91e14749633a7f022f5866116
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    4  possible deadlock in j1939_sk_errqueue
+***    4  possible deadlock in j1939_sk_errqueue
+Attempt 2: (RETRY)
+    Time  Bug Name
+***    3  possible deadlock in j1939_sk_errqueue
+Attempt 3: (RETRY)
+    No crashes found.
+The bug was found.
+
+New Max Time: 12
+
+==== Major Release Search ====
+17 Releases
+
+2025-03-13 00:53:11
+Session:   2
+Kernel:    2022-03-20 - f443e374ae131c168a065ea1748feac6b2e76613 (v5.17)
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    4  possible deadlock in j1939_sk_errqueue
+***    4  possible deadlock in j1939_sk_errqueue
+***    4  possible deadlock in j1939_sk_errqueue
+***    4  possible deadlock in j1939_sk_errqueue
+       4  possible deadlock in j1939_sk_queue_drop_all
+       4  possible deadlock in j1939_sk_queue_drop_all
+Running syz-repro.
+syz-repro was terminated after 60 minutes
+Run Time:        1h0m0s
+The bug was found.
+About 16 releases remaining
+
+2025-03-13 02:12:04
+Session:   3
+Kernel:    2022-01-09 - df0cc57e057f18e44dac8e6c18aba47ab53202f9 (v5.16)
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    4  possible deadlock in j1939_sk_errqueue
+***    4  possible deadlock in j1939_sk_errqueue
+***    4  possible deadlock in j1939_sk_errqueue
+***    4  possible deadlock in j1939_sk_errqueue
+       4  possible deadlock in j1939_sk_queue_drop_all
+       4  possible deadlock in j1939_sk_queue_drop_all
+Running syz-repro.
+syz-repro was terminated after 60 minutes
+Run Time:        1h0m0s
+The bug was found.
+About 15 releases remaining
+
+2025-03-13 03:31:15
+Session:   4
+Kernel:    2021-10-31 - 8bb7eca972ad531c9b149c0a51ab43a417385813 (v5.15)
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    4  possible deadlock in j1939_sk_errqueue
+       4  possible deadlock in j1939_sk_queue_drop_all
+Running syz-repro.
+syz-repro was terminated after 60 minutes
+Run Time:        1h0m0s
+The bug was found.
+About 14 releases remaining
+
+2025-03-13 04:50:27
+Session:   5
+Kernel:    2021-06-27 - 62fb9874f5da54fdb243003b386128037319b219 (v5.13)
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       3  BUG: sleeping function called from invalid context in lock_sock_nested
+       3  BUG: sleeping function called from invalid context in lock_sock_nested
+       3  BUG: sleeping function called from invalid context in lock_sock_nested
+       3  BUG: sleeping function called from invalid context in lock_sock_nested
+       5  WARNING: ODEBUG bug in netdev_run_todo
+       7  BUG: sleeping function called from invalid context in lock_sock_nested
+       7  BUG: sleeping function called from invalid context in lock_sock_nested
+       9  BUG: sleeping function called from invalid context in lock_sock_nested
+      10  BUG: sleeping function called from invalid context in lock_sock_nested
+      11  BUG: sleeping function called from invalid context in lock_sock_nested
+      11  BUG: sleeping function called from invalid context in lock_sock_nested
+      11  BUG: sleeping function called from invalid context in lock_sock_nested
+      12  BUG: sleeping function called from invalid context in lock_sock_nested
+      12  BUG: sleeping function called from invalid context in lock_sock_nested
+      12  BUG: sleeping function called from invalid context in lock_sock_nested
+The bug was not found.
+About 13 releases remaining
+
+==== Kernel Bisection ====
+29345 Linux commits
+
+2025-03-13 05:17:41
+Session:   6
+Kernel:    2021-07-26 - d20e5880fe9df149a9159673d9fec57aab43ac61
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       3  BUG: sleeping function called from invalid context in lock_sock_nested
+       3  BUG: sleeping function called from invalid context in lock_sock_nested
+       3  BUG: sleeping function called from invalid context in lock_sock_nested
+       3  BUG: sleeping function called from invalid context in lock_sock_nested
+       4  BUG: sleeping function called from invalid context in lock_sock_nested
+       6  BUG: sleeping function called from invalid context in lock_sock_nested
+       6  BUG: sleeping function called from invalid context in lock_sock_nested
+       6  BUG: sleeping function called from invalid context in lock_sock_nested
+       7  BUG: sleeping function called from invalid context in lock_sock_nested
+       7  BUG: sleeping function called from invalid context in lock_sock_nested
+       8  BUG: sleeping function called from invalid context in lock_sock_nested
+       8  BUG: sleeping function called from invalid context in lock_sock_nested
+       8  BUG: sleeping function called from invalid context in lock_sock_nested
+       9  BUG: sleeping function called from invalid context in lock_sock_nested
+       9  BUG: sleeping function called from invalid context in lock_sock_nested
+      10  BUG: sleeping function called from invalid context in lock_sock_nested
+      10  BUG: sleeping function called from invalid context in lock_sock_nested
+      11  BUG: sleeping function called from invalid context in lock_sock_nested
+      11  BUG: sleeping function called from invalid context in lock_sock_nested
+The bug was not found.
+About 14660 commits remaining
+
+2025-03-13 05:44:45
+Session:   7
+Kernel:    2021-09-01 - 477f70cd2a67904e04c2c2b9bd0fa2e95222f2f6
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       4  KASAN: use-after-free Read in __d_alloc
+       4  KASAN: use-after-free Read in __d_alloc
+       6  KASAN: use-after-free Read in __d_alloc
+       6  KASAN: use-after-free Read in __d_alloc
+       6  WARNING in j1939_session_deactivate
+       8  KASAN: use-after-free Read in __d_alloc
+       8  KASAN: use-after-free Read in __d_alloc
+       9  KASAN: use-after-free Read in __d_alloc
+       9  KASAN: use-after-free Read in __d_alloc
+      10  KASAN: use-after-free Read in __d_alloc
+      10  KASAN: use-after-free Read in __d_alloc
+      12  KASAN: use-after-free Read in __d_alloc
+      12  KASAN: use-after-free Read in __d_alloc
+      12  KASAN: use-after-free Read in __d_alloc
+      12  KASAN: use-after-free Read in __d_alloc
+The bug was not found.
+About 6695 commits remaining
+
+2025-03-13 06:11:56
+Session:   8
+Kernel:    2021-09-07 - 626bf91a292e2035af5b9d9cce35c5c138dfe06d
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    6  possible deadlock in j1939_sk_errqueue
+***    6  possible deadlock in j1939_sk_errqueue
+***    6  possible deadlock in j1939_sk_errqueue
+***    6  possible deadlock in j1939_sk_errqueue
+Running syz-repro.
+syz-repro was terminated after 60 minutes
+Run Time:        1h0m0s
+The bug was found.
+About 3377 commits remaining
+
+2025-03-13 07:33:07
+Session:   9
+Kernel:    2021-09-02 - 23852bec534a1633dc08f4df88b8493ae99953a9
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       4  KASAN: use-after-free Read in __d_alloc
+       5  KASAN: use-after-free Read in __d_alloc
+       7  KASAN: use-after-free Read in __d_alloc
+       7  KASAN: use-after-free Read in __d_alloc
+       8  KASAN: use-after-free Read in __d_alloc
+       9  KASAN: use-after-free Read in __d_alloc
+       9  KASAN: use-after-free Read in __d_alloc
+      10  KASAN: use-after-free Read in __d_alloc
+      11  KASAN: use-after-free Read in __d_alloc
+      11  KASAN: use-after-free Read in __d_alloc
+      11  KASAN: use-after-free Read in __d_alloc
+      11  KASAN: use-after-free Read in __d_alloc
+      12  KASAN: use-after-free Read in __d_alloc
+The bug was not found.
+About 1704 commits remaining
+
+2025-03-13 08:00:15
+Session:   10
+Kernel:    2021-09-04 - 55d1308bdff7341b778e5cf36220616a0dd6ab8f
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       3  KFENCE: use-after-free in kvm_fastop_exception
+       5  KASAN: use-after-free Read in __d_alloc
+       5  KASAN: use-after-free Read in __d_alloc
+       5  KASAN: use-after-free Read in __d_alloc
+       5  KFENCE: use-after-free in kvm_fastop_exception
+       6  KASAN: use-after-free Read in __d_alloc
+       8  KASAN: use-after-free Read in __d_alloc
+       8  KASAN: use-after-free Read in __d_alloc
+       9  KASAN: use-after-free Read in __d_alloc
+       9  KASAN: use-after-free Read in __d_alloc
+       9  KASAN: use-after-free Read in __d_alloc
+      10  KASAN: use-after-free Read in __d_alloc
+      10  KASAN: use-after-free Read in __d_alloc
+      11  KASAN: use-after-free Read in __d_alloc
+      11  KASAN: use-after-free Read in __d_alloc
+      12  KASAN: use-after-free Read in __d_alloc
+      12  KASAN: use-after-free Read in __d_alloc
+The bug was not found.
+About 871 commits remaining
+
+2025-03-13 08:27:19
+Session:   11
+Kernel:    2021-09-07 - 3754707bcc3e190e5dadc978d172b61e809cb3bd
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       5  possible deadlock in j1939_sk_queue_drop_all
+       5  possible deadlock in j1939_sk_queue_drop_all
+       5  possible deadlock in j1939_sk_queue_drop_all
+       6  possible deadlock in j1939_sk_queue_drop_all
+***    7  possible deadlock in j1939_sk_errqueue
+***    7  possible deadlock in j1939_sk_errqueue
+       7  possible deadlock in j1939_sk_queue_drop_all
+Running syz-repro.
+Run Time:        0h19m0s
+The bug was found.
+About 436 commits remaining
+
+2025-03-13 09:08:03
+Session:   12
+Kernel:    2021-09-05 - e07af2626643293fa16df655979e7963250abc63
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       5  KASAN: use-after-free Read in __d_alloc
+       5  KASAN: use-after-free Read in __d_alloc
+       5  KASAN: use-after-free Read in __d_alloc
+***    5  possible deadlock in j1939_sk_errqueue
+***    5  possible deadlock in j1939_sk_errqueue
+Running syz-repro.
+Run Time:        0h23m0s
+The bug was found.
+About 235 commits remaining
+
+2025-03-13 09:50:18
+Session:   13
+Kernel:    2021-09-04 - f7464060f7ab9a2424428008f0ee9f1e267e410f
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       4  KASAN: use-after-free Read in __d_alloc
+       4  WARNING in j1939_session_deactivate
+       5  KASAN: use-after-free Read in __d_alloc
+       6  KASAN: use-after-free Read in __d_alloc
+       6  KASAN: use-after-free Read in __d_alloc
+       8  KASAN: use-after-free Read in __d_alloc
+       8  KASAN: use-after-free Read in __d_alloc
+       8  KASAN: use-after-free Read in __d_alloc
+       8  KASAN: use-after-free Read in __d_alloc
+      10  KASAN: use-after-free Read in __d_alloc
+      10  KASAN: use-after-free Read in __d_alloc
+      11  unregister_netdevice: waiting for DEV to become free
+      12  KASAN: use-after-free Read in __d_alloc
+      12  KASAN: use-after-free Read in __d_alloc
+      12  KASAN: use-after-free Read in __d_alloc
+The bug was not found.
+About 111 commits remaining
+
+2025-03-13 10:08:59
+Session:   14
+Kernel:    2021-09-05 - 3fe617ccafd6f5bb33c2391d6f4eeb41c1fd0151
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    5  possible deadlock in j1939_sk_errqueue
+       5  possible deadlock in j1939_sk_queue_drop_all
+       5  possible deadlock in j1939_sk_queue_drop_all
+       5  possible deadlock in j1939_sk_queue_drop_all
+       5  possible deadlock in j1939_sk_queue_drop_all
+       5  WARNING: ODEBUG bug in netdev_run_todo
+Running syz-repro.
+syz-repro was terminated after 60 minutes
+Run Time:        1h0m0s
+The bug was found.
+About 55 commits remaining
+
+2025-03-13 11:18:09
+Session:   15
+Kernel:    2021-09-03 - c1fe77e42440d2cad76055df6fb58caabf622d51
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       3  BUG: sleeping function called from invalid context in lock_sock_nested
+       3  BUG: sleeping function called from invalid context in lock_sock_nested
+       3  BUG: sleeping function called from invalid context in lock_sock_nested
+       8  unregister_netdevice: waiting for DEV to become free
+       8  BUG: sleeping function called from invalid context in lock_sock_nested
+       9  BUG: sleeping function called from invalid context in lock_sock_nested
+      11  BUG: sleeping function called from invalid context in lock_sock_nested
+      11  BUG: sleeping function called from invalid context in lock_sock_nested
+The bug was not found.
+About 11539 commits remaining
+
+2025-03-13 11:45:12
+Session:   16
+Kernel:    2021-09-01 - 1b4f3dfb4792f03b139edf10124fcbeb44e608e6
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       4  KASAN: use-after-free Read in __d_alloc
+       4  KASAN: use-after-free Read in __d_alloc
+       7  KASAN: use-after-free Read in __d_alloc
+       8  KASAN: use-after-free Read in __d_alloc
+       9  KASAN: use-after-free Read in __d_alloc
+       9  KASAN: use-after-free Read in __d_alloc
+      10  unregister_netdevice: waiting for DEV to become free
+      12  KASAN: use-after-free Read in __d_alloc
+      12  KASAN: use-after-free Read in __d_alloc
+The bug was not found.
+About 4028 commits remaining
+
+2025-03-13 12:12:20
+Session:   17
+Kernel:    2021-09-03 - 6128b3af2a5e42386aa7faf37609b57f39fb7d00
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 9457 commits remaining
+
+2025-03-13 12:39:27
+Session:   18
+Kernel:    2021-09-05 - 0319b848b155185815724e1b46103c550627a845
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       3  KFENCE: use-after-free in kvm_fastop_exception
+       4  KASAN: use-after-free Read in __d_alloc
+       7  KASAN: use-after-free Read in __d_alloc
+       9  KASAN: use-after-free Read in __d_alloc
+      10  KASAN: use-after-free Read in __d_alloc
+      10  KASAN: use-after-free Read in __d_alloc
+      11  KASAN: use-after-free Read in __d_alloc
+The bug was not found.
+About 46 commits remaining
+
+2025-03-13 12:59:20
+Session:   19
+Kernel:    2021-09-05 - fd47ff55c9c31101fcc06d20cb381da3d4089bd5
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       5  KASAN: use-after-free Read in __d_alloc
+***    5  possible deadlock in j1939_sk_errqueue
+Running syz-repro.
+syz-repro was terminated after 60 minutes
+Run Time:        1h0m0s
+The bug was found.
+About 45 commits remaining
+
+2025-03-13 14:08:41
+Session:   20
+Kernel:    2021-09-05 - 6b6dc4f40c5264556223ba94693f20d83796ab1f
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    6  possible deadlock in j1939_sk_errqueue
+***    6  possible deadlock in j1939_sk_errqueue
+***    6  possible deadlock in j1939_sk_errqueue
+       6  possible deadlock in j1939_sk_queue_drop_all
+Running syz-repro.
+syz-repro was terminated after 60 minutes
+New PoC saved at /home/syzretrospector/syzinspector/wd-bisector-4/reproducers/repro-bug0882-0.prog
+Primary PoC:     /home/syzretrospector/syzinspector/wd-bisector-4/reproducers/repro-bug0882-0.prog
+Run Time:        1h0m0s
+The bug was found.
+About 33 commits remaining
+
+==== Partial Result: Focused Fuzzing ====
+Reproducer:           /home/syzretrospector/syzinspector/wd-bisector-4/reproducers/repro-bug0882-0.prog
+Bisection Result:     2021-09-05 - 6b6dc4f40c5264556223ba94693f20d83796ab1f
+Bisected Commit Name: Merge tag 'mtd/for-5.15' of git://git.kernel.org/pub/scm/linux/kernel/git/mtd/linux
+Stage Time:           14h59m42s
+Run Time:             14h59m45s
+=========================================
+
+==== Anchor Commit ====
+
+2025-03-13 15:19:03
+Session:   21
+Kernel:    2021-09-05 - 0319b848b155185815724e1b46103c550627a845
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Warning: VM has not responded after 5 attempts.
+Warning: Only booted 7 VMs.
+Attempt 0:
+    possible deadlock in blktrans_open
+Attempt 1:
+    possible deadlock in blktrans_open
+Attempt 2:
+    possible deadlock in blktrans_open
+Attempt 3:
+    possible deadlock in blktrans_open
+Attempt 4:
+    possible deadlock in blktrans_open
+Attempt 5:
+    possible deadlock in blktrans_open
+    KFENCE: use-after-free in kvm_fastop_exception
+Attempt 6:
+    possible deadlock in blktrans_open
+Attempt 7:
+    possible deadlock in blktrans_open
+The bug was not found.
+
+Failure: This bug cannot be found at the anchor commit.
+
+====================================================================================================================================================
+Bug Name:             possible deadlock in j1939_sk_errqueue
+Bug Link:             https://syzkaller.appspot.com/bug?extid=ee1cd780f69483a8616b
+Bisection Result:     2021-09-05 - 6b6dc4f40c5264556223ba94693f20d83796ab1f
+Bisected Commit Name: Merge tag 'mtd/for-5.15' of git://git.kernel.org/pub/scm/linux/kernel/git/mtd/linux
+Run Time:             15h8m35s
+
+Anchor Commit:        2022-06-14 - 24625f7d91fb86b91e14749633a7f022f5866116
+Bisection Result:     2021-09-05 - 6b6dc4f40c5264556223ba94693f20d83796ab1f

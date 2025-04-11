@@ -1,0 +1,560 @@
+./bin/bisector -i 4 -c /home/syzretrospector/syzinspector/wd-bisector-4/bisector.cfg -a a452483508d7b70b0f6c69e249ec0b3ea2330b5c -F ff-test,poc-test,stateful-corpus,ff-no-find-backup
+Bisecting:          possible deadlock in f2fs_getxattr
+Syzbot Link:        https://syzkaller.appspot.com/bug?extid=e5600587fa9cbf8e3826
+Working Name:       bug0846
+
+No aliases given.
+
+Anchor Commit:      a452483508d7b70b0f6c69e249ec0b3ea2330b5c
+Repository:         https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
+Branch:             master
+Arch:               amd64
+
+Bisector:           /home/syzretrospector/syzinspector/
+Version:            1.0.4
+Kernel:             /home/syzretrospector/syzinspector/wd-bisector-4/kernel/
+Syzkaller:          /home/syzretrospector/syzinspector/syzkaller/
+Compilers:          /home/syzretrospector/compilers/
+Ccache:             ccache
+Image:              /home/syzretrospector/images/stretch/stretch.img
+Image Key:          /home/syzretrospector/images/stretch/stretch.id_rsa
+
+Workdir:            /home/syzretrospector/syzinspector/wd-bisector-4/
+Kconfig:            /home/syzretrospector/syzinspector/wd-bisector-4/config-bug0846.txt
+Reproducers: (2)    /home/syzretrospector/syzinspector/wd-bisector-4/reproducers/
+Primary PoC:        /home/syzretrospector/syzinspector/wd-bisector-4/reproducers/repro-bug0846-1.prog
+Syzkaller Workdir:  /home/syzretrospector/syzinspector/wd-bisector-4/wd-kaller/
+Log Directory:      /home/syzretrospector/syzinspector/wd-bisector-4/log/
+
+Syscalls: (8)       ["creat", "ioctl$F2FS_IOC_START_ATOMIC_WRITE", "openat", "syz_mount_image$f2fs", "setgid", "getgid", "mount$bpf", "getuid"]
+VM Count:           8
+CPU Count:          2
+Procs:              16
+Memory:             4096
+Make Procs:         16
+Max Time:           10
+Max Attempts:       1
+
+==== Anchor Commit ====
+
+2025-03-06 13:59:21
+Session:   1
+Kernel:    2023-07-06 - a452483508d7b70b0f6c69e249ec0b3ea2330b5c
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    2  possible deadlock in f2fs_getxattr
+Attempt 2: (RETRY)
+    Time  Bug Name
+***    2  possible deadlock in f2fs_getxattr
+***    2  possible deadlock in f2fs_getxattr
+Attempt 3: (RETRY)
+    Time  Bug Name
+***    2  possible deadlock in f2fs_getxattr
+The bug was found.
+
+New Max Time: 10
+
+==== Major Release Search ====
+19 Releases
+
+2025-03-06 14:25:12
+Session:   2
+Kernel:    2023-06-25 - 6995e2de6891c724bfeb2db33d7b87775f913ad1 (v6.4)
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       4  UBSAN: shift-out-of-bounds in parse_options
+       7  UBSAN: shift-out-of-bounds in parse_options
+       7  UBSAN: shift-out-of-bounds in parse_options
+       8  WARNING in drm_wait_one_vblank
+       9  UBSAN: shift-out-of-bounds in parse_options
+The bug was not found.
+About 18 releases remaining
+
+==== Kernel Bisection ====
+12156 Linux commits
+
+2025-03-06 14:55:44
+Session:   3
+Kernel:    2023-06-29 - f8824e151fbfa0ac0a258015d606ea6f4a10251b
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       2  UBSAN: array-index-out-of-bounds in corrupted
+       2  UBSAN: array-index-out-of-bounds in corrupted
+       2  UBSAN: array-index-out-of-bounds in copy_process
+       2  UBSAN: array-index-out-of-bounds in copy_process
+       2  UBSAN: array-index-out-of-bounds in copy_process
+       2  UBSAN: array-index-out-of-bounds in copy_process
+       2  UBSAN: array-index-out-of-bounds in copy_process
+       2  UBSAN: array-index-out-of-bounds in copy_process
+       3  UBSAN: array-index-out-of-bounds in corrupted
+       3  UBSAN: array-index-out-of-bounds in corrupted
+       3  UBSAN: array-index-out-of-bounds in corrupted
+       3  UBSAN: array-index-out-of-bounds in corrupted
+       3  UBSAN: array-index-out-of-bounds in copy_process
+       3  UBSAN: array-index-out-of-bounds in copy_process
+       3  UBSAN: array-index-out-of-bounds in copy_process
+       3  UBSAN: array-index-out-of-bounds in copy_process
+       4  UBSAN: array-index-out-of-bounds in corrupted
+       4  UBSAN: array-index-out-of-bounds in corrupted
+       4  UBSAN: array-index-out-of-bounds in copy_process
+       4  UBSAN: array-index-out-of-bounds in copy_process
+       4  UBSAN: array-index-out-of-bounds in copy_process
+       4  UBSAN: array-index-out-of-bounds in copy_process
+       5  UBSAN: array-index-out-of-bounds in copy_process
+       5  UBSAN: array-index-out-of-bounds in copy_process
+       6  UBSAN: array-index-out-of-bounds in corrupted
+       6  UBSAN: array-index-out-of-bounds in corrupted
+       6  UBSAN: array-index-out-of-bounds in corrupted
+       6  UBSAN: array-index-out-of-bounds in alloc_pid
+       6  UBSAN: array-index-out-of-bounds in copy_process
+       6  UBSAN: array-index-out-of-bounds in copy_process
+       6  UBSAN: array-index-out-of-bounds in copy_process
+       6  UBSAN: array-index-out-of-bounds in copy_process
+       7  UBSAN: array-index-out-of-bounds in corrupted
+       7  UBSAN: array-index-out-of-bounds in corrupted
+       7  UBSAN: array-index-out-of-bounds in corrupted
+       7  UBSAN: array-index-out-of-bounds in copy_process
+       7  UBSAN: array-index-out-of-bounds in copy_process
+       7  UBSAN: array-index-out-of-bounds in copy_process
+       7  UBSAN: array-index-out-of-bounds in copy_process
+       7  UBSAN: array-index-out-of-bounds in copy_process
+       8  UBSAN: array-index-out-of-bounds in corrupted
+       8  UBSAN: array-index-out-of-bounds in corrupted
+       8  UBSAN: array-index-out-of-bounds in corrupted
+       8  UBSAN: array-index-out-of-bounds in alloc_pid
+       8  UBSAN: array-index-out-of-bounds in copy_process
+       8  UBSAN: array-index-out-of-bounds in copy_process
+       8  UBSAN: array-index-out-of-bounds in copy_process
+       8  UBSAN: array-index-out-of-bounds in copy_process
+       9  UBSAN: array-index-out-of-bounds in corrupted
+       9  UBSAN: array-index-out-of-bounds in corrupted
+       9  UBSAN: array-index-out-of-bounds in copy_process
+       9  UBSAN: array-index-out-of-bounds in copy_process
+       9  UBSAN: array-index-out-of-bounds in copy_process
+       9  UBSAN: array-index-out-of-bounds in copy_process
+       9  UBSAN: array-index-out-of-bounds in copy_process
+      10  UBSAN: array-index-out-of-bounds in corrupted
+      10  UBSAN: array-index-out-of-bounds in corrupted
+      10  UBSAN: array-index-out-of-bounds in copy_process
+      10  UBSAN: array-index-out-of-bounds in copy_process
+The bug was not found.
+About 6911 commits remaining
+
+2025-03-06 15:25:00
+Session:   4
+Kernel:    2023-06-30 - 9872fb13022788b7832616dea52a1feb3bcb4bf2
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       2  UBSAN: array-index-out-of-bounds in corrupted
+       2  UBSAN: array-index-out-of-bounds in copy_process
+       2  UBSAN: array-index-out-of-bounds in copy_process
+       2  UBSAN: array-index-out-of-bounds in copy_process
+       2  UBSAN: array-index-out-of-bounds in copy_process
+       2  UBSAN: array-index-out-of-bounds in copy_process
+       2  UBSAN: array-index-out-of-bounds in copy_process
+       2  UBSAN: array-index-out-of-bounds in copy_process
+       3  UBSAN: array-index-out-of-bounds in corrupted
+       3  UBSAN: array-index-out-of-bounds in corrupted
+       3  UBSAN: array-index-out-of-bounds in copy_process
+       3  UBSAN: array-index-out-of-bounds in copy_process
+       3  UBSAN: array-index-out-of-bounds in copy_process
+       3  UBSAN: array-index-out-of-bounds in copy_process
+       3  UBSAN: array-index-out-of-bounds in copy_process
+       3  UBSAN: array-index-out-of-bounds in copy_process
+       4  UBSAN: array-index-out-of-bounds in corrupted
+       4  UBSAN: array-index-out-of-bounds in copy_process
+       4  UBSAN: array-index-out-of-bounds in copy_process
+       4  UBSAN: array-index-out-of-bounds in copy_process
+       4  UBSAN: array-index-out-of-bounds in copy_process
+       4  UBSAN: array-index-out-of-bounds in copy_process
+       5  UBSAN: array-index-out-of-bounds in corrupted
+       5  UBSAN: array-index-out-of-bounds in corrupted
+       6  UBSAN: array-index-out-of-bounds in corrupted
+       6  UBSAN: array-index-out-of-bounds in corrupted
+       6  UBSAN: array-index-out-of-bounds in alloc_pid
+       6  UBSAN: array-index-out-of-bounds in copy_process
+       6  UBSAN: array-index-out-of-bounds in copy_process
+       6  UBSAN: array-index-out-of-bounds in copy_process
+       6  UBSAN: array-index-out-of-bounds in copy_process
+       6  UBSAN: array-index-out-of-bounds in copy_process
+       7  UBSAN: array-index-out-of-bounds in corrupted
+       7  UBSAN: array-index-out-of-bounds in corrupted
+       7  UBSAN: array-index-out-of-bounds in corrupted
+       7  UBSAN: array-index-out-of-bounds in corrupted
+       7  UBSAN: array-index-out-of-bounds in corrupted
+       7  UBSAN: array-index-out-of-bounds in corrupted
+       7  UBSAN: array-index-out-of-bounds in corrupted
+       7  UBSAN: array-index-out-of-bounds in copy_process
+       8  UBSAN: array-index-out-of-bounds in corrupted
+       8  UBSAN: array-index-out-of-bounds in corrupted
+       8  UBSAN: array-index-out-of-bounds in copy_process
+       8  UBSAN: array-index-out-of-bounds in copy_process
+       8  UBSAN: array-index-out-of-bounds in copy_process
+       8  UBSAN: array-index-out-of-bounds in copy_process
+       8  UBSAN: array-index-out-of-bounds in copy_process
+       8  UBSAN: array-index-out-of-bounds in copy_process
+       9  UBSAN: array-index-out-of-bounds in corrupted
+       9  UBSAN: array-index-out-of-bounds in copy_process
+       9  UBSAN: array-index-out-of-bounds in copy_process
+       9  UBSAN: array-index-out-of-bounds in copy_process
+       9  UBSAN: array-index-out-of-bounds in copy_process
+       9  UBSAN: array-index-out-of-bounds in copy_process
+      10  UBSAN: array-index-out-of-bounds in corrupted
+      10  UBSAN: array-index-out-of-bounds in corrupted
+      10  UBSAN: array-index-out-of-bounds in corrupted
+      10  UBSAN: array-index-out-of-bounds in corrupted
+The bug was not found.
+About 3458 commits remaining
+
+2025-03-06 15:54:02
+Session:   5
+Kernel:    2023-07-03 - 0a8d6c9c7128a93689fba384cdd7f72b0ce19abd
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       4  WARNING in drm_wait_one_vblank
+       4  UBSAN: shift-out-of-bounds in parse_options
+       6  UBSAN: shift-out-of-bounds in parse_options
+       7  UBSAN: shift-out-of-bounds in parse_options
+       7  UBSAN: shift-out-of-bounds in parse_options
+       8  UBSAN: shift-out-of-bounds in parse_options
+       8  UBSAN: shift-out-of-bounds in parse_options
+      10  lost connection to test machine
+      10  UBSAN: shift-out-of-bounds in parse_options
+The bug was not found.
+About 1833 commits remaining
+
+2025-03-06 16:22:55
+Session:   6
+Kernel:    2023-07-03 - 02676ecca76cea4316c8a1e867850d88f6149806
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       5  UBSAN: shift-out-of-bounds in parse_options
+       5  UBSAN: shift-out-of-bounds in parse_options
+       6  UBSAN: shift-out-of-bounds in parse_options
+       6  UBSAN: shift-out-of-bounds in parse_options
+       8  UBSAN: shift-out-of-bounds in parse_options
+       9  UBSAN: shift-out-of-bounds in parse_options
+      10  no output from test machine
+The bug was not found.
+About 912 commits remaining
+
+2025-03-06 16:51:03
+Session:   7
+Kernel:    2023-07-05 - 15ac468614e5e4fee82e1eb32568f427b0e51adc
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       3  WARNING in drm_wait_one_vblank
+       3  UBSAN: shift-out-of-bounds in parse_options
+       5  UBSAN: shift-out-of-bounds in parse_options
+       5  UBSAN: shift-out-of-bounds in parse_options
+       5  UBSAN: shift-out-of-bounds in parse_options
+       6  UBSAN: shift-out-of-bounds in parse_options
+       8  UBSAN: shift-out-of-bounds in parse_options
+       8  UBSAN: shift-out-of-bounds in parse_options
+       8  UBSAN: shift-out-of-bounds in parse_options
+       9  lost connection to test machine
+The bug was not found.
+About 402 commits remaining
+
+2025-03-06 17:20:05
+Session:   8
+Kernel:    2023-07-05 - 6843306689aff3aea608e4d2630b2a5a0137f827
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    3  possible deadlock in f2fs_getxattr
+***    3  possible deadlock in f2fs_getxattr
+***    3  possible deadlock in f2fs_getxattr
+***    3  possible deadlock in f2fs_getxattr
+***    3  possible deadlock in f2fs_getxattr
+***    3  possible deadlock in f2fs_getxattr
+***    3  possible deadlock in f2fs_getxattr
+***    3  possible deadlock in f2fs_getxattr
+Running syz-repro.
+New PoC saved at /home/syzretrospector/syzinspector/wd-bisector-4/reproducers/repro-bug0846-0.prog
+Primary PoC:     /home/syzretrospector/syzinspector/wd-bisector-4/reproducers/repro-bug0846-0.prog
+Run Time:        0h6m0s
+The bug was found.
+About 236 commits remaining
+
+2025-03-06 17:36:17
+Session:   9
+Kernel:    2023-07-05 - bb8e7e9f0bc47d01bea310808ab8c27f6484d850
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       4  UBSAN: shift-out-of-bounds in parse_options
+       5  UBSAN: shift-out-of-bounds in parse_options
+       5  UBSAN: shift-out-of-bounds in parse_options
+       5  UBSAN: shift-out-of-bounds in parse_options
+       6  UBSAN: shift-out-of-bounds in parse_options
+       8  UBSAN: shift-out-of-bounds in parse_options
+       9  UBSAN: shift-out-of-bounds in parse_options
+      10  UBSAN: shift-out-of-bounds in parse_options
+The bug was not found.
+About 128 commits remaining
+
+2025-03-06 17:52:42
+Session:   10
+Kernel:    2023-07-04 - 95c41842bcbdeab8debda1a4285850bd8235fbbe
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       2  UBSAN: array-index-out-of-bounds in corrupted
+       2  UBSAN: array-index-out-of-bounds in copy_process
+       2  UBSAN: array-index-out-of-bounds in copy_process
+       2  UBSAN: array-index-out-of-bounds in copy_process
+       2  UBSAN: array-index-out-of-bounds in copy_process
+       2  UBSAN: array-index-out-of-bounds in copy_process
+       2  UBSAN: array-index-out-of-bounds in copy_process
+       2  UBSAN: array-index-out-of-bounds in copy_process
+       3  UBSAN: array-index-out-of-bounds in corrupted
+       3  UBSAN: array-index-out-of-bounds in alloc_pid
+       3  UBSAN: array-index-out-of-bounds in copy_process
+       3  UBSAN: array-index-out-of-bounds in copy_process
+       3  UBSAN: array-index-out-of-bounds in copy_process
+       3  UBSAN: array-index-out-of-bounds in copy_process
+       3  UBSAN: array-index-out-of-bounds in copy_process
+       3  UBSAN: array-index-out-of-bounds in copy_process
+       4  UBSAN: array-index-out-of-bounds in corrupted
+       4  UBSAN: array-index-out-of-bounds in alloc_pid
+       4  UBSAN: array-index-out-of-bounds in copy_process
+       4  UBSAN: array-index-out-of-bounds in copy_process
+       4  UBSAN: array-index-out-of-bounds in copy_process
+       4  UBSAN: array-index-out-of-bounds in copy_process
+       5  UBSAN: array-index-out-of-bounds in corrupted
+       5  UBSAN: array-index-out-of-bounds in copy_process
+       6  UBSAN: array-index-out-of-bounds in corrupted
+       6  UBSAN: array-index-out-of-bounds in corrupted
+       6  UBSAN: array-index-out-of-bounds in corrupted
+       6  UBSAN: array-index-out-of-bounds in copy_process
+       6  UBSAN: array-index-out-of-bounds in copy_process
+       6  UBSAN: array-index-out-of-bounds in copy_process
+       6  UBSAN: array-index-out-of-bounds in copy_process
+       6  UBSAN: array-index-out-of-bounds in copy_process
+       7  UBSAN: array-index-out-of-bounds in corrupted
+       7  UBSAN: array-index-out-of-bounds in corrupted
+       7  UBSAN: array-index-out-of-bounds in corrupted
+       7  UBSAN: array-index-out-of-bounds in corrupted
+       7  UBSAN: array-index-out-of-bounds in alloc_pid
+       7  UBSAN: array-index-out-of-bounds in copy_process
+       7  UBSAN: array-index-out-of-bounds in copy_process
+       7  UBSAN: array-index-out-of-bounds in copy_process
+       8  UBSAN: array-index-out-of-bounds in corrupted
+       8  UBSAN: array-index-out-of-bounds in corrupted
+       8  UBSAN: array-index-out-of-bounds in corrupted
+       8  UBSAN: array-index-out-of-bounds in copy_process
+       8  UBSAN: array-index-out-of-bounds in copy_process
+       8  UBSAN: array-index-out-of-bounds in copy_process
+       8  UBSAN: array-index-out-of-bounds in copy_process
+       8  UBSAN: array-index-out-of-bounds in copy_process
+       9  UBSAN: array-index-out-of-bounds in corrupted
+       9  UBSAN: array-index-out-of-bounds in copy_process
+       9  UBSAN: array-index-out-of-bounds in copy_process
+       9  UBSAN: array-index-out-of-bounds in copy_process
+       9  UBSAN: array-index-out-of-bounds in copy_process
+       9  UBSAN: array-index-out-of-bounds in copy_process
+      10  UBSAN: array-index-out-of-bounds in corrupted
+      10  UBSAN: array-index-out-of-bounds in corrupted
+      10  UBSAN: array-index-out-of-bounds in copy_process
+      10  UBSAN: array-index-out-of-bounds in copy_process
+      10  UBSAN: array-index-out-of-bounds in copy_process
+      10  UBSAN: array-index-out-of-bounds in copy_process
+The bug was not found.
+About 7680 commits remaining
+
+2025-03-06 18:21:53
+Session:   11
+Kernel:    2023-06-26 - dde38c03b351749f682db087df5202b55c7c1b40
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       5  UBSAN: shift-out-of-bounds in parse_options
+       6  WARNING: ODEBUG bug in netdev_run_todo
+       6  UBSAN: shift-out-of-bounds in parse_options
+       6  UBSAN: shift-out-of-bounds in parse_options
+       8  UBSAN: shift-out-of-bounds in parse_options
+       9  UBSAN: shift-out-of-bounds in parse_options
+      10  UBSAN: shift-out-of-bounds in parse_options
+      10  UBSAN: shift-out-of-bounds in parse_options
+      10  UBSAN: shift-out-of-bounds in parse_options
+The bug was not found.
+About 14098 commits remaining
+
+2025-03-06 18:52:00
+Session:   12
+Kernel:    2023-07-05 - cc7eab25b1cf3f9594fe61142d3523ce4d14a788
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       2  UBSAN: array-index-out-of-bounds in corrupted
+       2  UBSAN: array-index-out-of-bounds in corrupted
+       2  UBSAN: array-index-out-of-bounds in copy_process
+       2  UBSAN: array-index-out-of-bounds in copy_process
+       2  UBSAN: array-index-out-of-bounds in copy_process
+       2  UBSAN: array-index-out-of-bounds in copy_process
+       2  UBSAN: array-index-out-of-bounds in copy_process
+       2  UBSAN: array-index-out-of-bounds in copy_process
+       3  UBSAN: array-index-out-of-bounds in corrupted
+       3  UBSAN: array-index-out-of-bounds in corrupted
+       3  UBSAN: array-index-out-of-bounds in corrupted
+       3  UBSAN: array-index-out-of-bounds in copy_process
+       3  UBSAN: array-index-out-of-bounds in copy_process
+       3  UBSAN: array-index-out-of-bounds in copy_process
+       3  UBSAN: array-index-out-of-bounds in copy_process
+       3  UBSAN: array-index-out-of-bounds in copy_process
+       4  UBSAN: array-index-out-of-bounds in corrupted
+       4  UBSAN: array-index-out-of-bounds in copy_process
+       4  UBSAN: array-index-out-of-bounds in copy_process
+       4  UBSAN: array-index-out-of-bounds in copy_process
+       4  UBSAN: array-index-out-of-bounds in copy_process
+       4  UBSAN: array-index-out-of-bounds in copy_process
+       5  UBSAN: array-index-out-of-bounds in copy_process
+       5  UBSAN: array-index-out-of-bounds in copy_process
+       6  UBSAN: array-index-out-of-bounds in corrupted
+       6  UBSAN: array-index-out-of-bounds in corrupted
+       6  UBSAN: array-index-out-of-bounds in corrupted
+       6  UBSAN: array-index-out-of-bounds in corrupted
+       6  UBSAN: array-index-out-of-bounds in corrupted
+       6  UBSAN: array-index-out-of-bounds in copy_process
+       6  UBSAN: array-index-out-of-bounds in copy_process
+       6  UBSAN: array-index-out-of-bounds in copy_process
+       7  UBSAN: array-index-out-of-bounds in corrupted
+       7  UBSAN: array-index-out-of-bounds in corrupted
+       7  UBSAN: array-index-out-of-bounds in corrupted
+       7  UBSAN: array-index-out-of-bounds in corrupted
+       7  UBSAN: array-index-out-of-bounds in corrupted
+       7  UBSAN: array-index-out-of-bounds in copy_process
+       7  UBSAN: array-index-out-of-bounds in copy_process
+       7  UBSAN: array-index-out-of-bounds in copy_process
+       8  UBSAN: array-index-out-of-bounds in corrupted
+       8  UBSAN: array-index-out-of-bounds in corrupted
+       8  UBSAN: array-index-out-of-bounds in corrupted
+       8  UBSAN: array-index-out-of-bounds in corrupted
+       8  UBSAN: array-index-out-of-bounds in copy_process
+       8  UBSAN: array-index-out-of-bounds in copy_process
+       8  UBSAN: array-index-out-of-bounds in copy_process
+       8  UBSAN: array-index-out-of-bounds in copy_process
+       9  UBSAN: array-index-out-of-bounds in corrupted
+       9  UBSAN: array-index-out-of-bounds in corrupted
+       9  UBSAN: array-index-out-of-bounds in corrupted
+       9  UBSAN: array-index-out-of-bounds in copy_process
+       9  UBSAN: array-index-out-of-bounds in copy_process
+       9  UBSAN: array-index-out-of-bounds in copy_process
+       9  UBSAN: array-index-out-of-bounds in copy_process
+       9  UBSAN: array-index-out-of-bounds in copy_process
+      10  UBSAN: array-index-out-of-bounds in copy_process
+The bug was not found.
+About 7664 commits remaining
+
+2025-03-06 19:08:37
+Session:   13
+Kernel:    2023-06-26 - 396d0a28836d42bef595a8843533285abaf64ff7
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       4  UBSAN: shift-out-of-bounds in parse_options
+       5  UBSAN: shift-out-of-bounds in parse_options
+       5  UBSAN: shift-out-of-bounds in parse_options
+       7  UBSAN: shift-out-of-bounds in parse_options
+       7  UBSAN: shift-out-of-bounds in parse_options
+       8  UBSAN: shift-out-of-bounds in parse_options
+       8  UBSAN: shift-out-of-bounds in parse_options
+       8  UBSAN: shift-out-of-bounds in parse_options
+       8  UBSAN: shift-out-of-bounds in parse_options
+The bug was not found.
+About 14090 commits remaining
+
+2025-03-06 19:26:20
+Session:   14
+Kernel:    2023-06-30 - c31e49615762a5fa0d14ffcfd5e2f1c206213a14
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    3  possible deadlock in f2fs_getxattr
+***    3  possible deadlock in f2fs_getxattr
+***    3  possible deadlock in f2fs_getxattr
+***    3  possible deadlock in f2fs_getxattr
+***    3  possible deadlock in f2fs_getxattr
+***    3  possible deadlock in f2fs_getxattr
+***    3  possible deadlock in f2fs_getxattr
+***    3  possible deadlock in f2fs_getxattr
+The bug was found.
+About 5 commits remaining
+
+2025-03-06 19:36:56
+Session:   15
+Kernel:    2023-06-30 - 5eda1ad1aaffdfebdecf7a164e586060a210f74f
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    3  possible deadlock in f2fs_getxattr
+***    3  possible deadlock in f2fs_getxattr
+***    3  possible deadlock in f2fs_getxattr
+***    3  possible deadlock in f2fs_getxattr
+***    3  possible deadlock in f2fs_getxattr
+***    3  possible deadlock in f2fs_getxattr
+***    3  possible deadlock in f2fs_getxattr
+***    3  possible deadlock in f2fs_getxattr
+The bug was found.
+About 3 commits remaining
+
+2025-03-06 19:47:23
+Session:   16
+Kernel:    2023-06-26 - cf2423a7555c4b012576c7282fb495ce739d50d4
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       5  UBSAN: shift-out-of-bounds in parse_options
+       8  UBSAN: shift-out-of-bounds in parse_options
+       8  UBSAN: shift-out-of-bounds in parse_options
+       8  UBSAN: shift-out-of-bounds in parse_options
+The bug was not found.
+About 2 commits remaining
+fatal: ambiguous argument 'cf2423a7555c4b012576c7282fb495ce739d50d4
+': unknown revision or path not in the working tree.
+Use '--' to separate paths from revisions, like this:
+'git <command> [<revision>...] -- [<file>...]'
+Warning: Child process git exited with error status 128.
+Failed to read commit date: cf2423a7555c4b012576c7282fb495ce739d50d4
+
+
+==== Partial Result: Focused Fuzzing ====
+Reproducer:           /home/syzretrospector/syzinspector/wd-bisector-4/reproducers/repro-bug0846-0.prog
+Bisection Result:     2023-06-30 - 5eda1ad1aaffdfebdecf7a164e586060a210f74f
+Bisected Commit Name: f2fs: fix deadlock in i_xattr_sem and inode page lock
+Stage Time:           6h5m38s
+Run Time:             6h5m40s
+=========================================
+
+==== Anchor Commit ====
+
+2025-03-06 20:04:59
+Session:   17
+Kernel:    2023-06-26 - cf2423a7555c4b012576c7282fb495ce739d50d4
+
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Warning: Child process git exited with error status 128.
+Warning: git exited with error status 0x80
+Error: Failed to fetch cf2423a7555c4b012576c7282fb495ce739d50d4
+ from https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
+Error: Failed to fetch/checkout linux finding commit
+Error: The kernel failed to make.
+Error: Failed to go to anchor commit
+
+====================================================================================================================================================
+Bug Name:             possible deadlock in f2fs_getxattr
+Bug Link:             https://syzkaller.appspot.com/bug?extid=e5600587fa9cbf8e3826
+Bisection Result:     2023-06-30 - 5eda1ad1aaffdfebdecf7a164e586060a210f74f
+Bisected Commit Name: f2fs: fix deadlock in i_xattr_sem and inode page lock
+Run Time:             6h5m50s
+
+Anchor Commit:        2023-07-06 - a452483508d7b70b0f6c69e249ec0b3ea2330b5c
+Bisection Result:     2023-06-30 - 5eda1ad1aaffdfebdecf7a164e586060a210f74f

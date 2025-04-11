@@ -1,0 +1,356 @@
+./bin/bisector -i 4 -c /home/syzretrospector/syzinspector/wd-bisector-4/bisector.cfg -a f4bc5bbb5fef3cf421ba3485d6d383c27ec473ed -F ff-test,poc-test,stateful-corpus,ff-no-find-backup
+Bisecting:          kernel BUG in workingset_activation
+Syzbot Link:        https://syzkaller.appspot.com/bug?extid=644848628d5e12d5438c
+Working Name:       bug0861
+
+No aliases given.
+
+Anchor Commit:      f4bc5bbb5fef3cf421ba3485d6d383c27ec473ed
+Repository:         https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
+Branch:             master
+Arch:               amd64
+
+Bisector:           /home/syzretrospector/syzinspector/
+Version:            1.0.4
+Kernel:             /home/syzretrospector/syzinspector/wd-bisector-4/kernel/
+Syzkaller:          /home/syzretrospector/syzinspector/syzkaller/
+Compilers:          /home/syzretrospector/compilers/
+Ccache:             ccache
+Image:              /home/syzretrospector/images/stretch/stretch.img
+Image Key:          /home/syzretrospector/images/stretch/stretch.id_rsa
+
+Workdir:            /home/syzretrospector/syzinspector/wd-bisector-4/
+Kconfig:            /home/syzretrospector/syzinspector/wd-bisector-4/config-bug0861.txt
+Reproducers: (9)    /home/syzretrospector/syzinspector/wd-bisector-4/reproducers/
+Primary PoC:        /home/syzretrospector/syzinspector/wd-bisector-4/reproducers/repro-bug0861-5.prog
+Syzkaller Workdir:  /home/syzretrospector/syzinspector/wd-bisector-4/wd-kaller/
+Log Directory:      /home/syzretrospector/syzinspector/wd-bisector-4/log/
+
+Syscalls: (10)      ["ioctl$KVM_CREATE_VCPU", "ioctl$KVM_CREATE_VM", "ioctl$KVM_RUN", "ioctl$KVM_SET_USER_MEMORY_REGION", "ioctl$USBDEVFS_IOCTL", "mmap", "openat$kvm", "syz_kvm_setup_cpu$x86", "syz_open_dev$usbfs", "openat$selinux_enforce"]
+VM Count:           8
+CPU Count:          2
+Procs:              16
+Memory:             4096
+Make Procs:         16
+Max Time:           10
+Max Attempts:       1
+
+==== Anchor Commit ====
+
+2025-03-08 21:09:55
+Session:   1
+Kernel:    2022-02-09 - f4bc5bbb5fef3cf421ba3485d6d383c27ec473ed
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    5  kernel BUG in workingset_activation
+***    5  kernel BUG in workingset_activation
+Attempt 2: (RETRY)
+    Time  Bug Name
+***    5  kernel BUG in workingset_activation
+***    5  kernel BUG in workingset_activation
+***    5  kernel BUG in workingset_activation
+***    5  kernel BUG in workingset_activation
+Attempt 3: (RETRY)
+    Time  Bug Name
+***    6  kernel BUG in workingset_activation
+***    6  kernel BUG in workingset_activation
+***    6  kernel BUG in workingset_activation
+***    6  kernel BUG in workingset_activation
+***    6  kernel BUG in workingset_activation
+***    6  kernel BUG in workingset_activation
+The bug was found.
+
+New Max Time: 10
+
+==== Major Release Search ====
+17 Releases
+
+2025-03-08 21:42:02
+Session:   2
+Kernel:    2021-10-31 - 8bb7eca972ad531c9b149c0a51ab43a417385813 (v5.15)
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    5  kernel BUG in workingset_activation
+***    5  kernel BUG in workingset_activation
+Running syz-repro.
+New PoC saved at /home/syzretrospector/syzinspector/wd-bisector-4/reproducers/repro-bug0861-0.prog
+Primary PoC:     /home/syzretrospector/syzinspector/wd-bisector-4/reproducers/repro-bug0861-0.prog
+Run Time:        0h25m0s
+The bug was found.
+About 16 releases remaining
+
+2025-03-08 22:27:34
+Session:   3
+Kernel:    2021-08-29 - 7d2a07b769330c34b4deabeed939325c77a7ec2f (v5.14)
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    5  kernel BUG in workingset_activation
+The bug was found.
+About 15 releases remaining
+
+2025-03-08 22:47:50
+Session:   4
+Kernel:    2021-06-27 - 62fb9874f5da54fdb243003b386128037319b219 (v5.13)
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       3  BUG: sleeping function called from invalid context in lock_sock_nested
+       3  BUG: sleeping function called from invalid context in lock_sock_nested
+       3  BUG: sleeping function called from invalid context in lock_sock_nested
+       4  BUG: sleeping function called from invalid context in lock_sock_nested
+       5  BUG: sleeping function called from invalid context in lock_sock_nested
+       5  BUG: sleeping function called from invalid context in lock_sock_nested
+***    6  kernel BUG in workingset_activation
+       6  BUG: sleeping function called from invalid context in lock_sock_nested
+       6  BUG: sleeping function called from invalid context in lock_sock_nested
+The bug was found.
+About 14 releases remaining
+
+2025-03-08 23:08:44
+Session:   5
+Kernel:    2021-02-14 - f40ddce88593482919761f74910f42f4b84c004b (v5.11)
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    3  kernel BUG in workingset_activation
+***    3  kernel BUG in workingset_activation
+***    3  kernel BUG in workingset_activation
+Running syz-repro.
+New PoC saved at /home/syzretrospector/syzinspector/wd-bisector-4/reproducers/repro-bug0861-1.prog
+Primary PoC:     /home/syzretrospector/syzinspector/wd-bisector-4/reproducers/repro-bug0861-1.prog
+Run Time:        0h13m0s
+The bug was found.
+About 13 releases remaining
+
+2025-03-08 23:39:24
+Session:   6
+Kernel:    2020-10-11 - bbf5c979011a099af5dc76498918ed7df445635b (v5.9)
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.1.0-syz/bin/gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 12 releases remaining
+
+==== Kernel Bisection ====
+32945 Linux commits
+
+2025-03-09 00:03:53
+Session:   7
+Kernel:    2020-11-21 - ea0ab64306355432746bafda0364fb2d593bc9e3
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.1.0-syz/bin/gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 16484 commits remaining
+
+2025-03-09 00:28:35
+Session:   8
+Kernel:    2020-12-15 - 9d0d886799e49e0f6d51e70c823416919544fdb7
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.1.0-syz/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    4  kernel BUG in workingset_activation
+***    4  kernel BUG in workingset_activation
+***    4  kernel BUG in workingset_activation
+***    4  kernel BUG in workingset_activation
+***    4  kernel BUG in workingset_activation
+***    4  kernel BUG in workingset_activation
+***    4  kernel BUG in workingset_activation
+The bug was found.
+About 8229 commits remaining
+
+2025-03-09 00:47:25
+Session:   9
+Kernel:    2020-12-14 - adb35e8dc98ba9bda99ff79ac6a05b8fcde2a762
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.1.0-syz/bin/gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 4118 commits remaining
+
+2025-03-09 01:12:02
+Session:   10
+Kernel:    2020-12-14 - 22f07b86d4e580424cbeb0ce232ed30d4b5ecb95
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.1.0-syz/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    3  kernel BUG in workingset_activation
+The bug was found.
+About 2060 commits remaining
+
+2025-03-09 01:29:46
+Session:   11
+Kernel:    2020-12-01 - 3e2816219d7ccae4ab4b5ed480566e05aef9cf1a
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.1.0-syz/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       8  WARNING in process_one_work
+The bug was not found.
+About 1591 commits remaining
+
+2025-03-09 01:54:23
+Session:   12
+Kernel:    2020-12-08 - 598874c8e9409b25377b9d07ee8124f6bbab4d86
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.1.0-syz/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    3  kernel BUG in workingset_activation
+***    3  kernel BUG in workingset_activation
+Running syz-repro.
+New PoC saved at /home/syzretrospector/syzinspector/wd-bisector-4/reproducers/repro-bug0861-9.prog
+Primary PoC:     /home/syzretrospector/syzinspector/wd-bisector-4/reproducers/repro-bug0861-9.prog
+Run Time:        0h13m0s
+The bug was found.
+About 717 commits remaining
+
+2025-03-09 03:25:01
+Session:   13
+Kernel:    2020-12-04 - fdd8b8249ef819958decd9b0ff2c0e52f9d20ae6
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.1.0-syz/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    3  kernel BUG in workingset_activation
+***    3  kernel BUG in workingset_activation
+***    3  kernel BUG in workingset_activation
+***    3  kernel BUG in workingset_activation
+The bug was found.
+About 437 commits remaining
+
+2025-03-09 03:38:02
+Session:   14
+Kernel:    2020-12-03 - 4f33a53d56000cfa67e2e4e8a5dac08f084a979b
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.1.0-syz/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    3  kernel BUG in workingset_activation
+***    3  kernel BUG in workingset_activation
+The bug was found.
+About 118 commits remaining
+
+2025-03-09 03:55:36
+Session:   15
+Kernel:    2020-12-02 - 87944e2992bd28098c6806086a1e96bb4d0e502b
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.1.0-syz/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    4  kernel BUG in workingset_activation
+***    4  kernel BUG in workingset_activation
+***    4  kernel BUG in workingset_activation
+***    4  kernel BUG in workingset_activation
+***    4  kernel BUG in workingset_activation
+***    4  kernel BUG in workingset_activation
+Running syz-repro.
+New PoC saved at /home/syzretrospector/syzinspector/wd-bisector-4/reproducers/repro-bug0861-1.prog
+Primary PoC:     /home/syzretrospector/syzinspector/wd-bisector-4/reproducers/repro-bug0861-1.prog
+Run Time:        0h17m0s
+The bug was found.
+About 59 commits remaining
+
+2025-03-09 04:31:19
+Session:   16
+Kernel:    2020-11-26 - c5815ac7e2aaff4f00b2b9e21d84b9f2fddddb48
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.1.0-syz/bin/gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 30 commits remaining
+
+2025-03-09 04:55:59
+Session:   17
+Kernel:    2020-12-01 - e392081837283fbe5df1837fd85012ae5bfae098
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.1.0-syz/bin/gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 16 commits remaining
+
+2025-03-09 05:15:02
+Session:   18
+Kernel:    2020-12-01 - df54228515593d1dc1df538786a94beb690f8cff
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.1.0-syz/bin/gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 9 commits remaining
+
+2025-03-09 05:33:52
+Session:   19
+Kernel:    2020-12-02 - a540c81a2bcb95227c3e24a4478956824858a6b0
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.1.0-syz/bin/gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 5 commits remaining
+
+2025-03-09 05:49:31
+Session:   20
+Kernel:    2020-12-02 - bcfe06bf2622f7c4899468e427683aec49070687
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.1.0-syz/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    4  kernel BUG in workingset_activation
+***    4  kernel BUG in workingset_activation
+***    4  kernel BUG in workingset_activation
+***    4  kernel BUG in workingset_activation
+***    4  kernel BUG in workingset_activation
+***    4  kernel BUG in workingset_activation
+***    4  kernel BUG in workingset_activation
+***    4  kernel BUG in workingset_activation
+The bug was found.
+About 3 commits remaining
+
+2025-03-09 06:02:47
+Session:   21
+Kernel:    2020-12-02 - 9e83f54f532bf2e66f6808922a4646cab7123033
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.1.0-syz/bin/gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 2 commits remaining
+
+==== Partial Result: Focused Fuzzing ====
+Reproducer:           /home/syzretrospector/syzinspector/wd-bisector-4/reproducers/repro-bug0861-1.prog
+Bisection Result:     2020-12-02 - bcfe06bf2622f7c4899468e427683aec49070687
+Bisected Commit Name: mm: memcontrol: Use helpers to read page's memcg data
+Stage Time:           8h6m55s
+Run Time:             8h6m57s
+=========================================
+
+==== Anchor Commit ====
+
+2025-03-09 06:16:50
+Session:   22
+Kernel:    2020-12-02 - 9e83f54f532bf2e66f6808922a4646cab7123033
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.1.0-syz/bin/gcc
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+
+Failure: This bug cannot be found at the anchor commit.
+
+====================================================================================================================================================
+Bug Name:             kernel BUG in workingset_activation
+Bug Link:             https://syzkaller.appspot.com/bug?extid=644848628d5e12d5438c
+Bisection Result:     2020-12-02 - bcfe06bf2622f7c4899468e427683aec49070687
+Bisected Commit Name: mm: memcontrol: Use helpers to read page's memcg data
+Run Time:             8h14m16s
+
+Anchor Commit:        2022-02-09 - f4bc5bbb5fef3cf421ba3485d6d383c27ec473ed
+Bisection Result:     2020-12-02 - bcfe06bf2622f7c4899468e427683aec49070687

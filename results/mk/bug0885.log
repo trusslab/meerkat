@@ -1,0 +1,387 @@
+./bin/bisector -i 4 -c /home/syzretrospector/syzinspector/wd-bisector-4/bisector.cfg -a c2bf05db6c78f53ca5cd4b48f3b9b71f78d215f1 -F ff-test,poc-test,stateful-corpus,ff-no-find-backup
+Bisecting:          KASAN: slab-out-of-bounds Read in indx_insert_into_buffer
+Syzbot Link:        https://syzkaller.appspot.com/bug?extid=d882d57193079e379309
+Working Name:       bug0885
+
+No aliases given.
+
+Anchor Commit:      c2bf05db6c78f53ca5cd4b48f3b9b71f78d215f1
+Repository:         https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
+Branch:             master
+Arch:               amd64
+
+Bisector:           /home/syzretrospector/syzinspector/
+Version:            1.0.4
+Kernel:             /home/syzretrospector/syzinspector/wd-bisector-4/kernel/
+Syzkaller:          /home/syzretrospector/syzinspector/syzkaller/
+Compilers:          /home/syzretrospector/compilers/
+Ccache:             ccache
+Image:              /home/syzretrospector/images/stretch/stretch.img
+Image Key:          /home/syzretrospector/images/stretch/stretch.id_rsa
+
+Workdir:            /home/syzretrospector/syzinspector/wd-bisector-4/
+Kconfig:            /home/syzretrospector/syzinspector/wd-bisector-4/config-bug0885.txt
+Reproducers: (1)    /home/syzretrospector/syzinspector/wd-bisector-4/reproducers/
+Syzkaller Workdir:  /home/syzretrospector/syzinspector/wd-bisector-4/wd-kaller/
+Log Directory:      /home/syzretrospector/syzinspector/wd-bisector-4/log/
+
+Syscalls: (6)       ["creat", "syz_mount_image$ntfs3", "ioctl$F2FS_IOC_START_ATOMIC_WRITE", "getuid", "setgid", "getgid"]
+VM Count:           8
+CPU Count:          2
+Procs:              16
+Memory:             4096
+Make Procs:         16
+Max Time:           10
+Max Attempts:       1
+
+==== Anchor Commit ====
+
+2025-03-13 22:09:08
+Session:   1
+Kernel:    2022-12-03 - c2bf05db6c78f53ca5cd4b48f3b9b71f78d215f1
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       3  INFO: rcu detected stall in corrupted
+***    3  KASAN: slab-out-of-bounds Read in indx_insert_into_buffer
+***    3  KASAN: slab-out-of-bounds Read in indx_insert_into_buffer
+***    3  KASAN: slab-out-of-bounds Read in indx_insert_into_buffer
+***    3  KASAN: slab-out-of-bounds Read in indx_insert_into_buffer
+Attempt 2: (RETRY)
+    Time  Bug Name
+       3  INFO: rcu detected stall in corrupted
+***    3  KASAN: slab-out-of-bounds Read in indx_insert_into_buffer
+***    3  KASAN: slab-out-of-bounds Read in indx_insert_into_buffer
+***    3  KASAN: slab-out-of-bounds Read in indx_insert_into_buffer
+***    3  KASAN: slab-out-of-bounds Read in indx_insert_into_buffer
+Attempt 3: (RETRY)
+    Time  Bug Name
+***    8  KASAN: slab-out-of-bounds Read in indx_insert_into_buffer
+***    8  KASAN: slab-out-of-bounds Read in indx_insert_into_buffer
+The bug was found.
+
+New Max Time: 10
+
+==== Major Release Search ====
+18 Releases
+
+2025-03-13 22:42:06
+Session:   2
+Kernel:    2022-10-02 - 4fe89d07dcc2804c8b562f6c7896a45643d34b2f (v6.0)
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    2  KASAN: slab-out-of-bounds Read in indx_insert_into_buffer
+Running syz-repro.
+New PoC saved at /home/syzretrospector/syzinspector/wd-bisector-4/reproducers/repro-bug0885-0.prog
+Primary PoC:     /home/syzretrospector/syzinspector/wd-bisector-4/reproducers/repro-bug0885-0.prog
+Run Time:        0h5m0s
+The bug was found.
+About 17 releases remaining
+
+2025-03-13 23:06:57
+Session:   3
+Kernel:    2022-07-31 - 3d7cb6b04c3f3115719235cc6866b10326de34cd (v5.19)
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    2  KASAN: slab-out-of-bounds Read in indx_insert_into_buffer
+The bug was found.
+About 16 releases remaining
+
+2025-03-13 23:25:53
+Session:   4
+Kernel:    2022-05-22 - 4b0986a3613c92f4ec1bdc7f60ec66fea135991f (v5.18)
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    3  KASAN: slab-out-of-bounds Read in indx_insert_into_buffer
+***    3  KASAN: slab-out-of-bounds Read in indx_insert_into_buffer
+***    3  KASAN: slab-out-of-bounds Read in indx_insert_into_buffer
+***    3  KASAN: slab-out-of-bounds Read in indx_insert_into_buffer
+The bug was found.
+About 15 releases remaining
+
+2025-03-13 23:44:42
+Session:   5
+Kernel:    2022-01-09 - df0cc57e057f18e44dac8e6c18aba47ab53202f9 (v5.16)
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    3  KASAN: slab-out-of-bounds Read in indx_insert_into_buffer
+***    3  KASAN: slab-out-of-bounds Read in indx_insert_into_buffer
+***    3  KASAN: slab-out-of-bounds Read in indx_insert_into_buffer
+***    3  KASAN: slab-out-of-bounds Read in indx_insert_into_buffer
+Running syz-repro.
+New PoC saved at /home/syzretrospector/syzinspector/wd-bisector-4/reproducers/repro-bug0885-2.prog
+Primary PoC:     /home/syzretrospector/syzinspector/wd-bisector-4/reproducers/repro-bug0885-2.prog
+Run Time:        0h5m0s
+The bug was found.
+About 14 releases remaining
+
+2025-03-14 00:08:49
+Session:   6
+Kernel:    2021-08-29 - 7d2a07b769330c34b4deabeed939325c77a7ec2f (v5.14)
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 13 releases remaining
+
+==== Kernel Bisection ====
+28858 Linux commits
+
+2025-03-14 00:35:23
+Session:   7
+Kernel:    2021-10-28 - 970eae15600a883e4ad27dd0757b18871cc983ab
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    3  KASAN: slab-out-of-bounds Read in indx_insert_into_buffer
+***    3  KASAN: slab-out-of-bounds Read in indx_insert_into_buffer
+***    3  KASAN: slab-out-of-bounds Read in indx_insert_into_buffer
+***    3  KASAN: slab-out-of-bounds Read in indx_insert_into_buffer
+The bug was found.
+About 14408 commits remaining
+
+2025-03-14 00:54:17
+Session:   8
+Kernel:    2021-09-01 - 32b47072f319bb65e9afad59e78153d83496f1f5
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       2  KFENCE: use-after-free in kvm_fastop_exception
+The bug was not found.
+About 7344 commits remaining
+
+2025-03-14 01:20:07
+Session:   9
+Kernel:    2021-09-09 - 43175623dd0dffccacbf014e368ee77f77c73898
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    3  KASAN: slab-out-of-bounds Read in indx_insert_into_buffer
+***    3  KASAN: slab-out-of-bounds Read in indx_insert_into_buffer
+***    3  KASAN: slab-out-of-bounds Read in indx_insert_into_buffer
+       3  kernel BUG in ntfs_fill_super
+       3  kernel BUG in ntfs_fill_super
+       3  kernel BUG in ntfs_fill_super
+       3  kernel BUG in ntfs_fill_super
+The bug was found.
+About 3672 commits remaining
+
+2025-03-14 01:38:54
+Session:   10
+Kernel:    2021-09-03 - 14726903c835101cd8d0a703b609305094350d61
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 1815 commits remaining
+
+2025-03-14 02:04:41
+Session:   11
+Kernel:    2021-09-07 - a2b28235335fee2586b4bd16448fb59ed6c80eef
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    3  KASAN: slab-out-of-bounds Read in indx_insert_into_buffer
+***    3  KASAN: slab-out-of-bounds Read in indx_insert_into_buffer
+***    3  KASAN: slab-out-of-bounds Read in indx_insert_into_buffer
+       3  kernel BUG in ntfs_fill_super
+       3  kernel BUG in ntfs_fill_super
+       3  kernel BUG in ntfs_fill_super
+Running syz-repro.
+New PoC saved at /home/syzretrospector/syzinspector/wd-bisector-4/reproducers/repro-bug0885-0.prog
+Primary PoC:     /home/syzretrospector/syzinspector/wd-bisector-4/reproducers/repro-bug0885-2.prog
+Run Time:        0h6m0s
+The bug was found.
+About 906 commits remaining
+
+2025-03-14 02:29:31
+Session:   12
+Kernel:    2021-09-04 - 6abaa83c7352b31450d7e8c173f674324c16b02b
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 456 commits remaining
+
+2025-03-14 02:54:51
+Session:   13
+Kernel:    2021-09-05 - 58ca24158758f1784400d32743373d7d6227d018
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    3  KASAN: slab-out-of-bounds Read in indx_insert_into_buffer
+***    3  KASAN: slab-out-of-bounds Read in indx_insert_into_buffer
+***    3  KASAN: slab-out-of-bounds Read in indx_insert_into_buffer
+       3  kernel BUG in ntfs_fill_super
+       3  kernel BUG in ntfs_fill_super
+       3  kernel BUG in ntfs_fill_super
+The bug was found.
+About 184 commits remaining
+
+2025-03-14 03:12:43
+Session:   14
+Kernel:    2021-09-05 - 3fe617ccafd6f5bb33c2391d6f4eeb41c1fd0151
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    3  KASAN: slab-out-of-bounds Read in indx_insert_into_buffer
+***    3  KASAN: slab-out-of-bounds Read in indx_insert_into_buffer
+***    3  KASAN: slab-out-of-bounds Read in indx_insert_into_buffer
+       3  kernel BUG in ntfs_fill_super
+       3  kernel BUG in ntfs_fill_super
+       3  kernel BUG in ntfs_fill_super
+The bug was found.
+About 92 commits remaining
+
+2025-03-14 03:21:43
+Session:   15
+Kernel:    2021-09-04 - 49624efa65ac9889f4e7c7b2452b2e6ce42ba37d
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    3  KASAN: slab-out-of-bounds Read in indx_insert_into_buffer
+***    3  KASAN: slab-out-of-bounds Read in indx_insert_into_buffer
+***    3  KASAN: slab-out-of-bounds Read in indx_insert_into_buffer
+***    3  KASAN: slab-out-of-bounds Read in indx_insert_into_buffer
+       3  kernel BUG in ntfs_fill_super
+       3  kernel BUG in ntfs_fill_super
+       3  kernel BUG in ntfs_fill_super
+Running syz-repro.
+New PoC saved at /home/syzretrospector/syzinspector/wd-bisector-4/reproducers/repro-bug0885-0.prog
+Primary PoC:     /home/syzretrospector/syzinspector/wd-bisector-4/reproducers/repro-bug0885-2.prog
+Run Time:        0h5m0s
+The bug was found.
+About 46 commits remaining
+
+2025-03-14 03:34:16
+Session:   16
+Kernel:    2021-08-27 - 195c52bdd5d5ecfdabf5a7c6159efe299e534f84
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    3  KASAN: slab-out-of-bounds Read in indx_insert_into_buffer
+***    3  KASAN: slab-out-of-bounds Read in indx_insert_into_buffer
+***    3  KASAN: slab-out-of-bounds Read in indx_insert_into_buffer
+       3  kernel BUG in ntfs_fill_super
+       3  kernel BUG in ntfs_fill_super
+       3  kernel BUG in ntfs_fill_super
+The bug was found.
+About 23 commits remaining
+
+2025-03-14 03:52:57
+Session:   17
+Kernel:    2021-08-23 - 11e4e66efd440216032f53ee7e5ca08cd263a292
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    3  KASAN: slab-out-of-bounds Read in indx_insert_into_buffer
+***    3  KASAN: slab-out-of-bounds Read in indx_insert_into_buffer
+***    3  KASAN: slab-out-of-bounds Read in indx_insert_into_buffer
+***    3  KASAN: slab-out-of-bounds Read in indx_insert_into_buffer
+       3  kernel BUG in ntfs_fill_super
+       3  kernel BUG in ntfs_fill_super
+       3  kernel BUG in ntfs_fill_super
+       3  kernel BUG in ntfs_fill_super
+The bug was found.
+About 12 commits remaining
+
+2025-03-14 04:00:27
+Session:   18
+Kernel:    2021-08-13 - be71b5cba2e6485e8959da7a9f9a44461a1bb074
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 544 commits remaining
+
+2025-03-14 04:25:35
+Session:   19
+Kernel:    2021-08-13 - 12dad495eaab95e0bb784c43869073617c513ea4
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 541 commits remaining
+
+2025-03-14 04:39:48
+Session:   20
+Kernel:    2021-08-13 - 96b18047a7172037ff4206720f4e889670030b41
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    3  KASAN: slab-out-of-bounds Read in indx_insert_into_buffer
+***    3  KASAN: slab-out-of-bounds Read in indx_insert_into_buffer
+***    3  KASAN: slab-out-of-bounds Read in indx_insert_into_buffer
+       3  kernel BUG in ntfs_fill_super
+       3  kernel BUG in ntfs_fill_super
+       3  kernel BUG in ntfs_fill_super
+       3  kernel BUG in ntfs_fill_super
+Running syz-repro.
+New PoC saved at /home/syzretrospector/syzinspector/wd-bisector-4/reproducers/repro-bug0885-0.prog
+Primary PoC:     /home/syzretrospector/syzinspector/wd-bisector-4/reproducers/repro-bug0885-2.prog
+Run Time:        0h6m0s
+The bug was found.
+About 3 commits remaining
+
+2025-03-14 04:55:27
+Session:   21
+Kernel:    2021-08-13 - 6e5be40d32fb1907285277c02e74493ed43d77fe
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    3  KASAN: slab-out-of-bounds Read in indx_insert_into_buffer
+***    3  KASAN: slab-out-of-bounds Read in indx_insert_into_buffer
+***    3  KASAN: slab-out-of-bounds Read in indx_insert_into_buffer
+***    3  KASAN: slab-out-of-bounds Read in indx_insert_into_buffer
+       3  kernel BUG in ntfs_fill_super
+       3  kernel BUG in ntfs_fill_super
+The bug was found.
+About 2 commits remaining
+
+==== Partial Result: Focused Fuzzing ====
+Reproducer:           /home/syzretrospector/syzinspector/wd-bisector-4/reproducers/repro-bug0885-2.prog
+Bisection Result:     2021-08-13 - 6e5be40d32fb1907285277c02e74493ed43d77fe
+Bisected Commit Name: fs/ntfs3: Add NTFS3 in fs/Kconfig and fs/Makefile
+Stage Time:           6h53m32s
+Run Time:             6h53m34s
+=========================================
+
+==== Anchor Commit ====
+
+2025-03-14 05:02:40
+Session:   22
+Kernel:    2021-08-13 - 12dad495eaab95e0bb784c43869073617c513ea4
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+
+Failure: This bug cannot be found at the anchor commit.
+
+====================================================================================================================================================
+Bug Name:             KASAN: slab-out-of-bounds Read in indx_insert_into_buffer
+Bug Link:             https://syzkaller.appspot.com/bug?extid=d882d57193079e379309
+Bisection Result:     2021-08-13 - 6e5be40d32fb1907285277c02e74493ed43d77fe
+Bisected Commit Name: fs/ntfs3: Add NTFS3 in fs/Kconfig and fs/Makefile
+Run Time:             7h0m35s
+
+Anchor Commit:        2022-12-03 - c2bf05db6c78f53ca5cd4b48f3b9b71f78d215f1
+Bisection Result:     2021-08-13 - 6e5be40d32fb1907285277c02e74493ed43d77fe

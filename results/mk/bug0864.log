@@ -1,0 +1,493 @@
+./bin/bisector -i 4 -c /home/syzretrospector/syzinspector/wd-bisector-4/bisector.cfg -a 58390c8ce1bddb6c623f62e7ed36383e7fa5c02f -F ff-test,poc-test,stateful-corpus,ff-no-find-backup
+Bisecting:          KASAN: slab-use-after-free Read in hci_conn_hash_flush
+Warning: No syscall found that produces sock_bt.
+Warning: No syscall found that produces tail_call_map.
+Warning: No syscall found that produces fd_bpf_const_str.
+Syzbot Link:        https://syzkaller.appspot.com/bug?extid=8bb72f86fc823817bc5d
+Working Name:       bug0864
+
+No aliases given.
+
+Anchor Commit:      58390c8ce1bddb6c623f62e7ed36383e7fa5c02f
+Repository:         https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
+Branch:             master
+Arch:               amd64
+
+Bisector:           /home/syzretrospector/syzinspector/
+Version:            1.0.4
+Kernel:             /home/syzretrospector/syzinspector/wd-bisector-4/kernel/
+Syzkaller:          /home/syzretrospector/syzinspector/syzkaller/
+Compilers:          /home/syzretrospector/compilers/
+Ccache:             ccache
+Image:              /home/syzretrospector/images/stretch/stretch.img
+Image Key:          /home/syzretrospector/images/stretch/stretch.id_rsa
+
+Workdir:            /home/syzretrospector/syzinspector/wd-bisector-4/
+Kconfig:            /home/syzretrospector/syzinspector/wd-bisector-4/config-bug0864.txt
+Reproducers: (6)    /home/syzretrospector/syzinspector/wd-bisector-4/reproducers/
+Syzkaller Workdir:  /home/syzretrospector/syzinspector/wd-bisector-4/wd-kaller/
+Log Directory:      /home/syzretrospector/syzinspector/wd-bisector-4/log/
+
+Syscalls: (24)      ["bpf$BPF_PROG_RAW_TRACEPOINT_LOAD", "bpf$BPF_RAW_TRACEPOINT_OPEN", "bpf$BPF_TASK_FD_QUERY", "connect$bt_sco", "connect$netrom", "ioctl$FS_IOC_RESVSP", "openat$cgroup_int", "openat$cgroup_ro", "openat$cgroup_root", "sendfile", "syz_init_net_socket$bt_sco", "syz_init_net_socket$netrom", "write$cgroup_int", "bpf$OBJ_GET_PROG", "syz_clone", "bpf$BPF_PROG_GET_FD_BY_ID", "socket", "ioctl$sock_SIOCGIFINDEX", "bpf$BPF_BTF_LOAD", "bpf$OBJ_GET_MAP", "bpf$BPF_MAP_CONST_STR_FREEZE", "bpf$MAP_CREATE_RINGBUF", "bpf$MAP_CREATE_TAIL_CALL", "bpf$MAP_CREATE_CONST_STR"]
+VM Count:           8
+CPU Count:          2
+Procs:              16
+Memory:             4096
+Make Procs:         16
+Max Time:           10
+Max Attempts:       1
+
+==== Anchor Commit ====
+
+2025-03-09 19:40:18
+Session:   1
+Kernel:    2023-04-30 - 58390c8ce1bddb6c623f62e7ed36383e7fa5c02f
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Warning: bpf$BPF_PROG_RAW_TRACEPOINT_LOAD was disabled by Syzkaller.
+Warning: bpf$BPF_RAW_TRACEPOINT_OPEN was disabled by Syzkaller.
+Warning: bpf$BPF_TASK_FD_QUERY was disabled by Syzkaller.
+Attempt 1:
+    Time  Bug Name
+***    3  KASAN: slab-use-after-free Read in hci_conn_hash_flush
+***    3  KASAN: slab-use-after-free Read in hci_conn_hash_flush
+***    3  KASAN: slab-use-after-free Read in hci_conn_hash_flush
+***    3  KASAN: slab-use-after-free Read in hci_conn_hash_flush
+Warning: bpf$BPF_PROG_RAW_TRACEPOINT_LOAD was disabled by Syzkaller.
+Warning: bpf$BPF_RAW_TRACEPOINT_OPEN was disabled by Syzkaller.
+Warning: bpf$BPF_TASK_FD_QUERY was disabled by Syzkaller.
+Attempt 2: (RETRY)
+    Time  Bug Name
+***    3  KASAN: slab-use-after-free Read in hci_conn_hash_flush
+***    3  KASAN: slab-use-after-free Read in hci_conn_hash_flush
+***    3  KASAN: slab-use-after-free Read in hci_conn_hash_flush
+***    3  KASAN: slab-use-after-free Read in hci_conn_hash_flush
+Warning: bpf$BPF_PROG_RAW_TRACEPOINT_LOAD was disabled by Syzkaller.
+Warning: bpf$BPF_RAW_TRACEPOINT_OPEN was disabled by Syzkaller.
+Warning: bpf$BPF_TASK_FD_QUERY was disabled by Syzkaller.
+Attempt 3: (RETRY)
+    Time  Bug Name
+***    3  KASAN: slab-use-after-free Read in hci_conn_hash_flush
+***    3  KASAN: slab-use-after-free Read in hci_conn_hash_flush
+***    3  KASAN: slab-use-after-free Read in hci_conn_hash_flush
+***    3  KASAN: slab-use-after-free Read in hci_conn_hash_flush
+***    3  KASAN: slab-use-after-free Read in hci_conn_hash_flush
+***    3  KASAN: slab-use-after-free Read in hci_conn_hash_flush
+The bug was found.
+
+New Max Time: 10
+
+==== Major Release Search ====
+18 Releases
+
+2025-03-09 20:10:56
+Session:   2
+Kernel:    2023-02-19 - c9c3395d5e3dcc6daee66c6908354d47bf98cb0c (v6.2)
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Warning: bpf$BPF_PROG_RAW_TRACEPOINT_LOAD was disabled by Syzkaller.
+Warning: bpf$BPF_RAW_TRACEPOINT_OPEN was disabled by Syzkaller.
+Warning: bpf$BPF_TASK_FD_QUERY was disabled by Syzkaller.
+Attempt 1:
+    Time  Bug Name
+       6  INFO: task hung in del_device_store
+       6  WARNING: ODEBUG bug in netdev_run_todo
+       7  INFO: task hung in new_device_store
+       7  INFO: task hung in del_device_store
+       7  INFO: task hung in del_device_store
+       7  INFO: task hung in del_device_store
+       7  INFO: task hung in del_device_store
+The bug was not found.
+About 17 releases remaining
+
+==== Kernel Bisection ====
+27685 Linux commits
+
+2025-03-09 20:42:15
+Session:   3
+Kernel:    2023-03-09 - d0ddf5065ffef45f8fce4001abe0206081c7ff10
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       2  WARNING in c_start
+       2  WARNING in c_start
+       2  WARNING in c_start
+       2  WARNING in c_start
+       2  WARNING in c_start
+       2  WARNING in c_start
+       2  WARNING in c_start
+       2  WARNING in c_start
+       3  WARNING in c_start
+       3  WARNING in c_start
+       3  WARNING in c_start
+       3  WARNING in c_start
+       3  WARNING in c_start
+       3  WARNING in c_start
+       3  WARNING in c_start
+       3  WARNING in c_start
+       4  WARNING in c_start
+       4  WARNING in c_start
+       4  WARNING in c_start
+       4  WARNING in c_start
+       4  WARNING in c_start
+       4  WARNING in c_start
+       4  WARNING in c_start
+       4  WARNING in c_start
+       5  WARNING in c_start
+       5  WARNING in c_start
+       5  WARNING in c_start
+       5  WARNING in c_start
+       5  WARNING in c_start
+       5  WARNING in c_start
+       5  WARNING in c_start
+       5  WARNING in c_start
+       7  WARNING in c_start
+       7  WARNING in c_start
+       7  WARNING in c_start
+       7  WARNING in c_start
+       7  WARNING in c_start
+       7  WARNING in c_start
+       7  WARNING in c_start
+       7  WARNING in c_start
+       8  WARNING in c_start
+       8  WARNING in c_start
+       8  WARNING in c_start
+       8  WARNING in c_start
+       8  WARNING in c_start
+       8  WARNING in c_start
+       8  WARNING in c_start
+       8  WARNING in c_start
+       9  WARNING in c_start
+       9  WARNING in c_start
+       9  WARNING in c_start
+       9  WARNING in c_start
+       9  WARNING in c_start
+       9  WARNING in c_start
+       9  WARNING in c_start
+       9  WARNING in c_start
+      10  WARNING in c_start
+      10  WARNING in c_start
+      10  WARNING in c_start
+      10  WARNING in c_start
+      10  WARNING in c_start
+      10  WARNING in c_start
+      10  WARNING in c_start
+      10  WARNING in c_start
+The bug was not found.
+About 13831 commits remaining
+
+2025-03-09 21:13:14
+Session:   4
+Kernel:    2023-04-26 - 94fc0792661a96d64a4bb79cf10d0793ecadf76e
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Warning: bpf$BPF_PROG_RAW_TRACEPOINT_LOAD was disabled by Syzkaller.
+Warning: bpf$BPF_RAW_TRACEPOINT_OPEN was disabled by Syzkaller.
+Warning: bpf$BPF_TASK_FD_QUERY was disabled by Syzkaller.
+Attempt 1:
+    Time  Bug Name
+       7  INFO: task hung in del_device_store
+       7  INFO: task hung in del_device_store
+       7  INFO: task hung in del_device_store
+       7  INFO: task hung in del_device_store
+       7  INFO: task hung in del_device_store
+       8  INFO: task hung in del_device_store
+       8  INFO: task hung in del_device_store
+The bug was not found.
+About 7147 commits remaining
+
+2025-03-09 21:43:39
+Session:   5
+Kernel:    2023-04-27 - 1c15ca4e4efaddb78f83eed31eeee34c522c3ae2
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Warning: bpf$BPF_PROG_RAW_TRACEPOINT_LOAD was disabled by Syzkaller.
+Warning: bpf$BPF_RAW_TRACEPOINT_OPEN was disabled by Syzkaller.
+Warning: bpf$BPF_TASK_FD_QUERY was disabled by Syzkaller.
+Attempt 1:
+    Time  Bug Name
+***    3  KASAN: slab-use-after-free Read in hci_conn_hash_flush
+***    3  KASAN: slab-use-after-free Read in hci_conn_hash_flush
+***    3  KASAN: slab-use-after-free Read in hci_conn_hash_flush
+***    3  KASAN: slab-use-after-free Read in hci_conn_hash_flush
+***    3  KASAN: slab-use-after-free Read in hci_conn_hash_flush
+***    3  KASAN: slab-use-after-free Read in hci_conn_hash_flush
+***    3  KASAN: slab-use-after-free Read in hci_conn_hash_flush
+Running syz-repro.
+syz-repro was terminated after 60 minutes
+Run Time:        1h0m0s
+The bug was found.
+About 3836 commits remaining
+
+2025-03-09 23:07:08
+Session:   6
+Kernel:    2023-04-22 - 207296f1a03bfead0110ffc4f192f242100ce4ff
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Warning: bpf$BPF_PROG_RAW_TRACEPOINT_LOAD was disabled by Syzkaller.
+Warning: bpf$BPF_RAW_TRACEPOINT_OPEN was disabled by Syzkaller.
+Warning: bpf$BPF_TASK_FD_QUERY was disabled by Syzkaller.
+Attempt 1:
+    Time  Bug Name
+       7  INFO: task hung in del_device_store
+       7  INFO: task hung in del_device_store
+       8  INFO: task hung in del_device_store
+       8  INFO: task hung in del_device_store
+       8  WARNING: ODEBUG bug in netdev_run_todo
+       9  INFO: task hung in del_device_store
+      10  INFO: task hung in new_device_store
+The bug was not found.
+About 6796 commits remaining
+
+2025-03-09 23:37:34
+Session:   7
+Kernel:    2023-04-26 - 6e98b09da931a00bf4e0477d0fa52748bf28fcce
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Warning: bpf$BPF_PROG_RAW_TRACEPOINT_LOAD was disabled by Syzkaller.
+Warning: bpf$BPF_RAW_TRACEPOINT_OPEN was disabled by Syzkaller.
+Warning: bpf$BPF_TASK_FD_QUERY was disabled by Syzkaller.
+Attempt 1:
+    Time  Bug Name
+***    3  KASAN: slab-use-after-free Read in hci_conn_hash_flush
+***    3  KASAN: slab-use-after-free Read in hci_conn_hash_flush
+***    3  KASAN: slab-use-after-free Read in hci_conn_hash_flush
+***    3  KASAN: slab-use-after-free Read in hci_conn_hash_flush
+***    3  KASAN: slab-use-after-free Read in hci_conn_hash_flush
+***    3  KASAN: slab-use-after-free Read in hci_conn_hash_flush
+***    3  KASAN: slab-use-after-free Read in hci_conn_hash_flush
+Running syz-repro.
+syz-repro was terminated after 60 minutes
+Run Time:        1h0m0s
+The bug was found.
+About 5979 commits remaining
+
+2025-03-10 00:51:48
+Session:   8
+Kernel:    2023-04-26 - 36006b1d5c04692924f011aa949e8788f1c604de
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Warning: bpf$BPF_PROG_RAW_TRACEPOINT_LOAD was disabled by Syzkaller.
+Warning: bpf$BPF_RAW_TRACEPOINT_OPEN was disabled by Syzkaller.
+Warning: bpf$BPF_TASK_FD_QUERY was disabled by Syzkaller.
+Attempt 1:
+    Time  Bug Name
+       7  INFO: task hung in del_device_store
+       7  INFO: task hung in del_device_store
+       7  INFO: task hung in del_device_store
+       7  INFO: task hung in del_device_store
+       7  INFO: task hung in del_device_store
+       8  INFO: task hung in del_device_store
+The bug was not found.
+About 2501 commits remaining
+
+2025-03-10 01:21:35
+Session:   9
+Kernel:    2023-04-25 - 28b17f6270f182e22cdad5a0fdc4979031e4486a
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Warning: bpf$BPF_PROG_RAW_TRACEPOINT_LOAD was disabled by Syzkaller.
+Warning: bpf$BPF_RAW_TRACEPOINT_OPEN was disabled by Syzkaller.
+Warning: bpf$BPF_TASK_FD_QUERY was disabled by Syzkaller.
+Attempt 1:
+    Time  Bug Name
+***    3  KASAN: slab-use-after-free Read in hci_conn_hash_flush
+***    3  KASAN: slab-use-after-free Read in hci_conn_hash_flush
+***    3  KASAN: slab-use-after-free Read in hci_conn_hash_flush
+***    3  KASAN: slab-use-after-free Read in hci_conn_hash_flush
+***    3  KASAN: slab-use-after-free Read in hci_conn_hash_flush
+Running syz-repro.
+New PoC saved at /home/syzretrospector/syzinspector/wd-bisector-4/reproducers/repro-bug0864-0.prog
+Primary PoC:     /home/syzretrospector/syzinspector/wd-bisector-4/reproducers/repro-bug0864-0.prog
+Run Time:        0h47m0s
+The bug was found.
+About 2239 commits remaining
+
+2025-03-10 02:26:35
+Session:   10
+Kernel:    2023-04-23 - 1f5020acb33f926030f62563c86dffca35c7b701
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Warning: bpf$BPF_PROG_RAW_TRACEPOINT_LOAD was disabled by Syzkaller.
+Warning: bpf$BPF_RAW_TRACEPOINT_OPEN was disabled by Syzkaller.
+Warning: bpf$BPF_TASK_FD_QUERY was disabled by Syzkaller.
+Attempt 1:
+    Time  Bug Name
+       6  INFO: task hung in del_device_store
+       7  INFO: task hung in new_device_store
+       7  INFO: task hung in del_device_store
+       7  INFO: task hung in del_device_store
+       7  INFO: task hung in del_device_store
+       7  INFO: task hung in del_device_store
+       7  INFO: task hung in del_device_store
+       8  INFO: task hung in del_device_store
+The bug was not found.
+About 136 commits remaining
+
+2025-03-10 02:47:04
+Session:   11
+Kernel:    2023-04-23 - 288c90224eec55d13e786844b7954ef060752089
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Warning: bpf$BPF_PROG_RAW_TRACEPOINT_LOAD was disabled by Syzkaller.
+Warning: bpf$BPF_RAW_TRACEPOINT_OPEN was disabled by Syzkaller.
+Warning: bpf$BPF_TASK_FD_QUERY was disabled by Syzkaller.
+Attempt 1:
+    Time  Bug Name
+       6  INFO: task hung in del_device_store
+       7  INFO: task hung in del_device_store
+       7  INFO: task hung in del_device_store
+       7  INFO: task hung in del_device_store
+       7  INFO: task hung in del_device_store
+       7  INFO: task hung in del_device_store
+       7  INFO: task hung in del_device_store
+       7  INFO: task hung in del_device_store
+The bug was not found.
+About 78 commits remaining
+
+2025-03-10 03:05:37
+Session:   12
+Kernel:    2023-04-23 - d883a4669a1def6d121ccf5e64ad28260d1c9531
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Warning: bpf$BPF_PROG_RAW_TRACEPOINT_LOAD was disabled by Syzkaller.
+Warning: bpf$BPF_RAW_TRACEPOINT_OPEN was disabled by Syzkaller.
+Warning: bpf$BPF_TASK_FD_QUERY was disabled by Syzkaller.
+Attempt 1:
+    Time  Bug Name
+***    3  KASAN: slab-use-after-free Read in hci_conn_hash_flush
+***    3  KASAN: slab-use-after-free Read in hci_conn_hash_flush
+***    3  KASAN: slab-use-after-free Read in hci_conn_hash_flush
+***    3  KASAN: slab-use-after-free Read in hci_conn_hash_flush
+***    3  KASAN: slab-use-after-free Read in hci_conn_hash_flush
+The bug was found.
+About 30 commits remaining
+
+2025-03-10 03:16:37
+Session:   13
+Kernel:    2023-04-23 - 06149746e7203d5ffe2d6faf9799ee36203aa8b8
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Warning: bpf$BPF_PROG_RAW_TRACEPOINT_LOAD was disabled by Syzkaller.
+Warning: bpf$BPF_RAW_TRACEPOINT_OPEN was disabled by Syzkaller.
+Warning: bpf$BPF_TASK_FD_QUERY was disabled by Syzkaller.
+Attempt 1:
+    Time  Bug Name
+***    3  KASAN: slab-use-after-free Read in hci_conn_hash_flush
+***    3  KASAN: slab-use-after-free Read in hci_conn_hash_flush
+***    3  KASAN: slab-use-after-free Read in hci_conn_hash_flush
+***    3  KASAN: slab-use-after-free Read in hci_conn_hash_flush
+***    3  KASAN: slab-use-after-free Read in hci_conn_hash_flush
+The bug was found.
+About 15 commits remaining
+
+2025-03-10 03:27:48
+Session:   14
+Kernel:    2023-04-23 - 86d55f124b52de2ba0d066d89b766bcc0387fd72
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Warning: bpf$BPF_PROG_RAW_TRACEPOINT_LOAD was disabled by Syzkaller.
+Warning: bpf$BPF_RAW_TRACEPOINT_OPEN was disabled by Syzkaller.
+Warning: bpf$BPF_TASK_FD_QUERY was disabled by Syzkaller.
+Attempt 1:
+    Time  Bug Name
+       6  INFO: task hung in del_device_store
+       7  INFO: task hung in new_device_store
+       7  INFO: task hung in del_device_store
+       7  INFO: task hung in del_device_store
+       7  INFO: task hung in del_device_store
+       7  INFO: task hung in del_device_store
+       7  INFO: task hung in del_device_store
+       8  INFO: task hung in del_device_store
+The bug was not found.
+About 8 commits remaining
+
+2025-03-10 03:45:38
+Session:   15
+Kernel:    2023-04-23 - 3c690a0d64f5964977050a91b6bba8de09c13d94
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Warning: bpf$BPF_PROG_RAW_TRACEPOINT_LOAD was disabled by Syzkaller.
+Warning: bpf$BPF_RAW_TRACEPOINT_OPEN was disabled by Syzkaller.
+Warning: bpf$BPF_TASK_FD_QUERY was disabled by Syzkaller.
+Attempt 1:
+    Time  Bug Name
+       6  INFO: task hung in del_device_store
+       6  INFO: task hung in del_device_store
+       7  INFO: task hung in del_device_store
+       7  INFO: task hung in del_device_store
+       7  INFO: task hung in del_device_store
+       7  INFO: task hung in del_device_store
+       7  INFO: task hung in del_device_store
+       7  INFO: task hung in del_device_store
+The bug was not found.
+About 5 commits remaining
+
+2025-03-10 04:03:28
+Session:   16
+Kernel:    2023-04-23 - 0811ff480978a2122f0465cb8682d9f7a2f6a169
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Warning: bpf$BPF_PROG_RAW_TRACEPOINT_LOAD was disabled by Syzkaller.
+Warning: bpf$BPF_RAW_TRACEPOINT_OPEN was disabled by Syzkaller.
+Warning: bpf$BPF_TASK_FD_QUERY was disabled by Syzkaller.
+Attempt 1:
+    Time  Bug Name
+       6  INFO: task hung in del_device_store
+       7  INFO: task hung in del_device_store
+       7  INFO: task hung in del_device_store
+       7  INFO: task hung in del_device_store
+       7  INFO: task hung in del_device_store
+       7  INFO: task hung in del_device_store
+       7  INFO: task hung in del_device_store
+       7  INFO: task hung in del_device_store
+The bug was not found.
+About 3 commits remaining
+
+2025-03-10 04:21:34
+Session:   17
+Kernel:    2023-04-23 - e4eea890369c00dd58d97b1c066dc2bddf0da2c7
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Warning: bpf$BPF_PROG_RAW_TRACEPOINT_LOAD was disabled by Syzkaller.
+Warning: bpf$BPF_RAW_TRACEPOINT_OPEN was disabled by Syzkaller.
+Warning: bpf$BPF_TASK_FD_QUERY was disabled by Syzkaller.
+Attempt 1:
+    Time  Bug Name
+       6  INFO: task hung in del_device_store
+       7  INFO: task hung in new_device_store
+       7  INFO: task hung in del_device_store
+       7  INFO: task hung in del_device_store
+       7  INFO: task hung in del_device_store
+       7  INFO: task hung in del_device_store
+       7  INFO: task hung in del_device_store
+The bug was not found.
+About 2 commits remaining
+
+==== Partial Result: Focused Fuzzing ====
+Reproducer:           /home/syzretrospector/syzinspector/wd-bisector-4/reproducers/repro-bug0864-0.prog
+Bisection Result:     2023-04-23 - 06149746e7203d5ffe2d6faf9799ee36203aa8b8
+Bisected Commit Name: Bluetooth: hci_conn: Add support for linking multiple hcon
+Stage Time:           8h59m17s
+Run Time:             8h59m21s
+=========================================
+
+==== Anchor Commit ====
+
+2025-03-10 04:39:36
+Session:   18
+Kernel:    2023-04-23 - e4eea890369c00dd58d97b1c066dc2bddf0da2c7
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+
+Failure: This bug cannot be found at the anchor commit.
+
+====================================================================================================================================================
+Bug Name:             KASAN: slab-use-after-free Read in hci_conn_hash_flush
+Bug Link:             https://syzkaller.appspot.com/bug?extid=8bb72f86fc823817bc5d
+Bisection Result:     2023-04-23 - 06149746e7203d5ffe2d6faf9799ee36203aa8b8
+Bisected Commit Name: Bluetooth: hci_conn: Add support for linking multiple hcon
+Run Time:             9h10m14s
+
+Anchor Commit:        2023-04-30 - 58390c8ce1bddb6c623f62e7ed36383e7fa5c02f
+Bisection Result:     2023-04-23 - 06149746e7203d5ffe2d6faf9799ee36203aa8b8

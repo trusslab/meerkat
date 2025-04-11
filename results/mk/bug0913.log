@@ -1,0 +1,562 @@
+./bin/bisector -i 4 -c /home/syzretrospector/syzinspector/wd-bisector-4/bisector.cfg -a 0280e3c58f92b2fe0e8fbbdf8d386449168de4a8 -F ff-test,poc-test,stateful-corpus,ff-no-find-backup
+Bisecting:          kernel BUG in vhost_get_vq_desc
+Warning: No syscall found that produces fd_vhost.
+Syzbot Link:        https://syzkaller.appspot.com/bug?extid=3140b17cb44a7b174008
+Working Name:       bug0913
+
+No aliases given.
+
+Anchor Commit:      0280e3c58f92b2fe0e8fbbdf8d386449168de4a8
+Repository:         https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
+Branch:             master
+Arch:               amd64
+
+Bisector:           /home/syzretrospector/syzinspector/
+Version:            1.0.4
+Kernel:             /home/syzretrospector/syzinspector/wd-bisector-4/kernel/
+Syzkaller:          /home/syzretrospector/syzinspector/syzkaller/
+Compilers:          /home/syzretrospector/compilers/
+Ccache:             ccache
+Image:              /home/syzretrospector/images/stretch/stretch.img
+Image Key:          /home/syzretrospector/images/stretch/stretch.id_rsa
+
+Workdir:            /home/syzretrospector/syzinspector/wd-bisector-4/
+Kconfig:            /home/syzretrospector/syzinspector/wd-bisector-4/config-bug0913.txt
+Reproducers: (1)    /home/syzretrospector/syzinspector/wd-bisector-4/reproducers/
+Primary PoC:        /home/syzretrospector/syzinspector/wd-bisector-4/reproducers/repro-bug0913-1.prog
+Syzkaller Workdir:  /home/syzretrospector/syzinspector/wd-bisector-4/wd-kaller/
+Log Directory:      /home/syzretrospector/syzinspector/wd-bisector-4/log/
+
+Syscalls: (12)      ["eventfd", "ioctl$VHOST_SET_LOG_FD", "ioctl$VHOST_SET_MEM_TABLE", "ioctl$VHOST_SET_VRING_ADDR", "ioctl$VHOST_SET_VRING_BASE", "ioctl$VHOST_SET_VRING_KICK", "ioctl$VHOST_VSOCK_SET_RUNNING", "openat$vhost_vsock", "socketpair$unix", "ioctl$F2FS_IOC_START_ATOMIC_WRITE", "openat$selinux_enforce", "socket"]
+VM Count:           8
+CPU Count:          2
+Procs:              16
+Memory:             4096
+Make Procs:         16
+Max Time:           10
+Max Attempts:       1
+
+==== Anchor Commit ====
+
+2025-03-18 08:09:21
+Session:   1
+Kernel:    2022-01-25 - 0280e3c58f92b2fe0e8fbbdf8d386449168de4a8
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       5  WARNING in vhost_dev_cleanup
+***    5  kernel BUG in vhost_get_vq_desc
+***    5  kernel BUG in vhost_get_vq_desc
+Attempt 2: (RETRY)
+    Time  Bug Name
+       3  WARNING in vhost_dev_cleanup
+       5  WARNING in vhost_dev_cleanup
+       5  WARNING in vhost_dev_cleanup
+***    5  kernel BUG in vhost_get_vq_desc
+***    5  kernel BUG in vhost_get_vq_desc
+***    5  kernel BUG in vhost_get_vq_desc
+***    5  kernel BUG in vhost_get_vq_desc
+Attempt 3: (RETRY)
+    Time  Bug Name
+       5  WARNING in vhost_dev_cleanup
+       5  WARNING in vhost_dev_cleanup
+       5  WARNING in vhost_dev_cleanup
+***    5  kernel BUG in vhost_get_vq_desc
+***    5  kernel BUG in vhost_get_vq_desc
+***    5  kernel BUG in vhost_get_vq_desc
+The bug was found.
+
+New Max Time: 10
+
+==== Major Release Search ====
+17 Releases
+
+2025-03-18 08:40:27
+Session:   2
+Kernel:    2021-10-31 - 8bb7eca972ad531c9b149c0a51ab43a417385813 (v5.15)
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    5  kernel BUG in vhost_get_vq_desc
+***    5  kernel BUG in vhost_get_vq_desc
+***    5  kernel BUG in vhost_get_vq_desc
+Running syz-repro.
+New PoC saved at /home/syzretrospector/syzinspector/wd-bisector-4/reproducers/repro-bug0913-0.prog
+Primary PoC:     /home/syzretrospector/syzinspector/wd-bisector-4/reproducers/repro-bug0913-0.prog
+Run Time:        0h53m0s
+The bug was found.
+About 16 releases remaining
+
+2025-03-18 09:53:52
+Session:   3
+Kernel:    2021-08-29 - 7d2a07b769330c34b4deabeed939325c77a7ec2f (v5.14)
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       3  WARNING in vhost_dev_cleanup
+***    3  kernel BUG in vhost_get_vq_desc
+The bug was found.
+About 15 releases remaining
+
+2025-03-18 10:12:06
+Session:   4
+Kernel:    2021-06-27 - 62fb9874f5da54fdb243003b386128037319b219 (v5.13)
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       3  BUG: sleeping function called from invalid context in lock_sock_nested
+***    3  kernel BUG in vhost_get_vq_desc
+***    3  kernel BUG in vhost_get_vq_desc
+The bug was found.
+About 14 releases remaining
+
+2025-03-18 10:29:58
+Session:   5
+Kernel:    2021-02-14 - f40ddce88593482919761f74910f42f4b84c004b (v5.11)
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    3  kernel BUG in vhost_get_vq_desc
+Running syz-repro.
+syz-repro was terminated after 60 minutes
+Run Time:        1h0m0s
+The bug was found.
+About 13 releases remaining
+
+2025-03-18 11:47:33
+Session:   6
+Kernel:    2020-10-11 - bbf5c979011a099af5dc76498918ed7df445635b (v5.9)
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.1.0-syz/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    3  kernel BUG in vhost_get_vq_desc
+Running syz-repro.
+syz-repro was terminated after 60 minutes
+Run Time:        1h0m0s
+The bug was found.
+About 12 releases remaining
+
+2025-03-18 13:04:25
+Session:   7
+Kernel:    2020-05-31 - 3d77e6a8804abcc0504c904bd6e5cdf3a5cf8162 (v5.7)
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.1.0-syz/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       3  WARNING in vhost_dev_cleanup
+       3  WARNING in vhost_dev_cleanup
+***    3  kernel BUG in vhost_get_vq_desc
+Running syz-repro.
+syz-repro was terminated after 60 minutes
+Run Time:        1h0m0s
+The bug was found.
+About 11 releases remaining
+
+2025-03-18 14:20:49
+Session:   8
+Kernel:    2020-01-26 - d5226fa6dbae0569ee43ecfc08bdcd6770fc4755 (v5.5)
+Compiler:  ccache /home/syzretrospector/compilers/gcc-9.0.0-20181231/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       3  WARNING in vhost_dev_cleanup
+       5  WARNING in vhost_dev_cleanup
+       5  WARNING in vhost_dev_cleanup
+***    5  kernel BUG in vhost_get_vq_desc
+***    5  kernel BUG in vhost_get_vq_desc
+***    5  kernel BUG in vhost_get_vq_desc
+Running syz-repro.
+syz-repro was terminated after 60 minutes
+Run Time:        1h0m0s
+The bug was found.
+About 10 releases remaining
+
+2025-03-18 15:40:04
+Session:   9
+Kernel:    2019-09-15 - 4d856f72c10ecb060868ed10ff1b1453943fc6c8 (v5.3)
+Compiler:  ccache /home/syzretrospector/compilers/gcc-9.0.0-20181231/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       2  lost connection to test machine
+       2  lost connection to test machine
+       2  lost connection to test machine
+       2  lost connection to test machine
+       2  lost connection to test machine
+       2  lost connection to test machine
+       2  lost connection to test machine
+       2  lost connection to test machine
+       3  lost connection to test machine
+       3  lost connection to test machine
+       3  lost connection to test machine
+       3  lost connection to test machine
+       3  lost connection to test machine
+       3  lost connection to test machine
+       3  lost connection to test machine
+       3  lost connection to test machine
+       5  lost connection to test machine
+       5  lost connection to test machine
+       5  lost connection to test machine
+       5  lost connection to test machine
+       5  lost connection to test machine
+       5  lost connection to test machine
+       5  lost connection to test machine
+       5  lost connection to test machine
+       6  lost connection to test machine
+       6  lost connection to test machine
+       6  lost connection to test machine
+       6  lost connection to test machine
+       6  lost connection to test machine
+       6  lost connection to test machine
+       6  lost connection to test machine
+       6  lost connection to test machine
+       8  lost connection to test machine
+       8  lost connection to test machine
+       8  lost connection to test machine
+       8  lost connection to test machine
+       8  lost connection to test machine
+       8  lost connection to test machine
+       8  lost connection to test machine
+       8  lost connection to test machine
+       9  lost connection to test machine
+       9  lost connection to test machine
+       9  lost connection to test machine
+       9  lost connection to test machine
+       9  lost connection to test machine
+       9  lost connection to test machine
+       9  lost connection to test machine
+       9  lost connection to test machine
+      10  lost connection to test machine
+      10  lost connection to test machine
+      10  lost connection to test machine
+      10  lost connection to test machine
+      10  lost connection to test machine
+      10  lost connection to test machine
+      10  lost connection to test machine
+      10  lost connection to test machine
+The bug was not found.
+About 9 releases remaining
+
+==== Kernel Bisection ====
+31223 Linux commits
+
+2025-03-18 16:04:41
+Session:   10
+Kernel:    2019-10-30 - 60845e34f0c5c19a9e86af477b429993952f585b
+Compiler:  ccache /home/syzretrospector/compilers/gcc-9.0.0-20181231/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       2  lost connection to test machine
+       2  lost connection to test machine
+       2  lost connection to test machine
+       2  lost connection to test machine
+       2  lost connection to test machine
+       2  lost connection to test machine
+       2  lost connection to test machine
+       2  lost connection to test machine
+       4  lost connection to test machine
+       4  lost connection to test machine
+       4  lost connection to test machine
+       4  lost connection to test machine
+       4  lost connection to test machine
+       4  lost connection to test machine
+       4  lost connection to test machine
+       4  lost connection to test machine
+       5  lost connection to test machine
+       5  lost connection to test machine
+       5  lost connection to test machine
+       5  lost connection to test machine
+       5  lost connection to test machine
+       5  lost connection to test machine
+       5  lost connection to test machine
+       5  lost connection to test machine
+       6  lost connection to test machine
+       6  lost connection to test machine
+       6  lost connection to test machine
+       6  lost connection to test machine
+       6  lost connection to test machine
+       6  lost connection to test machine
+       6  lost connection to test machine
+       6  lost connection to test machine
+       8  lost connection to test machine
+       8  lost connection to test machine
+       8  lost connection to test machine
+       8  lost connection to test machine
+       8  lost connection to test machine
+       8  lost connection to test machine
+       8  lost connection to test machine
+       8  lost connection to test machine
+       9  lost connection to test machine
+       9  lost connection to test machine
+       9  lost connection to test machine
+       9  lost connection to test machine
+       9  lost connection to test machine
+       9  lost connection to test machine
+       9  lost connection to test machine
+       9  lost connection to test machine
+The bug was not found.
+About 15619 commits remaining
+
+2025-03-18 16:28:47
+Session:   11
+Kernel:    2019-11-27 - 0dd09bc02c1bad55e92306ca83b38b3cf48b9f40
+Compiler:  ccache /home/syzretrospector/compilers/gcc-9.0.0-20181231/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       7  no output from test machine
+       7  no output from test machine
+       7  no output from test machine
+       7  no output from test machine
+       7  no output from test machine
+       7  no output from test machine
+       8  BUG: MAX_LOCKDEP_ENTRIES too low!
+       9  BUG: MAX_LOCKDEP_ENTRIES too low!
+The bug was not found.
+About 8823 commits remaining
+
+2025-03-18 16:53:01
+Session:   12
+Kernel:    2019-12-04 - 6cdc7f2efc25a6dbddf7c57bb2eee5d6c033d678
+Compiler:  ccache /home/syzretrospector/compilers/gcc-9.0.0-20181231/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       7  no output from test machine
+       7  no output from test machine
+       7  no output from test machine
+       7  no output from test machine
+       7  no output from test machine
+       8  BUG: MAX_LOCKDEP_ENTRIES too low!
+       8  no output from test machine
+       9  BUG: MAX_LOCKDEP_ENTRIES too low!
+The bug was not found.
+About 3787 commits remaining
+
+2025-03-18 17:17:08
+Session:   13
+Kernel:    2019-12-19 - a019739c1c32cbd07f62b1d84fa57620897464b1
+Compiler:  ccache /home/syzretrospector/compilers/gcc-9.0.0-20181231/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    3  kernel BUG in vhost_get_vq_desc
+Running syz-repro.
+syz-repro was terminated after 60 minutes
+Run Time:        1h0m0s
+The bug was found.
+About 1895 commits remaining
+
+2025-03-18 18:34:15
+Session:   14
+Kernel:    2019-12-05 - eb275167d18684e07ee43bdc0e09a18326540461
+Compiler:  ccache /home/syzretrospector/compilers/gcc-9.0.0-20181231/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       7  no output from test machine
+       7  no output from test machine
+       7  no output from test machine
+       7  no output from test machine
+       7  no output from test machine
+       7  no output from test machine
+       7  no output from test machine
+       8  BUG: MAX_LOCKDEP_ENTRIES too low!
+The bug was not found.
+About 777 commits remaining
+
+2025-03-18 18:58:29
+Session:   15
+Kernel:    2019-12-07 - 94e89b40235476a83a53a47b9ffb0cb91a4c335e
+Compiler:  ccache /home/syzretrospector/compilers/gcc-9.0.0-20181231/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       3  WARNING in vhost_dev_cleanup
+       3  WARNING in vhost_dev_cleanup
+***    5  kernel BUG in vhost_get_vq_desc
+***    5  kernel BUG in vhost_get_vq_desc
+***    5  kernel BUG in vhost_get_vq_desc
+Running syz-repro.
+syz-repro was terminated after 60 minutes
+Run Time:        1h0m0s
+The bug was found.
+About 376 commits remaining
+
+2025-03-18 20:15:16
+Session:   16
+Kernel:    2019-12-06 - 9feb1af97e7366b512ecb9e4dd61d3252074cda3
+Compiler:  ccache /home/syzretrospector/compilers/gcc-9.0.0-20181231/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       3  WARNING in vhost_dev_cleanup
+       3  WARNING in vhost_dev_cleanup
+***    4  kernel BUG in vhost_get_vq_desc
+Running syz-repro.
+syz-repro was terminated after 60 minutes
+Run Time:        1h0m0s
+The bug was found.
+About 153 commits remaining
+
+2025-03-18 21:33:26
+Session:   17
+Kernel:    2019-12-05 - 7ce4fab8191396a1b8e4bc42d3b90029876b2bcd
+Compiler:  ccache /home/syzretrospector/compilers/gcc-9.0.0-20181231/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       7  no output from test machine
+       7  no output from test machine
+       7  no output from test machine
+       7  no output from test machine
+       7  no output from test machine
+       7  no output from test machine
+       7  no output from test machine
+       8  BUG: MAX_LOCKDEP_ENTRIES too low!
+The bug was not found.
+About 85 commits remaining
+
+2025-03-18 21:57:04
+Session:   18
+Kernel:    2019-12-05 - b0d4beaa5a4b7d31070c41c2e50740304a3f1138
+Compiler:  ccache /home/syzretrospector/compilers/gcc-9.0.0-20181231/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       7  no output from test machine
+       7  no output from test machine
+       7  no output from test machine
+       7  no output from test machine
+       7  no output from test machine
+       7  no output from test machine
+       8  BUG: MAX_LOCKDEP_ENTRIES too low!
+       8  BUG: MAX_LOCKDEP_ENTRIES too low!
+The bug was not found.
+About 41 commits remaining
+
+2025-03-18 22:12:07
+Session:   19
+Kernel:    2019-12-03 - 87f80d623c6c93c721b2aaead8a45e848bc8ffbf
+Compiler:  ccache /home/syzretrospector/compilers/gcc-9.0.0-20181231/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       5  WARNING in vhost_dev_cleanup
+***    5  kernel BUG in vhost_get_vq_desc
+***    5  kernel BUG in vhost_get_vq_desc
+***    5  kernel BUG in vhost_get_vq_desc
+Running syz-repro.
+syz-repro was terminated after 60 minutes
+Run Time:        1h0m0s
+The bug was found.
+About 21 commits remaining
+
+2025-03-18 23:31:11
+Session:   20
+Kernel:    2019-12-03 - 8cdda87a4414092cd210e766189cf0353a844861
+Compiler:  ccache /home/syzretrospector/compilers/gcc-9.0.0-20181231/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       5  WARNING in vhost_dev_cleanup
+       5  WARNING in vhost_dev_cleanup
+***    5  kernel BUG in vhost_get_vq_desc
+Running syz-repro.
+syz-repro was terminated after 60 minutes
+Run Time:        1h0m0s
+The bug was found.
+About 11 commits remaining
+
+2025-03-19 00:47:17
+Session:   21
+Kernel:    2019-12-02 - f67676d160c6ee2ed82917fadfed6d29cab8237c
+Compiler:  ccache /home/syzretrospector/compilers/gcc-9.0.0-20181231/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    4  kernel BUG in vhost_get_vq_desc
+Running syz-repro.
+syz-repro was terminated after 60 minutes
+Run Time:        1h0m0s
+The bug was found.
+About 6 commits remaining
+
+2025-03-19 02:01:14
+Session:   22
+Kernel:    2019-12-02 - 441cdbd5449b4923cd413d3ba748124f91388be9
+Compiler:  ccache /home/syzretrospector/compilers/gcc-9.0.0-20181231/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       7  no output from test machine
+       7  no output from test machine
+       7  no output from test machine
+       7  no output from test machine
+       7  no output from test machine
+       7  no output from test machine
+       9  BUG: MAX_LOCKDEP_ENTRIES too low!
+       9  BUG: MAX_LOCKDEP_ENTRIES too low!
+The bug was not found.
+About 4 commits remaining
+
+2025-03-19 02:16:14
+Session:   23
+Kernel:    2019-12-02 - 1a6b74fc87024db59d41cd7346bd437f20fb3e2d
+Compiler:  ccache /home/syzretrospector/compilers/gcc-9.0.0-20181231/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       6  BUG: MAX_LOCKDEP_ENTRIES too low!
+       6  BUG: MAX_LOCKDEP_ENTRIES too low!
+       7  BUG: MAX_LOCKDEP_ENTRIES too low!
+***    7  kernel BUG in vhost_get_vq_desc
+***    7  kernel BUG in vhost_get_vq_desc
+Running syz-repro.
+syz-repro was terminated after 60 minutes
+Run Time:        1h0m0s
+The bug was found.
+About 3 commits remaining
+
+2025-03-19 03:28:07
+Session:   24
+Kernel:    2019-12-02 - 490547ca2df66b8413bce97cb651630f2c531487
+Compiler:  ccache /home/syzretrospector/compilers/gcc-9.0.0-20181231/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       6  BUG: MAX_LOCKDEP_ENTRIES too low!
+***    6  kernel BUG in vhost_get_vq_desc
+***    6  kernel BUG in vhost_get_vq_desc
+Running syz-repro.
+syz-repro was terminated after 60 minutes
+Run Time:        1h0m0s
+The bug was found.
+About 2 commits remaining
+
+==== Partial Result: Focused Fuzzing ====
+Reproducer:           /home/syzretrospector/syzinspector/wd-bisector-4/reproducers/repro-bug0913-0.prog
+Bisection Result:     2019-12-02 - 490547ca2df66b8413bce97cb651630f2c531487
+Bisected Commit Name: block: don't send uevent for empty disk when not invalidating
+Stage Time:           20h29m42s
+Run Time:             20h29m44s
+=========================================
+
+==== Anchor Commit ====
+
+2025-03-19 04:39:03
+Session:   25
+Kernel:    2019-12-02 - 441cdbd5449b4923cd413d3ba748124f91388be9
+Compiler:  ccache /home/syzretrospector/compilers/gcc-9.0.0-20181231/bin/gcc
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+
+Failure: This bug cannot be found at the anchor commit.
+
+====================================================================================================================================================
+Bug Name:             kernel BUG in vhost_get_vq_desc
+Bug Link:             https://syzkaller.appspot.com/bug?extid=3140b17cb44a7b174008
+Bisection Result:     2019-12-02 - 490547ca2df66b8413bce97cb651630f2c531487
+Bisected Commit Name: block: don't send uevent for empty disk when not invalidating
+Run Time:             20h39m24s
+
+Anchor Commit:        2022-01-25 - 0280e3c58f92b2fe0e8fbbdf8d386449168de4a8
+Bisection Result:     2019-12-02 - 490547ca2df66b8413bce97cb651630f2c531487

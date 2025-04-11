@@ -1,0 +1,288 @@
+./bin/bisector -i 4 -c /home/syzretrospector/syzinspector/wd-bisector-4/bisector.cfg -a 987a926c1d8a40e4256953b04771fbdb63bc7938 -F ff-test,poc-test,stateful-corpus,ff-no-find-backup
+Bisecting:          WARNING in change_protection
+Syzbot Link:        https://syzkaller.appspot.com/bug?extid=2b9b4f0895be09a6dec3
+Working Name:       bug0911
+
+No aliases given.
+
+Anchor Commit:      987a926c1d8a40e4256953b04771fbdb63bc7938
+Repository:         https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
+Branch:             master
+Arch:               amd64
+
+Bisector:           /home/syzretrospector/syzinspector/
+Version:            1.0.4
+Kernel:             /home/syzretrospector/syzinspector/wd-bisector-4/kernel/
+Syzkaller:          /home/syzretrospector/syzinspector/syzkaller/
+Compilers:          /home/syzretrospector/compilers/
+Ccache:             ccache
+Image:              /home/syzretrospector/images/stretch/stretch.img
+Image Key:          /home/syzretrospector/images/stretch/stretch.id_rsa
+
+Workdir:            /home/syzretrospector/syzinspector/wd-bisector-4/
+Kconfig:            /home/syzretrospector/syzinspector/wd-bisector-4/config-bug0911.txt
+Reproducers: (1)    /home/syzretrospector/syzinspector/wd-bisector-4/reproducers/
+Primary PoC:        /home/syzretrospector/syzinspector/wd-bisector-4/reproducers/repro-bug0911-6.prog
+Syzkaller Workdir:  /home/syzretrospector/syzinspector/wd-bisector-4/wd-kaller/
+Log Directory:      /home/syzretrospector/syzinspector/wd-bisector-4/log/
+
+Syscalls: (6)       ["ioctl$UFFDIO_API", "ioctl$UFFDIO_REGISTER", "ioctl$UFFDIO_WRITEPROTECT", "mmap", "userfaultfd", "openat$selinux_enforce"]
+VM Count:           8
+CPU Count:          2
+Procs:              16
+Memory:             4096
+Make Procs:         16
+Max Time:           10
+Max Attempts:       1
+
+==== Anchor Commit ====
+
+2025-03-18 01:57:27
+Session:   1
+Kernel:    2022-09-29 - 987a926c1d8a40e4256953b04771fbdb63bc7938
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       3  INFO: rcu detected stall in corrupted
+***    9  WARNING in change_protection
+Attempt 2: (RETRY)
+    Time  Bug Name
+       3  INFO: rcu detected stall in corrupted
+***    3  WARNING in change_protection
+***    3  WARNING in change_protection
+***    3  WARNING in change_protection
+***    3  WARNING in change_protection
+Attempt 3: (RETRY)
+    Time  Bug Name
+***    2  WARNING in change_protection
+The bug was found.
+
+New Max Time: 11
+
+==== Major Release Search ====
+18 Releases
+
+2025-03-18 02:29:26
+Session:   2
+Kernel:    2022-07-31 - 3d7cb6b04c3f3115719235cc6866b10326de34cd (v5.19)
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    2  WARNING in change_protection
+Running syz-repro.
+New PoC saved at /home/syzretrospector/syzinspector/wd-bisector-4/reproducers/repro-bug0911-0.prog
+Primary PoC:     /home/syzretrospector/syzinspector/wd-bisector-4/reproducers/repro-bug0911-0.prog
+Run Time:        0h10m0s
+The bug was found.
+About 17 releases remaining
+
+2025-03-18 02:57:48
+Session:   3
+Kernel:    2022-05-22 - 4b0986a3613c92f4ec1bdc7f60ec66fea135991f (v5.18)
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 16 releases remaining
+
+==== Kernel Bisection ====
+16400 Linux commits
+
+2025-03-18 03:24:27
+Session:   4
+Kernel:    2022-05-26 - c011dd537ffe47462051930413fed07dbdc80313
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 8495 commits remaining
+
+2025-03-18 03:50:40
+Session:   5
+Kernel:    2022-06-08 - 5d4af9c1f04ab0411ba5818baad9a68e87f33099
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    2  WARNING in change_protection
+The bug was found.
+About 4250 commits remaining
+
+2025-03-18 04:08:16
+Session:   6
+Kernel:    2022-05-26 - 7e284070abe53d448517b80493863595af4ab5f0
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    3  WARNING in change_protection
+***    3  WARNING in change_protection
+***    3  WARNING in change_protection
+The bug was found.
+About 2133 commits remaining
+
+2025-03-18 04:26:46
+Session:   7
+Kernel:    2022-05-26 - a0439cf4eca05fe562f19ece4b6761852d911adb
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 1059 commits remaining
+
+2025-03-18 04:42:07
+Session:   8
+Kernel:    2022-05-26 - 98931dd95fd489fcbfa97da563505a6f071d7c77
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    2  WARNING in change_protection
+Running syz-repro.
+New PoC saved at /home/syzretrospector/syzinspector/wd-bisector-4/reproducers/repro-bug0911-1.prog
+Primary PoC:     /home/syzretrospector/syzinspector/wd-bisector-4/reproducers/repro-bug0911-0.prog
+Run Time:        0h10m0s
+The bug was found.
+About 522 commits remaining
+
+2025-03-18 05:09:38
+Session:   9
+Kernel:    2022-05-13 - 54943a1a4d2a3fed23d31e96a91aa9d18ea74500
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    2  WARNING in change_protection
+The bug was found.
+About 261 commits remaining
+
+2025-03-18 05:26:47
+Session:   10
+Kernel:    2022-04-29 - eae3cb2e87ff84547e66211b81301a8f9122840f
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 131 commits remaining
+
+2025-03-18 05:52:48
+Session:   11
+Kernel:    2022-05-13 - b304c6f0d39d927a87e72a8ac6c89b96ac25f355
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       9  WARNING: ODEBUG bug in netdev_run_todo
+The bug was not found.
+About 66 commits remaining
+
+2025-03-18 06:18:54
+Session:   12
+Kernel:    2022-05-13 - c64e912c865a1a0df1c312bca946985eb095afa5
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       9  WARNING: ODEBUG bug in netdev_run_todo
+The bug was not found.
+About 34 commits remaining
+
+2025-03-18 06:44:55
+Session:   13
+Kernel:    2022-05-13 - b48d8a8e5ce53e3114a1ffe96563e3555b51d40b
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    3  WARNING in change_protection
+***    3  WARNING in change_protection
+***    3  WARNING in change_protection
+***    3  WARNING in change_protection
+The bug was found.
+About 17 commits remaining
+
+2025-03-18 07:03:03
+Session:   14
+Kernel:    2022-05-13 - c0eeeb02d9df878c71a457008900b650d94bd0d9
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    3  WARNING in change_protection
+***    3  WARNING in change_protection
+***    3  WARNING in change_protection
+***    3  WARNING in change_protection
+Running syz-repro.
+New PoC saved at /home/syzretrospector/syzinspector/wd-bisector-4/reproducers/repro-bug0911-1.prog
+Primary PoC:     /home/syzretrospector/syzinspector/wd-bisector-4/reproducers/repro-bug0911-0.prog
+Run Time:        0h11m0s
+The bug was found.
+About 9 commits remaining
+
+2025-03-18 07:23:17
+Session:   15
+Kernel:    2022-05-13 - deb4c93a9871082a7df6a99ca8fa48024665a71a
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       6  WARNING: ODEBUG bug in corrupted
+The bug was not found.
+About 5 commits remaining
+
+2025-03-18 07:38:57
+Session:   16
+Kernel:    2022-05-13 - b1f9e876862d8f7176299ec4fb2108bc1045cbc8
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    3  WARNING in change_protection
+***    3  WARNING in change_protection
+***    3  WARNING in change_protection
+***    3  WARNING in change_protection
+The bug was found.
+About 3 commits remaining
+
+2025-03-18 07:46:15
+Session:   17
+Kernel:    2022-05-13 - 8e165e733bfa06edbcdbe491ef13b2bf1a3fa883
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 2 commits remaining
+
+==== Partial Result: Focused Fuzzing ====
+Reproducer:           /home/syzretrospector/syzinspector/wd-bisector-4/reproducers/repro-bug0911-0.prog
+Bisection Result:     2022-05-13 - b1f9e876862d8f7176299ec4fb2108bc1045cbc8
+Bisected Commit Name: mm/uffd: enable write protection for shmem & hugetlbfs
+Stage Time:           6h4m8s
+Run Time:             6h4m9s
+=========================================
+
+==== Anchor Commit ====
+
+2025-03-18 08:01:35
+Session:   18
+Kernel:    2022-05-13 - 8e165e733bfa06edbcdbe491ef13b2bf1a3fa883
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+
+Failure: This bug cannot be found at the anchor commit.
+
+====================================================================================================================================================
+Bug Name:             WARNING in change_protection
+Bug Link:             https://syzkaller.appspot.com/bug?extid=2b9b4f0895be09a6dec3
+Bisection Result:     2022-05-13 - b1f9e876862d8f7176299ec4fb2108bc1045cbc8
+Bisected Commit Name: mm/uffd: enable write protection for shmem & hugetlbfs
+Run Time:             6h11m1s
+
+Anchor Commit:        2022-09-29 - 987a926c1d8a40e4256953b04771fbdb63bc7938
+Bisection Result:     2022-05-13 - b1f9e876862d8f7176299ec4fb2108bc1045cbc8
