@@ -13,7 +13,9 @@ PROJECTNAME := bisector
 
 .PHONY: all $(PROJECTNAME) helpers tools syzkaller
 
-all: $(PROJECTNAME) helpers tools syzkaller
+all-$(PROJECTNAME): $(PROJECTNAME) helpers tools
+
+all: all-$(PROJECTNAME) syzkaller
 
 $(BUILDDIR)%.o: $(LIBDIR)%.cpp $(INCDIR)%.h | $(BUILDDIR)
 	@echo "  CC     $@"
@@ -93,4 +95,6 @@ syzkaller:
 clean:
 	$(RM) -r $(BINDIR) $(BUILDDIR)
 	$(RM) $(HELPERDIR)diffdate
+
+syzkaller-clean:
 	$(MAKE) -C syzkaller/ clean
