@@ -319,7 +319,7 @@ void ProgOpts::compile_execopts(std::vector<std::string> &optv) const
     {
         optv.push_back("-enable=all");
         optv.push_back("-sandbox="+(sandbox.empty() ? "none" : sandbox));
-        optv.push_back("-tmpdir");
+        //optv.push_back("-tmpdir");
         return;
     }
 
@@ -330,8 +330,8 @@ void ProgOpts::compile_execopts(std::vector<std::string> &optv) const
             optv.push_back("-sandbox_arg="+std::to_string(sandbox_arg));
     }
 
-    if (tmpdir)
-        optv.push_back("-tmpdir");
+    //if (tmpdir)
+        //optv.push_back("-tmpdir");
     
     if (any_enabled())
         optv.push_back(enable_string());
