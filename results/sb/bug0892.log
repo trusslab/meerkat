@@ -1,0 +1,421 @@
+charm starts bisection 2025-04-12 09:11:56.45497114 -0700 PDT m=+10.150244231
+bisecting cause commit starting from d9fc1511728c15df49ff18e49a494d00f78b7cd4
+building syzkaller on HEAD
+ensuring issue is reproducible on original commit d9fc1511728c15df49ff18e49a494d00f78b7cd4
+
+testing commit d9fc1511728c15df49ff18e49a494d00f78b7cd4 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 059c8711f568ddaa5ac26c06a407d7d1db670745558ae12152ff473e56d4f4fe
+run #0: crashed: general protection fault in pn533_out_complete
+run #1: crashed: general protection fault in pn533_out_complete
+run #2: crashed: general protection fault in pn533_out_complete
+run #3: crashed: general protection fault in pn533_out_complete
+run #4: crashed: general protection fault in pn533_out_complete
+run #5: crashed: general protection fault in pn533_out_complete
+run #6: basic kernel testing failed: INFO: rcu detected stall in corrupted
+run #7: crashed: INFO: rcu detected stall in corrupted
+representative crash: general protection fault in pn533_out_complete, types: [UNKNOWN]
+picked [v6.1 v6.0 v5.19 v5.17 v5.15 v5.13 v5.11 v5.9 v5.6 v5.3 v5.0 v4.19] out of 24 release tags
+testing release v6.1
+testing commit 830b3c68c1fb1e9176028d02ef86f3cf76aa2476 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 7cec49393dc46a651f801d0bb83837f51061b2b9eb7d3fa514bea838c14194e9
+run #0: basic kernel testing failed: INFO: rcu detected stall in corrupted
+run #1: OK
+run #2: OK
+run #3: OK
+run #4: OK
+run #5: OK
+run #6: OK
+run #7: OK
+false negative chance: 0.000
+# git bisect start d9fc1511728c15df49ff18e49a494d00f78b7cd4 830b3c68c1fb1e9176028d02ef86f3cf76aa2476
+Bisecting: 7787 revisions left to test after this (roughly 13 steps)
+[1ca06f1c1acecbe02124f14a37cce347b8c1a90c] Merge tag 'xtensa-20221213' of https://github.com/jcmvbkbc/linux-xtensa
+
+testing commit 1ca06f1c1acecbe02124f14a37cce347b8c1a90c gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 277f2e25cd66e08767e675f07c68c184e5d526110950450b8142f2285ef9c99d
+run #0: crashed: INFO: rcu detected stall in corrupted
+run #1: basic kernel testing failed: INFO: rcu detected stall in corrupted
+run #2: basic kernel testing failed: INFO: rcu detected stall in corrupted
+run #3: basic kernel testing failed: INFO: rcu detected stall in corrupted
+run #4: OK
+run #5: OK
+run #6: OK
+run #7: OK
+representative crash: INFO: rcu detected stall in corrupted, types: [HANG]
+unable to determine the verdict: 4 good runs (wanted 4), for bad wanted 4 in total, got 5
+# git bisect skip 1ca06f1c1acecbe02124f14a37cce347b8c1a90c
+Bisecting: 7787 revisions left to test after this (roughly 13 steps)
+[f4b09c295e54ef310085253f986f62999626865f] drm/amdgpu: add printing to indicate rpm completeness
+
+testing commit f4b09c295e54ef310085253f986f62999626865f gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 1265829951016b4eb807fc88c38dcd357eed01393eaf93aaf1d3f94a6df3f43a
+all runs: boot failed: WARNING in fb_deferred_io_schedule_flush
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip f4b09c295e54ef310085253f986f62999626865f
+Bisecting: 7787 revisions left to test after this (roughly 13 steps)
+[d472cf797c4e268613dbce5ec9b95d0bcae19ecb] debugfs: fix error when writing negative value to atomic_t debugfs file
+
+testing commit d472cf797c4e268613dbce5ec9b95d0bcae19ecb gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: cf037c75dd0aa797238d00c05216098fb6f6611274856541c6a4431e2e301afc
+run #0: basic kernel testing failed: INFO: rcu detected stall in corrupted
+run #1: basic kernel testing failed: INFO: rcu detected stall in corrupted
+run #2: basic kernel testing failed: INFO: rcu detected stall in corrupted
+run #3: basic kernel testing failed: INFO: rcu detected stall in corrupted
+run #4: basic kernel testing failed: INFO: rcu detected stall in corrupted
+run #5: OK
+run #6: OK
+run #7: OK
+unable to determine the verdict: 3 good runs (wanted 4), for bad wanted 4 in total, got 3
+# git bisect skip d472cf797c4e268613dbce5ec9b95d0bcae19ecb
+Bisecting: 7787 revisions left to test after this (roughly 13 steps)
+[6d135d9e2b004024b84bd7c308f58300b64d29b6] octeontx2-af: Fix the size of memory allocated for the 'id_bmap' bitmap
+
+testing commit 6d135d9e2b004024b84bd7c308f58300b64d29b6 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 1ce16087c032421b7ca82a4b44c22ef76a819ad1dff15067473fbcef6c1e3040
+run #0: basic kernel testing failed: INFO: rcu detected stall in corrupted
+run #1: crashed: INFO: rcu detected stall in corrupted
+run #2: crashed: INFO: rcu detected stall in corrupted
+run #3: crashed: INFO: rcu detected stall in corrupted
+run #4: crashed: INFO: rcu detected stall in corrupted
+run #5: OK
+run #6: OK
+run #7: OK
+representative crash: INFO: rcu detected stall in corrupted, types: [HANG]
+# git bisect bad 6d135d9e2b004024b84bd7c308f58300b64d29b6
+Bisecting: 701 revisions left to test after this (roughly 10 steps)
+[3ca6c3b43c72a5fd0399d9ee1c7e5af978895ff1] Merge tag 'rxrpc-next-20221108' of git://git.kernel.org/pub/scm/linux/kernel/git/dhowells/linux-fs
+
+testing commit 3ca6c3b43c72a5fd0399d9ee1c7e5af978895ff1 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 384b3dd9d030337a008d00bf5d05ced664e34069c2bb5c990ee1b4ed5496e32a
+all runs: basic kernel testing failed: WARNING in devl_port_unregister
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip 3ca6c3b43c72a5fd0399d9ee1c7e5af978895ff1
+Bisecting: 701 revisions left to test after this (roughly 10 steps)
+[4e0243e7128c9b25ea2739136076a95d6adaba5e] net: phy: fix yt8521 duplicated argument to & or |
+
+testing commit 4e0243e7128c9b25ea2739136076a95d6adaba5e gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: afea8bf862191d898f321a4160ea6affe1df0057aa2557c8c74ea41734bf68ff
+all runs: basic kernel testing failed: WARNING in devl_port_unregister
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip 4e0243e7128c9b25ea2739136076a95d6adaba5e
+Bisecting: 701 revisions left to test after this (roughly 10 steps)
+[957ed5e7129f2ce85dd76e4cdce749388295467d] Merge branch 'tcp-plb'
+
+testing commit 957ed5e7129f2ce85dd76e4cdce749388295467d gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 183e3687a2064f15bd7e5a7275eb765d7fe7aee1ac03f986c0bf3a19b4f71858
+all runs: boot failed: WARNING in genl_register_family
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip 957ed5e7129f2ce85dd76e4cdce749388295467d
+Bisecting: 701 revisions left to test after this (roughly 10 steps)
+[92d3d9ba9bb3ab17b5bd4fd46032ced0264872c9] genetlink: add policies for both doit and dumpit in ctrl_dumppolicy_start()
+
+testing commit 92d3d9ba9bb3ab17b5bd4fd46032ced0264872c9 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: bcc2b834e18a21d77a46696b0a81e467745f34c595eb46b599c6adb91ba9ad09
+all runs: basic kernel testing failed: WARNING in devl_port_unregister
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip 92d3d9ba9bb3ab17b5bd4fd46032ced0264872c9
+Bisecting: 701 revisions left to test after this (roughly 10 steps)
+[8cf4f8c7d99addb6c2c2273fac7c20ca7c50db45] Merge tag 'rxrpc-next-20221116' of git://git.kernel.org/pub/scm/linux/kernel/git/dhowells/linux-fs
+
+testing commit 8cf4f8c7d99addb6c2c2273fac7c20ca7c50db45 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 0bd56cc5fe7d1e6be2edeae0a7cf54b815e6d1248f797d148b4818154dd5ca96
+run #0: basic kernel testing failed: INFO: rcu detected stall in corrupted
+run #1: basic kernel testing failed: INFO: rcu detected stall in corrupted
+run #2: basic kernel testing failed: INFO: rcu detected stall in corrupted
+run #3: basic kernel testing failed: INFO: rcu detected stall in corrupted
+run #4: crashed: INFO: rcu detected stall in corrupted
+run #5: crashed: INFO: rcu detected stall in corrupted
+run #6: OK
+run #7: OK
+representative crash: INFO: rcu detected stall in corrupted, types: [HANG]
+# git bisect bad 8cf4f8c7d99addb6c2c2273fac7c20ca7c50db45
+Bisecting: 559 revisions left to test after this (roughly 9 steps)
+[6182d5875c330a5a611687caa05f47752455720c] net: dcb: add new apptrust attribute
+
+testing commit 6182d5875c330a5a611687caa05f47752455720c gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: c71db1e43f99b8815fe335ccb88afe1ce5bb3588d3d48a6c4a7307399a99b782
+all runs: boot failed: WARNING in genl_register_family
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip 6182d5875c330a5a611687caa05f47752455720c
+Bisecting: 559 revisions left to test after this (roughly 9 steps)
+[fb398432db2f66f46714b855354c79223649e3ab] selftests: mlxsw: Add a test for locked port trap
+
+testing commit fb398432db2f66f46714b855354c79223649e3ab gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: f0d3b42c6f0c3ff468bb425e0a4e77d01ac6026f6078012f1f966b9aff46529c
+run #0: basic kernel testing failed: WARNING in devl_port_unregister
+run #1: basic kernel testing failed: WARNING in devl_port_unregister
+run #2: basic kernel testing failed: WARNING in devl_port_unregister
+run #3: basic kernel testing failed: WARNING in devl_port_unregister
+run #4: basic kernel testing failed: WARNING in devl_port_unregister
+run #5: basic kernel testing failed: WARNING in devl_port_unregister
+run #6: basic kernel testing failed: WARNING in devl_port_unregister
+run #7: crashed: WARNING in devl_port_unregister
+representative crash: WARNING in devl_port_unregister, types: [WARNING]
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 1
+# git bisect skip fb398432db2f66f46714b855354c79223649e3ab
+Bisecting: 559 revisions left to test after this (roughly 9 steps)
+[216647e6aaaf14773d85b6681eca1344bcd14757] brcmfmac: fix firmware trap while dumping obss stats
+
+testing commit 216647e6aaaf14773d85b6681eca1344bcd14757 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: f1c17db0acf87b0c82c203aba426cbe65d99ab90f227d88411bcb53bddeb217e
+all runs: OK
+false negative chance: 0.000
+# git bisect good 216647e6aaaf14773d85b6681eca1344bcd14757
+Bisecting: 553 revisions left to test after this (roughly 9 steps)
+[fbeb229a6622523c092a13c02bd0e15f69240dde] Merge git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net
+
+testing commit fbeb229a6622523c092a13c02bd0e15f69240dde gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: b87499f81e44cbaa5f52ae8e797a31ead9e02c79f15a52f432acde3b376f6e9e
+run #0: basic kernel testing failed: INFO: rcu detected stall in corrupted
+run #1: basic kernel testing failed: INFO: rcu detected stall in corrupted
+run #2: basic kernel testing failed: INFO: rcu detected stall in corrupted
+run #3: basic kernel testing failed: INFO: rcu detected stall in corrupted
+run #4: crashed: INFO: rcu detected stall in corrupted
+run #5: OK
+run #6: OK
+run #7: OK
+representative crash: INFO: rcu detected stall in corrupted, types: [HANG]
+unable to determine the verdict: 3 good runs (wanted 4), for bad wanted 4 in total, got 4
+# git bisect skip fbeb229a6622523c092a13c02bd0e15f69240dde
+Bisecting: 553 revisions left to test after this (roughly 9 steps)
+[233baf9a1bc46f18ad3bec688f52ea5f818a8a25] net: remove useless parameter of __sock_cmsg_send
+
+testing commit 233baf9a1bc46f18ad3bec688f52ea5f818a8a25 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: e77f9ebe85563bf16101f5a94892ef58e7cd4f955e6c6d723d124014a8175fb1
+all runs: OK
+false negative chance: 0.000
+# git bisect good 233baf9a1bc46f18ad3bec688f52ea5f818a8a25
+Bisecting: 494 revisions left to test after this (roughly 9 steps)
+[a352a2c5d2a504f17c7096c9085177a54917012d] dt-bindings: net: dsa-port: constrain number of 'reg' in ports
+
+testing commit a352a2c5d2a504f17c7096c9085177a54917012d gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 8c46c95f984c27bed0d286d7e86a09c361cc8dc1674849d9c5bb867741fd1ee0
+all runs: basic kernel testing failed: WARNING in devl_port_unregister
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip a352a2c5d2a504f17c7096c9085177a54917012d
+Bisecting: 494 revisions left to test after this (roughly 9 steps)
+[eadb434374075d3a09bcd983d340dad8d6a5138a] net: ethernet: ti: cpsw_ale: Add cpsw_ale_restore() helper
+
+testing commit eadb434374075d3a09bcd983d340dad8d6a5138a gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 37144599f660c2445300f4d4a566635e0cbf70b0c549a9cd01184598cff5b99c
+all runs: basic kernel testing failed: WARNING in devl_port_unregister
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip eadb434374075d3a09bcd983d340dad8d6a5138a
+Bisecting: 494 revisions left to test after this (roughly 9 steps)
+[341361533011945f0a7da85632662a5879233853] net/mlx5e: kTLS, Use a single async context object per a callback bulk
+
+testing commit 341361533011945f0a7da85632662a5879233853 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 4cebe97c3b32dfe1921e28d65584dca47db91244e7227578db12e243db63ff65
+run #0: basic kernel testing failed: INFO: rcu detected stall in corrupted
+run #1: basic kernel testing failed: INFO: rcu detected stall in corrupted
+run #2: crashed: INFO: rcu detected stall in corrupted
+run #3: crashed: INFO: rcu detected stall in corrupted
+run #4: OK
+run #5: OK
+run #6: OK
+run #7: OK
+representative crash: INFO: rcu detected stall in corrupted, types: [HANG]
+# git bisect bad 341361533011945f0a7da85632662a5879233853
+Bisecting: 410 revisions left to test after this (roughly 9 steps)
+[69b957440a6379b4ae4bc6eef07bbf5efdeb4233] iavf: Change information about device removal in dmesg
+
+testing commit 69b957440a6379b4ae4bc6eef07bbf5efdeb4233 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 4882aab696f57ae6d343a9e9d4b50792e5df333d6348766cb9427d2b6783e76a
+all runs: boot failed: WARNING in genl_register_family
+unable to determine the verdict: 0 good runs (wanted 6), for bad wanted 4 in total, got 0
+# git bisect skip 69b957440a6379b4ae4bc6eef07bbf5efdeb4233
+Bisecting: 410 revisions left to test after this (roughly 9 steps)
+[ec99451f0a488e50aaf0ce467db8771411edc407] selftests/bpf: Add config.aarch64
+
+testing commit ec99451f0a488e50aaf0ce467db8771411edc407 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 6b3fc7486e1d565f408f80cfb1989d8cbd035daa9c5c915631e4f537d5fbb760
+run #0: basic kernel testing failed: WARNING in c_start
+run #1: basic kernel testing failed: WARNING in c_start
+run #2: basic kernel testing failed: WARNING in c_start
+run #3: basic kernel testing failed: WARNING in c_start
+run #4: basic kernel testing failed: WARNING in c_start
+run #5: basic kernel testing failed: WARNING in c_start
+run #6: basic kernel testing failed: WARNING in c_start
+run #7: basic kernel testing failed: WARNING in smp_call_function_many_cond
+unable to determine the verdict: 0 good runs (wanted 6), for bad wanted 4 in total, got 0
+# git bisect skip ec99451f0a488e50aaf0ce467db8771411edc407
+Bisecting: 410 revisions left to test after this (roughly 9 steps)
+[1d8f16dbdf3693cae7567806cb1fb714fd1bcc70] net: ipa: add a parameter to aggregation registers
+
+testing commit 1d8f16dbdf3693cae7567806cb1fb714fd1bcc70 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 5679617c3ba839cb6cdd357ab7b32c6cde6a59146d29c816bdb60abac0ed90f4
+all runs: basic kernel testing failed: WARNING in devl_port_unregister
+unable to determine the verdict: 0 good runs (wanted 6), for bad wanted 4 in total, got 0
+# git bisect skip 1d8f16dbdf3693cae7567806cb1fb714fd1bcc70
+Bisecting: 410 revisions left to test after this (roughly 9 steps)
+[0143ea09b63d58ed3e19ffdfc444cc23d8d877b6] wifi: mac80211: advertise TWT requester only with HW support
+
+testing commit 0143ea09b63d58ed3e19ffdfc444cc23d8d877b6 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 97be88f5df47b72c60d19f2429b6f97bc7c418f82a7a7933deb19b0a74d62c94
+run #0: basic kernel testing failed: INFO: rcu detected stall in corrupted
+run #1: basic kernel testing failed: INFO: rcu detected stall in corrupted
+run #2: basic kernel testing failed: INFO: rcu detected stall in corrupted
+run #3: crashed: INFO: rcu detected stall in corrupted
+run #4: crashed: INFO: rcu detected stall in corrupted
+run #5: OK
+run #6: OK
+run #7: OK
+representative crash: INFO: rcu detected stall in corrupted, types: [HANG]
+# git bisect bad 0143ea09b63d58ed3e19ffdfc444cc23d8d877b6
+Bisecting: 14 revisions left to test after this (roughly 4 steps)
+[8af9d4068e86dd5c3221ee495ec09537c7fb458b] wifi: atmel: Avoid clashing function prototypes
+
+testing commit 8af9d4068e86dd5c3221ee495ec09537c7fb458b gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 71ddd80938c90a3826f95bf675d3ae5a69ae1b67a186b660ebe23e87758c1882
+run #0: basic kernel testing failed: INFO: rcu detected stall in corrupted
+run #1: basic kernel testing failed: INFO: rcu detected stall in corrupted
+run #2: crashed: INFO: rcu detected stall in corrupted
+run #3: crashed: INFO: rcu detected stall in corrupted
+run #4: crashed: INFO: rcu detected stall in corrupted
+run #5: crashed: INFO: rcu detected stall in corrupted
+run #6: OK
+run #7: OK
+representative crash: INFO: rcu detected stall in corrupted, types: [HANG]
+# git bisect bad 8af9d4068e86dd5c3221ee495ec09537c7fb458b
+Bisecting: 6 revisions left to test after this (roughly 3 steps)
+[1562bdef925117dcd5a5678417c01f703be99589] brcmfmac: Fix AP interface delete issue
+
+testing commit 1562bdef925117dcd5a5678417c01f703be99589 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: c2758b1eb656a3f34413080f9f363ea1adeb8744df48fd2fd5ab1d83b5666b6f
+run #0: basic kernel testing failed: INFO: rcu detected stall in corrupted
+run #1: basic kernel testing failed: INFO: rcu detected stall in corrupted
+run #2: basic kernel testing failed: INFO: rcu detected stall in corrupted
+run #3: crashed: INFO: rcu detected stall in corrupted
+run #4: OK
+run #5: OK
+run #6: OK
+run #7: OK
+representative crash: INFO: rcu detected stall in corrupted, types: [HANG]
+unable to determine the verdict: 4 good runs (wanted 6), for bad wanted 4 in total, got 5
+# git bisect skip 1562bdef925117dcd5a5678417c01f703be99589
+Bisecting: 6 revisions left to test after this (roughly 3 steps)
+[4388827b87d849e51053e098c4e12c707b9fef34] brcmfmac: support station interface creation version 1, 2 and 3
+
+testing commit 4388827b87d849e51053e098c4e12c707b9fef34 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 649847c6ae8ba9b1a466ee9d0053e9ae05bbb2dfd656531bc1225ab395c5e048
+run #0: basic kernel testing failed: INFO: rcu detected stall in corrupted
+run #1: basic kernel testing failed: INFO: rcu detected stall in corrupted
+run #2: basic kernel testing failed: INFO: rcu detected stall in corrupted
+run #3: basic kernel testing failed: INFO: rcu detected stall in corrupted
+run #4: crashed: INFO: rcu detected stall in corrupted
+run #5: crashed: INFO: rcu detected stall in corrupted
+run #6: crashed: INFO: rcu detected stall in corrupted
+run #7: OK
+representative crash: INFO: rcu detected stall in corrupted, types: [HANG]
+# git bisect bad 4388827b87d849e51053e098c4e12c707b9fef34
+Bisecting: 2 revisions left to test after this (roughly 2 steps)
+[2aca4f3734bd717e04943ddf340d49ab62299a00] brcmfmac: return error when getting invalid max_flowrings from dongle
+
+testing commit 2aca4f3734bd717e04943ddf340d49ab62299a00 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: d3d8188467fd70886b37a5d1be02e370e64796394d0a21dff6deb4a3daa231cf
+run #0: basic kernel testing failed: INFO: rcu detected stall in corrupted
+run #1: basic kernel testing failed: INFO: rcu detected stall in corrupted
+run #2: basic kernel testing failed: INFO: rcu detected stall in corrupted
+run #3: basic kernel testing failed: INFO: rcu detected stall in corrupted
+run #4: OK
+run #5: OK
+run #6: OK
+run #7: OK
+unable to determine the verdict: 4 good runs (wanted 6), for bad wanted 4 in total, got 4
+# git bisect skip 2aca4f3734bd717e04943ddf340d49ab62299a00
+Bisecting: 2 revisions left to test after this (roughly 2 steps)
+[dcb485dfc83bfa407e6dbdfb99f02be1446692ce] brcmfmac: add a timer to read console periodically in PCIE bus
+
+testing commit dcb485dfc83bfa407e6dbdfb99f02be1446692ce gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 3c6fe31423822ba8333b0517bd6594248dcfbd1f721546a37a693abdfbabcec5
+run #0: basic kernel testing failed: INFO: rcu detected stall in corrupted
+run #1: basic kernel testing failed: INFO: rcu detected stall in corrupted
+run #2: crashed: INFO: rcu detected stall in corrupted
+run #3: crashed: INFO: rcu detected stall in corrupted
+run #4: crashed: INFO: rcu detected stall in corrupted
+run #5: crashed: INFO: rcu detected stall in corrupted
+run #6: OK
+run #7: OK
+representative crash: INFO: rcu detected stall in corrupted, types: [HANG]
+# git bisect bad dcb485dfc83bfa407e6dbdfb99f02be1446692ce
+Bisecting: 1 revision left to test after this (roughly 1 step)
+[25076fe2a6024bcac009af1b737b184f65826476] brcmfmac: fix CERT-P2P:5.1.10 failure
+
+testing commit 25076fe2a6024bcac009af1b737b184f65826476 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 2dfd514193c9eadeb87590216f0655f2975e030509500afa3c30c0ff03712515
+run #0: basic kernel testing failed: INFO: rcu detected stall in corrupted
+run #1: basic kernel testing failed: INFO: rcu detected stall in corrupted
+run #2: basic kernel testing failed: INFO: rcu detected stall in corrupted
+run #3: basic kernel testing failed: INFO: rcu detected stall in corrupted
+run #4: basic kernel testing failed: INFO: rcu detected stall in corrupted
+run #5: crashed: INFO: rcu detected stall in corrupted
+run #6: crashed: INFO: rcu detected stall in corrupted
+run #7: OK
+representative crash: INFO: rcu detected stall in corrupted, types: [HANG]
+unable to determine the verdict: 1 good runs (wanted 6), for bad wanted 4 in total, got 3
+# git bisect skip 25076fe2a6024bcac009af1b737b184f65826476
+Bisecting: 1 revision left to test after this (roughly 1 step)
+[62ccb2e6f208ea754f62883be5a775f00bd559ab] brcmfmac: Fix authentication latency caused by OBSS stats survey
+
+testing commit 62ccb2e6f208ea754f62883be5a775f00bd559ab gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 2fdd39b7bcb39a09cb994ad551af06470117dbe9490c3f3ea235ec4ffe95fd4b
+run #0: basic kernel testing failed: INFO: rcu detected stall in corrupted
+run #1: basic kernel testing failed: INFO: rcu detected stall in corrupted
+run #2: basic kernel testing failed: INFO: rcu detected stall in corrupted
+run #3: crashed: INFO: rcu detected stall in corrupted
+run #4: OK
+run #5: OK
+run #6: OK
+run #7: OK
+representative crash: INFO: rcu detected stall in corrupted, types: [HANG]
+unable to determine the verdict: 4 good runs (wanted 6), for bad wanted 4 in total, got 5
+# git bisect skip 62ccb2e6f208ea754f62883be5a775f00bd559ab
+There are only 'skip'ped commits left to test.
+The first bad commit could be any of:
+25076fe2a6024bcac009af1b737b184f65826476
+62ccb2e6f208ea754f62883be5a775f00bd559ab
+dcb485dfc83bfa407e6dbdfb99f02be1446692ce
+We cannot bisect more!
+
+accumulated error probability: 0.00
+reproducer is flaky (0.44 repro chance estimate)
+revisions tested: 30, total time: 11h51m16.487320863s (build: 7h51m41.295175296s, test: 3h3m47.066485384s)
+bisection is inconclusive, the first bad commit could be any of:
+25076fe2a6024bcac009af1b737b184f65826476
+62ccb2e6f208ea754f62883be5a775f00bd559ab
+dcb485dfc83bfa407e6dbdfb99f02be1446692ce
+
+general protection fault in pn533_out_complete
+25076fe2a6024bcac009af1b737b184f65826476
+62ccb2e6f208ea754f62883be5a775f00bd559ab
+dcb485dfc83bfa407e6dbdfb99f02be1446692ce

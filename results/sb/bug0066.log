@@ -1,0 +1,540 @@
+TrussLab starts bisection 2025-03-25 11:26:34.730704805 -0700 PDT m=+8.727463730
+bisecting cause commit starting from d888c83fcec75194a8a48ccd283953bdba7b2550
+building syzkaller on HEAD
+ensuring issue is reproducible on original commit d888c83fcec75194a8a48ccd283953bdba7b2550
+
+testing commit d888c83fcec75194a8a48ccd283953bdba7b2550 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: e2201368599fcb518c986afe2011dbd3b5748c0a797e27c7d72faafb17447ba2
+run #0: crashed: KASAN: use-after-free Read in vxlan_vnifilter_dump_dev
+run #1: crashed: KASAN: use-after-free Read in vxlan_vnifilter_dump_dev
+run #2: crashed: KASAN: use-after-free Read in vxlan_vnifilter_dump_dev
+run #3: crashed: KASAN: use-after-free Read in vxlan_vnifilter_dump_dev
+run #4: crashed: KASAN: use-after-free Read in vxlan_vnifilter_dump_dev
+run #5: OK
+run #6: OK
+run #7: OK
+representative crash: KASAN: use-after-free Read in vxlan_vnifilter_dump_dev, types: [KASAN]
+picked [v5.17 v5.16 v5.15 v5.13 v5.11 v5.9 v5.7 v5.5 v5.2 v4.20 v4.19] out of 20 release tags
+testing release v5.17
+testing commit f443e374ae131c168a065ea1748feac6b2e76613 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 4984245c66111d31b4ae6fcc4d24288b4f96827dbb69cce281c59e56d1164b23
+all runs: OK
+false negative chance: 0.000
+# git bisect start d888c83fcec75194a8a48ccd283953bdba7b2550 f443e374ae131c168a065ea1748feac6b2e76613
+Bisecting: 5482 revisions left to test after this (roughly 13 steps)
+[169e77764adc041b1dacba84ea90516a895d43b2] Merge tag 'net-next-5.18' of git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net-next
+
+testing commit 169e77764adc041b1dacba84ea90516a895d43b2 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: aa5cd54ccba8acc519987e3834a358f33e07a78160a77375dff9bd389d0405db
+run #0: crashed: KASAN: use-after-free Read in vxlan_vnifilter_dump_dev
+run #1: crashed: KASAN: use-after-free Read in vxlan_vnifilter_dump_dev
+run #2: crashed: KASAN: use-after-free Read in vxlan_vnifilter_dump_dev
+run #3: OK
+run #4: OK
+run #5: OK
+run #6: OK
+run #7: OK
+representative crash: KASAN: use-after-free Read in vxlan_vnifilter_dump_dev, types: [KASAN]
+# git bisect bad 169e77764adc041b1dacba84ea90516a895d43b2
+Bisecting: 3788 revisions left to test after this (roughly 12 steps)
+[b4bc93bd76d4da32600795cd323c971f00a2e788] Merge tag 'arm-drivers-5.18' of git://git.kernel.org/pub/scm/linux/kernel/git/soc/soc
+
+testing commit b4bc93bd76d4da32600795cd323c971f00a2e788 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 02c0cf0e898ed6223ef39c928b419ad6e3f30c91a9a2a11b37f6f215d90e8c56
+all runs: OK
+false negative chance: 0.004
+# git bisect good b4bc93bd76d4da32600795cd323c971f00a2e788
+Bisecting: 1893 revisions left to test after this (roughly 11 steps)
+[4c7d2e179576e821b461bb4a58d0a834916601fa] Merge branch '100GbE' of git://git.kernel.org/pub/scm/linux/kernel/git/tnguy/next-queue
+
+testing commit 4c7d2e179576e821b461bb4a58d0a834916601fa gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 91529b911ae2a18551715709d33b7b6affc1d15021e79260e1906ba9007b75df
+run #0: crashed: KASAN: use-after-free Read in vxlan_vnifilter_dump_dev
+run #1: crashed: KASAN: use-after-free Read in vxlan_vnifilter_dump_dev
+run #2: crashed: KASAN: use-after-free Read in vxlan_vnifilter_dump_dev
+run #3: crashed: KASAN: use-after-free Read in vxlan_vnifilter_dump_dev
+run #4: OK
+run #5: OK
+run #6: OK
+run #7: OK
+representative crash: KASAN: use-after-free Read in vxlan_vnifilter_dump_dev, types: [KASAN]
+# git bisect bad 4c7d2e179576e821b461bb4a58d0a834916601fa
+Bisecting: 893 revisions left to test after this (roughly 10 steps)
+[b96a79253fff1cd2c928b379eadd8c7a6f8055e1] Merge tag 'wireless-next-2022-02-11' of git://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next
+
+testing commit b96a79253fff1cd2c928b379eadd8c7a6f8055e1 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 9e25cbd4c7b848caeac564228b8927a36c896c9c015885c982adeb9de9057583
+all runs: basic kernel testing failed: WARNING: suspicious RCU usage in hsr_node_get_first
+unable to determine the verdict: 0 good runs (wanted 6), for bad wanted 4 in total, got 0
+# git bisect skip b96a79253fff1cd2c928b379eadd8c7a6f8055e1
+Bisecting: 893 revisions left to test after this (roughly 10 steps)
+[13c6a37d409db9abc9c0bfc6d0a2f07bf0fff60e] selftests/bpf: Add test for reg2btf_ids out of bounds access
+
+testing commit 13c6a37d409db9abc9c0bfc6d0a2f07bf0fff60e gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 1ed7bce77b292ef15d44cb02453413905e9c487ca6237f341c5efcbca271c98b
+all runs: basic kernel testing failed: WARNING: suspicious RCU usage in hsr_node_get_first
+unable to determine the verdict: 0 good runs (wanted 6), for bad wanted 4 in total, got 0
+# git bisect skip 13c6a37d409db9abc9c0bfc6d0a2f07bf0fff60e
+Bisecting: 893 revisions left to test after this (roughly 10 steps)
+[4bd80d7a4039ac605a1e9ae767d2b01dbfc9b61e] Bluetooth: move adv_instance_cnt read within the device lock
+
+testing commit 4bd80d7a4039ac605a1e9ae767d2b01dbfc9b61e gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: aaf1cc3f4ab99735c340a05653dfd5e9141be3e67b4b53b4efaa0e0bb06b8689
+run #0: crashed: KASAN: slab-out-of-bounds Read in vxlan_vnifilter_dump_dev
+run #1: crashed: KASAN: slab-out-of-bounds Read in vxlan_vnifilter_dump_dev
+run #2: OK
+run #3: OK
+run #4: OK
+run #5: OK
+run #6: OK
+run #7: OK
+representative crash: KASAN: slab-out-of-bounds Read in vxlan_vnifilter_dump_dev, types: [KASAN]
+# git bisect bad 4bd80d7a4039ac605a1e9ae767d2b01dbfc9b61e
+Bisecting: 847 revisions left to test after this (roughly 10 steps)
+[d24d2a2b0a81dd5e9bb99aeb4559ec9734e1416f] bpf: bpf_prog_pack: Set proper size before freeing ro_header
+
+testing commit d24d2a2b0a81dd5e9bb99aeb4559ec9734e1416f gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 2a5b80f2ef46409ef88a3143969f42705c34e7f4aebfed4b920f1d48f9bd6e5d
+all runs: basic kernel testing failed: WARNING: suspicious RCU usage in hsr_node_get_first
+unable to determine the verdict: 0 good runs (wanted 6), for bad wanted 4 in total, got 0
+# git bisect skip d24d2a2b0a81dd5e9bb99aeb4559ec9734e1416f
+Bisecting: 847 revisions left to test after this (roughly 10 steps)
+[1080ef5cc0c2c3419dbdd61e441d1e014410824a] selftests/bpf: Update sockopt_sk test to the use bpf_set_retval
+
+testing commit 1080ef5cc0c2c3419dbdd61e441d1e014410824a gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 3a66075af4765beaef71c52363d2133bda37d993b7bd09e1c2c0d2c2ea9d5082
+all runs: OK
+false negative chance: 0.023
+# git bisect good 1080ef5cc0c2c3419dbdd61e441d1e014410824a
+Bisecting: 847 revisions left to test after this (roughly 10 steps)
+[453f8305483851c20a41b66719d5acdc945541ca] i40e: Add a stat tracking new RX page allocations
+
+testing commit 453f8305483851c20a41b66719d5acdc945541ca gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 1d482621d32e356e3f5547f253cc4bd965d9cc35237c4acfa4873c1fa6f80f0c
+all runs: basic kernel testing failed: WARNING: suspicious RCU usage in hsr_node_get_first
+unable to determine the verdict: 0 good runs (wanted 6), for bad wanted 4 in total, got 0
+# git bisect skip 453f8305483851c20a41b66719d5acdc945541ca
+Bisecting: 847 revisions left to test after this (roughly 10 steps)
+[b1755400b4be33dbd286272b153579631be2e2ca] net: remove net_invalid_timestamp()
+
+testing commit b1755400b4be33dbd286272b153579631be2e2ca gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 95d52f7befa57f870b68850f03285b732121b0d0b90a45dd297d1cd784b0371b
+all runs: OK
+false negative chance: 0.023
+# git bisect good b1755400b4be33dbd286272b153579631be2e2ca
+Bisecting: 654 revisions left to test after this (roughly 10 steps)
+[adce573b927adf827f2f8627f05c2ba90031ebc9] Bluetooth: hci_h5: Add power reset via gpio in h5_btrtl_open
+
+testing commit adce573b927adf827f2f8627f05c2ba90031ebc9 gcc
+compiler: gcc (GCC) 10.1.0-syz 20200507, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: e93edfe484d336f28cd40b066086493b092cb1e10b452d87033adcba83ffb820
+all runs: OK
+false negative chance: 0.023
+# git bisect good adce573b927adf827f2f8627f05c2ba90031ebc9
+Bisecting: 654 revisions left to test after this (roughly 10 steps)
+[ee6373ddf3a974c4239f56931f5944fd289146e7] net/funeth: probing and netdev ops
+
+testing commit ee6373ddf3a974c4239f56931f5944fd289146e7 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 0a4871cf080b1f23a566ee16006785e70d82cdb17e8689e7919fea2c03e97e0f
+all runs: OK
+false negative chance: 0.023
+# git bisect good ee6373ddf3a974c4239f56931f5944fd289146e7
+Bisecting: 128 revisions left to test after this (roughly 7 steps)
+[8fe96f586b8326073ab193f2e5cf951d7cd4d609] mlxsw: reg: Fix packing of router interface counters
+
+testing commit 8fe96f586b8326073ab193f2e5cf951d7cd4d609 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 9faed27a89262d37c2e7d5a5ae858ed9d88a9a1874f242a7edb5132369c6f3ca
+run #0: crashed: KASAN: use-after-free Read in vxlan_vnifilter_dump_dev
+run #1: crashed: KASAN: slab-out-of-bounds Read in vxlan_vnifilter_dump_dev
+run #2: crashed: KASAN: use-after-free Read in vxlan_vnifilter_dump_dev
+run #3: crashed: KASAN: slab-out-of-bounds Read in vxlan_vnifilter_dump_dev
+run #4: crashed: KASAN: use-after-free Read in vxlan_vnifilter_dump_dev
+run #5: OK
+run #6: OK
+run #7: OK
+representative crash: KASAN: use-after-free Read in vxlan_vnifilter_dump_dev, types: [KASAN]
+# git bisect bad 8fe96f586b8326073ab193f2e5cf951d7cd4d609
+Bisecting: 63 revisions left to test after this (roughly 6 steps)
+[445b2f36bb4efb81f064e931f28b9ec19f114355] drivers: vxlan: vnifilter: add support for stats dumping
+
+testing commit 445b2f36bb4efb81f064e931f28b9ec19f114355 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: d85d64a0ec59a0d89b8dd912098e7197cc71b9f1c1fbaa19d9a0feae25378536
+run #0: crashed: KASAN: slab-out-of-bounds Read in vxlan_vnifilter_dump_dev
+run #1: crashed: KASAN: use-after-free Read in vxlan_vnifilter_dump_dev
+run #2: crashed: KASAN: use-after-free Read in vxlan_vnifilter_dump_dev
+run #3: crashed: KASAN: use-after-free Read in vxlan_vnifilter_dump_dev
+run #4: OK
+run #5: OK
+run #6: OK
+run #7: OK
+representative crash: KASAN: slab-out-of-bounds Read in vxlan_vnifilter_dump_dev, types: [KASAN]
+# git bisect bad 445b2f36bb4efb81f064e931f28b9ec19f114355
+Bisecting: 31 revisions left to test after this (roughly 5 steps)
+[98fffd72f934c48e7e69e21e1394de0b5aed49b4] net: decnet: use time_is_before_jiffies() instead of open coding it
+
+testing commit 98fffd72f934c48e7e69e21e1394de0b5aed49b4 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 3ca852b5675e4cfe106a01a19ff71c256f394d8abb14b908069973bb65da9efe
+all runs: OK
+false negative chance: 0.023
+# git bisect good 98fffd72f934c48e7e69e21e1394de0b5aed49b4
+Bisecting: 15 revisions left to test after this (roughly 4 steps)
+[72fb3b60a3114a1154a8ae5629ea3b43a88a7a4d] net/mlx5: Add reset_state field to MFRL register
+
+testing commit 72fb3b60a3114a1154a8ae5629ea3b43a88a7a4d gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 197d520beeccd8b90daeb570843bf2d56e548c7d07930483ba4ce4f5527f7267
+all runs: OK
+false negative chance: 0.023
+# git bisect good 72fb3b60a3114a1154a8ae5629ea3b43a88a7a4d
+Bisecting: 7 revisions left to test after this (roughly 3 steps)
+[c63053e0cb5afcf53d5119cf82136c22131792a2] vxlan_core: move some fdb helpers to non-static
+
+testing commit c63053e0cb5afcf53d5119cf82136c22131792a2 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 8ace77143bf37df60926ebda3f731e50d7f07da2603db97729eeea9aa894c6f3
+all runs: OK
+false negative chance: 0.023
+# git bisect good c63053e0cb5afcf53d5119cf82136c22131792a2
+Bisecting: 3 revisions left to test after this (roughly 2 steps)
+[a498c5953a9cdadcc1479c07d5b04c1afa3f53dc] vxlan_multicast: Move multicast helpers to a separate file
+
+testing commit a498c5953a9cdadcc1479c07d5b04c1afa3f53dc gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 3afdb1bb283e9188cbd40023689971706cc6ce8867e79636f33b4790f5595efc
+all runs: OK
+false negative chance: 0.023
+# git bisect good a498c5953a9cdadcc1479c07d5b04c1afa3f53dc
+Bisecting: 1 revision left to test after this (roughly 1 step)
+[3edf5f66c12aa0b318b05ad2c04cf363b0f51f99] selftests: add new tests for vxlan vnifiltering
+
+testing commit 3edf5f66c12aa0b318b05ad2c04cf363b0f51f99 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: a944647565fa149e21a5544365f518ef0333e558980764ebeb7b2a0634aeb606
+run #0: crashed: KASAN: use-after-free Read in vxlan_vnifilter_dump_dev
+run #1: crashed: KASAN: slab-out-of-bounds Read in vxlan_vnifilter_dump_dev
+run #2: crashed: KASAN: use-after-free Read in vxlan_vnifilter_dump_dev
+run #3: crashed: KASAN: slab-out-of-bounds Read in vxlan_vnifilter_dump_dev
+run #4: OK
+run #5: OK
+run #6: OK
+run #7: OK
+representative crash: KASAN: use-after-free Read in vxlan_vnifilter_dump_dev, types: [KASAN]
+# git bisect bad 3edf5f66c12aa0b318b05ad2c04cf363b0f51f99
+Bisecting: 0 revisions left to test after this (roughly 0 steps)
+[f9c4bb0b245cee35ef66f75bf409c9573d934cf9] vxlan: vni filtering support on collect metadata device
+
+testing commit f9c4bb0b245cee35ef66f75bf409c9573d934cf9 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: dd9d3bd25827e7569d02f107a15e65d37180b2bf8ccb0e7378e57da6688365e8
+run #0: crashed: KASAN: use-after-free Read in vxlan_vnifilter_dump_dev
+run #1: crashed: KASAN: use-after-free Read in vxlan_vnifilter_dump_dev
+run #2: crashed: KASAN: use-after-free Read in vxlan_vnifilter_dump_dev
+run #3: crashed: KASAN: slab-out-of-bounds Read in vxlan_vnifilter_dump_dev
+run #4: OK
+run #5: OK
+run #6: OK
+run #7: OK
+representative crash: KASAN: use-after-free Read in vxlan_vnifilter_dump_dev, types: [KASAN]
+# git bisect bad f9c4bb0b245cee35ef66f75bf409c9573d934cf9
+f9c4bb0b245cee35ef66f75bf409c9573d934cf9 is the first bad commit
+commit f9c4bb0b245cee35ef66f75bf409c9573d934cf9
+Author: Roopa Prabhu <roopa@nvidia.com>
+Date:   Tue Mar 1 05:04:36 2022 +0000
+
+    vxlan: vni filtering support on collect metadata device
+    
+    This patch adds vnifiltering support to collect metadata device.
+    
+    Motivation:
+    You can only use a single vxlan collect metadata device for a given
+    vxlan udp port in the system today. The vxlan collect metadata device
+    terminates all received vxlan packets. As shown in the below diagram,
+    there are use-cases where you need to support multiple such vxlan devices in
+    independent bridge domains. Each vxlan device must terminate the vni's
+    it is configured for.
+    Example usecase: In a service provider network a service provider
+    typically supports multiple bridge domains with overlapping vlans.
+    One bridge domain per customer. Vlans in each bridge domain are
+    mapped to globally unique vxlan ranges assigned to each customer.
+    
+    vnifiltering support in collect metadata devices terminates only configured
+    vnis. This is similar to vlan filtering in bridge driver. The vni filtering
+    capability is provided by a new flag on collect metadata device.
+    
+    In the below pic:
+            - customer1 is mapped to br1 bridge domain
+            - customer2 is mapped to br2 bridge domain
+            - customer1 vlan 10-11 is mapped to vni 1001-1002
+            - customer2 vlan 10-11 is mapped to vni 2001-2002
+            - br1 and br2 are vlan filtering bridges
+            - vxlan1 and vxlan2 are collect metadata devices with
+              vnifiltering enabled
+    
+    ┌──────────────────────────────────────────────────────────────────┐
+    │  switch                                                          │
+    │                                                                  │
+    │         ┌───────────┐                 ┌───────────┐              │
+    │         │           │                 │           │              │
+    │         │   br1     │                 │   br2     │              │
+    │         └┬─────────┬┘                 └──┬───────┬┘              │
+    │     vlans│         │               vlans │       │               │
+    │     10,11│         │                10,11│       │               │
+    │          │     vlanvnimap:               │    vlanvnimap:        │
+    │          │       10-1001,11-1002         │      10-2001,11-2002  │
+    │          │         │                     │       │               │
+    │   ┌──────┴┐     ┌──┴─────────┐       ┌───┴────┐  │               │
+    │   │ swp1  │     │vxlan1      │       │ swp2   │ ┌┴─────────────┐ │
+    │   │       │     │  vnifilter:│       │        │ │vxlan2        │ │
+    │   └───┬───┘     │   1001,1002│       └───┬────┘ │ vnifilter:   │ │
+    │       │         └────────────┘           │      │  2001,2002   │ │
+    │       │                                  │      └──────────────┘ │
+    │       │                                  │                       │
+    └───────┼──────────────────────────────────┼───────────────────────┘
+            │                                  │
+            │                                  │
+      ┌─────┴───────┐                          │
+      │  customer1  │                    ┌─────┴──────┐
+      │ host/VM     │                    │customer2   │
+      └─────────────┘                    │ host/VM    │
+                                         └────────────┘
+    
+    With this implementation, vxlan dst metadata device can
+    be associated with range of vnis.
+    struct vxlan_vni_node is introduced to represent
+    a configured vni. We start with vni and its
+    associated remote_ip in this structure. This
+    structure can be extended to bring in other
+    per vni attributes if there are usecases for it.
+    A vni inherits an attribute from the base vxlan device
+    if there is no per vni attributes defined.
+    
+    struct vxlan_dev gets a new rhashtable for
+    vnis called vxlan_vni_group. vxlan_vnifilter.c
+    implements the necessary netlink api, notifications
+    and helper functions to process and manage lifecycle
+    of vxlan_vni_node.
+    
+    This patch also adds new helper functions in vxlan_multicast.c
+    to handle per vni remote_ip multicast groups which are part
+    of vxlan_vni_group.
+    
+    Fix build problems:
+    Reported-by: kernel test robot <lkp@intel.com>
+    Signed-off-by: Roopa Prabhu <roopa@nvidia.com>
+    Signed-off-by: David S. Miller <davem@davemloft.net>
+
+ drivers/net/vxlan/Makefile          |   2 +-
+ drivers/net/vxlan/vxlan_core.c      |  96 +++-
+ drivers/net/vxlan/vxlan_multicast.c | 150 ++++++-
+ drivers/net/vxlan/vxlan_private.h   |  41 +-
+ drivers/net/vxlan/vxlan_vnifilter.c | 862 ++++++++++++++++++++++++++++++++++++
+ include/net/vxlan.h                 |  28 +-
+ 6 files changed, 1147 insertions(+), 32 deletions(-)
+ create mode 100644 drivers/net/vxlan/vxlan_vnifilter.c
+
+accumulated error probability: 0.18
+culprit signature: dd9d3bd25827e7569d02f107a15e65d37180b2bf8ccb0e7378e57da6688365e8
+parent  signature: 3afdb1bb283e9188cbd40023689971706cc6ce8867e79636f33b4790f5595efc
+reproducer is flaky (0.38 repro chance estimate)
+revisions tested: 22, total time: 8h1m9.261205572s (build: 4h58m22.131350755s, test: 2h32m34.612112909s)
+first bad commit: f9c4bb0b245cee35ef66f75bf409c9573d934cf9 vxlan: vni filtering support on collect metadata device
+recipients (to): ["davem@davemloft.net" "davem@davemloft.net" "kuba@kernel.org" "netdev@vger.kernel.org" "pabeni@redhat.com" "roopa@nvidia.com"]
+recipients (cc): ["linux-kernel@vger.kernel.org"]
+crash: KASAN: use-after-free Read in vxlan_vnifilter_dump_dev
+==================================================================
+BUG: KASAN: use-after-free in vxlan_vnifilter_dump_dev+0x951/0xb00 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/drivers/net/vxlan/vxlan_vnifilter.c:227
+Read of size 4 at addr ffff88810d908e70 by task syz-executor.0/7457
+
+CPU: 0 PID: 7457 Comm: syz-executor.0 Not tainted 5.17.0-rc5-syzkaller #0
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.13.0-1ubuntu1.1 04/01/2014
+Call Trace:
+ <TASK>
+ __dump_stack mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/lib/dump_stack.c:88 [inline]
+ dump_stack_lvl+0xcd/0x134 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/lib/dump_stack.c:106
+ print_address_description.constprop.0.cold+0x8d/0x336 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/mm/kasan/report.c:255
+ __kasan_report mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/mm/kasan/report.c:442 [inline]
+ kasan_report.cold+0x83/0xdf mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/mm/kasan/report.c:459
+ vxlan_vnifilter_dump_dev+0x951/0xb00 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/drivers/net/vxlan/vxlan_vnifilter.c:227
+ vxlan_vnifilter_dump+0x3b7/0x570 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/drivers/net/vxlan/vxlan_vnifilter.c:297
+ netlink_dump+0x4b1/0xb60 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/netlink/af_netlink.c:2268
+ __netlink_dump_start+0x644/0x900 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/netlink/af_netlink.c:2373
+ netlink_dump_start mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/./include/linux/netlink.h:245 [inline]
+ rtnetlink_rcv_msg+0x70c/0xb80 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/core/rtnetlink.c:5561
+ netlink_rcv_skb+0x153/0x420 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/netlink/af_netlink.c:2494
+ netlink_unicast_kernel mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/netlink/af_netlink.c:1317 [inline]
+ netlink_unicast+0x539/0x7e0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/netlink/af_netlink.c:1343
+ netlink_sendmsg+0x905/0xe00 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/netlink/af_netlink.c:1919
+ sock_sendmsg_nosec mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/socket.c:705 [inline]
+ sock_sendmsg+0xcf/0x120 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/socket.c:725
+ ____sys_sendmsg+0x6e8/0x810 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/socket.c:2413
+ ___sys_sendmsg+0xf3/0x170 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/socket.c:2467
+ __sys_sendmsg+0xe5/0x1b0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/socket.c:2496
+ do_syscall_x64 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/arch/x86/entry/common.c:50 [inline]
+ do_syscall_64+0x35/0x80 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/arch/x86/entry/common.c:80
+ entry_SYSCALL_64_after_hwframe+0x44/0xae
+RIP: 0033:0x7fc783354ced
+Code: c3 e8 17 32 00 00 0f 1f 80 00 00 00 00 f3 0f 1e fa 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 b8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007fc7826c0bd8 EFLAGS: 00000246 ORIG_RAX: 000000000000002e
+RAX: ffffffffffffffda RBX: 00007fc78348ef80 RCX: 00007fc783354ced
+RDX: 0000000000000000 RSI: 00000000200003c0 RDI: 0000000000000004
+RBP: 00007fc7833b24ac R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+R13: 00007ffd74f1fd9f R14: 00007ffd74f1ff30 R15: 00007fc7826c0d80
+ </TASK>
+
+Allocated by task 7032:
+ kasan_save_stack+0x1e/0x40 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/mm/kasan/common.c:38
+ kasan_set_track mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/mm/kasan/common.c:45 [inline]
+ set_alloc_info mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/mm/kasan/common.c:436 [inline]
+ ____kasan_kmalloc mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/mm/kasan/common.c:515 [inline]
+ ____kasan_kmalloc mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/mm/kasan/common.c:474 [inline]
+ __kasan_kmalloc+0xa9/0xd0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/mm/kasan/common.c:524
+ kmalloc mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/./include/linux/slab.h:586 [inline]
+ tomoyo_realpath_from_path+0xc3/0x620 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/security/tomoyo/realpath.c:254
+ tomoyo_get_realpath mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/security/tomoyo/file.c:151 [inline]
+ tomoyo_check_open_permission+0x272/0x380 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/security/tomoyo/file.c:771
+ tomoyo_file_open mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/security/tomoyo/tomoyo.c:311 [inline]
+ tomoyo_file_open+0xa3/0xd0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/security/tomoyo/tomoyo.c:306
+ security_file_open+0x45/0xb0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/security/security.c:1638
+ do_dentry_open+0x4f1/0x1250 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/fs/open.c:811
+ do_open mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/fs/namei.c:3476 [inline]
+ path_openat+0x1c7a/0x28e0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/fs/namei.c:3609
+ do_filp_open+0x1aa/0x400 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/fs/namei.c:3636
+ do_sys_openat2+0x16d/0x4d0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/fs/open.c:1214
+ do_sys_open mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/fs/open.c:1230 [inline]
+ __do_sys_open mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/fs/open.c:1238 [inline]
+ __se_sys_open mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/fs/open.c:1234 [inline]
+ __x64_sys_open+0x119/0x1c0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/fs/open.c:1234
+ do_syscall_x64 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/arch/x86/entry/common.c:50 [inline]
+ do_syscall_64+0x35/0x80 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/arch/x86/entry/common.c:80
+ entry_SYSCALL_64_after_hwframe+0x44/0xae
+
+Freed by task 7032:
+ kasan_save_stack+0x1e/0x40 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/mm/kasan/common.c:38
+ kasan_set_track+0x21/0x30 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/mm/kasan/common.c:45
+ kasan_set_free_info+0x20/0x30 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/mm/kasan/generic.c:370
+ ____kasan_slab_free mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/mm/kasan/common.c:366 [inline]
+ ____kasan_slab_free+0x126/0x160 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/mm/kasan/common.c:328
+ kasan_slab_free mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/./include/linux/kasan.h:236 [inline]
+ slab_free_hook mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/mm/slub.c:1728 [inline]
+ slab_free_freelist_hook+0x8b/0x1c0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/mm/slub.c:1754
+ slab_free mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/mm/slub.c:3509 [inline]
+ kfree+0xd0/0x390 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/mm/slub.c:4562
+ tomoyo_realpath_from_path+0x191/0x620 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/security/tomoyo/realpath.c:291
+ tomoyo_get_realpath mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/security/tomoyo/file.c:151 [inline]
+ tomoyo_check_open_permission+0x272/0x380 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/security/tomoyo/file.c:771
+ tomoyo_file_open mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/security/tomoyo/tomoyo.c:311 [inline]
+ tomoyo_file_open+0xa3/0xd0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/security/tomoyo/tomoyo.c:306
+ security_file_open+0x45/0xb0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/security/security.c:1638
+ do_dentry_open+0x4f1/0x1250 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/fs/open.c:811
+ do_open mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/fs/namei.c:3476 [inline]
+ path_openat+0x1c7a/0x28e0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/fs/namei.c:3609
+ do_filp_open+0x1aa/0x400 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/fs/namei.c:3636
+ do_sys_openat2+0x16d/0x4d0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/fs/open.c:1214
+ do_sys_open mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/fs/open.c:1230 [inline]
+ __do_sys_open mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/fs/open.c:1238 [inline]
+ __se_sys_open mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/fs/open.c:1234 [inline]
+ __x64_sys_open+0x119/0x1c0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/fs/open.c:1234
+ do_syscall_x64 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/arch/x86/entry/common.c:50 [inline]
+ do_syscall_64+0x35/0x80 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/arch/x86/entry/common.c:80
+ entry_SYSCALL_64_after_hwframe+0x44/0xae
+
+The buggy address belongs to the object at ffff88810d908000
+ which belongs to the cache kmalloc-4k of size 4096
+The buggy address is located 3696 bytes inside of
+ 4096-byte region [ffff88810d908000, ffff88810d909000)
+The buggy address belongs to the page:
+page:ffffea0004364200 refcount:1 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x10d908
+head:ffffea0004364200 order:3 compound_mapcount:0 compound_pincount:0
+flags: 0x57ff00000010200(slab|head|node=1|zone=2|lastcpupid=0x7ff)
+raw: 057ff00000010200 0000000000000000 dead000000000122 ffff888010c42140
+raw: 0000000000000000 0000000000040004 00000001ffffffff 0000000000000000
+page dumped because: kasan: bad access detected
+page_owner tracks the page as allocated
+page last allocated via order 3, migratetype Unmovable, gfp_mask 0xd2040(__GFP_IO|__GFP_NOWARN|__GFP_NORETRY|__GFP_COMP|__GFP_NOMEMALLOC), pid 7032, ts 77033578763, free_ts 74956550723
+ prep_new_page mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/mm/page_alloc.c:2434 [inline]
+ get_page_from_freelist+0x13c4/0x2f10 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/mm/page_alloc.c:4165
+ __alloc_pages+0x1b2/0x500 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/mm/page_alloc.c:5389
+ alloc_pages+0x1aa/0x310 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/mm/mempolicy.c:2271
+ alloc_slab_page mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/mm/slub.c:1799 [inline]
+ allocate_slab+0x27f/0x3c0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/mm/slub.c:1944
+ new_slab mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/mm/slub.c:2004 [inline]
+ ___slab_alloc+0xbe3/0x12a0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/mm/slub.c:3018
+ __slab_alloc.constprop.0+0x4d/0xa0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/mm/slub.c:3105
+ slab_alloc_node mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/mm/slub.c:3196 [inline]
+ slab_alloc mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/mm/slub.c:3238 [inline]
+ __kmalloc+0x372/0x450 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/mm/slub.c:4420
+ kmalloc mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/./include/linux/slab.h:586 [inline]
+ tomoyo_realpath_from_path+0xc3/0x620 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/security/tomoyo/realpath.c:254
+ tomoyo_get_realpath mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/security/tomoyo/file.c:151 [inline]
+ tomoyo_check_open_permission+0x272/0x380 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/security/tomoyo/file.c:771
+ tomoyo_file_open mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/security/tomoyo/tomoyo.c:311 [inline]
+ tomoyo_file_open+0xa3/0xd0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/security/tomoyo/tomoyo.c:306
+ security_file_open+0x45/0xb0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/security/security.c:1638
+ do_dentry_open+0x4f1/0x1250 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/fs/open.c:811
+ do_open mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/fs/namei.c:3476 [inline]
+ path_openat+0x1c7a/0x28e0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/fs/namei.c:3609
+ do_filp_open+0x1aa/0x400 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/fs/namei.c:3636
+ do_sys_openat2+0x16d/0x4d0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/fs/open.c:1214
+ do_sys_open mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/fs/open.c:1230 [inline]
+ __do_sys_open mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/fs/open.c:1238 [inline]
+ __se_sys_open mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/fs/open.c:1234 [inline]
+ __x64_sys_open+0x119/0x1c0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/fs/open.c:1234
+page last free stack trace:
+ reset_page_owner mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/./include/linux/page_owner.h:24 [inline]
+ free_pages_prepare mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/mm/page_alloc.c:1352 [inline]
+ free_pcp_prepare+0x374/0x870 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/mm/page_alloc.c:1404
+ free_unref_page_prepare mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/mm/page_alloc.c:3325 [inline]
+ free_unref_page+0x19/0x690 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/mm/page_alloc.c:3404
+ __unfreeze_partials+0x320/0x340 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/mm/slub.c:2536
+ qlink_free mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/mm/kasan/quarantine.c:157 [inline]
+ qlist_free_all+0x6d/0x160 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/mm/kasan/quarantine.c:176
+ kasan_quarantine_reduce+0x180/0x200 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/mm/kasan/quarantine.c:283
+ __kasan_slab_alloc+0xa2/0xc0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/mm/kasan/common.c:446
+ kasan_slab_alloc mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/./include/linux/kasan.h:260 [inline]
+ slab_post_alloc_hook mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/mm/slab.h:732 [inline]
+ slab_alloc_node mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/mm/slub.c:3230 [inline]
+ slab_alloc mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/mm/slub.c:3238 [inline]
+ kmem_cache_alloc+0x1b1/0x4b0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/mm/slub.c:3243
+ sock_alloc_inode+0x18/0x1c0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/socket.c:304
+ alloc_inode+0x61/0x230 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/fs/inode.c:260
+ new_inode_pseudo+0x14/0xe0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/fs/inode.c:1018
+ sock_alloc+0x3c/0x260 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/socket.c:627
+ __sock_create+0xb9/0x790 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/socket.c:1432
+ sock_create mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/socket.c:1519 [inline]
+ __sys_socket+0xef/0x200 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/socket.c:1561
+ __do_sys_socket mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/socket.c:1570 [inline]
+ __se_sys_socket mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/socket.c:1568 [inline]
+ __x64_sys_socket+0x6f/0xb0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/socket.c:1568
+ do_syscall_x64 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/arch/x86/entry/common.c:50 [inline]
+ do_syscall_64+0x35/0x80 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/arch/x86/entry/common.c:80
+ entry_SYSCALL_64_after_hwframe+0x44/0xae
+
+Memory state around the buggy address:
+ ffff88810d908d00: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+ ffff88810d908d80: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+>ffff88810d908e00: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+                                                             ^
+ ffff88810d908e80: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+ ffff88810d908f00: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+==================================================================
+
+
+KASAN: slab-out-of-bounds Read in vxlan_vnifilter_dump_dev
+f9c4bb0b245cee35ef66f75bf409c9573d934cf9

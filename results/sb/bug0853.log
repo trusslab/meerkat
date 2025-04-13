@@ -1,0 +1,562 @@
+TrussLab starts bisection 2025-03-28 21:11:44.267924264 -0700 PDT m=+10.850389316
+bisecting cause commit starting from fff5a5e7f528b2ed2c335991399a766c2cf01103
+building syzkaller on HEAD
+ensuring issue is reproducible on original commit fff5a5e7f528b2ed2c335991399a766c2cf01103
+
+testing commit fff5a5e7f528b2ed2c335991399a766c2cf01103 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 2278c2621103d871b8cb4859c1b7e326191b4bde2d6d2419f13e4e5a1bd0067a
+run #0: crashed: INFO: task hung in lock_extent
+run #1: crashed: INFO: task hung in lock_extent
+run #2: crashed: INFO: task hung in lock_extent
+run #3: crashed: INFO: task hung in lock_extent
+run #4: crashed: INFO: task hung in lock_extent
+run #5: crashed: INFO: task hung in lock_extent
+run #6: crashed: INFO: task hung in lock_extent
+run #7: OK
+representative crash: INFO: task hung in lock_extent, types: [HANG]
+picked [v6.2 v6.1 v6.0 v5.18 v5.16 v5.14 v5.12 v5.10 v5.7 v5.4 v5.1 v4.19] out of 25 release tags
+testing release v6.2
+testing commit c9c3395d5e3dcc6daee66c6908354d47bf98cb0c gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 967cdf19d724dd48c18b59a9bc9f31707f0215d5165dc20c879ae4b922eac767
+run #0: crashed: INFO: task hung in lock_extent
+run #1: crashed: INFO: task hung in lock_extent
+run #2: crashed: INFO: task hung in lock_extent
+run #3: crashed: INFO: task hung in lock_extent
+run #4: OK
+run #5: OK
+run #6: OK
+run #7: crashed: INFO: task hung in lock_extent
+representative crash: INFO: task hung in lock_extent, types: [HANG]
+testing release v6.1
+testing commit 830b3c68c1fb1e9176028d02ef86f3cf76aa2476 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: c9cb7ab18b9bcc7907055f473916e5ce12a9e19fe6e6a6016920d1eb71c5f125
+run #0: crashed: INFO: task hung in lock_extent
+run #1: crashed: INFO: task hung in lock_extent
+run #2: crashed: INFO: task hung in lock_extent
+run #3: crashed: INFO: task hung in lock_extent
+run #4: crashed: INFO: task hung in lock_extent
+run #5: OK
+run #6: OK
+run #7: OK
+representative crash: INFO: task hung in lock_extent, types: [HANG]
+testing release v6.0
+testing commit 4fe89d07dcc2804c8b562f6c7896a45643d34b2f gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 303def2f031d388dba2653f0b9845927a18af2e02dcc4bca3dfb2a661f4aea54
+all runs: OK
+false negative chance: 0.000
+# git bisect start 830b3c68c1fb1e9176028d02ef86f3cf76aa2476 4fe89d07dcc2804c8b562f6c7896a45643d34b2f
+Bisecting: 7514 revisions left to test after this (roughly 13 steps)
+[33e591dee915832c618cf68bb1058c8e7d296128] Merge tag 'phy-for-6.1' of git://git.kernel.org/pub/scm/linux/kernel/git/phy/linux-phy
+
+testing commit 33e591dee915832c618cf68bb1058c8e7d296128 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: c5c4b2da93acee03124e8e5d8c04e6cda527fd43de99164383b6b7b030318e4a
+run #0: crashed: INFO: task hung in lock_extent
+run #1: crashed: INFO: task hung in lock_extent
+run #2: crashed: INFO: task hung in lock_extent
+run #3: crashed: INFO: task hung in lock_extent
+run #4: OK
+run #5: OK
+run #6: crashed: INFO: task hung in lock_extent
+run #7: crashed: INFO: task hung in lock_extent
+representative crash: INFO: task hung in lock_extent, types: [HANG]
+# git bisect bad 33e591dee915832c618cf68bb1058c8e7d296128
+Bisecting: 4354 revisions left to test after this (roughly 12 steps)
+[a47e60729d9624e931f988709ab76e043e2ee8b9] Merge tag 'backlight-next-6.1' of git://git.kernel.org/pub/scm/linux/kernel/git/lee/backlight
+
+testing commit a47e60729d9624e931f988709ab76e043e2ee8b9 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 783ae24e7d34d570856c0bf3aceaf35b840d54b8c61522c8a37672679a29fa8a
+all runs: crashed: INFO: task hung in lock_extent_bits
+representative crash: INFO: task hung in lock_extent_bits, types: [HANG]
+# git bisect bad a47e60729d9624e931f988709ab76e043e2ee8b9
+Bisecting: 1573 revisions left to test after this (roughly 11 steps)
+[915b96c52763e2988e6368b538b487a7138b8fa4] Merge tag 'wireless-next-2022-09-30' of git://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next
+
+testing commit 915b96c52763e2988e6368b538b487a7138b8fa4 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 318073c5dbfb4e23cdbcc59f21b50c28333efe37e06ca1307db04067e1b35bb8
+run #0: crashed: INFO: task hung in extent_write_cache_pages
+run #1: crashed: INFO: task hung in lock_extent_bits
+run #2: crashed: INFO: task hung in lock_extent_bits
+run #3: OK
+run #4: OK
+run #5: OK
+run #6: OK
+run #7: crashed: INFO: task hung in lock_extent_bits
+representative crash: INFO: task hung in extent_write_cache_pages, types: [HANG]
+# git bisect bad 915b96c52763e2988e6368b538b487a7138b8fa4
+Bisecting: 837 revisions left to test after this (roughly 10 steps)
+[2c119d9982b1aba54a2eca59c2455cd09f3bc749] net: dsa: microchip: add the support for set_ageing_time
+
+testing commit 2c119d9982b1aba54a2eca59c2455cd09f3bc749 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 1dd75b3d4034423c27d8e724ec23b64f494df1763027c829469513f796f69185
+run #0: crashed: kernel BUG in close_ctree
+run #1: crashed: VFS: Busy inodes after unmount (use-after-free)
+run #2: crashed: VFS: Busy inodes after unmount (use-after-free)
+run #3: crashed: kernel BUG in close_ctree
+run #4: crashed: INFO: task hung in lock_extent_bits
+run #5: crashed: INFO: task hung in lock_extent_bits
+run #6: crashed: INFO: task hung in lock_extent_bits
+run #7: crashed: INFO: task hung in extent_write_cache_pages
+representative crash: INFO: task hung in lock_extent_bits, types: [HANG BUG]
+# git bisect bad 2c119d9982b1aba54a2eca59c2455cd09f3bc749
+Bisecting: 413 revisions left to test after this (roughly 9 steps)
+[744ccd5c64bda0a4130b470ce2772985f20913ce] Merge branch 'net-sched-remove-unused-variables'
+
+testing commit 744ccd5c64bda0a4130b470ce2772985f20913ce gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 82b8e0aecf8285ac6b10d17a9e3553f4eb82884b3134abc6ea2341e7b27b3b3e
+run #0: crashed: kernel BUG in close_ctree
+run #1: crashed: INFO: task hung in lock_extent_bits
+run #2: crashed: INFO: task hung in lock_extent_bits
+run #3: crashed: INFO: task hung in lock_extent_bits
+run #4: crashed: INFO: task hung in lock_extent_bits
+run #5: crashed: INFO: task hung in lock_extent_bits
+run #6: crashed: INFO: task hung in lock_extent_bits
+run #7: OK
+representative crash: INFO: task hung in lock_extent_bits, types: [HANG]
+# git bisect bad 744ccd5c64bda0a4130b470ce2772985f20913ce
+Bisecting: 206 revisions left to test after this (roughly 8 steps)
+[73ef239cd8439b33273cd95d08cffaf8022b01a8] net: marvell: prestera: implement br_port_locked flag offloading
+
+testing commit 73ef239cd8439b33273cd95d08cffaf8022b01a8 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 889c2e3b16de6a660b6488d24aee01601ae20810b8ede45f119c6e9f87d2465e
+run #0: crashed: VFS: Busy inodes after unmount (use-after-free)
+run #1: crashed: kernel BUG in close_ctree
+run #2: crashed: VFS: Busy inodes after unmount (use-after-free)
+run #3: crashed: INFO: task hung in lock_extent_bits
+run #4: crashed: INFO: task hung in lock_extent_bits
+run #5: crashed: INFO: task hung in lock_extent_bits
+run #6: crashed: INFO: task hung in lock_extent_bits
+run #7: OK
+representative crash: INFO: task hung in lock_extent_bits, types: [HANG UNKNOWN]
+# git bisect bad 73ef239cd8439b33273cd95d08cffaf8022b01a8
+Bisecting: 102 revisions left to test after this (roughly 7 steps)
+[bb726b753f75a4eeda291438f89dfd9b94783569] net: phy: realtek: add support for RTL8211F(D)(I)-VD-CG
+
+testing commit bb726b753f75a4eeda291438f89dfd9b94783569 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 953abeaa7df4c3b02b206618a8544249805a17d15883cdbe88ccd2b0ba6300b8
+run #0: crashed: VFS: Busy inodes after unmount (use-after-free)
+run #1: crashed: kernel BUG in close_ctree
+run #2: crashed: VFS: Busy inodes after unmount (use-after-free)
+run #3: crashed: INFO: task hung in lock_extent_bits
+run #4: crashed: INFO: task hung in lock_extent_bits
+run #5: crashed: INFO: task hung in lock_extent_bits
+run #6: crashed: INFO: task hung in lock_extent_bits
+run #7: crashed: INFO: task hung in lock_extent_bits
+representative crash: INFO: task hung in lock_extent_bits, types: [HANG UNKNOWN]
+# git bisect bad bb726b753f75a4eeda291438f89dfd9b94783569
+Bisecting: 55 revisions left to test after this (roughly 6 steps)
+[df78da27260c915039b348b164bbc53fa372ba70] selftests/bpf: Few fixes for selftests/bpf built in release mode
+
+testing commit df78da27260c915039b348b164bbc53fa372ba70 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 361b7ac5e36024d8efc42d4225076968d29a2c8a8035fe07d9bb80daf71e1432
+2025/03/29 02:21:18 failed to symbolize report: failed to run ["scripts/get_maintainer.pl" "--git-min-percent=15" "-f" "mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/lib/debugobjects.c"]: exit status 2
+scripts/get_maintainer.pl: file 'mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/lib/debugobjects.c' not found
+2025/03/29 02:21:25 failed to symbolize report: failed to run ["scripts/get_maintainer.pl" "--git-min-percent=15" "-f" "mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/lib/debugobjects.c"]: exit status 2
+scripts/get_maintainer.pl: file 'mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/lib/debugobjects.c' not found
+2025/03/29 02:21:27 failed to symbolize report: failed to run ["scripts/get_maintainer.pl" "--git-min-percent=15" "-f" "mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/lib/debugobjects.c"]: exit status 2
+scripts/get_maintainer.pl: file 'mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/lib/debugobjects.c' not found
+2025/03/29 02:21:27 failed to symbolize report: failed to run ["scripts/get_maintainer.pl" "--git-min-percent=15" "-f" "mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/lib/debugobjects.c"]: exit status 2
+scripts/get_maintainer.pl: file 'mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/lib/debugobjects.c' not found
+2025/03/29 02:21:30 failed to symbolize report: failed to run ["scripts/get_maintainer.pl" "--git-min-percent=15" "-f" "mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/lib/debugobjects.c"]: exit status 2
+scripts/get_maintainer.pl: file 'mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/lib/debugobjects.c' not found
+2025/03/29 02:21:31 failed to symbolize report: failed to run ["scripts/get_maintainer.pl" "--git-min-percent=15" "-f" "mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/lib/debugobjects.c"]: exit status 2
+scripts/get_maintainer.pl: file 'mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/lib/debugobjects.c' not found
+2025/03/29 02:21:32 failed to symbolize report: failed to run ["scripts/get_maintainer.pl" "--git-min-percent=15" "-f" "mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/lib/debugobjects.c"]: exit status 2
+scripts/get_maintainer.pl: file 'mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/lib/debugobjects.c' not found
+2025/03/29 02:21:33 failed to symbolize report: failed to run ["scripts/get_maintainer.pl" "--git-min-percent=15" "-f" "mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/lib/debugobjects.c"]: exit status 2
+scripts/get_maintainer.pl: file 'mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/lib/debugobjects.c' not found
+all runs: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip df78da27260c915039b348b164bbc53fa372ba70
+Bisecting: 55 revisions left to test after this (roughly 6 steps)
+[5d81757835859760a38a54a87eff856d4e578836] net: macsec: Expose MACSEC_SALT_LEN definition to user space
+
+testing commit 5d81757835859760a38a54a87eff856d4e578836 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 28af97433b77563353095965cbf8bd5f00f75df27b06723134b4936f12f7e4fe
+run #0: crashed: INFO: task hung in lock_extent_bits
+run #1: crashed: INFO: task hung in lock_extent_bits
+run #2: crashed: INFO: task hung in lock_extent_bits
+run #3: crashed: INFO: task hung in extent_write_cache_pages
+run #4: crashed: INFO: task hung in lock_extent_bits
+run #5: crashed: INFO: task hung in lock_extent_bits
+run #6: crashed: INFO: task hung in lock_extent_bits
+run #7: crashed: INFO: task hung in lock_extent_bits
+representative crash: INFO: task hung in lock_extent_bits, types: [HANG]
+# git bisect bad 5d81757835859760a38a54a87eff856d4e578836
+Bisecting: 37 revisions left to test after this (roughly 5 steps)
+[8308bf207ce6963adb42791cfb260dc6552b6665] selftests/bpf: Update CI kconfig
+
+testing commit 8308bf207ce6963adb42791cfb260dc6552b6665 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 4ed09a798b77e468be29655e55cdb3d191e15fe812a051d8be37b1fdfba9cd98
+2025/03/29 03:02:45 failed to symbolize report: failed to run ["scripts/get_maintainer.pl" "--git-min-percent=15" "-f" "mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/lib/debugobjects.c"]: exit status 2
+scripts/get_maintainer.pl: file 'mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/lib/debugobjects.c' not found
+2025/03/29 03:02:47 failed to symbolize report: failed to run ["scripts/get_maintainer.pl" "--git-min-percent=15" "-f" "mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/lib/debugobjects.c"]: exit status 2
+scripts/get_maintainer.pl: file 'mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/lib/debugobjects.c' not found
+2025/03/29 03:02:51 failed to symbolize report: failed to run ["scripts/get_maintainer.pl" "--git-min-percent=15" "-f" "mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/lib/debugobjects.c"]: exit status 2
+scripts/get_maintainer.pl: file 'mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/lib/debugobjects.c' not found
+2025/03/29 03:02:51 failed to symbolize report: failed to run ["scripts/get_maintainer.pl" "--git-min-percent=15" "-f" "mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/lib/debugobjects.c"]: exit status 2
+scripts/get_maintainer.pl: file 'mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/lib/debugobjects.c' not found
+2025/03/29 03:02:52 failed to symbolize report: failed to run ["scripts/get_maintainer.pl" "--git-min-percent=15" "-f" "mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/lib/debugobjects.c"]: exit status 2
+scripts/get_maintainer.pl: file 'mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/lib/debugobjects.c' not found
+2025/03/29 03:02:53 failed to symbolize report: failed to run ["scripts/get_maintainer.pl" "--git-min-percent=15" "-f" "mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/lib/debugobjects.c"]: exit status 2
+scripts/get_maintainer.pl: file 'mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/lib/debugobjects.c' not found
+2025/03/29 03:02:56 failed to symbolize report: failed to run ["scripts/get_maintainer.pl" "--git-min-percent=15" "-f" "mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/lib/debugobjects.c"]: exit status 2
+scripts/get_maintainer.pl: file 'mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/lib/debugobjects.c' not found
+2025/03/29 03:02:57 failed to symbolize report: failed to run ["scripts/get_maintainer.pl" "--git-min-percent=15" "-f" "mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/lib/debugobjects.c"]: exit status 2
+scripts/get_maintainer.pl: file 'mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/lib/debugobjects.c' not found
+all runs: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip 8308bf207ce6963adb42791cfb260dc6552b6665
+Bisecting: 37 revisions left to test after this (roughly 5 steps)
+[a7be0ab1eb1949f3564739784b4360e1233305f6] selftests/bpf: Fix vmtest.sh getopts optstring
+
+testing commit a7be0ab1eb1949f3564739784b4360e1233305f6 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 8c8902be66c39894fa3ce3e88e88157590cab460e67fa99ee4950698162b4e4b
+2025/03/29 03:23:47 failed to symbolize report: failed to run ["scripts/get_maintainer.pl" "--git-min-percent=15" "-f" "mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/lib/debugobjects.c"]: exit status 2
+scripts/get_maintainer.pl: file 'mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/lib/debugobjects.c' not found
+2025/03/29 03:23:47 failed to symbolize report: failed to run ["scripts/get_maintainer.pl" "--git-min-percent=15" "-f" "mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/lib/debugobjects.c"]: exit status 2
+scripts/get_maintainer.pl: file 'mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/lib/debugobjects.c' not found
+2025/03/29 03:23:51 failed to symbolize report: failed to run ["scripts/get_maintainer.pl" "--git-min-percent=15" "-f" "mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/lib/debugobjects.c"]: exit status 2
+scripts/get_maintainer.pl: file 'mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/lib/debugobjects.c' not found
+2025/03/29 03:23:53 failed to symbolize report: failed to run ["scripts/get_maintainer.pl" "--git-min-percent=15" "-f" "mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/lib/debugobjects.c"]: exit status 2
+scripts/get_maintainer.pl: file 'mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/lib/debugobjects.c' not found
+2025/03/29 03:23:54 failed to symbolize report: failed to run ["scripts/get_maintainer.pl" "--git-min-percent=15" "-f" "mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/lib/debugobjects.c"]: exit status 2
+scripts/get_maintainer.pl: file 'mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/lib/debugobjects.c' not found
+2025/03/29 03:23:54 failed to symbolize report: failed to run ["scripts/get_maintainer.pl" "--git-min-percent=15" "-f" "mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/lib/debugobjects.c"]: exit status 2
+scripts/get_maintainer.pl: file 'mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/lib/debugobjects.c' not found
+2025/03/29 03:23:54 failed to symbolize report: failed to run ["scripts/get_maintainer.pl" "--git-min-percent=15" "-f" "mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/lib/debugobjects.c"]: exit status 2
+scripts/get_maintainer.pl: file 'mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/lib/debugobjects.c' not found
+2025/03/29 03:23:55 failed to symbolize report: failed to run ["scripts/get_maintainer.pl" "--git-min-percent=15" "-f" "mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/lib/debugobjects.c"]: exit status 2
+scripts/get_maintainer.pl: file 'mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/lib/debugobjects.c' not found
+all runs: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip a7be0ab1eb1949f3564739784b4360e1233305f6
+Bisecting: 37 revisions left to test after this (roughly 5 steps)
+[99799de2cba2d399acf65f49a986b3d5cf0732ab] selftests/bpf: Add connmark read test
+
+testing commit 99799de2cba2d399acf65f49a986b3d5cf0732ab gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: d30948fd923add5a6596eb38d9dbf18df56a147f225b1b608e82579e591a51ca
+2025/03/29 03:41:57 failed to symbolize report: failed to run ["scripts/get_maintainer.pl" "--git-min-percent=15" "-f" "mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/lib/debugobjects.c"]: exit status 2
+scripts/get_maintainer.pl: file 'mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/lib/debugobjects.c' not found
+2025/03/29 03:41:57 failed to symbolize report: failed to run ["scripts/get_maintainer.pl" "--git-min-percent=15" "-f" "mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/lib/debugobjects.c"]: exit status 2
+scripts/get_maintainer.pl: file 'mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/lib/debugobjects.c' not found
+2025/03/29 03:41:57 failed to symbolize report: failed to run ["scripts/get_maintainer.pl" "--git-min-percent=15" "-f" "mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/lib/debugobjects.c"]: exit status 2
+scripts/get_maintainer.pl: file 'mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/lib/debugobjects.c' not found
+2025/03/29 03:41:58 failed to symbolize report: failed to run ["scripts/get_maintainer.pl" "--git-min-percent=15" "-f" "mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/lib/debugobjects.c"]: exit status 2
+scripts/get_maintainer.pl: file 'mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/lib/debugobjects.c' not found
+2025/03/29 03:41:59 failed to symbolize report: failed to run ["scripts/get_maintainer.pl" "--git-min-percent=15" "-f" "mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/lib/debugobjects.c"]: exit status 2
+scripts/get_maintainer.pl: file 'mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/lib/debugobjects.c' not found
+2025/03/29 03:41:59 failed to symbolize report: failed to run ["scripts/get_maintainer.pl" "--git-min-percent=15" "-f" "mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/lib/debugobjects.c"]: exit status 2
+scripts/get_maintainer.pl: file 'mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/lib/debugobjects.c' not found
+2025/03/29 03:41:59 failed to symbolize report: failed to run ["scripts/get_maintainer.pl" "--git-min-percent=15" "-f" "mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/lib/debugobjects.c"]: exit status 2
+scripts/get_maintainer.pl: file 'mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/lib/debugobjects.c' not found
+2025/03/29 03:42:00 failed to symbolize report: failed to run ["scripts/get_maintainer.pl" "--git-min-percent=15" "-f" "mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/lib/debugobjects.c"]: exit status 2
+scripts/get_maintainer.pl: file 'mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/lib/debugobjects.c' not found
+all runs: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip 99799de2cba2d399acf65f49a986b3d5cf0732ab
+Bisecting: 37 revisions left to test after this (roughly 5 steps)
+[883743422ced8c961ab05dc63ec81b75a4e56052] bpf: Fix ref_obj_id for dynptr data slices in verifier
+
+testing commit 883743422ced8c961ab05dc63ec81b75a4e56052 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: f95120ec8dcffa809c1b617b73c5f2551ec5d2c5df3e2277a166b722c5bf4517
+2025/03/29 04:06:44 failed to symbolize report: failed to run ["scripts/get_maintainer.pl" "--git-min-percent=15" "-f" "mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/lib/debugobjects.c"]: exit status 2
+scripts/get_maintainer.pl: file 'mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/lib/debugobjects.c' not found
+2025/03/29 04:06:45 failed to symbolize report: failed to run ["scripts/get_maintainer.pl" "--git-min-percent=15" "-f" "mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/lib/debugobjects.c"]: exit status 2
+scripts/get_maintainer.pl: file 'mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/lib/debugobjects.c' not found
+2025/03/29 04:06:46 failed to symbolize report: failed to run ["scripts/get_maintainer.pl" "--git-min-percent=15" "-f" "mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/lib/debugobjects.c"]: exit status 2
+scripts/get_maintainer.pl: file 'mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/lib/debugobjects.c' not found
+2025/03/29 04:06:46 failed to symbolize report: failed to run ["scripts/get_maintainer.pl" "--git-min-percent=15" "-f" "mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/lib/debugobjects.c"]: exit status 2
+scripts/get_maintainer.pl: file 'mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/lib/debugobjects.c' not found
+2025/03/29 04:06:48 failed to symbolize report: failed to run ["scripts/get_maintainer.pl" "--git-min-percent=15" "-f" "mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/lib/debugobjects.c"]: exit status 2
+scripts/get_maintainer.pl: file 'mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/lib/debugobjects.c' not found
+2025/03/29 04:06:48 failed to symbolize report: failed to run ["scripts/get_maintainer.pl" "--git-min-percent=15" "-f" "mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/lib/debugobjects.c"]: exit status 2
+scripts/get_maintainer.pl: file 'mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/lib/debugobjects.c' not found
+2025/03/29 04:06:49 failed to symbolize report: failed to run ["scripts/get_maintainer.pl" "--git-min-percent=15" "-f" "mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/lib/debugobjects.c"]: exit status 2
+scripts/get_maintainer.pl: file 'mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/lib/debugobjects.c' not found
+2025/03/29 04:06:51 failed to symbolize report: failed to run ["scripts/get_maintainer.pl" "--git-min-percent=15" "-f" "mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/lib/debugobjects.c"]: exit status 2
+scripts/get_maintainer.pl: file 'mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/lib/debugobjects.c' not found
+all runs: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip 883743422ced8c961ab05dc63ec81b75a4e56052
+Bisecting: 37 revisions left to test after this (roughly 5 steps)
+[b3b173745c8cab1e24d6821488b60abed3acb24d] ice: set tx_tstamps when creating new Tx rings via ethtool
+
+testing commit b3b173745c8cab1e24d6821488b60abed3acb24d gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 3b6a381f1f6b4396f3925614fe5871367b7a4b349506dd992643ce67938b4033
+run #0: crashed: kernel BUG in close_ctree
+run #1: crashed: VFS: Busy inodes after unmount (use-after-free)
+run #2: crashed: INFO: task hung in lock_extent_bits
+run #3: crashed: INFO: task hung in lock_extent_bits
+run #4: OK
+run #5: OK
+run #6: OK
+run #7: crashed: INFO: task hung in lock_extent_bits
+representative crash: INFO: task hung in lock_extent_bits, types: [HANG BUG]
+# git bisect bad b3b173745c8cab1e24d6821488b60abed3acb24d
+b3b173745c8cab1e24d6821488b60abed3acb24d is the first bad commit
+commit b3b173745c8cab1e24d6821488b60abed3acb24d
+Author: Jacob Keller <jacob.e.keller@intel.com>
+Date:   Wed Jul 27 16:15:57 2022 -0700
+
+    ice: set tx_tstamps when creating new Tx rings via ethtool
+    
+    When the user changes the number of queues via ethtool, the driver
+    allocates new rings. This allocation did not initialize tx_tstamps. This
+    results in the tx_tstamps field being zero (due to kcalloc allocation), and
+    would result in a NULL pointer dereference when attempting a transmit
+    timestamp on the new ring.
+    
+    Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
+    Tested-by: Gurucharan <gurucharanx.g@intel.com> (A Contingent worker at Intel)
+    Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+
+ drivers/net/ethernet/intel/ice/ice_ethtool.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+accumulated error probability: 0.00
+parent commit 7ebfc85e2cd7b08f518b526173e9a33b56b3913b wasn't tested
+testing commit 7ebfc85e2cd7b08f518b526173e9a33b56b3913b gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: e0ec497401fb179493a11b806ad590aa951eaabfc9bd14a9a9b99d18dc58260b
+culprit signature: 3b6a381f1f6b4396f3925614fe5871367b7a4b349506dd992643ce67938b4033
+parent  signature: e0ec497401fb179493a11b806ad590aa951eaabfc9bd14a9a9b99d18dc58260b
+revisions tested: 18, total time: 7h38m22.090685392s (build: 5h13m34.470989763s, test: 1h44m49.591358645s)
+first bad commit: b3b173745c8cab1e24d6821488b60abed3acb24d ice: set tx_tstamps when creating new Tx rings via ethtool
+recipients (to): ["anthony.l.nguyen@intel.com" "gurucharanx.g@intel.com" "jacob.e.keller@intel.com"]
+recipients (cc): []
+crash: INFO: task hung in lock_extent_bits
+INFO: task kworker/u5:3:62 blocked for more than 143 seconds.
+      Not tainted 5.19.0-syzkaller #0
+"echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
+task:kworker/u5:3    state:D stack:24336 pid:   62 ppid:     2 flags:0x00004000
+Workqueue: btrfs-endio-write btrfs_work_helper
+Call Trace:
+ <TASK>
+ context_switch mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/kernel/sched/core.c:5182 [inline]
+ __schedule+0xadf/0x52b0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/kernel/sched/core.c:6494
+ schedule+0xde/0x1b0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/kernel/sched/core.c:6570
+ wait_on_state mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/fs/btrfs/extent_io.c:902 [inline]
+ wait_extent_bit.constprop.0+0x412/0x4d0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/fs/btrfs/extent_io.c:940
+ lock_extent_bits+0x7e/0x120 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/fs/btrfs/extent_io.c:1501
+ btrfs_finish_ordered_io+0x899/0x1e70 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/fs/btrfs/inode.c:3273
+ btrfs_work_helper+0x209/0xd20 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/fs/btrfs/async-thread.c:280
+ process_one_work+0x958/0x15c0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/kernel/workqueue.c:2289
+ worker_thread+0x669/0x1090 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/kernel/workqueue.c:2436
+ kthread+0x2e8/0x3a0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/kernel/kthread.c:376
+ ret_from_fork+0x1f/0x30 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/arch/x86/entry/entry_64.S:306
+ </TASK>
+INFO: task syz-executor.0:14293 blocked for more than 143 seconds.
+      Not tainted 5.19.0-syzkaller #0
+"echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
+task:syz-executor.0  state:D stack:23896 pid:14293 ppid:  7109 flags:0x00004004
+Call Trace:
+ <TASK>
+ context_switch mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/kernel/sched/core.c:5182 [inline]
+ __schedule+0xadf/0x52b0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/kernel/sched/core.c:6494
+ schedule+0xde/0x1b0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/kernel/sched/core.c:6570
+ btrfs_start_ordered_extent+0x454/0x5c0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/fs/btrfs/ordered-data.c:726
+ btrfs_wait_ordered_range+0x175/0x2a0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/fs/btrfs/ordered-data.c:779
+ btrfs_sync_file+0x503/0x1340 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/fs/btrfs/file.c:2251
+ vfs_fsync_range+0x13e/0x230 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/fs/sync.c:188
+ generic_write_sync mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/./include/linux/fs.h:2874 [inline]
+ btrfs_do_write_iter+0xa99/0x1430 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/fs/btrfs/file.c:2068
+ call_write_iter mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/./include/linux/fs.h:2192 [inline]
+ new_sync_write mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/fs/read_write.c:491 [inline]
+ vfs_write+0x9ef/0xdd0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/fs/read_write.c:578
+ ksys_write+0x12b/0x250 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/fs/read_write.c:631
+ do_syscall_x64 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/arch/x86/entry/common.c:50 [inline]
+ do_syscall_64+0x39/0xb0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/arch/x86/entry/common.c:80
+ entry_SYSCALL_64_after_hwframe+0x63/0xcd
+RIP: 0033:0x7f1998891ced
+RSP: 002b:00007f199968dbd8 EFLAGS: 00000246 ORIG_RAX: 0000000000000001
+RAX: ffffffffffffffda RBX: 00007f19989cbf80 RCX: 00007f1998891ced
+RDX: 0000000000000128 RSI: 0000000020004400 RDI: 0000000000000006
+RBP: 00007f19988ef4ac R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+R13: 00007ffe84b1a49f R14: 00007ffe84b1a630 R15: 00007f199968dd80
+ </TASK>
+INFO: task syz-executor.0:14316 blocked for more than 143 seconds.
+      Not tainted 5.19.0-syzkaller #0
+"echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
+task:syz-executor.0  state:D stack:27432 pid:14316 ppid:  7109 flags:0x00004004
+Call Trace:
+ <TASK>
+ context_switch mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/kernel/sched/core.c:5182 [inline]
+ __schedule+0xadf/0x52b0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/kernel/sched/core.c:6494
+ schedule+0xde/0x1b0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/kernel/sched/core.c:6570
+ rwsem_down_read_slowpath+0x5a7/0xb20 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/kernel/locking/rwsem.c:1087
+ __down_read_common mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/kernel/locking/rwsem.c:1252 [inline]
+ __down_read mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/kernel/locking/rwsem.c:1261 [inline]
+ down_read+0xe6/0x450 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/kernel/locking/rwsem.c:1501
+ btrfs_page_mkwrite+0x6ea/0x1170 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/fs/btrfs/inode.c:8568
+ do_page_mkwrite+0x1a7/0x690 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/mm/memory.c:2971
+ wp_page_shared mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/mm/memory.c:3316 [inline]
+ do_wp_page+0xed9/0x1860 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/mm/memory.c:3466
+ handle_pte_fault mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/mm/memory.c:4929 [inline]
+ __handle_mm_fault+0x1813/0x39d0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/mm/memory.c:5053
+ handle_mm_fault+0x1cc/0x780 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/mm/memory.c:5151
+ do_user_addr_fault+0x475/0x1210 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/arch/x86/mm/fault.c:1397
+ handle_page_fault mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/arch/x86/mm/fault.c:1488 [inline]
+ exc_page_fault+0x98/0x170 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/arch/x86/mm/fault.c:1544
+ asm_exc_page_fault+0x26/0x30 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/./arch/x86/include/asm/idtentry.h:570
+RIP: 0010:copy_user_short_string+0xd/0x40 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/arch/x86/lib/copy_user_64.S:233
+Code: 74 0a 89 d1 f3 a4 89 c8 0f 01 ca c3 89 d0 0f 01 ca c3 01 ca eb e7 0f 1f 80 00 00 00 00 89 d1 83 e2 07 c1 e9 03 74 12 4c 8b 06 <4c> 89 07 48 8d 76 08 48 8d 7f 08 ff c9 75 ee 21 d2 74 10 89 d1 8a
+RSP: 0018:ffffc90006aa79b8 EFLAGS: 00050202
+RAX: 0000000000000001 RBX: 0000000000000038 RCX: 0000000000000007
+RDX: 0000000000000000 RSI: ffffc90006aa7a30 RDI: 0000000020000120
+RBP: 0000000020000120 R08: 0000000000000000 R09: ffffc90006aa7a67
+R10: fffff52000d54f4c R11: 000000000009007d R12: 00007fffffffefc8
+R13: ffffc90006aa7a30 R14: ffffc90006aa7a30 R15: ffffc90006aa7d74
+ copy_user_generic mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/./arch/x86/include/asm/uaccess_64.h:37 [inline]
+ raw_copy_to_user mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/./arch/x86/include/asm/uaccess_64.h:58 [inline]
+ _copy_to_user mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/lib/usercopy.c:33 [inline]
+ _copy_to_user+0x127/0x150 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/lib/usercopy.c:26
+ copy_to_user mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/./include/linux/uaccess.h:160 [inline]
+ fiemap_fill_next_extent+0x1fe/0x350 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/fs/ioctl.c:144
+ emit_fiemap_extent mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/fs/btrfs/extent_io.c:5448 [inline]
+ extent_fiemap+0x970/0xf20 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/fs/btrfs/extent_io.c:5687
+ btrfs_fiemap+0xb1/0x100 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/fs/btrfs/inode.c:8249
+ ioctl_fiemap mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/fs/ioctl.c:219 [inline]
+ do_vfs_ioctl+0x466/0x1600 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/fs/ioctl.c:810
+ __do_sys_ioctl mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/fs/ioctl.c:868 [inline]
+ __se_sys_ioctl mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/fs/ioctl.c:856 [inline]
+ __x64_sys_ioctl+0x10c/0x210 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/fs/ioctl.c:856
+ do_syscall_x64 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/arch/x86/entry/common.c:50 [inline]
+ do_syscall_64+0x39/0xb0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/arch/x86/entry/common.c:80
+ entry_SYSCALL_64_after_hwframe+0x63/0xcd
+RIP: 0033:0x7f1998891ced
+RSP: 002b:00007f199966cbd8 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
+RAX: ffffffffffffffda RBX: 00007f19989cc050 RCX: 00007f1998891ced
+RDX: 0000000020000100 RSI: 00000000c020660b RDI: 0000000000000005
+RBP: 00007f19988ef4ac R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+R13: 00007ffe84b1a49f R14: 00007ffe84b1a630 R15: 00007f199966cd80
+ </TASK>
+
+Showing all locks held in the system:
+1 lock held by rcu_tasks_kthre/13:
+ #0: ffffffff8c3895b0 (rcu_tasks.tasks_gp_mutex){+.+.}-{3:3}, at: rcu_tasks_one_gp+0x26/0xc70 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/kernel/rcu/tasks.h:507
+1 lock held by rcu_tasks_trace/14:
+ #0: ffffffff8c3892b0 (rcu_tasks_trace.tasks_gp_mutex){+.+.}-{3:3}, at: rcu_tasks_one_gp+0x26/0xc70 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/kernel/rcu/tasks.h:507
+1 lock held by khungtaskd/31:
+ #0: ffffffff8c38a100 (rcu_read_lock){....}-{1:2}, at: debug_show_all_locks+0x57/0x264 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/kernel/locking/lockdep.c:6492
+2 locks held by kworker/u5:3/62:
+ #0: ffff888107775138 ((wq_completion)btrfs-endio-write){+.+.}-{0:0}, at: arch_atomic64_set mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/./arch/x86/include/asm/atomic64_64.h:34 [inline]
+ #0: ffff888107775138 ((wq_completion)btrfs-endio-write){+.+.}-{0:0}, at: arch_atomic_long_set mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/./include/linux/atomic/atomic-long.h:41 [inline]
+ #0: ffff888107775138 ((wq_completion)btrfs-endio-write){+.+.}-{0:0}, at: atomic_long_set mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/./include/linux/atomic/atomic-instrumented.h:1280 [inline]
+ #0: ffff888107775138 ((wq_completion)btrfs-endio-write){+.+.}-{0:0}, at: set_work_data mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/kernel/workqueue.c:636 [inline]
+ #0: ffff888107775138 ((wq_completion)btrfs-endio-write){+.+.}-{0:0}, at: set_work_pool_and_clear_pending mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/kernel/workqueue.c:663 [inline]
+ #0: ffff888107775138 ((wq_completion)btrfs-endio-write){+.+.}-{0:0}, at: process_one_work+0x841/0x15c0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/kernel/workqueue.c:2260
+ #1: ffffc900012bfda8 ((work_completion)(&work->normal_work)){+.+.}-{0:0}, at: process_one_work+0x875/0x15c0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/kernel/workqueue.c:2264
+1 lock held by in:imklog/6231:
+ #0: ffff888106f6f768 (&f->f_pos_lock){+.+.}-{3:3}, at: __fdget_pos+0xe7/0x100 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/fs/file.c:1036
+4 locks held by syz-executor.0/14293:
+ #0: ffff88810851d9e8 (&f->f_pos_lock){+.+.}-{3:3}, at: __fdget_pos+0xe7/0x100 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/fs/file.c:1036
+ #1: ffff888110de6460 (sb_writers#15){.+.+}-{0:0}, at: ksys_write+0x12b/0x250 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/fs/read_write.c:631
+ #2: ffff888114e63720 (&sb->s_type->i_mutex_key#22){++++}-{3:3}, at: inode_lock mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/./include/linux/fs.h:761 [inline]
+ #2: ffff888114e63720 (&sb->s_type->i_mutex_key#22){++++}-{3:3}, at: btrfs_inode_lock+0x7e/0xf0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/fs/btrfs/inode.c:155
+ #3: ffff888114e635a8 (&ei->i_mmap_lock){++++}-{3:3}, at: btrfs_inode_lock+0xeb/0xf0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/fs/btrfs/inode.c:158
+3 locks held by syz-executor.0/14316:
+ #0: ffff888103619628 (&mm->mmap_lock#2){++++}-{3:3}, at: mmap_read_trylock mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/./include/linux/mmap_lock.h:136 [inline]
+ #0: ffff888103619628 (&mm->mmap_lock#2){++++}-{3:3}, at: do_user_addr_fault+0x276/0x1210 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/arch/x86/mm/fault.c:1338
+ #1: ffff888110de6558 (sb_pagefaults){.+.+}-{0:0}, at: do_page_mkwrite+0x1a7/0x690 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/mm/memory.c:2971
+ #2: ffff888114e635a8 (&ei->i_mmap_lock){++++}-{3:3}, at: btrfs_page_mkwrite+0x6ea/0x1170 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/fs/btrfs/inode.c:8568
+3 locks held by syz-executor.0/14983:
+
+=============================================
+
+NMI backtrace for cpu 0
+CPU: 0 PID: 31 Comm: khungtaskd Not tainted 5.19.0-syzkaller #0
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.13.0-1ubuntu1.1 04/01/2014
+Call Trace:
+ <TASK>
+ __dump_stack mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/lib/dump_stack.c:88 [inline]
+ dump_stack_lvl+0xd1/0x138 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/lib/dump_stack.c:106
+ nmi_cpu_backtrace.cold+0x46/0x14f mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/lib/nmi_backtrace.c:111
+ nmi_trigger_cpumask_backtrace+0x20a/0x260 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/lib/nmi_backtrace.c:62
+ trigger_all_cpu_backtrace mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/./include/linux/nmi.h:148 [inline]
+ check_hung_uninterruptible_tasks mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/kernel/hung_task.c:212 [inline]
+ watchdog+0xc1c/0xf50 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/kernel/hung_task.c:369
+ kthread+0x2e8/0x3a0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/kernel/kthread.c:376
+ ret_from_fork+0x1f/0x30 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/arch/x86/entry/entry_64.S:306
+ </TASK>
+Sending NMI from CPU 0 to CPUs 1:
+NMI backtrace for cpu 1
+CPU: 1 PID: 6232 Comm: rs:main Q:Reg Not tainted 5.19.0-syzkaller #0
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.13.0-1ubuntu1.1 04/01/2014
+RIP: 0010:stack_trace_consume_entry+0x93/0x160 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/kernel/stacktrace.c:89
+Code: 48 b8 00 00 00 00 00 fc ff df 48 89 fa 48 c1 ea 03 0f b6 14 02 48 89 f8 83 e0 07 83 c0 03 38 d0 7c 08 84 d2 0f 85 90 00 00 00 <8b> 43 0c 85 c0 75 53 48 b8 00 00 00 00 00 fc ff df 48 89 da 48 c1
+RSP: 0018:ffffc90003d7f460 EFLAGS: 00000246
+RAX: 0000000000000007 RBX: ffffc90003d7f538 RCX: 0000000000000000
+RDX: 0000000000000000 RSI: ffffffff81d7d2fb RDI: ffffc90003d7f544
+RBP: 0000000000000010 R08: ffffffff8eb53130 R09: ffffc90003d7f4b4
+R10: fffff520007afe9b R11: ffffc90003d7fea0 R12: ffffc90003d7f538
+R13: 0000000000000000 R14: ffff88810acf5880 R15: ffffea00009b8800
+FS:  00007f58e33fd700(0000) GS:ffff888135c00000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007ff52925e000 CR3: 000000001cfd7000 CR4: 0000000000350ee0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+ <TASK>
+ arch_stack_walk+0x71/0xf0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/arch/x86/kernel/stacktrace.c:27
+ stack_trace_save+0x90/0xc0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/kernel/stacktrace.c:122
+ kasan_save_stack+0x22/0x40 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/mm/kasan/common.c:38
+ kasan_set_track+0x25/0x30 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/mm/kasan/common.c:45
+ kasan_set_free_info+0x24/0x40 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/mm/kasan/generic.c:370
+ ____kasan_slab_free mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/mm/kasan/common.c:367 [inline]
+ ____kasan_slab_free+0x166/0x1c0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/mm/kasan/common.c:329
+ kasan_slab_free mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/./include/linux/kasan.h:200 [inline]
+ slab_free_hook mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/mm/slub.c:1754 [inline]
+ slab_free_freelist_hook+0x8b/0x1c0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/mm/slub.c:1780
+ slab_free mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/mm/slub.c:3534 [inline]
+ kmem_cache_free+0xef/0x5b0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/mm/slub.c:3551
+ jbd2_free_handle mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/./include/linux/jbd2.h:1601 [inline]
+ jbd2_journal_stop+0x5e5/0xf20 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/fs/jbd2/transaction.c:1956
+ __ext4_journal_stop+0xe2/0x1f0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/fs/ext4/ext4_jbd2.c:127
+ ext4_dirty_inode+0xec/0x110 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/fs/ext4/inode.c:5967
+ __mark_inode_dirty+0x48f/0x1040 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/fs/fs-writeback.c:2381
+ mark_inode_dirty mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/./include/linux/fs.h:2467 [inline]
+ generic_write_end+0x354/0x440 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/fs/buffer.c:2199
+ ext4_da_write_end+0x172/0x9a0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/fs/ext4/inode.c:3089
+ generic_perform_write+0x30a/0x560 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/mm/filemap.c:3749
+ ext4_buffered_write_iter+0x15b/0x460 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/fs/ext4/file.c:270
+ ext4_file_write_iter+0x44e/0x1650 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/fs/ext4/file.c:679
+ call_write_iter mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/./include/linux/fs.h:2192 [inline]
+ new_sync_write mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/fs/read_write.c:491 [inline]
+ vfs_write+0x9ef/0xdd0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/fs/read_write.c:578
+ ksys_write+0x12b/0x250 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/fs/read_write.c:631
+ do_syscall_x64 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/arch/x86/entry/common.c:50 [inline]
+ do_syscall_64+0x39/0xb0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/arch/x86/entry/common.c:80
+ entry_SYSCALL_64_after_hwframe+0x63/0xcd
+RIP: 0033:0x7f58e7c101cd
+Code: c2 20 00 00 75 10 b8 01 00 00 00 0f 05 48 3d 01 f0 ff ff 73 31 c3 48 83 ec 08 e8 ae fc ff ff 48 89 04 24 b8 01 00 00 00 0f 05 <48> 8b 3c 24 48 89 c2 e8 f7 fc ff ff 48 89 d0 48 83 c4 08 48 3d 01
+RSP: 002b:00007f58e33fc590 EFLAGS: 00000293 ORIG_RAX: 0000000000000001
+RAX: ffffffffffffffda RBX: 00007f58d8023080 RCX: 00007f58e7c101cd
+RDX: 00000000000006db RSI: 00007f58d8023080 RDI: 0000000000000006
+RBP: 0000000000000000 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000293 R12: 00007f58d8022e00
+R13: 00007f58e33fc5b0 R14: 0000564649086360 R15: 00000000000006db
+ </TASK>
+
+
+INFO: task hung in btrfs_sync_file
+b3b173745c8cab1e24d6821488b60abed3acb24d

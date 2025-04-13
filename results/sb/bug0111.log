@@ -1,0 +1,347 @@
+charm starts bisection 2025-04-07 16:58:33.390462155 -0700 PDT m=+72.737516500
+bisecting cause commit starting from f1b45d8ccb9839b48e5884664470e54520e17f4c
+building syzkaller on HEAD
+ensuring issue is reproducible on original commit f1b45d8ccb9839b48e5884664470e54520e17f4c
+
+testing commit f1b45d8ccb9839b48e5884664470e54520e17f4c gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 0b8e4e5cb658d0fd35976c1d71d808bff6493cd7578d7f2eb39a5a3e3144e668
+all runs: crashed: general protection fault in smc_pnet_add
+representative crash: general protection fault in smc_pnet_add, types: [UNKNOWN]
+picked [v5.17 v5.16 v5.15 v5.13 v5.11 v5.9 v5.7 v5.5 v5.2 v4.20 v4.19] out of 20 release tags
+testing release v5.17
+testing commit f443e374ae131c168a065ea1748feac6b2e76613 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: df158ef12d17ad5ae2e581cf29391054e78669fc39117ee47fa26b2d39d60ebc
+all runs: crashed: general protection fault in smc_pnet_add
+representative crash: general protection fault in smc_pnet_add, types: [UNKNOWN]
+testing release v5.16
+testing commit df0cc57e057f18e44dac8e6c18aba47ab53202f9 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 71b23170c88430905e921cb078d14da0c7ed71aa22d434b2e16f42fcc3eb6635
+all runs: crashed: general protection fault in smc_pnet_add
+representative crash: general protection fault in smc_pnet_add, types: [UNKNOWN]
+testing release v5.15
+testing commit 8bb7eca972ad531c9b149c0a51ab43a417385813 gcc
+compiler: gcc (GCC) 10.1.0-syz 20200507, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: f186a022fc31f7e80414ca3bef7a734aea0fa6f667ee47e270aa69d775a71479
+all runs: crashed: general protection fault in smc_pnet_add
+representative crash: general protection fault in smc_pnet_add, types: [UNKNOWN]
+testing release v5.13
+testing commit 62fb9874f5da54fdb243003b386128037319b219 gcc
+compiler: gcc (GCC) 10.1.0-syz 20200507, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 1582d72c029a771f98621d39dcd5634f756d78718478094fe84f483e009f9438
+all runs: crashed: general protection fault in smc_pnet_add
+representative crash: general protection fault in smc_pnet_add, types: [UNKNOWN]
+testing release v5.11
+testing commit f40ddce88593482919761f74910f42f4b84c004b gcc
+compiler: gcc (GCC) 10.1.0-syz 20200507, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: c3b281f81dfb29aa6095baf1aa540385744ce20fcb6b84737b69aed356a9f293
+all runs: crashed: general protection fault in smc_pnet_add
+representative crash: general protection fault in smc_pnet_add, types: [UNKNOWN]
+testing release v5.9
+testing commit bbf5c979011a099af5dc76498918ed7df445635b gcc
+compiler: gcc (GCC) 10.1.0-syz 20200507, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: c3aae476238116e130a3b15246f7d4ce1d94fc68760ae6c42e2e28d3082abea0
+all runs: crashed: general protection fault in smc_pnet_add
+representative crash: general protection fault in smc_pnet_add, types: [UNKNOWN]
+testing release v5.7
+testing commit 3d77e6a8804abcc0504c904bd6e5cdf3a5cf8162 gcc
+compiler: gcc version 8.1.0 (GCC), GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: bc766c07af63771f8ce3b2dfdfd1d7484bec8fd88a9289452d87714055a90461
+all runs: crashed: general protection fault in rds_ib_add_one
+representative crash: general protection fault in rds_ib_add_one, types: [UNKNOWN]
+testing release v5.5
+testing commit d5226fa6dbae0569ee43ecfc08bdcd6770fc4755 gcc
+compiler: gcc version 8.1.0 (GCC)
+kernel signature: 3a522dd0cfec32729dc44106c59bb426c7bf9032fb4c0107d5839dbb9594e8ef
+all runs: crashed: general protection fault in rds_ib_add_one
+representative crash: general protection fault in rds_ib_add_one, types: [UNKNOWN]
+testing release v5.2
+testing commit 0ecfebd2b52404ae0c54a878c872bb93363ada36 gcc
+compiler: gcc version 8.1.0 (GCC)
+kernel signature: 2009939aacfd6ad4f4c460976381a15a0475b8ea23fc9e9cf7fc7f9f189b9fe6
+all runs: OK
+false negative chance: 0.000
+# git bisect start d5226fa6dbae0569ee43ecfc08bdcd6770fc4755 0ecfebd2b52404ae0c54a878c872bb93363ada36
+Bisecting: 23502 revisions left to test after this (roughly 15 steps)
+[7f9e88e6ef8c971f2c638b5ff7044c59b5d0f58d] net: socionext: Fix a signedness bug in ave_probe()
+
+testing commit 7f9e88e6ef8c971f2c638b5ff7044c59b5d0f58d gcc
+compiler: gcc version 8.1.0 (GCC)
+kernel signature: 71587560c33056d4afd12582d6ec74e562ab1da314cb1e5aef4ac9e9279854f6
+all runs: OK
+false negative chance: 0.000
+# git bisect good 7f9e88e6ef8c971f2c638b5ff7044c59b5d0f58d
+Bisecting: 11720 revisions left to test after this (roughly 14 steps)
+[1d87200446f1d10dfe9672ca8edb027a82612f8c] Merge branch 'x86-asm-for-linus' of git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip
+
+testing commit 1d87200446f1d10dfe9672ca8edb027a82612f8c gcc
+compiler: gcc version 8.1.0 (GCC)
+kernel signature: 80daf67f3d7a14b5916d593c88b39e3150ff884eea15cf13e785362f25e05105
+all runs: crashed: general protection fault in rds_ib_add_one
+representative crash: general protection fault in rds_ib_add_one, types: [UNKNOWN]
+# git bisect bad 1d87200446f1d10dfe9672ca8edb027a82612f8c
+Bisecting: 5890 revisions left to test after this (roughly 13 steps)
+[6a6f9b7dafd50efc1b243fb25c3766ebc78adc7b] MIPS: Loongson: Add CFUCFG&CSR support
+
+testing commit 6a6f9b7dafd50efc1b243fb25c3766ebc78adc7b gcc
+compiler: gcc version 8.1.0 (GCC)
+kernel signature: 43955f0080f12f7d7f9451b2743b96df11330410f27c98fd229b31919ba02f0a
+all runs: crashed: general protection fault in rds_ib_add_one
+representative crash: general protection fault in rds_ib_add_one, types: [UNKNOWN]
+# git bisect bad 6a6f9b7dafd50efc1b243fb25c3766ebc78adc7b
+Bisecting: 2966 revisions left to test after this (roughly 12 steps)
+[253c892193ab58da6b1d94371285971b22c63260] powerpc/eeh: Fix eeh eeh_debugfs_break_device() with SRIOV devices
+
+testing commit 253c892193ab58da6b1d94371285971b22c63260 gcc
+compiler: gcc version 8.1.0 (GCC)
+kernel signature: 14ac403d7a487c556c580fa69c7765a3b09ec2d852bf7c141ab7559f8e6f6e52
+all runs: OK
+false negative chance: 0.000
+# git bisect good 253c892193ab58da6b1d94371285971b22c63260
+Bisecting: 1483 revisions left to test after this (roughly 11 steps)
+[956e255c59a5b64d1b3f16fdf2db306d74829e33] KVM: x86: svm: remove unneeded nested_enable_evmcs() hook
+
+testing commit 956e255c59a5b64d1b3f16fdf2db306d74829e33 gcc
+compiler: gcc version 8.1.0 (GCC)
+kernel signature: 4212a4911c63c8b5c8e9fec133a2e443a205562d90640bcb3d11f417c9108d38
+all runs: crashed: general protection fault in rds_ib_add_one
+representative crash: general protection fault in rds_ib_add_one, types: [UNKNOWN]
+# git bisect bad 956e255c59a5b64d1b3f16fdf2db306d74829e33
+Bisecting: 748 revisions left to test after this (roughly 10 steps)
+[6cb2e9ee51b5f1539f027346a02904e282b87d4d] Merge tag 'libnvdimm-for-5.4' of git://git.kernel.org/pub/scm/linux/kernel/git/nvdimm/nvdimm
+
+testing commit 6cb2e9ee51b5f1539f027346a02904e282b87d4d gcc
+compiler: gcc version 8.1.0 (GCC)
+kernel signature: 15097678746eda029d5e97af91ef5894bcbe1391eb824a45f0bda8198e439f8b
+all runs: crashed: general protection fault in rds_ib_add_one
+representative crash: general protection fault in rds_ib_add_one, types: [UNKNOWN]
+# git bisect bad 6cb2e9ee51b5f1539f027346a02904e282b87d4d
+Bisecting: 406 revisions left to test after this (roughly 9 steps)
+[84da111de0b4be15bd500deff773f5116f39f7be] Merge tag 'for-linus-hmm' of git://git.kernel.org/pub/scm/linux/kernel/git/rdma/rdma
+
+testing commit 84da111de0b4be15bd500deff773f5116f39f7be gcc
+compiler: gcc version 8.1.0 (GCC)
+kernel signature: 57ce868f7d1ddf6973a05c6e5dcb2f375a23ea2bb1410e52b22527207992a015
+all runs: OK
+false negative chance: 0.000
+# git bisect good 84da111de0b4be15bd500deff773f5116f39f7be
+Bisecting: 203 revisions left to test after this (roughly 8 steps)
+[5e6a9760f7da4dd86cca43ac6423695d6cb0dff4] scsi: smartpqi: add module param for exposure order
+
+testing commit 5e6a9760f7da4dd86cca43ac6423695d6cb0dff4 gcc
+compiler: gcc version 8.1.0 (GCC)
+kernel signature: 7a01e7c6dffa7adb1c3455057eb99182a14dde8dc8129c133260969e964e8a2a
+all runs: OK
+false negative chance: 0.000
+# git bisect good 5e6a9760f7da4dd86cca43ac6423695d6cb0dff4
+Bisecting: 101 revisions left to test after this (roughly 7 steps)
+[130c2c576e75efaea9cd321ec4b171cc93cd0030] IB/mlx5: Use the original address for the page during free_pages
+
+testing commit 130c2c576e75efaea9cd321ec4b171cc93cd0030 gcc
+compiler: gcc version 8.1.0 (GCC)
+kernel signature: 76e27008df7b912af469f4bf63021ef22bbbcdac29905057309dd89966da36cd
+all runs: crashed: general protection fault in rds_ib_add_one
+representative crash: general protection fault in rds_ib_add_one, types: [UNKNOWN]
+# git bisect bad 130c2c576e75efaea9cd321ec4b171cc93cd0030
+Bisecting: 50 revisions left to test after this (roughly 6 steps)
+[e7f40440afb829594c3ae96187404bc0ecf15ce3] RDMA/hns: Split bool statement and assign statement
+
+testing commit e7f40440afb829594c3ae96187404bc0ecf15ce3 gcc
+compiler: gcc version 8.1.0 (GCC)
+kernel signature: 4f61135c4edf4c39d514bc9257817c8e56ee3b76946369cc36fbe898dddd659e
+all runs: crashed: general protection fault in rds_ib_add_one
+representative crash: general protection fault in rds_ib_add_one, types: [UNKNOWN]
+# git bisect bad e7f40440afb829594c3ae96187404bc0ecf15ce3
+Bisecting: 25 revisions left to test after this (roughly 5 steps)
+[5dcecbc96755793e9417a9135b290d16639ec6aa] IB/mlx5: Refactor code for counters allocation
+
+testing commit 5dcecbc96755793e9417a9135b290d16639ec6aa gcc
+compiler: gcc version 8.1.0 (GCC)
+kernel signature: e07824b6d4c4ecd53d9de265c70ff95043bf5964eaf92b2877ea71733005b483
+all runs: crashed: general protection fault in rds_ib_add_one
+representative crash: general protection fault in rds_ib_add_one, types: [UNKNOWN]
+# git bisect bad 5dcecbc96755793e9417a9135b290d16639ec6aa
+Bisecting: 12 revisions left to test after this (roughly 4 steps)
+[89b4b70b974c98139f57eeb06facab40473268d3] RDMA/hns: Optimize hns_roce_mhop_alloc function.
+
+testing commit 89b4b70b974c98139f57eeb06facab40473268d3 gcc
+compiler: gcc version 8.1.0 (GCC)
+kernel signature: a5d41b6ff5f995c7a794ac1bd21bd3c19111c5fe8693fb273457e287c0c0255b
+all runs: OK
+false negative chance: 0.000
+# git bisect good 89b4b70b974c98139f57eeb06facab40473268d3
+Bisecting: 6 revisions left to test after this (roughly 3 steps)
+[39289bfc221423b27570e7c9157b690828e786cb] RDMA: Make most headers compile stand alone
+
+testing commit 39289bfc221423b27570e7c9157b690828e786cb gcc
+compiler: gcc version 8.1.0 (GCC)
+kernel signature: a5d41b6ff5f995c7a794ac1bd21bd3c19111c5fe8693fb273457e287c0c0255b
+all runs: OK
+false negative chance: 0.000
+# git bisect good 39289bfc221423b27570e7c9157b690828e786cb
+Bisecting: 3 revisions left to test after this (roughly 2 steps)
+[913df8c35322dcd15d993cabc8cc92814dee3d50] RDMA/mlx4: Annotate boolean arguments as bool and not int
+
+testing commit 913df8c35322dcd15d993cabc8cc92814dee3d50 gcc
+compiler: gcc version 8.1.0 (GCC)
+kernel signature: e90899bd4d6a4e3ba5a7f8762ccb3e05e104f63f98bdc45b8c9d953948725fa7
+all runs: OK
+false negative chance: 0.000
+# git bisect good 913df8c35322dcd15d993cabc8cc92814dee3d50
+Bisecting: 1 revision left to test after this (roughly 1 step)
+[8b38c538d460f46680d0fb8524efa15a8652b2d1] IB/mlx5: Add CREATE_PSV/DESTROY_PSV for devx interface
+
+testing commit 8b38c538d460f46680d0fb8524efa15a8652b2d1 gcc
+compiler: gcc version 8.1.0 (GCC)
+kernel signature: e07824b6d4c4ecd53d9de265c70ff95043bf5964eaf92b2877ea71733005b483
+all runs: crashed: general protection fault in rds_ib_add_one
+representative crash: general protection fault in rds_ib_add_one, types: [UNKNOWN]
+# git bisect bad 8b38c538d460f46680d0fb8524efa15a8652b2d1
+Bisecting: 0 revisions left to test after this (roughly 0 steps)
+[1d2fedd8561dc469a7503855ee602f4bb3eccfa7] RDMA/core: Support netlink commands in non init_net net namespaces
+
+testing commit 1d2fedd8561dc469a7503855ee602f4bb3eccfa7 gcc
+compiler: gcc version 8.1.0 (GCC)
+kernel signature: e07824b6d4c4ecd53d9de265c70ff95043bf5964eaf92b2877ea71733005b483
+all runs: crashed: general protection fault in rds_ib_add_one
+representative crash: general protection fault in rds_ib_add_one, types: [UNKNOWN]
+# git bisect bad 1d2fedd8561dc469a7503855ee602f4bb3eccfa7
+1d2fedd8561dc469a7503855ee602f4bb3eccfa7 is the first bad commit
+commit 1d2fedd8561dc469a7503855ee602f4bb3eccfa7
+Author: Parav Pandit <parav@mellanox.com>
+Date:   Tue Jul 23 10:02:05 2019 +0300
+
+    RDMA/core: Support netlink commands in non init_net net namespaces
+    
+    Now that IB core supports RDMA device binding with specific net namespace,
+    enable IB core to accept netlink commands in non init_net namespaces.
+    
+    This is done by having per net namespace netlink socket.
+    
+    At present only netlink device handling client RDMA_NL_NLDEV supports
+    device handling in multiple net namespaces.  Hence do not accept netlink
+    messages for other clients in non init_net net namespaces.
+    
+    Link: https://lore.kernel.org/r/20190723070205.6247-1-leon@kernel.org
+    Signed-off-by: Parav Pandit <parav@mellanox.com>
+    Signed-off-by: Leon Romanovsky <leonro@mellanox.com>
+    Reviewed-by: Jason Gunthorpe <jgg@mellanox.com>
+    Signed-off-by: Jason Gunthorpe <jgg@mellanox.com>
+
+ drivers/infiniband/core/addr.c      |  2 +-
+ drivers/infiniband/core/core_priv.h | 24 +++++++++++++-
+ drivers/infiniband/core/device.c    | 38 ++++++++--------------
+ drivers/infiniband/core/iwpm_msg.c  |  8 ++---
+ drivers/infiniband/core/iwpm_util.c |  6 ++--
+ drivers/infiniband/core/netlink.c   | 63 +++++++++++++++++++++++++------------
+ drivers/infiniband/core/nldev.c     | 20 ++++++------
+ drivers/infiniband/core/sa_query.c  |  2 +-
+ include/rdma/rdma_netlink.h         | 10 ++++--
+ 9 files changed, 105 insertions(+), 68 deletions(-)
+
+accumulated error probability: 0.00
+culprit signature: e07824b6d4c4ecd53d9de265c70ff95043bf5964eaf92b2877ea71733005b483
+parent  signature: e90899bd4d6a4e3ba5a7f8762ccb3e05e104f63f98bdc45b8c9d953948725fa7
+revisions tested: 26, total time: 7h35m7.020856407s (build: 5h41m18.17464284s, test: 1h32m4.971349843s)
+first bad commit: 1d2fedd8561dc469a7503855ee602f4bb3eccfa7 RDMA/core: Support netlink commands in non init_net net namespaces
+recipients (to): ["jgg@mellanox.com" "leonro@mellanox.com" "parav@mellanox.com"]
+recipients (cc): []
+crash: general protection fault in rds_ib_add_one
+netlink: 28 bytes leftover after parsing attributes in process `syz-executor.0'.
+infiniband syz: set active
+infiniband syz: added veth0_vlan
+kasan: CONFIG_KASAN_INLINE enabled
+kasan: GPF could be caused by NULL-ptr deref or user memory access
+general protection fault: 0000 [#1] SMP KASAN
+CPU: 0 PID: 9346 Comm: syz-executor.0 Not tainted 5.3.0-rc1-syzkaller #0
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.13.0-1ubuntu1.1 04/01/2014
+RIP: 0010:dev_to_node mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/./include/linux/device.h:1107 [inline]
+RIP: 0010:rds_ib_add_one+0x9f/0x9b0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/rds/ib.c:137
+Code: 80 3c 02 00 0f 85 b4 07 00 00 49 8b 9c 24 20 06 00 00 48 b8 00 00 00 00 00 fc ff df 48 8d bb 90 03 00 00 48 89 fa 48 c1 ea 03 <0f> b6 04 02 84 c0 74 08 3c 03 0f 8e 1a 07 00 00 48 c7 c7 a0 15 65
+RSP: 0018:ffff88812b6a7020 EFLAGS: 00010206
+RAX: dffffc0000000000 RBX: 0000000000000000 RCX: ffffffff814a2c3b
+RDX: 0000000000000072 RSI: 0000000000000008 RDI: 0000000000000390
+RBP: ffff88812b6a7050 R08: ffffed102605e4a8 R09: ffffed102605e4a8
+R10: ffffed102605e4a7 R11: ffff8881302f253f R12: ffff8881302f2100
+R13: ffff8881302f2530 R14: ffffffff8a9605c8 R15: ffff8881302f25b0
+FS:  00007f8ef945b700(0000) GS:ffff888064600000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007fab335b0710 CR3: 00000001317b6000 CR4: 0000000000340ef0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+ add_client_context+0x171/0x200 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/drivers/infiniband/core/device.c:669
+ enable_device_and_get+0x1bf/0x370 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/drivers/infiniband/core/device.c:1284
+ ib_register_device+0x88e/0xca0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/drivers/infiniband/core/device.c:1348
+ rxe_register_device+0x433/0x528 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/drivers/infiniband/sw/rxe/rxe_verbs.c:1224
+ rxe_add+0x143b/0x18bb mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/drivers/infiniband/sw/rxe/rxe.c:315
+ rxe_net_add+0x86/0xd0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/drivers/infiniband/sw/rxe/rxe_net.c:537
+ rxe_newlink+0x4f/0x60 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/drivers/infiniband/sw/rxe/rxe.c:331
+ nldev_newlink+0x21d/0x3c0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/drivers/infiniband/core/nldev.c:1493
+ rdma_nl_rcv_msg mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/drivers/infiniband/core/netlink.c:203 [inline]
+ rdma_nl_rcv_skb mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/drivers/infiniband/core/netlink.c:246 [inline]
+ rdma_nl_rcv+0x37c/0x920 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/drivers/infiniband/core/netlink.c:267
+ netlink_unicast_kernel mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/netlink/af_netlink.c:1302 [inline]
+ netlink_unicast+0x43b/0x650 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/netlink/af_netlink.c:1328
+ netlink_sendmsg+0x672/0xca0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/netlink/af_netlink.c:1917
+ sock_sendmsg_nosec mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/socket.c:637 [inline]
+ sock_sendmsg+0xac/0xf0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/socket.c:657
+ ___sys_sendmsg+0x647/0x950 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/socket.c:2311
+ __sys_sendmsg+0xd9/0x180 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/socket.c:2356
+ __do_sys_sendmsg mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/socket.c:2365 [inline]
+ __se_sys_sendmsg mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/socket.c:2363 [inline]
+ __x64_sys_sendmsg+0x73/0xb0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/socket.c:2363
+ do_syscall_64+0x99/0x4a0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/arch/x86/entry/common.c:296
+ entry_SYSCALL_64_after_hwframe+0x49/0xbe
+RIP: 0033:0x7f8efa0eeced
+Code: c3 e8 17 32 00 00 0f 1f 80 00 00 00 00 f3 0f 1e fa 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 b8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007f8ef945abd8 EFLAGS: 00000246 ORIG_RAX: 000000000000002e
+RAX: ffffffffffffffda RBX: 00007f8efa228f80 RCX: 00007f8efa0eeced
+RDX: 0000000004000000 RSI: 0000000020000100 RDI: 0000000000000003
+RBP: 00007f8efa14c4ac R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+R13: 00007fff2e5f093f R14: 00007fff2e5f0ad0 R15: 00007f8ef945ad80
+Modules linked in:
+---[ end trace 1bbd41dedb9d552a ]---
+RIP: 0010:dev_to_node mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/./include/linux/device.h:1107 [inline]
+RIP: 0010:rds_ib_add_one+0x9f/0x9b0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/rds/ib.c:137
+Code: 80 3c 02 00 0f 85 b4 07 00 00 49 8b 9c 24 20 06 00 00 48 b8 00 00 00 00 00 fc ff df 48 8d bb 90 03 00 00 48 89 fa 48 c1 ea 03 <0f> b6 04 02 84 c0 74 08 3c 03 0f 8e 1a 07 00 00 48 c7 c7 a0 15 65
+RSP: 0018:ffff88812b6a7020 EFLAGS: 00010206
+RAX: dffffc0000000000 RBX: 0000000000000000 RCX: ffffffff814a2c3b
+RDX: 0000000000000072 RSI: 0000000000000008 RDI: 0000000000000390
+RBP: ffff88812b6a7050 R08: ffffed102605e4a8 R09: ffffed102605e4a8
+R10: ffffed102605e4a7 R11: ffff8881302f253f R12: ffff8881302f2100
+R13: ffff8881302f2530 R14: ffffffff8a9605c8 R15: ffff8881302f25b0
+FS:  00007f8ef945b700(0000) GS:ffff888064600000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007fab335b0710 CR3: 00000001317b6000 CR4: 0000000000340ef0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+----------------
+Code disassembly (best guess):
+   0:	80 3c 02 00          	cmpb   $0x0,(%rdx,%rax,1)
+   4:	0f 85 b4 07 00 00    	jne    0x7be
+   a:	49 8b 9c 24 20 06 00 	mov    0x620(%r12),%rbx
+  11:	00
+  12:	48 b8 00 00 00 00 00 	movabs $0xdffffc0000000000,%rax
+  19:	fc ff df
+  1c:	48 8d bb 90 03 00 00 	lea    0x390(%rbx),%rdi
+  23:	48 89 fa             	mov    %rdi,%rdx
+  26:	48 c1 ea 03          	shr    $0x3,%rdx
+* 2a:	0f b6 04 02          	movzbl (%rdx,%rax,1),%eax <-- trapping instruction
+  2e:	84 c0                	test   %al,%al
+  30:	74 08                	je     0x3a
+  32:	3c 03                	cmp    $0x3,%al
+  34:	0f 8e 1a 07 00 00    	jle    0x754
+  3a:	48                   	rex.W
+  3b:	c7                   	.byte 0xc7
+  3c:	c7                   	(bad)
+  3d:	a0                   	.byte 0xa0
+  3e:	15                   	.byte 0x15
+  3f:	65                   	gs
+
+
+general protection fault in smc_pnet_add
+1d2fedd8561dc469a7503855ee602f4bb3eccfa7

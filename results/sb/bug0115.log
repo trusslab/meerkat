@@ -1,0 +1,249 @@
+charm starts bisection 2025-04-08 22:13:52.235128683 -0700 PDT m=+5.053946955
+bisecting cause commit starting from 2c5ca23f7414eb2c782f945aa417cfab7b5c88dd
+building syzkaller on HEAD
+ensuring issue is reproducible on original commit 2c5ca23f7414eb2c782f945aa417cfab7b5c88dd
+
+testing commit 2c5ca23f7414eb2c782f945aa417cfab7b5c88dd gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 373a4ce9f304076265e5c940c5f9605fb34c2489889928c4d7193fb037297e15
+all runs: crashed: kernel BUG in __skb_gso_segment
+representative crash: kernel BUG in __skb_gso_segment, types: [BUG]
+picked [v5.18 v5.17 v5.16 v5.14 v5.12 v5.10 v5.8 v5.6 v5.3 v5.0 v4.19] out of 21 release tags
+testing release v5.18
+testing commit 4b0986a3613c92f4ec1bdc7f60ec66fea135991f gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 6cda324491ac966764133ddacbd663fe25c4c3137bb83302fe99881c8c1c558d
+all runs: OK
+false negative chance: 0.000
+# git bisect start 2c5ca23f7414eb2c782f945aa417cfab7b5c88dd 4b0986a3613c92f4ec1bdc7f60ec66fea135991f
+Bisecting: 6168 revisions left to test after this (roughly 13 steps)
+[86c87bea6b42100c67418af690919c44de6ede6e] Merge tag 'devicetree-for-5.19' of git://git.kernel.org/pub/scm/linux/kernel/git/robh/linux
+
+testing commit 86c87bea6b42100c67418af690919c44de6ede6e gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 9642d2dcdb1f7724bb729a26d552f9d87a2c0dbc7d1a8ed17c537d93d686d5dc
+all runs: crashed: kernel BUG in __skb_gso_segment
+representative crash: kernel BUG in __skb_gso_segment, types: [BUG]
+# git bisect bad 86c87bea6b42100c67418af690919c44de6ede6e
+Bisecting: 2583 revisions left to test after this (roughly 11 steps)
+[7208c9842c50f97327aac20be62edc8ad230f05c] Merge tag 'gfs2-v5.18-rc6-fixes' of git://git.kernel.org/pub/scm/linux/kernel/git/gfs2/linux-gfs2
+
+testing commit 7208c9842c50f97327aac20be62edc8ad230f05c gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 616c888a3ae8d91835586ece6776d21e62b0b85b99dd33fb32c36dc50c1167ea
+all runs: OK
+false negative chance: 0.000
+# git bisect good 7208c9842c50f97327aac20be62edc8ad230f05c
+Bisecting: 1292 revisions left to test after this (roughly 10 steps)
+[01f4685797a5723b0046da03c30185ac9ff42b30] eth: amd: remove NI6510 support (ni65)
+
+testing commit 01f4685797a5723b0046da03c30185ac9ff42b30 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 5dc45dabbcb8c6344117f0fe096c669cb0de99f40bcb5daff2a2d1907fa72f72
+all runs: crashed: kernel BUG in __skb_gso_segment
+representative crash: kernel BUG in __skb_gso_segment, types: [BUG]
+# git bisect bad 01f4685797a5723b0046da03c30185ac9ff42b30
+Bisecting: 615 revisions left to test after this (roughly 9 steps)
+[50c6afabfd2ae91a4ff0e2feb14fe702b0688ec5] Merge https://git.kernel.org/pub/scm/linux/kernel/git/bpf/bpf-next
+
+testing commit 50c6afabfd2ae91a4ff0e2feb14fe702b0688ec5 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 6a512fd0b2bbfcda50523ea01587183b79727536a26bdf792f1b2373b1863c99
+all runs: crashed: kernel BUG in __skb_gso_segment
+representative crash: kernel BUG in __skb_gso_segment, types: [BUG]
+# git bisect bad 50c6afabfd2ae91a4ff0e2feb14fe702b0688ec5
+Bisecting: 337 revisions left to test after this (roughly 8 steps)
+[7d9dbdfbfdc5e52131bea94a7318ee35b15a5f19] net: ipv6: add skb drop reasons to TLV parse
+
+testing commit 7d9dbdfbfdc5e52131bea94a7318ee35b15a5f19 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: b4cca6c59bde4ef9bd42be1dd470e430a35cc7e462c967db9a2102295e8b2093
+all runs: OK
+false negative chance: 0.000
+# git bisect good 7d9dbdfbfdc5e52131bea94a7318ee35b15a5f19
+Bisecting: 168 revisions left to test after this (roughly 7 steps)
+[fb799dd49a25625db05af51dd141371f6f64d3d1] Merge branch 'ipv6-RT_ONLINK-remove-prep'
+
+testing commit fb799dd49a25625db05af51dd141371f6f64d3d1 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: f8ef10e5cdba43c6cf10e0c33fcd53485254fccb8af09f7727a7a69c7785cbf1
+all runs: OK
+false negative chance: 0.000
+# git bisect good fb799dd49a25625db05af51dd141371f6f64d3d1
+Bisecting: 84 revisions left to test after this (roughly 6 steps)
+[11d5daa89254ba2233d422777d52dbf24666b280] libbpf: Avoid joining .BTF.ext data with BPF programs by section name
+
+testing commit 11d5daa89254ba2233d422777d52dbf24666b280 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: f7c61b2ed3dc804383a72cf36dc1b2969ab8bccf0b3e347c11cda722008893a1
+all runs: OK
+false negative chance: 0.000
+# git bisect good 11d5daa89254ba2233d422777d52dbf24666b280
+Bisecting: 42 revisions left to test after this (roughly 5 steps)
+[c5794097b269f15961ed78f7f27b50e51766dec9] net: ipa: compute proper aggregation limit
+
+testing commit c5794097b269f15961ed78f7f27b50e51766dec9 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 2f33b5ba32eb96cf30d4d1d0c663ff782cefc112da3e78b832f9c3628b85ea7e
+all runs: OK
+false negative chance: 0.000
+# git bisect good c5794097b269f15961ed78f7f27b50e51766dec9
+Bisecting: 21 revisions left to test after this (roughly 5 steps)
+[124de27101ffec33a1eb6ccf0eff89a1a9b999a8] Merge branch 'mptcp-MP_FAIL-timeout'
+
+testing commit 124de27101ffec33a1eb6ccf0eff89a1a9b999a8 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 945343cc8d560d581bc164316c1b147c86da309a4e92597f588dc990d4a128a7
+all runs: crashed: kernel BUG in __skb_gso_segment
+representative crash: kernel BUG in __skb_gso_segment, types: [BUG]
+# git bisect bad 124de27101ffec33a1eb6ccf0eff89a1a9b999a8
+Bisecting: 10 revisions left to test after this (roughly 3 steps)
+[c706b2b5ed74d30436b85cbd8e63e969f6b5873a] net: tls: fix async vs NIC crypto offload
+
+testing commit c706b2b5ed74d30436b85cbd8e63e969f6b5873a gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: f6a8900a6383b709611f7d95d2cfed0ee58b9030fe01c8f2999a349e79796de1
+all runs: crashed: kernel BUG in __skb_gso_segment
+representative crash: kernel BUG in __skb_gso_segment, types: [BUG]
+# git bisect bad c706b2b5ed74d30436b85cbd8e63e969f6b5873a
+Bisecting: 4 revisions left to test after this (roughly 2 steps)
+[de6dd626d7082eda383ec77a5e06093c82122d10] net: dsa: ksz: added the generic port_stp_state_set function
+
+testing commit de6dd626d7082eda383ec77a5e06093c82122d10 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 6821a3a9031d518979999cc64efa7b91d46db942b7db56a4bf747f16e02484ea
+all runs: OK
+false negative chance: 0.000
+# git bisect good de6dd626d7082eda383ec77a5e06093c82122d10
+Bisecting: 2 revisions left to test after this (roughly 1 step)
+[561215482cc69d1c758944d4463b3d5d96d37bd1] net: usb: qmi_wwan: add support for Sierra Wireless EM7590
+
+testing commit 561215482cc69d1c758944d4463b3d5d96d37bd1 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 659c0517716c5a47af32f657de1076e06ff16e70de9bf721221d75635df9cd05
+all runs: crashed: kernel BUG in __skb_gso_segment
+representative crash: kernel BUG in __skb_gso_segment, types: [BUG]
+# git bisect bad 561215482cc69d1c758944d4463b3d5d96d37bd1
+Bisecting: 0 revisions left to test after this (roughly 0 steps)
+[dfed913e8b55a0c2c4906f1242fd38fd9a116e49] net/af_packet: add VLAN support for AF_PACKET SOCK_RAW GSO
+
+testing commit dfed913e8b55a0c2c4906f1242fd38fd9a116e49 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 1f28bac936401104637e70db4c566dcb0b63e8f0768d5e22b913cfa73f4b5d66
+all runs: crashed: kernel BUG in __skb_gso_segment
+representative crash: kernel BUG in __skb_gso_segment, types: [BUG]
+# git bisect bad dfed913e8b55a0c2c4906f1242fd38fd9a116e49
+dfed913e8b55a0c2c4906f1242fd38fd9a116e49 is the first bad commit
+commit dfed913e8b55a0c2c4906f1242fd38fd9a116e49
+Author: Hangbin Liu <liuhangbin@gmail.com>
+Date:   Mon Apr 25 09:45:02 2022 +0800
+
+    net/af_packet: add VLAN support for AF_PACKET SOCK_RAW GSO
+    
+    Currently, the kernel drops GSO VLAN tagged packet if it's created with
+    socket(AF_PACKET, SOCK_RAW, 0) plus virtio_net_hdr.
+    
+    The reason is AF_PACKET doesn't adjust the skb network header if there is
+    a VLAN tag. Then after virtio_net_hdr_set_proto() called, the skb->protocol
+    will be set to ETH_P_IP/IPv6. And in later inet/ipv6_gso_segment() the skb
+    is dropped as network header position is invalid.
+    
+    Let's handle VLAN packets by adjusting network header position in
+    packet_parse_headers(). The adjustment is safe and does not affect the
+    later xmit as tap device also did that.
+    
+    In packet_snd(), packet_parse_headers() need to be moved before calling
+    virtio_net_hdr_set_proto(), so we can set correct skb->protocol and
+    network header first.
+    
+    There is no need to update tpacket_snd() as it calls packet_parse_headers()
+    in tpacket_fill_skb(), which is already before calling virtio_net_hdr_*
+    functions.
+    
+    skb->no_fcs setting is also moved upper to make all skb settings together
+    and keep consistency with function packet_sendmsg_spkt().
+    
+    Signed-off-by: Hangbin Liu <liuhangbin@gmail.com>
+    Acked-by: Willem de Bruijn <willemb@google.com>
+    Acked-by: Michael S. Tsirkin <mst@redhat.com>
+    Link: https://lore.kernel.org/r/20220425014502.985464-1-liuhangbin@gmail.com
+    Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+
+ net/packet/af_packet.c | 18 +++++++++++++-----
+ 1 file changed, 13 insertions(+), 5 deletions(-)
+
+accumulated error probability: 0.00
+culprit signature: 1f28bac936401104637e70db4c566dcb0b63e8f0768d5e22b913cfa73f4b5d66
+parent  signature: 6821a3a9031d518979999cc64efa7b91d46db942b7db56a4bf747f16e02484ea
+revisions tested: 15, total time: 4h3m13.788648673s (build: 2h35m10.574718676s, test: 1h9m22.339111036s)
+first bad commit: dfed913e8b55a0c2c4906f1242fd38fd9a116e49 net/af_packet: add VLAN support for AF_PACKET SOCK_RAW GSO
+recipients (to): ["liuhangbin@gmail.com" "mst@redhat.com" "pabeni@redhat.com" "willemb@google.com"]
+recipients (cc): []
+crash: kernel BUG in __skb_gso_segment
+------------[ cut here ]------------
+kernel BUG at include/linux/skbuff.h:2587!
+invalid opcode: 0000 [#1] PREEMPT SMP KASAN
+CPU: 0 PID: 7495 Comm: syz-executor.0 Not tainted 5.18.0-rc3-syzkaller #0
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.13.0-1ubuntu1.1 04/01/2014
+RIP: 0010:__skb_pull mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/./include/linux/skbuff.h:2587 [inline]
+RIP: 0010:skb_mac_gso_segment+0x48f/0x530 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/core/gro.c:136
+Code: 00 48 c7 c7 20 90 d2 8a c6 05 52 05 4c 06 01 e8 c2 bc cf 01 e9 2f fd ff ff 49 c7 c4 ea ff ff ff e9 f1 fe ff ff e8 01 c3 20 fa <0f> 0b 48 89 df e8 57 4a 6c fa e9 7f fd ff ff e8 6d 4a 6c fa e9 48
+RSP: 0018:ffffc9000bdcf4b8 EFLAGS: 00010293
+RAX: 0000000000000000 RBX: 0000000000000012 RCX: 0000000000000000
+RDX: ffff88810da8ba00 RSI: ffffffff87585a4f RDI: 0000000000000003
+RBP: 0000000000005dbc R08: 0000000000000fe0 R09: 0000000000005dbc
+R10: ffffffff875856ec R11: 0000000000000000 R12: 0000000000000fe0
+R13: ffff88801f693000 R14: 1ffff920017b9e9b R15: 0000000000000012
+FS:  00007fb62b88c700(0000) GS:ffff888063e00000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 000055ed7621bf88 CR3: 0000000110bb4000 CR4: 0000000000350ef0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+ <TASK>
+ __skb_gso_segment+0x32c/0x6b0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/core/dev.c:3359
+ skb_gso_segment mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/./include/linux/netdevice.h:4690 [inline]
+ validate_xmit_skb+0x73b/0xf90 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/core/dev.c:3618
+ validate_xmit_skb_list+0xbc/0x120 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/core/dev.c:3668
+ sch_direct_xmit+0x3d1/0xbe0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/sched/sch_generic.c:327
+ __dev_xmit_skb mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/core/dev.c:3764 [inline]
+ __dev_queue_xmit+0x1572/0x3b10 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/core/dev.c:4173
+ packet_snd mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/packet/af_packet.c:3071 [inline]
+ packet_sendmsg+0x21c3/0x5550 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/packet/af_packet.c:3102
+ sock_sendmsg_nosec mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/socket.c:705 [inline]
+ sock_sendmsg+0xcf/0x120 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/socket.c:725
+ ____sys_sendmsg+0x6e2/0x800 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/socket.c:2413
+ ___sys_sendmsg+0xf3/0x170 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/socket.c:2467
+ __sys_sendmsg+0xe5/0x1b0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/socket.c:2496
+ do_syscall_x64 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/arch/x86/entry/common.c:50 [inline]
+ do_syscall_64+0x35/0xb0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/arch/x86/entry/common.c:80
+ entry_SYSCALL_64_after_hwframe+0x44/0xae
+RIP: 0033:0x7fb62aa91ced
+Code: c3 e8 17 32 00 00 0f 1f 80 00 00 00 00 f3 0f 1e fa 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 b8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007fb62b88bbd8 EFLAGS: 00000246 ORIG_RAX: 000000000000002e
+RAX: ffffffffffffffda RBX: 00007fb62abcbf80 RCX: 00007fb62aa91ced
+RDX: 0000000000000000 RSI: 0000000020000140 RDI: 0000000000000003
+RBP: 00007fb62aaef4ac R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+R13: 00007ffcc2df4c3f R14: 00007ffcc2df4dd0 R15: 00007fb62b88bd80
+ </TASK>
+Modules linked in:
+---[ end trace 0000000000000000 ]---
+RIP: 0010:__skb_pull mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/./include/linux/skbuff.h:2587 [inline]
+RIP: 0010:skb_mac_gso_segment+0x48f/0x530 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/core/gro.c:136
+Code: 00 48 c7 c7 20 90 d2 8a c6 05 52 05 4c 06 01 e8 c2 bc cf 01 e9 2f fd ff ff 49 c7 c4 ea ff ff ff e9 f1 fe ff ff e8 01 c3 20 fa <0f> 0b 48 89 df e8 57 4a 6c fa e9 7f fd ff ff e8 6d 4a 6c fa e9 48
+RSP: 0018:ffffc9000bdcf4b8 EFLAGS: 00010293
+RAX: 0000000000000000 RBX: 0000000000000012 RCX: 0000000000000000
+RDX: ffff88810da8ba00 RSI: ffffffff87585a4f RDI: 0000000000000003
+RBP: 0000000000005dbc R08: 0000000000000fe0 R09: 0000000000005dbc
+R10: ffffffff875856ec R11: 0000000000000000 R12: 0000000000000fe0
+R13: ffff88801f693000 R14: 1ffff920017b9e9b R15: 0000000000000012
+FS:  00007fb62b88c700(0000) GS:ffff888063e00000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 000055ed7621bf88 CR3: 0000000110bb4000 CR4: 0000000000350ef0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+
+
+kernel BUG in __skb_gso_segment
+dfed913e8b55a0c2c4906f1242fd38fd9a116e49

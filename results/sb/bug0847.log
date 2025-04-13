@@ -1,0 +1,377 @@
+TrussLab starts bisection 2025-03-28 12:37:30.353845764 -0700 PDT m=+72.960569767
+bisecting cause commit starting from 1c7873e3364570ec89343ff4877e0f27a7b21a61
+building syzkaller on HEAD
+ensuring issue is reproducible on original commit 1c7873e3364570ec89343ff4877e0f27a7b21a61
+
+testing commit 1c7873e3364570ec89343ff4877e0f27a7b21a61 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 888464f7196cb6cf242ca60b2d8b31e45fca64f284fd146367d1929a8ab6abf6
+all runs: crashed: WARNING in btrfs_destroy_inode
+representative crash: WARNING in btrfs_destroy_inode, types: [WARNING]
+picked [v6.4 v6.3 v6.2 v6.0 v5.18 v5.16 v5.14 v5.12 v5.9 v5.6 v5.3 v5.0 v4.19] out of 27 release tags
+testing release v6.4
+testing commit 6995e2de6891c724bfeb2db33d7b87775f913ad1 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 3257793b6a685dadec771ce6583badc28417912759987fdb746f79c52e5018a2
+all runs: crashed: WARNING in btrfs_destroy_inode
+representative crash: WARNING in btrfs_destroy_inode, types: [WARNING]
+testing release v6.3
+testing commit 457391b0380335d5e9a5babdec90ac53928b23b4 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 4369173038ddb9a06442af7a04a875270f232a6ce78ffef42b353a66b7aa179c
+all runs: OK
+false negative chance: 0.000
+# git bisect start 6995e2de6891c724bfeb2db33d7b87775f913ad1 457391b0380335d5e9a5babdec90ac53928b23b4
+Bisecting: 8012 revisions left to test after this (roughly 13 steps)
+[d42b1c47570eb2ed818dc3fe94b2678124af109d] Merge tag 'devicetree-for-6.4-1' of git://git.kernel.org/pub/scm/linux/kernel/git/robh/linux
+
+testing commit d42b1c47570eb2ed818dc3fe94b2678124af109d gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 8587fd63cf8809222c7025f4c82376593c0fd4f0fa5bdcd38aeb5db865e30693
+all runs: crashed: WARNING in btrfs_destroy_inode
+representative crash: WARNING in btrfs_destroy_inode, types: [WARNING]
+# git bisect bad d42b1c47570eb2ed818dc3fe94b2678124af109d
+Bisecting: 4005 revisions left to test after this (roughly 12 steps)
+[088e0c188513b58a0056a488cf5b7df094a8a48a] Merge tag 'platform-drivers-x86-v6.4-1' of git://git.kernel.org/pub/scm/linux/kernel/git/pdx86/platform-drivers-x86
+
+testing commit 088e0c188513b58a0056a488cf5b7df094a8a48a gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: cbcefbdd8fc837025678aa5317b81254b89c32652662434b48fe61507a258394
+all runs: OK
+false negative chance: 0.000
+# git bisect good 088e0c188513b58a0056a488cf5b7df094a8a48a
+Bisecting: 2002 revisions left to test after this (roughly 11 steps)
+[28339b21a365a8cb9edc6956cbfd679f569daa81] netfilter: nf_tables: do not send complete notification of deletions
+
+testing commit 28339b21a365a8cb9edc6956cbfd679f569daa81 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: ea36c06f9f9baf5be87844d44f4eb04a74a54a2c19a7df875f237e431aa0fed0
+all runs: OK
+false negative chance: 0.000
+# git bisect good 28339b21a365a8cb9edc6956cbfd679f569daa81
+Bisecting: 946 revisions left to test after this (roughly 10 steps)
+[85d7ab2463822a4ab096c0b7b59feec962552572] Merge tag 'for-6.4-tag' of git://git.kernel.org/pub/scm/linux/kernel/git/kdave/linux
+
+testing commit 85d7ab2463822a4ab096c0b7b59feec962552572 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: a71efebfef99426df20116576443740726cd0ba830484a1e819ca75c08d57877
+all runs: crashed: WARNING in btrfs_destroy_inode
+representative crash: WARNING in btrfs_destroy_inode, types: [WARNING]
+# git bisect bad 85d7ab2463822a4ab096c0b7b59feec962552572
+Bisecting: 544 revisions left to test after this (roughly 9 steps)
+[5e0ca0bfc33b7196ae3a5cbe26289a4025618f5a] Merge tag 'thermal-6.4-rc1' of git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm
+
+testing commit 5e0ca0bfc33b7196ae3a5cbe26289a4025618f5a gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: d2d5f8026f1764d03fd3e2ad16a1f2b0f1597e48436e15eaf0bfa1471ddce94b
+all runs: OK
+false negative chance: 0.000
+# git bisect good 5e0ca0bfc33b7196ae3a5cbe26289a4025618f5a
+Bisecting: 273 revisions left to test after this (roughly 8 steps)
+[dbe0e78d0e3a83dd924ea01bebf6c45313c81607] Merge tag 'fscrypt-for-linus' of git://git.kernel.org/pub/scm/fs/fscrypt/linux
+
+testing commit dbe0e78d0e3a83dd924ea01bebf6c45313c81607 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 24a3b1ee887efc863a45cd48a68e3d937818f38b2cc1c4baa1b0df75f78d5423
+all runs: OK
+false negative chance: 0.000
+# git bisect good dbe0e78d0e3a83dd924ea01bebf6c45313c81607
+Bisecting: 136 revisions left to test after this (roughly 7 steps)
+[13a62fd997f0649d221afc73e301c95c76560506] btrfs: scrub: remove scrub_bio structure
+
+testing commit 13a62fd997f0649d221afc73e301c95c76560506 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: c47c1b8c70138fcfc43cae93ecd263fcbfba87b49d0f5a26e0f24dc272e66ce7
+all runs: OK
+false negative chance: 0.000
+# git bisect good 13a62fd997f0649d221afc73e301c95c76560506
+Bisecting: 68 revisions left to test after this (roughly 6 steps)
+[4d934a5e6caa6dcdd3fbee7b96fe512a455863b6] ext4: Convert ext4_write_begin() to use a folio
+
+testing commit 4d934a5e6caa6dcdd3fbee7b96fe512a455863b6 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: d9a823b1b17b7edeb3ecce85cdf9ac939f8155be2db03fe034806298029d8483
+all runs: OK
+false negative chance: 0.000
+# git bisect good 4d934a5e6caa6dcdd3fbee7b96fe512a455863b6
+Bisecting: 34 revisions left to test after this (roughly 5 steps)
+[54902099b1d8b62bea7cfd949aa3acd9eae1c3db] ext4: move dax and encrypt checking into ext4_check_feature_compatibility()
+
+testing commit 54902099b1d8b62bea7cfd949aa3acd9eae1c3db gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 0b159c72185a8051eb282e71ebf95c8396a7293e98fff10aaf7115d73157ed97
+all runs: OK
+false negative chance: 0.000
+# git bisect good 54902099b1d8b62bea7cfd949aa3acd9eae1c3db
+Bisecting: 21 revisions left to test after this (roughly 4 steps)
+[36d532d713db5797b844fb8bd61a068d3cd4ee3f] quota: mark PRINT_QUOTA_WARNING as BROKEN
+
+testing commit 36d532d713db5797b844fb8bd61a068d3cd4ee3f gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 06792e56fd272865b0be40bb7d1f80a249f76083f45fbc5460eec9ef0b8e86dd
+all runs: OK
+false negative chance: 0.000
+# git bisect good 36d532d713db5797b844fb8bd61a068d3cd4ee3f
+Bisecting: 10 revisions left to test after this (roughly 4 steps)
+[94fc0792661a96d64a4bb79cf10d0793ecadf76e] Merge tag 'fs_for_v6.4-rc1' of git://git.kernel.org/pub/scm/linux/kernel/git/jack/linux-fs
+
+testing commit 94fc0792661a96d64a4bb79cf10d0793ecadf76e gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: c919b6b8535ac249ee2daa5acadcfe297bb6cee5d67df78cf1d017c637aa85e8
+all runs: OK
+false negative chance: 0.000
+# git bisect good 94fc0792661a96d64a4bb79cf10d0793ecadf76e
+Bisecting: 5 revisions left to test after this (roughly 3 steps)
+[524f14bb114a20d9b3d8db25f93b532d4207fcac] btrfs: remove pointless loop at btrfs_get_next_valid_item()
+
+testing commit 524f14bb114a20d9b3d8db25f93b532d4207fcac gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 909c676992bc071682fcf17472cc231c88128ca79db938a49b7c83b6993e9c36
+all runs: OK
+false negative chance: 0.000
+# git bisect good 524f14bb114a20d9b3d8db25f93b532d4207fcac
+Bisecting: 2 revisions left to test after this (roughly 2 steps)
+[5d3e4f1d5123d79932177c3e7461a968f412775a] btrfs: use log root when iterating over index keys when logging directory
+
+testing commit 5d3e4f1d5123d79932177c3e7461a968f412775a gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 689cf51949dde60083090e4904e5d85cd951e81b2273dfc9dc55e85d6515001c
+all runs: OK
+false negative chance: 0.000
+# git bisect good 5d3e4f1d5123d79932177c3e7461a968f412775a
+Bisecting: 0 revisions left to test after this (roughly 1 step)
+[f372463124df5f980de6ee0cd6000a3e43df0e01] btrfs: mark btrfs_assertfail() __noreturn
+
+testing commit f372463124df5f980de6ee0cd6000a3e43df0e01 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 8532860e5a00ac2675b9921242461cb6ee2cfc9a55040eaa1c6d8d66c7143748
+all runs: OK
+false negative chance: 0.000
+# git bisect good f372463124df5f980de6ee0cd6000a3e43df0e01
+85d7ab2463822a4ab096c0b7b59feec962552572 is the first bad commit
+commit 85d7ab2463822a4ab096c0b7b59feec962552572
+Merge: 94fc0792661a f372463124df
+Author: Linus Torvalds <torvalds@linux-foundation.org>
+Date:   Wed Apr 26 09:13:44 2023 -0700
+
+    Merge tag 'for-6.4-tag' of git://git.kernel.org/pub/scm/linux/kernel/git/kdave/linux
+    
+    Pull btrfs updates from David Sterba:
+     "Mostly core changes and cleanups, some notable fixes and two
+      performance improvements in directory logging.
+    
+      The IO path cleanups are removing or refactoring old code, scrub main
+      loop has been completely rewritten also refactoring old code.
+    
+      There are some changes to non-btrfs code, mostly trivial, the cgroup
+      punt bio logic is only moved from generic code.
+    
+      Performance improvements:
+    
+       - improve logging changes in a directory during one transaction,
+         avoid iterating over items and reduce lock contention (fsync time
+         4x lower)
+    
+       - when logging directory entries during one transaction, reduce
+         locking of subvolume trees by checking tree-log instead
+         (improvement in throughput and latency for concurrent access to a
+         subvolume)
+    
+      Notable fixes:
+    
+       - dev-replace:
+          - properly honor read mode when requested to avoid reading from
+            source device
+          - target device won't be used for eventual read repair, this is
+            unreliable for NODATASUM files
+          - when there are unpaired (and unrepairable) metadata during
+            replace, exit early with error and don't try to finish whole
+            operation
+    
+       - scrub ioctl properly rejects unknown flags
+    
+       - fix global block reserve calculations
+    
+       - fix partial direct io write when there's a page fault in the
+         middle, iomap will try to continue with partial request but the
+         btrfs part did not match that, this can lead to zeros written
+         instead of data
+    
+      Core changes:
+    
+       - io path:
+          - continued cleanups and refactoring around bio handling
+          - extent io submit path simplifications and cleanups
+          - flush write path simplifications and cleanups
+          - rework logic of passing sync mode of bio, with further cleanups
+    
+       - rewrite scrub code flow, restructure how the stripes are enumerated
+         and verified in a more unified way
+    
+       - allow to set lower threshold for block group reclaim in debug mode
+         to aid zoned mode testing
+    
+       - remove obsolete time-based delayed ref throttling logic when
+         truncating items
+    
+       - DREW locks are not using percpu variables anymore
+    
+       - more warning fixes (-Wmaybe-uninitialized)
+    
+       - u64 division simplifications
+    
+       - error handling improvements
+    
+      Non-btrfs code changes:
+    
+       - push cgroup punt bio logic to btrfs code (there was no other user
+         of that), the functionality can be now selected separately by
+         BLK_CGROUP_PUNT_BIO
+    
+       - crc32c_impl removed after removing last uses in btrfs code
+    
+       - add btrfs_assertfail() to objtool table"
+    
+    * tag 'for-6.4-tag' of git://git.kernel.org/pub/scm/linux/kernel/git/kdave/linux: (147 commits)
+      btrfs: mark btrfs_assertfail() __noreturn
+      btrfs: fix uninitialized variable warnings
+      btrfs: use log root when iterating over index keys when logging directory
+      btrfs: avoid iterating over all indexes when logging directory
+      btrfs: dev-replace: error out if we have unrepaired metadata error during
+      btrfs: remove pointless loop at btrfs_get_next_valid_item()
+      btrfs: scrub: reject unsupported scrub flags
+      btrfs: reinterpret async discard iops_limit=0 as no delay
+      btrfs: set default discard iops_limit to 1000
+      btrfs: remove unused raid56 functions which were dedicated for scrub
+      btrfs: scrub: remove scrub_bio structure
+      btrfs: scrub: remove scrub_block and scrub_sector structures
+      btrfs: scrub: remove the old scrub recheck code
+      btrfs: scrub: remove the old writeback infrastructure
+      btrfs: scrub: remove scrub_parity structure
+      btrfs: scrub: use scrub_stripe to implement RAID56 P/Q scrub
+      btrfs: scrub: switch scrub_simple_mirror() to scrub_stripe infrastructure
+      btrfs: scrub: introduce helper to queue a stripe for scrub
+      btrfs: scrub: introduce error reporting functionality for scrub_stripe
+      btrfs: scrub: introduce a writeback helper for scrub_stripe
+      ...
+
+ block/Kconfig                     |    3 +
+ block/blk-cgroup.c                |   78 +-
+ block/blk-cgroup.h                |   15 +-
+ block/blk-core.c                  |    3 -
+ fs/btrfs/Kconfig                  |    1 +
+ fs/btrfs/bio.c                    |  211 +-
+ fs/btrfs/bio.h                    |   22 +-
+ fs/btrfs/block-group.c            |   40 +-
+ fs/btrfs/block-group.h            |   13 +-
+ fs/btrfs/block-rsv.c              |   21 +-
+ fs/btrfs/block-rsv.h              |    2 +-
+ fs/btrfs/btrfs_inode.h            |   35 +-
+ fs/btrfs/compression.c            |  299 +--
+ fs/btrfs/compression.h            |   20 +-
+ fs/btrfs/ctree.c                  |   91 +-
+ fs/btrfs/ctree.h                  |   17 +-
+ fs/btrfs/delalloc-space.c         |    2 +-
+ fs/btrfs/delayed-ref.c            |   49 +-
+ fs/btrfs/delayed-ref.h            |   22 +-
+ fs/btrfs/disk-io.c                |  147 +-
+ fs/btrfs/extent-tree.c            |   37 +-
+ fs/btrfs/extent_io.c              |  550 ++---
+ fs/btrfs/file-item.c              |   93 +-
+ fs/btrfs/file-item.h              |    3 +-
+ fs/btrfs/fs.h                     |   53 +-
+ fs/btrfs/inode-item.c             |   15 +-
+ fs/btrfs/inode.c                  |  375 ++--
+ fs/btrfs/ioctl.c                  |    5 +
+ fs/btrfs/locking.c                |   25 +-
+ fs/btrfs/locking.h                |    5 +-
+ fs/btrfs/lru_cache.h              |    5 -
+ fs/btrfs/lzo.c                    |   17 +-
+ fs/btrfs/messages.c               |    2 +-
+ fs/btrfs/messages.h               |    2 +-
+ fs/btrfs/ordered-data.c           |  120 +-
+ fs/btrfs/ordered-data.h           |   10 +-
+ fs/btrfs/raid56.c                 |  162 +-
+ fs/btrfs/raid56.h                 |   12 +-
+ fs/btrfs/relocation.c             |    6 +-
+ fs/btrfs/scrub.c                  | 4142 ++++++++++++-------------------------
+ fs/btrfs/send.c                   |    2 +-
+ fs/btrfs/space-info.c             |   32 +-
+ fs/btrfs/space-info.h             |    1 +
+ fs/btrfs/super.c                  |    3 +-
+ fs/btrfs/sysfs.c                  |    5 +
+ fs/btrfs/tests/extent-map-tests.c |    1 -
+ fs/btrfs/transaction.c            |   28 +-
+ fs/btrfs/tree-checker.c           |   14 +
+ fs/btrfs/tree-log.c               |  171 +-
+ fs/btrfs/volumes.c                |  593 +++---
+ fs/btrfs/volumes.h                |   85 +-
+ fs/btrfs/zlib.c                   |    2 -
+ fs/btrfs/zoned.c                  |    4 +-
+ fs/btrfs/zstd.c                   |    1 -
+ include/linux/bio.h               |    5 +
+ include/linux/blk_types.h         |   18 +-
+ include/linux/crc32c.h            |    1 -
+ include/linux/writeback.h         |    5 -
+ include/trace/events/btrfs.h      |    2 +-
+ include/uapi/linux/btrfs.h        |    1 +
+ lib/libcrc32c.c                   |    6 -
+ tools/objtool/check.c             |    1 +
+ 62 files changed, 2867 insertions(+), 4844 deletions(-)
+
+accumulated error probability: 0.00
+revisions tested: 17, total time: 7h47m0.697829374s (build: 5h25m39.335470316s, test: 1h45m47.415079846s)
+first bad commit: 85d7ab2463822a4ab096c0b7b59feec962552572 Merge tag 'for-6.4-tag' of git://git.kernel.org/pub/scm/linux/kernel/git/kdave/linux
+recipients (to): ["torvalds@linux-foundation.org"]
+recipients (cc): []
+crash: WARNING in btrfs_destroy_inode
+------------[ cut here ]------------
+WARNING: CPU: 1 PID: 8547 at fs/btrfs/inode.c:8495 btrfs_destroy_inode+0x6b9/0x830 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/fs/btrfs/inode.c:8495
+Modules linked in:
+CPU: 1 PID: 8547 Comm: syz-executor.0 Not tainted 6.3.0-syzkaller #0
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.13.0-1ubuntu1.1 04/01/2014
+RIP: 0010:btrfs_destroy_inode+0x6b9/0x830 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/fs/btrfs/inode.c:8495
+Code: ff e8 5b a0 1b fe 0f 0b e9 48 fc ff ff e8 4f a0 1b fe 0f 0b e9 9c fa ff ff e8 43 a0 1b fe 0f 0b e9 08 fa ff ff e8 37 a0 1b fe <0f> 0b e9 40 fa ff ff e8 2b a0 1b fe 0f 0b e9 c0 fa ff ff e8 1f a0
+RSP: 0018:ffffc90002aafbf0 EFLAGS: 00010293
+RAX: 0000000000000000 RBX: ffff88811c6035c8 RCX: 0000000000000000
+RDX: ffff88810fe60180 RSI: ffffffff83672a99 RDI: 0000000000000007
+RBP: ffffc90002aafc40 R08: 0000000000000007 R09: 0000000000000000
+R10: 0000000000010000 R11: 0000000000094001 R12: ffff88811c603180
+R13: ffffc90002aafd08 R14: 0000000000010000 R15: ffff888107b98000
+FS:  000055555579e980(0000) GS:ffff888135c00000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00005555557a7dc8 CR3: 0000000106efd000 CR4: 0000000000350ee0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+ <TASK>
+ destroy_inode+0xc4/0x1b0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/fs/inode.c:310
+ dispose_list+0x117/0x1e0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/fs/inode.c:698
+ evict_inodes+0x345/0x440 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/fs/inode.c:748
+ generic_shutdown_super+0xaf/0x480 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/fs/super.c:479
+ kill_anon_super+0x3a/0x60 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/fs/super.c:1107
+ btrfs_kill_super+0x3c/0x50 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/fs/btrfs/super.c:2134
+ deactivate_locked_super+0x98/0x160 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/fs/super.c:331
+ deactivate_super+0xb1/0xd0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/fs/super.c:362
+ cleanup_mnt+0x2ae/0x3d0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/fs/namespace.c:1177
+ task_work_run+0x16f/0x270 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/kernel/task_work.c:179
+ resume_user_mode_work mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/./include/linux/resume_user_mode.h:49 [inline]
+ exit_to_user_mode_loop mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/kernel/entry/common.c:171 [inline]
+ exit_to_user_mode_prepare+0x210/0x240 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/kernel/entry/common.c:204
+ __syscall_exit_to_user_mode_work mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/kernel/entry/common.c:286 [inline]
+ syscall_exit_to_user_mode+0x1d/0x50 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/kernel/entry/common.c:297
+ do_syscall_64+0x46/0xb0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/arch/x86/entry/common.c:86
+ entry_SYSCALL_64_after_hwframe+0x63/0xcd
+RIP: 0033:0x7f82b8a9465b
+Code: ff ff ff f7 d8 64 89 01 48 83 c8 ff c3 66 90 f3 0f 1e fa 31 f6 e9 05 00 00 00 0f 1f 44 00 00 f3 0f 1e fa b8 a6 00 00 00 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 b8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007ffde28d2d98 EFLAGS: 00000246 ORIG_RAX: 00000000000000a6
+RAX: 0000000000000000 RBX: 0000000000000000 RCX: 00007f82b8a9465b
+RDX: 00007f82b8a29ae0 RSI: 000000000000000a RDI: 00007ffde28d2e60
+RBP: 00007ffde28d2e60 R08: 00007f82b8aee336 R09: 00007ffde28d2c20
+R10: 00000000fffffffd R11: 0000000000000246 R12: 00007f82b8aee312
+R13: 00007ffde28d3f40 R14: 000055555579fd90 R15: 00007ffde28d3f30
+ </TASK>
+
+
+general protection fault in btrfs_finish_ordered_extent
+85d7ab2463822a4ab096c0b7b59feec962552572

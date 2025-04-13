@@ -1,0 +1,371 @@
+charm starts bisection 2025-04-11 16:14:24.502936095 -0700 PDT m=+50.492308666
+bisecting cause commit starting from 148341f0a2f53b5e8808d093333d85170586a15d
+building syzkaller on HEAD
+ensuring issue is reproducible on original commit 148341f0a2f53b5e8808d093333d85170586a15d
+
+testing commit 148341f0a2f53b5e8808d093333d85170586a15d gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 9ac73a631fd2d09d570903c4bf5a55801eb29e66c418e04ac3e66ce330f67444
+all runs: crashed: KASAN: slab-use-after-free Read in mas_next_nentry
+representative crash: KASAN: slab-use-after-free Read in mas_next_nentry, types: [KASAN]
+picked [v6.2 v6.1 v6.0 v5.18 v5.16 v5.14 v5.12 v5.10 v5.7 v5.4 v5.1 v4.19] out of 25 release tags
+testing release v6.2
+testing commit c9c3395d5e3dcc6daee66c6908354d47bf98cb0c gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: f5a1f360126f11c4ef11ade8f121e33a9fa1635749d720fa34859854d785778e
+run #0: crashed: INFO: rcu detected stall in corrupted
+run #1: crashed: INFO: rcu detected stall in corrupted
+run #2: crashed: INFO: rcu detected stall in corrupted
+run #3: crashed: INFO: rcu detected stall in corrupted
+run #4: crashed: INFO: rcu detected stall in corrupted
+run #5: crashed: INFO: rcu detected stall in corrupted
+run #6: crashed: KASAN: use-after-free Read in mas_next_nentry
+run #7: crashed: KASAN: use-after-free Read in mas_next_nentry
+representative crash: INFO: rcu detected stall in corrupted, types: [HANG]
+testing release v6.1
+testing commit 830b3c68c1fb1e9176028d02ef86f3cf76aa2476 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: d2afe65d53b1a67db77da5bca29bf7f082654d3c667b9c5a1b9a96db3409efde
+run #0: crashed: INFO: rcu detected stall in corrupted
+run #1: crashed: INFO: rcu detected stall in corrupted
+run #2: crashed: INFO: rcu detected stall in corrupted
+run #3: crashed: INFO: rcu detected stall in corrupted
+run #4: crashed: INFO: rcu detected stall in corrupted
+run #5: basic kernel testing failed: INFO: rcu detected stall in corrupted
+run #6: crashed: KASAN: use-after-free Read in mas_next_nentry
+run #7: crashed: INFO: rcu detected stall in corrupted
+representative crash: INFO: rcu detected stall in corrupted, types: [HANG]
+testing release v6.0
+testing commit 4fe89d07dcc2804c8b562f6c7896a45643d34b2f gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: a78c9ef25a9d9fd95802ad1dc2a13708cd53847bdd13abe9d35825ddc237b26c
+run #0: crashed: INFO: rcu detected stall in corrupted
+run #1: crashed: INFO: rcu detected stall in corrupted
+run #2: crashed: INFO: rcu detected stall in corrupted
+run #3: crashed: INFO: rcu detected stall in corrupted
+run #4: crashed: INFO: rcu detected stall in corrupted
+run #5: OK
+run #6: OK
+run #7: OK
+representative crash: INFO: rcu detected stall in corrupted, types: [HANG]
+testing release v5.18
+testing commit 4b0986a3613c92f4ec1bdc7f60ec66fea135991f gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 6514224394b1a9d687d972d8cba4b1c9f0ce5ec8ad61eacf82082fbbae4e1a06
+run #0: crashed: WARNING: ODEBUG bug in netdev_run_todo
+run #1: crashed: WARNING: ODEBUG bug in netdev_run_todo
+run #2: OK
+run #3: OK
+run #4: OK
+run #5: OK
+run #6: OK
+run #7: OK
+representative crash: WARNING: ODEBUG bug in netdev_run_todo, types: [WARNING]
+testing release v5.16
+testing commit df0cc57e057f18e44dac8e6c18aba47ab53202f9 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: a64db6b6461e8e8d235c46f03f7bf1e2013289e939f4f32efb9b75ffca56bcb5
+run #0: crashed: WARNING: ODEBUG bug in netdev_run_todo
+run #1: OK
+run #2: OK
+run #3: OK
+run #4: OK
+run #5: OK
+run #6: OK
+run #7: OK
+representative crash: WARNING: ODEBUG bug in netdev_run_todo, types: [WARNING]
+unable to determine the verdict: 7 good runs (wanted 6), for bad wanted 4 in total, got 8
+testing release v5.14
+testing commit 7d2a07b769330c34b4deabeed939325c77a7ec2f gcc
+compiler: gcc (GCC) 10.1.0-syz 20200507, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: dd8f4e23242560c1e3eaee5acc82f9d4de1b9a7154984a83377babf785bb6282
+all runs: OK
+false negative chance: 0.000
+# git bisect start 4b0986a3613c92f4ec1bdc7f60ec66fea135991f 7d2a07b769330c34b4deabeed939325c77a7ec2f
+Bisecting: 29630 revisions left to test after this (roughly 15 steps)
+[bd0b536dc2e1e9828a85b1e3470ee7bafc3b36f6] virtchnl: Add support for new VLAN capabilities
+
+testing commit bd0b536dc2e1e9828a85b1e3470ee7bafc3b36f6 gcc
+compiler: gcc (GCC) 10.1.0-syz 20200507, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 9a3b8f9f61b2437207397bbf02d1dd9467ee8900d681479d48675a187076a567
+all runs: basic kernel testing failed: WARNING in free_netdev
+unable to determine the verdict: 0 good runs (wanted 6), for bad wanted 4 in total, got 0
+# git bisect skip bd0b536dc2e1e9828a85b1e3470ee7bafc3b36f6
+Bisecting: 29630 revisions left to test after this (roughly 15 steps)
+[00315e1627583c6ed5381bccf55c725aa4f45290] tsnep: Fix s390 devm_ioremap_resource warning
+
+testing commit 00315e1627583c6ed5381bccf55c725aa4f45290 gcc
+compiler: gcc (GCC) 10.1.0-syz 20200507, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 9a3b8f9f61b2437207397bbf02d1dd9467ee8900d681479d48675a187076a567
+all runs: basic kernel testing failed: WARNING in free_netdev
+unable to determine the verdict: 0 good runs (wanted 6), for bad wanted 4 in total, got 0
+# git bisect skip 00315e1627583c6ed5381bccf55c725aa4f45290
+Bisecting: 29630 revisions left to test after this (roughly 15 steps)
+[d08d2b62510e2407cf939e693aefd179dc114913] mm: remove the total_mapcount argument from page_trans_huge_mapcount()
+
+testing commit d08d2b62510e2407cf939e693aefd179dc114913 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 4f937cd88304e6f67766d89b0233ae6f8e13ac88c3519298ad705576a9b9aec0
+all runs: OK
+false negative chance: 0.000
+# git bisect good d08d2b62510e2407cf939e693aefd179dc114913
+Bisecting: 15197 revisions left to test after this (roughly 14 steps)
+[2f25d8ce09b7ba5d769c132ba3d4eb84a941d2cb] drm/amdgpu/smu10: fix SoC/fclk units in auto mode
+
+testing commit 2f25d8ce09b7ba5d769c132ba3d4eb84a941d2cb gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 3e017dcc5ba8d81cb1c72d0456ab7813d3cb0c97f471c3dad1b12e22126a46d9
+all runs: OK
+false negative chance: 0.000
+# git bisect good 2f25d8ce09b7ba5d769c132ba3d4eb84a941d2cb
+Bisecting: 7047 revisions left to test after this (roughly 13 steps)
+[169e77764adc041b1dacba84ea90516a895d43b2] Merge tag 'net-next-5.18' of git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net-next
+
+testing commit 169e77764adc041b1dacba84ea90516a895d43b2 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 5cbe62ef20ca2c45e883795406fb46eccafc8f81e18fff11fa036fdf9e3bc172
+all runs: OK
+false negative chance: 0.000
+# git bisect good 169e77764adc041b1dacba84ea90516a895d43b2
+Bisecting: 3472 revisions left to test after this (roughly 12 steps)
+[dfdc1de64248b5e1024d8188aeaf0e59ec6cecd5] Merge tag 'staging-5.18-rc1' of git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/staging
+
+testing commit dfdc1de64248b5e1024d8188aeaf0e59ec6cecd5 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 17bababbd8b4d23058497c07f677d2785d35920dbabb8a56821d000496072913
+all runs: OK
+false negative chance: 0.000
+# git bisect good dfdc1de64248b5e1024d8188aeaf0e59ec6cecd5
+Bisecting: 1735 revisions left to test after this (roughly 11 steps)
+[7136849ea95280685dc6a00a893501e61983b6b9] Merge tag 'sched_urgent_for_v5.18_rc2' of git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip
+
+testing commit 7136849ea95280685dc6a00a893501e61983b6b9 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 88500abc9c11fbdf887fe06f4182efc9e28f93453b0c66fe6c4cceb941d66ee9
+all runs: OK
+false negative chance: 0.000
+# git bisect good 7136849ea95280685dc6a00a893501e61983b6b9
+Bisecting: 867 revisions left to test after this (roughly 10 steps)
+[38dcd9570d6fced1dcfee226d5b29722b070ce90] selftests/net: add missing tests to Makefile
+
+testing commit 38dcd9570d6fced1dcfee226d5b29722b070ce90 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: f7a25a1f51d51ce46f0e978471efc6bbd2ffdfab1f557937cd8b567e73fd8f8b
+all runs: OK
+false negative chance: 0.000
+# git bisect good 38dcd9570d6fced1dcfee226d5b29722b070ce90
+Bisecting: 433 revisions left to test after this (roughly 9 steps)
+[0921244f6f4f0d05698b953fe632a99b38907226] parisc: Only list existing CPUs in cpu_possible_mask
+
+testing commit 0921244f6f4f0d05698b953fe632a99b38907226 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: cc0fe020ca8aea840eb4ee04297fa9d5ce21e0ad693a45568ad518c840aacef9
+all runs: OK
+false negative chance: 0.000
+# git bisect good 0921244f6f4f0d05698b953fe632a99b38907226
+Bisecting: 218 revisions left to test after this (roughly 8 steps)
+[bc403203d65a874df2f3156046468052e4109cb0] Merge tag 'powerpc-5.18-5' of git://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux
+
+testing commit bc403203d65a874df2f3156046468052e4109cb0 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 4f2af76d31cad020176d2609896937d055d2abf8c061e32836c87b06f922291f
+all runs: OK
+false negative chance: 0.000
+# git bisect good bc403203d65a874df2f3156046468052e4109cb0
+Bisecting: 79 revisions left to test after this (roughly 7 steps)
+[d904c8cc0302393640bc29ee62193f88ddc53126] Merge tag 'net-5.18-rc8' of git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net
+
+testing commit d904c8cc0302393640bc29ee62193f88ddc53126 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 7d3f963b326d6f69f88b26ae757e2aad886eefab7d2b25f48b561a668dad2f62
+run #0: crashed: WARNING: ODEBUG bug in netdev_run_todo
+run #1: OK
+run #2: OK
+run #3: OK
+run #4: OK
+run #5: OK
+run #6: OK
+run #7: OK
+representative crash: WARNING: ODEBUG bug in netdev_run_todo, types: [WARNING]
+unable to determine the verdict: 7 good runs (wanted 6), for bad wanted 4 in total, got 8
+# git bisect skip d904c8cc0302393640bc29ee62193f88ddc53126
+Bisecting: 79 revisions left to test after this (roughly 7 steps)
+[f993aed406eaf968ba3867a76bb46c95336a33d0] Merge tag 'block-5.18-2022-05-18' of git://git.kernel.dk/linux-block
+
+testing commit f993aed406eaf968ba3867a76bb46c95336a33d0 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 2681a8b72ffca8a7c37ce8cf8cebca40c84ed1440e89ac9577cc5f5ce02a50c3
+run #0: crashed: WARNING: ODEBUG bug in netdev_run_todo
+run #1: OK
+run #2: OK
+run #3: OK
+run #4: OK
+run #5: OK
+run #6: OK
+run #7: OK
+representative crash: WARNING: ODEBUG bug in netdev_run_todo, types: [WARNING]
+unable to determine the verdict: 7 good runs (wanted 6), for bad wanted 4 in total, got 8
+# git bisect skip f993aed406eaf968ba3867a76bb46c95336a33d0
+Bisecting: 79 revisions left to test after this (roughly 7 steps)
+[6811a466d27ba79e6c31c0aecc74feab0472df36] Merge tag 'tty-5.18-rc7' of git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/tty
+
+testing commit 6811a466d27ba79e6c31c0aecc74feab0472df36 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 12a856bf9e126a91fd355465aa970e2325e192600c12a7bc14abbc5ac0c5be5f
+all runs: OK
+false negative chance: 0.000
+# git bisect good 6811a466d27ba79e6c31c0aecc74feab0472df36
+Bisecting: 79 revisions left to test after this (roughly 7 steps)
+[01464a73a6387b45aa4cf6ea522abd4f9e44dce5] Merge tag 'io_uring-5.18-2022-05-18' of git://git.kernel.dk/linux-block
+
+testing commit 01464a73a6387b45aa4cf6ea522abd4f9e44dce5 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 73215859636a32ab205e80ae99556091f028e5030ab8828a81a2b0a027ae25d8
+all runs: OK
+false negative chance: 0.000
+# git bisect good 01464a73a6387b45aa4cf6ea522abd4f9e44dce5
+Bisecting: 71 revisions left to test after this (roughly 6 steps)
+[99b056443e6fc61b896607434107b825aec1f10c] Merge tag 'for-linus' of git://git.armlinux.org.uk/~rmk/linux-arm
+
+testing commit 99b056443e6fc61b896607434107b825aec1f10c gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 376391391bcd099fa55fd87247c757a028e39f019f05a3be4249b3e05109642b
+all runs: OK
+false negative chance: 0.000
+# git bisect good 99b056443e6fc61b896607434107b825aec1f10c
+Bisecting: 34 revisions left to test after this (roughly 5 steps)
+[b3454ce0b2c8a56e760e6baa88ed10278585072b] Merge tag 'clk-fixes-for-linus' of git://git.kernel.org/pub/scm/linux/kernel/git/clk/linux
+
+testing commit b3454ce0b2c8a56e760e6baa88ed10278585072b gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 52e6eaca9456bb298ef38ac30c50f4ea576d79b403390c136ba5135461c0e665
+all runs: OK
+false negative chance: 0.000
+# git bisect good b3454ce0b2c8a56e760e6baa88ed10278585072b
+Bisecting: 15 revisions left to test after this (roughly 4 steps)
+[4c493b1a41274c3f9b754036cd8431903306cdf3] Merge tag 'input-for-v5.18-rc7' of git://git.kernel.org/pub/scm/linux/kernel/git/dtor/input
+
+testing commit 4c493b1a41274c3f9b754036cd8431903306cdf3 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: ccf51c5dbb7781635f1926b502a8370478796f7c572a8f7c475b0ae5fd2cba4c
+run #0: crashed: WARNING: ODEBUG bug in netdev_run_todo
+run #1: OK
+run #2: OK
+run #3: OK
+run #4: OK
+run #5: OK
+run #6: OK
+run #7: OK
+representative crash: WARNING: ODEBUG bug in netdev_run_todo, types: [WARNING]
+unable to determine the verdict: 7 good runs (wanted 6), for bad wanted 4 in total, got 8
+# git bisect skip 4c493b1a41274c3f9b754036cd8431903306cdf3
+Bisecting: 15 revisions left to test after this (roughly 4 steps)
+[04baa2233d55e85e0f0f5dfe0401ecb027da9a0e] selftests: kvm/x86: Add the helper function create_pmu_event_filter
+
+testing commit 04baa2233d55e85e0f0f5dfe0401ecb027da9a0e gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: b6c51c5618ec6a6c62810f64fc48d251372959b620e905d38ce88b91d4dfea0b
+all runs: OK
+false negative chance: 0.000
+# git bisect good 04baa2233d55e85e0f0f5dfe0401ecb027da9a0e
+Bisecting: 15 revisions left to test after this (roughly 4 steps)
+[f8ac1c478424a9a14669b8cef7389b1e14e5229d] perf bench numa: Address compiler error on s390
+
+testing commit f8ac1c478424a9a14669b8cef7389b1e14e5229d gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: ae56664b070060ad910e08f8d886abf2e5f39207d5fc8f4a4086980c3b3f148f
+all runs: OK
+false negative chance: 0.000
+# git bisect good f8ac1c478424a9a14669b8cef7389b1e14e5229d
+Bisecting: 9 revisions left to test after this (roughly 4 steps)
+[9f46c187e2e680ecd9de7983e4d081c3391acc76] KVM: x86/mmu: fix NULL pointer dereference on guest INVPCID
+
+testing commit 9f46c187e2e680ecd9de7983e4d081c3391acc76 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 08bfce8b7bf8e150e578bcbc0c931058fba087df0e3ed1145f9b5895579992a4
+run #0: crashed: WARNING: ODEBUG bug in netdev_run_todo
+run #1: OK
+run #2: OK
+run #3: OK
+run #4: OK
+run #5: OK
+run #6: OK
+run #7: OK
+representative crash: WARNING: ODEBUG bug in netdev_run_todo, types: [WARNING]
+unable to determine the verdict: 7 good runs (wanted 6), for bad wanted 4 in total, got 8
+# git bisect skip 9f46c187e2e680ecd9de7983e4d081c3391acc76
+Bisecting: 9 revisions left to test after this (roughly 4 steps)
+[2aeb8c86d49967552394d5e723f87454cb53f501] afs: Fix afs_getattr() to refetch file status if callback break occurred
+
+testing commit 2aeb8c86d49967552394d5e723f87454cb53f501 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: c5a16271ead2075bb89c4d6d43563bb36dd0c6ce9ff4f9ed5a658a163a688a02
+all runs: OK
+false negative chance: 0.000
+# git bisect good 2aeb8c86d49967552394d5e723f87454cb53f501
+4b0986a3613c92f4ec1bdc7f60ec66fea135991f is the first bad commit
+commit 4b0986a3613c92f4ec1bdc7f60ec66fea135991f
+Author: Linus Torvalds <torvalds@linux-foundation.org>
+Date:   Sun May 22 09:52:31 2022 -1000
+
+    Linux 5.18
+
+ Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+accumulated error probability: 0.00
+culprit signature: 6514224394b1a9d687d972d8cba4b1c9f0ce5ec8ad61eacf82082fbbae4e1a06
+parent  signature: c5a16271ead2075bb89c4d6d43563bb36dd0c6ce9ff4f9ed5a658a163a688a02
+reproducer is flaky (1.00 repro chance estimate)
+revisions tested: 28, total time: 10h56m53.642415544s (build: 6h47m34.135423429s, test: 3h6m49.727509516s)
+first bad commit: 4b0986a3613c92f4ec1bdc7f60ec66fea135991f Linux 5.18
+recipients (to): ["linux-kbuild@vger.kernel.org" "masahiroy@kernel.org" "michal.lkml@markovi.net" "torvalds@linux-foundation.org"]
+recipients (cc): ["linux-kernel@vger.kernel.org"]
+crash: WARNING: ODEBUG bug in netdev_run_todo
+------------[ cut here ]------------
+ODEBUG: free active (active state 0) object type: timer_list hint: delayed_work_timer_fn+0x0/0x90 include/linux/find.h:144
+WARNING: CPU: 1 PID: 11 at lib/debugobjects.c:505 debug_print_object+0x16e/0x250 lib/debugobjects.c:505
+Modules linked in:
+CPU: 1 PID: 11 Comm: kworker/u4:1 Not tainted 5.18.0-syzkaller #0
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.13.0-1ubuntu1.1 04/01/2014
+Workqueue: netns cleanup_net
+RIP: 0010:debug_print_object+0x16e/0x250 lib/debugobjects.c:505
+Code: ff df 48 89 fa 48 c1 ea 03 80 3c 02 00 0f 85 af 00 00 00 48 8b 14 dd 00 ad 63 8a 4c 89 ee 48 c7 c7 00 a1 63 8a e8 df f8 74 05 <0f> 0b 83 05 65 c9 07 0a 01 48 83 c4 18 5b 5d 41 5c 41 5d 41 5e c3
+RSP: 0018:ffffc900000df850 EFLAGS: 00010286
+RAX: 0000000000000000 RBX: 0000000000000003 RCX: 0000000000000000
+RDX: ffff888011fa3b00 RSI: ffffffff8161964c RDI: fffff5200001befc
+RBP: 0000000000000001 R08: 0000000000000000 R09: 0000000000000000
+R10: ffffffff81613f6e R11: 0000000000000000 R12: ffffffff8a0dc6e0
+R13: ffffffff8a63a5e0 R14: ffffffff8168d520 R15: dffffc0000000000
+FS:  0000000000000000(0000) GS:ffff888135c00000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00002000000f5000 CR3: 000000010826b000 CR4: 0000000000350ee0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+ <TASK>
+ __debug_check_no_obj_freed lib/debugobjects.c:992 [inline]
+ debug_check_no_obj_freed+0x305/0x420 lib/debugobjects.c:1023
+ slab_free_hook mm/slub.c:1703 [inline]
+ slab_free_freelist_hook+0xeb/0x1c0 mm/slub.c:1754
+ slab_free mm/slub.c:3510 [inline]
+ kfree+0xda/0x4e0 mm/slub.c:4552
+ kvfree+0x46/0x50 mm/util.c:622
+ device_release+0xa3/0x240 drivers/base/core.c:2229
+ kobject_cleanup lib/kobject.c:673 [inline]
+ kobject_release lib/kobject.c:704 [inline]
+ kref_put include/linux/kref.h:65 [inline]
+ kobject_put+0x1cc/0x540 lib/kobject.c:721
+ netdev_run_todo+0x732/0x10c0 net/core/dev.c:10274
+ default_device_exit_batch+0x452/0x590 net/core/dev.c:11242
+ ops_exit_list+0x125/0x170 net/core/net_namespace.c:167
+ cleanup_net+0x4ee/0xb00 net/core/net_namespace.c:594
+ process_one_work+0x996/0x1620 kernel/workqueue.c:2289
+ worker_thread+0x669/0x1090 kernel/workqueue.c:2436
+ kthread+0x2ed/0x3a0 kernel/kthread.c:376
+ ret_from_fork+0x1f/0x30 arch/x86/entry/entry_64.S:298
+ </TASK>
+
+
+KASAN: slab-use-after-free Read in mas_next_entry
+4b0986a3613c92f4ec1bdc7f60ec66fea135991f

@@ -1,0 +1,493 @@
+charm starts bisection 2025-04-13 00:02:23.259927233 -0700 PDT m=+9.374817153
+bisecting cause commit starting from 58390c8ce1bddb6c623f62e7ed36383e7fa5c02f
+building syzkaller on HEAD
+ensuring issue is reproducible on original commit 58390c8ce1bddb6c623f62e7ed36383e7fa5c02f
+
+testing commit 58390c8ce1bddb6c623f62e7ed36383e7fa5c02f gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: fba8d638ea4a5fc91f71ba0cf8274586342a6f7ebd9a8a01bc585dd87903591c
+all runs: crashed: INFO: rcu detected stall in corrupted
+representative crash: INFO: rcu detected stall in corrupted, types: [HANG]
+picked [v6.3 v6.2 v6.1 v5.19 v5.17 v5.15 v5.13 v5.11 v5.8 v5.5 v5.2 v4.20 v4.19] out of 26 release tags
+testing release v6.3
+testing commit 457391b0380335d5e9a5babdec90ac53928b23b4 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 4d19d740ffe58130ca597c8dd919634ae206baa35c02d379acc5f47b7d717d0d
+all runs: ignore: lost connection to test machine
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+testing release v6.2
+testing commit c9c3395d5e3dcc6daee66c6908354d47bf98cb0c gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: acecb468346abf05f7775383e8972ccc55d839c77adf7fc0dcaa4bc6ebf8acd2
+run #0: crashed: possible deadlock in sco_conn_del
+run #1: crashed: possible deadlock in sco_conn_del
+run #2: crashed: possible deadlock in sco_conn_del
+run #3: crashed: INFO: rcu detected stall in corrupted
+run #4: crashed: INFO: rcu detected stall in corrupted
+run #5: crashed: INFO: rcu detected stall in corrupted
+run #6: crashed: INFO: rcu detected stall in corrupted
+run #7: crashed: INFO: rcu detected stall in corrupted
+representative crash: INFO: rcu detected stall in corrupted, types: [HANG LOCKDEP]
+testing release v6.1
+testing commit 830b3c68c1fb1e9176028d02ef86f3cf76aa2476 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: e6311ca79542825f6cf363c92148ea9d364e7bbf1954677baafd01055165d47a
+run #0: crashed: possible deadlock in sco_conn_del
+run #1: crashed: possible deadlock in sco_conn_del
+run #2: crashed: possible deadlock in sco_conn_del
+run #3: crashed: possible deadlock in sco_conn_del
+run #4: crashed: possible deadlock in sco_conn_del
+run #5: crashed: possible deadlock in sco_conn_del
+run #6: crashed: INFO: rcu detected stall in corrupted
+run #7: crashed: INFO: rcu detected stall in corrupted
+representative crash: possible deadlock in sco_conn_del, types: [LOCKDEP]
+testing release v5.19
+testing commit 3d7cb6b04c3f3115719235cc6866b10326de34cd gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: b6582b260fef58a95c81f08f5d62730d205693d745bc3c4710a16d8a69628d27
+all runs: crashed: possible deadlock in sco_conn_del
+representative crash: possible deadlock in sco_conn_del, types: [LOCKDEP]
+testing release v5.17
+testing commit f443e374ae131c168a065ea1748feac6b2e76613 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: a679e36ba894f38d232dfeed1d04542c8ca43908d51b5877899243d5474a9074
+run #0: crashed: WARNING in sco_chan_del
+run #1: crashed: WARNING in sco_chan_del
+run #2: crashed: WARNING in sco_chan_del
+run #3: crashed: INFO: task hung in scan_update_work
+run #4: crashed: INFO: task hung in scan_update_work
+run #5: OK
+run #6: OK
+run #7: OK
+representative crash: WARNING in sco_chan_del, types: [WARNING]
+testing release v5.15
+testing commit 8bb7eca972ad531c9b149c0a51ab43a417385813 gcc
+compiler: gcc (GCC) 10.1.0-syz 20200507, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 23614cf964260baec3a55537dfe04303cdde0bd673b795bb882b75e743222500
+run #0: crashed: WARNING in process_one_work
+run #1: OK
+run #2: OK
+run #3: OK
+run #4: OK
+run #5: OK
+run #6: OK
+run #7: OK
+representative crash: WARNING in process_one_work, types: [WARNING]
+unable to determine the verdict: 7 good runs (wanted 4), for bad wanted 4 in total, got 8
+testing release v5.13
+testing commit 62fb9874f5da54fdb243003b386128037319b219 gcc
+compiler: gcc (GCC) 10.1.0-syz 20200507, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 64bd66bc9367ca1938af7203f2fa4e383b62544176a3625d35836cea66142bac
+all runs: crashed: BUG: sleeping function called from invalid context in lock_sock_nested
+representative crash: BUG: sleeping function called from invalid context in lock_sock_nested, types: [ATOMIC_SLEEP]
+testing release v5.11
+testing commit f40ddce88593482919761f74910f42f4b84c004b gcc
+compiler: gcc (GCC) 10.1.0-syz 20200507, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 6a32383e36a44d40b826de28ab4690b28ef961f8c5b04bd2214dace36937eca8
+all runs: boot failed: inconsistent lock state in vdpasim_map_page
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+testing release v5.8
+testing commit bcf876870b95592b52519ed4aafcf9d95999bc9c gcc
+compiler: gcc (GCC) 8.1.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: fa949065fcbd925deb2415576cb04e2bbca0ede28dc9daf142322e929bb05d7f
+all runs: boot failed: can't ssh into the instance
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+testing release v5.5
+testing commit d5226fa6dbae0569ee43ecfc08bdcd6770fc4755 gcc
+compiler: gcc version 8.1.0 (GCC)
+kernel signature: f4a73462b40d87b6586d3365d481c60d99c0921888d8b06ade4cbfacac577381
+all runs: crashed: BUG: MAX_LOCKDEP_CHAIN_HLOCKS too low!
+representative crash: BUG: MAX_LOCKDEP_CHAIN_HLOCKS too low!, types: [UNKNOWN]
+testing release v5.2
+testing commit 0ecfebd2b52404ae0c54a878c872bb93363ada36 gcc
+compiler: gcc version 8.1.0 (GCC)
+kernel signature: 63903a8aba717f5540aefead87d2abcdfc728313c137276fc5c93834f5eb6865
+all runs: OK
+false negative chance: 0.000
+# git bisect start d5226fa6dbae0569ee43ecfc08bdcd6770fc4755 0ecfebd2b52404ae0c54a878c872bb93363ada36
+Bisecting: 23502 revisions left to test after this (roughly 15 steps)
+[7f9e88e6ef8c971f2c638b5ff7044c59b5d0f58d] net: socionext: Fix a signedness bug in ave_probe()
+
+testing commit 7f9e88e6ef8c971f2c638b5ff7044c59b5d0f58d gcc
+compiler: gcc version 8.1.0 (GCC)
+kernel signature: 61e4c094146aaa130f6de7a5c3b2a246e1ceb35a70f15ea2f9dd4a369a8128df
+all runs: crashed: BUG: MAX_LOCKDEP_CHAIN_HLOCKS too low!
+representative crash: BUG: MAX_LOCKDEP_CHAIN_HLOCKS too low!, types: [UNKNOWN]
+# git bisect bad 7f9e88e6ef8c971f2c638b5ff7044c59b5d0f58d
+Bisecting: 11725 revisions left to test after this (roughly 14 steps)
+[d9b9c893048e9d308a833619f0866f1f52778cf5] Merge tag 'ceph-for-5.3-rc1' of git://github.com/ceph/ceph-client
+
+testing commit d9b9c893048e9d308a833619f0866f1f52778cf5 gcc
+compiler: gcc version 8.1.0 (GCC)
+kernel signature: dd7df2536da37707888be465601e186d8854679d4cb9254ec8d97329c6dd6b15
+run #0: crashed: general protection fault in hci_send_cmd
+run #1: OK
+run #2: OK
+run #3: OK
+run #4: OK
+run #5: OK
+run #6: OK
+run #7: OK
+representative crash: general protection fault in hci_send_cmd, types: [UNKNOWN]
+unable to determine the verdict: 7 good runs (wanted 4), for bad wanted 4 in total, got 8
+# git bisect skip d9b9c893048e9d308a833619f0866f1f52778cf5
+Bisecting: 11725 revisions left to test after this (roughly 14 steps)
+[8c965642354950cd17d1edff57fd5ca965040517] arm64: dts: renesas: r8a774a1: Add HDMI encoder instance
+
+testing commit 8c965642354950cd17d1edff57fd5ca965040517 gcc
+compiler: gcc version 8.1.0 (GCC)
+kernel signature: 40f50e31b1c194bb9017cbed6c1983d2aa2e8768c60949d14a8b8b371c98f27e
+run #0: crashed: general protection fault in batadv_iv_ogm_queue_add
+run #1: OK
+run #2: OK
+run #3: OK
+run #4: OK
+run #5: OK
+run #6: OK
+run #7: OK
+representative crash: general protection fault in batadv_iv_ogm_queue_add, types: [UNKNOWN]
+unable to determine the verdict: 7 good runs (wanted 4), for bad wanted 4 in total, got 8
+# git bisect skip 8c965642354950cd17d1edff57fd5ca965040517
+Bisecting: 11725 revisions left to test after this (roughly 14 steps)
+[3884ae44f41247e0ae41952d4fad46db86d2e0a8] pidfd: remove obsolete comments from test
+
+testing commit 3884ae44f41247e0ae41952d4fad46db86d2e0a8 gcc
+compiler: gcc version 8.1.0 (GCC)
+kernel signature: c4c160d915e191327e58d37db97d5e8b0985bb2b18fbed308784d2653f2ebd2c
+run #0: crashed: KASAN: use-after-free Read in sco_chan_del
+run #1: crashed: KASAN: use-after-free Read in sco_chan_del
+run #2: crashed: WARNING in hci_send_cmd
+run #3: ignore: lost connection to test machine
+run #4: ignore: lost connection to test machine
+run #5: ignore: lost connection to test machine
+run #6: ignore: lost connection to test machine
+run #7: crashed: general protection fault in hci_send_cmd
+representative crash: KASAN: use-after-free Read in sco_chan_del, types: [KASAN WARNING UNKNOWN]
+# git bisect bad 3884ae44f41247e0ae41952d4fad46db86d2e0a8
+Bisecting: 6853 revisions left to test after this (roughly 13 steps)
+[17a20acaf171124017f43bc70bb4d7ca88070659] Merge tag 'usb-5.3-rc1' of git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/usb
+
+testing commit 17a20acaf171124017f43bc70bb4d7ca88070659 gcc
+compiler: gcc version 8.1.0 (GCC)
+kernel signature: bc403007d1d1f6f7722dec0737229a0780e505968a83dbe68689a1f5afeeb58d
+run #0: crashed: general protection fault in send_hsr_supervision_frame
+run #1: crashed: KASAN: use-after-free Read in sco_chan_del
+run #2: crashed: general protection fault in hci_send_cmd
+run #3: ignore: lost connection to test machine
+run #4: ignore: lost connection to test machine
+run #5: ignore: lost connection to test machine
+run #6: ignore: lost connection to test machine
+run #7: ignore: lost connection to test machine
+representative crash: general protection fault in send_hsr_supervision_frame, types: [UNKNOWN KASAN]
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 3
+# git bisect skip 17a20acaf171124017f43bc70bb4d7ca88070659
+Bisecting: 6853 revisions left to test after this (roughly 13 steps)
+[083db6764821996526970e42d09c1ab2f4155dd4] x86/paravirt: Fix callee-saved function ELF sizes
+
+testing commit 083db6764821996526970e42d09c1ab2f4155dd4 gcc
+compiler: gcc version 8.1.0 (GCC)
+kernel signature: b25d464b10e610c6a34d98fe238354df8c7bbdc65074f5d004004aeddda3e775
+run #0: crashed: general protection fault in hci_send_cmd
+run #1: ignore: lost connection to test machine
+run #2: ignore: lost connection to test machine
+run #3: ignore: lost connection to test machine
+run #4: ignore: lost connection to test machine
+run #5: ignore: lost connection to test machine
+run #6: crashed: KASAN: use-after-free Read in sco_chan_del
+run #7: ignore: lost connection to test machine
+representative crash: general protection fault in hci_send_cmd, types: [UNKNOWN KASAN]
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 2
+# git bisect skip 083db6764821996526970e42d09c1ab2f4155dd4
+Bisecting: 6853 revisions left to test after this (roughly 13 steps)
+[ebb04eb36f9cbb6255594f0f88b11cb5b60bce98] drm/mgag200: Convert mgag200 driver to |struct drm_gem_vram_object|
+
+testing commit ebb04eb36f9cbb6255594f0f88b11cb5b60bce98 gcc
+compiler: gcc version 8.1.0 (GCC)
+kernel signature: 39fe09b7f34851b84d9aea76e5a2f4d3c15aba088bcd0038d773b8448b8bdd6f
+all runs: boot failed: WARNING in ttm_bo_validate
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip ebb04eb36f9cbb6255594f0f88b11cb5b60bce98
+Bisecting: 6853 revisions left to test after this (roughly 13 steps)
+[aa94b1dc5bca1c23d1a1f4110b4e77bfe88c0061] fs/binfmt_elf.c: delete stale comment
+
+testing commit aa94b1dc5bca1c23d1a1f4110b4e77bfe88c0061 gcc
+compiler: gcc version 8.1.0 (GCC)
+kernel signature: c60353d7c84d69bbcd2c594504a8f000ac02ff7b7c18880aa703aa05173608f1
+run #0: crashed: KASAN: use-after-free Read in sco_chan_del
+run #1: crashed: WARNING in hci_send_cmd
+run #2: crashed: KASAN: use-after-free Read in sco_chan_del
+run #3: ignore: lost connection to test machine
+run #4: crashed: KASAN: use-after-free Read in sco_chan_del
+run #5: ignore: lost connection to test machine
+run #6: OK
+run #7: OK
+representative crash: KASAN: use-after-free Read in sco_chan_del, types: [KASAN WARNING]
+# git bisect bad aa94b1dc5bca1c23d1a1f4110b4e77bfe88c0061
+Bisecting: 5244 revisions left to test after this (roughly 12 steps)
+[237f83dfbe668443b5e31c3c7576125871cca674] Merge git://git.kernel.org/pub/scm/linux/kernel/git/davem/net-next
+
+testing commit 237f83dfbe668443b5e31c3c7576125871cca674 gcc
+compiler: gcc version 8.1.0 (GCC)
+kernel signature: 55d50caef574d4aa7f1994ea3cf14200bd555ac1a82e34d37aa5a31859a34ddb
+run #0: ignore: lost connection to test machine
+run #1: crashed: general protection fault in hci_send_cmd
+run #2: ignore: lost connection to test machine
+run #3: crashed: KASAN: use-after-free Read in sco_chan_del
+run #4: crashed: KASAN: use-after-free Read in sco_chan_del
+run #5: crashed: KASAN: use-after-free Read in sco_chan_del
+run #6: ignore: lost connection to test machine
+run #7: OK
+representative crash: KASAN: use-after-free Read in sco_chan_del, types: [KASAN UNKNOWN]
+# git bisect bad 237f83dfbe668443b5e31c3c7576125871cca674
+Bisecting: 2907 revisions left to test after this (roughly 12 steps)
+[cdc5ffc4100549654e19e6f068cf1fc0871a85c2] Merge tag 'for-5.3/libata-20190708' of git://git.kernel.dk/linux-block
+
+testing commit cdc5ffc4100549654e19e6f068cf1fc0871a85c2 gcc
+compiler: gcc version 8.1.0 (GCC)
+kernel signature: f8f096b83c9110250ceb7f471d86a8d8dfd8f25944a4572f2d2085c663f59cea
+all runs: OK
+false negative chance: 0.000
+# git bisect good cdc5ffc4100549654e19e6f068cf1fc0871a85c2
+Bisecting: 1453 revisions left to test after this (roughly 11 steps)
+[5b0d7d7da64b42175a41b9c39de0a512216621cd] net: stmmac: Add the missing speeds that XGMAC supports
+
+testing commit 5b0d7d7da64b42175a41b9c39de0a512216621cd gcc
+compiler: gcc version 8.1.0 (GCC)
+kernel signature: 9a1058645052dad9afb2be164e47c85207a2f4e704464982db02efbc8eb3cc77
+run #0: crashed: BUG: MAX_LOCKDEP_CHAIN_HLOCKS too low!
+run #1: crashed: BUG: MAX_LOCKDEP_CHAIN_HLOCKS too low!
+run #2: crashed: BUG: MAX_LOCKDEP_CHAIN_HLOCKS too low!
+run #3: crashed: KASAN: use-after-free Read in sco_chan_del
+run #4: crashed: BUG: MAX_LOCKDEP_CHAIN_HLOCKS too low!
+run #5: crashed: BUG: MAX_LOCKDEP_CHAIN_HLOCKS too low!
+run #6: crashed: BUG: MAX_LOCKDEP_CHAIN_HLOCKS too low!
+run #7: crashed: BUG: MAX_LOCKDEP_CHAIN_HLOCKS too low!
+representative crash: BUG: MAX_LOCKDEP_CHAIN_HLOCKS too low!, types: [UNKNOWN]
+# git bisect bad 5b0d7d7da64b42175a41b9c39de0a512216621cd
+Bisecting: 726 revisions left to test after this (roughly 10 steps)
+[a274ce0f311040ce188c53340c93120f52649519] Merge branch 'Rethink-PHYLINK-callbacks-for-SJA1105-DSA'
+
+testing commit a274ce0f311040ce188c53340c93120f52649519 gcc
+compiler: gcc version 8.1.0 (GCC)
+kernel signature: 3a2f999752267c3dc77f06b809983ab4f17ee1d7c30cbc269558e1aa5c668c2a
+run #0: crashed: KASAN: use-after-free Read in sco_chan_del
+run #1: crashed: BUG: MAX_LOCKDEP_CHAIN_HLOCKS too low!
+run #2: crashed: BUG: MAX_LOCKDEP_CHAIN_HLOCKS too low!
+run #3: crashed: BUG: MAX_LOCKDEP_CHAIN_HLOCKS too low!
+run #4: crashed: BUG: MAX_LOCKDEP_CHAIN_HLOCKS too low!
+run #5: crashed: BUG: MAX_LOCKDEP_CHAIN_HLOCKS too low!
+run #6: crashed: BUG: MAX_LOCKDEP_CHAIN_HLOCKS too low!
+run #7: crashed: BUG: MAX_LOCKDEP_CHAIN_HLOCKS too low!
+representative crash: BUG: MAX_LOCKDEP_CHAIN_HLOCKS too low!, types: [UNKNOWN]
+# git bisect bad a274ce0f311040ce188c53340c93120f52649519
+Bisecting: 406 revisions left to test after this (roughly 9 steps)
+[33aae28285b73e013f7f697a61f569c5b48c6650] Merge branch '40GbE' of git://git.kernel.org/pub/scm/linux/kernel/git/jkirsher/next-queue
+
+testing commit 33aae28285b73e013f7f697a61f569c5b48c6650 gcc
+compiler: gcc version 8.1.0 (GCC)
+kernel signature: 045881585a99171a34cfbc8320f3dc1e6de3846b83bbd19be43fb9eff7545bcb
+all runs: OK
+false negative chance: 0.000
+# git bisect good 33aae28285b73e013f7f697a61f569c5b48c6650
+Bisecting: 203 revisions left to test after this (roughly 8 steps)
+[90c96cca351a0d0bfd24a56a516e046a23684677] net: dsa: sja1105: Plug in support for TCAM searches via the dynamic interface
+
+testing commit 90c96cca351a0d0bfd24a56a516e046a23684677 gcc
+compiler: gcc version 8.1.0 (GCC)
+kernel signature: 00ba80219415991bb0680671aaaedcb3f1833387a5d61e953e27ba50be10889f
+run #0: crashed: KASAN: use-after-free Write in batadv_iv_ogm_schedule
+run #1: crashed: BUG: MAX_LOCKDEP_CHAIN_HLOCKS too low!
+run #2: crashed: BUG: MAX_LOCKDEP_CHAIN_HLOCKS too low!
+run #3: crashed: BUG: MAX_LOCKDEP_CHAIN_HLOCKS too low!
+run #4: crashed: BUG: MAX_LOCKDEP_CHAIN_HLOCKS too low!
+run #5: crashed: BUG: MAX_LOCKDEP_CHAIN_HLOCKS too low!
+run #6: crashed: BUG: MAX_LOCKDEP_CHAIN_HLOCKS too low!
+run #7: crashed: BUG: MAX_LOCKDEP_CHAIN_HLOCKS too low!
+representative crash: BUG: MAX_LOCKDEP_CHAIN_HLOCKS too low!, types: [UNKNOWN]
+# git bisect bad 90c96cca351a0d0bfd24a56a516e046a23684677
+Bisecting: 93 revisions left to test after this (roughly 7 steps)
+[c1e9e01d423334f1647c3a746f2e451dfb6044fb] Merge git://git.kernel.org/pub/scm/linux/kernel/git/pablo/nf-next
+
+testing commit c1e9e01d423334f1647c3a746f2e451dfb6044fb gcc
+compiler: gcc version 8.1.0 (GCC)
+kernel signature: 6cd47e1764d4bc6c18ae678aa2d8cbcd9e696c1363bda758f8d798b91d1ce561
+run #0: crashed: KASAN: use-after-free Read in sco_chan_del
+run #1: crashed: BUG: MAX_LOCKDEP_CHAIN_HLOCKS too low!
+run #2: crashed: BUG: MAX_LOCKDEP_CHAIN_HLOCKS too low!
+run #3: crashed: BUG: MAX_LOCKDEP_CHAIN_HLOCKS too low!
+run #4: crashed: BUG: MAX_LOCKDEP_CHAIN_HLOCKS too low!
+run #5: crashed: BUG: MAX_LOCKDEP_CHAIN_HLOCKS too low!
+run #6: crashed: BUG: MAX_LOCKDEP_CHAIN_HLOCKS too low!
+run #7: crashed: BUG: MAX_LOCKDEP_CHAIN_HLOCKS too low!
+representative crash: BUG: MAX_LOCKDEP_CHAIN_HLOCKS too low!, types: [UNKNOWN]
+# git bisect bad c1e9e01d423334f1647c3a746f2e451dfb6044fb
+Bisecting: 53 revisions left to test after this (roughly 6 steps)
+[463910a5dd63655ce3bdbb9171ad40a31a044fe7] Merge branch 'bpf-bpftool-dbg-output'
+
+testing commit 463910a5dd63655ce3bdbb9171ad40a31a044fe7 gcc
+compiler: gcc version 8.1.0 (GCC)
+kernel signature: e58a21bfe6a123874c5e302cf780b777e299133ce06df871e0102e2590923dd7
+all runs: crashed: BUG: MAX_LOCKDEP_CHAIN_HLOCKS too low!
+representative crash: BUG: MAX_LOCKDEP_CHAIN_HLOCKS too low!, types: [UNKNOWN]
+# git bisect bad 463910a5dd63655ce3bdbb9171ad40a31a044fe7
+Bisecting: 27 revisions left to test after this (roughly 5 steps)
+[16f0efc3b46352018c297bbdb2c405e7d8a63095] tools/bpf: add selftest in test_progs for bpf_send_signal() helper
+
+testing commit 16f0efc3b46352018c297bbdb2c405e7d8a63095 gcc
+compiler: gcc version 8.1.0 (GCC)
+kernel signature: 2c501d617ad67470d4ff06a58216c1233470722af931c9ac987ef8d17f0597be
+run #0: ignore: lost connection to test machine
+run #1: crashed: BUG: MAX_LOCKDEP_CHAIN_HLOCKS too low!
+run #2: crashed: BUG: MAX_LOCKDEP_CHAIN_HLOCKS too low!
+run #3: crashed: BUG: MAX_LOCKDEP_CHAIN_HLOCKS too low!
+run #4: crashed: BUG: MAX_LOCKDEP_CHAIN_HLOCKS too low!
+run #5: crashed: BUG: MAX_LOCKDEP_CHAIN_HLOCKS too low!
+run #6: crashed: BUG: MAX_LOCKDEP_CHAIN_HLOCKS too low!
+run #7: crashed: BUG: MAX_LOCKDEP_CHAIN_HLOCKS too low!
+representative crash: BUG: MAX_LOCKDEP_CHAIN_HLOCKS too low!, types: [UNKNOWN]
+# git bisect bad 16f0efc3b46352018c297bbdb2c405e7d8a63095
+Bisecting: 12 revisions left to test after this (roughly 4 steps)
+[58650cc47382af7d87282f53a5b508ac4bf734af] bpftool: use libbpf's btf__parse_elf API
+
+testing commit 58650cc47382af7d87282f53a5b508ac4bf734af gcc
+compiler: gcc version 8.1.0 (GCC)
+kernel signature: 42686bafff2462ef5a6eed975a5e20fbf90c02d7a0628049ce2745c47f0ffcc8
+run #0: crashed: general protection fault in batadv_iv_ogm_queue_add
+run #1: OK
+run #2: OK
+run #3: OK
+run #4: OK
+run #5: OK
+run #6: OK
+run #7: crashed: general protection fault in batadv_iv_ogm_queue_add
+representative crash: general protection fault in batadv_iv_ogm_queue_add, types: [UNKNOWN]
+# git bisect bad 58650cc47382af7d87282f53a5b508ac4bf734af
+Bisecting: 6 revisions left to test after this (roughly 3 steps)
+[a8f500af0ccffc3d2aaf9018537981cb173865a1] bpf: split explored_states
+
+testing commit a8f500af0ccffc3d2aaf9018537981cb173865a1 gcc
+compiler: gcc version 8.1.0 (GCC)
+kernel signature: 71aa76699f15beb599b54f32bbe4cb54425a8bfe8524df054670a832fbe9e507
+all runs: OK
+false negative chance: 0.002
+# git bisect good a8f500af0ccffc3d2aaf9018537981cb173865a1
+Bisecting: 3 revisions left to test after this (roughly 2 steps)
+[37739d1b4fe744da9c2f342224000ae7fbb5c063] selftests: bpf: Move bpf_printk to bpf_helpers.h
+
+testing commit 37739d1b4fe744da9c2f342224000ae7fbb5c063 gcc
+compiler: gcc version 8.1.0 (GCC)
+kernel signature: 42686bafff2462ef5a6eed975a5e20fbf90c02d7a0628049ce2745c47f0ffcc8
+run #0: crashed: general protection fault in batadv_iv_ogm_queue_add
+run #1: crashed: general protection fault in batadv_iv_ogm_queue_add
+run #2: OK
+run #3: OK
+run #4: OK
+run #5: OK
+run #6: OK
+run #7: OK
+representative crash: general protection fault in batadv_iv_ogm_queue_add, types: [UNKNOWN]
+# git bisect bad 37739d1b4fe744da9c2f342224000ae7fbb5c063
+Bisecting: 0 revisions left to test after this (roughly 1 step)
+[5762a20b11ef261ae8436868555fab4340cb3ca0] Merge branch 'bpf-explored-states'
+
+testing commit 5762a20b11ef261ae8436868555fab4340cb3ca0 gcc
+compiler: gcc version 8.1.0 (GCC)
+kernel signature: 42686bafff2462ef5a6eed975a5e20fbf90c02d7a0628049ce2745c47f0ffcc8
+all runs: OK
+false negative chance: 0.019
+# git bisect good 5762a20b11ef261ae8436868555fab4340cb3ca0
+37739d1b4fe744da9c2f342224000ae7fbb5c063 is the first bad commit
+commit 37739d1b4fe744da9c2f342224000ae7fbb5c063
+Author: Michal Rostecki <mrostecki@opensuse.org>
+Date:   Thu May 23 14:53:54 2019 +0200
+
+    selftests: bpf: Move bpf_printk to bpf_helpers.h
+    
+    bpf_printk is a macro which is commonly used to print out debug messages
+    in BPF programs and it was copied in many selftests and samples. Since
+    all of them include bpf_helpers.h, this change moves the macro there.
+    
+    Signed-off-by: Michal Rostecki <mrostecki@opensuse.org>
+    Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+
+ tools/testing/selftests/bpf/bpf_helpers.h                | 8 ++++++++
+ tools/testing/selftests/bpf/progs/sockmap_parse_prog.c   | 7 -------
+ tools/testing/selftests/bpf/progs/sockmap_tcp_msg_prog.c | 7 -------
+ tools/testing/selftests/bpf/progs/sockmap_verdict_prog.c | 7 -------
+ tools/testing/selftests/bpf/progs/test_lwt_seg6local.c   | 7 -------
+ tools/testing/selftests/bpf/progs/test_xdp_noinline.c    | 7 -------
+ tools/testing/selftests/bpf/test_sockmap_kern.h          | 7 -------
+ 7 files changed, 8 insertions(+), 42 deletions(-)
+
+accumulated error probability: 0.02
+culprit signature: 42686bafff2462ef5a6eed975a5e20fbf90c02d7a0628049ce2745c47f0ffcc8
+parent  signature: 42686bafff2462ef5a6eed975a5e20fbf90c02d7a0628049ce2745c47f0ffcc8
+reproducer is flaky (0.39 repro chance estimate)
+revisions tested: 33, total time: 9h21m24.208398455s (build: 5h55m20.493352968s, test: 2h48m19.793886219s)
+first bad commit: 37739d1b4fe744da9c2f342224000ae7fbb5c063 selftests: bpf: Move bpf_printk to bpf_helpers.h
+recipients (to): ["ast@kernel.org" "linux-kselftest@vger.kernel.org" "mrostecki@opensuse.org" "shuah@kernel.org"]
+recipients (cc): ["ast@kernel.org" "bpf@vger.kernel.org" "daniel@iogearbox.net" "davem@davemloft.net" "hawk@kernel.org" "jakub.kicinski@netronome.com" "john.fastabend@gmail.com" "kafai@fb.com" "linux-kernel@vger.kernel.org" "netdev@vger.kernel.org" "songliubraving@fb.com" "xdp-newbies@vger.kernel.org" "yhs@fb.com"]
+crash: general protection fault in batadv_iv_ogm_queue_add
+kasan: CONFIG_KASAN_INLINE enabled
+kasan: GPF could be caused by NULL-ptr deref or user memory access
+general protection fault: 0000 [#1] PREEMPT SMP KASAN
+CPU: 1 PID: 8712 Comm: kworker/u4:2 Not tainted 5.2.0-rc1-syzkaller #0
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.13.0-1ubuntu1.1 04/01/2014
+Workqueue: bat_events batadv_iv_send_outstanding_bat_ogm_packet
+RIP: 0010:batadv_iv_ogm_queue_add+0x9b/0xe50 net/batman-adv/bat_iv_ogm.c:599
+Code: 44 89 8d 64 ff ff ff c7 02 f1 f1 f1 f1 c7 42 04 04 f2 f2 f2 48 89 fa 65 48 8b 0c 25 28 00 00 00 48 89 4d d0 31 c9 48 c1 ea 03 <0f> b6 04 02 48 89 fa 83 e2 07 38 d0 7f 08 84 c0 0f 85 99 0b 00 00
+RSP: 0018:ffff88812fd1fac0 EFLAGS: 00010246
+RAX: dffffc0000000000 RBX: ffff888131112b80 RCX: 0000000000000000
+RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000003
+RBP: ffff88812fd1fbd8 R08: ffff88806182d400 R09: 0000000000000001
+R10: ffffed1025fa3f8f R11: 0000000000000003 R12: ffff88806182d400
+R13: dffffc0000000000 R14: ffffed100c305a8e R15: 000000000000003c
+FS:  0000000000000000(0000) GS:ffff888135a00000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007fe89aa9bbac CR3: 000000013033e000 CR4: 0000000000340ee0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+ batadv_iv_ogm_schedule+0xb47/0xe80 net/batman-adv/bat_iv_ogm.c:807
+ batadv_iv_send_outstanding_bat_ogm_packet+0x4a2/0x790 net/batman-adv/bat_iv_ogm.c:1669
+ process_one_work+0x7b9/0x15e0 kernel/workqueue.c:2269
+ worker_thread+0x85/0xb60 kernel/workqueue.c:2415
+ kthread+0x324/0x3e0 kernel/kthread.c:255
+ ret_from_fork+0x24/0x30 arch/x86/entry/entry_64.S:352
+Modules linked in:
+---[ end trace 70638ca431f479e2 ]---
+RIP: 0010:batadv_iv_ogm_queue_add+0x9b/0xe50 net/batman-adv/bat_iv_ogm.c:599
+Code: 44 89 8d 64 ff ff ff c7 02 f1 f1 f1 f1 c7 42 04 04 f2 f2 f2 48 89 fa 65 48 8b 0c 25 28 00 00 00 48 89 4d d0 31 c9 48 c1 ea 03 <0f> b6 04 02 48 89 fa 83 e2 07 38 d0 7f 08 84 c0 0f 85 99 0b 00 00
+RSP: 0018:ffff88812fd1fac0 EFLAGS: 00010246
+RAX: dffffc0000000000 RBX: ffff888131112b80 RCX: 0000000000000000
+RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000003
+RBP: ffff88812fd1fbd8 R08: ffff88806182d400 R09: 0000000000000001
+R10: ffffed1025fa3f8f R11: 0000000000000003 R12: ffff88806182d400
+R13: dffffc0000000000 R14: ffffed100c305a8e R15: 000000000000003c
+FS:  0000000000000000(0000) GS:ffff888064600000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007fe89aa9bbac CR3: 0000000121bf9000 CR4: 0000000000340ef0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+----------------
+Code disassembly (best guess):
+   0:	44 89 8d 64 ff ff ff 	mov    %r9d,-0x9c(%rbp)
+   7:	c7 02 f1 f1 f1 f1    	movl   $0xf1f1f1f1,(%rdx)
+   d:	c7 42 04 04 f2 f2 f2 	movl   $0xf2f2f204,0x4(%rdx)
+  14:	48 89 fa             	mov    %rdi,%rdx
+  17:	65 48 8b 0c 25 28 00 	mov    %gs:0x28,%rcx
+  1e:	00 00
+  20:	48 89 4d d0          	mov    %rcx,-0x30(%rbp)
+  24:	31 c9                	xor    %ecx,%ecx
+  26:	48 c1 ea 03          	shr    $0x3,%rdx
+* 2a:	0f b6 04 02          	movzbl (%rdx,%rax,1),%eax <-- trapping instruction
+  2e:	48 89 fa             	mov    %rdi,%rdx
+  31:	83 e2 07             	and    $0x7,%edx
+  34:	38 d0                	cmp    %dl,%al
+  36:	7f 08                	jg     0x40
+  38:	84 c0                	test   %al,%al
+  3a:	0f 85 99 0b 00 00    	jne    0xbd9
+
+
+KASAN: slab-use-after-free Read in hci_conn_hash_flush
+37739d1b4fe744da9c2f342224000ae7fbb5c063

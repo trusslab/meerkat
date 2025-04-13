@@ -1,0 +1,367 @@
+charm starts bisection 2025-04-07 21:34:47.590998806 -0700 PDT m=+5.196594625
+bisecting cause commit starting from c2bf05db6c78f53ca5cd4b48f3b9b71f78d215f1
+building syzkaller on HEAD
+ensuring issue is reproducible on original commit c2bf05db6c78f53ca5cd4b48f3b9b71f78d215f1
+
+testing commit c2bf05db6c78f53ca5cd4b48f3b9b71f78d215f1 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: d23ff7bf525238c275d90799d74f7168bb83788d7edb6b8981da7d88e7b88adb
+all runs: crashed: KASAN: slab-out-of-bounds Read in indx_insert_into_buffer
+representative crash: KASAN: slab-out-of-bounds Read in indx_insert_into_buffer, types: [KASAN]
+picked [v6.0 v5.19 v5.18 v5.16 v5.14 v5.12 v5.10 v5.8 v5.5 v5.2 v4.20 v4.19] out of 23 release tags
+testing release v6.0
+testing commit 4fe89d07dcc2804c8b562f6c7896a45643d34b2f gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 395a3028825baf12b727b83e9bd6222fb2ec7f3350a3cc451f12dc70ab684332
+all runs: crashed: KASAN: slab-out-of-bounds Read in indx_insert_into_buffer
+representative crash: KASAN: slab-out-of-bounds Read in indx_insert_into_buffer, types: [KASAN]
+testing release v5.19
+testing commit 3d7cb6b04c3f3115719235cc6866b10326de34cd gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 0dec00012193315f9ddd465704ebae9a466c09bbd52d73ca4d0d3407c82f5bea
+all runs: crashed: KASAN: slab-out-of-bounds Read in indx_insert_into_buffer
+representative crash: KASAN: slab-out-of-bounds Read in indx_insert_into_buffer, types: [KASAN]
+testing release v5.18
+testing commit 4b0986a3613c92f4ec1bdc7f60ec66fea135991f gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 1090385b84de89a847a1404539a12f5760aef6198312dce5603aab1ff42e7a88
+all runs: crashed: KASAN: slab-out-of-bounds Read in indx_insert_into_buffer
+representative crash: KASAN: slab-out-of-bounds Read in indx_insert_into_buffer, types: [KASAN]
+testing release v5.16
+testing commit df0cc57e057f18e44dac8e6c18aba47ab53202f9 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: ffd4064a564f67b07780600e11ff6ad3c4dc96ccfa657da186d32d92c6ed6a32
+all runs: crashed: KASAN: slab-out-of-bounds Read in indx_insert_into_buffer
+representative crash: KASAN: slab-out-of-bounds Read in indx_insert_into_buffer, types: [KASAN]
+testing release v5.14
+testing commit 7d2a07b769330c34b4deabeed939325c77a7ec2f gcc
+compiler: gcc (GCC) 10.1.0-syz 20200507, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 4ef63c0d9b97b2c6e3c1c6f029f82ea594dd5174e803aa5a3446d5e1241efe1d
+all runs: OK
+false negative chance: 0.000
+# git bisect start df0cc57e057f18e44dac8e6c18aba47ab53202f9 7d2a07b769330c34b4deabeed939325c77a7ec2f
+Bisecting: 14449 revisions left to test after this (roughly 14 steps)
+[970eae15600a883e4ad27dd0757b18871cc983ab] BackMerge tag 'v5.15-rc7' into drm-next
+
+testing commit 970eae15600a883e4ad27dd0757b18871cc983ab gcc
+compiler: gcc (GCC) 10.1.0-syz 20200507, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 956e136d997d037b2545cada6918eb79b3440bed3885a4c8a6940897df7db0b2
+all runs: crashed: KASAN: slab-out-of-bounds Read in indx_insert_into_buffer
+representative crash: KASAN: slab-out-of-bounds Read in indx_insert_into_buffer, types: [KASAN]
+# git bisect bad 970eae15600a883e4ad27dd0757b18871cc983ab
+Bisecting: 7342 revisions left to test after this (roughly 13 steps)
+[32b47072f319bb65e9afad59e78153d83496f1f5] Merge tag 'defconfig-5.15' of git://git.kernel.org/pub/scm/linux/kernel/git/soc/soc
+
+testing commit 32b47072f319bb65e9afad59e78153d83496f1f5 gcc
+compiler: gcc (GCC) 10.1.0-syz 20200507, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 5ea4d48900fcf19abc074cd36adfffdf404e758e849b30cd7876f2cde9d760e6
+all runs: OK
+false negative chance: 0.000
+# git bisect good 32b47072f319bb65e9afad59e78153d83496f1f5
+Bisecting: 3671 revisions left to test after this (roughly 12 steps)
+[43175623dd0dffccacbf014e368ee77f77c73898] Merge tag 'trace-v5.15-2' of git://git.kernel.org/pub/scm/linux/kernel/git/rostedt/linux-trace
+
+testing commit 43175623dd0dffccacbf014e368ee77f77c73898 gcc
+compiler: gcc (GCC) 10.1.0-syz 20200507, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 8df0f6d4774760a1e778ad6b0f18e67f0f3b2069a2d105baf76785ce89af0845
+2025/04/08 00:35:47 failed to symbolize report: failed to run ["scripts/get_maintainer.pl" "--git-min-percent=15" "-f" "mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/fs/dcache.c"]: exit status 2
+scripts/get_maintainer.pl: file 'mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/fs/dcache.c' not found
+run #0: crashed: KASAN: slab-out-of-bounds Read in indx_insert_into_buffer
+run #1: crashed: KASAN: slab-out-of-bounds Read in indx_insert_into_buffer
+run #2: crashed: KASAN: slab-out-of-bounds Read in indx_insert_into_buffer
+run #3: crashed: KASAN: slab-out-of-bounds Read in indx_insert_into_buffer
+run #4: crashed: KASAN: slab-out-of-bounds Read in indx_insert_into_buffer
+run #5: crashed: KASAN: slab-out-of-bounds Read in indx_insert_into_buffer
+run #6: crashed: KASAN: slab-out-of-bounds Read in indx_insert_into_buffer
+run #7: boot failed: KFENCE: use-after-free in kvm_fastop_exception
+representative crash: KASAN: slab-out-of-bounds Read in indx_insert_into_buffer, types: [KASAN]
+# git bisect bad 43175623dd0dffccacbf014e368ee77f77c73898
+Bisecting: 1813 revisions left to test after this (roughly 11 steps)
+[14726903c835101cd8d0a703b609305094350d61] Merge branch 'akpm' (patches from Andrew)
+
+testing commit 14726903c835101cd8d0a703b609305094350d61 gcc
+compiler: gcc (GCC) 10.1.0-syz 20200507, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: eecccfbceb072e62512a0c03e486e56cce406f278ea978544a5faaf47c98503d
+all runs: OK
+false negative chance: 0.000
+# git bisect good 14726903c835101cd8d0a703b609305094350d61
+Bisecting: 908 revisions left to test after this (roughly 10 steps)
+[a2b28235335fee2586b4bd16448fb59ed6c80eef] Merge branch 'dmi-for-linus' of git://git.kernel.org/pub/scm/linux/kernel/git/jdelvare/staging
+
+testing commit a2b28235335fee2586b4bd16448fb59ed6c80eef gcc
+compiler: gcc (GCC) 10.1.0-syz 20200507, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 896cd07c19d2d79193df55f2fb999c512415af3aa02e4a577bf8d51891af6d3a
+all runs: crashed: KASAN: slab-out-of-bounds Read in indx_insert_into_buffer
+representative crash: KASAN: slab-out-of-bounds Read in indx_insert_into_buffer, types: [KASAN]
+# git bisect bad a2b28235335fee2586b4bd16448fb59ed6c80eef
+Bisecting: 454 revisions left to test after this (roughly 9 steps)
+[6abaa83c7352b31450d7e8c173f674324c16b02b] Merge tag 'f2fs-for-5.15-rc1' of git://git.kernel.org/pub/scm/linux/kernel/git/jaegeuk/f2fs
+
+testing commit 6abaa83c7352b31450d7e8c173f674324c16b02b gcc
+compiler: gcc (GCC) 10.1.0-syz 20200507, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 45c50e09a8f9456535a442355cd8578ce34f5b4065b0758447095ccaa730ec19
+2025/04/08 01:46:02 failed to symbolize report: failed to run ["scripts/get_maintainer.pl" "--git-min-percent=15" "-f" "mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/drivers/mtd/devices/mtdram.c"]: exit status 2
+scripts/get_maintainer.pl: file 'mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/drivers/mtd/devices/mtdram.c' not found
+run #0: OK
+run #1: OK
+run #2: OK
+run #3: OK
+run #4: OK
+run #5: OK
+run #6: OK
+run #7: boot failed: possible deadlock in blktrans_open
+false negative chance: 0.000
+# git bisect good 6abaa83c7352b31450d7e8c173f674324c16b02b
+Bisecting: 271 revisions left to test after this (roughly 8 steps)
+[58ca24158758f1784400d32743373d7d6227d018] Merge tag 'trace-v5.15' of git://git.kernel.org/pub/scm/linux/kernel/git/rostedt/linux-trace
+
+testing commit 58ca24158758f1784400d32743373d7d6227d018 gcc
+compiler: gcc (GCC) 10.1.0-syz 20200507, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 9b6685dd4a3099aec0a0ae83a136de6e9d434cd339fd758a5a24898dfcc5d37e
+all runs: crashed: KASAN: slab-out-of-bounds Read in indx_insert_into_buffer
+representative crash: KASAN: slab-out-of-bounds Read in indx_insert_into_buffer, types: [KASAN]
+# git bisect bad 58ca24158758f1784400d32743373d7d6227d018
+Bisecting: 91 revisions left to test after this (roughly 7 steps)
+[3fe617ccafd6f5bb33c2391d6f4eeb41c1fd0151] Enable '-Werror' by default for all kernel builds
+
+testing commit 3fe617ccafd6f5bb33c2391d6f4eeb41c1fd0151 gcc
+compiler: gcc (GCC) 10.1.0-syz 20200507, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: b10a4c8e1d5b1e052615f04615d2c66a469799166cda94040df9d5ba1c141817
+all runs: crashed: KASAN: slab-out-of-bounds Read in indx_insert_into_buffer
+representative crash: KASAN: slab-out-of-bounds Read in indx_insert_into_buffer, types: [KASAN]
+# git bisect bad 3fe617ccafd6f5bb33c2391d6f4eeb41c1fd0151
+Bisecting: 45 revisions left to test after this (roughly 6 steps)
+[49624efa65ac9889f4e7c7b2452b2e6ce42ba37d] Merge tag 'denywrite-for-5.15' of git://github.com/davidhildenbrand/linux
+
+testing commit 49624efa65ac9889f4e7c7b2452b2e6ce42ba37d gcc
+compiler: gcc (GCC) 10.1.0-syz 20200507, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 52331f614a2611e1271be81a578dfba08483f1ae7f2a0b73082a4ad2d67af5d2
+all runs: crashed: KASAN: slab-out-of-bounds Read in indx_insert_into_buffer
+representative crash: KASAN: slab-out-of-bounds Read in indx_insert_into_buffer, types: [KASAN]
+# git bisect bad 49624efa65ac9889f4e7c7b2452b2e6ce42ba37d
+Bisecting: 22 revisions left to test after this (roughly 5 steps)
+[195c52bdd5d5ecfdabf5a7c6159efe299e534f84] fs/ntfs3: Do not use driver own alloc wrappers
+
+testing commit 195c52bdd5d5ecfdabf5a7c6159efe299e534f84 gcc
+compiler: gcc (GCC) 10.1.0-syz 20200507, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: df465caf5753a7a264263cbdfddcaa0928d0686970ff9a932a6eb19fcaa6cd3b
+all runs: crashed: KASAN: slab-out-of-bounds Read in indx_insert_into_buffer
+representative crash: KASAN: slab-out-of-bounds Read in indx_insert_into_buffer, types: [KASAN]
+# git bisect bad 195c52bdd5d5ecfdabf5a7c6159efe299e534f84
+Bisecting: 10 revisions left to test after this (roughly 4 steps)
+[11e4e66efd440216032f53ee7e5ca08cd263a292] Merge branch 'torvalds:master' into master
+
+testing commit 11e4e66efd440216032f53ee7e5ca08cd263a292 gcc
+compiler: gcc (GCC) 10.1.0-syz 20200507, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 33c2ea142ea47e05a0c6c7dfc6e642a7f9e1a1ad684c047f38f29a904aac890f
+all runs: crashed: KASAN: slab-out-of-bounds Read in indx_insert_into_buffer
+representative crash: KASAN: slab-out-of-bounds Read in indx_insert_into_buffer, types: [KASAN]
+# git bisect bad 11e4e66efd440216032f53ee7e5ca08cd263a292
+Bisecting: 5 revisions left to test after this (roughly 3 steps)
+[be71b5cba2e6485e8959da7a9f9a44461a1bb074] fs/ntfs3: Add attrib operations
+
+testing commit be71b5cba2e6485e8959da7a9f9a44461a1bb074 gcc
+compiler: gcc (GCC) 10.1.0-syz 20200507, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 1a0f80d742892a7c2d0df91cf86cc1ee9aafc7a45908f1a52b92e962e3083253
+all runs: OK
+false negative chance: 0.000
+# git bisect good be71b5cba2e6485e8959da7a9f9a44461a1bb074
+Bisecting: 2 revisions left to test after this (roughly 2 steps)
+[12dad495eaab95e0bb784c43869073617c513ea4] fs/ntfs3: Add Kconfig, Makefile and doc
+
+testing commit 12dad495eaab95e0bb784c43869073617c513ea4 gcc
+compiler: gcc (GCC) 10.1.0-syz 20200507, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 1a0f80d742892a7c2d0df91cf86cc1ee9aafc7a45908f1a52b92e962e3083253
+all runs: OK
+false negative chance: 0.000
+# git bisect good 12dad495eaab95e0bb784c43869073617c513ea4
+Bisecting: 0 revisions left to test after this (roughly 1 step)
+[96b18047a7172037ff4206720f4e889670030b41] fs/ntfs3: Add MAINTAINERS
+
+testing commit 96b18047a7172037ff4206720f4e889670030b41 gcc
+compiler: gcc (GCC) 10.1.0-syz 20200507, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: fa74b1acb2a7c2b0c599c93d1eef17f55aba435848e590341a919f28d784ae4c
+all runs: crashed: KASAN: slab-out-of-bounds Read in indx_insert_into_buffer
+representative crash: KASAN: slab-out-of-bounds Read in indx_insert_into_buffer, types: [KASAN]
+# git bisect bad 96b18047a7172037ff4206720f4e889670030b41
+Bisecting: 0 revisions left to test after this (roughly 0 steps)
+[6e5be40d32fb1907285277c02e74493ed43d77fe] fs/ntfs3: Add NTFS3 in fs/Kconfig and fs/Makefile
+
+testing commit 6e5be40d32fb1907285277c02e74493ed43d77fe gcc
+compiler: gcc (GCC) 10.1.0-syz 20200507, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: fa74b1acb2a7c2b0c599c93d1eef17f55aba435848e590341a919f28d784ae4c
+all runs: crashed: KASAN: slab-out-of-bounds Read in indx_insert_into_buffer
+representative crash: KASAN: slab-out-of-bounds Read in indx_insert_into_buffer, types: [KASAN]
+# git bisect bad 6e5be40d32fb1907285277c02e74493ed43d77fe
+6e5be40d32fb1907285277c02e74493ed43d77fe is the first bad commit
+commit 6e5be40d32fb1907285277c02e74493ed43d77fe
+Author: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+Date:   Fri Aug 13 17:21:30 2021 +0300
+
+    fs/ntfs3: Add NTFS3 in fs/Kconfig and fs/Makefile
+    
+    This adds NTFS3 in fs/Kconfig and fs/Makefile
+    
+    Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+
+ fs/Kconfig  | 1 +
+ fs/Makefile | 1 +
+ 2 files changed, 2 insertions(+)
+
+accumulated error probability: 0.00
+culprit signature: fa74b1acb2a7c2b0c599c93d1eef17f55aba435848e590341a919f28d784ae4c
+parent  signature: 1a0f80d742892a7c2d0df91cf86cc1ee9aafc7a45908f1a52b92e962e3083253
+revisions tested: 21, total time: 6h56m59.196781696s (build: 5h10m7.707237428s, test: 1h25m2.77964412s)
+first bad commit: 6e5be40d32fb1907285277c02e74493ed43d77fe fs/ntfs3: Add NTFS3 in fs/Kconfig and fs/Makefile
+recipients (to): ["almaz.alexandrovich@paragon-software.com" "linux-kernel@vger.kernel.org"]
+recipients (cc): ["linux-fsdevel@vger.kernel.org" "viro@zeniv.linux.org.uk"]
+crash: KASAN: slab-out-of-bounds Read in indx_insert_into_buffer
+loop0: detected capacity change from 0 to 4096
+ntfs3: loop0: Different NTFS' sector size and media sector size
+==================================================================
+BUG: KASAN: slab-out-of-bounds in memmove mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/./include/linux/fortify-string.h:207 [inline]
+BUG: KASAN: slab-out-of-bounds in indx_insert_into_buffer.isra.0+0x935/0x1080 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/fs/ntfs3/index.c:1832
+Read of size 17168 at addr ffff8881096526c0 by task syz-executor.0/9103
+
+CPU: 1 PID: 9103 Comm: syz-executor.0 Not tainted 5.14.0-rc5-syzkaller #0
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.13.0-1ubuntu1.1 04/01/2014
+Call Trace:
+ __dump_stack mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/lib/dump_stack.c:88 [inline]
+ dump_stack_lvl+0xcd/0x134 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/lib/dump_stack.c:105
+ print_address_description.constprop.0.cold+0x6c/0x309 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/mm/kasan/report.c:233
+ __kasan_report mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/mm/kasan/report.c:419 [inline]
+ kasan_report.cold+0x83/0xdf mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/mm/kasan/report.c:436
+ check_region_inline mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/mm/kasan/generic.c:183 [inline]
+ kasan_check_range+0x13d/0x180 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/mm/kasan/generic.c:189
+ memmove+0x20/0x60 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/mm/kasan/shadow.c:54
+ memmove mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/./include/linux/fortify-string.h:207 [inline]
+ indx_insert_into_buffer.isra.0+0x935/0x1080 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/fs/ntfs3/index.c:1832
+ indx_insert_entry+0x15a/0x460 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/fs/ntfs3/index.c:1929
+ ntfs_create_inode+0x13a1/0x3cc0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/fs/ntfs3/inode.c:1539
+ ntfs_create+0x51/0xa0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/fs/ntfs3/namei.c:113
+ lookup_open.isra.0+0xfe4/0x13d0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/fs/namei.c:3228
+ open_last_lookups mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/fs/namei.c:3298 [inline]
+ path_openat+0x9b3/0x27f0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/fs/namei.c:3504
+ do_filp_open+0x1aa/0x400 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/fs/namei.c:3534
+ do_sys_openat2+0x16d/0x420 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/fs/open.c:1204
+ do_sys_open mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/fs/open.c:1220 [inline]
+ __do_sys_creat mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/fs/open.c:1294 [inline]
+ __se_sys_creat mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/fs/open.c:1288 [inline]
+ __x64_sys_creat+0xc9/0x120 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/fs/open.c:1288
+ do_syscall_x64 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/arch/x86/entry/common.c:50 [inline]
+ do_syscall_64+0x35/0x80 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/arch/x86/entry/common.c:80
+ entry_SYSCALL_64_after_hwframe+0x44/0xae
+RIP: 0033:0x7fe9f8869ced
+Code: c3 e8 17 32 00 00 0f 1f 80 00 00 00 00 f3 0f 1e fa 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 b8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007fe9f7bd5bd8 EFLAGS: 00000246 ORIG_RAX: 0000000000000055
+RAX: ffffffffffffffda RBX: 00007fe9f89a3f80 RCX: 00007fe9f8869ced
+RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000020000040
+RBP: 00007fe9f88c74ac R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+R13: 00007fff26b2767f R14: 00007fff26b27810 R15: 00007fe9f7bd5d80
+
+Allocated by task 9103:
+ kasan_save_stack+0x1b/0x40 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/mm/kasan/common.c:38
+ kasan_set_track mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/mm/kasan/common.c:46 [inline]
+ set_alloc_info mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/mm/kasan/common.c:434 [inline]
+ ____kasan_kmalloc mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/mm/kasan/common.c:513 [inline]
+ ____kasan_kmalloc mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/mm/kasan/common.c:472 [inline]
+ __kasan_kmalloc+0x9b/0xd0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/mm/kasan/common.c:522
+ kmalloc mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/./include/linux/slab.h:596 [inline]
+ indx_read+0x4d0/0x810 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/fs/ntfs3/index.c:1038
+ indx_find+0x49e/0x970 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/fs/ntfs3/index.c:1150
+ indx_insert_entry+0x25e/0x460 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/fs/ntfs3/index.c:1909
+ ntfs_create_inode+0x13a1/0x3cc0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/fs/ntfs3/inode.c:1539
+ ntfs_create+0x51/0xa0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/fs/ntfs3/namei.c:113
+ lookup_open.isra.0+0xfe4/0x13d0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/fs/namei.c:3228
+ open_last_lookups mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/fs/namei.c:3298 [inline]
+ path_openat+0x9b3/0x27f0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/fs/namei.c:3504
+ do_filp_open+0x1aa/0x400 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/fs/namei.c:3534
+ do_sys_openat2+0x16d/0x420 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/fs/open.c:1204
+ do_sys_open mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/fs/open.c:1220 [inline]
+ __do_sys_creat mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/fs/open.c:1294 [inline]
+ __se_sys_creat mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/fs/open.c:1288 [inline]
+ __x64_sys_creat+0xc9/0x120 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/fs/open.c:1288
+ do_syscall_x64 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/arch/x86/entry/common.c:50 [inline]
+ do_syscall_64+0x35/0x80 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/arch/x86/entry/common.c:80
+ entry_SYSCALL_64_after_hwframe+0x44/0xae
+
+The buggy address belongs to the object at ffff888109652000
+ which belongs to the cache kmalloc-4k of size 4096
+The buggy address is located 1728 bytes inside of
+ 4096-byte region [ffff888109652000, ffff888109653000)
+The buggy address belongs to the page:
+page:ffffea0004259400 refcount:1 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x109650
+head:ffffea0004259400 order:3 compound_mapcount:0 compound_pincount:0
+flags: 0x57ff00000010200(slab|head|node=1|zone=2|lastcpupid=0x7ff)
+raw: 057ff00000010200 0000000000000000 dead000000000122 ffff888011842140
+raw: 0000000000000000 0000000080040004 00000001ffffffff 0000000000000000
+page dumped because: kasan: bad access detected
+page_owner tracks the page as allocated
+page last allocated via order 3, migratetype Unmovable, gfp_mask 0xd2040(__GFP_IO|__GFP_NOWARN|__GFP_NORETRY|__GFP_COMP|__GFP_NOMEMALLOC), pid 9103, ts 74696910903, free_ts 61348864203
+ prep_new_page mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/mm/page_alloc.c:2436 [inline]
+ get_page_from_freelist+0xa72/0x2f80 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/mm/page_alloc.c:4169
+ __alloc_pages+0x1b2/0x500 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/mm/page_alloc.c:5391
+ alloc_pages+0x18c/0x2a0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/mm/mempolicy.c:2244
+ alloc_slab_page mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/mm/slub.c:1688 [inline]
+ allocate_slab+0x32e/0x4b0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/mm/slub.c:1828
+ new_slab mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/mm/slub.c:1891 [inline]
+ new_slab_objects mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/mm/slub.c:2637 [inline]
+ ___slab_alloc+0x4ba/0x820 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/mm/slub.c:2800
+ __slab_alloc.constprop.0+0xa7/0xf0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/mm/slub.c:2840
+ slab_alloc_node mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/mm/slub.c:2922 [inline]
+ slab_alloc mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/mm/slub.c:2964 [inline]
+ __kmalloc+0x312/0x330 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/mm/slub.c:4108
+ kmalloc mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/./include/linux/slab.h:596 [inline]
+ mi_init+0x8c/0xf0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/fs/ntfs3/record.c:110
+ mi_format_new+0x86/0x590 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/fs/ntfs3/record.c:360
+ ntfs_new_inode+0x80/0x120 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/fs/ntfs3/fsntfs.c:1701
+ ntfs_create_inode+0x382/0x3cc0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/fs/ntfs3/inode.c:1265
+ ntfs_create+0x51/0xa0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/fs/ntfs3/namei.c:113
+ lookup_open.isra.0+0xfe4/0x13d0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/fs/namei.c:3228
+ open_last_lookups mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/fs/namei.c:3298 [inline]
+ path_openat+0x9b3/0x27f0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/fs/namei.c:3504
+ do_filp_open+0x1aa/0x400 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/fs/namei.c:3534
+ do_sys_openat2+0x16d/0x420 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/fs/open.c:1204
+page last free stack trace:
+ reset_page_owner mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/./include/linux/page_owner.h:24 [inline]
+ free_pages_prepare mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/mm/page_alloc.c:1346 [inline]
+ free_pcp_prepare+0x2c5/0x780 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/mm/page_alloc.c:1397
+ free_unref_page_prepare mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/mm/page_alloc.c:3332 [inline]
+ free_unref_page+0x19/0x690 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/mm/page_alloc.c:3411
+ unfreeze_partials+0x17c/0x1d0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/mm/slub.c:2418
+ put_cpu_partial+0x13d/0x230 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/mm/slub.c:2454
+ qlink_free mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/mm/kasan/quarantine.c:146 [inline]
+ qlist_free_all+0x5a/0xc0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/mm/kasan/quarantine.c:165
+ kasan_quarantine_reduce+0x180/0x200 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/mm/kasan/quarantine.c:272
+ __kasan_slab_alloc+0x8e/0xa0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/mm/kasan/common.c:444
+ kasan_slab_alloc mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/./include/linux/kasan.h:254 [inline]
+ slab_post_alloc_hook mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/mm/slab.h:519 [inline]
+ slab_alloc_node mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/mm/slub.c:2956 [inline]
+ __kmalloc_node+0x24c/0x380 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/mm/slub.c:4156
+ kmalloc_node mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/./include/linux/slab.h:614 [inline]
+ kvmalloc_node+0x61/0xf0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/mm/util.c:587
+ kvmalloc mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/./include/linux/mm.h:806 [inline]
+ seq_buf_alloc mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/fs/seq_file.c:38 [inline]
+ seq_read_iter+0x7e7/0x1240 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/fs/seq_file.c:210
+ kernfs_fop_read_iter+0x44f/0x5f0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/fs/kernfs/file.c:241
+ call_read_iter mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/./include/linux/fs.h:2108 [inline]
+ new_sync_read+0x41e/0x6e0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/fs/read_write.c:415
+ vfs_read+0x35c/0x570 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/fs/read_write.c:496
+ ksys_read+0x12d/0x250 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/fs/read_write.c:634
+ do_syscall_x64 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/arch/x86/entry/common.c:50 [inline]
+ do_syscall_64+0x35/0x80 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/arch/x86/entry/common.c:80
+ entry_SYSCALL_64_after_hwframe+0x44/0xae
+
+Memory state around the buggy address:
+ ffff888109652f00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+ ffff888109652f80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+>ffff888109653000: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
+                   ^
+ ffff888109653080: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
+ ffff888109653100: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
+==================================================================
+
+
+KASAN: slab-out-of-bounds Read in indx_insert_into_buffer
+6e5be40d32fb1907285277c02e74493ed43d77fe

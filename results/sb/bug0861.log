@@ -1,0 +1,330 @@
+TrussLab starts bisection 2025-03-30 18:58:42.731638986 -0700 PDT m=+14.191557783
+bisecting cause commit starting from f4bc5bbb5fef3cf421ba3485d6d383c27ec473ed
+building syzkaller on HEAD
+ensuring issue is reproducible on original commit f4bc5bbb5fef3cf421ba3485d6d383c27ec473ed
+
+testing commit f4bc5bbb5fef3cf421ba3485d6d383c27ec473ed gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 74db6ebaf0bbcd25735f0751e29d5d26d50bdc7309aec25e46180f86b64ae33b
+all runs: crashed: kernel BUG in workingset_activation
+representative crash: kernel BUG in workingset_activation, types: [BUG]
+picked [v5.16 v5.15 v5.14 v5.12 v5.10 v5.8 v5.6 v5.4 v5.1 v4.19] out of 19 release tags
+testing release v5.16
+testing commit df0cc57e057f18e44dac8e6c18aba47ab53202f9 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 1480860787fd4075c07db7506f8e01084e7860069102b3472127263e09f38810
+all runs: crashed: kernel BUG in workingset_activation
+representative crash: kernel BUG in workingset_activation, types: [BUG]
+testing release v5.15
+testing commit 8bb7eca972ad531c9b149c0a51ab43a417385813 gcc
+compiler: gcc (GCC) 10.1.0-syz 20200507, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 29bd37ca5c955fae92eb240d1c30d84f6c2957cb59764624cf3e04f3922a3fe0
+2025/03/30 19:41:25 failed to symbolize report: failed to run ["scripts/get_maintainer.pl" "--git-min-percent=15" "-f" "mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/kernel/workqueue.c"]: exit status 2
+scripts/get_maintainer.pl: file 'mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/kernel/workqueue.c' not found
+run #0: basic kernel testing failed: WARNING in process_one_work
+run #1: crashed: kernel BUG in workingset_activation
+run #2: crashed: kernel BUG in workingset_activation
+run #3: crashed: kernel BUG in workingset_activation
+run #4: crashed: kernel BUG in workingset_activation
+run #5: crashed: kernel BUG in workingset_activation
+run #6: crashed: kernel BUG in workingset_activation
+run #7: crashed: kernel BUG in workingset_activation
+representative crash: kernel BUG in workingset_activation, types: [BUG]
+testing release v5.14
+testing commit 7d2a07b769330c34b4deabeed939325c77a7ec2f gcc
+compiler: gcc (GCC) 10.1.0-syz 20200507, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 8882f4e9301604daad870584c848ddb645d7fb3b1168cd108f54990f7601215c
+all runs: crashed: kernel BUG in workingset_activation
+representative crash: kernel BUG in workingset_activation, types: [BUG]
+testing release v5.12
+testing commit 9f4ad9e425a1d3b6a34617b8ea226d56a119a717 gcc
+compiler: gcc (GCC) 10.1.0-syz 20200507, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: c43b2f302f5032e053ed9513ae0fa91a7ce612b1e8bfbc3e95b03403d0da4e75
+all runs: crashed: kernel BUG in workingset_activation
+representative crash: kernel BUG in workingset_activation, types: [BUG]
+testing release v5.10
+testing commit 2c85ebc57b3e1817b6ce1a6b703928e113a90442 gcc
+compiler: gcc (GCC) 10.1.0-syz 20200507, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 3ae802f11910c876f59d998f062152471882196b1f9cc4821c9e2ed5d7628e99
+all runs: OK
+false negative chance: 0.000
+# git bisect start 9f4ad9e425a1d3b6a34617b8ea226d56a119a717 2c85ebc57b3e1817b6ce1a6b703928e113a90442
+Bisecting: 14821 revisions left to test after this (roughly 14 steps)
+[e87e4b5caa5db4ab14508e75ec5926a1c05020ac] net: bridge: multicast: handle block pg delete for all cases
+
+testing commit e87e4b5caa5db4ab14508e75ec5926a1c05020ac gcc
+compiler: gcc (GCC) 10.1.0-syz 20200507, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 2ef8cd88143d8b0aeab4d152119b8a372348f4a3a930518fef936ea192227670
+all runs: crashed: kernel BUG in workingset_activation
+representative crash: kernel BUG in workingset_activation, types: [BUG]
+# git bisect bad e87e4b5caa5db4ab14508e75ec5926a1c05020ac
+Bisecting: 7397 revisions left to test after this (roughly 13 steps)
+[61f914256c56a39a96dc14eae9f394d35b934812] Merge tag 'platform-drivers-x86-v5.11-1' of git://git.kernel.org/pub/scm/linux/kernel/git/pdx86/platform-drivers-x86
+
+testing commit 61f914256c56a39a96dc14eae9f394d35b934812 gcc
+compiler: gcc (GCC) 10.1.0-syz 20200507, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 80e4cd2d6338c394b0137d8b9b3566f5c8265cafbbdc67a7379424a5c51c9e82
+all runs: crashed: kernel BUG in workingset_activation
+representative crash: kernel BUG in workingset_activation, types: [BUG]
+# git bisect bad 61f914256c56a39a96dc14eae9f394d35b934812
+Bisecting: 4017 revisions left to test after this (roughly 12 steps)
+[15b447361794271f4d03c04d82276a841fe06328] mm/lru: revise the comments of lru_lock
+
+testing commit 15b447361794271f4d03c04d82276a841fe06328 gcc
+compiler: gcc (GCC) 10.1.0-syz 20200507, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 3ade33560c7beb1c2143b54cfb5a01275e4cce4a70e9cd9372e2443fdd8d6398
+all runs: OK
+false negative chance: 0.000
+# git bisect good 15b447361794271f4d03c04d82276a841fe06328
+Bisecting: 2000 revisions left to test after this (roughly 11 steps)
+[a6b5e026e6238cbdd51e3c9b77cc3c79a7c24a9a] Merge https://git.kernel.org/pub/scm/linux/kernel/git/bpf/bpf-next
+
+testing commit a6b5e026e6238cbdd51e3c9b77cc3c79a7c24a9a gcc
+compiler: gcc (GCC) 10.1.0-syz 20200507, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 493be5057ec61a64811816c502d330ce5c96f55b8735dd694b06aae2c77d266f
+all runs: crashed: kernel BUG in workingset_activation
+representative crash: kernel BUG in workingset_activation, types: [BUG]
+# git bisect bad a6b5e026e6238cbdd51e3c9b77cc3c79a7c24a9a
+Bisecting: 1009 revisions left to test after this (roughly 10 steps)
+[76810ed840f811b312120eb8c61bc9543432901f] net: wan: remove trailing semicolon in macro definition
+
+testing commit 76810ed840f811b312120eb8c61bc9543432901f gcc
+compiler: gcc (GCC) 10.1.0-syz 20200507, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 255a95b7981a1fea49ff75245b7fa458199029bbd7bcce09f3424aee1d84fc9c
+all runs: OK
+false negative chance: 0.000
+# git bisect good 76810ed840f811b312120eb8c61bc9543432901f
+Bisecting: 504 revisions left to test after this (roughly 9 steps)
+[57449b07eafcc831343013b87b57e928c50d16b4] ath11k: use MHI provided APIs to allocate and free MHI controller
+
+testing commit 57449b07eafcc831343013b87b57e928c50d16b4 gcc
+compiler: gcc (GCC) 10.1.0-syz 20200507, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 16056e47b9e4e7d87a985f0d8d9f2ae9080e3a23644653146f0224eeb834d8e8
+all runs: crashed: kernel BUG in workingset_activation
+representative crash: kernel BUG in workingset_activation, types: [BUG]
+# git bisect bad 57449b07eafcc831343013b87b57e928c50d16b4
+Bisecting: 248 revisions left to test after this (roughly 8 steps)
+[a1dd1d86973182458da7798a95f26cfcbea599b4] Merge https://git.kernel.org/pub/scm/linux/kernel/git/bpf/bpf-next
+
+testing commit a1dd1d86973182458da7798a95f26cfcbea599b4 gcc
+compiler: gcc (GCC) 10.1.0-syz 20200507, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: d93bbba4bfe5416b8f1601d12637ffb1e8984f5a2cf778bd79e1010737d26bf3
+all runs: crashed: kernel BUG in workingset_activation
+representative crash: kernel BUG in workingset_activation, types: [BUG]
+# git bisect bad a1dd1d86973182458da7798a95f26cfcbea599b4
+Bisecting: 127 revisions left to test after this (roughly 7 steps)
+[3015b500ae42356936b9b4a8b660eacaee7a6147] libbpf: Use memcpy instead of strncpy to please GCC
+
+testing commit 3015b500ae42356936b9b4a8b660eacaee7a6147 gcc
+compiler: gcc (GCC) 10.1.0-syz 20200507, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 76e0549e6c734a052f119bfac78eea6ee854783ee6a6b21c00091da87c42da34
+run #0: crashed: kernel BUG in workingset_activation
+run #1: crashed: kernel BUG in workingset_activation
+run #2: crashed: kernel BUG in workingset_activation
+run #3: crashed: BUG: sleeping function called from invalid context in sta_info_move_state
+run #4: crashed: kernel BUG in workingset_activation
+run #5: crashed: kernel BUG in workingset_activation
+run #6: crashed: kernel BUG in workingset_activation
+run #7: crashed: kernel BUG in workingset_activation
+representative crash: kernel BUG in workingset_activation, types: [BUG]
+# git bisect bad 3015b500ae42356936b9b4a8b660eacaee7a6147
+Bisecting: 63 revisions left to test after this (roughly 6 steps)
+[e88cc05b61f3fe8bd4bd8ce1a0a2d03357225305] bpf: Refine memcg-based memory accounting for cpumap maps
+
+testing commit e88cc05b61f3fe8bd4bd8ce1a0a2d03357225305 gcc
+compiler: gcc (GCC) 10.1.0-syz 20200507, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: ea579700bc783254581b26ae1e03ac09d9eaf60a4b7eb9872cb67aafb750c5e1
+run #0: crashed: kernel BUG in workingset_activation
+run #1: crashed: kernel BUG in workingset_activation
+run #2: crashed: BUG: sleeping function called from invalid context in sta_info_move_state
+run #3: crashed: kernel BUG in workingset_activation
+run #4: crashed: kernel BUG in workingset_activation
+run #5: crashed: kernel BUG in workingset_activation
+run #6: crashed: kernel BUG in workingset_activation
+run #7: crashed: kernel BUG in workingset_activation
+representative crash: kernel BUG in workingset_activation, types: [BUG]
+# git bisect bad e88cc05b61f3fe8bd4bd8ce1a0a2d03357225305
+Bisecting: 31 revisions left to test after this (roughly 5 steps)
+[763af200d6160b2f79f45cbf9a85b8dc6e20f2c7] samples: bpf: Refactor ibumad program with libbpf
+
+testing commit 763af200d6160b2f79f45cbf9a85b8dc6e20f2c7 gcc
+compiler: gcc (GCC) 10.1.0-syz 20200507, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 1d81478d79e93e0517c17de02ce22db2490869a459bc9eb9e10ffdeb7f32775d
+all runs: OK
+false negative chance: 0.000
+# git bisect good 763af200d6160b2f79f45cbf9a85b8dc6e20f2c7
+Bisecting: 15 revisions left to test after this (roughly 4 steps)
+[b35fc1482ceb2f36bedd1587c3cfea3167baa2f1] samples/bpf: Add busy-poll support to xdpsock
+
+testing commit b35fc1482ceb2f36bedd1587c3cfea3167baa2f1 gcc
+compiler: gcc (GCC) 10.1.0-syz 20200507, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: b70fe2abad47f8ad64b32bc4cb96edbb9455319138da69cd252d1c614fd82886
+run #0: basic kernel testing failed: BUG: sleeping function called from invalid context in sta_info_move_state
+run #1: basic kernel testing failed: BUG: sleeping function called from invalid context in sta_info_move_state
+run #2: crashed: BUG: sleeping function called from invalid context in sta_info_move_state
+run #3: OK
+run #4: OK
+run #5: OK
+run #6: OK
+run #7: OK
+representative crash: BUG: sleeping function called from invalid context in sta_info_move_state, types: [ATOMIC_SLEEP]
+# git bisect bad b35fc1482ceb2f36bedd1587c3cfea3167baa2f1
+Bisecting: 7 revisions left to test after this (roughly 3 steps)
+[7fd3253a7de6a317a0683f83739479fb880bffc8] net: Introduce preferred busy-polling
+
+testing commit 7fd3253a7de6a317a0683f83739479fb880bffc8 gcc
+compiler: gcc (GCC) 10.1.0-syz 20200507, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: a1d5269a98f2e1fb3304667afcce8d347f0cc0b5e7121ab27a6bb59876d1b16b
+run #0: basic kernel testing failed: BUG: sleeping function called from invalid context in sta_info_move_state
+run #1: basic kernel testing failed: BUG: sleeping function called from invalid context in sta_info_move_state
+run #2: basic kernel testing failed: BUG: sleeping function called from invalid context in sta_info_move_state
+run #3: basic kernel testing failed: BUG: sleeping function called from invalid context in sta_info_move_state
+run #4: OK
+run #5: OK
+run #6: OK
+run #7: OK
+unable to determine the verdict: 4 good runs (wanted 6), for bad wanted 4 in total, got 4
+# git bisect skip 7fd3253a7de6a317a0683f83739479fb880bffc8
+Bisecting: 7 revisions left to test after this (roughly 3 steps)
+[b02e5a0ebb172c8276cea3151942aac681f7a4a6] xsk: Propagate napi_id to XDP socket Rx path
+
+testing commit b02e5a0ebb172c8276cea3151942aac681f7a4a6 gcc
+compiler: gcc (GCC) 10.1.0-syz 20200507, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: b70fe2abad47f8ad64b32bc4cb96edbb9455319138da69cd252d1c614fd82886
+run #0: basic kernel testing failed: BUG: sleeping function called from invalid context in sta_info_move_state
+run #1: basic kernel testing failed: BUG: sleeping function called from invalid context in sta_info_move_state
+run #2: OK
+run #3: OK
+run #4: OK
+run #5: OK
+run #6: OK
+run #7: OK
+false negative chance: 0.005
+# git bisect good b02e5a0ebb172c8276cea3151942aac681f7a4a6
+Bisecting: 0 revisions left to test after this (roughly 1 step)
+[284cbc61f851bf86326b28acfe6d161691d4a4ed] samples/bpf: Use recvfrom() in xdpsock/l2fwd
+
+testing commit 284cbc61f851bf86326b28acfe6d161691d4a4ed gcc
+compiler: gcc (GCC) 10.1.0-syz 20200507, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: b70fe2abad47f8ad64b32bc4cb96edbb9455319138da69cd252d1c614fd82886
+run #0: basic kernel testing failed: BUG: sleeping function called from invalid context in sta_info_move_state
+run #1: OK
+run #2: OK
+run #3: OK
+run #4: OK
+run #5: OK
+run #6: OK
+run #7: OK
+false negative chance: 0.002
+# git bisect good 284cbc61f851bf86326b28acfe6d161691d4a4ed
+b35fc1482ceb2f36bedd1587c3cfea3167baa2f1 is the first bad commit
+commit b35fc1482ceb2f36bedd1587c3cfea3167baa2f1
+Author: Björn Töpel <bjorn.topel@intel.com>
+Date:   Mon Nov 30 19:52:04 2020 +0100
+
+    samples/bpf: Add busy-poll support to xdpsock
+    
+    Add a new option to xdpsock, 'B', for busy-polling. This option will
+    also set the batching size, 'b' option, to the busy-poll budget.
+    
+    Signed-off-by: Björn Töpel <bjorn.topel@intel.com>
+    Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+    Acked-by: Magnus Karlsson <magnus.karlsson@intel.com>
+    Link: https://lore.kernel.org/bpf/20201130185205.196029-10-bjorn.topel@gmail.com
+
+ samples/bpf/xdpsock_user.c | 40 +++++++++++++++++++++++++++++++++-------
+ 1 file changed, 33 insertions(+), 7 deletions(-)
+
+accumulated error probability: 0.01
+culprit signature: b70fe2abad47f8ad64b32bc4cb96edbb9455319138da69cd252d1c614fd82886
+parent  signature: b70fe2abad47f8ad64b32bc4cb96edbb9455319138da69cd252d1c614fd82886
+reproducer is flaky (0.58 repro chance estimate)
+revisions tested: 20, total time: 5h46m45.854530463s (build: 3h43m43.56105836s, test: 1h41m19.568154508s)
+first bad commit: b35fc1482ceb2f36bedd1587c3cfea3167baa2f1 samples/bpf: Add busy-poll support to xdpsock
+recipients (to): ["bjorn.topel@intel.com" "daniel@iogearbox.net" "magnus.karlsson@intel.com"]
+recipients (cc): []
+crash: BUG: sleeping function called from invalid context in sta_info_move_state
+BUG: sleeping function called from invalid context at net/mac80211/sta_info.c:1962
+in_atomic(): 0, irqs_disabled(): 0, non_block: 0, pid: 8569, name: kworker/u4:3
+4 locks held by kworker/u4:3/8569:
+ #0: ffff888102734138 ((wq_completion)phy6){+.+.}-{0:0}, at: arch_atomic64_set mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/./arch/x86/include/asm/atomic64_64.h:34 [inline]
+ #0: ffff888102734138 ((wq_completion)phy6){+.+.}-{0:0}, at: atomic64_set mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/./include/asm-generic/atomic-instrumented.h:856 [inline]
+ #0: ffff888102734138 ((wq_completion)phy6){+.+.}-{0:0}, at: atomic_long_set mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/./include/asm-generic/atomic-long.h:41 [inline]
+ #0: ffff888102734138 ((wq_completion)phy6){+.+.}-{0:0}, at: set_work_data mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/kernel/workqueue.c:616 [inline]
+ #0: ffff888102734138 ((wq_completion)phy6){+.+.}-{0:0}, at: set_work_pool_and_clear_pending mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/kernel/workqueue.c:643 [inline]
+ #0: ffff888102734138 ((wq_completion)phy6){+.+.}-{0:0}, at: process_one_work+0x750/0x15c0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/kernel/workqueue.c:2243
+ #1: ffffc90001ea7da8 ((work_completion)(&sdata->work)){+.+.}-{0:0}, at: process_one_work+0x783/0x15c0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/kernel/workqueue.c:2247
+ #2: ffff888113eb8d00 (&wdev->mtx){+.+.}-{3:3}, at: sdata_lock mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/net/mac80211/ieee80211_i.h:1015 [inline]
+ #2: ffff888113eb8d00 (&wdev->mtx){+.+.}-{3:3}, at: ieee80211_ibss_work+0x93/0xf20 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/net/mac80211/ibss.c:1683
+ #3: ffffffff8b60fe60 (rcu_read_lock){....}-{1:2}, at: sta_info_insert_finish mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/net/mac80211/sta_info.c:644 [inline]
+ #3: ffffffff8b60fe60 (rcu_read_lock){....}-{1:2}, at: sta_info_insert_rcu+0x6c6/0x2f00 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/net/mac80211/sta_info.c:732
+Preemption disabled at:
+[<ffffffff89178e9f>] __mutex_lock_common mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/kernel/locking/mutex.c:955 [inline]
+[<ffffffff89178e9f>] __mutex_lock+0x10f/0x1210 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/kernel/locking/mutex.c:1103
+CPU: 0 PID: 8569 Comm: kworker/u4:3 Not tainted 5.10.0-rc3-syzkaller #0
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.13.0-1ubuntu1.1 04/01/2014
+Workqueue: phy6 ieee80211_iface_work
+Call Trace:
+ __dump_stack mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/lib/dump_stack.c:77 [inline]
+ dump_stack+0x107/0x163 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/lib/dump_stack.c:118
+ ___might_sleep.cold+0x65/0x79 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/kernel/sched/core.c:7298
+ sta_info_move_state+0x32/0x910 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/net/mac80211/sta_info.c:1962
+ sta_info_free+0x65/0x3e0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/net/mac80211/sta_info.c:274
+ sta_info_insert_rcu+0x2eb/0x2f00 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/net/mac80211/sta_info.c:738
+ ieee80211_ibss_finish_sta+0x22d/0x3b0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/net/mac80211/ibss.c:592
+ ieee80211_ibss_work+0x2c7/0xf20 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/net/mac80211/ibss.c:1700
+ ieee80211_iface_work+0x9ea/0xb10 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/net/mac80211/iface.c:1443
+ process_one_work+0x868/0x15c0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/kernel/workqueue.c:2272
+ worker_thread+0x64c/0x1120 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/kernel/workqueue.c:2418
+ kthread+0x3af/0x4a0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/kernel/kthread.c:292
+ ret_from_fork+0x1f/0x30 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/arch/x86/entry/entry_64.S:296
+
+=============================
+[ BUG: Invalid wait context ]
+5.10.0-rc3-syzkaller #0 Tainted: G        W        
+-----------------------------
+kworker/u4:3/8569 is trying to lock:
+ffff888111d729d0 (&local->chanctx_mtx){+.+.}-{3:3}, at: ieee80211_recalc_min_chandef+0x49/0x160 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/net/mac80211/util.c:2741
+other info that might help us debug this:
+context-{4:4}
+4 locks held by kworker/u4:3/8569:
+ #0: ffff888102734138 ((wq_completion)phy6){+.+.}-{0:0}, at: arch_atomic64_set mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/./arch/x86/include/asm/atomic64_64.h:34 [inline]
+ #0: ffff888102734138 ((wq_completion)phy6){+.+.}-{0:0}, at: atomic64_set mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/./include/asm-generic/atomic-instrumented.h:856 [inline]
+ #0: ffff888102734138 ((wq_completion)phy6){+.+.}-{0:0}, at: atomic_long_set mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/./include/asm-generic/atomic-long.h:41 [inline]
+ #0: ffff888102734138 ((wq_completion)phy6){+.+.}-{0:0}, at: set_work_data mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/kernel/workqueue.c:616 [inline]
+ #0: ffff888102734138 ((wq_completion)phy6){+.+.}-{0:0}, at: set_work_pool_and_clear_pending mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/kernel/workqueue.c:643 [inline]
+ #0: ffff888102734138 ((wq_completion)phy6){+.+.}-{0:0}, at: process_one_work+0x750/0x15c0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/kernel/workqueue.c:2243
+ #1: ffffc90001ea7da8 ((work_completion)(&sdata->work)){+.+.}-{0:0}, at: process_one_work+0x783/0x15c0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/kernel/workqueue.c:2247
+ #2: ffff888113eb8d00 (&wdev->mtx){+.+.}-{3:3}, at: sdata_lock mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/net/mac80211/ieee80211_i.h:1015 [inline]
+ #2: ffff888113eb8d00 (&wdev->mtx){+.+.}-{3:3}, at: ieee80211_ibss_work+0x93/0xf20 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/net/mac80211/ibss.c:1683
+ #3: ffffffff8b60fe60 (rcu_read_lock){....}-{1:2}, at: sta_info_insert_finish mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/net/mac80211/sta_info.c:644 [inline]
+ #3: ffffffff8b60fe60 (rcu_read_lock){....}-{1:2}, at: sta_info_insert_rcu+0x6c6/0x2f00 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/net/mac80211/sta_info.c:732
+stack backtrace:
+CPU: 0 PID: 8569 Comm: kworker/u4:3 Tainted: G        W         5.10.0-rc3-syzkaller #0
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.13.0-1ubuntu1.1 04/01/2014
+Workqueue: phy6 ieee80211_iface_work
+Call Trace:
+ __dump_stack mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/lib/dump_stack.c:77 [inline]
+ dump_stack+0x107/0x163 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/lib/dump_stack.c:118
+ print_lock_invalid_wait_context mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/kernel/locking/lockdep.c:4483 [inline]
+ check_wait_context mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/kernel/locking/lockdep.c:4544 [inline]
+ __lock_acquire.cold+0x217/0x3ce mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/kernel/locking/lockdep.c:4781
+ lock_acquire mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/kernel/locking/lockdep.c:5436 [inline]
+ lock_acquire+0x2a3/0x910 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/kernel/locking/lockdep.c:5401
+ __mutex_lock_common mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/kernel/locking/mutex.c:956 [inline]
+ __mutex_lock+0x134/0x1210 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/kernel/locking/mutex.c:1103
+ ieee80211_recalc_min_chandef+0x49/0x160 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/net/mac80211/util.c:2741
+ sta_info_move_state+0x3cf/0x910 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/net/mac80211/sta_info.c:2019
+ sta_info_free+0x65/0x3e0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/net/mac80211/sta_info.c:274
+ sta_info_insert_rcu+0x2eb/0x2f00 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/net/mac80211/sta_info.c:738
+ ieee80211_ibss_finish_sta+0x22d/0x3b0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/net/mac80211/ibss.c:592
+ ieee80211_ibss_work+0x2c7/0xf20 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/net/mac80211/ibss.c:1700
+ ieee80211_iface_work+0x9ea/0xb10 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/net/mac80211/iface.c:1443
+ process_one_work+0x868/0x15c0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/kernel/workqueue.c:2272
+ worker_thread+0x64c/0x1120 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/kernel/workqueue.c:2418
+ kthread+0x3af/0x4a0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/kernel/kthread.c:292
+ ret_from_fork+0x1f/0x30 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/arch/x86/entry/entry_64.S:296
+
+
+kernel BUG in workingset_activation
+b35fc1482ceb2f36bedd1587c3cfea3167baa2f1

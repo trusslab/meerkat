@@ -1,0 +1,426 @@
+TrussLab starts bisection 2025-03-20 16:52:40.811519367 -0700 PDT m=+4.497514867
+bisecting cause commit starting from dcb85f85fa6f142aae1fe86f399d4503d49f2b60
+building syzkaller on HEAD
+ensuring issue is reproducible on original commit dcb85f85fa6f142aae1fe86f399d4503d49f2b60
+
+testing commit dcb85f85fa6f142aae1fe86f399d4503d49f2b60 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 6b21e224944c1c4aaf55efe6d2d3cb4490df6e958db1e699f5eae2d7ec7cf2b0
+all runs: crashed: BUG: MAX_LOCK_DEPTH too low!
+representative crash: BUG: MAX_LOCK_DEPTH too low!, types: [UNKNOWN]
+picked [v5.16 v5.15 v5.14 v5.12 v5.10 v5.8 v5.6 v5.4 v5.1 v4.19] out of 19 release tags
+testing release v5.16
+testing commit df0cc57e057f18e44dac8e6c18aba47ab53202f9 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 220726ab08043cbc1169bbbd5f8a95ff59885988c6e041e3c4c995d4c93a97dc
+all runs: OK
+false negative chance: 0.000
+# git bisect start dcb85f85fa6f142aae1fe86f399d4503d49f2b60 df0cc57e057f18e44dac8e6c18aba47ab53202f9
+Bisecting: 6255 revisions left to test after this (roughly 13 steps)
+[9149fe8ba7ff798ea1c6b1fa05eeb59f95f9a94a] Merge tag 'erofs-for-5.17-rc1' of git://git.kernel.org/pub/scm/linux/kernel/git/xiang/erofs
+
+testing commit 9149fe8ba7ff798ea1c6b1fa05eeb59f95f9a94a gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 12f93da8fff1f553ecb66341c0f442d0128ea7037e907c81fd55ebb362173e09
+all runs: OK
+false negative chance: 0.000
+# git bisect good 9149fe8ba7ff798ea1c6b1fa05eeb59f95f9a94a
+Bisecting: 3237 revisions left to test after this (roughly 12 steps)
+[aee101d7b95a03078945681dd7f7ea5e4a1e7686] powerpc/64s: Mask SRR0 before checking against the masked NIP
+
+testing commit aee101d7b95a03078945681dd7f7ea5e4a1e7686 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 588a82e6c923693404d7c24c98596c926119afeaac4d3da4ef7e072d7476b5dd
+all runs: OK
+false negative chance: 0.000
+# git bisect good aee101d7b95a03078945681dd7f7ea5e4a1e7686
+Bisecting: 1626 revisions left to test after this (roughly 11 steps)
+[e3a8b6a1e70c37702054ae3c7c07ed828435d8ee] Merge tag 'slab-for-5.17-part2' of git://git.kernel.org/pub/scm/linux/kernel/git/vbabka/slab
+
+testing commit e3a8b6a1e70c37702054ae3c7c07ed828435d8ee gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 18ca4c9d13b4aff0979a81a43d6f4e273076c9bbe8613fc6ba5953320902b0c7
+all runs: OK
+false negative chance: 0.000
+# git bisect good e3a8b6a1e70c37702054ae3c7c07ed828435d8ee
+Bisecting: 809 revisions left to test after this (roughly 10 steps)
+[636b5284d8fa12cadbaa09bb7efa48473aa804f5] Merge tag 'for-linus' of git://git.kernel.org/pub/scm/virt/kvm/kvm
+
+testing commit 636b5284d8fa12cadbaa09bb7efa48473aa804f5 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: ac7e33575abf05785a3b9ca29bbc93a3f49bbc54b8ee162ec9c3e9712ad6db7c
+all runs: OK
+false negative chance: 0.000
+# git bisect good 636b5284d8fa12cadbaa09bb7efa48473aa804f5
+Bisecting: 404 revisions left to test after this (roughly 9 steps)
+[9cef24c8b76c1f6effe499d2f131807c90f7ce9a] net: macsec: Fix offload support for NETDEV_UNREGISTER event
+
+testing commit 9cef24c8b76c1f6effe499d2f131807c90f7ce9a gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: d0a34c15b51f56236a1f78795106f251c44c1c9ab6e4ba695595100c6c95e8aa
+run #0: crashed: BUG: stack guard page was hit in inet_release
+run #1: crashed: BUG: MAX_LOCK_DEPTH too low!
+run #2: crashed: BUG: MAX_LOCK_DEPTH too low!
+run #3: crashed: BUG: MAX_LOCK_DEPTH too low!
+run #4: crashed: BUG: MAX_LOCK_DEPTH too low!
+run #5: crashed: BUG: MAX_LOCK_DEPTH too low!
+run #6: crashed: BUG: MAX_LOCK_DEPTH too low!
+run #7: crashed: BUG: MAX_LOCK_DEPTH too low!
+representative crash: BUG: stack guard page was hit in inet_release, types: [UNKNOWN]
+# git bisect bad 9cef24c8b76c1f6effe499d2f131807c90f7ce9a
+Bisecting: 203 revisions left to test after this (roughly 8 steps)
+[e783362eb54cd99b2cac8b3a9aeac942e6f6ac07] Linux 5.17-rc1
+
+testing commit e783362eb54cd99b2cac8b3a9aeac942e6f6ac07 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 51bac8f6a6b0354375792aa703a235a20b1b27aee0b44fdeec8055f166016871
+all runs: OK
+false negative chance: 0.000
+# git bisect good e783362eb54cd99b2cac8b3a9aeac942e6f6ac07
+Bisecting: 105 revisions left to test after this (roughly 7 steps)
+[fd20d9738395cf8e27d0a17eba34169699fccdff] net: bridge: vlan: fix memory leak in __allowed_ingress
+
+testing commit fd20d9738395cf8e27d0a17eba34169699fccdff gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 737cbc4a531bcd7ad4e7b228305d186f07a5ae4b0d8f3593ccfcd70c8fcd58ec
+all runs: OK
+false negative chance: 0.000
+# git bisect good fd20d9738395cf8e27d0a17eba34169699fccdff
+Bisecting: 70 revisions left to test after this (roughly 6 steps)
+[aed28b7a2d620cb5cd0c554cb889075c02e25e8e] SUNRPC: Don't dereference xprt->snd_task if it's a cookie
+
+testing commit aed28b7a2d620cb5cd0c554cb889075c02e25e8e gcc
+compiler: gcc (GCC) 10.1.0-syz 20200507, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 679f7b101cb0bd09b9cff32155a1ca4dd4f1cd0530af1ac4594d179646c9a7b7
+all runs: OK
+false negative chance: 0.000
+# git bisect good aed28b7a2d620cb5cd0c554cb889075c02e25e8e
+Bisecting: 35 revisions left to test after this (roughly 5 steps)
+[7938d61591d33394a21bdd7797a245b65428f44c] drm/i915: Flush TLBs before releasing backing store
+
+testing commit 7938d61591d33394a21bdd7797a245b65428f44c gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 2f414c0acff5d0ec306ad7f97e0c767f5a25f6c739fabbb86c3e9b74dc8b85c8
+all runs: OK
+false negative chance: 0.000
+# git bisect good 7938d61591d33394a21bdd7797a245b65428f44c
+Bisecting: 17 revisions left to test after this (roughly 4 steps)
+[33d12dc91bc41183003913b888cc492420ae6ef8] Merge git://git.kernel.org/pub/scm/linux/kernel/git/pablo/nf
+
+testing commit 33d12dc91bc41183003913b888cc492420ae6ef8 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 2a434a5a7b5941c53d25fb5d423a02468bd86d0d016bc4beb28d2a278eb8238d
+all runs: OK
+false negative chance: 0.000
+# git bisect good 33d12dc91bc41183003913b888cc492420ae6ef8
+Bisecting: 11 revisions left to test after this (roughly 3 steps)
+[5d8a8b324ff48c9d9fe4f1634e33dc647d2481b4] MAINTAINERS: Remove Harry Morris bouncing address
+
+testing commit 5d8a8b324ff48c9d9fe4f1634e33dc647d2481b4 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 197204e6914a7640985806a123ddccb7b806bc6f55622030a50d1947d2bfe981
+all runs: OK
+false negative chance: 0.000
+# git bisect good 5d8a8b324ff48c9d9fe4f1634e33dc647d2481b4
+Bisecting: 5 revisions left to test after this (roughly 3 steps)
+[1f84a9450d75e08af70d9e2f2d5e1c0ac0c881d2] gve: fix the wrong AdminQ buffer queue index check
+
+testing commit 1f84a9450d75e08af70d9e2f2d5e1c0ac0c881d2 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: d696dc2cc1c9da9cb48ec75f01bbf419106fddc11b8ae666171140fb254b7e1d
+all runs: OK
+false negative chance: 0.000
+# git bisect good 1f84a9450d75e08af70d9e2f2d5e1c0ac0c881d2
+Bisecting: 2 revisions left to test after this (roughly 2 steps)
+[341adeec9adad0874f29a0a1af35638207352a39] net/smc: Forward wakeup to smc socket waitqueue after fallback
+
+testing commit 341adeec9adad0874f29a0a1af35638207352a39 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 38cbac600c54a6312328d8784a11e0de96174bdc0f84f2c4202cf77f6ff40a05
+all runs: crashed: BUG: MAX_LOCK_DEPTH too low!
+representative crash: BUG: MAX_LOCK_DEPTH too low!, types: [UNKNOWN]
+# git bisect bad 341adeec9adad0874f29a0a1af35638207352a39
+Bisecting: 0 revisions left to test after this (roughly 1 step)
+[6449520391dfc3d2cef134f11a91251a054ff7d0] net: stmmac: properly handle with runtime pm in stmmac_dvr_remove()
+
+testing commit 6449520391dfc3d2cef134f11a91251a054ff7d0 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 293a988b137def9052767f6c286f513c51c243c131a943f05a4e4c6d59d1b9b1
+all runs: OK
+false negative chance: 0.000
+# git bisect good 6449520391dfc3d2cef134f11a91251a054ff7d0
+341adeec9adad0874f29a0a1af35638207352a39 is the first bad commit
+commit 341adeec9adad0874f29a0a1af35638207352a39
+Author: Wen Gu <guwen@linux.alibaba.com>
+Date:   Wed Jan 26 23:33:04 2022 +0800
+
+    net/smc: Forward wakeup to smc socket waitqueue after fallback
+    
+    When we replace TCP with SMC and a fallback occurs, there may be
+    some socket waitqueue entries remaining in smc socket->wq, such
+    as eppoll_entries inserted by userspace applications.
+    
+    After the fallback, data flows over TCP/IP and only clcsocket->wq
+    will be woken up. Applications can't be notified by the entries
+    which were inserted in smc socket->wq before fallback. So we need
+    a mechanism to wake up smc socket->wq at the same time if some
+    entries remaining in it.
+    
+    The current workaround is to transfer the entries from smc socket->wq
+    to clcsock->wq during the fallback. But this may cause a crash
+    like this:
+    
+     general protection fault, probably for non-canonical address 0xdead000000000100: 0000 [#1] PREEMPT SMP PTI
+     CPU: 3 PID: 0 Comm: swapper/3 Kdump: loaded Tainted: G E     5.16.0+ #107
+     RIP: 0010:__wake_up_common+0x65/0x170
+     Call Trace:
+      <IRQ>
+      __wake_up_common_lock+0x7a/0xc0
+      sock_def_readable+0x3c/0x70
+      tcp_data_queue+0x4a7/0xc40
+      tcp_rcv_established+0x32f/0x660
+      ? sk_filter_trim_cap+0xcb/0x2e0
+      tcp_v4_do_rcv+0x10b/0x260
+      tcp_v4_rcv+0xd2a/0xde0
+      ip_protocol_deliver_rcu+0x3b/0x1d0
+      ip_local_deliver_finish+0x54/0x60
+      ip_local_deliver+0x6a/0x110
+      ? tcp_v4_early_demux+0xa2/0x140
+      ? tcp_v4_early_demux+0x10d/0x140
+      ip_sublist_rcv_finish+0x49/0x60
+      ip_sublist_rcv+0x19d/0x230
+      ip_list_rcv+0x13e/0x170
+      __netif_receive_skb_list_core+0x1c2/0x240
+      netif_receive_skb_list_internal+0x1e6/0x320
+      napi_complete_done+0x11d/0x190
+      mlx5e_napi_poll+0x163/0x6b0 [mlx5_core]
+      __napi_poll+0x3c/0x1b0
+      net_rx_action+0x27c/0x300
+      __do_softirq+0x114/0x2d2
+      irq_exit_rcu+0xb4/0xe0
+      common_interrupt+0xba/0xe0
+      </IRQ>
+      <TASK>
+    
+    The crash is caused by privately transferring waitqueue entries from
+    smc socket->wq to clcsock->wq. The owners of these entries, such as
+    epoll, have no idea that the entries have been transferred to a
+    different socket wait queue and still use original waitqueue spinlock
+    (smc socket->wq.wait.lock) to make the entries operation exclusive,
+    but it doesn't work. The operations to the entries, such as removing
+    from the waitqueue (now is clcsock->wq after fallback), may cause a
+    crash when clcsock waitqueue is being iterated over at the moment.
+    
+    This patch tries to fix this by no longer transferring wait queue
+    entries privately, but introducing own implementations of clcsock's
+    callback functions in fallback situation. The callback functions will
+    forward the wakeup to smc socket->wq if clcsock->wq is actually woken
+    up and smc socket->wq has remaining entries.
+    
+    Fixes: 2153bd1e3d3d ("net/smc: Transfer remaining wait queue entries during fallback")
+    Suggested-by: Karsten Graul <kgraul@linux.ibm.com>
+    Signed-off-by: Wen Gu <guwen@linux.alibaba.com>
+    Acked-by: Karsten Graul <kgraul@linux.ibm.com>
+    Signed-off-by: David S. Miller <davem@davemloft.net>
+
+ net/smc/af_smc.c | 133 ++++++++++++++++++++++++++++++++++++++++++++++++-------
+ net/smc/smc.h    |  20 ++++++++-
+ 2 files changed, 137 insertions(+), 16 deletions(-)
+
+accumulated error probability: 0.00
+culprit signature: 38cbac600c54a6312328d8784a11e0de96174bdc0f84f2c4202cf77f6ff40a05
+parent  signature: 293a988b137def9052767f6c286f513c51c243c131a943f05a4e4c6d59d1b9b1
+revisions tested: 16, total time: 4h13m36.471550481s (build: 2h20m41.725750654s, test: 1h38m5.652916841s)
+first bad commit: 341adeec9adad0874f29a0a1af35638207352a39 net/smc: Forward wakeup to smc socket waitqueue after fallback
+recipients (to): ["davem@davemloft.net" "guwen@linux.alibaba.com" "kgraul@linux.ibm.com"]
+recipients (cc): []
+crash: BUG: MAX_LOCK_DEPTH too low!
+BUG: MAX_LOCK_DEPTH too low!
+turning off the locking correctness validator.
+depth: 48  max: 48!
+48 locks held by syz-executor.0/7547:
+ #0: ffff88811475e810 (&sb->s_type->i_mutex_key#13){+.+.}-{3:3}, at: inode_lock mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/./include/linux/fs.h:777 [inline]
+ #0: ffff88811475e810 (&sb->s_type->i_mutex_key#13){+.+.}-{3:3}, at: __sock_release+0x86/0x280 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/socket.c:649
+ #1: ffff888019649f78 (&smc->clcsock_release_lock){+.+.}-{3:3}, at: smc_clcsock_release+0x71/0xe0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/smc_close.c:30
+ #2: ffff88801d3a3130 (k-sk_lock-AF_INET){+.+.}-{0:0}, at: lock_sock mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/./include/net/sock.h:1668 [inline]
+ #2: ffff88801d3a3130 (k-sk_lock-AF_INET){+.+.}-{0:0}, at: tcp_close+0x1e/0xc0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/ipv4/tcp.c:2918
+ #3: ffffffff8bb827e0 (rcu_read_lock){....}-{1:2}, at: smc_fback_forward_wakeup+0x0/0x540 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:2890
+ #4: ffffffff8bb827e0 (rcu_read_lock){....}-{1:2}, at: smc_fback_forward_wakeup+0x0/0x540 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:2890
+ #5: ffffffff8bb827e0 (rcu_read_lock){....}-{1:2}, at: smc_fback_forward_wakeup+0x0/0x540 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:2890
+ #6: ffffffff8bb827e0 (rcu_read_lock){....}-{1:2}, at: smc_fback_forward_wakeup+0x0/0x540 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:2890
+ #7: ffffffff8bb827e0 (rcu_read_lock){....}-{1:2}, at: smc_fback_forward_wakeup+0x0/0x540 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:2890
+ #8: ffffffff8bb827e0 (rcu_read_lock){....}-{1:2}, at: smc_fback_forward_wakeup+0x0/0x540 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:2890
+ #9: ffffffff8bb827e0 (rcu_read_lock){....}-{1:2}, at: smc_fback_forward_wakeup+0x0/0x540 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:2890
+ #10: ffffffff8bb827e0 (rcu_read_lock){....}-{1:2}, at: smc_fback_forward_wakeup+0x0/0x540 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:2890
+ #11: ffffffff8bb827e0 (rcu_read_lock){....}-{1:2}, at: smc_fback_forward_wakeup+0x0/0x540 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:2890
+ #12: ffffffff8bb827e0 (rcu_read_lock){....}-{1:2}, at: smc_fback_forward_wakeup+0x0/0x540 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:2890
+ #13: ffffffff8bb827e0 (rcu_read_lock){....}-{1:2}, at: smc_fback_forward_wakeup+0x0/0x540 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:2890
+ #14: ffffffff8bb827e0 (rcu_read_lock){....}-{1:2}, at: smc_fback_forward_wakeup+0x0/0x540 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:2890
+ #15: ffffffff8bb827e0 (rcu_read_lock){....}-{1:2}, at: smc_fback_forward_wakeup+0x0/0x540 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:2890
+ #16: ffffffff8bb827e0 (rcu_read_lock){....}-{1:2}, at: smc_fback_forward_wakeup+0x0/0x540 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:2890
+ #17: ffffffff8bb827e0 (rcu_read_lock){....}-{1:2}, at: smc_fback_forward_wakeup+0x0/0x540 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:2890
+ #18: ffffffff8bb827e0 (rcu_read_lock){....}-{1:2}, at: smc_fback_forward_wakeup+0x0/0x540 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:2890
+ #19: ffffffff8bb827e0 (rcu_read_lock){....}-{1:2}, at: smc_fback_forward_wakeup+0x0/0x540 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:2890
+ #20: ffffffff8bb827e0 (rcu_read_lock){....}-{1:2}, at: smc_fback_forward_wakeup+0x0/0x540 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:2890
+ #21: ffffffff8bb827e0 (rcu_read_lock){....}-{1:2}, at: smc_fback_forward_wakeup+0x0/0x540 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:2890
+ #22: ffffffff8bb827e0 (rcu_read_lock){....}-{1:2}, at: smc_fback_forward_wakeup+0x0/0x540 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:2890
+ #23: ffffffff8bb827e0 (rcu_read_lock){....}-{1:2}, at: smc_fback_forward_wakeup+0x0/0x540 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:2890
+ #24: ffffffff8bb827e0 (rcu_read_lock){....}-{1:2}, at: smc_fback_forward_wakeup+0x0/0x540 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:2890
+ #25: ffffffff8bb827e0 (rcu_read_lock){....}-{1:2}, at: smc_fback_forward_wakeup+0x0/0x540 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:2890
+ #26: ffffffff8bb827e0 (rcu_read_lock){....}-{1:2}, at: smc_fback_forward_wakeup+0x0/0x540 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:2890
+ #27: ffffffff8bb827e0 (rcu_read_lock){....}-{1:2}, at: smc_fback_forward_wakeup+0x0/0x540 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:2890
+ #28: ffffffff8bb827e0 (rcu_read_lock){....}-{1:2}, at: smc_fback_forward_wakeup+0x0/0x540 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:2890
+ #29: ffffffff8bb827e0 (rcu_read_lock){....}-{1:2}, at: smc_fback_forward_wakeup+0x0/0x540 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:2890
+ #30: ffffffff8bb827e0 (rcu_read_lock){....}-{1:2}, at: smc_fback_forward_wakeup+0x0/0x540 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:2890
+ #31: ffffffff8bb827e0 (rcu_read_lock){....}-{1:2}, at: smc_fback_forward_wakeup+0x0/0x540 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:2890
+ #32: ffffffff8bb827e0 (rcu_read_lock){....}-{1:2}, at: smc_fback_forward_wakeup+0x0/0x540 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:2890
+ #33: ffffffff8bb827e0 (rcu_read_lock){....}-{1:2}, at: smc_fback_forward_wakeup+0x0/0x540 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:2890
+ #34: ffffffff8bb827e0 (rcu_read_lock){....}-{1:2}, at: smc_fback_forward_wakeup+0x0/0x540 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:2890
+ #35: ffffffff8bb827e0 (rcu_read_lock){....}-{1:2}, at: smc_fback_forward_wakeup+0x0/0x540 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:2890
+ #36: ffffffff8bb827e0 (rcu_read_lock){....}-{1:2}, at: smc_fback_forward_wakeup+0x0/0x540 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:2890
+ #37: ffffffff8bb827e0 (rcu_read_lock){....}-{1:2}, at: smc_fback_forward_wakeup+0x0/0x540 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:2890
+ #38: ffffffff8bb827e0 (rcu_read_lock){....}-{1:2}, at: smc_fback_forward_wakeup+0x0/0x540 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:2890
+ #39: ffffffff8bb827e0 (rcu_read_lock){....}-{1:2}, at: smc_fback_forward_wakeup+0x0/0x540 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:2890
+ #40: ffffffff8bb827e0 (rcu_read_lock){....}-{1:2}, at: smc_fback_forward_wakeup+0x0/0x540 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:2890
+ #41: ffffffff8bb827e0 (rcu_read_lock){....}-{1:2}, at: smc_fback_forward_wakeup+0x0/0x540 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:2890
+ #42: ffffffff8bb827e0 (rcu_read_lock){....}-{1:2}, at: smc_fback_forward_wakeup+0x0/0x540 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:2890
+ #43: ffffffff8bb827e0 (rcu_read_lock){....}-{1:2}, at: smc_fback_forward_wakeup+0x0/0x540 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:2890
+ #44: ffffffff8bb827e0 (rcu_read_lock){....}-{1:2}, at: smc_fback_forward_wakeup+0x0/0x540 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:2890
+ #45: ffffffff8bb827e0 (rcu_read_lock){....}-{1:2}, at: smc_fback_forward_wakeup+0x0/0x540 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:2890
+ #46: ffffffff8bb827e0 (rcu_read_lock){....}-{1:2}, at: smc_fback_forward_wakeup+0x0/0x540 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:2890
+ #47: ffff88811475f258 (&ei->socket.wq.wait){..-.}-{2:2}, at: add_wait_queue+0x42/0x260 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/kernel/sched/wait.c:23
+INFO: lockdep is turned off.
+CPU: 0 PID: 7547 Comm: syz-executor.0 Not tainted 5.17.0-rc1-syzkaller #0
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.13.0-1ubuntu1.1 04/01/2014
+Call Trace:
+ <TASK>
+ __dump_stack mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/lib/dump_stack.c:88 [inline]
+ dump_stack_lvl+0xcd/0x134 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/lib/dump_stack.c:106
+ __lock_acquire+0x187b/0x5410 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/kernel/locking/lockdep.c:5045
+ lock_acquire mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/kernel/locking/lockdep.c:5639 [inline]
+ lock_acquire+0x1ab/0x510 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/kernel/locking/lockdep.c:5604
+ __raw_spin_lock_irqsave mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/./include/linux/spinlock_api_smp.h:110 [inline]
+ _raw_spin_lock_irqsave+0x39/0x50 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/kernel/locking/spinlock.c:162
+ add_wait_queue+0x42/0x260 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/kernel/sched/wait.c:23
+ smc_fback_forward_wakeup+0x15b/0x540 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:617
+ smc_fback_error_report+0x82/0xa0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:664
+ smc_fback_forward_wakeup+0x161/0x540 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:618
+ smc_fback_error_report+0x82/0xa0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:664
+ smc_fback_forward_wakeup+0x161/0x540 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:618
+ smc_fback_error_report+0x82/0xa0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:664
+ smc_fback_forward_wakeup+0x161/0x540 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:618
+ smc_fback_error_report+0x82/0xa0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:664
+ smc_fback_forward_wakeup+0x161/0x540 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:618
+ smc_fback_error_report+0x82/0xa0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:664
+ smc_fback_forward_wakeup+0x161/0x540 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:618
+ smc_fback_error_report+0x82/0xa0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:664
+ smc_fback_forward_wakeup+0x161/0x540 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:618
+ smc_fback_error_report+0x82/0xa0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:664
+ smc_fback_forward_wakeup+0x161/0x540 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:618
+ smc_fback_error_report+0x82/0xa0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:664
+ smc_fback_forward_wakeup+0x161/0x540 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:618
+ smc_fback_error_report+0x82/0xa0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:664
+ smc_fback_forward_wakeup+0x161/0x540 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:618
+ smc_fback_error_report+0x82/0xa0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:664
+ smc_fback_forward_wakeup+0x161/0x540 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:618
+ smc_fback_error_report+0x82/0xa0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:664
+ smc_fback_forward_wakeup+0x161/0x540 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:618
+ smc_fback_error_report+0x82/0xa0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:664
+ smc_fback_forward_wakeup+0x161/0x540 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:618
+ smc_fback_error_report+0x82/0xa0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:664
+ smc_fback_forward_wakeup+0x161/0x540 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:618
+ smc_fback_error_report+0x82/0xa0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:664
+ smc_fback_forward_wakeup+0x161/0x540 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:618
+ smc_fback_error_report+0x82/0xa0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:664
+ smc_fback_forward_wakeup+0x161/0x540 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:618
+ smc_fback_error_report+0x82/0xa0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:664
+ smc_fback_forward_wakeup+0x161/0x540 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:618
+ smc_fback_error_report+0x82/0xa0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:664
+ smc_fback_forward_wakeup+0x161/0x540 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:618
+ smc_fback_error_report+0x82/0xa0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:664
+ smc_fback_forward_wakeup+0x161/0x540 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:618
+ smc_fback_error_report+0x82/0xa0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:664
+ smc_fback_forward_wakeup+0x161/0x540 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:618
+ smc_fback_error_report+0x82/0xa0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:664
+ smc_fback_forward_wakeup+0x161/0x540 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:618
+ smc_fback_error_report+0x82/0xa0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:664
+ smc_fback_forward_wakeup+0x161/0x540 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:618
+ smc_fback_error_report+0x82/0xa0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:664
+ smc_fback_forward_wakeup+0x161/0x540 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:618
+ smc_fback_error_report+0x82/0xa0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:664
+ smc_fback_forward_wakeup+0x161/0x540 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:618
+ smc_fback_error_report+0x82/0xa0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:664
+ smc_fback_forward_wakeup+0x161/0x540 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:618
+ smc_fback_error_report+0x82/0xa0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:664
+ smc_fback_forward_wakeup+0x161/0x540 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:618
+ smc_fback_error_report+0x82/0xa0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:664
+ smc_fback_forward_wakeup+0x161/0x540 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:618
+ smc_fback_error_report+0x82/0xa0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:664
+ smc_fback_forward_wakeup+0x161/0x540 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:618
+ smc_fback_error_report+0x82/0xa0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:664
+ smc_fback_forward_wakeup+0x161/0x540 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:618
+ smc_fback_error_report+0x82/0xa0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:664
+ smc_fback_forward_wakeup+0x161/0x540 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:618
+ smc_fback_error_report+0x82/0xa0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:664
+ smc_fback_forward_wakeup+0x161/0x540 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:618
+ smc_fback_error_report+0x82/0xa0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:664
+ smc_fback_forward_wakeup+0x161/0x540 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:618
+ smc_fback_error_report+0x82/0xa0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:664
+ smc_fback_forward_wakeup+0x161/0x540 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:618
+ smc_fback_error_report+0x82/0xa0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:664
+ smc_fback_forward_wakeup+0x161/0x540 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:618
+ smc_fback_error_report+0x82/0xa0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:664
+ smc_fback_forward_wakeup+0x161/0x540 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:618
+ smc_fback_error_report+0x82/0xa0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:664
+ smc_fback_forward_wakeup+0x161/0x540 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:618
+ smc_fback_error_report+0x82/0xa0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:664
+ smc_fback_forward_wakeup+0x161/0x540 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:618
+ smc_fback_error_report+0x82/0xa0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:664
+ smc_fback_forward_wakeup+0x161/0x540 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:618
+ smc_fback_error_report+0x82/0xa0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:664
+ smc_fback_forward_wakeup+0x161/0x540 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:618
+ smc_fback_error_report+0x82/0xa0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:664
+ smc_fback_forward_wakeup+0x161/0x540 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:618
+ smc_fback_error_report+0x82/0xa0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:664
+ smc_fback_forward_wakeup+0x161/0x540 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:618
+ smc_fback_error_report+0x82/0xa0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:664
+ smc_fback_forward_wakeup+0x161/0x540 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:618
+ smc_fback_error_report+0x82/0xa0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:664
+ smc_fback_forward_wakeup+0x161/0x540 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:618
+ smc_fback_error_report+0x82/0xa0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:664
+ smc_fback_forward_wakeup+0x161/0x540 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:618
+ smc_fback_error_report+0x82/0xa0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:664
+ sk_error_report+0x35/0x310 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/core/sock.c:340
+ tcp_disconnect+0x14e3/0x1e80 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/ipv4/tcp.c:3093
+ __tcp_close+0xe65/0x12b0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/ipv4/tcp.c:2789
+ tcp_close+0x29/0xc0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/ipv4/tcp.c:2919
+ inet_release+0x12e/0x280 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/ipv4/af_inet.c:428
+ __sock_release mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/socket.c:650 [inline]
+ sock_release+0x87/0x1b0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/socket.c:678
+ smc_clcsock_release+0xb3/0xe0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/smc_close.c:34
+ __smc_release+0x35e/0x5b0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:172
+ smc_release+0x17f/0x530 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:209
+ __sock_release+0xcd/0x280 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/socket.c:650
+ sock_close+0x18/0x20 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/socket.c:1318
+ __fput+0x286/0x9f0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/fs/file_table.c:311
+ task_work_run+0xdd/0x1a0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/kernel/task_work.c:164
+ tracehook_notify_resume mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/./include/linux/tracehook.h:188 [inline]
+ exit_to_user_mode_loop mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/kernel/entry/common.c:175 [inline]
+ exit_to_user_mode_prepare+0x27e/0x290 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/kernel/entry/common.c:207
+ __syscall_exit_to_user_mode_work mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/kernel/entry/common.c:289 [inline]
+ syscall_exit_to_user_mode+0x19/0x60 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/kernel/entry/common.c:300
+ do_syscall_64+0x42/0xb0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/arch/x86/entry/common.c:86
+ entry_SYSCALL_64_after_hwframe+0x44/0xae
+RIP: 0033:0x7f40473968ab
+Code: 03 00 00 00 0f 05 48 3d 00 f0 ff ff 77 41 c3 48 83 ec 18 89 7c 24 0c e8 63 fc ff ff 8b 7c 24 0c 41 89 c0 b8 03 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 2f 44 89 c7 89 44 24 0c e8 a1 fc ff ff 8b 44
+RSP: 002b:00007fff0210cc90 EFLAGS: 00000293 ORIG_RAX: 0000000000000003
+RAX: 0000000000000000 RBX: 0000000000000004 RCX: 00007f40473968ab
+RDX: 00007f4046f56620 RSI: ffffffffffffffff RDI: 0000000000000003
+RBP: 00007f4047523980 R08: 0000000000000000 R09: 00007f4046f56000
+R10: 00007f4046f56628 R11: 0000000000000293 R12: 00000000000190fb
+R13: 00007fff0210cd90 R14: 00007f4047522050 R15: 0000000000000032
+ </TASK>
+
+
+BUG: MAX_LOCK_DEPTH too low!
+341adeec9adad0874f29a0a1af35638207352a39

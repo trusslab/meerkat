@@ -1,215 +1,23 @@
-TrussLab starts bisection 2025-03-27 23:34:27.458974772 -0700 PDT m=+12.287381633
+charm starts bisection 2025-04-11 18:45:13.539055803 -0700 PDT m=+21.255500947
 bisecting cause commit starting from 7d2f353b2682dcfe5f9bc71e5b61d5b61770d98e
 building syzkaller on HEAD
 ensuring issue is reproducible on original commit 7d2f353b2682dcfe5f9bc71e5b61d5b61770d98e
 
 testing commit 7d2f353b2682dcfe5f9bc71e5b61d5b61770d98e gcc
 compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
-kernel signature: 7c30349701483ee51f00a579c7f4bb92e2135c6e4e7bf6f85150a8563164f3e9
+kernel signature: 30873bb7b32480b28f3272709816a9577c0cc4c4b4e34f354655894b8929a890
 run #0: crashed: general protection fault in tls_merge_open_record
-run #1: crashed: general protection fault in tls_merge_open_record
-run #2: crashed: general protection fault in tls_merge_open_record
-run #3: crashed: general protection fault in tls_merge_open_record
-run #4: OK
-run #5: OK
-run #6: OK
-run #7: crashed: general protection fault in tls_merge_open_record
-representative crash: general protection fault in tls_merge_open_record, types: [UNKNOWN]
-picked [v6.4 v6.3 v6.2 v6.0 v5.18 v5.16 v5.14 v5.12 v5.9 v5.6 v5.3 v5.0 v4.19] out of 27 release tags
-testing release v6.4
-testing commit 6995e2de6891c724bfeb2db33d7b87775f913ad1 gcc
-compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
-kernel signature: 60d5844ded10a82937b678f224bf04754bccfc4180beffcc51b46c3a693d98c0
-all runs: OK
-false negative chance: 0.000
-# git bisect start 7d2f353b2682dcfe5f9bc71e5b61d5b61770d98e 6995e2de6891c724bfeb2db33d7b87775f913ad1
-Bisecting: 7341 revisions left to test after this (roughly 13 steps)
-[b775d6c5859affe00527cbe74263de05cfe6b9f9] Merge tag 'mips_6.5' of git://git.kernel.org/pub/scm/linux/kernel/git/mips/linux
-
-testing commit b775d6c5859affe00527cbe74263de05cfe6b9f9 gcc
-compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
-kernel signature: 74b8d3d36cbd3c2575a6df784231f23985aa3a0b62d0b90a26a032c0b4a41789
-all runs: basic kernel testing failed: UBSAN: array-index-out-of-bounds in alloc_pid
-unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
-# git bisect skip b775d6c5859affe00527cbe74263de05cfe6b9f9
-Bisecting: 7341 revisions left to test after this (roughly 13 steps)
-[ae2ad293d6be143ad223f5f947cca07bcbe42595] sched/fair: Use recent_used_cpu to test p->cpus_ptr
-
-testing commit ae2ad293d6be143ad223f5f947cca07bcbe42595 gcc
-compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
-kernel signature: f22366cdf1c2ed5628e30bada314198f1cf5ea542e399b79af46909128b8d697
-all runs: OK
-false negative chance: 0.000
-# git bisect good ae2ad293d6be143ad223f5f947cca07bcbe42595
-Bisecting: 1078 revisions left to test after this (roughly 10 steps)
-[41aad0905568508070842e22ebc5398f8b733939] ASoC: SOF: Fix incorrect use of sizeof in sof_ipc3_do_rx_work()
-
-testing commit 41aad0905568508070842e22ebc5398f8b733939 gcc
-compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
-kernel signature: 33d8db06aaad70e038415e8d6332aa04b03f74f6a5d73800365b43afbd5cdb4d
-run #0: crashed: general protection fault in tls_merge_open_record
-run #1: crashed: general protection fault in tls_merge_open_record
-run #2: crashed: general protection fault in tls_merge_open_record
-run #3: crashed: general protection fault in tls_merge_open_record
-run #4: crashed: general protection fault in tls_merge_open_record
-run #5: crashed: general protection fault in tls_merge_open_record
-run #6: crashed: general protection fault in tls_merge_open_record
-run #7: OK
-representative crash: general protection fault in tls_merge_open_record, types: [UNKNOWN]
-# git bisect bad 41aad0905568508070842e22ebc5398f8b733939
-Bisecting: 538 revisions left to test after this (roughly 9 steps)
-[ff0df20827f6ac32822f9855998c4db3e99af47c] Merge tag 'nf-23-07-26' of https://git.kernel.org/pub/scm/linux/kernel/git/netfilter/nf
-
-testing commit ff0df20827f6ac32822f9855998c4db3e99af47c gcc
-compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
-kernel signature: 065478ac2b5d973a5c7326d1b880f03492ad72a6e160af7fb3fe0f947652d349
-all runs: boot failed: can't ssh into the instance
-unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
-# git bisect skip ff0df20827f6ac32822f9855998c4db3e99af47c
-Bisecting: 538 revisions left to test after this (roughly 9 steps)
-[a746b3689546da27125da9ccaea62b1dbaaf927c] hwmon: (aquacomputer_d5next) Fix incorrect PWM value readout
-
-testing commit a746b3689546da27125da9ccaea62b1dbaaf927c gcc
-compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
-kernel signature: eb6c67bf300c9b1d392b6cabec5384b0d7dfa0fcaf0ae3e1057c6c945512c7f0
-run #0: crashed: general protection fault in tls_merge_open_record
-run #1: crashed: general protection fault in tls_merge_open_record
-run #2: crashed: general protection fault in tls_merge_open_record
-run #3: crashed: general protection fault in tls_merge_open_record
-run #4: OK
-run #5: OK
-run #6: OK
-run #7: OK
-representative crash: general protection fault in tls_merge_open_record, types: [UNKNOWN]
-# git bisect bad a746b3689546da27125da9ccaea62b1dbaaf927c
-Bisecting: 0 revisions left to test after this (roughly 0 steps)
-[368da76be8df60e9228a41b7d46e7836a67158fd] hwmon: (nct6775) Fix register for nct6799
-
-testing commit 368da76be8df60e9228a41b7d46e7836a67158fd gcc
-compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
-kernel signature: cd459f34574ea33f546659989e78e7262b9280da64126b3c25a5256ef349f235
-run #0: crashed: general protection fault in tls_merge_open_record
-run #1: crashed: general protection fault in tls_merge_open_record
+run #1: OK
 run #2: OK
 run #3: OK
 run #4: OK
 run #5: OK
 run #6: OK
-run #7: crashed: general protection fault in tls_merge_open_record
+run #7: OK
 representative crash: general protection fault in tls_merge_open_record, types: [UNKNOWN]
-# git bisect bad 368da76be8df60e9228a41b7d46e7836a67158fd
-368da76be8df60e9228a41b7d46e7836a67158fd is the first bad commit
-commit 368da76be8df60e9228a41b7d46e7836a67158fd
-Author: Ahmad Khalifa <ahmad@khalifa.ws>
-Date:   Sat Jul 15 15:58:31 2023 +0100
-
-    hwmon: (nct6775) Fix register for nct6799
-    
-    Datasheet and variable name point to 0xe6
-    
-    Fixes: aee395bb1905 ("hwmon: (nct6755) Add support for NCT6799D")
-    Signed-off-by: Ahmad Khalifa <ahmad@khalifa.ws>
-    Link: https://lore.kernel.org/r/20230715145831.1304633-1-ahmad@khalifa.ws
-    Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-
- drivers/hwmon/nct6775-platform.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-accumulated error probability: 0.00
-parent commit 06c2afb862f9da8dc5efa4b6076a0e48c3fbaaa5 wasn't tested
-testing commit 06c2afb862f9da8dc5efa4b6076a0e48c3fbaaa5 gcc
-compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
-kernel signature: 86becccb3d1ed1fe266f619f8b419c6b95c89cdd0ef753117a6a9db97fa8f0d1
-culprit signature: cd459f34574ea33f546659989e78e7262b9280da64126b3c25a5256ef349f235
-parent  signature: 86becccb3d1ed1fe266f619f8b419c6b95c89cdd0ef753117a6a9db97fa8f0d1
-reproducer is flaky (0.47 repro chance estimate)
-revisions tested: 8, total time: 3h47m57.278622121s (build: 2h30m0.41128878s, test: 54m40.541302691s)
-first bad commit: 368da76be8df60e9228a41b7d46e7836a67158fd hwmon: (nct6775) Fix register for nct6799
-recipients (to): ["ahmad@khalifa.ws" "jdelvare@suse.com" "linux-hwmon@vger.kernel.org" "linux@roeck-us.net" "linux@roeck-us.net"]
-recipients (cc): ["linux-kernel@vger.kernel.org"]
-crash: general protection fault in tls_merge_open_record
-general protection fault, probably for non-canonical address 0xdffffc0000000001: 0000 [#1] PREEMPT SMP KASAN
-KASAN: null-ptr-deref in range [0x0000000000000008-0x000000000000000f]
-CPU: 1 PID: 16572 Comm: syz-executor.0 Not tainted 6.5.0-rc1-syzkaller #0
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.13.0-1ubuntu1.1 04/01/2014
-RIP: 0010:_compound_head mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/./include/linux/page-flags.h:245 [inline]
-RIP: 0010:put_page mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/./include/linux/mm.h:1484 [inline]
-RIP: 0010:tls_merge_open_record+0x4b5/0x810 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/net/tls/tls_sw.c:669
-Code: 85 e4 0f 85 c6 02 00 00 e8 98 e5 bd f8 4d 89 ec 48 b8 00 00 00 00 00 fc ff df 49 83 e4 fc 49 8d 7c 24 08 48 89 fa 48 c1 ea 03 <80> 3c 02 00 0f 85 15 03 00 00 4d 8b 74 24 08 31 ff 4d 89 f7 41 83
-RSP: 0018:ffffc9000727f498 EFLAGS: 00010202
-RAX: dffffc0000000000 RBX: ffff888020a76000 RCX: 0000000000000000
-RDX: 0000000000000001 RSI: ffffffff88c6f908 RDI: 0000000000000008
-RBP: ffff88802eb47000 R08: 0000000000000007 R09: 0000000000000000
-R10: 0000000000000000 R11: ffffffff8a40008b R12: 0000000000000000
-R13: 0000000000000000 R14: ffff88802eb47018 R15: ffff88802eb47000
-FS:  00007f85555a0700(0000) GS:ffff888135c00000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000555555c55c88 CR3: 0000000110c10000 CR4: 0000000000350ee0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-Call Trace:
- <TASK>
- tls_push_record+0x28da/0x30f0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/net/tls/tls_sw.c:726
- bpf_exec_tx_verdict+0xdf0/0x1210 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/net/tls/tls_sw.c:819
- tls_sw_splice_eof+0x197/0x4b0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/net/tls/tls_sw.c:1239
- sock_splice_eof+0x86/0xb0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/net/socket.c:1087
- direct_file_splice_eof+0x86/0xb0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/fs/splice.c:1152
- do_splice_eof mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/fs/splice.c:945 [inline]
- splice_direct_to_actor+0x73b/0xa00 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/fs/splice.c:1118
- do_splice_direct+0x1aa/0x280 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/fs/splice.c:1195
- do_sendfile+0xb9c/0x1380 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/fs/read_write.c:1254
- __do_sys_sendfile64 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/fs/read_write.c:1322 [inline]
- __se_sys_sendfile64 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/fs/read_write.c:1308 [inline]
- __x64_sys_sendfile64+0x1d0/0x210 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/fs/read_write.c:1308
- do_syscall_x64 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/arch/x86/entry/common.c:50 [inline]
- do_syscall_64+0x39/0xb0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/arch/x86/entry/common.c:80
- entry_SYSCALL_64_after_hwframe+0x63/0xcd
-RIP: 0033:0x7f8554891ced
-Code: c3 e8 17 32 00 00 0f 1f 80 00 00 00 00 f3 0f 1e fa 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 b8 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007f855559fbd8 EFLAGS: 00000246 ORIG_RAX: 0000000000000028
-RAX: ffffffffffffffda RBX: 00007f85549cc120 RCX: 00007f8554891ced
-RDX: 0000000000000000 RSI: 0000000000000004 RDI: 0000000000000003
-RBP: 00007f85548ef4ac R08: 0000000000000000 R09: 0000000000000000
-R10: 00000000f2090293 R11: 0000000000000246 R12: 0000000000000000
-R13: 00007ffdb8c02fff R14: 00007ffdb8c03190 R15: 00007f855559fd80
- </TASK>
-Modules linked in:
----[ end trace 0000000000000000 ]---
-RIP: 0010:_compound_head mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/./include/linux/page-flags.h:245 [inline]
-RIP: 0010:put_page mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/./include/linux/mm.h:1484 [inline]
-RIP: 0010:tls_merge_open_record+0x4b5/0x810 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/net/tls/tls_sw.c:669
-Code: 85 e4 0f 85 c6 02 00 00 e8 98 e5 bd f8 4d 89 ec 48 b8 00 00 00 00 00 fc ff df 49 83 e4 fc 49 8d 7c 24 08 48 89 fa 48 c1 ea 03 <80> 3c 02 00 0f 85 15 03 00 00 4d 8b 74 24 08 31 ff 4d 89 f7 41 83
-RSP: 0018:ffffc9000727f498 EFLAGS: 00010202
-RAX: dffffc0000000000 RBX: ffff888020a76000 RCX: 0000000000000000
-RDX: 0000000000000001 RSI: ffffffff88c6f908 RDI: 0000000000000008
-RBP: ffff88802eb47000 R08: 0000000000000007 R09: 0000000000000000
-R10: 0000000000000000 R11: ffffffff8a40008b R12: 0000000000000000
-R13: 0000000000000000 R14: ffff88802eb47018 R15: ffff88802eb47000
-FS:  00007f85555a0700(0000) GS:ffff888063a00000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00005641038fd160 CR3: 0000000110c10000 CR4: 0000000000350ef0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-----------------
-Code disassembly (best guess):
-   0:	85 e4                	test   %esp,%esp
-   2:	0f 85 c6 02 00 00    	jne    0x2ce
-   8:	e8 98 e5 bd f8       	callq  0xf8bde5a5
-   d:	4d 89 ec             	mov    %r13,%r12
-  10:	48 b8 00 00 00 00 00 	movabs $0xdffffc0000000000,%rax
-  17:	fc ff df
-  1a:	49 83 e4 fc          	and    $0xfffffffffffffffc,%r12
-  1e:	49 8d 7c 24 08       	lea    0x8(%r12),%rdi
-  23:	48 89 fa             	mov    %rdi,%rdx
-  26:	48 c1 ea 03          	shr    $0x3,%rdx
-* 2a:	80 3c 02 00          	cmpb   $0x0,(%rdx,%rax,1) <-- trapping instruction
-  2e:	0f 85 15 03 00 00    	jne    0x349
-  34:	4d 8b 74 24 08       	mov    0x8(%r12),%r14
-  39:	31 ff                	xor    %edi,%edi
-  3b:	4d 89 f7             	mov    %r14,%r15
-  3e:	41                   	rex.B
-  3f:	83                   	.byte 0x83
-
+unable to determine the verdict: 7 good runs (wanted 4), for bad wanted 4 in total, got 8
+revisions tested: 1, total time: 29m11.259744104s (build: 17m51.219077117s, test: 8m0.545275435s)
+error: the crash wasn't reproduced on the original commit
+bisection failed: the crash wasn't reproduced on the original commit
 
 general protection fault in tls_merge_open_record
-368da76be8df60e9228a41b7d46e7836a67158fd

@@ -1,0 +1,399 @@
+charm starts bisection 2025-04-06 03:18:41.162186674 -0700 PDT m=+4.420511334
+bisecting cause commit starting from 24625f7d91fb86b91e14749633a7f022f5866116
+building syzkaller on HEAD
+ensuring issue is reproducible on original commit 24625f7d91fb86b91e14749633a7f022f5866116
+
+testing commit 24625f7d91fb86b91e14749633a7f022f5866116 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: d2093187d70c0f8e15de98a0e7927dc14d4f2a09626602d74967ec417ff86417
+all runs: crashed: possible deadlock in j1939_sk_errqueue
+representative crash: possible deadlock in j1939_sk_errqueue, types: [LOCKDEP]
+picked [v5.18 v5.17 v5.16 v5.14 v5.12 v5.10 v5.8 v5.6 v5.3 v5.0 v4.19] out of 21 release tags
+testing release v5.18
+testing commit 4b0986a3613c92f4ec1bdc7f60ec66fea135991f gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: a091cf33938311a83587568e6a50c6c691051bc733fcea645f268670430811a5
+all runs: crashed: possible deadlock in j1939_sk_errqueue
+representative crash: possible deadlock in j1939_sk_errqueue, types: [LOCKDEP]
+testing release v5.17
+testing commit f443e374ae131c168a065ea1748feac6b2e76613 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 4208e4e7af5e77676829f615621c1199b93405f93e55a5f6dcd5c73df6a2d8bf
+all runs: crashed: possible deadlock in j1939_sk_errqueue
+representative crash: possible deadlock in j1939_sk_errqueue, types: [LOCKDEP]
+testing release v5.16
+testing commit df0cc57e057f18e44dac8e6c18aba47ab53202f9 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 71dc467a2c053b878d0ec62ba93d2a98c83436dc8e1135090dba7d8d5c242cfd
+all runs: crashed: possible deadlock in j1939_sk_errqueue
+representative crash: possible deadlock in j1939_sk_errqueue, types: [LOCKDEP]
+testing release v5.14
+testing commit 7d2a07b769330c34b4deabeed939325c77a7ec2f gcc
+compiler: gcc (GCC) 10.1.0-syz 20200507, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 9df2e17c793e2db0078b875aefa903b70f587ddf6c395231901018a274ae7099
+all runs: crashed: WARNING in j1939_session_deactivate
+representative crash: WARNING in j1939_session_deactivate, types: [WARNING]
+testing release v5.12
+testing commit 9f4ad9e425a1d3b6a34617b8ea226d56a119a717 gcc
+compiler: gcc (GCC) 10.1.0-syz 20200507, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 394c2eed62915606fdae8018f3bda3a3781cd3f5fc7a9b17a55eae2bfc4d413a
+all runs: OK
+false negative chance: 0.000
+# git bisect start 7d2a07b769330c34b4deabeed939325c77a7ec2f 9f4ad9e425a1d3b6a34617b8ea226d56a119a717
+Bisecting: 16528 revisions left to test after this (roughly 14 steps)
+[e1d9a90a9bfdb0735062d3adb16b07314b4b7b01] net: ethernet: rmnet: Support for ingress MAPv5 checksum offload
+
+testing commit e1d9a90a9bfdb0735062d3adb16b07314b4b7b01 gcc
+compiler: gcc (GCC) 10.1.0-syz 20200507, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 55f44d0d872325216647b8843639d86c77aaacacc79e4f592c587183ac0405a0
+all runs: OK
+false negative chance: 0.000
+# git bisect good e1d9a90a9bfdb0735062d3adb16b07314b4b7b01
+Bisecting: 8255 revisions left to test after this (roughly 13 steps)
+[19b438592238b3b40c3f945bb5f9c4ca971c0c45] Merge tag 'mips_5.14' of git://git.kernel.org/pub/scm/linux/kernel/git/mips/linux
+
+testing commit 19b438592238b3b40c3f945bb5f9c4ca971c0c45 gcc
+compiler: gcc (GCC) 10.1.0-syz 20200507, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 03b9a75f42e75ff8c7135b04c6145653d0b173eed2777d8e36f99a379f54b2ea
+run #0: crashed: WARNING in j1939_xtp_rx_rts
+run #1: OK
+run #2: OK
+run #3: OK
+run #4: OK
+run #5: OK
+run #6: OK
+run #7: OK
+representative crash: WARNING in j1939_xtp_rx_rts, types: [WARNING]
+# git bisect bad 19b438592238b3b40c3f945bb5f9c4ca971c0c45
+Bisecting: 4126 revisions left to test after this (roughly 12 steps)
+[df668a5fe461bb9d7e899c538acc7197746038f4] Merge tag 'for-5.14/block-2021-06-29' of git://git.kernel.dk/linux-block
+
+testing commit df668a5fe461bb9d7e899c538acc7197746038f4 gcc
+compiler: gcc (GCC) 10.1.0-syz 20200507, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: e99a0fb9f45e86ddab689c8b06dd186f72924faafd9c92884e9a4f684b3fc7ed
+all runs: OK
+false negative chance: 0.001
+# git bisect good df668a5fe461bb9d7e899c538acc7197746038f4
+Bisecting: 2095 revisions left to test after this (roughly 11 steps)
+[c288d9cd710433e5991d58a0764c4d08a933b871] Merge tag 'for-5.14/io_uring-2021-06-30' of git://git.kernel.dk/linux-block
+
+testing commit c288d9cd710433e5991d58a0764c4d08a933b871 gcc
+compiler: gcc (GCC) 10.1.0-syz 20200507, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: ab2a3d0295f2cb8964ec5bfe882ffddbed4abddc5d07370e258aaf68e5b67cd2
+all runs: OK
+false negative chance: 0.001
+# git bisect good c288d9cd710433e5991d58a0764c4d08a933b871
+Bisecting: 1047 revisions left to test after this (roughly 10 steps)
+[e79907216b7466e49db6b525f2de7a69756554f2] drm/amdgpu: add nv common ip block support for yellow carp
+
+testing commit e79907216b7466e49db6b525f2de7a69756554f2 gcc
+compiler: gcc (GCC) 10.1.0-syz 20200507, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: bb896c77ffec16c16989d8653cd2add52f963c244cd40f30ecb32435774750ef
+run #0: crashed: KASAN: use-after-free Write in j1939_can_recv
+run #1: OK
+run #2: OK
+run #3: OK
+run #4: OK
+run #5: OK
+run #6: OK
+run #7: OK
+representative crash: KASAN: use-after-free Write in j1939_can_recv, types: [KASAN]
+# git bisect bad e79907216b7466e49db6b525f2de7a69756554f2
+Bisecting: 467 revisions left to test after this (roughly 9 steps)
+[c99c4d0ca57c978dcc2a2f41ab8449684ea154cc] Merge tag 'amd-drm-next-5.14-2021-05-19' of https://gitlab.freedesktop.org/agd5f/linux into drm-next
+
+testing commit c99c4d0ca57c978dcc2a2f41ab8449684ea154cc gcc
+compiler: gcc (GCC) 10.1.0-syz 20200507, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 53cdaf96a5f690c4feea2eec7c82d3e0c040b232ebb221ed0cb48f67b5ce8c9a
+all runs: OK
+false negative chance: 0.034
+# git bisect good c99c4d0ca57c978dcc2a2f41ab8449684ea154cc
+Bisecting: 233 revisions left to test after this (roughly 8 steps)
+[050cd3d616d96c3a04f4877842a391c0a4fdcc7a] drm/amd/display: Add support for SURFACE_PIXEL_FORMAT_GRPH_ABGR16161616.
+
+testing commit 050cd3d616d96c3a04f4877842a391c0a4fdcc7a gcc
+compiler: gcc (GCC) 10.1.0-syz 20200507, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 81e6af41e0ae2612f8f03485538968192ddcac1d54388f318430f5ac898dceb3
+all runs: OK
+false negative chance: 0.034
+# git bisect good 050cd3d616d96c3a04f4877842a391c0a4fdcc7a
+Bisecting: 125 revisions left to test after this (roughly 7 steps)
+[43ed3c6c786d996a264fcde68dbb36df6f03b965] Merge tag 'drm-misc-next-2021-06-01' of git://anongit.freedesktop.org/drm/drm-misc into drm-next
+
+testing commit 43ed3c6c786d996a264fcde68dbb36df6f03b965 gcc
+compiler: gcc (GCC) 10.1.0-syz 20200507, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 4850bd0de73c7a252a970e91b85c3fce9d938f0d91e9606e6466c2df7e5a1e1c
+all runs: OK
+false negative chance: 0.034
+# git bisect good 43ed3c6c786d996a264fcde68dbb36df6f03b965
+Bisecting: 64 revisions left to test after this (roughly 6 steps)
+[ccd1950c2f7e38ae45aeefb99a08b39407cd6c63] Merge tag 'drm-intel-gt-next-2021-05-28' of git://anongit.freedesktop.org/drm/drm-intel into drm-next
+
+testing commit ccd1950c2f7e38ae45aeefb99a08b39407cd6c63 gcc
+compiler: gcc (GCC) 10.1.0-syz 20200507, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 4850bd0de73c7a252a970e91b85c3fce9d938f0d91e9606e6466c2df7e5a1e1c
+run #0: crashed: KASAN: use-after-free Write in j1939_can_recv
+run #1: OK
+run #2: OK
+run #3: OK
+run #4: OK
+run #5: OK
+run #6: OK
+run #7: OK
+representative crash: KASAN: use-after-free Write in j1939_can_recv, types: [KASAN]
+# git bisect bad ccd1950c2f7e38ae45aeefb99a08b39407cd6c63
+Bisecting: 30 revisions left to test after this (roughly 5 steps)
+[a9cf6ab3e7e4fc9e3720efe15cad3f7ae2322141] drm/i915/fbdev: Use lmem physical addresses for fb_mmap() on discrete
+
+testing commit a9cf6ab3e7e4fc9e3720efe15cad3f7ae2322141 gcc
+compiler: gcc (GCC) 10.1.0-syz 20200507, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 2e90eee4061b9f5eb65f34ca53b6a6c7d256d907d5bee4790f15e5645a535834
+2025/04/06 09:06:23 failed to symbolize report: failed to run ["scripts/get_maintainer.pl" "--git-min-percent=15" "-f" "mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/kernel/locking/irqflag-debug.c"]: exit status 2
+scripts/get_maintainer.pl: file 'mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/kernel/locking/irqflag-debug.c' not found
+2025/04/06 09:15:28 failed to symbolize report: failed to run ["scripts/get_maintainer.pl" "--git-min-percent=15" "-f" "mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/kernel/locking/irqflag-debug.c"]: exit status 2
+scripts/get_maintainer.pl: file 'mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/kernel/locking/irqflag-debug.c' not found
+2025/04/06 09:15:29 failed to symbolize report: failed to run ["scripts/get_maintainer.pl" "--git-min-percent=15" "-f" "mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/kernel/locking/irqflag-debug.c"]: exit status 2
+scripts/get_maintainer.pl: file 'mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/kernel/locking/irqflag-debug.c' not found
+run #0: basic kernel testing failed: WARNING in kvm_wait
+run #1: crashed: WARNING in kvm_wait
+run #2: crashed: WARNING in kvm_wait
+run #3: crashed: WARNING in kvm_wait
+run #4: OK
+run #5: boot failed: WARNING in kvm_wait
+run #6: boot failed: WARNING in kvm_wait
+run #7: basic kernel testing failed: failed to copy syz-execprog to VM: failed to run ["scp" "-P" "21134" "-F" "/dev/null" "-o" "UserKnownHostsFile=/dev/null" "-o" "BatchMode=yes" "-o" "IdentitiesOnly=yes" "-o" "StrictHostKeyChecking=no" "-o" "ConnectTimeout=10" "-i" "/mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/wd-kaller/image/key" "/mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/src/syzkaller/bin/linux_amd64/syz-execprog" "root@localhost:/syz-execprog"]: exit status 1
+Warning: Permanently added '[localhost]:21134' (ECDSA) to the list of known hosts.
+Connection to localhost closed by remote host.
+lost connection
+
+representative crash: WARNING in kvm_wait, types: [WARNING]
+# git bisect bad a9cf6ab3e7e4fc9e3720efe15cad3f7ae2322141
+Bisecting: 14 revisions left to test after this (roughly 4 steps)
+[c256af0d6c1846db9af357a913b277b566ca3797] drm/i915/lmem: Fail driver init if LMEM training failed
+
+testing commit c256af0d6c1846db9af357a913b277b566ca3797 gcc
+compiler: gcc (GCC) 10.1.0-syz 20200507, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 2e90eee4061b9f5eb65f34ca53b6a6c7d256d907d5bee4790f15e5645a535834
+2025/04/06 09:35:12 failed to symbolize report: failed to run ["scripts/get_maintainer.pl" "--git-min-percent=15" "-f" "mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/kernel/locking/irqflag-debug.c"]: exit status 2
+scripts/get_maintainer.pl: file 'mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/kernel/locking/irqflag-debug.c' not found
+2025/04/06 09:35:13 failed to symbolize report: failed to run ["scripts/get_maintainer.pl" "--git-min-percent=15" "-f" "mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/kernel/locking/irqflag-debug.c"]: exit status 2
+scripts/get_maintainer.pl: file 'mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/kernel/locking/irqflag-debug.c' not found
+2025/04/06 09:35:13 failed to symbolize report: failed to run ["scripts/get_maintainer.pl" "--git-min-percent=15" "-f" "mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/kernel/locking/irqflag-debug.c"]: exit status 2
+scripts/get_maintainer.pl: file 'mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/kernel/locking/irqflag-debug.c' not found
+2025/04/06 09:35:13 failed to symbolize report: failed to run ["scripts/get_maintainer.pl" "--git-min-percent=15" "-f" "mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/kernel/locking/irqflag-debug.c"]: exit status 2
+scripts/get_maintainer.pl: file 'mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/kernel/locking/irqflag-debug.c' not found
+2025/04/06 09:35:13 failed to symbolize report: failed to run ["scripts/get_maintainer.pl" "--git-min-percent=15" "-f" "mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/kernel/locking/irqflag-debug.c"]: exit status 2
+scripts/get_maintainer.pl: file 'mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/kernel/locking/irqflag-debug.c' not found
+2025/04/06 09:35:13 failed to symbolize report: failed to run ["scripts/get_maintainer.pl" "--git-min-percent=15" "-f" "mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/kernel/locking/irqflag-debug.c"]: exit status 2
+scripts/get_maintainer.pl: file 'mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/kernel/locking/irqflag-debug.c' not found
+2025/04/06 09:35:13 failed to symbolize report: failed to run ["scripts/get_maintainer.pl" "--git-min-percent=15" "-f" "mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/kernel/locking/irqflag-debug.c"]: exit status 2
+scripts/get_maintainer.pl: file 'mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/kernel/locking/irqflag-debug.c' not found
+run #0: crashed: WARNING in kvm_wait
+run #1: boot failed: WARNING in kvm_wait
+run #2: boot failed: WARNING in kvm_wait
+run #3: boot failed: WARNING in kvm_wait
+run #4: boot failed: WARNING in kvm_wait
+run #5: boot failed: WARNING in kvm_wait
+run #6: boot failed: WARNING in kvm_wait
+run #7: boot failed: WARNING in kvm_wait
+representative crash: WARNING in kvm_wait, types: [WARNING]
+unable to determine the verdict: 0 good runs (wanted 6), for bad wanted 4 in total, got 1
+# git bisect skip c256af0d6c1846db9af357a913b277b566ca3797
+Bisecting: 14 revisions left to test after this (roughly 4 steps)
+[503c7ef3b47d7c4274e01d0703ef2d987284716b] drm/i915/icl: add Wa_22010271021 for all gen11
+
+testing commit 503c7ef3b47d7c4274e01d0703ef2d987284716b gcc
+compiler: gcc (GCC) 10.1.0-syz 20200507, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 2e90eee4061b9f5eb65f34ca53b6a6c7d256d907d5bee4790f15e5645a535834
+2025/04/06 09:51:27 failed to symbolize report: failed to run ["scripts/get_maintainer.pl" "--git-min-percent=15" "-f" "mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/kernel/locking/irqflag-debug.c"]: exit status 2
+scripts/get_maintainer.pl: file 'mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/kernel/locking/irqflag-debug.c' not found
+2025/04/06 09:51:27 failed to symbolize report: failed to run ["scripts/get_maintainer.pl" "--git-min-percent=15" "-f" "mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/kernel/locking/irqflag-debug.c"]: exit status 2
+scripts/get_maintainer.pl: file 'mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/kernel/locking/irqflag-debug.c' not found
+2025/04/06 09:51:27 failed to symbolize report: failed to run ["scripts/get_maintainer.pl" "--git-min-percent=15" "-f" "mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/kernel/locking/irqflag-debug.c"]: exit status 2
+scripts/get_maintainer.pl: file 'mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/kernel/locking/irqflag-debug.c' not found
+2025/04/06 09:51:27 failed to symbolize report: failed to run ["scripts/get_maintainer.pl" "--git-min-percent=15" "-f" "mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/kernel/locking/irqflag-debug.c"]: exit status 2
+scripts/get_maintainer.pl: file 'mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/kernel/locking/irqflag-debug.c' not found
+2025/04/06 09:51:27 failed to symbolize report: failed to run ["scripts/get_maintainer.pl" "--git-min-percent=15" "-f" "mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/kernel/locking/irqflag-debug.c"]: exit status 2
+scripts/get_maintainer.pl: file 'mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/kernel/locking/irqflag-debug.c' not found
+2025/04/06 09:51:27 failed to symbolize report: failed to run ["scripts/get_maintainer.pl" "--git-min-percent=15" "-f" "mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/kernel/locking/irqflag-debug.c"]: exit status 2
+scripts/get_maintainer.pl: file 'mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/kernel/locking/irqflag-debug.c' not found
+2025/04/06 09:51:27 failed to symbolize report: failed to run ["scripts/get_maintainer.pl" "--git-min-percent=15" "-f" "mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/kernel/locking/irqflag-debug.c"]: exit status 2
+scripts/get_maintainer.pl: file 'mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/kernel/locking/irqflag-debug.c' not found
+2025/04/06 09:51:32 failed to symbolize report: failed to run ["scripts/get_maintainer.pl" "--git-min-percent=15" "-f" "mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/kernel/locking/irqflag-debug.c"]: exit status 2
+scripts/get_maintainer.pl: file 'mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/kernel/locking/irqflag-debug.c' not found
+all runs: boot failed: WARNING in kvm_wait
+unable to determine the verdict: 0 good runs (wanted 6), for bad wanted 4 in total, got 0
+# git bisect skip 503c7ef3b47d7c4274e01d0703ef2d987284716b
+Bisecting: 14 revisions left to test after this (roughly 4 steps)
+[ae7f0dc105c4e5248e6e2e2299e52d9a289e1215] drm/i915/stolen: actually mark as contiguous
+
+testing commit ae7f0dc105c4e5248e6e2e2299e52d9a289e1215 gcc
+compiler: gcc (GCC) 10.1.0-syz 20200507, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 2e90eee4061b9f5eb65f34ca53b6a6c7d256d907d5bee4790f15e5645a535834
+2025/04/06 10:05:54 failed to symbolize report: failed to run ["scripts/get_maintainer.pl" "--git-min-percent=15" "-f" "mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/kernel/locking/irqflag-debug.c"]: exit status 2
+scripts/get_maintainer.pl: file 'mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/kernel/locking/irqflag-debug.c' not found
+2025/04/06 10:05:54 failed to symbolize report: failed to run ["scripts/get_maintainer.pl" "--git-min-percent=15" "-f" "mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/kernel/locking/irqflag-debug.c"]: exit status 2
+scripts/get_maintainer.pl: file 'mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/kernel/locking/irqflag-debug.c' not found
+2025/04/06 10:05:54 failed to symbolize report: failed to run ["scripts/get_maintainer.pl" "--git-min-percent=15" "-f" "mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/kernel/locking/irqflag-debug.c"]: exit status 2
+scripts/get_maintainer.pl: file 'mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/kernel/locking/irqflag-debug.c' not found
+2025/04/06 10:05:54 failed to symbolize report: failed to run ["scripts/get_maintainer.pl" "--git-min-percent=15" "-f" "mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/kernel/locking/irqflag-debug.c"]: exit status 2
+scripts/get_maintainer.pl: file 'mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/kernel/locking/irqflag-debug.c' not found
+2025/04/06 10:05:54 failed to symbolize report: failed to run ["scripts/get_maintainer.pl" "--git-min-percent=15" "-f" "mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/kernel/locking/irqflag-debug.c"]: exit status 2
+scripts/get_maintainer.pl: file 'mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/kernel/locking/irqflag-debug.c' not found
+2025/04/06 10:05:54 failed to symbolize report: failed to run ["scripts/get_maintainer.pl" "--git-min-percent=15" "-f" "mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/kernel/locking/irqflag-debug.c"]: exit status 2
+scripts/get_maintainer.pl: file 'mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/kernel/locking/irqflag-debug.c' not found
+2025/04/06 10:05:54 failed to symbolize report: failed to run ["scripts/get_maintainer.pl" "--git-min-percent=15" "-f" "mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/kernel/locking/irqflag-debug.c"]: exit status 2
+scripts/get_maintainer.pl: file 'mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/kernel/locking/irqflag-debug.c' not found
+2025/04/06 10:05:54 failed to symbolize report: failed to run ["scripts/get_maintainer.pl" "--git-min-percent=15" "-f" "mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/kernel/locking/irqflag-debug.c"]: exit status 2
+scripts/get_maintainer.pl: file 'mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/kernel/locking/irqflag-debug.c' not found
+all runs: boot failed: WARNING in kvm_wait
+unable to determine the verdict: 0 good runs (wanted 6), for bad wanted 4 in total, got 0
+# git bisect skip ae7f0dc105c4e5248e6e2e2299e52d9a289e1215
+Bisecting: 14 revisions left to test after this (roughly 4 steps)
+[0a6b3d35c033b340f0bb1f6d3236ebdb953020ac] drm/i915: Move Wa_16011163337 to gen12_ctx_workarounds_init()
+
+testing commit 0a6b3d35c033b340f0bb1f6d3236ebdb953020ac gcc
+compiler: gcc (GCC) 10.1.0-syz 20200507, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 2e90eee4061b9f5eb65f34ca53b6a6c7d256d907d5bee4790f15e5645a535834
+2025/04/06 10:20:26 failed to symbolize report: failed to run ["scripts/get_maintainer.pl" "--git-min-percent=15" "-f" "mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/kernel/locking/irqflag-debug.c"]: exit status 2
+scripts/get_maintainer.pl: file 'mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/kernel/locking/irqflag-debug.c' not found
+2025/04/06 10:20:31 failed to symbolize report: failed to run ["scripts/get_maintainer.pl" "--git-min-percent=15" "-f" "mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/kernel/locking/irqflag-debug.c"]: exit status 2
+scripts/get_maintainer.pl: file 'mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/kernel/locking/irqflag-debug.c' not found
+2025/04/06 10:20:32 failed to symbolize report: failed to run ["scripts/get_maintainer.pl" "--git-min-percent=15" "-f" "mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/kernel/locking/irqflag-debug.c"]: exit status 2
+scripts/get_maintainer.pl: file 'mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/kernel/locking/irqflag-debug.c' not found
+2025/04/06 10:20:32 failed to symbolize report: failed to run ["scripts/get_maintainer.pl" "--git-min-percent=15" "-f" "mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/kernel/locking/irqflag-debug.c"]: exit status 2
+scripts/get_maintainer.pl: file 'mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/kernel/locking/irqflag-debug.c' not found
+run #0: crashed: WARNING in kvm_wait
+run #1: crashed: WARNING in kvm_wait
+run #2: crashed: WARNING in kvm_wait
+run #3: OK
+run #4: boot failed: WARNING in kvm_wait
+run #5: boot failed: WARNING in kvm_wait
+run #6: boot failed: WARNING in kvm_wait
+run #7: boot failed: WARNING in kvm_wait
+representative crash: WARNING in kvm_wait, types: [WARNING]
+# git bisect bad 0a6b3d35c033b340f0bb1f6d3236ebdb953020ac
+Bisecting: 1 revision left to test after this (roughly 1 step)
+[2b5298b0aa09be3d789052107cb864603b88bc93] drm/i915/gen12: Add recommended hardware tuning value
+
+testing commit 2b5298b0aa09be3d789052107cb864603b88bc93 gcc
+compiler: gcc (GCC) 10.1.0-syz 20200507, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 2e90eee4061b9f5eb65f34ca53b6a6c7d256d907d5bee4790f15e5645a535834
+2025/04/06 10:40:14 failed to symbolize report: failed to run ["scripts/get_maintainer.pl" "--git-min-percent=15" "-f" "mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/kernel/locking/irqflag-debug.c"]: exit status 2
+scripts/get_maintainer.pl: file 'mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/kernel/locking/irqflag-debug.c' not found
+2025/04/06 10:40:14 failed to symbolize report: failed to run ["scripts/get_maintainer.pl" "--git-min-percent=15" "-f" "mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/kernel/locking/irqflag-debug.c"]: exit status 2
+scripts/get_maintainer.pl: file 'mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/kernel/locking/irqflag-debug.c' not found
+2025/04/06 10:40:19 failed to symbolize report: failed to run ["scripts/get_maintainer.pl" "--git-min-percent=15" "-f" "mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/kernel/locking/irqflag-debug.c"]: exit status 2
+scripts/get_maintainer.pl: file 'mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/kernel/locking/irqflag-debug.c' not found
+run #0: crashed: WARNING in kvm_wait
+run #1: crashed: WARNING in kvm_wait
+run #2: crashed: WARNING in kvm_wait
+run #3: crashed: WARNING in kvm_wait
+run #4: crashed: WARNING in kvm_wait
+run #5: boot failed: WARNING in kvm_wait
+run #6: boot failed: WARNING in kvm_wait
+run #7: boot failed: WARNING in kvm_wait
+representative crash: WARNING in kvm_wait, types: [WARNING]
+# git bisect bad 2b5298b0aa09be3d789052107cb864603b88bc93
+2b5298b0aa09be3d789052107cb864603b88bc93 is the first bad commit
+commit 2b5298b0aa09be3d789052107cb864603b88bc93
+Author: Caz Yokoyama <caz.yokoyama@intel.com>
+Date:   Wed Mar 24 13:04:59 2021 -0700
+
+    drm/i915/gen12: Add recommended hardware tuning value
+    
+    Follow Bspec 31870 to set recommended tuning values for certain GT
+    register.  These values aren't workarounds per-se, but it's best to
+    handle them in the same general area of the driver, especially since
+    there may be real workarounds that update other bits of the same
+    registers.
+    
+    At the moment the only value we need to worry about is the
+    TDS_TIMER setting in FF_MODE2.  This setting was previously
+    described as "Wa_1604555607" on some platforms, but the spec
+    tells us that we should continue to program this on all current
+    gen12 platforms, even those that do not have that WA.
+    
+    Bspec: 31870
+    
+    v2: Rephrase some comments to make them clearer (Matt)
+    
+    Cc: Clinton Taylor <clinton.a.taylor@intel.com>
+    Signed-off-by: Caz Yokoyama <caz.yokoyama@intel.com>
+    Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+    Reviewed-by: Matt Roper <matthew.d.roper@intel.com>
+    Link: https://patchwork.freedesktop.org/patch/msgid/20210324200502.1731265-2-lucas.demarchi@intel.com
+
+ drivers/gpu/drm/i915/gt/intel_workarounds.c | 48 ++++++++++++++++++++++-------
+ 1 file changed, 37 insertions(+), 11 deletions(-)
+
+accumulated error probability: 0.10
+parent commit 9c0fed84d5750e1eea6c664e073ffa2534a17743 wasn't tested
+testing commit 9c0fed84d5750e1eea6c664e073ffa2534a17743 gcc
+compiler: gcc (GCC) 10.1.0-syz 20200507, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 2e90eee4061b9f5eb65f34ca53b6a6c7d256d907d5bee4790f15e5645a535834
+culprit signature: 2e90eee4061b9f5eb65f34ca53b6a6c7d256d907d5bee4790f15e5645a535834
+parent  signature: 2e90eee4061b9f5eb65f34ca53b6a6c7d256d907d5bee4790f15e5645a535834
+reproducer is flaky (0.23 repro chance estimate)
+revisions tested: 21, total time: 7h32m6.994093152s (build: 4h23m12.451690085s, test: 2h37m24.286039466s)
+first bad commit: 2b5298b0aa09be3d789052107cb864603b88bc93 drm/i915/gen12: Add recommended hardware tuning value
+recipients (to): ["caz.yokoyama@intel.com" "lucas.demarchi@intel.com" "matthew.d.roper@intel.com"]
+recipients (cc): []
+crash: WARNING in kvm_wait
+vcan0: j1939_xtp_rx_dat_one: 0xffff88801caba400: last 15
+vcan0: j1939_xtp_rx_dat_one: 0xffff8881071d3c00: last 15
+------------[ cut here ]------------
+raw_local_irq_restore() called with IRQs enabled
+WARNING: CPU: 0 PID: 14 at kernel/locking/irqflag-debug.c:10 warn_bogus_irq_restore+0x1d/0x20 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/kernel/locking/irqflag-debug.c:10
+Modules linked in:
+CPU: 0 PID: 14 Comm: ksoftirqd/0 Not tainted 5.12.0-rc3-syzkaller #0
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.13.0-1ubuntu1.1 04/01/2014
+RIP: 0010:warn_bogus_irq_restore+0x1d/0x20 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/kernel/locking/irqflag-debug.c:10
+Code: bf ff cc cc cc cc cc cc cc cc cc cc cc 80 3d c4 b1 11 04 00 74 01 c3 48 c7 c7 e0 70 6b 89 c6 05 b3 b1 11 04 01 e8 b1 b1 bf ff <0f> 0b c3 48 39 77 10 0f 84 97 00 00 00 66 f7 47 22 f0 ff 74 4b 48
+RSP: 0018:ffffc90000717810 EFLAGS: 00010286
+RAX: 0000000000000000 RBX: ffff8881033e9070 RCX: 0000000000000000
+RDX: ffff888010649c40 RSI: ffffffff815bf3d5 RDI: fffff520000e2ef4
+RBP: 0000000000000200 R08: 0000000000000000 R09: 0000000000000000
+R10: ffffffff815b816e R11: 0000000000000000 R12: 0000000000000003
+R13: ffffed102067d20e R14: 0000000000000001 R15: ffff888064051f40
+FS:  0000000000000000(0000) GS:ffff888064000000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007fb449aa0020 CR3: 0000000106e1a000 CR4: 0000000000350ef0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+ kvm_wait mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/arch/x86/kernel/kvm.c:860 [inline]
+ kvm_wait+0xc9/0xe0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/arch/x86/kernel/kvm.c:837
+ pv_wait mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/./arch/x86/include/asm/paravirt.h:564 [inline]
+ pv_wait_head_or_lock mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/kernel/locking/qspinlock_paravirt.h:470 [inline]
+ __pv_queued_spin_lock_slowpath+0x8b8/0xb40 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/kernel/locking/qspinlock.c:508
+ pv_queued_spin_lock_slowpath mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/./arch/x86/include/asm/paravirt.h:554 [inline]
+ queued_spin_lock_slowpath mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/./arch/x86/include/asm/qspinlock.h:51 [inline]
+ queued_spin_lock mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/./include/asm-generic/qspinlock.h:85 [inline]
+ do_raw_spin_lock+0x200/0x2b0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/kernel/locking/spinlock_debug.c:113
+ spin_lock_bh mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/./include/linux/spinlock.h:359 [inline]
+ j1939_session_list_lock mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/net/can/j1939/transport.c:238 [inline]
+ j1939_session_get_by_addr mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/net/can/j1939/transport.c:541 [inline]
+ j1939_xtp_rx_dat mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/net/can/j1939/transport.c:1869 [inline]
+ j1939_tp_recv+0x505/0xb40 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/net/can/j1939/transport.c:2057
+ j1939_can_recv+0x6d7/0x930 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/net/can/j1939/main.c:101
+ deliver mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/net/can/af_can.c:574 [inline]
+ can_rcv_filter+0x5d4/0x8d0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/net/can/af_can.c:608
+ can_receive+0x336/0x580 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/net/can/af_can.c:665
+ can_rcv+0x120/0x1c0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/net/can/af_can.c:696
+ __netif_receive_skb_one_core+0x114/0x180 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/net/core/dev.c:5365
+ __netif_receive_skb+0x27/0x1c0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/net/core/dev.c:5479
+ process_backlog+0x232/0x6c0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/net/core/dev.c:6346
+ __napi_poll+0xaf/0x440 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/net/core/dev.c:6892
+ napi_poll mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/net/core/dev.c:6959 [inline]
+ net_rx_action+0x801/0xb40 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/net/core/dev.c:7036
+ __do_softirq+0x2bc/0xa29 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/kernel/softirq.c:345
+ run_ksoftirqd mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/kernel/softirq.c:652 [inline]
+ run_ksoftirqd+0x2d/0x60 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/kernel/softirq.c:644
+ smpboot_thread_fn+0x655/0x9e0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/kernel/smpboot.c:165
+ kthread+0x3b1/0x4a0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/kernel/kthread.c:292
+ ret_from_fork+0x1f/0x30 mnt/sdd/jtbursey/SyzInspector/wd-bisector-6/kernel/arch/x86/entry/entry_64.S:294
+
+
+possible deadlock in j1939_sk_errqueue
+2b5298b0aa09be3d789052107cb864603b88bc93

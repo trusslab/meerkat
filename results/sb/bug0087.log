@@ -1,0 +1,291 @@
+charm starts bisection 2025-04-03 04:04:16.100767922 -0700 PDT m=+13.523473449
+bisecting cause commit starting from 52d543b5497cf31d6baeb0bcfe5a5474c3238578
+building syzkaller on HEAD
+ensuring issue is reproducible on original commit 52d543b5497cf31d6baeb0bcfe5a5474c3238578
+
+testing commit 52d543b5497cf31d6baeb0bcfe5a5474c3238578 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 9a2b7c86effeb6f7cdb18874d2317a55b4ce7135840124cc8bfdca15dbd786ab
+all runs: crashed: possible deadlock in rfcomm_sk_state_change
+representative crash: possible deadlock in rfcomm_sk_state_change, types: [LOCKDEP]
+picked [v5.17 v5.16 v5.15 v5.13 v5.11 v5.9 v5.7 v5.5 v5.2 v4.20 v4.19] out of 20 release tags
+testing release v5.17
+testing commit f443e374ae131c168a065ea1748feac6b2e76613 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 01f9c9afeabff0971a09b7700778939346a9cbdcbddd813b3819d8f2fd770d04
+all runs: crashed: possible deadlock in rfcomm_sk_state_change
+representative crash: possible deadlock in rfcomm_sk_state_change, types: [LOCKDEP]
+testing release v5.16
+testing commit df0cc57e057f18e44dac8e6c18aba47ab53202f9 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: d6b09ea27d51c994e5ed0b5599d4620b0e9cfbb316fead1ca4778ce235060ed1
+all runs: crashed: possible deadlock in rfcomm_sk_state_change
+representative crash: possible deadlock in rfcomm_sk_state_change, types: [LOCKDEP]
+testing release v5.15
+testing commit 8bb7eca972ad531c9b149c0a51ab43a417385813 gcc
+compiler: gcc (GCC) 10.1.0-syz 20200507, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 8e23b2b31d21ea7b41394afc7931f80bb28a727c88c266e84db622d32ae241b3
+all runs: crashed: possible deadlock in rfcomm_sk_state_change
+representative crash: possible deadlock in rfcomm_sk_state_change, types: [LOCKDEP]
+testing release v5.13
+testing commit 62fb9874f5da54fdb243003b386128037319b219 gcc
+compiler: gcc (GCC) 10.1.0-syz 20200507, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 0e6f619bc76cd0ff75ee9ecfb9a7778f0c67c54a6c9a41c74c9b0c2fa71b9666
+all runs: OK
+false negative chance: 0.000
+# git bisect start 8bb7eca972ad531c9b149c0a51ab43a417385813 62fb9874f5da54fdb243003b386128037319b219
+Bisecting: 14671 revisions left to test after this (roughly 14 steps)
+[0c283b47539ab11f9efb46800f2a9dd63a48d825] rtw88: change beacon filter default mode
+
+testing commit 0c283b47539ab11f9efb46800f2a9dd63a48d825 gcc
+compiler: gcc (GCC) 10.1.0-syz 20200507, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 63ca2b8f1afb00adce79fa62b481028e4006ebf3f25c861a56291fb4e2732e1e
+all runs: OK
+false negative chance: 0.000
+# git bisect good 0c283b47539ab11f9efb46800f2a9dd63a48d825
+Bisecting: 6693 revisions left to test after this (roughly 13 steps)
+[477f70cd2a67904e04c2c2b9bd0fa2e95222f2f6] Merge tag 'drm-next-2021-08-31-1' of git://anongit.freedesktop.org/drm/drm
+
+testing commit 477f70cd2a67904e04c2c2b9bd0fa2e95222f2f6 gcc
+compiler: gcc (GCC) 10.1.0-syz 20200507, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: f9e491516d6baf40d26e962595a65cdf958bf07f7f0bc2fab7be467cc1655e09
+all runs: crashed: INFO: task hung in lock_sock_nested
+representative crash: INFO: task hung in lock_sock_nested, types: [HANG]
+# git bisect bad 477f70cd2a67904e04c2c2b9bd0fa2e95222f2f6
+Bisecting: 4624 revisions left to test after this (roughly 12 steps)
+[86ac54e79fe09b34c52691a780a6e31d12fa57f4] Merge branch 'for-5.15' of git://git.kernel.org/pub/scm/linux/kernel/git/tj/wq
+
+testing commit 86ac54e79fe09b34c52691a780a6e31d12fa57f4 gcc
+compiler: gcc (GCC) 10.1.0-syz 20200507, GNU ld (GNU Binutils for Ubuntu) 2.34
+failed building 86ac54e79fe09b34c52691a780a6e31d12fa57f4: arch/x86/kernel/setup.c:916:6: error: implicit declaration of function 'acpi_mps_check' [-Werror=implicit-function-declaration]
+arch/x86/kernel/setup.c:1110:2: error: implicit declaration of function 'acpi_table_upgrade' [-Werror=implicit-function-declaration]
+arch/x86/kernel/setup.c:1112:2: error: implicit declaration of function 'acpi_boot_table_init' [-Werror=implicit-function-declaration]
+arch/x86/kernel/setup.c:1120:2: error: implicit declaration of function 'early_acpi_boot_init'; did you mean 'early_cpu_init'? [-Werror=implicit-function-declaration]
+arch/x86/kernel/setup.c:1162:2: error: implicit declaration of function 'acpi_boot_init' [-Werror=implicit-function-declaration]
+# git bisect skip 86ac54e79fe09b34c52691a780a6e31d12fa57f4
+Bisecting: 4624 revisions left to test after this (roughly 12 steps)
+[5993c90ccb56b34aaedfd77a1c67c7a2039090ee] iwlwifi: use DEFINE_MUTEX() for mutex lock
+
+testing commit 5993c90ccb56b34aaedfd77a1c67c7a2039090ee gcc
+compiler: gcc (GCC) 10.1.0-syz 20200507, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 621d91dd531b0fc642fb67b3c41ce08fb54b5086f301e037047e2a03f3214e3b
+all runs: crashed: INFO: task hung in lock_sock_nested
+representative crash: INFO: task hung in lock_sock_nested, types: [HANG]
+# git bisect bad 5993c90ccb56b34aaedfd77a1c67c7a2039090ee
+Bisecting: 1220 revisions left to test after this (roughly 10 steps)
+[0d08026ac6099ef8bd73412005830ce7280b7c80] net: ipa: kill ipa_clock_get_additional()
+
+testing commit 0d08026ac6099ef8bd73412005830ce7280b7c80 gcc
+compiler: gcc (GCC) 10.1.0-syz 20200507, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 57cd02d4225347f269da3d8077d339da088f4418d95ec95f2c1bfd7769ac5fcd
+all runs: OK
+false negative chance: 0.000
+# git bisect good 0d08026ac6099ef8bd73412005830ce7280b7c80
+Bisecting: 609 revisions left to test after this (roughly 9 steps)
+[ab44035d308227723b490487ff0feba521e87029] octeontx2-pf: Allow VLAN priority also in ntuple filters
+
+testing commit ab44035d308227723b490487ff0feba521e87029 gcc
+compiler: gcc (GCC) 10.1.0-syz 20200507, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 620eb6a06b37d6a0459ca2c2757fcdf3fba02849b4dbee486bed3f70359be089
+all runs: OK
+false negative chance: 0.000
+# git bisect good ab44035d308227723b490487ff0feba521e87029
+Bisecting: 315 revisions left to test after this (roughly 8 steps)
+[3202ea65f85c5488926e01aa51d73d53dfe17e6e] net/mlx5: E-switch, Add QoS tracepoints
+
+testing commit 3202ea65f85c5488926e01aa51d73d53dfe17e6e gcc
+compiler: gcc (GCC) 10.1.0-syz 20200507, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 7632c1389c177cd63f77d7f0780613dfb6579ef5edbd4cdd70773e56c8e2cc61
+all runs: OK
+false negative chance: 0.000
+# git bisect good 3202ea65f85c5488926e01aa51d73d53dfe17e6e
+Bisecting: 157 revisions left to test after this (roughly 7 steps)
+[3408259b6ae5b01cd216633509f360def1d58dd5] Revert "bnx2: Search VPD with pci_vpd_find_ro_info_keyword()"
+
+testing commit 3408259b6ae5b01cd216633509f360def1d58dd5 gcc
+compiler: gcc (GCC) 10.1.0-syz 20200507, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: bd9ca7a2211a031a98694a733f03bf634f254f5c80a6b9c8e47983182c533a71
+all runs: crashed: INFO: task hung in lock_sock_nested
+representative crash: INFO: task hung in lock_sock_nested, types: [HANG]
+# git bisect bad 3408259b6ae5b01cd216633509f360def1d58dd5
+Bisecting: 78 revisions left to test after this (roughly 6 steps)
+[ceaeaafc8b6278930d9994e29d6826ee893cea65] net: phy: gmii2rgmii: Support PHY loopback
+
+testing commit ceaeaafc8b6278930d9994e29d6826ee893cea65 gcc
+compiler: gcc (GCC) 10.1.0-syz 20200507, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: d649547809b36a295a33110b7d0ea267924590a4d857533a8ff5d5d1abf9b3ba
+all runs: crashed: INFO: task hung in lock_sock_nested
+representative crash: INFO: task hung in lock_sock_nested, types: [HANG]
+# git bisect bad ceaeaafc8b6278930d9994e29d6826ee893cea65
+Bisecting: 39 revisions left to test after this (roughly 5 steps)
+[0d8603b4ee0ce8b572da6de776172bf235dce1bd] Bluetooth: btintel: Clean the exported function to static
+
+testing commit 0d8603b4ee0ce8b572da6de776172bf235dce1bd gcc
+compiler: gcc (GCC) 10.1.0-syz 20200507, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 926fecd79050685ae7bec16a9cdc196471cad7195691137c24de53a853099da2
+all runs: OK
+false negative chance: 0.000
+# git bisect good 0d8603b4ee0ce8b572da6de776172bf235dce1bd
+Bisecting: 20 revisions left to test after this (roughly 4 steps)
+[61969ef867d48fc76551fe50cefe0501e624766e] Bluetooth: Fix return value in hci_dev_do_close()
+
+testing commit 61969ef867d48fc76551fe50cefe0501e624766e gcc
+compiler: gcc (GCC) 10.1.0-syz 20200507, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: ae175d42c94e29b651c0983679b1991cd525bd2f2a18298773237bc391b96a9c
+all runs: crashed: INFO: task hung in lock_sock_nested
+representative crash: INFO: task hung in lock_sock_nested, types: [HANG]
+# git bisect bad 61969ef867d48fc76551fe50cefe0501e624766e
+Bisecting: 8 revisions left to test after this (roughly 3 steps)
+[55981d3541812234e687062926ff199c83f79a39] Bluetooth: btusb: check conditions before enabling USB ALT 3 for WBS
+
+testing commit 55981d3541812234e687062926ff199c83f79a39 gcc
+compiler: gcc (GCC) 10.1.0-syz 20200507, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: d0087d0edeac9b27e707bc87d8d3bc1fddd99af65278cf227acf179c6cd7c0e9
+2025/04/03 09:07:54 failed to symbolize report: failed to run ["scripts/get_maintainer.pl" "--git-min-percent=15" "-f" "mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/lib/dump_stack.c"]: exit status 2
+scripts/get_maintainer.pl: file 'mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/lib/dump_stack.c' not found
+run #0: basic kernel testing failed: BUG: sleeping function called from invalid context in stack_depot_save
+run #1: crashed: INFO: task hung in lock_sock_nested
+run #2: crashed: INFO: task hung in lock_sock_nested
+run #3: crashed: INFO: task hung in lock_sock_nested
+run #4: crashed: INFO: task hung in lock_sock_nested
+run #5: crashed: INFO: task hung in lock_sock_nested
+run #6: crashed: INFO: task hung in lock_sock_nested
+run #7: crashed: INFO: task hung in lock_sock_nested
+representative crash: INFO: task hung in lock_sock_nested, types: [HANG]
+# git bisect bad 55981d3541812234e687062926ff199c83f79a39
+Bisecting: 4 revisions left to test after this (roughly 2 steps)
+[734bc5ff783115aa3164f4e9dd5967ae78e0a8ab] Bluetooth: avoid circular locks in sco_sock_connect
+
+testing commit 734bc5ff783115aa3164f4e9dd5967ae78e0a8ab gcc
+compiler: gcc (GCC) 10.1.0-syz 20200507, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: d115ae62f618c14eb311fee50544ef41ae836a457da02d7f883ad10ef118ad09
+2025/04/03 09:25:11 failed to symbolize report: failed to run ["scripts/get_maintainer.pl" "--git-min-percent=15" "-f" "mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/lib/dump_stack.c"]: exit status 2
+scripts/get_maintainer.pl: file 'mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/lib/dump_stack.c' not found
+run #0: basic kernel testing failed: BUG: sleeping function called from invalid context in stack_depot_save
+run #1: OK
+run #2: OK
+run #3: OK
+run #4: OK
+run #5: OK
+run #6: OK
+run #7: OK
+false negative chance: 0.000
+# git bisect good 734bc5ff783115aa3164f4e9dd5967ae78e0a8ab
+Bisecting: 2 revisions left to test after this (roughly 1 step)
+[3f2c89fb465f63fe14da804a8afcd7ac6776508e] Bluetooth: serialize calls to sco_sock_{set,clear}_timer
+
+testing commit 3f2c89fb465f63fe14da804a8afcd7ac6776508e gcc
+compiler: gcc (GCC) 10.1.0-syz 20200507, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 76ff2e679b16654d12e5a9e6f2f45fd9971102aed92c5d3a214bd2143b9db9fd
+all runs: OK
+false negative chance: 0.000
+# git bisect good 3f2c89fb465f63fe14da804a8afcd7ac6776508e
+Bisecting: 1 revision left to test after this (roughly 1 step)
+[b7ce436a5d798bc59e71797952566608a4b4626b] Bluetooth: switch to lock_sock in RFCOMM
+
+testing commit b7ce436a5d798bc59e71797952566608a4b4626b gcc
+compiler: gcc (GCC) 10.1.0-syz 20200507, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: a93424504620c381fd2c6b9362ff2bf14003605678f31cbc5429de036fe04b54
+2025/04/03 10:00:07 failed to symbolize report: failed to run ["scripts/get_maintainer.pl" "--git-min-percent=15" "-f" "mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/lib/dump_stack.c"]: exit status 2
+scripts/get_maintainer.pl: file 'mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/lib/dump_stack.c' not found
+run #0: basic kernel testing failed: BUG: sleeping function called from invalid context in stack_depot_save
+run #1: crashed: INFO: task hung in lock_sock_nested
+run #2: crashed: INFO: task hung in lock_sock_nested
+run #3: crashed: INFO: task hung in lock_sock_nested
+run #4: crashed: INFO: task hung in lock_sock_nested
+run #5: crashed: INFO: task hung in lock_sock_nested
+run #6: crashed: INFO: task hung in lock_sock_nested
+run #7: crashed: INFO: task hung in lock_sock_nested
+representative crash: INFO: task hung in lock_sock_nested, types: [HANG]
+# git bisect bad b7ce436a5d798bc59e71797952566608a4b4626b
+b7ce436a5d798bc59e71797952566608a4b4626b is the first bad commit
+commit b7ce436a5d798bc59e71797952566608a4b4626b
+Author: Desmond Cheong Zhi Xi <desmondcheongzx@gmail.com>
+Date:   Tue Aug 10 12:14:09 2021 +0800
+
+    Bluetooth: switch to lock_sock in RFCOMM
+    
+    Other than rfcomm_sk_state_change and rfcomm_connect_ind, functions in
+    RFCOMM use lock_sock to lock the socket.
+    
+    Since bh_lock_sock and spin_lock_bh do not provide synchronization
+    with lock_sock, these calls should be changed to lock_sock.
+    
+    This is now safe to do because packet processing is now done in a
+    workqueue instead of a tasklet, so bh_lock_sock/spin_lock_bh are no
+    longer necessary to synchronise between user contexts and SOFTIRQ
+    processing.
+    
+    Signed-off-by: Desmond Cheong Zhi Xi <desmondcheongzx@gmail.com>
+    Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+
+ net/bluetooth/rfcomm/sock.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+accumulated error probability: 0.00
+culprit signature: a93424504620c381fd2c6b9362ff2bf14003605678f31cbc5429de036fe04b54
+parent  signature: 76ff2e679b16654d12e5a9e6f2f45fd9971102aed92c5d3a214bd2143b9db9fd
+revisions tested: 19, total time: 6h0m34.166874245s (build: 3h42m26.649491512s, test: 1h48m49.759178802s)
+first bad commit: b7ce436a5d798bc59e71797952566608a4b4626b Bluetooth: switch to lock_sock in RFCOMM
+recipients (to): ["davem@davemloft.net" "desmondcheongzx@gmail.com" "johan.hedberg@gmail.com" "kuba@kernel.org" "linux-bluetooth@vger.kernel.org" "luiz.dentz@gmail.com" "luiz.von.dentz@intel.com" "marcel@holtmann.org" "netdev@vger.kernel.org"]
+recipients (cc): ["linux-kernel@vger.kernel.org"]
+crash: INFO: task hung in lock_sock_nested
+INFO: task syz-executor.0:9291 blocked for more than 143 seconds.
+      Tainted: G        W         5.14.0-rc1-syzkaller #0
+"echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
+task:syz-executor.0  state:D stack:28440 pid: 9291 ppid:  8911 flags:0x00004006
+Call Trace:
+ context_switch mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/kernel/sched/core.c:4683 [inline]
+ __schedule+0xb3f/0x5960 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/kernel/sched/core.c:5940
+ schedule+0xd3/0x270 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/kernel/sched/core.c:6019
+ __lock_sock+0x13d/0x260 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/core/sock.c:2631
+ lock_sock_nested+0xf6/0x120 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/core/sock.c:3164
+ lock_sock mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/./include/net/sock.h:1613 [inline]
+ rfcomm_sk_state_change+0xb4/0x390 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/bluetooth/rfcomm/sock.c:73
+ __rfcomm_dlc_close+0x1b6/0x8a0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/bluetooth/rfcomm/core.c:489
+ rfcomm_dlc_close+0x1ea/0x240 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/bluetooth/rfcomm/core.c:520
+ __rfcomm_sock_close+0xac/0x260 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/bluetooth/rfcomm/sock.c:220
+ rfcomm_sock_shutdown+0xe9/0x210 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/bluetooth/rfcomm/sock.c:931
+ rfcomm_sock_release+0x5f/0x140 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/bluetooth/rfcomm/sock.c:951
+ __sock_release+0xcd/0x280 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/socket.c:648
+ sock_close+0x18/0x20 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/socket.c:1300
+ __fput+0x288/0x920 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/fs/file_table.c:280
+ task_work_run+0xdd/0x1a0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/kernel/task_work.c:164
+ get_signal+0x1abd/0x20d0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/kernel/signal.c:2581
+ arch_do_signal_or_restart+0x2a9/0x1c40 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/arch/x86/kernel/signal.c:865
+ handle_signal_work mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/kernel/entry/common.c:148 [inline]
+ exit_to_user_mode_loop mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/kernel/entry/common.c:172 [inline]
+ exit_to_user_mode_prepare+0x17d/0x290 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/kernel/entry/common.c:209
+ __syscall_exit_to_user_mode_work mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/kernel/entry/common.c:291 [inline]
+ syscall_exit_to_user_mode+0x19/0x60 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/kernel/entry/common.c:302
+ do_syscall_64+0x42/0xb0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/arch/x86/entry/common.c:86
+ entry_SYSCALL_64_after_hwframe+0x44/0xae
+RIP: 0033:0x7fa3ced59ced
+RSP: 002b:00007fa3ce0c5bd8 EFLAGS: 00000246 ORIG_RAX: 000000000000002a
+RAX: fffffffffffffffc RBX: 00007fa3cee93f80 RCX: 00007fa3ced59ced
+RDX: 0000000000000080 RSI: 0000000020000000 RDI: 0000000000000004
+RBP: 00007fa3cedb74ac R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+R13: 00007ffe4ea7855f R14: 00007ffe4ea786f0 R15: 00007fa3ce0c5d80
+INFO: lockdep is turned off.
+NMI backtrace for cpu 0
+CPU: 0 PID: 1608 Comm: khungtaskd Tainted: G        W         5.14.0-rc1-syzkaller #0
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.13.0-1ubuntu1.1 04/01/2014
+Call Trace:
+ __dump_stack mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/lib/dump_stack.c:88 [inline]
+ dump_stack_lvl+0xcd/0x134 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/lib/dump_stack.c:105
+ nmi_cpu_backtrace.cold+0x44/0xd7 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/lib/nmi_backtrace.c:105
+ nmi_trigger_cpumask_backtrace+0x236/0x280 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/lib/nmi_backtrace.c:62
+ trigger_all_cpu_backtrace mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/./include/linux/nmi.h:146 [inline]
+ check_hung_uninterruptible_tasks mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/kernel/hung_task.c:210 [inline]
+ watchdog+0xd0a/0xfc0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/kernel/hung_task.c:295
+ kthread+0x3e5/0x4d0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/kernel/kthread.c:319
+ ret_from_fork+0x1f/0x30 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/arch/x86/entry/entry_64.S:295
+Sending NMI from CPU 0 to CPUs 1:
+NMI backtrace for cpu 1 skipped: idling at native_safe_halt mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/./arch/x86/include/asm/irqflags.h:51 [inline]
+NMI backtrace for cpu 1 skipped: idling at arch_safe_halt mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/./arch/x86/include/asm/irqflags.h:89 [inline]
+NMI backtrace for cpu 1 skipped: idling at default_idle+0xb/0x10 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/arch/x86/kernel/process.c:716
+
+
+INFO: task hung in rfcomm_process_sessions
+b7ce436a5d798bc59e71797952566608a4b4626b

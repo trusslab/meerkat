@@ -1,0 +1,220 @@
+TrussLab starts bisection 2025-03-21 06:11:10.773204929 -0700 PDT m=+3.872137094
+bisecting cause commit starting from feb9c5e19e913b53cb536a7aa7c9f20107bb51ec
+building syzkaller on HEAD
+ensuring issue is reproducible on original commit feb9c5e19e913b53cb536a7aa7c9f20107bb51ec
+
+testing commit feb9c5e19e913b53cb536a7aa7c9f20107bb51ec gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: ec4e47c6bec11334c96b813e977a403f596ae7118ee55fce79f9e4f12486ee80
+all runs: crashed: WARNING: suspicious RCU usage in bond_ethtool_get_ts_info
+representative crash: WARNING: suspicious RCU usage in bond_ethtool_get_ts_info, types: [LOCKDEP]
+picked [v5.17 v5.16 v5.15 v5.13 v5.11 v5.9 v5.7 v5.5 v5.2 v4.20 v4.19] out of 20 release tags
+testing release v5.17
+testing commit f443e374ae131c168a065ea1748feac6b2e76613 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 5bbcd68f5bd0255fb14c599f469e95700d7da0bcf7144ecb195570815f89a2f6
+all runs: crashed: WARNING: suspicious RCU usage in bond_ethtool_get_ts_info
+representative crash: WARNING: suspicious RCU usage in bond_ethtool_get_ts_info, types: [LOCKDEP]
+testing release v5.16
+testing commit df0cc57e057f18e44dac8e6c18aba47ab53202f9 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 8ea4597b72e31085367ba960baa8fed597ebd0fad1d075055cebf3090c465155
+all runs: OK
+false negative chance: 0.000
+# git bisect start f443e374ae131c168a065ea1748feac6b2e76613 df0cc57e057f18e44dac8e6c18aba47ab53202f9
+Bisecting: 6995 revisions left to test after this (roughly 13 steps)
+[22ef12195e13c5ec58320dbf99ef85059a2c0820] Merge tag 'staging-5.17-rc1' of git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/staging
+
+testing commit 22ef12195e13c5ec58320dbf99ef85059a2c0820 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: bf25640a29c39fabb69b49f64761020ba3dd66ae59d28416da0bd39143b3f99f
+all runs: OK
+false negative chance: 0.000
+# git bisect good 22ef12195e13c5ec58320dbf99ef85059a2c0820
+Bisecting: 3520 revisions left to test after this (roughly 12 steps)
+[51620150ca2df62f8ea472ab8962be590c957288] cifs: update internal module number
+
+testing commit 51620150ca2df62f8ea472ab8962be590c957288 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 1f87abf1871faed0f3d1a662cd9091f7c8f665bcf80166be69fc14787fbfeccc
+all runs: OK
+false negative chance: 0.000
+# git bisect good 51620150ca2df62f8ea472ab8962be590c957288
+Bisecting: 1760 revisions left to test after this (roughly 11 steps)
+[d1ca60efc53d665cf89ed847a14a510a81770b81] netfilter: ctnetlink: disable helper autoassign
+
+testing commit d1ca60efc53d665cf89ed847a14a510a81770b81 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: a4a869d9386e04c2d83e890fa2015f40a2ca59f00e5ff8ad9201ff426e5b9d42
+all runs: crashed: WARNING: suspicious RCU usage in bond_ethtool_get_ts_info
+representative crash: WARNING: suspicious RCU usage in bond_ethtool_get_ts_info, types: [LOCKDEP]
+# git bisect bad d1ca60efc53d665cf89ed847a14a510a81770b81
+Bisecting: 879 revisions left to test after this (roughly 10 steps)
+[5475e8f03c80bbce7b43a57d861f5acc44a60b22] random: move the random sysctl declarations to its own file
+
+testing commit 5475e8f03c80bbce7b43a57d861f5acc44a60b22 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: de6e30cd0d1ec39e47fce47b869728363a762f25cd0250e05e22e7365ad5f176
+all runs: OK
+false negative chance: 0.000
+# git bisect good 5475e8f03c80bbce7b43a57d861f5acc44a60b22
+Bisecting: 439 revisions left to test after this (roughly 9 steps)
+[23a46422c56144939c091c76cf389aa863ce9c18] Merge tag 'net-5.17-rc2' of git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net
+
+testing commit 23a46422c56144939c091c76cf389aa863ce9c18 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: d1d8b012985703dc6844260a61e24f0b5af8a668f5359396b99b52bb843ef52b
+all runs: crashed: WARNING: suspicious RCU usage in bond_ethtool_get_ts_info
+representative crash: WARNING: suspicious RCU usage in bond_ethtool_get_ts_info, types: [LOCKDEP]
+# git bisect bad 23a46422c56144939c091c76cf389aa863ce9c18
+Bisecting: 224 revisions left to test after this (roughly 8 steps)
+[e6340b6526eeec5a00fe26a6ff515afe7d0affa4] certs: Fix build error when CONFIG_MODULE_SIG_KEY is empty
+
+testing commit e6340b6526eeec5a00fe26a6ff515afe7d0affa4 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: f4a9efa2b2ace84cd59c62f2b42a168c5fac60d6d8760b0372d8604042392e93
+all runs: OK
+false negative chance: 0.000
+# git bisect good e6340b6526eeec5a00fe26a6ff515afe7d0affa4
+Bisecting: 104 revisions left to test after this (roughly 7 steps)
+[0280e3c58f92b2fe0e8fbbdf8d386449168de4a8] Merge tag 'nfs-for-5.17-1' of git://git.linux-nfs.org/projects/anna/linux-nfs
+
+testing commit 0280e3c58f92b2fe0e8fbbdf8d386449168de4a8 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 261c4b86d6bf3021fd9683dedb155551a5aee66fee340fede6aa29c7400e3eed
+all runs: OK
+false negative chance: 0.000
+# git bisect good 0280e3c58f92b2fe0e8fbbdf8d386449168de4a8
+Bisecting: 52 revisions left to test after this (roughly 6 steps)
+[3a5d9db7fbdfc8207ddf70d92668ced0ab330701] ibmvnic: remove unused ->wait_capability
+
+testing commit 3a5d9db7fbdfc8207ddf70d92668ced0ab330701 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 8f9ff40977d7504f420a7de1f07d668898c7f882435d418df6e4689c4f8e1123
+all runs: crashed: WARNING: suspicious RCU usage in bond_ethtool_get_ts_info
+representative crash: WARNING: suspicious RCU usage in bond_ethtool_get_ts_info, types: [LOCKDEP]
+# git bisect bad 3a5d9db7fbdfc8207ddf70d92668ced0ab330701
+Bisecting: 23 revisions left to test after this (roughly 5 steps)
+[0b6d8cf2ecb98a842eaf523f31939ba362eb2235] Merge branch '40GbE' of git://git.kernel.org/pub/scm/linux/kernel/git/tnguy/net-queue
+
+testing commit 0b6d8cf2ecb98a842eaf523f31939ba362eb2235 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 8ae3e03543ffdaf3fb5da82bd908b1ef2dcbf6157178c70f6edd6b692520e2c8
+all runs: OK
+false negative chance: 0.000
+# git bisect good 0b6d8cf2ecb98a842eaf523f31939ba362eb2235
+Bisecting: 11 revisions left to test after this (roughly 4 steps)
+[745166fcf01cecc4f5ff3defc6586868349a43f9] octeontx2-af: Add KPU changes to parse NGIO as separate layer
+
+testing commit 745166fcf01cecc4f5ff3defc6586868349a43f9 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: b860153265d92382e200b3a5f0a3b81d314b35e7f87f7edd383f1f267c937c77
+all runs: OK
+false negative chance: 0.000
+# git bisect good 745166fcf01cecc4f5ff3defc6586868349a43f9
+Bisecting: 5 revisions left to test after this (roughly 3 steps)
+[aa6034678e873db8bd5c5a4b73f8b88c469374d6] bonding: use rcu_dereference_rtnl when get bonding active slave
+
+testing commit aa6034678e873db8bd5c5a4b73f8b88c469374d6 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 0b0060c72ceb64967a6e121b38a5ddf8d4c16c66ac3b98584ffdfc4908d5f757
+all runs: crashed: WARNING: suspicious RCU usage in bond_ethtool_get_ts_info
+representative crash: WARNING: suspicious RCU usage in bond_ethtool_get_ts_info, types: [LOCKDEP]
+# git bisect bad aa6034678e873db8bd5c5a4b73f8b88c469374d6
+Bisecting: 2 revisions left to test after this (roughly 2 steps)
+[63ec72bd58487935a2e40d2cdffe5c9498f1275e] mptcp: Use struct_group() to avoid cross-field memset()
+
+testing commit 63ec72bd58487935a2e40d2cdffe5c9498f1275e gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: fd71ad80f77d165c67db82d6507edcd757754091620d02c133f3d2013b27dd41
+all runs: OK
+false negative chance: 0.000
+# git bisect good 63ec72bd58487935a2e40d2cdffe5c9498f1275e
+Bisecting: 0 revisions left to test after this (roughly 1 step)
+[2148927e6ed43a1667baf7c2ae3e0e05a44b51a0] net: sfp: ignore disabled SFP node
+
+testing commit 2148927e6ed43a1667baf7c2ae3e0e05a44b51a0 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 3382d0eec7c3f373fea7b79af14f8df0524eb45890a8b6e72dad3e2aab0cc22a
+all runs: OK
+false negative chance: 0.000
+# git bisect good 2148927e6ed43a1667baf7c2ae3e0e05a44b51a0
+aa6034678e873db8bd5c5a4b73f8b88c469374d6 is the first bad commit
+commit aa6034678e873db8bd5c5a4b73f8b88c469374d6
+Author: Hangbin Liu <liuhangbin@gmail.com>
+Date:   Fri Jan 21 16:25:18 2022 +0800
+
+    bonding: use rcu_dereference_rtnl when get bonding active slave
+    
+    bond_option_active_slave_get_rcu() should not be used in rtnl_mutex as it
+    use rcu_dereference(). Replace to rcu_dereference_rtnl() so we also can use
+    this function in rtnl protected context.
+    
+    With this update, we can rmeove the rcu_read_lock/unlock in
+    bonding .ndo_eth_ioctl and .get_ts_info.
+    
+    Reported-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+    Fixes: 94dd016ae538 ("bond: pass get_ts_info and SIOC[SG]HWTSTAMP ioctl to active device")
+    Signed-off-by: Hangbin Liu <liuhangbin@gmail.com>
+    Signed-off-by: David S. Miller <davem@davemloft.net>
+
+ drivers/net/bonding/bond_main.c | 4 ----
+ include/net/bonding.h           | 2 +-
+ 2 files changed, 1 insertion(+), 5 deletions(-)
+
+accumulated error probability: 0.00
+culprit signature: 0b0060c72ceb64967a6e121b38a5ddf8d4c16c66ac3b98584ffdfc4908d5f757
+parent  signature: 3382d0eec7c3f373fea7b79af14f8df0524eb45890a8b6e72dad3e2aab0cc22a
+revisions tested: 16, total time: 3h38m50.318224766s (build: 1h58m23.545550432s, test: 1h27m28.506203266s)
+first bad commit: aa6034678e873db8bd5c5a4b73f8b88c469374d6 bonding: use rcu_dereference_rtnl when get bonding active slave
+recipients (to): ["andy@greyhouse.net" "davem@davemloft.net" "davem@davemloft.net" "j.vosburgh@gmail.com" "kuba@kernel.org" "liuhangbin@gmail.com" "netdev@vger.kernel.org" "vfalico@gmail.com"]
+recipients (cc): ["linux-kernel@vger.kernel.org"]
+crash: WARNING: suspicious RCU usage in bond_ethtool_get_ts_info
+=============================
+WARNING: suspicious RCU usage
+5.16.0-syzkaller #0 Not tainted
+-----------------------------
+include/net/bonding.h:349 suspicious rcu_dereference_check() usage!
+
+other info that might help us debug this:
+
+
+rcu_scheduler_active = 2, debug_locks = 1
+1 lock held by syz-executor.0/7489:
+ #0: ffff888019d49b30 (sk_lock-AF_INET){+.+.}-{0:0}, at: lock_sock mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/./include/net/sock.h:1668 [inline]
+ #0: ffff888019d49b30 (sk_lock-AF_INET){+.+.}-{0:0}, at: sock_setsockopt+0x1e3/0x2ce0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/core/sock.c:1043
+
+stack backtrace:
+CPU: 0 PID: 7489 Comm: syz-executor.0 Not tainted 5.16.0-syzkaller #0
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.13.0-1ubuntu1.1 04/01/2014
+Call Trace:
+ <TASK>
+ __dump_stack mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/lib/dump_stack.c:88 [inline]
+ dump_stack_lvl+0xcd/0x134 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/lib/dump_stack.c:106
+ bond_option_active_slave_get_rcu mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/./include/net/bonding.h:349 [inline]
+ bond_ethtool_get_ts_info+0x32c/0x3a0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/drivers/net/bonding/bond_main.c:5383
+ __ethtool_get_ts_info+0x173/0x240 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/ethtool/common.c:551
+ ethtool_get_phc_vclocks+0x99/0x110 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/ethtool/common.c:565
+ sock_timestamping_bind_phc mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/core/sock.c:846 [inline]
+ sock_set_timestamping+0x2f1/0x7a0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/core/sock.c:893
+ sock_setsockopt+0x5a4/0x2ce0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/core/sock.c:1198
+ __sys_setsockopt+0x486/0x590 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/socket.c:2176
+ __do_sys_setsockopt mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/socket.c:2191 [inline]
+ __se_sys_setsockopt mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/socket.c:2188 [inline]
+ __x64_sys_setsockopt+0xba/0x150 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/socket.c:2188
+ do_syscall_x64 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/arch/x86/entry/common.c:50 [inline]
+ do_syscall_64+0x35/0x80 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/arch/x86/entry/common.c:80
+ entry_SYSCALL_64_after_hwframe+0x44/0xae
+RIP: 0033:0x7fbe9bf72ced
+Code: c3 e8 17 32 00 00 0f 1f 80 00 00 00 00 f3 0f 1e fa 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 b8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007fbe9b2debd8 EFLAGS: 00000246 ORIG_RAX: 0000000000000036
+RAX: ffffffffffffffda RBX: 00007fbe9c0acf80 RCX: 00007fbe9bf72ced
+RDX: 0000000000000041 RSI: 0000000000000001 RDI: 0000000000000003
+RBP: 00007fbe9bfd04ac R08: 0000000000000004 R09: 0000000000000000
+R10: 0000000020000000 R11: 0000000000000246 R12: 0000000000000000
+R13: 00007ffc4138d16f R14: 00007ffc4138d300 R15: 00007fbe9b2ded80
+ </TASK>
+
+
+WARNING: suspicious RCU usage in bond_ethtool_get_ts_info
+aa6034678e873db8bd5c5a4b73f8b88c469374d6

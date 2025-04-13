@@ -1,0 +1,224 @@
+charm starts bisection 2025-04-03 10:51:37.275800286 -0700 PDT m=+7.624347456
+bisecting cause commit starting from 700170bf6b4d773e328fa54ebb70ba444007c702
+building syzkaller on HEAD
+ensuring issue is reproducible on original commit 700170bf6b4d773e328fa54ebb70ba444007c702
+
+testing commit 700170bf6b4d773e328fa54ebb70ba444007c702 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: b4f9e5833aec592586f6a6e104a40518271e2b0a3a9bb6812f8c1d86951a6452
+all runs: crashed: UBSAN: array-index-out-of-bounds in nfnetlink_unbind
+representative crash: UBSAN: array-index-out-of-bounds in nfnetlink_unbind, types: [UBSAN]
+picked [v5.18 v5.17 v5.16 v5.14 v5.12 v5.10 v5.8 v5.6 v5.3 v5.0 v4.19] out of 21 release tags
+testing release v5.18
+testing commit 4b0986a3613c92f4ec1bdc7f60ec66fea135991f gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 366d228570d5a2687392f59f11385dd5e4ad180306024857e02f709a45a7e0d3
+all runs: OK
+false negative chance: 0.000
+# git bisect start 700170bf6b4d773e328fa54ebb70ba444007c702 4b0986a3613c92f4ec1bdc7f60ec66fea135991f
+Bisecting: 6542 revisions left to test after this (roughly 13 steps)
+[86c87bea6b42100c67418af690919c44de6ede6e] Merge tag 'devicetree-for-5.19' of git://git.kernel.org/pub/scm/linux/kernel/git/robh/linux
+
+testing commit 86c87bea6b42100c67418af690919c44de6ede6e gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 643561d612633c380c4d5f4eb043ba9abf817f3d9bc22fbc928c50d4f3577b0f
+all runs: crashed: UBSAN: array-index-out-of-bounds in nfnetlink_unbind
+representative crash: UBSAN: array-index-out-of-bounds in nfnetlink_unbind, types: [UBSAN]
+# git bisect bad 86c87bea6b42100c67418af690919c44de6ede6e
+Bisecting: 2583 revisions left to test after this (roughly 11 steps)
+[7208c9842c50f97327aac20be62edc8ad230f05c] Merge tag 'gfs2-v5.18-rc6-fixes' of git://git.kernel.org/pub/scm/linux/kernel/git/gfs2/linux-gfs2
+
+testing commit 7208c9842c50f97327aac20be62edc8ad230f05c gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 371e844c66cc096343d3a5b38b64b186c07f088dce1ba98194678f1adc37d105
+2025/04/03 11:52:52 failed to symbolize report: failed to run ["scripts/get_maintainer.pl" "--git-min-percent=15" "-f" "mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/kernel/workqueue.c"]: exit status 2
+scripts/get_maintainer.pl: file 'mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/kernel/workqueue.c' not found
+run #0: basic kernel testing failed: WARNING in process_one_work
+run #1: OK
+run #2: OK
+run #3: OK
+run #4: OK
+run #5: OK
+run #6: OK
+run #7: OK
+false negative chance: 0.000
+# git bisect good 7208c9842c50f97327aac20be62edc8ad230f05c
+Bisecting: 1292 revisions left to test after this (roughly 10 steps)
+[01f4685797a5723b0046da03c30185ac9ff42b30] eth: amd: remove NI6510 support (ni65)
+
+testing commit 01f4685797a5723b0046da03c30185ac9ff42b30 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 6f054615f89ecd363eab42a996dbbe0cc9f0be277f140ff42ae15a0b5996701d
+all runs: OK
+false negative chance: 0.000
+# git bisect good 01f4685797a5723b0046da03c30185ac9ff42b30
+Bisecting: 624 revisions left to test after this (roughly 9 steps)
+[1ef0736c0711e2633a59b540931406de626f2836] Merge https://git.kernel.org/pub/scm/linux/kernel/git/bpf/bpf-next
+
+testing commit 1ef0736c0711e2633a59b540931406de626f2836 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 70486a9c688cdcff8a0797aaf8ea8ec4ceb003cdcbc62a61bfa26ecc12d10a3c
+all runs: crashed: UBSAN: array-index-out-of-bounds in nfnetlink_unbind
+representative crash: UBSAN: array-index-out-of-bounds in nfnetlink_unbind, types: [UBSAN]
+# git bisect bad 1ef0736c0711e2633a59b540931406de626f2836
+Bisecting: 295 revisions left to test after this (roughly 8 steps)
+[d353e1a3bafd468941d42f6aa59bbd8ac42959b6] Merge tag 'wireless-next-2022-05-19' of git://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next
+
+testing commit d353e1a3bafd468941d42f6aa59bbd8ac42959b6 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: fb567e8bc281ac228538275708f0922ca8909e88898cabe8a26c8844c0604594
+all runs: crashed: UBSAN: array-index-out-of-bounds in nfnetlink_unbind
+representative crash: UBSAN: array-index-out-of-bounds in nfnetlink_unbind, types: [UBSAN]
+# git bisect bad d353e1a3bafd468941d42f6aa59bbd8ac42959b6
+Bisecting: 185 revisions left to test after this (roughly 8 steps)
+[6e144b47f560edc25744498f360835b1042b73dd] octeontx2-pf: Add support for adaptive interrupt coalescing
+
+testing commit 6e144b47f560edc25744498f360835b1042b73dd gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: f39137d2bc38ab76f174affbbfec9865bf7ed6fee49c53703c5deba4679c9031
+all runs: crashed: UBSAN: array-index-out-of-bounds in nfnetlink_unbind
+representative crash: UBSAN: array-index-out-of-bounds in nfnetlink_unbind, types: [UBSAN]
+# git bisect bad 6e144b47f560edc25744498f360835b1042b73dd
+Bisecting: 85 revisions left to test after this (roughly 7 steps)
+[1a01a0751731c807c04e81d3c19c5b782d205af7] Merge git://git.kernel.org/pub/scm/linux/kernel/git/netfilter/nf-next
+
+testing commit 1a01a0751731c807c04e81d3c19c5b782d205af7 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: dc9302c223b78abc7bcdb37410ee9b8bdea87ac686c1afffc3b1e743d01b9c81
+all runs: crashed: UBSAN: array-index-out-of-bounds in nfnetlink_unbind
+representative crash: UBSAN: array-index-out-of-bounds in nfnetlink_unbind, types: [UBSAN]
+# git bisect bad 1a01a0751731c807c04e81d3c19c5b782d205af7
+Bisecting: 49 revisions left to test after this (roughly 6 steps)
+[0f6deac3a07958195173119627502350925dce78] net: page_pool: add page allocation stats for two fast page allocate path
+
+testing commit 0f6deac3a07958195173119627502350925dce78 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: ca2597d97eb55f53a35fd0f949ec0e46e0a80d979f81edd77d7f5d7e3145dca0
+all runs: OK
+false negative chance: 0.000
+# git bisect good 0f6deac3a07958195173119627502350925dce78
+Bisecting: 20 revisions left to test after this (roughly 5 steps)
+[2c5f1536473b7530adefd09a25cf3fef2cfe01f2] Merge branch 'master' of git://git.kernel.org/pub/scm/linux/kernel/git/klassert/ipsec-next
+
+testing commit 2c5f1536473b7530adefd09a25cf3fef2cfe01f2 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: ebb6c51c8fc025b0c8a06b10dde72a248e1562563f2032aaeaea71b1db4a01de
+all runs: OK
+false negative chance: 0.000
+# git bisect good 2c5f1536473b7530adefd09a25cf3fef2cfe01f2
+Bisecting: 10 revisions left to test after this (roughly 3 steps)
+[0bcfbafbcd345f285db0c3788e6359ceac6a008c] netfilter: conntrack: avoid unconditional local_bh_disable
+
+testing commit 0bcfbafbcd345f285db0c3788e6359ceac6a008c gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: bd43a4c8464f4486f6e0fe2234b3ec575559830dff1166bd66d021d4c500a9ca
+all runs: OK
+false negative chance: 0.000
+# git bisect good 0bcfbafbcd345f285db0c3788e6359ceac6a008c
+Bisecting: 5 revisions left to test after this (roughly 3 steps)
+[8edc813111001e9be3cce066d3d4091d2ef04a1d] netfilter: prefer extension check to pointer check
+
+testing commit 8edc813111001e9be3cce066d3d4091d2ef04a1d gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 79d2b1d74f092179af3e72d843cd9678e866be71cdb8cc753bba10bd588dab03
+all runs: crashed: UBSAN: array-index-out-of-bounds in nfnetlink_unbind
+representative crash: UBSAN: array-index-out-of-bounds in nfnetlink_unbind, types: [UBSAN]
+# git bisect bad 8edc813111001e9be3cce066d3d4091d2ef04a1d
+Bisecting: 2 revisions left to test after this (roughly 1 step)
+[2794cdb0b97bfe62d25c996c8afe4832207e78bc] netfilter: nfnetlink: allow to detect if ctnetlink listeners exist
+
+testing commit 2794cdb0b97bfe62d25c996c8afe4832207e78bc gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 565fb0698a3f5c396dc3e1922dcb63e26421f3213207d8536c5ed6985f05a8e1
+all runs: crashed: UBSAN: array-index-out-of-bounds in nfnetlink_unbind
+representative crash: UBSAN: array-index-out-of-bounds in nfnetlink_unbind, types: [UBSAN]
+# git bisect bad 2794cdb0b97bfe62d25c996c8afe4832207e78bc
+Bisecting: 0 revisions left to test after this (roughly 0 steps)
+[8169ff584003c871a226719e998bb034231954d6] netfilter: conntrack: add nf_ct_iter_data object for nf_ct_iterate_cleanup*()
+
+testing commit 8169ff584003c871a226719e998bb034231954d6 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 4a4b46eabb41b55afcfd9df617790dacdd025e306f6125b966275cdf7a792c7c
+all runs: OK
+false negative chance: 0.000
+# git bisect good 8169ff584003c871a226719e998bb034231954d6
+2794cdb0b97bfe62d25c996c8afe4832207e78bc is the first bad commit
+commit 2794cdb0b97bfe62d25c996c8afe4832207e78bc
+Author: Florian Westphal <fw@strlen.de>
+Date:   Mon Apr 25 15:15:41 2022 +0200
+
+    netfilter: nfnetlink: allow to detect if ctnetlink listeners exist
+    
+    At this time, every new conntrack gets the 'event cache extension'
+    enabled for it.
+    
+    This is because the 'net.netfilter.nf_conntrack_events' sysctl defaults
+    to 1.
+    
+    Changing the default to 0 means that commands that rely on the event
+    notification extension, e.g. 'conntrack -E' or conntrackd, stop working.
+    
+    We COULD detect if there is a listener by means of
+    'nfnetlink_has_listeners()' and only add the extension if this is true.
+    
+    The downside is a dependency from conntrack module to nfnetlink module.
+    
+    This adds a different way: inc/dec a counter whenever a ctnetlink group
+    is being (un)subscribed and toggle a flag in struct net.
+    
+    Next patches will take advantage of this and will only add the event
+    extension if the flag is set.
+    
+    Signed-off-by: Florian Westphal <fw@strlen.de>
+    Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+
+ include/net/netns/conntrack.h |  1 +
+ net/netfilter/nfnetlink.c     | 40 +++++++++++++++++++++++++++++++++++++---
+ 2 files changed, 38 insertions(+), 3 deletions(-)
+
+accumulated error probability: 0.00
+culprit signature: 565fb0698a3f5c396dc3e1922dcb63e26421f3213207d8536c5ed6985f05a8e1
+parent  signature: 4a4b46eabb41b55afcfd9df617790dacdd025e306f6125b966275cdf7a792c7c
+revisions tested: 15, total time: 4h15m36.597967974s (build: 2h47m1.074320906s, test: 1h9m40.028505807s)
+first bad commit: 2794cdb0b97bfe62d25c996c8afe4832207e78bc netfilter: nfnetlink: allow to detect if ctnetlink listeners exist
+recipients (to): ["coreteam@netfilter.org" "davem@davemloft.net" "edumazet@google.com" "fw@strlen.de" "fw@strlen.de" "kadlec@netfilter.org" "kuba@kernel.org" "netdev@vger.kernel.org" "netfilter-devel@vger.kernel.org" "pabeni@redhat.com" "pablo@netfilter.org" "pablo@netfilter.org"]
+recipients (cc): ["linux-kernel@vger.kernel.org"]
+crash: UBSAN: array-index-out-of-bounds in nfnetlink_unbind
+================================================================================
+UBSAN: array-index-out-of-bounds in net/netfilter/nfnetlink.c:697:28
+index 10 is out of range for type 'int [10]'
+CPU: 1 PID: 7452 Comm: syz-executor.0 Not tainted 5.18.0-rc2-syzkaller #0
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.13.0-1ubuntu1.1 04/01/2014
+Call Trace:
+ <TASK>
+ __dump_stack mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/lib/dump_stack.c:88 [inline]
+ dump_stack_lvl+0xcd/0x134 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/lib/dump_stack.c:106
+ ubsan_epilogue+0xb/0x50 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/lib/ubsan.c:151
+ __ubsan_handle_out_of_bounds.cold+0x62/0x6c mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/lib/ubsan.c:283
+ nfnetlink_unbind+0x38c/0x3b0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/netfilter/nfnetlink.c:697
+ netlink_release+0xa8f/0x1db0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/netlink/af_netlink.c:773
+ __sock_release+0xcd/0x280 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/socket.c:650
+ sock_close+0x18/0x20 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/socket.c:1318
+ __fput+0x277/0x9d0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/fs/file_table.c:317
+ task_work_run+0xdd/0x1a0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/kernel/task_work.c:164
+ resume_user_mode_work mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/./include/linux/resume_user_mode.h:49 [inline]
+ exit_to_user_mode_loop mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/kernel/entry/common.c:169 [inline]
+ exit_to_user_mode_prepare+0x23c/0x250 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/kernel/entry/common.c:201
+ __syscall_exit_to_user_mode_work mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/kernel/entry/common.c:283 [inline]
+ syscall_exit_to_user_mode+0x19/0x60 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/kernel/entry/common.c:294
+ do_syscall_64+0x42/0xb0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/arch/x86/entry/common.c:86
+ entry_SYSCALL_64_after_hwframe+0x44/0xae
+RIP: 0033:0x7f654d8408ab
+Code: 03 00 00 00 0f 05 48 3d 00 f0 ff ff 77 41 c3 48 83 ec 18 89 7c 24 0c e8 63 fc ff ff 8b 7c 24 0c 41 89 c0 b8 03 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 2f 44 89 c7 89 44 24 0c e8 a1 fc ff ff 8b 44
+RSP: 002b:00007ffd69a09400 EFLAGS: 00000293 ORIG_RAX: 0000000000000003
+RAX: 0000000000000000 RBX: 0000000000000004 RCX: 00007f654d8408ab
+RDX: 00007f654d400178 RSI: ffffffffffffffff RDI: 0000000000000003
+RBP: 00007f654d9cd980 R08: 0000000000000000 R09: 00007f654d400000
+R10: 00007f654d400180 R11: 0000000000000293 R12: 000000000003bd7d
+R13: 00007ffd69a09500 R14: 00007f654d9cbf80 R15: 0000000000000032
+ </TASK>
+================================================================================
+
+
+UBSAN: array-index-out-of-bounds in nfnetlink_unbind
+2794cdb0b97bfe62d25c996c8afe4832207e78bc
