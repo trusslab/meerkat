@@ -295,6 +295,7 @@ Test_Result poc_loop(Environment &env)
 
     ProgOpts opts;
     opts.from_prog(env.primary_repro);
+    opts.procs = env.vmc.numProcs;
 
     VM_Config vmc;
     vmc.port = env.port.inc();
