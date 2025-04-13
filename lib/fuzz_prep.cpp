@@ -52,8 +52,7 @@ VMConfig determine_threadedness(Environment &env)
 {
     // Choose arbitrarily the first repro file
 
-    string reproducer = list_dir(env.reprodir).front();
-    int procs = get_procs_from_repro(reproducer);
+    int procs = get_procs_from_repro(env.primary_repro);
     switch (procs)
     {
     case 1:

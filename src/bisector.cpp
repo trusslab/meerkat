@@ -206,8 +206,6 @@ int bisect(Environment &env)
 
     env.port.init(START_PORT, env.id*env.vmst.numVM, PORT_RANGE);
 
-    determine_threadedness(env);
-
     bisector.init(env, linux_git);
 
     if (check_syzkaller(env) < 0)
@@ -215,6 +213,8 @@ int bisect(Environment &env)
 
     if (uniqify_reproducers(env) < 0)
         goto finish;
+
+    determine_threadedness(env);
 
     if (env.feats.ff_test)
         bisector.set_mode(Mode_FF);
