@@ -50,10 +50,8 @@ int get_procs_from_repro(const string & repro)
 
 VMConfig determine_threadedness(Environment &env)
 {
-    // Choose arbitrarily the first repro file
-
     std::string reproducer = env.primary_repro.empty() ? list_dir(env.reprodir).front() : env.primary_repro;
-    int procs = get_procs_from_repro(env.primary_repro);
+    int procs = get_procs_from_repro(reproducer);
     switch (procs)
     {
     case 1:

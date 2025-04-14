@@ -312,8 +312,8 @@ void ProgOpts::compile_execopts(std::vector<std::string> &optv) const
     if (slowdown != 1)
         optv.push_back("-slowdown="+std::to_string(slowdown));
 
-    if (segv)
-        optv.push_back("-segv");
+    //if (segv)
+        //optv.push_back("-segv");
 
     if (all_enabled())
     {
