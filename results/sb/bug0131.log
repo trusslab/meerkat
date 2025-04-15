@@ -1,0 +1,571 @@
+charm starts bisection 2025-04-13 04:16:19.84400934 -0700 PDT m=+9.330889672
+bisecting cause commit starting from 52d543b5497cf31d6baeb0bcfe5a5474c3238578
+building syzkaller on HEAD
+ensuring issue is reproducible on original commit 52d543b5497cf31d6baeb0bcfe5a5474c3238578
+
+testing commit 52d543b5497cf31d6baeb0bcfe5a5474c3238578 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 20387ddee7018105d57e20c7d6a4aa61bb1052ee66ead02429f0b54843bee266
+run #0: crashed: general protection fault in llc_ui_sendmsg
+run #1: crashed: general protection fault in llc_build_and_send_xid_pkt
+run #2: crashed: general protection fault in llc_build_and_send_xid_pkt
+run #3: crashed: general protection fault in llc_ui_sendmsg
+run #4: crashed: general protection fault in llc_ui_sendmsg
+run #5: crashed: general protection fault in llc_ui_sendmsg
+run #6: crashed: general protection fault in llc_build_and_send_xid_pkt
+run #7: crashed: general protection fault in llc_build_and_send_xid_pkt
+representative crash: general protection fault in llc_ui_sendmsg, types: [UNKNOWN]
+picked [v5.17 v5.16 v5.15 v5.13 v5.11 v5.9 v5.7 v5.5 v5.2 v4.20 v4.19] out of 20 release tags
+testing release v5.17
+testing commit f443e374ae131c168a065ea1748feac6b2e76613 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: eb1528e1cfd1b503048edad1df6ce2878bd33302f22eaaf1ff568470723321d3
+all runs: OK
+false negative chance: 0.000
+# git bisect start 52d543b5497cf31d6baeb0bcfe5a5474c3238578 f443e374ae131c168a065ea1748feac6b2e76613
+Bisecting: 5986 revisions left to test after this (roughly 12 steps)
+[7403e6d8263937dea206dd201fed1ceed190ca18] Merge tag 'vfio-v5.18-rc1' of https://github.com/awilliam/linux-vfio
+
+testing commit 7403e6d8263937dea206dd201fed1ceed190ca18 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 46cccaa54f12754ad72e39160c209eef81f88778e13207f85e53043eda49c4ef
+all runs: OK
+false negative chance: 0.000
+# git bisect good 7403e6d8263937dea206dd201fed1ceed190ca18
+Bisecting: 3045 revisions left to test after this (roughly 12 steps)
+[25fd2d41b505d0640bdfe67aa77c549de2d3c18a] selftests: kselftest framework: provide "finished" helper
+
+testing commit 25fd2d41b505d0640bdfe67aa77c549de2d3c18a gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 2b802c2024231c4c68adc73361acfca92981a7368be30257921bb346b32b05eb
+run #0: crashed: general protection fault in llc_ui_sendmsg
+run #1: crashed: general protection fault in llc_build_and_send_xid_pkt
+run #2: crashed: general protection fault in llc_build_and_send_xid_pkt
+run #3: crashed: general protection fault in llc_build_and_send_xid_pkt
+run #4: crashed: general protection fault in llc_ui_sendmsg
+run #5: crashed: general protection fault in llc_ui_sendmsg
+run #6: crashed: general protection fault in llc_build_and_send_xid_pkt
+run #7: crashed: general protection fault in llc_ui_sendmsg
+representative crash: general protection fault in llc_ui_sendmsg, types: [UNKNOWN]
+# git bisect bad 25fd2d41b505d0640bdfe67aa77c549de2d3c18a
+Bisecting: 1470 revisions left to test after this (roughly 11 steps)
+[a505cce6f7cfaf2aa2385aab7286063c96444526] net/smc: don't req_notify until all CQEs drained
+
+testing commit a505cce6f7cfaf2aa2385aab7286063c96444526 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 67a6c729ac1f795a294961c1b51ff3cc095a001a29ef23201f3b45f53f161cbb
+all runs: OK
+false negative chance: 0.000
+# git bisect good a505cce6f7cfaf2aa2385aab7286063c96444526
+Bisecting: 735 revisions left to test after this (roughly 10 steps)
+[9ba1dc994ff56f273fa9697878c6d47ad945aa44] nfp: use dev_info for the DMA mask
+
+testing commit 9ba1dc994ff56f273fa9697878c6d47ad945aa44 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 1bf8fa229030da9d05af365fe218a7acd19dff8e258d873440799a4d4022de42
+all runs: OK
+false negative chance: 0.000
+# git bisect good 9ba1dc994ff56f273fa9697878c6d47ad945aa44
+Bisecting: 367 revisions left to test after this (roughly 9 steps)
+[14e426bf1a4d77ac87d0fa2a964092a23f863e44] devlink: hold the instance lock during eswitch_mode callbacks
+
+testing commit 14e426bf1a4d77ac87d0fa2a964092a23f863e44 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 891a37ceb33be30fb13d4af521c1fc2590c087eaa718b81f55f5a7bce15a558e
+all runs: basic kernel testing failed: WARNING in __napi_schedule
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip 14e426bf1a4d77ac87d0fa2a964092a23f863e44
+Bisecting: 367 revisions left to test after this (roughly 9 steps)
+[c24f657791fd2df9d7a5491ac43b63658ea7187d] net: sparx5: fix a couple warning messages
+
+testing commit c24f657791fd2df9d7a5491ac43b63658ea7187d gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 40460abd876e9cdbba5cd4dc69fb245c7205a32d3721aac444e0119714f8fe3e
+all runs: basic kernel testing failed: WARNING in __napi_schedule
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip c24f657791fd2df9d7a5491ac43b63658ea7187d
+Bisecting: 367 revisions left to test after this (roughly 9 steps)
+[5da03b56662618ac469461df0f33a1cf1dd18813] netfilter: nft_hash: track register operations
+
+testing commit 5da03b56662618ac469461df0f33a1cf1dd18813 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 431e4e164a7309e8b3723c33b2ac505c22eae4b524565e2023d5ba72ce595858
+all runs: basic kernel testing failed: WARNING in __napi_schedule
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip 5da03b56662618ac469461df0f33a1cf1dd18813
+Bisecting: 367 revisions left to test after this (roughly 9 steps)
+[2486ab434b2c2a14e9237296db00b1e1b7ae3273] bpf, sockmap: Fix double uncharge the mem of sk_msg
+
+testing commit 2486ab434b2c2a14e9237296db00b1e1b7ae3273 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 24e0acbcfddc6560dee1cb3704f25286ff633763bf1fffc2c37ac86cdcb0300a
+all runs: OK
+false negative chance: 0.000
+# git bisect good 2486ab434b2c2a14e9237296db00b1e1b7ae3273
+Bisecting: 334 revisions left to test after this (roughly 8 steps)
+[48f1910326eaf7318cab8356302258faede4f6b5] netfilter: nft_xfrm: track register operations
+
+testing commit 48f1910326eaf7318cab8356302258faede4f6b5 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 1f331edb9ed3f256cf8a5ce7d8da1dba623780fd86bf6b2d50d2d224062289e3
+all runs: basic kernel testing failed: WARNING in __napi_schedule
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip 48f1910326eaf7318cab8356302258faede4f6b5
+Bisecting: 334 revisions left to test after this (roughly 8 steps)
+[e07a99682972a20fca25748e6fdbd3962ed3b7b8] rtw89: initialize preload window of D-MAC
+
+testing commit e07a99682972a20fca25748e6fdbd3962ed3b7b8 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: bb31de2ccd4f7b692e1c59c4fa3520a7b2282c2dafc73fbaff7ce6bfa91fa55a
+all runs: OK
+false negative chance: 0.000
+# git bisect good e07a99682972a20fca25748e6fdbd3962ed3b7b8
+Bisecting: 308 revisions left to test after this (roughly 8 steps)
+[4f3dda8b4c4be154a0dacf063156c362268f5288] s390/ctcm: fix typo "length to short" -> "length too short"
+
+testing commit 4f3dda8b4c4be154a0dacf063156c362268f5288 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 631584e08243d24cf0d134afbe3d2217fc6e951df5630342ba5750c70d783791
+all runs: basic kernel testing failed: WARNING in __napi_schedule
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip 4f3dda8b4c4be154a0dacf063156c362268f5288
+Bisecting: 308 revisions left to test after this (roughly 8 steps)
+[05fc65f3f5e45e8194e16b8e43e92133ada06e26] ptp: ocp: Fix PTP_PF_* verification requests
+
+testing commit 05fc65f3f5e45e8194e16b8e43e92133ada06e26 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 83e6eec978da929bcd8551114f2e31b18f67d92347d7a79d2c6f2544c11acabb
+all runs: basic kernel testing failed: WARNING in __napi_schedule
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip 05fc65f3f5e45e8194e16b8e43e92133ada06e26
+Bisecting: 308 revisions left to test after this (roughly 8 steps)
+[4c905f6740a365464e91467aa50916555b28213d] netfilter: nf_tables: initialize registers in nft_do_chain()
+
+testing commit 4c905f6740a365464e91467aa50916555b28213d gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: b9eb22ca1d1e1fcac5e4c7c10ccbff3e651024b669246218541763df227d96f8
+all runs: OK
+false negative chance: 0.000
+# git bisect good 4c905f6740a365464e91467aa50916555b28213d
+Bisecting: 306 revisions left to test after this (roughly 8 steps)
+[e94b99a40b997b547862d35ca05c7c6925a2ccfa] ar5523: fix typo "to short" -> "too short"
+
+testing commit e94b99a40b997b547862d35ca05c7c6925a2ccfa gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: e610fcf7e7d39b2f1bc9ef4db487834b4cfd0c8086b775fae4725b4586fdf4bc
+all runs: basic kernel testing failed: WARNING in __napi_schedule
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip e94b99a40b997b547862d35ca05c7c6925a2ccfa
+Bisecting: 306 revisions left to test after this (roughly 8 steps)
+[ad13baf4569152b00de11949b8c93aaa83c1243f] selftests/bpf: Test subprog jit when toggle bpf_jit_harden repeatedly
+
+testing commit ad13baf4569152b00de11949b8c93aaa83c1243f gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: dc9820975c055315ccc1a41c256d0f51a8a3feb251b67b295d92e58d7eaca250
+all runs: OK
+false negative chance: 0.000
+# git bisect good ad13baf4569152b00de11949b8c93aaa83c1243f
+Bisecting: 301 revisions left to test after this (roughly 8 steps)
+[c10d12e3dce8efc24af2478d45b0313796b20387] nfp: add support for NFDK data path
+
+testing commit c10d12e3dce8efc24af2478d45b0313796b20387 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: a4b5dd4192ba71ffb0357f4e397406eb86fd7ec385873d92f6a715de4829d18c
+all runs: basic kernel testing failed: WARNING in __napi_schedule
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip c10d12e3dce8efc24af2478d45b0313796b20387
+Bisecting: 301 revisions left to test after this (roughly 8 steps)
+[e7ce7500375a63348e1d3a703c8d5003cbe3fea6] kasan: no need to unset panic_on_warn in end_report()
+
+testing commit e7ce7500375a63348e1d3a703c8d5003cbe3fea6 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 2b56b403b5599e164fc2ba026fff1f73c9639ea8370123b7dfef71b0b033d3d9
+all runs: OK
+false negative chance: 0.000
+# git bisect good e7ce7500375a63348e1d3a703c8d5003cbe3fea6
+Bisecting: 284 revisions left to test after this (roughly 8 steps)
+[e86dbdb9d4619c3fd9b2ccec159ae1ca41e8ac36] netfilter: nft_exthdr: add reduce support
+
+testing commit e86dbdb9d4619c3fd9b2ccec159ae1ca41e8ac36 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 16c07a0684a65deee78bc838290f32756c209d459a8663cd40634ab331e24939
+all runs: basic kernel testing failed: WARNING in __napi_schedule
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip e86dbdb9d4619c3fd9b2ccec159ae1ca41e8ac36
+Bisecting: 284 revisions left to test after this (roughly 8 steps)
+[37b63c68194d09d358c8abd73692adf9a6ceaad3] Bluetooth: msft: Clear tracked devices on resume
+
+testing commit 37b63c68194d09d358c8abd73692adf9a6ceaad3 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: d4ac092a85020be2f628d4595246e1342d0d17a709d7ac67408fb4e405535849
+all runs: basic kernel testing failed: WARNING in __napi_schedule
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip 37b63c68194d09d358c8abd73692adf9a6ceaad3
+Bisecting: 284 revisions left to test after this (roughly 8 steps)
+[49d9977ac909a98a9bbd689a64b1d872ac10215b] kasan: check CONFIG_KASAN_KUNIT_TEST instead of CONFIG_KUNIT
+
+testing commit 49d9977ac909a98a9bbd689a64b1d872ac10215b gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 7c7a612238760fda21da5c69fa83d217481e0fd79eaaa217b4a0cfdd30432f45
+run #0: crashed: general protection fault in llc_ui_sendmsg
+run #1: crashed: general protection fault in llc_ui_sendmsg
+run #2: crashed: general protection fault in llc_ui_sendmsg
+run #3: crashed: general protection fault in llc_ui_sendmsg
+run #4: crashed: general protection fault in llc_build_and_send_xid_pkt
+run #5: crashed: general protection fault in llc_ui_sendmsg
+run #6: crashed: general protection fault in llc_ui_sendmsg
+run #7: crashed: general protection fault in llc_build_and_send_xid_pkt
+representative crash: general protection fault in llc_ui_sendmsg, types: [UNKNOWN]
+# git bisect bad 49d9977ac909a98a9bbd689a64b1d872ac10215b
+Bisecting: 267 revisions left to test after this (roughly 8 steps)
+[092d992b76ed9d06389af0bc5efd5279d7b1ed9f] Merge tag 'mlx5-updates-2022-03-18' of git://git.kernel.org/pub/scm/linux/kernel/git/saeed/linux
+
+testing commit 092d992b76ed9d06389af0bc5efd5279d7b1ed9f gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: b6aa05ccbea85a75fa138e12e0eb63a51a0fb8e676f49dc1cff1f536f521853f
+all runs: basic kernel testing failed: WARNING in __napi_schedule
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip 092d992b76ed9d06389af0bc5efd5279d7b1ed9f
+Bisecting: 267 revisions left to test after this (roughly 8 steps)
+[12a18341b5c3b6b897e52e8f387ab7cd7f7b6d85] mptcp: send ADD_ADDR echo before create subflows
+
+testing commit 12a18341b5c3b6b897e52e8f387ab7cd7f7b6d85 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 97b695e0b444ccb6e9136e154e4daa3d1a9fc322744ecfcd9ea5bd9b3578f9cc
+all runs: basic kernel testing failed: WARNING in __napi_schedule
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip 12a18341b5c3b6b897e52e8f387ab7cd7f7b6d85
+Bisecting: 267 revisions left to test after this (roughly 8 steps)
+[00a57e2959bd74e87a0e21dce746762d2f9c1987] ice: remove unused definitions from ice_sriov.h
+
+testing commit 00a57e2959bd74e87a0e21dce746762d2f9c1987 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 6b878624ba3b8db543df55ebebd6d375fe15afb5d9a87effe1962bf5a823bdae
+all runs: basic kernel testing failed: WARNING in __napi_schedule
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip 00a57e2959bd74e87a0e21dce746762d2f9c1987
+Bisecting: 267 revisions left to test after this (roughly 8 steps)
+[c090451633f89c292316e928f970d082d7e8295f] net/mlx5e: Remove assignment of inline_hdr.sz on XDP TX
+
+testing commit c090451633f89c292316e928f970d082d7e8295f gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 2263af3270aeac5b1f4723e671d7bb24ca0626f6bb01d93fa2a7d79022cc917e
+all runs: basic kernel testing failed: WARNING in __napi_schedule
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip c090451633f89c292316e928f970d082d7e8295f
+Bisecting: 267 revisions left to test after this (roughly 8 steps)
+[5bd9bae22a455321327982d0b595a7e76d425fd0] kasan: reorder vmalloc hooks
+
+testing commit 5bd9bae22a455321327982d0b595a7e76d425fd0 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: f61f5f024c3b16450f8959d3db4407336061a35aee801ba474fec86dcd5aaf09
+run #0: crashed: general protection fault in llc_build_and_send_xid_pkt
+run #1: crashed: general protection fault in llc_build_and_send_xid_pkt
+run #2: crashed: general protection fault in llc_build_and_send_xid_pkt
+run #3: crashed: general protection fault in llc_ui_sendmsg
+run #4: crashed: general protection fault in llc_ui_sendmsg
+run #5: crashed: general protection fault in llc_ui_sendmsg
+run #6: crashed: general protection fault in llc_ui_sendmsg
+run #7: crashed: general protection fault in llc_ui_sendmsg
+representative crash: general protection fault in llc_build_and_send_xid_pkt, types: [UNKNOWN]
+# git bisect bad 5bd9bae22a455321327982d0b595a7e76d425fd0
+Bisecting: 251 revisions left to test after this (roughly 8 steps)
+[62f65554f5cffb17234e2b267d6376efc561d1c0] Merge branch 'master' of git://git.kernel.org/pub/scm/linux/kernel/git/klassert/ ipsec-next
+
+testing commit 62f65554f5cffb17234e2b267d6376efc561d1c0 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 7bc12bd7f3ccb8bf0daee1da56e30f5758a5db6dd537320a1f77e9cef8aeeec4
+all runs: basic kernel testing failed: WARNING in __napi_schedule
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip 62f65554f5cffb17234e2b267d6376efc561d1c0
+Bisecting: 251 revisions left to test after this (roughly 8 steps)
+[90647d9d725068ad27d39f80d2b4a5150d041038] selftest/vm: add util.h and and move helper functions there
+
+testing commit 90647d9d725068ad27d39f80d2b4a5150d041038 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: b181000c8437fd381887296e456e2d823321599d2ba86f54590b081ce395db9b
+run #0: crashed: general protection fault in llc_build_and_send_xid_pkt
+run #1: crashed: general protection fault in llc_build_and_send_xid_pkt
+run #2: crashed: general protection fault in llc_build_and_send_xid_pkt
+run #3: crashed: general protection fault in llc_build_and_send_xid_pkt
+run #4: crashed: general protection fault in llc_ui_sendmsg
+run #5: crashed: general protection fault in llc_build_and_send_xid_pkt
+run #6: crashed: general protection fault in llc_ui_sendmsg
+run #7: crashed: general protection fault in llc_ui_sendmsg
+representative crash: general protection fault in llc_build_and_send_xid_pkt, types: [UNKNOWN]
+# git bisect bad 90647d9d725068ad27d39f80d2b4a5150d041038
+Bisecting: 240 revisions left to test after this (roughly 8 steps)
+[726c0eb7cb15be3e5fe9a9f1c8aad12c5cbe4675] Bluetooth: ath3k: remove superfluous header files
+
+testing commit 726c0eb7cb15be3e5fe9a9f1c8aad12c5cbe4675 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: d3f6fad6f3140e0ffacb3ec6fbaff4bd013b026935dd6797f3a0a04ab65e8db4
+all runs: basic kernel testing failed: WARNING in __napi_schedule
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip 726c0eb7cb15be3e5fe9a9f1c8aad12c5cbe4675
+Bisecting: 240 revisions left to test after this (roughly 8 steps)
+[f54fd0e163068ced4d0d27db64cd3cbda95b74e4] net: bridge: mst: Add helper to query a port's MST state
+
+testing commit f54fd0e163068ced4d0d27db64cd3cbda95b74e4 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 61bab67826c423734c3578122284f5844ab6aa337b17fd5f94860771f1794613
+all runs: basic kernel testing failed: WARNING in __napi_schedule
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip f54fd0e163068ced4d0d27db64cd3cbda95b74e4
+Bisecting: 240 revisions left to test after this (roughly 8 steps)
+[e907341dab1bf4eb3c6cbdf79d125b2eee51058c] mt76: mt7921: fix xmit-queue dump for usb and sdio
+
+testing commit e907341dab1bf4eb3c6cbdf79d125b2eee51058c gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: e375cdb008fbc21946791defd1be81ef9cffa18292ef78290e892997b8dd51a1
+all runs: OK
+false negative chance: 0.000
+# git bisect good e907341dab1bf4eb3c6cbdf79d125b2eee51058c
+Bisecting: 234 revisions left to test after this (roughly 8 steps)
+[53fb430e2070dd2d87f7bd978973d04303d1876a] Merge tag 'for-net-next-2022-03-18' of git://git.kernel.org/pub/scm/linux/kernel/git/bluetooth/bluetooth-next
+
+testing commit 53fb430e2070dd2d87f7bd978973d04303d1876a gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: e6df5d4caf6a71a63f854520a05a68f09e7d104d191024e89204fdb7982947a1
+all runs: basic kernel testing failed: WARNING in __napi_schedule
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip 53fb430e2070dd2d87f7bd978973d04303d1876a
+Bisecting: 234 revisions left to test after this (roughly 8 steps)
+[b94b6a1342ccce016f1139af32adc3b6bfab9656] nfp: add per-data path feature mask
+
+testing commit b94b6a1342ccce016f1139af32adc3b6bfab9656 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: f2e31d7efc72b058e5883835a081ef687ffa7a40294f21428bff36586d7b9214
+all runs: basic kernel testing failed: WARNING in __napi_schedule
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip b94b6a1342ccce016f1139af32adc3b6bfab9656
+Bisecting: 234 revisions left to test after this (roughly 8 steps)
+[f92fcb5c00dc924a4661d5bf68de7937040f26b8] Merge branch 'ice-avoid-sleeping-scheduling-in-atomic-contexts'
+
+testing commit f92fcb5c00dc924a4661d5bf68de7937040f26b8 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 07ff0aa13c1bf5a94a246cd1ad3d79f4ef42655041db1e0aa32a2e1e36a1b913
+all runs: OK
+false negative chance: 0.000
+# git bisect good f92fcb5c00dc924a4661d5bf68de7937040f26b8
+Bisecting: 223 revisions left to test after this (roughly 8 steps)
+[a76d269a4e86cfd7d4441e40adccfa67808fe6fa] Bluetooth: btmtkuart: fix error handling in mtk_hci_wmt_sync()
+
+testing commit a76d269a4e86cfd7d4441e40adccfa67808fe6fa gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: d184e96447e8e081ec45d972e80d270e34537836def1868bd17146e0d525d171
+all runs: basic kernel testing failed: WARNING in __napi_schedule
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip a76d269a4e86cfd7d4441e40adccfa67808fe6fa
+Bisecting: 223 revisions left to test after this (roughly 8 steps)
+[a53cbe5d628c0cbaa76b23a292c6b32e6c2ddcfe] net: dsa: felix: allow PHY_INTERFACE_MODE_INTERNAL on port 5
+
+testing commit a53cbe5d628c0cbaa76b23a292c6b32e6c2ddcfe gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 2d5d2e772eaa3eb02307ffcd273df355e8e58948b857a812a16ac9f0d44f0148
+all runs: OK
+false negative chance: 0.000
+# git bisect good a53cbe5d628c0cbaa76b23a292c6b32e6c2ddcfe
+Bisecting: 64 revisions left to test after this (roughly 6 steps)
+[d56c9fe6a06820d5ef8188d96bf4345c7bdba249] bpf: Fix warning for cast from restricted gfp_t in verifier
+
+testing commit d56c9fe6a06820d5ef8188d96bf4345c7bdba249 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 0385064f4e081a9f0927c7c36d394e0d3c4cca7f9414bcbeff783c441aae6670
+all runs: boot failed: WARNING in bpf_prog_pack_free
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip d56c9fe6a06820d5ef8188d96bf4345c7bdba249
+Bisecting: 64 revisions left to test after this (roughly 6 steps)
+[46e9244b2563cc53acc63b57f5eb2999fa729c60] Merge branch 'Make 2-byte access to bpf_sk_lookup->remote_port endian-agnostic'
+
+testing commit 46e9244b2563cc53acc63b57f5eb2999fa729c60 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: f5c778cdc9240852833590978c113d787fa8a5bd28c6a008325750c9c395c62f
+all runs: boot failed: KASAN: null-ptr-deref Write in register_btf_kfunc_id_set
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip 46e9244b2563cc53acc63b57f5eb2999fa729c60
+Bisecting: 64 revisions left to test after this (roughly 6 steps)
+[515a49173b80a4aabcbad9a4fa2a247042378ea1] ARM: rethook: Add rethook arm implementation
+
+testing commit 515a49173b80a4aabcbad9a4fa2a247042378ea1 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: e43de72f50775ff4d71eec65c1ee6360813168caf8a3cab34ff81daf5056654e
+all runs: OK
+false negative chance: 0.000
+# git bisect good 515a49173b80a4aabcbad9a4fa2a247042378ea1
+Bisecting: 58 revisions left to test after this (roughly 6 steps)
+[0f8f8030038ae37c32a233186caab2c381396784] Revert "arm64: rethook: Add arm64 rethook implementation"
+
+testing commit 0f8f8030038ae37c32a233186caab2c381396784 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 0538ce501e5465009ae1937e17e16ab87b8aac83624496f3484b0dde1bf8e123
+all runs: OK
+false negative chance: 0.000
+# git bisect good 0f8f8030038ae37c32a233186caab2c381396784
+Bisecting: 31 revisions left to test after this (roughly 5 steps)
+[169e77764adc041b1dacba84ea90516a895d43b2] Merge tag 'net-next-5.18' of git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net-next
+
+testing commit 169e77764adc041b1dacba84ea90516a895d43b2 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: eaf1aace4fd507b8c92332918d587dc4c57d3b545962821749542272f1491d15
+run #0: crashed: general protection fault in llc_ui_sendmsg
+run #1: crashed: general protection fault in llc_ui_sendmsg
+run #2: crashed: general protection fault in llc_ui_sendmsg
+run #3: crashed: general protection fault in llc_build_and_send_xid_pkt
+run #4: crashed: general protection fault in llc_ui_sendmsg
+run #5: crashed: general protection fault in llc_build_and_send_xid_pkt
+run #6: crashed: general protection fault in llc_build_and_send_xid_pkt
+run #7: OK
+representative crash: general protection fault in llc_ui_sendmsg, types: [UNKNOWN]
+# git bisect bad 169e77764adc041b1dacba84ea90516a895d43b2
+Bisecting: 11 revisions left to test after this (roughly 4 steps)
+[0db8640df59512dbd423c32077919f10cf35ebc6] Merge https://git.kernel.org/pub/scm/linux/kernel/git/bpf/bpf-next
+
+testing commit 0db8640df59512dbd423c32077919f10cf35ebc6 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: d1e241e2e619a0508a55d93f711a699558dee5d322d93b25b67d22f7904e6dc9
+all runs: OK
+false negative chance: 0.000
+# git bisect good 0db8640df59512dbd423c32077919f10cf35ebc6
+Bisecting: 5 revisions left to test after this (roughly 3 steps)
+[4a6806cfcbca2cd7bae94b2d4244dab3aaa1b333] net: marvell: prestera: add missing destroy_workqueue() in prestera_module_init()
+
+testing commit 4a6806cfcbca2cd7bae94b2d4244dab3aaa1b333 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: aac6c94a61118cf15770fd2394a4488de88a82e5cb463571cff8184f002b15f4
+all runs: OK
+false negative chance: 0.000
+# git bisect good 4a6806cfcbca2cd7bae94b2d4244dab3aaa1b333
+Bisecting: 2 revisions left to test after this (roughly 2 steps)
+[2844e2434385819f674d1fb4130c308c50ba681e] drivers: ethernet: cpsw: fix panic when interrupt coaleceing is set via ethtool
+
+testing commit 2844e2434385819f674d1fb4130c308c50ba681e gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 0615f5e6bccd3cb8856c8e809d88120f6d663cc09d3e7e084f2d5d7a2893b996
+all runs: OK
+false negative chance: 0.000
+# git bisect good 2844e2434385819f674d1fb4130c308c50ba681e
+Bisecting: 1 revision left to test after this (roughly 1 step)
+[764f4eb6846f5475f1244767d24d25dd86528a4a] llc: fix netdevice reference leaks in llc_ui_bind()
+
+testing commit 764f4eb6846f5475f1244767d24d25dd86528a4a gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: af01a45df06c9eeec0de624849c5a4697b54bbeddfb94bae7db1db7648a8a6b8
+run #0: crashed: general protection fault in llc_build_and_send_xid_pkt
+run #1: crashed: general protection fault in llc_build_and_send_xid_pkt
+run #2: crashed: general protection fault in llc_build_and_send_xid_pkt
+run #3: crashed: general protection fault in llc_build_and_send_xid_pkt
+run #4: crashed: general protection fault in llc_ui_sendmsg
+run #5: crashed: general protection fault in llc_ui_sendmsg
+run #6: crashed: general protection fault in llc_build_and_send_xid_pkt
+run #7: crashed: general protection fault in llc_ui_sendmsg
+representative crash: general protection fault in llc_build_and_send_xid_pkt, types: [UNKNOWN]
+# git bisect bad 764f4eb6846f5475f1244767d24d25dd86528a4a
+764f4eb6846f5475f1244767d24d25dd86528a4a is the first bad commit
+commit 764f4eb6846f5475f1244767d24d25dd86528a4a
+Author: Eric Dumazet <edumazet@google.com>
+Date:   Tue Mar 22 17:41:47 2022 -0700
+
+    llc: fix netdevice reference leaks in llc_ui_bind()
+    
+    Whenever llc_ui_bind() and/or llc_ui_autobind()
+    took a reference on a netdevice but subsequently fail,
+    they must properly release their reference
+    or risk the infamous message from unregister_netdevice()
+    at device dismantle.
+    
+    unregister_netdevice: waiting for eth0 to become free. Usage count = 3
+    
+    Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+    Signed-off-by: Eric Dumazet <edumazet@google.com>
+    Reported-by: 赵子轩 <beraphin@gmail.com>
+    Reported-by: Stoyan Manolov <smanolov@suse.de>
+    Link: https://lore.kernel.org/r/20220323004147.1990845-1-eric.dumazet@gmail.com
+    Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+
+ net/llc/af_llc.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
+
+accumulated error probability: 0.00
+culprit signature: af01a45df06c9eeec0de624849c5a4697b54bbeddfb94bae7db1db7648a8a6b8
+parent  signature: 0615f5e6bccd3cb8856c8e809d88120f6d663cc09d3e7e084f2d5d7a2893b996
+revisions tested: 46, total time: 10h30m16.659899476s (build: 6h22m23.589364045s, test: 3h17m32.96631077s)
+first bad commit: 764f4eb6846f5475f1244767d24d25dd86528a4a llc: fix netdevice reference leaks in llc_ui_bind()
+recipients (to): ["davem@davemloft.net" "edumazet@google.com" "kuba@kernel.org" "kuba@kernel.org" "linux-kernel@vger.kernel.org" "pabeni@redhat.com"]
+recipients (cc): ["netdev@vger.kernel.org"]
+crash: general protection fault in llc_build_and_send_xid_pkt
+general protection fault, probably for non-canonical address 0xdffffc0000000070: 0000 [#1] PREEMPT SMP KASAN
+KASAN: null-ptr-deref in range [0x0000000000000380-0x0000000000000387]
+CPU: 1 PID: 9008 Comm: syz.0.17 Not tainted 5.17.0-rc8-syzkaller #0
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.13.0-1ubuntu1.1 04/01/2014
+RIP: 0010:llc_build_and_send_xid_pkt+0xda/0x1f0 net/llc/llc_sap.c:264
+Code: 48 c1 ea 03 80 3c 02 00 0f 85 20 01 00 00 48 b8 00 00 00 00 00 fc ff df 48 8b 5d 10 48 8d bb 80 03 00 00 48 89 fa 48 c1 ea 03 <80> 3c 02 00 0f 85 f0 00 00 00 48 8b b3 80 03 00 00 48 8d 7d 2e ba
+RSP: 0018:ffffc9000318f898 EFLAGS: 00010202
+RAX: dffffc0000000000 RBX: 0000000000000000 RCX: 0000000000000000
+RDX: 0000000000000070 RSI: ffffffff87479ad8 RDI: 0000000000000380
+RBP: ffff888105945500 R08: 0000000000000000 R09: 0000000000000008
+R10: ffffffff874812f8 R11: 0000000000000000 R12: ffff88810c119000
+R13: ffff88810c118510 R14: 00000000000000c2 R15: 0000000000000000
+FS:  00007ff65b33b700(0000) GS:ffff888135c00000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007ff65b319d38 CR3: 00000001214d3000 CR4: 0000000000350ee0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+ <TASK>
+ llc_ui_sendmsg+0xa6f/0x10c0 net/llc/af_llc.c:979
+ sock_sendmsg_nosec net/socket.c:705 [inline]
+ sock_sendmsg+0xcf/0x120 net/socket.c:725
+ ____sys_sendmsg+0x331/0x810 net/socket.c:2413
+ ___sys_sendmsg+0xf3/0x170 net/socket.c:2467
+ __sys_sendmmsg+0x195/0x470 net/socket.c:2553
+ __do_sys_sendmmsg net/socket.c:2582 [inline]
+ __se_sys_sendmmsg net/socket.c:2579 [inline]
+ __x64_sys_sendmmsg+0x99/0x100 net/socket.c:2579
+ do_syscall_x64 arch/x86/entry/common.c:50 [inline]
+ do_syscall_64+0x35/0xb0 arch/x86/entry/common.c:80
+ entry_SYSCALL_64_after_hwframe+0x44/0xae
+RIP: 0033:0x7ff65c10c0bd
+Code: 02 b8 ff ff ff ff c3 66 0f 1f 44 00 00 f3 0f 1e fa 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 b0 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007ff65b33ab88 EFLAGS: 00000246 ORIG_RAX: 0000000000000133
+RAX: ffffffffffffffda RBX: 00007ff65c324080 RCX: 00007ff65c10c0bd
+RDX: 03fffffffffffeed RSI: 0000200000001380 RDI: 0000000000000004
+RBP: 00007ff65c18fc7e R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+R13: 0000000000000001 R14: 00007fff05797120 R15: 00007ff65b33ad40
+ </TASK>
+Modules linked in:
+---[ end trace 0000000000000000 ]---
+RIP: 0010:llc_build_and_send_xid_pkt+0xda/0x1f0 net/llc/llc_sap.c:264
+Code: 48 c1 ea 03 80 3c 02 00 0f 85 20 01 00 00 48 b8 00 00 00 00 00 fc ff df 48 8b 5d 10 48 8d bb 80 03 00 00 48 89 fa 48 c1 ea 03 <80> 3c 02 00 0f 85 f0 00 00 00 48 8b b3 80 03 00 00 48 8d 7d 2e ba
+RSP: 0018:ffffc9000318f898 EFLAGS: 00010202
+RAX: dffffc0000000000 RBX: 0000000000000000 RCX: 0000000000000000
+RDX: 0000000000000070 RSI: ffffffff87479ad8 RDI: 0000000000000380
+RBP: ffff888105945500 R08: 0000000000000000 R09: 0000000000000008
+R10: ffffffff874812f8 R11: 0000000000000000 R12: ffff88810c119000
+R13: ffff88810c118510 R14: 00000000000000c2 R15: 0000000000000000
+FS:  00007ff65b33b700(0000) GS:ffff888135c00000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007fe505860000 CR3: 00000001214d3000 CR4: 0000000000350ee0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+----------------
+Code disassembly (best guess):
+   0:	48 c1 ea 03          	shr    $0x3,%rdx
+   4:	80 3c 02 00          	cmpb   $0x0,(%rdx,%rax,1)
+   8:	0f 85 20 01 00 00    	jne    0x12e
+   e:	48 b8 00 00 00 00 00 	movabs $0xdffffc0000000000,%rax
+  15:	fc ff df
+  18:	48 8b 5d 10          	mov    0x10(%rbp),%rbx
+  1c:	48 8d bb 80 03 00 00 	lea    0x380(%rbx),%rdi
+  23:	48 89 fa             	mov    %rdi,%rdx
+  26:	48 c1 ea 03          	shr    $0x3,%rdx
+* 2a:	80 3c 02 00          	cmpb   $0x0,(%rdx,%rax,1) <-- trapping instruction
+  2e:	0f 85 f0 00 00 00    	jne    0x124
+  34:	48 8b b3 80 03 00 00 	mov    0x380(%rbx),%rsi
+  3b:	48 8d 7d 2e          	lea    0x2e(%rbp),%rdi
+  3f:	ba                   	.byte 0xba
+
+
+general protection fault in llc_ui_sendmsg
+764f4eb6846f5475f1244767d24d25dd86528a4a
