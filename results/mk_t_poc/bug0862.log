@@ -1,4 +1,4 @@
-./bin/bisector -i 5 -c /home/syzretrospector/syzinspector/wd-bisector-5/bisector.cfg -a 58390c8ce1bddb6c623f62e7ed36383e7fa5c02f -F poc-test,poc-all-pocs
+./bin/bisector -i 1 -c /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/bisector.cfg -a 58390c8ce1bddb6c623f62e7ed36383e7fa5c02f -F poc-test,poc-all-pocs
 Bisecting:          KASAN: slab-out-of-bounds Read in xfs_getbmap
 Syzbot Link:        https://syzkaller.appspot.com/bug?extid=c103d3808a0de5faaf80
 Working Name:       bug0862
@@ -10,21 +10,21 @@ Repository:         https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/lin
 Branch:             master
 Arch:               amd64
 
-Bisector:           /home/syzretrospector/syzinspector/
-Version:            1.0.4
-Kernel:             /home/syzretrospector/syzinspector/wd-bisector-5/kernel/
-Syzkaller:          /home/syzretrospector/syzinspector/syzkaller/
-Compilers:          /home/syzretrospector/compilers/
+Bisector:           /mnt/sdd/jtbursey/SyzInspector/
+Version:            1.0.5
+Kernel:             /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/kernel/
+Syzkaller:          /mnt/sdd/jtbursey/SyzInspector/syzkaller/
+Compilers:          /mnt/sda/jtbursey/SyzInspector/compilers/
 Ccache:             ccache
-Image:              /home/syzretrospector/images/stretch/stretch.img
-Image Key:          /home/syzretrospector/images/stretch/stretch.id_rsa
+Image:              /mnt/sda/jtbursey/SyzInspector/image/stretch/stretch.img
+Image Key:          /mnt/sda/jtbursey/SyzInspector/image/stretch/stretch.id_rsa
 
-Workdir:            /home/syzretrospector/syzinspector/wd-bisector-5/
-Kconfig:            /home/syzretrospector/syzinspector/wd-bisector-5/config-bug0862.txt
-Reproducers: (1)    /home/syzretrospector/syzinspector/wd-bisector-5/reproducers/
-Primary PoC:        /home/syzretrospector/syzinspector/wd-bisector-5/reproducers/repro-bug0862-1.prog
-Syzkaller Workdir:  /home/syzretrospector/syzinspector/wd-bisector-5/wd-kaller/
-Log Directory:      /home/syzretrospector/syzinspector/wd-bisector-5/log/
+Workdir:            /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/
+Kconfig:            /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/config-bug0862.txt
+Reproducers: (1)    /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/reproducers/
+Primary PoC:        /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/reproducers/repro-bug0862-1.prog
+Syzkaller Workdir:  /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/wd-kaller/
+Log Directory:      /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/log/
 
 VM Count:           8
 CPU Count:          2
@@ -34,10 +34,43 @@ Make Procs:         16
 
 ==== Anchor Commit ====
 
-2025-03-21 05:35:03
+2025-04-15 22:01:58
 Session:   1
 Kernel:    2023-04-30 - 58390c8ce1bddb6c623f62e7ed36383e7fa5c02f
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 0:
+*** KASAN: slab-out-of-bounds Read in xfs_getbmap
+    kernel panic: KASAN: panic_on_warn set ...
+Attempt 1:
+*** KASAN: slab-out-of-bounds Read in xfs_getbmap
+    kernel panic: KASAN: panic_on_warn set ...
+Attempt 2:
+*** KASAN: slab-out-of-bounds Read in xfs_getbmap
+    kernel panic: KASAN: panic_on_warn set ...
+Attempt 3:
+*** KASAN: slab-out-of-bounds Read in xfs_getbmap
+    kernel panic: KASAN: panic_on_warn set ...
+Attempt 4:
+*** KASAN: slab-out-of-bounds Read in xfs_getbmap
+    kernel panic: KASAN: panic_on_warn set ...
+Attempt 5:
+*** KASAN: slab-out-of-bounds Read in xfs_getbmap
+    kernel panic: KASAN: panic_on_warn set ...
+Attempt 6:
+*** KASAN: slab-out-of-bounds Read in xfs_getbmap
+    kernel panic: KASAN: panic_on_warn set ...
+Attempt 7:
+*** KASAN: slab-out-of-bounds Read in xfs_getbmap
+    kernel panic: KASAN: panic_on_warn set ...
+The bug was found.
+
+==== Major Release Search ====
+19 Releases
+
+2025-04-15 22:30:59
+Session:   2
+Kernel:    2023-04-23 - 457391b0380335d5e9a5babdec90ac53928b23b4 (v6.3)
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
 Attempt 0:
     No crashes found.
 Attempt 1:
@@ -55,12 +88,364 @@ Attempt 6:
 Attempt 7:
     No crashes found.
 The bug was not found.
+About 18 releases remaining
 
-Failure: This bug cannot be found at the anchor commit.
+==== Kernel Bisection ====
+12048 Linux commits
 
-==== Partial Result: Primary PoC Test ====
-Reproducer:           /home/syzretrospector/syzinspector/wd-bisector-5/reproducers/repro-bug0862-1.prog
-Bisection Result:     Failed to reproduce at the anchor commit.
-Stage Time:           0h23m59s
-Run Time:             0h24m0s
-==========================================
+2025-04-15 23:00:58
+Session:   3
+Kernel:    2023-04-26 - b68ee1c6131c540a62ecd443be89c406401df091
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+About 6408 commits remaining
+
+2025-04-15 23:34:43
+Session:   4
+Kernel:    2023-04-27 - fc2e58b8b7c94b8fe23977775550de00472f6a74
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+About 3110 commits remaining
+
+2025-04-16 00:06:42
+Session:   5
+Kernel:    2023-04-27 - 7fa8a8ee9400fe8ec188426e40e481717bc5e924
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+About 1479 commits remaining
+
+2025-04-16 00:39:30
+Session:   6
+Kernel:    2023-04-29 - 1ae78a14516b9372e4c90a89ac21b259339a3a3a
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 0:
+*** KASAN: slab-out-of-bounds Read in xfs_getbmap
+    kernel panic: KASAN: panic_on_warn set ...
+Attempt 1:
+*** KASAN: slab-out-of-bounds Read in xfs_getbmap
+    kernel panic: KASAN: panic_on_warn set ...
+Attempt 2:
+*** KASAN: slab-out-of-bounds Read in xfs_getbmap
+    kernel panic: KASAN: panic_on_warn set ...
+Attempt 3:
+*** KASAN: slab-out-of-bounds Read in xfs_getbmap
+    kernel panic: KASAN: panic_on_warn set ...
+Attempt 4:
+*** KASAN: slab-out-of-bounds Read in xfs_getbmap
+    kernel panic: KASAN: panic_on_warn set ...
+Attempt 5:
+*** KASAN: slab-out-of-bounds Read in xfs_getbmap
+    kernel panic: KASAN: panic_on_warn set ...
+Attempt 6:
+*** KASAN: slab-out-of-bounds Read in xfs_getbmap
+    kernel panic: KASAN: panic_on_warn set ...
+Attempt 7:
+*** KASAN: slab-out-of-bounds Read in xfs_getbmap
+    kernel panic: KASAN: panic_on_warn set ...
+The bug was found.
+About 733 commits remaining
+
+2025-04-16 01:05:55
+Session:   7
+Kernel:    2023-04-28 - 70cc1b5307e8ee3076fdf2ecbeb89eb973aa0ff7
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+About 348 commits remaining
+
+2025-04-16 01:37:52
+Session:   8
+Kernel:    2023-04-27 - 9419092fb2630c30e4ffeb9ef61007ef0c61827a
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 0:
+*** KASAN: slab-out-of-bounds Read in xfs_getbmap
+    kernel panic: KASAN: panic_on_warn set ...
+Attempt 1:
+*** KASAN: slab-out-of-bounds Read in xfs_getbmap
+    kernel panic: KASAN: panic_on_warn set ...
+Attempt 2:
+*** KASAN: slab-out-of-bounds Read in xfs_getbmap
+    kernel panic: KASAN: panic_on_warn set ...
+Attempt 3:
+*** KASAN: slab-out-of-bounds Read in xfs_getbmap
+    kernel panic: KASAN: panic_on_warn set ...
+Attempt 4:
+*** KASAN: slab-out-of-bounds Read in xfs_getbmap
+    kernel panic: KASAN: panic_on_warn set ...
+Attempt 5:
+*** KASAN: slab-out-of-bounds Read in xfs_getbmap
+    kernel panic: KASAN: panic_on_warn set ...
+Attempt 6:
+*** KASAN: slab-out-of-bounds Read in xfs_getbmap
+    kernel panic: KASAN: panic_on_warn set ...
+Attempt 7:
+*** KASAN: slab-out-of-bounds Read in xfs_getbmap
+    kernel panic: KASAN: panic_on_warn set ...
+The bug was found.
+About 129 commits remaining
+
+2025-04-16 02:04:18
+Session:   9
+Kernel:    2023-04-11 - 46e0dd89659923dd02cfa45080675fc4f0926528
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+About 65 commits remaining
+
+2025-04-16 02:38:25
+Session:   10
+Kernel:    2023-04-11 - 4f5e304248ab4939e9aef58244041c194f01f0b5
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+About 33 commits remaining
+
+2025-04-16 03:09:42
+Session:   11
+Kernel:    2023-04-14 - f1121b995c9825f3267ad4f586b2ac644d87d5a8
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 0:
+*** KASAN: slab-out-of-bounds Read in xfs_getbmap
+    kernel panic: KASAN: panic_on_warn set ...
+Attempt 1:
+*** KASAN: slab-out-of-bounds Read in xfs_getbmap
+    kernel panic: KASAN: panic_on_warn set ...
+Attempt 2:
+*** KASAN: slab-out-of-bounds Read in xfs_getbmap
+    kernel panic: KASAN: panic_on_warn set ...
+Attempt 3:
+*** KASAN: slab-out-of-bounds Read in xfs_getbmap
+    kernel panic: KASAN: panic_on_warn set ...
+Attempt 4:
+*** KASAN: slab-out-of-bounds Read in xfs_getbmap
+    kernel panic: KASAN: panic_on_warn set ...
+Attempt 5:
+*** KASAN: slab-out-of-bounds Read in xfs_getbmap
+    kernel panic: KASAN: panic_on_warn set ...
+Attempt 6:
+*** KASAN: slab-out-of-bounds Read in xfs_getbmap
+    kernel panic: KASAN: panic_on_warn set ...
+Attempt 7:
+*** KASAN: slab-out-of-bounds Read in xfs_getbmap
+    kernel panic: KASAN: panic_on_warn set ...
+The bug was found.
+About 17 commits remaining
+
+2025-04-16 03:37:01
+Session:   12
+Kernel:    2023-04-14 - 1e5ffdc57d7e0b213219f9e6bb0fb0ba5ef13da8
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 0:
+*** KASAN: slab-out-of-bounds Read in xfs_getbmap
+    kernel panic: KASAN: panic_on_warn set ...
+Attempt 1:
+*** KASAN: slab-out-of-bounds Read in xfs_getbmap
+    kernel panic: KASAN: panic_on_warn set ...
+Attempt 2:
+*** KASAN: slab-out-of-bounds Read in xfs_getbmap
+    kernel panic: KASAN: panic_on_warn set ...
+Attempt 3:
+*** KASAN: slab-out-of-bounds Read in xfs_getbmap
+    kernel panic: KASAN: panic_on_warn set ...
+Attempt 4:
+*** KASAN: slab-out-of-bounds Read in xfs_getbmap
+    kernel panic: KASAN: panic_on_warn set ...
+Attempt 5:
+*** KASAN: slab-out-of-bounds Read in xfs_getbmap
+    kernel panic: KASAN: panic_on_warn set ...
+Attempt 6:
+*** KASAN: slab-out-of-bounds Read in xfs_getbmap
+    kernel panic: KASAN: panic_on_warn set ...
+Attempt 7:
+*** KASAN: slab-out-of-bounds Read in xfs_getbmap
+    kernel panic: KASAN: panic_on_warn set ...
+The bug was found.
+About 9 commits remaining
+
+2025-04-16 04:03:50
+Session:   13
+Kernel:    2023-04-12 - 22ed903eee23a5b174e240f1cdfa9acf393a5210
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+About 25 commits remaining
+
+2025-04-16 04:35:18
+Session:   14
+Kernel:    2023-04-14 - bed25d8010bcf48de626545a89ea58550fb5e95b
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 0:
+*** KASAN: slab-out-of-bounds Read in xfs_getbmap
+    kernel panic: KASAN: panic_on_warn set ...
+Attempt 1:
+*** KASAN: slab-out-of-bounds Read in xfs_getbmap
+    kernel panic: KASAN: panic_on_warn set ...
+Attempt 2:
+*** KASAN: slab-out-of-bounds Read in xfs_getbmap
+    kernel panic: KASAN: panic_on_warn set ...
+Attempt 3:
+*** KASAN: slab-out-of-bounds Read in xfs_getbmap
+    kernel panic: KASAN: panic_on_warn set ...
+Attempt 4:
+*** KASAN: slab-out-of-bounds Read in xfs_getbmap
+    kernel panic: KASAN: panic_on_warn set ...
+Attempt 5:
+*** KASAN: slab-out-of-bounds Read in xfs_getbmap
+    kernel panic: KASAN: panic_on_warn set ...
+Attempt 6:
+*** KASAN: slab-out-of-bounds Read in xfs_getbmap
+    kernel panic: KASAN: panic_on_warn set ...
+Attempt 7:
+*** KASAN: slab-out-of-bounds Read in xfs_getbmap
+    kernel panic: KASAN: panic_on_warn set ...
+The bug was found.
+About 17 commits remaining
+
+2025-04-16 04:58:31
+Session:   15
+Kernel:    2023-04-12 - 8ee81ed581ff35882b006a5205100db0b57bf070
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 0:
+*** KASAN: slab-out-of-bounds Read in xfs_getbmap
+    kernel panic: KASAN: panic_on_warn set ...
+Attempt 1:
+*** KASAN: slab-out-of-bounds Read in xfs_getbmap
+    kernel panic: KASAN: panic_on_warn set ...
+Attempt 2:
+*** KASAN: slab-out-of-bounds Read in xfs_getbmap
+    kernel panic: KASAN: panic_on_warn set ...
+Attempt 3:
+*** KASAN: slab-out-of-bounds Read in xfs_getbmap
+    kernel panic: KASAN: panic_on_warn set ...
+Attempt 4:
+*** KASAN: slab-out-of-bounds Read in xfs_getbmap
+    kernel panic: KASAN: panic_on_warn set ...
+Attempt 5:
+*** KASAN: slab-out-of-bounds Read in xfs_getbmap
+    kernel panic: KASAN: panic_on_warn set ...
+Attempt 6:
+*** KASAN: slab-out-of-bounds Read in xfs_getbmap
+    kernel panic: KASAN: panic_on_warn set ...
+Attempt 7:
+*** KASAN: slab-out-of-bounds Read in xfs_getbmap
+    kernel panic: KASAN: panic_on_warn set ...
+The bug was found.
+About 2 commits remaining
+
+====================================================================================================================================================
+Bug Name:             KASAN: slab-out-of-bounds Read in xfs_getbmap
+Bug Link:             https://syzkaller.appspot.com/bug?extid=c103d3808a0de5faaf80
+Bisection Result:     2023-04-12 - 8ee81ed581ff35882b006a5205100db0b57bf070
+Bisected Commit Name: xfs: fix BUG_ON in xfs_getbmap()
+Run Time:             7h20m41s
+
+Anchor Commit:        2023-04-30 - 58390c8ce1bddb6c623f62e7ed36383e7fa5c02f
+Bisection Result:     2023-04-12 - 8ee81ed581ff35882b006a5205100db0b57bf070

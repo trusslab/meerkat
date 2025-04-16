@@ -1,4 +1,4 @@
-./bin/bisector -i 6 -c /home/syzretrospector/syzinspector/wd-bisector-6/bisector.cfg -a fdf0eaf11452d72945af31804e2a1048ee1b574c -F poc-test,poc-all-pocs
+./bin/bisector -i 1 -c /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/bisector.cfg -a fdf0eaf11452d72945af31804e2a1048ee1b574c -F poc-test,poc-all-pocs
 Bisecting:          KASAN: slab-use-after-free Read in nilfs_load_inode_block
 Syzbot Link:        https://syzkaller.appspot.com/bug?extid=74db8b3087f293d3a13a
 Working Name:       bug0825
@@ -10,21 +10,21 @@ Repository:         https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/lin
 Branch:             master
 Arch:               amd64
 
-Bisector:           /home/syzretrospector/syzinspector/
-Version:            1.0.4
-Kernel:             /home/syzretrospector/syzinspector/wd-bisector-6/kernel/
-Syzkaller:          /home/syzretrospector/syzinspector/syzkaller/
-Compilers:          /home/syzretrospector/compilers/
+Bisector:           /mnt/sdd/jtbursey/SyzInspector/
+Version:            1.0.5
+Kernel:             /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/kernel/
+Syzkaller:          /mnt/sdd/jtbursey/SyzInspector/syzkaller/
+Compilers:          /mnt/sda/jtbursey/SyzInspector/compilers/
 Ccache:             ccache
-Image:              /home/syzretrospector/images/stretch/stretch.img
-Image Key:          /home/syzretrospector/images/stretch/stretch.id_rsa
+Image:              /mnt/sda/jtbursey/SyzInspector/image/stretch/stretch.img
+Image Key:          /mnt/sda/jtbursey/SyzInspector/image/stretch/stretch.id_rsa
 
-Workdir:            /home/syzretrospector/syzinspector/wd-bisector-6/
-Kconfig:            /home/syzretrospector/syzinspector/wd-bisector-6/config-bug0825.txt
-Reproducers: (2)    /home/syzretrospector/syzinspector/wd-bisector-6/reproducers/
-Primary PoC:        /home/syzretrospector/syzinspector/wd-bisector-6/reproducers/repro-bug0825-1.prog
-Syzkaller Workdir:  /home/syzretrospector/syzinspector/wd-bisector-6/wd-kaller/
-Log Directory:      /home/syzretrospector/syzinspector/wd-bisector-6/log/
+Workdir:            /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/
+Kconfig:            /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/config-bug0825.txt
+Reproducers: (2)    /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/reproducers/
+Primary PoC:        /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/reproducers/repro-bug0825-1.prog
+Syzkaller Workdir:  /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/wd-kaller/
+Log Directory:      /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/log/
 
 VM Count:           4
 CPU Count:          4
@@ -34,10 +34,45 @@ Make Procs:         16
 
 ==== Anchor Commit ====
 
-2025-03-27 16:39:43
+2025-04-14 18:06:57
 Session:   1
 Kernel:    2023-07-16 - fdf0eaf11452d72945af31804e2a1048ee1b574c
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 0:
+*** KASAN: slab-use-after-free Read in nilfs_load_inode_block
+    kernel panic: KASAN: panic_on_warn set ...
+Attempt 1:
+*** KASAN: slab-use-after-free Read in nilfs_load_inode_block
+    kernel panic: KASAN: panic_on_warn set ...
+Attempt 2:
+*** KASAN: slab-use-after-free Read in nilfs_load_inode_block
+    kernel panic: KASAN: panic_on_warn set ...
+Attempt 3:
+*** KASAN: slab-use-after-free Read in nilfs_load_inode_block
+    general protection fault in nilfs_palloc_get_block
+    kernel panic: Fatal exception
+Attempt 4:
+*** KASAN: slab-use-after-free Read in nilfs_load_inode_block
+    kernel panic: KASAN: panic_on_warn set ...
+Attempt 5:
+*** KASAN: slab-use-after-free Read in nilfs_load_inode_block
+    kernel panic: KASAN: panic_on_warn set ...
+Attempt 6:
+*** KASAN: slab-use-after-free Read in nilfs_load_inode_block
+    general protection fault in nilfs_palloc_get_block
+    kernel panic: Fatal exception
+Attempt 7:
+*** KASAN: slab-use-after-free Read in nilfs_load_inode_block
+    kernel panic: KASAN: panic_on_warn set ...
+The bug was found.
+
+==== Major Release Search ====
+19 Releases
+
+2025-04-14 18:35:20
+Session:   2
+Kernel:    2023-04-23 - 457391b0380335d5e9a5babdec90ac53928b23b4 (v6.3)
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
 Attempt 0:
     No crashes found.
 Attempt 1:
@@ -55,22 +90,429 @@ Attempt 6:
 Attempt 7:
     No crashes found.
 The bug was not found.
+About 18 releases remaining
 
-Failure: This bug cannot be found at the anchor commit.
+==== Kernel Bisection ====
+28807 Linux commits
+
+2025-04-14 19:11:11
+Session:   3
+Kernel:    2023-05-20 - 0dd2a6fb1e34d6dcb96806bc6b111388ad324722
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 0:
+*** KASAN: slab-use-after-free Read in nilfs_load_inode_block
+    kernel panic: KASAN: panic_on_warn set ...
+Attempt 1:
+*** KASAN: slab-use-after-free Read in nilfs_load_inode_block
+    general protection fault in nilfs_palloc_get_block
+    kernel panic: Fatal exception
+Attempt 2:
+*** KASAN: slab-use-after-free Read in nilfs_load_inode_block
+    general protection fault in nilfs_palloc_get_block
+    kernel panic: Fatal exception
+Attempt 3:
+*** KASAN: slab-use-after-free Read in nilfs_load_inode_block
+    kernel panic: KASAN: panic_on_warn set ...
+Attempt 4:
+*** KASAN: slab-use-after-free Read in nilfs_load_inode_block
+    kernel panic: KASAN: panic_on_warn set ...
+Attempt 5:
+*** KASAN: slab-use-after-free Read in nilfs_load_inode_block
+    kernel panic: KASAN: panic_on_warn set ...
+Attempt 6:
+*** KASAN: slab-use-after-free Read in nilfs_load_inode_block
+    kernel panic: KASAN: panic_on_warn set ...
+Attempt 7:
+*** KASAN: slab-use-after-free Read in nilfs_load_inode_block
+    kernel panic: KASAN: panic_on_warn set ...
+The bug was found.
+About 14403 commits remaining
+
+2025-04-14 19:39:26
+Session:   4
+Kernel:    2023-04-26 - 6e98b09da931a00bf4e0477d0fa52748bf28fcce
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+About 6484 commits remaining
+
+2025-04-14 20:11:29
+Session:   5
+Kernel:    2023-04-29 - 56c455b38dba47ae9cb48d71b2a106d769d1a694
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+About 3194 commits remaining
+
+2025-04-14 20:47:25
+Session:   6
+Kernel:    2023-05-03 - 7994beabfbb9a15c069eba7833a00f5ff4da1172
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    BUG: unable to handle kernel NULL pointer dereference in nilfs_segctor_do_construct
+    kernel panic: Fatal exception
+The bug was not found.
+About 1604 commits remaining
+
+2025-04-14 21:20:43
+Session:   7
+Kernel:    2023-05-07 - 17784de648be93b4eef0ef8fe28a16ff04feecc7
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 0:
+*** KASAN: slab-use-after-free Read in nilfs_load_inode_block
+    kernel panic: KASAN: panic_on_warn set ...
+Attempt 1:
+*** KASAN: slab-use-after-free Read in nilfs_load_inode_block
+    kernel panic: KASAN: panic_on_warn set ...
+Attempt 2:
+*** KASAN: slab-use-after-free Read in nilfs_load_inode_block
+    general protection fault in nilfs_palloc_get_block
+    kernel panic: Fatal exception
+Attempt 3:
+*** KASAN: slab-use-after-free Read in nilfs_load_inode_block
+    kernel panic: KASAN: panic_on_warn set ...
+Attempt 4:
+*** KASAN: slab-use-after-free Read in nilfs_load_inode_block
+    kernel panic: KASAN: panic_on_warn set ...
+Attempt 5:
+*** KASAN: slab-use-after-free Read in nilfs_load_inode_block
+    kernel panic: KASAN: panic_on_warn set ...
+Attempt 6:
+*** KASAN: slab-use-after-free Read in nilfs_load_inode_block
+    kernel panic: KASAN: panic_on_warn set ...
+Attempt 7:
+*** KASAN: slab-use-after-free Read in nilfs_load_inode_block
+    kernel panic: KASAN: panic_on_warn set ...
+The bug was found.
+About 705 commits remaining
+
+2025-04-14 21:48:44
+Session:   8
+Kernel:    2023-05-04 - 78b421b6a7c6dbb6a213877c742af52330f5026d
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+About 342 commits remaining
+
+2025-04-14 22:22:20
+Session:   9
+Kernel:    2023-05-06 - da9619a30e73b59605ed998bf7bc4359f5c0029a
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+About 202 commits remaining
+
+2025-04-14 22:57:46
+Session:   10
+Kernel:    2023-05-06 - 27e0c8461c0aa2454d236924421e1c078cb77f21
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+About 114 commits remaining
+
+2025-04-14 23:29:04
+Session:   11
+Kernel:    2023-05-06 - a3b111b046f6ce5dff168af203daf2f46f3afb29
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    WARNING in mark_buffer_dirty
+    kernel panic: kernel: panic_on_warn set ...
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+About 66 commits remaining
+
+2025-04-14 23:59:04
+Session:   12
+Kernel:    2023-05-07 - 03e5cb7b50feb687508946a702febaba24c77f0b
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 0:
+*** KASAN: slab-use-after-free Read in nilfs_load_inode_block
+    general protection fault in nilfs_palloc_get_block
+    kernel panic: Fatal exception
+Attempt 1:
+*** KASAN: slab-use-after-free Read in nilfs_load_inode_block
+    kernel panic: KASAN: panic_on_warn set ...
+Attempt 2:
+*** KASAN: slab-use-after-free Read in nilfs_load_inode_block
+    kernel panic: KASAN: panic_on_warn set ...
+Attempt 3:
+*** KASAN: slab-use-after-free Read in nilfs_load_inode_block
+    general protection fault in nilfs_palloc_get_block
+    kernel panic: Fatal exception
+Attempt 4:
+*** KASAN: slab-use-after-free Read in nilfs_load_inode_block
+    kernel panic: KASAN: panic_on_warn set ...
+Attempt 5:
+*** KASAN: slab-use-after-free Read in nilfs_load_inode_block
+    kernel panic: KASAN: panic_on_warn set ...
+Attempt 6:
+*** KASAN: slab-use-after-free Read in nilfs_load_inode_block
+    kernel panic: KASAN: panic_on_warn set ...
+Attempt 7:
+*** KASAN: slab-use-after-free Read in nilfs_load_inode_block
+    general protection fault in nilfs_palloc_get_block
+    kernel panic: Fatal exception
+The bug was found.
+About 32 commits remaining
+
+2025-04-15 00:26:51
+Session:   13
+Kernel:    2023-05-06 - 994e2419f1e77724479f0ffd5ad4eeae060dec95
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+About 23 commits remaining
+
+2025-04-15 00:58:28
+Session:   14
+Kernel:    2023-05-06 - 706ce3caea1cc1dab8c7fd6e7d1389b46ad1570e
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 0:
+*** KASAN: slab-use-after-free Read in nilfs_load_inode_block
+    kernel panic: KASAN: panic_on_warn set ...
+    general protection fault in nilfs_palloc_get_block
+Attempt 1:
+*** KASAN: slab-use-after-free Read in nilfs_load_inode_block
+    kernel panic: KASAN: panic_on_warn set ...
+Attempt 2:
+*** KASAN: slab-use-after-free Read in nilfs_load_inode_block
+    general protection fault in nilfs_palloc_get_block
+    kernel panic: Fatal exception
+Attempt 3:
+*** KASAN: slab-use-after-free Read in nilfs_load_inode_block
+    kernel panic: KASAN: panic_on_warn set ...
+Attempt 4:
+*** KASAN: slab-use-after-free Read in nilfs_load_inode_block
+    kernel panic: KASAN: panic_on_warn set ...
+Attempt 5:
+*** KASAN: slab-use-after-free Read in nilfs_load_inode_block
+    kernel panic: KASAN: panic_on_warn set ...
+Attempt 6:
+*** KASAN: slab-use-after-free Read in nilfs_load_inode_block
+    kernel panic: KASAN: panic_on_warn set ...
+Attempt 7:
+*** KASAN: slab-use-after-free Read in nilfs_load_inode_block
+    kernel panic: KASAN: panic_on_warn set ...
+The bug was found.
+About 7 commits remaining
+
+2025-04-15 01:25:30
+Session:   15
+Kernel:    2023-05-06 - d824ec2a154677f63c56cc71ffe4578274f6e32e
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+About 159 commits remaining
+
+2025-04-15 01:56:58
+Session:   16
+Kernel:    2023-05-06 - 58f5f6698a72a8af5d7bfc5f49b6df60f378f167
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 0:
+*** KASAN: slab-use-after-free Read in nilfs_load_inode_block
+    kernel panic: KASAN: panic_on_warn set ...
+Attempt 1:
+*** KASAN: slab-use-after-free Read in nilfs_load_inode_block
+    kernel panic: KASAN: panic_on_warn set ...
+Attempt 2:
+*** KASAN: slab-use-after-free Read in nilfs_load_inode_block
+    general protection fault in nilfs_palloc_get_block
+    kernel panic: Fatal exception
+Attempt 3:
+*** KASAN: slab-use-after-free Read in nilfs_load_inode_block
+    kernel panic: KASAN: panic_on_warn set ...
+Attempt 4:
+*** KASAN: slab-use-after-free Read in nilfs_load_inode_block
+    kernel panic: KASAN: panic_on_warn set ...
+Attempt 5:
+*** KASAN: slab-use-after-free Read in nilfs_load_inode_block
+    kernel panic: KASAN: panic_on_warn set ...
+Attempt 6:
+*** KASAN: slab-use-after-free Read in nilfs_load_inode_block
+    kernel panic: KASAN: panic_on_warn set ...
+Attempt 7:
+*** KASAN: slab-use-after-free Read in nilfs_load_inode_block
+    kernel panic: KASAN: panic_on_warn set ...
+The bug was found.
+About 3 commits remaining
+
+2025-04-15 02:21:33
+Session:   17
+Kernel:    2023-05-06 - 28a65b49eb53e172d23567005465019658bfdb4d
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 0:
+*** KASAN: slab-use-after-free Read in nilfs_load_inode_block
+    kernel panic: KASAN: panic_on_warn set ...
+Attempt 1:
+*** KASAN: slab-use-after-free Read in nilfs_load_inode_block
+    kernel panic: KASAN: panic_on_warn set ...
+Attempt 2:
+*** KASAN: slab-use-after-free Read in nilfs_load_inode_block
+    kernel panic: KASAN: panic_on_warn set ...
+Attempt 3:
+*** KASAN: slab-use-after-free Read in nilfs_load_inode_block
+    kernel panic: KASAN: panic_on_warn set ...
+Attempt 4:
+*** KASAN: slab-use-after-free Read in nilfs_load_inode_block
+    kernel panic: KASAN: panic_on_warn set ...
+Attempt 5:
+*** KASAN: slab-use-after-free Read in nilfs_load_inode_block
+    kernel panic: KASAN: panic_on_warn set ...
+Attempt 6:
+*** KASAN: slab-use-after-free Read in nilfs_load_inode_block
+    kernel panic: KASAN: panic_on_warn set ...
+Attempt 7:
+*** KASAN: slab-use-after-free Read in nilfs_load_inode_block
+    kernel panic: KASAN: panic_on_warn set ...
+The bug was found.
+About 2 commits remaining
 
 ==== Partial Result: Primary PoC Test ====
-Reproducer:           /home/syzretrospector/syzinspector/wd-bisector-6/reproducers/repro-bug0825-1.prog
-Bisection Result:     Failed to reproduce at the anchor commit.
-Stage Time:           0h15m13s
-Run Time:             0h15m13s
+Reproducer:           /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/reproducers/repro-bug0825-1.prog
+Bisection Result:     2023-05-06 - 28a65b49eb53e172d23567005465019658bfdb4d
+Bisected Commit Name: nilfs2: do not write dirty data after degenerating to read-only
+Stage Time:           8h42m14s
+Run Time:             8h42m14s
 ==========================================
 
 ==== Anchor Commit ====
 
-2025-03-27 16:54:58
-Session:   2
-Kernel:    2023-07-16 - fdf0eaf11452d72945af31804e2a1048ee1b574c
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+2025-04-15 02:49:11
+Session:   18
+Kernel:    2023-05-06 - d824ec2a154677f63c56cc71ffe4578274f6e32e
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
 Attempt 0:
     No crashes found.
 Attempt 1:
@@ -92,8 +534,18 @@ The bug was not found.
 Failure: This bug cannot be found at the anchor commit.
 
 ==== Partial Result: Subsequent PoC Test ====
-Reproducer:           /home/syzretrospector/syzinspector/wd-bisector-6/reproducers/repro-bug0825-2.prog
+Reproducer:           /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/reproducers/repro-bug0825-2.prog
 Bisection Result:     Failed to reproduce at the anchor commit.
-Stage Time:           0h6m31s
-Run Time:             0h21m44s
+Stage Time:           0h32m54s
+Run Time:             9h15m8s
 =============================================
+
+====================================================================================================================================================
+Bug Name:             KASAN: slab-use-after-free Read in nilfs_load_inode_block
+Bug Link:             https://syzkaller.appspot.com/bug?extid=74db8b3087f293d3a13a
+Bisection Result:     2023-05-06 - 28a65b49eb53e172d23567005465019658bfdb4d
+Bisected Commit Name: nilfs2: do not write dirty data after degenerating to read-only
+Run Time:             9h15m8s
+
+Anchor Commit:        2023-07-16 - fdf0eaf11452d72945af31804e2a1048ee1b574c
+Bisection Result:     2023-05-06 - 28a65b49eb53e172d23567005465019658bfdb4d
