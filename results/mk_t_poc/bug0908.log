@@ -1,4 +1,4 @@
-./bin/bisector -i 5 -c /home/syzretrospector/syzinspector/wd-bisector-5/bisector.cfg -a 5b7c4cabbb65f5c469464da6c5f614cbd7f730f2 -F poc-test,poc-all-pocs
+./bin/bisector -i 1 -c /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/bisector.cfg -a 5b7c4cabbb65f5c469464da6c5f614cbd7f730f2 -F poc-test,poc-all-pocs
 Bisecting:          KASAN: invalid-free in skb_free_head
 Syzbot Link:        https://syzkaller.appspot.com/bug?id=0e93739cdd4799ad72795c612cca7658e7607e7f
 Working Name:       bug0908
@@ -10,20 +10,20 @@ Repository:         https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/lin
 Branch:             master
 Arch:               amd64
 
-Bisector:           /home/syzretrospector/syzinspector/
-Version:            1.0.4
-Kernel:             /home/syzretrospector/syzinspector/wd-bisector-5/kernel/
-Syzkaller:          /home/syzretrospector/syzinspector/syzkaller/
-Compilers:          /home/syzretrospector/compilers/
+Bisector:           /mnt/sdd/jtbursey/SyzInspector/
+Version:            1.0.5
+Kernel:             /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/kernel/
+Syzkaller:          /mnt/sdd/jtbursey/SyzInspector/syzkaller/
+Compilers:          /mnt/sda/jtbursey/SyzInspector/compilers/
 Ccache:             ccache
-Image:              /home/syzretrospector/images/stretch/stretch.img
-Image Key:          /home/syzretrospector/images/stretch/stretch.id_rsa
+Image:              /mnt/sda/jtbursey/SyzInspector/image/stretch/stretch.img
+Image Key:          /mnt/sda/jtbursey/SyzInspector/image/stretch/stretch.id_rsa
 
-Workdir:            /home/syzretrospector/syzinspector/wd-bisector-5/
-Kconfig:            /home/syzretrospector/syzinspector/wd-bisector-5/config-bug0908.txt
-Reproducers: (1)    /home/syzretrospector/syzinspector/wd-bisector-5/reproducers/
-Syzkaller Workdir:  /home/syzretrospector/syzinspector/wd-bisector-5/wd-kaller/
-Log Directory:      /home/syzretrospector/syzinspector/wd-bisector-5/log/
+Workdir:            /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/
+Kconfig:            /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/config-bug0908.txt
+Reproducers: (1)    /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/reproducers/
+Syzkaller Workdir:  /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/wd-kaller/
+Log Directory:      /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/log/
 
 VM Count:           4
 CPU Count:          4
@@ -33,33 +33,803 @@ Make Procs:         16
 
 ==== Anchor Commit ====
 
-2025-03-25 15:51:13
+2025-04-17 11:43:17
 Session:   1
 Kernel:    2023-02-21 - 5b7c4cabbb65f5c469464da6c5f614cbd7f730f2
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
 Attempt 0:
-    No crashes found.
+*** KASAN: invalid-free in skb_free_head
+    kernel panic: KASAN: panic_on_warn set ...
 Attempt 1:
+*** KASAN: invalid-free in skb_free_head
+    kernel panic: KASAN: panic_on_warn set ...
+Attempt 2:
+*** KASAN: invalid-free in skb_free_head
+    kernel panic: KASAN: panic_on_warn set ...
+Attempt 3:
+*** KASAN: invalid-free in skb_free_head
+    kernel panic: KASAN: panic_on_warn set ...
+Attempt 4:
+*** KASAN: invalid-free in skb_free_head
+    kernel panic: KASAN: panic_on_warn set ...
+Attempt 5:
     No crashes found.
+Attempt 6:
+*** KASAN: invalid-free in skb_free_head
+    kernel panic: KASAN: panic_on_warn set ...
+Attempt 7:
+*** KASAN: invalid-free in skb_free_head
+    kernel panic: KASAN: panic_on_warn set ...
+The bug was found.
+
+==== Major Release Search ====
+18 Releases
+
+2025-04-17 12:12:08
+Session:   2
+Kernel:    2022-12-11 - 830b3c68c1fb1e9176028d02ef86f3cf76aa2476 (v6.1)
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 0:
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in del_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in new_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in del_device_store
+    INFO: task hung in rtnetlink_rcv_msg
+Attempt 1:
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in linkwatch_event
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in devlink_unregister
+    INFO: task hung in del_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in rtnetlink_rcv_msg
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in wg_destruct
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in linkwatch_event
+    INFO: task hung in del_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in rtnetlink_rcv_msg
+Attempt 4:
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in new_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in rtnetlink_rcv_msg
+Attempt 5:
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in linkwatch_event
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in new_device_store
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in devlink_unregister
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in del_device_store
+Attempt 6:
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in cangw_pernet_exit_batch
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in new_device_store
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in del_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in new_device_store
+    INFO: task hung in del_device_store
+Attempt 7:
+    No crashes found.
+The bug was not found.
+About 17 releases remaining
+
+==== Kernel Bisection ====
+22092 Linux commits
+
+2025-04-17 12:42:57
+Session:   3
+Kernel:    2022-12-15 - c0f234ff90a211272138be1611ba53f3155ebd78
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 0:
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in wg_destruct
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in del_device_store
+    INFO: task hung in new_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in rtnetlink_rcv_msg
+Attempt 1:
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in ieee80211_unregister_hw
+    INFO: task hung in linkwatch_event
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in del_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in devlink_unregister
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in del_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in del_device_store
 Attempt 2:
     No crashes found.
 Attempt 3:
     No crashes found.
 Attempt 4:
-    No crashes found.
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in netdev_run_todo
+    INFO: task hung in del_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in del_device_store
+    INFO: task hung in del_device_store
 Attempt 5:
-    No crashes found.
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in new_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in new_device_store
+    INFO: task hung in new_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in del_device_store
 Attempt 6:
     No crashes found.
 Attempt 7:
-    No crashes found.
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in linkwatch_event
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in new_device_store
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in devlink_unregister
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in del_device_store
 The bug was not found.
+About 11013 commits remaining
 
-Failure: This bug cannot be found at the anchor commit.
+2025-04-17 13:12:41
+Session:   4
+Kernel:    2023-02-16 - b20b8aec6ffc07bb547966b356780cd344f20f5b
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 0:
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in new_device_store
+    INFO: task hung in new_device_store
+    INFO: task hung in new_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in synchronize_rcu
+Attempt 1:
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in linkwatch_event
+    INFO: task hung in switchdev_deferred_process_work
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in devlink_unregister
+    INFO: task hung in new_device_store
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in del_device_store
+    INFO: task hung in rtnetlink_rcv_msg
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    WARNING: ODEBUG bug in netdev_run_todo
+    kernel panic: kernel: panic_on_warn set ...
+Attempt 4:
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in del_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in del_device_store
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in new_device_store
+    INFO: task hung in new_device_store
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in del_device_store
+    INFO: task hung in rtnetlink_rcv_msg
+Attempt 7:
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in cleanup_net
+    INFO: task hung in del_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in devlink_unregister
+    INFO: task hung in del_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in del_device_store
+The bug was not found.
+About 5508 commits remaining
 
-==== Partial Result: Primary PoC Test ====
-Reproducer:           /home/syzretrospector/syzinspector/wd-bisector-5/reproducers/repro-bug0908-1.prog
-Bisection Result:     Failed to reproduce at the anchor commit.
-Stage Time:           0h24m30s
-Run Time:             0h24m30s
-==========================================
+2025-04-17 13:41:47
+Session:   5
+Kernel:    2023-02-21 - 1b72607d7321e66829e11148712b3a2ba1dc83e7
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 0:
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in linkwatch_event
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in del_device_store
+    INFO: task hung in new_device_store
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in del_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in devlink_unregister
+    INFO: task hung in del_device_store
+    INFO: task hung in new_device_store
+Attempt 1:
+    INFO: task hung in del_device_store
+    INFO: task hung in del_device_store
+Attempt 2:
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in del_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in del_device_store
+Attempt 3:
+    INFO: task hung in del_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in del_device_store
+Attempt 4:
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in del_device_store
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in del_device_store
+    INFO: task hung in devlink_unregister
+    INFO: task hung in del_device_store
+    INFO: task hung in del_device_store
+Attempt 5:
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in new_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in devlink_unregister
+    INFO: task hung in del_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in del_device_store
+Attempt 6:
+    INFO: task hung in del_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in del_device_store
+Attempt 7:
+    INFO: task hung in del_device_store
+    INFO: task hung in new_device_store
+    INFO: task hung in del_device_store
+The bug was not found.
+About 2717 commits remaining
+
+2025-04-17 14:10:15
+Session:   6
+Kernel:    2023-02-10 - 558d95e7e11cd9844806e804f4c1243f2c744b00
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 0:
+    INFO: trying to register non-static key in net_free
+    general protection fault in net_free
+    general protection fault in net_free
+    kernel panic: Fatal exception
+Attempt 1:
+    INFO: trying to register non-static key in net_free
+    general protection fault in net_free
+    kernel panic: Fatal exception
+Attempt 2:
+    INFO: trying to register non-static key in net_free
+    general protection fault in net_free
+    kernel panic: Fatal exception
+Attempt 3:
+    INFO: trying to register non-static key in net_free
+    general protection fault in net_free
+    general protection fault in net_free
+    kernel panic: Fatal exception
+Attempt 4:
+    INFO: trying to register non-static key in net_free
+    general protection fault in net_free
+    kernel panic: Fatal exception
+Attempt 5:
+    INFO: trying to register non-static key in net_free
+    general protection fault in net_free
+    general protection fault in net_free
+    kernel panic: Fatal exception
+Attempt 6:
+    INFO: trying to register non-static key in net_free
+    general protection fault in net_free
+    general protection fault in net_free
+    kernel panic: Fatal exception
+Attempt 7:
+    INFO: trying to register non-static key in net_free
+    general protection fault in net_free
+    general protection fault in net_free
+    kernel panic: Fatal exception
+The bug was not found.
+About 4190 commits remaining
+
+2025-04-17 14:34:57
+Session:   7
+Kernel:    2023-02-20 - 6702782845a5bf381a19b204c369e63420041665
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 0:
+*** KASAN: invalid-free in skb_free_head
+    kernel panic: KASAN: panic_on_warn set ...
+Attempt 1:
+*** KASAN: invalid-free in skb_free_head
+    kernel panic: KASAN: panic_on_warn set ...
+Attempt 2:
+*** KASAN: invalid-free in skb_free_head
+    kernel panic: KASAN: panic_on_warn set ...
+Attempt 3:
+*** KASAN: invalid-free in skb_free_head
+    kernel panic: KASAN: panic_on_warn set ...
+Attempt 4:
+*** KASAN: invalid-free in skb_free_head
+    kernel panic: KASAN: panic_on_warn set ...
+Attempt 5:
+*** KASAN: invalid-free in skb_free_head
+    kernel panic: KASAN: panic_on_warn set ...
+Attempt 6:
+*** KASAN: invalid-free in skb_free_head
+    kernel panic: KASAN: panic_on_warn set ...
+Attempt 7:
+*** KASAN: invalid-free in skb_free_head
+    kernel panic: KASAN: panic_on_warn set ...
+The bug was found.
+About 922 commits remaining
+
+2025-04-17 15:02:19
+Session:   8
+Kernel:    2023-02-14 - e6f5dcb7ec9badd9500f64b087f7243c37300d63
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 0:
+    INFO: trying to register non-static key in net_free
+    general protection fault in net_free
+    kernel panic: Fatal exception
+Attempt 1:
+    INFO: trying to register non-static key in net_free
+    general protection fault in net_free
+    kernel panic: Fatal exception
+Attempt 2:
+    INFO: trying to register non-static key in net_free
+    general protection fault in net_free
+    kernel panic: Fatal exception
+Attempt 3:
+    INFO: trying to register non-static key in net_free
+    general protection fault in net_free
+    kernel panic: Fatal exception
+    general protection fault in net_free
+Attempt 4:
+    INFO: trying to register non-static key in net_free
+    general protection fault in net_free
+    general protection fault in net_free
+    kernel panic: Fatal exception
+Attempt 5:
+    INFO: trying to register non-static key in net_free
+    general protection fault in net_free
+    kernel panic: Fatal exception
+Attempt 6:
+    INFO: trying to register non-static key in net_free
+    general protection fault in net_free
+    kernel panic: Fatal exception
+Attempt 7:
+    INFO: trying to register non-static key in net_free
+    general protection fault in net_free
+    kernel panic: Fatal exception
+The bug was not found.
+About 583 commits remaining
+
+2025-04-17 15:27:53
+Session:   9
+Kernel:    2023-02-16 - ca0df43d211039dded5a8f8553356414c9a74731
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 0:
+    INFO: trying to register non-static key in net_free
+    general protection fault in net_free
+    kernel panic: Fatal exception
+Attempt 1:
+    INFO: trying to register non-static key in net_free
+    general protection fault in net_free
+    general protection fault in net_free
+    kernel panic: Fatal exception
+Attempt 2:
+    INFO: trying to register non-static key in net_free
+    general protection fault in net_free
+    kernel panic: Fatal exception
+Attempt 3:
+    INFO: trying to register non-static key in net_free
+    general protection fault in net_free
+    kernel panic: Fatal exception
+Attempt 4:
+    INFO: trying to register non-static key in net_free
+    general protection fault in net_free
+    kernel panic: Fatal exception
+Attempt 5:
+    INFO: trying to register non-static key in net_free
+    general protection fault in net_free
+    general protection fault in net_free
+    kernel panic: Fatal exception
+Attempt 6:
+    INFO: trying to register non-static key in net_free
+    general protection fault in net_free
+    general protection fault in net_free
+    kernel panic: Fatal exception
+Attempt 7:
+    INFO: trying to register non-static key in net_free
+    general protection fault in net_free
+    kernel panic: Fatal exception
+The bug was not found.
+About 414 commits remaining
+
+2025-04-17 15:46:51
+Session:   10
+Kernel:    2023-02-17 - 168de0233586fb06c5c5c56304aa9a928a09b0ba
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 0:
+    INFO: trying to register non-static key in net_free
+    general protection fault in net_free
+    general protection fault in net_free
+    kernel panic: Fatal exception
+Attempt 1:
+    INFO: trying to register non-static key in net_free
+    general protection fault in net_free
+    general protection fault in net_free
+    kernel panic: Fatal exception
+Attempt 2:
+    INFO: trying to register non-static key in net_free
+    general protection fault in net_free
+    kernel panic: Fatal exception
+Attempt 3:
+    INFO: trying to register non-static key in net_free
+    general protection fault in net_free
+    kernel panic: Fatal exception
+Attempt 4:
+    INFO: trying to register non-static key in net_free
+    general protection fault in net_free
+    kernel panic: Fatal exception
+Attempt 5:
+    INFO: trying to register non-static key in net_free
+    general protection fault in net_free
+    kernel panic: Fatal exception
+Attempt 6:
+    INFO: trying to register non-static key in net_free
+    general protection fault in net_free
+    general protection fault in net_free
+    kernel panic: Fatal exception
+Attempt 7:
+    INFO: trying to register non-static key in net_free
+    general protection fault in net_free
+    kernel panic: Fatal exception
+The bug was not found.
+About 747 commits remaining
+
+2025-04-17 16:09:53
+Session:   11
+Kernel:    2023-02-20 - e469b6268d8cb7c6cf6b9cd5ce7f403de695627f
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 0:
+*** KASAN: invalid-free in skb_free_head
+    kernel panic: KASAN: panic_on_warn set ...
+Attempt 1:
+*** KASAN: invalid-free in skb_free_head
+    kernel panic: KASAN: panic_on_warn set ...
+Attempt 2:
+    No crashes found.
+Attempt 3:
+*** KASAN: invalid-free in skb_free_head
+    kernel panic: KASAN: panic_on_warn set ...
+Attempt 4:
+*** KASAN: invalid-free in skb_free_head
+    kernel panic: KASAN: panic_on_warn set ...
+Attempt 5:
+*** KASAN: invalid-free in skb_free_head
+    kernel panic: KASAN: panic_on_warn set ...
+Attempt 6:
+*** KASAN: invalid-free in skb_free_head
+    kernel panic: KASAN: panic_on_warn set ...
+Attempt 7:
+*** KASAN: invalid-free in skb_free_head
+    kernel panic: KASAN: panic_on_warn set ...
+The bug was found.
+About 699 commits remaining
+
+2025-04-17 16:37:33
+Session:   12
+Kernel:    2023-02-20 - 2f326d9d9ff46fb2e45fb3b6ae77eff04332dde6
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 0:
+*** KASAN: invalid-free in skb_free_head
+    kernel panic: KASAN: panic_on_warn set ...
+Attempt 1:
+*** KASAN: invalid-free in skb_free_head
+    kernel panic: KASAN: panic_on_warn set ...
+Attempt 2:
+*** KASAN: invalid-free in skb_free_head
+    kernel panic: KASAN: panic_on_warn set ...
+Attempt 3:
+    No crashes found.
+Attempt 4:
+*** KASAN: invalid-free in skb_free_head
+    kernel panic: KASAN: panic_on_warn set ...
+Attempt 5:
+*** KASAN: invalid-free in skb_free_head
+    kernel panic: KASAN: panic_on_warn set ...
+Attempt 6:
+*** KASAN: invalid-free in skb_free_head
+    kernel panic: KASAN: panic_on_warn set ...
+Attempt 7:
+*** KASAN: invalid-free in skb_free_head
+    kernel panic: KASAN: panic_on_warn set ...
+The bug was found.
+About 672 commits remaining
+
+2025-04-17 17:04:07
+Session:   13
+Kernel:    2023-02-20 - 37cd29ec84016297e5b834345dd272a7d3bd8fae
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 0:
+*** KASAN: invalid-free in skb_free_head
+    kernel panic: KASAN: panic_on_warn set ...
+Attempt 1:
+*** KASAN: invalid-free in skb_free_head
+    kernel panic: KASAN: panic_on_warn set ...
+Attempt 2:
+*** KASAN: invalid-free in skb_free_head
+    kernel panic: KASAN: panic_on_warn set ...
+Attempt 3:
+*** KASAN: invalid-free in skb_free_head
+    kernel panic: KASAN: panic_on_warn set ...
+Attempt 4:
+    No crashes found.
+Attempt 5:
+*** KASAN: invalid-free in skb_free_head
+    kernel panic: KASAN: panic_on_warn set ...
+Attempt 6:
+*** KASAN: invalid-free in skb_free_head
+    kernel panic: KASAN: panic_on_warn set ...
+Attempt 7:
+*** KASAN: invalid-free in skb_free_head
+    kernel panic: KASAN: panic_on_warn set ...
+The bug was found.
+About 659 commits remaining
+
+2025-04-17 17:22:28
+Session:   14
+Kernel:    2023-02-16 - 84cb1b53cdbad52642571e31a8aee301206d2043
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 0:
+    INFO: trying to register non-static key in net_free
+    general protection fault in net_free
+    general protection fault in net_free
+    kernel panic: Fatal exception
+Attempt 1:
+    INFO: trying to register non-static key in net_free
+    general protection fault in net_free
+    kernel panic: Fatal exception
+Attempt 2:
+    INFO: trying to register non-static key in net_free
+    general protection fault in net_free
+    general protection fault in net_free
+    kernel panic: Fatal exception
+Attempt 3:
+    INFO: trying to register non-static key in net_free
+    general protection fault in net_free
+    kernel panic: Fatal exception
+Attempt 4:
+    INFO: trying to register non-static key in net_free
+    general protection fault in net_free
+    kernel panic: Fatal exception
+Attempt 5:
+    INFO: trying to register non-static key in net_free
+    general protection fault in net_free
+    kernel panic: Fatal exception
+Attempt 6:
+    INFO: trying to register non-static key in net_free
+    general protection fault in net_free
+    kernel panic: Fatal exception
+Attempt 7:
+    INFO: trying to register non-static key in net_free
+    general protection fault in net_free
+    kernel panic: Fatal exception
+The bug was not found.
+About 250 commits remaining
+
+2025-04-17 17:49:54
+Session:   15
+Kernel:    2023-02-20 - ecfa80ce3b8740d0760f44cbd9e60f446682b3fa
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 0:
+*** KASAN: invalid-free in skb_free_head
+    kernel panic: KASAN: panic_on_warn set ...
+Attempt 1:
+*** KASAN: invalid-free in skb_free_head
+    kernel panic: KASAN: panic_on_warn set ...
+Attempt 2:
+*** KASAN: invalid-free in skb_free_head
+    kernel panic: KASAN: panic_on_warn set ...
+Attempt 3:
+*** KASAN: invalid-free in skb_free_head
+    kernel panic: KASAN: panic_on_warn set ...
+Attempt 4:
+*** KASAN: invalid-free in skb_free_head
+    kernel panic: KASAN: panic_on_warn set ...
+Attempt 5:
+*** KASAN: invalid-free in skb_free_head
+    kernel panic: KASAN: panic_on_warn set ...
+Attempt 6:
+*** KASAN: invalid-free in skb_free_head
+    kernel panic: KASAN: panic_on_warn set ...
+Attempt 7:
+*** KASAN: invalid-free in skb_free_head
+    kernel panic: KASAN: panic_on_warn set ...
+The bug was found.
+About 246 commits remaining
+
+2025-04-17 18:20:37
+Session:   16
+Kernel:    2023-02-20 - 1c93e48cc39147723abdcadc251611f6f0c18dee
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 0:
+*** KASAN: invalid-free in skb_free_head
+    kernel panic: KASAN: panic_on_warn set ...
+Attempt 1:
+*** KASAN: invalid-free in skb_free_head
+    kernel panic: KASAN: panic_on_warn set ...
+Attempt 2:
+*** KASAN: invalid-free in skb_free_head
+    kernel panic: KASAN: panic_on_warn set ...
+Attempt 3:
+*** KASAN: invalid-free in skb_free_head
+    kernel panic: KASAN: panic_on_warn set ...
+Attempt 4:
+*** KASAN: invalid-free in skb_free_head
+    kernel panic: KASAN: panic_on_warn set ...
+Attempt 5:
+*** KASAN: invalid-free in skb_free_head
+    kernel panic: KASAN: panic_on_warn set ...
+Attempt 6:
+*** KASAN: invalid-free in skb_free_head
+    kernel panic: KASAN: panic_on_warn set ...
+Attempt 7:
+*** KASAN: invalid-free in skb_free_head
+    kernel panic: KASAN: panic_on_warn set ...
+The bug was found.
+About 245 commits remaining
+
+2025-04-17 18:33:56
+Session:   17
+Kernel:    2023-02-17 - 675f176b4dcc2b75adbcea7ba0e9a649527f53bd
+Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 0:
+*** KASAN: invalid-free in skb_free_head
+    kernel panic: KASAN: panic_on_warn set ...
+Attempt 1:
+*** KASAN: invalid-free in skb_free_head
+    kernel panic: KASAN: panic_on_warn set ...
+Attempt 2:
+    No crashes found.
+Attempt 3:
+*** KASAN: invalid-free in skb_free_head
+    kernel panic: KASAN: panic_on_warn set ...
+Attempt 4:
+*** KASAN: invalid-free in skb_free_head
+    kernel panic: KASAN: panic_on_warn set ...
+Attempt 5:
+*** KASAN: invalid-free in skb_free_head
+    kernel panic: KASAN: panic_on_warn set ...
+Attempt 6:
+*** KASAN: invalid-free in skb_free_head
+    kernel panic: KASAN: panic_on_warn set ...
+Attempt 7:
+*** KASAN: invalid-free in skb_free_head
+    kernel panic: KASAN: panic_on_warn set ...
+The bug was found.
+About 244 commits remaining
+
+====================================================================================================================================================
+Bug Name:             KASAN: invalid-free in skb_free_head
+Bug Link:             https://syzkaller.appspot.com/bug?id=0e93739cdd4799ad72795c612cca7658e7607e7f
+Bisection Result:     2023-02-17 - 675f176b4dcc2b75adbcea7ba0e9a649527f53bd
+Bisected Commit Name: Merge ra.kernel.org:/pub/scm/linux/kernel/git/netdev/net
+Run Time:             7h5m58s
+
+Anchor Commit:        2023-02-21 - 5b7c4cabbb65f5c469464da6c5f614cbd7f730f2
+Bisection Result:     2023-02-17 - 675f176b4dcc2b75adbcea7ba0e9a649527f53bd
