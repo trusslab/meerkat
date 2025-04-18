@@ -1,4 +1,4 @@
-./bin/bisector -i 1 -c /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/bisector.cfg -a f1b45d8ccb9839b48e5884664470e54520e17f4c -F ff-test,poc-test,stateful-corpus,ff-no-find-backup
+./bin/bisector -i 1 -c /home/syzretrospector/syzinspector/wd-bisector-1/bisector.cfg -a f1b45d8ccb9839b48e5884664470e54520e17f4c -F ff-test,poc-test,stateful-corpus,ff-no-find-backup,poc-all-pocs
 Bisecting:          general protection fault in smc_pnet_add
 Syzbot Link:        https://syzkaller.appspot.com/bug?id=4710b830601445fbfcee1d0bc64531b13b9ca57f
 Working Name:       bug0111
@@ -10,23 +10,23 @@ Repository:         https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/lin
 Branch:             master
 Arch:               amd64
 
-Bisector:           /mnt/sdd/jtbursey/SyzInspector/
-Version:            1.0.4
-Kernel:             /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/kernel/
-Syzkaller:          /mnt/sdd/jtbursey/SyzInspector/syzkaller/
-Compilers:          /mnt/sda/jtbursey/SyzInspector/compilers/
+Bisector:           /home/syzretrospector/syzinspector/
+Version:            1.0.5
+Kernel:             /home/syzretrospector/syzinspector/wd-bisector-1/kernel/
+Syzkaller:          /home/syzretrospector/syzinspector/syzkaller/
+Compilers:          /home/syzretrospector/compilers/
 Ccache:             ccache
-Image:              /mnt/sda/jtbursey/SyzInspector/image/stretch/stretch.img
-Image Key:          /mnt/sda/jtbursey/SyzInspector/image/stretch/stretch.id_rsa
+Image:              /home/syzretrospector/images/stretch/stretch.img
+Image Key:          /home/syzretrospector/images/stretch/stretch.id_rsa
 
-Workdir:            /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/
-Kconfig:            /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/config-bug0111.txt
-Reproducers: (1)    /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/reproducers/
-Primary PoC:        /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/reproducers/repro-bug0111-1.prog
-Syzkaller Workdir:  /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/wd-kaller/
-Log Directory:      /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/log/
+Workdir:            /home/syzretrospector/syzinspector/wd-bisector-1/
+Kconfig:            /home/syzretrospector/syzinspector/wd-bisector-1/config-bug0111.txt
+Reproducers: (1)    /home/syzretrospector/syzinspector/wd-bisector-1/reproducers/
+Primary PoC:        /home/syzretrospector/syzinspector/wd-bisector-1/reproducers/repro-bug0111-1.prog
+Syzkaller Workdir:  /home/syzretrospector/syzinspector/wd-bisector-1/wd-kaller/
+Log Directory:      /home/syzretrospector/syzinspector/wd-bisector-1/log/
 
-Syscalls: (10)      ["sendmsg$RDMA_NLDEV_CMD_NEWLINK", "sendmsg$SMC_PNETID_DEL", "socket$nl_rdma", "syz_genetlink_get_family_id$smc", "syz_init_net_socket$nl_rdma", "socket$nl_generic", "socket$netlink", "socket", "ioctl$EXT4_IOC_GROUP_EXTEND", "openat$sw_sync_info"]
+Syscalls: (10)      ["sendmsg$RDMA_NLDEV_CMD_NEWLINK", "sendmsg$SMC_PNETID_DEL", "socket$nl_rdma", "syz_genetlink_get_family_id$smc", "syz_init_net_socket$nl_rdma", "socket$nl_generic", "socket$netlink", "socket", "ioctl$F2FS_IOC_START_ATOMIC_WRITE", "openat$selinux_enforce"]
 VM Count:           8
 CPU Count:          2
 Procs:              16
@@ -37,26 +37,23 @@ Max Attempts:       1
 
 ==== Anchor Commit ====
 
-2025-03-08 20:02:08
+2025-04-17 23:12:13
 Session:   1
 Kernel:    2022-04-08 - f1b45d8ccb9839b48e5884664470e54520e17f4c
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
 Attempt 1:
     Time  Bug Name
-***    4  general protection fault in smc_pnet_add
-***    4  general protection fault in smc_pnet_add
+***    2  general protection fault in smc_pnet_add
+***    2  general protection fault in smc_pnet_add
 Attempt 2: (RETRY)
     Time  Bug Name
-***    3  general protection fault in smc_pnet_add
-***    3  general protection fault in smc_pnet_add
+***    2  general protection fault in smc_pnet_add
+***    2  general protection fault in smc_pnet_add
+***    2  general protection fault in smc_pnet_add
 Attempt 3: (RETRY)
     Time  Bug Name
-       6  no output from test machine
-       6  no output from test machine
-       7  no output from test machine
-       7  no output from test machine
-       7  no output from test machine
-***    8  general protection fault in smc_pnet_add
+***    2  general protection fault in smc_pnet_add
+***    2  general protection fault in smc_pnet_add
 The bug was found.
 
 New Max Time: 10
@@ -64,296 +61,1378 @@ New Max Time: 10
 ==== Major Release Search ====
 17 Releases
 
-2025-03-08 20:33:03
+2025-04-17 23:27:44
 Session:   2
-Kernel:    2022-03-20 - f443e374ae131c168a065ea1748feac6b2e76613 (v5.17)
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Kernel:    2022-01-09 - df0cc57e057f18e44dac8e6c18aba47ab53202f9 (v5.16)
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
 Attempt 1:
     Time  Bug Name
-       5  unregister_netdevice: waiting for DEV to become free
-       7  unregister_netdevice: waiting for DEV to become free
-       9  unregister_netdevice: waiting for DEV to become free
-       9  unregister_netdevice: waiting for DEV to become free
-       9  SYZFAIL: tun: ioctl(TUNSETIFF) failed
-       9  SYZFAIL: tun: ioctl(TUNSETIFF) failed
-      10  unregister_netdevice: waiting for DEV to become free
-The bug was not found.
-This commit is flagged as unstable.
+***    2  general protection fault in smc_pnet_add
+***    2  general protection fault in smc_pnet_add
+Running syz-repro.
+New PoC saved at /home/syzretrospector/syzinspector/wd-bisector-1/reproducers/repro-bug0111-0.prog
+Primary PoC:     /home/syzretrospector/syzinspector/wd-bisector-1/reproducers/repro-bug0111-0.prog
+Run Time:        0h11m0s
+The bug was found.
 About 16 releases remaining
 
-2025-03-08 20:58:30
+2025-04-17 23:49:51
 Session:   3
-Kernel:    2022-01-09 - df0cc57e057f18e44dac8e6c18aba47ab53202f9 (v5.16)
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Kernel:    2021-10-31 - 8bb7eca972ad531c9b149c0a51ab43a417385813 (v5.15)
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
 Attempt 1:
     Time  Bug Name
-***    3  general protection fault in smc_pnet_add
-***    3  general protection fault in smc_pnet_add
-Running syz-repro.
-New PoC saved at /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/reproducers/repro-bug0111-0.prog
-Primary PoC:     /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/reproducers/repro-bug0111-0.prog
-Run Time:        0h12m0s
+***    2  general protection fault in smc_pnet_add
+***    2  general protection fault in smc_pnet_add
+***    2  general protection fault in smc_pnet_add
 The bug was found.
 About 15 releases remaining
 
-2025-03-08 21:28:35
+2025-04-18 00:00:54
 Session:   4
-Kernel:    2021-10-31 - 8bb7eca972ad531c9b149c0a51ab43a417385813 (v5.15)
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Kernel:    2021-08-29 - 7d2a07b769330c34b4deabeed939325c77a7ec2f (v5.14)
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
 Attempt 1:
     Time  Bug Name
-***    4  general protection fault in smc_pnet_add
-***    4  general protection fault in smc_pnet_add
-***    4  general protection fault in smc_pnet_add
+***    2  general protection fault in smc_pnet_add
+***    2  general protection fault in smc_pnet_add
+***    2  general protection fault in smc_pnet_add
 The bug was found.
 About 14 releases remaining
 
-2025-03-08 21:47:04
+2025-04-18 00:11:56
 Session:   5
-Kernel:    2021-06-27 - 62fb9874f5da54fdb243003b386128037319b219 (v5.13)
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Kernel:    2021-04-25 - 9f4ad9e425a1d3b6a34617b8ea226d56a119a717 (v5.12)
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
 Attempt 1:
     Time  Bug Name
-       5  BUG: sleeping function called from invalid context in lock_sock_nested
-       6  unregister_netdevice: waiting for DEV to become free
-       6  BUG: sleeping function called from invalid context in lock_sock_nested
-       6  BUG: sleeping function called from invalid context in lock_sock_nested
-       7  unregister_netdevice: waiting for DEV to become free
-       7  BUG: sleeping function called from invalid context in lock_sock_nested
-       8  unregister_netdevice: waiting for DEV to become free
-       8  unregister_netdevice: waiting for DEV to become free
-       9  BUG: sleeping function called from invalid context in lock_sock_nested
-      10  BUG: sleeping function called from invalid context in lock_sock_nested
-The bug was not found.
+***    2  general protection fault in smc_pnet_add
+***    2  general protection fault in smc_pnet_add
+***    2  general protection fault in smc_pnet_add
+Running syz-repro.
+New PoC saved at /home/syzretrospector/syzinspector/wd-bisector-1/reproducers/repro-bug0111-2.prog
+Primary PoC:     /home/syzretrospector/syzinspector/wd-bisector-1/reproducers/repro-bug0111-0.prog
+Run Time:        0h12m0s
+The bug was found.
 About 13 releases remaining
 
-==== Kernel Bisection ====
-29345 Linux commits
-
-2025-03-08 22:12:48
+2025-04-18 00:34:37
 Session:   6
-Kernel:    2021-08-21 - 0c283b47539ab11f9efb46800f2a9dd63a48d825
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Kernel:    2020-12-13 - 2c85ebc57b3e1817b6ce1a6b703928e113a90442 (v5.10)
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.1.0-syz/bin/gcc
 Attempt 1:
     Time  Bug Name
-       2  BUG: sleeping function called from invalid context in smc_pnet_apply_ib
+***    2  general protection fault in smc_pnet_add
+***    2  general protection fault in smc_pnet_add
 ***    2  general protection fault in smc_pnet_add
 The bug was found.
-About 14673 commits remaining
+About 12 releases remaining
 
-2025-03-08 22:30:47
+2025-04-18 00:45:17
 Session:   7
-Kernel:    2021-07-01 - 514798d36572fb8eba6ccff3de10c9615063a7f5
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Kernel:    2020-08-02 - bcf876870b95592b52519ed4aafcf9d95999bc9c (v5.8)
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.1.0-syz/bin/gcc
 Attempt 1:
     Time  Bug Name
 ***    2  general protection fault in smc_pnet_add
 ***    2  general protection fault in smc_pnet_add
 ***    2  general protection fault in smc_pnet_add
-Running syz-repro.
-New PoC saved at /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/reproducers/repro-bug0111-2.prog
-Primary PoC:     /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/reproducers/repro-bug0111-0.prog
-Run Time:        0h8m0s
 The bug was found.
-About 7303 commits remaining
+About 11 releases remaining
 
-2025-03-08 22:56:02
+2025-04-18 00:55:30
 Session:   8
-Kernel:    2021-06-30 - a6eaf3850cb171c328a8b0db6d3c79286a1eba9d
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Kernel:    2020-03-29 - 7111951b8d4973bda27ff663f2cf18b663d15b48 (v5.6)
+Compiler:  ccache /home/syzretrospector/compilers/gcc-9.0.0-20181231/bin/gcc
+grep: /home/syzretrospector/syzinspector/wd-bisector-1/kernel//include/linux/lsm_hook_defs.h: No such file or directory
 Attempt 1:
     Time  Bug Name
-***    2  general protection fault in smc_pnet_add
-       2  possible deadlock in fs_reclaim_acquire
-The bug was found.
-About 2986 commits remaining
+       2  general protection fault in rds_ib_add_one
+       2  general protection fault in rds_ib_add_one
+       2  general protection fault in rds_ib_add_one
+       2  general protection fault in rds_ib_add_one
+       2  general protection fault in rds_ib_add_one
+       2  general protection fault in rds_ib_add_one
+       2  general protection fault in rds_ib_add_one
+       2  general protection fault in rds_ib_add_one
+       3  general protection fault in rds_ib_add_one
+       3  general protection fault in rds_ib_add_one
+       3  general protection fault in rds_ib_add_one
+       3  general protection fault in rds_ib_add_one
+       3  general protection fault in rds_ib_add_one
+       3  general protection fault in rds_ib_add_one
+       3  general protection fault in rds_ib_add_one
+       3  general protection fault in rds_ib_add_one
+       4  general protection fault in rds_ib_add_one
+       4  general protection fault in rds_ib_add_one
+       4  general protection fault in rds_ib_add_one
+       4  general protection fault in rds_ib_add_one
+       4  general protection fault in rds_ib_add_one
+       4  general protection fault in rds_ib_add_one
+       4  general protection fault in rds_ib_add_one
+       4  general protection fault in rds_ib_add_one
+       5  general protection fault in rds_ib_add_one
+       5  general protection fault in rds_ib_add_one
+       5  general protection fault in rds_ib_add_one
+       5  general protection fault in rds_ib_add_one
+       5  general protection fault in rds_ib_add_one
+       5  general protection fault in rds_ib_add_one
+       5  general protection fault in rds_ib_add_one
+       6  general protection fault in rds_ib_add_one
+       6  general protection fault in rds_ib_add_one
+       6  general protection fault in rds_ib_add_one
+       6  general protection fault in rds_ib_add_one
+       6  general protection fault in rds_ib_add_one
+       7  general protection fault in rds_ib_add_one
+       7  general protection fault in rds_ib_add_one
+       7  general protection fault in rds_ib_add_one
+       7  general protection fault in rds_ib_add_one
+       7  general protection fault in rds_ib_add_one
+       7  general protection fault in rds_ib_add_one
+       8  general protection fault in rds_ib_add_one
+       8  general protection fault in rds_ib_add_one
+       9  general protection fault in rds_ib_add_one
+       9  general protection fault in rds_ib_add_one
+       9  general protection fault in rds_ib_add_one
+       9  general protection fault in rds_ib_add_one
+       9  BUG: MAX_LOCKDEP_CHAIN_HLOCKS too low!
+      10  general protection fault in rds_ib_add_one
+      10  BUG: MAX_LOCKDEP_CHAIN_HLOCKS too low!
+The bug was not found.
+About 10 releases remaining
 
-2025-03-08 23:12:39
+==== Kernel Bisection ====
+32621 Linux commits
+
+2025-04-18 01:14:23
 Session:   9
-Kernel:    2021-06-28 - 31e798fd6f0ff0acdc49c1a358b581730936a09a
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Kernel:    2020-06-01 - e148a8f948afc0b1eeb5c157b23b3d0a4d4517a5
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.1.0-syz/bin/gcc
 Attempt 1:
     Time  Bug Name
-***    3  general protection fault in smc_pnet_add
-***    3  general protection fault in smc_pnet_add
-***    3  general protection fault in smc_pnet_add
-       3  BUG: sleeping function called from invalid context in lock_sock_nested
-The bug was found.
-About 1496 commits remaining
+       2  general protection fault in rds_ib_add_one
+       2  general protection fault in rds_ib_add_one
+       2  general protection fault in rds_ib_add_one
+       2  general protection fault in rds_ib_add_one
+       2  general protection fault in rds_ib_add_one
+       2  general protection fault in rds_ib_add_one
+       3  general protection fault in rds_ib_add_one
+       3  general protection fault in rds_ib_add_one
+       3  general protection fault in rds_ib_add_one
+       3  general protection fault in rds_ib_add_one
+       3  general protection fault in rds_ib_add_one
+       4  general protection fault in rds_ib_add_one
+       4  general protection fault in rds_ib_add_one
+       4  general protection fault in rds_ib_add_one
+       4  general protection fault in rds_ib_add_one
+       4  general protection fault in rds_ib_add_one
+       5  general protection fault in rds_ib_add_one
+       5  general protection fault in rds_ib_add_one
+       5  general protection fault in rds_ib_add_one
+       5  general protection fault in rds_ib_add_one
+       5  general protection fault in rds_ib_add_one
+       5  BUG: MAX_LOCKDEP_ENTRIES too low!
+       6  general protection fault in rds_ib_add_one
+       6  general protection fault in rds_ib_add_one
+       6  general protection fault in rds_ib_add_one
+       6  general protection fault in rds_ib_add_one
+       6  general protection fault in rds_ib_add_one
+       6  general protection fault in rds_ib_add_one
+       7  general protection fault in rds_ib_add_one
+       7  general protection fault in rds_ib_add_one
+       7  general protection fault in rds_ib_add_one
+       7  general protection fault in rds_ib_add_one
+       7  general protection fault in rds_ib_add_one
+       7  general protection fault in rds_ib_add_one
+       8  general protection fault in rds_ib_add_one
+       8  general protection fault in rds_ib_add_one
+       8  general protection fault in rds_ib_add_one
+       8  general protection fault in rds_ib_add_one
+       8  general protection fault in rds_ib_add_one
+       8  general protection fault in rds_ib_add_one
+       8  general protection fault in rds_ib_add_one
+       8  general protection fault in rds_ib_add_one
+       8  BUG: MAX_LOCKDEP_ENTRIES too low!
+       9  general protection fault in rds_ib_add_one
+       9  general protection fault in rds_ib_add_one
+       9  general protection fault in rds_ib_add_one
+       9  general protection fault in rds_ib_add_one
+       9  general protection fault in rds_ib_add_one
+       9  general protection fault in rds_ib_add_one
+       9  general protection fault in rds_ib_add_one
+       9  general protection fault in rds_ib_add_one
+       9  general protection fault in rds_ib_add_one
+      10  general protection fault in rds_ib_add_one
+      10  general protection fault in rds_ib_add_one
+      10  general protection fault in rds_ib_add_one
+      10  general protection fault in rds_ib_add_one
+      10  general protection fault in rds_ib_add_one
+      10  general protection fault in rds_ib_add_one
+The bug was not found.
+About 16323 commits remaining
 
-2025-03-08 23:31:04
+2025-04-18 01:32:15
 Session:   10
-Kernel:    2021-06-28 - 9840cfcb97fc8b6aa7b36cec3cc3fd763f14052e
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Kernel:    2020-06-04 - 9d71d3cd9ef040c284506648285915e9ba4d08c4
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.1.0-syz/bin/gcc
 Attempt 1:
     Time  Bug Name
-       6  unregister_netdevice: waiting for DEV to become free
-       6  unregister_netdevice: waiting for DEV to become free
-       7  unregister_netdevice: waiting for DEV to become free
-       7  BUG: sleeping function called from invalid context in lock_sock_nested
-       9  unregister_netdevice: waiting for DEV to become free
-      10  unregister_netdevice: waiting for DEV to become free
-      10  unregister_netdevice: waiting for DEV to become free
-      10  unregister_netdevice: waiting for DEV to become free
+       2  general protection fault in rds_ib_add_one
+       2  general protection fault in rds_ib_add_one
+       2  general protection fault in rds_ib_add_one
+       2  general protection fault in rds_ib_add_one
+       2  general protection fault in rds_ib_add_one
+       2  general protection fault in rds_ib_add_one
+       2  general protection fault in rds_ib_add_one
+       2  general protection fault in rds_ib_add_one
+       3  general protection fault in rds_ib_add_one
+       3  general protection fault in rds_ib_add_one
+       3  general protection fault in rds_ib_add_one
+       3  general protection fault in rds_ib_add_one
+       3  general protection fault in rds_ib_add_one
+       3  general protection fault in rds_ib_add_one
+       3  general protection fault in rds_ib_add_one
+       4  general protection fault in rds_ib_add_one
+       4  general protection fault in rds_ib_add_one
+       4  general protection fault in rds_ib_add_one
+       6  general protection fault in rds_ib_add_one
+       7  general protection fault in rds_ib_add_one
+       8  general protection fault in rds_ib_add_one
+       9  BUG: MAX_LOCKDEP_ENTRIES too low!
+      10  BUG: MAX_LOCKDEP_ENTRIES too low!
+      10  BUG: MAX_LOCKDEP_ENTRIES too low!
 The bug was not found.
-About 725 commits remaining
+About 7923 commits remaining
 
-2025-03-08 23:55:27
+2025-04-18 01:50:06
 Session:   11
-Kernel:    2021-06-17 - 5d11e6aad1811ea293ee2996cec9124f7fccb661
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Kernel:    2020-06-10 - 6f630784cc0d92fb58ea326e2bc01aa056279ecb
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.1.0-syz/bin/gcc
 Attempt 1:
     Time  Bug Name
-       6  unregister_netdevice: waiting for DEV to become free
-       6  unregister_netdevice: waiting for DEV to become free
-       6  INFO: task hung in register_netdevice_notifier
-       6  INFO: task hung in isotp_release
-       7  unregister_netdevice: waiting for DEV to become free
-       7  INFO: task hung in bcm_release
-       7  INFO: task hung in isotp_release
-       7  INFO: task hung in isotp_release
+       1  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       1  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       1  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       1  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       1  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       1  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       1  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       1  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       2  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       2  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       2  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       2  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       2  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       2  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       2  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       2  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       3  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       3  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       3  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       3  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       3  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       3  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       3  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       3  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       4  BUG: using smp_processor_id() in preemptible code in corrupted
+       4  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       4  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       4  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       4  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       4  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       4  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       4  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       4  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       4  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       4  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       4  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       4  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       4  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       4  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       4  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       5  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       5  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       5  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       5  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       5  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       5  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       5  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       5  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       6  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       6  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       6  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       6  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       6  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       6  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       6  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       6  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       6  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       6  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       6  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       6  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       6  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       6  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       7  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       7  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       7  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       7  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       7  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       7  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       7  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       7  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       7  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       7  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       8  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       8  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       8  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       8  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       8  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       8  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       8  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       8  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       9  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       9  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       9  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       9  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       9  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       9  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       9  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       9  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       9  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       9  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       9  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       9  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       9  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       9  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       9  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+      10  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+      10  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+      10  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+      10  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+      10  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+      10  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
 The bug was not found.
-About 2124 commits remaining
+About 3944 commits remaining
 
-2025-03-09 00:20:56
+2025-04-18 02:08:00
 Session:   12
-Kernel:    2021-06-24 - e5830fb13b8cad5e3bdf84f0f7a3dcb4f4d9bcbb
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Kernel:    2020-06-25 - 42e9c85f5c7296c4ec02644a2b3debc7120e2bf4
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.1.0-syz/bin/gcc
 Attempt 1:
     Time  Bug Name
+       1  KASAN: use-after-free Write in afs_wake_up_async_call
+       1  KASAN: use-after-free Write in afs_wake_up_async_call
+       2  KASAN: use-after-free Write in afs_wake_up_async_call
+       2  KASAN: use-after-free Write in afs_wake_up_async_call
+       3  KASAN: use-after-free Write in afs_wake_up_async_call
+       3  KASAN: use-after-free Write in afs_wake_up_async_call
+       3  KASAN: use-after-free Write in afs_wake_up_async_call
+       3  KASAN: use-after-free Write in afs_wake_up_async_call
 ***    3  general protection fault in smc_pnet_add
 Running syz-repro.
-New PoC saved at /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/reproducers/repro-bug0111-2.prog
-Primary PoC:     /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/reproducers/repro-bug0111-0.prog
-Run Time:        0h13m0s
+Run Time:        0h3m0s
 The bug was found.
-About 201 commits remaining
+About 1909 commits remaining
 
-2025-03-09 00:53:19
+2025-04-18 02:22:05
 Session:   13
-Kernel:    2021-06-17 - 0f85722341b0e3a67d0f2d2ae943b9193cb3e1b0
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Kernel:    2020-06-13 - 6c3297841472b4e53e22e53826eea9e483d993e5
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.1.0-syz/bin/gcc
 Attempt 1:
     Time  Bug Name
-       2  BUG: sleeping function called from invalid context in smc_pnet_apply_ib
-***    3  general protection fault in smc_pnet_add
-The bug was found.
-About 110 commits remaining
+       1  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       1  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       1  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       1  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       1  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       1  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       1  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       1  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       2  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       2  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       2  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       2  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       2  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       2  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       2  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       2  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       3  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       3  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       3  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       3  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       3  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       3  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       3  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       3  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       3  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       3  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       4  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       4  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       4  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       4  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       4  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       4  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       4  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       4  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       4  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       4  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       4  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       4  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       4  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       4  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       5  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       5  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       5  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       5  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       5  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       5  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       5  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       5  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       6  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       6  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       6  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       6  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       6  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       6  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       6  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       6  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       6  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       6  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       6  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       6  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       6  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       6  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       6  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       7  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       7  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       7  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       7  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       7  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       7  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       7  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       7  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       7  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       8  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       8  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       8  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       8  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       8  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       8  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       8  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       8  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       8  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       8  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       8  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       9  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       9  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       9  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       9  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       9  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       9  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       9  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       9  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       9  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       9  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       9  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       9  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       9  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+      10  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+      10  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+      10  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+      10  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+The bug was not found.
+About 1020 commits remaining
 
-2025-03-09 01:10:56
+2025-04-18 02:40:07
 Session:   14
-Kernel:    2021-06-17 - 0128116550acf52043a0aa5cca3caa85e3853aca
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Kernel:    2020-06-13 - 96144c58abe7ff767e754b5b80995f7b8846d49b
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.1.0-syz/bin/gcc
 Attempt 1:
     Time  Bug Name
-***    2  general protection fault in smc_pnet_add
-The bug was found.
-About 65 commits remaining
+       1  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       1  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       1  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       1  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       1  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       1  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       1  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       1  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       2  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       2  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       2  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       2  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       2  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       2  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       2  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       2  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       3  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       3  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       3  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       3  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       3  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       3  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       3  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       3  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       3  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       3  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       3  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       3  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       4  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       4  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       4  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       4  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       4  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       4  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       4  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       4  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       4  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       4  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       4  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       4  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       5  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       5  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       5  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       5  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       5  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       5  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       5  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       5  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       6  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       6  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       6  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       6  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       6  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       6  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       6  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       6  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       6  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       6  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       6  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       6  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       6  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       6  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       7  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       7  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       7  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       7  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       7  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       7  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       7  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       7  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       7  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       7  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       8  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       8  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       8  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       8  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       8  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       8  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       8  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       8  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       8  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       9  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       9  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       9  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       9  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       9  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       9  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       9  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       9  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       9  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       9  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       9  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       9  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       9  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+      10  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+      10  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+      10  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+      10  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+      10  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+      10  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+The bug was not found.
+About 483 commits remaining
 
-2025-03-09 01:26:35
+2025-04-18 02:58:09
 Session:   15
-Kernel:    2021-06-17 - edcfe54058114cb3782cd2e919c224e14420e76e
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Kernel:    2020-06-20 - 27c2760561c0c68595b60a084c317b34e85e7c73
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.1.0-syz/bin/gcc
 Attempt 1:
     Time  Bug Name
-       6  INFO: task hung in raw_release
-       7  unregister_netdevice: waiting for DEV to become free
-       7  INFO: task hung in register_netdevice_notifier
-       7  INFO: task hung in new_device_store
-       7  INFO: task hung in bcm_release
-The bug was not found.
-About 24 commits remaining
-
-2025-03-09 01:50:42
-Session:   16
-Kernel:    2021-06-17 - 4c63c923408595eede59ce9fef6f4ab868928549
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
-Attempt 1:
-    No crashes found.
-The bug was not found.
-About 13 commits remaining
-
-2025-03-09 03:11:24
-Session:   17
-Kernel:    2021-06-17 - 25b17226cd9a77982fc8c915d4118d7238a0f079
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
-Attempt 1:
-    Time  Bug Name
+       1  KASAN: use-after-free Write in afs_wake_up_async_call
+       1  KASAN: use-after-free Write in afs_wake_up_async_call
+       2  KASAN: use-after-free Write in afs_wake_up_async_call
+       2  KASAN: use-after-free Write in afs_wake_up_async_call
+       2  KASAN: use-after-free Write in afs_wake_up_async_call
+       3  KASAN: use-after-free Write in afs_wake_up_async_call
+       3  KASAN: use-after-free Write in afs_wake_up_async_call
+       3  KASAN: use-after-free Write in afs_wake_up_async_call
+       3  KASAN: use-after-free Write in afs_wake_up_async_call
+       3  KASAN: use-after-free Write in afs_wake_up_async_call
+***    3  general protection fault in smc_pnet_add
+***    3  general protection fault in smc_pnet_add
 ***    3  general protection fault in smc_pnet_add
 Running syz-repro.
-New PoC saved at /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/reproducers/repro-bug0111-2.prog
-Primary PoC:     /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/reproducers/repro-bug0111-0.prog
-Run Time:        0h13m0s
+Run Time:        0h3m0s
 The bug was found.
-About 7 commits remaining
+About 246 commits remaining
 
-2025-03-09 03:32:31
-Session:   18
-Kernel:    2021-06-17 - 7d62874f69d7e5c1c1063a5848075bd1adff3998
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+2025-04-18 03:12:07
+Session:   16
+Kernel:    2020-06-16 - 69119673bd50b176ded34032fadd41530fb5af21
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.1.0-syz/bin/gcc
 Attempt 1:
     Time  Bug Name
-       3  BUG: sleeping function called from invalid context in smc_pnet_apply_ib
+       1  KASAN: use-after-free Write in afs_wake_up_async_call
+       2  KASAN: use-after-free Write in afs_wake_up_async_call
+       2  KASAN: use-after-free Write in afs_wake_up_async_call
+       2  KASAN: use-after-free Write in afs_wake_up_async_call
+       3  KASAN: use-after-free Write in afs_wake_up_async_call
+       3  KASAN: use-after-free Write in afs_wake_up_async_call
+       3  KASAN: use-after-free Write in afs_wake_up_async_call
+       3  KASAN: use-after-free Write in afs_wake_up_async_call
+       3  KASAN: use-after-free Write in afs_wake_up_async_call
 ***    3  general protection fault in smc_pnet_add
+Running syz-repro.
+Run Time:        0h3m0s
 The bug was found.
-About 4 commits remaining
+About 127 commits remaining
 
-2025-03-09 03:49:41
-Session:   19
-Kernel:    2021-06-17 - 2fdef3a2ae01dfd928c4b42c5a3b76546170a74c
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+2025-04-18 03:25:59
+Session:   17
+Kernel:    2020-06-16 - ffbc93768e9d3a3dafdd90124b1244b4723d30e8
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.1.0-syz/bin/gcc
 Attempt 1:
     Time  Bug Name
-       6  INFO: task hung in raw_release
-       6  INFO: task hung in register_netdevice_notifier
-       6  INFO: task hung in register_netdevice_notifier
-       6  INFO: task hung in bcm_release
-       6  INFO: task hung in bcm_release
-       6  INFO: task hung in isotp_release
-       7  INFO: task hung in register_netdevice_notifier
+       1  KASAN: use-after-free Write in afs_wake_up_async_call
+       1  KASAN: use-after-free Write in afs_wake_up_async_call
+       2  general protection fault in rds_ib_add_one
+       2  general protection fault in rds_ib_add_one
+       2  KASAN: use-after-free Write in afs_wake_up_async_call
+       2  KASAN: use-after-free Write in afs_wake_up_async_call
+       2  KASAN: use-after-free Write in afs_wake_up_async_call
+       2  KASAN: use-after-free Write in afs_wake_up_async_call
+       2  KASAN: use-after-free Write in afs_wake_up_async_call
+       2  KASAN: use-after-free Write in afs_wake_up_async_call
+       3  general protection fault in rds_ib_add_one
+       3  general protection fault in rds_ib_add_one
+       3  general protection fault in rds_ib_add_one
+       3  general protection fault in rds_ib_add_one
+       3  KASAN: use-after-free Write in afs_wake_up_async_call
+       4  general protection fault in rds_ib_add_one
+       4  general protection fault in rds_ib_add_one
+       4  general protection fault in rds_ib_add_one
+       4  general protection fault in rds_ib_add_one
+       5  general protection fault in rds_ib_add_one
+       5  general protection fault in rds_ib_add_one
+       5  general protection fault in rds_ib_add_one
+       5  general protection fault in rds_ib_add_one
+       5  KASAN: use-after-free Write in afs_wake_up_async_call
+       5  KASAN: use-after-free Write in afs_wake_up_async_call
+       6  general protection fault in rds_ib_add_one
+       6  general protection fault in rds_ib_add_one
+       6  general protection fault in rds_ib_add_one
+       6  general protection fault in rds_ib_add_one
+       6  general protection fault in rds_ib_add_one
+       6  general protection fault in rds_ib_add_one
+       7  general protection fault in rds_ib_add_one
+       7  general protection fault in rds_ib_add_one
+       7  general protection fault in rds_ib_add_one
+       7  KASAN: use-after-free Write in afs_wake_up_async_call
+       8  general protection fault in rds_ib_add_one
+       8  general protection fault in rds_ib_add_one
+       8  general protection fault in rds_ib_add_one
+       8  KASAN: use-after-free Write in afs_wake_up_async_call
+       9  general protection fault in rds_ib_add_one
+       9  general protection fault in rds_ib_add_one
+       9  general protection fault in rds_ib_add_one
+       9  general protection fault in rds_ib_add_one
+       9  general protection fault in rds_ib_add_one
+       9  KASAN: use-after-free Write in afs_wake_up_async_call
+       9  KASAN: use-after-free Write in afs_wake_up_async_call
+       9  KASAN: use-after-free Write in afs_wake_up_async_call
+      10  general protection fault in rds_ib_add_one
+      10  general protection fault in rds_ib_add_one
+      10  general protection fault in rds_ib_add_one
+      10  general protection fault in rds_ib_add_one
+      10  general protection fault in rds_ib_add_one
+      10  general protection fault in rds_ib_add_one
 The bug was not found.
-About 2 commits remaining
+About 55 commits remaining
+
+2025-04-18 03:38:49
+Session:   18
+Kernel:    2020-06-15 - 762f926d6f19b9ab4dee0f98d55fc67e276cd094
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.1.0-syz/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       1  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       1  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       1  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       1  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       1  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       1  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       1  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       1  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       2  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       2  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       2  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       2  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       2  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       2  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       2  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       2  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       3  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       3  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       3  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       3  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       3  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       3  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       3  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       3  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       3  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       4  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       4  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       4  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       4  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       4  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       4  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       4  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       4  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       4  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       4  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       4  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       4  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       4  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       4  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       4  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       5  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       5  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       5  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       5  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       5  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       5  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       5  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       5  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       6  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       6  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       6  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       6  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       6  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       6  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       6  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       6  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       6  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       6  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       6  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       6  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       6  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       6  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       6  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       6  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       7  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       7  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       7  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       7  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       7  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       7  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       7  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       7  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       8  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       8  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       8  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       8  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       8  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       8  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       8  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       8  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       8  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       8  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       8  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       9  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       9  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       9  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       9  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       9  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       9  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       9  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       9  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       9  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       9  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       9  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       9  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       9  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+      10  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+      10  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+      10  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+      10  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+The bug was not found.
+About 92 commits remaining
+
+2025-04-18 03:56:37
+Session:   19
+Kernel:    2020-06-16 - 26c20ffcb5c86eb6a052e0d528396de5600c9710
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.1.0-syz/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       1  KASAN: use-after-free Write in afs_wake_up_async_call
+       1  KASAN: use-after-free Write in afs_wake_up_async_call
+       2  KASAN: use-after-free Write in afs_wake_up_async_call
+       2  KASAN: use-after-free Write in afs_wake_up_async_call
+       2  KASAN: use-after-free Write in afs_wake_up_async_call
+       2  KASAN: use-after-free Write in afs_wake_up_async_call
+       2  KASAN: use-after-free Write in afs_wake_up_async_call
+       2  KASAN: use-after-free Write in afs_wake_up_async_call
+       3  general protection fault in rds_ib_add_one
+       3  general protection fault in rds_ib_add_one
+       3  general protection fault in rds_ib_add_one
+       3  general protection fault in rds_ib_add_one
+       3  KASAN: use-after-free Write in afs_wake_up_async_call
+       3  KASAN: use-after-free Write in afs_wake_up_async_call
+       4  general protection fault in rds_ib_add_one
+       4  general protection fault in rds_ib_add_one
+       4  general protection fault in rds_ib_add_one
+       4  general protection fault in rds_ib_add_one
+       4  general protection fault in rds_ib_add_one
+       4  general protection fault in rds_ib_add_one
+       5  general protection fault in rds_ib_add_one
+       5  general protection fault in rds_ib_add_one
+       6  general protection fault in rds_ib_add_one
+       6  general protection fault in rds_ib_add_one
+       6  general protection fault in rds_ib_add_one
+       6  KASAN: use-after-free Write in afs_wake_up_async_call
+       6  KASAN: use-after-free Write in afs_wake_up_async_call
+       6  KASAN: use-after-free Write in afs_wake_up_async_call
+       8  general protection fault in hwsim_new_edge_nl
+       8  general protection fault in rds_ib_add_one
+       8  general protection fault in rds_ib_add_one
+       8  KASAN: use-after-free Write in afs_wake_up_async_call
+       8  KASAN: use-after-free Write in afs_wake_up_async_call
+       9  general protection fault in rds_ib_add_one
+       9  general protection fault in rds_ib_add_one
+       9  KASAN: use-after-free Write in afs_wake_up_async_call
+       9  KASAN: use-after-free Write in afs_wake_up_async_call
+       9  KASAN: use-after-free Write in afs_wake_up_async_call
+      10  general protection fault in rds_ib_add_one
+      10  KASAN: use-after-free Write in afs_wake_up_async_call
+The bug was not found.
+About 41 commits remaining
+
+2025-04-18 04:09:19
+Session:   20
+Kernel:    2020-06-16 - b15bb8817f991497d97ae55d8c0e349a9d1e1478
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.1.0-syz/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       1  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       1  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       1  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       1  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       1  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       1  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       1  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       1  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       2  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       2  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       2  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       2  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       2  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       2  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       2  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       2  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       3  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       3  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       3  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       3  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       3  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       3  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       3  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       3  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       3  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       3  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       3  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       3  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       3  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       4  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       4  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       4  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       4  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       4  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       4  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       4  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       4  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       4  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       4  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       4  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       5  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       5  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       5  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       5  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       5  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       5  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       5  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       5  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       6  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       6  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       6  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       6  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       6  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       6  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       6  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       6  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       6  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       6  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       6  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       6  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       6  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       6  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       6  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       7  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       7  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       7  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       7  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       7  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       7  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       7  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       7  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       7  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       8  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       8  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       8  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       8  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       8  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       8  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       8  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       8  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       8  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       8  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       9  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       9  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       9  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       9  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       9  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       9  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       9  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       9  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       9  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       9  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       9  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       9  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       9  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+      10  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+      10  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+      10  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+      10  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+      10  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+The bug was not found.
+About 86 commits remaining
+
+2025-04-18 04:22:05
+Session:   21
+Kernel:    2020-06-16 - 880e6269fd6e60249c8f5f1b98295e9f7e56636d
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.1.0-syz/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       1  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       1  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       1  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       1  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       1  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       1  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       1  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       1  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       2  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       2  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       2  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       2  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       2  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       2  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       2  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       2  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       3  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       3  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       3  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       3  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       3  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       3  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       3  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       3  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       3  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       3  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       3  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       3  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       3  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       4  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       4  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       4  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       4  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       4  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       4  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       4  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       4  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       4  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       4  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       4  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       5  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       5  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       5  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       5  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       5  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       5  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       5  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       5  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       6  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       6  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       6  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       6  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       6  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       6  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       6  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       6  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       6  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       6  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       6  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       6  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       6  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       6  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       7  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       7  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       7  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       7  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       7  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       7  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       7  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       7  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       7  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       7  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       8  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       8  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       8  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       8  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       8  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       8  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       8  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       8  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       8  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       8  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       8  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       8  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       8  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       8  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       9  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       9  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       9  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       9  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       9  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       9  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       9  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       9  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       9  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       9  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+      10  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+      10  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+      10  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+      10  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+The bug was not found.
+About 86 commits remaining
+
+2025-04-18 04:34:48
+Session:   22
+Kernel:    2020-06-16 - ea12fe9dee97d1f284ee980845444859cfcb307d
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.1.0-syz/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       1  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       1  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       1  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       1  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       1  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       1  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       1  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       1  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       2  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       2  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       2  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       2  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       2  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       2  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       2  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       2  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       3  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       3  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       3  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       3  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       3  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       3  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       3  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       3  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       4  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       4  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       4  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       4  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       4  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       4  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       4  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       4  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       4  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       4  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       4  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       4  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       4  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       4  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       4  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       4  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       5  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       5  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       5  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       5  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       5  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       5  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       5  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       5  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       6  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       6  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       6  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       6  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       6  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       6  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       6  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       6  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       6  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       6  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       6  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       6  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       6  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       6  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       6  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       6  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       7  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       7  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       7  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       7  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       7  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       7  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       7  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       7  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       8  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       8  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       8  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       8  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       8  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       8  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       8  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       8  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       9  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       9  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       9  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       9  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       9  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       9  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       9  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       9  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       9  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       9  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       9  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       9  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       9  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       9  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       9  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       9  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+      10  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+      10  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+      10  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+      10  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+The bug was not found.
+About 84 commits remaining
+
+2025-04-18 04:47:26
+Session:   23
+Kernel:    2020-06-16 - c9f66b43ee27409e1b614434d87e0e722efaa5f2
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.1.0-syz/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       1  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       1  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       1  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       1  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       1  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       1  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       1  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       1  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       2  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       2  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       2  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       2  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       2  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       2  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       2  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       2  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       3  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       3  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       3  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       3  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       3  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       3  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       3  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       3  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       4  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       4  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       4  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       4  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       4  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       4  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       4  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       4  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       4  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       4  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       4  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       4  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       4  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       4  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       4  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       4  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       5  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       5  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       5  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       5  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       5  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       5  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       5  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       5  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       6  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       6  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       6  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       6  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       6  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       6  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       6  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       6  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       6  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       6  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       6  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       6  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       6  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       6  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       6  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       6  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       7  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       7  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       7  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       7  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       7  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       7  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       7  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       7  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       8  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       8  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       8  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       8  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       8  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       8  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       8  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       8  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       9  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       9  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       9  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       9  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       9  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       9  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       9  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       9  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       9  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       9  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       9  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       9  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       9  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       9  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       9  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+       9  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+      10  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+      10  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+      10  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+      10  BUG: using smp_processor_id() in preemptible code in ext4_mb_new_blocks
+The bug was not found.
+About 80 commits remaining
 
 ==== Partial Result: Focused Fuzzing ====
-Reproducer:           /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/reproducers/repro-bug0111-0.prog
-Bisection Result:     2021-06-17 - 7d62874f69d7e5c1c1063a5848075bd1adff3998
-Bisected Commit Name: kvm: x86: implement KVM PM-notifier
-Stage Time:           7h12m7s
-Run Time:             7h12m9s
+Reproducer:           /home/syzretrospector/syzinspector/wd-bisector-1/reproducers/repro-bug0111-0.prog
+Bisection Result:     2020-06-16 - 69119673bd50b176ded34032fadd41530fb5af21
+Bisected Commit Name: Merge git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net
+Stage Time:           5h47m55s
+Run Time:             5h47m55s
 =========================================
 
 ==== Anchor Commit ====
 
-2025-03-09 04:14:15
-Session:   20
-Kernel:    2021-06-17 - 2fdef3a2ae01dfd928c4b42c5a3b76546170a74c
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+2025-04-18 05:00:08
+Session:   24
+Kernel:    2020-06-16 - 26c20ffcb5c86eb6a052e0d528396de5600c9710
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.1.0-syz/bin/gcc
 Attempt 0:
-    No crashes found.
+    KASAN: use-after-free Write in afs_wake_up_async_call
 Attempt 1:
-    No crashes found.
+    KASAN: use-after-free Write in afs_wake_up_async_call
 Attempt 2:
-    No crashes found.
+    KASAN: use-after-free Write in afs_wake_up_async_call
 Attempt 3:
-    No crashes found.
+    KASAN: use-after-free Write in afs_wake_up_async_call
 Attempt 4:
-    No crashes found.
+    KASAN: use-after-free Write in afs_wake_up_async_call
 Attempt 5:
-    No crashes found.
+    KASAN: use-after-free Write in afs_wake_up_async_call
 Attempt 6:
-    No crashes found.
+    KASAN: use-after-free Write in afs_wake_up_async_call
 Attempt 7:
-    No crashes found.
+    KASAN: use-after-free Write in afs_wake_up_async_call
 The bug was not found.
 
 Failure: This bug cannot be found at the anchor commit.
 
+==== Partial Result: Primary PoC Test ====
+Reproducer:           /home/syzretrospector/syzinspector/wd-bisector-1/reproducers/repro-bug0111-0.prog
+Bisection Result:     Failed to reproduce at the anchor commit.
+Stage Time:           0h4m55s
+Run Time:             5h52m51s
+==========================================
+
+==== Anchor Commit ====
+
+2025-04-18 05:05:05
+Session:   25
+Kernel:    2020-06-16 - 26c20ffcb5c86eb6a052e0d528396de5600c9710
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.1.0-syz/bin/gcc
+Attempt 0:
+    KASAN: use-after-free Write in afs_wake_up_async_call
+Attempt 1:
+    KASAN: use-after-free Write in afs_wake_up_async_call
+Attempt 2:
+    KASAN: use-after-free Write in afs_wake_up_async_call
+Attempt 3:
+    KASAN: use-after-free Write in afs_wake_up_async_call
+Attempt 4:
+    KASAN: use-after-free Write in afs_wake_up_async_call
+Attempt 5:
+    KASAN: use-after-free Write in afs_wake_up_async_call
+Attempt 6:
+    KASAN: use-after-free Write in afs_wake_up_async_call
+Attempt 7:
+    KASAN: use-after-free Write in afs_wake_up_async_call
+The bug was not found.
+
+Failure: This bug cannot be found at the anchor commit.
+
+==== Partial Result: Subsequent PoC Test ====
+Reproducer:           /home/syzretrospector/syzinspector/wd-bisector-1/reproducers/repro-bug0111-1.prog
+Bisection Result:     Failed to reproduce at the anchor commit.
+Stage Time:           0h4m53s
+Run Time:             5h57m45s
+=============================================
+
 ====================================================================================================================================================
 Bug Name:             general protection fault in smc_pnet_add
 Bug Link:             https://syzkaller.appspot.com/bug?id=4710b830601445fbfcee1d0bc64531b13b9ca57f
-Bisection Result:     2021-06-17 - 7d62874f69d7e5c1c1063a5848075bd1adff3998
-Bisected Commit Name: kvm: x86: implement KVM PM-notifier
-Run Time:             7h28m55s
+Bisection Result:     2020-06-16 - 69119673bd50b176ded34032fadd41530fb5af21
+Bisected Commit Name: Merge git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net
+Run Time:             5h57m45s
 
 Anchor Commit:        2022-04-08 - f1b45d8ccb9839b48e5884664470e54520e17f4c
-Bisection Result:     2021-06-17 - 7d62874f69d7e5c1c1063a5848075bd1adff3998
+Bisection Result:     2020-06-16 - 69119673bd50b176ded34032fadd41530fb5af21
