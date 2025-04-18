@@ -1,4 +1,4 @@
-./bin/bisector -i 1 -c /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/bisector.cfg -a ddec8ed2d4905d0967ce2ec432e440e582aa52c6 -F ff-test,poc-test,stateful-corpus,ff-no-find-backup
+./bin/bisector -i 1 -c /home/syzretrospector/syzinspector/wd-bisector-1/bisector.cfg -a ddec8ed2d4905d0967ce2ec432e440e582aa52c6 -F ff-test,poc-test,stateful-corpus,ff-no-find-backup,poc-all-pocs
 Bisecting:          KASAN: slab-out-of-bounds Read in decrypt_internal
 Syzbot Link:        https://syzkaller.appspot.com/bug?id=02617ac69815ae324053c954118c2dc7ba0e59b2
 Working Name:       bug0108
@@ -10,23 +10,23 @@ Repository:         https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/lin
 Branch:             master
 Arch:               amd64
 
-Bisector:           /mnt/sdd/jtbursey/SyzInspector/
-Version:            1.0.4
-Kernel:             /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/kernel/
-Syzkaller:          /mnt/sdd/jtbursey/SyzInspector/syzkaller/
-Compilers:          /mnt/sda/jtbursey/SyzInspector/compilers/
+Bisector:           /home/syzretrospector/syzinspector/
+Version:            1.0.5
+Kernel:             /home/syzretrospector/syzinspector/wd-bisector-1/kernel/
+Syzkaller:          /home/syzretrospector/syzinspector/syzkaller/
+Compilers:          /home/syzretrospector/compilers/
 Ccache:             ccache
-Image:              /mnt/sda/jtbursey/SyzInspector/image/stretch/stretch.img
-Image Key:          /mnt/sda/jtbursey/SyzInspector/image/stretch/stretch.id_rsa
+Image:              /home/syzretrospector/images/stretch/stretch.img
+Image Key:          /home/syzretrospector/images/stretch/stretch.id_rsa
 
-Workdir:            /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/
-Kconfig:            /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/config-bug0108.txt
-Reproducers: (1)    /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/reproducers/
-Primary PoC:        /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/reproducers/repro-bug0108-3.prog
-Syzkaller Workdir:  /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/wd-kaller/
-Log Directory:      /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/log/
+Workdir:            /home/syzretrospector/syzinspector/wd-bisector-1/
+Kconfig:            /home/syzretrospector/syzinspector/wd-bisector-1/config-bug0108.txt
+Reproducers: (1)    /home/syzretrospector/syzinspector/wd-bisector-1/reproducers/
+Primary PoC:        /home/syzretrospector/syzinspector/wd-bisector-1/reproducers/repro-bug0108-3.prog
+Syzkaller Workdir:  /home/syzretrospector/syzinspector/wd-bisector-1/wd-kaller/
+Log Directory:      /home/syzretrospector/syzinspector/wd-bisector-1/log/
 
-Syscalls: (20)      ["connect$inet6", "recvmmsg", "sendmsg$sock", "sendto$inet6", "setsockopt$inet6_tcp_TCP_REPAIR_QUEUE", "setsockopt$inet6_tcp_TCP_ULP", "setsockopt$inet6_tcp_TLS_TX", "setsockopt$inet6_tcp_int", "socket$inet6_tcp", "socket$inet6", "socket", "ioctl$EXT4_IOC_GROUP_EXTEND", "openat$sw_sync_info", "getrusage", "clock_gettime", "ioctl$sock_SIOCGIFINDEX", "ioctl$ifreq_SIOCGIFINDEX_vcan", "ioctl$IOCTL_GET_NCIDEV_IDX", "utimes", "openat$nci"]
+Syscalls: (20)      ["connect$inet6", "recvmmsg", "sendmsg$sock", "sendto$inet6", "setsockopt$inet6_tcp_TCP_REPAIR_QUEUE", "setsockopt$inet6_tcp_TCP_ULP", "setsockopt$inet6_tcp_TLS_TX", "setsockopt$inet6_tcp_int", "socket$inet6_tcp", "socket$inet6", "socket", "ioctl$F2FS_IOC_START_ATOMIC_WRITE", "openat$selinux_enforce", "getrusage", "clock_gettime", "ioctl$sock_SIOCGIFINDEX", "ioctl$ifreq_SIOCGIFINDEX_vcan", "ioctl$IOCTL_GET_NCIDEV_IDX", "utimes", "openat$nci"]
 VM Count:           8
 CPU Count:          2
 Procs:              16
@@ -37,685 +37,896 @@ Max Attempts:       1
 
 ==== Anchor Commit ====
 
-2025-03-08 09:01:45
+2025-04-15 22:00:24
 Session:   1
 Kernel:    2022-01-06 - ddec8ed2d4905d0967ce2ec432e440e582aa52c6
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
 Attempt 1:
     Time  Bug Name
-***    4  KASAN: slab-out-of-bounds Read in decrypt_internal
-***    4  KASAN: slab-out-of-bounds Read in decrypt_internal
-***    4  KASAN: slab-out-of-bounds Read in decrypt_internal
-***    4  KASAN: slab-out-of-bounds Read in decrypt_internal
-***    4  KASAN: slab-out-of-bounds Read in decrypt_internal
+***    3  KASAN: slab-out-of-bounds Read in decrypt_internal
+***    3  KASAN: slab-out-of-bounds Read in decrypt_internal
+***    3  KASAN: slab-out-of-bounds Read in decrypt_internal
+***    3  KASAN: slab-out-of-bounds Read in decrypt_internal
+***    3  KASAN: slab-out-of-bounds Read in decrypt_internal
 Attempt 2: (RETRY)
     Time  Bug Name
 ***    2  KASAN: slab-out-of-bounds Read in decrypt_internal
 ***    2  KASAN: slab-out-of-bounds Read in decrypt_internal
+***    2  KASAN: slab-out-of-bounds Read in decrypt_internal
 Attempt 3: (RETRY)
     Time  Bug Name
+***    2  KASAN: slab-out-of-bounds Read in decrypt_internal
+***    2  KASAN: slab-out-of-bounds Read in decrypt_internal
 ***    2  KASAN: slab-out-of-bounds Read in decrypt_internal
 The bug was found.
 
 New Max Time: 10
 
 ==== Major Release Search ====
-17 Releases
+16 Releases
 
-2025-03-08 09:24:37
+2025-04-15 22:18:22
 Session:   2
-Kernel:    2021-10-31 - 8bb7eca972ad531c9b149c0a51ab43a417385813 (v5.15)
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Kernel:    2021-08-29 - 7d2a07b769330c34b4deabeed939325c77a7ec2f (v5.14)
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
 Attempt 1:
     Time  Bug Name
+***    2  KASAN: slab-out-of-bounds Read in decrypt_internal
 ***    2  KASAN: slab-out-of-bounds Read in decrypt_internal
 Running syz-repro.
-New PoC saved at /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/reproducers/repro-bug0108-0.prog
-Primary PoC:     /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/reproducers/repro-bug0108-0.prog
-Run Time:        0h24m0s
-The bug was found.
-About 16 releases remaining
-
-2025-03-08 10:06:22
-Session:   3
-Kernel:    2021-08-29 - 7d2a07b769330c34b4deabeed939325c77a7ec2f (v5.14)
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
-Attempt 1:
-    Time  Bug Name
-***    2  KASAN: slab-out-of-bounds Read in decrypt_internal
+New PoC saved at /home/syzretrospector/syzinspector/wd-bisector-1/reproducers/repro-bug0108-0.prog
+Primary PoC:     /home/syzretrospector/syzinspector/wd-bisector-1/reproducers/repro-bug0108-0.prog
+Run Time:        0h23m0s
 The bug was found.
 About 15 releases remaining
 
-2025-03-08 10:23:25
-Session:   4
+2025-04-15 22:53:39
+Session:   3
 Kernel:    2021-06-27 - 62fb9874f5da54fdb243003b386128037319b219 (v5.13)
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
 Attempt 1:
     Time  Bug Name
-***    4  KASAN: slab-out-of-bounds Read in decrypt_internal
-***    4  KASAN: slab-out-of-bounds Read in decrypt_internal
-       4  BUG: sleeping function called from invalid context in lock_sock_nested
-       4  BUG: sleeping function called from invalid context in lock_sock_nested
-       4  BUG: sleeping function called from invalid context in lock_sock_nested
-       4  BUG: sleeping function called from invalid context in lock_sock_nested
-       4  BUG: sleeping function called from invalid context in lock_sock_nested
-       4  BUG: sleeping function called from invalid context in lock_sock_nested
+       2  BUG: sleeping function called from invalid context in lock_sock_nested
+***    2  KASAN: slab-out-of-bounds Read in decrypt_internal
+***    2  KASAN: slab-out-of-bounds Read in decrypt_internal
 The bug was found.
 About 14 releases remaining
 
-2025-03-08 10:43:32
-Session:   5
-Kernel:    2021-02-14 - f40ddce88593482919761f74910f42f4b84c004b (v5.11)
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+2025-04-15 23:05:37
+Session:   4
+Kernel:    2021-04-25 - 9f4ad9e425a1d3b6a34617b8ea226d56a119a717 (v5.12)
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
 Attempt 1:
     Time  Bug Name
-***    3  KASAN: slab-out-of-bounds Read in decrypt_internal
-***    3  KASAN: slab-out-of-bounds Read in decrypt_internal
-Running syz-repro.
-New PoC saved at /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/reproducers/repro-bug0108-1.prog
-Primary PoC:     /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/reproducers/repro-bug0108-1.prog
-Run Time:        0h52m0s
+***    2  KASAN: slab-out-of-bounds Read in decrypt_internal
+***    2  KASAN: slab-out-of-bounds Read in decrypt_internal
+***    2  KASAN: slab-out-of-bounds Read in decrypt_internal
 The bug was found.
 About 13 releases remaining
 
-2025-03-08 11:55:03
+2025-04-15 23:17:32
+Session:   5
+Kernel:    2020-12-13 - 2c85ebc57b3e1817b6ce1a6b703928e113a90442 (v5.10)
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.1.0-syz/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    2  KASAN: slab-out-of-bounds Read in decrypt_internal
+***    2  KASAN: slab-out-of-bounds Read in decrypt_internal
+Running syz-repro.
+New PoC saved at /home/syzretrospector/syzinspector/wd-bisector-1/reproducers/repro-bug0108-1.prog
+Primary PoC:     /home/syzretrospector/syzinspector/wd-bisector-1/reproducers/repro-bug0108-0.prog
+Run Time:        0h23m0s
+The bug was found.
+About 12 releases remaining
+
+2025-04-15 23:52:27
 Session:   6
-Kernel:    2020-10-11 - bbf5c979011a099af5dc76498918ed7df445635b (v5.9)
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.1.0-syz/bin/gcc
-Error: Waitpid on pid 1784503 failed.
-Error: Syzkaller has experienced a crash.
-Warning: Child process exited with error status 32764.
+Kernel:    2020-08-02 - bcf876870b95592b52519ed4aafcf9d95999bc9c (v5.8)
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.1.0-syz/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       2  BUG: using smp_processor_id() in preemptible code in radix_tree_node_alloc
+       2  BUG: using smp_processor_id() in preemptible code in radix_tree_node_alloc
+***    4  KASAN: slab-out-of-bounds Read in decrypt_internal
+***    4  KASAN: slab-out-of-bounds Read in decrypt_internal
+       4  BUG: using smp_processor_id() in preemptible code in radix_tree_node_alloc
+The bug was found.
+About 11 releases remaining
+
+2025-04-16 00:05:43
+Session:   7
+Kernel:    2020-03-29 - 7111951b8d4973bda27ff663f2cf18b663d15b48 (v5.6)
+Compiler:  ccache /home/syzretrospector/compilers/gcc-9.0.0-20181231/bin/gcc
+grep: /home/syzretrospector/syzinspector/wd-bisector-1/kernel//include/linux/lsm_hook_defs.h: No such file or directory
+Attempt 1:
+    Time  Bug Name
+***    2  KASAN: slab-out-of-bounds Read in decrypt_internal
+***    2  KASAN: slab-out-of-bounds Read in decrypt_internal
+The bug was found.
+About 10 releases remaining
+
+2025-04-16 00:16:52
+Session:   8
+Kernel:    2019-11-24 - 219d54332a09e8d8741c1e1982f5eae56099de85 (v5.4)
+Compiler:  ccache /home/syzretrospector/compilers/gcc-9.0.0-20181231/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       4  WARNING in sta_info_insert_rcu
+       4  WARNING in sta_info_insert_rcu
+       4  WARNING in sta_info_insert_rcu
+       4  WARNING in sta_info_insert_rcu
+       7  BUG: MAX_LOCKDEP_CHAIN_HLOCKS too low!
+       7  BUG: MAX_LOCKDEP_CHAIN_HLOCKS too low!
+       7  BUG: MAX_LOCKDEP_CHAIN_HLOCKS too low!
+       7  BUG: MAX_LOCKDEP_CHAIN_HLOCKS too low!
+       9  WARNING in hsr_addr_subst_dest
+      10  BUG: MAX_LOCKDEP_CHAIN_HLOCKS too low!
+      10  BUG: MAX_LOCKDEP_CHAIN_HLOCKS too low!
+      10  BUG: MAX_LOCKDEP_CHAIN_HLOCKS too low!
+The bug was not found.
+About 9 releases remaining
+
+==== Kernel Bisection ====
+29189 Linux commits
+
+2025-04-16 00:36:02
+Session:   9
+Kernel:    2020-01-03 - 3a562aee727a7bfbb3a37b1aa934118397dad701
+Compiler:  ccache /home/syzretrospector/compilers/gcc-9.0.0-20181231/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       5  WARNING in hsr_addr_subst_dest
+       9  WARNING in hsr_addr_subst_dest
+      10  BUG: MAX_LOCKDEP_ENTRIES too low!
+      10  BUG: MAX_LOCKDEP_ENTRIES too low!
+      10  BUG: MAX_LOCKDEP_ENTRIES too low!
+      10  BUG: MAX_LOCKDEP_ENTRIES too low!
+      10  BUG: MAX_LOCKDEP_ENTRIES too low!
+      10  BUG: MAX_LOCKDEP_ENTRIES too low!
+The bug was not found.
+About 14608 commits remaining
+
+2025-04-16 00:55:10
+Session:   10
+Kernel:    2020-01-30 - 4cadc60d6bcfee9c626d4b55e9dc1475d21ad3bb
+Compiler:  ccache /home/syzretrospector/compilers/gcc-9.0.0-20181231/bin/gcc
 Attempt 1:
     No crashes found.
 The bug was not found.
-About 12 releases remaining
+About 8143 commits remaining
 
-==== Kernel Bisection ====
-32945 Linux commits
-
-2025-03-08 12:17:01
-Session:   7
-Kernel:    2020-11-21 - a349e4c659609fd20e4beea89e5c4a4038e33a95
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.1.0-syz/bin/gcc
-Attempt 1:
-    Time  Bug Name
-       4  BUG: using smp_processor_id() in preemptible code in radix_tree_node_alloc
-       4  BUG: using smp_processor_id() in preemptible code in radix_tree_node_alloc
-***    5  KASAN: slab-out-of-bounds Read in decrypt_internal
-***    5  KASAN: slab-out-of-bounds Read in decrypt_internal
-***    5  KASAN: slab-out-of-bounds Read in decrypt_internal
-***    5  KASAN: slab-out-of-bounds Read in decrypt_internal
-***    5  KASAN: slab-out-of-bounds Read in decrypt_internal
-***    5  KASAN: slab-out-of-bounds Read in decrypt_internal
-The bug was found.
-About 16473 commits remaining
-
-2025-03-08 12:37:22
-Session:   8
-Kernel:    2020-10-16 - 4d0e9df5e43dba52d38b251e3b909df8fa1110be
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.1.0-syz/bin/gcc
-Attempt 1:
-    Time  Bug Name
-       3  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       3  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       3  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       3  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       3  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       3  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       3  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       3  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       4  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       4  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       4  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       4  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       4  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       4  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       4  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       4  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       6  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       6  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       6  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       6  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       6  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       6  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       6  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       6  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       7  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       8  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       8  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       8  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       8  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       8  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       8  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       8  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-The bug was not found.
-About 8601 commits remaining
-
-2025-03-08 13:02:43
-Session:   9
-Kernel:    2020-10-20 - 38525c6919e2f6b27c1855905f342a0def3cbdcf
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.1.0-syz/bin/gcc
-Attempt 1:
-    Time  Bug Name
-       3  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       3  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       3  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       3  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       3  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       3  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       3  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       3  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       4  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       4  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       4  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       4  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       4  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       4  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       4  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       4  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       5  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       5  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       5  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       5  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       5  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       6  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       6  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       6  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       6  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       6  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       6  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       7  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       7  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       7  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       7  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       7  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       8  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       8  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       8  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       8  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       8  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       8  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       8  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       8  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       9  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       9  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-      10  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-      10  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-      10  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-      10  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-      10  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-      10  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-The bug was not found.
-About 4280 commits remaining
-
-2025-03-08 13:28:15
-Session:   10
-Kernel:    2020-10-24 - e533cda12d8f0e7936354bafdc85c81741f805d2
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.1.0-syz/bin/gcc
-Attempt 1:
-    Time  Bug Name
-       3  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       3  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       3  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       3  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       3  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       3  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       3  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       3  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       4  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       4  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       4  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       4  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       4  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       4  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       4  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       4  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       5  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       5  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       5  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       5  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       5  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       5  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       5  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       5  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       6  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       6  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       6  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       6  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       6  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       6  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       6  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       6  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       7  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       7  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       7  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       7  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       7  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       7  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       7  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       7  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       9  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       9  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       9  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       9  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       9  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       9  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       9  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       9  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-      10  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-The bug was not found.
-About 1885 commits remaining
-
-2025-03-08 13:53:52
+2025-04-16 01:14:11
 Session:   11
-Kernel:    2020-11-06 - fc7b66ef076644dd646eb9f11563684edc479649
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.1.0-syz/bin/gcc
+Kernel:    2020-02-06 - c1ef57a3a3f5e69e98baf89055b423da62791c13
+Compiler:  ccache /home/syzretrospector/compilers/gcc-9.0.0-20181231/bin/gcc
 Attempt 1:
     Time  Bug Name
-       5  BUG: sleeping function called from invalid context in sta_info_move_state
-       5  BUG: sleeping function called from invalid context in sta_info_move_state
-       5  BUG: sleeping function called from invalid context in sta_info_move_state
-***    5  KASAN: slab-out-of-bounds Read in decrypt_internal
-       5  BUG: using smp_processor_id() in preemptible code in radix_tree_node_alloc
-The bug was found.
-About 929 commits remaining
+       4  BUG: MAX_LOCKDEP_ENTRIES too low!
+       5  WARNING in hsr_addr_subst_dest
+       5  BUG: MAX_LOCKDEP_ENTRIES too low!
+       7  WARNING in sta_info_insert_rcu
+       8  WARNING in hsr_addr_subst_dest
+       8  WARNING in hsr_addr_subst_dest
+       8  WARNING in sta_info_insert_rcu
+       9  WARNING in hsr_addr_subst_dest
+      10  WARNING in sta_info_insert_rcu
+The bug was not found.
+About 4088 commits remaining
 
-2025-03-08 14:14:37
+2025-04-16 01:33:19
 Session:   12
-Kernel:    2020-10-31 - 67ff377bc30cd4eb91f0454adb9dcb1f4de280f2
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.1.0-syz/bin/gcc
+Kernel:    2020-02-16 - 44bfa9c5e5f06c72540273813e4c66beb5a8c213
+Compiler:  ccache /home/syzretrospector/compilers/gcc-9.0.0-20181231/bin/gcc
 Attempt 1:
     Time  Bug Name
-       3  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       3  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       3  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       3  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       3  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       3  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       3  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       3  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       5  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       5  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       5  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       5  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       5  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       5  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       5  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       5  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       6  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       6  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       6  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       6  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       6  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       6  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       6  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       6  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       7  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       7  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       7  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       7  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       7  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       7  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       7  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       8  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       8  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       8  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       8  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       9  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       9  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       9  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       9  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       9  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-      10  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-      10  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-      10  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-      10  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-      10  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-      10  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-      10  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-      10  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
+       3  WARNING in hsr_addr_subst_dest
+       3  WARNING in hsr_addr_subst_dest
+       4  WARNING in sta_info_insert_rcu
+       5  WARNING in hsr_addr_subst_dest
+       5  WARNING in sta_info_insert_rcu
+       6  WARNING in hsr_addr_subst_dest
+       6  WARNING in hsr_addr_subst_dest
+       7  WARNING in hsr_addr_subst_dest
+       7  WARNING in hsr_addr_subst_dest
+       7  BUG: MAX_LOCKDEP_ENTRIES too low!
+       8  BUG: MAX_LOCKDEP_ENTRIES too low!
+       8  BUG: MAX_LOCKDEP_ENTRIES too low!
+       9  WARNING in hsr_addr_subst_dest
+       9  WARNING in sta_info_insert_rcu
+      10  BUG: MAX_LOCKDEP_ENTRIES too low!
+      10  BUG: MAX_LOCKDEP_ENTRIES too low!
+      10  BUG: MAX_LOCKDEP_ENTRIES too low!
+      10  WARNING in sta_info_insert_rcu
 The bug was not found.
-About 465 commits remaining
+About 2045 commits remaining
 
-2025-03-08 14:39:43
+2025-04-16 01:52:25
 Session:   13
-Kernel:    2020-11-03 - 4ef8451b332662d004df269d4cdeb7d9f31419b5
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.1.0-syz/bin/gcc
+Kernel:    2020-03-06 - c20c4a084a878df35a7e394a7e646f303b505eaf
+Compiler:  ccache /home/syzretrospector/compilers/gcc-9.0.0-20181231/bin/gcc
 Attempt 1:
     Time  Bug Name
-       6  INFO: task hung in register_netdevice_notifier
-       9  BUG: using smp_processor_id() in preemptible code in radix_tree_node_alloc
-       9  BUG: using smp_processor_id() in preemptible code in radix_tree_node_alloc
-The bug was not found.
-About 228 commits remaining
-
-2025-03-08 15:06:26
-Session:   14
-Kernel:    2020-11-06 - 41f16530241405819ae5644b6544965ab124bbda
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.1.0-syz/bin/gcc
-Attempt 1:
-    Time  Bug Name
-       7  BUG: sleeping function called from invalid context in sta_info_move_state
-       8  BUG: sleeping function called from invalid context in sta_info_move_state
-       9  BUG: sleeping function called from invalid context in sta_info_move_state
-       9  WARNING in __cfg80211_ibss_joined
-      10  BUG: sleeping function called from invalid context in sta_info_move_state
-      10  BUG: sleeping function called from invalid context in sta_info_move_state
-The bug was not found.
-About 96 commits remaining
-
-2025-03-08 15:33:31
-Session:   15
-Kernel:    2020-11-06 - f56fb0122c4155f333ee9a50175dfe1e01cb12c1
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.1.0-syz/bin/gcc
-Attempt 1:
-    Time  Bug Name
-***    8  KASAN: slab-out-of-bounds Read in decrypt_internal
+***    2  KASAN: slab-out-of-bounds Read in decrypt_internal
 Running syz-repro.
-New PoC saved at /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/reproducers/repro-bug0108-0.prog
-Primary PoC:     /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/reproducers/repro-bug0108-1.prog
-Run Time:        0h27m0s
+New PoC saved at /home/syzretrospector/syzinspector/wd-bisector-1/reproducers/repro-bug0108-1.prog
+Primary PoC:     /home/syzretrospector/syzinspector/wd-bisector-1/reproducers/repro-bug0108-0.prog
+Run Time:        0h23m0s
 The bug was found.
-About 51 commits remaining
+About 1021 commits remaining
 
-2025-03-08 16:22:11
+2025-04-16 02:26:30
+Session:   14
+Kernel:    2020-02-21 - e5553ac71e584c3aa443e211ca2afded6071b5b6
+Compiler:  ccache /home/syzretrospector/compilers/gcc-9.0.0-20181231/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       4  WARNING in hsr_addr_subst_dest
+       5  BUG: MAX_LOCKDEP_ENTRIES too low!
+       5  BUG: MAX_LOCKDEP_ENTRIES too low!
+       6  WARNING in hsr_addr_subst_dest
+       6  WARNING in hsr_addr_subst_dest
+       6  WARNING in hsr_addr_subst_dest
+       7  WARNING in hsr_addr_subst_dest
+       7  WARNING in hsr_addr_subst_dest
+       7  WARNING in hsr_addr_subst_dest
+       7  WARNING in hsr_addr_subst_dest
+       7  WARNING in hsr_addr_subst_dest
+       8  WARNING in hsr_addr_subst_dest
+       8  WARNING in sta_info_insert_rcu
+       9  WARNING in hsr_addr_subst_dest
+       9  WARNING in hsr_addr_subst_dest
+      10  WARNING in hsr_addr_subst_dest
+      10  BUG: MAX_LOCKDEP_ENTRIES too low!
+      10  WARNING in sta_info_insert_rcu
+The bug was not found.
+About 513 commits remaining
+
+2025-04-16 02:45:28
+Session:   15
+Kernel:    2020-02-27 - a2f0b878c3ca531a1706cb2a8b079cea3b17bafc
+Compiler:  ccache /home/syzretrospector/compilers/gcc-9.0.0-20181231/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       5  WARNING in hsr_addr_subst_dest
+       5  WARNING in hsr_addr_subst_dest
+       5  WARNING in hsr_addr_subst_dest
+       5  BUG: MAX_LOCKDEP_CHAIN_HLOCKS too low!
+       6  WARNING in hsr_addr_subst_dest
+       6  WARNING in hsr_addr_subst_dest
+       6  BUG: MAX_LOCKDEP_CHAIN_HLOCKS too low!
+       7  WARNING in hsr_addr_subst_dest
+       7  WARNING in hsr_addr_subst_dest
+       7  WARNING in sta_info_insert_rcu
+       7  WARNING in sta_info_insert_rcu
+       8  WARNING in hsr_addr_subst_dest
+       8  WARNING in hsr_addr_subst_dest
+       8  WARNING in hsr_addr_subst_dest
+       8  WARNING in hsr_addr_subst_dest
+       9  WARNING in hsr_addr_subst_dest
+      10  WARNING in hsr_addr_subst_dest
+The bug was not found.
+About 288 commits remaining
+
+2025-04-16 03:01:01
 Session:   16
-Kernel:    2020-11-06 - 866bc2d3c40abc044c4ede51529a82dc0d561216
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.1.0-syz/bin/gcc
+Kernel:    2020-03-01 - f853ed90e2e49f4f6e585f995ffb25e093fe4df6
+Compiler:  ccache /home/syzretrospector/compilers/gcc-9.0.0-20181231/bin/gcc
 Attempt 1:
     Time  Bug Name
-       7  BUG: using smp_processor_id() in preemptible code in radix_tree_node_alloc
-       7  BUG: using smp_processor_id() in preemptible code in radix_tree_node_alloc
-       7  BUG: using smp_processor_id() in preemptible code in radix_tree_node_alloc
-       8  BUG: using smp_processor_id() in preemptible code in radix_tree_node_alloc
-The bug was not found.
-About 26 commits remaining
+       3  WARNING in hsr_addr_subst_dest
+       3  WARNING in hsr_addr_subst_dest
+       4  WARNING in hsr_addr_subst_dest
+***    4  KASAN: slab-out-of-bounds Read in decrypt_internal
+The bug was found.
+About 145 commits remaining
 
-2025-03-08 16:46:40
+2025-04-16 03:11:06
 Session:   17
-Kernel:    2020-11-03 - a2404fd4823053db08d82582f4361e0978a98a24
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.1.0-syz/bin/gcc
+Kernel:    2020-02-27 - 7058b837899fc978c9f8a033fa29ab07360a85c8
+Compiler:  ccache /home/syzretrospector/compilers/gcc-9.0.0-20181231/bin/gcc
 Attempt 1:
     Time  Bug Name
-       3  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       3  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       3  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       3  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       3  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       3  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       3  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       3  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       4  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       4  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       4  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       4  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       4  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       4  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       4  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       4  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       5  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       5  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       5  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       5  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       5  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       5  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       5  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       6  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       6  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       6  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       6  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       6  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       6  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       7  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       7  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       7  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       7  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       7  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       7  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       8  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       8  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       8  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       8  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       8  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       9  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       9  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       9  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       9  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       9  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       9  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       9  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       9  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-      10  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-      10  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-      10  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-      10  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-      10  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-      10  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-      10  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-      10  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-The bug was not found.
-About 430 commits remaining
+       3  WARNING in hsr_addr_subst_dest
+       4  WARNING in hsr_addr_subst_dest
+***    4  KASAN: slab-out-of-bounds Read in decrypt_internal
+***    4  KASAN: slab-out-of-bounds Read in decrypt_internal
+       4  WARNING in sta_info_insert_rcu
+       4  WARNING in sta_info_insert_rcu
+The bug was found.
+About 69 commits remaining
 
-2025-03-08 17:11:49
+2025-04-16 03:18:48
 Session:   18
-Kernel:    2020-11-04 - 445b011d4ade483e5afc42b37c3c35d4586856b0
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.1.0-syz/bin/gcc
+Kernel:    2020-02-26 - 574b238f64594cc0d87aad3f716ebab49fb663fa
+Compiler:  ccache /home/syzretrospector/compilers/gcc-9.0.0-20181231/bin/gcc
 Attempt 1:
     Time  Bug Name
-       3  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       3  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       3  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       3  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       3  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       3  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       3  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       3  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       4  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       4  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       4  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       4  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       4  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       4  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       4  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       4  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       6  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       6  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       6  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       6  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       6  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       6  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       6  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       6  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       7  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       7  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       7  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       7  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       7  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       7  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       7  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       7  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       8  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       8  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       8  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       8  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       8  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       8  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       9  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       9  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       9  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       9  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       9  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       9  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       9  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-      10  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-      10  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-      10  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-      10  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-      10  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-      10  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
+       3  WARNING in sta_info_insert_rcu
+       4  WARNING in hsr_addr_subst_dest
+       4  WARNING in hsr_addr_subst_dest
+       4  WARNING in hsr_addr_subst_dest
+       4  WARNING in sta_info_insert_rcu
+       5  WARNING in hsr_addr_subst_dest
+       5  BUG: MAX_LOCKDEP_ENTRIES too low!
+       5  WARNING in sta_info_insert_rcu
+       6  WARNING in hsr_addr_subst_dest
+       7  WARNING in hsr_addr_subst_dest
+       7  WARNING in hsr_addr_subst_dest
+       7  WARNING in hsr_addr_subst_dest
+       7  WARNING in hsr_addr_subst_dest
+       7  WARNING in sta_info_insert_rcu
+       8  WARNING in hsr_addr_subst_dest
+       8  WARNING in hsr_addr_subst_dest
+       8  WARNING in hsr_addr_subst_dest
+       8  WARNING in sta_info_insert_rcu
+       9  WARNING in hsr_addr_subst_dest
+       9  WARNING in hsr_addr_subst_dest
+       9  WARNING in hsr_addr_subst_dest
+      10  WARNING in hsr_addr_subst_dest
+      10  WARNING in hsr_addr_subst_dest
 The bug was not found.
-About 424 commits remaining
+About 243 commits remaining
 
-2025-03-08 17:36:01
+2025-04-16 03:32:36
 Session:   19
-Kernel:    2020-11-04 - d83d3ad61ce8f2b841ce6eacc23142634acbae46
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.1.0-syz/bin/gcc
+Kernel:    2020-02-27 - 3a12500ed5dd21a63da779ac73503f11085bbc1c
+Compiler:  ccache /home/syzretrospector/compilers/gcc-9.0.0-20181231/bin/gcc
 Attempt 1:
     Time  Bug Name
-       3  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       3  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       3  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       3  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       3  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       3  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       3  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       3  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       4  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       4  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       4  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       5  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       5  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       5  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       5  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       5  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       6  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       6  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       6  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       6  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       6  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       6  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       6  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       6  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       7  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       7  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       7  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       7  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       7  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       7  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       7  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       7  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       8  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       8  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       8  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       8  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       8  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       8  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       8  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       9  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       9  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       9  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       9  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       9  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       9  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       9  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-      10  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-      10  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
+       4  WARNING in hsr_addr_subst_dest
+       4  WARNING in hsr_addr_subst_dest
+       5  WARNING in hsr_addr_subst_dest
+       5  WARNING in hsr_addr_subst_dest
+       5  WARNING in hsr_addr_subst_dest
+       6  WARNING in hsr_addr_subst_dest
+       6  WARNING in hsr_addr_subst_dest
+       6  WARNING in sta_info_insert_rcu
+       7  WARNING in hsr_addr_subst_dest
+       7  WARNING in sta_info_insert_rcu
+       8  WARNING in sta_info_insert_rcu
+       9  WARNING in hsr_addr_subst_dest
+       9  WARNING in hsr_addr_subst_dest
+      10  BUG: MAX_LOCKDEP_ENTRIES too low!
+      10  BUG: MAX_LOCKDEP_ENTRIES too low!
+      10  BUG: MAX_LOCKDEP_ENTRIES too low!
+      10  WARNING in sta_info_insert_rcu
 The bug was not found.
-About 421 commits remaining
+About 226 commits remaining
 
-2025-03-08 18:00:53
+2025-04-16 03:46:08
 Session:   20
-Kernel:    2020-11-04 - c236c0e5f5e27bce4171d980f2e03c1f1739978b
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.1.0-syz/bin/gcc
+Kernel:    2020-02-27 - 037f9cdf72fb8a7ff9ec2b5dd05336ec1492bdf1
+Compiler:  ccache /home/syzretrospector/compilers/gcc-9.0.0-20181231/bin/gcc
 Attempt 1:
     Time  Bug Name
-       3  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       3  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       3  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       3  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       3  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       3  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       3  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       3  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       4  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       4  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       4  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       4  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       4  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       4  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       4  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       4  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       5  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       5  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       5  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       5  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       5  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       5  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       5  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       5  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       6  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       6  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       6  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       6  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       6  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       7  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       7  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       7  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       7  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       7  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       7  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       7  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       8  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       8  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       8  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       8  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       9  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       9  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       9  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       9  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       9  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       9  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       9  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       9  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-      10  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-      10  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-      10  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-      10  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
+       3  WARNING in hsr_addr_subst_dest
+       4  WARNING in sta_info_insert_rcu
+       5  WARNING in hsr_addr_subst_dest
+       5  WARNING in hsr_addr_subst_dest
+       5  BUG: MAX_LOCKDEP_ENTRIES too low!
+       5  BUG: MAX_LOCKDEP_CHAIN_HLOCKS too low!
+       5  WARNING in sta_info_insert_rcu
+       7  WARNING in hsr_addr_subst_dest
+       7  WARNING in hsr_addr_subst_dest
+       7  WARNING in hsr_addr_subst_dest
+       7  WARNING in hsr_addr_subst_dest
+       7  WARNING in sta_info_insert_rcu
+       7  WARNING in sta_info_insert_rcu
+       8  WARNING in hsr_addr_subst_dest
+      10  WARNING in hsr_addr_subst_dest
+      10  WARNING in hsr_addr_subst_dest
+      10  WARNING in hsr_addr_subst_dest
 The bug was not found.
-About 419 commits remaining
+About 218 commits remaining
 
-2025-03-08 18:26:36
+2025-04-16 03:59:30
 Session:   21
-Kernel:    2020-11-04 - 4241b0411c60a97f87a25ff4da92dac53beb3039
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.1.0-syz/bin/gcc
+Kernel:    2020-02-27 - 5c05a164d441a1792791175e4959ea9df12f7e2b
+Compiler:  ccache /home/syzretrospector/compilers/gcc-9.0.0-20181231/bin/gcc
 Attempt 1:
     Time  Bug Name
-       3  WARNING in __cfg80211_ibss_joined
-       3  WARNING in __cfg80211_ibss_joined
-       6  INFO: task hung in new_device_store
-       9  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       9  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       9  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       9  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       9  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       9  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       9  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-       9  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-      10  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-      10  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-      10  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-      10  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-      10  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-      10  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-      10  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
-      10  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore
+       3  WARNING in hsr_addr_subst_dest
+       4  WARNING in hsr_addr_subst_dest
+       5  WARNING in hsr_addr_subst_dest
+       5  WARNING in hsr_addr_subst_dest
+       5  BUG: MAX_LOCKDEP_CHAIN_HLOCKS too low!
+       5  BUG: MAX_LOCKDEP_CHAIN_HLOCKS too low!
+       6  WARNING in hsr_addr_subst_dest
+       6  WARNING in hsr_addr_subst_dest
+       6  WARNING in hsr_addr_subst_dest
+       6  WARNING in hsr_addr_subst_dest
+       7  WARNING in hsr_addr_subst_dest
+       7  WARNING in hsr_addr_subst_dest
+       7  WARNING in hsr_addr_subst_dest
+       7  WARNING in hsr_addr_subst_dest
+       7  WARNING in hsr_addr_subst_dest
+       8  WARNING in hsr_addr_subst_dest
+       8  WARNING in hsr_addr_subst_dest
+       9  WARNING in hsr_addr_subst_dest
+      10  WARNING in hsr_addr_subst_dest
+      10  WARNING in hsr_addr_subst_dest
+      10  WARNING in hsr_addr_subst_dest
+      10  WARNING in hsr_addr_subst_dest
 The bug was not found.
-About 418 commits remaining
+About 214 commits remaining
+
+2025-04-16 04:12:55
+Session:   22
+Kernel:    2020-02-27 - 23797b98909f34b75fd130369bde86f760db69d0
+Compiler:  ccache /home/syzretrospector/compilers/gcc-9.0.0-20181231/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       5  WARNING in hsr_addr_subst_dest
+       5  BUG: MAX_LOCKDEP_ENTRIES too low!
+       5  BUG: MAX_LOCKDEP_CHAIN_HLOCKS too low!
+       6  WARNING in hsr_addr_subst_dest
+       7  WARNING in hsr_addr_subst_dest
+       7  WARNING in hsr_addr_subst_dest
+       7  WARNING in hsr_addr_subst_dest
+       7  WARNING in hsr_addr_subst_dest
+       8  WARNING in sta_info_insert_rcu
+       8  WARNING in sta_info_insert_rcu
+       9  BUG: MAX_LOCKDEP_ENTRIES too low!
+       9  BUG: MAX_LOCKDEP_ENTRIES too low!
+      10  WARNING in hsr_addr_subst_dest
+      10  WARNING in hsr_addr_subst_dest
+      10  WARNING in hsr_addr_subst_dest
+      10  WARNING in hsr_addr_subst_dest
+      10  BUG: MAX_LOCKDEP_ENTRIES too low!
+The bug was not found.
+About 212 commits remaining
+
+2025-04-16 04:26:24
+Session:   23
+Kernel:    2020-02-27 - 3ee339eb28959629db33aaa2b8cde4c63c6289eb
+Compiler:  ccache /home/syzretrospector/compilers/gcc-9.0.0-20181231/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       3  WARNING in sta_info_insert_rcu
+       4  WARNING in hsr_addr_subst_dest
+       4  WARNING in hsr_addr_subst_dest
+       4  WARNING in hsr_addr_subst_dest
+       4  WARNING in sta_info_insert_rcu
+       6  WARNING in hsr_addr_subst_dest
+       6  WARNING in hsr_addr_subst_dest
+       6  WARNING in hsr_addr_subst_dest
+       6  WARNING in hsr_addr_subst_dest
+       6  WARNING in sta_info_insert_rcu
+       7  WARNING in hsr_addr_subst_dest
+       7  WARNING in sta_info_insert_rcu
+       8  WARNING in hsr_addr_subst_dest
+       8  WARNING in hsr_addr_subst_dest
+       8  WARNING in hsr_addr_subst_dest
+       8  WARNING in sta_info_insert_rcu
+       9  WARNING in hsr_addr_subst_dest
+       9  WARNING in hsr_addr_subst_dest
+       9  WARNING in hsr_addr_subst_dest
+      10  WARNING in hsr_addr_subst_dest
+      10  WARNING in hsr_addr_subst_dest
+      10  WARNING in hsr_addr_subst_dest
+The bug was not found.
+About 210 commits remaining
 
 ==== Partial Result: Focused Fuzzing ====
-Reproducer:           /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/reproducers/repro-bug0108-1.prog
-Bisection Result:     2020-11-06 - f56fb0122c4155f333ee9a50175dfe1e01cb12c1
-Bisected Commit Name: Merge tag 'amd-drm-fixes-5.10-2020-11-04' of git://people.freedesktop.org/~agd5f/linux into drm-fixes
-Stage Time:           9h50m50s
-Run Time:             9h50m53s
+Reproducer:           /home/syzretrospector/syzinspector/wd-bisector-1/reproducers/repro-bug0108-0.prog
+Bisection Result:     2020-02-27 - 7058b837899fc978c9f8a033fa29ab07360a85c8
+Bisected Commit Name: Merge git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net
+Stage Time:           6h39m18s
+Run Time:             6h39m20s
 =========================================
 
 ==== Anchor Commit ====
 
-2025-03-08 18:52:36
-Session:   22
-Kernel:    2020-11-06 - 866bc2d3c40abc044c4ede51529a82dc0d561216
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.1.0-syz/bin/gcc
+2025-04-16 04:39:42
+Session:   24
+Kernel:    2020-02-27 - a2f0b878c3ca531a1706cb2a8b079cea3b17bafc
+Compiler:  ccache /home/syzretrospector/compilers/gcc-9.0.0-20181231/bin/gcc
+Attempt 0:
+*** KASAN: slab-out-of-bounds Read in decrypt_internal
+Attempt 1:
+*** KASAN: slab-out-of-bounds Read in decrypt_internal
+Attempt 2:
+*** KASAN: slab-out-of-bounds Read in decrypt_internal
+Attempt 3:
+*** KASAN: slab-out-of-bounds Read in decrypt_internal
+Attempt 4:
+*** KASAN: slab-out-of-bounds Read in decrypt_internal
+Attempt 5:
+*** KASAN: slab-out-of-bounds Read in decrypt_internal
+Attempt 6:
+*** KASAN: slab-out-of-bounds Read in decrypt_internal
+Attempt 7:
+*** KASAN: slab-out-of-bounds Read in decrypt_internal
+The bug was found.
+
+==== Major Release Search ====
+13 Releases
+
+2025-04-16 04:45:57
+Session:   25
+Kernel:    2019-11-24 - 219d54332a09e8d8741c1e1982f5eae56099de85 (v5.4)
+Compiler:  ccache /home/syzretrospector/compilers/gcc-9.0.0-20181231/bin/gcc
+Attempt 0:
+*** KASAN: slab-out-of-bounds Read in decrypt_internal
+Attempt 1:
+*** KASAN: slab-out-of-bounds Read in decrypt_internal
+Attempt 2:
+*** KASAN: slab-out-of-bounds Read in decrypt_internal
+Attempt 3:
+*** KASAN: slab-out-of-bounds Read in decrypt_internal
+Attempt 4:
+*** KASAN: slab-out-of-bounds Read in decrypt_internal
+Attempt 5:
+*** KASAN: slab-out-of-bounds Read in decrypt_internal
+Attempt 6:
+*** KASAN: slab-out-of-bounds Read in decrypt_internal
+Attempt 7:
+*** KASAN: slab-out-of-bounds Read in decrypt_internal
+The bug was found.
+About 12 releases remaining
+
+2025-04-16 04:57:55
+Session:   26
+Kernel:    2019-09-15 - 4d856f72c10ecb060868ed10ff1b1453943fc6c8 (v5.3)
+Compiler:  ccache /home/syzretrospector/compilers/gcc-9.0.0-20181231/bin/gcc
+Attempt 0:
+    BUG: spinlock bad magic in nf_connlabels_get
+Attempt 1:
+    BUG: spinlock bad magic in nf_connlabels_get
+Attempt 2:
+    BUG: spinlock bad magic in nf_connlabels_get
+Attempt 3:
+    BUG: spinlock bad magic in nf_connlabels_get
+Attempt 4:
+    BUG: spinlock bad magic in nf_connlabels_get
+Attempt 5:
+    BUG: spinlock bad magic in nf_connlabels_get
+Attempt 6:
+    BUG: spinlock bad magic in nf_connlabels_get
+Attempt 7:
+    BUG: spinlock bad magic in nf_connlabels_get
+The bug was not found.
+About 11 releases remaining
+
+==== Kernel Bisection ====
+15726 Linux commits
+
+2025-04-16 05:09:04
+Session:   27
+Kernel:    2019-09-19 - a9f8b38a071b468276a243ea3ea5a0636e848cf2
+Compiler:  ccache /home/syzretrospector/compilers/gcc-9.0.0-20181231/bin/gcc
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+About 7884 commits remaining
+
+2025-04-16 05:19:45
+Session:   28
+Kernel:    2019-09-23 - 5825a95fe92566ada2292a65de030850b5cff1da
+Compiler:  ccache /home/syzretrospector/compilers/gcc-9.0.0-20181231/bin/gcc
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+About 3941 commits remaining
+
+2025-04-16 05:30:38
+Session:   29
+Kernel:    2019-10-12 - 48acba989ed5d8707500193048d6c4c5945d5f43
+Compiler:  ccache /home/syzretrospector/compilers/gcc-9.0.0-20181231/bin/gcc
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+About 1969 commits remaining
+
+2025-04-16 05:41:28
+Session:   30
+Kernel:    2019-11-01 - 65a5bf1c790039dc194507563478137b4314a59d
+Compiler:  ccache /home/syzretrospector/compilers/gcc-9.0.0-20181231/bin/gcc
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+About 990 commits remaining
+
+2025-04-16 05:52:11
+Session:   31
+Kernel:    2019-11-08 - 0058b0a506e40d9a2c62015fe92eb64a44d78cd9
+Compiler:  ccache /home/syzretrospector/compilers/gcc-9.0.0-20181231/bin/gcc
+Attempt 0:
+*** KASAN: slab-out-of-bounds Read in decrypt_internal
+Attempt 1:
+*** KASAN: slab-out-of-bounds Read in decrypt_internal
+Attempt 2:
+*** KASAN: slab-out-of-bounds Read in decrypt_internal
+Attempt 3:
+*** KASAN: slab-out-of-bounds Read in decrypt_internal
+Attempt 4:
+*** KASAN: slab-out-of-bounds Read in decrypt_internal
+Attempt 5:
+*** KASAN: slab-out-of-bounds Read in decrypt_internal
+Attempt 6:
+*** KASAN: slab-out-of-bounds Read in decrypt_internal
+Attempt 7:
+*** KASAN: slab-out-of-bounds Read in decrypt_internal
+The bug was found.
+About 548 commits remaining
+
+2025-04-16 06:04:01
+Session:   32
+Kernel:    2019-11-02 - 9d2345057538bb97b1e556508ad69983f446462f
+Compiler:  ccache /home/syzretrospector/compilers/gcc-9.0.0-20181231/bin/gcc
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+About 274 commits remaining
+
+2025-04-16 06:14:43
+Session:   33
+Kernel:    2019-11-08 - 6737e763495185999b073303bf58a49ca0b1e64d
+Compiler:  ccache /home/syzretrospector/compilers/gcc-9.0.0-20181231/bin/gcc
+Attempt 0:
+*** KASAN: slab-out-of-bounds Read in decrypt_internal
+Attempt 1:
+*** KASAN: slab-out-of-bounds Read in decrypt_internal
+Attempt 2:
+*** KASAN: slab-out-of-bounds Read in decrypt_internal
+Attempt 3:
+*** KASAN: slab-out-of-bounds Read in decrypt_internal
+Attempt 4:
+*** KASAN: slab-out-of-bounds Read in decrypt_internal
+Attempt 5:
+*** KASAN: slab-out-of-bounds Read in decrypt_internal
+Attempt 6:
+*** KASAN: slab-out-of-bounds Read in decrypt_internal
+Attempt 7:
+*** KASAN: slab-out-of-bounds Read in decrypt_internal
+The bug was found.
+About 137 commits remaining
+
+2025-04-16 06:24:18
+Session:   34
+Kernel:    2019-11-07 - 847120f859cc45e074204f4cf33c8df069306eb2
+Compiler:  ccache /home/syzretrospector/compilers/gcc-9.0.0-20181231/bin/gcc
+Attempt 0:
+*** KASAN: slab-out-of-bounds Read in decrypt_internal
+Attempt 1:
+*** KASAN: slab-out-of-bounds Read in decrypt_internal
+Attempt 2:
+*** KASAN: slab-out-of-bounds Read in decrypt_internal
+Attempt 3:
+*** KASAN: slab-out-of-bounds Read in decrypt_internal
+Attempt 4:
+*** KASAN: slab-out-of-bounds Read in decrypt_internal
+Attempt 5:
+*** KASAN: slab-out-of-bounds Read in decrypt_internal
+Attempt 6:
+*** KASAN: slab-out-of-bounds Read in decrypt_internal
+Attempt 7:
+*** KASAN: slab-out-of-bounds Read in decrypt_internal
+The bug was found.
+About 66 commits remaining
+
+2025-04-16 06:36:03
+Session:   35
+Kernel:    2019-10-31 - d8eca64eec7103ab1fbabc0a187dbf6acfb2af93
+Compiler:  ccache /home/syzretrospector/compilers/gcc-9.0.0-20181231/bin/gcc
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+About 383 commits remaining
+
+2025-04-16 06:46:25
+Session:   36
+Kernel:    2019-11-06 - 5cbf2fff3bba8d3c6a4d47c1754de1cf57e2b01f
+Compiler:  ccache /home/syzretrospector/compilers/gcc-9.0.0-20181231/bin/gcc
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+About 18 commits remaining
+
+2025-04-16 06:57:02
+Session:   37
+Kernel:    2019-11-05 - 26bc672134241a080a83b2ab9aa8abede8d30e1c
+Compiler:  ccache /home/syzretrospector/compilers/gcc-9.0.0-20181231/bin/gcc
+Attempt 0:
+*** KASAN: slab-out-of-bounds Read in decrypt_internal
+Attempt 1:
+*** KASAN: slab-out-of-bounds Read in decrypt_internal
+Attempt 2:
+*** KASAN: slab-out-of-bounds Read in decrypt_internal
+Attempt 3:
+*** KASAN: slab-out-of-bounds Read in decrypt_internal
+Attempt 4:
+*** KASAN: slab-out-of-bounds Read in decrypt_internal
+Attempt 5:
+*** KASAN: slab-out-of-bounds Read in decrypt_internal
+Attempt 6:
+*** KASAN: slab-out-of-bounds Read in decrypt_internal
+Attempt 7:
+*** KASAN: slab-out-of-bounds Read in decrypt_internal
+The bug was found.
+About 9 commits remaining
+
+2025-04-16 07:08:42
+Session:   38
+Kernel:    2019-11-03 - 52c75f56703e1c40a2bc3f64a140602112dfa302
+Compiler:  ccache /home/syzretrospector/compilers/gcc-9.0.0-20181231/bin/gcc
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+About 700 commits remaining
+
+2025-04-16 07:19:28
+Session:   39
+Kernel:    2019-11-05 - 7111fa1151e3c66cde3a94250bda72d7144419ff
+Compiler:  ccache /home/syzretrospector/compilers/gcc-9.0.0-20181231/bin/gcc
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+About 3 commits remaining
+
+2025-04-16 07:30:06
+Session:   40
+Kernel:    2019-11-05 - fa729c4df558936b4a1a7b3e2234011f44ede28b
+Compiler:  ccache /home/syzretrospector/compilers/gcc-9.0.0-20181231/bin/gcc
+Attempt 0:
+*** KASAN: slab-out-of-bounds Read in decrypt_internal
+Attempt 1:
+*** KASAN: slab-out-of-bounds Read in decrypt_internal
+Attempt 2:
+*** KASAN: slab-out-of-bounds Read in decrypt_internal
+Attempt 3:
+*** KASAN: slab-out-of-bounds Read in decrypt_internal
+Attempt 4:
+*** KASAN: slab-out-of-bounds Read in decrypt_internal
+Attempt 5:
+*** KASAN: slab-out-of-bounds Read in decrypt_internal
+Attempt 6:
+*** KASAN: slab-out-of-bounds Read in decrypt_internal
+Attempt 7:
+*** KASAN: slab-out-of-bounds Read in decrypt_internal
+The bug was found.
+About 2 commits remaining
+
+==== Partial Result: Primary PoC Test ====
+Reproducer:           /home/syzretrospector/syzinspector/wd-bisector-1/reproducers/repro-bug0108-0.prog
+Bisection Result:     2019-11-05 - fa729c4df558936b4a1a7b3e2234011f44ede28b
+Bisected Commit Name: clone3: validate stack arguments
+Stage Time:           3h2m12s
+Run Time:             9h41m33s
+==========================================
+
+==== Anchor Commit ====
+
+2025-04-16 07:41:55
+Session:   41
+Kernel:    2019-10-27 - d6d5df1db6e9d7f8f76d2911707f7d5877251b02
+Compiler:  ccache /home/syzretrospector/compilers/gcc-9.0.0-20181231/bin/gcc
 Attempt 0:
     No crashes found.
 Attempt 1:
@@ -736,12 +947,19 @@ The bug was not found.
 
 Failure: This bug cannot be found at the anchor commit.
 
+==== Partial Result: Subsequent PoC Test ====
+Reproducer:           /home/syzretrospector/syzinspector/wd-bisector-1/reproducers/repro-bug0108-3.prog
+Bisection Result:     Failed to reproduce at the anchor commit.
+Stage Time:           0h10m32s
+Run Time:             9h52m5s
+=============================================
+
 ====================================================================================================================================================
 Bug Name:             KASAN: slab-out-of-bounds Read in decrypt_internal
 Bug Link:             https://syzkaller.appspot.com/bug?id=02617ac69815ae324053c954118c2dc7ba0e59b2
-Bisection Result:     2020-11-06 - f56fb0122c4155f333ee9a50175dfe1e01cb12c1
-Bisected Commit Name: Merge tag 'amd-drm-fixes-5.10-2020-11-04' of git://people.freedesktop.org/~agd5f/linux into drm-fixes
-Run Time:             10h9m6s
+Bisection Result:     2019-11-05 - fa729c4df558936b4a1a7b3e2234011f44ede28b
+Bisected Commit Name: clone3: validate stack arguments
+Run Time:             9h52m5s
 
 Anchor Commit:        2022-01-06 - ddec8ed2d4905d0967ce2ec432e440e582aa52c6
-Bisection Result:     2020-11-06 - f56fb0122c4155f333ee9a50175dfe1e01cb12c1
+Bisection Result:     2019-11-05 - fa729c4df558936b4a1a7b3e2234011f44ede28b
