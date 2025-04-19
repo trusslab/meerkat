@@ -1,0 +1,2647 @@
+charm starts bisection 2025-04-17 10:05:23.844157266 -0700 PDT m=+32.047734888
+bisecting cause commit starting from 5b7c4cabbb65f5c469464da6c5f614cbd7f730f2
+building syzkaller on HEAD
+ensuring issue is reproducible on original commit 5b7c4cabbb65f5c469464da6c5f614cbd7f730f2
+
+testing commit 5b7c4cabbb65f5c469464da6c5f614cbd7f730f2 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 18e8291aeab0da76e54595da20cb8574dc4b66431cd8202b4e022dcc45e5d3ab
+all runs: crashed: KASAN: invalid-free in skb_free_head
+representative crash: KASAN: invalid-free in skb_free_head, types: [KASAN]
+picked [v6.2 v6.1 v6.0 v5.18 v5.16 v5.14 v5.12 v5.10 v5.7 v5.4 v5.1 v4.19] out of 25 release tags
+testing release v6.2
+testing commit c9c3395d5e3dcc6daee66c6908354d47bf98cb0c gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 86c24047636cc379423826f93b5b0b2a3d0370f01493b89403ef0c56c188a58a
+run #0: crashed: INFO: rcu detected stall in corrupted
+run #1: crashed: INFO: rcu detected stall in corrupted
+run #2: crashed: INFO: rcu detected stall in corrupted
+run #3: crashed: INFO: rcu detected stall in corrupted
+run #4: crashed: INFO: rcu detected stall in corrupted
+run #5: crashed: INFO: rcu detected stall in corrupted
+run #6: OK
+run #7: OK
+representative crash: INFO: rcu detected stall in corrupted, types: [HANG]
+testing release v6.1
+testing commit 830b3c68c1fb1e9176028d02ef86f3cf76aa2476 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: a5138c3da8f9321c74dd119af824cf969cb740acdf35fb105a169a017f58f332
+run #0: crashed: INFO: rcu detected stall in corrupted
+run #1: crashed: INFO: rcu detected stall in corrupted
+run #2: crashed: INFO: rcu detected stall in corrupted
+run #3: crashed: INFO: rcu detected stall in corrupted
+run #4: crashed: INFO: rcu detected stall in corrupted
+run #5: basic kernel testing failed: INFO: rcu detected stall in corrupted
+run #6: crashed: INFO: rcu detected stall in corrupted
+run #7: OK
+representative crash: INFO: rcu detected stall in corrupted, types: [HANG]
+testing release v6.0
+testing commit 4fe89d07dcc2804c8b562f6c7896a45643d34b2f gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 807e3895b732a49b8342f8c33aa4e33a18ea850ff0ebd3be2e83279e370da014
+run #0: crashed: INFO: rcu detected stall in corrupted
+run #1: basic kernel testing failed: INFO: rcu detected stall in corrupted
+run #2: crashed: INFO: rcu detected stall in corrupted
+run #3: crashed: INFO: rcu detected stall in corrupted
+run #4: crashed: INFO: rcu detected stall in corrupted
+run #5: crashed: INFO: rcu detected stall in corrupted
+run #6: crashed: INFO: rcu detected stall in corrupted
+run #7: crashed: INFO: rcu detected stall in corrupted
+representative crash: INFO: rcu detected stall in corrupted, types: [HANG]
+testing release v5.18
+testing commit 4b0986a3613c92f4ec1bdc7f60ec66fea135991f gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 9e511829e168a4f89266ed840c74077466f9271542946bcf1f395081a3db488c
+all runs: OK
+false negative chance: 0.000
+# git bisect start 4fe89d07dcc2804c8b562f6c7896a45643d34b2f 4b0986a3613c92f4ec1bdc7f60ec66fea135991f
+Bisecting: 16492 revisions left to test after this (roughly 14 steps)
+[92598ae22f582547ebb060cf76f5869bc9780b80] Merge tag 'x86_mm_for_v6.0_rc1' of git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip
+
+testing commit 92598ae22f582547ebb060cf76f5869bc9780b80 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: b5a8f78dde72946c142d8c7058c6295dc1a87a44a42957cfa44b7e5a29b40cbe
+all runs: OK
+false negative chance: 0.000
+# git bisect good 92598ae22f582547ebb060cf76f5869bc9780b80
+Bisecting: 8189 revisions left to test after this (roughly 13 steps)
+[723c188d5cd42a07344f997b0b7e1d83b4173c8d] Merge tag 'staging-6.0-rc1' of git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/staging
+
+testing commit 723c188d5cd42a07344f997b0b7e1d83b4173c8d gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 067bfc8b00eba830c496cf2e69d0f445f30d800aab3c2fb4208b0fd5950f2715
+all runs: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip 723c188d5cd42a07344f997b0b7e1d83b4173c8d
+Bisecting: 8189 revisions left to test after this (roughly 13 steps)
+[65534736d9a5cab5340ae8819e1394b6325e8390] tty: Use flow-control char function on closing path
+
+testing commit 65534736d9a5cab5340ae8819e1394b6325e8390 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 32036e6a5b3ae84dd943d5db03fa2068c5b7deeca43d2b6593ce8a89381e2928
+all runs: OK
+false negative chance: 0.000
+# git bisect good 65534736d9a5cab5340ae8819e1394b6325e8390
+Bisecting: 8290 revisions left to test after this (roughly 13 steps)
+[78acd4ca433425e6dd4032cfc2156c60e34931f2] usb: cdns3: Don't use priv_dev uninitialized in cdns3_gadget_ep_enable()
+
+testing commit 78acd4ca433425e6dd4032cfc2156c60e34931f2 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 0482bbb71d3954ab38c69a9d862a42cf34e8a96507da173cd6325d139410ef63
+all runs: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip 78acd4ca433425e6dd4032cfc2156c60e34931f2
+Bisecting: 8290 revisions left to test after this (roughly 13 steps)
+[9059ca921bd3e81ad554c1baa4c08e90b12767fe] media: amphion: support for reloading module
+
+testing commit 9059ca921bd3e81ad554c1baa4c08e90b12767fe gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: ee52888d2094261ab29d0905fc7d19ee325f71b5718e30686f5d56d592786416
+all runs: OK
+false negative chance: 0.000
+# git bisect good 9059ca921bd3e81ad554c1baa4c08e90b12767fe
+Bisecting: 8095 revisions left to test after this (roughly 13 steps)
+[47092381023050ab90c3f0603a587f798d37f194] staging: r8188eu: make dump_chip_info() static
+
+testing commit 47092381023050ab90c3f0603a587f798d37f194 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: c801b374f62f140c620c2c156ab127c4779b74eee24f6eafc5f9065e1a0a337d
+all runs: OK
+false negative chance: 0.000
+# git bisect good 47092381023050ab90c3f0603a587f798d37f194
+Bisecting: 8095 revisions left to test after this (roughly 13 steps)
+[a524837ddd11bc20ec59d033d0260707cfa3cb99] ASoC: rt*: Remove now redundant non_legacy_dai_naming flag
+
+testing commit a524837ddd11bc20ec59d033d0260707cfa3cb99 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: fabfdf2355732897b2996604127ec828a623ba9a1d162e29c8bb56efca481f4b
+run #0: OK
+run #1: OK
+run #2: OK
+run #3: OK
+run #4: OK
+run #5: OK
+run #6: OK
+run #7: boot failed: INFO: task hung in add_early_randomness
+false negative chance: 0.000
+# git bisect good a524837ddd11bc20ec59d033d0260707cfa3cb99
+Bisecting: 7867 revisions left to test after this (roughly 13 steps)
+[cfeafd94668910334a77c9437a18212baf9f5610] Merge tag 'driver-core-6.0-rc1' of git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/driver-core
+
+testing commit cfeafd94668910334a77c9437a18212baf9f5610 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 2026d22b29e048174b245cbf6e1e6d337a36bd9bead33daf998e502df7af65a8
+run #0: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+run #1: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+run #2: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+run #3: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+run #4: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+run #5: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+run #6: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+run #7: basic kernel testing failed: INFO: rcu detected stall in corrupted
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip cfeafd94668910334a77c9437a18212baf9f5610
+Bisecting: 7867 revisions left to test after this (roughly 13 steps)
+[4ac7573e1f9333073fa8d303acc941c9b7ab7f61] net: 9p: fix refcount leak in p9_read_work() error handling
+
+testing commit 4ac7573e1f9333073fa8d303acc941c9b7ab7f61 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: ea5e3e5b8897dbe27edbae41d7405f600845780969caa453c88c8c7e6240b76e
+all runs: OK
+false negative chance: 0.000
+# git bisect good 4ac7573e1f9333073fa8d303acc941c9b7ab7f61
+Bisecting: 7855 revisions left to test after this (roughly 13 steps)
+[19cd4a5471b8eaa4bd161b0fdb4567f2fc88d809] vdpa_sim_blk: set number of address spaces and virtqueue groups
+
+testing commit 19cd4a5471b8eaa4bd161b0fdb4567f2fc88d809 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: a665747a0efb52cbdea5792267ddca016f3bb46f84ea7cdb4356fa00989ae1aa
+all runs: OK
+false negative chance: 0.000
+# git bisect good 19cd4a5471b8eaa4bd161b0fdb4567f2fc88d809
+Bisecting: 7864 revisions left to test after this (roughly 13 steps)
+[228dfe98a313f6b6bff5da8b2c5e650e297ebf1a] Merge tag 'char-misc-6.0-rc1' of git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/char-misc
+
+testing commit 228dfe98a313f6b6bff5da8b2c5e650e297ebf1a gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 5ee9e0a94e96837f50e57029e30a218ab64158dc2ee6bc56e8e96deda0af53af
+run #0: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+run #1: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+run #2: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+run #3: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+run #4: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+run #5: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+run #6: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+run #7: basic kernel testing failed: INFO: rcu detected stall in corrupted
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip 228dfe98a313f6b6bff5da8b2c5e650e297ebf1a
+Bisecting: 7864 revisions left to test after this (roughly 13 steps)
+[70cfdd0365acf550350d8949096c0b34a96b6b48] ALSA: hda/realtek: Add quirk for Lenovo Yoga7 14IAL7
+
+testing commit 70cfdd0365acf550350d8949096c0b34a96b6b48 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 913f8b18f8c3b995af110ba63c2c4debdc9c3dc39a5692f4c289c89551c90b00
+all runs: OK
+false negative chance: 0.000
+# git bisect good 70cfdd0365acf550350d8949096c0b34a96b6b48
+Bisecting: 7415 revisions left to test after this (roughly 13 steps)
+[f2d57765b79857264fb0ddc52679d661b60ecc21] firmware_loader: Replace kmap() with kmap_local_page()
+
+testing commit f2d57765b79857264fb0ddc52679d661b60ecc21 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 16f569fcb4c9ebb015c5c3c1e723dd2a7353b5408c31fd921d957273d5c50b7b
+run #0: OK
+run #1: OK
+run #2: OK
+run #3: OK
+run #4: OK
+run #5: OK
+run #6: OK
+run #7: boot failed: INFO: task hung in add_early_randomness
+false negative chance: 0.000
+# git bisect good f2d57765b79857264fb0ddc52679d661b60ecc21
+Bisecting: 7352 revisions left to test after this (roughly 13 steps)
+[7e753eb675f0523207b184558638ee2eed6c9ac2] ice: Fix DMA mappings leak
+
+testing commit 7e753eb675f0523207b184558638ee2eed6c9ac2 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 10190368a0ff17876df8978aceb643bbf5ab5c33c6202501537ecc46aab9af6e
+run #0: crashed: INFO: rcu detected stall in corrupted
+run #1: crashed: INFO: rcu detected stall in corrupted
+run #2: crashed: INFO: rcu detected stall in corrupted
+run #3: crashed: INFO: rcu detected stall in corrupted
+run #4: crashed: INFO: rcu detected stall in corrupted
+run #5: crashed: INFO: rcu detected stall in corrupted
+run #6: crashed: WARNING: ODEBUG bug in netdev_run_todo
+run #7: OK
+representative crash: INFO: rcu detected stall in corrupted, types: [HANG]
+# git bisect bad 7e753eb675f0523207b184558638ee2eed6c9ac2
+Bisecting: 6703 revisions left to test after this (roughly 13 steps)
+[b44f2fd87919b5ae6e1756d4c7ba2cbba22238e1] Merge tag 'drm-next-2022-08-03' of git://anongit.freedesktop.org/drm/drm
+
+testing commit b44f2fd87919b5ae6e1756d4c7ba2cbba22238e1 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 5a3cd4df77c5d8e04998f5d62679a8566da3946d534238332d06843b743afef4
+all runs: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip b44f2fd87919b5ae6e1756d4c7ba2cbba22238e1
+Bisecting: 6703 revisions left to test after this (roughly 13 steps)
+[37d1dc8d48cf266ffcb83b223d2dd0667a73e830] hwmon: (lm90) Add remaining chips supported by adm1021 driver
+
+testing commit 37d1dc8d48cf266ffcb83b223d2dd0667a73e830 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 9c2b1461b7985549dd48bcf56bd8333f11a85b58e2747846e150099c27310f5f
+all runs: OK
+false negative chance: 0.000
+# git bisect good 37d1dc8d48cf266ffcb83b223d2dd0667a73e830
+Bisecting: 6703 revisions left to test after this (roughly 13 steps)
+[95215d3d19c5b47b8ccef8cb61c9dcd17ac7a669] Input: iqs7222 - fortify slider event reporting
+
+testing commit 95215d3d19c5b47b8ccef8cb61c9dcd17ac7a669 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: eb533991f93cf69f91f96a6229c449453a1102aa95cf5bb2164d562f032e9ae8
+run #0: crashed: WARNING: ODEBUG bug in netdev_run_todo
+run #1: OK
+run #2: OK
+run #3: OK
+run #4: OK
+run #5: OK
+run #6: OK
+run #7: OK
+representative crash: WARNING: ODEBUG bug in netdev_run_todo, types: [WARNING]
+unable to determine the verdict: 7 good runs (wanted 4), for bad wanted 4 in total, got 8
+# git bisect skip 95215d3d19c5b47b8ccef8cb61c9dcd17ac7a669
+Bisecting: 6703 revisions left to test after this (roughly 13 steps)
+[017691914c115903ee513d9ca058335bb35f8bd6] octeontx2-af: Exact match support
+
+testing commit 017691914c115903ee513d9ca058335bb35f8bd6 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 0eef6c399ecc37be2960b6347c30a7d9819d021c6b72c72dc3426c44f7f2f294
+all runs: OK
+false negative chance: 0.000
+# git bisect good 017691914c115903ee513d9ca058335bb35f8bd6
+Bisecting: 6702 revisions left to test after this (roughly 13 steps)
+[798cd57cd5f871452461746032cf6ee50b0fd69a] drm/amd/display: restore code for plane with no modifiers
+
+testing commit 798cd57cd5f871452461746032cf6ee50b0fd69a gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: a208e9d6e82da81ce246183cbda50f582fa45007a343999b3c8fae470df9f955
+all runs: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip 798cd57cd5f871452461746032cf6ee50b0fd69a
+Bisecting: 6702 revisions left to test after this (roughly 13 steps)
+[bccceabb92ce8eb78bbf2de08308e2cc2761a2e5] soc: renesas: r8a779a0-sysc: Fix A2DP1 and A2CV[2357] PDR values
+
+testing commit bccceabb92ce8eb78bbf2de08308e2cc2761a2e5 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 6025f9a61367e478409f5dedc469f8ed40290c4e5d1273ccd4c636d6c8c75cf3
+all runs: OK
+false negative chance: 0.000
+# git bisect good bccceabb92ce8eb78bbf2de08308e2cc2761a2e5
+Bisecting: 6702 revisions left to test after this (roughly 13 steps)
+[ea937ad6e925994b94d17555e4c2f2f9a99234e1] drm/amdgpu: Fix GTT size reporting in amdgpu_ioctl
+
+testing commit ea937ad6e925994b94d17555e4c2f2f9a99234e1 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 9ee5b97c4b88e72ade8c1c9e31976d246f4b0c3ed5d4a04d29cdcaeabd9dd9a7
+all runs: OK
+false negative chance: 0.000
+# git bisect good ea937ad6e925994b94d17555e4c2f2f9a99234e1
+Bisecting: 6702 revisions left to test after this (roughly 13 steps)
+[df936cadfb58ba93601ac351ab6fc2e2650cf591] perf stat: Add JSON output option
+
+testing commit df936cadfb58ba93601ac351ab6fc2e2650cf591 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 1e1446e91a63bc52dd4fea37546e56deaabdaa5d7c3883b8ea09a59a842e9691
+run #0: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+run #1: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+run #2: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+run #3: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+run #4: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+run #5: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+run #6: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+run #7: basic kernel testing failed: INFO: rcu detected stall in corrupted
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip df936cadfb58ba93601ac351ab6fc2e2650cf591
+Bisecting: 6702 revisions left to test after this (roughly 13 steps)
+[0982c8d859f8f7022b9fd44d421c7ec721bb41f9] Merge branch kvm-arm64/nvhe-stacktrace into kvmarm-master/next
+
+testing commit 0982c8d859f8f7022b9fd44d421c7ec721bb41f9 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: d657c5ec4e109d4e8e45f1f7f9ec9c4969accb081a8b23de644074c72dcb74c5
+run #0: crashed: WARNING: ODEBUG bug in netdev_run_todo
+run #1: OK
+run #2: OK
+run #3: OK
+run #4: OK
+run #5: OK
+run #6: OK
+run #7: OK
+representative crash: WARNING: ODEBUG bug in netdev_run_todo, types: [WARNING]
+unable to determine the verdict: 7 good runs (wanted 4), for bad wanted 4 in total, got 8
+# git bisect skip 0982c8d859f8f7022b9fd44d421c7ec721bb41f9
+Bisecting: 6702 revisions left to test after this (roughly 13 steps)
+[1a893c2bfef46ac447eead8ea7afe417942be237] nvme: refactor namespace probing
+
+testing commit 1a893c2bfef46ac447eead8ea7afe417942be237 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 0d3333d85f01cd81e18f150b053c5b8553571887d01aee7ec2de4ceedafd3792
+all runs: OK
+false negative chance: 0.000
+# git bisect good 1a893c2bfef46ac447eead8ea7afe417942be237
+Bisecting: 5080 revisions left to test after this (roughly 12 steps)
+[7c5c3a6177fa9646884114fc7f2e970b0bc50dc9] Merge tag 'for-linus' of git://git.kernel.org/pub/scm/virt/kvm/kvm
+
+testing commit 7c5c3a6177fa9646884114fc7f2e970b0bc50dc9 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 3a1f833c97bc9746b868424ca4e697bb836e005a6b811438a3e13a7b3d43a354
+all runs: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip 7c5c3a6177fa9646884114fc7f2e970b0bc50dc9
+Bisecting: 5080 revisions left to test after this (roughly 12 steps)
+[ff34eaa820231dfaecca9c048637bd86ba294bc7] perf header: Store PMU caps in an array of strings
+
+testing commit ff34eaa820231dfaecca9c048637bd86ba294bc7 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 33601ffa2c8a37cbb266db78a1b371eec49341d3b643ab9b387f3dd9be756b9f
+run #0: crashed: WARNING: ODEBUG bug in netdev_run_todo
+run #1: OK
+run #2: OK
+run #3: OK
+run #4: OK
+run #5: OK
+run #6: OK
+run #7: OK
+representative crash: WARNING: ODEBUG bug in netdev_run_todo, types: [WARNING]
+unable to determine the verdict: 7 good runs (wanted 4), for bad wanted 4 in total, got 8
+# git bisect skip ff34eaa820231dfaecca9c048637bd86ba294bc7
+Bisecting: 5080 revisions left to test after this (roughly 12 steps)
+[1a55048674379f9b093e0a6dbef586d28b55f9ae] net/mlx5e: Remove the duplicating check for striding RQ when enabling LRO
+
+testing commit 1a55048674379f9b093e0a6dbef586d28b55f9ae gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 5424939ab699ea271a37e7b740d715971acc059428a67df007a3e0229c2cd199
+all runs: OK
+false negative chance: 0.000
+# git bisect good 1a55048674379f9b093e0a6dbef586d28b55f9ae
+Bisecting: 5055 revisions left to test after this (roughly 12 steps)
+[7df9075e232e09d99cf23b657b6cb04c9506e618] Merge tag 'csky-for-linus-6.0-rc1' of https://github.com/c-sky/csky-linux
+
+testing commit 7df9075e232e09d99cf23b657b6cb04c9506e618 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 8049d0b9afce9f23744d66c481e1de2d9df9f3e091e9d321a3f040e101250340
+all runs: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip 7df9075e232e09d99cf23b657b6cb04c9506e618
+Bisecting: 5055 revisions left to test after this (roughly 12 steps)
+[10f525a8cd7a525e9fc73288bb35428c9cad5e63] ITER_PIPE: cache the type of last buffer
+
+testing commit 10f525a8cd7a525e9fc73288bb35428c9cad5e63 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 659054d7dd5ad29e07ede8716275027b18696f5b4f7d107056d8e921a04ad864
+run #0: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+run #1: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+run #2: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+run #3: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+run #4: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+run #5: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+run #6: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+run #7: basic kernel testing failed: INFO: rcu detected stall in corrupted
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip 10f525a8cd7a525e9fc73288bb35428c9cad5e63
+Bisecting: 5055 revisions left to test after this (roughly 12 steps)
+[4920065888fa27edf1cb3f2d03c6d1c245e493bf] net: ipa: rearrange transaction initialization
+
+testing commit 4920065888fa27edf1cb3f2d03c6d1c245e493bf gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: fa500b08a0f7e4fe4ea92d760ad889d94156265215449a1ba156f2c3e5495d4c
+all runs: basic kernel testing failed: INFO: trying to register non-static key in ieee80211_do_stop
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip 4920065888fa27edf1cb3f2d03c6d1c245e493bf
+Bisecting: 5055 revisions left to test after this (roughly 12 steps)
+[995177a4c75ee9b9069d5a313d90c005cf89c1b2] Merge tag 'for-linus' of git://git.armlinux.org.uk/~rmk/linux-arm
+
+testing commit 995177a4c75ee9b9069d5a313d90c005cf89c1b2 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 10b6290c7964f85e21590aa93499310b0f56255e72e6031a4de141215282e5cd
+all runs: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip 995177a4c75ee9b9069d5a313d90c005cf89c1b2
+Bisecting: 5055 revisions left to test after this (roughly 12 steps)
+[7959bd4411766899ad9c66235dab789a3e8dd7db] btrfs: remove the start argument to check_data_csum and export
+
+testing commit 7959bd4411766899ad9c66235dab789a3e8dd7db gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: b419adde4edc80c603db2c5966588e1b2c9d8f61e3c618cef6894c28b4c8047b
+all runs: basic kernel testing failed: INFO: trying to register non-static key in ieee80211_do_stop
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip 7959bd4411766899ad9c66235dab789a3e8dd7db
+Bisecting: 5055 revisions left to test after this (roughly 12 steps)
+[4e3299eaddffd9d7d5b8bae28ad700bb775f02d0] fs: do not compare against ->llseek
+
+testing commit 4e3299eaddffd9d7d5b8bae28ad700bb775f02d0 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 94ed5c6f620e5feb235d3f3f3156d6a8ee5d18b29ecbaefbbfe456b90448fbd7
+all runs: OK
+false negative chance: 0.000
+# git bisect good 4e3299eaddffd9d7d5b8bae28ad700bb775f02d0
+Bisecting: 5055 revisions left to test after this (roughly 12 steps)
+[6d056b7254f9954522b7bb9947c8779a013d189f] powerpc/52xx: Remove dead code, i.e. mpc52xx_get_xtal_freq()
+
+testing commit 6d056b7254f9954522b7bb9947c8779a013d189f gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 2d91a51761bb3f95005584b3dc5bb7f59fd6846be4814a0d4f6a598f789e1b0c
+all runs: OK
+false negative chance: 0.000
+# git bisect good 6d056b7254f9954522b7bb9947c8779a013d189f
+Bisecting: 5051 revisions left to test after this (roughly 12 steps)
+[cec7bb7d58fa0e644f8cec46b081bf5427c1a0f8] xfs: pass perag to xfs_alloc_read_agfl
+
+testing commit cec7bb7d58fa0e644f8cec46b081bf5427c1a0f8 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 92887214a559b21c8f748ff88dc939a860460863b8385153a726ae897bf3e34d
+all runs: OK
+false negative chance: 0.000
+# git bisect good cec7bb7d58fa0e644f8cec46b081bf5427c1a0f8
+Bisecting: 5051 revisions left to test after this (roughly 12 steps)
+[25e6bed5a64836621e41bc9f9d97eb79f1bdfa1e] Merge branch 'for-linus' of git://git.kernel.org/pub/scm/linux/kernel/git/egtvedt/linux-avr32
+
+testing commit 25e6bed5a64836621e41bc9f9d97eb79f1bdfa1e gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 778bf9c96157c7f8054ba0888cc9662bb7847026a7f70f335594a6684e4188ca
+all runs: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip 25e6bed5a64836621e41bc9f9d97eb79f1bdfa1e
+Bisecting: 5051 revisions left to test after this (roughly 12 steps)
+[714f3cbd70a4db9f9b7fe5b8a032896ed33fb824] arm64/sme: Don't flush SVE register state when handling SME traps
+
+testing commit 714f3cbd70a4db9f9b7fe5b8a032896ed33fb824 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 420ba25c430ef65ace5f9e241e69d7a5256e89de0a3a78c7f1760df36616ad97
+run #0: crashed: INFO: rcu detected stall in corrupted
+run #1: crashed: INFO: rcu detected stall in corrupted
+run #2: crashed: INFO: rcu detected stall in corrupted
+run #3: crashed: INFO: rcu detected stall in corrupted
+run #4: basic kernel testing failed: INFO: rcu detected stall in corrupted
+run #5: crashed: INFO: rcu detected stall in corrupted
+run #6: crashed: INFO: rcu detected stall in corrupted
+run #7: crashed: INFO: rcu detected stall in corrupted
+representative crash: INFO: rcu detected stall in corrupted, types: [HANG]
+# git bisect bad 714f3cbd70a4db9f9b7fe5b8a032896ed33fb824
+Bisecting: 4818 revisions left to test after this (roughly 12 steps)
+[f0a892f599c46af673e47418c47c15e69a7b67f4] drm/amd/amdgpu: fix build failure due to implicit declaration
+
+testing commit f0a892f599c46af673e47418c47c15e69a7b67f4 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: b971103315f49813f1fbea9fdf9794e6dc840b2d15d82c1a0230af18fd3ae674
+run #0: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+run #1: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+run #2: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+run #3: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+run #4: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+run #5: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+run #6: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+run #7: basic kernel testing failed: INFO: rcu detected stall in corrupted
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip f0a892f599c46af673e47418c47c15e69a7b67f4
+Bisecting: 4818 revisions left to test after this (roughly 12 steps)
+[3a44fb9f61d4315806d46dd3d107be15f6860052] mmc: Merge branch fixes into next
+
+testing commit 3a44fb9f61d4315806d46dd3d107be15f6860052 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 52eb886ae2aeff02b31e78a5476769be111adb30684b3fea099cbd87cb02c9dd
+all runs: OK
+false negative chance: 0.000
+# git bisect good 3a44fb9f61d4315806d46dd3d107be15f6860052
+Bisecting: 4769 revisions left to test after this (roughly 12 steps)
+[81bf9e2e6e857cd8bed7062c22af09fb34881340] media: st-mipid02: add support of pixel clock polarity
+
+testing commit 81bf9e2e6e857cd8bed7062c22af09fb34881340 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 705c7039c951ed71f7c40419d0a79b52c3d20dbe37dda0db527cbf20ac1caa66
+all runs: OK
+false negative chance: 0.000
+# git bisect good 81bf9e2e6e857cd8bed7062c22af09fb34881340
+Bisecting: 4769 revisions left to test after this (roughly 12 steps)
+[c19a23fadd279f433424b4d6436fe4ab0020e20c] drm/amdgpu: Fix comment typo
+
+testing commit c19a23fadd279f433424b4d6436fe4ab0020e20c gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 710b8ab45dca242c0b17b75f358ee3198695d2b3e74bc7e4985885602433b6c8
+all runs: OK
+false negative chance: 0.000
+# git bisect good c19a23fadd279f433424b4d6436fe4ab0020e20c
+Bisecting: 3936 revisions left to test after this (roughly 12 steps)
+[5bb3bf24b0aaa76253c77e437b88927a32a10c4e] Merge tag 'tag-chrome-platform-for-v5.20' of git://git.kernel.org/pub/scm/linux/kernel/git/chrome-platform/linux
+
+testing commit 5bb3bf24b0aaa76253c77e437b88927a32a10c4e gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 2479dce416aadc5288e4be438ca3988bff0ef8234cce8bfc2e773cbadaec8185
+run #0: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+run #1: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+run #2: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+run #3: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+run #4: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+run #5: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+run #6: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+run #7: basic kernel testing failed: INFO: rcu detected stall in corrupted
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip 5bb3bf24b0aaa76253c77e437b88927a32a10c4e
+Bisecting: 3936 revisions left to test after this (roughly 12 steps)
+[fe3d651627d61210c6905339e5281d3b9db75033] media: mediatek: vcodec: Initialize decoder parameters for each instance
+
+testing commit fe3d651627d61210c6905339e5281d3b9db75033 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: df330d69bd239a76749adef90843289e206fd7dd8918658ca02c1b99b06359ac
+run #0: crashed: WARNING: ODEBUG bug in netdev_run_todo
+run #1: OK
+run #2: OK
+run #3: OK
+run #4: OK
+run #5: OK
+run #6: OK
+run #7: OK
+representative crash: WARNING: ODEBUG bug in netdev_run_todo, types: [WARNING]
+unable to determine the verdict: 7 good runs (wanted 4), for bad wanted 4 in total, got 8
+# git bisect skip fe3d651627d61210c6905339e5281d3b9db75033
+Bisecting: 3936 revisions left to test after this (roughly 12 steps)
+[45e15c1a375ea380d55880be2f8182cb737b60ed] csky: Add qspinlock support
+
+testing commit 45e15c1a375ea380d55880be2f8182cb737b60ed gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 474bea6e3f4e5305b3b83fd17c8a7acdc9df49cefcb0b42a0020a2d8a8a9e9e6
+all runs: basic kernel testing failed: INFO: trying to register non-static key in ieee80211_do_stop
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip 45e15c1a375ea380d55880be2f8182cb737b60ed
+Bisecting: 3936 revisions left to test after this (roughly 12 steps)
+[5478431f984ec593684f0dbb212e2c141ec20320] KVM: selftests: Convert mmu_role_test away from VCPU_ID
+
+testing commit 5478431f984ec593684f0dbb212e2c141ec20320 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 38a3cecaf21adabbf8acd4d2d100624541b1918f4d8e0690a2de75102194339f
+run #0: OK
+run #1: OK
+run #2: OK
+run #3: OK
+run #4: OK
+run #5: OK
+run #6: OK
+run #7: boot failed: INFO: task hung in add_early_randomness
+false negative chance: 0.000
+# git bisect good 5478431f984ec593684f0dbb212e2c141ec20320
+Bisecting: 3829 revisions left to test after this (roughly 12 steps)
+[5f0848190c6dd0f5b8a2aaf0f1d900a96d96bee0] Merge tag 'platform-drivers-x86-v6.0-1' of git://git.kernel.org/pub/scm/linux/kernel/git/pdx86/platform-drivers-x86
+
+testing commit 5f0848190c6dd0f5b8a2aaf0f1d900a96d96bee0 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: e60b1f63056c570d81a5f7e3109d580ece8714a8fb906a7a996552c94dfd4354
+all runs: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip 5f0848190c6dd0f5b8a2aaf0f1d900a96d96bee0
+Bisecting: 3829 revisions left to test after this (roughly 12 steps)
+[944e594cfa84ec552831489c244e02589d826b11] net/x25: fix call timeouts in blocking connects
+
+testing commit 944e594cfa84ec552831489c244e02589d826b11 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: e6f15db0a6d467ac06827d7082dedc4686ae82d9ec53422d087a75fd54bbf542
+all runs: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip 944e594cfa84ec552831489c244e02589d826b11
+Bisecting: 3829 revisions left to test after this (roughly 12 steps)
+[d80b83c911ca9b8d35213bf62e9cf336c78c5d24] platform/x86: x86-android-tablets: Fix Lenovo Yoga Tablet 2 830/1050 poweroff again
+
+testing commit d80b83c911ca9b8d35213bf62e9cf336c78c5d24 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 2cd9c604cd4ccd95438792d0a106856a24785e3531a93d28549b054fa2864874
+all runs: OK
+false negative chance: 0.000
+# git bisect good d80b83c911ca9b8d35213bf62e9cf336c78c5d24
+Bisecting: 3829 revisions left to test after this (roughly 12 steps)
+[aeb7942b64ccab88140542a92a6ac3ac5726e053] Merge branch kvm-arm64/misc-5.20 into kvmarm-master/next
+
+testing commit aeb7942b64ccab88140542a92a6ac3ac5726e053 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 8184497dbf8d85dc46d17f330be8f7670e2955501d931a8cf2ff0d1c3e0a37b8
+all runs: OK
+false negative chance: 0.000
+# git bisect good aeb7942b64ccab88140542a92a6ac3ac5726e053
+Bisecting: 3829 revisions left to test after this (roughly 12 steps)
+[ec2ea5e06c67f85c6541a74b661722a176be086f] net: ipa: list supported IPA versions in the Makefile
+
+testing commit ec2ea5e06c67f85c6541a74b661722a176be086f gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 1dd829bf8f76461d8baaa08efb00835903ac182a79828efde65deb83a5bcc380
+all runs: basic kernel testing failed: INFO: trying to register non-static key in ieee80211_do_stop
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip ec2ea5e06c67f85c6541a74b661722a176be086f
+Bisecting: 3829 revisions left to test after this (roughly 12 steps)
+[b61fc0857a3ad4cdee44128ad13685033e237367] KVM: arm64: vgic-v3: Simplify vgic_v3_has_cpu_sysregs_attr()
+
+testing commit b61fc0857a3ad4cdee44128ad13685033e237367 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: f3ee3be1d5b7ca073280cb46cc60432029a9e03f7dae4c4d639c48e92aaa0ac7
+all runs: OK
+false negative chance: 0.000
+# git bisect good b61fc0857a3ad4cdee44128ad13685033e237367
+Bisecting: 3829 revisions left to test after this (roughly 12 steps)
+[0b685f435769bec6fe766da3c911a51b3afa9993] MAINTAINERS: add include/dt-bindings/iio to IIO SUBSYSTEM AND DRIVERS
+
+testing commit 0b685f435769bec6fe766da3c911a51b3afa9993 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 4973e65df8254000abb4ac9b411a3a3fa463023104e35b189e704ae0b14103f3
+run #0: OK
+run #1: OK
+run #2: OK
+run #3: OK
+run #4: OK
+run #5: OK
+run #6: OK
+run #7: boot failed: INFO: task hung in add_early_randomness
+false negative chance: 0.000
+# git bisect good 0b685f435769bec6fe766da3c911a51b3afa9993
+Bisecting: 3775 revisions left to test after this (roughly 12 steps)
+[37644cac6e8297d0908aef054caabb439c467c7d] Merge tag 'gpio-updates-for-v6.0-rc1' of git://git.kernel.org/pub/scm/linux/kernel/git/brgl/linux
+
+testing commit 37644cac6e8297d0908aef054caabb439c467c7d gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: b8d947b9222c4d780ab9899fe1b5d08ca8871101d91156005a79325466e53663
+run #0: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+run #1: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+run #2: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+run #3: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+run #4: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+run #5: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+run #6: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+run #7: basic kernel testing failed: INFO: rcu detected stall in corrupted
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip 37644cac6e8297d0908aef054caabb439c467c7d
+Bisecting: 3775 revisions left to test after this (roughly 12 steps)
+[c09b1f372e746aeeb61ef8ffe0fea3970fd9273e] usb: gadget: aspeed_udc: cleanup loop in ast_dma_descriptor_setup()
+
+testing commit c09b1f372e746aeeb61ef8ffe0fea3970fd9273e gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: b70995f039534e96ded1991372bd47b2bf9ebf2cf4e1a240b316c054625f767d
+all runs: OK
+false negative chance: 0.000
+# git bisect good c09b1f372e746aeeb61ef8ffe0fea3970fd9273e
+Bisecting: 3637 revisions left to test after this (roughly 12 steps)
+[36001a2fa6cc63d58664a2a99b90a864f9eb587a] Merge tag 'clk-for-linus' of git://git.kernel.org/pub/scm/linux/kernel/git/clk/linux
+
+testing commit 36001a2fa6cc63d58664a2a99b90a864f9eb587a gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: f200a9c08d60dce782b55858de60d4a8ae919a1686e4993974316f6c0c97febc
+all runs: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip 36001a2fa6cc63d58664a2a99b90a864f9eb587a
+Bisecting: 3637 revisions left to test after this (roughly 12 steps)
+[3482c0b7307365fa9d00cfc1040ff8c39bb8604e] iommu: arm-smmu-impl: Add 8250 display compatible to the client list.
+
+testing commit 3482c0b7307365fa9d00cfc1040ff8c39bb8604e gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: c9e767981424f793afd1f3bbad704b020c498b6ad8517ac5b2c36c726dd95a94
+all runs: OK
+false negative chance: 0.000
+# git bisect good 3482c0b7307365fa9d00cfc1040ff8c39bb8604e
+Bisecting: 3636 revisions left to test after this (roughly 12 steps)
+[90c3ca3f247d1a95fc47232e9f0aef114becd605] scsi: mpt3sas: Remove flush_scheduled_work() call
+
+testing commit 90c3ca3f247d1a95fc47232e9f0aef114becd605 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 0457c9db41e82748733d61fe89ae1c82984b4b02ef5cfd4b77651a802b5f13ba
+run #0: OK
+run #1: OK
+run #2: OK
+run #3: OK
+run #4: OK
+run #5: OK
+run #6: OK
+run #7: boot failed: INFO: task hung in add_early_randomness
+false negative chance: 0.000
+# git bisect good 90c3ca3f247d1a95fc47232e9f0aef114becd605
+Bisecting: 3676 revisions left to test after this (roughly 12 steps)
+[592d8362bc2526bbb08cf7d258661691e957b5ea] Merge tag 'perf-urgent-2022-08-06' of git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip
+
+testing commit 592d8362bc2526bbb08cf7d258661691e957b5ea gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: a29cc5d650788d22108177dfcdc58b132aa65d77ec198aed8edaae8f0d5f319e
+all runs: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip 592d8362bc2526bbb08cf7d258661691e957b5ea
+Bisecting: 3676 revisions left to test after this (roughly 12 steps)
+[3ce632fdd13abd23686c29e81a924d47365b2eca] gpio: 104-idi-48: Implement and utilize register structures
+
+testing commit 3ce632fdd13abd23686c29e81a924d47365b2eca gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: e06e5dba5b7b2a39d07cf0201e4154076133a7a808b5f32a8cc054812bf608a3
+all runs: basic kernel testing failed: INFO: trying to register non-static key in ieee80211_do_stop
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip 3ce632fdd13abd23686c29e81a924d47365b2eca
+Bisecting: 3676 revisions left to test after this (roughly 12 steps)
+[a4cb6e62ea4d36e53fb3c0f18ea4503d7b76674f] can: ems_usb: fix clang's -Wunaligned-access warning
+
+testing commit a4cb6e62ea4d36e53fb3c0f18ea4503d7b76674f gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: bb48a74593ae4a14f6a94807389992d278d03e2e4ed6650c0922954ab272d75d
+run #0: crashed: INFO: rcu detected stall in corrupted
+run #1: crashed: INFO: rcu detected stall in corrupted
+run #2: crashed: INFO: rcu detected stall in corrupted
+run #3: crashed: INFO: rcu detected stall in corrupted
+run #4: crashed: INFO: rcu detected stall in corrupted
+run #5: crashed: INFO: rcu detected stall in corrupted
+run #6: basic kernel testing failed: INFO: rcu detected stall in corrupted
+run #7: basic kernel testing failed: INFO: rcu detected stall in corrupted
+representative crash: INFO: rcu detected stall in corrupted, types: [HANG]
+# git bisect bad a4cb6e62ea4d36e53fb3c0f18ea4503d7b76674f
+Bisecting: 882 revisions left to test after this (roughly 10 steps)
+[b7d8912cfd1b72c970f727d7da1c8274d5b18803] Merge tag 'linux-can-next-for-5.20-20220731' of git://git.kernel.org/pub/scm/linux/kernel/git/mkl/linux-can-next Marc Kleine-Budde says:
+
+testing commit b7d8912cfd1b72c970f727d7da1c8274d5b18803 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 70a013ab4a99cabd1fd50ab304d1209c6d8f1e9e386a741212e351013c7de6b0
+all runs: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip b7d8912cfd1b72c970f727d7da1c8274d5b18803
+Bisecting: 882 revisions left to test after this (roughly 10 steps)
+[ec60d54cb9a3d43a02c5612a03093c18233e6601] iavf: Fix max_rate limiting
+
+testing commit ec60d54cb9a3d43a02c5612a03093c18233e6601 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 0318ce8f1afa731d4ad63d2b2f6a5ede064196769fccd3798e761433e72dcc70
+all runs: OK
+false negative chance: 0.000
+# git bisect good ec60d54cb9a3d43a02c5612a03093c18233e6601
+Bisecting: 875 revisions left to test after this (roughly 10 steps)
+[f00654007fe1c154dafbdc1f5953c132e8c27c38] Merge tag 'folio-6.0' of git://git.infradead.org/users/willy/pagecache
+
+testing commit f00654007fe1c154dafbdc1f5953c132e8c27c38 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 311048ef71e01213e16a5ff41145e919131cfcccefac050d1f295fd730330721
+run #0: crashed: WARNING: ODEBUG bug in netdev_run_todo
+run #1: OK
+run #2: OK
+run #3: OK
+run #4: OK
+run #5: OK
+run #6: OK
+run #7: OK
+representative crash: WARNING: ODEBUG bug in netdev_run_todo, types: [WARNING]
+unable to determine the verdict: 7 good runs (wanted 4), for bad wanted 4 in total, got 8
+# git bisect skip f00654007fe1c154dafbdc1f5953c132e8c27c38
+Bisecting: 875 revisions left to test after this (roughly 10 steps)
+[ce7d101750ff8450af16d6e1f6ccba10d44ae9f3] selftests: timers: clocksource-switch: adapt to kselftest framework
+
+testing commit ce7d101750ff8450af16d6e1f6ccba10d44ae9f3 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: f135a76837c13162a1f39ff71881325da7658ba0ad1b144eb477212cd18d7a44
+all runs: OK
+false negative chance: 0.000
+# git bisect good ce7d101750ff8450af16d6e1f6ccba10d44ae9f3
+Bisecting: 853 revisions left to test after this (roughly 10 steps)
+[4a21a8ae7964278f6ed8168a4391eaa88c4ab452] wifi: mac80211: mlme: change flags in ieee80211_determine_chantype()
+
+testing commit 4a21a8ae7964278f6ed8168a4391eaa88c4ab452 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: ff31dd356ee87be9c1a363dbd101663c216b7be89a5cb6492343a98f146be97d
+all runs: basic kernel testing failed: INFO: trying to register non-static key in ieee80211_do_stop
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip 4a21a8ae7964278f6ed8168a4391eaa88c4ab452
+Bisecting: 853 revisions left to test after this (roughly 10 steps)
+[143823cf4d5a36cb8c83f5a6adb291bc45f40bc3] btrfs: fix typos in comments
+
+testing commit 143823cf4d5a36cb8c83f5a6adb291bc45f40bc3 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 01d681b349fe4f1712e9ab8395e355f6f4c2e7f195087b544f4c57870f704a76
+all runs: basic kernel testing failed: INFO: trying to register non-static key in ieee80211_do_stop
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip 143823cf4d5a36cb8c83f5a6adb291bc45f40bc3
+Bisecting: 853 revisions left to test after this (roughly 10 steps)
+[710d5921d1431fa7d6fef8b47bb391256560bfd0] btrfs: switch btrfs_block_rsv::failfast to bool
+
+testing commit 710d5921d1431fa7d6fef8b47bb391256560bfd0 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: be2d624d238874054e295c68e4f3665ef0ff6f421eb78c0f127e9c2f51db056a
+all runs: basic kernel testing failed: INFO: trying to register non-static key in ieee80211_do_stop
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip 710d5921d1431fa7d6fef8b47bb391256560bfd0
+Bisecting: 853 revisions left to test after this (roughly 10 steps)
+[68cb47204db478302a37adb2aaa26a05882dbaa1] rcu-tasks: Move synchronize_rcu_tasks_generic() down
+
+testing commit 68cb47204db478302a37adb2aaa26a05882dbaa1 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 348d15d2d3cf1a0d52ff19216444757c85e06e8c06cfaff24fbfc5eff04adc0f
+all runs: OK
+false negative chance: 0.000
+# git bisect good 68cb47204db478302a37adb2aaa26a05882dbaa1
+Bisecting: 850 revisions left to test after this (roughly 10 steps)
+[40e589ba133cd8194ce4857ca5f1dac73628f466] iavf: Check for duplicate TC flower filter before parsing
+
+testing commit 40e589ba133cd8194ce4857ca5f1dac73628f466 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: af8b2c87dbdd0e259512107bf9df53aefce2d55d8944b4aed30277d47f4a481c
+all runs: basic kernel testing failed: INFO: trying to register non-static key in ieee80211_do_stop
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip 40e589ba133cd8194ce4857ca5f1dac73628f466
+Bisecting: 850 revisions left to test after this (roughly 10 steps)
+[18fa9af7263164ec9a8d7b28a848324825f14672] iov_iter_bvec_advance(): don't bother with bvec_iter
+
+testing commit 18fa9af7263164ec9a8d7b28a848324825f14672 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 20af445267241894968eb8baabb93417192fa9702cf8013f38ef9e4d7d314432
+all runs: OK
+false negative chance: 0.000
+# git bisect good 18fa9af7263164ec9a8d7b28a848324825f14672
+Bisecting: 842 revisions left to test after this (roughly 10 steps)
+[577e5b8c3924539c7a09e3e00477534f39e61829] wifi: cfg80211: add API to add/modify/remove a link station
+
+testing commit 577e5b8c3924539c7a09e3e00477534f39e61829 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: a5e9f94bc6c91fb40bbf8c8ac2dbcc36acfb8bb587ad26c136df7fe07bb235bc
+all runs: basic kernel testing failed: INFO: trying to register non-static key in ieee80211_do_stop
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip 577e5b8c3924539c7a09e3e00477534f39e61829
+Bisecting: 842 revisions left to test after this (roughly 10 steps)
+[4ea07cf638dbd6260664b69b0f69cc951934194d] mlxsw: reg: Extend MDDQ by device_info
+
+testing commit 4ea07cf638dbd6260664b69b0f69cc951934194d gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 7e8caedf9009d6e257670ec5704d09526d1a45e295a96ee720ed47fefd8cfcd7
+all runs: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip 4ea07cf638dbd6260664b69b0f69cc951934194d
+Bisecting: 842 revisions left to test after this (roughly 10 steps)
+[63e36289c4c6e9f4273cc780b1adab01aad6c222] Merge branch 'octeontx2-af-driver-fixes-for-npc'
+
+testing commit 63e36289c4c6e9f4273cc780b1adab01aad6c222 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 21a1a24bce53cc8c2c4dc55a8616dbaa5201f904853a9ee7ced465b40365cbbe
+all runs: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip 63e36289c4c6e9f4273cc780b1adab01aad6c222
+Bisecting: 842 revisions left to test after this (roughly 10 steps)
+[b93f5700164dabc59f5c82857dbe571e0ccb2d35] tls: rx: don't free the output in case of zero-copy
+
+testing commit b93f5700164dabc59f5c82857dbe571e0ccb2d35 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 5e8d5a79fd6764d66b7348167a72734cff0ce434700b4db66579f0de571b9ae1
+all runs: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip b93f5700164dabc59f5c82857dbe571e0ccb2d35
+Bisecting: 842 revisions left to test after this (roughly 10 steps)
+[31f3248a75932b111bc90c66b1f6c7d89eedca8e] mt76: mt7921: enlarge maximum VHT MPDU length to 11454
+
+testing commit 31f3248a75932b111bc90c66b1f6c7d89eedca8e gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 7c898d23438debe499d69e717f1d0ff7e848feec54d348d4f7000c4ae2b4fab7
+all runs: OK
+false negative chance: 0.000
+# git bisect good 31f3248a75932b111bc90c66b1f6c7d89eedca8e
+Bisecting: 842 revisions left to test after this (roughly 10 steps)
+[356bbbb66bb1dbde45d36d0d29a9fa47fe3223c1] btrfs: send: write larger chunks when using stream v2
+
+testing commit 356bbbb66bb1dbde45d36d0d29a9fa47fe3223c1 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 9c2a37bef321afb1f153f4191ed615a5aa6efefe8877d98857cc4463f7433956
+all runs: basic kernel testing failed: INFO: trying to register non-static key in ieee80211_do_stop
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip 356bbbb66bb1dbde45d36d0d29a9fa47fe3223c1
+Bisecting: 842 revisions left to test after this (roughly 10 steps)
+[5ffcba41de5579566f7d6933b96e8ca63335f790] Merge branch 'smc-updates'
+
+testing commit 5ffcba41de5579566f7d6933b96e8ca63335f790 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 3907b01eee30f97ad4f1215948876599c0e001b370a51b4c907717071a1ba0d9
+all runs: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip 5ffcba41de5579566f7d6933b96e8ca63335f790
+Bisecting: 842 revisions left to test after this (roughly 10 steps)
+[3fbddae46e5fc3f1630c7cf561d88e4ad21c7105] wifi: mac80211: provide link ID in link_conf
+
+testing commit 3fbddae46e5fc3f1630c7cf561d88e4ad21c7105 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 7d7a52fa90b9bc4f131e6ad25e57237660e83accbc16625f17ac1e77b155d632
+all runs: basic kernel testing failed: INFO: trying to register non-static key in ieee80211_do_stop
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip 3fbddae46e5fc3f1630c7cf561d88e4ad21c7105
+Bisecting: 842 revisions left to test after this (roughly 10 steps)
+[7d1a5ce46e475378761432263e9b1a385968a9af] net/mlx5e: TC, Support tc action api for police
+
+testing commit 7d1a5ce46e475378761432263e9b1a385968a9af gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: e74cddff5711331fac71d5dfc99be058e85c6db16a1c17cbc282b15b822f1f01
+all runs: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip 7d1a5ce46e475378761432263e9b1a385968a9af
+Bisecting: 842 revisions left to test after this (roughly 10 steps)
+[240159077d007527324a1e245ecd78b10a2b0d36] gfs2: Convert gfs2_jhead_process_page() to use a folio
+
+testing commit 240159077d007527324a1e245ecd78b10a2b0d36 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: b52579af90b8df68ff88bf15dea68047ca850d6d6fa474192be419b195104d8a
+all runs: OK
+false negative chance: 0.000
+# git bisect good 240159077d007527324a1e245ecd78b10a2b0d36
+Bisecting: 831 revisions left to test after this (roughly 10 steps)
+[63757225a93353bc2ce4499af5501eabdbbf23f9] Merge tag 'mlx5-updates-2022-07-28' of git://git.kernel.org/pub/scm/linux/kernel/git/saeed/linux
+
+testing commit 63757225a93353bc2ce4499af5501eabdbbf23f9 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 075180bb8a06b8c472e1445c0254c6630bdcc9f7d8be810d171ba88a93a63a1f
+all runs: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip 63757225a93353bc2ce4499af5501eabdbbf23f9
+Bisecting: 831 revisions left to test after this (roughly 10 steps)
+[949d6b405e6160ae44baea39192d67b39cb7eeac] net: add missing includes and forward declarations under net/
+
+testing commit 949d6b405e6160ae44baea39192d67b39cb7eeac gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 5a23a1bb1643306c72b071405194cb7729dd8340e48f999c5dc5bba7062cd7fb
+all runs: basic kernel testing failed: INFO: trying to register non-static key in ieee80211_do_stop
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip 949d6b405e6160ae44baea39192d67b39cb7eeac
+Bisecting: 831 revisions left to test after this (roughly 10 steps)
+[79ad6a561958777d6d8ecfa66e51d09d35ec6450] ata: libata-core: fix sloppy typing in ata_id_n_sectors()
+
+testing commit 79ad6a561958777d6d8ecfa66e51d09d35ec6450 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 654943907ccf35d80b3092e9a06d68d1866a6356754ec9c1a7267d4d7fe5af82
+all runs: OK
+false negative chance: 0.000
+# git bisect good 79ad6a561958777d6d8ecfa66e51d09d35ec6450
+Bisecting: 825 revisions left to test after this (roughly 10 steps)
+[bf3f00378524adae16628cbadbd11ba7211863bb] libbpf: Fix the name of a reused map
+
+testing commit bf3f00378524adae16628cbadbd11ba7211863bb gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 18b57197a6ef715ce76db01eafe592dcb6d20e9467cdb2f51d637c256123ceff
+all runs: OK
+false negative chance: 0.000
+# git bisect good bf3f00378524adae16628cbadbd11ba7211863bb
+Bisecting: 825 revisions left to test after this (roughly 10 steps)
+[155738a4f319538a09f734ce1f5a2eac3ada1de2] net: ethernet: mtk_eth_soc: introduce xdp multi-frag support
+
+testing commit 155738a4f319538a09f734ce1f5a2eac3ada1de2 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 79f7bcc3051a1f391329e4f58c981724c6954b3ad55408bb088b63e12aa3a01a
+all runs: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip 155738a4f319538a09f734ce1f5a2eac3ada1de2
+Bisecting: 825 revisions left to test after this (roughly 10 steps)
+[4f232482467a354a74e08633faa1ed93fe00ee5e] can: peak_usb: include support for a new MCU
+
+testing commit 4f232482467a354a74e08633faa1ed93fe00ee5e gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: ec2cbb0632d89d477baa156e0d7403aefda7341d8fd783cc8342631e63892044
+all runs: basic kernel testing failed: INFO: trying to register non-static key in ieee80211_do_stop
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip 4f232482467a354a74e08633faa1ed93fe00ee5e
+Bisecting: 825 revisions left to test after this (roughly 10 steps)
+[69bb5fa73d2b2d7fa3ccbf16e8b1f055fe2d26b1] sfc: ef100 representor RX NAPI poll
+
+testing commit 69bb5fa73d2b2d7fa3ccbf16e8b1f055fe2d26b1 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: b96e80d730d22c1dc29f8ea6f39aee0914e57175054dff7cb8495824ab8e31ed
+all runs: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip 69bb5fa73d2b2d7fa3ccbf16e8b1f055fe2d26b1
+Bisecting: 825 revisions left to test after this (roughly 10 steps)
+[875d1daa7bc683821a4209e1c6aab24909e95217] btrfs: simplify parameters of backref iterators
+
+testing commit 875d1daa7bc683821a4209e1c6aab24909e95217 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 3d296884e74c188d60e5998ccfeabdf7b8fa2450cdfcf6e2fbacf5e79023c6ab
+all runs: basic kernel testing failed: INFO: trying to register non-static key in ieee80211_do_stop
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip 875d1daa7bc683821a4209e1c6aab24909e95217
+Bisecting: 825 revisions left to test after this (roughly 10 steps)
+[7267aa6d99f5b82f6d0e4f537d87fa9b6ab86411] sfc: implement ethtool get/set RX ring size for EF100 reps
+
+testing commit 7267aa6d99f5b82f6d0e4f537d87fa9b6ab86411 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 6ce1930de2ffb723bb697e17ff9b99c81cf5dec581c278f30fc09a37bb40d4da
+all runs: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip 7267aa6d99f5b82f6d0e4f537d87fa9b6ab86411
+Bisecting: 825 revisions left to test after this (roughly 10 steps)
+[140a8ff76547de36291e948df0de294d5f951678] btrfs: sysfs: export commit stats
+
+testing commit 140a8ff76547de36291e948df0de294d5f951678 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: e3a138cfb9145f0360edd2b82e69169f4eceabe814e48a7008c5205df0371ca7
+all runs: basic kernel testing failed: INFO: trying to register non-static key in ieee80211_do_stop
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip 140a8ff76547de36291e948df0de294d5f951678
+Bisecting: 825 revisions left to test after this (roughly 10 steps)
+[d3efc2a6a6d851bcd53805309f4632e018007436] net: devlink: remove devlink_mutex
+
+testing commit d3efc2a6a6d851bcd53805309f4632e018007436 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 60c2d909e2acff16c6cf5b0e4e766d56dd33f30e2db1539a89f60d845b3d10f7
+all runs: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip d3efc2a6a6d851bcd53805309f4632e018007436
+Bisecting: 825 revisions left to test after this (roughly 10 steps)
+[aea9a6088ae46e77527716496ab259ddfa320148] wifi: mac80211_hwsim: do rc update per link
+
+testing commit aea9a6088ae46e77527716496ab259ddfa320148 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: a55f871573e0f87aa0baa2ebb7e6299a6c9c378e4b13f88af7090fdb596d83b6
+all runs: basic kernel testing failed: INFO: trying to register non-static key in ieee80211_do_stop
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip aea9a6088ae46e77527716496ab259ddfa320148
+Bisecting: 825 revisions left to test after this (roughly 10 steps)
+[6365a1935c5151455812e96d8de434c551dc0d98] efi: Make code to find mirrored memory ranges generic
+
+testing commit 6365a1935c5151455812e96d8de434c551dc0d98 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: e129c9ef4a93dc4517e02e48d7399a4a8d0d81a71fee079f088789c8ecd0a6a4
+all runs: OK
+false negative chance: 0.000
+# git bisect good 6365a1935c5151455812e96d8de434c551dc0d98
+Bisecting: 824 revisions left to test after this (roughly 10 steps)
+[bf2200e8491b4b5558e70febd17ea83caddb6090] Merge branch 'net-ipa-move-configuration-data-files'
+
+testing commit bf2200e8491b4b5558e70febd17ea83caddb6090 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 1c375288bd02c4e61247570b3d49b959557a6835e97aa00fc276b7f472fb823b
+all runs: basic kernel testing failed: INFO: trying to register non-static key in ieee80211_do_stop
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip bf2200e8491b4b5558e70febd17ea83caddb6090
+Bisecting: 824 revisions left to test after this (roughly 10 steps)
+[d0eac20f9909de044fbeb958960b08ff235cf8a2] rcutorture: Validate get_completed_synchronize_rcu()
+
+testing commit d0eac20f9909de044fbeb958960b08ff235cf8a2 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: f208b23811dc4420b11c09d69d0eefa8092a6561f1f9e0e860bfd641a3c84af3
+all runs: OK
+false negative chance: 0.000
+# git bisect good d0eac20f9909de044fbeb958960b08ff235cf8a2
+Bisecting: 821 revisions left to test after this (roughly 10 steps)
+[ac15a010b66429d2cc4ffa71b25f3b3e04675f9e] wifi: ipw2x00: fix repeated words in comments
+
+testing commit ac15a010b66429d2cc4ffa71b25f3b3e04675f9e gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 7d188dfd366d6e9776f5364a7bd4c8af5e7407adcf433b9e95ee2a9d4205ff0c
+all runs: OK
+false negative chance: 0.000
+# git bisect good ac15a010b66429d2cc4ffa71b25f3b3e04675f9e
+Bisecting: 721 revisions left to test after this (roughly 10 steps)
+[7c6327c77d509e78bff76f2a4551fcfee851682e] Merge git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net
+
+testing commit 7c6327c77d509e78bff76f2a4551fcfee851682e gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 99ea422d1979aa83ffc0be7eb06ae7b5d859689954b820af44d3b5bf84545f1f
+all runs: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip 7c6327c77d509e78bff76f2a4551fcfee851682e
+Bisecting: 721 revisions left to test after this (roughly 10 steps)
+[97ef77c52b789ec1411d360ed99dca1efe4b2c81] fs: check FMODE_LSEEK to control internal pipe splicing
+
+testing commit 97ef77c52b789ec1411d360ed99dca1efe4b2c81 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 8ed45e1588d9feaf5350e14e89196b53561da73dbf6fa721ff7ecc0c24011343
+all runs: OK
+false negative chance: 0.000
+# git bisect good 97ef77c52b789ec1411d360ed99dca1efe4b2c81
+Bisecting: 718 revisions left to test after this (roughly 10 steps)
+[a86ddbffa6ed05bc2465a545a96627b6e776c019] Bluetooth: Use bt_status to convert from errno
+
+testing commit a86ddbffa6ed05bc2465a545a96627b6e776c019 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 91162497c51ae3f237f7f1749f4a95c410af2d8362f14cca3e6e2ffb109eeec5
+all runs: basic kernel testing failed: INFO: trying to register non-static key in ieee80211_do_stop
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip a86ddbffa6ed05bc2465a545a96627b6e776c019
+Bisecting: 718 revisions left to test after this (roughly 10 steps)
+[ef4f9d9b9230fcf4fca9801f03c31d99ed06a716] rcu: Put panic_on_rcu_stall() after expedited RCU CPU stall warnings
+
+testing commit ef4f9d9b9230fcf4fca9801f03c31d99ed06a716 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 9fbc1bcfb514138ca869b37568604a2831a14bb93664a828e28f1414eac0c590
+all runs: OK
+false negative chance: 0.000
+# git bisect good ef4f9d9b9230fcf4fca9801f03c31d99ed06a716
+Bisecting: 711 revisions left to test after this (roughly 10 steps)
+[949c84f05eb65b0a41f7f5c62ee9ffc5d8e39c89] selftests: mlxsw: Check line card info on activated line card
+
+testing commit 949c84f05eb65b0a41f7f5c62ee9ffc5d8e39c89 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 88083f07020c996775338f62620754b7ac154c9aa617699614265bc6838c89e6
+all runs: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip 949c84f05eb65b0a41f7f5c62ee9ffc5d8e39c89
+Bisecting: 711 revisions left to test after this (roughly 10 steps)
+[3908fcddc65d04e069b03be49b33fae90e424631] bpf: fix lsm_cgroup build errors on esoteric configs
+
+testing commit 3908fcddc65d04e069b03be49b33fae90e424631 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 1fc2a1add191e05c907e7edcf1ef6d3fdf6191dfac3a63532a24f2821a849ae6
+all runs: OK
+false negative chance: 0.000
+# git bisect good 3908fcddc65d04e069b03be49b33fae90e424631
+Bisecting: 711 revisions left to test after this (roughly 10 steps)
+[e26b04c4c91925dba57324db177a24e18e2d0013] btrfs: properly flag filesystem with BTRFS_FEATURE_INCOMPAT_BIG_METADATA
+
+testing commit e26b04c4c91925dba57324db177a24e18e2d0013 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 05c7afe6f12ee7eba32f23d4ab1dce9850760f9a0e82cf587e998b67a28f4f43
+all runs: basic kernel testing failed: INFO: trying to register non-static key in ieee80211_do_stop
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip e26b04c4c91925dba57324db177a24e18e2d0013
+Bisecting: 711 revisions left to test after this (roughly 10 steps)
+[9592eef7c16ec5fb9f36c4d9abe8eeffc2e1d2f3] random: remove CONFIG_ARCH_RANDOM
+
+testing commit 9592eef7c16ec5fb9f36c4d9abe8eeffc2e1d2f3 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 903862e0b8320c38ab6a1d2c17c0abdb9c35f9c9de7700afaf6d180b583a6968
+all runs: basic kernel testing failed: INFO: trying to register non-static key in ieee80211_do_stop
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip 9592eef7c16ec5fb9f36c4d9abe8eeffc2e1d2f3
+Bisecting: 711 revisions left to test after this (roughly 10 steps)
+[65ea1b66482f415d51cd46515b02477257330339] block: add bdev_max_segments() helper
+
+testing commit 65ea1b66482f415d51cd46515b02477257330339 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: dac48f55eac49590fa22194b6c99e39d584feae5f8e194ca260e9aa5f9bb60bc
+all runs: basic kernel testing failed: INFO: trying to register non-static key in ieee80211_do_stop
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip 65ea1b66482f415d51cd46515b02477257330339
+Bisecting: 711 revisions left to test after this (roughly 10 steps)
+[4d3d0ed60ee0d2da4c541e525c132dc374464624] selinux: drop unnecessary NULL check
+
+testing commit 4d3d0ed60ee0d2da4c541e525c132dc374464624 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 0c6b36b9c8b8fad952329929f064eb42a171a8f05a06c17a2df6f2b3a2d75c58
+run #0: OK
+run #1: OK
+run #2: OK
+run #3: OK
+run #4: OK
+run #5: OK
+run #6: boot failed: INFO: task hung in add_early_randomness
+run #7: boot failed: INFO: task hung in add_early_randomness
+false negative chance: 0.000
+# git bisect good 4d3d0ed60ee0d2da4c541e525c132dc374464624
+Bisecting: 709 revisions left to test after this (roughly 10 steps)
+[c6e8e36c6ae4b11bed5643317afb66b6c3cadba8] exec: Call kmap_local_page() in copy_string_kernel()
+
+testing commit c6e8e36c6ae4b11bed5643317afb66b6c3cadba8 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: b915f8f4d7026893e5063f33fa0306df8438ba5fe159d3740f9f216e2cb9f4d6
+all runs: OK
+false negative chance: 0.000
+# git bisect good c6e8e36c6ae4b11bed5643317afb66b6c3cadba8
+Bisecting: 705 revisions left to test after this (roughly 10 steps)
+[97861cd1660de638e6fd588030afe8965ebfbe90] btrfs: refactor end_bio_extent_readpage code flow
+
+testing commit 97861cd1660de638e6fd588030afe8965ebfbe90 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: fd1a2ed28b4c338cfacf051954bee564e8147995a82963e7f0097d15a7f46b02
+all runs: basic kernel testing failed: INFO: trying to register non-static key in ieee80211_do_stop
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip 97861cd1660de638e6fd588030afe8965ebfbe90
+Bisecting: 705 revisions left to test after this (roughly 10 steps)
+[aa246499bb5f44bf4822ff1966213c14912c732c] net: delete extra space and tab in blank line
+
+testing commit aa246499bb5f44bf4822ff1966213c14912c732c gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: fcc2b96c85341defdc3922dd86776505c7dbc16540d0acfec7bfc2fbdc33b2a7
+all runs: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip aa246499bb5f44bf4822ff1966213c14912c732c
+Bisecting: 705 revisions left to test after this (roughly 10 steps)
+[b2fdf7f080b4fbc8b22e006c2b78153253518741] docs/zh_CN: core-api: Update the translation of kernel-api.rst to 5.19-rc3
+
+testing commit b2fdf7f080b4fbc8b22e006c2b78153253518741 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: ecb6fe42321c246be203fb06e327d4f1675b8fa7d394c613f5a99f694275611a
+all runs: OK
+false negative chance: 0.000
+# git bisect good b2fdf7f080b4fbc8b22e006c2b78153253518741
+Bisecting: 694 revisions left to test after this (roughly 10 steps)
+[d8fae2504efee73958cbbf9c7122f13f95495222] igb: convert .adjfreq to .adjfine
+
+testing commit d8fae2504efee73958cbbf9c7122f13f95495222 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 6c7446f7d4a277f3a0520395e91bb1a10c3445f3dbc42cdf5b347394171443d3
+all runs: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip d8fae2504efee73958cbbf9c7122f13f95495222
+Bisecting: 694 revisions left to test after this (roughly 10 steps)
+[54cab6aff811d328c5add37e0faf32f6328741ea] btrfs: send: explicitly number commands and attributes
+
+testing commit 54cab6aff811d328c5add37e0faf32f6328741ea gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 51cb38fd073762d60081e160da2677bd0daffd7572db2c5ffd976c8d08d8b192
+all runs: basic kernel testing failed: INFO: trying to register non-static key in ieee80211_do_stop
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip 54cab6aff811d328c5add37e0faf32f6328741ea
+Bisecting: 694 revisions left to test after this (roughly 10 steps)
+[84a433a40d0ebf3bbf36b8bfa58c6f45dc782344] net/mlx5: Lock mlx5 devlink reload callbacks
+
+testing commit 84a433a40d0ebf3bbf36b8bfa58c6f45dc782344 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: fb519e5de7a3987836e36f82e1e41630d39bd0c32985c08b3caf6e22a22c3d34
+all runs: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip 84a433a40d0ebf3bbf36b8bfa58c6f45dc782344
+Bisecting: 694 revisions left to test after this (roughly 10 steps)
+[e6484bd4881f340e04de6833230225ee3ba7ce6d] btrfs: simplify code flow in btrfs_submit_dio_bio
+
+testing commit e6484bd4881f340e04de6833230225ee3ba7ce6d gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 23a7ac524a0131b0310894a2383054d4239488c379a28b07ec3ae4991f16ca0b
+all runs: basic kernel testing failed: INFO: trying to register non-static key in ieee80211_do_stop
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip e6484bd4881f340e04de6833230225ee3ba7ce6d
+Bisecting: 694 revisions left to test after this (roughly 10 steps)
+[2e5bd96eea86a246b4de3bf756f7a11b43e6187d] net: dsa: qca8k: move port FDB/MDB function to common code
+
+testing commit 2e5bd96eea86a246b4de3bf756f7a11b43e6187d gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: c5eb1624bd9fb55372e643d02559d39117a74b1d987561225f4791f1ac3858a3
+all runs: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip 2e5bd96eea86a246b4de3bf756f7a11b43e6187d
+Bisecting: 694 revisions left to test after this (roughly 10 steps)
+[02884a4f12de11f54d4ca67a07dd1f111d96fdbd] crypto: hisilicon/sec - don't sleep when in softirq
+
+testing commit 02884a4f12de11f54d4ca67a07dd1f111d96fdbd gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 7e4fa5681ee383234468c494199df1324f13edb772b3874311be7241a0efa053
+all runs: OK
+false negative chance: 0.000
+# git bisect good 02884a4f12de11f54d4ca67a07dd1f111d96fdbd
+Bisecting: 666 revisions left to test after this (roughly 9 steps)
+[6f63d04473f2bc973e24ff828a28a2bd5e41bb38] doc: sfp-phylink: Fix a broken reference
+
+testing commit 6f63d04473f2bc973e24ff828a28a2bd5e41bb38 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: fd5dcf14503ed7b1f7f2969d1f5a2aeeaabc111fe8d61df7729caebee6b366aa
+all runs: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip 6f63d04473f2bc973e24ff828a28a2bd5e41bb38
+Bisecting: 666 revisions left to test after this (roughly 9 steps)
+[1bbf4023cf663b85a2a37ebb2d3eb07fb856ca9a] Bluetooth: hci_sync: Split hci_dev_open_sync
+
+testing commit 1bbf4023cf663b85a2a37ebb2d3eb07fb856ca9a gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: a7e55cf629bb9a648399c4f2e08e87e81c22da7604a12b2b25dbb153cfe33ccb
+all runs: basic kernel testing failed: INFO: trying to register non-static key in ieee80211_do_stop
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip 1bbf4023cf663b85a2a37ebb2d3eb07fb856ca9a
+Bisecting: 666 revisions left to test after this (roughly 9 steps)
+[2e0aee8f0a22c60a1ae0876f7233e70ad9d026b8] ata: make ata_port::fastdrain_cnt *unsigned int*
+
+testing commit 2e0aee8f0a22c60a1ae0876f7233e70ad9d026b8 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 37a6608ace48a9f1902458ff9ed126ff4655f88f244b63466b89dfdf520484cc
+all runs: OK
+false negative chance: 0.000
+# git bisect good 2e0aee8f0a22c60a1ae0876f7233e70ad9d026b8
+Bisecting: 662 revisions left to test after this (roughly 9 steps)
+[9017462f006c4b686cb1e1e1a3a52ea8363076e6] Merge branch 'wireguard-patches-for-5-20-rc1'
+
+testing commit 9017462f006c4b686cb1e1e1a3a52ea8363076e6 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 1f2b238f7fbfb006c8920f2cb4250a687cec38ae7b4394e0ae12b222f1722fb4
+all runs: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip 9017462f006c4b686cb1e1e1a3a52ea8363076e6
+Bisecting: 662 revisions left to test after this (roughly 9 steps)
+[ddefb2d205539418f3c3851a3e06fac9624f257d] net/smc: Extend SMC-R link group netlink attribute
+
+testing commit ddefb2d205539418f3c3851a3e06fac9624f257d gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 96b9eef1eb8cb8b8895ba4c392c42d8c0cd6db6a1950b9f1c0415eaee86086fe
+all runs: basic kernel testing failed: INFO: trying to register non-static key in ieee80211_do_stop
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip ddefb2d205539418f3c3851a3e06fac9624f257d
+Bisecting: 662 revisions left to test after this (roughly 9 steps)
+[3fc0c51905fb0f57d8f7093cc5efe45d8a9557ca] mlxsw: core_linecards: Expose device PSID over device info
+
+testing commit 3fc0c51905fb0f57d8f7093cc5efe45d8a9557ca gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 000a1dc2493dd64d047206156d019d33cc760fe15c49f1664d6ec7abb71eee76
+all runs: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip 3fc0c51905fb0f57d8f7093cc5efe45d8a9557ca
+Bisecting: 662 revisions left to test after this (roughly 9 steps)
+[820636106342a6c5cfbb8279a4bf029ea2e00acd] docs/kselftest: add more guidelines for adding new tests
+
+testing commit 820636106342a6c5cfbb8279a4bf029ea2e00acd gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: ddb61366ec63d5a487e6eceb7a62a85c8920cda91e414bdb69b224ef7b9fcddc
+all runs: OK
+false negative chance: 0.000
+# git bisect good 820636106342a6c5cfbb8279a4bf029ea2e00acd
+Bisecting: 654 revisions left to test after this (roughly 9 steps)
+[2e8f205d910eb1fc59faf24582f3faf774000360] net: txgbe: Fix an error handling path in txgbe_probe()
+
+testing commit 2e8f205d910eb1fc59faf24582f3faf774000360 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: f99a9cc64216bfb338f9cf348af48b4f599f570df3844ed3162449bcd9ba1ef6
+run #0: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+run #1: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+run #2: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+run #3: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+run #4: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+run #5: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+run #6: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+run #7: basic kernel testing failed: INFO: rcu detected stall in corrupted
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip 2e8f205d910eb1fc59faf24582f3faf774000360
+Bisecting: 654 revisions left to test after this (roughly 9 steps)
+[0b30f719451ebbf313cdb444a27b00c10cf6e8a5] btrfs: use btrfs_raid_array to calculate number of parity stripes
+
+testing commit 0b30f719451ebbf313cdb444a27b00c10cf6e8a5 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: fef3fd7b58306960f8f661313a60d01554bcc50791e5b46edfbe6141fd0a8d30
+all runs: basic kernel testing failed: INFO: trying to register non-static key in ieee80211_do_stop
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip 0b30f719451ebbf313cdb444a27b00c10cf6e8a5
+Bisecting: 654 revisions left to test after this (roughly 9 steps)
+[2df91e397d85cd4c5206ab48d4e398e338db02d7] net: rose: add netdev ref tracker to 'struct rose_sock'
+
+testing commit 2df91e397d85cd4c5206ab48d4e398e338db02d7 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 2936549707df8015603e7b6d21b1aa79bb5f5381b93c522db1d93d02a66f5ece
+all runs: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip 2df91e397d85cd4c5206ab48d4e398e338db02d7
+Bisecting: 654 revisions left to test after this (roughly 9 steps)
+[49f468c93807b61897bafa15a180ff2297bfde30] btrfs: don't print 'has skinny extents' anymore on mount
+
+testing commit 49f468c93807b61897bafa15a180ff2297bfde30 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 885a2584d44f6c8d7ff3d201138c4fd225af92170b27eeededcce4f41cfbed8a
+all runs: basic kernel testing failed: INFO: trying to register non-static key in ieee80211_do_stop
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip 49f468c93807b61897bafa15a180ff2297bfde30
+Bisecting: 654 revisions left to test after this (roughly 9 steps)
+[d81c7cdd7a6ddffcc8c00c991e3d6e24db84bd9e] net/tls: Remove redundant workqueue flush before destroy
+
+testing commit d81c7cdd7a6ddffcc8c00c991e3d6e24db84bd9e gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: c200ca504fee29f535b79665f6e79b4c5d419355c1156bf9e86d28234cf2ed54
+run #0: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+run #1: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+run #2: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+run #3: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+run #4: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+run #5: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+run #6: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+run #7: basic kernel testing failed: INFO: rcu detected stall in corrupted
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip d81c7cdd7a6ddffcc8c00c991e3d6e24db84bd9e
+Bisecting: 654 revisions left to test after this (roughly 9 steps)
+[c69ecb0ea4c96b8b191cbaa0b420222a37867655] Bluetooth: btusb: Add support of IMC Networks PID 0x3568
+
+testing commit c69ecb0ea4c96b8b191cbaa0b420222a37867655 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 569b9a7cf4a20451a5c898c0692031d0c01c193b558a8be3675e61f0ed26b073
+all runs: basic kernel testing failed: INFO: trying to register non-static key in ieee80211_do_stop
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip c69ecb0ea4c96b8b191cbaa0b420222a37867655
+Bisecting: 654 revisions left to test after this (roughly 9 steps)
+[40a3cb0d2314a41975aa385a74643878454f6eac] d_add_ci(): make sure we don't miss d_lookup_done()
+
+testing commit 40a3cb0d2314a41975aa385a74643878454f6eac gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: ad1a4184577613bc00f7946e0b1b2d58d2ca210da05b2ea6d1406651ac46a87c
+all runs: OK
+false negative chance: 0.000
+# git bisect good 40a3cb0d2314a41975aa385a74643878454f6eac
+Bisecting: 654 revisions left to test after this (roughly 9 steps)
+[062cf5ebc2e8ca8afb9908072493dea314f62862] net: dsa: Fix spelling mistakes and cleanup code
+
+testing commit 062cf5ebc2e8ca8afb9908072493dea314f62862 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: b2aad25d4b3f2af5a8aceed9cb38b42ba082470e7c6371a93501ac5511ce75f0
+run #0: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+run #1: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+run #2: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+run #3: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+run #4: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+run #5: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+run #6: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+run #7: basic kernel testing failed: INFO: rcu detected stall in corrupted
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip 062cf5ebc2e8ca8afb9908072493dea314f62862
+Bisecting: 654 revisions left to test after this (roughly 9 steps)
+[da92e03c7fbf4dc6e1a4a030433c8c30946e6aa0] octeontx2-af: Fixes static warnings
+
+testing commit da92e03c7fbf4dc6e1a4a030433c8c30946e6aa0 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 8495cfcd8dd3a6c50df2ed7002503fb20eaa626e05dd5b0f800768384c91f99b
+all runs: basic kernel testing failed: INFO: trying to register non-static key in ieee80211_do_stop
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip da92e03c7fbf4dc6e1a4a030433c8c30946e6aa0
+Bisecting: 654 revisions left to test after this (roughly 9 steps)
+[6f43f6169a8229bb6ddbf483d3be760d48c4cdd1] Bluetooth: clean up error pointer checking
+
+testing commit 6f43f6169a8229bb6ddbf483d3be760d48c4cdd1 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 7b7de3ac5c2b4993fe0988d323bbb6ba365f7728ec65d998d881ff83ae17f388
+all runs: basic kernel testing failed: INFO: trying to register non-static key in ieee80211_do_stop
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip 6f43f6169a8229bb6ddbf483d3be760d48c4cdd1
+Bisecting: 654 revisions left to test after this (roughly 9 steps)
+[63b8ce77b15ebf69c4b0ef4b87451e2626aa3c43] bpf: remove obsolete KMALLOC_MAX_SIZE restriction on array map value size
+
+testing commit 63b8ce77b15ebf69c4b0ef4b87451e2626aa3c43 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 26e864ab5d041d127dfab814a2aade45375f1fecc953cde0e3f1a3690765d603
+all runs: OK
+false negative chance: 0.000
+# git bisect good 63b8ce77b15ebf69c4b0ef4b87451e2626aa3c43
+Bisecting: 651 revisions left to test after this (roughly 9 steps)
+[80ef928643c1558a0474389fcd680a5ccd6c86e6] net: devlink: Fix missing mutex_unlock() call
+
+testing commit 80ef928643c1558a0474389fcd680a5ccd6c86e6 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: eeb429f88be93f4b3f838b3b1e2d5bb394ba019e37a81ae636ed84fe7882f6fd
+all runs: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip 80ef928643c1558a0474389fcd680a5ccd6c86e6
+Bisecting: 651 revisions left to test after this (roughly 9 steps)
+[c2ce2145f7f3c1e92b9adceb729756a8be7ca145] wifi: mwl8k: use time_after to replace "jiffies > a"
+
+testing commit c2ce2145f7f3c1e92b9adceb729756a8be7ca145 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 30344524fd4e0f787ea02dade521602d7e1d4a66627c970c6f246d852df2fa6f
+all runs: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip c2ce2145f7f3c1e92b9adceb729756a8be7ca145
+Bisecting: 651 revisions left to test after this (roughly 9 steps)
+[7bf336fb8dac718febb7bf4fe79e1be0c5e4a631] refscale: Convert test_lock spinlock to raw_spinlock
+
+testing commit 7bf336fb8dac718febb7bf4fe79e1be0c5e4a631 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: bde8901f22301baf838ad0debcf1e9222725279731835a797ed535c8d3247054
+all runs: OK
+false negative chance: 0.000
+# git bisect good 7bf336fb8dac718febb7bf4fe79e1be0c5e4a631
+Bisecting: 646 revisions left to test after this (roughly 9 steps)
+[f157cfa3a589f6900c81c90620eb895253705e59] Merge branch 'net-rose-fix-module-unload-issues'
+
+testing commit f157cfa3a589f6900c81c90620eb895253705e59 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: a2058e147b6e57b8b19000bf385d8f4038003bab2cfcb7c624e43f88a913db2e
+all runs: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip f157cfa3a589f6900c81c90620eb895253705e59
+Bisecting: 646 revisions left to test after this (roughly 9 steps)
+[ec7c56812fa56b6726150877f0a1025fc78b44a4] Documentation: hyperv: Add overview of Hyper-V enlightenments
+
+testing commit ec7c56812fa56b6726150877f0a1025fc78b44a4 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: bbf492443ea38d3296eaf2bbf7b9e08e80a674a40bb83dcaf7f39f0065f06e3d
+all runs: OK
+false negative chance: 0.000
+# git bisect good ec7c56812fa56b6726150877f0a1025fc78b44a4
+Bisecting: 628 revisions left to test after this (roughly 9 steps)
+[09b278462f16569c63dd78ffa29bbfe048b4e604] net: devlink: enable parallel ops on netlink interface
+
+testing commit 09b278462f16569c63dd78ffa29bbfe048b4e604 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: e416e647bd6c22da3434c91a4ec62d2255bf03da40be949d86d291718247b483
+all runs: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip 09b278462f16569c63dd78ffa29bbfe048b4e604
+Bisecting: 628 revisions left to test after this (roughly 9 steps)
+[07977a8a9e542888d39acc14a0738fd2fcdafbf0] bnxt_en: Remove duplicated include bnxt_devlink.c
+
+testing commit 07977a8a9e542888d39acc14a0738fd2fcdafbf0 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 56a6c57d707711e380d4e373fdf847bfd1eefd50cb42fd8d7305641938802f05
+run #0: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+run #1: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+run #2: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+run #3: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+run #4: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+run #5: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+run #6: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+run #7: basic kernel testing failed: INFO: rcu detected stall in corrupted
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip 07977a8a9e542888d39acc14a0738fd2fcdafbf0
+Bisecting: 628 revisions left to test after this (roughly 9 steps)
+[910746444313dc463396cd63024cdf54ef04ef39] net: dsa: qca8k: move qca8k bulk read/write helper to common code
+
+testing commit 910746444313dc463396cd63024cdf54ef04ef39 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 786cc2a20e9160939c09df62dc3a695970abf86e7d2711ad439f3bb3948f62ee
+all runs: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip 910746444313dc463396cd63024cdf54ef04ef39
+Bisecting: 628 revisions left to test after this (roughly 9 steps)
+[02bb5b72470facec78e03cdea9f01ca8c7fe7835] btrfs: don't double-defer bio completions for compressed reads
+
+testing commit 02bb5b72470facec78e03cdea9f01ca8c7fe7835 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: ff0ef9a6c3dba4fee236da2d2b2ab34c746e1f8804878661b539c2b2e971bd38
+all runs: basic kernel testing failed: INFO: trying to register non-static key in ieee80211_do_stop
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip 02bb5b72470facec78e03cdea9f01ca8c7fe7835
+Bisecting: 628 revisions left to test after this (roughly 9 steps)
+[eba28aaf2f539c3a8844878d64ad4a43d60d4e48] mlxsw: spectrum: Support ethtool 'get_ts_info' callback in Spectrum-2
+
+testing commit eba28aaf2f539c3a8844878d64ad4a43d60d4e48 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 769f58223acb1258837ed4151b155d3831bdee19f819c8c012efead0b5452a49
+all runs: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip eba28aaf2f539c3a8844878d64ad4a43d60d4e48
+Bisecting: 628 revisions left to test after this (roughly 9 steps)
+[51c0674a56f9823e83dcc2f3d7f0d4f61c4927fc] btrfs: replace kmap() with kmap_local_page() in lzo.c
+
+testing commit 51c0674a56f9823e83dcc2f3d7f0d4f61c4927fc gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 019b31da699278289abc0eccccb990dd9f7331c8f980d9412cebb0933ba0c08e
+all runs: basic kernel testing failed: INFO: trying to register non-static key in ieee80211_do_stop
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip 51c0674a56f9823e83dcc2f3d7f0d4f61c4927fc
+Bisecting: 628 revisions left to test after this (roughly 9 steps)
+[a39b5dbdd2bc5ba36e6b90f2f979efcb090b0613] Merge tag 'zonefs-5.20-rc1' of git://git.kernel.org/pub/scm/linux/kernel/git/dlemoal/zonefs
+
+testing commit a39b5dbdd2bc5ba36e6b90f2f979efcb090b0613 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: e926b572e63c7da6c7c397fdca9ef619d82b4052af4687db9d33fcfad70af05e
+all runs: OK
+false negative chance: 0.000
+# git bisect good a39b5dbdd2bc5ba36e6b90f2f979efcb090b0613
+Bisecting: 371 revisions left to test after this (roughly 9 steps)
+[b92a13d488de2e87c869a4a6c0393d1f9eebe6dd] tls: rx: wrap recv_pkt accesses in helpers
+
+testing commit b92a13d488de2e87c869a4a6c0393d1f9eebe6dd gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 29b3fb572599b9193562a7e81006bf2eedf7ef41c1cee2c6b5ea983d381fdd9e
+all runs: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip b92a13d488de2e87c869a4a6c0393d1f9eebe6dd
+Bisecting: 371 revisions left to test after this (roughly 9 steps)
+[aebe8a2433cd090ccdc222861f44bddb75eb01de] can: usb_8dev: do not report txerr and rxerr during bus-off
+
+testing commit aebe8a2433cd090ccdc222861f44bddb75eb01de gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 0a1d54a3592192de134aeea7c47a2ab4e5df79a0d53591b5d7bd3e69244931a6
+all runs: basic kernel testing failed: INFO: trying to register non-static key in ieee80211_do_stop
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip aebe8a2433cd090ccdc222861f44bddb75eb01de
+Bisecting: 371 revisions left to test after this (roughly 9 steps)
+[4fd310c74432d19e8f58a4291b44db0ddebe7bf3] Merge branch 'implement-dev-info-and-dev-flash-for-line-cards'
+
+testing commit 4fd310c74432d19e8f58a4291b44db0ddebe7bf3 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 321dfc9e43e2a295c4a002e8a3e557f81d27cf733271b14240260c618d9bd729
+all runs: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip 4fd310c74432d19e8f58a4291b44db0ddebe7bf3
+Bisecting: 371 revisions left to test after this (roughly 9 steps)
+[16ead40812a08248c89268736b973c53cfe6e16e] net/funeth: Unify skb/XDP Tx packet unmapping.
+
+testing commit 16ead40812a08248c89268736b973c53cfe6e16e gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 79840fb3aa8af8c71bc1310372932c489f2572eb29ba6ffbc22c4c02d67cb27b
+all runs: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip 16ead40812a08248c89268736b973c53cfe6e16e
+Bisecting: 371 revisions left to test after this (roughly 9 steps)
+[8a7a5c0251e19ae7a288c94ab8de8d6302b98927] wifi: rtlwifi: Remove duplicate word and Fix typo
+
+testing commit 8a7a5c0251e19ae7a288c94ab8de8d6302b98927 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 77163daab34d6f41837681391341f6c654a04c5bdcd16659c8c25c901aca82f6
+all runs: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip 8a7a5c0251e19ae7a288c94ab8de8d6302b98927
+Bisecting: 371 revisions left to test after this (roughly 9 steps)
+[bde63e9effd3a6ba384707c62abe46c32d22f665] Bluetooth: hci_qca: Return wakeup for qca_wakeup
+
+testing commit bde63e9effd3a6ba384707c62abe46c32d22f665 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: b618a6d40ff0b851315df26d4783bd4ab04b53caceea331b3b3ec442693bcd2d
+all runs: basic kernel testing failed: INFO: trying to register non-static key in ieee80211_do_stop
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip bde63e9effd3a6ba384707c62abe46c32d22f665
+Bisecting: 371 revisions left to test after this (roughly 9 steps)
+[12fb1ae537a416b77ac9cbaefa6dd9dacaa27ed0] wifi: wilc1000: get correct length of string WID from received config packet
+
+testing commit 12fb1ae537a416b77ac9cbaefa6dd9dacaa27ed0 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 2cba590ffd91e0a20f0ef4a9bcdf282963ac8708e7d25aa9d109c1cf57edbe42
+all runs: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip 12fb1ae537a416b77ac9cbaefa6dd9dacaa27ed0
+Bisecting: 371 revisions left to test after this (roughly 9 steps)
+[e1479556f808b1702a0cb83e823784ccf67c305d] sfc: phys port/switch identification for ef100 reps
+
+testing commit e1479556f808b1702a0cb83e823784ccf67c305d gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 01ee521815b3858aeb5fad95612d47c3f6e6107f69a019d5e21d58094350362a
+all runs: basic kernel testing failed: INFO: trying to register non-static key in ieee80211_do_stop
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip e1479556f808b1702a0cb83e823784ccf67c305d
+Bisecting: 371 revisions left to test after this (roughly 9 steps)
+[f589b5d941c712d982868fd548a000e07fc5cf59] wifi: wilc1000: set correct value of 'close' variable in failure case
+
+testing commit f589b5d941c712d982868fd548a000e07fc5cf59 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 111f3d2ea23e325b483af5372c81cb2b60c23ce70268c3f704410f7e67d25c74
+all runs: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip f589b5d941c712d982868fd548a000e07fc5cf59
+Bisecting: 371 revisions left to test after this (roughly 9 steps)
+[6ad353dfc8ee3230a5e123c21da50f1b64cc4b39] Bluetooth: btusb: Add Realtek RTL8852C support ID 0x13D3:0x3586
+
+testing commit 6ad353dfc8ee3230a5e123c21da50f1b64cc4b39 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: df9d56181513bb43e6fde012c763cdd26f8d53eea20f8b04c2b97c9d8884586f
+all runs: basic kernel testing failed: INFO: trying to register non-static key in ieee80211_do_stop
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip 6ad353dfc8ee3230a5e123c21da50f1b64cc4b39
+Bisecting: 371 revisions left to test after this (roughly 9 steps)
+[d295daf505758f9a0e4d05f4ee3bfdfb4192c18f] selftests/bpf: Attach to socketcall() in test_probe_user
+
+testing commit d295daf505758f9a0e4d05f4ee3bfdfb4192c18f gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: aa7e8c9c8d74406d1588fa3a49a88a72a61080827e9a7f4ec1a4c1b6acd2a0f8
+all runs: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip d295daf505758f9a0e4d05f4ee3bfdfb4192c18f
+Bisecting: 371 revisions left to test after this (roughly 9 steps)
+[77eb40749d73fe347c47d6903874a924840ff8d5] sfc: move table locking into filter_table_{probe,remove} methods
+
+testing commit 77eb40749d73fe347c47d6903874a924840ff8d5 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 7ae443f1c436d949602e254a5cde7f201dbbe8b1d1eb3c5dd4f7e3c11dad5868
+all runs: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip 77eb40749d73fe347c47d6903874a924840ff8d5
+Bisecting: 371 revisions left to test after this (roughly 9 steps)
+[13876f2a087ad352bf640a7a0a4a4229ea6e9e4f] wifi: rtl8xxxu: Fix the error handling of the probe function
+
+testing commit 13876f2a087ad352bf640a7a0a4a4229ea6e9e4f gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 8cef45bd9ee163428636db5ad2f65d637e4ef589c26e86ba9853c11c2c5dac63
+all runs: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip 13876f2a087ad352bf640a7a0a4a4229ea6e9e4f
+Bisecting: 371 revisions left to test after this (roughly 9 steps)
+[6957730e20389a63eb333afb6fcf38b45f549ea8] Merge branch 'mtk_eth_soc-xdp-multi-frame'
+
+testing commit 6957730e20389a63eb333afb6fcf38b45f549ea8 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 52d4065e1fbcda4d204cb7fcf6bc277a27da014534596b027d6d2f9dbe29b775
+all runs: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip 6957730e20389a63eb333afb6fcf38b45f549ea8
+Bisecting: 371 revisions left to test after this (roughly 9 steps)
+[a6e6231ac10a0e94ed298de8297574b8944f7bfa] Merge patch series "can: remove litteral strings used for driver names and remove DRV_VERSION"
+
+testing commit a6e6231ac10a0e94ed298de8297574b8944f7bfa gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: e45df80ae3d67c46baf83ef897dc7942c5035209df9fa72be410e07d36770b46
+all runs: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip a6e6231ac10a0e94ed298de8297574b8944f7bfa
+Bisecting: 371 revisions left to test after this (roughly 9 steps)
+[502c6f8cedcce7889ccdefeb88ce36b39acd522f] Merge branch '100GbE' of git://git.kernel.org/pub/scm/linux/kernel/git/tnguy/next-queue
+
+testing commit 502c6f8cedcce7889ccdefeb88ce36b39acd522f gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: c708410a143e0f39168dc270a54fea44eb256b1f33f614b693ab22da624d8c00
+all runs: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip 502c6f8cedcce7889ccdefeb88ce36b39acd522f
+Bisecting: 371 revisions left to test after this (roughly 9 steps)
+[88b3822cdf2f9d1c5f569cd89a9e51a1ab223214] net/sched: sch_cbq: Delete unused delay_timer
+
+testing commit 88b3822cdf2f9d1c5f569cd89a9e51a1ab223214 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 5102c35e3ce53789409cad859a31faafdd9211248981c63e8dde917967b37fef
+all runs: basic kernel testing failed: INFO: trying to register non-static key in ieee80211_do_stop
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip 88b3822cdf2f9d1c5f569cd89a9e51a1ab223214
+Bisecting: 371 revisions left to test after this (roughly 9 steps)
+[9d1bcb1f293f1391302a109c9819c3705c804700] net: dsa: qca8k: move read_switch_id function to common code
+
+testing commit 9d1bcb1f293f1391302a109c9819c3705c804700 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 0a6c2de94585061839d6de1688631f43e330c952bed262a112325582de780a36
+all runs: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip 9d1bcb1f293f1391302a109c9819c3705c804700
+Bisecting: 371 revisions left to test after this (roughly 9 steps)
+[52586d2f56b3e4f528ca7268d65074e92c936681] net/mlx5e: xsk: Account for XSK RQ UMRs when calculating ICOSQ size
+
+testing commit 52586d2f56b3e4f528ca7268d65074e92c936681 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: a315e12ea27cacf917f9f863cc5a1c05487c1509f4e3a3bd520c0459dfca5247
+all runs: OK
+false negative chance: 0.000
+# git bisect good 52586d2f56b3e4f528ca7268d65074e92c936681
+Bisecting: 369 revisions left to test after this (roughly 9 steps)
+[1190f520826ac5ce1e86182bf940b3ccfc576e60] can: etas_es58x: replace ES58X_MODULE_NAME with KBUILD_MODNAME
+
+testing commit 1190f520826ac5ce1e86182bf940b3ccfc576e60 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: b4b1f189581f6e31222db3011c96f4886afa2f836765acb8280ef6facd743457
+all runs: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip 1190f520826ac5ce1e86182bf940b3ccfc576e60
+Bisecting: 369 revisions left to test after this (roughly 9 steps)
+[da6682faa82f4dfa5dbc2bc05bd166f1800c4f80] net/mlx5e: kTLS, Introduce TLS-specific create TIS
+
+testing commit da6682faa82f4dfa5dbc2bc05bd166f1800c4f80 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 2fd2ad8625e3ce426f4e54261c30a13543741ae0dc5feed848e21ef2d1464748
+all runs: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip da6682faa82f4dfa5dbc2bc05bd166f1800c4f80
+Bisecting: 369 revisions left to test after this (roughly 9 steps)
+[dd820ed6336ad37c870ef2f11e34dcf1a8ff2aa1] wifi: mac80211: return error from control port TX for drops
+
+testing commit dd820ed6336ad37c870ef2f11e34dcf1a8ff2aa1 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: c167c9d16d53a4350a433b76ff217a08f138dab0acfbcf3915694f662a45fb23
+all runs: OK
+false negative chance: 0.000
+# git bisect good dd820ed6336ad37c870ef2f11e34dcf1a8ff2aa1
+Bisecting: 360 revisions left to test after this (roughly 9 steps)
+[4c2742146de06a39d24e91155e3deec278e11932] wifi: wilc1000: use existing iftype variable to store the interface type
+
+testing commit 4c2742146de06a39d24e91155e3deec278e11932 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 557b5b206aec528ff1a8953310b23df29120d3e29114d3fc874dd6142a821667
+all runs: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip 4c2742146de06a39d24e91155e3deec278e11932
+Bisecting: 360 revisions left to test after this (roughly 9 steps)
+[1b5995e370e4024e7bb7408247363e8e67f0393d] mlxsw: core: Fix use-after-free calling devl_unlock() in mlxsw_core_bus_device_unregister()
+
+testing commit 1b5995e370e4024e7bb7408247363e8e67f0393d gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: e251df7fdf424bf7930b1e6b4148f213b698f1f5ff0b6b3039b0cf712b982914
+all runs: basic kernel testing failed: INFO: trying to register non-static key in ieee80211_do_stop
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip 1b5995e370e4024e7bb7408247363e8e67f0393d
+Bisecting: 360 revisions left to test after this (roughly 9 steps)
+[3e720131960bb724e2ae365aa9e240c1c11f45c1] can: slcan: add support for listen-only mode
+
+testing commit 3e720131960bb724e2ae365aa9e240c1c11f45c1 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: c0913481900641de5da1cf9583b11924add8550f33cc493f8776d1fbe5682be7
+all runs: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip 3e720131960bb724e2ae365aa9e240c1c11f45c1
+Bisecting: 360 revisions left to test after this (roughly 9 steps)
+[7cf5c2978f23fdbb2dd7b4e8b07e362ae2d8211c] Bluetooth: hci_sync: Refactor remove Adv Monitor
+
+testing commit 7cf5c2978f23fdbb2dd7b4e8b07e362ae2d8211c gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 8ac3947cbb42f2443d39c758b5d09f03fedff5854be273efd77aff3e47cc3d1c
+all runs: basic kernel testing failed: INFO: trying to register non-static key in ieee80211_do_stop
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip 7cf5c2978f23fdbb2dd7b4e8b07e362ae2d8211c
+Bisecting: 360 revisions left to test after this (roughly 9 steps)
+[ad3e683ae4dc311baea7a8724315b6d8d9a7aaa9] wifi: wilc1000: cancel the connect operation during interface down
+
+testing commit ad3e683ae4dc311baea7a8724315b6d8d9a7aaa9 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 292282c7a8f524f348bf57240ae34ef6e2e9a81cfc11c688509ee2f7541bdcef
+all runs: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip ad3e683ae4dc311baea7a8724315b6d8d9a7aaa9
+Bisecting: 360 revisions left to test after this (roughly 9 steps)
+[ccf74f2390d60a2f9a75ef496d2564abb478f46a] Bluetooth: Add BTPROTO_ISO socket type
+
+testing commit ccf74f2390d60a2f9a75ef496d2564abb478f46a gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: bc5de0472d6845125466ea06d802554e4866ee687fd48971f6a9dc3b6da95341
+all runs: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip ccf74f2390d60a2f9a75ef496d2564abb478f46a
+Bisecting: 360 revisions left to test after this (roughly 9 steps)
+[3b317abc71598bda8ff9a9c483ad8ae167b18382] bpf: Fix NULL pointer dereference when registering bpf trampoline
+
+testing commit 3b317abc71598bda8ff9a9c483ad8ae167b18382 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: dc07007bd52bad535a45b218b09d4ac9237e38b33c38c25560db48e830820ad9
+all runs: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip 3b317abc71598bda8ff9a9c483ad8ae167b18382
+Bisecting: 360 revisions left to test after this (roughly 9 steps)
+[2bcbd3d8a7b4525cdb741fe82330edb6f5452c7f] net: usb: ax88179_178a: move priv to driver_priv
+
+testing commit 2bcbd3d8a7b4525cdb741fe82330edb6f5452c7f gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 154d072cc1f9022fc63deb2bde99c195390c47a35f91ae3c1e0f26878853b93f
+all runs: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip 2bcbd3d8a7b4525cdb741fe82330edb6f5452c7f
+Bisecting: 360 revisions left to test after this (roughly 9 steps)
+[cfcb4465e9923bb9ac168abcea84e880633f9cef] can: slcan: remove legacy infrastructure
+
+testing commit cfcb4465e9923bb9ac168abcea84e880633f9cef gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 82f0c3f5d4b1f7dd18356cc23653684c4cc4ba0b2e19d272139a08ab9505ee9f
+all runs: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip cfcb4465e9923bb9ac168abcea84e880633f9cef
+Bisecting: 360 revisions left to test after this (roughly 9 steps)
+[37b62b282b182acd2113f97c1b9fd651d4211027] mlxsw: spectrum_ptp: Add helper functions to configure PTP traps
+
+testing commit 37b62b282b182acd2113f97c1b9fd651d4211027 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: a9b103691a47d3fa242363ebe73bd7e8da8d36f76ebe769edfd70ff8b65d00c4
+all runs: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip 37b62b282b182acd2113f97c1b9fd651d4211027
+Bisecting: 360 revisions left to test after this (roughly 9 steps)
+[4bbaf764e1e1786eb937fdb62172f656f512e116] net: dsa: qca8k: move driver to qca dir
+
+testing commit 4bbaf764e1e1786eb937fdb62172f656f512e116 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: a2cfa0611cf287661d5281e21bc3e3bfaea4936711fed30c5d288933e7dd1b91
+all runs: basic kernel testing failed: INFO: trying to register non-static key in ieee80211_do_stop
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip 4bbaf764e1e1786eb937fdb62172f656f512e116
+Bisecting: 360 revisions left to test after this (roughly 9 steps)
+[731416e9ae5d5c3d5491aeef4fda53a191e8822d] mlxsw: reg: Add Monitoring Time Precision Correction Port Configuration Register
+
+testing commit 731416e9ae5d5c3d5491aeef4fda53a191e8822d gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: f40fd87ba7abb4cea70fbb7294e63d066abd0cd362d22ba40596997a816a7190
+run #0: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+run #1: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+run #2: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+run #3: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+run #4: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+run #5: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+run #6: basic kernel testing failed: INFO: trying to register non-static key in ieee80211_do_stop
+run #7: basic kernel testing failed: INFO: trying to register non-static key in ieee80211_do_stop
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip 731416e9ae5d5c3d5491aeef4fda53a191e8822d
+Bisecting: 360 revisions left to test after this (roughly 9 steps)
+[0903f899418ee0235e4ad756f5502162f29b49b9] wifi: ieee80211: add helper functions for detecting TM/FTM frames
+
+testing commit 0903f899418ee0235e4ad756f5502162f29b49b9 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 167f51e3de20dcd8f7533e0021acee20027b843146667662177410cb4c8e80e4
+all runs: OK
+false negative chance: 0.000
+# git bisect good 0903f899418ee0235e4ad756f5502162f29b49b9
+Bisecting: 357 revisions left to test after this (roughly 9 steps)
+[02a186f1e96bfca8fd19862dad14ea011712ce9d] wifi: brcmfmac: Remove #ifdef guards for PM related functions
+
+testing commit 02a186f1e96bfca8fd19862dad14ea011712ce9d gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: e4794ace00bb890c6e30eec1b0552fe08d88b61e2fc545a97deb0467acc70662
+all runs: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip 02a186f1e96bfca8fd19862dad14ea011712ce9d
+Bisecting: 357 revisions left to test after this (roughly 9 steps)
+[63e564ebd1fd91c7194266a2169ab5be984f08bc] bpf: Add documentation for kfuncs
+
+testing commit 63e564ebd1fd91c7194266a2169ab5be984f08bc gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+failed building 63e564ebd1fd91c7194266a2169ab5be984f08bc: net/bpf/test_run.c:703:40: error: macro "BTF_ID_FLAGS" requires 3 arguments, but only 2 given
+net/bpf/test_run.c:704:40: error: macro "BTF_ID_FLAGS" requires 3 arguments, but only 2 given
+net/bpf/test_run.c:703:1: error: unknown type name 'BTF_ID_FLAGS'
+net/bpf/test_run.c:705:40: error: macro "BTF_ID_FLAGS" requires 3 arguments, but only 2 given
+net/bpf/test_run.c:705:1: error: expected '=', ',', ';', 'asm' or '__attribute__' before 'BTF_ID_FLAGS'
+net/bpf/test_run.c:712:48: error: macro "BTF_ID_FLAGS" requires 3 arguments, but only 2 given
+net/bpf/test_run.c:705:1: error: unknown type name 'BTF_ID_FLAGS'
+net/bpf/test_run.c:713:45: error: macro "BTF_ID_FLAGS" requires 3 arguments, but only 2 given
+net/bpf/test_run.c:714:45: error: macro "BTF_ID_FLAGS" requires 3 arguments, but only 2 given
+net/bpf/test_run.c:715:45: error: macro "BTF_ID_FLAGS" requires 3 arguments, but only 2 given
+net/bpf/test_run.c:716:45: error: macro "BTF_ID_FLAGS" requires 3 arguments, but only 2 given
+net/bpf/test_run.c:717:45: error: macro "BTF_ID_FLAGS" requires 3 arguments, but only 2 given
+net/bpf/test_run.c:718:53: error: macro "BTF_ID_FLAGS" requires 3 arguments, but only 2 given
+net/bpf/test_run.c:719:53: error: macro "BTF_ID_FLAGS" requires 3 arguments, but only 2 given
+net/bpf/test_run.c:720:53: error: macro "BTF_ID_FLAGS" requires 3 arguments, but only 2 given
+# git bisect skip 63e564ebd1fd91c7194266a2169ab5be984f08bc
+Bisecting: 357 revisions left to test after this (roughly 9 steps)
+[d7393425e7c8819ac4a6dbc03f061954665f62ee] ice: Introduce enabling promiscuous mode on multiple VF's
+
+testing commit d7393425e7c8819ac4a6dbc03f061954665f62ee gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: b013431e7c2468702dba822c5479d438502d15e883b66644db05f657ff537c2d
+all runs: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip d7393425e7c8819ac4a6dbc03f061954665f62ee
+Bisecting: 357 revisions left to test after this (roughly 9 steps)
+[049d5d9890e9f4ba6d384ba5cfc5e8698be1ae9e] eth: fix the help in Wangxun's Kconfig
+
+testing commit 049d5d9890e9f4ba6d384ba5cfc5e8698be1ae9e gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 44637dfd8cecb5cd3eeeec2984b3bcaf9a9a57cbb8b006943d5aeb30510394a9
+run #0: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+run #1: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+run #2: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+run #3: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+run #4: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+run #5: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+run #6: basic kernel testing failed: INFO: rcu detected stall in corrupted
+run #7: basic kernel testing failed: INFO: rcu detected stall in corrupted
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip 049d5d9890e9f4ba6d384ba5cfc5e8698be1ae9e
+Bisecting: 357 revisions left to test after this (roughly 9 steps)
+[8531c80800c10e8ef7952022326c2f983e1314bf] net: ethernet: stmicro: stmmac: move dma conf to dedicated struct
+
+testing commit 8531c80800c10e8ef7952022326c2f983e1314bf gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 6da573ed6275ff0069010cd260211f5cfb88367ada6f3116ea2e4b9259f2ed82
+all runs: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip 8531c80800c10e8ef7952022326c2f983e1314bf
+Bisecting: 357 revisions left to test after this (roughly 9 steps)
+[cf2437626502b5271d19686b03dea306efe17ea0] octeontx2-af: suppress external profile loading warning
+
+testing commit cf2437626502b5271d19686b03dea306efe17ea0 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 018923b169360f58f4dbf63945ee963fb58857348524cba9be3f946dedb19693
+all runs: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip cf2437626502b5271d19686b03dea306efe17ea0
+Bisecting: 357 revisions left to test after this (roughly 9 steps)
+[58d8bcd47ecc55f1ab92320fe36c31ff4d83cc0c] sfc/siena: fix repeated words in comments
+
+testing commit 58d8bcd47ecc55f1ab92320fe36c31ff4d83cc0c gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 38ef21338dce0916b5b082220e507ec245d40571963578772dc137721cdebf4b
+all runs: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip 58d8bcd47ecc55f1ab92320fe36c31ff4d83cc0c
+Bisecting: 357 revisions left to test after this (roughly 9 steps)
+[332f1795ca202489c665a75e62e18ff6284de077] Bluetooth: L2CAP: Fix l2cap_global_chan_by_psm regression
+
+testing commit 332f1795ca202489c665a75e62e18ff6284de077 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 7409ac15e380914efec4d3de5e490e539b6542af1cf59e9159f5472abaf1299d
+run #0: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+run #1: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+run #2: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+run #3: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+run #4: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+run #5: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+run #6: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+run #7: basic kernel testing failed: INFO: rcu detected stall in corrupted
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip 332f1795ca202489c665a75e62e18ff6284de077
+Bisecting: 357 revisions left to test after this (roughly 9 steps)
+[c476bede4b0f07a26c84e38b0bc34bdaca8135da] net: dsa: microchip: ksz8795: use common xmii function
+
+testing commit c476bede4b0f07a26c84e38b0bc34bdaca8135da gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 17e2df43071104cbf6581bbf1a8d3b47f9342c25d0d674930facd3b36b1b231d
+all runs: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip c476bede4b0f07a26c84e38b0bc34bdaca8135da
+Bisecting: 357 revisions left to test after this (roughly 9 steps)
+[efe317997ec9501d1b37802f8ffef1692caa0f68] net/mlx5e: HTB, reduce visibility of htb functions
+
+testing commit efe317997ec9501d1b37802f8ffef1692caa0f68 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: f156e4f4fe80e1f471de86b8276a01f0b27ef30f8bbda4d33a63530dd981bbcc
+all runs: basic kernel testing failed: INFO: trying to register non-static key in ieee80211_do_stop
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip efe317997ec9501d1b37802f8ffef1692caa0f68
+Bisecting: 357 revisions left to test after this (roughly 9 steps)
+[b19ac41faa3f9602f245d1ab679f7fa96d388320] net: dsa: microchip: apply rgmii tx and rx delay in phylink mac config
+
+testing commit b19ac41faa3f9602f245d1ab679f7fa96d388320 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: c246269714d304da8724d9d1a744c883a7ac821c79c329992861d9d5f1e9d829
+all runs: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip b19ac41faa3f9602f245d1ab679f7fa96d388320
+Bisecting: 357 revisions left to test after this (roughly 9 steps)
+[462b0059993696eaf863c23c2a12658e4fe0ccbf] net/mlx5e: HTB, move htb functions to a new file
+
+testing commit 462b0059993696eaf863c23c2a12658e4fe0ccbf gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: e6b6e18f59f34603ce5e17ca8fdc544d99e76601e166c71bf13bb7f34fd91b9f
+all runs: basic kernel testing failed: INFO: trying to register non-static key in ieee80211_do_stop
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip 462b0059993696eaf863c23c2a12658e4fe0ccbf
+Bisecting: 357 revisions left to test after this (roughly 9 steps)
+[cd8efeeed16e8ecf30071583865f3f468db9e854] ice: Add support for PPPoE hardware offload
+
+testing commit cd8efeeed16e8ecf30071583865f3f468db9e854 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 0b12fdd4267cacbad4d5f1e0b5d9dc03f803000883704005dda6abfd8c24c54d
+all runs: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip cd8efeeed16e8ecf30071583865f3f468db9e854
+Bisecting: 357 revisions left to test after this (roughly 9 steps)
+[1dbd8748a147c971747c8460e0cd1828cf2745d7] Merge branch 'can-error-set-of-fixes-and-improvement-on-txerr-and-rxerr-reporting'
+
+testing commit 1dbd8748a147c971747c8460e0cd1828cf2745d7 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 3422acf9ae91ed5627fbc5050e78f319f152cf07d2e7e42568615ffed0f630a2
+all runs: basic kernel testing failed: INFO: trying to register non-static key in ieee80211_do_stop
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip 1dbd8748a147c971747c8460e0cd1828cf2745d7
+Bisecting: 357 revisions left to test after this (roughly 9 steps)
+[7fb48d25b5ce3bc488dbb019bf1736248181de9a] can: dev: add generic function can_ethtool_op_get_ts_info_hwts()
+
+testing commit 7fb48d25b5ce3bc488dbb019bf1736248181de9a gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: f6b415d78b12149f9b5d6182b746a290dbad179b14e28d4105802c5b992581da
+all runs: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip 7fb48d25b5ce3bc488dbb019bf1736248181de9a
+Bisecting: 357 revisions left to test after this (roughly 9 steps)
+[644a66c60f02f302d82c3008ae2ffe67cf495383] net: devlink: convert reload command to take implicit devlink->lock
+
+testing commit 644a66c60f02f302d82c3008ae2ffe67cf495383 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 3e00edc538ba584bfb47246f0061038a0d58316264288251c508ae15ed474e31
+run #0: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+run #1: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+run #2: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+run #3: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+run #4: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+run #5: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+run #6: basic kernel testing failed: INFO: rcu detected stall in corrupted
+run #7: basic kernel testing failed: INFO: rcu detected stall in corrupted
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip 644a66c60f02f302d82c3008ae2ffe67cf495383
+Bisecting: 357 revisions left to test after this (roughly 9 steps)
+[334facd651b98f2e6c6bb699405f8b7421b9b40c] wifi: rtw89: 8852a: adjust IMR for SER L1
+
+testing commit 334facd651b98f2e6c6bb699405f8b7421b9b40c gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: ebd01c6f0125464e5373d4aca4634d58c7f3588f8e917b241157330e47dfc3d5
+all runs: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip 334facd651b98f2e6c6bb699405f8b7421b9b40c
+Bisecting: 357 revisions left to test after this (roughly 9 steps)
+[0b4de2523f281b0492de3427da82495bfca6f263] dt-bindings: net: broadcom-bluetooth: Add property for autobaud mode
+
+testing commit 0b4de2523f281b0492de3427da82495bfca6f263 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 4981f2f1dc0948037b0ee6495eb405233445ceee73f870b4e4a431179479884d
+all runs: basic kernel testing failed: INFO: trying to register non-static key in ieee80211_do_stop
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip 0b4de2523f281b0492de3427da82495bfca6f263
+Bisecting: 357 revisions left to test after this (roughly 9 steps)
+[9d8dd3725f4032f94d9cf65304559e0780e04ad7] Merge patch series "can: export export slcan_ethtool_ops and remove setter functions"
+
+testing commit 9d8dd3725f4032f94d9cf65304559e0780e04ad7 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: b4ec4891b741cbc4d53ac1cb73bb2b0bf6edc14c4a4dc9fe8b6c31bc3b40dc1d
+all runs: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip 9d8dd3725f4032f94d9cf65304559e0780e04ad7
+Bisecting: 357 revisions left to test after this (roughly 9 steps)
+[34a718bc86f908de8ef79affaff6a3de7b95759c] Bluetooth: HCI: Fix not always setting Scan Response/Advertising Data
+
+testing commit 34a718bc86f908de8ef79affaff6a3de7b95759c gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 187a16cb0a23532a2524fe4f31987e62434d6c6ea39a2b8e46b9813bf0f2ebba
+all runs: basic kernel testing failed: INFO: trying to register non-static key in ieee80211_do_stop
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip 34a718bc86f908de8ef79affaff6a3de7b95759c
+Bisecting: 357 revisions left to test after this (roughly 9 steps)
+[5c54ab24377b999c7f1c30b41218e6490cd4ac80] wifi: brcmfmac: support brcm,ccode-map-trivial DT property
+
+testing commit 5c54ab24377b999c7f1c30b41218e6490cd4ac80 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 4a229114fc11afd07687f0c3296823ae75a01e0718defe608e40581e4d74ed8a
+all runs: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip 5c54ab24377b999c7f1c30b41218e6490cd4ac80
+Bisecting: 357 revisions left to test after this (roughly 9 steps)
+[c8ce64900db470a7b7b8f2e5c87d0756a91b1d27] dt-bindings: net: broadcom-bluetooth: Add conditional constraints
+
+testing commit c8ce64900db470a7b7b8f2e5c87d0756a91b1d27 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: df20411ed496bec8d67a458733b689fbb810e6b49a6843291a11c989b6f9d3fc
+all runs: basic kernel testing failed: INFO: trying to register non-static key in ieee80211_do_stop
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip c8ce64900db470a7b7b8f2e5c87d0756a91b1d27
+Bisecting: 357 revisions left to test after this (roughly 9 steps)
+[dc81f8d1e8ea3f5dfa88919cb834a135a6a536b8] bpf: Fix test_progs -j error with fentry/fexit tests
+
+testing commit dc81f8d1e8ea3f5dfa88919cb834a135a6a536b8 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 3f819ca875423b71cedfdd98ba77cba97cd50339184e3b818765bf81a89746ed
+all runs: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip dc81f8d1e8ea3f5dfa88919cb834a135a6a536b8
+Bisecting: 357 revisions left to test after this (roughly 9 steps)
+[08d0b16ecb3649025336e104d8d25f56abde563c] sfc: check ef100 RX packets are from the wire
+
+testing commit 08d0b16ecb3649025336e104d8d25f56abde563c gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 8bec720e58415b7372144f60ab7a7ac4a4054c174348762b8d8d0a91b0c82c03
+all runs: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip 08d0b16ecb3649025336e104d8d25f56abde563c
+Bisecting: 357 revisions left to test after this (roughly 9 steps)
+[4aeccfd84d2808574ef32b19877f022462c81d79] MAINTAINERS: Add maintainer for the slcan driver
+
+testing commit 4aeccfd84d2808574ef32b19877f022462c81d79 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 67aaee649006ff7b39c6c85f5d47122389b203746abac6d01a155374ddfd334c
+all runs: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip 4aeccfd84d2808574ef32b19877f022462c81d79
+Bisecting: 357 revisions left to test after this (roughly 9 steps)
+[5fc7c5887c62f5485b606884a83eea972961423d] Merge https://git.kernel.org/pub/scm/linux/kernel/git/bpf/bpf-next
+
+testing commit 5fc7c5887c62f5485b606884a83eea972961423d gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 9b84efbc0116766628dc3353cee4067ca4043a9247acd15d2c8fbb511467d216
+all runs: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip 5fc7c5887c62f5485b606884a83eea972961423d
+Bisecting: 357 revisions left to test after this (roughly 9 steps)
+[bef11f1edc40cee156c60f9dbbbd9725a56b3639] wifi: brcmfmac: use strreplace() in brcmf_of_probe()
+
+testing commit bef11f1edc40cee156c60f9dbbbd9725a56b3639 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: b4fc7e825dd680a79b6fda53fd5f2eda0f4d1003de48d796c8312e5e48e6357e
+all runs: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip bef11f1edc40cee156c60f9dbbbd9725a56b3639
+Bisecting: 357 revisions left to test after this (roughly 9 steps)
+[08ef8bc825d961d6adde6fc2665f293e43ab3777] mlxsw: spectrum_ptp: Support SIOCGHWTSTAMP, SIOCSHWTSTAMP ioctls
+
+testing commit 08ef8bc825d961d6adde6fc2665f293e43ab3777 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 94afa7acfaaa1580c81aae24c1a848eb28af2a7f8d13f715e723b1181a2d6671
+all runs: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip 08ef8bc825d961d6adde6fc2665f293e43ab3777
+Bisecting: 357 revisions left to test after this (roughly 9 steps)
+[8c21c54a53ab21842f5050fa090f26b03c0313d6] can: j1939: j1939_session_destroy(): fix memory leak of skbs
+
+testing commit 8c21c54a53ab21842f5050fa090f26b03c0313d6 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: a2397338b882d0a22cf62b9901b076b26c65e1a78b89462d70d72ac0aad284cd
+run #0: crashed: INFO: rcu detected stall in corrupted
+run #1: crashed: INFO: rcu detected stall in corrupted
+run #2: crashed: INFO: rcu detected stall in corrupted
+run #3: crashed: INFO: rcu detected stall in corrupted
+run #4: basic kernel testing failed: INFO: rcu detected stall in corrupted
+run #5: basic kernel testing failed: INFO: rcu detected stall in corrupted
+run #6: crashed: INFO: rcu detected stall in corrupted
+run #7: OK
+representative crash: INFO: rcu detected stall in corrupted, types: [HANG]
+# git bisect bad 8c21c54a53ab21842f5050fa090f26b03c0313d6
+Bisecting: 357 revisions left to test after this (roughly 9 steps)
+[341c5724d7a1c71899752201dab88f87343c0c2b] can: slcan: use the generic can_change_mtu()
+
+testing commit 341c5724d7a1c71899752201dab88f87343c0c2b gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: aa22fa31544d14c02e030a1ac9c0c48a47b9a9a2e5d36900c37c55aef7faded7
+all runs: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip 341c5724d7a1c71899752201dab88f87343c0c2b
+Bisecting: 357 revisions left to test after this (roughly 9 steps)
+[a1ac9fd6c6504aa1838930bbfae6217ab6b95945] libbpf: fallback to tracefs mount point if debugfs is not mounted
+
+testing commit a1ac9fd6c6504aa1838930bbfae6217ab6b95945 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 5890e483ecd7f5449f696e703e454e874ca04e39715575285476a72792fb4c3f
+all runs: OK
+false negative chance: 0.000
+# git bisect good a1ac9fd6c6504aa1838930bbfae6217ab6b95945
+Bisecting: 355 revisions left to test after this (roughly 9 steps)
+[14250fa4839b3a48c979e7faaf4cbcce619d02bd] bpf: Remove unneeded semicolon
+
+testing commit 14250fa4839b3a48c979e7faaf4cbcce619d02bd gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 80a5884a96b3afa3a29bcccfb10834ef759301ebe4359a6d96ef24fd892eff23
+all runs: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip 14250fa4839b3a48c979e7faaf4cbcce619d02bd
+Bisecting: 355 revisions left to test after this (roughly 9 steps)
+[624bf09921338f977ca81e70817ff2fd3aa9216d] net/mlx5e: kTLS, Dynamically re-size TX recycling pool
+
+testing commit 624bf09921338f977ca81e70817ff2fd3aa9216d gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: dcb4ee959af730409746e1a713c7954b5516ab6bc20217dfda8493d183e83c61
+all runs: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip 624bf09921338f977ca81e70817ff2fd3aa9216d
+Bisecting: 355 revisions left to test after this (roughly 9 steps)
+[4cbc325ed6b4dce4910be06d9d6940a8b919c59b] tls: rx: allow only one reader at a time
+
+testing commit 4cbc325ed6b4dce4910be06d9d6940a8b919c59b gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 2956173da2383a3e9d2998b37d98c6cfcc9e97e4cdabbbf57652af3ef523b7e1
+all runs: basic kernel testing failed: INFO: trying to register non-static key in ieee80211_do_stop
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip 4cbc325ed6b4dce4910be06d9d6940a8b919c59b
+Bisecting: 355 revisions left to test after this (roughly 9 steps)
+[d11ef9cc5a6792c8508cb00308b604836f9a9053] tls: strp: rename and multithread the workqueue
+
+testing commit d11ef9cc5a6792c8508cb00308b604836f9a9053 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 9c2fa649c934ab9aeb2a69c4e35b50f0797d6ae8ebe8c6a568bb2bc4a8f3a673
+all runs: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip d11ef9cc5a6792c8508cb00308b604836f9a9053
+Bisecting: 355 revisions left to test after this (roughly 9 steps)
+[c618db2afe7c31d13ca8cf05b60f17165fbdc282] tls: rx: async: hold onto the input skb
+
+testing commit c618db2afe7c31d13ca8cf05b60f17165fbdc282 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: d18497c8c24f86d0aa234d964be8d2d83b60539e2052c46d8b80fefbc6aaa89c
+all runs: basic kernel testing failed: INFO: trying to register non-static key in ieee80211_do_stop
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip c618db2afe7c31d13ca8cf05b60f17165fbdc282
+Bisecting: 355 revisions left to test after this (roughly 9 steps)
+[4488df1401522cd263166ef8799d56661baf83b0] ice: implement adjfine with mul_u64_u64_div_u64
+
+testing commit 4488df1401522cd263166ef8799d56661baf83b0 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: c1af04b73e172b730141b0593b64a087f60c0ca59e35a29e0dfb5fb6ab71716d
+all runs: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip 4488df1401522cd263166ef8799d56661baf83b0
+Bisecting: 355 revisions left to test after this (roughly 9 steps)
+[e26fde2f5befad0951fe6345403616bf51e901be] net: devlink: avoid false DEADLOCK warning reported by lockdep
+
+testing commit e26fde2f5befad0951fe6345403616bf51e901be gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: a5decba8627f682d26879c51fcaad690be6491aaddbead368551e0001d40013f
+all runs: basic kernel testing failed: INFO: trying to register non-static key in ieee80211_do_stop
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip e26fde2f5befad0951fe6345403616bf51e901be
+Bisecting: 355 revisions left to test after this (roughly 9 steps)
+[3470079687448abac42deb62774253be1d6bdef3] net: ethernet: stmicro: stmmac: permit MTU change with interface up
+
+testing commit 3470079687448abac42deb62774253be1d6bdef3 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 98589ae51cfd796c9e045395104893b058bd0084150612adcf78a860d33518c7
+all runs: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip 3470079687448abac42deb62774253be1d6bdef3
+Bisecting: 355 revisions left to test after this (roughly 9 steps)
+[b4443423278263d229dbeee12d09e657b78d64ab] Bluetooth: ISO: Fix memory corruption
+
+testing commit b4443423278263d229dbeee12d09e657b78d64ab gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: eb68b0a6931c4df5842f856921e2c05d9f76a3c425e9742a248e993e7c48dec4
+all runs: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip b4443423278263d229dbeee12d09e657b78d64ab
+Bisecting: 355 revisions left to test after this (roughly 9 steps)
+[d351c90ce248601ce34fbc5ac817e3362b441b55] octeontx2-pf: Fix UDP/TCP src and dst port tc filters
+
+testing commit d351c90ce248601ce34fbc5ac817e3362b441b55 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 8a9caa31a196a6970c249a0edda2a0a0028396d67377802ee55cf7007bf0d13b
+all runs: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip d351c90ce248601ce34fbc5ac817e3362b441b55
+Bisecting: 355 revisions left to test after this (roughly 9 steps)
+[c0bf3c6aa444a5ef44acc57ef6cfa53fd4fc1c9b] mptcp: move subflow cleanup in mptcp_destroy_common()
+
+testing commit c0bf3c6aa444a5ef44acc57ef6cfa53fd4fc1c9b gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: a88137bc2df08971cf04346f186671e133a4d47b68c9fedee1ddbae4da15b107
+all runs: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip c0bf3c6aa444a5ef44acc57ef6cfa53fd4fc1c9b
+Bisecting: 355 revisions left to test after this (roughly 9 steps)
+[46126db9c86110e5fc1e369b9bb89735ddefdae4] flow_dissector: Add PPPoE dissectors
+
+testing commit 46126db9c86110e5fc1e369b9bb89735ddefdae4 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: f664247ba3c060a962bd507638c7bc97a217d553983579c81fa5723ef7470d51
+all runs: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip 46126db9c86110e5fc1e369b9bb89735ddefdae4
+Bisecting: 355 revisions left to test after this (roughly 9 steps)
+[4873a1b2024dce9a501b56d1039ff0752027a92e] net/sched: remove hacks added to dev_trans_start() for bonding to work
+
+testing commit 4873a1b2024dce9a501b56d1039ff0752027a92e gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: a185efeeba0baba61a56bf39bbfe6d2db1eb72880f8adcc50db96a1988eb42d9
+all runs: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip 4873a1b2024dce9a501b56d1039ff0752027a92e
+Bisecting: 355 revisions left to test after this (roughly 9 steps)
+[8ba09bfa2b08802e023519e91798ea83c32f2c2f] can: peak_canfd: advertise timestamping capabilities and add ioctl support
+
+testing commit 8ba09bfa2b08802e023519e91798ea83c32f2c2f gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 7d3cd534185690dde11f5d699715d3f426fe4257e5df7fd29346feabcdf906fc
+all runs: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip 8ba09bfa2b08802e023519e91798ea83c32f2c2f
+Bisecting: 355 revisions left to test after this (roughly 9 steps)
+[d79ee9a66a82e4b88a26d7928f78ecdca180c483] Merge branch 'can-peak_usb-cleanups-and-updates'
+
+testing commit d79ee9a66a82e4b88a26d7928f78ecdca180c483 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 98e4170cb0d8d5ef66ca599e054ff07ac133c4352d1b2352614be08afc9b05ed
+all runs: basic kernel testing failed: INFO: trying to register non-static key in ieee80211_do_stop
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip d79ee9a66a82e4b88a26d7928f78ecdca180c483
+Bisecting: 355 revisions left to test after this (roughly 9 steps)
+[aee993bbd05cede097885fa74e2627a458d3418a] selftests/bpf: Sort configuration
+
+testing commit aee993bbd05cede097885fa74e2627a458d3418a gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 841ee7191a1a16662c9092bf22eec7012324763918ba60013af4200f318930c5
+all runs: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip aee993bbd05cede097885fa74e2627a458d3418a
+Bisecting: 355 revisions left to test after this (roughly 9 steps)
+[52323ef75414d60b17f683076833eb55a6bffa2b] net: marvell: prestera: add phylink support
+
+testing commit 52323ef75414d60b17f683076833eb55a6bffa2b gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 92f289051afd89cf4b190e42f30f5e059acec6355ddfdd92a0c2d25f7c0729b5
+all runs: basic kernel testing failed: INFO: trying to register non-static key in ieee80211_do_stop
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip 52323ef75414d60b17f683076833eb55a6bffa2b
+Bisecting: 355 revisions left to test after this (roughly 9 steps)
+[2f6e44ee6e969ea22d330c2810d7c891e63e6a08] wifi: wilc1000: add WID_TX_POWER WID in g_cfg_byte array
+
+testing commit 2f6e44ee6e969ea22d330c2810d7c891e63e6a08 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: e55e628ea7a4cd965569c4b6737e842c36f8ddfc2a9ee945fa4d36958a57cfef
+all runs: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip 2f6e44ee6e969ea22d330c2810d7c891e63e6a08
+Bisecting: 355 revisions left to test after this (roughly 9 steps)
+[4d8996cbeeabba028714d0e0bd5957b5515cae43] net: ipa: skip some cleanup for unused transactions
+
+testing commit 4d8996cbeeabba028714d0e0bd5957b5515cae43 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 5e3becd034e48b94166a64ed02289f7bfc498738498334d8253ca31033a6fbdc
+all runs: basic kernel testing failed: INFO: trying to register non-static key in ieee80211_do_stop
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip 4d8996cbeeabba028714d0e0bd5957b5515cae43
+Bisecting: 355 revisions left to test after this (roughly 9 steps)
+[33d4a577c7b184bac755deb68fe6e84ae009d70f] wifi: wilc1000: set station_info flag only when signal value is valid
+
+testing commit 33d4a577c7b184bac755deb68fe6e84ae009d70f gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: b024f9884eddee27129f04d9b79e51e0e0b6d7e314edd65ba56be62203cfbf1c
+all runs: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip 33d4a577c7b184bac755deb68fe6e84ae009d70f
+Bisecting: 355 revisions left to test after this (roughly 9 steps)
+[59ad24714b7bb0c46c69cffc55478cc3295465d3] mlxsw: use netif_is_any_bridge_port() instead of open code
+
+testing commit 59ad24714b7bb0c46c69cffc55478cc3295465d3 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: ca12a44479735e690d375eb7946b3c422440461551107a17da264261d54ac3da
+all runs: basic kernel testing failed: INFO: trying to register non-static key in ieee80211_do_stop
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip 59ad24714b7bb0c46c69cffc55478cc3295465d3
+Bisecting: 355 revisions left to test after this (roughly 9 steps)
+[409c188c57cdb5cb1dfcac79e72b5169f0463fe4] can: tree-wide: advertise software timestamping capabilities
+
+testing commit 409c188c57cdb5cb1dfcac79e72b5169f0463fe4 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 84ba56ce538f7c547f5fbda09b39945950989efc7c6380c55226490bf502ca0c
+all runs: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip 409c188c57cdb5cb1dfcac79e72b5169f0463fe4
+Bisecting: 355 revisions left to test after this (roughly 9 steps)
+[df332800a914e9fd97b83aa63832979227fd8a8d] Bluetooth: btmtksdio: Add in-band wakeup support
+
+testing commit df332800a914e9fd97b83aa63832979227fd8a8d gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 3637f6ed3173de623d5ace1fd227ec0cf09506b175875ee649e6f1f62f9cabad
+all runs: basic kernel testing failed: INFO: trying to register non-static key in ieee80211_do_stop
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip df332800a914e9fd97b83aa63832979227fd8a8d
+Bisecting: 355 revisions left to test after this (roughly 9 steps)
+[cb774bd35318c1b4cb61f6f2caac85537d07fbde] wifi: brcmfmac: prevent double-free on hardware-reset
+
+testing commit cb774bd35318c1b4cb61f6f2caac85537d07fbde gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 4d7aedd99d887c05726f99457cd5a06ec959be780720a958c595c5b0987f0a6a
+all runs: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip cb774bd35318c1b4cb61f6f2caac85537d07fbde
+Bisecting: 355 revisions left to test after this (roughly 9 steps)
+[84a8d931ab213250932959c4f929a7e7e670b8a7] Merge branch '100GbE' of git://git.kernel.org/pub/scm/linux/kernel/git/tnguy/next-queue
+
+testing commit 84a8d931ab213250932959c4f929a7e7e670b8a7 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 245968ed5986404d8378625f226af5fdb7d3c4abf864731140dd7880fc2e13b2
+all runs: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip 84a8d931ab213250932959c4f929a7e7e670b8a7
+Bisecting: 355 revisions left to test after this (roughly 9 steps)
+[dd47ed3620e693636b4d912db4810fe0c092eb2c] tls: rx: factor SW handling out of tls_rx_one_record()
+
+testing commit dd47ed3620e693636b4d912db4810fe0c092eb2c gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 9520101d9a8039dc2a0f42f52efbfeda415964807e86cf0c055d1a7ef2327318
+all runs: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip dd47ed3620e693636b4d912db4810fe0c092eb2c
+Bisecting: 355 revisions left to test after this (roughly 9 steps)
+[a95115c407a26c55fdeb6750811a0252687b331e] sfc: plumb ef100 representor stats
+
+testing commit a95115c407a26c55fdeb6750811a0252687b331e gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: bf298b9763d066148cb28f931a6894c6f06c6b64e843e7bb00426148dced27e7
+all runs: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip a95115c407a26c55fdeb6750811a0252687b331e
+Bisecting: 355 revisions left to test after this (roughly 9 steps)
+[4af4c0b93c15ece3732dee5e5dbcf0a01904413a] wifi: brcmfmac: Replace default (not configured) MAC with a random MAC
+
+testing commit 4af4c0b93c15ece3732dee5e5dbcf0a01904413a gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 2b02fc029b2e16c39b58473601ab8552c95ffcc6d62e93bcce096da684e370fe
+all runs: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip 4af4c0b93c15ece3732dee5e5dbcf0a01904413a
+Bisecting: 355 revisions left to test after this (roughly 9 steps)
+[ed6dc4b871c0a1cf298298bbe96f51104abfb55c] Merge branch 'seg6-headend-reduced'
+
+testing commit ed6dc4b871c0a1cf298298bbe96f51104abfb55c gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: ae6363295ceaff8097d7321e7e7033a90abd8672e4208e1fe71e3a90f351546c
+all runs: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip ed6dc4b871c0a1cf298298bbe96f51104abfb55c
+Bisecting: 355 revisions left to test after this (roughly 9 steps)
+[cf1239e5b7bf3db82cb54dc754fca5b5d4a6b3eb] wifi: brcmfmac: Add brcmf_c_set_cur_etheraddr() helper
+
+testing commit cf1239e5b7bf3db82cb54dc754fca5b5d4a6b3eb gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: c29fb9e99d8d7f12580d8b94ca27808b59732afb40a62ad476560794f23436cf
+all runs: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip cf1239e5b7bf3db82cb54dc754fca5b5d4a6b3eb
+Bisecting: 355 revisions left to test after this (roughly 9 steps)
+[382ad0d957932dded55984c1da3a98e8c3544d93] mlxsw: spectrum: Support time stamping on Spectrum-2
+
+testing commit 382ad0d957932dded55984c1da3a98e8c3544d93 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 6d462184acab332d04b35df724cbfa4dfb0d206505af17a938f006d0b47166aa
+all runs: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip 382ad0d957932dded55984c1da3a98e8c3544d93
+Bisecting: 355 revisions left to test after this (roughly 9 steps)
+[b8acd43148c067376f76faed9be138aa0e25414c] netfilter: conntrack: use correct format characters
+
+testing commit b8acd43148c067376f76faed9be138aa0e25414c gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: b0fd32286a9ee5c4649bc3b71f80b80b766c8fb00050664687f34d733c3cd21b
+all runs: OK
+false negative chance: 0.000
+# git bisect good b8acd43148c067376f76faed9be138aa0e25414c
+Bisecting: 354 revisions left to test after this (roughly 9 steps)
+[3f92a64e44e5823a975cbf2c9f05ab1893fd4cb7] tcp: allow tls to decrypt directly from the tcp rcv queue
+
+testing commit 3f92a64e44e5823a975cbf2c9f05ab1893fd4cb7 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 314c24ccc15a6bc165e12bbc6846aa7739b799a4eb79a7648da3755555862170
+all runs: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip 3f92a64e44e5823a975cbf2c9f05ab1893fd4cb7
+Bisecting: 354 revisions left to test after this (roughly 9 steps)
+[533c64bca62a8654f00698bc893f639013e38c7b] net: dsa: qca8k: make mib autocast feature optional
+
+testing commit 533c64bca62a8654f00698bc893f639013e38c7b gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 902e7f7f5e40fdd1a99af74b65b74e05b7c79515e77cdfdb8d2a6ee84fa2fe1c
+all runs: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip 533c64bca62a8654f00698bc893f639013e38c7b
+Bisecting: 354 revisions left to test after this (roughly 9 steps)
+[e1e68b14c5f85f2ad43d06a1b2f0d0fcc8dbdd62] wifi: mac80211: expand ieee80211_mgmt_tx() for MLO
+
+testing commit e1e68b14c5f85f2ad43d06a1b2f0d0fcc8dbdd62 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: ee31873a8124b65326d71128e8af918f7d06a53e177028d7eccfc5fcb88c9bc5
+run #0: crashed: WARNING: ODEBUG bug in netdev_run_todo
+run #1: OK
+run #2: OK
+run #3: OK
+run #4: OK
+run #5: OK
+run #6: OK
+run #7: OK
+representative crash: WARNING: ODEBUG bug in netdev_run_todo, types: [WARNING]
+unable to determine the verdict: 7 good runs (wanted 4), for bad wanted 4 in total, got 8
+# git bisect skip e1e68b14c5f85f2ad43d06a1b2f0d0fcc8dbdd62
+Bisecting: 354 revisions left to test after this (roughly 9 steps)
+[60d7ceea4b2a2f7106f61a0bb712a71868875106] net/mlx4: Lock mlx4 devlink reload callback
+
+testing commit 60d7ceea4b2a2f7106f61a0bb712a71868875106 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: f5e89f92fe11b85d9f3177267b856791ffc7bee03970bc71524256a27d0c2d53
+all runs: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip 60d7ceea4b2a2f7106f61a0bb712a71868875106
+Bisecting: 354 revisions left to test after this (roughly 9 steps)
+[ef2c6f370a637e6f84c813f31fe0ebb4ced2ed69] tools/resolve_btfids: Add support for 8-byte BTF sets
+
+testing commit ef2c6f370a637e6f84c813f31fe0ebb4ced2ed69 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 1f50074fd6499a03506b40b4742a8ee1d20bf29cd56794c7e4b3dd93b6f5181b
+all runs: OK
+false negative chance: 0.000
+# git bisect good ef2c6f370a637e6f84c813f31fe0ebb4ced2ed69
+Bisecting: 347 revisions left to test after this (roughly 9 steps)
+[3f9c26210cf80ea8cb5dd901aba5feb77200b085] can: error: add definitions for the different CAN error thresholds
+
+testing commit 3f9c26210cf80ea8cb5dd901aba5feb77200b085 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: fb3f09e6aa4332cd69630774e714d7bbe52e356b151579482f7b6b11d38f69c4
+all runs: basic kernel testing failed: INFO: trying to register non-static key in ieee80211_do_stop
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip 3f9c26210cf80ea8cb5dd901aba5feb77200b085
+Bisecting: 347 revisions left to test after this (roughly 9 steps)
+[e96c8da380391cca7889a4fd4b09c8fbc14aeef8] selftests: mlxsw: Check line card info on provisioned line card
+
+testing commit e96c8da380391cca7889a4fd4b09c8fbc14aeef8 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: be625d2980ba3d2f7a9bbf0658e39c1dd15827bd3d1ee0523772f86446ca59e7
+all runs: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip e96c8da380391cca7889a4fd4b09c8fbc14aeef8
+Bisecting: 347 revisions left to test after this (roughly 9 steps)
+[a3b461bbd1847e02bb83957bbba0a195bc274e7a] net/funeth: Unify skb/XDP gather list writing.
+
+testing commit a3b461bbd1847e02bb83957bbba0a195bc274e7a gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 389c2f7868f5b3107ea6988a8670f8862ee508929c301615feb727e764f617df
+all runs: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip a3b461bbd1847e02bb83957bbba0a195bc274e7a
+Bisecting: 347 revisions left to test after this (roughly 9 steps)
+[0cef03b109ca671252cf00481eabc3032acb9d80] can: slcan: change every `slc' occurrence in `slcan'
+
+testing commit 0cef03b109ca671252cf00481eabc3032acb9d80 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: dfd5a6b8dbd906dd7f32dfc5231e5ecf77bc904ccfe26df34ebc73615719edde
+all runs: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip 0cef03b109ca671252cf00481eabc3032acb9d80
+Bisecting: 347 revisions left to test after this (roughly 9 steps)
+[32d00f62db4e982edbee137109407636f71f79b6] net: ipa: fix build
+
+testing commit 32d00f62db4e982edbee137109407636f71f79b6 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 39bfdd0163990c7635f0bbc8f72afa18ca61607e4e1755e53bc6195cca2ad29b
+all runs: basic kernel testing failed: INFO: trying to register non-static key in ieee80211_do_stop
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip 32d00f62db4e982edbee137109407636f71f79b6
+Bisecting: 347 revisions left to test after this (roughly 9 steps)
+[12a18d79dc14c80b358dbd26461614b97f2ea4a6] Merge patch series "can: add ethtool support and reporting of timestamping capabilities"
+
+testing commit 12a18d79dc14c80b358dbd26461614b97f2ea4a6 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: b7162473c93b1bd3a88ea06419829a65a45940af58d2ce47e24e8b99735fa85c
+all runs: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip 12a18d79dc14c80b358dbd26461614b97f2ea4a6
+Bisecting: 347 revisions left to test after this (roughly 9 steps)
+[a5133fe87ed827ce94084eecb7830a6d451ef55c] Bluetooth: use memset avoid memory leaks
+
+testing commit a5133fe87ed827ce94084eecb7830a6d451ef55c gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 90dcb7fd73a79042dd0458e353cd150865db341f752904b959dd2cc60aad953f
+all runs: basic kernel testing failed: INFO: trying to register non-static key in ieee80211_do_stop
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip a5133fe87ed827ce94084eecb7830a6d451ef55c
+Bisecting: 347 revisions left to test after this (roughly 9 steps)
+[84c61fe1a75b4255df1e1e7c054c9e6d048da417] tls: rx: do not use the standard strparser
+
+testing commit 84c61fe1a75b4255df1e1e7c054c9e6d048da417 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 783bc09ba17ada5a3abad787fa57be28203bd4829287d727e97237c870767a94
+all runs: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip 84c61fe1a75b4255df1e1e7c054c9e6d048da417
+Bisecting: 347 revisions left to test after this (roughly 9 steps)
+[5b75ee37ebb73f58468d4cca172434324af203f1] Bluetooth: btusb: Add Realtek RTL8852C support ID 0x0CB8:0xC558
+
+testing commit 5b75ee37ebb73f58468d4cca172434324af203f1 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 2172c1137ea275c47d89d409ea29d440d0ff7198c3df897c2aff495ed552b2d8
+all runs: basic kernel testing failed: INFO: trying to register non-static key in ieee80211_do_stop
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip 5b75ee37ebb73f58468d4cca172434324af203f1
+Bisecting: 347 revisions left to test after this (roughly 9 steps)
+[a7e555d4a184d7da72ed6df7d6741dc190b5ca5b] ip6mr: remove stray rcu_read_unlock() from ip6_mr_forward()
+
+testing commit a7e555d4a184d7da72ed6df7d6741dc190b5ca5b gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 40f9377e46b42868b70f6eba3f5189aaedf0afa153c4563a5a67701535551a23
+all runs: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip a7e555d4a184d7da72ed6df7d6741dc190b5ca5b
+Bisecting: 347 revisions left to test after this (roughly 9 steps)
+[ca2045e059c3aa1b06c9aed448672bc86dfdce11] Bluetooth: Add bt_status
+
+testing commit ca2045e059c3aa1b06c9aed448672bc86dfdce11 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 2a840c1f3181f41fe03dd4872c260c549d933d48642a55b3a31c65ab5be76af6
+all runs: basic kernel testing failed: INFO: trying to register non-static key in ieee80211_do_stop
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip ca2045e059c3aa1b06c9aed448672bc86dfdce11
+Bisecting: 347 revisions left to test after this (roughly 9 steps)
+[060468f0ddbbd3396944ad234077e44af1841efc] selftests: net: Fix typo 'the the' in comment
+
+testing commit 060468f0ddbbd3396944ad234077e44af1841efc gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: bad7c930431b3993fc9829068d3088d5071c3ba957fefd54c15afc13e68c897d
+all runs: basic kernel testing failed: WARNING: ODEBUG bug in mgmt_index_removed
+unable to determine the verdict: 0 good runs (wanted 4), for bad wanted 4 in total, got 0
+# git bisect skip 060468f0ddbbd3396944ad234077e44af1841efc
+Bisecting: 347 revisions left to test after this (roughly 9 steps)
+[eca0ae4aea66914515e5e3098ea051b518ee5316] Bluetooth: Add initial implementation of BIS connections
+
+testing commit eca0ae4aea66914515e5e3098ea051b518ee5316 gcc
+
+JTBURSEY: taking too tong.

@@ -1,0 +1,210 @@
+charm starts bisection 2025-04-17 23:28:30.108405911 -0700 PDT m=+8.917468182
+bisecting cause commit starting from 92f90cc9fe0e7a984ea3d4bf3d120e30ba8a2118
+building syzkaller on HEAD
+ensuring issue is reproducible on original commit 92f90cc9fe0e7a984ea3d4bf3d120e30ba8a2118
+
+testing commit 92f90cc9fe0e7a984ea3d4bf3d120e30ba8a2118 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 1389a2993b891731f912fafc9cd638f53bc914cee75c7883546475b59f47fa8e
+all runs: crashed: general protection fault in __pm_runtime_resume
+representative crash: general protection fault in __pm_runtime_resume, types: [UNKNOWN]
+picked [v5.16 v5.15 v5.14 v5.12 v5.10 v5.8 v5.6 v5.4 v5.1 v4.19] out of 19 release tags
+testing release v5.16
+testing commit df0cc57e057f18e44dac8e6c18aba47ab53202f9 gcc
+compiler: gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 1e1767e88105ae532eb75c89eee753349d2d4e79f437c7391e26167e148ecb96
+run #0: crashed: general protection fault in __pm_runtime_resume
+run #1: crashed: general protection fault in __pm_runtime_resume
+run #2: crashed: general protection fault in __pm_runtime_resume
+run #3: crashed: general protection fault in __pm_runtime_resume
+run #4: crashed: general protection fault in __pm_runtime_resume
+run #5: crashed: general protection fault in __pm_runtime_resume
+run #6: OK
+run #7: crashed: general protection fault in __pm_runtime_resume
+representative crash: general protection fault in __pm_runtime_resume, types: [UNKNOWN]
+testing release v5.15
+testing commit 8bb7eca972ad531c9b149c0a51ab43a417385813 gcc
+compiler: gcc (GCC) 10.1.0-syz 20200507, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 2674b6ce496b1d58453370ddf2a09ea9487182879aa5730c2039fe4066c97b8e
+all runs: crashed: KASAN: null-ptr-deref Write in __pm_runtime_resume
+representative crash: KASAN: null-ptr-deref Write in __pm_runtime_resume, types: [KASAN]
+testing release v5.14
+testing commit 7d2a07b769330c34b4deabeed939325c77a7ec2f gcc
+compiler: gcc (GCC) 10.1.0-syz 20200507, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: fe9d71d6751ae471f4a5d163b365f6d2a1115c1c80b562b4dfe33adbd85751f1
+all runs: OK
+false negative chance: 0.000
+# git bisect start 8bb7eca972ad531c9b149c0a51ab43a417385813 7d2a07b769330c34b4deabeed939325c77a7ec2f
+Bisecting: 6693 revisions left to test after this (roughly 13 steps)
+[477f70cd2a67904e04c2c2b9bd0fa2e95222f2f6] Merge tag 'drm-next-2021-08-31-1' of git://anongit.freedesktop.org/drm/drm
+
+testing commit 477f70cd2a67904e04c2c2b9bd0fa2e95222f2f6 gcc
+compiler: gcc (GCC) 10.1.0-syz 20200507, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 1da414bb80dfe6559e34eda7492c0939b58b4c774136c7f699a5ad6ed0a0eb42
+run #0: crashed: KASAN: use-after-free Read in __d_alloc
+run #1: OK
+run #2: OK
+run #3: OK
+run #4: OK
+run #5: OK
+run #6: OK
+run #7: OK
+representative crash: KASAN: use-after-free Read in __d_alloc, types: [KASAN]
+unable to determine the verdict: 7 good runs (wanted 4), for bad wanted 4 in total, got 8
+# git bisect skip 477f70cd2a67904e04c2c2b9bd0fa2e95222f2f6
+Bisecting: 6693 revisions left to test after this (roughly 13 steps)
+[e5dad32d90e0e9b006f5c330e92fa0ec9042ae79] regulator: sy7636a: Remove the poll_enable_time
+
+testing commit e5dad32d90e0e9b006f5c330e92fa0ec9042ae79 gcc
+compiler: gcc (GCC) 10.1.0-syz 20200507, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: ef2c34ea119a9d4fe3b9c6dd6bc30d0c2c4bb07ea4d50687ff9bdfd3a79cf28c
+run #0: basic kernel testing failed: possible deadlock in fs_reclaim_acquire
+run #1: crashed: BUG: sleeping function called from invalid context in lock_sock_nested
+run #2: crashed: BUG: sleeping function called from invalid context in lock_sock_nested
+run #3: crashed: BUG: sleeping function called from invalid context in lock_sock_nested
+run #4: crashed: BUG: sleeping function called from invalid context in lock_sock_nested
+run #5: crashed: BUG: sleeping function called from invalid context in lock_sock_nested
+run #6: crashed: BUG: sleeping function called from invalid context in lock_sock_nested
+run #7: OK
+representative crash: BUG: sleeping function called from invalid context in lock_sock_nested, types: [ATOMIC_SLEEP]
+# git bisect bad e5dad32d90e0e9b006f5c330e92fa0ec9042ae79
+Bisecting: 16 revisions left to test after this (roughly 4 steps)
+[9705c49c3b5e8640fa1afd24f93a391ac0f793a4] Merge series "regulator: devres: remove unused device-managed unregister APIs" from Alexandru Ardelean <aardelean@deviqon.com>:
+
+testing commit 9705c49c3b5e8640fa1afd24f93a391ac0f793a4 gcc
+compiler: gcc (GCC) 10.1.0-syz 20200507, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 07a556af4bae8ef8e78d1ae50006cf64416b723b549bc54ed8c43282160b95a8
+run #0: crashed: BUG: sleeping function called from invalid context in lock_sock_nested
+run #1: crashed: BUG: sleeping function called from invalid context in lock_sock_nested
+run #2: crashed: BUG: sleeping function called from invalid context in lock_sock_nested
+run #3: crashed: BUG: sleeping function called from invalid context in lock_sock_nested
+run #4: crashed: BUG: sleeping function called from invalid context in lock_sock_nested
+run #5: crashed: BUG: sleeping function called from invalid context in lock_sock_nested
+run #6: crashed: BUG: sleeping function called from invalid context in lock_sock_nested
+run #7: OK
+representative crash: BUG: sleeping function called from invalid context in lock_sock_nested, types: [ATOMIC_SLEEP]
+# git bisect bad 9705c49c3b5e8640fa1afd24f93a391ac0f793a4
+Bisecting: 8 revisions left to test after this (roughly 3 steps)
+[526e99cf43fe3884014f9e9f2ca5d04d56007287] regulator: rtq6752: Add binding document for Richtek RTQ6752
+
+testing commit 526e99cf43fe3884014f9e9f2ca5d04d56007287 gcc
+compiler: gcc (GCC) 10.1.0-syz 20200507, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 463ffc4cd346b2825678998e3cba9f07fb5629e54934fb186d0f2a730db5a436
+run #0: crashed: BUG: sleeping function called from invalid context in lock_sock_nested
+run #1: crashed: BUG: sleeping function called from invalid context in lock_sock_nested
+run #2: crashed: BUG: sleeping function called from invalid context in lock_sock_nested
+run #3: crashed: BUG: sleeping function called from invalid context in lock_sock_nested
+run #4: crashed: BUG: sleeping function called from invalid context in lock_sock_nested
+run #5: crashed: BUG: sleeping function called from invalid context in lock_sock_nested
+run #6: crashed: BUG: sleeping function called from invalid context in lock_sock_nested
+run #7: OK
+representative crash: BUG: sleeping function called from invalid context in lock_sock_nested, types: [ATOMIC_SLEEP]
+# git bisect bad 526e99cf43fe3884014f9e9f2ca5d04d56007287
+Bisecting: 3 revisions left to test after this (roughly 2 steps)
+[12401a1cef787167aff52ef2dd28286e61054c38] regulator: mt6397: Remove modeset_shift from struct mt6397_regulator_info
+
+testing commit 12401a1cef787167aff52ef2dd28286e61054c38 gcc
+compiler: gcc (GCC) 10.1.0-syz 20200507, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 463ffc4cd346b2825678998e3cba9f07fb5629e54934fb186d0f2a730db5a436
+run #0: basic kernel testing failed: BUG: sleeping function called from invalid context in stack_depot_save
+run #1: crashed: BUG: sleeping function called from invalid context in lock_sock_nested
+run #2: crashed: BUG: sleeping function called from invalid context in lock_sock_nested
+run #3: crashed: BUG: sleeping function called from invalid context in lock_sock_nested
+run #4: crashed: BUG: sleeping function called from invalid context in lock_sock_nested
+run #5: crashed: BUG: sleeping function called from invalid context in lock_sock_nested
+run #6: crashed: BUG: sleeping function called from invalid context in lock_sock_nested
+run #7: crashed: BUG: sleeping function called from invalid context in lock_sock_nested
+representative crash: BUG: sleeping function called from invalid context in lock_sock_nested, types: [ATOMIC_SLEEP]
+# git bisect bad 12401a1cef787167aff52ef2dd28286e61054c38
+Bisecting: 1 revision left to test after this (roughly 1 step)
+[b99b7b79a7c57d5f1550b9a507521c791c5f92ed] regulator: mt6358: Remove shift fields from struct mt6358_regulator_info
+
+testing commit b99b7b79a7c57d5f1550b9a507521c791c5f92ed gcc
+compiler: gcc (GCC) 10.1.0-syz 20200507, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 463ffc4cd346b2825678998e3cba9f07fb5629e54934fb186d0f2a730db5a436
+run #0: crashed: BUG: sleeping function called from invalid context in lock_sock_nested
+run #1: crashed: BUG: sleeping function called from invalid context in lock_sock_nested
+run #2: crashed: BUG: sleeping function called from invalid context in lock_sock_nested
+run #3: crashed: BUG: sleeping function called from invalid context in lock_sock_nested
+run #4: crashed: BUG: sleeping function called from invalid context in lock_sock_nested
+run #5: crashed: BUG: sleeping function called from invalid context in lock_sock_nested
+run #6: OK
+run #7: OK
+representative crash: BUG: sleeping function called from invalid context in lock_sock_nested, types: [ATOMIC_SLEEP]
+# git bisect bad b99b7b79a7c57d5f1550b9a507521c791c5f92ed
+Bisecting: 0 revisions left to test after this (roughly 0 steps)
+[3cb5992c34f7a8693009f969b7d73b6b181ccc8e] Merge existing fixes from regulator/for-5.14
+
+testing commit 3cb5992c34f7a8693009f969b7d73b6b181ccc8e gcc
+compiler: gcc (GCC) 10.1.0-syz 20200507, GNU ld (GNU Binutils for Ubuntu) 2.34
+kernel signature: 463ffc4cd346b2825678998e3cba9f07fb5629e54934fb186d0f2a730db5a436
+all runs: crashed: BUG: sleeping function called from invalid context in lock_sock_nested
+representative crash: BUG: sleeping function called from invalid context in lock_sock_nested, types: [ATOMIC_SLEEP]
+# git bisect bad 3cb5992c34f7a8693009f969b7d73b6b181ccc8e
+3cb5992c34f7a8693009f969b7d73b6b181ccc8e is the first bad commit
+commit 3cb5992c34f7a8693009f969b7d73b6b181ccc8e
+Merge: e73f0f0ee754 ea986908ccfc
+Author: Mark Brown <broonie@kernel.org>
+Date:   Sun Jul 11 23:45:15 2021 +0100
+
+    Merge existing fixes from regulator/for-5.14
+
+ .../devicetree/bindings/regulator/fixed-regulator.yaml   |  2 ++
+ drivers/regulator/bd9576-regulator.c                     |  4 ++--
+ drivers/regulator/hi6421v600-regulator.c                 | 16 +++++++++-------
+ drivers/regulator/mtk-dvfsrc-regulator.c                 |  3 +--
+ drivers/regulator/rtmv20-regulator.c                     |  2 +-
+ include/linux/mfd/rt5033-private.h                       |  4 ++--
+ 6 files changed, 17 insertions(+), 14 deletions(-)
+
+accumulated error probability: 0.00
+revisions tested: 11, total time: 2h27m22.695780016s (build: 1h3m50.280964185s, test: 1h10m56.549674078s)
+first bad commit: 3cb5992c34f7a8693009f969b7d73b6b181ccc8e Merge existing fixes from regulator/for-5.14
+recipients (to): ["broonie@kernel.org"]
+recipients (cc): []
+crash: BUG: sleeping function called from invalid context in lock_sock_nested
+BUG: sleeping function called from invalid context at net/core/sock.c:3100
+in_atomic(): 1, irqs_disabled(): 0, non_block: 0, pid: 9801, name: syz-executor
+1 lock held by syz-executor/9801:
+ #0: ffffffff8d2d84a0 (hci_sk_list.lock){++++}-{2:2}, at: hci_sock_dev_event+0x3db/0x660 net/bluetooth/hci_sock.c:763
+Preemption disabled at:
+[<0000000000000000>] 0x0
+CPU: 0 PID: 9801 Comm: syz-executor Not tainted 5.14.0-rc1-syzkaller #0
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.13.0-1ubuntu1.1 04/01/2014
+Call Trace:
+ __dump_stack lib/dump_stack.c:88 [inline]
+ dump_stack_lvl+0xcd/0x134 lib/dump_stack.c:105
+ ___might_sleep.cold+0x1f1/0x237 kernel/sched/core.c:9154
+ lock_sock_nested+0x25/0x120 net/core/sock.c:3100
+ lock_sock include/net/sock.h:1610 [inline]
+ hci_sock_dev_event+0x465/0x660 net/bluetooth/hci_sock.c:765
+ hci_unregister_dev+0x2fd/0x1130 net/bluetooth/hci_core.c:4033
+ vhci_release+0x70/0xe0 drivers/bluetooth/hci_vhci.c:340
+ __fput+0x288/0x920 fs/file_table.c:280
+ task_work_run+0xdd/0x1a0 kernel/task_work.c:164
+ exit_task_work include/linux/task_work.h:32 [inline]
+ do_exit+0xbd4/0x2a60 kernel/exit.c:825
+ do_group_exit+0x125/0x310 kernel/exit.c:922
+ get_signal+0x47f/0x2160 kernel/signal.c:2808
+ arch_do_signal_or_restart+0x2a9/0x1c40 arch/x86/kernel/signal.c:865
+ handle_signal_work kernel/entry/common.c:148 [inline]
+ exit_to_user_mode_loop kernel/entry/common.c:172 [inline]
+ exit_to_user_mode_prepare+0x17d/0x290 kernel/entry/common.c:209
+ __syscall_exit_to_user_mode_work kernel/entry/common.c:291 [inline]
+ syscall_exit_to_user_mode+0x19/0x60 kernel/entry/common.c:302
+ do_syscall_64+0x42/0xb0 arch/x86/entry/common.c:86
+ entry_SYSCALL_64_after_hwframe+0x44/0xae
+RIP: 0033:0x7f75b0eba12c
+Code: Unable to access opcode bytes at RIP 0x7f75b0eba102.
+RSP: 002b:00007ffd561c6510 EFLAGS: 00000246 ORIG_RAX: 0000000000000000
+RAX: fffffffffffffe00 RBX: 00007ffd561c65c0 RCX: 00007f75b0eba12c
+RDX: 0000000000000030 RSI: 00007ffd561c6590 RDI: 00000000000000f9
+RBP: 00007ffd561c6590 R08: 0000000000000000 R09: 00007ffd561c5ef0
+R10: 0000000000000010 R11: 0000000000000246 R12: 00000000000927c0
+R13: 0000000000000032 R14: 0000000000025b2f R15: 00007ffd561c6600
+
+======================================================
+
+
+general protection fault in __pm_runtime_resume
+3cb5992c34f7a8693009f969b7d73b6b181ccc8e
