@@ -1,4 +1,4 @@
-./bin/bisector -i 5 -c /home/syzretrospector/syzinspector/wd-bisector-5/bisector.cfg -a 5a6a09e97199d6600d31383055f9d43fbbcbe86f -F ff-test,poc-test,stateful-corpus,ff-no-find-backup
+./bin/bisector -i 1 -c /home/syzretrospector/syzinspector/wd-bisector-1/bisector.cfg -a 5a6a09e97199d6600d31383055f9d43fbbcbe86f -F ff-test,poc-test,stateful-corpus,ff-no-find-backup,poc-all-pocs
 Bisecting:          KASAN: slab-use-after-free Read in btrfs_qgroup_account_extent
 Syzbot Link:        https://syzkaller.appspot.com/bug?extid=e0b615318f8fcfc01ceb
 Working Name:       bug0768
@@ -11,25 +11,25 @@ Branch:             master
 Arch:               amd64
 
 Bisector:           /home/syzretrospector/syzinspector/
-Version:            1.0.4
-Kernel:             /home/syzretrospector/syzinspector/wd-bisector-5/kernel/
+Version:            1.0.5
+Kernel:             /home/syzretrospector/syzinspector/wd-bisector-1/kernel/
 Syzkaller:          /home/syzretrospector/syzinspector/syzkaller/
 Compilers:          /home/syzretrospector/compilers/
 Ccache:             ccache
 Image:              /home/syzretrospector/images/stretch/stretch.img
 Image Key:          /home/syzretrospector/images/stretch/stretch.id_rsa
 
-Workdir:            /home/syzretrospector/syzinspector/wd-bisector-5/
-Kconfig:            /home/syzretrospector/syzinspector/wd-bisector-5/config-bug0768.txt
-Reproducers: (4)    /home/syzretrospector/syzinspector/wd-bisector-5/reproducers/
-Primary PoC:        /home/syzretrospector/syzinspector/wd-bisector-5/reproducers/repro-bug0768-3.prog
-Syzkaller Workdir:  /home/syzretrospector/syzinspector/wd-bisector-5/wd-kaller/
-Log Directory:      /home/syzretrospector/syzinspector/wd-bisector-5/log/
+Workdir:            /home/syzretrospector/syzinspector/wd-bisector-1/
+Kconfig:            /home/syzretrospector/syzinspector/wd-bisector-1/config-bug0768.txt
+Reproducers: (4)    /home/syzretrospector/syzinspector/wd-bisector-1/reproducers/
+Primary PoC:        /home/syzretrospector/syzinspector/wd-bisector-1/reproducers/repro-bug0768-3.prog
+Syzkaller Workdir:  /home/syzretrospector/syzinspector/wd-bisector-1/wd-kaller/
+Log Directory:      /home/syzretrospector/syzinspector/wd-bisector-1/log/
 
 Syscalls: (12)      ["ioctl$BTRFS_IOC_QGROUP_CREATE", "ioctl$BTRFS_IOC_QUOTA_CTL", "ioctl$BTRFS_IOC_SUBVOL_CREATE_V2", "open", "pwrite64", "syz_mount_image$btrfs", "ioctl$BTRFS_IOC_START_SYNC", "ioctl$BTRFS_IOC_BALANCE_PROGRESS", "mount$bpf", "getuid", "setgid", "getgid"]
-VM Count:           8
-CPU Count:          2
-Procs:              16
+VM Count:           4
+CPU Count:          4
+Procs:              24
 Memory:             4096
 Make Procs:         16
 Max Time:           10
@@ -37,41 +37,33 @@ Max Attempts:       1
 
 ==== Anchor Commit ====
 
-2025-03-17 12:52:33
+2025-04-18 09:46:05
 Session:   1
 Kernel:    2023-10-30 - 5a6a09e97199d6600d31383055f9d43fbbcbe86f
 Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
 Attempt 1:
     Time  Bug Name
-       6  BUG: MAX_LOCKDEP_KEYS too low!
-       6  BUG: MAX_LOCKDEP_KEYS too low!
-       6  BUG: MAX_LOCKDEP_KEYS too low!
-       6  BUG: MAX_LOCKDEP_KEYS too low!
-       6  BUG: MAX_LOCKDEP_KEYS too low!
-       6  BUG: MAX_LOCKDEP_KEYS too low!
-       6  BUG: MAX_LOCKDEP_KEYS too low!
-       6  BUG: MAX_LOCKDEP_KEYS too low!
+       4  BUG: MAX_LOCKDEP_KEYS too low!
+       4  BUG: MAX_LOCKDEP_KEYS too low!
+       4  BUG: MAX_LOCKDEP_KEYS too low!
+       4  BUG: MAX_LOCKDEP_KEYS too low!
+       8  BUG: MAX_LOCKDEP_KEYS too low!
+       8  BUG: MAX_LOCKDEP_KEYS too low!
+       8  BUG: MAX_LOCKDEP_KEYS too low!
+       8  BUG: MAX_LOCKDEP_KEYS too low!
 Attempt 2: (RETRY)
     Time  Bug Name
-       6  BUG: MAX_LOCKDEP_KEYS too low!
-       6  BUG: MAX_LOCKDEP_KEYS too low!
-       6  BUG: MAX_LOCKDEP_KEYS too low!
-       6  BUG: MAX_LOCKDEP_KEYS too low!
-       6  BUG: MAX_LOCKDEP_KEYS too low!
-       6  BUG: MAX_LOCKDEP_KEYS too low!
-       6  BUG: MAX_LOCKDEP_KEYS too low!
-       6  BUG: MAX_LOCKDEP_KEYS too low!
+***    4  KASAN: slab-use-after-free Read in btrfs_qgroup_account_extent
+       4  BUG: MAX_LOCKDEP_KEYS too low!
+       4  BUG: MAX_LOCKDEP_KEYS too low!
+       4  BUG: MAX_LOCKDEP_KEYS too low!
 Attempt 3: (RETRY)
     Time  Bug Name
-       6  BUG: MAX_LOCKDEP_KEYS too low!
-       6  BUG: MAX_LOCKDEP_KEYS too low!
-       6  BUG: MAX_LOCKDEP_KEYS too low!
-       6  BUG: MAX_LOCKDEP_KEYS too low!
-       6  BUG: MAX_LOCKDEP_KEYS too low!
-       6  BUG: MAX_LOCKDEP_KEYS too low!
-       6  BUG: MAX_LOCKDEP_KEYS too low!
-       6  BUG: MAX_LOCKDEP_KEYS too low!
-***   10  KASAN: slab-use-after-free Read in btrfs_qgroup_account_extent
+       4  BUG: MAX_LOCKDEP_KEYS too low!
+       4  BUG: MAX_LOCKDEP_KEYS too low!
+       4  BUG: MAX_LOCKDEP_KEYS too low!
+       4  BUG: MAX_LOCKDEP_KEYS too low!
+***    7  KASAN: slab-use-after-free Read in btrfs_qgroup_account_extent
 The bug was found.
 
 New Max Time: 12
@@ -79,226 +71,655 @@ New Max Time: 12
 ==== Major Release Search ====
 19 Releases
 
-2025-03-17 13:36:57
+2025-04-18 10:19:29
 Session:   2
-Kernel:    2023-10-29 - ffc253263a1375a65fa6c9f62a893e9767fbebfa (v6.6)
+Kernel:    2023-08-27 - 2dde18cd1d8fac735875f2e4987f11817cc0bc2c (v6.5)
 Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
 Attempt 1:
-    Time  Bug Name
-       8  BUG: MAX_LOCKDEP_KEYS too low!
-       8  BUG: MAX_LOCKDEP_KEYS too low!
-       8  BUG: MAX_LOCKDEP_KEYS too low!
-       8  BUG: MAX_LOCKDEP_KEYS too low!
-       8  BUG: MAX_LOCKDEP_KEYS too low!
-       8  BUG: MAX_LOCKDEP_KEYS too low!
-       9  BUG: MAX_LOCKDEP_KEYS too low!
-       9  BUG: MAX_LOCKDEP_KEYS too low!
+    No crashes found.
 The bug was not found.
 About 18 releases remaining
 
 ==== Kernel Bisection ====
-3861 Linux commits
+19150 Linux commits
 
-2025-03-17 14:02:26
+2025-04-18 10:43:12
 Session:   3
-Kernel:    2023-10-22 - 17047fbced563cf5abe5aa546f6a92af48900b69
+Kernel:    2023-09-01 - 51e7accbe8ab51476fbe55fbb5616c12fb3a0beb
 Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
 Attempt 1:
     No crashes found.
 The bug was not found.
-About 4060 commits remaining
+About 9546 commits remaining
 
-2025-03-17 14:27:32
+2025-04-18 11:07:05
 Session:   4
-Kernel:    2023-10-26 - b827ac419721a106ae2fccaa40576b0594edad92
+Kernel:    2023-10-07 - 102363a39b8d37b5839403e08cfaf900de0cddfa
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       5  BUG: MAX_LOCKDEP_KEYS too low!
+       5  BUG: MAX_LOCKDEP_KEYS too low!
+       5  BUG: MAX_LOCKDEP_KEYS too low!
+       5  BUG: MAX_LOCKDEP_KEYS too low!
+      10  BUG: MAX_LOCKDEP_KEYS too low!
+      10  BUG: MAX_LOCKDEP_KEYS too low!
+      10  BUG: MAX_LOCKDEP_KEYS too low!
+      10  BUG: MAX_LOCKDEP_KEYS too low!
+The bug was not found.
+About 4773 commits remaining
+
+2025-04-18 11:30:58
+Session:   5
+Kernel:    2023-10-22 - 873555f04d81b49a96ea03b37dcd499c13e67742
 Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
 Attempt 1:
     No crashes found.
 The bug was not found.
-About 3208 commits remaining
+About 3604 commits remaining
 
-2025-03-17 14:44:56
-Session:   5
-Kernel:    2023-10-30 - 9ab021a1b57007a22761f6f41d91eb4aae10d145
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
-Attempt 1:
-    Time  Bug Name
-       5  BUG: MAX_LOCKDEP_KEYS too low!
-       5  BUG: MAX_LOCKDEP_KEYS too low!
-       5  BUG: MAX_LOCKDEP_KEYS too low!
-       5  BUG: MAX_LOCKDEP_KEYS too low!
-       6  BUG: MAX_LOCKDEP_KEYS too low!
-       6  BUG: MAX_LOCKDEP_KEYS too low!
-       6  BUG: MAX_LOCKDEP_KEYS too low!
-       6  BUG: MAX_LOCKDEP_KEYS too low!
-      11  BUG: MAX_LOCKDEP_KEYS too low!
-      11  BUG: MAX_LOCKDEP_KEYS too low!
-      11  BUG: MAX_LOCKDEP_KEYS too low!
-      11  BUG: MAX_LOCKDEP_KEYS too low!
-      11  BUG: MAX_LOCKDEP_KEYS too low!
-      11  BUG: MAX_LOCKDEP_KEYS too low!
-      11  BUG: MAX_LOCKDEP_KEYS too low!
-      11  BUG: MAX_LOCKDEP_KEYS too low!
-The bug was not found.
-About 535 commits remaining
-
-2025-03-17 15:10:42
+2025-04-18 11:54:26
 Session:   6
-Kernel:    2023-10-30 - c891e98ab32d55b25d87e380d919c279a8b228e0
+Kernel:    2023-10-30 - 8b16da681eb0c9b9cb2f9abd0dade67559cfb48d
 Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
 Attempt 1:
     Time  Bug Name
+       4  BUG: MAX_LOCKDEP_KEYS too low!
+       4  BUG: MAX_LOCKDEP_KEYS too low!
+       4  BUG: MAX_LOCKDEP_KEYS too low!
        5  BUG: MAX_LOCKDEP_KEYS too low!
-       5  BUG: MAX_LOCKDEP_KEYS too low!
-       5  BUG: MAX_LOCKDEP_KEYS too low!
-       5  BUG: MAX_LOCKDEP_KEYS too low!
-       5  BUG: MAX_LOCKDEP_KEYS too low!
-       5  BUG: MAX_LOCKDEP_KEYS too low!
-       5  BUG: MAX_LOCKDEP_KEYS too low!
-       5  BUG: MAX_LOCKDEP_KEYS too low!
-      10  BUG: MAX_LOCKDEP_KEYS too low!
-      10  BUG: MAX_LOCKDEP_KEYS too low!
-      10  BUG: MAX_LOCKDEP_KEYS too low!
-      10  BUG: MAX_LOCKDEP_KEYS too low!
-      10  BUG: MAX_LOCKDEP_KEYS too low!
-      10  BUG: MAX_LOCKDEP_KEYS too low!
+       9  BUG: MAX_LOCKDEP_KEYS too low!
+       9  BUG: MAX_LOCKDEP_KEYS too low!
+       9  BUG: MAX_LOCKDEP_KEYS too low!
+       9  BUG: MAX_LOCKDEP_KEYS too low!
+The bug was not found.
+About 3526 commits remaining
+
+2025-04-18 12:17:52
+Session:   7
+Kernel:    2023-10-30 - 01ae815c5021532aecf8c5e280cf50cdaa72a9d6
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       4  BUG: MAX_LOCKDEP_KEYS too low!
+       4  BUG: MAX_LOCKDEP_KEYS too low!
+       4  BUG: MAX_LOCKDEP_KEYS too low!
+       4  BUG: MAX_LOCKDEP_KEYS too low!
+       7  BUG: MAX_LOCKDEP_KEYS too low!
+       7  BUG: MAX_LOCKDEP_KEYS too low!
+       7  BUG: MAX_LOCKDEP_KEYS too low!
+       7  BUG: MAX_LOCKDEP_KEYS too low!
+      11  BUG: MAX_LOCKDEP_KEYS too low!
+      11  BUG: MAX_LOCKDEP_KEYS too low!
       11  BUG: MAX_LOCKDEP_KEYS too low!
       11  BUG: MAX_LOCKDEP_KEYS too low!
 The bug was not found.
-About 267 commits remaining
+About 572 commits remaining
 
-2025-03-17 15:36:21
-Session:   7
-Kernel:    2023-10-30 - fdce8bd38037a4a2b2961ca4abffaab195690b30
+2025-04-18 12:42:56
+Session:   8
+Kernel:    2023-10-30 - f0d25b5d0f8ef0ad35f1beff17da5843279d47a1
 Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
 Attempt 1:
     Time  Bug Name
-***    5  KASAN: slab-use-after-free Read in btrfs_qgroup_account_extent
        5  BUG: MAX_LOCKDEP_KEYS too low!
        5  BUG: MAX_LOCKDEP_KEYS too low!
        5  BUG: MAX_LOCKDEP_KEYS too low!
        5  BUG: MAX_LOCKDEP_KEYS too low!
-       5  BUG: MAX_LOCKDEP_KEYS too low!
-       5  BUG: MAX_LOCKDEP_KEYS too low!
-       5  BUG: MAX_LOCKDEP_KEYS too low!
-Running syz-repro.
-New PoC saved at /home/syzretrospector/syzinspector/wd-bisector-5/reproducers/repro-bug0768-0.prog
-Primary PoC:     /home/syzretrospector/syzinspector/wd-bisector-5/reproducers/repro-bug0768-0.prog
-Run Time:        0h53m0s
-The bug was found.
-About 133 commits remaining
+       9  BUG: MAX_LOCKDEP_KEYS too low!
+       9  BUG: MAX_LOCKDEP_KEYS too low!
+       9  BUG: MAX_LOCKDEP_KEYS too low!
+       9  BUG: MAX_LOCKDEP_KEYS too low!
+The bug was not found.
+About 286 commits remaining
 
-2025-03-17 16:48:07
-Session:   8
-Kernel:    2023-10-30 - 6750f0de53b7d64a4deffa62944ea431a153ec48
+2025-04-18 13:10:02
+Session:   9
+Kernel:    2023-10-30 - 2656821f1f202d58224551b71eff41aafd1edf8b
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       4  BUG: MAX_LOCKDEP_KEYS too low!
+       4  BUG: MAX_LOCKDEP_KEYS too low!
+       5  BUG: MAX_LOCKDEP_KEYS too low!
+       5  BUG: MAX_LOCKDEP_KEYS too low!
+       8  BUG: MAX_LOCKDEP_KEYS too low!
+       8  BUG: MAX_LOCKDEP_KEYS too low!
+       8  BUG: MAX_LOCKDEP_KEYS too low!
+       8  BUG: MAX_LOCKDEP_KEYS too low!
+      12  BUG: MAX_LOCKDEP_KEYS too low!
+      12  BUG: MAX_LOCKDEP_KEYS too low!
+      12  BUG: MAX_LOCKDEP_KEYS too low!
+      12  BUG: MAX_LOCKDEP_KEYS too low!
+The bug was not found.
+About 141 commits remaining
+
+2025-04-18 13:36:44
+Session:   10
+Kernel:    2023-10-30 - 5e37269945b4d6117770666a40081848558f9501
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       4  BUG: MAX_LOCKDEP_KEYS too low!
+       4  BUG: MAX_LOCKDEP_KEYS too low!
+       5  BUG: MAX_LOCKDEP_KEYS too low!
+       5  BUG: MAX_LOCKDEP_KEYS too low!
+       8  BUG: MAX_LOCKDEP_KEYS too low!
+       8  BUG: MAX_LOCKDEP_KEYS too low!
+       9  BUG: MAX_LOCKDEP_KEYS too low!
+       9  BUG: MAX_LOCKDEP_KEYS too low!
+      11  BUG: MAX_LOCKDEP_KEYS too low!
+      12  BUG: MAX_LOCKDEP_KEYS too low!
+      12  BUG: MAX_LOCKDEP_KEYS too low!
+      12  BUG: MAX_LOCKDEP_KEYS too low!
+The bug was not found.
+About 74 commits remaining
+
+2025-04-18 14:03:54
+Session:   11
+Kernel:    2023-10-30 - 2b93c2c3c02f4243d4c773b880fc86e2788f013d
 Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
 Attempt 1:
     Time  Bug Name
 ***    4  KASAN: slab-use-after-free Read in btrfs_qgroup_account_extent
        4  BUG: MAX_LOCKDEP_KEYS too low!
        4  BUG: MAX_LOCKDEP_KEYS too low!
+       4  BUG: MAX_LOCKDEP_KEYS too low!
+Running syz-repro.
+New PoC saved at /home/syzretrospector/syzinspector/wd-bisector-1/reproducers/repro-bug0768-0.prog
+Primary PoC:     /home/syzretrospector/syzinspector/wd-bisector-1/reproducers/repro-bug0768-0.prog
+Run Time:        0h45m0s
 The bug was found.
-About 67 commits remaining
+About 36 commits remaining
 
-2025-03-17 17:04:57
-Session:   9
-Kernel:    2023-10-13 - 92fe9bb77b0c9fade150350fdb0629a662f0923f
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
-Attempt 1:
-    No crashes found.
-The bug was not found.
-About 5766 commits remaining
-
-2025-03-17 17:29:06
-Session:   10
-Kernel:    2023-10-30 - 943af0e73a370b0c856340fd873c140e42822ec7
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
-Attempt 1:
-    Time  Bug Name
-       5  BUG: MAX_LOCKDEP_KEYS too low!
-       5  BUG: MAX_LOCKDEP_KEYS too low!
-       5  BUG: MAX_LOCKDEP_KEYS too low!
-       5  BUG: MAX_LOCKDEP_KEYS too low!
-       5  BUG: MAX_LOCKDEP_KEYS too low!
-       5  BUG: MAX_LOCKDEP_KEYS too low!
-       5  BUG: MAX_LOCKDEP_KEYS too low!
-       5  BUG: MAX_LOCKDEP_KEYS too low!
-       9  BUG: MAX_LOCKDEP_KEYS too low!
-       9  BUG: MAX_LOCKDEP_KEYS too low!
-       9  BUG: MAX_LOCKDEP_KEYS too low!
-       9  BUG: MAX_LOCKDEP_KEYS too low!
-       9  BUG: MAX_LOCKDEP_KEYS too low!
-       9  BUG: MAX_LOCKDEP_KEYS too low!
-       9  BUG: MAX_LOCKDEP_KEYS too low!
-       9  BUG: MAX_LOCKDEP_KEYS too low!
-The bug was not found.
-About 44 commits remaining
-
-2025-03-17 17:51:09
-Session:   11
-Kernel:    2023-10-12 - 535b70c143dcca0e236c35cc32fac17a18697764
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
-Attempt 1:
-    No crashes found.
-The bug was not found.
-About 5776 commits remaining
-
-2025-03-17 18:15:00
+2025-04-18 15:07:14
 Session:   12
-Kernel:    2023-10-12 - 17362f3d0bd38fd5d152a370c110b0630ac4dc65
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
-Attempt 1:
-    No crashes found.
-The bug was not found.
-About 5771 commits remaining
-
-2025-03-17 18:31:16
-Session:   13
-Kernel:    2023-10-30 - c9049984f0e470af865c497c7f785fe895e5da9c
+Kernel:    2023-10-30 - b9ff774548cd91b45003b3b0d41f15cd52b25509
 Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
 Attempt 1:
     Time  Bug Name
-       5  BUG: MAX_LOCKDEP_KEYS too low!
-       5  BUG: MAX_LOCKDEP_KEYS too low!
-       5  BUG: MAX_LOCKDEP_KEYS too low!
-       5  BUG: MAX_LOCKDEP_KEYS too low!
-       5  BUG: MAX_LOCKDEP_KEYS too low!
-       5  BUG: MAX_LOCKDEP_KEYS too low!
-       5  BUG: MAX_LOCKDEP_KEYS too low!
-       5  BUG: MAX_LOCKDEP_KEYS too low!
+       4  BUG: MAX_LOCKDEP_KEYS too low!
+       4  BUG: MAX_LOCKDEP_KEYS too low!
+       4  BUG: MAX_LOCKDEP_KEYS too low!
+       4  BUG: MAX_LOCKDEP_KEYS too low!
+       6  BUG: MAX_LOCKDEP_KEYS too low!
+       7  BUG: MAX_LOCKDEP_KEYS too low!
+       7  BUG: MAX_LOCKDEP_KEYS too low!
+       7  BUG: MAX_LOCKDEP_KEYS too low!
+       9  BUG: MAX_LOCKDEP_KEYS too low!
+       9  BUG: MAX_LOCKDEP_KEYS too low!
+      10  BUG: MAX_LOCKDEP_KEYS too low!
+      10  BUG: MAX_LOCKDEP_KEYS too low!
+The bug was not found.
+About 20 commits remaining
+
+2025-04-18 15:30:56
+Session:   13
+Kernel:    2023-10-30 - f5fc9e4a117d4c118c95abb37e9d34d52b748c99
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       4  BUG: MAX_LOCKDEP_KEYS too low!
+       4  BUG: MAX_LOCKDEP_KEYS too low!
+       4  BUG: MAX_LOCKDEP_KEYS too low!
+       4  BUG: MAX_LOCKDEP_KEYS too low!
+       6  BUG: MAX_LOCKDEP_KEYS too low!
+       7  BUG: MAX_LOCKDEP_KEYS too low!
+       7  BUG: MAX_LOCKDEP_KEYS too low!
+       7  BUG: MAX_LOCKDEP_KEYS too low!
        9  BUG: MAX_LOCKDEP_KEYS too low!
       10  BUG: MAX_LOCKDEP_KEYS too low!
       10  BUG: MAX_LOCKDEP_KEYS too low!
       10  BUG: MAX_LOCKDEP_KEYS too low!
-      10  BUG: MAX_LOCKDEP_KEYS too low!
-      10  BUG: MAX_LOCKDEP_KEYS too low!
-      10  BUG: MAX_LOCKDEP_KEYS too low!
-      10  BUG: MAX_LOCKDEP_KEYS too low!
 The bug was not found.
-About 3 commits remaining
+About 9 commits remaining
 
-2025-03-17 18:53:26
+2025-04-18 15:47:25
 Session:   14
-Kernel:    2023-10-09 - 1566bf4b13daa66e3de6fdbc77ee3995df5a9064
+Kernel:    2023-09-14 - a721f7b8c3548e943e514a957f2a37f4763b9888
 Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
 Attempt 1:
     No crashes found.
 The bug was not found.
-About 5788 commits remaining
+About 5947 commits remaining
+
+2025-04-18 16:11:51
+Session:   15
+Kernel:    2023-09-21 - 41e845628511878d6e89e2a9249c095e72aab7eb
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 5945 commits remaining
+
+2025-04-18 16:35:03
+Session:   16
+Kernel:    2023-10-04 - e508560672890b2873c89258b88fade1356392ce
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 5944 commits remaining
 
 ==== Partial Result: Focused Fuzzing ====
-Reproducer:           /home/syzretrospector/syzinspector/wd-bisector-5/reproducers/repro-bug0768-0.prog
-Bisection Result:     2023-10-30 - 6750f0de53b7d64a4deffa62944ea431a153ec48
-Bisected Commit Name: Merge tag 'lkmm.2023.10.28a' of git://git.kernel.org/pub/scm/linux/kernel/git/paulmck/linux-rcu
-Stage Time:           6h17m24s
-Run Time:             6h17m26s
+Reproducer:           /home/syzretrospector/syzinspector/wd-bisector-1/reproducers/repro-bug0768-0.prog
+Bisection Result:     2023-10-30 - 2b93c2c3c02f4243d4c773b880fc86e2788f013d
+Bisected Commit Name: Merge tag 'lsm-pr-20231030' of git://git.kernel.org/pub/scm/linux/kernel/git/pcmoore/lsm
+Stage Time:           7h5m8s
+Run Time:             7h5m10s
 =========================================
 
 ==== Anchor Commit ====
 
-2025-03-17 19:09:57
-Session:   15
-Kernel:    2023-10-30 - c9049984f0e470af865c497c7f785fe895e5da9c
+2025-04-18 16:51:14
+Session:   17
+Kernel:    2023-10-30 - f5fc9e4a117d4c118c95abb37e9d34d52b748c99
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 0:
+    BUG: MAX_LOCKDEP_CHAIN_HLOCKS too low!
+Attempt 1:
+*** KASAN: slab-use-after-free Read in btrfs_qgroup_account_extent
+    kernel panic: KASAN: panic_on_warn set ...
+Attempt 2:
+    BUG: MAX_LOCKDEP_CHAIN_HLOCKS too low!
+Attempt 3:
+    BUG: MAX_LOCKDEP_CHAIN_HLOCKS too low!
+Attempt 4:
+*** KASAN: slab-use-after-free Read in btrfs_qgroup_account_extent
+    kernel panic: KASAN: panic_on_warn set ...
+Attempt 5:
+*** KASAN: slab-use-after-free Read in btrfs_qgroup_account_extent
+    kernel panic: KASAN: panic_on_warn set ...
+Attempt 6:
+    BUG: MAX_LOCKDEP_CHAIN_HLOCKS too low!
+Attempt 7:
+    BUG: MAX_LOCKDEP_CHAIN_HLOCKS too low!
+The bug was found.
+
+==== Major Release Search ====
+19 Releases
+
+2025-04-18 17:04:15
+Session:   18
+Kernel:    2023-08-27 - 2dde18cd1d8fac735875f2e4987f11817cc0bc2c (v6.5)
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+About 18 releases remaining
+
+==== Kernel Bisection ====
+19104 Linux commits
+
+2025-04-18 17:24:12
+Session:   19
+Kernel:    2023-09-01 - 51e7accbe8ab51476fbe55fbb5616c12fb3a0beb
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 0:
+    WARNING: bad unlock balance in vkms_vblank_simulate
+Attempt 1:
+    WARNING: bad unlock balance in vkms_vblank_simulate
+Attempt 2:
+    WARNING: bad unlock balance in vkms_vblank_simulate
+Attempt 3:
+    WARNING: bad unlock balance in vkms_vblank_simulate
+Attempt 4:
+    WARNING: bad unlock balance in vkms_vblank_simulate
+Attempt 5:
+    WARNING: bad unlock balance in vkms_vblank_simulate
+Attempt 6:
+    WARNING: bad unlock balance in vkms_vblank_simulate
+Attempt 7:
+    WARNING: bad unlock balance in vkms_vblank_simulate
+The bug was not found.
+About 9500 commits remaining
+
+2025-04-18 17:44:48
+Session:   20
+Kernel:    2023-10-22 - 5bc38f44fa8e938044bb3b69c8881f3682fe97f6
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 0:
+    WARNING: bad unlock balance in vkms_vblank_simulate
+Attempt 1:
+    WARNING: bad unlock balance in vkms_vblank_simulate
+Attempt 2:
+    WARNING: bad unlock balance in vkms_vblank_simulate
+Attempt 3:
+    WARNING: bad unlock balance in vkms_vblank_simulate
+Attempt 4:
+    WARNING: bad unlock balance in vkms_vblank_simulate
+Attempt 5:
+    WARNING: bad unlock balance in vkms_vblank_simulate
+Attempt 6:
+    WARNING: bad unlock balance in vkms_vblank_simulate
+Attempt 7:
+    WARNING: bad unlock balance in vkms_vblank_simulate
+The bug was not found.
+About 4754 commits remaining
+
+2025-04-18 18:04:32
+Session:   21
+Kernel:    2023-10-30 - 14ab6d425e80674b6a0145f05719b11e82e64824
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+About 3608 commits remaining
+
+2025-04-18 18:23:51
+Session:   22
+Kernel:    2023-10-22 - 25d8f40560e75aea107b0e773f8712931173ded6
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 0:
+    WARNING: bad unlock balance in vkms_vblank_simulate
+Attempt 1:
+    WARNING: bad unlock balance in vkms_vblank_simulate
+Attempt 2:
+    WARNING: bad unlock balance in vkms_vblank_simulate
+Attempt 3:
+    WARNING: bad unlock balance in vkms_vblank_simulate
+Attempt 4:
+    WARNING: bad unlock balance in vkms_vblank_simulate
+Attempt 5:
+    WARNING: bad unlock balance in vkms_vblank_simulate
+Attempt 6:
+    WARNING: bad unlock balance in vkms_vblank_simulate
+Attempt 7:
+    WARNING: bad unlock balance in vkms_vblank_simulate
+The bug was not found.
+About 3545 commits remaining
+
+2025-04-18 18:37:01
+Session:   23
+Kernel:    2023-10-30 - 9e87705289667a6c5185c619ea32f3d39314eb1b
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 0:
+*** KASAN: slab-use-after-free Read in btrfs_qgroup_account_extent
+    kernel panic: KASAN: panic_on_warn set ...
+Attempt 1:
+*** KASAN: slab-use-after-free Read in btrfs_qgroup_account_extent
+    kernel panic: KASAN: panic_on_warn set ...
+Attempt 2:
+    BUG: MAX_LOCKDEP_CHAIN_HLOCKS too low!
+Attempt 3:
+*** KASAN: slab-use-after-free Read in btrfs_qgroup_account_extent
+    kernel panic: KASAN: panic_on_warn set ...
+Attempt 4:
+    BUG: MAX_LOCKDEP_CHAIN_HLOCKS too low!
+*** KASAN: slab-use-after-free Read in btrfs_qgroup_account_extent
+    kernel panic: KASAN: panic_on_warn set ...
+Attempt 5:
+    BUG: MAX_LOCKDEP_CHAIN_HLOCKS too low!
+Attempt 6:
+*** KASAN: slab-use-after-free Read in btrfs_qgroup_account_extent
+    kernel panic: KASAN: panic_on_warn set ...
+Attempt 7:
+    BUG: MAX_LOCKDEP_CHAIN_HLOCKS too low!
+The bug was found.
+About 3013 commits remaining
+
+2025-04-18 18:57:06
+Session:   24
+Kernel:    2023-10-22 - 92b63f5bf0774eab2e62b86f85bb4efb915edef1
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 0:
+    WARNING: bad unlock balance in vkms_vblank_simulate
+Attempt 1:
+    WARNING: bad unlock balance in vkms_vblank_simulate
+Attempt 2:
+    WARNING: bad unlock balance in vkms_vblank_simulate
+Attempt 3:
+    WARNING: bad unlock balance in vkms_vblank_simulate
+Attempt 4:
+    WARNING: bad unlock balance in vkms_vblank_simulate
+Attempt 5:
+    WARNING: bad unlock balance in vkms_vblank_simulate
+Attempt 6:
+    WARNING: bad unlock balance in vkms_vblank_simulate
+Attempt 7:
+    WARNING: bad unlock balance in vkms_vblank_simulate
+The bug was not found.
+About 2675 commits remaining
+
+2025-04-18 19:09:47
+Session:   25
+Kernel:    2023-10-12 - c6e8f898f56fae2cb5bc4396bec480f23cd8b066
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 0:
+    BUG: MAX_LOCKDEP_CHAIN_HLOCKS too low!
+*** KASAN: slab-use-after-free Read in btrfs_qgroup_account_extent
+    kernel panic: KASAN: panic_on_warn set ...
+Attempt 1:
+    BUG: MAX_LOCKDEP_CHAIN_HLOCKS too low!
+*** KASAN: slab-use-after-free Read in btrfs_qgroup_account_extent
+    kernel panic: KASAN: panic_on_warn set ...
+Attempt 2:
+    BUG: MAX_LOCKDEP_CHAIN_HLOCKS too low!
+Attempt 3:
+    BUG: MAX_LOCKDEP_CHAIN_HLOCKS too low!
+Attempt 4:
+*** KASAN: slab-use-after-free Read in btrfs_qgroup_account_extent
+    kernel panic: KASAN: panic_on_warn set ...
+Attempt 5:
+    BUG: MAX_LOCKDEP_CHAIN_HLOCKS too low!
+Attempt 6:
+*** KASAN: slab-use-after-free Read in btrfs_qgroup_account_extent
+    kernel panic: KASAN: panic_on_warn set ...
+Attempt 7:
+    BUG: MAX_LOCKDEP_CHAIN_HLOCKS too low!
+The bug was found.
+About 1466 commits remaining
+
+2025-04-18 19:29:42
+Session:   26
+Kernel:    2023-10-12 - 9f9918a8017b7925da2fad16b4ccf6a14630f03e
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 0:
+    No crashes found.
+Attempt 1:
+*** KASAN: slab-use-after-free Read in btrfs_qgroup_account_extent
+    kernel panic: KASAN: panic_on_warn set ...
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was found.
+About 1388 commits remaining
+
+2025-04-18 19:42:19
+Session:   27
+Kernel:    2023-10-12 - 9fb2acc2fe07f15b6cfe94a4bf910d3dfcd6e127
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+About 40 commits remaining
+
+2025-04-18 19:55:49
+Session:   28
+Kernel:    2023-10-12 - 50564b651d01c19ce732819c5b3c3fd60707188e
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 0:
+*** KASAN: slab-use-after-free Read in btrfs_qgroup_account_extent
+    kernel panic: KASAN: panic_on_warn set ...
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+*** KASAN: slab-use-after-free Read in btrfs_qgroup_account_extent
+    kernel panic: KASAN: panic_on_warn set ...
+Attempt 6:
+    No crashes found.
+Attempt 7:
+*** KASAN: slab-use-after-free Read in btrfs_qgroup_account_extent
+    kernel panic: KASAN: panic_on_warn set ...
+The bug was found.
+About 20 commits remaining
+
+2025-04-18 20:08:25
+Session:   29
+Kernel:    2023-10-12 - cc925b9646b4d91dd2536bf7c5ec0dee103fd341
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+About 11 commits remaining
+
+2025-04-18 20:20:44
+Session:   30
+Kernel:    2023-10-12 - b6ea3e6ab569d9ed7472e8df4cbf5f78fe49f277
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 0:
+*** KASAN: slab-use-after-free Read in btrfs_qgroup_account_extent
+    kernel panic: KASAN: panic_on_warn set ...
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was found.
+About 6 commits remaining
+
+2025-04-18 20:33:19
+Session:   31
+Kernel:    2023-10-12 - da8848ac6a1b3a3b3a2bd412f943e3e23b5e05fe
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+*** KASAN: slab-use-after-free Read in btrfs_qgroup_account_extent
+    kernel panic: KASAN: panic_on_warn set ...
+Attempt 4:
+    No crashes found.
+Attempt 5:
+*** KASAN: slab-use-after-free Read in btrfs_qgroup_account_extent
+    kernel panic: KASAN: panic_on_warn set ...
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was found.
+About 3 commits remaining
+
+2025-04-18 20:45:42
+Session:   32
+Kernel:    2023-10-12 - eba444f1c0ecaf4a1992fb40a2c9e7a8cb3fdd5d
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+*** KASAN: slab-use-after-free Read in btrfs_qgroup_account_extent
+    kernel panic: KASAN: panic_on_warn set ...
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was found.
+About 2 commits remaining
+
+==== Partial Result: Primary PoC Test ====
+Reproducer:           /home/syzretrospector/syzinspector/wd-bisector-1/reproducers/repro-bug0768-0.prog
+Bisection Result:     2023-10-12 - eba444f1c0ecaf4a1992fb40a2c9e7a8cb3fdd5d
+Bisected Commit Name: btrfs: return -EUCLEAN if extent item is missing when searching inline backref
+Stage Time:           4h7m22s
+Run Time:             11h12m32s
+==========================================
+
+==== Anchor Commit ====
+
+2025-04-18 20:58:36
+Session:   33
+Kernel:    2023-10-12 - cc925b9646b4d91dd2536bf7c5ec0dee103fd341
 Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
 Attempt 0:
     No crashes found.
@@ -320,12 +741,973 @@ The bug was not found.
 
 Failure: This bug cannot be found at the anchor commit.
 
+==== Partial Result: Subsequent PoC Test ====
+Reproducer:           /home/syzretrospector/syzinspector/wd-bisector-1/reproducers/repro-bug0768-2.prog
+Bisection Result:     Failed to reproduce at the anchor commit.
+Stage Time:           0h12m31s
+Run Time:             11h25m3s
+=============================================
+
+==== Anchor Commit ====
+
+2025-04-18 21:11:09
+Session:   34
+Kernel:    2023-10-12 - cc925b9646b4d91dd2536bf7c5ec0dee103fd341
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 0:
+    No crashes found.
+Attempt 1:
+*** KASAN: slab-use-after-free Read in btrfs_qgroup_account_extent
+    kernel panic: KASAN: panic_on_warn set ...
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+*** KASAN: slab-use-after-free Read in btrfs_qgroup_account_extent
+    kernel panic: KASAN: panic_on_warn set ...
+Attempt 5:
+*** KASAN: slab-use-after-free Read in btrfs_qgroup_account_extent
+    kernel panic: KASAN: panic_on_warn set ...
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was found.
+
+==== Major Release Search ====
+19 Releases
+
+2025-04-18 21:23:33
+Session:   35
+Kernel:    2023-08-27 - 2dde18cd1d8fac735875f2e4987f11817cc0bc2c (v6.5)
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+About 18 releases remaining
+
+2025-04-18 21:42:47
+Session:   36
+Kernel:    2023-06-25 - 6995e2de6891c724bfeb2db33d7b87775f913ad1 (v6.4)
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+About 17 releases remaining
+
+==== Kernel Bisection ====
+29193 Linux commits
+
+2025-04-18 22:03:10
+Session:   37
+Kernel:    2023-08-24 - 4f9e7fabf8643003afefc172e62dd276686f016e
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+About 14606 commits remaining
+
+2025-04-18 22:22:33
+Session:   38
+Kernel:    2023-08-30 - c66403f62717e1af3be2a1873d52d2cf4724feba
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 0:
+    WARNING: bad unlock balance in vkms_vblank_simulate
+Attempt 1:
+    WARNING: bad unlock balance in vkms_vblank_simulate
+Attempt 2:
+    WARNING: bad unlock balance in vkms_vblank_simulate
+Attempt 3:
+    WARNING: bad unlock balance in vkms_vblank_simulate
+Attempt 4:
+    WARNING: bad unlock balance in vkms_vblank_simulate
+Attempt 5:
+    WARNING: bad unlock balance in vkms_vblank_simulate
+Attempt 6:
+    WARNING: bad unlock balance in vkms_vblank_simulate
+Attempt 7:
+    WARNING: bad unlock balance in vkms_vblank_simulate
+The bug was not found.
+About 7364 commits remaining
+
+2025-04-18 22:42:47
+Session:   39
+Kernel:    2023-09-01 - f7e97ce26972ae7be8bbbae8d819ff311d4c5900
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 0:
+    WARNING: bad unlock balance in vkms_vblank_simulate
+Attempt 1:
+    WARNING: bad unlock balance in vkms_vblank_simulate
+Attempt 2:
+    WARNING: bad unlock balance in vkms_vblank_simulate
+Attempt 3:
+    WARNING: bad unlock balance in vkms_vblank_simulate
+Attempt 4:
+    WARNING: bad unlock balance in vkms_vblank_simulate
+Attempt 5:
+    WARNING: bad unlock balance in vkms_vblank_simulate
+Attempt 6:
+    WARNING: bad unlock balance in vkms_vblank_simulate
+Attempt 7:
+    WARNING: bad unlock balance in vkms_vblank_simulate
+The bug was not found.
+About 3702 commits remaining
+
+2025-04-18 23:02:30
+Session:   40
+Kernel:    2023-09-07 - 73be7fb14e83d24383f840a22f24d3ed222ca319
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 0:
+    WARNING: bad unlock balance in vkms_vblank_simulate
+Attempt 1:
+    WARNING: bad unlock balance in vkms_vblank_simulate
+Attempt 2:
+    WARNING: bad unlock balance in vkms_vblank_simulate
+Attempt 3:
+    WARNING: bad unlock balance in vkms_vblank_simulate
+Attempt 4:
+    WARNING: bad unlock balance in vkms_vblank_simulate
+Attempt 5:
+    WARNING: bad unlock balance in vkms_vblank_simulate
+Attempt 6:
+    WARNING: bad unlock balance in vkms_vblank_simulate
+Attempt 7:
+    WARNING: bad unlock balance in vkms_vblank_simulate
+The bug was not found.
+About 1846 commits remaining
+
+2025-04-18 23:22:19
+Session:   41
+Kernel:    2023-09-21 - b5cbe7c00aa0f7a81ec40c007f81a3e9c84581e3
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+About 945 commits remaining
+
+2025-04-18 23:42:06
+Session:   42
+Kernel:    2023-09-30 - e402b08634b398e9feb94902c7adcf05bb8ba47d
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+About 459 commits remaining
+
+2025-04-19 00:02:19
+Session:   43
+Kernel:    2023-10-06 - 4940c1543b4381a4895072489b4de7b6145694f5
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+About 227 commits remaining
+
+2025-04-19 00:21:41
+Session:   44
+Kernel:    2023-10-10 - 626b13f015e080e434b1dee9a0c116ddbf4fb695
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+About 116 commits remaining
+
+2025-04-19 00:36:12
+Session:   45
+Kernel:    2023-10-11 - 4524565e3a3821a40eea029d05846f7de6588857
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+About 63 commits remaining
+
+2025-04-19 00:49:11
+Session:   46
+Kernel:    2023-10-12 - a4a81383fbf8c4e17ea6bbc7f005be98f5ece61b
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+About 30 commits remaining
+
+2025-04-19 01:08:24
+Session:   47
+Kernel:    2023-10-12 - 321f4992c127458e51009b5160567b72e3442ff3
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 0:
+*** KASAN: slab-use-after-free Read in btrfs_qgroup_account_extent
+    kernel panic: KASAN: panic_on_warn set ...
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+*** KASAN: slab-use-after-free Read in btrfs_qgroup_account_extent
+    kernel panic: KASAN: panic_on_warn set ...
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was found.
+About 15 commits remaining
+
+2025-04-19 01:21:10
+Session:   48
+Kernel:    2023-10-12 - 9580503bcb6e1169c72f2cceb80af4c65d17b1da
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+About 8 commits remaining
+
+2025-04-19 01:34:11
+Session:   49
+Kernel:    2023-10-12 - 007dec8c7edd22cdca3968d0000b318a245e43b7
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 0:
+*** KASAN: slab-use-after-free Read in btrfs_qgroup_account_extent
+    kernel panic: KASAN: panic_on_warn set ...
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+*** KASAN: slab-use-after-free Read in btrfs_qgroup_account_extent
+    kernel panic: KASAN: panic_on_warn set ...
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was found.
+About 4 commits remaining
+
+2025-04-19 01:46:51
+Session:   50
+Kernel:    2023-10-12 - f863c50277c57cdbd6b0d1bbddb2b19a25016151
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+*** KASAN: slab-use-after-free Read in btrfs_qgroup_account_extent
+    kernel panic: KASAN: panic_on_warn set ...
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was found.
+About 3 commits remaining
+
+2025-04-19 01:59:55
+Session:   51
+Kernel:    2023-10-12 - 203f6a8772fc631a946525decb5df6d98da3730d
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+*** KASAN: slab-use-after-free Read in btrfs_qgroup_account_extent
+    kernel panic: KASAN: panic_on_warn set ...
+Attempt 6:
+*** KASAN: slab-use-after-free Read in btrfs_qgroup_account_extent
+    kernel panic: KASAN: panic_on_warn set ...
+Attempt 7:
+    No crashes found.
+The bug was found.
+About 2 commits remaining
+
+==== Partial Result: Subsequent PoC Test ====
+Reproducer:           /home/syzretrospector/syzinspector/wd-bisector-1/reproducers/repro-bug0768-1.prog
+Bisection Result:     2023-10-12 - 203f6a8772fc631a946525decb5df6d98da3730d
+Bisected Commit Name: btrfs: drop __must_check annotations
+Stage Time:           5h1m3s
+Run Time:             16h26m6s
+=============================================
+
+==== Anchor Commit ====
+
+2025-04-19 02:12:11
+Session:   52
+Kernel:    2023-10-12 - 9580503bcb6e1169c72f2cceb80af4c65d17b1da
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+
+Failure: This bug cannot be found at the anchor commit.
+
+==== Partial Result: Subsequent PoC Test ====
+Reproducer:           /home/syzretrospector/syzinspector/wd-bisector-1/reproducers/repro-bug0768-3.prog
+Bisection Result:     Failed to reproduce at the anchor commit.
+Stage Time:           0h12m9s
+Run Time:             16h38m16s
+=============================================
+
+==== Anchor Commit ====
+
+2025-04-19 02:24:23
+Session:   53
+Kernel:    2023-10-12 - 9580503bcb6e1169c72f2cceb80af4c65d17b1da
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 0:
+*** KASAN: slab-use-after-free Read in btrfs_qgroup_account_extent
+    kernel panic: KASAN: panic_on_warn set ...
+Attempt 1:
+    No crashes found.
+Attempt 2:
+*** KASAN: slab-use-after-free Read in btrfs_qgroup_account_extent
+    kernel panic: KASAN: panic_on_warn set ...
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+*** KASAN: slab-use-after-free Read in btrfs_qgroup_account_extent
+    kernel panic: KASAN: panic_on_warn set ...
+Attempt 6:
+    No crashes found.
+Attempt 7:
+*** KASAN: slab-use-after-free Read in btrfs_qgroup_account_extent
+    kernel panic: KASAN: panic_on_warn set ...
+The bug was found.
+
+==== Major Release Search ====
+19 Releases
+
+2025-04-19 02:36:54
+Session:   54
+Kernel:    2023-08-27 - 2dde18cd1d8fac735875f2e4987f11817cc0bc2c (v6.5)
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+About 18 releases remaining
+
+2025-04-19 02:56:02
+Session:   55
+Kernel:    2023-06-25 - 6995e2de6891c724bfeb2db33d7b87775f913ad1 (v6.4)
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+About 17 releases remaining
+
+2025-04-19 03:16:21
+Session:   56
+Kernel:    2023-04-23 - 457391b0380335d5e9a5babdec90ac53928b23b4 (v6.3)
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+About 16 releases remaining
+
+==== Kernel Bisection ====
+45182 Linux commits
+
+2025-04-19 03:37:00
+Session:   57
+Kernel:    2023-06-29 - 1b722407a13b7f8658d2e26917791f32805980a2
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 0:
+    UBSAN: array-index-out-of-bounds in alloc_pid
+    UBSAN: array-index-out-of-bounds in corrupted
+    UBSAN: array-index-out-of-bounds in copy_process
+    kernel panic: UBSAN: panic_on_warn set ...
+Attempt 1:
+    UBSAN: array-index-out-of-bounds in corrupted
+    UBSAN: array-index-out-of-bounds in corrupted
+    UBSAN: array-index-out-of-bounds in copy_process
+    kernel panic: UBSAN: panic_on_warn set ...
+Attempt 2:
+    UBSAN: array-index-out-of-bounds in alloc_pid
+    UBSAN: array-index-out-of-bounds in copy_process
+    kernel panic: UBSAN: panic_on_warn set ...
+Attempt 3:
+    UBSAN: array-index-out-of-bounds in corrupted
+    UBSAN: array-index-out-of-bounds in corrupted
+    UBSAN: array-index-out-of-bounds in copy_process
+    kernel panic: UBSAN: panic_on_warn set ...
+Attempt 4:
+    UBSAN: array-index-out-of-bounds in alloc_pid
+    UBSAN: array-index-out-of-bounds in corrupted
+    UBSAN: array-index-out-of-bounds in copy_process
+    kernel panic: UBSAN: panic_on_warn set ...
+Attempt 5:
+    UBSAN: array-index-out-of-bounds in alloc_pid
+    UBSAN: array-index-out-of-bounds in copy_process
+    kernel panic: UBSAN: panic_on_warn set ...
+Attempt 6:
+    UBSAN: array-index-out-of-bounds in alloc_pid
+    UBSAN: array-index-out-of-bounds in corrupted
+    UBSAN: array-index-out-of-bounds in copy_process
+    kernel panic: UBSAN: panic_on_warn set ...
+Attempt 7:
+    UBSAN: array-index-out-of-bounds in corrupted
+    UBSAN: array-index-out-of-bounds in corrupted
+    UBSAN: array-index-out-of-bounds in copy_process
+    kernel panic: UBSAN: panic_on_warn set ...
+The bug was not found.
+About 22105 commits remaining
+
+2025-04-19 03:51:04
+Session:   58
+Kernel:    2023-08-29 - bd6c11bc43c496cddfc6cf603b5d45365606dbd5
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    KASAN: use-after-free Read in btrfs_test_super
+    kernel panic: KASAN: panic_on_warn set ...
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    KASAN: use-after-free Read in btrfs_test_super
+    kernel panic: KASAN: panic_on_warn set ...
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+About 10530 commits remaining
+
+2025-04-19 04:10:23
+Session:   59
+Kernel:    2023-08-31 - f35d1706159e015848ec7421e91b44b614c02dc2
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 0:
+    WARNING: bad unlock balance in vkms_vblank_simulate
+Attempt 1:
+    WARNING: bad unlock balance in vkms_vblank_simulate
+Attempt 2:
+    WARNING: bad unlock balance in vkms_vblank_simulate
+Attempt 3:
+    WARNING: bad unlock balance in vkms_vblank_simulate
+Attempt 4:
+    WARNING: bad unlock balance in vkms_vblank_simulate
+Attempt 5:
+    WARNING: bad unlock balance in vkms_vblank_simulate
+Attempt 6:
+    WARNING: bad unlock balance in vkms_vblank_simulate
+Attempt 7:
+    WARNING: bad unlock balance in vkms_vblank_simulate
+The bug was not found.
+About 5244 commits remaining
+
+2025-04-19 04:30:07
+Session:   60
+Kernel:    2023-09-05 - 4b3d6e0c6c4cb3565c73012d7d292c22e68393a9
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 0:
+    WARNING: bad unlock balance in vkms_vblank_simulate
+Attempt 1:
+    WARNING: bad unlock balance in vkms_vblank_simulate
+Attempt 2:
+    WARNING: bad unlock balance in vkms_vblank_simulate
+Attempt 3:
+    WARNING: bad unlock balance in vkms_vblank_simulate
+Attempt 4:
+    WARNING: bad unlock balance in vkms_vblank_simulate
+Attempt 5:
+    WARNING: bad unlock balance in vkms_vblank_simulate
+Attempt 6:
+    WARNING: bad unlock balance in vkms_vblank_simulate
+Attempt 7:
+    WARNING: bad unlock balance in vkms_vblank_simulate
+The bug was not found.
+About 2624 commits remaining
+
+2025-04-19 04:49:41
+Session:   61
+Kernel:    2023-09-13 - 1155b12edbb5d79a5730e1d9348cf3d8b2107696
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 0:
+    WARNING: bad unlock balance in vkms_vblank_simulate
+Attempt 1:
+    WARNING: bad unlock balance in vkms_vblank_simulate
+Attempt 2:
+    WARNING: bad unlock balance in vkms_vblank_simulate
+Attempt 3:
+    WARNING: bad unlock balance in vkms_vblank_simulate
+Attempt 4:
+    WARNING: bad unlock balance in vkms_vblank_simulate
+Attempt 5:
+    WARNING: bad unlock balance in vkms_vblank_simulate
+Attempt 6:
+    WARNING: bad unlock balance in vkms_vblank_simulate
+Attempt 7:
+    WARNING: bad unlock balance in vkms_vblank_simulate
+The bug was not found.
+About 1313 commits remaining
+
+2025-04-19 05:09:00
+Session:   62
+Kernel:    2023-09-24 - 8a511e7efc5a72173f64d191f01cda236d54e27a
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+About 652 commits remaining
+
+2025-04-19 05:28:15
+Session:   63
+Kernel:    2023-10-05 - cb84fb87f325ecd46be586b62623db5b2c0a792e
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+About 347 commits remaining
+
+2025-04-19 05:47:41
+Session:   64
+Kernel:    2023-10-06 - a88c38694714f70b2bc72f33ca125bf06c0f62f2
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+About 175 commits remaining
+
+2025-04-19 06:04:06
+Session:   65
+Kernel:    2023-10-10 - 626b13f015e080e434b1dee9a0c116ddbf4fb695
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+About 94 commits remaining
+
+2025-04-19 06:18:51
+Session:   66
+Kernel:    2023-10-10 - 87813e13df5ca4d899e2da0bc37d40f9a95788ee
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+About 47 commits remaining
+
+2025-04-19 06:31:27
+Session:   67
+Kernel:    2023-10-12 - 03e86348965a5fa13593db8682132033d663f7ee
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+About 22 commits remaining
+
+2025-04-19 06:50:42
+Session:   68
+Kernel:    2023-10-12 - 686c4a5a42635e0d2889e3eb461c554fd0b616b4
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+About 12 commits remaining
+
+2025-04-19 07:03:19
+Session:   69
+Kernel:    2023-10-12 - dce28769a33a95425b007f00842d6e12ffa28f83
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+*** KASAN: slab-use-after-free Read in btrfs_qgroup_account_extent
+    kernel panic: KASAN: panic_on_warn set ...
+Attempt 6:
+    No crashes found.
+Attempt 7:
+*** KASAN: slab-use-after-free Read in btrfs_qgroup_account_extent
+    kernel panic: KASAN: panic_on_warn set ...
+The bug was found.
+About 6 commits remaining
+
+2025-04-19 07:16:10
+Session:   70
+Kernel:    2023-10-12 - 0913445082496c2b29668ee26521401b273838b8
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+About 4 commits remaining
+
+2025-04-19 07:28:32
+Session:   71
+Kernel:    2023-10-12 - a4a81383fbf8c4e17ea6bbc7f005be98f5ece61b
+Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+About 2 commits remaining
+
+==== Partial Result: Subsequent PoC Test ====
+Reproducer:           /home/syzretrospector/syzinspector/wd-bisector-1/reproducers/repro-bug0768-4.prog
+Bisection Result:     2023-10-12 - dce28769a33a95425b007f00842d6e12ffa28f83
+Bisected Commit Name: btrfs: qgroup: use qgroup_iterator_nested to in qgroup_update_refcnt()
+Stage Time:           5h16m40s
+Run Time:             21h54m57s
+=============================================
+
 ====================================================================================================================================================
 Bug Name:             KASAN: slab-use-after-free Read in btrfs_qgroup_account_extent
 Bug Link:             https://syzkaller.appspot.com/bug?extid=e0b615318f8fcfc01ceb
-Bisection Result:     2023-10-30 - 6750f0de53b7d64a4deffa62944ea431a153ec48
-Bisected Commit Name: Merge tag 'lkmm.2023.10.28a' of git://git.kernel.org/pub/scm/linux/kernel/git/paulmck/linux-rcu
-Run Time:             6h24m15s
+Bisection Result:     2023-10-12 - dce28769a33a95425b007f00842d6e12ffa28f83
+Bisected Commit Name: btrfs: qgroup: use qgroup_iterator_nested to in qgroup_update_refcnt()
+Run Time:             21h54m57s
 
 Anchor Commit:        2023-10-30 - 5a6a09e97199d6600d31383055f9d43fbbcbe86f
-Bisection Result:     2023-10-30 - 6750f0de53b7d64a4deffa62944ea431a153ec48
+Bisection Result:     2023-10-12 - dce28769a33a95425b007f00842d6e12ffa28f83
