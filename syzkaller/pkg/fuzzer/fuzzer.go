@@ -267,11 +267,6 @@ func signalPrio(p *prog.Prog, info *flatrpc.CallInfo, call int) (prio uint8) {
 func (fuzzer *Fuzzer) genFuzz() *queue.Request {
 	// Either generate a new input or mutate an existing one.
 	mutateRate := 2.0
-	if !fuzzer.Config.Coverage {
-		// If we don't have real coverage signal, generate programs
-		// more frequently because fallback signal is weak.
-		mutateRate = 0.5
-	}
 	var req *queue.Request
 	rnd := fuzzer.rand()
 	if rnd.Float64() < mutateRate {
