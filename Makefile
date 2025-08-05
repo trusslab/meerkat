@@ -6,7 +6,7 @@ INCDIR := include/
 LIBDIR := lib/
 SRCDIR := src/
 TOOLDIR := tools/
-PROJECTNAME := bisector
+PROJECTNAME := meerkat
 
 .DEFAULT_GOAL := $(PROJECTNAME)
 
