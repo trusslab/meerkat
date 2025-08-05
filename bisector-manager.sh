@@ -140,10 +140,6 @@ while (( $line <= $endLine )); do
     guiltyDate=$(echo "$linetext" | awk -F',' '{ print $11; }')
     echo -n "${line},${fixDate},${findDate},${guiltyDate}" >> $logfile
 
-    # ignore most recent bugs as they are broken to my elfutils
-    #elfutilAge=$(( $($bisectdir/helpers/diffdate "2024-01-01" $findDate) ))
-
-    #if (( $elfutilAge > 0 )); then
     # bug number and name
     bugNum="$(printf "%04d" $(echo "$linetext" | awk -F',' '{ print $1; }'))"
     curBug="bug${bugNum}"

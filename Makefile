@@ -5,15 +5,14 @@ BUILDDIR := build/
 INCDIR := include/
 LIBDIR := lib/
 SRCDIR := src/
-HELPERDIR := helpers/
 TOOLDIR := tools/
 PROJECTNAME := bisector
 
 .DEFAULT_GOAL := $(PROJECTNAME)
 
-.PHONY: all $(PROJECTNAME) helpers tools syzkaller
+.PHONY: all $(PROJECTNAME) tools syzkaller
 
-all-$(PROJECTNAME): $(PROJECTNAME) helpers tools
+all-$(PROJECTNAME): $(PROJECTNAME) tools
 
 all: all-$(PROJECTNAME) syzkaller
 
@@ -37,14 +36,6 @@ $(PROJECTNAME): $(SRCDIR)$(PROJECTNAME).cpp $(ALL_OBJS) | $(BINDIR) $(BUILDDIR)
 	@$(CC) -I $(INCDIR) -c $(SRCDIR)$(PROJECTNAME).cpp -o $(BUILDDIR)$(PROJECTNAME).o
 	@echo "  LN     $(BINDIR)$(PROJECTNAME)"
 	@$(CC) $(BUILDDIR)$(PROJECTNAME).o $(ALL_OBJS) -o $(BINDIR)$(PROJECTNAME)
-
-helpers: diffdate
-
-diffdate: $(HELPERDIR)diffdate.cpp | $(BINDIR) $(BUILDDIR)
-	@echo "  CC     $(BUILDDIR)diffdate.o"
-	@$(CC) -I $(INCDIR) -c $(HELPERDIR)diffdate.cpp -o $(BUILDDIR)diffdate.o
-	@echo "  LN     $(HELPERDIR)diffdate"
-	@$(CC) $(BUILDDIR)diffdate.o $(DD_OBJS) -o $(HELPERDIR)diffdate
 
 tools: git_test description_test runner
 
@@ -94,7 +85,6 @@ syzkaller:
 
 clean:
 	$(RM) -r $(BINDIR) $(BUILDDIR)
-	$(RM) $(HELPERDIR)diffdate
 
 syzkaller-clean:
 	$(MAKE) -C syzkaller/ clean
