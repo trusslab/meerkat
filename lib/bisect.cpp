@@ -627,8 +627,11 @@ std::string Bisect::print_partial_result(const Environment &env, Git &linux_git,
     ss << "\n" << title << "\n";
     if (!repro.empty())
         ss << "Reproducer:           " << repro << "\n";
-    ss << "Bisection Result:     " << bisect_version.date.get_date() << " - " << bisect_version.name << "\n";
-    ss << "Bisected Commit Name: " << linux_git.get_commit_name(bisect_version.name) << "\n";
+    if (!bisect_version.name.empty())
+    {
+        ss << "Bisection Result:     " << bisect_version.date.get_date() << " - " << bisect_version.name << "\n";
+        ss << "Bisected Commit Name: " << linux_git.get_commit_name(bisect_version.name) << "\n";
+    }
     ss << "Stage Time:           " << runtime(stage_start) << "\n";
     ss << "Run Time:             " << runtime(start) << "\n";
     ss << std::setw(title.size()) << std::setfill('=') << "=" << "\n";
@@ -642,8 +645,15 @@ std::string Bisect::print_result(const Environment &env, Git &linux_git, const s
     std::stringstream ss;
     ss << "Bug Name:             " << env.name << "\n";
     ss << "Bug Link:             " << env.buglink << "\n";
-    ss << "Bisection Result:     " << bisect_version.date.get_date() << " - " << bisect_version.name << "\n";
-    ss << "Bisected Commit Name: " << linux_git.get_commit_name(bisect_version.name) << "\n";
+    if (!bisect_version.name.empty())
+    {
+        ss << "Bisection Result:     " << bisect_version.date.get_date() << " - " << bisect_version.name << "\n";
+        ss << "Bisected Commit Name: " << linux_git.get_commit_name(bisect_version.name) << "\n";
+    }
+    else
+    {
+        ss << "Bisection Result:     Failed to bisect the bug.\n";
+    }
     ss << "Run Time:             " << runtime(start) << "\n\n";
 
     ss << "Anchor Commit:        " << anchor_version.date.get_date() << " - " << anchor_version.name << "\n";
