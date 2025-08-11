@@ -13,7 +13,7 @@ wd=""
 startLine=1
 endLine=0
 
-bisector=bin/bisector
+bisector=bin/meerkat
 
 # =================================================================================================
 # Functions
