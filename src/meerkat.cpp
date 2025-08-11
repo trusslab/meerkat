@@ -23,6 +23,10 @@
 
 using namespace std;
 
+// TODO:
+// Check for machine check at the end of fuzzing to make sure the VMs actually booted.
+// Check for broken programs when Syzkaller launches.
+
 Git prep_kernel_local_repo(Environment &env)
 {
     Git linux_git(env.kerneldir, env.repository, env.branch);
