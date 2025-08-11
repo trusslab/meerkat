@@ -286,12 +286,13 @@ func parseProg(target *prog.Target, data []byte, mode prog.DeserializeMode, reqs
 	if len(p.Calls) > prog.MaxCalls {
 		return nil, nil, fmt.Errorf("longer than %d calls (%d)", prog.MaxCalls, len(p.Calls))
 	}
+	// JTBURSEY: Removing this check temporarily. Not sure if it is actually needed and some of our repros do use fault injection.
 	// For some yet unknown reasons, programs with fail_nth > 0 may sneak in. Ignore them.
-	for _, call := range p.Calls {
-		if call.Props.FailNth > 0 {
-			return nil, nil, fmt.Errorf("input has fail_nth > 0")
-		}
-	}
+	//for _, call := range p.Calls {
+	//	if call.Props.FailNth > 0 {
+	//		return nil, nil, fmt.Errorf("input has fail_nth > 0")
+	//	}
+	//}
 	return p, properties, nil
 }
 
