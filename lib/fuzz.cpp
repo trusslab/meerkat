@@ -113,12 +113,25 @@ bool check_enabled_syscalls(const Environment &env)
     return false;
 }
 
+bool completed_machine_check(const Environment &env)
+{
+    std::vector<std::string> loglines;
+    load_file(env.syzkaller_log, loglines);
+    for (std::string line : loglines)
+    {
+        if (line.find("machine check:") != std::string::npos)
+            return true;
+    }
+    return false;
+}
+
 // The time is rough here and rounds up to the nearest time increment (usually 1 minute)
 // result.ttf is the time it took to find the bug, or the max_time
 Syzkaller_Result run_syzkaller(const Environment &env)
 {
     Syzkaller_Result result;
     int time = 0, to_add = 0;
+    bool fuzz_fail = false;
     result.ttf = 0;
     result.found = false;
     result.bad_crashes = 0;
@@ -185,11 +198,23 @@ Syzkaller_Result run_syzkaller(const Environment &env)
             cout << "Warning: Syzkaller log file exceeded 5000 lines.\n"
                  << "Saved at " << logfile << ".\n" << flush;
             copy(env.syzkaller_log, logfile);
-            result.bad_crashes++;
-            result.reports.push_back({"boot failure", time});
+            fuzz_fail = true;
             break;
         }
     }
+
+    if (!completed_machine_check(env))
+    {
+        cout << "Warning: Syzkaller never completed machine check.\n" << flush;
+        fuzz_fail = true;
+    }
+
+    if (fuzz_fail)
+    {
+        result.bad_crashes++;
+        result.reports.push_back({"boot failure", time});
+    }
+
     result.ttf = time;
 
     if (!check_alive(pid))
