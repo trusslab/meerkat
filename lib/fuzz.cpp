@@ -194,10 +194,7 @@ Syzkaller_Result run_syzkaller(const Environment &env)
 
         if (wc_l(env.syzkaller_log) > 5000)
         {
-            string logfile = env.bootfaillog();
-            cout << "Warning: Syzkaller log file exceeded 5000 lines.\n"
-                 << "Saved at " << logfile << ".\n" << flush;
-            copy(env.syzkaller_log, logfile);
+            cout << "Warning: Syzkaller log file exceeded 5000 lines.\n" << flush;
             fuzz_fail = true;
             break;
         }
@@ -211,6 +208,9 @@ Syzkaller_Result run_syzkaller(const Environment &env)
 
     if (fuzz_fail)
     {
+        string logfile = env.bootfaillog();
+        cout << "Saved log at " << logfile << ".\n" << flush;
+        copy(env.syzkaller_log, logfile);
         result.bad_crashes++;
         result.reports.push_back({"boot failure", time});
     }
@@ -417,15 +417,3 @@ Syzkaller_Result symbolize(Environment &env, const std::string &file)
     return res;
 }
 
-/*
-bool check_faulty_result()
-{
-    bool fault = false;
-
-    // Check if the reproducer is dependent on fault injection
-    if (grep_to_find("\\\"fault_call\\\":", bug.allreproducer) && !grep_to_find("\\\"fault_call\\\":-1", bug.allreproducer))
-        fault = true;
-
-    return fault;
-}
-*/
