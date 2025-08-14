@@ -159,7 +159,7 @@ int Environment::parse_config_file(const std::string &filename)
     }
     else
     {
-        std::cerr << "Error: No home directory was given (\"home\": \"/path/to/Bisector/\")\n" << std::flush;
+        std::cerr << "Error: No home directory was given (\"home\": \"/path/to/" << PROJECT_NAME << "/\")\n" << std::flush;
         return -1;
     }
 

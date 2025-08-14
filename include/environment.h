@@ -53,7 +53,7 @@ public:
     std::string image_key;              // path to the image key
     std::string syzdir;                 // the directory that houses syzkaller
 
-    std::string wd;                     // wd-bisector-[id]
+    std::string wd;                     // wd-meerkat-[id]
     std::string kerneldir;              // the directory that houses the kernel
     std::string syzwd;                  // wd-kaller
     std::string syzconfig;              // the config for syzkaller. We write this ourselves

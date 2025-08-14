@@ -125,7 +125,7 @@ int main(int argc, char ** argv)
     vmpool.kill_all();
 
     // symbolize the report if needed
-    // ./syzkaller/bin/syz-symbolize -kernel_obj wd-bisector-5/kernel/ wd-bisector-5/wd-runner/vm-0.log
+    // ./syzkaller/bin/syz-symbolize -kernel_obj wd-meerkat-5/kernel/ wd-meerkat-5/wd-runner/vm-0.log
     Test_Result res;
     res.found = false;
     res.stable = true;

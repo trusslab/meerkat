@@ -29,6 +29,7 @@ using namespace std;
 // Use the same compilers syz-bisect uses (pkg/vcs/linux.go)
 // Use the same patches syz-bisect uses (pkg/vcs/linux_patches.go)
     // git cherry-pick for patches, git apply for known diffs
+// check that procs # is not affecting hanging tasks
 
 Git prep_kernel_local_repo(Environment &env)
 {

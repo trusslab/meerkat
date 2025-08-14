@@ -13,7 +13,8 @@ wd=""
 startLine=1
 endLine=0
 
-bisector=bin/meerkat
+projectname=meerkat
+bisector=bin/${projectname}
 
 # =================================================================================================
 # Functions
@@ -95,8 +96,8 @@ fi
 
 echo "Starting at: $(date)"
 
-wd="${bisectdir}wd-bisector-${id}/"
-bisectorconfig=${wd}bisector.cfg
+wd="${bisectdir}wd-${projectname}-${id}/"
+bisectorconfig=${wd}${projectname}.cfg
 logfile=${wd}log/manager.log
 
 if [ ! -d $wd ]; then

@@ -8,7 +8,7 @@ pref=linux
 kern="$pref-$h"
 home=`pwd`
 
-cd $home/wd-bisector-$id/kernels/
+cd $home/wd-meerkat-$id/kernels/
 if (( $clean == 1 )); then
     rm -r *
 fi
