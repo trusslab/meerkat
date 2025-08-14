@@ -26,6 +26,9 @@ using namespace std;
 // TODO:
 // Check for machine check at the end of fuzzing to make sure the VMs actually booted.
 // Check for broken programs when Syzkaller launches.
+// Use the same compilers syz-bisect uses (pkg/vcs/linux.go)
+// Use the same patches syz-bisect uses (pkg/vcs/linux_patches.go)
+    // git cherry-pick for patches, git apply for known diffs
 
 Git prep_kernel_local_repo(Environment &env)
 {
