@@ -67,4 +67,10 @@ private:
 
 std::string opts_from_syz_repro(const std::string &);
 
+// builds syzkaller for 386 POCs using syz-env
+int syz_env_cross_compile(const std::string &, const std::string & = "");
+
+// cleans up after syz-env because sudo
+int syz_env_clean(const std::string &);
+
 #endif

@@ -6,6 +6,7 @@
 #include <fuzz.h>
 #include <fuzz_prep.h>
 #include <git.h>
+#include <make.h>
 #include <my_string.h>
 #include <shell_api.h>
 #include <template_parse.h>

@@ -8,6 +8,8 @@
 #include <string>
 #include <vector>
 
+#include <string.h>
+
 ProgOpts::ProgOpts()
 { reset(); }
 
@@ -348,4 +350,37 @@ std::string ProgOpts::execopts_string() const
             ret += o + " ";
     
     return ret;
+}
+
+int syz_env_cross_compile(const std::string &syz_env, const std::string &outfile)
+{
+    char command[] = "sudo";
+    char * arg1 = new char[syz_env.size() + 1];
+    strcpy(arg1, syz_env.c_str());
+    char arg2[] = "make";
+    char arg3[] = "TARGETVMARCH=amd64";
+    char arg4[] = "TARGETARCH=386";
+
+    char * arg_list[] = {command, arg1, arg2, arg3, arg4, nullptr};
+
+    int err = exec_and_wait("sudo", arg_list, outfile, outfile);
+
+    delete[] arg1;
+    return (err != 0 ? -1 : 0);
+}
+
+int syz_env_clean(const std::string &syz_env)
+{
+    char command[] = "sudo";
+    char * arg1 = new char[syz_env.size() + 1];
+    strcpy(arg1, syz_env.c_str());
+    char arg2[] = "make";
+    char arg3[] = "clean";
+
+    char * arg_list[] = {command, arg1, arg2, arg3, nullptr};
+
+    int err = exec_and_wait("sudo", arg_list);
+
+    delete[] arg1;
+    return (err != 0 ? -1 : 0);
 }

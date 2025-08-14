@@ -29,7 +29,7 @@ ALL_OBJS = $(BUILDDIR)argparse.o $(BUILDDIR)version.o $(BUILDDIR)template_parse.
 			$(BUILDDIR)file_api.o $(BUILDDIR)fuzz_prep.o $(BUILDDIR)fuzz.o $(BUILDDIR)git.o \
 			$(BUILDDIR)my_string.o $(BUILDDIR)psf.o $(BUILDDIR)syzlang.o $(BUILDDIR)json.o \
 			$(BUILDDIR)result.o $(BUILDDIR)bisect.o $(BUILDDIR)shell_api.o $(BUILDDIR)port.o \
-			$(BUILDDIR)syzkaller.o $(BUILDDIR)vm.o
+			$(BUILDDIR)syzkaller.o $(BUILDDIR)vm.o $(BUILDDIR)make.o
 
 $(PROJECTNAME): $(SRCDIR)$(PROJECTNAME).cpp $(ALL_OBJS) | $(BINDIR) $(BUILDDIR)
 	@echo "  CC     $(BUILDDIR)$(PROJECTNAME).o"
@@ -63,7 +63,7 @@ RR_OBJS = $(BUILDDIR)file_api.o $(BUILDDIR)argparse.o $(BUILDDIR)environment.o \
 			$(BUILDDIR)json.o $(BUILDDIR)my_string.o $(BUILDDIR)exec_api.o \
 			$(BUILDDIR)date.o $(BUILDDIR)port.o $(BUILDDIR)vm.o $(BUILDDIR)syzkaller.o \
 			$(BUILDDIR)fuzz.o $(BUILDDIR)fuzz_prep.o $(BUILDDIR)shell_api.o $(BUILDDIR)result.o \
-			$(BUILDDIR)bisect.o $(BUILDDIR)git.o $(BUILDDIR)version.o
+			$(BUILDDIR)bisect.o $(BUILDDIR)git.o $(BUILDDIR)version.o $(BUILDDIR)make.o
 
 runner: $(TOOLDIR)runner.cpp $(RR_OBJS) | $(BINDIR) $(BUILDDIR)
 	@echo "  CC     $(BUILDDIR)runner.o"
