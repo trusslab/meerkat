@@ -335,9 +335,22 @@ std::string Git::get_url()
  // git tag -l v[0-9].[0-9] v[0-9].[0-9][0-9] --sort=-taggerdate
 int Git::dump_tags(const std::string &filename)
 {
-    // For now stop at 4.0
-    err = git({"tag", "-l", "v[4-9].[0-9]", "v[4-9].[0-9][0-9]", "--sort=-taggerdate"}, filename) == 0 ? 0 : -1;
+    // globs are the worst
+    err = git({"tag", "-l", "v[0-9].[0-9]", "v[0-9].[0-9][0-9]", "--sort=-taggerdate"}, filename) == 0 ? 0 : -1;
     return err;
+}
+
+ // git tag -l --no-contains hash --merged hash v[0-9].[0-9] v[0-9].[0-9][0-9] --sort=-taggerdate
+int Git::dump_commit_past_tags(const std::string &commit, const std::string &filename)
+{
+    // globs are the worst
+    err = git({"tag", "-l", "--no-contains", commit, "--merged", commit, "v[0-9].[0-9]", "v[0-9].[0-9][0-9]", "--sort=-taggerdate"}, filename) == 0 ? 0 : -1;
+    return err;
+}
+
+std::string Git::commit_tag(const std::string &commit)
+{
+    return git_read({"tag", "-l", "--points-at", commit, "--merged", commit, "v[0-9].[0-9]", "v[0-9].[0-9][0-9]", "--sort=-taggerdate"});
 }
 
 std::string Git::get_current_commit()

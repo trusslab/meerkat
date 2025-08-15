@@ -16,6 +16,8 @@
 enum Bisect_Mode {Mode_PoC, Mode_FF};
 enum Bisect_Phase {Bisect_Init, Bisect_Anchor, Bisect_Releases, Bisect_Kernel, Bisect_Done};
 
+enum Compiler_Type {CC_GCC, CC_CLANG};
+
 class Session
 {
 public:
@@ -63,7 +65,14 @@ private:
     unsigned int repro_count;
     bool defer_repro;
 
-    std::vector<Version> gcc_versions;
+    Compiler_Type compiler_type;
+    std::string default_compiler;
+
+    int set_compiler_type(const std::string &);
+    int check_compiler_versions(const Environment &);
+    std::string clang_mux(const Environment &, Git &, const std::string &);
+    std::string gcc_mux(const Environment &, Git &, const std::string &);
+    std::string get_compiler_for_commit(const Environment &, Git &, const std::string &);
 
     int init_anchor_phase(Git &);
     int init_releases_phase(const Environment &, Git &);
@@ -117,8 +126,6 @@ public:
     { return phase; }
 
     int remaining(Git &) const;
-
-    int gather_compiler_versions(const Environment &);
 
     int next_phase(const Bisect_Phase, const Environment &, Git &);
 

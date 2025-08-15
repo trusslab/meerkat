@@ -22,9 +22,6 @@ VMConfig determine_threadedness(Environment &);
 // Reads the gcc version file and returns them in vector form
 std::vector<Version> grab_compiler_versions(const std::string &);
 
-// returns the name of the compiler to be used
-std::string get_compiler(const std::vector<Version> &, const Date &, const Environment &);
-
 int set_kernel_config(const std::string &, const std::vector<std::string> &);
 int unset_kernel_config(const std::string &, const std::vector<std::string> &);
 

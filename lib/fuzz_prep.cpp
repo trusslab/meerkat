@@ -70,53 +70,6 @@ VMConfig determine_threadedness(Environment &env)
     return env.vmc;
 }
 
-vector<Version> grab_compiler_versions(const string &filename)
-{
-    ifstream inf;
-    inf.open(filename);
-    if (!inf)
-    {
-        cerr << "Error: Failed to open file " << filename << ".\n";
-        return vector<Version>();
-    }
-
-    vector<Version> versions;
-    string line;
-    int pos0;
-    Version v;
-    while (getline(inf, line))
-    {
-        if (line.at(0) == '#')
-            continue;
-        
-        pos0 = line.find_first_of(",");
-        v.date = Date(line.substr(0, pos0));
-        v.name = line.substr(pos0 + 1);
-        versions.push_back(v);
-    }
-
-    inf.close();
-    return versions;
-}
-
-string compiler_mux(const vector<Version> &versions, const Date &kernel_date, const Environment &env)
-{
-    int i;
-    // Assumes list of versions is sorted least to greatest
-    for (i = versions.size() - 1; i >= 0 && kernel_date < versions.at(i).date; i--);
-    i = i < 0 ? 0 : i;
-
-    return env.gcc_dir + versions.at(i).name;
-}
-
-string get_compiler(const vector<Version> &gcc_versions, const Date &kernel_date, const Environment &env)
-{
-    string compiler = compiler_mux(gcc_versions, kernel_date, env)+"/bin/gcc";
-    if (!env.ccache.empty())
-        compiler = env.ccache + " " + compiler;
-    return compiler;
-}
-
 // sets the specified config "con" in the config file "lines"
 int set_config(const string &con, vector<string> &lines)
 {

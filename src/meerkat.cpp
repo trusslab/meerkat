@@ -24,12 +24,14 @@
 using namespace std;
 
 // TODO:
-// Check for machine check at the end of fuzzing to make sure the VMs actually booted.
 // Check for broken programs when Syzkaller launches.
-// Use the same compilers syz-bisect uses (pkg/vcs/linux.go)
-// Use the same patches syz-bisect uses (pkg/vcs/linux_patches.go)
+// Use the same compilers syz-bisect uses (pkg/vcs/linux.go) https://github.com/google/syzkaller/blob/master/pkg/vcs/linux.go#L124
+    // automatically verify that they work
+// Use the same patches syz-bisect uses (pkg/vcs/linux_patches.go) https://github.com/google/syzkaller/blob/master/pkg/vcs/linux_patches.go#L23
     // git cherry-pick for patches, git apply for known diffs
 // check that procs # is not affecting hanging tasks
+// refactor fuzz_prep code -- extract linux specific, syzkaller specific
+// fix oldest tested commit
 
 Git prep_kernel_local_repo(Environment &env)
 {
@@ -54,30 +56,13 @@ int check_syzkaller(const Environment &env)
 vector<string> order_pocs(const Environment &env)
 {
     vector<string> ret;
-    // PoCs can go in an arbitrary order, but leave out the primary poc
+    // PoCs can go in an arbitrary order, but leave out the primary poc.
+    // This is for after the primary poc has been tested.
     for (string file : list_dir(env.reprodir))
         if (file != env.primary_repro)
             ret.push_back(file);
 
     return ret;
-}
-
-// thought I would have needed this, but I guess not.
-int make_repro_opts(const Environment &env)
-{
-    vector<string> inlines, outlines;
-    load_file(env.primary_repro, inlines);
-    for (string l : inlines)
-    {
-        if (starts_with(l, "#{"))
-        {
-            outlines.push_back(l.substr(1));
-            break;
-        }
-    }
-
-    write_file(env.repro_opts_file(), outlines);
-    return 0;
 }
 
 int do_bisection(Environment &env, Bisect &bisector, Git &linux_git)

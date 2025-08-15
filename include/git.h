@@ -58,6 +58,8 @@ public:
 
     std::string get_url();
     int dump_tags(const std::string &);
+    int dump_commit_past_tags(const std::string &, const std::string &);
+    std::string commit_tag(const std::string &);
 
     std::string get_current_commit();
     Version get_current_version();

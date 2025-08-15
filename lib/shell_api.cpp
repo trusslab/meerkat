@@ -148,3 +148,16 @@ int wc_l(const string &filename)
     delete[] arg2;
     return ret;
 }
+
+bool which(const string &com)
+{
+    char command[] = "which";
+    char * arg1 = new char[com.size() + 1];
+    strcpy(arg1, com.c_str());
+
+    char * arg_list[] = {command, arg1, nullptr};
+    int ret = exec_and_wait("which", arg_list, "/dev/null", "/dev/null");
+
+    delete[] arg1;
+    return (ret == 0);
+}

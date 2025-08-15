@@ -18,7 +18,32 @@
 #include <sstream>
 #include <chrono>
 
-std::vector<Version> gather_release_tags(const Environment &env, Git &linux_git)
+std::set<std::string> gather_commit_tags(const Environment &env, Git &linux_git, const std::string &commit)
+{
+    std::string tagfile = env.wd + "linux_release_tags.txt";
+    std::set<std::string> releases;
+    linux_git.dump_commit_past_tags(commit, tagfile);
+    
+    std::ifstream inf;
+    inf.open(tagfile);
+    std::string tag;
+    while (getline(inf, tag))
+    {
+        tag = chomp(tag);
+        releases.insert(tag);
+        if (tag == EARLIEST_TESTED_VERSION)
+            break;
+    }
+    inf.close();
+    remove_file(tagfile);
+
+    tag = linux_git.commit_tag(commit);
+    if (releases.count(tag) == 0)
+        releases.insert(tag);
+    return releases;
+}
+
+std::vector<Version> gather_release_versions(const Environment &env, Git &linux_git)
 {
     std::string tagfile = env.wd + "linux_release_tags.txt";
     std::vector<Version> releases;
@@ -29,7 +54,10 @@ std::vector<Version> gather_release_tags(const Environment &env, Git &linux_git)
     std::string tag;
     while (getline(inf, tag))
     {
+        tag = chomp(tag);
         releases.push_back(Version(tag, linux_git.get_tag_hash(tag), linux_git.get_tag_date(tag)));
+        if (tag == EARLIEST_TESTED_VERSION)
+            break;
     }
     inf.close();
     remove_file(tagfile);
@@ -44,7 +72,10 @@ int Bisect::init(const Environment &env, Git &linux_git)
     git_stop = false;
     defer_repro = false;
 
-    if (gather_compiler_versions(env) < 0)
+    if (set_compiler_type(env.compiler) < 0)
+        return -1;
+
+    if (check_compiler_versions(env) < 0)
         return -1;
 
     anchor_version.name = env.anchor_hash;
@@ -86,10 +117,115 @@ int Bisect::remaining(Git &linux_git) const
     return -1;
 }
 
-int Bisect::gather_compiler_versions(const Environment &env)
+int Bisect::set_compiler_type(const std::string &cc)
 {
-    gcc_versions = grab_compiler_versions(env.gcc_dir + "/gccVersions.csv");
-    return gcc_versions.size();
+    default_compiler = cc;
+    if (starts_with(cc, "gcc"))
+    {
+        compiler_type = CC_GCC;
+        return 0;
+    }
+    else if (starts_with(cc, "clang"))
+    {
+        compiler_type = CC_CLANG;
+        return 0;
+    }
+    
+    return -1;
+}
+
+int check_clang_versions(const Environment &env)
+{
+    std::cerr << "Clang compilers have not been tested yet.\n" << std::flush;
+    return -1;
+}
+
+int check_gcc_versions(const Environment &env)
+{
+    std::vector<std::string> gcc_versions = {"10.1.0", "8.1.0", "7.3.0", "5.5.0"};
+    for (std::string version : gcc_versions)
+    {
+        if (!check_file(env.compiler_dir + "gcc-" + version + "/bin/gcc"))
+        {
+            std::cerr << "Failed to find gcc-" << version << "\n"
+                      << "Please run \"tar -xzf compilers.tar.gz\"\n" << std::flush;
+            return -1;
+        }
+    }
+
+    if (!which("gcc"))
+    {
+        std::cerr << "Failed to find default gcc\n" << std::flush;
+        return -1;
+    }
+
+    return 0;
+}
+
+int Bisect::check_compiler_versions(const Environment &env)
+{
+    switch (compiler_type)
+    {
+    case CC_CLANG:
+        break;
+    case CC_GCC:
+    default:
+        return check_gcc_versions(env);
+    }
+
+    return -1;
+}
+
+// Decides which clang compiler to use based on what release version the hash is from.
+// This is intended to mirror Syz-Bisect (https://github.com/google/syzkaller/blob/master/pkg/vcs/linux.go#L124)
+std::string Bisect::clang_mux(const Environment &env, Git &linux_git, const std::string &hash)
+{
+    std::set<std::string> tags = gather_commit_tags(env, linux_git, hash);
+    std::string version;
+    if (tags.count("v6.15") > 0)
+        return "clang"; // use system default gcc
+    else if (tags.count("v5.9") > 0)
+        return "clang-15";
+    else
+        version = "9.0.1";
+
+    return env.compiler_dir + "llvm-" + version + "/bin/clang";
+}
+
+// Decides which gcc compiler to use based on what release version the hash is from.
+// This is intended to mirror Syz-Bisect (https://github.com/google/syzkaller/blob/master/pkg/vcs/linux.go#L124)
+std::string Bisect::gcc_mux(const Environment &env, Git &linux_git, const std::string &hash)
+{
+    std::set<std::string> tags = gather_commit_tags(env, linux_git, hash);
+    std::string version;
+    if (tags.count("v5.16") > 0)
+        return "gcc"; // use system default gcc
+    else if (tags.count("v5.9") > 0)
+        version = "10.1.0";
+    else if (tags.count("v4.12") > 0)
+        version = "8.1.0";
+    else if (tags.count("v4.11") > 0)
+        version = "7.3.0";
+    else
+        version = "5.5.0";
+
+    return env.compiler_dir + "gcc-" + version + "/bin/gcc";
+}
+
+std::string Bisect::get_compiler_for_commit(const Environment &env, Git &linux_git, const std::string &kernel_hash)
+{
+    std::string compiler;
+    switch (compiler_type)
+    {
+    case CC_CLANG:
+        clang_mux(env, linux_git, kernel_hash);
+        break;
+    case CC_GCC:
+    default:
+        gcc_mux(env, linux_git, kernel_hash);
+        break;
+    }
+    return (env.ccache.empty() ? "" : env.ccache + " ") + compiler;
 }
 
 int Bisect::init_anchor_phase(Git &linux_git)
@@ -140,7 +276,7 @@ int Bisect::init_releases_phase(const Environment &env, Git &linux_git)
     Version anchor = good_version.name.empty() ? bisect_version : good_version;
 
     // Gather linux release tags, dates, and hashes
-    releases = gather_release_tags(env, linux_git);
+    releases = gather_release_versions(env, linux_git);
     if (releases.size() <= 0)
     {
         std::cerr << "Error: Failed to get Linux release tags.\n" << std::flush;
@@ -232,7 +368,7 @@ bool Bisect::session_was_stable(const Session &session) const
 int Bisect::build_current_kernel(const Environment &env, Git &linux_git, bool bisecting)
 {
     std::string compiler;
-    compiler = get_compiler(gcc_versions, current_session.kernel.date, env);
+    compiler = get_compiler_for_commit(env, linux_git, current_session.kernel.name);
     log_session_compiler(compiler);
     return prep_kernel(env, linux_git, current_session.kernel, compiler, bisecting);
 }

@@ -28,4 +28,6 @@ int move(const std::string &, const std::string &);
 
 int wc_l(const std::string &);
 
+bool which(const std::string &);
+
 #endif

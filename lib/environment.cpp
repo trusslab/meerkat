@@ -176,12 +176,22 @@ int Environment::parse_config_file(const std::string &filename)
 
     if (json.has_name("compilers") && json.is_type("compilers", JSON_Val_string))
     {
-        gcc_dir = json.get_string("compilers");
-        gcc_dir = starts_with(gcc_dir, "/") ? gcc_dir : home + gcc_dir;
+        compiler_dir = json.get_string("compilers");
+        compiler_dir = starts_with(compiler_dir, "/") ? compiler_dir : home + compiler_dir;
     }
     else
     {
         std::cerr << "Error: No Compiler Directory was given (\"compilers\": \"/path/to/compilers/\")\n" << std::flush;
+        return -1;
+    }
+
+    if (json.has_name("compiler") && json.is_type("compiler", JSON_Val_string))
+    {
+        compiler = json.get_string("compiler");
+    }
+    else
+    {
+        std::cerr << "Error: No default compiler was given (\"compiler\": \"gcc|clang\")\n" << std::flush;
         return -1;
     }
 
@@ -351,7 +361,7 @@ void Environment::print() const
     config_print("Version", REVISION);
     config_print("Kernel", kerneldir);
     config_print("Syzkaller", syzdir);
-    config_print("Compilers", gcc_dir);
+    config_print("Compilers", compiler_dir);
     config_print("Ccache", ccache);
     config_print("Image", image);
     config_print("Image Key", image_key);

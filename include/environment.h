@@ -47,7 +47,8 @@ public:
     int makeprocs;                      // number of threads to using while making
 
     std::string home;                   // SyzInspector/
-    std::string gcc_dir;                // the directory housing all of the gcc compilers
+    std::string compiler_dir;           // the directory housing all of the gcc compilers
+    std::string compiler;               // gcc or clang
     std::string ccache;                 // location of ccache to use
     std::string image;                  // path to the image
     std::string image_key;              // path to the image key
@@ -57,7 +58,7 @@ public:
     std::string kerneldir;              // the directory that houses the kernel
     std::string syzwd;                  // wd-kaller
     std::string syzconfig;              // the config for syzkaller. We write this ourselves
-    std::string vmwd;
+    std::string vmwd;                   // wd-runner
     
     std::string logdir;                 // directory to put all the logs in
     std::string syzkaller_log;          // the log file to hold syzkaller output

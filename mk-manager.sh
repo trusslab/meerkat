@@ -35,7 +35,8 @@ writebugconfig () {
     echo "    \"wd\": \"${wd}\"," >> $bisectorconfig
     echo "    \"home\": \"${bisectdir}\"," >> $bisectorconfig
     echo "    \"syzkaller\": \"${bisectdir}syzkaller/\"," >> $bisectorconfig
-    echo "    \"compilers\": \"${gccdir}\"," >> $bisectorconfig
+    echo "    \"compilers\": \"${compilers}\"," >> $bisectorconfig
+    echo "    \"compiler\": \"gcc\"," >> $bisectorconfig # keep gcc the default until further notice
     echo "    \"ccache\": \"ccache\"," >> $bisectorconfig
     echo "    \"image\": \"${image}\"," >> $bisectorconfig
     echo "    \"image_key\": \"${imagekey}\"" >> $bisectorconfig
