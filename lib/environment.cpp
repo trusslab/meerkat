@@ -362,6 +362,7 @@ void Environment::print() const
     config_print("Kernel", kerneldir);
     config_print("Syzkaller", syzdir);
     config_print("Compilers", compiler_dir);
+    config_print("Compiler", compiler);
     config_print("Ccache", ccache);
     config_print("Image", image);
     config_print("Image Key", image_key);
