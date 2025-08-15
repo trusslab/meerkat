@@ -167,7 +167,7 @@ int Bisect::check_compiler_versions(const Environment &env)
     switch (compiler_type)
     {
     case CC_CLANG:
-        break;
+        return check_clang_versions(env);
     case CC_GCC:
     default:
         return check_gcc_versions(env);
@@ -218,11 +218,11 @@ std::string Bisect::get_compiler_for_commit(const Environment &env, Git &linux_g
     switch (compiler_type)
     {
     case CC_CLANG:
-        clang_mux(env, linux_git, kernel_hash);
+        compiler = clang_mux(env, linux_git, kernel_hash);
         break;
     case CC_GCC:
     default:
-        gcc_mux(env, linux_git, kernel_hash);
+        compiler = gcc_mux(env, linux_git, kernel_hash);
         break;
     }
     return (env.ccache.empty() ? "" : env.ccache + " ") + compiler;
