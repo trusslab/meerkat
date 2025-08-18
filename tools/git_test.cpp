@@ -22,6 +22,6 @@ int main(void)
     //cout << "v6.1 Date: " << git.get_tag_date("v6.1").get_date() << endl << flush;
     //cout << "2017-02-12 Commit: " << git.get_commit_by_date_raw(Date(2017, 2, 12)) << endl << flush;
     Version version = git.get_version_by_date_raw(Date(2020, 10, 6));
-    cout << version.name << " - " << version.date.get_date() << endl << flush;
+    cout << version.id << " - " << version.date.get_date() << endl << flush;
     return 0;
 }

@@ -16,7 +16,7 @@ class Version
 {
 public:
     std::string tag;
-    std::string name;
+    std::string id;
     Date date;
     bool skipped;
 
@@ -25,11 +25,11 @@ public:
     { return; }
 
     Version(const std::string &n, const Date &d)
-        : name(n), date(d), skipped(false)
+        : id(n), date(d), skipped(false)
     { return; }
 
     Version(const std::string &t, const std::string &n, const Date &d)
-        : tag(t), name(n), date(d), skipped(false)
+        : tag(t), id(n), date(d), skipped(false)
     { return; }
 
     std::string string() const;
@@ -51,9 +51,9 @@ std::vector<Version> get_only_stable(const std::vector<Version> &);
 Version get_version_by_date(const std::vector<Version> &, const Date &);
 Version get_stable_version_by_date(const std::vector<Version> &, const Date &);
 
-int get_index_by_name(const std::vector<Version> &, const std::string &, const int pos = 0);
+int get_index_by_id(const std::vector<Version> &, const std::string &, const int pos = 0);
 
-int get_index_by_name(const std::vector<Version_p> &, const std::string &, const int pos = 0);
+int get_index_by_id(const std::vector<Version_p> &, const std::string &, const int pos = 0);
 
 // get the index of the first (oldest) version on or after the given date
 int get_starting_index(const std::vector<Version> &, const Date &);

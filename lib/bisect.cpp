@@ -78,12 +78,12 @@ int Bisect::init(const Environment &env, Git &linux_git)
     if (check_compiler_versions(env) < 0)
         return -1;
 
-    anchor_version.name = env.anchor_hash;
+    anchor_version.id = env.anchor_hash;
     anchor_version.date = linux_git.get_commit_date(env.anchor_hash);
     
-    bisect_version.name.clear();
-    good_version.name.clear();
-    last_session.kernel.name.clear();
+    bisect_version.id.clear();
+    good_version.id.clear();
+    last_session.kernel.id.clear();
 
     return 0;
 }
@@ -96,9 +96,9 @@ int Bisect::set_mode(const Bisect_Mode &m)
 
 int Bisect::bisect_remaining(Git &linux_git) const
 {
-    if (bisect_version.name.empty() || good_version.name.empty())
+    if (bisect_version.id.empty() || good_version.id.empty())
         return -1;
-    return linux_git.bisect_remaining(bisect_version.name, good_version.name);
+    return linux_git.bisect_remaining(bisect_version.id, good_version.id);
 }
 
 int Bisect::remaining(Git &linux_git) const
@@ -242,7 +242,7 @@ int find_first_ancestor(Git &linux_git, const std::string &child, const std::vec
     while (r < l)
     {
         m = (r + l)/2;
-        if (linux_git.is_ancestor(child, list.at(m).name))
+        if (linux_git.is_ancestor(child, list.at(m).id))
         {
             l = m - 1;
             best = m;
@@ -273,7 +273,7 @@ int skip_tags(std::vector<Version> &releases)
 int Bisect::init_releases_phase(const Environment &env, Git &linux_git)
 {
     // We can get here after first or second anchor test.
-    Version anchor = good_version.name.empty() ? bisect_version : good_version;
+    Version anchor = good_version.id.empty() ? bisect_version : good_version;
 
     // Gather linux release tags, dates, and hashes
     releases = gather_release_versions(env, linux_git);
@@ -284,7 +284,7 @@ int Bisect::init_releases_phase(const Environment &env, Git &linux_git)
     }
 
     // Using commit date may be flakey here, so use git.
-    int i = find_first_ancestor(linux_git, anchor.name, releases);
+    int i = find_first_ancestor(linux_git, anchor.id, releases);
     if (i < 0)
     {
         std::cerr << "Error: Failed to find first ancestor tag.\n" << std::flush;
@@ -305,8 +305,8 @@ int Bisect::init_bisect_phase(Git &linux_git)
 {
     git_stop = false;
     // Switch over to git bisect for this phase
-    std::string bad = bisect_version.name;
-    std::string good = good_version.name;
+    std::string bad = bisect_version.id;
+    std::string good = good_version.id;
     linux_git.cleanup();
     linux_git.bisect_reset();
     if (linux_git.error() < 0)
@@ -368,7 +368,7 @@ bool Bisect::session_was_stable(const Session &session) const
 int Bisect::build_current_kernel(const Environment &env, Git &linux_git, bool bisecting)
 {
     std::string compiler;
-    compiler = get_compiler_for_commit(env, linux_git, current_session.kernel.name);
+    compiler = get_compiler_for_commit(env, linux_git, current_session.kernel.id);
     log_session_compiler(compiler);
     return prep_kernel(env, linux_git, current_session.kernel, compiler, bisecting);
 }
@@ -380,7 +380,7 @@ int Bisect::goto_anchor_session(const Environment &env, Git &linux_git)
         return -1;
 
     // Choose the anchor commit if this is the first round, or good versino if second round
-    Version linux_version = good_version.name.empty() ? anchor_version : good_version;
+    Version linux_version = good_version.id.empty() ? anchor_version : good_version;
 
     current_session = Session(linux_version, mode(), false);
     log_session_info(this_session(), inc_session());
@@ -417,7 +417,7 @@ retry:
     log_session_info(current_session, inc_session());
 
     // May be no need to rebuild kernel version
-    if (last_session.kernel.name == current_session.kernel.name)
+    if (last_session.kernel.id == current_session.kernel.id)
         return err;
 
     err = build_current_kernel(env, linux_git);
@@ -642,7 +642,7 @@ retry:
 // Set good_version to be the parent of the bisect_commit
 int Bisect::set_good_version(Git &linux_git)
 {
-    std::string parent = linux_git.get_first_parent(bisect_version.name);
+    std::string parent = linux_git.get_first_parent(bisect_version.id);
     Date parent_date = linux_git.get_commit_date(parent);
     good_version = Version(parent, parent_date);
     return 0;
@@ -763,10 +763,10 @@ std::string Bisect::print_partial_result(const Environment &env, Git &linux_git,
     ss << "\n" << title << "\n";
     if (!repro.empty())
         ss << "Reproducer:           " << repro << "\n";
-    if (!bisect_version.name.empty())
+    if (!bisect_version.id.empty())
     {
-        ss << "Bisection Result:     " << bisect_version.date.get_date() << " - " << bisect_version.name << "\n";
-        ss << "Bisected Commit Name: " << linux_git.get_commit_name(bisect_version.name) << "\n";
+        ss << "Bisection Result:     " << bisect_version.date.get_date() << " - " << bisect_version.id << "\n";
+        ss << "Bisected Commit Name: " << linux_git.get_commit_name(bisect_version.id) << "\n";
     }
     ss << "Stage Time:           " << runtime(stage_start) << "\n";
     ss << "Run Time:             " << runtime(start) << "\n";
@@ -781,10 +781,10 @@ std::string Bisect::print_result(const Environment &env, Git &linux_git, const s
     std::stringstream ss;
     ss << "Bug Name:             " << env.name << "\n";
     ss << "Bug Link:             " << env.buglink << "\n";
-    if (!bisect_version.name.empty())
+    if (!bisect_version.id.empty())
     {
-        ss << "Bisection Result:     " << bisect_version.date.get_date() << " - " << bisect_version.name << "\n";
-        ss << "Bisected Commit Name: " << linux_git.get_commit_name(bisect_version.name) << "\n";
+        ss << "Bisection Result:     " << bisect_version.date.get_date() << " - " << bisect_version.id << "\n";
+        ss << "Bisected Commit Name: " << linux_git.get_commit_name(bisect_version.id) << "\n";
     }
     else
     {
@@ -792,8 +792,8 @@ std::string Bisect::print_result(const Environment &env, Git &linux_git, const s
     }
     ss << "Run Time:             " << runtime(start) << "\n\n";
 
-    ss << "Anchor Commit:        " << anchor_version.date.get_date() << " - " << anchor_version.name << "\n";
-    ss << "Bisection Result:     " << bisect_version.date.get_date() << " - " << bisect_version.name << "\n";
+    ss << "Anchor Commit:        " << anchor_version.date.get_date() << " - " << anchor_version.id << "\n";
+    ss << "Bisection Result:     " << bisect_version.date.get_date() << " - " << bisect_version.id << "\n";
 
     return ss.str();
 }

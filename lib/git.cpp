@@ -401,7 +401,7 @@ Version Git::get_version_by_date_raw(const Date &date)
         err = -1;
         return vret;
     }
-    vret.name = spl.at(0);
+    vret.id = spl.at(0);
     vret.date = Date(spl.at(1));
     return vret;
 }

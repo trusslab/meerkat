@@ -10,18 +10,18 @@
 std::string Version::string() const
 {
     std::stringstream ss;
-    ss << date.get_date() << " - " << name << (tag.empty() ? "" : " ("+tag+")");
+    ss << date.get_date() << " - " << id << (tag.empty() ? "" : " ("+tag+")");
     return ss.str();
 }
 
 bool Version::operator==(const Version &other)
 {
-    return name == other.name;
+    return id == other.id;
 }
 
 bool Version::operator!=(const Version &other)
 {
-    return name != other.name;
+    return id != other.id;
 }
 
 // Mark commits between unstable versions as unstable.
@@ -103,17 +103,17 @@ Version get_stable_version_by_date(const std::vector<Version> &versions, const D
     return get_version_by_date(get_only_stable(versions2), date);
 }
 
-int get_index_by_name(const std::vector<Version> &versions, const std::string &name, const int pos)
+int get_index_by_id(const std::vector<Version> &versions, const std::string &id, const int pos)
 {
     int i = (pos < versions.size() ? pos : 0);
-    for (; i < versions.size() && name != versions.at(i).name; i++);
+    for (; i < versions.size() && id != versions.at(i).id; i++);
     return i < versions.size() ? i : -1;
 }
 
-int get_index_by_name(const std::vector<Version_p> &versions, const std::string &name, const int pos)
+int get_index_by_id(const std::vector<Version_p> &versions, const std::string &id, const int pos)
 {
     int i = (pos < versions.size() ? pos : 0);
-    for (; i < versions.size() && name != versions.at(i).v.name; i++);
+    for (; i < versions.size() && id != versions.at(i).v.id; i++);
     return i < versions.size() ? i : -1;
 }
 

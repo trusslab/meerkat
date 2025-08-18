@@ -40,7 +40,7 @@ public:
     { return kernel == other.kernel && mode == other.mode; }
 
     bool operator<(const Session &other) const
-    { return kernel.name + std::to_string(mode) < other.kernel.name + std::to_string(other.mode); }
+    { return kernel.id + std::to_string(mode) < other.kernel.id + std::to_string(other.mode); }
 };
 
 class Bisect

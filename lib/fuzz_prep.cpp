@@ -253,7 +253,7 @@ int prep_kernel(const Environment &env, Git &linux_git, const Version &linux_ver
     // if Bisecting, git bisect has already checked out the version
     if (!bisecting)
     {
-        err = linux_git.fetch_and_checkout(linux_version.name);
+        err = linux_git.fetch_and_checkout(linux_version.id);
         if (err < 0)
         {
             std::cerr << "Error: Failed to fetch/checkout linux finding commit\n" << std::flush;
@@ -614,7 +614,7 @@ int prep_syzkaller(const Environment &env, Git &syzkaller, const Version &syzkal
     }
 
     // download syzkaller (does not decide)
-    err = syzkaller.fetch_and_checkout(syzkaller_version.name);
+    err = syzkaller.fetch_and_checkout(syzkaller_version.id);
     if (err < 0)
         return err;
 
