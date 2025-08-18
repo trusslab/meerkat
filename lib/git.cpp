@@ -500,9 +500,9 @@ std::string Git::get_first_parent(const std::string &hash)
     return res;
 }
 
-bool Git::is_ancestor(const std::string &child, const std::string &maybe_parent)
+bool Git::is_ancestor(const std::string &maybe_ancestor, const std::string &child)
 {
-    err = git({"merge-base", "--is-ancestor", child, maybe_parent}, "/dev/null", true);
+    err = git({"merge-base", "--is-ancestor", maybe_ancestor, child}, "/dev/null", true);
     return (err == 0);
 }
 
