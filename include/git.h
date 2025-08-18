@@ -64,7 +64,7 @@ public:
     std::string get_current_commit();
     Version get_current_version();
     std::string get_commit_by_date_raw(const Date &);
-    Version get_version_by_date_raw(const Date &);
+    Version get_version_by_date(const Date &);
 
     Date get_commit_date(const std::string &);
     std::string get_commit_name(const std::string &);

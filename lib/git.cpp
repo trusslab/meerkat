@@ -386,7 +386,7 @@ std::string Git::get_commit_by_date_raw(const Date &date)
 }
 
 // git log -1 -s --until='date' --date=format:%Y-%m-%d --format='%H %cd'
-Version Git::get_version_by_date_raw(const Date &date)
+Version Git::get_version_by_date(const Date &date)
 {
     Version vret;
     std::string ret = git_read({"log", "-1", "--until="+date.get_date(), "-s", "--date=format:%Y-%m-%d", "--format=%H %cd"});
