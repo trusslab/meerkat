@@ -1,6 +1,7 @@
 #ifndef SYZKALLER_H
 #define SYZKALLER_H
 
+#include <environment.h>
 #include <json.h>
 
 #include <string>
@@ -65,12 +66,19 @@ private:
     bool enable_format(const JSON &);
 };
 
-std::string opts_from_syz_repro(const std::string &);
+// reads the reproducer file to determine how many
+// procs syzbot used to trigger the bug. The number
+// of procs can be used to determine the threadedness of the bug
+int get_procs_from_repro(const std::string &);
 
-// builds syzkaller for 386 POCs using syz-env
-int syz_env_cross_compile(const std::string &, const std::string & = "");
+// writes the syzkaller config to the config file.
+// also shifts the host port by one
+int write_syzkaller_config(const Environment &);
 
-// cleans up after syz-env because sudo
-int syz_env_clean(const std::string &);
+// deletes the syzkaller working directory and recreates it.
+void reset_kaller_wd(const Environment &);
+int prepare_kaller_wd(const Environment &);
+
+void reset_runner_wd(const Environment &);
 
 #endif

@@ -4,7 +4,7 @@
 #include <exec_api.h>
 #include <file_api.h>
 #include <fuzz.h>
-#include <fuzz_prep.h>
+#include <linux.h>
 #include <my_string.h>
 #include <result.h>
 #include <shell_api.h>

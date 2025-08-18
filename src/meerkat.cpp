@@ -4,13 +4,14 @@
 #include <date.h>
 #include <environment.h>
 #include <file_api.h>
-#include <fuzz_prep.h>
+#include <linux.h>
 #include <fuzz.h>
 #include <git.h>
 #include <my_string.h>
 #include <psf.h>
 #include <result.h>
 #include <shell_api.h>
+#include <syzkaller.h>
 #include <template_parse.h>
 
 #include <string>
@@ -30,7 +31,7 @@ using namespace std;
 // Use the same patches syz-bisect uses (pkg/vcs/linux_patches.go) https://github.com/google/syzkaller/blob/master/pkg/vcs/linux_patches.go#L23
     // git cherry-pick for patches, git apply for known diffs
 // check that procs # is not affecting hanging tasks
-// refactor fuzz_prep code -- extract linux specific, syzkaller specific
+// refactor linux code -- extract linux specific, syzkaller specific
 // fix oldest tested commit
 
 Git prep_kernel_local_repo(Environment &env)

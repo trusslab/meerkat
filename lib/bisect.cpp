@@ -3,7 +3,7 @@
 #include <environment.h>
 #include <file_api.h>
 #include <fuzz.h>
-#include <fuzz_prep.h>
+#include <linux.h>
 #include <git.h>
 #include <my_string.h>
 #include <result.h>
@@ -370,7 +370,7 @@ int Bisect::build_current_kernel(const Environment &env, Git &linux_git, bool bi
     std::string compiler;
     compiler = get_compiler_for_commit(env, linux_git, current_session.kernel.id);
     log_session_compiler(compiler);
-    return prep_kernel(env, linux_git, current_session.kernel, compiler, bisecting);
+    return build_kernel(env, linux_git, current_session.kernel, compiler, bisecting);
 }
 
 int Bisect::goto_anchor_session(const Environment &env, Git &linux_git)

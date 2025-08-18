@@ -2,9 +2,11 @@
 #include <file_api.h>
 #include <json.h>
 #include <my_string.h>
+#include <shell_api.h>
 #include <syzkaller.h>
 
 #include <iostream>
+#include <fstream>
 #include <string>
 #include <vector>
 
@@ -352,35 +354,178 @@ std::string ProgOpts::execopts_string() const
     return ret;
 }
 
-int syz_env_cross_compile(const std::string &syz_env, const std::string &outfile)
+int get_procs_from_repro(const std::string & repro)
 {
-    char command[] = "sudo";
-    char * arg1 = new char[syz_env.size() + 1];
-    strcpy(arg1, syz_env.c_str());
-    char arg2[] = "make";
-    char arg3[] = "TARGETVMARCH=amd64";
-    char arg4[] = "TARGETARCH=386";
+    int p = -1, pos0;
+    std::string line;
+    std::ifstream inf;
+    inf.open(repro);
+    if (!inf)
+    {
+        std::cerr << "Error: Failed to open file " << repro << ".\n";
+        return -1;
+    }
 
-    char * arg_list[] = {command, arg1, arg2, arg3, arg4, nullptr};
+    while (std::getline(inf, line))
+    {
+        pos0 = line.find("\"procs\":");
+        if (pos0 != std::string::npos)
+        {
+            pos0 += 8;
+            p = line.at(pos0) - '0';
+            break;
+        }
+    }
 
-    int err = exec_and_wait("sudo", arg_list, outfile, outfile);
-
-    delete[] arg1;
-    return (err != 0 ? -1 : 0);
+    inf.close();
+    return p;
 }
 
-int syz_env_clean(const std::string &syz_env)
+VMConfig determine_threadedness(Environment &env)
 {
-    char command[] = "sudo";
-    char * arg1 = new char[syz_env.size() + 1];
-    strcpy(arg1, syz_env.c_str());
-    char arg2[] = "make";
-    char arg3[] = "clean";
+    std::string reproducer = env.primary_repro.empty() ? list_dir(env.reprodir).front() : env.primary_repro;
+    int procs = get_procs_from_repro(reproducer);
+    switch (procs)
+    {
+    case 1:
+        env.vmc = env.vmst;
+        break;
+    case 6:
+        env.vmc = env.vmd;
+        break;
+    case 8:
+        env.vmc = env.vmr;
+        break;
+    default:
+        env.vmc = env.vmst;
+    }
+    return env.vmc;
+}
+
+int write_syzkaller_config(const Environment &env)
+{
+    std::ofstream outf;
+    outf.open(env.syzconfig);
+    if (!outf)
+    {
+        std::cerr << "Error: Failed to open file " << env.syzconfig << ".\n";
+        return -1;
+    }
+
+    outf << "{\n"
+         << "    \"target\": \"linux/amd64" << (env.arch == "i386" ? "/386" : "") << "\",\n"
+         << "    \"http\": \"127.0.0.1:" << env.port.port << "\",\n"
+         << "    \"workdir\": \"" << env.syzwd << "\",\n"
+         << "    \"kernel_obj\": \"" << env.kerneldir << "\",\n";
+
+    outf << "    \"image\": \"" << env.image << "\",\n"
+         << "    \"sshkey\": \"" << env.image_key << "\",\n";
+
+    outf << "    \"syzkaller\": \"" << env.syzdir << "\",\n"
+         << "    \"procs\": " << env.vmc.numProcs << ",\n"
+         << "    \"type\": \"qemu\",\n";
+    
+    outf << "    \"enable_syscalls\": " << env.syscall_string() << ",\n";
+
+    outf << "    \"reproduce\": false,\n"
+         << "    \"vm\": {\n"
+         << "        \"count\": " << env.vmc.numVM << ",\n"
+         << "        \"kernel\": \"" << env.kerneldir << "/arch/x86/boot/bzImage\",\n"
+         << "        \"cpu\": " << env.vmc.numCPU << ",\n"
+         << "        \"mem\": " << env.memory << "\n"
+         << "    }\n"
+         << "}\n";
+
+    outf.close();
+    return 0;
+}
+
+void reset_kaller_wd(const Environment &env)
+{
+    if (check_file(env.syzwd))
+        remove_dir(env.syzwd);
+
+    make_dir(env.syzwd);
+    make_dir(env.syzwd + "crashes");
+    return;
+}
+
+void reset_runner_wd(const Environment &env)
+{
+    if (check_file(env.vmwd))
+        remove_dir(env.vmwd);
+
+    make_dir(env.vmwd);
+    return;
+}
+
+// Calls syz-db (up)pack src dest.
+// assumes syzkaller has already been made.
+int syz_db(const Environment &env, const std::string &opt, const std::string &src, const std::string &dest)
+{
+    std::string com = env.syzdir + "bin/syz-db";
+    char * command = new char[com.size() + 1];
+    strcpy(command, com.c_str());
+    char * arg1 = new char[opt.size() + 1];
+    strcpy(arg1, opt.c_str());
+    char * arg2 = new char[src.size() + 1];
+    strcpy(arg2, src.c_str());
+    char * arg3 = new char[dest.size() + 1];
+    strcpy(arg3, dest.c_str());
 
     char * arg_list[] = {command, arg1, arg2, arg3, nullptr};
 
-    int err = exec_and_wait("sudo", arg_list);
+    int ret = exec_and_wait(com, arg_list, "/dev/null", "/dev/null");
 
+    delete[] command;
     delete[] arg1;
-    return (err != 0 ? -1 : 0);
+    delete[] arg2;
+    delete[] arg3;
+    return ret;
+}
+
+int syz_db_pack_corpus(const Environment &env, const std::string &corpusdir, const std::string &corpus)
+{
+    return syz_db(env, "pack", corpusdir, corpus);
+}
+
+int syz_db_unpack_corpus(const Environment &env, const std::string &corpusdir, const std::string &corpus)
+{
+    return syz_db(env, "unpack", corpus, corpusdir);
+}
+
+// Does the following as needed:
+// Unpack the previous corpus
+// Reset the working directory
+// Filter/Clear the previous corpus
+// Adds the PoCs to the corpus
+// Packs the corpus
+int prepare_kaller_wd(const Environment &env)
+{
+    int err = 0;
+    std::string corpus = env.syzwd + "corpus.db";
+    std::string corpusdir = env.wd + "corpus";
+
+    if (check_file(corpusdir))
+        remove_dir(corpusdir);
+    make_dir(corpusdir);
+
+    if (env.feats.stateful_corpus && check_file(corpus))
+    {
+        err = syz_db_unpack_corpus(env, corpusdir, corpus);
+        if (err < 0)
+            goto exit;
+    }
+
+    reset_kaller_wd(env);
+
+    // Copy the reproducers into the corpus directory
+    for (std::string repro : list_dir(env.reprodir))
+        copy(repro, corpusdir);
+    err = syz_db_pack_corpus(env, corpusdir, corpus);
+
+exit:
+    if (check_file(corpusdir))
+        remove_dir(corpusdir);
+    return err;
 }
