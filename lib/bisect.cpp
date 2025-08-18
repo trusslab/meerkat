@@ -69,6 +69,7 @@ int Bisect::init(const Environment &env, Git &linux_git)
     session_count = 0;
     repro_count = 0;
     phase = Bisect_Init;
+    treat_error_as_good = false;
     git_stop = false;
     defer_repro = false;
 
@@ -418,7 +419,7 @@ retry:
 
     // May be no need to rebuild kernel version
     if (last_session.kernel.id == current_session.kernel.id)
-        return err;
+        return 0;
 
     err = build_current_kernel(env, linux_git);
     if (err < 0)
@@ -666,6 +667,12 @@ int Bisect::record_kernel(const Test_Result &result, Git &linux_git)
         res = linux_git.bisect_good();
         good_version = current_session.kernel;
     }
+    else if (!result.stable && treat_error_as_good)
+    {
+        linux_git.cleanup();
+        res = linux_git.bisect_good();
+        good_version = current_session.kernel;
+    }
     else if (!result.stable)
     {
         linux_git.cleanup();
@@ -679,6 +686,7 @@ int Bisect::record_kernel(const Test_Result &result, Git &linux_git)
 
 int Bisect::record_release(const Test_Result &result)
 {
+    bool last_stable = last_session.stable;
     if (!already_fuzzed(current_session))
         archive_session(result);
     
@@ -687,8 +695,16 @@ int Bisect::record_release(const Test_Result &result)
         bisect_version = current_session.kernel;
     }
     else if (result.stable)
+    {
         good_version = current_session.kernel;
-    
+        treat_error_as_good = false;
+    }
+    else if (!result.stable && last_stable)
+    {
+        good_version = current_session.kernel;
+        treat_error_as_good = true;
+    }
+
     return 0;
 }
 

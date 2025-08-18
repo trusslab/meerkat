@@ -60,6 +60,8 @@ private:
 
     int index;
 
+    bool treat_error_as_good;
+
     bool git_stop;
 
     unsigned int repro_count;
