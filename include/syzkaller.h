@@ -66,6 +66,9 @@ private:
     bool enable_format(const JSON &);
 };
 
+// Ensure all of the binaries for Syzkaller are built. Return -1 if not.
+int check_syzkaller(const Environment &);
+
 // reads the reproducer file to determine how many
 // procs syzbot used to trigger the bug. The number
 // of procs can be used to determine the threadedness of the bug

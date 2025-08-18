@@ -9,6 +9,9 @@
 #include <vector>
 #include <iostream>
 
+// Initialize and pull the given repository
+Git prep_kernel_local_repo(Environment &);
+
 // Outer function to determine the threadedness of the bug.
 // Returns the allocation to use.
 VMConfig determine_threadedness(Environment &);

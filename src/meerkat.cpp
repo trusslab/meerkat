@@ -26,33 +26,10 @@ using namespace std;
 
 // TODO:
 // Check for broken programs when Syzkaller launches.
-// Use the same compilers syz-bisect uses (pkg/vcs/linux.go) https://github.com/google/syzkaller/blob/master/pkg/vcs/linux.go#L124
-    // automatically verify that they work
+// automatically verify that the compilers work
 // Use the same patches syz-bisect uses (pkg/vcs/linux_patches.go) https://github.com/google/syzkaller/blob/master/pkg/vcs/linux_patches.go#L23
     // git cherry-pick for patches, git apply for known diffs
 // check that procs # is not affecting hanging tasks
-// refactor linux code -- extract linux specific, syzkaller specific
-// fix oldest tested commit
-
-Git prep_kernel_local_repo(Environment &env)
-{
-    Git linux_git(env.kerneldir, env.repository, env.branch);
-    return linux_git;
-}
-
-int check_syzkaller(const Environment &env)
-{
-    vector<string> syzbins = { "syz-sysgen", "syz-symbolize", "syz-repro", "syz-prog2c", "syz-mutate", "syz-manager", "syz-db", "linux_amd64/syz-execprog", "linux_amd64/syz-executor" };
-    for (string bin : syzbins)
-    {
-        if (!check_file(env.syzdir + "bin/" + bin))
-        {
-            cerr << "Error: Syzkaller binary " << env.syzdir + "bin/" + bin << " was not found.\n" << flush;
-            return -1;
-        }
-    }
-    return 0;
-}
 
 vector<string> order_pocs(const Environment &env)
 {

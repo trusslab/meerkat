@@ -354,6 +354,20 @@ std::string ProgOpts::execopts_string() const
     return ret;
 }
 
+int check_syzkaller(const Environment &env)
+{
+    std::vector<std::string> syzbins = { "syz-sysgen", "syz-symbolize", "syz-repro", "syz-prog2c", "syz-mutate", "syz-manager", "syz-db", "linux_amd64/syz-execprog", "linux_amd64/syz-executor" };
+    for (std::string bin : syzbins)
+    {
+        if (!check_file(env.syzdir + "bin/" + bin))
+        {
+            std::cerr << "Error: Syzkaller binary " << env.syzdir + "bin/" + bin << " was not found.\n" << std::flush;
+            return -1;
+        }
+    }
+    return 0;
+}
+
 int get_procs_from_repro(const std::string & repro)
 {
     int p = -1, pos0;
