@@ -502,6 +502,19 @@ std::string Git::get_first_parent(const std::string &hash)
 
 bool Git::is_ancestor(const std::string &child, const std::string &maybe_parent)
 {
-    err = git({"merge-base", child, "--is-ancestor", maybe_parent}, "/dev/null", true);
-    return (err == 1);
+    err = git({"merge-base", "--is-ancestor", child, maybe_parent}, "/dev/null", true);
+    return (err == 0);
+}
+
+// git log --since 01-01-2005 --fixed-strings --grep "title" --oneline -s commit
+bool Git::commit_exists_by_title(const std::string &title_to_check, const std::string &commit)
+{
+    std::string out = git_read({"log", "--since", "01-01-2005", "--grep", title_to_check, "--oneline", "-s", commit});
+    return !out.empty();
+}
+
+int Git::cherry_pick(const std::string &hash)
+{
+    err = git({"cherry-pick", "--no-commit", hash}, "/dev/null", true);
+    return err;
 }

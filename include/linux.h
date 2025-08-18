@@ -9,6 +9,17 @@
 #include <vector>
 #include <iostream>
 
+class Backport {
+public:
+    std::string guilty_hash;
+    std::string fix_hash;
+    std::string title;
+
+    Backport(const std::string &g, const std::string &f, const std::string &t)
+        : guilty_hash(g), fix_hash(f), title(t)
+    {}
+};
+
 // Initialize and pull the given repository
 Git prep_kernel_local_repo(Environment &);
 

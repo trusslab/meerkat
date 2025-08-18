@@ -77,6 +77,9 @@ public:
 
     std::string get_first_parent(const std::string &);
     bool is_ancestor(const std::string &, const std::string &);
+    bool commit_exists_by_title(const std::string &, const std::string &);
+
+    int cherry_pick(const std::string &);
 };
 
 #endif

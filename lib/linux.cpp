@@ -183,6 +183,70 @@ void patch_kernel(const Environment &env, const Version &linux_version)
     // If it becomes a big issue, we can patch it.
 }
 
+std::string canonical_title(const std::string &title)
+{
+    return title;
+}
+
+// Apply the same backports as syz-bisect
+void apply_backports(const Environment &env, Git &linux_git, const Version &linux_version)
+{
+    // Here are patches and notes from the Syzkaller team.
+    std::vector<Backport> backports = {
+        // Compiling v4.6..v5.11 with a modern objtool, w/o this patch, results in the
+        // following issue, when compiling with clang:
+        // arch/x86/entry/thunk_64.o: warning: objtool: missing symbol table
+        // We don't bisect that far back with neither clang nor gcc, so this should be fine:
+        Backport("", "1d489151e9f9d1647110277ff77282fe4d96d09b", "objtool: Don't fail on missing symbol table"),
+        
+        // With newer compiler versions, kernel compilation fails with:
+        // subcmd-util.h:56:23: error: pointer may be used after ‘realloc’ [-Werror=use-after-free]
+        // 56 |                 ret = realloc(ptr, size);
+        // The guilty commit is from 2015, we don't bisect that far.
+        Backport("", "52a9dab6d892763b2a8334a568bd4e2c1a6fde66", "libsubcmd: Fix use-after-free for realloc(..., 0)"),
+
+        // A number of old releases fail with KASAN: use-after-free in task_active_pid_ns.
+        // The problem was actually present so long ago that we do not need to check whether
+        // the guilty commit is present. We don't bisect that back (v2.*) anyway.
+        Backport("", "0711f0d7050b9e07c44bc159bbc64ac0a1022c7f", "pid: take a reference when initializing `cad_pid`"),
+
+        // Fixes the following error:
+        // check.c:2865:58: error: '%d' directive output may be truncated writing between 1 and
+        // 10 bytes into a region of size 9 [-Werror=format-truncation=]
+        Backport("db2b0c5d7b6f19b3c2cab08c531b65342eb5252b", "82880283d7fcd0a1d20964a56d6d1a5cc0df0713", "objtool: Fix truncated string warning"),
+
+        // Fixes `boot failed: WARNING in kvm_wait`.
+        Backport("997acaf6b4b59c6a9c259740312a69ea549cc684", "f4e61f0c9add3b00bd5f2df3c814d688849b8707", "x86/kvm: Fix broken irq restoration in kvm_wait"),
+
+        // Fixes `error: implicit declaration of function 'acpi_mps_check'`.
+        Backport("342f43af70dbc74f8629381998f92c060e1763a2", "ea7b4244b3656ca33b19a950f092b5bbc718b40c", "x86/setup: Explicitly include acpi.h"),
+
+        // Fixes `BUG: KASAN: slab-use-after-free in binder_add_device` at boot.
+        Backport("12d909cac1e1c4147cc3417fee804ee12fc6b984", "e77aff5528a183462714f750e45add6cc71e276a", "binderfs: fix use-after-free in binder_devices"),
+
+        // Fixes `unregister_netdevice: waiting for batadv0 to become free. Usage count = 3`.
+        // Several v6.15-rc* tags are essentially unfuzzeable because of this.
+        Backport("00b35530811f2aa3d7ceec2dbada80861c7632a8", "10a77965760c6e2b3eef483be33ae407004df894", "batman-adv: Fix double-hold of meshif when getting enabled")
+    };
+
+    for (Backport bp : backports)
+    {
+        // If the guilty commit is not an ancestor, no need to patch.
+        if (!bp.guilty_hash.empty() && !linux_git.is_ancestor(bp.guilty_hash, linux_version.id))
+            continue;
+
+        // If the fix is present, also do not patch.
+        if (linux_git.commit_exists_by_title(bp.title, linux_version.id))
+            continue;
+
+        std::cout << "PATCH: " << bp.title << "\n" << std::flush;
+        if (linux_git.cherry_pick(bp.fix_hash) != 0)
+            std::cerr << "Failed to apply patch: " << bp.title << ". Continuing...\n" << std::flush;
+    }
+
+    return;
+}
+
 int build_kernel(const Environment &env, Git &linux_git, const Version &linux_version, const std::string &compiler, bool bisecting)
 {
     int err = 0;
@@ -205,6 +269,8 @@ int build_kernel(const Environment &env, Git &linux_git, const Version &linux_ve
 
     // copy over the config
     copy(env.kconfig, env.kerneldir + ".config");
+
+    apply_backports(env, linux_git, linux_version);
 
     // Handle Patches
     if (env.feats.patch_kernel)
