@@ -159,6 +159,7 @@ void log_safe_mode(int, int);
 void log_datetime();
 
 void log_session_info(const Session &, const int);
+void log_current_poc(const Environment &);
 void log_session_compiler(const std::string &);
 
 void log_kernel_build_error();

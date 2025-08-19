@@ -240,6 +240,7 @@ void Environment::default_features()
     feats.poc_test = true;
     feats.ff_test = true;
     feats.stateful_corpus = true;
+    feats.poc_all_pocs = true;
     return;
 }
 

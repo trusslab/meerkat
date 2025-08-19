@@ -555,6 +555,7 @@ Test_Result Bisect::test_anchor_ff(Environment &env)
 
 Test_Result Bisect::test_anchor_poc(Environment &env)
 {
+    log_current_poc(env);
     Test_Result result = poc_loop(env);
     return result;
 }
@@ -915,6 +916,11 @@ void log_session_info(const Session &session, const int count)
     std::cout << "\n" << get_datetime() << ""
               << std::left << std::setw(SESHW) << "Session:" << count << "\n"
               << std::left << std::setw(SESHW) << "Kernel:" << session.kernel.string() << "\n" << std::flush;
+}
+
+void log_current_poc(const Environment &env)
+{
+    std::cout << std::left << std::setw(SESHW) << "PoC:" << env.primary_repro << "\n" << std::flush;
 }
 
 void log_session_compiler(const std::string &compiler)

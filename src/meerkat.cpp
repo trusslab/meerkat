@@ -30,6 +30,7 @@ using namespace std;
 // Use the same patches syz-bisect uses (pkg/vcs/linux_patches.go) https://github.com/google/syzkaller/blob/master/pkg/vcs/linux_patches.go#L23
     // git cherry-pick for patches, git apply for known diffs
 // check that procs # is not affecting hanging tasks
+// Print gcc/clang and ld versions
 
 vector<string> order_pocs(const Environment &env)
 {
