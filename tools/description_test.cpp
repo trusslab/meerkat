@@ -57,7 +57,7 @@ int main(int argc, char ** argv)
         return -1;
     }
 
-    vector<string> syscalls = get_reproduer_syscall_descriptions(env);
+    vector<string> syscalls = get_reproducer_syscall_descriptions(env);
 
     for (string syscall : syscalls)
         cout << syscall << endl << flush;

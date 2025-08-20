@@ -199,7 +199,7 @@ int bisect(Environment &env)
     }
 
     if (bisector.mode() == Mode_FF)
-        env.required_syscalls = get_reproduer_syscall_descriptions(env);
+        env.required_syscalls = get_reproducer_syscall_descriptions(env);
 
     env.print();
 

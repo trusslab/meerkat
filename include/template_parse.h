@@ -12,6 +12,6 @@ std::vector<std::string> slim_template(Environment &, const std::vector<std::str
 // creates a vector with a list of all the .txt files in the given template.
 std::vector<std::string> list_template_files(const std::string &, bool);
 
-std::vector<std::string> get_reproduer_syscall_descriptions(Environment &);
+std::vector<std::string> get_reproducer_syscall_descriptions(Environment &);
 
 #endif

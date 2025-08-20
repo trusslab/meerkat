@@ -5,6 +5,7 @@
 
 #include <iostream>
 #include <fstream>
+#include <map>
 #include <vector>
 #include <string>
 #include <cctype>
@@ -453,10 +454,19 @@ void get_one_producer_syscall(const TypeTag &this_resource, vector<TypeTag> &nee
                         const vector<Union> &unions, const vector<Structure> &structures)
 {
     int index;
-    // manual adding for uid and gid
-    if (this_resource.get_name() == "uid" || this_resource.get_name() == "gid")
+    // Manually check for some resources that are difficult for one reason or another.
+    std::map<std::string, std::string> problematic = {
+        {"uid", "getuid"},
+        {"gid", "getgid"},
+        {"fd_perf_base", "perf_event_open"},
+        {"fd_bpf_token", "bpf$TOKEN_CREATE"},
+        {"fd_bpf_const_str", "bpf$MAP_UPDATE_CONST_STR"},
+        {"tail_call_map", "bpf$MAP_UPDATE_ELEM_TAIL_CALL"}
+    };
+
+    if (problematic.count(this_resource.get_name()) == 1)
     {
-        index = find_in_items(items, TypeTag(syscallClass, "get" + this_resource.get_name()));
+        index = find_in_items(items, TypeTag(syscallClass, problematic.at(this_resource.get_name())));
         if (!is_in_needed(needed, items.at(index)))
             needed.push_back(items.at(index));
         return;
@@ -504,6 +514,27 @@ void get_one_producer_syscall(const TypeTag &this_resource, vector<TypeTag> &nee
     else
         cerr << "Warning: No syscall found that produces " << this_resource.get_name() << ".\n";
     return;
+}
+
+void push_syscall_depends(vector<Syscall> &syscalls, int index, vector<TypeTag> &needed, vector<TypeTag> &items)
+{
+    syscalls.at(index).push_depends(needed, items);
+
+    // It seems we are not finding resources for some syscalls. Add them manually.
+    std::map<std::string, std::vector<TypeTag>> problematic = {
+        {"bpf$BPF_PROG_RAW_TRACEPOINT_LOAD", {TypeTag(resourceClass, "tail_call_map")}},
+        {"bpf$BPF_BTF_LOAD", {TypeTag(syscallClass, "bpf$TOKEN_CREATE")}}
+    };
+
+    if (problematic.count(syscalls.at(index).get_name()) == 1)
+    {
+        for (TypeTag tag : problematic.at(syscalls.at(index).get_name()))
+        {
+            index = find_in_items(items, tag);
+            if (!is_in_needed(needed, items.at(index)))
+                needed.push_back(items.at(index));
+        }
+    }
 }
 
 vector<string> slim_template(Environment &env, const string &full_template)
@@ -720,7 +751,7 @@ vector<string> slim_template(Environment &env, const string &full_template)
             flags.at(index).push_depends(needed, items);
             break;
         case syscallClass:
-            syscalls.at(index).push_depends(needed, items);
+            push_syscall_depends(syscalls, index, needed, items);
             break;
         default:
             cout << "Warning: Unknown class type found while grabbing dependencies.\n";
@@ -755,7 +786,7 @@ vector<string> list_template_files(const string &template_dir, bool hasauto)
     return files;
 }
 
-vector<string> get_reproduer_syscall_descriptions(Environment &env)
+vector<string> get_reproducer_syscall_descriptions(Environment &env)
 {
     string full_template = env.syzdir + "sys/linux";
     vector<string> syscalls = slim_template(env, full_template);
