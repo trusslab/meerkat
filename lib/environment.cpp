@@ -1,5 +1,6 @@
 #include <consts.h>
 #include <environment.h>
+#include <exec_api.h>
 #include <file_api.h>
 #include <json.h>
 #include <my_string.h>
@@ -12,6 +13,8 @@
 #include <fstream>
 #include <iostream>
 #include <iomanip>
+
+#include <string.h>
 
 int Environment::init()
 {
@@ -337,6 +340,21 @@ void Environment::config_print(const std::string &label, const std::string &conf
               << config << std::endl << std::flush;
 }
 
+std::string __version(const std::string &cmd)
+{
+    char * command = new char[cmd.size() + 1];
+    strcpy(command, cmd.c_str());
+    char arg1[] = "--version";
+
+    char * arg_list[] = {command, arg1, nullptr};
+    std::string ret = exec_and_read(cmd, arg_list);
+
+    ret = split(ret, '\n').at(0);
+
+    delete[] command;
+    return ret;
+}
+
 void Environment::print() const
 {
     config_print("Syzbot Link", buglink);
@@ -363,8 +381,9 @@ void Environment::print() const
     config_print("Kernel", kerneldir);
     config_print("Syzkaller", syzdir);
     config_print("Compilers", compiler_dir);
-    config_print("Compiler", compiler);
-    config_print("Ccache", ccache);
+    config_print("Compiler", __version(compiler));
+    config_print("Linker", __version("ld"));
+    config_print("Ccache", __version(ccache));
     config_print("Image", image);
     config_print("Image Key", image_key);
     std::cout << std::endl;
