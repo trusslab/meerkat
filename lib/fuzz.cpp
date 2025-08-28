@@ -342,10 +342,13 @@ Test_Result poc_loop(Environment &env)
         return result;
     }
 
+    // TODO: Try this command: /syz-execprog -executor=/syz-executor -arch=amd64 -sandbox=none -procs=1 -repeat=0 -threaded=true -collide=false -cover=0 -optional=slowdown=1:sandboxArg=0 /syzkaller2976420098
+
     // Run the prog
     vmpool.copy_all(env.primary_repro);
     vmpool.copy_all(env.syzdir + "bin/linux_amd64/syz-execprog");
     vmpool.copy_all(env.syzdir + "bin/linux_amd64/syz-executor");
+    //std::string cmd = "./syz-execprog -executor=/syz-executor -arch=amd64 -sandbox=none -procs=1 -repeat=0 -threaded=true -collide=false -cover=0 -optional=slowdown=1:sandboxArg=0 " + split(env.primary_repro, '/').back();
     std::string cmd = "./syz-execprog -executor=./syz-executor " + opts.execopts_string() + " " + split(env.primary_repro, '/').back();
     vmpool.run_all(cmd);
     // timeout used by syzkaller

@@ -27,10 +27,9 @@ using namespace std;
 // TODO:
 // Check for broken programs when Syzkaller launches.
 // automatically verify that the compilers work
-// Use the same patches syz-bisect uses (pkg/vcs/linux_patches.go) https://github.com/google/syzkaller/blob/master/pkg/vcs/linux_patches.go#L23
-    // git cherry-pick for patches, git apply for known diffs
+// canonical title
 // check that procs # is not affecting hanging tasks
-// Print gcc/clang and ld versions
+// Use older Syzkaller?
 
 vector<string> order_pocs(const Environment &env)
 {
@@ -297,7 +296,7 @@ void print_help()
         << "    --config (c) [config.cfg]: [config]: REQUIRED. The config file containing the bug information.\n"
         << "    --anchor (a) [hash]: REQUIRED. the hash of the commit where the bug was found.\n"
         << "    --feature (F) [feature list]: features to use.\n"
-        << "         [ all, default, poc-test, ff-test, setup-only, find-only, poc-all-pocs, ff-no-find-backup, stateful-corpus, patch-kernel ]"
+        << "         [ default, poc-test, ff-test, setup-only, find-only, poc-all-pocs, ff-no-find-backup, stateful-corpus, no-patch-kernel, obselete-patches ]"
         << endl << flush;
 }
 

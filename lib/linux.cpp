@@ -26,6 +26,52 @@ Git prep_kernel_local_repo(Environment &env)
     return linux_git;
 }
 
+std::set<std::string> gather_commit_tags(const Environment &env, Git &linux_git, const std::string &commit)
+{
+    std::string tagfile = env.wd + "linux_release_tags.txt";
+    std::set<std::string> releases;
+    linux_git.dump_commit_past_tags(commit, tagfile);
+    
+    std::ifstream inf;
+    inf.open(tagfile);
+    std::string tag;
+    while (getline(inf, tag))
+    {
+        tag = chomp(tag);
+        releases.insert(tag);
+        // We don't stop at the earliet tested commit for this one.
+        // The older tags still exist in the commit and are useful.
+    }
+    inf.close();
+    remove_file(tagfile);
+
+    tag = linux_git.commit_tag(commit);
+    if (releases.count(tag) == 0)
+        releases.insert(tag);
+    return releases;
+}
+
+std::vector<Version> gather_release_versions(const Environment &env, Git &linux_git)
+{
+    std::string tagfile = env.wd + "linux_release_tags.txt";
+    std::vector<Version> releases;
+    linux_git.dump_tags(tagfile);
+    
+    std::ifstream inf;
+    inf.open(tagfile);
+    std::string tag;
+    while (getline(inf, tag))
+    {
+        tag = chomp(tag);
+        releases.push_back(Version(tag, linux_git.get_tag_hash(tag), linux_git.get_tag_date(tag)));
+        if (tag == EARLIEST_TESTED_VERSION)
+            break;
+    }
+    inf.close();
+    remove_file(tagfile);
+    return releases;
+}
+
 // sets the specified config "con" in the config file "lines"
 int set_config(const std::string &con, std::vector<std::string> &lines)
 {
@@ -189,6 +235,7 @@ std::string canonical_title(const std::string &title)
 }
 
 // Apply the same backports as syz-bisect
+// From https://github.com/google/syzkaller/blob/master/pkg/vcs/linux_patches.go#L23
 void apply_backports(const Environment &env, Git &linux_git, const Version &linux_version)
 {
     // Here are patches and notes from the Syzkaller team.
@@ -247,11 +294,160 @@ void apply_backports(const Environment &env, Git &linux_git, const Version &linu
     return;
 }
 
-int build_kernel(const Environment &env, Git &linux_git, const Version &linux_version, const std::string &compiler, bool bisecting)
+int write_config(const Environment &env, Git &linux_git, const Version &linux_version, bool fuzzing = true)
+{
+    std::vector<std::string> lines;
+    if (!load_file(env.kconfig, lines))
+    {
+        std::cerr << "Failed to read kernel config: " << env.kconfig << "\n" << std::flush;
+        return -1;
+    }
+
+    std::vector<KConfigChange> changes = {
+        // 5.2 has CONFIG_SECURITY_TOMOYO_INSECURE_BUILTIN_SETTING which allows to test tomoyo better.
+		// This config also enables CONFIG_SECURITY_TOMOYO_OMIT_USERSPACE_LOADER
+		// but we need it disabled to boot older kernels.
+		KConfigChange("SECURITY_TOMOYO_OMIT_USERSPACE_LOADER", "", "v5.2"),
+		// Kernel is boot broken before 4.15 due to double-free in vudc_probe:
+		// https://lkml.org/lkml/2018/9/7/648
+		// Fixed by e28fd56ad5273be67d0fae5bedc7e1680e729952.
+		KConfigChange("USBIP_VUDC", "", "v4.15"),
+		// CONFIG_CAN causes:
+		// all runs: crashed: INFO: trying to register non-static key in can_notifier
+		// for v4.11..v4.12 and v4.12..v4.13 ranges.
+		// Fixed by 74b7b490886852582d986a33443c2ffa50970169.
+		KConfigChange("CAN", "", "v4.13"),
+		// Setup of network devices is broken before v4.12 with a "WARNING in hsr_get_node".
+		// Fixed by 675c8da049fd6556eb2d6cdd745fe812752f07a8.
+		KConfigChange("HSR", "", "v4.12"),
+		// Setup of network devices is broken before v4.12 with a "WARNING: ODEBUG bug in __sk_destruct"
+		// coming from smc_release.
+		KConfigChange("SMC", "", "v4.12"),
+		// Kernel is boot broken before 4.10 with a lockdep warning in vhci_hcd_probe.
+		KConfigChange("USBIP_VHCI_HCD", "", "v4.10"),
+		KConfigChange("BT_HCIVHCI", "", "v4.10"),
+		// Setup of network devices is broken before v4.7 with a deadlock involving team.
+		KConfigChange("NET_TEAM", "", "v4.7"),
+		// Setup of network devices is broken before v4.5 with a warning in batadv_tvlv_container_remove.
+		KConfigChange("BATMAN_ADV", "", "v4.5"),
+		// UBSAN is broken in multiple ways before v5.3, see:
+		// https://github.com/google/syzkaller/issues/1523#issuecomment-696514105
+		KConfigChange("UBSAN", "", "v5.3"),
+		// First, we disable coverage in pkg/bisect because it fails machine testing starting from 4.7.
+		// Second, at 6689da155bdcd17abfe4d3a8b1e245d9ed4b5f2c CONFIG_KCOV selects CONFIG_GCC_PLUGIN_SANCOV
+		// (why?), which is build broken for hundreds of revisions.
+		// However, as there's a chance that KCOV might positively affect bug reproduction rate, let's
+		// keep it for newer kernel revisions. Bisection algorithm will try to drop it anyway during
+		// kernel config minimization.
+		KConfigChange("KCOV", "", "v5.4"),
+		// This helps to produce stable binaries in presence of kernel tag changes.
+		KConfigChange("LOCALVERSION_AUTO", "", "always"),
+		// BTF fails lots of builds with:
+		// pahole version v1.9 is too old, need at least v1.13
+		// Failed to generate BTF for vmlinux. Try to disable CONFIG_DEBUG_INFO_BTF.
+		KConfigChange("DEBUG_INFO_BTF", "", "always"),
+		// This config only adds debug output. It should not be enabled at all,
+		// but it was accidentially enabled on some instances for some periods of time,
+		// and kernel is boot-broken for prolonged ranges of commits with deadlock
+		// which makes bisections take weeks.
+		KConfigChange("DEBUG_KOBJECT", "", "always"),
+		// This config is causing problems to kernel signature calculation as new initramfs is generated
+		// as a part of every build. Due to this init.data section containing this generated initramfs
+		// is differing between builds causing signture being random number.
+		KConfigChange("BLK_DEV_INITRD", "", "always"),
+        // Even though ORC unwinder was introduced a long time ago, it might have been broken for
+		// some time. 5.4 is chosen as a version tag, where ORC unwinder seems to work properly.
+		KConfigChange("UNWINDER_ORC", "UNWINDER_FRAME_POINTER", "v5.4")
+    };
+
+    // TODO: functionize this
+    bool need_ubsan = false;
+    if (env.name.find("UBSAN") != std::string::npos)
+        need_ubsan = true;
+    for (std::string d : env.duplicates)
+        if (d.find("UBSAN") != std::string::npos)
+            need_ubsan = true;
+
+    std::set<std::string> tags = gather_commit_tags(env, linux_git, linux_version.id);
+    for (KConfigChange config : changes)
+    {
+        if (config.disable == "KCOV" && fuzzing)
+            continue;
+        
+        if (config.disable == "UBSAN" && need_ubsan)
+            continue;
+
+        if (config.version == "always" || tags.count(config.version) == 0)
+        {
+            if (!config.disable.empty())
+            {
+                std::cout << "CONFIG: Disabling CONFIG_" << config.disable << "\n" << std::flush;
+                unset_config("CONFIG_" + config.disable, lines);
+            }
+            
+            if (!config.enable.empty())
+            {
+                std::cout << "CONFIG: Enabling CONFIG_" << config.enable << "\n" << std::flush;
+                set_config("CONFIG_" + config.enable, lines);
+            }
+        }
+    }
+
+    if (!write_file(env.kerneldir + ".config", lines))
+    {
+        std::cerr << "Failed to write kernel config.\n" << std::flush;
+        return -1;
+    }
+
+    return 0;
+}
+
+void apply_reproducible_build(const Environment &env)
+{
+    // From Documentation/kbuild/reproducible-builds.rst
+
+    // Give the kernel a randstruct seed
+    if (check_file(env.kerneldir + "scripts/gcc-plugins"))
+        write_file(env.kerneldir + "scripts/gcc-plugins/randomize_layout_seed.h", {"const char *randstruct_seed = \"e9db0ca5181da2eedb76eba144df7aba4b7f9359040ee58409765f2bdc4cb3b8\";"});
+
+    // Give the kernel a signing key
+    if (check_file(env.kerneldir + "certs"))
+    {
+        write_file(env.kerneldir + "certs/signing_key.pem", {
+            "-----BEGIN PRIVATE KEY-----",
+            "MIIBVAIBADANBgkqhkiG9w0BAQEFAASCAT4wggE6AgEAAkEAxu5GRXw7d13xTLlZ",
+            "GT1y63U4Firk3WjXapTgf9radlfzpqheFr5HWO8f11U/euZQWXDzi+Bsq+6s/2lJ",
+            "AU9XWQIDAQABAkB24ZxTGBv9iMGURUvOvp83wRRkgvvEqUva4N+M6MAXagav3GRi",
+            "K/gl3htzQVe+PLGDfbIkstPJUvI2izL8ZWmBAiEA/P72IitEYE4NQj4dPcYglEYT",
+            "Hbh2ydGYFbYxvG19DTECIQDJSvg7NdAaZNd9faE5UIAcLF35k988m9hSqBjtz0tC",
+            "qQIgGOJC901mJkrHBxLw8ViBb9QMoUm5dVRGLyyCa9QhDqECIQCQGLX4lP5DVrsY",
+            "X43BnMoI4Q3o8x1Uou/JxAIMg1+J+QIgamNCPBLeP8Ce38HtPcm8BXmhPKkpCXdn",
+            "uUf4bYtfSSw=",
+            "-----END PRIVATE KEY-----",
+            "-----BEGIN CERTIFICATE-----",
+            "MIIBvzCCAWmgAwIBAgIUKoM7Idv4nw571nWDgYFpw6I29u0wDQYJKoZIhvcNAQEF",
+            "BQAwLjEsMCoGA1UEAwwjQnVpbGQgdGltZSBhdXRvZ2VuZXJhdGVkIGtlcm5lbCBr",
+            "ZXkwIBcNMjAxMDA4MTAzMzIwWhgPMjEyMDA5MTQxMDMzMjBaMC4xLDAqBgNVBAMM",
+            "I0J1aWxkIHRpbWUgYXV0b2dlbmVyYXRlZCBrZXJuZWwga2V5MFwwDQYJKoZIhvcN",
+            "AQEBBQADSwAwSAJBAMbuRkV8O3dd8Uy5WRk9cut1OBYq5N1o12qU4H/a2nZX86ao",
+            "Xha+R1jvH9dVP3rmUFlw84vgbKvurP9pSQFPV1kCAwEAAaNdMFswDAYDVR0TAQH/",
+            "BAIwADALBgNVHQ8EBAMCB4AwHQYDVR0OBBYEFPhQx4etmYw5auCJwIO5QP8Kmrt3",
+            "MB8GA1UdIwQYMBaAFPhQx4etmYw5auCJwIO5QP8Kmrt3MA0GCSqGSIb3DQEBBQUA",
+            "A0EAK5moCH39eLLn98pBzSm3MXrHpLtOWuu2p696fg/ZjiUmRSdHK3yoRONxMHLJ",
+            "1nL9cAjWPantqCm5eoyhj7V7gg==",
+            "-----END CERTIFICATE-----"
+        });
+    }
+}
+
+int build_kernel(const Environment &env, Git &linux_git, const Version &linux_version, const std::string &compiler, bool bisecting, bool fuzzing)
 {
     int err = 0;
     std::string old_dir = pwd();
-    clean_kernel(env);
+
+    // for note, Syzkaller uses distclean, oldconfig, and bzimage for make. I have been using clean + git clean, olddefconfig, and "".
+    // It also has some KBUILD variables set
+
     linux_git.cleanup();
 
     // downloads the kernel version (does not decide)
@@ -265,28 +461,30 @@ int build_kernel(const Environment &env, Git &linux_git, const Version &linux_ve
             return -1;
         }
     }
+
+    clean_kernel(env);
     
+    if (!env.feats.no_patch_kernel)
+        apply_backports(env, linux_git, linux_version);
 
-    // copy over the config
-    copy(env.kconfig, env.kerneldir + ".config");
+    write_config(env, linux_git, linux_version, fuzzing);
 
-    apply_backports(env, linux_git, linux_version);
+    apply_reproducible_build(env);
 
     // Handle Patches
-    if (env.feats.patch_kernel)
+    if (env.feats.obselete_patches)
         patch_kernel(env, linux_version);
-
-    // TODO: apply_backports
 
     // build the kernel
     cd(env.kerneldir);
-    err = make(env.makeprocs, {"olddefconfig", "CC="+compiler}, env.kbuildlog());
+    err = make(env.makeprocs, {"olddefconfig", "ARCH=x86_64", "CC="+compiler}, env.kbuildlog());
     if (err < 0)
         return err;
-    err = make(env.makeprocs, "CC="+compiler, env.kbuildlog());
+    err = make(env.makeprocs, {"bzImage", "ARCH=x86_64", "CC="+compiler}, env.kbuildlog());
     if (err < 0)
     {
         std::cerr << "Error: The kernel failed to make.\n";
+        cd(old_dir);
         return err;
     }
     cd(old_dir);
@@ -299,7 +497,7 @@ int clean_kernel(const Environment &env)
     int err = 0;
 
     cd(env.kerneldir);
-    err = make(1, "clean", env.kbuildlog());
+    err = make(1, std::vector<std::string>({"distclean", "ARCH=x86_64"}), env.kbuildlog());
     cd(old_dir);
 
     return (err == 0 ? 0 : -1);

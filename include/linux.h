@@ -20,8 +20,22 @@ public:
     {}
 };
 
+class KConfigChange {
+public:
+    std::string disable;
+    std::string enable;
+    std::string version;
+
+    KConfigChange(const std::string &d, const std::string &e, const std::string &v)
+        : disable(d), enable(e), version(v)
+    {};
+};
+
 // Initialize and pull the given repository
 Git prep_kernel_local_repo(Environment &);
+
+std::set<std::string> gather_commit_tags(const Environment &, Git &, const std::string &);
+std::vector<Version> gather_release_versions(const Environment &, Git &);
 
 // Outer function to determine the threadedness of the bug.
 // Returns the allocation to use.
@@ -35,7 +49,7 @@ int unset_kernel_config(const std::string &, const std::vector<std::string> &);
 
 // Grabs the correct kernel version, applies any patches needed,
 // copies the config in, and build the kernel
-int build_kernel(const Environment &, Git &, const Version &, const std::string &, bool = false);
+int build_kernel(const Environment &, Git &, const Version &, const std::string &, bool = false, bool = true);
 
 // runs make clean
 int clean_kernel(const Environment &);

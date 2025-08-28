@@ -18,52 +18,6 @@
 #include <sstream>
 #include <chrono>
 
-std::set<std::string> gather_commit_tags(const Environment &env, Git &linux_git, const std::string &commit)
-{
-    std::string tagfile = env.wd + "linux_release_tags.txt";
-    std::set<std::string> releases;
-    linux_git.dump_commit_past_tags(commit, tagfile);
-    
-    std::ifstream inf;
-    inf.open(tagfile);
-    std::string tag;
-    while (getline(inf, tag))
-    {
-        tag = chomp(tag);
-        releases.insert(tag);
-        if (tag == EARLIEST_TESTED_VERSION)
-            break;
-    }
-    inf.close();
-    remove_file(tagfile);
-
-    tag = linux_git.commit_tag(commit);
-    if (releases.count(tag) == 0)
-        releases.insert(tag);
-    return releases;
-}
-
-std::vector<Version> gather_release_versions(const Environment &env, Git &linux_git)
-{
-    std::string tagfile = env.wd + "linux_release_tags.txt";
-    std::vector<Version> releases;
-    linux_git.dump_tags(tagfile);
-    
-    std::ifstream inf;
-    inf.open(tagfile);
-    std::string tag;
-    while (getline(inf, tag))
-    {
-        tag = chomp(tag);
-        releases.push_back(Version(tag, linux_git.get_tag_hash(tag), linux_git.get_tag_date(tag)));
-        if (tag == EARLIEST_TESTED_VERSION)
-            break;
-    }
-    inf.close();
-    remove_file(tagfile);
-    return releases;
-}
-
 int Bisect::init(const Environment &env, Git &linux_git)
 {
     session_count = 0;
@@ -371,7 +325,7 @@ int Bisect::build_current_kernel(const Environment &env, Git &linux_git, bool bi
     std::string compiler;
     compiler = get_compiler_for_commit(env, linux_git, current_session.kernel.id);
     log_session_compiler(compiler);
-    return build_kernel(env, linux_git, current_session.kernel, compiler, bisecting);
+    return build_kernel(env, linux_git, current_session.kernel, compiler, bisecting, (bisect_mode == Mode_FF));
 }
 
 int Bisect::goto_anchor_session(const Environment &env, Git &linux_git)

@@ -39,7 +39,8 @@ int Environment::init()
     feats.poc_all_pocs = false;
     feats.ff_no_find_backup = false;
     feats.stateful_corpus = false;
-    feats.patch_kernel = false;
+    feats.no_patch_kernel = false;
+    feats.obselete_patches = false;
 
     return 0;
 }
@@ -254,16 +255,6 @@ int Environment::handle_features(const std::set<std::string> &features)
         default_features();
         return 0;
     }
-
-    // PoC usage will be determined in manager/by user (?)
-
-    if (features.find("all") != features.end())
-    {
-        feats.ff_test = true;
-        feats.poc_test = true;
-        feats.stateful_corpus = true;
-        feats.patch_kernel = true;
-    }
     
     if (features.find("poc-test") != features.end())
     {
@@ -310,9 +301,14 @@ int Environment::handle_features(const std::set<std::string> &features)
         
     }
 
-    if (features.find("patch-kernel") != features.end())
+    if (features.find("no-patch-kernel") != features.end())
     {
-        feats.patch_kernel = true;
+        feats.no_patch_kernel = true;
+    }
+
+    if (features.find("obselete-patches") != features.end())
+    {
+        feats.obselete_patches = true;
     }
 
     // check that at least one feature is set

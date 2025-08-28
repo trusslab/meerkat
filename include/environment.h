@@ -26,7 +26,8 @@ public:
     bool ff_no_find_backup;
     bool poc_all_pocs;
     bool stateful_corpus;
-    bool patch_kernel;
+    bool no_patch_kernel;
+    bool obselete_patches;
 };
 
 class Environment

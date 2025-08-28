@@ -9,7 +9,7 @@
 #define DEFAULT_FUZZ_TIMES 1
 #define MAX_FUZZ_TIMES 3
 
-#define EARLIEST_TESTED_VERSION "v4.9"
+#define EARLIEST_TESTED_VERSION "v4.19"
 
 // Resource Allocation for a single instance of Syzkaller
 // VM -> the number of VMs to be given to syzkaller
