@@ -58,6 +58,14 @@ std::string chomp(const std::string &str)
     return ends_with(str, "\n") ? str.substr(0, str.size() - 1) : str;
 }
 
+// Removes spaces from the front of a string (using isspace from cctype)
+std::string trim_space(std::string str)
+{
+    int pos = 0;
+    for (pos = 0; pos < str.size() && isspace(str.at(pos)); pos++);
+    return str.substr(pos);
+}
+
 bool is_hash(const std::string &str)
 {
     bool ishash = true;

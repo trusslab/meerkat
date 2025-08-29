@@ -2,7 +2,9 @@
 # Copyright 2016 syzkaller project authors. All rights reserved.
 # Use of this source code is governed by Apache 2 LICENSE that can be found in the LICENSE file.
 
-# create-image.sh creates a minimal Debian-wheezy Linux image suitable for syzkaller.
+# Code modified by JTBursey for use with Meerkat
+
+# create-image.sh creates a minimal Debian-wheezy Linux image suitable for syzkaller/meerkat.
 
 set -eux
 
@@ -23,7 +25,7 @@ echo "net.core.bpf_jit_harden = 2" | sudo tee -a wheezy/etc/sysctl.conf
 echo "net.ipv4.ping_group_range = 0 65535" | sudo tee -a wheezy/etc/sysctl.conf
 echo -en "127.0.0.1\tlocalhost\n" | sudo tee wheezy/etc/hosts
 echo "nameserver 8.8.8.8" | sudo tee -a wheezy/etc/resolve.conf
-echo "syzkaller" | sudo tee wheezy/etc/hostname
+echo "meerkat" | sudo tee wheezy/etc/hostname
 sudo mkdir -p wheezy/root/.ssh/
 rm -rf ssh
 mkdir -p ssh

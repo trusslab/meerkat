@@ -13,6 +13,7 @@ bool starts_with(const std::string &, const std::string &);
 bool ends_with(const std::string &, const std::string &);
 
 std::string chomp(const std::string &);
+std::string trim_space(std::string);
 bool is_hash(const std::string &);
 
 #endif

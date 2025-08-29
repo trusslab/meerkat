@@ -229,9 +229,27 @@ void patch_kernel(const Environment &env, const Version &linux_version)
     // If it becomes a big issue, we can patch it.
 }
 
-std::string canonical_title(const std::string &title)
+std::string canonical_title(std::string title)
 {
-    return title;
+    std::vector<std::string> prefixes = {
+        "UPSTREAM:",
+        "CHROMIUM:",
+        "FROMLIST:",
+        "BACKPORT:",
+        "FROMGIT:",
+        "net-backports:"
+    };
+
+    for (std::string pf : prefixes)
+    {
+        if (starts_with(title, pf))
+        {
+            title = title.substr(pf.size());
+            break;
+        }
+    }
+
+    return trim_space(title);
 }
 
 // Apply the same backports as syz-bisect
@@ -294,7 +312,7 @@ void apply_backports(const Environment &env, Git &linux_git, const Version &linu
     return;
 }
 
-int write_config(const Environment &env, Git &linux_git, const Version &linux_version, bool fuzzing = true)
+int write_config(const Environment &env, Git &linux_git, const Version &linux_version, bool need_kcov = true)
 {
     std::vector<std::string> lines;
     if (!load_file(env.kconfig, lines))
@@ -371,7 +389,7 @@ int write_config(const Environment &env, Git &linux_git, const Version &linux_ve
     std::set<std::string> tags = gather_commit_tags(env, linux_git, linux_version.id);
     for (KConfigChange config : changes)
     {
-        if (config.disable == "KCOV" && fuzzing)
+        if (config.disable == "KCOV" && need_kcov)
             continue;
         
         if (config.disable == "UBSAN" && need_ubsan)
@@ -440,7 +458,7 @@ void apply_reproducible_build(const Environment &env)
     }
 }
 
-int build_kernel(const Environment &env, Git &linux_git, const Version &linux_version, const std::string &compiler, bool bisecting, bool fuzzing)
+int build_kernel(const Environment &env, Git &linux_git, const Version &linux_version, const std::string &compiler, bool bisecting, bool need_kcov)
 {
     int err = 0;
     std::string old_dir = pwd();
@@ -467,7 +485,7 @@ int build_kernel(const Environment &env, Git &linux_git, const Version &linux_ve
     if (!env.feats.no_patch_kernel)
         apply_backports(env, linux_git, linux_version);
 
-    write_config(env, linux_git, linux_version, fuzzing);
+    write_config(env, linux_git, linux_version, need_kcov);
 
     apply_reproducible_build(env);
 
