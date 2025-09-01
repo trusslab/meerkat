@@ -342,7 +342,7 @@ int main(int argc, char ** argv)
     Environment env;
 
     args.expect("mihcaF");
-    args.expect(vector<string>({ "help", "config", "feature", "anchor", "--debug" }));
+    args.expect(vector<string>({ "help", "config", "feature", "anchor", "debug" }));
     args.parse(argc, argv);
     if (args.is_set('h') || args.is_set("help"))
     {
@@ -371,6 +371,9 @@ int main(int argc, char ** argv)
     {
         cerr << "Error: No anchor commit was given. Use -a [hash]\n" << flush;
     }
+
+    if (args.is_set("debug"))
+        env.debug = true;
 
     // get information about the bug
     if (handle_config(env, args) < 0)

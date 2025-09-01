@@ -51,8 +51,7 @@ printhelp () {
     echo "    b - determine the name of the bug file in parse"
     echo "    m - the maximum time to fuzz at the finding commit"
     echo "    F - The feature string"
-    echo "        [ all, default, poc-test, ff-test, setup-only, find-only, poc-all-pocs, ff-no-find-backup, stateful-corpus, patch-kernel ]"
-    echo "    S - run in safe mode"
+    echo "        [ all, default, poc-test, ff-test, setup-only, find-only, poc-all-pocs, ff-no-find-backup, stateful-corpus, no-patch-kernel ]"
 }
 
 # =================================================================================================
@@ -78,8 +77,6 @@ do
             mtime="-m ${OPTARG}" ;;
         F)
             feature="-F ${OPTARG}" ;;
-        S)
-            safemode="--safe-mode" ;;
         *)
             printhelp
             exit
@@ -192,7 +189,7 @@ while (( $line <= $endLine )); do
         echo ",good fuzz,$findDate" >> $logfile
         echo "./$bisector -i $id -c $bisectorconfig -a ${findhash} ${feature} $mtime $safemode" >> $logfile
         set +e
-        ./$bisector -i $id -c $bisectorconfig -a ${findhash} ${feature} $mtime $safemode 2>&1 | tee ${wd}log/${curBug}.log
+        ./$bisector -i $id -c $bisectorconfig -a ${findhash} ${feature} $mtime 2>&1 | tee ${wd}log/${curBug}.log
         set -e
         cp ${wd}reproducers/* ${wd}old/
         number=$(( $number + 1 ))

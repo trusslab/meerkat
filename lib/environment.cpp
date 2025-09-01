@@ -18,6 +18,7 @@
 
 int Environment::init()
 {
+    debug = false;
     fuzztimes = DEFAULT_FUZZ_TIMES;
 
     vmd.numVM = NUM_VM_DEFAULT;
