@@ -520,7 +520,7 @@ Test_Result Bisect::test_anchor(Environment &env)
     if (mode() == Mode_FF)
     {
         result = test_anchor_ff(env);
-        env.max_time = (env.safe_mode ? env.max_time : result.suggest_ttf);
+        env.max_time = result.suggest_ttf;
     }
     else if (mode() == Mode_PoC)
     {
@@ -560,9 +560,6 @@ Test_Result Bisect::test_bisect(Environment &env)
     }
 
     log_session_result(result);
-    if (check_safe_mode(result, env.safe_mode, env.max_time, env.fuzztimes))
-        log_safe_mode(env.max_time, env.fuzztimes);
-
     return result;
 }
 
@@ -828,30 +825,6 @@ int uniqify_reproducers(Environment &env)
         remove_file(r);
 
     return 0;
-}
-
-void log_safe_mode(int max_time, int fuzztimes)
-{
-    std::cout << "Switching to Safe Mode: Fuzzing " << fuzztimes << " times at " << max_time << " minutes\n";
-}
-
-void set_safe_mode(bool &safe_mode, unsigned int &max_time, unsigned int &fuzztimes)
-{
-    safe_mode = true;
-    fuzztimes = MAX_FUZZ_TIMES;
-    max_time = max_time > DEFAULT_MAX_TIME ? max_time : DEFAULT_MAX_TIME;
-}
-
-// Checks the given result to see if SyzInspector should switch to safe mode.
-// If yes, sets safe mode
-bool check_safe_mode(const Test_Result &result, bool &safe_mode, unsigned int &max_time, unsigned int &fuzztimes)
-{
-    if (!safe_mode && result.found && result.attempts.back().ttf > max_time * 0.8)
-    {
-        set_safe_mode(safe_mode, max_time, fuzztimes);
-        return true;
-    }
-    return false;
 }
 
 std::string get_datetime()

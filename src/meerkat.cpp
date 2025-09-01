@@ -27,7 +27,6 @@ using namespace std;
 // TODO:
 // Check for broken programs when Syzkaller launches.
 // automatically verify that the compilers work
-// canonical title
 // check that procs # is not affecting hanging tasks
 // Use older Syzkaller?
 
@@ -296,8 +295,9 @@ void print_help()
         << "    --config (c) [config.cfg]: [config]: REQUIRED. The config file containing the bug information.\n"
         << "    --anchor (a) [hash]: REQUIRED. the hash of the commit where the bug was found.\n"
         << "    --feature (F) [feature list]: features to use.\n"
-        << "         [ default, poc-test, ff-test, setup-only, find-only, poc-all-pocs, ff-no-find-backup, stateful-corpus, no-patch-kernel, obselete-patches ]"
-        << endl << flush;
+        << "         [ default, poc-test, ff-test, setup-only, find-only, poc-all-pocs, ff-no-find-backup, stateful-corpus, no-patch-kernel, obselete-patches ]\n"
+        << "    --debug\n"
+        << flush;
 }
 
 int handle_config(Environment &env, const Argparse &args)
@@ -342,7 +342,7 @@ int main(int argc, char ** argv)
     Environment env;
 
     args.expect("mihcaF");
-    args.expect(vector<string>({ "help", "config", "feature", "anchor", "safe-mode" }));
+    args.expect(vector<string>({ "help", "config", "feature", "anchor", "--debug" }));
     args.parse(argc, argv);
     if (args.is_set('h') || args.is_set("help"))
     {
@@ -378,13 +378,6 @@ int main(int argc, char ** argv)
 
     if (handle_features(args, env) < 0)
         return -1;
-
-    // TODO: set compiler mode here if needed
-
-    if (args.is_set("safe-mode") || env.name.substr(0, 11) == "memory leak")
-        set_safe_mode(env.safe_mode, env.max_time, env.fuzztimes);
-    else
-        env.safe_mode = false;
 
     // make sure all of the needed files are here.
     if (!check_file(env.logdir))

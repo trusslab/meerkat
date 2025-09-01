@@ -38,7 +38,7 @@ private:
 
 public:
     bool try_patch;
-    bool safe_mode;
+    bool debug;
 
     unsigned int max_time;
     unsigned int fuzztimes;

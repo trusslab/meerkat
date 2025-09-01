@@ -150,7 +150,8 @@ void patch_kernel(const Environment &env, const Version &linux_version)
         grep_to_find("#include <sys/socket.h>", env.kerneldir + "/scripts/selinux/genheaders/genheaders.c") &&
         !grep_to_find("#include <sys/socket.h>", env.kerneldir + "/security/selinux/include/classmap.h"))
     {
-        std::cout << "PATCH: Fixing includes in selinux/mpd and selinux/genheaders.\n";
+        if (env.debug)
+            std::cout << "PATCH: Fixing includes in selinux/mpd and selinux/genheaders.\n";
         sed_i("s/#include <sys\\/socket.h>//", env.kerneldir + "/scripts/selinux/mdp/mdp.c");
         sed_i("s/#include <sys\\/socket.h>//", env.kerneldir + "/scripts/selinux/genheaders/genheaders.c");
         sed_i("s/#include <linux\\/capability.h>/#include <linux\\/capability.h>\\n#include <linux\\/socket.h>/", env.kerneldir + "/security/selinux/include/classmap.h");
@@ -159,7 +160,8 @@ void patch_kernel(const Environment &env, const Version &linux_version)
     // Add a patch for all of 14 commits
     if (linux_version.date == Date(2019,12,1))
     {
-        std::cout << "PATCH: Fixing page size references in mm/userfaultfd.c.\n";
+        if (env.debug)
+            std::cout << "PATCH: Fixing page size references in mm/userfaultfd.c.\n";
         sed_i("s/VM_BUG_ON(dst_addr \\& ~huge_page_mask(h));/VM_BUG_ON(dst_addr \\& (vma_hpagesize - 1));/", env.kerneldir + "/mm/userfaultfd.c");
         sed_i("s/dst_pte = huge_pte_alloc(dst_mm, dst_addr, huge_page_size(h));/dst_pte = huge_pte_alloc(dst_mm, dst_addr, vma_hpagesize);/", env.kerneldir + "/mm/userfaultfd.c");
         sed_i("s/pages_per_huge_page(h), true);/vma_hpagesize \\/ PAGE_SIZE, true);/", env.kerneldir + "/mm/userfaultfd.c");
@@ -169,7 +171,8 @@ void patch_kernel(const Environment &env, const Version &linux_version)
     if (!grep_to_find("ifdef CONFIG_X86_64", env.kerneldir + "/arch/x86/Makefile") &&
         linux_version.date <= Date(2018,6,9))
     {
-        std::cout << "PATCH: Forcing 2MB page size in arch/x86/Makefile.\n";
+        if (env.debug)
+            std::cout << "PATCH: Forcing 2MB page size in arch/x86/Makefile.\n";
         sed_i("s/LDFLAGS := \\-m elf_$(UTS_MACHINE)/LDFLAGS := \\-m elf_$(UTS_MACHINE)\\nifdef CONFIG_X86_64\\nLDFLAGS += $(call ld\\-option, \\-z max\\-page\\-size=0x200000)\\nendif\\n/",
             env.kerneldir + "/arch/x86/Makefile");
         
@@ -181,7 +184,8 @@ void patch_kernel(const Environment &env, const Version &linux_version)
     if (linux_version.date >= Date(2021,8,31) && linux_version.date <= Date(2021,9,1)
         && !grep_to_find("#include <linux\\/acpi\\.h>", env.kerneldir + "/arch/x86/kernel/setup.c"))
     {
-        std::cout << "PATCH: Explicitly include acpi.h\n";
+        if (env.debug)
+            std::cout << "PATCH: Explicitly include acpi.h\n";
         sed_i("s/#include <linux\\/console.h>/#include <linux\\/acpi.h>\\n#include <linux\\/console.h>/", env.kerneldir + "/arch/x86/kernel/setup.c");
     }
 
@@ -190,7 +194,8 @@ void patch_kernel(const Environment &env, const Version &linux_version)
     if ((linux_version.date == Date(2019,10,15) || linux_version.date == Date(2019,10,16))
         && grep_to_find("struct inet6_dev \\*idev, \\*bdev;", env.kerneldir + "/net/ipv6/addrconf.c"))
     {
-        std::cout << "PATCH: Fix regression in blackhole_netdev\n";
+        if (env.debug)
+            std::cout << "PATCH: Fix regression in blackhole_netdev\n";
         sed_i("s/struct inet6_dev \\*idev, \\*bdev;/struct inet6_dev \\*idev;/", env.kerneldir + "/net/ipv6/addrconf.c");
         sed_i("/bdev = ipv6_add_dev(blackhole_netdev);/ d", env.kerneldir + "/net/ipv6/addrconf.c");
         sed_i("/} else if (IS_ERR(bdev)) {/,+2 d", env.kerneldir + "/net/ipv6/addrconf.c");
@@ -207,7 +212,8 @@ void patch_kernel(const Environment &env, const Version &linux_version)
     if (linux_version.date <= Date(2020,5,8) && linux_version.date >= Date(2020,3,29)
         && grep_to_find("LSM_HOOK(int, 0, fs_context_parse_param, struct fs_context \\*fc,", env.kerneldir + "/include/linux/lsm_hook_defs.h"))
     {
-        std::cout << "PATCH: Fix boot error \"VFS: Unable to mount root fs on unknown-block(8,0)\"\n";
+        if (env.debug)
+            std::cout << "PATCH: Fix boot error \"VFS: Unable to mount root fs on unknown-block(8,0)\"\n";
         sed_i("s/LSM_HOOK(int, 0, fs_context_parse_param, struct fs_context \\*fc,/LSM_HOOK(int, -ENOPARAM, fs_context_parse_param, struct fs_context \\*fc,/",
             env.kerneldir + "/include/linux/lsm_hook_defs.h");
     }
@@ -218,7 +224,8 @@ void patch_kernel(const Environment &env, const Version &linux_version)
     if (linux_version.date <= Date(2020,8,13) && linux_version.date >= Date(2020,8,12)
         && grep_to_find("\\/\\* We charge the parent cgroup, never the current task \\*\\/", env.kerneldir + "/mm/memcontrol.c"))
     {
-        std::cout << "PATCH: Remove warning when allocating the root cgroup\n";
+        if (env.debug)
+            std::cout << "PATCH: Remove warning when allocating the root cgroup\n";
         sed_i("/\\/\\* We charge the parent cgroup, never the current task \\*\\//,+1 d", env.kerneldir + "/mm/memcontrol.c");
         sed_i("/\\/\\* We charge the parent cgroup, never the current task \\*\\//,+1 d", env.kerneldir + "/mm/memcontrol.c");
     }
@@ -304,7 +311,8 @@ void apply_backports(const Environment &env, Git &linux_git, const Version &linu
         if (linux_git.commit_exists_by_title(bp.title, linux_version.id))
             continue;
 
-        std::cout << "PATCH: " << bp.title << "\n" << std::flush;
+        if (env.debug)
+            std::cout << "PATCH: " << bp.title << "\n" << std::flush;
         if (linux_git.cherry_pick(bp.fix_hash) != 0)
             std::cerr << "Failed to apply patch: " << bp.title << ". Continuing...\n" << std::flush;
     }
@@ -399,13 +407,15 @@ int write_config(const Environment &env, Git &linux_git, const Version &linux_ve
         {
             if (!config.disable.empty())
             {
-                std::cout << "CONFIG: Disabling CONFIG_" << config.disable << "\n" << std::flush;
+                if (env.debug)
+                    std::cout << "CONFIG: Disabling CONFIG_" << config.disable << "\n" << std::flush;
                 unset_config("CONFIG_" + config.disable, lines);
             }
             
             if (!config.enable.empty())
             {
-                std::cout << "CONFIG: Enabling CONFIG_" << config.enable << "\n" << std::flush;
+                if (env.debug)
+                    std::cout << "CONFIG: Enabling CONFIG_" << config.enable << "\n" << std::flush;
                 set_config("CONFIG_" + config.enable, lines);
             }
         }

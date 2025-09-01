@@ -151,11 +151,6 @@ std::string runtime(const std::chrono::steady_clock::time_point &);
 
 int uniqify_reproducers(Environment &);
 
-bool check_safe_mode(const Test_Result &, bool &, unsigned int &, unsigned int &);
-// switch to fuzzing in safe mode. More fuzzing attempts and for longer.
-void set_safe_mode(bool &, unsigned int &, unsigned int &);
-void log_safe_mode(int, int);
-
 void log_datetime();
 
 void log_session_info(const Session &, const int);
