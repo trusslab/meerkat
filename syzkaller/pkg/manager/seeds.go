@@ -135,12 +135,20 @@ func readInputs(cfg *mgrconfig.Config, db *db.DB, output chan *input) error {
 		}()
 	}
 
+	count := 0
 	for key, rec := range db.Records {
 		inputs <- &input{
 			Key:  key,
 			Data: rec.Val,
 		}
+		count++
 	}
+
+	// JTBURSEY: Add this count here so we don't outright break syzkaller, but also don't use seeds in normal bisection
+	if count > 0 {
+		return nil
+	}
+
 	seedPath := filepath.Join("sys", cfg.TargetOS, "test")
 	seedDir := filepath.Join(cfg.Syzkaller, seedPath)
 	if osutil.IsExist(seedDir) {
