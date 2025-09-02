@@ -194,7 +194,7 @@ int find_first_ancestor(Git &linux_git, const std::string &child, const std::vec
     int r = 0, l = list.size() - 1;
     int m, best = -1;
 
-    while (r < l)
+    while (r <= l)
     {
         m = (r + l)/2;
         if (linux_git.is_ancestor(list.at(m).id, child))
