@@ -176,7 +176,11 @@ int bisect(Environment &env)
 
     env.port.init(START_PORT, env.id*env.vmst.numVM, PORT_RANGE);
 
-    bisector.init(env, linux_git);
+    if (bisector.init(env, linux_git) < 0)
+    {
+        err = -1;
+        goto finish;
+    }
 
     if (check_syzkaller(env) < 0)
         goto finish;
