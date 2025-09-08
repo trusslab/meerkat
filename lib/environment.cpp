@@ -395,6 +395,8 @@ void Environment::print() const
     std::cout << std::endl;
     if (required_syscalls.size() > 0)
         config_print("Syscalls", syscall_string(), required_syscalls.size());
+    // TODO: Print VM config only if fuzzing, or maybe print the correct config for poc testing
+    // Better idea, get rid of the automatic config stuff altogether and let the user decide.
     config_print("VM Count", std::to_string(vmc.numVM));
     config_print("CPU Count", std::to_string(vmc.numCPU));
     config_print("Procs", std::to_string(vmc.numProcs));

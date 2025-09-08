@@ -461,7 +461,8 @@ void get_one_producer_syscall(const TypeTag &this_resource, vector<TypeTag> &nee
         {"fd_perf_base", "perf_event_open"},
         {"fd_bpf_token", "bpf$TOKEN_CREATE"},
         {"fd_bpf_const_str", "bpf$MAP_UPDATE_CONST_STR"},
-        {"tail_call_map", "bpf$MAP_UPDATE_ELEM_TAIL_CALL"}
+        {"tail_call_map", "bpf$MAP_UPDATE_ELEM_TAIL_CALL"},
+        {"fd_bpf_prog", "bpf$BPF_PROG_GET_FD_BY_ID"}
     };
 
     if (problematic.count(this_resource.get_name()) == 1)
