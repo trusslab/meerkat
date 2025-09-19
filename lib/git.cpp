@@ -350,7 +350,7 @@ int Git::dump_commit_past_tags(const std::string &commit, const std::string &fil
 
 std::string Git::commit_tag(const std::string &commit)
 {
-    return git_read({"tag", "-l", "--points-at", commit, "--merged", commit, "v[0-9].[0-9]", "v[0-9].[0-9][0-9]", "--sort=-taggerdate"});
+    return chomp(git_read({"tag", "-l", "--points-at", commit, "--merged", commit, "v[0-9].[0-9]", "v[0-9].[0-9][0-9]", "--sort=-taggerdate"}));
 }
 
 std::string Git::get_current_commit()
