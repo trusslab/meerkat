@@ -28,6 +28,7 @@ public:
     bool stateful_corpus;
     bool no_patch_kernel;
     bool obselete_patches;
+    bool old_syzkaller;
 };
 
 class Environment

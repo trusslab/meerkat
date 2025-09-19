@@ -348,8 +348,11 @@ Test_Result poc_loop(Environment &env)
     vmpool.copy_all(env.primary_repro);
     vmpool.copy_all(env.syzdir + "bin/linux_amd64/syz-execprog");
     vmpool.copy_all(env.syzdir + "bin/linux_amd64/syz-executor");
-    //std::string cmd = "./syz-execprog -executor=./syz-executor -arch=amd64 -sandbox=none -procs=1 -repeat=0 -threaded=true -collide=false -cover=0 -optional=slowdown=1:sandboxArg=0 " + split(env.primary_repro, '/').back();
-    std::string cmd = "./syz-execprog -executor=./syz-executor " + opts.execopts_string() + " " + split(env.primary_repro, '/').back();
+    std::string cmd;
+    if (env.feats.old_syzkaller)
+        cmd = "./syz-execprog -executor=./syz-executor -arch=amd64 -sandbox=none -procs=1 -repeat=0 -threaded=true -collide=false -cover=0 -optional=slowdown=1:sandboxArg=0 " + split(env.primary_repro, '/').back();
+    else
+        cmd = "./syz-execprog -executor=./syz-executor " + opts.execopts_string() + " " + split(env.primary_repro, '/').back();
     vmpool.run_all(cmd);
     // timeout used by syzkaller
     // https://github.com/google/syzkaller/blob/master/sys/targets/targets.go#L834

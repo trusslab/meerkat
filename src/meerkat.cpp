@@ -29,6 +29,16 @@ using namespace std;
 // automatically verify that the compilers work
 // check that procs # is not affecting hanging tasks
 // Use older Syzkaller?
+// Use this:
+    /*
+    SYZ_DISABLE_SANDBOXING=yes
+	KBUILD_BUILD_VERSION=0
+	KBUILD_BUILD_TIMESTAMP=now
+	KBUILD_BUILD_USER=syzkaller
+	KBUILD_BUILD_HOST=syzkaller
+	KERNELVERSION=syzkaller
+	LOCALVERSION=-syzkaller
+    */
 
 vector<string> order_pocs(const Environment &env)
 {
@@ -299,7 +309,7 @@ void print_help()
         << "    --config (c) [config.cfg]: [config]: REQUIRED. The config file containing the bug information.\n"
         << "    --anchor (a) [hash]: REQUIRED. the hash of the commit where the bug was found.\n"
         << "    --feature (F) [feature list]: features to use.\n"
-        << "         [ default, poc-test, ff-test, setup-only, find-only, poc-all-pocs, ff-no-find-backup, stateful-corpus, no-patch-kernel, obselete-patches ]\n"
+        << "         [ default, poc-test, ff-test, setup-only, find-only, poc-all-pocs, ff-no-find-backup, stateful-corpus, no-patch-kernel, obselete-patches, old-syzkaller ]\n"
         << "    --debug\n"
         << flush;
 }

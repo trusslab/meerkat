@@ -42,6 +42,7 @@ int Environment::init()
     feats.stateful_corpus = false;
     feats.no_patch_kernel = false;
     feats.obselete_patches = false;
+    feats.old_syzkaller = false;
 
     return 0;
 }
@@ -312,7 +313,11 @@ int Environment::handle_features(const std::set<std::string> &features)
         feats.obselete_patches = true;
     }
 
-    // check that at least one feature is set
+    if (features.find("old-syzkaller") != features.end())
+    {
+        feats.old_syzkaller = true;
+    }
+
     return 0;
 }
 
