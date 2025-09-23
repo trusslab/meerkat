@@ -128,6 +128,11 @@ int do_bisection(Environment &env, Bisect &bisector, Git &linux_git)
         cerr << "Failed to get or build next session.\n" << flush;
         return -1;
     }
+    else if (err == 2 && bisector.remaining(linux_git) <= 0)
+    {
+        cout << "This bug was found on the oldest tested release.\n" << flush;
+        return err;
+    }
 
     // Result: a bisect session and index into the releases.
     // Bisect session is the oldest release where the bug reproduced. Index points to it in the releases array.
@@ -228,7 +233,8 @@ int bisect(Environment &env)
             goto finish;
         if (err == 1 && env.feats.ff_no_find_backup)
             goto finish;
-        
+        if (err == 2)
+            goto print_result;
         if (err == 0)
             found = true;
         if (env.feats.poc_test)

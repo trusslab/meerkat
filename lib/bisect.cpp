@@ -63,7 +63,7 @@ int Bisect::remaining(Git &linux_git) const
     case Bisect_Anchor:
         return 1;
     case Bisect_Releases:
-        return releases.size() - index; // TODO: Might change
+        return releases.size() - index - 1; // TODO: Might change
     case Bisect_Kernel:
         return bisect_remaining(linux_git);
     default:
@@ -215,13 +215,14 @@ int skip_tags(std::vector<Version> &releases)
     int inc = 1;
     std::vector<Version> tmp = releases;
     releases.clear();
-    for (int i = 0; i < tmp.size(); i += inc)
+    for (int i = 0; i < tmp.size() - 1; i += inc)
     {
         releases.push_back(tmp.at(i));
         // This mimics how Syz-Bisect skips some releases as it goes back
         if (i == 2 || i == 14 || i == 32)
             inc++;
     }
+    releases.push_back(tmp.at(tmp.size() - 1));
     return 0;
 }
 
@@ -357,7 +358,11 @@ int Bisect::goto_release_session(const Environment &env, Git &linux_git)
 
 retry:
     index++;
-    if (index >= releases.size() || (index > 0 && !last_session.found && last_session.stable))
+    if (index >= releases.size())
+    {
+        return 2;
+    }
+    else if (index > 0 && !last_session.found && last_session.stable)
     {
         return 1;
     }
