@@ -753,6 +753,7 @@ std::string Bisect::print_result(const Environment &env, Git &linux_git, const s
     // TODO: iomanip this
     std::stringstream ss;
     ss << "Bug Name:             " << env.name << "\n";
+    ss << "Big ID:               " << env.working_name << "\n";
     ss << "Bug Link:             " << env.buglink << "\n";
     if (!bisect_version.id.empty())
     {
