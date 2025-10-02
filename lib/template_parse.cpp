@@ -463,7 +463,7 @@ void get_one_producer_syscall(const TypeTag &this_resource, vector<TypeTag> &nee
         {"fd_bpf_const_str", "bpf$MAP_UPDATE_CONST_STR"},
         {"tail_call_map", "bpf$MAP_UPDATE_ELEM_TAIL_CALL"},
         {"fd_bpf_prog", "bpf$BPF_PROG_GET_FD_BY_ID"},
-        {"assoc_id", "getsockopt"}//$inet_sctp6_SCTP_AUTH_ACTIVE_KEY
+        {"assoc_id", "getsockopt"}, //$inet_sctp6_SCTP_AUTH_ACTIVE_KEY
     };
 
     if (problematic.count(this_resource.get_name()) == 1)
@@ -527,7 +527,8 @@ void push_syscall_depends(vector<Syscall> &syscalls, int index, vector<TypeTag> 
         {"bpf$BPF_PROG_RAW_TRACEPOINT_LOAD", {TypeTag(resourceClass, "tail_call_map")}},
         {"bpf$BPF_BTF_LOAD", {TypeTag(syscallClass, "bpf$TOKEN_CREATE")}},
         {"setsockopt$inet_sctp6_SCTP_AUTH_KEY", {TypeTag(resourceClass, "assoc_id")}},
-        {"bpf$TOKEN_CREATE", {TypeTag(resourceClass, "fd_bpf_prog")}}
+        {"bpf$TOKEN_CREATE", {TypeTag(resourceClass, "fd_bpf_prog")}},
+        {"bpf$BPF_PROG_DETACH", {TypeTag(resourceClass, "fd_cgroup"), TypeTag(resourceClass, "fd_bpf_link")}},
     };
 
     if (problematic.count(syscalls.at(index).get_name()) == 1)
