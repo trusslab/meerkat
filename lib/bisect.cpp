@@ -540,7 +540,11 @@ Test_Result Bisect::test_bisect_ff(Environment &env)
 {
     Test_Result result = fuzz_loop(env);
     if (result.found && (repro_count % REPRO_FREQ == 0 || defer_repro))
+    {
         do_syz_repro(env);
+        defer_repro = false;
+    }
+        
 
     repro_count += result.found && !defer_repro ? 1 : 0;
     return result;
