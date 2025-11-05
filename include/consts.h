@@ -2,7 +2,7 @@
 #define CONSTS_H
 
 #define PROJECT_NAME "Meerkat"
-#define REVISION "1.1.1"
+#define REVISION "1.1.2"
 
 #define REPRO_FREQ 3
 #define DEFAULT_MAX_TIME 10

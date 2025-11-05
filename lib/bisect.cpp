@@ -155,7 +155,7 @@ std::string Bisect::gcc_mux(const Environment &env, Git &linux_git, const std::s
     std::string version;
     if (tags.count("v5.16") > 0)
         return "gcc"; // use system default gcc
-    else if (tags.count("v5.9") > 0)
+    else if (tags.count("v5.8") > 0)
         version = "10.1.0";
     else if (tags.count("v4.12") > 0)
         version = "8.1.0";
@@ -357,14 +357,14 @@ int Bisect::goto_release_session(const Environment &env, Git &linux_git)
     Version linux_version;
 
 retry:
-    index++;
-    if (index >= releases.size())
-    {
-        return 2;
-    }
-    else if (index > 0 && !last_session.found && last_session.stable)
+    index++;    // starts at -1 and increments each time
+    if (index > 0 && !last_session.found && last_session.stable)
     {
         return 1;
+    }
+    else if (index >= releases.size())
+    {
+        return 2;
     }
     else if (index < 0)
     {
@@ -699,7 +699,9 @@ int Bisect::record(const Test_Result &result, Git &linux_git)
 
 int Bisect::_archive_session()
 {
-    if (phase == Bisect_Releases)
+    if (index >= releases.size())
+        std::cerr << "Error: Index error in archive session\n" << std::flush;
+    if (phase == Bisect_Releases && index < releases.size())
         releases.at(index).skipped = !current_session.stable && !current_session.found;
 
     last_session = this_session();
