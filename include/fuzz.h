@@ -3,13 +3,11 @@
 
 #include <environment.h>
 #include <date.h>
-#include <result.h>
+#include <dedup.h>
 
 #include <fstream>
 #include <string>
 #include <vector>
-
-std::string get_crash_name(const std::string &);
 
 // Run syz-repro, return true if successful.
 // Takes env, the destination prog file, and the crash log
@@ -24,10 +22,7 @@ Test_Result fuzz_loop_finding(Environment &);
 Test_Result fuzz_loop(Environment &);
 Test_Result poc_loop(Environment &);
 
+// Symbolizes a vm log into a syzkaller-style result, then parses it
 Syzkaller_Result symbolize(Environment &, const std::string &);
-
-// Checks against heuristics to see if the resulting kernel
-// commit is faulty. Returns true if it is.
-//bool check_faulty_result();
 
 #endif

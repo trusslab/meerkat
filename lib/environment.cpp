@@ -1,4 +1,5 @@
 #include <consts.h>
+#include <dedup.h>
 #include <environment.h>
 #include <exec_api.h>
 #include <file_api.h>
@@ -56,13 +57,19 @@ int Environment::parse_config_file(const std::string &filename)
         return -1;
     }
 
+    // bug name is now inferred from aliases
     if (json.has_name("bug_name") && json.is_type("bug_name", JSON_Val_string))
     {
         name = json.get_string("bug_name");
     }
+
+    if (json.has_name("aliases") && json.is_type("aliases", JSON_Val_string))
+    {
+        aliasdir = json.get_string("aliases");
+    }
     else
     {
-        std::cerr << "Error: Bug Title was not given (\"bug_name\": \"KASAN: use-after-free ...\")\n" << std::flush;
+        std::cerr << "Error: Alias Directory was not given (\"aliases\": \"/path/to/bugs/\")\n" << std::flush;
         return -1;
     }
 
@@ -241,6 +248,43 @@ int Environment::parse_config_file(const std::string &filename)
     return 0;
 }
 
+int Environment::parse_aliases()
+{
+    std::vector<std::string> hashes = list_dir(aliasdir);
+    for (std::string hash : hashes)
+    {
+        BugAlias alias = BugAlias(hash);
+        if (alias.init() < 0)
+            std::cerr << "Error: Failed to init BugAlias for " << hash << "\n" << std::flush;
+        duplicates.push_back(alias);
+    }
+
+    if (duplicates.size() == 0)
+    {
+        std::cerr << "Error: Found no aliases to bisect" << "\n" << std::flush;
+    }
+
+    // if bug_name is empty, choose a name for it.
+    if (name.empty())
+    {
+        if (duplicates.size() > 1)
+        {
+            for (BugAlias a : duplicates)
+            {
+                if (ends_with(a.path, "primary/") || ends_with(a.path, "primary"))
+                {
+                    name = a.name;
+                    break;
+                }
+            }
+        }
+        if (name.empty())
+            name = duplicates.front().name;
+    }
+
+    return 0;
+}
+
 void Environment::default_features()
 {
     feats.poc_test = true;
@@ -363,14 +407,10 @@ void Environment::print() const
     if (!working_name.empty())
         config_print("Working Name", working_name);
 
-    if (duplicates.size() > 1)
-    {
-        std::cout << "\nAliases:\n";
-        for (std::string s : duplicates)
-            std::cout << "    " << s << std::endl;
-    }
-    else
-        std::cout << "\nNo aliases given.\n";
+    // TODO: figure out a format to indicate if an alias has a stack trace
+    std::cout << "\nAliases:\n";
+    for (BugAlias a : duplicates)
+        std::cout << "    " << a.name << std::endl;
     
     std::cout << std::endl;
     config_print("Anchor Commit", anchor_hash);

@@ -22,7 +22,9 @@ bisector=bin/${projectname}
 writebugconfig () {
     echo "{" > $bisectorconfig
     echo "    \"bugID\": \"${curBug}\","  >> $bisectorconfig
+    # bug name is now optional thanks to aliases
     echo "    \"bug_name\": \"${bugName}\"," >> $bisectorconfig
+    echo "    \"aliases\": \"${wd}/bugs/\"," >> $bisectorconfig
     echo "    \"bug_link\": \"${buglink}\"," >> $bisectorconfig
     # extra config are just ignored, so anchor hash is fine
     echo "    \"anchor_hash\": \"${findhash}\"," >> $bisectorconfig
@@ -41,6 +43,16 @@ writebugconfig () {
     echo "    \"image\": \"${image}\"," >> $bisectorconfig
     echo "    \"image_key\": \"${imagekey}\"" >> $bisectorconfig
     echo "}" >> $bisectorconfig
+}
+
+writebugalias () {
+    # so far, mk-manager just needs to handle the bug name. no reports, only one bug.
+    if [ -d ${wd}/bugs/ ]; then
+        rm -rf ${wd}/bugs/*
+    fi
+
+    mkdir -p ${wd}/bugs/primary/
+    echo "${bugName}" > ${wd}/bugs/primary/description
 }
 
 printhelp () {
@@ -185,6 +197,7 @@ while (( $line <= $endLine )); do
 
     if [[ $configlink != "" && $bugName != "" && $findlink != "" && $repo != "" && $branch != "" ]]; then
         writebugconfig
+        writebugalias
 
         echo ",good fuzz,$findDate" >> $logfile
         echo "./$bisector -i $id -c $bisectorconfig -a ${findhash} ${feature} $mtime $safemode" >> $logfile

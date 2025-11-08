@@ -6,7 +6,7 @@
 #include <fuzz.h>
 #include <linux.h>
 #include <my_string.h>
-#include <result.h>
+#include <dedup.h>
 #include <shell_api.h>
 #include <syzkaller.h>
 #include <vm.h>
@@ -73,23 +73,6 @@ void handle_syzkaller_crash()
     cerr << "Error: Syzkaller has experienced a crash.\n" << flush;
 }
 
-string get_crash_name(const string &hash)
-{
-    ifstream inf;
-    string filename = hash + "/description";
-    string line;
-    inf.open(filename);
-    if (!inf)
-    {
-        cerr << "Error: Failed to open file " << filename << ".\n";
-        return "";
-    }
-
-    // description file only has one line
-    getline(inf, line);
-    return line;
-}
-
 // Reads the syzkaller log to see if any syscalls were disabled
 bool check_enabled_syscalls(const Environment &env)
 {
@@ -125,6 +108,12 @@ bool completed_machine_check(const Environment &env)
     return false;
 }
 
+bool fuzz_is_bad_crash(const std::string &crash_name)
+{
+    return crash_name.find("SYZFATAL") != std::string::npos
+            || crash_name.find("SYZFAIL:") != std::string::npos || crash_name == "boot failure";
+}
+
 // The time is rough here and rounds up to the nearest time increment (usually 1 minute)
 // result.ttf is the time it took to find the bug, or the max_time
 Syzkaller_Result run_syzkaller(const Environment &env)
@@ -137,7 +126,8 @@ Syzkaller_Result run_syzkaller(const Environment &env)
     result.bad_crashes = 0;
     vector<string> crash_hashes;
     map<string, int> checked_crashes;
-    string crash_name;
+    map<string, BugAlias> reuse_alias;
+    BugAlias crash;
 
     string managerbin = env.syzdir + "bin/syz-manager";
     vector<string> spl = {managerbin, "-config=" + env.syzconfig};
@@ -182,13 +172,24 @@ Syzkaller_Result run_syzkaller(const Environment &env)
 
             if (to_add == 0)
                 continue;
-            
-            crash_name = get_crash_name(hash);
-            result.found = fuzz_is_crash_in(crash_name, env.duplicates) ? true : result.found;
-            for (int j = 0; j < to_add; j++)
-                result.reports.push_back({crash_name, time});
 
-            if (fuzz_is_bad_crash(crash_name))
+            // Reuse aliases from previous loops to cut down on parsing
+            if (reuse_alias.find(hash) == reuse_alias.end())
+            {
+                crash = BugAlias(hash);
+                crash.init();
+                reuse_alias.insert({hash, crash});
+            }
+            else
+            {
+                crash = reuse_alias.at(hash);
+            }
+            
+            if (!result.found)
+                result.found = deduplicate(crash, env.duplicates);
+            result.reports.push_back({crash, time, to_add});
+
+            if (fuzz_is_bad_crash(crash.name))
                 result.bad_crashes += to_add;
         }
 
@@ -212,7 +213,9 @@ Syzkaller_Result run_syzkaller(const Environment &env)
         cout << "Saved log at " << logfile << ".\n" << flush;
         copy(env.syzkaller_log, logfile);
         result.bad_crashes++;
-        result.reports.push_back({"boot failure", time});
+        BugAlias badalias = BugAlias();
+        badalias.name = "boot failure";
+        result.reports.push_back({badalias, time, 1});
     }
 
     result.ttf = time;
@@ -277,7 +280,7 @@ Test_Result fuzz_loop_finding(Environment &env)
         prepare_kaller_wd(env);
         result.attempts.push_back(run_syzkaller(env));
         result.found = result.attempts.back().found ? true : result.found;
-        log_attempt_result(result.attempts.back(), i + 1, env.duplicates, env.fuzztimes);
+        log_attempt_result(result.attempts.back(), i + 1, env);
     }
 
     result.suggest_ttf = find_max_time(result.attempts);
@@ -302,7 +305,7 @@ Test_Result fuzz_loop(Environment &env)
             retries++;
             unstable_count++;
         }
-        log_attempt_result(result.attempts.back(), i + 1, env.duplicates, env.fuzztimes);
+        log_attempt_result(result.attempts.back(), i + 1, env);
     }
 
     result.stable = unstable_count < result.attempts.size() || result.found;
@@ -342,7 +345,7 @@ Test_Result poc_loop(Environment &env)
         return result;
     }
 
-    // TODO: Try this command: /syz-execprog -executor=/syz-executor -arch=amd64 -sandbox=none -procs=1 -repeat=0 -threaded=true -collide=false -cover=0 -optional=slowdown=1:sandboxArg=0 /syzkaller2976420098
+    // from syzkaller: /syz-execprog -executor=/syz-executor -arch=amd64 -sandbox=none -procs=1 -repeat=0 -threaded=true -collide=false -cover=0 -optional=slowdown=1:sandboxArg=0 /syzkaller2976420098
 
     // Run the prog
     vmpool.copy_all(env.primary_repro);
@@ -365,7 +368,7 @@ Test_Result poc_loop(Environment &env)
     for (int i = 0; i < logs.size(); i++)
     {
         result.attempts.push_back(symbolize(env, logs.at(i)));
-        log_attempt_result_poc(result.attempts.back(), i, env.duplicates);
+        log_attempt_result_poc(result.attempts.back(), i, env);
         result.found = result.attempts.back().found ? true : result.found;
         if (result.attempts.back().bad_crashes > 0)
             unstable_count++;
@@ -375,6 +378,13 @@ Test_Result poc_loop(Environment &env)
     return result;
 }
 
+bool ignore_name(const std::string &name)
+{
+    std::set<std::string> ignore = {"unexpected kernel reboot", "kernel panic: panic_on_warn set", "kernel panic: hung_task: blocked tasks",
+                                "kernel panic: Fatal exception"};
+    return ignore.count(name) > 0;
+}
+
 Syzkaller_Result symbolize(Environment &env, const std::string &file)
 {
     Syzkaller_Result res;
@@ -382,9 +392,13 @@ Syzkaller_Result symbolize(Environment &env, const std::string &file)
     res.bad_crashes = 0;
     res.ttf = 0;
 
-    std::string tmp = env.wd + "tmp_symbolize.txt";
+    // JTBURSEY: If we ever want to switch back to fuzzing after poc testing (and want to preserve corpus),
+    // we will need to use prepare_kaller_wd() instead. For now this saves cycles.
+    reset_kaller_wd(env);
+
+    // ./syzkaller/bin/syz-symbolize --kernel_obj wd/kernel/ --outdir wd/wd-kaller/crashes/ vm.log
     std::string symbolizebin = env.syzdir + "bin/syz-symbolize";
-    std::string cmd = symbolizebin + " --kernel_obj " + env.kerneldir + " " + file;
+    std::string cmd = symbolizebin + " --kernel_obj " + env.kerneldir + " --outdir " + env.syzwd + "crashes/ " + file;
 
     vector<string> spl = split(cmd, ' ');
     const char ** arg_list = new const char*[spl.size()+1];
@@ -393,32 +407,23 @@ Syzkaller_Result symbolize(Environment &env, const std::string &file)
 
     arg_list[spl.size()] = nullptr;
 
-    int pid = exec_and_wait(symbolizebin, (char **)arg_list, tmp, tmp);
-
-    std::vector<string> ignore = {"unexpected kernel reboot", "kernel panic: panic_on_warn set", "kernel panic: hung_task: blocked tasks"};
-    bool do_ignore = false;
-    std::vector<string> lines;
-    load_file(tmp, lines);
-    for (std::string line : lines)
+    int pid = exec_and_wait(symbolizebin, (char **)arg_list, "/dev/null", "/dev/null");
+    
+    std::vector<std::string> hashes = list_dir(env.syzwd + "crashes/");
+    for (std::string hash : hashes)
     {
-        if (starts_with(line, "TITLE: "))
-        {
-            do_ignore = false;
-            std::string name = line.substr(7);
-            for (std::string ign : ignore)
-                if (name == ign)
-                    do_ignore = true;
-            
-            if (!do_ignore)
-            {
-                res.reports.push_back(Crash_Report(name, 0));
-                res.found = fuzz_is_crash_in(name, env.duplicates) ? true : res.found;
-                res.bad_crashes += fuzz_is_bad_crash(name) ? 1 : 0;
-            }
-        }
+        BugAlias crash = BugAlias(hash);
+        crash.init();
+
+        if (ignore_name(crash.name))
+            continue;
+        
+        res.reports.push_back({crash, 0, 1});
+        if (!res.found)
+            res.found = deduplicate(crash, env.duplicates);
+        res.bad_crashes += fuzz_is_bad_crash(crash.name) ? 1 : 0;
     }
 
-    remove_file(tmp);
     delete[] arg_list;
     return res;
 }

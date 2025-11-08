@@ -6,7 +6,7 @@
 #include <linux.h>
 #include <git.h>
 #include <my_string.h>
-#include <result.h>
+#include <dedup.h>
 #include <shell_api.h>
 #include <syzkaller.h>
 #include <version.h>
@@ -20,6 +20,7 @@
 
 int Bisect::init(const Environment &env, Git &linux_git)
 {
+    index = -1;
     session_count = 0;
     repro_count = 0;
     phase = Bisect_Init;
@@ -63,7 +64,7 @@ int Bisect::remaining(Git &linux_git) const
     case Bisect_Anchor:
         return 1;
     case Bisect_Releases:
-        return releases.size() - index - 1; // TODO: Might change
+        return releases.size() - index - 1; // Might change
     case Bisect_Kernel:
         return bisect_remaining(linux_git);
     default:
@@ -470,12 +471,13 @@ std::string viable_repro_name(const Environment &env)
 
 std::string find_crash_log(const Environment &env)
 {
-    std::string crash_name;
+    BugAlias crash;
     std::vector<std::string> crash_hashes = list_dir(env.syzwd + "/crashes");
     for (std::string hash : crash_hashes)
     {
-        crash_name = get_crash_name(hash);
-        if (fuzz_is_crash_in(crash_name, env.duplicates))
+        crash = BugAlias(hash);
+        crash.init(false);
+        if (deduplicate(crash, env.duplicates))
             return hash + "/log0";
     }
 
@@ -699,10 +701,13 @@ int Bisect::record(const Test_Result &result, Git &linux_git)
 
 int Bisect::_archive_session()
 {
-    if (index >= releases.size())
-        std::cerr << "Error: Index error in archive session\n" << std::flush;
-    if (phase == Bisect_Releases && index < releases.size())
-        releases.at(index).skipped = !current_session.stable && !current_session.found;
+    if (phase == Bisect_Releases)
+    {
+        if (index >= releases.size())
+            std::cerr << "Error: Index error in archive session\n" << std::flush;
+        if (index < releases.size())
+            releases.at(index).skipped = !current_session.stable && !current_session.found;
+    }
 
     last_session = this_session();
     past_sessions.insert(this_session());
@@ -759,7 +764,7 @@ std::string Bisect::print_result(const Environment &env, Git &linux_git, const s
     // TODO: iomanip this
     std::stringstream ss;
     ss << "Bug Name:             " << env.name << "\n";
-    ss << "Big ID:               " << env.working_name << "\n";
+    ss << "Bug ID:               " << env.working_name << "\n";
     ss << "Bug Link:             " << env.buglink << "\n";
     if (!bisect_version.id.empty())
     {
@@ -885,9 +890,9 @@ void log_syzkaller_build_error()
 // Attempt 2:
 // ...
 
-void log_attempt_result(const Syzkaller_Result &attempt, int i, const std::vector<std::string> &dups, int fuzztimes)
+void log_attempt_result(const Syzkaller_Result &attempt, int i, const Environment &env)
 {
-    std::cout << "Attempt " << i << ":" << (i > fuzztimes ? " (RETRY)" : "") << "\n";
+    std::cout << "Attempt " << i << ":" << (i > env.fuzztimes ? " (RETRY)" : "") << "\n";
 
     if (attempt.reports.size() > 0)
         std::cout << "    Time  Bug Name\n" << std::flush;
@@ -895,10 +900,10 @@ void log_attempt_result(const Syzkaller_Result &attempt, int i, const std::vecto
         std::cout << "    No crashes found.\n" << std::flush;
     
     for (Crash_Report cr : attempt.reports)
-        std::cout << (fuzz_is_crash_in(cr.name, dups) ? "*** " : "    ") << std::right << std::setw(4) << cr.time << "  " << cr.name << std::endl << std::flush;
+        std::cout << (deduplicate(cr.alias, env.duplicates) ? "*** " : "    ") << std::right << std::setw(4) << cr.time << "  " << cr.alias.name << (cr.count > 1 ? " (" + std::to_string(cr.count) + ")" : "") << std::endl << std::flush;
 }
 
-void log_attempt_result_poc(const Syzkaller_Result &attempt, int i, const std::vector<std::string> &dups)
+void log_attempt_result_poc(const Syzkaller_Result &attempt, int i, const Environment &env)
 {
     std::cout << "Attempt " << i << ":\n";
 
@@ -906,7 +911,7 @@ void log_attempt_result_poc(const Syzkaller_Result &attempt, int i, const std::v
         std::cout << "    No crashes found.\n" << std::flush;
     
     for (Crash_Report cr : attempt.reports)
-        std::cout << (fuzz_is_crash_in(cr.name, dups) ? "*** " : "    ") << cr.name << std::endl << std::flush;
+        std::cout << (deduplicate(cr.alias, env.duplicates) ? "*** " : "    ") << cr.alias.name << std::endl << std::flush;
 }
 
 void log_session_result(const Test_Result &result)

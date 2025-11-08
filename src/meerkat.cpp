@@ -8,8 +8,7 @@
 #include <fuzz.h>
 #include <git.h>
 #include <my_string.h>
-#include <psf.h>
-#include <result.h>
+#include <dedup.h>
 #include <shell_api.h>
 #include <syzkaller.h>
 #include <template_parse.h>
@@ -39,6 +38,9 @@ using namespace std;
 	KERNELVERSION=syzkaller
 	LOCALVERSION=-syzkaller
     */
+
+// check for a patch of v4.19
+// check remaining disabled syscall cases
 
 vector<string> order_pocs(const Environment &env)
 {
@@ -182,12 +184,9 @@ int bisect(Environment &env)
     Git linux_git = prep_kernel_local_repo(env);
     if (linux_git.error() < 0)
         goto finish;
-    
+
     starttime = chrono::steady_clock::now();
     cout << left << setw(CONFW) << "Bisecting:" << env.name << endl;
-
-    env.duplicates.clear();
-    env.duplicates.push_back(env.name);
 
     env.port.init(START_PORT, env.id*env.vmst.numVM, PORT_RANGE);
 
@@ -400,6 +399,9 @@ int main(int argc, char ** argv)
         return -1;
 
     if (handle_features(args, env) < 0)
+        return -1;
+
+    if (env.parse_aliases() < 0)
         return -1;
 
     // make sure all of the needed files are here.

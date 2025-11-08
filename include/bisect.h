@@ -5,7 +5,7 @@
 #include <date.h>
 #include <environment.h>
 #include <git.h>
-#include <result.h>
+#include <dedup.h>
 #include <version.h>
 
 #include <fstream>
@@ -160,8 +160,8 @@ void log_session_compiler(const std::string &);
 void log_kernel_build_error();
 void log_syzkaller_build_error();
 
-void log_attempt_result(const Syzkaller_Result &, int, const std::vector<std::string> &, int);
-void log_attempt_result_poc(const Syzkaller_Result &, int, const std::vector<std::string> &);
+void log_attempt_result(const Syzkaller_Result &, int, const Environment &);
+void log_attempt_result_poc(const Syzkaller_Result &, int, const Environment &);
 void log_session_result(const Test_Result &);
 
 #endif

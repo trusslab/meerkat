@@ -2,6 +2,7 @@
 #define ENVIRONMENT_H
 
 #include <port.h>
+#include <dedup.h>
 
 #include <string>
 #include <vector>
@@ -57,6 +58,7 @@ public:
     std::string syzdir;                 // the directory that houses syzkaller
 
     std::string wd;                     // wd-meerkat-[id]
+    std::string aliasdir;               // wd/bugs/ houses syzkaller-style bugs
     std::string kerneldir;              // the directory that houses the kernel
     std::string syzwd;                  // wd-kaller
     std::string syzconfig;              // the config for syzkaller. We write this ourselves
@@ -86,7 +88,7 @@ public:
 
     std::string anchor_hash;
 
-    std::vector<std::string> duplicates;
+    std::vector<BugAlias> duplicates;   // list of aliases (and stacks) for the bug. front() is the primary alias
 
     std::vector<std::string> base_syscalls;
     std::vector<std::string> required_syscalls;
@@ -98,6 +100,7 @@ public:
 
     // parses unique bug config to get filenames
     int parse_config_file(const std::string &);
+    int parse_aliases();
     int handle_features(const std::set<std::string> &);
 
     std::string syscall_string() const;

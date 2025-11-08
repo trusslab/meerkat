@@ -390,8 +390,8 @@ int write_config(const Environment &env, Git &linux_git, const Version &linux_ve
     bool need_ubsan = false;
     if (env.name.find("UBSAN") != std::string::npos)
         need_ubsan = true;
-    for (std::string d : env.duplicates)
-        if (d.find("UBSAN") != std::string::npos)
+    for (BugAlias a : env.duplicates)
+        if (a.name.find("UBSAN") != std::string::npos)
             need_ubsan = true;
 
     std::set<std::string> tags = gather_commit_tags(env, linux_git, linux_version.id);
@@ -532,14 +532,13 @@ int clean_kernel(const Environment &env)
 }
 
 // Tries to remove the config related to the sanitizer finding the blocking bug
-// TODO: add more sanitizers
 int remove_related_config(const Environment &env, const std::string &bb)
 {
     int err = 0;
     std::string sanitizer = split(bb, ' ').front();
     // If any duplicates need the sanitizer, don't remove it
-    for (std::string dup : env.duplicates)
-        if (sanitizer.find(split(dup, ' ').front()) != std::string::npos)
+    for (BugAlias dup : env.duplicates)
+        if (sanitizer.find(split(dup.name, ' ').front()) != std::string::npos)
             return 0;
 
     if (sanitizer.find("UBSAN") != std::string::npos)
@@ -554,7 +553,6 @@ int remove_related_config(const Environment &env, const std::string &bb)
 // Tries to patch the given blocking bug
 int attempt_patch_blocking_bug(const Environment &env, const std::string &bb)
 {
-    // TODO: find a backport for this bug
     // try to remove a config related to the bug
     if (remove_related_config(env, bb) > 0)
         return 1;
