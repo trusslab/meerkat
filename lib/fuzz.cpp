@@ -381,7 +381,7 @@ Test_Result poc_loop(Environment &env)
 bool ignore_name(const std::string &name)
 {
     std::set<std::string> ignore = {"unexpected kernel reboot", "kernel panic: panic_on_warn set", "kernel panic: hung_task: blocked tasks",
-                                "kernel panic: Fatal exception"};
+                                "kernel panic: Fatal exception", "kernel panic: KASAN: panic_on_warn set ..."};
     return ignore.count(name) > 0;
 }
 
