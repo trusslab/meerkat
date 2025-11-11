@@ -57,7 +57,7 @@ std::string chomp(const std::string &str)
 {
     // Remove return carriages as well.
     std::string ret = ends_with(str, "\n") ? str.substr(0, str.size() - 1) : str;
-    ret = ends_with(str, "\r") ? str.substr(0, str.size() - 1) : str;
+    ret = ends_with(ret, "\r") ? ret.substr(0, ret.size() - 1) : ret;
     return ret;
 }
 
