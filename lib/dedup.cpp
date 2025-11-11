@@ -6,6 +6,8 @@
 #include <iostream>
 #include <map>
 #include <string>
+#include <sstream>
+#include <iomanip>
 
 // Deduplication workflow:
 // Input Materials:
@@ -82,8 +84,8 @@ int BugAlias::init(bool full)
 
     if (!report.empty())
     {
-        // TODO: parse the report here
         stack.clear();
+        return parse_report(report, stack);
     }
 
     return 0;
@@ -114,6 +116,22 @@ std::string BugAlias::crash_function() const
     return "";
 }
 
+std::string BugAlias::debug() const
+{
+    std::stringstream ss;
+    ss << name << std::endl;
+    ss << path << std::endl;
+
+    if (has_stack())
+    {
+        ss << std::endl;
+        for (std::string func : stack)
+            ss << func << std::endl;
+    }
+
+    return ss.str();
+}
+
 Crash_Report::Crash_Report(const BugAlias &a, int t, int c)
 {
     alias = a;
@@ -141,14 +159,70 @@ bool Test_Result::is_stable() const
     return (count < attempts.size() / 2);
 }
 
+#define COMPARISON_THRESHOLD 4
+#define MAX_STACK_COMPARE 5
+
+// In a simple comparison, 
+bool simple_stack_comparison(const BugAlias &bug1, const BugAlias &bug2)
+{
+    unsigned int count = 0;
+    for (int i = 0; i < bug1.stack.size() && i < bug2.stack.size() && i < MAX_STACK_COMPARE; i++)
+        if (bug1.stack.at(i) == bug2.stack.at(i))
+            count++;
+
+    return count >= COMPARISON_THRESHOLD;
+}
+
+bool mutation_stack_comparison(const BugAlias &bug1, const BugAlias &bug2)
+{
+    bool maybe_change = false;
+    int additions = 0, removals = 0, changes = 0, count = 0;
+    int j = 0, k = 0;
+    for (int i = 0; i < bug1.stack.size() && i < MAX_STACK_COMPARE; i++)
+    {
+        k = j;
+        for (; k < bug2.stack.size() && bug1.stack.at(i) != bug2.stack.at(k); k++);
+        if (k >= bug2.stack.size())
+        {
+            maybe_change = true;
+            removals++;
+            continue;
+        }
+        count++;
+        if (maybe_change)
+        {
+            maybe_change = false;
+            if (k - j >= 1)
+            {
+                changes++;
+                removals--;
+            }
+            if (k - j > 1)
+            {
+                additions++;
+            }
+            // if k == j, it was a removal.
+        }
+        else
+        {
+            if (k > j)
+                additions++;
+        }
+        j = k + 1;
+    }
+
+    //std::cout << "add: " << additions << " rem: " << removals << " cha: " << changes << " cnt: " << count << std::endl << std::flush;
+    // The threshold here could vary quite a bit. I'll need to tune it.
+    return (count + changes >= COMPARISON_THRESHOLD) && changes <= 1 && additions <= 1;
+}
+
 bool compare_stack_traces(const BugAlias &bug1, const BugAlias &bug2)
 {
     // if either stack is uncomparable, return false (i.e. don't use stack comparison).
     if (!bug1.has_stack() || !bug2.has_stack())
         return false;
-    
-    // TODO: figure out the comparison algorithm
-    return false;
+
+    return simple_stack_comparison(bug1, bug2);
 }
 
 std::string cluster_crash_type(const std::string &ct)

@@ -8,6 +8,8 @@
 
 #define cut_here "------------[ cut here ]------------"
 
+enum Crash_Type { CT_UNKNOWN, CT_KASAN, CT_WARNING };
+
 int parse_report(const std::string &, std::vector<std::string> &);
 
 #endif

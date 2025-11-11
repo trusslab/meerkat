@@ -2,8 +2,10 @@
 #include <my_string.h>
 #include <report.h>
 
+#include <iostream>
 #include <string>
 #include <vector>
+#include <set>
 
 void sanitize_function_name(std::string &function)
 {
@@ -44,12 +46,108 @@ std::string parse_stack_line(std::string line)
     return ret;
 }
 
+// Ignore some common functions like atomic_read. They are not interesting to the stack trace.
+// And often inline which may introduce variance.
+bool ignore_functions(const std::string &func)
+{
+    std::set<std::string> ignore = { "instrument_atomic_read", "atomic_read" };
+    return ignore.count(func) > 0;
+}
+
+int parse_kasan_stack(const std::vector<std::string> &lines, int &i, std::vector<std::string> &stack)
+{
+    /* KASAN call trace:
+     * BUG: KASAN: use-after-free...
+     * ...
+     * Call trace:
+     *  func1
+     *  func2
+     *  ...
+     */
+
+    std::set<std::string> kasan_functions = { "dump_stack", "__dump_stack", "dump_stack_lvl", "show_stack",
+                                "print_address_description", "print_report", "kasan_report", "kasan_tag_mismatch",
+                                "__hwasan_tag_mismatch", "__asan_memcpy", "check_region_inline", "kasan_check_range",
+                                "__kasan_report" };
+
+    // To start, find the line after "Call trace:". There are no "RIP:"'s in KASAN reports
+    for (; i < lines.size() && !starts_with(to_lower(lines.at(i)), "call trace:"); i++);
+    if (i >= lines.size() - 1)
+    {
+        std::cerr << "Error: index error in parse_kasan_stack()\n" << std::flush;
+        return -1;
+    }
+    i += lines.at(i + 1).find("<TASK>") != std::string::npos ? 2 : 1;
+    
+    int pos1 = lines.at(i).find_first_not_of(" "), pos2 = 0;
+
+    bool still_kasan = true;
+    std::string func;
+    for (; i < lines.size(); i++)
+    {
+        // Look for the end of the stack
+        pos2 = lines.at(i).find_first_not_of(" ");
+        //std::cout << lines.at(i) << " " << pos1 << " " << pos2 << std::endl << std::flush;
+        if (lines.at(i).empty() || lines.at(i).find("</TASK>") != std::string::npos || pos1 != pos2)
+        {
+            break;
+        }
+
+        func = parse_stack_line(lines.at(i));
+        // __asan_report_load8_noabort, __asan_report_load1_noabort
+        if (still_kasan && (kasan_functions.count(func) > 0 || starts_with(func, "__asan_report_load")))
+            continue;
+        still_kasan = false;
+
+        if (!ignore_functions(func))
+            stack.push_back(func);
+    }
+
+    return 0;
+}
+
+// parse one stack trace starting at index i, output to stack vector
+int parse_one_stack(Crash_Type ct, const std::vector<std::string> &lines, int &i, std::vector<std::string> &stack)
+{
+    switch (ct)
+    {
+    case CT_KASAN:
+        return parse_kasan_stack(lines, i, stack);
+    case CT_UNKNOWN:
+    default:
+        return -1;
+    }
+
+    return 0;
+}
+
+Crash_Type identify_ct(const std::vector<std::string> &lines, int &i)
+{
+    for (i = 0; i < lines.size(); i++)
+    {
+        // Start breaking off into identifiable bits
+        if (starts_with(lines.at(i), "BUG: "))
+        {
+            if (lines.at(i).find("KASAN: ") != std::string::npos)
+                return CT_KASAN;
+        }
+    }
+
+    return CT_UNKNOWN;
+}
+
 // Read a syzkaller-style report file and extract the function names in order of the stack trace.
+// On the output of this, the top of stack needs to be useful functions. So cut off any sanitizer
+// functions.
 int parse_report(const std::string &filename, std::vector<std::string> &stack)
 {
     std::vector<std::string> lines;
     if (load_file(filename, lines) < 0)
         return -1;
-    
-    return 0;
+
+    int index = 0;
+    Crash_Type ct = identify_ct(lines, index);
+
+    // parse the first stack trace from that report
+    return parse_one_stack(ct, lines, index, stack);
 }

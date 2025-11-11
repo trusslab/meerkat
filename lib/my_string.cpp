@@ -55,7 +55,10 @@ bool ends_with(const std::string &str, const std::string &postfix)
 
 std::string chomp(const std::string &str)
 {
-    return ends_with(str, "\n") ? str.substr(0, str.size() - 1) : str;
+    // Remove return carriages as well.
+    std::string ret = ends_with(str, "\n") ? str.substr(0, str.size() - 1) : str;
+    ret = ends_with(str, "\r") ? str.substr(0, str.size() - 1) : str;
+    return ret;
 }
 
 // Removes spaces from the front of a string (using isspace from cctype)

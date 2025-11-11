@@ -1,5 +1,6 @@
 #include <file_api.h>
 #include <exec_api.h>
+#include <my_string.h>
 #include <consts.h>
 
 #include <string>
@@ -151,6 +152,8 @@ bool load_file(const std::string &filename, std::vector<std::string> &lines)
     std::string l;
     while (getline(inf, l))
     {
+        // Sanitize return carriages. I guess that's an issue now...
+        l = chomp(l);
         lines.push_back(l);
     }
     inf.close();

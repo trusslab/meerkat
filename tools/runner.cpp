@@ -23,6 +23,7 @@ void print_help()
         << "    --config (c) [config.cfg]: [config]: REQUIRED. The config file containing the bug information.\n"
         << endl
         << "This Program assumes there is at least one reproducer and both Linux and Syzkaller are built.\n"
+        << "WARNING: This Program may be out of date!\n"
         << endl << flush;
 }
 
@@ -133,7 +134,7 @@ int main(int argc, char ** argv)
     for (int i = 0; i < logs.size(); i++)
     {
         res.attempts.push_back(symbolize(env, logs.at(i)));
-        log_attempt_result_poc(res.attempts.back(), i, env.duplicates);
+        log_attempt_result_poc(res.attempts.back(), i, env);
         res.found = res.attempts.back().found ? true : res.found;
     }
     log_session_result(res);

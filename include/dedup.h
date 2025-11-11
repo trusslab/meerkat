@@ -21,6 +21,8 @@ public:
 
     std::string crash_type() const;
     std::string crash_function() const;
+
+    std::string debug() const;
 };
 
 class Crash_Report
@@ -55,6 +57,9 @@ public:
     bool is_stable() const;
 };
 
+bool compare_stack_traces(const BugAlias &, const BugAlias &);
+bool compare_crash_types(const BugAlias &, const BugAlias &);
+bool compare_crash_names(const BugAlias &, const BugAlias &);
 bool deduplicate(const BugAlias &, const std::vector<BugAlias> &);
 
 #endif
