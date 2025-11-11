@@ -23,8 +23,6 @@
 #include <string.h>
 #include <unistd.h>
 
-using namespace std;
-
 std::string make_repro_log(const Environment &env)
 {
     std::string reprolog = env.wd+"reprolog.prog";
@@ -45,7 +43,7 @@ std::string make_repro_log(const Environment &env)
     return reprolog;
 }
 
-int find_max_time(const vector<Syzkaller_Result> &times)
+int find_max_time(const std::vector<Syzkaller_Result> &times)
 {
     // simplify. Find the max time and add 2 minutes to it
     int max = 0;
@@ -58,7 +56,7 @@ int find_max_time(const vector<Syzkaller_Result> &times)
     return max;
 }
 
-int find_average_time(const vector<Syzkaller_Result> &times)
+int find_average_time(const std::vector<Syzkaller_Result> &times)
 {
     int sum = 0;
 
@@ -70,7 +68,7 @@ int find_average_time(const vector<Syzkaller_Result> &times)
 
 void handle_syzkaller_crash()
 {
-    cerr << "Error: Syzkaller has experienced a crash.\n" << flush;
+    std::cerr << "Error: Syzkaller has experienced a crash.\n" << std::flush;
 }
 
 // Reads the syzkaller log to see if any syscalls were disabled
@@ -124,13 +122,13 @@ Syzkaller_Result run_syzkaller(const Environment &env)
     result.ttf = 0;
     result.found = false;
     result.bad_crashes = 0;
-    vector<string> crash_hashes;
-    map<string, int> checked_crashes;
-    map<string, BugAlias> reuse_alias;
+    std::vector<std::string> crash_hashes;
+    std::map<std::string, int> checked_crashes;
+    std::map<std::string, BugAlias> reuse_alias;
     BugAlias crash;
 
-    string managerbin = env.syzdir + "bin/syz-manager";
-    vector<string> spl = {managerbin, "-config=" + env.syzconfig};
+    std::string managerbin = env.syzdir + "bin/syz-manager";
+    std::vector<std::string> spl = {managerbin, "-config=" + env.syzconfig};
     const char ** arg_list = new const char*[spl.size()+1];
     for (int i = 0; i < spl.size(); i++)
         arg_list[i] = spl.at(i).c_str();
@@ -155,7 +153,7 @@ Syzkaller_Result run_syzkaller(const Environment &env)
 
         // list the unique crashes Syzkaller has found
         crash_hashes = list_dir(env.syzwd + "/crashes");
-        for (string hash : crash_hashes)
+        for (std::string hash : crash_hashes)
         {
             to_add = 0;
             if (checked_crashes.find(hash) == checked_crashes.end())
@@ -164,7 +162,7 @@ Syzkaller_Result run_syzkaller(const Environment &env)
                 checked_crashes.insert({hash, 1});
             }
 
-            while (check_file(hash + "/log" + to_string(checked_crashes.at(hash))))
+            while (check_file(hash + "/log" + std::to_string(checked_crashes.at(hash))))
             {
                 to_add++;
                 checked_crashes.at(hash)++;
@@ -195,7 +193,7 @@ Syzkaller_Result run_syzkaller(const Environment &env)
 
         if (wc_l(env.syzkaller_log) > 5000)
         {
-            cout << "Warning: Syzkaller log file exceeded 5000 lines.\n" << flush;
+            std::cout << "Warning: Syzkaller log file exceeded 5000 lines.\n" << std::flush;
             fuzz_fail = true;
             break;
         }
@@ -203,14 +201,14 @@ Syzkaller_Result run_syzkaller(const Environment &env)
 
     if (!completed_machine_check(env))
     {
-        cout << "Warning: Syzkaller never completed machine check.\n" << flush;
+        std::cout << "Warning: Syzkaller never completed machine check.\n" << std::flush;
         fuzz_fail = true;
     }
 
     if (fuzz_fail)
     {
-        string logfile = env.bootfaillog();
-        cout << "Saved log at " << logfile << ".\n" << flush;
+        std::string logfile = env.bootfaillog();
+        std::cout << "Saved log at " << logfile << ".\n" << std::flush;
         copy(env.syzkaller_log, logfile);
         result.bad_crashes++;
         BugAlias badalias = BugAlias();
@@ -400,7 +398,7 @@ Syzkaller_Result symbolize(Environment &env, const std::string &file)
     std::string symbolizebin = env.syzdir + "bin/syz-symbolize";
     std::string cmd = symbolizebin + " --kernel_obj " + env.kerneldir + " --outdir " + env.syzwd + "crashes/ " + file;
 
-    vector<string> spl = split(cmd, ' ');
+    std::vector<std::string> spl = split(cmd, ' ');
     const char ** arg_list = new const char*[spl.size()+1];
     for (int i = 0; i < spl.size(); i++)
         arg_list[i] = spl.at(i).c_str();

@@ -10,15 +10,13 @@
 #include <string>
 #include <cctype>
 
-using namespace std;
-
 // parses a typeref: name<[typeref]>
-TypeRef parse_typeref(const string &typestring)
+TypeRef parse_typeref(const std::string &typestring)
 {
     TypeRef ret;
     int pos0 = 0, pos1 = typestring.find("["), count = 0;
 
-    if (pos1 != string::npos)
+    if (pos1 !=std::string::npos)
     { // if there are options
         ret.set_name(typestring.substr(pos0, pos1 - pos0));
         do {
@@ -43,12 +41,12 @@ TypeRef parse_typeref(const string &typestring)
     return ret;
 }
 
-TailingAttribute parse_tailing_attribute(const string &line)
+TailingAttribute parse_tailing_attribute(const std::string &line)
 {
     TailingAttribute ta;
     int pos0 = 0, pos1 = line.find("[");
 
-    if (pos1 != string::npos)
+    if (pos1 !=std::string::npos)
     {
         ta.set_name(line.substr(pos0, pos1 - pos0));
         pos0 = pos1 + 1;
@@ -65,38 +63,38 @@ TailingAttribute parse_tailing_attribute(const string &line)
 }
 
 // parses a field: name typeref <(attr)>
-Field parse_field(const string &line)
+Field parse_field(const std::string &line)
 {
     Field field;
     int pos0 = line.find_first_not_of(" \t");
     int pos1 = line.find_first_of(" \t", pos0);
-    if (pos0 == string::npos || pos1 == string::npos)
+    if (pos0 ==std::string::npos || pos1 ==std::string::npos)
     {
-        cerr << "Warning: Bad field " << line << ".\n";
+        std::cerr << "Warning: Bad field " << line << ".\n";
         return field;
     }
     field.set_name(line.substr(pos0, pos1 - pos0));
     
     pos0 = line.find_first_not_of(" \t", pos1);
-    if (pos0 == string::npos)
+    if (pos0 ==std::string::npos)
     {
-        cerr << "Warning: Bad field " << line << ".\n";
+        std::cerr << "Warning: Bad field " << line << ".\n";
         return field;
     }
 
     pos1 = line.find("[", pos0);
-    if (pos1 != string::npos && pos0 != string::npos)
+    if (pos1 != std::string::npos && pos0 != std::string::npos)
         pos1 = line.find_last_of("]", pos0) + 1;
-    else if (pos0 != string::npos)
+    else if (pos0 != std::string::npos)
         pos1 = line.find_first_of(" \t", pos0);
 
-    if (pos1 != string::npos && pos0 != string::npos)
+    if (pos1 != std::string::npos && pos0 != std::string::npos)
         field.set_typeref(parse_typeref(line.substr(pos0, pos1 - pos0)));
-    else if (pos0 != string::npos)
+    else if (pos0 != std::string::npos)
         field.set_typeref(parse_typeref(line.substr(pos0)));
 
     pos1 = line.find("(", pos0);
-    if (pos1 != string::npos)
+    if (pos1 != std::string::npos)
     {
         do {
             pos0 = pos1 + (line.at(pos1) == ',' ? 2 : 1);
@@ -109,16 +107,16 @@ Field parse_field(const string &line)
 }
 
 // parses a line that is known to be an include (or incdir) and pushes it to the given vector
-void parse_include(vector<Include> &includes, const string &line)
+void parse_include(std::vector<Include> &includes, const std::string &line)
 {
     int pos0, pos1;
-    string name;
+    std::string name;
 
     pos0 = line.find("<");
     pos1 = line.find(">");
-    if (pos0 == string::npos || pos1 == string::npos)
+    if (pos0 == std::string::npos || pos1 == std::string::npos)
     {
-        cerr << "Error: Bad include: " << line << endl;
+        std::cerr << "Error: Bad include: " << line << std::endl;
         return;
     }
 
@@ -131,15 +129,15 @@ void parse_include(vector<Include> &includes, const string &line)
 }
 
 // parses a line known to be a resource and pushes it to items and resources
-void parse_resource(vector<TypeTag> &items, vector<Resource> &resources, const string &line)
+void parse_resource(std::vector<TypeTag> &items, std::vector<Resource> &resources, const std::string &line)
 {
     int pos0 = 9;
     int pos1 = line.find_first_of("[");
-    string name, typestring;
-    vector<string> sv;
-    if (pos0 >= line.size() || pos1 == string::npos)
+    std::string name, typestring;
+    std::vector<std::string> sv;
+    if (pos0 >= line.size() || pos1 == std::string::npos)
     {
-        cerr << "Error: Bad resource: " << line << endl;
+        std::cerr << "Error: Bad resource: " << line << std::endl;
         return;
     }
 
@@ -149,11 +147,11 @@ void parse_resource(vector<TypeTag> &items, vector<Resource> &resources, const s
     typestring = line.substr(pos0, pos1 - pos0);
 
     pos0 = line.find_first_of(":");
-    if (pos0 != string::npos)
+    if (pos0 != std::string::npos)
     {
         pos0 += 2;
         pos1 = line.find(",", pos0);
-        while (pos1 != string::npos)
+        while (pos1 != std::string::npos)
         {
             sv.push_back(line.substr(pos0, pos1 - pos0));
             pos0 = pos1 + 2;
@@ -172,17 +170,17 @@ void parse_resource(vector<TypeTag> &items, vector<Resource> &resources, const s
 }
 
 // parses a multi-line type where all the lines are given in a vector
-void parse_typeml(vector<TypeTag> &items, vector<TypeMultiline> &typemls, const vector<string> &lines)
+void parse_typeml(std::vector<TypeTag> &items, std::vector<TypeMultiline> &typemls, const std::vector<std::string> &lines)
 {
     int pos0 = 5;
     int pos1 = lines.at(0).find_first_of(" [", pos0);
-    string name; 
-    vector<string> args;
-    vector<Field> fields;
+    std::string name; 
+    std::vector<std::string> args;
+    std::vector<Field> fields;
 
-    if (pos1 == string::npos)
+    if (pos1 == std::string::npos)
     {
-        cerr << "Warning: Bad typeml " << lines.front() << ".\n";
+        std::cerr << "Warning: Bad typeml " << lines.front() << ".\n";
         return;
     }
     name = lines.at(0).substr(pos0, pos1 - pos0);
@@ -193,14 +191,14 @@ void parse_typeml(vector<TypeTag> &items, vector<TypeMultiline> &typemls, const 
             pos0 = pos1 + (lines.at(0).at(pos1) == ',' ? 2 : 1);
             pos1 = lines.at(0).find_first_of(",]", pos0);
             args.push_back(lines.at(0).substr(pos0, pos1 - pos0));
-        } while (pos1 != string::npos && lines.at(0).at(pos1) != ']');
+        } while (pos1 != std::string::npos && lines.at(0).at(pos1) != ']');
     }
 
     for (int i = 1; i < lines.size() - 1; i++)
         fields.push_back(parse_field(lines.at(i)));
 
-    string text;
-    for (string l : lines)
+    std::string text;
+    for (std::string l : lines)
         text += l + "\n";
 
     if (!is_in_items(items, TypeTag(typemlClass, name)))
@@ -213,16 +211,16 @@ void parse_typeml(vector<TypeTag> &items, vector<TypeMultiline> &typemls, const 
 }
 
 // parses a type that is only one line
-void parse_typeol(vector<TypeTag> &items, vector<TypeOneline> &typeols, const string &line)
+void parse_typeol(std::vector<TypeTag> &items, std::vector<TypeOneline> &typeols, const std::string &line)
 {
     int pos0 = 5;
     int pos1 = line.find_first_of(" [", pos0);
-    string name; 
-    vector<string> args;
+    std::string name; 
+    std::vector<std::string> args;
 
-    if (pos1 == string::npos)
+    if (pos1 == std::string::npos)
     {
-        cerr << "Warning: Bad typeol " << line << ".\n";
+        std::cerr << "Warning: Bad typeol " << line << ".\n";
         return;
     }
     name = line.substr(pos0, pos1 - pos0);
@@ -233,13 +231,13 @@ void parse_typeol(vector<TypeTag> &items, vector<TypeOneline> &typeols, const st
             pos0 = pos1 + (line.at(pos1) == ',' ? 2 : 1);
             pos1 = line.find_first_of(",]", pos0);
             args.push_back(line.substr(pos0, pos1 - pos0));
-        } while (pos1 != string::npos && line.at(pos1) != ']');
+        } while (pos1 != std::string::npos && line.at(pos1) != ']');
     }
 
     // find the position of the underlying type
     pos0 = line.find_first_not_of(" ]", pos1);
 
-    if (!is_in_items(items, TypeTag(typeolClass, name)) && pos0 != string::npos)
+    if (!is_in_items(items, TypeTag(typeolClass, name)) && pos0 != std::string::npos)
     {
         item_push_sorted(items, TypeTag(typeolClass, name, typeols.size()));
         typeols.push_back(TypeOneline(line, name, args, parse_typeref(line.substr(pos0))));
@@ -248,14 +246,14 @@ void parse_typeol(vector<TypeTag> &items, vector<TypeOneline> &typeols, const st
     return;
 }
 
-void parse_definition(vector<TypeTag> &items, vector<Definition> &defines, const string &line)
+void parse_definition(std::vector<TypeTag> &items, std::vector<Definition> &defines, const std::string &line)
 {
     int pos0 = 7, pos1 = line.find_first_of(" \t", pos0);
-    string name;
+    std::string name;
 
-    if (pos1 == string::npos)
+    if (pos1 == std::string::npos)
     {
-        cerr << "Warning: Bad define " << line << ".\n";
+        std::cerr << "Warning: Bad define " << line << ".\n";
         return;
     }
     name = line.substr(pos0, pos1 - pos0);
@@ -268,14 +266,14 @@ void parse_definition(vector<TypeTag> &items, vector<Definition> &defines, const
     return;
 }
 
-void parse_syscall(vector<TypeTag> &items, vector<Syscall> &syscalls, const string &line)
+void parse_syscall(std::vector<TypeTag> &items, std::vector<Syscall> &syscalls, const std::string &line)
 {
     int pos0 = 0, pos1 = line.find("("), count = 0;
     Syscall syscall;
     
-    if (pos1 == string::npos)
+    if (pos1 == std::string::npos)
     {
-        cerr << "Warning: Bad syscall " << line << ".\n";
+        std::cerr << "Warning: Bad syscall " << line << ".\n";
         return;
     }
     syscall.set_name(line.substr(pos0, pos1 - pos0));
@@ -300,10 +298,10 @@ void parse_syscall(vector<TypeTag> &items, vector<Syscall> &syscalls, const stri
 
     pos0 = line.find_first_not_of(" \t", pos1 + 1);
 
-    if (pos0 != string::npos && line.at(pos0) != '(')
+    if (pos0 != std::string::npos && line.at(pos0) != '(')
     {
         pos1 = line.find_first_of(" \t", pos0);
-        if (pos1 != string::npos)
+        if (pos1 != std::string::npos)
             syscall.set_return(line.substr(pos0, pos1 - pos0));
         else
             syscall.set_return(line.substr(pos0));
@@ -320,13 +318,13 @@ void parse_syscall(vector<TypeTag> &items, vector<Syscall> &syscalls, const stri
 
 // Both struct and union are the same format, so we can use the same function to parse them
 // heh, strunion
-BaseStruct parse_strunion(const vector<string> &lines)
+BaseStruct parse_strunion(const std::vector<std::string> &lines)
 {
     BaseStruct bs;
     int pos0 = 0, pos1 = lines.front().find_first_of(" {[");
-    if (pos1 == string::npos)
+    if (pos1 == std::string::npos)
     {
-        cerr << "Warning: Bad strunion " << lines.front() << ".\n";
+        std::cerr << "Warning: Bad strunion " << lines.front() << ".\n";
     }
 
     bs.set_name(lines.front().substr(pos0, pos1 - pos0));
@@ -334,7 +332,7 @@ BaseStruct parse_strunion(const vector<string> &lines)
     for (int i = 1; i < lines.size() - 1; i++)
         bs.push_field(parse_field(lines.at(i)));
 
-    string text;
+    std::string text;
     for (int i = 0; i < lines.size(); i++)
         text += lines.at(i) + (i == lines.size() - 1 ? "" : "\n");
     
@@ -344,7 +342,7 @@ BaseStruct parse_strunion(const vector<string> &lines)
 }
 
 // parses a struct
-void parse_structure(vector<TypeTag> &items, vector<Structure> &structures, const vector<string> &lines)
+void parse_structure(std::vector<TypeTag> &items, std::vector<Structure> &structures, const std::vector<std::string> &lines)
 {
     BaseStruct bs = parse_strunion(lines);
 
@@ -357,7 +355,7 @@ void parse_structure(vector<TypeTag> &items, vector<Structure> &structures, cons
 }
 
 // parses a union
-void parse_union(vector<TypeTag> &items, vector<Union> &unions, const vector<string> &lines)
+void parse_union(std::vector<TypeTag> &items, std::vector<Union> &unions, const std::vector<std::string> &lines)
 {
     BaseStruct bs = parse_strunion(lines);
 
@@ -370,16 +368,16 @@ void parse_union(vector<TypeTag> &items, vector<Union> &unions, const vector<str
 }
 
 // parses a flag
-void parse_flag(vector<TypeTag> &items, vector<Flag> &flags, const string &line)
+void parse_flag(std::vector<TypeTag> &items, std::vector<Flag> &flags, const std::string &line)
 {
-    vector<string> values;
-    string name;
+    std::vector<std::string> values;
+    std::string name;
     int pos0 = 0, pos1;
     
     pos1 = line.find(" = ");
-    if (pos1 == string::npos)
+    if (pos1 == std::string::npos)
     {
-        cerr << "Warning: Bad flag " << line << ".\n";
+        std::cerr << "Warning: Bad flag " << line << ".\n";
         return;
     }
     name = line.substr(pos0, pos1 - pos0);
@@ -387,11 +385,11 @@ void parse_flag(vector<TypeTag> &items, vector<Flag> &flags, const string &line)
     do {
         pos0 = pos1 + (line.at(pos1) == ',' ? 2 : 3);
         pos1 = line.find(",", pos0);
-        if (pos1 != string::npos)
+        if (pos1 != std::string::npos)
             values.push_back(line.substr(pos0, pos1 - pos0));
         else
             values.push_back(line.substr(pos0));
-    } while (pos1 != string::npos);
+    } while (pos1 != std::string::npos);
 
     if (!is_in_items(items, TypeTag(flagClass, name)))
     {
@@ -402,13 +400,13 @@ void parse_flag(vector<TypeTag> &items, vector<Flag> &flags, const string &line)
     return;
 }
 
-void get_one_user_syscall(const TypeTag &this_resource, vector<TypeTag> &needed, const vector<TypeTag> &items,
-                        vector<Syscall> &syscalls, vector<TypeOneline> &typeols, vector<TypeMultiline> &typemls,
-                        vector<Union> &unions, vector<Structure> &structures)
+void get_one_user_syscall(const TypeTag &this_resource, std::vector<TypeTag> &needed, const std::vector<TypeTag> &items,
+                        std::vector<Syscall> &syscalls, std::vector<TypeOneline> &typeols, std::vector<TypeMultiline> &typemls,
+                        std::vector<Union> &unions, std::vector<Structure> &structures)
 {
     // check the syscalls already in needed
     int index;
-    vector<TypeTag> used_recs;
+    std::vector<TypeTag> used_recs;
     for (TypeTag tt : needed)
     {
         if (tt.get_class() == syscallClass)
@@ -445,13 +443,13 @@ void get_one_user_syscall(const TypeTag &this_resource, vector<TypeTag> &needed,
         needed.push_back(items.at(index));
     }
     else
-        cerr << "Warning: No syscall found that uses " << this_resource.get_name() << ".\n";
+        std::cerr << "Warning: No syscall found that uses " << this_resource.get_name() << ".\n";
     return;
 }
 
-void get_one_producer_syscall(const TypeTag &this_resource, vector<TypeTag> &needed, const vector<TypeTag> &items,
-                        vector<Syscall> &syscalls, const vector<TypeOneline> &typeols, const vector<TypeMultiline> &typemls,
-                        const vector<Union> &unions, const vector<Structure> &structures)
+void get_one_producer_syscall(const TypeTag &this_resource, std::vector<TypeTag> &needed, const std::vector<TypeTag> &items,
+                        std::vector<Syscall> &syscalls, const std::vector<TypeOneline> &typeols, const std::vector<TypeMultiline> &typemls,
+                        const std::vector<Union> &unions, const std::vector<Structure> &structures)
 {
     int index;
     // Manually check for some resources that are difficult for one reason or another.
@@ -475,7 +473,7 @@ void get_one_producer_syscall(const TypeTag &this_resource, vector<TypeTag> &nee
     }
 
     // check the syscalls already in needed
-    vector<TypeTag> produced_recs;
+    std::vector<TypeTag> produced_recs;
     for (TypeTag tt : needed)
     {
         if (tt.get_class() == syscallClass)
@@ -514,11 +512,11 @@ void get_one_producer_syscall(const TypeTag &this_resource, vector<TypeTag> &nee
         needed.push_back(items.at(index));
     }
     else
-        cerr << "Warning: No syscall found that produces " << this_resource.get_name() << ".\n";
+        std::cerr << "Warning: No syscall found that produces " << this_resource.get_name() << ".\n";
     return;
 }
 
-void push_syscall_depends(vector<Syscall> &syscalls, int index, vector<TypeTag> &needed, vector<TypeTag> &items)
+void push_syscall_depends(std::vector<Syscall> &syscalls, int index, std::vector<TypeTag> &needed, std::vector<TypeTag> &items)
 {
     syscalls.at(index).push_depends(needed, items);
 
@@ -542,42 +540,42 @@ void push_syscall_depends(vector<Syscall> &syscalls, int index, vector<TypeTag> 
     }
 }
 
-vector<string> slim_template(Environment &env, const string &full_template)
+std::vector<std::string> slim_template(Environment &env, const std::string &full_template)
 {
     // Wow this is all bad. But is works (mostly) and I don't want to touch it.
     int pos0, pos1, index;
 
-    ifstream templateIn;
-    ifstream reproIn;
-    ofstream outf;
-    string line, line2;
-    vector<string> lines;
+    std::ifstream templateIn;
+    std::ifstream reproIn;
+    std::ofstream outf;
+    std::string line, line2;
+    std::vector<std::string> lines;
 
-    vector<TypeTag> items;
-    vector<Include> includes;
-    vector<Resource> resources;
-    vector<TypeOneline> typeols;
-    vector<TypeMultiline> typemls;
-    vector<Definition> definitions;
-    vector<Syscall> syscalls;
-    vector<Structure> structures;
-    vector<Union> unions;
-    vector<Flag> flags;
+    std::vector<TypeTag> items;
+    std::vector<Include> includes;
+    std::vector<Resource> resources;
+    std::vector<TypeOneline> typeols;
+    std::vector<TypeMultiline> typemls;
+    std::vector<Definition> definitions;
+    std::vector<Syscall> syscalls;
+    std::vector<Structure> structures;
+    std::vector<Union> unions;
+    std::vector<Flag> flags;
 
-    vector<TypeTag> needed;
-    vector<string> ret;
+    std::vector<TypeTag> needed;
+    std::vector<std::string> ret;
 
     // ======================================================================================================
     // Read the reproducer to get syscalls
 
     // For each repro
-    vector<string> reproducers = list_dir(env.reprodir);
-    for (string file : reproducers)
+    std::vector<std::string> reproducers = list_dir(env.reprodir);
+    for (std::string file : reproducers)
     {
         reproIn.open(file);
         if(!reproIn)
         {
-            cout << "Failed to open reproducer file!" << file << endl;
+            std::cerr << "Failed to open reproducer file!" << file << std::endl;
             return ret;
         }
 
@@ -588,7 +586,7 @@ vector<string> slim_template(Environment &env, const string &full_template)
                 continue;
 
             pos0 = line.find(" = ");
-            pos0 = (pos0 == string::npos) ? 0 : pos0 + 3;
+            pos0 = (pos0 == std::string::npos) ? 0 : pos0 + 3;
             pos1 = line.find("(");
 
             if (!is_in_string(env.base_syscalls, line.substr(pos0, pos1 - pos0)))
@@ -599,24 +597,24 @@ vector<string> slim_template(Environment &env, const string &full_template)
     }
 
     bool hasauto = false;
-    for (string s : env.base_syscalls)
+    for (std::string s : env.base_syscalls)
     {
-        if (s.find("auto") != string::npos)
+        if (s.find("auto") != std::string::npos)
         {
             hasauto = true;
             break;
         }
     }
-    vector<string> templateFiles = list_template_files(full_template, hasauto);
+    std::vector<std::string> templateFiles = list_template_files(full_template, hasauto);
 
     // ======================================================================================================
     // Parse the full template
-    for (string filename : templateFiles)
+    for (std::string filename : templateFiles)
     {
         templateIn.open(filename);
         if (!templateIn)
         {
-            cout << "Error: Failed to open file " << filename << ".\n";
+            std::cout << "Error: Failed to open file " << filename << ".\n";
             return ret;
         }
 
@@ -660,7 +658,7 @@ vector<string> slim_template(Environment &env, const string &full_template)
             { // if it is a define
                 parse_definition(items, definitions, line);
             }
-            else if (line.find("(") != string::npos && line.find(" = ") == string::npos)
+            else if (line.find("(") != std::string::npos && line.find(" = ") == std::string::npos)
             { // if it is a syscall
                 parse_syscall(items, syscalls, line);
             }
@@ -688,12 +686,12 @@ vector<string> slim_template(Environment &env, const string &full_template)
 
                 parse_union(items, unions, lines);
             }
-            else if (line.find(" = ") != string::npos)
+            else if (line.find(" = ") != std::string::npos)
             { // if it is a flag
                 parse_flag(items, flags, line);
             }
             else {
-                cerr << "Warning: Unknown line type in " << filename << ": " << line << endl;
+                std::cerr << "Warning: Unknown line type in " << filename << ": " << line << std::endl;
             }
             line.clear();
             lines.clear();
@@ -707,7 +705,7 @@ vector<string> slim_template(Environment &env, const string &full_template)
     // grab everything first, then print it all to the file
 
     // initial syscalls
-    for (string s : env.base_syscalls)
+    for (std::string s : env.base_syscalls)
     {
         index = find_in_syscalls(syscalls, s);
         if (!is_in_needed(needed, TypeTag(syscallClass ,s)) && index >= 0)
@@ -724,7 +722,7 @@ vector<string> slim_template(Environment &env, const string &full_template)
         index = needed.at(i).get_index();
         if (index < 0)
         {
-            cerr << "Warning: Unknown item " << needed.at(i).get_name() << ".\n";
+            std::cerr << "Warning: Unknown item " << needed.at(i).get_name() << ".\n";
             continue;
         }
         switch (needed.at(i).get_class())
@@ -759,7 +757,7 @@ vector<string> slim_template(Environment &env, const string &full_template)
             push_syscall_depends(syscalls, index, needed, items);
             break;
         default:
-            cout << "Warning: Unknown class type found while grabbing dependencies.\n";
+            std::cerr << "Warning: Unknown class type found while grabbing dependencies.\n";
             break;
         };
     }
@@ -777,27 +775,27 @@ vector<string> slim_template(Environment &env, const string &full_template)
     return ret;
 }
 
-vector<string> list_template_files(const string &template_dir, bool hasauto)
+std::vector<std::string> list_template_files(const std::string &template_dir, bool hasauto)
 {
-    vector<string> files = list_dir(template_dir);
+    std::vector<std::string> files = list_dir(template_dir);
 
     // traversing backwards so we don't mess up as we delete
     for (int i = files.size() - 1; i >= 0; i--)
-        if (files.at(i).find(".const") != string::npos || files.at(i).find(".warn") != string::npos
-        || files.at(i).find(".info") != string::npos || (!hasauto && files.at(i).find("auto") != string::npos)
-        || files.at(i).find(".txt") == string::npos)
+        if (files.at(i).find(".const") != std::string::npos || files.at(i).find(".warn") != std::string::npos
+        || files.at(i).find(".info") != std::string::npos || (!hasauto && files.at(i).find("auto") != std::string::npos)
+        || files.at(i).find(".txt") == std::string::npos)
             files.erase(files.begin() + i);
 
     return files;
 }
 
-vector<string> get_reproducer_syscall_descriptions(Environment &env)
+std::vector<std::string> get_reproducer_syscall_descriptions(Environment &env)
 {
-    string full_template = env.syzdir + "sys/linux";
-    vector<string> syscalls = slim_template(env, full_template);
+    std::string full_template = env.syzdir + "sys/linux";
+    std::vector<std::string> syscalls = slim_template(env, full_template);
     if (syscalls.size() == 0)
     {
-        cout << "Error: failed to slim the template.\n";
+        std::cerr << "Error: failed to slim the template.\n";
         return {};
     }
     return syscalls;

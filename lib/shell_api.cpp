@@ -10,26 +10,24 @@
 #include <string.h>
 #include <stdlib.h>
 
-using namespace std;
-
-string get_path()
+std::string get_path()
 {
     char * path = getenv("PATH");
 
     if (path == nullptr)
         return "";
 
-    return string(path);
+    return std::string(path);
 }
 
-int export_env(const string &e)
+int export_env(const std::string &e)
 {
     char * e_c = new char[e.size() + 1];
     strcpy(e_c, e.c_str());
     int err = putenv(e_c);
     if (err < 0)
     {
-        cerr << "Error: Could not export " << e << ".\n";
+        std::cerr << "Error: Could not export " << e << ".\n" << std::flush;
         return err;
     }
 
@@ -40,28 +38,28 @@ int export_env(const string &e)
     return 0;
 }
 
-int set_timezone(const string &tz)
+int set_timezone(const std::string &tz)
 {
-    string env = "TZ=" + tz;
+    std::string env = "TZ=" + tz;
     return (export_env(env) == 0 ? 0 : -1);
 }
 
-string date(const string &format)
+std::string date(const std::string &format)
 {
-    string plus_format = "+" + format;
+    std::string plus_format = "+" + format;
 
     char command[] = "date";
     char * arg1 = new char[plus_format.size() + 1];
     strcpy(arg1, plus_format.c_str());
 
     char * arg_list[] = {command, arg1, nullptr};
-    string ret = exec_and_read("date", arg_list);
+    std::string ret = exec_and_read("date", arg_list);
 
     delete[] arg1;
     return ret;
 }
 
-int sed_i(const string &regex, const string &filename)
+int sed_i(const std::string &regex, const std::string &filename)
 {
     char command[] = "sed";
     char arg1[] = "-i";
@@ -80,7 +78,7 @@ int sed_i(const string &regex, const string &filename)
     return ret;
 }
 
-bool grep_to_find(const string &expr, const string &file)
+bool grep_to_find(const std::string &expr, const std::string &file)
 {
     char command[] = "grep";
     char * arg1 = new char[expr.size() + 1];
@@ -97,7 +95,7 @@ bool grep_to_find(const string &expr, const string &file)
     return ret == 0 ? true : false;
 }
 
-int copy(const string &src, const string &dest)
+int copy(const std::string &src, const std::string &dest)
 {
     char command[] = "cp";
     char * arg1 = new char[src.size() + 1];
@@ -114,7 +112,7 @@ int copy(const string &src, const string &dest)
     return ret;
 }
 
-int move(const string &src, const string &dest)
+int move(const std::string &src, const std::string &dest)
 {
     char command[] = "mv";
     char * arg1 = new char[src.size() + 1];
@@ -131,7 +129,7 @@ int move(const string &src, const string &dest)
     return ret;
 }
 
-int wc_l(const string &filename)
+int wc_l(const std::string &filename)
 {
     char command[] = "wc";
     char arg1[] = "-l";
@@ -139,7 +137,7 @@ int wc_l(const string &filename)
     strcpy(arg2, filename.c_str());
 
     char * arg_list[] = {command, arg1, arg2, nullptr};
-    string output = exec_and_read("wc", arg_list);
+    std::string output = exec_and_read("wc", arg_list);
 
     int ret = 0;
     for (int i = 0; i < output.size() && isdigit(output.at(i)); i++)
@@ -149,7 +147,7 @@ int wc_l(const string &filename)
     return ret;
 }
 
-bool which(const string &com)
+bool which(const std::string &com)
 {
     char command[] = "which";
     char * arg1 = new char[com.size() + 1];

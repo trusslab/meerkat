@@ -12,99 +12,97 @@
 #include <stdio.h>
 #include <unistd.h>
 
-using namespace std;
-
-bool check_file(const string &filename)
+bool check_file(const std::string &filename)
 {
     struct stat buf;
     return stat(filename.c_str(), &buf) == 0;
 }
 
-string pwd()
+std::string pwd()
 {
     char *buf = new char[BUF_SIZE];
-    string cwd(getcwd(buf, BUF_SIZE));
+    std::string cwd(getcwd(buf, BUF_SIZE));
     delete[] buf;
     return cwd;
 }
 
-int make_dir(const string &filename)
+int make_dir(const std::string &filename)
 {
     int err = mkdir(filename.c_str(), 0775);
 
     if (err < 0)
-        cerr << "Error: Directory " << filename << " could not be made\n";
+        std::cerr << "Error: Directory " << filename << " could not be made\n";
 
     return (err == 0 ? 0 : -1);
 }
 
-int remove_file(const string &filename)
+int remove_file(const std::string &filename)
 {
     int err = remove(filename.c_str());
 
     if (err != 0)
-        cerr << "Error: Failed to delete file " << filename << ".\n";
+        std::cerr << "Error: Failed to delete file " << filename << ".\n";
     
     return (err == 0 ? 0 : -1);
 }
 
-int remove_files_in_dir(const string &dir)
+int remove_files_in_dir(const std::string &dir)
 {
     int err = 0;
-    for (string file : list_dir(dir))
+    for (std::string file : list_dir(dir))
         err = remove_dir(file);
 
     return err;
 }
 
-int remove_dir(const string &dir)
+int remove_dir(const std::string &dir)
 {
-    if (!filesystem::remove_all(dir))
+    if (!std::filesystem::remove_all(dir))
     {
-        cerr << "Error: Failed to delete directory " << dir << ".\n";
+        std::cerr << "Error: Failed to delete directory " << dir << ".\n";
         return -1;
     }
 
     return 0;
 }
 
-int cd(const string &dir)
+int cd(const std::string &dir)
 {
     if (chdir(dir.c_str()) < 0)
     {
-        cerr << "Error: Failed to change working directory to " << dir << ".\n";
+        std::cerr << "Error: Failed to change working directory to " << dir << ".\n";
         return -1;
     }
     return 0;
 }
 
-vector<string> list_dir(const string &dir)
+std::vector<std::string> list_dir(const std::string &dir)
 {
     if (!check_file(dir))
     {
-        cerr << "Error Trying to read a directory that does not exist: "
-             << dir << endl << flush;
+        std::cerr << "Error Trying to read a directory that does not exist: "
+             << dir << std::endl << std::flush;
         return {};
     }
-    vector<string> files;
-    for (const auto &file : filesystem::directory_iterator(dir))
+    std::vector<std::string> files;
+    for (const auto &file : std::filesystem::directory_iterator(dir))
         files.push_back(file.path().string());
 
     return files;
 }
 
 // Compares 2 files. returns true if they have no differences, false otherwise
-bool compare_files(const string &file1, const string &file2)
+bool compare_files(const std::string &file1, const std::string &file2)
 {
     bool ok1, ok2, ret = true;
-    string line1, line2;
-    ifstream inf1, inf2;
+    std::string line1, line2;
+    std::ifstream inf1, inf2;
     inf1.open(file1);
     inf2.open(file2);
 
     if (!inf1 || !inf2)
     {
-        cerr << "Error: Failed to open either " << file1 << " or " << file2 << ".\n";
+        std::cerr << "Error: Failed to open either " << file1 << " or " << file2 << ".\n";
         return false;
     }
 

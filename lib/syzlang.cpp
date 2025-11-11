@@ -3,22 +3,20 @@
 #include <vector>
 #include <syzlang.h>
 
-using namespace std;
-
 // ======================================================================================================
 // Wrapper
 
 ParseClass TypeTag::get_class() const
 { return pc; }
 
-string TypeTag::get_name() const
+std::string TypeTag::get_name() const
 { return name; }
 
 int TypeTag::get_index() const
 { return index; }
 
 // resourceClass, typeolClass, typemlClass, definitionClass, unionClass, structureClass, flagClass, syscallClass, includeClass
-void TypeTag::set_type(const ParseClass &pclass, const string &n)
+void TypeTag::set_type(const ParseClass &pclass, const std::string &n)
 {
     pc = pclass;
     name = n;
@@ -28,19 +26,19 @@ void TypeTag::set_type(const ParseClass &pclass, const string &n)
 // ======================================================================================================
 // Base Class
 
-string Identifier::get_name() const
+std::string Identifier::get_name() const
 { return name; }
 
-void Identifier::set_name(const string &n)
+void Identifier::set_name(const std::string &n)
 {
     name = n;
     return;
 }
 
-string Identifier::get_text() const
+std::string Identifier::get_text() const
 { return text; }
 
-void Identifier::set_text(const string &t)
+void Identifier::set_text(const std::string &t)
 {
     text = t;
     return;
@@ -49,9 +47,9 @@ void Identifier::set_text(const string &t)
 // ======================================================================================================
 // Member Classes
 
-string TypeRef::print() const
+std::string TypeRef::print() const
 {
-    string p = name;
+    std::string p = name;
 
     if (this->has_opts())
     {
@@ -64,10 +62,10 @@ string TypeRef::print() const
     return p;
 }
 
-string TypeRef::get_name() const
+std::string TypeRef::get_name() const
 { return name;}
 
-void TypeRef::set_name(const string &n)
+void TypeRef::set_name(const std::string &n)
 {
     name = n;
     return;
@@ -82,10 +80,10 @@ void TypeRef::push_opt(const TypeRef &tr)
     return;
 }
 
-vector<TypeRef> TypeRef::get_opts() const
+std::vector<TypeRef> TypeRef::get_opts() const
 { return options; }
 
-void TypeRef::push_depends(vector<TypeTag> &needed, const vector<TypeTag> &items)
+void TypeRef::push_depends(std::vector<TypeTag> &needed, const std::vector<TypeTag> &items)
 {
     int index;
     if(!checked_depends)
@@ -106,20 +104,20 @@ void TypeRef::push_depends(vector<TypeTag> &needed, const vector<TypeTag> &items
     return;
 }
 
-string TailingAttribute::print() const
+std::string TailingAttribute::print() const
 {
-    string p = name;
+    std::string p = name;
 
     if (has_n())
-        p += "[" + to_string(n) + "]";
+        p += "[" + std::to_string(n) + "]";
 
     return p;
 }
 
-string TailingAttribute::get_name() const
+std::string TailingAttribute::get_name() const
 { return name; }
 
-void TailingAttribute::set_name(const string &n)
+void TailingAttribute::set_name(const std::string &n)
 {
     name = n;
     return;
@@ -137,9 +135,9 @@ void TailingAttribute::set_n(int x)
     return;
 }
 
-string Field::print() const
+std::string Field::print() const
 {
-    string p = name + " " + type.print();
+    std::string p = name + " " + type.print();
 
     if (has_attrs())
     {
@@ -152,10 +150,10 @@ string Field::print() const
     return p;
 }
 
-string Field::get_name() const
+std::string Field::get_name() const
 { return name; }
 
-void Field::set_name(const string &n)
+void Field::set_name(const std::string &n)
 {
     name = n;
     return;
@@ -179,7 +177,7 @@ void Field::push_attr(const TailingAttribute &ta)
     return;
 }
 
-bool Field::check_attrs(const string &a) const
+bool Field::check_attrs(const std::string &a) const
 {
     for (TailingAttribute ta : attributes)
         if (ta.get_name() == a)
@@ -188,7 +186,7 @@ bool Field::check_attrs(const string &a) const
     return false;
 }
 
-void Field::push_depends(vector<TypeTag> &needed, const vector<TypeTag> &items)
+void Field::push_depends(std::vector<TypeTag> &needed, const std::vector<TypeTag> &items)
 {
     int index;
     if (!checked_depends)
@@ -207,35 +205,35 @@ void Field::push_depends(vector<TypeTag> &needed, const vector<TypeTag> &items)
 // ======================================================================================================
 // Other directives
 
-string Include::print() const
+std::string Include::print() const
 {
     return "include <" + name + ">";
 }
 
-string Definition::print() const
+std::string Definition::print() const
 {
     return "define " + name;
 }
 
-void Definition::push_depends(vector<TypeTag> &needed, const vector<TypeTag> &items)
+void Definition::push_depends(std::vector<TypeTag> &needed, const std::vector<TypeTag> &items)
 { return; }
 
 // ======================================================================================================
 // Types
 
-void BaseType::push_arg(const string &a)
+void BaseType::push_arg(const std::string &a)
 {
     args.push_back(a);
     return;
 }
 
-vector<string>& BaseType::get_args()
+std::vector<std::string>& BaseType::get_args()
 { return args; }
 
 bool BaseType::has_args() const
 { return !args.empty(); }
 
-int BaseType::find_arg(const string &query) const
+int BaseType::find_arg(const std::string &query) const
 {
     for (int i = 0; i < args.size(); i++)
         if (args.at(i) == query)
@@ -244,9 +242,9 @@ int BaseType::find_arg(const string &query) const
     return -1;
 }
 
-string BaseType::print_args() const
+std::string BaseType::print_args() const
 {
-    string p = "[";
+    std::string p = "[";
     for (int i = 0; i < args.size(); i++)
         p += (i == 0 ? "" : ", ") + args.at(i);
     p += "]";
@@ -254,9 +252,9 @@ string BaseType::print_args() const
     return p;
 }
 
-string TypeOneline::print() const
+std::string TypeOneline::print() const
 {
-    string p = "type " + name;
+    std::string p = "type " + name;
 
     if (has_args())
         p += " " + print_args();
@@ -268,7 +266,7 @@ string TypeOneline::print() const
 TypeRef TypeOneline::get_type() const
 { return type; }
 
-void TypeOneline::push_depends(vector<TypeTag> &needed, const vector<TypeTag> &items)
+void TypeOneline::push_depends(std::vector<TypeTag> &needed, const std::vector<TypeTag> &items)
 {
     if (!checked_depends)
     {
@@ -283,9 +281,9 @@ void TypeOneline::push_depends(vector<TypeTag> &needed, const vector<TypeTag> &i
     return;
 }
 
-string TypeMultiline::print() const
+std::string TypeMultiline::print() const
 {
-    string p = "type " + name;
+    std::string p = "type " + name;
 
     if (has_args())
         p += " " + print_args();
@@ -298,10 +296,10 @@ string TypeMultiline::print() const
     return p;
 }
 
-vector<Field> TypeMultiline::get_fields() const
+std::vector<Field> TypeMultiline::get_fields() const
 { return fields; }
 
-void TypeMultiline::push_depends(vector<TypeTag> &needed, const vector<TypeTag> &items)
+void TypeMultiline::push_depends(std::vector<TypeTag> &needed, const std::vector<TypeTag> &items)
 {
     int index;
     if (!checked_depends)
@@ -321,9 +319,9 @@ void TypeMultiline::push_depends(vector<TypeTag> &needed, const vector<TypeTag> 
 // ======================================================================================================
 // Resource
 
-string Resource::print() const
+std::string Resource::print() const
 {
-    string p = "resource " + name + "[" + type.print() + "]";
+    std::string p = "resource " + name + "[" + type.print() + "]";
 
     if (has_sv())
     {
@@ -341,17 +339,17 @@ TypeRef& Resource::get_typeref()
 bool Resource::has_sv() const
 { return !special_values.empty(); }
 
-vector<string>& Resource::get_sv()
+std::vector<std::string>& Resource::get_sv()
 { return special_values; }
 
-void Resource::push_depends(vector<TypeTag> &needed, const vector<TypeTag> &items)
+void Resource::push_depends(std::vector<TypeTag> &needed, const std::vector<TypeTag> &items)
 { 
     int index;
     if (!checked_depends)
     {
         type.push_depends(depends, items);
 
-        for (string v : special_values)
+        for (std::string v : special_values)
         {
             index = find_in_items(items, TypeTag(definitionClass, v));
             if (index >= 0)
@@ -371,7 +369,7 @@ bool Resource::has_depends()
 { // This can be part of identifier if needed.
     if (!checked_depends)
     {
-        cerr << "Error: Tried to query depends before they were checked\n" << flush;
+        std::cerr << "Error: Tried to query depends before they were checked\n" << std::flush;
         return 0;
     }
 
@@ -387,12 +385,12 @@ void BaseStruct::push_field(const Field &f)
     return;
 }
 
-vector<Field> BaseStruct::get_fields() const
+std::vector<Field> BaseStruct::get_fields() const
 { return fields; }
 
-string BaseStruct::print_delim(char d = '{') const
+std::string BaseStruct::print_delim(char d = '{') const
 {
-    string p = name + " " + d + "\n";
+    std::string p = name + " " + d + "\n";
 
     for (Field f : fields)
         p += "    " + f.print() + "\n";
@@ -402,7 +400,7 @@ string BaseStruct::print_delim(char d = '{') const
     return p;
 }
 
-void BaseStruct::push_depends(vector<TypeTag> &needed, const vector<TypeTag> &items)
+void BaseStruct::push_depends(std::vector<TypeTag> &needed, const std::vector<TypeTag> &items)
 {
     if (!checked_depends)
     {
@@ -419,12 +417,12 @@ void BaseStruct::push_depends(vector<TypeTag> &needed, const vector<TypeTag> &it
     return;
 }
 
-string Union::print() const
+std::string Union::print() const
 {
     return print_delim('[');
 }
 
-string Structure::print() const
+std::string Structure::print() const
 {
     return print_delim('{');
 }
@@ -441,9 +439,9 @@ int Structure::find_outoverlay() const
 // ======================================================================================================
 // Flag
 
-string Flag::print() const
+std::string Flag::print() const
 {
-    string p = name + " = ";
+    std::string p = name + " = ";
 
     for (int i = 0; i < values.size(); i++)
         p += (i == 0 ? "" : ", ") + values.at(i);
@@ -451,12 +449,12 @@ string Flag::print() const
     return p;
 }
 
-void Flag::push_depends(vector<TypeTag> &needed, const vector<TypeTag> &items)
+void Flag::push_depends(std::vector<TypeTag> &needed, const std::vector<TypeTag> &items)
 {
     int index;
     if (!checked_depends)
     {
-        for (string s : values)
+        for (std::string s : values)
         {
             index = find_in_items(items, TypeTag(definitionClass, s));
             if (index >= 0)
@@ -475,9 +473,9 @@ void Flag::push_depends(vector<TypeTag> &needed, const vector<TypeTag> &items)
 // ======================================================================================================
 // Syscall
 
-string Syscall::print() const
+std::string Syscall::print() const
 {
-    string p = name + "(";
+    std::string p = name + "(";
 
     for (int i = 0; i < args.size(); i++)
         p += (i == 0 ? "" : ", ") + args.at(i).print();
@@ -495,7 +493,7 @@ void Syscall::push_field(const Field &f)
     return;
 }
 
-void Syscall::set_return(const string &rt)
+void Syscall::set_return(const std::string &rt)
 {
     return_type = rt;
     return;
@@ -504,7 +502,7 @@ void Syscall::set_return(const string &rt)
 bool Syscall::has_return() const
 { return !return_type.empty(); }
 
-void Syscall::push_depends(vector<TypeTag> &needed, const vector<TypeTag> &items)
+void Syscall::push_depends(std::vector<TypeTag> &needed, const std::vector<TypeTag> &items)
 {
     int index;
     if (!checked_depends)
@@ -525,12 +523,12 @@ void Syscall::push_depends(vector<TypeTag> &needed, const vector<TypeTag> &items
     return;
 }
 
-vector<TypeTag> Syscall::get_resources_used(const vector<TypeTag> &items,
-                const vector<TypeOneline> &typeols, const vector<TypeMultiline> &typemls,
-                const vector<Union> &unions, const vector<Structure> &structures)
+std::vector<TypeTag> Syscall::get_resources_used(const std::vector<TypeTag> &items,
+                const std::vector<TypeOneline> &typeols, const std::vector<TypeMultiline> &typemls,
+                const std::vector<Union> &unions, const std::vector<Structure> &structures)
 {
     int index;
-    vector<TypeRef> items_to_check;
+    std::vector<TypeRef> items_to_check;
     TypeRef tmp;
     if (!checked_used)
     {
@@ -661,12 +659,12 @@ vector<TypeTag> Syscall::get_resources_used(const vector<TypeTag> &items,
     return resources_used;
 }
 
-vector<TypeTag> Syscall::get_resources_produced(const vector<TypeTag> &items,
-                    const vector<TypeOneline> &typeols, const vector<TypeMultiline> &typemls,
-                    const vector<Union> &unions, const vector<Structure> &structures)
+std::vector<TypeTag> Syscall::get_resources_produced(const std::vector<TypeTag> &items,
+                    const std::vector<TypeOneline> &typeols, const std::vector<TypeMultiline> &typemls,
+                    const std::vector<Union> &unions, const std::vector<Structure> &structures)
 {
     int index;
-    vector<TypeRef> items_to_check;
+    std::vector<TypeRef> items_to_check;
     TypeRef tmp;
     if (!checked_produced)
     {
@@ -785,16 +783,16 @@ vector<TypeTag> Syscall::get_resources_produced(const vector<TypeTag> &items,
             if (index >= 0)
                 resources_produced.push_back(items.at(index));
             else
-                cerr << "Warning: Bad return value " << return_type << ".\n";
+                std::cerr << "Warning: Bad return value " << return_type << ".\n";
         }
         checked_produced = true;
     }
     return resources_produced;
 }
 
-int Syscall::total_resources(const vector<TypeTag> &items, const vector<TypeOneline> &typeols,
-                                const vector<TypeMultiline> &typemls, const vector<Union> &unions,
-                                const vector<Structure> &structures)
+int Syscall::total_resources(const std::vector<TypeTag> &items, const std::vector<TypeOneline> &typeols,
+                                const std::vector<TypeMultiline> &typemls, const std::vector<Union> &unions,
+                                const std::vector<Structure> &structures)
 {
     if (!checked_produced || !checked_used)
     {
@@ -811,7 +809,7 @@ int Syscall::total_resources(const vector<TypeTag> &items, const vector<TypeOnel
 // insert tt into items sorted using binary search
 // l = 0, smaller values
 // h = high index, larger values
-void item_push_sorted(vector<TypeTag> &items, const TypeTag &tt)
+void item_push_sorted(std::vector<TypeTag> &items, const TypeTag &tt)
 {
     if (items.empty())
     {
@@ -833,7 +831,7 @@ void item_push_sorted(vector<TypeTag> &items, const TypeTag &tt)
     return;
 }
 
-int find_in_items(const vector<TypeTag> &items, const TypeTag &query)
+int find_in_items(const std::vector<TypeTag> &items, const TypeTag &query)
 {
     if (items.empty())
         return -1;
@@ -868,9 +866,9 @@ int find_in_items(const vector<TypeTag> &items, const TypeTag &query)
 // for when you don't know which one you'll need.
 // Thankfully, this really only happens when a type template is acting
 // as a wrapper for flags
-vector<TypeTag> find_in_items(const vector<TypeTag> &items, const string &query)
+std::vector<TypeTag> find_in_items(const std::vector<TypeTag> &items, const std::string &query)
 {
-    vector<TypeTag> ret;
+    std::vector<TypeTag> ret;
     if (items.empty())
         return ret;
     
@@ -894,13 +892,13 @@ vector<TypeTag> find_in_items(const vector<TypeTag> &items, const string &query)
 }
 
 // binary search on the items
-bool is_in_items(const vector<TypeTag> &items, const TypeTag &query)
+bool is_in_items(const std::vector<TypeTag> &items, const TypeTag &query)
 {
     return (find_in_items(items, query) >= 0);
 }
 
 // needed cannot be sorted because of how we add things to it.
-bool is_in_needed(const vector<TypeTag> &needed, const TypeTag &query)
+bool is_in_needed(const std::vector<TypeTag> &needed, const TypeTag &query)
 {
     for (TypeTag tt : needed)
         if (query.get_name() == tt.get_name() && query.get_class() == tt.get_class())
@@ -910,7 +908,7 @@ bool is_in_needed(const vector<TypeTag> &needed, const TypeTag &query)
 }
 
 // linear search because sorting is a lot of effort for not a lot of time gained
-bool is_in_includes(const vector<Include> &includes, const string &name)
+bool is_in_includes(const std::vector<Include> &includes, const std::string &name)
 {
     for (Include i : includes)
         if (i.get_name() == name)
@@ -918,7 +916,7 @@ bool is_in_includes(const vector<Include> &includes, const string &name)
     return false;
 }
 
-bool is_in_typeref(const vector<TypeRef> &typerefs, const string &name)
+bool is_in_typeref(const std::vector<TypeRef> &typerefs, const std::string &name)
 {
     for (TypeRef tr : typerefs)
         if (tr.get_name() == name)
@@ -927,16 +925,16 @@ bool is_in_typeref(const vector<TypeRef> &typerefs, const string &name)
     return false;
 }
 
-bool is_in_string(const vector<string> &strs, const string &s)
+bool is_in_string(const std::vector<std::string> &strs, const std::string &s)
 {
-    for (string str : strs)
+    for (std::string str : strs)
         if (s == str)
             return true;
     
     return false;
 }
 
-int find_in_syscalls(const vector<Syscall> &syscalls, const string &name)
+int find_in_syscalls(const std::vector<Syscall> &syscalls, const std::string &name)
 {
     int i = 0;
     for (i = 0; i < syscalls.size(); i++)
@@ -946,7 +944,7 @@ int find_in_syscalls(const vector<Syscall> &syscalls, const string &name)
     return -1;
 }
 
-int stoi_custom(const string &line)
+int stoi_custom(const std::string &line)
 {
     int n = 0, neg = 1;
     if (line.empty())
