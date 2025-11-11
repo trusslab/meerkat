@@ -1,4 +1,4 @@
-./bin/bisector -i 1 -c /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/bisector.cfg -a d1dc87763f406d4e67caf16dbe438a5647692395 -F ff-test,poc-test,stateful-corpus,ff-no-find-backup
+./bin/meerkat -i 1 -c /home/syzretrospector/meerkat/wd-meerkat-1/meerkat.cfg -a d1dc87763f406d4e67caf16dbe438a5647692395 -F ff-test,poc-test,poc-all-pocs,ff-no-find-backup,stateful-corpus
 Bisecting:          WARNING in inet_csk_get_port
 Syzbot Link:        https://syzkaller.appspot.com/bug?id=ea15ed20f874608f0b5e8f90c9d1cda69f1e34be
 Working Name:       bug0007
@@ -10,388 +10,388 @@ Repository:         https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/lin
 Branch:             master
 Arch:               amd64
 
-Bisector:           /mnt/sdd/jtbursey/SyzInspector/
-Version:            1.0.3
-Kernel:             /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/kernel/
-Syzkaller:          /mnt/sdd/jtbursey/SyzInspector/syzkaller/
-Compilers:          /mnt/sda/jtbursey/SyzInspector/compilers/
-Ccache:             ccache
-Image:              /mnt/sda/jtbursey/SyzInspector/image/stretch/stretch.img
-Image Key:          /mnt/sda/jtbursey/SyzInspector/image/stretch/stretch.id_rsa
+Meerkat:            /home/syzretrospector/meerkat/
+Version:            1.1.0
+Kernel:             /home/syzretrospector/meerkat/wd-meerkat-1/kernel/
+Syzkaller:          /home/syzretrospector/meerkat/syzkaller/
+Compilers:          /home/syzretrospector/meerkat/compilers/
+Compiler:           gcc (Ubuntu 11.4.0-1ubuntu1~22.04.2) 11.4.0
+Linker:             GNU ld (GNU Binutils for Ubuntu) 2.38
+Ccache:             ccache version 4.5.1
+Image:              /home/syzretrospector/images/stretch/stretch.img
+Image Key:          /home/syzretrospector/images/stretch/stretch.id_rsa
 
-Workdir:            /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/
-Kconfig:            /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/config-bug0007.txt
-Reproducers: (4)    /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/reproducers/
-Primary PoC:        /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/reproducers/repro-bug0007-1.prog
-Syzkaller Workdir:  /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/wd-kaller/
-Log Directory:      /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/log/
+Workdir:            /home/syzretrospector/meerkat/wd-meerkat-1/
+Kconfig:            /home/syzretrospector/meerkat/wd-meerkat-1/config-bug0007.txt
+Reproducers: (4)    /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/
+Primary PoC:        /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0007-1.prog
+Syzkaller Workdir:  /home/syzretrospector/meerkat/wd-meerkat-1/wd-kaller/
+Log Directory:      /home/syzretrospector/meerkat/wd-meerkat-1/log/
 
-Syscalls: (10)      ["bind$inet6", "connect$inet6", "listen", "sendto$inet6", "setsockopt$sock_int", "socket$inet6", "socket$inet6_tcp", "socket", "ioctl$EXT4_IOC_GROUP_EXTEND", "openat$sw_sync_info"]
+Syscalls: (10)      ["bind$inet6", "connect$inet6", "listen", "sendto$inet6", "setsockopt$sock_int", "socket$inet6", "socket$inet6_tcp", "socket", "ioctl$F2FS_IOC_START_ATOMIC_WRITE", "openat$selinux_enforce"]
 VM Count:           8
 CPU Count:          2
 Procs:              16
 Memory:             4096
 Make Procs:         16
-Max Time:           30
-Max Attempts:       3
+Max Time:           10
+Max Attempts:       1
 
 ==== Anchor Commit ====
 
-2025-02-26 12:25:43
+2025-09-09 14:34:43
 Session:   1
 Kernel:    2022-06-01 - d1dc87763f406d4e67caf16dbe438a5647692395
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
-Error: Waitpid on pid 2384849 failed.
-Error: Syzkaller has experienced a crash.
-Warning: Child process exited with error status 32766.
+Compiler:  ccache gcc
 Attempt 1:
-    No crashes found.
-Attempt 2:
     Time  Bug Name
 ***    2  WARNING in inet_csk_get_port
 ***    2  WARNING in inet_csk_get_port
-Attempt 3:
+***    2  WARNING in inet_csk_get_port
+***    2  WARNING in inet_csk_get_port
+***    2  WARNING in inet_csk_get_port
+***    2  WARNING in inet_csk_get_port
+Attempt 2: (RETRY)
     Time  Bug Name
+***    2  WARNING in inet_csk_get_port
+***    2  WARNING in inet_csk_get_port
+***    2  WARNING in inet_csk_get_port
+***    2  WARNING in inet_csk_get_port
+       2  KASAN: use-after-free Read in nf_confirm
+       2  KASAN: use-after-free Read in nf_confirm
+Attempt 3: (RETRY)
+    Time  Bug Name
+***    2  WARNING in inet_csk_get_port
+***    2  WARNING in inet_csk_get_port
+***    2  WARNING in inet_csk_get_port
+***    2  WARNING in inet_csk_get_port
+***    2  WARNING in inet_csk_get_port
 ***    2  WARNING in inet_csk_get_port
 The bug was found.
 
 New Max Time: 10
 
 ==== Major Release Search ====
-17 Releases
+12 Releases
 
-2025-02-26 12:53:49
+2025-09-09 14:51:37
 Session:   2
-Kernel:    2022-03-20 - f443e374ae131c168a065ea1748feac6b2e76613 (v5.17)
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Kernel:    2022-05-22 - 4b0986a3613c92f4ec1bdc7f60ec66fea135991f (v5.18)
+Compiler:  ccache gcc
 Attempt 1:
     No crashes found.
-Attempt 2:
-    No crashes found.
-Attempt 3:
-    No crashes found.
 The bug was not found.
-About 16 releases remaining
+About 11 releases remaining
 
 ==== Kernel Bisection ====
-28178 Linux commits
+11973 Linux commits
 
-2025-02-26 13:41:23
+2025-09-09 15:11:58
 Session:   3
-Kernel:    2022-04-03 - 63d12cc30574eec9241932cefa17a21df3afd8d0
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Kernel:    2022-05-25 - 86c87bea6b42100c67418af690919c44de6ede6e
+Compiler:  ccache gcc
 Attempt 1:
     Time  Bug Name
-       8  WARNING in inet_sock_destruct
-Attempt 2:
-    Time  Bug Name
-      10  WARNING in inet_sock_destruct
-Attempt 3:
-    No crashes found.
-The bug was not found.
-About 14089 commits remaining
-
-2025-02-26 14:29:47
-Session:   4
-Kernel:    2022-05-25 - 7e062cda7d90543ac8c7700fc7c5527d0c0f22ad
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
-Attempt 1:
-    Time  Bug Name
-***    3  WARNING in inet_csk_get_port
-***    3  WARNING in inet_csk_get_port
-***    3  WARNING in inet_csk_get_port
-***    3  WARNING in inet_csk_get_port
-***    3  WARNING in inet_csk_get_port
-***    3  WARNING in inet_csk_get_port
-***    3  WARNING in inet_csk_get_port
+***    2  WARNING in inet_csk_get_port
+***    2  WARNING in inet_csk_get_port
+***    2  WARNING in inet_csk_get_port
+***    2  WARNING in inet_csk_get_port
 Running syz-repro.
-New PoC saved at /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/reproducers/repro-bug0007-0.prog
-Primary PoC:     /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/reproducers/repro-bug0007-0.prog
-Run Time:        0h16m0s
-The bug was found.
-About 7060 commits remaining
-
-2025-02-26 15:06:22
-Session:   5
-Kernel:    2022-05-24 - a9d1046a846571422a92d2b8fbf8a8b24221b9a3
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
-Attempt 1:
-    Time  Bug Name
-       5  INFO: rcu detected stall in corrupted
-       6  SYZFAIL: failed to mkdtemp
-       7  no output from test machine
-       7  no output from test machine
-       7  no output from test machine
-       7  no output from test machine
-       7  no output from test machine
-       7  no output from test machine
-Attempt 2:
-    No crashes found.
-Attempt 3:
-    Time  Bug Name
-       5  general protection fault in sctp_inet_listen
-       8  INFO: rcu detected stall in corrupted
-       8  INFO: rcu detected stall in corrupted
-       8  INFO: rcu detected stall in corrupted
-       8  INFO: rcu detected stall in corrupted
-       8  INFO: rcu detected stall in corrupted
-       8  INFO: rcu detected stall in corrupted
-Attempt 4: (RETRY)
-    Time  Bug Name
-       2  INFO: rcu detected stall in corrupted
-The bug was not found.
-About 3536 commits remaining
-
-2025-02-26 16:01:28
-Session:   6
-Kernel:    2022-05-22 - 62dfb4cc444649b3f841ddb4f472a12ed6422714
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
-Attempt 1:
-    Time  Bug Name
-***    2  WARNING in inet_csk_get_port
-***    2  WARNING in inet_csk_get_port
-***    2  WARNING in inet_csk_get_port
-The bug was found.
-About 1768 commits remaining
-
-2025-02-26 16:17:11
-Session:   7
-Kernel:    2022-05-03 - 58caed3dacb4354a25a1aa8d2febc3e9648ba1f4
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
-Attempt 1:
-    No crashes found.
-Attempt 2:
-    Time  Bug Name
-       4  WARNING in __cfg80211_ibss_joined
-       7  INFO: task hung in new_device_store
-Attempt 3:
-    No crashes found.
-The bug was not found.
-About 1730 commits remaining
-
-2025-02-26 17:01:16
-Session:   8
-Kernel:    2022-05-11 - d7722973a1923c9af6372f5bd7ee75439e68c882
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
-Attempt 1:
-    Time  Bug Name
-       5  INFO: task hung in new_device_store
-       5  INFO: task hung in new_device_store
-       6  WARNING: refcount bug in rds_tcp_tune
-       7  WARNING: refcount bug in rds_tcp_tune
-       8  WARNING: refcount bug in rds_tcp_tune
-      10  WARNING: refcount bug in rds_tcp_tune
-Attempt 2:
-    Time  Bug Name
-       4  WARNING: refcount bug in rds_tcp_tune
-       4  WARNING: refcount bug in rds_tcp_tune
-       6  WARNING: refcount bug in rds_tcp_tune
-       7  general protection fault in sctp_inet_listen
-       7  WARNING: refcount bug in rds_tcp_tune
-       7  WARNING: refcount bug in rds_tcp_tune
-       7  WARNING: refcount bug in rds_tcp_tune
-       8  WARNING: refcount bug in rds_tcp_tune
-       8  WARNING: refcount bug in rds_tcp_tune
-      10  WARNING: refcount bug in rds_tcp_tune
-Attempt 3:
-    Time  Bug Name
-       7  INFO: rcu detected stall in newfstat
-       7  INFO: rcu detected stall in kcov_ioctl
-       7  no output from test machine
-       7  no output from test machine
-      10  WARNING: refcount bug in rds_tcp_tune
-The bug was not found.
-About 904 commits remaining
-
-2025-02-26 17:44:52
-Session:   9
-Kernel:    2022-05-19 - 1a6dd9996699889313327be03981716a8337656b
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
-Attempt 1:
-    Time  Bug Name
-       6  BUG: soft lockup in kcov_ioctl
-       6  BUG: soft lockup in kcov_ioctl
-       6  BUG: soft lockup in kcov_ioctl
-       6  BUG: soft lockup in kcov_ioctl
-       6  INFO: rcu detected stall in kcov_ioctl
-       6  INFO: rcu detected stall in kcov_ioctl
-       6  INFO: rcu detected stall in corrupted
-Attempt 2:
-    Time  Bug Name
-       7  KASAN: use-after-free Read in nf_confirm
-       7  KASAN: use-after-free Read in nf_confirm
-       7  KASAN: use-after-free Read in nf_confirm
-       7  KASAN: use-after-free Read in nf_confirm
-       7  KASAN: use-after-free Read in nf_confirm
-      10  KASAN: use-after-free Read in nf_confirm
-Attempt 3:
-    Time  Bug Name
-       5  KASAN: use-after-free Read in nf_confirm
-       8  KASAN: use-after-free Read in nf_confirm
-       8  KASAN: use-after-free Read in nf_confirm
-       9  KASAN: use-after-free Read in nf_confirm
-      10  KASAN: use-after-free Read in nf_confirm
-The bug was not found.
-About 239 commits remaining
-
-2025-02-26 18:29:12
-Session:   10
-Kernel:    2022-05-17 - ee0e2f51e2115c2578d40e5a8ac33737984fe477
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
-Attempt 1:
-    Time  Bug Name
-       8  WARNING: ODEBUG bug in netdev_run_todo
-      10  WARNING: ODEBUG bug in netdev_run_todo
-      10  WARNING in inet_sock_destruct
-Attempt 2:
-    No crashes found.
-Attempt 3:
-    No crashes found.
-The bug was not found.
-About 1379 commits remaining
-
-2025-02-26 19:13:13
-Session:   11
-Kernel:    2022-05-20 - 75944b040bbcce0fc1d1432787efe8a96b51b595
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
-Attempt 1:
-    Time  Bug Name
-       4  KASAN: use-after-free Read in nf_confirm
-       5  KASAN: use-after-free Read in nf_confirm
-       5  KASAN: use-after-free Read in nf_confirm
-       5  KASAN: use-after-free Read in nf_confirm
-       6  KASAN: use-after-free Read in nf_confirm
-       6  KASAN: use-after-free Read in nf_confirm
-       7  KASAN: use-after-free Read in nf_confirm
-       8  KASAN: use-after-free Read in nf_confirm
-       9  KASAN: use-after-free Read in nf_confirm
-       9  KASAN: use-after-free Read in nf_confirm
-       9  KASAN: use-after-free Read in nf_confirm
-Attempt 2:
-    Time  Bug Name
-       5  KASAN: use-after-free Read in nf_confirm
-       8  WARNING: suspicious RCU usage in bond_ethtool_get_ts_info
-       9  KASAN: use-after-free Read in nf_confirm
-       9  KASAN: use-after-free Read in nf_confirm
-      10  KASAN: use-after-free Read in nf_confirm
-Attempt 3:
-    Time  Bug Name
-      10  KASAN: use-after-free Read in nf_confirm
-The bug was not found.
-About 61 commits remaining
-
-2025-02-26 19:57:33
-Session:   12
-Kernel:    2022-05-22 - d15180b4eadbdee782d97afcbf3c56e2f246c40a
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
-Attempt 1:
-    Time  Bug Name
-***    3  WARNING in inet_csk_get_port
-***    3  WARNING in inet_csk_get_port
-***    3  WARNING in inet_csk_get_port
-The bug was found.
-About 31 commits remaining
-
-2025-02-26 20:15:11
-Session:   13
-Kernel:    2022-05-20 - eac67d83bf2553f98cfddd42cfbcfd6f9ccfc287
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
-Attempt 1:
-    Time  Bug Name
-       5  KASAN: use-after-free Read in nf_confirm
-       5  KASAN: use-after-free Read in nf_confirm
-       9  KASAN: use-after-free Read in nf_confirm
-       9  KASAN: use-after-free Read in nf_confirm
-Attempt 2:
-    Time  Bug Name
-       7  KASAN: use-after-free Read in nf_confirm
-       7  KASAN: use-after-free Read in nf_confirm
-      10  KASAN: use-after-free Read in nf_confirm
-Attempt 3:
-    Time  Bug Name
-       5  KASAN: use-after-free Read in kthread_is_per_cpu
-       6  KASAN: use-after-free Read in nf_confirm
-       6  KASAN: use-after-free Read in nf_confirm
-       7  KASAN: use-after-free Read in nf_confirm
-       8  KASAN: use-after-free Read in nf_confirm
-       9  KASAN: use-after-free Read in nf_confirm
-       9  KASAN: use-after-free Read in nf_confirm
-       9  KASAN: use-after-free Read in nf_confirm
-      10  KASAN: use-after-free Read in nf_confirm
-The bug was not found.
-About 16 commits remaining
-
-2025-02-26 21:00:05
-Session:   14
-Kernel:    2022-05-22 - cc4e7fa549cb69c18bc2ba7209df373ca06749e3
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
-Attempt 1:
-    Time  Bug Name
-***    3  WARNING in inet_csk_get_port
-***    3  WARNING in inet_csk_get_port
-***    3  WARNING in inet_csk_get_port
-Running syz-repro.
-New PoC saved at /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/reproducers/repro-bug0007-4.prog
-Primary PoC:     /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/reproducers/repro-bug0007-4.prog
+New PoC saved at /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0007-0.prog
+Primary PoC:     /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0007-0.prog
 Run Time:        0h11m0s
 The bug was found.
-About 8 commits remaining
+About 5170 commits remaining
 
-2025-02-26 21:28:39
-Session:   15
-Kernel:    2022-05-20 - aa5334b1f96801cd09775217a72ff252ef614d7a
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+2025-09-09 15:35:20
+Session:   4
+Kernel:    2022-05-24 - 7208c9842c50f97327aac20be62edc8ad230f05c
+Compiler:  ccache gcc
 Attempt 1:
     Time  Bug Name
-***    3  WARNING in inet_csk_get_port
-***    3  WARNING in inet_csk_get_port
-***    3  WARNING in inet_csk_get_port
+      10  WARNING: suspicious RCU usage in bond_ethtool_get_ts_info
+The bug was not found.
+About 2585 commits remaining
+
+2025-09-09 15:55:30
+Session:   5
+Kernel:    2022-05-11 - 01f4685797a5723b0046da03c30185ac9ff42b30
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       6  WARNING: refcount bug in rds_tcp_tune
+       6  WARNING: refcount bug in rds_tcp_tune
+       6  WARNING: refcount bug in rds_tcp_tune
+       6  WARNING: refcount bug in rds_tcp_tune
+       6  WARNING: refcount bug in rds_tcp_tune
+       6  WARNING: refcount bug in rds_tcp_tune
+       6  WARNING: refcount bug in rds_tcp_tune
+       6  WARNING: refcount bug in nf_nat_masq_schedule
+       9  WARNING: refcount bug in rds_tcp_tune
+       9  WARNING: refcount bug in rds_tcp_tune
+       9  WARNING: refcount bug in rds_tcp_tune
+       9  WARNING: refcount bug in rds_tcp_tune
+       9  WARNING: refcount bug in rds_tcp_tune
+      10  WARNING: refcount bug in rds_tcp_tune
+      10  WARNING: refcount bug in rds_tcp_tune
+      10  WARNING: refcount bug in rds_tcp_tune
+The bug was not found.
+About 4394 commits remaining
+
+2025-09-09 16:15:37
+Session:   6
+Kernel:    2022-05-23 - 1ef0736c0711e2633a59b540931406de626f2836
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    2  WARNING in inet_csk_get_port
+***    2  WARNING in inet_csk_get_port
+***    2  WARNING in inet_csk_get_port
+***    2  WARNING in inet_csk_get_port
+***    2  WARNING in inet_csk_get_port
 The bug was found.
+About 1105 commits remaining
+
+2025-09-09 16:27:49
+Session:   7
+Kernel:    2022-05-19 - d353e1a3bafd468941d42f6aa59bbd8ac42959b6
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       3  KASAN: use-after-free Read in nf_confirm
+       4  KASAN: use-after-free Read in nf_confirm
+       4  KASAN: use-after-free Read in nf_confirm
+       6  KASAN: use-after-free Read in nf_confirm
+       6  KASAN: use-after-free Read in nf_confirm
+       7  KASAN: use-after-free Read in nf_confirm
+       7  KASAN: use-after-free Read in nf_confirm
+       8  KASAN: use-after-free Read in nf_confirm
+       8  KASAN: use-after-free Read in nf_confirm
+       8  KASAN: use-after-free Read in nf_confirm
+       9  KASAN: use-after-free Read in nf_confirm
+       9  KASAN: use-after-free Read in nf_confirm
+      10  KASAN: use-after-free Read in nf_confirm
+      10  KASAN: use-after-free Read in nf_confirm
+      10  KASAN: use-after-free Read in nf_confirm
+      10  KASAN: use-after-free Read in nf_confirm
+The bug was not found.
+About 297 commits remaining
+
+2025-09-09 16:48:12
+Session:   8
+Kernel:    2022-05-23 - 8f445a3ec3fd36feb90c5b2ef8d21e2492819cdc
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    2  WARNING in inet_csk_get_port
+***    2  WARNING in inet_csk_get_port
+***    2  WARNING in inet_csk_get_port
+The bug was found.
+About 142 commits remaining
+
+2025-09-09 16:57:08
+Session:   9
+Kernel:    2022-05-22 - 60f243ad1426b796efed750937733b0e410f9257
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    2  WARNING in inet_csk_get_port
+Running syz-repro.
+New PoC saved at /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0007-4.prog
+Primary PoC:     /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0007-4.prog
+Run Time:        0h12m0s
+The bug was found.
+About 71 commits remaining
+
+2025-09-09 17:17:17
+Session:   10
+Kernel:    2022-05-19 - 16ea52c44e7a56c983a2a49e218af5a9dbbd8965
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       5  KASAN: use-after-free Read in nf_confirm
+       6  KASAN: use-after-free Read in nf_confirm
+       7  KASAN: use-after-free Read in nf_confirm
+       7  KASAN: use-after-free Read in nf_confirm
+       8  KASAN: use-after-free Read in nf_confirm
+       9  KASAN: use-after-free Read in nf_confirm
+       9  KASAN: use-after-free Read in nf_confirm
+       9  KASAN: use-after-free Read in nf_confirm
+      10  KASAN: use-after-free Read in nf_confirm
+The bug was not found.
+About 36 commits remaining
+
+2025-09-09 17:31:34
+Session:   11
+Kernel:    2022-05-20 - dc2df00af951569689ec39ce0a41b1dff7e3595e
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       5  KASAN: use-after-free Read in nf_confirm
+       7  KASAN: use-after-free Read in nf_confirm
+       9  KASAN: use-after-free Read in nf_confirm
+       9  KASAN: use-after-free Read in nf_confirm
+      10  KASAN: use-after-free Read in nf_confirm
+      10  KASAN: use-after-free Read in nf_confirm
+      10  KASAN: use-after-free Read in nf_confirm
+      10  KASAN: use-after-free Read in nf_confirm
+      10  KASAN: use-after-free Read in nf_confirm
+The bug was not found.
+About 19 commits remaining
+
+2025-09-09 17:45:54
+Session:   12
+Kernel:    2022-05-20 - 538aaf9b2383701094a47797b4554c6a21c83eed
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    2  WARNING in inet_csk_get_port
+***    2  WARNING in inet_csk_get_port
+***    2  WARNING in inet_csk_get_port
+The bug was found.
+About 10 commits remaining
+
+2025-09-09 17:51:59
+Session:   13
+Kernel:    2022-05-20 - c2e10f53455c898050738d6a5f8c237f27aec225
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       6  KASAN: use-after-free Read in nf_confirm
+       6  KASAN: use-after-free Read in nf_confirm
+       8  KASAN: use-after-free Read in nf_confirm
+       8  KASAN: use-after-free Read in nf_confirm
+The bug was not found.
+About 6 commits remaining
+
+2025-09-09 18:06:26
+Session:   14
+Kernel:    2022-05-20 - 29849a486a85f7ab1f3b389db5e3d4948119bef2
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       6  KASAN: use-after-free Read in nf_confirm
+       6  KASAN: use-after-free Read in nf_confirm
+       6  KASAN: use-after-free Read in nf_confirm
+       7  KASAN: use-after-free Read in nf_confirm
+       8  KASAN: use-after-free Read in nf_confirm
+      10  KASAN: use-after-free Read in nf_confirm
+The bug was not found.
 About 4 commits remaining
 
-2025-02-26 21:46:22
-Session:   16
-Kernel:    2022-05-20 - 538aaf9b2383701094a47797b4554c6a21c83eed
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+2025-09-09 18:20:58
+Session:   15
+Kernel:    2022-05-20 - d5a42de8bdbe25081f07b801d8b35f4d75a791f4
+Compiler:  ccache gcc
 Attempt 1:
     Time  Bug Name
-***    3  WARNING in inet_csk_get_port
-***    3  WARNING in inet_csk_get_port
-***    3  WARNING in inet_csk_get_port
+***    2  WARNING in inet_csk_get_port
+***    2  WARNING in inet_csk_get_port
+***    2  WARNING in inet_csk_get_port
 The bug was found.
 About 3 commits remaining
 
-2025-02-26 22:04:27
-Session:   17
-Kernel:    2022-05-20 - d5a42de8bdbe25081f07b801d8b35f4d75a791f4
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+2025-09-09 18:27:08
+Session:   16
+Kernel:    2022-05-20 - eac67d83bf2553f98cfddd42cfbcfd6f9ccfc287
+Compiler:  ccache gcc
 Attempt 1:
     Time  Bug Name
-***    3  WARNING in inet_csk_get_port
-***    3  WARNING in inet_csk_get_port
-***    3  WARNING in inet_csk_get_port
-***    3  WARNING in inet_csk_get_port
-Running syz-repro.
-New PoC saved at /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/reproducers/repro-bug0007-5.prog
-Primary PoC:     /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/reproducers/repro-bug0007-5.prog
-Run Time:        0h12m0s
-The bug was found.
+       6  KASAN: use-after-free Read in nf_confirm
+       7  KASAN: use-after-free Read in nf_confirm
+       7  KASAN: use-after-free Read in nf_confirm
+       8  KASAN: use-after-free Read in nf_confirm
+       8  KASAN: use-after-free Read in nf_confirm
+       9  KASAN: use-after-free Read in nf_confirm
+       9  KASAN: use-after-free Read in nf_confirm
+       9  KASAN: use-after-free Read in nf_confirm
+      10  KASAN: use-after-free Read in nf_confirm
+The bug was not found.
 About 2 commits remaining
 
 ==== Partial Result: Focused Fuzzing ====
-Reproducer:           /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/reproducers/repro-bug0007-5.prog
+Reproducer:           /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0007-4.prog
 Bisection Result:     2022-05-20 - d5a42de8bdbe25081f07b801d8b35f4d75a791f4
 Bisected Commit Name: net: Add a second bind table hashed by port and address
-Stage Time:           10h8m45s
-Run Time:             10h8m47s
+Stage Time:           4h6m59s
+Run Time:             4h6m59s
 =========================================
 
 ==== Anchor Commit ====
 
-2025-02-26 22:34:28
+2025-09-09 18:41:42
+Session:   17
+Kernel:    2022-05-20 - eac67d83bf2553f98cfddd42cfbcfd6f9ccfc287
+Compiler:  ccache gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0007-4.prog
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    WARNING: ODEBUG bug in netdev_run_todo
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+
+Failure: This bug cannot be found at the anchor commit.
+
+==== Partial Result: Primary PoC Test ====
+Reproducer:           /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0007-4.prog
+Bisection Result:     Failed to reproduce at the anchor commit.
+Stage Time:           0h12m3s
+Run Time:             4h19m3s
+==========================================
+
+==== Anchor Commit ====
+
+2025-09-09 18:53:47
 Session:   18
 Kernel:    2022-05-20 - eac67d83bf2553f98cfddd42cfbcfd6f9ccfc287
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Compiler:  ccache gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0007-3.prog
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    WARNING: ODEBUG bug in netdev_run_todo
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+
+Failure: This bug cannot be found at the anchor commit.
+
+==== Partial Result: Subsequent PoC Test ====
+Reproducer:           /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0007-3.prog
+Bisection Result:     Failed to reproduce at the anchor commit.
+Stage Time:           0h11m29s
+Run Time:             4h30m32s
+=============================================
+
+==== Anchor Commit ====
+
+2025-09-09 19:05:17
+Session:   19
+Kernel:    2022-05-20 - eac67d83bf2553f98cfddd42cfbcfd6f9ccfc287
+Compiler:  ccache gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0007-0.prog
 Attempt 0:
     No crashes found.
 Attempt 1:
@@ -412,12 +412,121 @@ The bug was not found.
 
 Failure: This bug cannot be found at the anchor commit.
 
+==== Partial Result: Subsequent PoC Test ====
+Reproducer:           /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0007-0.prog
+Bisection Result:     Failed to reproduce at the anchor commit.
+Stage Time:           0h11m53s
+Run Time:             4h42m25s
+=============================================
+
+==== Anchor Commit ====
+
+2025-09-09 19:17:10
+Session:   20
+Kernel:    2022-05-20 - eac67d83bf2553f98cfddd42cfbcfd6f9ccfc287
+Compiler:  ccache gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0007-2.prog
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+
+Failure: This bug cannot be found at the anchor commit.
+
+==== Partial Result: Subsequent PoC Test ====
+Reproducer:           /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0007-2.prog
+Bisection Result:     Failed to reproduce at the anchor commit.
+Stage Time:           0h12m0s
+Run Time:             4h54m26s
+=============================================
+
+==== Anchor Commit ====
+
+2025-09-09 19:29:10
+Session:   21
+Kernel:    2022-05-20 - eac67d83bf2553f98cfddd42cfbcfd6f9ccfc287
+Compiler:  ccache gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0007-1.prog
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+
+Failure: This bug cannot be found at the anchor commit.
+
+==== Partial Result: Subsequent PoC Test ====
+Reproducer:           /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0007-1.prog
+Bisection Result:     Failed to reproduce at the anchor commit.
+Stage Time:           0h11m31s
+Run Time:             5h5m57s
+=============================================
+
+==== Anchor Commit ====
+
+2025-09-09 19:40:41
+Session:   22
+Kernel:    2022-05-20 - eac67d83bf2553f98cfddd42cfbcfd6f9ccfc287
+Compiler:  ccache gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0007-6.prog
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+
+Failure: This bug cannot be found at the anchor commit.
+
+==== Partial Result: Subsequent PoC Test ====
+Reproducer:           /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0007-6.prog
+Bisection Result:     Failed to reproduce at the anchor commit.
+Stage Time:           0h11m52s
+Run Time:             5h17m50s
+=============================================
+
 ====================================================================================================================================================
 Bug Name:             WARNING in inet_csk_get_port
 Bug Link:             https://syzkaller.appspot.com/bug?id=ea15ed20f874608f0b5e8f90c9d1cda69f1e34be
 Bisection Result:     2022-05-20 - d5a42de8bdbe25081f07b801d8b35f4d75a791f4
 Bisected Commit Name: net: Add a second bind table hashed by port and address
-Run Time:             10h24m29s
+Run Time:             5h17m50s
 
 Anchor Commit:        2022-06-01 - d1dc87763f406d4e67caf16dbe438a5647692395
 Bisection Result:     2022-05-20 - d5a42de8bdbe25081f07b801d8b35f4d75a791f4
