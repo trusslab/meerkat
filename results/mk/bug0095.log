@@ -1,7 +1,5 @@
-./bin/bisector -i 1 -c /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/bisector.cfg -a 2293be58d6a18cab800e25e42081bacb75c05752 -F ff-test,poc-test,stateful-corpus,ff-no-find-backup
+./bin/meerkat -i 1 -c /home/syzretrospector/meerkat/wd-meerkat-1/meerkat.cfg -a 2293be58d6a18cab800e25e42081bacb75c05752 -F ff-test,poc-test,poc-all-pocs,ff-no-find-backup,stateful-corpus
 Bisecting:          KASAN: use-after-free Read in __nf_register_net_hook
-Warning: No syscall found that produces tail_call_map.
-Warning: No syscall found that produces fd_bpf_const_str.
 Syzbot Link:        https://syzkaller.appspot.com/bug?id=5f78045f24cd5965ee29bb7fe106904e42f80d52
 Working Name:       bug0095
 
@@ -12,22 +10,24 @@ Repository:         https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/lin
 Branch:             master
 Arch:               amd64
 
-Bisector:           /mnt/sdd/jtbursey/SyzInspector/
-Version:            1.0.4
-Kernel:             /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/kernel/
-Syzkaller:          /mnt/sdd/jtbursey/SyzInspector/syzkaller/
-Compilers:          /mnt/sda/jtbursey/SyzInspector/compilers/
-Ccache:             ccache
-Image:              /mnt/sda/jtbursey/SyzInspector/image/stretch/stretch.img
-Image Key:          /mnt/sda/jtbursey/SyzInspector/image/stretch/stretch.id_rsa
+Meerkat:            /home/syzretrospector/meerkat/
+Version:            1.1.0
+Kernel:             /home/syzretrospector/meerkat/wd-meerkat-1/kernel/
+Syzkaller:          /home/syzretrospector/meerkat/syzkaller/
+Compilers:          /home/syzretrospector/meerkat/compilers/
+Compiler:           gcc (Ubuntu 11.4.0-1ubuntu1~22.04.2) 11.4.0
+Linker:             GNU ld (GNU Binutils for Ubuntu) 2.38
+Ccache:             ccache version 4.5.1
+Image:              /home/syzretrospector/images/stretch/stretch.img
+Image Key:          /home/syzretrospector/images/stretch/stretch.id_rsa
 
-Workdir:            /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/
-Kconfig:            /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/config-bug0095.txt
-Reproducers: (4)    /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/reproducers/
-Syzkaller Workdir:  /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/wd-kaller/
-Log Directory:      /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/log/
+Workdir:            /home/syzretrospector/meerkat/wd-meerkat-1/
+Kconfig:            /home/syzretrospector/meerkat/wd-meerkat-1/config-bug0095.txt
+Reproducers: (4)    /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/
+Syzkaller Workdir:  /home/syzretrospector/meerkat/wd-meerkat-1/wd-kaller/
+Log Directory:      /home/syzretrospector/meerkat/wd-meerkat-1/log/
 
-Syscalls: (25)      ["bpf$BPF_PROG_RAW_TRACEPOINT_LOAD", "bpf$BPF_TASK_FD_QUERY", "setsockopt$IP6T_SO_SET_REPLACE", "socket$inet6", "bpf$OBJ_GET_PROG", "syz_clone", "bpf$BPF_RAW_TRACEPOINT_OPEN_UNNAMED", "bpf$BPF_PROG_GET_FD_BY_ID", "socket", "ioctl$sock_SIOCGIFINDEX", "bpf$BPF_BTF_LOAD", "bpf$OBJ_GET_MAP", "openat$sw_sync_info", "bpf$BPF_PROG_WITH_BTFID_LOAD", "mount$9p_tcp", "getuid", "setgid", "getgid", "bpf$BPF_MAP_CONST_STR_FREEZE", "bpf$MAP_CREATE_RINGBUF", "bpf$MAP_CREATE_TAIL_CALL", "bpf$MAP_CREATE_CONST_STR", "syz_btf_id_by_name$bpf_lsm", "bpf$BPF_BTF_GET_FD_BY_ID", "bpf$BPF_BTF_GET_NEXT_ID"]
+Syscalls: (23)      ["bpf$BPF_PROG_RAW_TRACEPOINT_LOAD", "bpf$BPF_TASK_FD_QUERY", "setsockopt$IP6T_SO_SET_REPLACE", "socket$inet6", "bpf$MAP_UPDATE_ELEM_TAIL_CALL", "bpf$BPF_PROG_GET_FD_BY_ID", "bpf$MAP_CREATE_TAIL_CALL", "syz_clone", "perf_event_open", "socket", "ioctl$sock_SIOCGIFINDEX", "bpf$BPF_BTF_LOAD", "bpf$OBJ_GET_MAP", "openat$selinux_enforce", "bpf$TOKEN_CREATE", "mount$bpf", "getuid", "setgid", "getgid", "bpf$BPF_MAP_CONST_STR_FREEZE", "bpf$MAP_CREATE_RINGBUF", "bpf$MAP_UPDATE_CONST_STR", "bpf$MAP_CREATE_CONST_STR"]
 VM Count:           4
 CPU Count:          4
 Procs:              24
@@ -38,22 +38,72 @@ Max Attempts:       1
 
 ==== Anchor Commit ====
 
-2025-03-07 02:10:54
+2025-09-15 01:27:28
 Session:   1
 Kernel:    2022-02-26 - 2293be58d6a18cab800e25e42081bacb75c05752
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
-Warning: bpf$BPF_PROG_RAW_TRACEPOINT_LOAD was disabled by Syzkaller.
-Warning: bpf$BPF_TASK_FD_QUERY was disabled by Syzkaller.
+Compiler:  ccache gcc
 Attempt 1:
-    No crashes found.
-Warning: bpf$BPF_PROG_RAW_TRACEPOINT_LOAD was disabled by Syzkaller.
-Warning: bpf$BPF_TASK_FD_QUERY was disabled by Syzkaller.
+    Time  Bug Name
+       4  WARNING in reserve_ds_buffers
+       4  WARNING in reserve_ds_buffers
+       4  WARNING in reserve_ds_buffers
+       4  WARNING in reserve_ds_buffers
+       5  WARNING in reserve_ds_buffers
+       5  WARNING in reserve_ds_buffers
+       5  WARNING in reserve_ds_buffers
+       6  WARNING in reserve_ds_buffers
+       6  WARNING in reserve_ds_buffers
+       7  WARNING in reserve_ds_buffers
+       7  WARNING in reserve_ds_buffers
+       8  WARNING in reserve_ds_buffers
+       8  WARNING in reserve_ds_buffers
+       8  WARNING in reserve_ds_buffers
+      10  WARNING in reserve_ds_buffers
+      10  WARNING in reserve_ds_buffers
+      10  WARNING in reserve_ds_buffers
+      10  WARNING in reserve_ds_buffers
 Attempt 2: (RETRY)
-    No crashes found.
-Warning: bpf$BPF_PROG_RAW_TRACEPOINT_LOAD was disabled by Syzkaller.
-Warning: bpf$BPF_TASK_FD_QUERY was disabled by Syzkaller.
+    Time  Bug Name
+       2  WARNING in reserve_ds_buffers
+       2  WARNING in reserve_ds_buffers
+       2  WARNING in reserve_ds_buffers
+       2  WARNING in reserve_ds_buffers
+       3  WARNING in reserve_ds_buffers
+       3  WARNING in reserve_ds_buffers
+       3  WARNING in reserve_ds_buffers
+       4  WARNING in reserve_ds_buffers
+       4  WARNING in reserve_ds_buffers
+       5  WARNING in reserve_ds_buffers
+       5  WARNING in reserve_ds_buffers
+       5  WARNING in reserve_ds_buffers
+       5  WARNING in reserve_ds_buffers
+       6  WARNING in reserve_ds_buffers
+       6  WARNING in reserve_ds_buffers
+       6  possible deadlock in __perf_install_in_context
+       6  possible deadlock in __perf_install_in_context
+       7  WARNING in reserve_ds_buffers
+       7  possible deadlock in __perf_install_in_context
+       8  WARNING in reserve_ds_buffers
+       8  WARNING in reserve_ds_buffers
+       8  possible deadlock in __perf_install_in_context
+       9  WARNING in reserve_ds_buffers
+       9  possible deadlock in __perf_install_in_context
+      10  WARNING in reserve_ds_buffers
+      10  WARNING in reserve_ds_buffers
+      10  possible deadlock in __perf_install_in_context
 Attempt 3: (RETRY)
-    No crashes found.
+    Time  Bug Name
+       4  WARNING in reserve_ds_buffers
+       4  possible deadlock in __perf_install_in_context
+       4  possible deadlock in __perf_install_in_context
+       5  possible deadlock in __perf_install_in_context
+       6  possible deadlock in __perf_install_in_context
+       7  WARNING in reserve_ds_buffers
+       7  possible deadlock in __perf_install_in_context
+       7  possible deadlock in __perf_install_in_context
+       8  possible deadlock in __perf_install_in_context
+       9  WARNING in reserve_ds_buffers
+      10  WARNING in reserve_ds_buffers
 The bug was not found.
 
 Failure: This bug cannot be found at the anchor commit.

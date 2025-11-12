@@ -1,4 +1,4 @@
-./bin/bisector -i 1 -c /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/bisector.cfg -a 1c23f9e627a7b412978b4e852793c5e3c3efc555 -F ff-test,poc-test,stateful-corpus,ff-no-find-backup
+./bin/meerkat -i 1 -c /home/syzretrospector/meerkat/wd-meerkat-1/meerkat.cfg -a 1c23f9e627a7b412978b4e852793c5e3c3efc555 -F ff-test,poc-test,poc-all-pocs,ff-no-find-backup,stateful-corpus
 Bisecting:          KASAN: use-after-free Read in mgmt_pending_remove
 Warning: No syscall found that produces sock_bt.
 Syzbot Link:        https://syzkaller.appspot.com/bug?id=722062bdc6cc9c667864938700935bc02e2542fa
@@ -11,23 +11,25 @@ Repository:         https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/lin
 Branch:             master
 Arch:               amd64
 
-Bisector:           /mnt/sdd/jtbursey/SyzInspector/
-Version:            1.0.4
-Kernel:             /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/kernel/
-Syzkaller:          /mnt/sdd/jtbursey/SyzInspector/syzkaller/
-Compilers:          /mnt/sda/jtbursey/SyzInspector/compilers/
-Ccache:             ccache
-Image:              /mnt/sda/jtbursey/SyzInspector/image/stretch/stretch.img
-Image Key:          /mnt/sda/jtbursey/SyzInspector/image/stretch/stretch.id_rsa
+Meerkat:            /home/syzretrospector/meerkat/
+Version:            1.1.0
+Kernel:             /home/syzretrospector/meerkat/wd-meerkat-1/kernel/
+Syzkaller:          /home/syzretrospector/meerkat/syzkaller/
+Compilers:          /home/syzretrospector/meerkat/compilers/
+Compiler:           gcc (Ubuntu 11.4.0-1ubuntu1~22.04.2) 11.4.0
+Linker:             GNU ld (GNU Binutils for Ubuntu) 2.38
+Ccache:             ccache version 4.5.1
+Image:              /home/syzretrospector/images/stretch/stretch.img
+Image Key:          /home/syzretrospector/images/stretch/stretch.id_rsa
 
-Workdir:            /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/
-Kconfig:            /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/config-bug0110.txt
-Reproducers: (2)    /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/reproducers/
-Primary PoC:        /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/reproducers/repro-bug0110-1.prog
-Syzkaller Workdir:  /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/wd-kaller/
-Log Directory:      /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/log/
+Workdir:            /home/syzretrospector/meerkat/wd-meerkat-1/
+Kconfig:            /home/syzretrospector/meerkat/wd-meerkat-1/config-bug0110.txt
+Reproducers: (2)    /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/
+Primary PoC:        /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0110-1.prog
+Syzkaller Workdir:  /home/syzretrospector/meerkat/wd-meerkat-1/wd-kaller/
+Log Directory:      /home/syzretrospector/meerkat/wd-meerkat-1/log/
 
-Syscalls: (6)       ["bind$bt_hci", "syz_init_net_socket$bt_hci", "write$bt_hci", "socket", "ioctl$EXT4_IOC_GROUP_EXTEND", "openat$sw_sync_info"]
+Syscalls: (6)       ["bind$bt_hci", "syz_init_net_socket$bt_hci", "write$bt_hci", "socket", "ioctl$F2FS_IOC_START_ATOMIC_WRITE", "openat$selinux_enforce"]
 VM Count:           4
 CPU Count:          4
 Procs:              24
@@ -38,22 +40,497 @@ Max Attempts:       1
 
 ==== Anchor Commit ====
 
-2025-03-08 19:11:47
+2025-09-18 11:29:43
 Session:   1
 Kernel:    2022-08-21 - 1c23f9e627a7b412978b4e852793c5e3c3efc555
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Compiler:  ccache gcc
 Attempt 1:
     Time  Bug Name
-       2  INFO: rcu detected stall in corrupted
+***    2  KASAN: use-after-free Read in mgmt_pending_remove
+***    2  KASAN: use-after-free Read in mgmt_pending_remove
+***    2  KASAN: use-after-free Read in mgmt_pending_remove
 Attempt 2: (RETRY)
     Time  Bug Name
        2  INFO: rcu detected stall in corrupted
-      10  INFO: rcu detected stall in corrupted
+***    2  KASAN: use-after-free Read in mgmt_pending_remove
+***    2  KASAN: use-after-free Read in mgmt_pending_remove
+***    2  KASAN: use-after-free Read in mgmt_pending_remove
+***    2  KASAN: use-after-free Read in mgmt_pending_remove
 Attempt 3: (RETRY)
     Time  Bug Name
        2  INFO: rcu detected stall in corrupted
-       6  INFO: rcu detected stall in corrupted
-       7  suppressed report
+***    2  KASAN: use-after-free Read in mgmt_pending_remove
+***    2  KASAN: use-after-free Read in mgmt_pending_remove
+***    2  KASAN: use-after-free Read in mgmt_pending_remove
+The bug was found.
+
+New Max Time: 10
+
+==== Major Release Search ====
+12 Releases
+
+2025-09-18 11:47:37
+Session:   2
+Kernel:    2022-07-31 - 3d7cb6b04c3f3115719235cc6866b10326de34cd (v5.19)
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 11 releases remaining
+
+==== Kernel Bisection ====
+14809 Linux commits
+
+2025-09-18 12:08:58
+Session:   3
+Kernel:    2022-08-04 - 798cd57cd5f871452461746032cf6ee50b0fd69a
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       1  WARNING: ODEBUG bug in mgmt_index_removed
+***    2  KASAN: use-after-free Read in mgmt_pending_remove
+***    2  KASAN: use-after-free Read in mgmt_pending_remove
+***    2  KASAN: use-after-free Read in mgmt_pending_remove
+       2  WARNING: ODEBUG bug in mgmt_index_removed
+       2  WARNING: ODEBUG bug in mgmt_index_removed
+Running syz-repro.
+Run Time:        0h3m0s
+The bug was found.
+About 7282 commits remaining
+
+2025-09-18 12:25:05
+Session:   4
+Kernel:    2022-08-03 - 526942b8134cc34d25d27f95dfff98b8ce2f6fcd
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 4074 commits remaining
+
+2025-09-18 12:46:12
+Session:   5
+Kernel:    2022-08-01 - 4ff7c8fc81cec31c852833b00afe9c85f9086b5d
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       1  WARNING: ODEBUG bug in mgmt_index_removed
+***    2  KASAN: use-after-free Read in mgmt_pending_remove
+***    2  KASAN: use-after-free Read in mgmt_pending_remove
+       2  WARNING: ODEBUG bug in mgmt_index_removed
+       2  WARNING: ODEBUG bug in mgmt_index_removed
+       2  WARNING: ODEBUG bug in mgmt_index_removed
+Running syz-repro.
+Run Time:        0h3m0s
+The bug was found.
+About 2037 commits remaining
+
+2025-09-18 13:02:18
+Session:   6
+Kernel:    2022-07-22 - ea2babac63d40e59926dc5de4550dac94cc3c6d2
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  WARNING in __dev_queue_xmit
+       2  WARNING in __dev_queue_xmit
+       2  WARNING in __dev_queue_xmit
+       2  WARNING in __dev_queue_xmit
+       2  WARNING in __dev_queue_xmit
+       2  WARNING in __dev_queue_xmit
+       3  WARNING in __dev_queue_xmit
+       3  WARNING in __dev_queue_xmit
+       3  WARNING in __dev_queue_xmit
+       3  WARNING in __dev_queue_xmit
+       3  WARNING in __dev_queue_xmit
+       3  WARNING in __dev_queue_xmit
+       4  WARNING in __dev_queue_xmit
+       4  WARNING in __dev_queue_xmit
+       4  WARNING in __dev_queue_xmit
+       4  WARNING in __dev_queue_xmit
+       5  WARNING in __dev_queue_xmit
+       5  WARNING in __dev_queue_xmit
+       5  WARNING in __dev_queue_xmit
+       5  WARNING in __dev_queue_xmit
+       6  WARNING in __dev_queue_xmit
+       6  WARNING in __dev_queue_xmit
+       7  WARNING in __dev_queue_xmit
+       7  WARNING in __dev_queue_xmit
+       8  WARNING in __dev_queue_xmit
+       9  WARNING in __dev_queue_xmit
+       9  WARNING in __dev_queue_xmit
+      10  WARNING in __dev_queue_xmit
+      10  WARNING in __dev_queue_xmit
+      10  WARNING in __dev_queue_xmit
+      10  WARNING in __dev_queue_xmit
+The bug was not found.
+About 1916 commits remaining
+
+2025-09-18 13:23:18
+Session:   7
+Kernel:    2022-07-25 - 5030a9a03f0107f645772450bcba521b2ec19a51
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       1  WARNING: ODEBUG bug in mgmt_index_removed
+***    2  KASAN: use-after-free Read in mgmt_pending_remove
+***    2  KASAN: use-after-free Read in mgmt_pending_remove
+***    2  KASAN: use-after-free Read in mgmt_pending_remove
+       2  WARNING: ODEBUG bug in mgmt_index_removed
+       2  WARNING: ODEBUG bug in mgmt_index_removed
+Running syz-repro.
+Run Time:        0h3m0s
+The bug was found.
+About 1182 commits remaining
+
+2025-09-18 13:39:20
+Session:   8
+Kernel:    2022-07-18 - 541cc48be3b141e8529fef05ad6cedbca83f9e80
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       1  INFO: trying to register non-static key in ieee80211_do_stop
+       2  INFO: trying to register non-static key in ieee80211_do_stop
+       3  INFO: trying to register non-static key in ieee80211_do_stop
+       4  INFO: trying to register non-static key in ieee80211_do_stop
+       4  INFO: trying to register non-static key in ieee80211_do_stop
+       4  INFO: trying to register non-static key in ieee80211_do_stop
+       4  INFO: trying to register non-static key in ieee80211_do_stop
+       6  INFO: trying to register non-static key in ieee80211_do_stop
+       6  INFO: trying to register non-static key in ieee80211_do_stop
+       6  INFO: trying to register non-static key in ieee80211_do_stop
+       6  INFO: trying to register non-static key in ieee80211_do_stop
+       7  INFO: trying to register non-static key in ieee80211_do_stop
+       7  INFO: trying to register non-static key in ieee80211_do_stop
+       8  INFO: trying to register non-static key in ieee80211_do_stop
+       8  INFO: trying to register non-static key in ieee80211_do_stop
+       8  INFO: trying to register non-static key in ieee80211_do_stop
+       8  INFO: trying to register non-static key in ieee80211_do_stop
+       9  INFO: trying to register non-static key in ieee80211_do_stop
+      10  INFO: trying to register non-static key in ieee80211_do_stop
+      10  INFO: trying to register non-static key in ieee80211_do_stop
+The bug was not found.
+About 649 commits remaining
+
+2025-09-18 13:58:48
+Session:   9
+Kernel:    2022-07-21 - 629f66aaca81ad713fb05f1d12acc827510601b3
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       1  INFO: trying to register non-static key in ieee80211_do_stop
+       3  INFO: trying to register non-static key in ieee80211_do_stop
+       3  INFO: trying to register non-static key in ieee80211_do_stop
+       3  INFO: trying to register non-static key in ieee80211_do_stop
+       3  INFO: trying to register non-static key in ieee80211_do_stop
+       4  INFO: trying to register non-static key in ieee80211_do_stop
+       4  INFO: trying to register non-static key in ieee80211_do_stop
+       4  INFO: trying to register non-static key in ieee80211_do_stop
+       5  INFO: trying to register non-static key in ieee80211_do_stop
+       6  INFO: trying to register non-static key in ieee80211_do_stop
+       6  INFO: trying to register non-static key in ieee80211_do_stop
+       6  INFO: trying to register non-static key in ieee80211_do_stop
+       6  INFO: trying to register non-static key in ieee80211_do_stop
+       8  INFO: trying to register non-static key in ieee80211_do_stop
+       8  INFO: trying to register non-static key in ieee80211_do_stop
+       8  INFO: trying to register non-static key in ieee80211_do_stop
+       8  INFO: trying to register non-static key in ieee80211_do_stop
+       9  INFO: trying to register non-static key in ieee80211_do_stop
+       9  INFO: trying to register non-static key in ieee80211_do_stop
+      10  INFO: trying to register non-static key in ieee80211_do_stop
+      10  INFO: trying to register non-static key in ieee80211_do_stop
+The bug was not found.
+About 204 commits remaining
+
+2025-09-18 14:16:54
+Session:   10
+Kernel:    2022-07-22 - 14202eff214e1e941fefa0366d4c3bc4b1a0d500
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       1  WARNING: ODEBUG bug in mgmt_index_removed
+***    2  KASAN: use-after-free Read in mgmt_pending_remove
+***    2  KASAN: use-after-free Read in mgmt_pending_remove
+***    2  KASAN: use-after-free Read in mgmt_pending_remove
+       2  WARNING: ODEBUG bug in mgmt_index_removed
+       2  WARNING: ODEBUG bug in mgmt_index_removed
+       2  WARNING: ODEBUG bug in mgmt_index_removed
+Running syz-repro.
+Run Time:        0h3m0s
+The bug was found.
+About 54 commits remaining
+
+2025-09-18 14:26:59
+Session:   11
+Kernel:    2022-07-21 - f8cad62002a7699fd05a23b558b980b5a77defe0
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  INFO: trying to register non-static key in ieee80211_do_stop
+       2  INFO: trying to register non-static key in ieee80211_do_stop
+       3  INFO: trying to register non-static key in ieee80211_do_stop
+       3  INFO: trying to register non-static key in ieee80211_do_stop
+       3  INFO: trying to register non-static key in ieee80211_do_stop
+       3  INFO: trying to register non-static key in ieee80211_do_stop
+       4  INFO: trying to register non-static key in ieee80211_do_stop
+       4  INFO: trying to register non-static key in ieee80211_do_stop
+       5  INFO: trying to register non-static key in ieee80211_do_stop
+       5  INFO: trying to register non-static key in ieee80211_do_stop
+       6  INFO: trying to register non-static key in ieee80211_do_stop
+       6  INFO: trying to register non-static key in ieee80211_do_stop
+       6  INFO: trying to register non-static key in ieee80211_do_stop
+       6  INFO: trying to register non-static key in ieee80211_do_stop
+       7  INFO: trying to register non-static key in ieee80211_do_stop
+       7  INFO: trying to register non-static key in ieee80211_do_stop
+       8  INFO: trying to register non-static key in ieee80211_do_stop
+       8  INFO: trying to register non-static key in ieee80211_do_stop
+       9  INFO: trying to register non-static key in ieee80211_do_stop
+       9  INFO: trying to register non-static key in ieee80211_do_stop
+      10  INFO: trying to register non-static key in ieee80211_do_stop
+      10  INFO: trying to register non-static key in ieee80211_do_stop
+      10  INFO: trying to register non-static key in ieee80211_do_stop
+      10  INFO: trying to register non-static key in ieee80211_do_stop
+The bug was not found.
+About 28 commits remaining
+
+2025-09-18 14:42:04
+Session:   12
+Kernel:    2022-07-21 - ca2045e059c3aa1b06c9aed448672bc86dfdce11
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       1  INFO: trying to register non-static key in ieee80211_do_stop
+***    2  KASAN: use-after-free Read in mgmt_pending_remove
+***    2  KASAN: use-after-free Read in mgmt_pending_remove
+***    2  KASAN: use-after-free Read in mgmt_pending_remove
+***    2  KASAN: use-after-free Read in mgmt_pending_remove
+***    2  KASAN: use-after-free Read in mgmt_pending_remove
+Running syz-repro.
+New PoC saved at /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0110-0.prog
+Primary PoC:     /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0110-0.prog
+Run Time:        0h4m0s
+The bug was found.
+About 14 commits remaining
+
+2025-09-18 14:53:09
+Session:   13
+Kernel:    2022-07-21 - 766ae2422b4312a73510ebee9266bc23b466fbbb
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       1  INFO: trying to register non-static key in ieee80211_do_stop
+       2  INFO: trying to register non-static key in ieee80211_do_stop
+       3  INFO: trying to register non-static key in ieee80211_do_stop
+       3  INFO: trying to register non-static key in ieee80211_do_stop
+       3  INFO: trying to register non-static key in ieee80211_do_stop
+       4  INFO: trying to register non-static key in ieee80211_do_stop
+       4  INFO: trying to register non-static key in ieee80211_do_stop
+       5  INFO: trying to register non-static key in ieee80211_do_stop
+       5  INFO: trying to register non-static key in ieee80211_do_stop
+       6  INFO: trying to register non-static key in ieee80211_do_stop
+       6  INFO: trying to register non-static key in ieee80211_do_stop
+       6  INFO: trying to register non-static key in ieee80211_do_stop
+       6  INFO: trying to register non-static key in ieee80211_do_stop
+       7  INFO: trying to register non-static key in ieee80211_do_stop
+       8  INFO: trying to register non-static key in ieee80211_do_stop
+       8  INFO: trying to register non-static key in ieee80211_do_stop
+       8  INFO: trying to register non-static key in ieee80211_do_stop
+       9  INFO: trying to register non-static key in ieee80211_do_stop
+       9  INFO: trying to register non-static key in ieee80211_do_stop
+       9  INFO: trying to register non-static key in ieee80211_do_stop
+       9  INFO: trying to register non-static key in ieee80211_do_stop
+      10  INFO: trying to register non-static key in ieee80211_do_stop
+      10  INFO: trying to register non-static key in ieee80211_do_stop
+      10  INFO: trying to register non-static key in ieee80211_do_stop
+The bug was not found.
+About 8 commits remaining
+
+2025-09-18 15:08:11
+Session:   14
+Kernel:    2022-07-21 - 63b1a7dd38bfd4630e5f59a20a2b7b1f3d04f486
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  INFO: trying to register non-static key in ieee80211_do_stop
+       2  INFO: trying to register non-static key in ieee80211_do_stop
+       3  INFO: trying to register non-static key in ieee80211_do_stop
+       4  INFO: trying to register non-static key in ieee80211_do_stop
+       4  INFO: trying to register non-static key in ieee80211_do_stop
+       4  INFO: trying to register non-static key in ieee80211_do_stop
+       4  INFO: trying to register non-static key in ieee80211_do_stop
+       5  INFO: trying to register non-static key in ieee80211_do_stop
+       5  INFO: trying to register non-static key in ieee80211_do_stop
+       6  INFO: trying to register non-static key in ieee80211_do_stop
+       6  INFO: trying to register non-static key in ieee80211_do_stop
+       6  INFO: trying to register non-static key in ieee80211_do_stop
+       6  INFO: trying to register non-static key in ieee80211_do_stop
+       8  INFO: trying to register non-static key in ieee80211_do_stop
+       8  INFO: trying to register non-static key in ieee80211_do_stop
+       8  INFO: trying to register non-static key in ieee80211_do_stop
+       8  INFO: trying to register non-static key in ieee80211_do_stop
+       9  INFO: trying to register non-static key in ieee80211_do_stop
+       9  INFO: trying to register non-static key in ieee80211_do_stop
+      10  INFO: trying to register non-static key in ieee80211_do_stop
+      10  INFO: trying to register non-static key in ieee80211_do_stop
+      10  INFO: trying to register non-static key in ieee80211_do_stop
+The bug was not found.
+About 5 commits remaining
+
+2025-09-18 15:23:14
+Session:   15
+Kernel:    2022-07-21 - 7cf5c2978f23fdbb2dd7b4e8b07e362ae2d8211c
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       1  INFO: trying to register non-static key in ieee80211_do_stop
+***    2  KASAN: use-after-free Read in mgmt_pending_remove
+***    2  KASAN: use-after-free Read in mgmt_pending_remove
+The bug was found.
+About 3 commits remaining
+
+2025-09-18 15:30:19
+Session:   16
+Kernel:    2022-07-21 - b747a83690c8f53bc7a3f75899415c699b2c51aa
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       1  INFO: trying to register non-static key in ieee80211_do_stop
+       2  INFO: trying to register non-static key in ieee80211_do_stop
+       3  INFO: trying to register non-static key in ieee80211_do_stop
+       3  INFO: trying to register non-static key in ieee80211_do_stop
+       4  INFO: trying to register non-static key in ieee80211_do_stop
+       4  INFO: trying to register non-static key in ieee80211_do_stop
+       4  INFO: trying to register non-static key in ieee80211_do_stop
+       5  INFO: trying to register non-static key in ieee80211_do_stop
+       6  INFO: trying to register non-static key in ieee80211_do_stop
+       6  INFO: trying to register non-static key in ieee80211_do_stop
+       6  INFO: trying to register non-static key in ieee80211_do_stop
+       7  INFO: trying to register non-static key in ieee80211_do_stop
+       7  INFO: trying to register non-static key in ieee80211_do_stop
+       8  INFO: trying to register non-static key in ieee80211_do_stop
+       8  INFO: trying to register non-static key in ieee80211_do_stop
+       9  INFO: trying to register non-static key in ieee80211_do_stop
+       9  INFO: trying to register non-static key in ieee80211_do_stop
+       9  INFO: trying to register non-static key in ieee80211_do_stop
+      10  INFO: trying to register non-static key in ieee80211_do_stop
+      10  INFO: trying to register non-static key in ieee80211_do_stop
+The bug was not found.
+About 2 commits remaining
+
+==== Partial Result: Focused Fuzzing ====
+Reproducer:           /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0110-0.prog
+Bisection Result:     2022-07-21 - 7cf5c2978f23fdbb2dd7b4e8b07e362ae2d8211c
+Bisected Commit Name: Bluetooth: hci_sync: Refactor remove Adv Monitor
+Stage Time:           4h15m35s
+Run Time:             4h15m36s
+=========================================
+
+==== Anchor Commit ====
+
+2025-09-18 15:45:18
+Session:   17
+Kernel:    2022-07-21 - b747a83690c8f53bc7a3f75899415c699b2c51aa
+Compiler:  ccache gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0110-0.prog
+Attempt 0:
+    INFO: trying to register non-static key in ieee80211_do_stop
+Attempt 1:
+    INFO: trying to register non-static key in ieee80211_do_stop
+Attempt 2:
+    INFO: trying to register non-static key in ieee80211_do_stop
+Attempt 3:
+    INFO: trying to register non-static key in ieee80211_do_stop
+Attempt 4:
+    INFO: trying to register non-static key in ieee80211_do_stop
+Attempt 5:
+    INFO: trying to register non-static key in ieee80211_do_stop
+Attempt 6:
+    INFO: trying to register non-static key in ieee80211_do_stop
+Attempt 7:
+    INFO: trying to register non-static key in ieee80211_do_stop
 The bug was not found.
 
 Failure: This bug cannot be found at the anchor commit.
+
+==== Partial Result: Primary PoC Test ====
+Reproducer:           /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0110-0.prog
+Bisection Result:     Failed to reproduce at the anchor commit.
+Stage Time:           0h12m29s
+Run Time:             4h28m6s
+==========================================
+
+==== Anchor Commit ====
+
+2025-09-18 15:57:50
+Session:   18
+Kernel:    2022-07-21 - b747a83690c8f53bc7a3f75899415c699b2c51aa
+Compiler:  ccache gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0110-1.prog
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+
+Failure: This bug cannot be found at the anchor commit.
+
+==== Partial Result: Subsequent PoC Test ====
+Reproducer:           /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0110-1.prog
+Bisection Result:     Failed to reproduce at the anchor commit.
+Stage Time:           0h12m13s
+Run Time:             4h40m20s
+=============================================
+
+==== Anchor Commit ====
+
+2025-09-18 16:10:04
+Session:   19
+Kernel:    2022-07-21 - b747a83690c8f53bc7a3f75899415c699b2c51aa
+Compiler:  ccache gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0110-3.prog
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+
+Failure: This bug cannot be found at the anchor commit.
+
+==== Partial Result: Subsequent PoC Test ====
+Reproducer:           /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0110-3.prog
+Bisection Result:     Failed to reproduce at the anchor commit.
+Stage Time:           0h12m14s
+Run Time:             4h52m34s
+=============================================
+
+====================================================================================================================================================
+Bug Name:             KASAN: use-after-free Read in mgmt_pending_remove
+Bug Link:             https://syzkaller.appspot.com/bug?id=722062bdc6cc9c667864938700935bc02e2542fa
+Bisection Result:     2022-07-21 - 7cf5c2978f23fdbb2dd7b4e8b07e362ae2d8211c
+Bisected Commit Name: Bluetooth: hci_sync: Refactor remove Adv Monitor
+Run Time:             4h52m34s
+
+Anchor Commit:        2022-08-21 - 1c23f9e627a7b412978b4e852793c5e3c3efc555
+Bisection Result:     2022-07-21 - 7cf5c2978f23fdbb2dd7b4e8b07e362ae2d8211c

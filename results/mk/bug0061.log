@@ -1,4 +1,4 @@
-./bin/bisector -i 1 -c /home/syzretrospector/syzinspector/wd-bisector-1/bisector.cfg -a b229b6ca5abbd63ff40c1396095b1b36b18139c3 -F ff-test,poc-test,stateful-corpus,ff-no-find-backup,poc-all-pocs
+./bin/meerkat -i 1 -c /home/syzretrospector/meerkat/wd-meerkat-1/meerkat.cfg -a b229b6ca5abbd63ff40c1396095b1b36b18139c3 -F ff-test,poc-test,poc-all-pocs,ff-no-find-backup,stateful-corpus
 Bisecting:          WARNING in ieee80211_link_info_change_notify
 Syzbot Link:        https://syzkaller.appspot.com/bug?id=64a91d95c31faa0e8dd58a5a7cc0ab963e28600a
 Working Name:       bug0061
@@ -10,23 +10,25 @@ Repository:         https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/lin
 Branch:             master
 Arch:               amd64
 
-Bisector:           /home/syzretrospector/syzinspector/
-Version:            1.0.5
-Kernel:             /home/syzretrospector/syzinspector/wd-bisector-1/kernel/
-Syzkaller:          /home/syzretrospector/syzinspector/syzkaller/
-Compilers:          /home/syzretrospector/compilers/
-Ccache:             ccache
+Meerkat:            /home/syzretrospector/meerkat/
+Version:            1.1.0
+Kernel:             /home/syzretrospector/meerkat/wd-meerkat-1/kernel/
+Syzkaller:          /home/syzretrospector/meerkat/syzkaller/
+Compilers:          /home/syzretrospector/meerkat/compilers/
+Compiler:           gcc (Ubuntu 11.4.0-1ubuntu1~22.04.2) 11.4.0
+Linker:             GNU ld (GNU Binutils for Ubuntu) 2.38
+Ccache:             ccache version 4.5.1
 Image:              /home/syzretrospector/images/stretch/stretch.img
 Image Key:          /home/syzretrospector/images/stretch/stretch.id_rsa
 
-Workdir:            /home/syzretrospector/syzinspector/wd-bisector-1/
-Kconfig:            /home/syzretrospector/syzinspector/wd-bisector-1/config-bug0061.txt
-Reproducers: (4)    /home/syzretrospector/syzinspector/wd-bisector-1/reproducers/
-Primary PoC:        /home/syzretrospector/syzinspector/wd-bisector-1/reproducers/repro-bug0061-1.prog
-Syzkaller Workdir:  /home/syzretrospector/syzinspector/wd-bisector-1/wd-kaller/
-Log Directory:      /home/syzretrospector/syzinspector/wd-bisector-1/log/
+Workdir:            /home/syzretrospector/meerkat/wd-meerkat-1/
+Kconfig:            /home/syzretrospector/meerkat/wd-meerkat-1/config-bug0061.txt
+Reproducers: (4)    /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/
+Primary PoC:        /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0061-1.prog
+Syzkaller Workdir:  /home/syzretrospector/meerkat/wd-meerkat-1/wd-kaller/
+Log Directory:      /home/syzretrospector/meerkat/wd-meerkat-1/log/
 
-Syscalls: (24)      ["ioctl$sock_SIOCGIFINDEX_80211", "sendmsg$NL80211_CMD_SET_MCAST_RATE", "sendmsg$netlink", "sendmsg$nl_route", "socket", "socket$netlink", "socket$nl_generic", "socket$nl_route", "syz_genetlink_get_family_id$nl80211", "sendmsg$NL80211_CMD_GET_INTERFACE", "openat$selinux_enforce", "ioctl$sock_SIOCGIFINDEX", "syz_clone", "ioctl$TUNGETDEVNETNS", "getuid", "ioctl$ifreq_SIOCGIFINDEX_vcan", "bpf$OBJ_GET_PROG", "setgid", "getgid", "openat$tun", "socket$inet_udp", "socket$inet6_udp", "socket$inet", "socket$inet6"]
+Syscalls: (25)      ["ioctl$sock_SIOCGIFINDEX_80211", "sendmsg$NL80211_CMD_SET_MCAST_RATE", "sendmsg$netlink", "sendmsg$nl_route", "socket", "socket$netlink", "socket$nl_generic", "socket$nl_route", "syz_genetlink_get_family_id$nl80211", "sendmsg$NL80211_CMD_GET_INTERFACE", "openat$selinux_enforce", "ioctl$sock_SIOCGIFINDEX", "syz_clone", "ioctl$TUNGETDEVNETNS", "getuid", "ioctl$ifreq_SIOCGIFINDEX_vcan", "bpf$BPF_PROG_GET_FD_BY_ID", "setgid", "getgid", "openat$tun", "socket$inet_udp", "socket$inet6_udp", "socket$inet", "socket$inet6", "bpf$BPF_PROG_GET_NEXT_ID"]
 VM Count:           8
 CPU Count:          2
 Procs:              16
@@ -37,22 +39,31 @@ Max Attempts:       1
 
 ==== Anchor Commit ====
 
-2025-04-14 22:20:25
+2025-09-09 19:53:19
 Session:   1
 Kernel:    2022-10-26 - b229b6ca5abbd63ff40c1396095b1b36b18139c3
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Compiler:  ccache gcc
 Attempt 1:
     Time  Bug Name
 ***    2  WARNING in ieee80211_link_info_change_notify
 ***    2  WARNING in ieee80211_link_info_change_notify
 ***    2  WARNING in ieee80211_link_info_change_notify
+***    2  WARNING in ieee80211_link_info_change_notify
+***    2  WARNING in ieee80211_link_info_change_notify
 Attempt 2: (RETRY)
     Time  Bug Name
-       2  INFO: rcu detected stall in corrupted
+***    2  WARNING in ieee80211_link_info_change_notify
+***    2  WARNING in ieee80211_link_info_change_notify
+***    2  WARNING in ieee80211_link_info_change_notify
 ***    2  WARNING in ieee80211_link_info_change_notify
 Attempt 3: (RETRY)
     Time  Bug Name
        2  INFO: rcu detected stall in corrupted
+***    2  WARNING in ieee80211_link_info_change_notify
+***    2  WARNING in ieee80211_link_info_change_notify
+***    2  WARNING in ieee80211_link_info_change_notify
+***    2  WARNING in ieee80211_link_info_change_notify
+***    2  WARNING in ieee80211_link_info_change_notify
 ***    2  WARNING in ieee80211_link_info_change_notify
 ***    2  WARNING in ieee80211_link_info_change_notify
 The bug was found.
@@ -60,87 +71,36 @@ The bug was found.
 New Max Time: 10
 
 ==== Major Release Search ====
-18 Releases
+12 Releases
 
-2025-04-14 22:40:07
+2025-09-09 20:11:59
 Session:   2
 Kernel:    2022-10-02 - 4fe89d07dcc2804c8b562f6c7896a45643d34b2f (v6.0)
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Compiler:  ccache gcc
 Attempt 1:
     Time  Bug Name
-       2  INFO: rcu detected stall in corrupted
+***    2  WARNING in ieee80211_link_info_change_notify
+***    2  WARNING in ieee80211_link_info_change_notify
 ***    2  WARNING in ieee80211_link_info_change_notify
 ***    2  WARNING in ieee80211_link_info_change_notify
 ***    2  WARNING in ieee80211_link_info_change_notify
 Running syz-repro.
-New PoC saved at /home/syzretrospector/syzinspector/wd-bisector-1/reproducers/repro-bug0061-0.prog
-Primary PoC:     /home/syzretrospector/syzinspector/wd-bisector-1/reproducers/repro-bug0061-0.prog
-Run Time:        0h37m0s
+New PoC saved at /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0061-0.prog
+Primary PoC:     /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0061-0.prog
+Run Time:        0h23m0s
 The bug was found.
-About 17 releases remaining
+About 11 releases remaining
 
-2025-04-14 23:31:50
+2025-09-09 20:49:04
 Session:   3
 Kernel:    2022-07-31 - 3d7cb6b04c3f3115719235cc6866b10326de34cd (v5.19)
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Compiler:  ccache gcc
 Attempt 1:
     Time  Bug Name
        2  WARNING in drv_bss_info_changed
        2  WARNING in drv_bss_info_changed
        2  WARNING in drv_bss_info_changed
        2  WARNING in drv_bss_info_changed
-       2  WARNING in drv_bss_info_changed
-       3  WARNING in drv_bss_info_changed
-       4  WARNING in drv_bss_info_changed
-       4  WARNING in drv_bss_info_changed
-       4  WARNING in drv_bss_info_changed
-       4  WARNING in drv_bss_info_changed
-       6  WARNING in drv_bss_info_changed
-       6  WARNING in drv_bss_info_changed
-       8  WARNING in drv_bss_info_changed
-       8  WARNING in drv_bss_info_changed
-The bug was not found.
-About 16 releases remaining
-
-==== Kernel Bisection ====
-16585 Linux commits
-
-2025-04-14 23:54:42
-Session:   4
-Kernel:    2022-08-04 - 78acd4ca433425e6dd4032cfc2156c60e34931f2
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
-Attempt 1:
-    Time  Bug Name
-***    2  WARNING in ieee80211_link_info_change_notify
-***    2  WARNING in ieee80211_link_info_change_notify
-***    2  WARNING in ieee80211_link_info_change_notify
-***    2  WARNING in ieee80211_link_info_change_notify
-***    2  WARNING in ieee80211_link_info_change_notify
-       2  WARNING: ODEBUG bug in mgmt_index_removed
-The bug was found.
-About 8200 commits remaining
-
-2025-04-15 00:09:03
-Session:   5
-Kernel:    2022-08-03 - 526942b8134cc34d25d27f95dfff98b8ce2f6fcd
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
-Attempt 1:
-    Time  Bug Name
-       2  WARNING in drv_bss_info_changed
-       2  WARNING in drv_bss_info_changed
-       2  WARNING in drv_bss_info_changed
-       2  WARNING in drv_bss_info_changed
-       2  WARNING in drv_bss_info_changed
-       2  WARNING in drv_bss_info_changed
-       3  WARNING in drv_bss_info_changed
-       3  WARNING in drv_bss_info_changed
-       3  WARNING in drv_bss_info_changed
-       3  WARNING in drv_bss_info_changed
-       3  WARNING in drv_bss_info_changed
-       4  WARNING in drv_bss_info_changed
-       4  WARNING in drv_bss_info_changed
-       4  WARNING in drv_bss_info_changed
-       4  WARNING in drv_bss_info_changed
        4  WARNING in drv_bss_info_changed
        5  WARNING in drv_bss_info_changed
        5  WARNING in drv_bss_info_changed
@@ -150,23 +110,95 @@ Attempt 1:
        6  WARNING in drv_bss_info_changed
        6  WARNING in drv_bss_info_changed
        6  WARNING in drv_bss_info_changed
-       7  WARNING in drv_bss_info_changed
-       7  WARNING in drv_bss_info_changed
-       7  WARNING in drv_bss_info_changed
-       7  WARNING in drv_bss_info_changed
+       6  WARNING in drv_bss_info_changed
+       6  WARNING in drv_bss_info_changed
        7  WARNING in drv_bss_info_changed
        7  WARNING in drv_bss_info_changed
        7  WARNING in drv_bss_info_changed
        7  WARNING in drv_bss_info_changed
        8  WARNING in drv_bss_info_changed
-       9  WARNING in drv_bss_info_changed
-       9  WARNING in drv_bss_info_changed
+       8  WARNING in drv_bss_info_changed
+       8  WARNING in drv_bss_info_changed
+       8  WARNING in drv_bss_info_changed
        9  WARNING in drv_bss_info_changed
        9  WARNING in drv_bss_info_changed
        9  WARNING in drv_bss_info_changed
        9  WARNING in drv_bss_info_changed
        9  WARNING in drv_bss_info_changed
       10  WARNING in drv_bss_info_changed
+      10  WARNING in drv_bss_info_changed
+      10  WARNING in drv_bss_info_changed
+      10  WARNING in drv_bss_info_changed
+The bug was not found.
+About 10 releases remaining
+
+==== Kernel Bisection ====
+16585 Linux commits
+
+2025-09-09 21:11:05
+Session:   4
+Kernel:    2022-08-04 - 78acd4ca433425e6dd4032cfc2156c60e34931f2
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       1  WARNING: ODEBUG bug in mgmt_index_removed
+***    2  WARNING in ieee80211_link_info_change_notify
+***    2  WARNING in ieee80211_link_info_change_notify
+***    2  WARNING in ieee80211_link_info_change_notify
+***    2  WARNING in ieee80211_link_info_change_notify
+       2  WARNING: ODEBUG bug in mgmt_index_removed
+       2  WARNING: ODEBUG bug in mgmt_index_removed
+       2  WARNING: ODEBUG bug in mgmt_index_removed
+The bug was found.
+About 8200 commits remaining
+
+2025-09-09 21:24:10
+Session:   5
+Kernel:    2022-08-03 - 526942b8134cc34d25d27f95dfff98b8ce2f6fcd
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  WARNING in drv_bss_info_changed
+       2  WARNING in drv_bss_info_changed
+       2  WARNING in drv_bss_info_changed
+       2  WARNING in drv_bss_info_changed
+       2  WARNING in drv_bss_info_changed
+       2  WARNING in drv_bss_info_changed
+       2  WARNING in drv_bss_info_changed
+       3  WARNING in drv_bss_info_changed
+       3  WARNING in drv_bss_info_changed
+       4  WARNING in drv_bss_info_changed
+       4  WARNING in drv_bss_info_changed
+       4  WARNING in drv_bss_info_changed
+       4  WARNING in drv_bss_info_changed
+       4  WARNING in drv_bss_info_changed
+       4  WARNING in drv_bss_info_changed
+       5  WARNING in drv_bss_info_changed
+       5  WARNING in drv_bss_info_changed
+       6  WARNING in drv_bss_info_changed
+       6  WARNING in drv_bss_info_changed
+       6  WARNING in drv_bss_info_changed
+       6  WARNING in drv_bss_info_changed
+       6  WARNING in drv_bss_info_changed
+       6  WARNING in drv_bss_info_changed
+       6  WARNING in drv_bss_info_changed
+       6  WARNING in drv_bss_info_changed
+       7  WARNING in drv_bss_info_changed
+       7  WARNING in drv_bss_info_changed
+       7  WARNING in drv_bss_info_changed
+       7  WARNING in drv_bss_info_changed
+       8  WARNING in drv_bss_info_changed
+       8  WARNING in drv_bss_info_changed
+       8  WARNING in drv_bss_info_changed
+       8  WARNING in drv_bss_info_changed
+       9  WARNING in drv_bss_info_changed
+       9  WARNING in drv_bss_info_changed
+       9  WARNING in drv_bss_info_changed
+       9  WARNING in drv_bss_info_changed
+       9  WARNING in drv_bss_info_changed
+       9  WARNING in drv_bss_info_changed
+       9  WARNING in drv_bss_info_changed
+       9  WARNING in drv_bss_info_changed
       10  WARNING in drv_bss_info_changed
       10  WARNING in drv_bss_info_changed
       10  WARNING in drv_bss_info_changed
@@ -175,26 +207,26 @@ Attempt 1:
 The bug was not found.
 About 4992 commits remaining
 
-2025-04-15 00:31:03
+2025-09-09 21:46:12
 Session:   6
 Kernel:    2022-08-03 - 12b68040a5e468068fd7f4af1150eab8f6e96235
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Compiler:  ccache gcc
 Attempt 1:
     Time  Bug Name
+       1  WARNING: ODEBUG bug in mgmt_index_removed
+       2  INFO: rcu detected stall in corrupted
 ***    2  WARNING in ieee80211_link_info_change_notify
 ***    2  WARNING in ieee80211_link_info_change_notify
 ***    2  WARNING in ieee80211_link_info_change_notify
 ***    2  WARNING in ieee80211_link_info_change_notify
 ***    2  WARNING in ieee80211_link_info_change_notify
-***    2  WARNING in ieee80211_link_info_change_notify
-       2  WARNING: ODEBUG bug in mgmt_index_removed
 The bug was found.
 About 2564 commits remaining
 
-2025-04-15 00:45:16
+2025-09-09 21:59:19
 Session:   7
 Kernel:    2022-07-21 - b945804d993072e24138741ab67e28f6b09b2502
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Compiler:  ccache gcc
 Attempt 1:
     Time  Bug Name
        2  INFO: trying to register non-static key in ieee80211_do_stop
@@ -209,35 +241,29 @@ Attempt 1:
        3  INFO: trying to register non-static key in ieee80211_do_stop
        3  INFO: trying to register non-static key in ieee80211_do_stop
        3  INFO: trying to register non-static key in ieee80211_do_stop
-       4  INFO: trying to register non-static key in ieee80211_do_stop
-       4  INFO: trying to register non-static key in ieee80211_do_stop
-       4  INFO: trying to register non-static key in ieee80211_do_stop
-       4  INFO: trying to register non-static key in ieee80211_do_stop
-       4  INFO: trying to register non-static key in ieee80211_do_stop
-       4  INFO: trying to register non-static key in ieee80211_do_stop
-       4  INFO: trying to register non-static key in ieee80211_do_stop
+       3  INFO: trying to register non-static key in ieee80211_do_stop
+       3  INFO: trying to register non-static key in ieee80211_do_stop
        4  INFO: trying to register non-static key in ieee80211_do_stop
        5  INFO: trying to register non-static key in ieee80211_do_stop
        5  INFO: trying to register non-static key in ieee80211_do_stop
        5  INFO: trying to register non-static key in ieee80211_do_stop
        5  INFO: trying to register non-static key in ieee80211_do_stop
-       6  INFO: trying to register non-static key in ieee80211_do_stop
-       6  INFO: trying to register non-static key in ieee80211_do_stop
-       6  INFO: trying to register non-static key in ieee80211_do_stop
+       5  INFO: trying to register non-static key in ieee80211_do_stop
+       5  INFO: trying to register non-static key in ieee80211_do_stop
+       5  INFO: trying to register non-static key in ieee80211_do_stop
        6  INFO: trying to register non-static key in ieee80211_do_stop
        7  INFO: trying to register non-static key in ieee80211_do_stop
        7  INFO: trying to register non-static key in ieee80211_do_stop
        7  INFO: trying to register non-static key in ieee80211_do_stop
        7  INFO: trying to register non-static key in ieee80211_do_stop
-       8  INFO: trying to register non-static key in ieee80211_do_stop
-       8  INFO: trying to register non-static key in ieee80211_do_stop
-       8  INFO: trying to register non-static key in ieee80211_do_stop
+       7  INFO: trying to register non-static key in ieee80211_do_stop
+       7  INFO: trying to register non-static key in ieee80211_do_stop
+       7  INFO: trying to register non-static key in ieee80211_do_stop
+       7  INFO: trying to register non-static key in ieee80211_do_stop
        9  INFO: trying to register non-static key in ieee80211_do_stop
        9  INFO: trying to register non-static key in ieee80211_do_stop
        9  INFO: trying to register non-static key in ieee80211_do_stop
        9  INFO: trying to register non-static key in ieee80211_do_stop
-       9  INFO: trying to register non-static key in ieee80211_do_stop
-      10  INFO: trying to register non-static key in ieee80211_do_stop
       10  INFO: trying to register non-static key in ieee80211_do_stop
       10  INFO: trying to register non-static key in ieee80211_do_stop
       10  INFO: trying to register non-static key in ieee80211_do_stop
@@ -245,45 +271,45 @@ Attempt 1:
 The bug was not found.
 About 4730 commits remaining
 
-2025-04-15 01:07:09
+2025-09-09 22:20:59
 Session:   8
 Kernel:    2022-07-29 - ff4970b130e74af4f2fe5bc6a7a963bc977cae1a
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Compiler:  ccache gcc
 Attempt 1:
     Time  Bug Name
+       1  WARNING: ODEBUG bug in mgmt_index_removed
 ***    2  WARNING in ieee80211_link_info_change_notify
 ***    2  WARNING in ieee80211_link_info_change_notify
 ***    2  WARNING in ieee80211_link_info_change_notify
 ***    2  WARNING in ieee80211_link_info_change_notify
-       2  WARNING: ODEBUG bug in mgmt_index_removed
+***    2  WARNING in ieee80211_link_info_change_notify
+***    2  WARNING in ieee80211_link_info_change_notify
 Running syz-repro.
-Run Time:        0h4m0s
+Run Time:        0h3m0s
 The bug was found.
 About 840 commits remaining
 
-2025-04-15 01:25:16
+2025-09-09 22:36:49
 Session:   9
 Kernel:    2022-07-29 - 5cc8cc4406edee1bc22991c23d38efbbb797aa6d
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Compiler:  ccache gcc
 Attempt 1:
     Time  Bug Name
-***    2  WARNING in ieee80211_link_info_change_notify
-***    2  WARNING in ieee80211_link_info_change_notify
 ***    2  WARNING in ieee80211_link_info_change_notify
 ***    2  WARNING in ieee80211_link_info_change_notify
 ***    2  WARNING in ieee80211_link_info_change_notify
 ***    2  WARNING in ieee80211_link_info_change_notify
 Running syz-repro.
-New PoC saved at /home/syzretrospector/syzinspector/wd-bisector-1/reproducers/repro-bug0061-5.prog
-Primary PoC:     /home/syzretrospector/syzinspector/wd-bisector-1/reproducers/repro-bug0061-5.prog
-Run Time:        0h28m0s
+New PoC saved at /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0061-5.prog
+Primary PoC:     /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0061-5.prog
+Run Time:        0h13m0s
 The bug was found.
 About 264 commits remaining
 
-2025-04-15 02:04:48
+2025-09-09 23:01:32
 Session:   10
 Kernel:    2022-07-18 - ec65e0e9acf758585249e43a51abf082ba1af582
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Compiler:  ccache gcc
 Attempt 1:
     Time  Bug Name
        2  INFO: trying to register non-static key in ieee80211_do_stop
@@ -296,24 +322,23 @@ Attempt 1:
        3  INFO: trying to register non-static key in ieee80211_do_stop
        3  INFO: trying to register non-static key in ieee80211_do_stop
        3  INFO: trying to register non-static key in ieee80211_do_stop
-       3  INFO: trying to register non-static key in ieee80211_do_stop
-       3  INFO: trying to register non-static key in ieee80211_do_stop
        4  INFO: trying to register non-static key in ieee80211_do_stop
        4  INFO: trying to register non-static key in ieee80211_do_stop
        4  INFO: trying to register non-static key in ieee80211_do_stop
        4  INFO: trying to register non-static key in ieee80211_do_stop
-       4  INFO: trying to register non-static key in ieee80211_do_stop
-       4  INFO: trying to register non-static key in ieee80211_do_stop
+       5  INFO: trying to register non-static key in ieee80211_do_stop
+       5  INFO: trying to register non-static key in ieee80211_do_stop
+       5  INFO: trying to register non-static key in ieee80211_do_stop
        5  INFO: trying to register non-static key in ieee80211_do_stop
        6  INFO: trying to register non-static key in ieee80211_do_stop
        6  INFO: trying to register non-static key in ieee80211_do_stop
        6  INFO: trying to register non-static key in ieee80211_do_stop
        6  INFO: trying to register non-static key in ieee80211_do_stop
        6  INFO: trying to register non-static key in ieee80211_do_stop
-       6  INFO: trying to register non-static key in ieee80211_do_stop
        7  INFO: trying to register non-static key in ieee80211_do_stop
        7  INFO: trying to register non-static key in ieee80211_do_stop
        7  INFO: trying to register non-static key in ieee80211_do_stop
+       8  INFO: trying to register non-static key in ieee80211_do_stop
        8  INFO: trying to register non-static key in ieee80211_do_stop
        8  INFO: trying to register non-static key in ieee80211_do_stop
        8  INFO: trying to register non-static key in ieee80211_do_stop
@@ -329,13 +354,12 @@ Attempt 1:
 The bug was not found.
 About 142 commits remaining
 
-2025-04-15 02:19:27
+2025-09-09 23:16:43
 Session:   11
 Kernel:    2022-07-11 - fc8f841bacfc092d0ca0f3022dc9bdf8e570797b
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Compiler:  ccache gcc
 Attempt 1:
     Time  Bug Name
-***    2  WARNING in ieee80211_link_info_change_notify
 ***    2  WARNING in ieee80211_link_info_change_notify
 ***    2  WARNING in ieee80211_link_info_change_notify
 ***    2  WARNING in ieee80211_link_info_change_notify
@@ -344,42 +368,45 @@ Attempt 1:
 The bug was found.
 About 71 commits remaining
 
-2025-04-15 02:33:25
+2025-09-09 23:30:41
 Session:   12
 Kernel:    2022-07-11 - 364718c94ac2ea4e51958ac0aa15c9092c785a3a
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Compiler:  ccache gcc
 Attempt 1:
     Time  Bug Name
+***    2  WARNING in ieee80211_link_info_change_notify
+***    2  WARNING in ieee80211_link_info_change_notify
+***    2  WARNING in ieee80211_link_info_change_notify
 ***    2  WARNING in ieee80211_link_info_change_notify
 ***    2  WARNING in ieee80211_link_info_change_notify
 The bug was found.
 About 36 commits remaining
 
-2025-04-15 02:39:26
+2025-09-09 23:37:19
 Session:   13
 Kernel:    2022-07-11 - c132fc7d83bb9f459ef10d7fe082bc301f63cd3b
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Compiler:  ccache gcc
 Attempt 1:
     Time  Bug Name
+***    2  WARNING in ieee80211_link_info_change_notify
 ***    2  WARNING in ieee80211_link_info_change_notify
 ***    2  WARNING in ieee80211_link_info_change_notify
 ***    2  WARNING in ieee80211_link_info_change_notify
 ***    2  WARNING in ieee80211_link_info_change_notify
 ***    2  WARNING in ieee80211_link_info_change_notify
 Running syz-repro.
-New PoC saved at /home/syzretrospector/syzinspector/wd-bisector-1/reproducers/repro-bug0061-6.prog
-Primary PoC:     /home/syzretrospector/syzinspector/wd-bisector-1/reproducers/repro-bug0061-6.prog
-Run Time:        0h15m0s
+New PoC saved at /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0061-0.prog
+Primary PoC:     /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0061-5.prog
+Run Time:        0h12m0s
 The bug was found.
 About 18 commits remaining
 
-2025-04-15 03:00:24
+2025-09-09 23:55:56
 Session:   14
 Kernel:    2022-07-11 - ef55564e2b173d459a4aaae962c84f05aeaf8e36
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Compiler:  ccache gcc
 Attempt 1:
     Time  Bug Name
-***    2  WARNING in ieee80211_link_info_change_notify
 ***    2  WARNING in ieee80211_link_info_change_notify
 ***    2  WARNING in ieee80211_link_info_change_notify
 ***    2  WARNING in ieee80211_link_info_change_notify
@@ -388,13 +415,12 @@ Attempt 1:
 The bug was found.
 About 9 commits remaining
 
-2025-04-15 03:06:17
+2025-09-10 00:02:55
 Session:   15
 Kernel:    2022-07-11 - 162d5c14ba482934334428b3be972571f0c007b0
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Compiler:  ccache gcc
 Attempt 1:
     Time  Bug Name
-***    2  WARNING in ieee80211_link_info_change_notify
 ***    2  WARNING in ieee80211_link_info_change_notify
 ***    2  WARNING in ieee80211_link_info_change_notify
 ***    2  WARNING in ieee80211_link_info_change_notify
@@ -403,30 +429,37 @@ Attempt 1:
 The bug was found.
 About 5 commits remaining
 
-2025-04-15 03:12:09
+2025-09-10 00:09:38
 Session:   16
 Kernel:    2022-07-11 - cffd93411575afd987788e2ec3cb8eaff70f0215
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Compiler:  ccache gcc
 Attempt 1:
     Time  Bug Name
+***    2  WARNING in ieee80211_link_info_change_notify
+***    2  WARNING in ieee80211_link_info_change_notify
+***    2  WARNING in ieee80211_link_info_change_notify
 ***    2  WARNING in ieee80211_link_info_change_notify
 ***    2  WARNING in ieee80211_link_info_change_notify
 ***    2  WARNING in ieee80211_link_info_change_notify
 ***    2  WARNING in ieee80211_link_info_change_notify
 ***    2  WARNING in ieee80211_link_info_change_notify
 Running syz-repro.
-New PoC saved at /home/syzretrospector/syzinspector/wd-bisector-1/reproducers/repro-bug0061-7.prog
-Primary PoC:     /home/syzretrospector/syzinspector/wd-bisector-1/reproducers/repro-bug0061-5.prog
-Run Time:        0h20m0s
+New PoC saved at /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0061-0.prog
+Primary PoC:     /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0061-0.prog
+Run Time:        0h11m0s
 The bug was found.
 About 3 commits remaining
 
-2025-04-15 03:38:02
+2025-09-10 00:27:10
 Session:   17
 Kernel:    2022-07-11 - 63907290faa916ffab1c8455141c79ca8e3a79bb
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Compiler:  ccache gcc
 Attempt 1:
     Time  Bug Name
+***    2  WARNING in ieee80211_link_info_change_notify
+***    2  WARNING in ieee80211_link_info_change_notify
+***    2  WARNING in ieee80211_link_info_change_notify
+***    2  WARNING in ieee80211_link_info_change_notify
 ***    2  WARNING in ieee80211_link_info_change_notify
 ***    2  WARNING in ieee80211_link_info_change_notify
 ***    2  WARNING in ieee80211_link_info_change_notify
@@ -434,19 +467,20 @@ The bug was found.
 About 2 commits remaining
 
 ==== Partial Result: Focused Fuzzing ====
-Reproducer:           /home/syzretrospector/syzinspector/wd-bisector-1/reproducers/repro-bug0061-5.prog
+Reproducer:           /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0061-0.prog
 Bisection Result:     2022-07-11 - 63907290faa916ffab1c8455141c79ca8e3a79bb
 Bisected Commit Name: mt76: mt7915: fix endianness in mt7915_rf_regval_get
-Stage Time:           5h23m34s
-Run Time:             5h23m37s
+Stage Time:           4h40m50s
+Run Time:             4h40m53s
 =========================================
 
 ==== Anchor Commit ====
 
-2025-04-15 03:43:59
+2025-09-10 00:34:10
 Session:   18
 Kernel:    2022-07-11 - 58b6259d820d63c2adf1c7541b54cce5a2ae6073
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Compiler:  ccache gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0061-0.prog
 Attempt 0:
 *** WARNING in ieee80211_link_info_change_notify
 Attempt 1:
@@ -466,12 +500,12 @@ Attempt 7:
 The bug was found.
 
 ==== Major Release Search ====
-17 Releases
+12 Releases
 
-2025-04-15 03:51:03
+2025-09-10 00:41:15
 Session:   19
 Kernel:    2022-05-22 - 4b0986a3613c92f4ec1bdc7f60ec66fea135991f (v5.18)
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Compiler:  ccache gcc
 Attempt 0:
     WARNING in drv_bss_info_changed
 Attempt 1:
@@ -489,15 +523,15 @@ Attempt 6:
 Attempt 7:
     WARNING in drv_bss_info_changed
 The bug was not found.
-About 16 releases remaining
+About 11 releases remaining
 
 ==== Kernel Bisection ====
 14494 Linux commits
 
-2025-04-15 04:06:29
+2025-09-10 00:53:58
 Session:   20
 Kernel:    2022-05-25 - d7227785e384d4422b3ca189aa5bf19f462337cc
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Compiler:  ccache gcc
 Attempt 0:
     WARNING in drv_bss_info_changed
 Attempt 1:
@@ -517,10 +551,10 @@ Attempt 7:
 The bug was not found.
 About 6998 commits remaining
 
-2025-04-15 04:20:51
+2025-09-10 01:07:29
 Session:   21
 Kernel:    2022-05-28 - 6112bd00e84e5dbffebc3c1e908cbe914ca772ee
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Compiler:  ccache gcc
 Attempt 0:
     WARNING in drv_bss_info_changed
 Attempt 1:
@@ -540,10 +574,10 @@ Attempt 7:
 The bug was not found.
 About 3476 commits remaining
 
-2025-04-15 04:35:38
+2025-09-10 01:20:28
 Session:   22
 Kernel:    2022-06-03 - 4ad680f083ec360e0991c453e18a38ed9ae500d7
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Compiler:  ccache gcc
 Attempt 0:
     WARNING in drv_bss_info_changed
 Attempt 1:
@@ -563,10 +597,10 @@ Attempt 7:
 The bug was not found.
 About 1683 commits remaining
 
-2025-04-15 04:50:18
+2025-09-10 01:33:27
 Session:   23
 Kernel:    2022-06-03 - 21873bd66b6e6040d95d0a33525ea6933bdc6c71
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Compiler:  ccache gcc
 Attempt 0:
     WARNING in drv_bss_info_changed
 Attempt 1:
@@ -586,14 +620,14 @@ Attempt 7:
 The bug was not found.
 About 842 commits remaining
 
-2025-04-15 05:05:34
+2025-09-10 01:47:08
 Session:   24
 Kernel:    2022-06-10 - 7d78b7ebdf7dac762c3807274182b7c582be7937
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Compiler:  ccache gcc
 Attempt 0:
     WARNING in drv_bss_info_changed
 Attempt 1:
-    WARNING in drv_bss_info_changed
+    WARNING: ODEBUG bug in netdev_run_todo
 Attempt 2:
     WARNING in drv_bss_info_changed
 Attempt 3:
@@ -609,10 +643,10 @@ Attempt 7:
 The bug was not found.
 About 424 commits remaining
 
-2025-04-15 05:21:05
+2025-09-10 02:00:04
 Session:   25
 Kernel:    2022-06-10 - 5c281b4e529cd5a73b32ac561d79f448d18dda6f
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Compiler:  ccache gcc
 Attempt 0:
     WARNING in drv_bss_info_changed
 Attempt 1:
@@ -632,10 +666,10 @@ Attempt 7:
 The bug was not found.
 About 189 commits remaining
 
-2025-04-15 05:32:14
+2025-09-10 02:10:43
 Session:   26
 Kernel:    2022-06-20 - bfd8403adddd09f32033a14bf25be398291e7881
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Compiler:  ccache gcc
 Attempt 0:
     WARNING in drv_bss_info_changed
 Attempt 1:
@@ -655,10 +689,10 @@ Attempt 7:
 The bug was not found.
 About 95 commits remaining
 
-2025-04-15 05:43:39
+2025-09-10 02:21:35
 Session:   27
 Kernel:    2022-06-21 - a8eb8e6f7159c7c20c0ddac428bde3d110890aa7
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Compiler:  ccache gcc
 Attempt 0:
 *** WARNING in ieee80211_link_info_change_notify
 Attempt 1:
@@ -678,10 +712,10 @@ Attempt 7:
 The bug was found.
 About 48 commits remaining
 
-2025-04-15 05:51:15
+2025-09-10 02:28:23
 Session:   28
 Kernel:    2022-06-20 - 7a52107e441effadd850a7bf155c4719205ad6d7
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Compiler:  ccache gcc
 Attempt 0:
 *** WARNING in ieee80211_link_info_change_notify
 Attempt 1:
@@ -701,10 +735,10 @@ Attempt 7:
 The bug was found.
 About 24 commits remaining
 
-2025-04-15 05:58:50
+2025-09-10 02:35:33
 Session:   29
 Kernel:    2022-06-20 - 2b4ad30946d3117819d9a78d58a99b7c3de3ee91
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Compiler:  ccache gcc
 Attempt 0:
 *** WARNING in ieee80211_link_info_change_notify
 Attempt 1:
@@ -724,10 +758,10 @@ Attempt 7:
 The bug was found.
 About 12 commits remaining
 
-2025-04-15 06:06:22
+2025-09-10 02:42:36
 Session:   30
 Kernel:    2022-06-20 - 2a5ccbeec0f226c3a1099aac74069d89ea119e01
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Compiler:  ccache gcc
 Attempt 0:
 *** WARNING in ieee80211_link_info_change_notify
 Attempt 1:
@@ -747,10 +781,10 @@ Attempt 7:
 The bug was found.
 About 6 commits remaining
 
-2025-04-15 06:14:04
+2025-09-10 02:49:50
 Session:   31
 Kernel:    2022-06-20 - 8e14130d3faf7b6b0fc57b530bb601cd9d6a1dab
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Compiler:  ccache gcc
 Attempt 0:
 *** WARNING in ieee80211_link_info_change_notify
 Attempt 1:
@@ -770,10 +804,10 @@ Attempt 7:
 The bug was found.
 About 3 commits remaining
 
-2025-04-15 06:21:55
+2025-09-10 02:56:56
 Session:   32
 Kernel:    2022-06-20 - 7b7090b4c6a906cc7c3e2a460335f705b93f4506
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Compiler:  ccache gcc
 Attempt 0:
 *** WARNING in ieee80211_link_info_change_notify
 Attempt 1:
@@ -794,19 +828,20 @@ The bug was found.
 About 2 commits remaining
 
 ==== Partial Result: Primary PoC Test ====
-Reproducer:           /home/syzretrospector/syzinspector/wd-bisector-1/reproducers/repro-bug0061-5.prog
+Reproducer:           /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0061-0.prog
 Bisection Result:     2022-06-20 - 7b7090b4c6a906cc7c3e2a460335f705b93f4506
 Bisected Commit Name: wifi: mac80211: split bss_info_changed method
-Stage Time:           2h45m36s
-Run Time:             8h9m14s
+Stage Time:           2h29m43s
+Run Time:             7h10m36s
 ==========================================
 
 ==== Anchor Commit ====
 
-2025-04-15 06:29:36
+2025-09-10 03:03:53
 Session:   33
 Kernel:    2022-06-20 - bfd8403adddd09f32033a14bf25be398291e7881
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Compiler:  ccache gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0061-1.prog
 Attempt 0:
     WARNING in drv_bss_info_changed
 Attempt 1:
@@ -828,18 +863,19 @@ The bug was not found.
 Failure: This bug cannot be found at the anchor commit.
 
 ==== Partial Result: Subsequent PoC Test ====
-Reproducer:           /home/syzretrospector/syzinspector/wd-bisector-1/reproducers/repro-bug0061-1.prog
+Reproducer:           /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0061-1.prog
 Bisection Result:     Failed to reproduce at the anchor commit.
-Stage Time:           0h6m51s
-Run Time:             8h16m6s
+Stage Time:           0h6m26s
+Run Time:             7h17m2s
 =============================================
 
 ==== Anchor Commit ====
 
-2025-04-15 06:36:30
+2025-09-10 03:10:21
 Session:   34
 Kernel:    2022-06-20 - bfd8403adddd09f32033a14bf25be398291e7881
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Compiler:  ccache gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0061-2.prog
 Attempt 0:
     WARNING in drv_bss_info_changed
 Attempt 1:
@@ -861,18 +897,19 @@ The bug was not found.
 Failure: This bug cannot be found at the anchor commit.
 
 ==== Partial Result: Subsequent PoC Test ====
-Reproducer:           /home/syzretrospector/syzinspector/wd-bisector-1/reproducers/repro-bug0061-2.prog
+Reproducer:           /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0061-2.prog
 Bisection Result:     Failed to reproduce at the anchor commit.
-Stage Time:           0h6m53s
-Run Time:             8h22m59s
+Stage Time:           0h6m30s
+Run Time:             7h23m33s
 =============================================
 
 ==== Anchor Commit ====
 
-2025-04-15 06:43:23
+2025-09-10 03:16:51
 Session:   35
 Kernel:    2022-06-20 - bfd8403adddd09f32033a14bf25be398291e7881
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Compiler:  ccache gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0061-5.prog
 Attempt 0:
     WARNING in drv_bss_info_changed
 Attempt 1:
@@ -894,18 +931,19 @@ The bug was not found.
 Failure: This bug cannot be found at the anchor commit.
 
 ==== Partial Result: Subsequent PoC Test ====
-Reproducer:           /home/syzretrospector/syzinspector/wd-bisector-1/reproducers/repro-bug0061-0.prog
+Reproducer:           /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0061-5.prog
 Bisection Result:     Failed to reproduce at the anchor commit.
-Stage Time:           0h6m56s
-Run Time:             8h29m55s
+Stage Time:           0h6m36s
+Run Time:             7h30m10s
 =============================================
 
 ==== Anchor Commit ====
 
-2025-04-15 06:50:20
+2025-09-10 03:23:28
 Session:   36
 Kernel:    2022-06-20 - bfd8403adddd09f32033a14bf25be398291e7881
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Compiler:  ccache gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0061-4.prog
 Attempt 0:
     WARNING in drv_bss_info_changed
 Attempt 1:
@@ -927,18 +965,19 @@ The bug was not found.
 Failure: This bug cannot be found at the anchor commit.
 
 ==== Partial Result: Subsequent PoC Test ====
-Reproducer:           /home/syzretrospector/syzinspector/wd-bisector-1/reproducers/repro-bug0061-6.prog
+Reproducer:           /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0061-4.prog
 Bisection Result:     Failed to reproduce at the anchor commit.
-Stage Time:           0h7m1s
-Run Time:             8h36m57s
+Stage Time:           0h6m39s
+Run Time:             7h36m49s
 =============================================
 
 ==== Anchor Commit ====
 
-2025-04-15 06:57:21
+2025-09-10 03:30:08
 Session:   37
 Kernel:    2022-06-20 - bfd8403adddd09f32033a14bf25be398291e7881
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Compiler:  ccache gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0061-3.prog
 Attempt 0:
     WARNING in drv_bss_info_changed
 Attempt 1:
@@ -960,43 +999,10 @@ The bug was not found.
 Failure: This bug cannot be found at the anchor commit.
 
 ==== Partial Result: Subsequent PoC Test ====
-Reproducer:           /home/syzretrospector/syzinspector/wd-bisector-1/reproducers/repro-bug0061-4.prog
+Reproducer:           /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0061-3.prog
 Bisection Result:     Failed to reproduce at the anchor commit.
-Stage Time:           0h7m6s
-Run Time:             8h44m4s
-=============================================
-
-==== Anchor Commit ====
-
-2025-04-15 07:04:28
-Session:   38
-Kernel:    2022-06-20 - bfd8403adddd09f32033a14bf25be398291e7881
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
-Attempt 0:
-    WARNING in drv_bss_info_changed
-Attempt 1:
-    WARNING in drv_bss_info_changed
-Attempt 2:
-    WARNING in drv_bss_info_changed
-Attempt 3:
-    WARNING in drv_bss_info_changed
-Attempt 4:
-    WARNING in drv_bss_info_changed
-Attempt 5:
-    WARNING in drv_bss_info_changed
-Attempt 6:
-    WARNING in drv_bss_info_changed
-Attempt 7:
-    WARNING in drv_bss_info_changed
-The bug was not found.
-
-Failure: This bug cannot be found at the anchor commit.
-
-==== Partial Result: Subsequent PoC Test ====
-Reproducer:           /home/syzretrospector/syzinspector/wd-bisector-1/reproducers/repro-bug0061-3.prog
-Bisection Result:     Failed to reproduce at the anchor commit.
-Stage Time:           0h7m5s
-Run Time:             8h51m10s
+Stage Time:           0h6m30s
+Run Time:             7h43m20s
 =============================================
 
 ====================================================================================================================================================
@@ -1004,7 +1010,7 @@ Bug Name:             WARNING in ieee80211_link_info_change_notify
 Bug Link:             https://syzkaller.appspot.com/bug?id=64a91d95c31faa0e8dd58a5a7cc0ab963e28600a
 Bisection Result:     2022-06-20 - 7b7090b4c6a906cc7c3e2a460335f705b93f4506
 Bisected Commit Name: wifi: mac80211: split bss_info_changed method
-Run Time:             8h51m10s
+Run Time:             7h43m20s
 
 Anchor Commit:        2022-10-26 - b229b6ca5abbd63ff40c1396095b1b36b18139c3
 Bisection Result:     2022-06-20 - 7b7090b4c6a906cc7c3e2a460335f705b93f4506

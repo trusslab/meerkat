@@ -1,4 +1,4 @@
-./bin/bisector -i 1 -c /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/bisector.cfg -a 97ec4d559d939743e8af83628be5af8da610d9dc -F ff-test,poc-test,stateful-corpus,ff-no-find-backup
+./bin/meerkat -i 1 -c /home/syzretrospector/meerkat/wd-meerkat-1/meerkat.cfg -a 97ec4d559d939743e8af83628be5af8da610d9dc -F ff-test,poc-test,poc-all-pocs,ff-no-find-backup,stateful-corpus
 Bisecting:          kernel BUG in rxrpc_put_call
 Syzbot Link:        https://syzkaller.appspot.com/bug?id=4ed88f7c1c6d6d21f9bb9521d2efbf83dbd94b79
 Working Name:       bug0082
@@ -10,1430 +10,654 @@ Repository:         https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/lin
 Branch:             master
 Arch:               amd64
 
-Bisector:           /mnt/sdd/jtbursey/SyzInspector/
-Version:            1.0.3
-Kernel:             /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/kernel/
-Syzkaller:          /mnt/sdd/jtbursey/SyzInspector/syzkaller/
-Compilers:          /mnt/sda/jtbursey/SyzInspector/compilers/
-Ccache:             ccache
-Image:              /mnt/sda/jtbursey/SyzInspector/image/stretch/stretch.img
-Image Key:          /mnt/sda/jtbursey/SyzInspector/image/stretch/stretch.id_rsa
+Meerkat:            /home/syzretrospector/meerkat/
+Version:            1.1.0
+Kernel:             /home/syzretrospector/meerkat/wd-meerkat-1/kernel/
+Syzkaller:          /home/syzretrospector/meerkat/syzkaller/
+Compilers:          /home/syzretrospector/meerkat/compilers/
+Compiler:           gcc (Ubuntu 11.4.0-1ubuntu1~22.04.2) 11.4.0
+Linker:             GNU ld (GNU Binutils for Ubuntu) 2.38
+Ccache:             ccache version 4.5.1
+Image:              /home/syzretrospector/images/stretch/stretch.img
+Image Key:          /home/syzretrospector/images/stretch/stretch.id_rsa
 
-Workdir:            /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/
-Kconfig:            /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/config-bug0082.txt
-Reproducers: (1)    /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/reproducers/
-Primary PoC:        /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/reproducers/repro-bug0082-1.prog
-Syzkaller Workdir:  /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/wd-kaller/
-Log Directory:      /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/log/
+Workdir:            /home/syzretrospector/meerkat/wd-meerkat-1/
+Kconfig:            /home/syzretrospector/meerkat/wd-meerkat-1/config-bug0082.txt
+Reproducers: (1)    /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/
+Primary PoC:        /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0082-1.prog
+Syzkaller Workdir:  /home/syzretrospector/meerkat/wd-meerkat-1/wd-kaller/
+Log Directory:      /home/syzretrospector/meerkat/wd-meerkat-1/log/
 
-Syscalls: (10)      ["connect$rxrpc", "sendmsg$inet", "socket$rxrpc", "socket", "ioctl$EXT4_IOC_GROUP_EXTEND", "openat$sw_sync_info", "sendmsg$TCPDIAG_GETSOCK", "ioctl$sock_SIOCGIFINDEX", "socket$nl_sock_diag", "socket$netlink"]
+Syscalls: (9)       ["connect$rxrpc", "sendmsg$inet", "socket$rxrpc", "socket", "ioctl$F2FS_IOC_START_ATOMIC_WRITE", "openat$selinux_enforce", "setsockopt$inet_mreqn", "ioctl$sock_SIOCGIFINDEX", "socket$inet"]
 VM Count:           8
 CPU Count:          2
 Procs:              16
 Memory:             4096
 Make Procs:         16
-Max Time:           30
-Max Attempts:       3
+Max Time:           10
+Max Attempts:       1
 
 ==== Anchor Commit ====
 
-2025-03-04 11:51:26
+2025-09-14 04:30:46
 Session:   1
 Kernel:    2023-01-13 - 97ec4d559d939743e8af83628be5af8da610d9dc
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Compiler:  ccache gcc
 Attempt 1:
     Time  Bug Name
-      27  WARNING: ODEBUG bug in netdev_run_todo
-      28  WARNING: ODEBUG bug in netdev_run_todo
-Attempt 2:
+***    2  kernel BUG in rxrpc_put_call
+***    2  kernel BUG in rxrpc_put_call
+***    2  kernel BUG in rxrpc_put_call
+***    2  kernel BUG in rxrpc_put_call
+Attempt 2: (RETRY)
     Time  Bug Name
-       4  INFO: rcu detected stall in corrupted
-***   10  kernel BUG in rxrpc_put_call
-***   10  kernel BUG in rxrpc_put_call
-Attempt 3:
+***    2  kernel BUG in rxrpc_put_call
+***    2  kernel BUG in rxrpc_put_call
+***    2  kernel BUG in rxrpc_put_call
+***    2  kernel BUG in rxrpc_put_call
+Attempt 3: (RETRY)
     Time  Bug Name
        2  INFO: rcu detected stall in corrupted
-       3  INFO: rcu detected stall in corrupted
-       3  INFO: rcu detected stall in corrupted
-       4  INFO: rcu detected stall in corrupted
-       4  INFO: rcu detected stall in corrupted
-       7  INFO: rcu detected stall in corrupted
-***    8  kernel BUG in rxrpc_put_call
+***    2  kernel BUG in rxrpc_put_call
+***    2  kernel BUG in rxrpc_put_call
+***    2  kernel BUG in rxrpc_put_call
 The bug was found.
 
-New Max Time: 25
+New Max Time: 10
 
 ==== Major Release Search ====
-18 Releases
+13 Releases
 
-2025-03-04 13:00:07
+2025-09-14 04:51:21
 Session:   2
-Kernel:    2022-10-02 - 4fe89d07dcc2804c8b562f6c7896a45643d34b2f (v6.0)
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Kernel:    2022-12-11 - 830b3c68c1fb1e9176028d02ef86f3cf76aa2476 (v6.1)
+Compiler:  ccache gcc
 Attempt 1:
     Time  Bug Name
-       3  INFO: rcu detected stall in corrupted
-       6  INFO: rcu detected stall in corrupted
-       8  INFO: rcu detected stall in corrupted
-       8  INFO: rcu detected stall in corrupted
-       9  INFO: rcu detected stall in corrupted
-       9  INFO: rcu detected stall in corrupted
-       9  INFO: rcu detected stall in corrupted
-       9  INFO: rcu detected stall in corrupted
-      13  WARNING: ODEBUG bug in netdev_run_todo
-      17  INFO: rcu detected stall in corrupted
-      17  INFO: rcu detected stall in corrupted
-      18  INFO: rcu detected stall in corrupted
-      19  INFO: rcu detected stall in corrupted
-      22  INFO: rcu detected stall in corrupted
-Error: Waitpid on pid 2384130 failed.
-Error: Syzkaller has experienced a crash.
-Warning: Child process exited with error status 32764.
-Attempt 2:
-    No crashes found.
-Attempt 3:
-    Time  Bug Name
-       5  INFO: rcu detected stall in corrupted
-      10  WARNING: ODEBUG bug in netdev_run_todo
-      16  WARNING: ODEBUG bug in netdev_run_todo
-      22  INFO: rcu detected stall in corrupted
-      25  INFO: rcu detected stall in corrupted
-      25  INFO: rcu detected stall in corrupted
+       2  INFO: rcu detected stall in corrupted
 The bug was not found.
-About 17 releases remaining
+About 12 releases remaining
 
 ==== Kernel Bisection ====
-30492 Linux commits
+15383 Linux commits
 
-2025-03-04 14:10:23
+2025-09-14 05:15:22
 Session:   3
-Kernel:    2022-11-21 - 4dca1319a796bc4c17e57a8727c1d95cecc892da
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Kernel:    2022-12-13 - 1ca06f1c1acecbe02124f14a37cce347b8c1a90c
+Compiler:  ccache gcc
 Attempt 1:
-    Time  Bug Name
-       7  INFO: task hung in synchronize_rcu
-       7  INFO: task hung in synchronize_rcu
-       8  INFO: rcu detected stall in corrupted
-       8  INFO: rcu detected stall in corrupted
-       9  INFO: rcu detected stall in corrupted
-      12  INFO: rcu detected stall in corrupted
-      12  INFO: rcu detected stall in corrupted
-      12  INFO: rcu detected stall in corrupted
-      16  INFO: rcu detected stall in corrupted
-      16  INFO: rcu detected stall in corrupted
-      17  INFO: rcu detected stall in corrupted
-Attempt 2:
-    Time  Bug Name
-       2  INFO: rcu detected stall in corrupted
-      13  INFO: rcu detected stall in corrupted
-      14  INFO: rcu detected stall in corrupted
-      14  INFO: rcu detected stall in corrupted
-      17  INFO: rcu detected stall in corrupted
-Attempt 3:
-    Time  Bug Name
-      23  INFO: rcu detected stall in corrupted
-      24  INFO: rcu detected stall in corrupted
-      24  INFO: rcu detected stall in corrupted
-      25  INFO: rcu detected stall in corrupted
+    No crashes found.
 The bug was not found.
-About 15246 commits remaining
+About 7973 commits remaining
 
-2025-03-04 15:45:19
+2025-09-14 05:39:17
 Session:   4
-Kernel:    2022-12-13 - 4d03390b5cb97ea8562fcf324106c4735805d558
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Kernel:    2022-12-15 - 8fa590bf344816c925810331eea8387627bbeb40
+Compiler:  ccache gcc
 Attempt 1:
     Time  Bug Name
-       2  WARNING in tipc_msg_build
-       2  WARNING in tipc_msg_build
-       3  WARNING in tipc_msg_build
-       4  WARNING in tipc_msg_build
-       7  INFO: rcu detected stall in corrupted
-       8  INFO: rcu detected stall in corrupted
-       8  INFO: rcu detected stall in corrupted
-       8  INFO: rcu detected stall in corrupted
-       9  INFO: rcu detected stall in corrupted
-      10  WARNING in tipc_msg_build
-      23  WARNING in tipc_msg_build
-Attempt 2:
-    Time  Bug Name
-       5  WARNING in tipc_msg_build
-       9  INFO: rcu detected stall in corrupted
-      10  INFO: rcu detected stall in corrupted
-      16  INFO: rcu detected stall in corrupted
-      21  INFO: rcu detected stall in corrupted
-      25  WARNING in tipc_msg_build
-Attempt 3:
-    Time  Bug Name
        2  INFO: rcu detected stall in corrupted
-       5  WARNING in tipc_msg_build
-       6  INFO: rcu detected stall in corrupted
-       7  INFO: rcu detected stall in corrupted
-       8  INFO: rcu detected stall in corrupted
-      16  WARNING in tipc_msg_build
-      21  WARNING: ODEBUG bug in netdev_run_todo
-      23  WARNING in tipc_msg_build
+       2  general protection fault in rxrpc_unuse_local
+       2  general protection fault in rxrpc_unuse_local
+       2  general protection fault in rxrpc_unuse_local
+       2  general protection fault in rxrpc_unuse_local
+       2  general protection fault in rxrpc_unuse_local
+       2  general protection fault in rxrpc_unuse_local
+       2  general protection fault in rxrpc_unuse_local
+       2  general protection fault in rxrpc_unuse_local
+       2  general protection fault in rxrpc_unuse_local
+       2  general protection fault in rxrpc_unuse_local
+       2  general protection fault in rxrpc_unuse_local
+       3  general protection fault in rxrpc_unuse_local
+       3  general protection fault in rxrpc_unuse_local
+       3  general protection fault in rxrpc_unuse_local
+       3  general protection fault in rxrpc_unuse_local
+       3  general protection fault in rxrpc_unuse_local
+       3  general protection fault in rxrpc_unuse_local
+       3  general protection fault in rxrpc_unuse_local
+       3  general protection fault in rxrpc_unuse_local
+       3  general protection fault in rxrpc_unuse_local
+       3  general protection fault in rxrpc_unuse_local
+       4  general protection fault in rxrpc_unuse_local
+       4  general protection fault in rxrpc_unuse_local
+       4  general protection fault in rxrpc_unuse_local
+       4  general protection fault in rxrpc_unuse_local
+       4  general protection fault in rxrpc_unuse_local
+       4  general protection fault in rxrpc_unuse_local
+       4  general protection fault in rxrpc_unuse_local
+       4  general protection fault in rxrpc_unuse_local
+       4  general protection fault in rxrpc_unuse_local
+       5  general protection fault in rxrpc_unuse_local
+       5  general protection fault in rxrpc_unuse_local
+       5  general protection fault in rxrpc_unuse_local
+       5  general protection fault in rxrpc_unuse_local
+       5  general protection fault in rxrpc_unuse_local
+       5  general protection fault in rxrpc_unuse_local
+       5  general protection fault in rxrpc_unuse_local
+       5  general protection fault in rxrpc_unuse_local
+       6  general protection fault in rxrpc_unuse_local
+       6  general protection fault in rxrpc_unuse_local
+       6  general protection fault in rxrpc_unuse_local
+       6  general protection fault in rxrpc_unuse_local
+       6  general protection fault in rxrpc_unuse_local
+       6  general protection fault in rxrpc_unuse_local
+       6  general protection fault in rxrpc_unuse_local
+       6  general protection fault in rxrpc_unuse_local
+       6  general protection fault in rxrpc_unuse_local
+       7  general protection fault in rxrpc_unuse_local
+       7  general protection fault in rxrpc_unuse_local
+       7  general protection fault in rxrpc_unuse_local
+       7  general protection fault in rxrpc_unuse_local
+       7  general protection fault in rxrpc_unuse_local
+       7  general protection fault in rxrpc_unuse_local
+       7  general protection fault in rxrpc_unuse_local
+       7  general protection fault in rxrpc_unuse_local
+       8  general protection fault in rxrpc_unuse_local
+       8  general protection fault in rxrpc_unuse_local
+       8  general protection fault in rxrpc_unuse_local
+       8  general protection fault in rxrpc_unuse_local
+       8  general protection fault in rxrpc_unuse_local
+       8  general protection fault in rxrpc_unuse_local
+       8  general protection fault in rxrpc_unuse_local
+       8  general protection fault in rxrpc_unuse_local
+       9  general protection fault in rxrpc_unuse_local
+       9  general protection fault in rxrpc_unuse_local
+       9  general protection fault in rxrpc_unuse_local
+       9  general protection fault in rxrpc_unuse_local
+       9  general protection fault in rxrpc_unuse_local
+       9  general protection fault in rxrpc_unuse_local
+       9  general protection fault in rxrpc_unuse_local
+       9  general protection fault in rxrpc_unuse_local
+       9  general protection fault in rxrpc_unuse_local
+      10  general protection fault in rxrpc_unuse_local
+      10  general protection fault in rxrpc_unuse_local
+      10  general protection fault in rxrpc_unuse_local
+      10  general protection fault in rxrpc_unuse_local
+      10  general protection fault in rxrpc_unuse_local
+      10  general protection fault in rxrpc_unuse_local
+      10  general protection fault in rxrpc_unuse_local
+      10  general protection fault in rxrpc_unuse_local
+      10  general protection fault in rxrpc_unuse_local
 The bug was not found.
-About 8766 commits remaining
+About 3873 commits remaining
 
-2025-03-04 17:19:24
+2025-09-14 06:03:24
 Session:   5
-Kernel:    2022-12-15 - ec9187ecea142593c54cf7a73ef2e1a3d517495a
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Kernel:    2022-12-19 - 2f26e424552efd50722f4cf61f7f080373adbb1e
+Compiler:  ccache gcc
 Attempt 1:
     Time  Bug Name
-       2  general protection fault in rxrpc_lookup_local
-       2  general protection fault in rxrpc_lookup_local
        2  KASAN: use-after-free Read in rxrpc_lookup_local
        2  KASAN: use-after-free Read in rxrpc_lookup_local
-       3  KASAN: slab-out-of-bounds Read in rxrpc_lookup_local
+       2  general protection fault in rxrpc_unuse_local
+       2  general protection fault in rxrpc_unuse_local
+       2  general protection fault in rxrpc_unuse_local
+       2  general protection fault in rxrpc_unuse_local
+       2  general protection fault in rxrpc_unuse_local
+       2  general protection fault in rxrpc_unuse_local
+       2  general protection fault in rxrpc_unuse_local
+       2  general protection fault in rxrpc_unuse_local
+       2  general protection fault in rxrpc_unuse_local
        3  KASAN: use-after-free Read in rxrpc_lookup_local
-       3  KASAN: use-after-free Read in rxrpc_lookup_local
-       3  KASAN: use-after-free Read in rxrpc_lookup_local
-       4  general protection fault in rxrpc_lookup_local
-       4  general protection fault in rxrpc_lookup_local
-       4  KASAN: use-after-free Read in rxrpc_lookup_local
-       4  KASAN: use-after-free Read in rxrpc_lookup_local
-       4  KASAN: use-after-free Read in rxrpc_lookup_local
-       4  KASAN: use-after-free Read in rxrpc_lookup_local
-       4  KASAN: use-after-free Read in rxrpc_lookup_local
-       4  kernel BUG in rxrpc_put_peer
-       5  KASAN: use-after-free Read in rxrpc_lookup_local
-       5  KASAN: use-after-free Read in rxrpc_lookup_local
-       6  KASAN: use-after-free Read in rxrpc_lookup_local
-       6  KASAN: use-after-free Read in rxrpc_lookup_local
-       6  KASAN: use-after-free Read in rxrpc_lookup_local
-       6  KASAN: use-after-free Read in rxrpc_lookup_local
-       6  KASAN: use-after-free Read in rxrpc_lookup_local
-       6  KASAN: use-after-free Read in rxrpc_lookup_local
-       7  KASAN: use-after-free Read in try_to_wake_up
+       3  general protection fault in rxrpc_unuse_local
+       3  general protection fault in rxrpc_unuse_local
+       3  general protection fault in rxrpc_unuse_local
+       3  general protection fault in rxrpc_unuse_local
+       3  general protection fault in rxrpc_unuse_local
+       3  general protection fault in rxrpc_unuse_local
+       3  general protection fault in rxrpc_unuse_local
+       3  general protection fault in rxrpc_unuse_local
+       3  general protection fault in rxrpc_unuse_local
+       3  general protection fault in rxrpc_unuse_local
+       3  general protection fault in rxrpc_unuse_local
+       4  general protection fault in rxrpc_unuse_local
+       4  general protection fault in rxrpc_unuse_local
+       4  general protection fault in rxrpc_unuse_local
+       4  general protection fault in rxrpc_unuse_local
+       4  general protection fault in rxrpc_unuse_local
+       4  general protection fault in rxrpc_unuse_local
+       4  general protection fault in rxrpc_unuse_local
+       4  general protection fault in rxrpc_unuse_local
+       4  general protection fault in rxrpc_unuse_local
+       5  general protection fault in rxrpc_unuse_local
+       5  general protection fault in rxrpc_unuse_local
+       5  general protection fault in rxrpc_unuse_local
+       5  general protection fault in rxrpc_unuse_local
+       5  general protection fault in rxrpc_unuse_local
+       5  general protection fault in rxrpc_unuse_local
+       5  general protection fault in rxrpc_unuse_local
+       5  general protection fault in rxrpc_unuse_local
+       6  general protection fault in rxrpc_unuse_local
+       6  general protection fault in rxrpc_unuse_local
+       6  general protection fault in rxrpc_unuse_local
+       6  general protection fault in rxrpc_unuse_local
+       6  general protection fault in rxrpc_unuse_local
+       6  general protection fault in rxrpc_unuse_local
+       6  general protection fault in rxrpc_unuse_local
+       6  general protection fault in rxrpc_unuse_local
        7  KASAN: use-after-free Read in rxrpc_lookup_local
-       7  KASAN: use-after-free Read in rxrpc_lookup_local
-       7  KASAN: use-after-free Read in rxrpc_lookup_local
-       7  KASAN: use-after-free Read in rxrpc_lookup_local
-       7  KASAN: use-after-free Read in rxrpc_lookup_local
-       7  KASAN: use-after-free Read in rxrpc_lookup_local
-       7  KASAN: use-after-free Read in rxrpc_lookup_local
-       8  KASAN: use-after-free Read in try_to_wake_up
-       8  KASAN: use-after-free Read in rxrpc_lookup_local
-       8  KASAN: use-after-free Read in rxrpc_lookup_local
-       8  KASAN: use-after-free Read in rxrpc_lookup_local
-       8  KASAN: use-after-free Read in rxrpc_lookup_local
-       8  KASAN: use-after-free Read in rxrpc_lookup_local
-       9  KASAN: use-after-free Read in rxrpc_lookup_local
-       9  KASAN: use-after-free Read in rxrpc_lookup_local
-       9  KASAN: use-after-free Read in rxrpc_lookup_local
-      10  general protection fault in rxrpc_lookup_local
-      10  general protection fault in rxrpc_lookup_local
-      10  KASAN: use-after-free Read in rxrpc_lookup_local
-      10  KASAN: use-after-free Read in rxrpc_lookup_local
-      10  KASAN: use-after-free Read in rxrpc_lookup_local
-      10  KASAN: use-after-free Read in rxrpc_lookup_local
-      11  KASAN: use-after-free Read in rxrpc_lookup_local
-      11  KASAN: use-after-free Read in rxrpc_lookup_local
-      11  KASAN: use-after-free Read in rxrpc_lookup_local
-      11  KASAN: use-after-free Read in rxrpc_lookup_local
-      11  KASAN: use-after-free Read in rxrpc_lookup_local
-      11  KASAN: use-after-free Read in rxrpc_lookup_local
-      12  KASAN: use-after-free Read in try_to_wake_up
-      12  KASAN: use-after-free Read in rxrpc_lookup_local
-      12  KASAN: use-after-free Read in rxrpc_lookup_local
-      12  KASAN: use-after-free Read in rxrpc_lookup_local
-      12  KASAN: use-after-free Read in rxrpc_lookup_local
-      13  KASAN: use-after-free Read in try_to_wake_up
-      13  KASAN: use-after-free Read in try_to_wake_up
-      13  KASAN: use-after-free Read in try_to_wake_up
-      13  general protection fault in rxrpc_lookup_local
-      13  general protection fault in rxrpc_lookup_local
-      13  KASAN: use-after-free Read in rxrpc_lookup_local
-      13  KASAN: use-after-free Read in rxrpc_lookup_local
-      14  KASAN: use-after-free Read in try_to_wake_up
-      14  general protection fault in rxrpc_lookup_local
-      14  KASAN: use-after-free Read in rxrpc_lookup_local
-      14  KASAN: use-after-free Read in rxrpc_lookup_local
-      14  KASAN: use-after-free Read in rxrpc_lookup_local
-      14  KASAN: use-after-free Read in rxrpc_lookup_local
-      14  KASAN: use-after-free Read in rxrpc_lookup_local
-      15  KASAN: use-after-free Read in try_to_wake_up
-      15  KASAN: use-after-free Read in rxrpc_lookup_local
-      15  KASAN: use-after-free Read in rxrpc_lookup_local
-      15  KASAN: use-after-free Read in rxrpc_lookup_local
-      15  KASAN: use-after-free Read in rxrpc_lookup_local
-      15  KASAN: use-after-free Read in rxrpc_lookup_local
-      16  general protection fault in rxrpc_lookup_local
-      16  general protection fault in rxrpc_lookup_local
-      16  KASAN: use-after-free Read in rxrpc_lookup_local
-      16  KASAN: use-after-free Read in rxrpc_lookup_local
-      16  KASAN: use-after-free Read in rxrpc_lookup_local
-      17  KASAN: use-after-free Read in try_to_wake_up
-      17  KASAN: use-after-free Read in rxrpc_lookup_local
-      17  KASAN: use-after-free Read in rxrpc_lookup_local
-      17  KASAN: use-after-free Read in rxrpc_lookup_local
-      17  KASAN: use-after-free Read in rxrpc_lookup_local
-      17  KASAN: use-after-free Read in rxrpc_lookup_local
-      18  KASAN: use-after-free Read in rxrpc_lookup_local
-      18  KASAN: use-after-free Read in rxrpc_lookup_local
-      18  KASAN: use-after-free Read in rxrpc_lookup_local
-      18  KASAN: use-after-free Read in rxrpc_lookup_local
-      18  KASAN: use-after-free Read in rxrpc_lookup_local
-      18  KASAN: use-after-free Read in rxrpc_lookup_local
-      18  KASAN: use-after-free Read in rxrpc_lookup_local
-      18  KASAN: use-after-free Read in rxrpc_lookup_local
-      19  KASAN: use-after-free Read in rxrpc_lookup_local
-      20  KASAN: use-after-free Read in try_to_wake_up
-      20  general protection fault in rxrpc_lookup_local
-      20  KASAN: use-after-free Read in rxrpc_lookup_local
-      20  KASAN: use-after-free Read in rxrpc_lookup_local
-      20  KASAN: use-after-free Read in rxrpc_lookup_local
-      20  KASAN: use-after-free Read in rxrpc_lookup_local
-      20  KASAN: use-after-free Read in rxrpc_lookup_local
-      21  general protection fault in rxrpc_lookup_local
-      21  general protection fault in rxrpc_lookup_local
-      21  general protection fault in rxrpc_lookup_local
-      21  KASAN: use-after-free Read in rxrpc_lookup_local
-      21  KASAN: use-after-free Read in rxrpc_lookup_local
-      21  KASAN: use-after-free Read in rxrpc_lookup_local
-      21  KASAN: use-after-free Read in rxrpc_lookup_local
-      21  KASAN: use-after-free Read in rxrpc_lookup_local
-      22  KASAN: use-after-free Read in rxrpc_lookup_local
-      23  KASAN: use-after-free Read in try_to_wake_up
-      23  KASAN: use-after-free Read in try_to_wake_up
-      23  KASAN: use-after-free Read in try_to_wake_up
-      23  KASAN: use-after-free Read in try_to_wake_up
-      23  KASAN: use-after-free Read in rxrpc_lookup_local
-      23  KASAN: use-after-free Read in rxrpc_lookup_local
-      23  KASAN: use-after-free Read in rxrpc_lookup_local
-      24  KASAN: use-after-free Read in try_to_wake_up
-      24  KASAN: use-after-free Read in try_to_wake_up
-      24  KASAN: use-after-free Read in rxrpc_lookup_local
-      25  KASAN: use-after-free Read in rxrpc_lookup_local
-      25  KASAN: use-after-free Read in rxrpc_lookup_local
-      25  KASAN: use-after-free Read in rxrpc_lookup_local
-      25  KASAN: use-after-free Read in rxrpc_lookup_local
-      25  KASAN: use-after-free Read in rxrpc_lookup_local
-Attempt 2:
-    Time  Bug Name
-       2  KASAN: use-after-free Read in rxrpc_lookup_local
-       2  KASAN: use-after-free Read in rxrpc_lookup_local
-       2  KASAN: use-after-free Read in rxrpc_lookup_local
-       2  KASAN: use-after-free Read in rxrpc_lookup_local
-       2  KASAN: use-after-free Read in rxrpc_lookup_local
-       2  KASAN: use-after-free Read in rxrpc_lookup_local
-       3  KASAN: use-after-free Read in rxrpc_lookup_local
-       3  KASAN: use-after-free Read in rxrpc_lookup_local
-       4  KASAN: slab-out-of-bounds Read in rxrpc_lookup_local
-       4  KASAN: use-after-free Read in rxrpc_lookup_local
-       4  KASAN: use-after-free Read in rxrpc_lookup_local
-       4  KASAN: use-after-free Read in rxrpc_lookup_local
-       4  KASAN: use-after-free Read in rxrpc_lookup_local
-       4  KASAN: use-after-free Read in rxrpc_lookup_local
-       4  KASAN: use-after-free Read in rxrpc_lookup_local
-       4  KASAN: use-after-free Read in rxrpc_lookup_local
-       5  general protection fault in rxrpc_lookup_local
-       5  general protection fault in rxrpc_lookup_local
-       5  KASAN: use-after-free Read in rxrpc_lookup_local
-       5  KASAN: use-after-free Read in rxrpc_lookup_local
-       6  KASAN: use-after-free Read in rxrpc_lookup_local
-       6  KASAN: use-after-free Read in rxrpc_lookup_local
-       6  KASAN: use-after-free Read in rxrpc_lookup_local
-       6  KASAN: use-after-free Read in rxrpc_lookup_local
-       6  KASAN: use-after-free Read in rxrpc_lookup_local
-       7  KASAN: use-after-free Read in try_to_wake_up
-       7  KASAN: use-after-free Read in try_to_wake_up
-       7  KASAN: use-after-free Read in try_to_wake_up
-       7  general protection fault in rxrpc_lookup_local
-       7  general protection fault in rxrpc_lookup_local
-       7  KASAN: use-after-free Read in rxrpc_lookup_local
-       7  KASAN: use-after-free Read in rxrpc_lookup_local
-       7  KASAN: use-after-free Read in rxrpc_lookup_local
-       8  KASAN: use-after-free Read in rxrpc_lookup_local
-       8  KASAN: use-after-free Read in rxrpc_lookup_local
-       8  KASAN: use-after-free Read in rxrpc_lookup_local
-       8  KASAN: use-after-free Read in rxrpc_lookup_local
-       8  KASAN: use-after-free Read in rxrpc_lookup_local
-       8  KASAN: use-after-free Read in rxrpc_lookup_local
-       9  KFENCE: use-after-free in rxrpc_lookup_local
-       9  KASAN: use-after-free Read in rxrpc_lookup_local
-       9  KASAN: use-after-free Read in rxrpc_lookup_local
-       9  KASAN: use-after-free Read in rxrpc_lookup_local
-       9  KASAN: use-after-free Read in rxrpc_lookup_local
-       9  KASAN: use-after-free Read in rxrpc_lookup_local
-       9  KASAN: use-after-free Read in rxrpc_lookup_local
-      10  general protection fault in rxrpc_lookup_local
-      10  KASAN: use-after-free Read in rxrpc_lookup_local
-      10  KASAN: use-after-free Read in rxrpc_lookup_local
-      10  KASAN: use-after-free Read in rxrpc_lookup_local
-      10  KASAN: use-after-free Read in rxrpc_lookup_local
-      11  KASAN: use-after-free Read in rxrpc_lookup_local
-      11  KASAN: use-after-free Read in rxrpc_lookup_local
-      11  KASAN: use-after-free Read in rxrpc_lookup_local
-      11  KASAN: use-after-free Read in rxrpc_lookup_local
-      12  KASAN: use-after-free Read in rxrpc_lookup_local
-      12  KASAN: use-after-free Read in rxrpc_lookup_local
-      12  KASAN: use-after-free Read in rxrpc_lookup_local
-      12  KASAN: use-after-free Read in rxrpc_lookup_local
-      12  KASAN: use-after-free Read in rxrpc_lookup_local
-      12  KASAN: use-after-free Read in rxrpc_lookup_local
-      13  KASAN: use-after-free Read in rxrpc_lookup_local
-      13  KASAN: use-after-free Read in rxrpc_lookup_local
-      13  KASAN: use-after-free Read in rxrpc_lookup_local
-      14  KASAN: use-after-free Read in rxrpc_lookup_local
-      14  KASAN: use-after-free Read in rxrpc_lookup_local
-      14  KASAN: use-after-free Read in rxrpc_lookup_local
-      14  KASAN: use-after-free Read in rxrpc_lookup_local
-      15  general protection fault in rxrpc_lookup_local
-      15  KASAN: use-after-free Read in rxrpc_lookup_local
-      15  KASAN: use-after-free Read in rxrpc_lookup_local
-      15  KASAN: use-after-free Read in rxrpc_lookup_local
-      15  KASAN: use-after-free Read in rxrpc_lookup_local
-      15  KASAN: use-after-free Read in rxrpc_lookup_local
-      16  KASAN: use-after-free Read in try_to_wake_up
-      16  KASAN: use-after-free Read in try_to_wake_up
-      16  KASAN: use-after-free Read in rxrpc_lookup_local
-      16  KASAN: use-after-free Read in rxrpc_lookup_local
-      16  KASAN: use-after-free Read in rxrpc_lookup_local
-      16  KASAN: use-after-free Read in rxrpc_lookup_local
-      17  general protection fault in rxrpc_lookup_local
-      17  general protection fault in rxrpc_lookup_local
-      17  KASAN: use-after-free Read in rxrpc_lookup_local
-      17  KASAN: use-after-free Read in rxrpc_lookup_local
-      17  KASAN: use-after-free Read in rxrpc_lookup_local
-      17  KASAN: use-after-free Read in rxrpc_lookup_local
-      18  general protection fault in rxrpc_lookup_local
-      18  KASAN: use-after-free Read in rxrpc_lookup_local
-      18  KASAN: use-after-free Read in rxrpc_lookup_local
-      18  KASAN: use-after-free Read in rxrpc_lookup_local
-      18  KASAN: use-after-free Read in rxrpc_lookup_local
-      19  general protection fault in rxrpc_lookup_local
-      19  general protection fault in rxrpc_lookup_local
-      19  general protection fault in rxrpc_lookup_local
-      19  KASAN: use-after-free Read in rxrpc_lookup_local
-      19  KASAN: use-after-free Read in rxrpc_lookup_local
-      19  KASAN: use-after-free Read in rxrpc_lookup_local
-      19  KASAN: use-after-free Read in rxrpc_lookup_local
-      20  KASAN: use-after-free Read in rxrpc_lookup_local
-      20  KASAN: use-after-free Read in rxrpc_lookup_local
-      20  KASAN: use-after-free Read in rxrpc_lookup_local
-      20  KASAN: use-after-free Read in rxrpc_lookup_local
-      20  KASAN: use-after-free Read in rxrpc_lookup_local
-      20  KASAN: use-after-free Read in rxrpc_lookup_local
-      21  KASAN: use-after-free Read in rxrpc_lookup_local
-      21  KASAN: use-after-free Read in rxrpc_lookup_local
-      21  KASAN: use-after-free Read in rxrpc_lookup_local
-      22  general protection fault in rxrpc_lookup_local
-      22  KASAN: use-after-free Read in rxrpc_lookup_local
-      22  KASAN: use-after-free Read in rxrpc_lookup_local
-      22  KASAN: use-after-free Read in rxrpc_lookup_local
-      22  KASAN: use-after-free Read in rxrpc_lookup_local
-      23  general protection fault in rxrpc_lookup_local
-      23  KASAN: use-after-free Read in rxrpc_lookup_local
-      23  KASAN: use-after-free Read in rxrpc_lookup_local
-      23  KASAN: use-after-free Read in rxrpc_lookup_local
-      24  KASAN: use-after-free Read in try_to_wake_up
-      24  KASAN: use-after-free Read in rxrpc_lookup_local
-      24  KASAN: use-after-free Read in rxrpc_lookup_local
-      24  KASAN: use-after-free Read in rxrpc_lookup_local
-      25  KASAN: use-after-free Read in rxrpc_lookup_local
-      25  KASAN: use-after-free Read in rxrpc_lookup_local
-Attempt 3:
-    Time  Bug Name
-       2  KASAN: use-after-free Read in rxrpc_lookup_local
-       3  general protection fault in rxrpc_lookup_local
-       3  KASAN: use-after-free Read in rxrpc_lookup_local
-       3  KASAN: use-after-free Read in rxrpc_lookup_local
-       3  KASAN: use-after-free Read in rxrpc_lookup_local
-       3  KASAN: use-after-free Read in rxrpc_lookup_local
-       3  KASAN: use-after-free Read in rxrpc_lookup_local
-       3  KASAN: use-after-free Read in rxrpc_lookup_local
-       4  KASAN: use-after-free Write in rxrpc_lookup_local
-       4  general protection fault in rxrpc_lookup_local
-       4  general protection fault in rxrpc_lookup_local
-       4  KASAN: use-after-free Read in rxrpc_lookup_local
-       4  KASAN: use-after-free Read in rxrpc_lookup_local
-       4  KASAN: use-after-free Read in rxrpc_lookup_local
-       4  KASAN: use-after-free Read in rxrpc_lookup_local
-       5  general protection fault in rxrpc_lookup_local
-       5  general protection fault in rxrpc_lookup_local
-       5  KASAN: use-after-free Read in rxrpc_lookup_local
-       5  KASAN: use-after-free Read in rxrpc_lookup_local
-       5  KASAN: use-after-free Read in rxrpc_lookup_local
-       5  KASAN: use-after-free Read in rxrpc_lookup_local
-       6  KASAN: use-after-free Read in rxrpc_lookup_local
-       6  KASAN: use-after-free Read in rxrpc_lookup_local
-       6  KASAN: use-after-free Read in rxrpc_lookup_local
-       6  KASAN: use-after-free Read in rxrpc_lookup_local
-       7  KASAN: use-after-free Read in rxrpc_lookup_local
-       7  KASAN: use-after-free Read in rxrpc_lookup_local
-       7  KASAN: use-after-free Read in rxrpc_lookup_local
-       7  KASAN: use-after-free Read in rxrpc_lookup_local
-       7  KASAN: use-after-free Read in rxrpc_lookup_local
-       7  KASAN: use-after-free Read in rxrpc_lookup_local
-       7  KASAN: use-after-free Read in rxrpc_lookup_local
-       7  KASAN: use-after-free Read in rxrpc_lookup_local
-       8  KASAN: use-after-free Read in rxrpc_lookup_local
-       8  KASAN: use-after-free Read in rxrpc_lookup_local
-       8  KASAN: use-after-free Read in rxrpc_lookup_local
-       8  KASAN: use-after-free Read in rxrpc_lookup_local
-       8  KASAN: use-after-free Read in rxrpc_lookup_local
-       9  KASAN: use-after-free Read in rxrpc_lookup_local
-       9  KASAN: use-after-free Read in rxrpc_lookup_local
-      10  KASAN: use-after-free Read in rxrpc_lookup_local
-      10  KASAN: use-after-free Read in rxrpc_lookup_local
-      10  KASAN: use-after-free Read in rxrpc_lookup_local
-      10  KASAN: use-after-free Read in rxrpc_lookup_local
-      10  KASAN: use-after-free Read in rxrpc_lookup_local
-      11  KASAN: use-after-free Read in rxrpc_lookup_local
-      11  KASAN: use-after-free Read in rxrpc_lookup_local
-      11  KASAN: use-after-free Read in rxrpc_lookup_local
-      12  KASAN: use-after-free Read in try_to_wake_up
-      12  KASAN: use-after-free Read in try_to_wake_up
-      12  KASAN: use-after-free Read in rxrpc_lookup_local
-      12  KASAN: use-after-free Read in rxrpc_lookup_local
-      12  KASAN: use-after-free Read in rxrpc_lookup_local
-      12  KASAN: use-after-free Read in rxrpc_lookup_local
-      13  general protection fault in rxrpc_lookup_local
-      13  KASAN: use-after-free Read in rxrpc_lookup_local
-      13  KASAN: use-after-free Read in rxrpc_lookup_local
-      13  KASAN: use-after-free Read in rxrpc_lookup_local
-      13  KASAN: use-after-free Read in rxrpc_lookup_local
-      13  KASAN: use-after-free Read in rxrpc_lookup_local
-      14  KASAN: use-after-free Read in try_to_wake_up
-      14  KASAN: use-after-free Read in rxrpc_lookup_local
-      14  KASAN: use-after-free Read in rxrpc_lookup_local
-      14  KASAN: use-after-free Read in rxrpc_lookup_local
-      14  KASAN: use-after-free Read in rxrpc_lookup_local
-      15  KASAN: use-after-free Read in try_to_wake_up
-      15  KASAN: use-after-free Read in rxrpc_lookup_local
-      15  KASAN: use-after-free Read in rxrpc_lookup_local
-      15  KASAN: use-after-free Read in rxrpc_lookup_local
-      15  KASAN: use-after-free Read in rxrpc_lookup_local
-      15  KASAN: use-after-free Read in rxrpc_lookup_local
-      15  KASAN: use-after-free Read in rxrpc_lookup_local
-      16  KASAN: use-after-free Read in rxrpc_lookup_local
-      16  KASAN: use-after-free Read in rxrpc_lookup_local
-      16  KASAN: use-after-free Read in rxrpc_lookup_local
-      16  KASAN: use-after-free Read in rxrpc_lookup_local
-      16  KASAN: use-after-free Read in rxrpc_lookup_local
-      16  KASAN: use-after-free Read in rxrpc_lookup_local
-      16  KASAN: use-after-free Read in rxrpc_lookup_local
-      17  KASAN: use-after-free Read in rxrpc_lookup_local
-      17  KASAN: use-after-free Read in rxrpc_lookup_local
-      17  KASAN: use-after-free Read in rxrpc_lookup_local
-      18  KASAN: use-after-free Read in rxrpc_lookup_local
-      18  KASAN: use-after-free Read in rxrpc_lookup_local
-      18  KASAN: use-after-free Read in rxrpc_lookup_local
-      18  KASAN: use-after-free Read in rxrpc_lookup_local
-      18  KASAN: use-after-free Read in rxrpc_lookup_local
-      18  KASAN: use-after-free Read in rxrpc_lookup_local
-      19  general protection fault in rxrpc_lookup_local
-      19  general protection fault in rxrpc_lookup_local
-      19  KASAN: use-after-free Read in rxrpc_lookup_local
-      19  KASAN: use-after-free Read in rxrpc_lookup_local
-      19  KASAN: use-after-free Read in rxrpc_lookup_local
-      19  KASAN: use-after-free Read in rxrpc_lookup_local
-      19  KASAN: use-after-free Read in rxrpc_lookup_local
-      20  KASAN: use-after-free Read in rxrpc_lookup_local
-      20  KASAN: use-after-free Read in rxrpc_lookup_local
-      20  KASAN: use-after-free Read in rxrpc_lookup_local
-      21  general protection fault in rxrpc_lookup_local
-      21  KASAN: use-after-free Read in rxrpc_lookup_local
-      21  KASAN: use-after-free Read in rxrpc_lookup_local
-      21  KASAN: use-after-free Read in rxrpc_lookup_local
-      21  KASAN: use-after-free Read in rxrpc_lookup_local
-      21  KASAN: use-after-free Read in rxrpc_lookup_local
-      22  KASAN: use-after-free Read in rxrpc_lookup_local
-      22  KASAN: use-after-free Read in rxrpc_lookup_local
-      22  KASAN: use-after-free Read in rxrpc_lookup_local
-      22  KASAN: use-after-free Read in rxrpc_lookup_local
-      23  KASAN: use-after-free Read in try_to_wake_up
-      23  KASAN: use-after-free Read in rxrpc_lookup_local
-      23  KASAN: use-after-free Read in rxrpc_lookup_local
-      23  KASAN: use-after-free Read in rxrpc_lookup_local
-      24  general protection fault in rxrpc_lookup_local
-      24  KASAN: use-after-free Read in rxrpc_lookup_local
-      24  KASAN: use-after-free Read in rxrpc_lookup_local
-      24  KASAN: use-after-free Read in rxrpc_lookup_local
+       7  general protection fault in rxrpc_unuse_local
+       7  general protection fault in rxrpc_unuse_local
+       7  general protection fault in rxrpc_unuse_local
+       7  general protection fault in rxrpc_unuse_local
+       7  general protection fault in rxrpc_unuse_local
+       7  general protection fault in rxrpc_unuse_local
+       7  general protection fault in rxrpc_unuse_local
+       8  general protection fault in rxrpc_unuse_local
+       8  general protection fault in rxrpc_unuse_local
+       8  general protection fault in rxrpc_unuse_local
+       8  general protection fault in rxrpc_unuse_local
+       8  general protection fault in rxrpc_unuse_local
+       8  general protection fault in rxrpc_unuse_local
+       8  general protection fault in rxrpc_unuse_local
+       8  general protection fault in rxrpc_unuse_local
+       9  general protection fault in rxrpc_unuse_local
+       9  general protection fault in rxrpc_unuse_local
+       9  general protection fault in rxrpc_unuse_local
+       9  general protection fault in rxrpc_unuse_local
+       9  general protection fault in rxrpc_unuse_local
+       9  general protection fault in rxrpc_unuse_local
+       9  general protection fault in rxrpc_unuse_local
+       9  general protection fault in rxrpc_unuse_local
+      10  general protection fault in rxrpc_unuse_local
+      10  general protection fault in rxrpc_unuse_local
+      10  general protection fault in rxrpc_unuse_local
+      10  general protection fault in rxrpc_unuse_local
+      10  general protection fault in rxrpc_unuse_local
+      10  general protection fault in rxrpc_unuse_local
+      10  general protection fault in rxrpc_unuse_local
+      10  general protection fault in rxrpc_unuse_local
 The bug was not found.
-About 3787 commits remaining
+About 1975 commits remaining
 
-2025-03-04 18:53:42
+2025-09-14 06:27:50
 Session:   6
-Kernel:    2022-12-19 - b8fd76f41820951d8a6e2521c25f54afadf338bd
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Kernel:    2022-12-21 - 9d2f6060fe4c3b49d0cdc1dce1c99296f33379c8
+Compiler:  ccache gcc
 Attempt 1:
     Time  Bug Name
-       3  INFO: rcu detected stall in corrupted
-       3  KASAN: use-after-free Read in rxrpc_lookup_local
-       3  KASAN: use-after-free Read in rxrpc_lookup_local
-       3  KASAN: use-after-free Read in rxrpc_lookup_local
-       3  KASAN: use-after-free Read in rxrpc_lookup_local
-       3  KASAN: use-after-free Read in rxrpc_lookup_local
-       3  KASAN: use-after-free Read in rxrpc_lookup_local
-       3  KASAN: use-after-free Read in rxrpc_lookup_local
-       4  general protection fault in rxrpc_lookup_local
-       4  KASAN: use-after-free Read in rxrpc_lookup_local
-       4  KASAN: use-after-free Read in rxrpc_lookup_local
-       5  KASAN: use-after-free Write in rxrpc_lookup_local
-       5  KASAN: use-after-free Read in rxrpc_lookup_local
-       5  KASAN: use-after-free Read in rxrpc_lookup_local
-       5  KASAN: use-after-free Read in rxrpc_lookup_local
-       5  KASAN: use-after-free Read in rxrpc_lookup_local
-       6  KFENCE: use-after-free in rxrpc_lookup_local
-       6  general protection fault in rxrpc_lookup_local
-       6  KASAN: use-after-free Read in rxrpc_lookup_local
-       6  KASAN: use-after-free Read in rxrpc_lookup_local
-       6  KASAN: use-after-free Read in rxrpc_lookup_local
-       6  KASAN: use-after-free Read in rxrpc_lookup_local
-       7  general protection fault in rxrpc_lookup_local
-       7  KASAN: use-after-free Read in rxrpc_lookup_local
-       7  KASAN: use-after-free Read in rxrpc_lookup_local
-       7  KASAN: use-after-free Read in rxrpc_lookup_local
-       8  general protection fault in rxrpc_lookup_local
-       8  general protection fault in rxrpc_lookup_local
-       8  KASAN: use-after-free Read in rxrpc_lookup_local
-       8  KASAN: use-after-free Read in rxrpc_lookup_local
-       8  KASAN: use-after-free Read in rxrpc_lookup_local
-       8  KASAN: use-after-free Read in rxrpc_lookup_local
-       9  general protection fault in rxrpc_lookup_local
-       9  general protection fault in rxrpc_lookup_local
-       9  general protection fault in rxrpc_lookup_local
-       9  KASAN: use-after-free Read in rxrpc_lookup_local
-       9  KASAN: use-after-free Read in rxrpc_lookup_local
-      10  KASAN: use-after-free Read in try_to_wake_up
-      10  general protection fault in rxrpc_lookup_local
-      10  KASAN: use-after-free Read in rxrpc_lookup_local
-      10  KASAN: use-after-free Read in rxrpc_lookup_local
-      11  KASAN: use-after-free Read in try_to_wake_up
-      11  KASAN: use-after-free Read in try_to_wake_up
-      11  KASAN: use-after-free Read in try_to_wake_up
-      11  KASAN: use-after-free Read in try_to_wake_up
-      11  KASAN: use-after-free Read in try_to_wake_up
-      11  KASAN: use-after-free Read in try_to_wake_up
-      12  general protection fault in rxrpc_lookup_local
-      12  KASAN: use-after-free Read in rxrpc_lookup_local
-      12  KASAN: use-after-free Read in rxrpc_lookup_local
-      12  KASAN: use-after-free Read in rxrpc_lookup_local
-      12  KASAN: use-after-free Read in rxrpc_lookup_local
-      13  KASAN: use-after-free Read in rxrpc_lookup_local
-      13  KASAN: use-after-free Read in rxrpc_lookup_local
-      13  KASAN: use-after-free Read in rxrpc_lookup_local
-      13  KASAN: use-after-free Read in rxrpc_lookup_local
-      14  KASAN: use-after-free Read in try_to_wake_up
-      14  KASAN: use-after-free Read in rxrpc_lookup_local
-      14  KASAN: use-after-free Read in rxrpc_lookup_local
-      14  KASAN: use-after-free Read in rxrpc_lookup_local
-      14  KASAN: use-after-free Read in rxrpc_lookup_local
-      14  KASAN: use-after-free Read in rxrpc_lookup_local
-      15  KASAN: use-after-free Read in try_to_wake_up
-      15  KASAN: use-after-free Read in rxrpc_lookup_local
-      15  KASAN: use-after-free Read in rxrpc_lookup_local
-      15  KASAN: use-after-free Read in rxrpc_lookup_local
-      15  KASAN: use-after-free Read in rxrpc_lookup_local
-      16  KASAN: use-after-free Read in try_to_wake_up
-      16  KASAN: use-after-free Read in rxrpc_lookup_local
-      16  KASAN: use-after-free Read in rxrpc_lookup_local
-      16  KASAN: use-after-free Read in rxrpc_lookup_local
-      16  KASAN: use-after-free Read in rxrpc_lookup_local
-      17  KASAN: use-after-free Read in try_to_wake_up
-      17  KASAN: use-after-free Read in try_to_wake_up
-      17  KASAN: use-after-free Read in rxrpc_lookup_local
-      17  KASAN: use-after-free Read in rxrpc_lookup_local
-      17  KASAN: use-after-free Read in rxrpc_lookup_local
-      17  kernel BUG in rxrpc_put_peer
-      18  KASAN: use-after-free Read in rxrpc_lookup_local
-      18  KASAN: use-after-free Read in rxrpc_lookup_local
-      18  KASAN: use-after-free Read in rxrpc_lookup_local
-      18  KASAN: use-after-free Read in rxrpc_lookup_local
-      18  KASAN: use-after-free Read in rxrpc_lookup_local
-      18  KASAN: use-after-free Read in rxrpc_lookup_local
-      18  KASAN: use-after-free Read in rxrpc_lookup_local
-      19  general protection fault in rxrpc_lookup_local
-      19  KASAN: use-after-free Read in rxrpc_lookup_local
-      19  KASAN: use-after-free Read in rxrpc_lookup_local
-      19  KASAN: use-after-free Read in rxrpc_lookup_local
-      19  KASAN: use-after-free Read in rxrpc_lookup_local
-      19  KASAN: use-after-free Read in rxrpc_lookup_local
-      19  KASAN: use-after-free Read in rxrpc_lookup_local
-      19  KASAN: use-after-free Read in rxrpc_lookup_local
-      20  KASAN: use-after-free Read in rxrpc_lookup_local
-      20  KASAN: use-after-free Read in rxrpc_lookup_local
-      20  KASAN: use-after-free Read in rxrpc_lookup_local
-      20  KASAN: use-after-free Read in rxrpc_lookup_local
-      20  KASAN: use-after-free Read in rxrpc_lookup_local
-      21  KASAN: use-after-free Read in rxrpc_lookup_local
-      21  KASAN: use-after-free Read in rxrpc_lookup_local
-      21  KASAN: use-after-free Read in rxrpc_lookup_local
-      21  KASAN: use-after-free Read in rxrpc_lookup_local
-      22  KASAN: use-after-free Read in try_to_wake_up
-      22  general protection fault in rxrpc_lookup_local
-      22  general protection fault in rxrpc_lookup_local
-      22  KASAN: use-after-free Read in rxrpc_lookup_local
-      22  KASAN: use-after-free Read in rxrpc_lookup_local
-      22  KASAN: use-after-free Read in rxrpc_lookup_local
-      22  KASAN: use-after-free Read in rxrpc_lookup_local
-      24  general protection fault in rxrpc_lookup_local
-      24  KASAN: use-after-free Read in rxrpc_lookup_local
-      24  KASAN: use-after-free Read in rxrpc_lookup_local
-      24  KASAN: use-after-free Read in rxrpc_lookup_local
-      24  KASAN: use-after-free Read in rxrpc_lookup_local
-      24  KASAN: use-after-free Read in rxrpc_lookup_local
-      24  KASAN: use-after-free Read in rxrpc_lookup_local
-      25  general protection fault in rxrpc_lookup_local
-      25  KASAN: use-after-free Read in rxrpc_lookup_local
-      25  KASAN: use-after-free Read in rxrpc_lookup_local
-      25  KASAN: use-after-free Read in rxrpc_lookup_local
-      25  KASAN: use-after-free Read in rxrpc_lookup_local
-      25  KASAN: use-after-free Read in rxrpc_lookup_local
-Attempt 2:
-    Time  Bug Name
-       2  KASAN: use-after-free Read in rxrpc_lookup_local
-       2  KASAN: use-after-free Read in rxrpc_lookup_local
-       2  KASAN: use-after-free Read in rxrpc_lookup_local
-       2  KASAN: use-after-free Read in rxrpc_lookup_local
-       2  KASAN: use-after-free Read in rxrpc_lookup_local
-       2  KASAN: use-after-free Read in rxrpc_lookup_local
-       2  KASAN: use-after-free Read in rxrpc_lookup_local
-       2  KASAN: use-after-free Read in rxrpc_lookup_local
-       3  KASAN: use-after-free Read in rxrpc_lookup_local
-       3  KASAN: use-after-free Read in rxrpc_lookup_local
-       4  general protection fault in rxrpc_lookup_local
-       4  general protection fault in rxrpc_lookup_local
-       4  general protection fault in rxrpc_lookup_local
-       4  KASAN: use-after-free Read in rxrpc_lookup_local
-       4  KASAN: use-after-free Read in rxrpc_lookup_local
-       4  KASAN: use-after-free Read in rxrpc_lookup_local
-       5  KASAN: use-after-free Read in rxrpc_lookup_local
-       5  KASAN: use-after-free Read in rxrpc_lookup_local
-       5  KASAN: use-after-free Read in rxrpc_lookup_local
-       5  KASAN: use-after-free Read in rxrpc_lookup_local
-       5  KASAN: use-after-free Read in rxrpc_lookup_local
-       6  KASAN: use-after-free Read in rxrpc_lookup_local
-       6  KASAN: use-after-free Read in rxrpc_lookup_local
-       6  KASAN: use-after-free Read in rxrpc_lookup_local
-       7  general protection fault in rxrpc_lookup_local
-       7  KASAN: use-after-free Read in rxrpc_lookup_local
-       7  KASAN: use-after-free Read in rxrpc_lookup_local
-       7  KASAN: use-after-free Read in rxrpc_lookup_local
-       7  KASAN: use-after-free Read in rxrpc_lookup_local
-       7  KASAN: use-after-free Read in rxrpc_lookup_local
-       8  general protection fault in rxrpc_lookup_local
-       8  KASAN: use-after-free Read in rxrpc_lookup_local
-       8  KASAN: use-after-free Read in rxrpc_lookup_local
-       8  KASAN: use-after-free Read in rxrpc_lookup_local
-       9  general protection fault in rxrpc_lookup_local
-       9  KASAN: use-after-free Read in rxrpc_lookup_local
-       9  KASAN: use-after-free Read in rxrpc_lookup_local
-       9  KASAN: use-after-free Read in rxrpc_lookup_local
-       9  KASAN: use-after-free Read in rxrpc_lookup_local
-      10  general protection fault in rxrpc_lookup_local
-      10  KASAN: use-after-free Read in rxrpc_lookup_local
-      10  KASAN: use-after-free Read in rxrpc_lookup_local
-      10  KASAN: use-after-free Read in rxrpc_lookup_local
-      10  KASAN: use-after-free Read in rxrpc_lookup_local
-      11  KASAN: use-after-free Read in rxrpc_lookup_local
-      11  KASAN: use-after-free Read in rxrpc_lookup_local
-      11  KASAN: use-after-free Read in rxrpc_lookup_local
-      11  KASAN: use-after-free Read in rxrpc_lookup_local
-      12  KASAN: use-after-free Read in try_to_wake_up
-      12  KASAN: use-after-free Read in rxrpc_lookup_local
-      12  KASAN: use-after-free Read in rxrpc_lookup_local
-      12  KASAN: use-after-free Read in rxrpc_lookup_local
-      12  KASAN: use-after-free Read in rxrpc_lookup_local
-      12  KASAN: use-after-free Read in rxrpc_lookup_local
-      13  KASAN: use-after-free Read in try_to_wake_up
-      13  KASAN: use-after-free Read in try_to_wake_up
-      13  general protection fault in rxrpc_lookup_local
-      13  general protection fault in rxrpc_lookup_local
-      13  KASAN: use-after-free Read in rxrpc_lookup_local
-      13  KASAN: use-after-free Read in rxrpc_lookup_local
-      13  KASAN: use-after-free Read in rxrpc_lookup_local
-      13  KASAN: use-after-free Read in rxrpc_lookup_local
-      14  KASAN: use-after-free Read in rxrpc_lookup_local
-      14  KASAN: use-after-free Read in rxrpc_lookup_local
-      14  KASAN: use-after-free Read in rxrpc_lookup_local
-      14  KASAN: use-after-free Read in rxrpc_lookup_local
-      14  KASAN: use-after-free Read in rxrpc_lookup_local
-      15  KASAN: use-after-free Read in rxrpc_lookup_local
-      15  KASAN: use-after-free Read in rxrpc_lookup_local
-      15  KASAN: use-after-free Read in rxrpc_lookup_local
-      15  KASAN: use-after-free Read in rxrpc_lookup_local
-      15  KASAN: use-after-free Read in rxrpc_lookup_local
-      15  kernel BUG in rxrpc_put_peer
-      16  KASAN: use-after-free Read in rxrpc_lookup_local
-      16  KASAN: use-after-free Read in rxrpc_lookup_local
-      16  KASAN: use-after-free Read in rxrpc_lookup_local
-      16  KASAN: use-after-free Read in rxrpc_lookup_local
-      17  general protection fault in rxrpc_lookup_local
-      17  KASAN: use-after-free Read in rxrpc_lookup_local
-      17  KASAN: use-after-free Read in rxrpc_lookup_local
-      17  KASAN: use-after-free Read in rxrpc_lookup_local
-      17  KASAN: use-after-free Read in rxrpc_lookup_local
-      17  KASAN: use-after-free Read in rxrpc_lookup_local
-      17  KASAN: use-after-free Read in rxrpc_lookup_local
-      18  general protection fault in rxrpc_lookup_local
-      18  KASAN: use-after-free Read in rxrpc_lookup_local
-      18  KASAN: use-after-free Read in rxrpc_lookup_local
-      18  KASAN: use-after-free Read in rxrpc_lookup_local
-      18  KASAN: use-after-free Read in rxrpc_lookup_local
-      19  KASAN: use-after-free Read in try_to_wake_up
-      19  KASAN: use-after-free Read in rxrpc_lookup_local
-      19  KASAN: use-after-free Read in rxrpc_lookup_local
-      19  KASAN: use-after-free Read in rxrpc_lookup_local
-      20  KASAN: use-after-free Read in rxrpc_lookup_local
-      20  KASAN: use-after-free Read in rxrpc_lookup_local
-      20  KASAN: use-after-free Read in rxrpc_lookup_local
-      20  KASAN: use-after-free Read in rxrpc_lookup_local
-      20  KASAN: use-after-free Read in rxrpc_lookup_local
-      20  KASAN: use-after-free Read in rxrpc_lookup_local
-      21  KASAN: use-after-free Read in try_to_wake_up
-      21  general protection fault in rxrpc_lookup_local
-      21  general protection fault in rxrpc_lookup_local
-      21  KASAN: use-after-free Read in rxrpc_lookup_local
-      21  KASAN: use-after-free Read in rxrpc_lookup_local
-      21  KASAN: use-after-free Read in rxrpc_lookup_local
-      21  KASAN: use-after-free Read in rxrpc_lookup_local
-      22  KASAN: use-after-free Read in rxrpc_lookup_local
-      22  KASAN: use-after-free Read in rxrpc_lookup_local
-      22  KASAN: use-after-free Read in rxrpc_lookup_local
-      23  KASAN: use-after-free Read in try_to_wake_up
-      23  KASAN: use-after-free Read in rxrpc_lookup_local
-      23  KASAN: use-after-free Read in rxrpc_lookup_local
-      23  KASAN: use-after-free Read in rxrpc_lookup_local
-      23  KASAN: use-after-free Read in rxrpc_lookup_local
-      23  KASAN: use-after-free Read in rxrpc_lookup_local
-      23  KASAN: use-after-free Read in rxrpc_lookup_local
-      24  KASAN: use-after-free Read in rxrpc_lookup_local
-      25  KASAN: use-after-free Read in try_to_wake_up
-      25  general protection fault in rxrpc_lookup_local
-      25  general protection fault in rxrpc_lookup_local
-      25  general protection fault in rxrpc_lookup_local
-      25  KASAN: use-after-free Read in rxrpc_lookup_local
-      25  KASAN: use-after-free Read in rxrpc_lookup_local
-      25  KASAN: use-after-free Read in rxrpc_lookup_local
-Attempt 3:
-    Time  Bug Name
-       2  KASAN: use-after-free Read in rxrpc_lookup_local
-       3  general protection fault in rxrpc_lookup_local
-       3  KASAN: use-after-free Read in rxrpc_lookup_local
-       3  KASAN: use-after-free Read in rxrpc_lookup_local
-       3  KASAN: use-after-free Read in rxrpc_lookup_local
-       3  KASAN: use-after-free Read in rxrpc_lookup_local
-       3  KASAN: use-after-free Read in rxrpc_lookup_local
-       3  KASAN: use-after-free Read in rxrpc_lookup_local
-       4  KASAN: use-after-free Read in rxrpc_lookup_local
-       5  general protection fault in rxrpc_lookup_local
-       5  general protection fault in rxrpc_lookup_local
-       5  KASAN: use-after-free Read in rxrpc_lookup_local
-       5  KASAN: use-after-free Read in rxrpc_lookup_local
-       5  KASAN: use-after-free Read in rxrpc_lookup_local
-       5  KASAN: use-after-free Read in rxrpc_lookup_local
-       5  KASAN: use-after-free Read in rxrpc_lookup_local
-       5  KASAN: use-after-free Read in rxrpc_lookup_local
-       6  KASAN: use-after-free Read in try_to_wake_up
-       6  KASAN: use-after-free Read in try_to_wake_up
-       6  KASAN: use-after-free Read in rxrpc_lookup_local
-       6  KASAN: use-after-free Read in rxrpc_lookup_local
-       6  KASAN: use-after-free Read in rxrpc_lookup_local
-       6  KASAN: use-after-free Read in rxrpc_lookup_local
-       6  KASAN: use-after-free Read in rxrpc_lookup_local
-       7  KASAN: use-after-free Read in rxrpc_lookup_local
-       7  KASAN: use-after-free Read in rxrpc_lookup_local
-       7  KASAN: use-after-free Read in rxrpc_lookup_local
-       7  KASAN: use-after-free Read in rxrpc_lookup_local
-       7  KASAN: use-after-free Read in rxrpc_lookup_local
-       7  KASAN: use-after-free Read in rxrpc_lookup_local
-       7  KASAN: use-after-free Read in rxrpc_lookup_local
-       7  KASAN: use-after-free Read in rxrpc_lookup_local
-       8  KASAN: use-after-free Read in rxrpc_lookup_local
-       8  KASAN: use-after-free Read in rxrpc_lookup_local
-       8  KASAN: use-after-free Read in rxrpc_lookup_local
-       8  KASAN: use-after-free Read in rxrpc_lookup_local
-       9  KASAN: use-after-free Read in try_to_wake_up
-       9  general protection fault in rxrpc_lookup_local
-       9  KASAN: use-after-free Read in rxrpc_lookup_local
-       9  KASAN: use-after-free Read in rxrpc_lookup_local
-       9  KASAN: use-after-free Read in rxrpc_lookup_local
-      10  KASAN: use-after-free Read in rxrpc_lookup_local
-      10  KASAN: use-after-free Read in rxrpc_lookup_local
-      10  KASAN: use-after-free Read in rxrpc_lookup_local
-      11  KASAN: use-after-free Read in rxrpc_lookup_local
-      11  KASAN: use-after-free Read in rxrpc_lookup_local
-      11  KASAN: use-after-free Read in rxrpc_lookup_local
-      11  KASAN: use-after-free Read in rxrpc_lookup_local
-      12  general protection fault in rxrpc_lookup_local
-      12  KASAN: use-after-free Read in rxrpc_lookup_local
-      12  KASAN: use-after-free Read in rxrpc_lookup_local
-      12  KASAN: use-after-free Read in rxrpc_lookup_local
-      12  KASAN: use-after-free Read in rxrpc_lookup_local
-      13  KASAN: use-after-free Read in try_to_wake_up
-      13  KASAN: use-after-free Read in rxrpc_lookup_local
-      14  general protection fault in rxrpc_lookup_local
-      14  general protection fault in rxrpc_lookup_local
-      14  KASAN: use-after-free Read in rxrpc_lookup_local
-      14  KASAN: use-after-free Read in rxrpc_lookup_local
-      14  KASAN: use-after-free Read in rxrpc_lookup_local
-      14  KASAN: use-after-free Read in rxrpc_lookup_local
-      15  KASAN: use-after-free Read in rxrpc_lookup_local
-      15  KASAN: use-after-free Read in rxrpc_lookup_local
-      15  KASAN: use-after-free Read in rxrpc_lookup_local
-      16  KASAN: use-after-free Read in try_to_wake_up
-      16  KASAN: use-after-free Read in rxrpc_lookup_local
-      16  KASAN: use-after-free Read in rxrpc_lookup_local
-      16  KASAN: use-after-free Read in rxrpc_lookup_local
-      16  KASAN: use-after-free Read in rxrpc_lookup_local
-      16  KASAN: use-after-free Read in rxrpc_lookup_local
-      17  KASAN: use-after-free Read in try_to_wake_up
-      17  general protection fault in rxrpc_lookup_local
-      17  KASAN: use-after-free Read in rxrpc_lookup_local
-      17  KASAN: use-after-free Read in rxrpc_lookup_local
-      17  KASAN: use-after-free Read in rxrpc_lookup_local
-      17  KASAN: use-after-free Read in rxrpc_lookup_local
-      17  KASAN: use-after-free Read in rxrpc_lookup_local
-      17  KASAN: use-after-free Read in rxrpc_lookup_local
-      19  KASAN: use-after-free Read in try_to_wake_up
-      19  general protection fault in rxrpc_lookup_local
-      19  general protection fault in rxrpc_lookup_local
-      19  KASAN: use-after-free Read in rxrpc_lookup_local
-      19  KASAN: use-after-free Read in rxrpc_lookup_local
-      19  KASAN: use-after-free Read in rxrpc_lookup_local
-      19  KASAN: use-after-free Read in rxrpc_lookup_local
-      19  KASAN: use-after-free Read in rxrpc_lookup_local
-      20  KASAN: use-after-free Read in try_to_wake_up
-      20  KASAN: use-after-free Read in try_to_wake_up
-      20  general protection fault in rxrpc_lookup_local
-      20  KASAN: use-after-free Read in rxrpc_lookup_local
-      20  KASAN: use-after-free Read in rxrpc_lookup_local
-      20  KASAN: use-after-free Read in rxrpc_lookup_local
-      20  KASAN: use-after-free Read in rxrpc_lookup_local
-      20  KASAN: use-after-free Read in rxrpc_lookup_local
-      21  KASAN: use-after-free Read in try_to_wake_up
-      21  KASAN: use-after-free Read in rxrpc_lookup_local
-      21  KASAN: use-after-free Read in rxrpc_lookup_local
-      21  KASAN: use-after-free Read in rxrpc_lookup_local
-      21  KASAN: use-after-free Read in rxrpc_lookup_local
-      22  KASAN: use-after-free Read in rxrpc_lookup_local
-      22  KASAN: use-after-free Read in rxrpc_lookup_local
-      22  KASAN: use-after-free Read in rxrpc_lookup_local
-      23  KASAN: use-after-free Read in try_to_wake_up
-      23  KASAN: use-after-free Read in rxrpc_lookup_local
-      23  KASAN: use-after-free Read in rxrpc_lookup_local
-      23  KASAN: use-after-free Read in rxrpc_lookup_local
-      23  KASAN: use-after-free Read in rxrpc_lookup_local
-      23  KASAN: use-after-free Read in rxrpc_lookup_local
-      23  KASAN: use-after-free Read in rxrpc_lookup_local
-      23  KASAN: use-after-free Read in rxrpc_lookup_local
-      24  KASAN: use-after-free Read in rxrpc_lookup_local
-      24  KASAN: use-after-free Read in rxrpc_lookup_local
-      24  KASAN: use-after-free Read in rxrpc_lookup_local
-      24  KASAN: use-after-free Read in rxrpc_lookup_local
-      24  KASAN: use-after-free Read in rxrpc_lookup_local
-      24  KASAN: use-after-free Read in rxrpc_lookup_local
-      25  KASAN: use-after-free Read in rxrpc_lookup_local
-      25  KASAN: use-after-free Read in rxrpc_lookup_local
-      25  KASAN: use-after-free Read in rxrpc_lookup_local
+       7  INFO: task hung in lock_sock_nested
+       8  INFO: task hung in lock_sock_nested
+       9  kernel BUG in rxrpc_put_peer
+       9  kernel BUG in rxrpc_put_peer
+      10  INFO: task hung in lock_sock_nested
+      10  INFO: task hung in lock_sock_nested
 The bug was not found.
-About 1897 commits remaining
+About 1020 commits remaining
 
-2025-03-04 20:28:36
+2025-09-14 06:52:28
 Session:   7
-Kernel:    2022-12-22 - d1ac1a2b14264e98c24db6f8c2bd452e695c7238
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
-Attempt 1:
-    Time  Bug Name
-       2  INFO: rcu detected stall in corrupted
-       3  kernel BUG in rxrpc_put_peer
-       4  kernel BUG in rxrpc_put_peer
-       4  kernel BUG in rxrpc_put_peer
-       7  kernel BUG in rxrpc_put_peer
-       9  WARNING in fib6_add
-      13  kernel BUG in rxrpc_put_peer
-      13  kernel BUG in rxrpc_put_peer
-      14  WARNING in tipc_msg_build
-      14  INFO: rcu detected stall in corrupted
-      14  kernel BUG in rxrpc_put_peer
-      21  kernel BUG in rxrpc_put_peer
-      22  INFO: rcu detected stall in corrupted
-      22  INFO: rcu detected stall in corrupted
-      22  INFO: rcu detected stall in corrupted
-      23  kernel BUG in rxrpc_put_peer
-Attempt 2:
-    Time  Bug Name
-       2  INFO: rcu detected stall in corrupted
-       3  kernel BUG in rxrpc_put_peer
-       5  kernel BUG in rxrpc_put_peer
-       6  WARNING in tipc_msg_build
-      10  INFO: rcu detected stall in corrupted
-      14  INFO: task hung in new_device_store
-      15  INFO: task hung in del_device_store
-      17  INFO: task hung in lock_sock_nested
-      17  INFO: rcu detected stall in corrupted
-      18  INFO: rcu detected stall in corrupted
-      20  WARNING in tipc_msg_build
-      21  INFO: rcu detected stall in corrupted
-      23  WARNING in tipc_msg_build
-      24  INFO: task hung in lock_sock_nested
-      24  INFO: task hung in lock_sock_nested
-      25  INFO: rcu detected stall in corrupted
-      25  kernel BUG in rxrpc_put_peer
-Attempt 3:
-    Time  Bug Name
-       5  INFO: rcu detected stall in corrupted
-       5  INFO: rcu detected stall in corrupted
-       5  INFO: rcu detected stall in corrupted
-       5  INFO: rcu detected stall in corrupted
-       5  INFO: rcu detected stall in corrupted
-       6  INFO: rcu detected stall in corrupted
-       8  kernel BUG in rxrpc_put_peer
-      10  kernel BUG in rxrpc_put_peer
-      10  kernel BUG in rxrpc_put_peer
-      12  kernel BUG in rxrpc_put_peer
-      14  kernel BUG in rxrpc_put_peer
-      15  INFO: task hung in lock_sock_nested
-      16  INFO: task hung in lock_sock_nested
-      16  kernel BUG in rxrpc_put_peer
-      17  INFO: task hung in lock_sock_nested
-      18  WARNING in tipc_msg_build
-      18  WARNING in tipc_msg_build
-      19  INFO: rcu detected stall in corrupted
-      21  INFO: task hung in lock_sock_nested
-      23  INFO: task hung in lock_sock_nested
-      24  INFO: task hung in lock_sock_nested
-      24  INFO: task hung in lock_sock_nested
-      24  INFO: rcu detected stall in corrupted
-The bug was not found.
-About 951 commits remaining
-
-2025-03-04 22:02:10
-Session:   8
 Kernel:    2023-01-05 - 50011c32f421215f6231996fcc84fd1fe81c4a48
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Compiler:  ccache gcc
 Attempt 1:
     Time  Bug Name
        2  INFO: rcu detected stall in corrupted
-       3  kernel BUG in rxrpc_put_peer
        6  kernel BUG in rxrpc_put_peer
-       7  INFO: rcu detected stall in corrupted
-       7  INFO: rcu detected stall in corrupted
-       7  INFO: rcu detected stall in corrupted
-       7  INFO: rcu detected stall in corrupted
-       8  kernel BUG in rxrpc_put_peer
-       9  WARNING in tipc_msg_build
-       9  INFO: rcu detected stall in corrupted
-      13  WARNING in call_timer_fn
-      13  INFO: task hung in new_device_store
-      14  INFO: rcu detected stall in corrupted
-      14  INFO: rcu detected stall in corrupted
-      14  INFO: rcu detected stall in corrupted
-      17  WARNING in fib6_add
-      17  WARNING in tipc_msg_build
-      17  WARNING in tipc_msg_build
-      20  WARNING in fib6_add
-      24  kernel BUG in rxrpc_put_peer
-      24  kernel BUG in rxrpc_put_peer
-Attempt 2:
-    Time  Bug Name
-       6  WARNING in tipc_msg_build
-       6  WARNING in tipc_msg_build
-       6  kernel BUG in rxrpc_put_peer
-       8  INFO: rcu detected stall in corrupted
-      11  INFO: rcu detected stall in corrupted
-      11  INFO: rcu detected stall in corrupted
-      12  WARNING in fib6_add
-      12  INFO: rcu detected stall in corrupted
-      12  INFO: rcu detected stall in corrupted
-      15  INFO: rcu detected stall in corrupted
-      17  INFO: rcu detected stall in corrupted
-      21  kernel BUG in rxrpc_put_peer
-      22  INFO: rcu detected stall in corrupted
-      24  INFO: rcu detected stall in corrupted
-Attempt 3:
-    Time  Bug Name
-       4  kernel BUG in rxrpc_put_peer
-       6  WARNING in tipc_msg_build
-       8  kernel BUG in rxrpc_put_peer
-       9  WARNING in fib6_add
-       9  WARNING: ODEBUG bug in netdev_run_todo
-      11  kernel BUG in rxrpc_put_peer
-      13  kernel BUG in rxrpc_put_peer
-      15  kernel BUG in rxrpc_put_peer
-      17  INFO: rcu detected stall in corrupted
-      18  INFO: rcu detected stall in corrupted
-      19  INFO: rcu detected stall in corrupted
-      24  WARNING: ODEBUG bug in netdev_run_todo
-      25  INFO: rcu detected stall in corrupted
+      10  kernel BUG in rxrpc_put_peer
 The bug was not found.
 About 470 commits remaining
 
-2025-03-04 23:37:19
-Session:   9
+2025-09-14 07:13:45
+Session:   8
 Kernel:    2023-01-12 - 5be413a6e2a16e08c8f0f1b59794a7203b5eca2c
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Compiler:  ccache gcc
 Attempt 1:
     Time  Bug Name
-       9  WARNING in tipc_msg_build
+       2  INFO: rcu detected stall in corrupted
+       6  kernel BUG in rxrpc_put_peer
+       7  kernel BUG in rxrpc_put_peer
+       8  kernel BUG in rxrpc_put_peer
        9  kernel BUG in rxrpc_put_peer
-       9  kernel BUG in rxrpc_put_peer
-      10  WARNING in tipc_msg_build
-      11  WARNING in fib6_add
-      12  kernel BUG in rxrpc_put_peer
-      17  kernel BUG in rxrpc_put_peer
-      19  INFO: rcu detected stall in corrupted
-      23  WARNING: ODEBUG bug in netdev_run_todo
-Attempt 2:
-    Time  Bug Name
-       7  WARNING in tipc_msg_build
-      11  kernel BUG in rxrpc_put_peer
-      15  kernel BUG in rxrpc_put_peer
-      18  INFO: rcu detected stall in corrupted
-      21  WARNING in tipc_msg_build
-      23  INFO: rcu detected stall in corrupted
-      24  kernel BUG in rxrpc_put_peer
-      24  kernel BUG in rxrpc_put_peer
-      25  kernel BUG in rxrpc_put_peer
-Attempt 3:
-    Time  Bug Name
-       3  INFO: rcu detected stall in corrupted
-       7  WARNING in tipc_msg_build
-       7  WARNING in tipc_msg_build
-       7  WARNING in tipc_msg_build
-       9  WARNING in tipc_msg_build
-      10  WARNING in tipc_msg_build
-      11  WARNING in fib6_add
-      13  kernel BUG in rxrpc_put_peer
-      22  INFO: rcu detected stall in corrupted
-      22  kernel BUG in rxrpc_put_peer
 The bug was not found.
 About 255 commits remaining
 
-2025-03-05 01:13:06
-Session:   10
+2025-09-14 07:38:11
+Session:   9
 Kernel:    2023-01-13 - ff5ebafd51ecc01014f1db510299eede60faf22a
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Compiler:  ccache gcc
 Attempt 1:
     Time  Bug Name
-       3  INFO: rcu detected stall in corrupted
-       6  WARNING in tipc_msg_build
-***    7  kernel BUG in rxrpc_put_call
-***    7  kernel BUG in rxrpc_put_call
-***    7  kernel BUG in rxrpc_put_call
+       2  INFO: rcu detected stall in corrupted
+***    2  kernel BUG in rxrpc_put_call
+***    2  kernel BUG in rxrpc_put_call
+***    2  kernel BUG in rxrpc_put_call
 Running syz-repro.
-New PoC saved at /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/reproducers/repro-bug0082-0.prog
-Primary PoC:     /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/reproducers/repro-bug0082-0.prog
-Run Time:        0h14m0s
+New PoC saved at /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0082-0.prog
+Primary PoC:     /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0082-0.prog
+Run Time:        0h6m0s
 The bug was found.
 About 128 commits remaining
 
-2025-03-05 01:54:52
-Session:   11
+2025-09-14 07:53:48
+Session:   10
 Kernel:    2023-01-11 - 97f5e03a4a27d27ee4fed0cdb1658c81cf2784db
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Compiler:  ccache gcc
 Attempt 1:
     Time  Bug Name
-       6  WARNING in tipc_msg_build
-***    6  kernel BUG in rxrpc_put_call
-***    6  kernel BUG in rxrpc_put_call
-***    6  kernel BUG in rxrpc_put_call
+***    2  kernel BUG in rxrpc_put_call
+***    2  kernel BUG in rxrpc_put_call
+***    2  kernel BUG in rxrpc_put_call
+***    2  kernel BUG in rxrpc_put_call
 The bug was found.
 About 64 commits remaining
 
-2025-03-05 02:19:32
-Session:   12
+2025-09-14 08:03:35
+Session:   11
 Kernel:    2023-01-09 - 7d6ceeb1875cc08dc3d1e558e191434d94840cd5
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Compiler:  ccache gcc
 Attempt 1:
     Time  Bug Name
-       6  INFO: rcu detected stall in corrupted
-       7  WARNING in tipc_msg_build
-***    8  kernel BUG in rxrpc_put_call
-***    8  kernel BUG in rxrpc_put_call
+***    2  kernel BUG in rxrpc_put_call
+***    2  kernel BUG in rxrpc_put_call
+***    2  kernel BUG in rxrpc_put_call
 The bug was found.
 About 32 commits remaining
 
-2025-03-05 02:47:44
-Session:   13
+2025-09-14 08:12:57
+Session:   12
 Kernel:    2023-01-06 - d41b3f5b96881809c73f86e3ca436c9426610b7a
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Compiler:  ccache gcc
 Attempt 1:
     Time  Bug Name
-       4  INFO: rcu detected stall in corrupted
-       5  INFO: rcu detected stall in corrupted
-       6  INFO: rcu detected stall in corrupted
-       6  INFO: rcu detected stall in corrupted
-       7  INFO: rcu detected stall in corrupted
-       9  INFO: rcu detected stall in corrupted
-       9  INFO: rcu detected stall in corrupted
-      12  INFO: rcu detected stall in corrupted
-      13  INFO: rcu detected stall in corrupted
-      14  general protection fault in rxrpc_connect_call
-      14  general protection fault in rxrpc_connect_call
-      14  general protection fault in rxrpc_connect_call
-      14  WARNING in tipc_msg_build
-      15  general protection fault in rxrpc_connect_call
-      16  INFO: rcu detected stall in corrupted
-      16  INFO: rcu detected stall in corrupted
-      16  INFO: rcu detected stall in corrupted
-      17  INFO: rcu detected stall in corrupted
-      17  INFO: rcu detected stall in corrupted
-      18  INFO: rcu detected stall in corrupted
-      18  INFO: rcu detected stall in corrupted
-      20  INFO: rcu detected stall in corrupted
-      20  INFO: rcu detected stall in corrupted
-      20  INFO: rcu detected stall in corrupted
-      21  general protection fault in rxrpc_connect_call
-      21  general protection fault in rxrpc_connect_call
-      21  INFO: rcu detected stall in corrupted
-      21  INFO: rcu detected stall in corrupted
-      21  INFO: rcu detected stall in corrupted
-      21  INFO: rcu detected stall in corrupted
-      22  general protection fault in rxrpc_connect_call
-      22  general protection fault in rxrpc_connect_call
-      22  general protection fault in rxrpc_connect_call
-      23  WARNING in fib6_add
-      23  general protection fault in rxrpc_connect_call
-      23  general protection fault in rxrpc_connect_call
-      24  general protection fault in rxrpc_connect_call
-      25  WARNING in tipc_msg_build
-Attempt 2:
-    Time  Bug Name
-       4  WARNING: ODEBUG bug in netdev_run_todo
-       6  WARNING in tipc_msg_build
-       7  general protection fault in rxrpc_connect_call
-       7  general protection fault in rxrpc_connect_call
-       7  WARNING in tipc_msg_build
-       8  general protection fault in rxrpc_connect_call
-       9  general protection fault in rxrpc_connect_call
-       9  general protection fault in rxrpc_connect_call
-       9  general protection fault in rxrpc_connect_call
-      10  WARNING in fib6_add
-      10  general protection fault in rxrpc_connect_call
-      11  general protection fault in rxrpc_connect_call
-      13  INFO: rcu detected stall in corrupted
-      18  no output from test machine
-      19  INFO: rcu detected stall in corrupted
-      19  INFO: rcu detected stall in corrupted
-      19  INFO: rcu detected stall in corrupted
-      19  INFO: rcu detected stall in corrupted
-      23  WARNING in tipc_msg_build
-Attempt 3:
-    Time  Bug Name
-       2  INFO: rcu detected stall in corrupted
-       6  WARNING in tipc_msg_build
-       7  general protection fault in rxrpc_connect_call
-       7  general protection fault in rxrpc_connect_call
-       7  general protection fault in rxrpc_connect_call
-       8  general protection fault in rxrpc_connect_call
-       8  general protection fault in rxrpc_connect_call
-       9  general protection fault in rxrpc_connect_call
-       9  general protection fault in rxrpc_connect_call
-       9  general protection fault in rxrpc_connect_call
-       9  general protection fault in rxrpc_connect_call
-       9  general protection fault in rxrpc_connect_call
-       9  general protection fault in rxrpc_connect_call
-      10  general protection fault in rxrpc_connect_call
-      11  general protection fault in rxrpc_connect_call
-      14  INFO: rcu detected stall in corrupted
-      14  INFO: rcu detected stall in corrupted
-      14  INFO: rcu detected stall in corrupted
-      14  INFO: rcu detected stall in corrupted
-      16  INFO: rcu detected stall in corrupted
-      18  INFO: rcu detected stall in corrupted
-      18  INFO: rcu detected stall in corrupted
-      18  INFO: rcu detected stall in corrupted
-      18  INFO: rcu detected stall in corrupted
-      20  WARNING in tipc_msg_build
+       4  general protection fault in rxrpc_connect_call
 The bug was not found.
 About 17 commits remaining
 
-2025-03-05 04:22:37
-Session:   14
+2025-09-14 08:30:13
+Session:   13
 Kernel:    2023-01-07 - 571f3dd0d01b62ec63a4039320dbdbcd54ae8fb0
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Compiler:  ccache gcc
 Attempt 1:
     Time  Bug Name
-       7  WARNING in tipc_msg_build
-***    7  kernel BUG in rxrpc_put_call
-***    7  kernel BUG in rxrpc_put_call
-***    7  kernel BUG in rxrpc_put_call
-***    7  kernel BUG in rxrpc_put_call
-***    7  kernel BUG in rxrpc_put_call
+***    2  kernel BUG in rxrpc_put_call
+***    2  kernel BUG in rxrpc_put_call
+***    2  kernel BUG in rxrpc_put_call
 Running syz-repro.
-New PoC saved at /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/reproducers/repro-bug0082-2.prog
-Primary PoC:     /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/reproducers/repro-bug0082-2.prog
-Run Time:        0h15m0s
+New PoC saved at /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0082-2.prog
+Primary PoC:     /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0082-0.prog
+Run Time:        0h6m0s
 The bug was found.
 About 10 commits remaining
 
-2025-03-05 05:03:54
-Session:   15
+2025-09-14 08:45:58
+Session:   14
 Kernel:    2023-01-06 - 0d6bf319bc5aba4535bb46e1b607973688a2248a
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Compiler:  ccache gcc
 Attempt 1:
     Time  Bug Name
        2  INFO: rcu detected stall in corrupted
-       8  WARNING in tipc_msg_build
-       8  kernel BUG in rxrpc_release_call
-       8  kernel BUG in rxrpc_release_call
-       8  kernel BUG in rxrpc_release_call
-       8  kernel BUG in rxrpc_release_call
-       8  kernel BUG in rxrpc_release_call
-      12  kernel BUG in rxrpc_release_call
-      12  kernel BUG in rxrpc_release_call
-      12  kernel BUG in rxrpc_release_call
-      12  kernel BUG in rxrpc_release_call
-      12  kernel BUG in rxrpc_release_call
-      12  kernel BUG in rxrpc_release_call
-      12  kernel BUG in rxrpc_release_call
-      12  kernel BUG in rxrpc_release_call
-      13  kernel BUG in rxrpc_release_call
-      13  kernel BUG in rxrpc_release_call
-      14  WARNING in fib6_add
-      14  WARNING in tipc_msg_build
-      20  WARNING: ODEBUG bug in netdev_run_todo
-Attempt 2:
-    Time  Bug Name
-       2  INFO: rcu detected stall in corrupted
+       2  kernel BUG in rxrpc_release_call
+       2  kernel BUG in rxrpc_release_call
+       2  kernel BUG in rxrpc_release_call
+       2  kernel BUG in rxrpc_release_call
+       3  kernel BUG in rxrpc_release_call
+       3  kernel BUG in rxrpc_release_call
        7  kernel BUG in rxrpc_release_call
-       7  kernel BUG in rxrpc_release_call
-       7  kernel BUG in rxrpc_release_call
-       7  kernel BUG in rxrpc_release_call
-       8  kernel BUG in rxrpc_release_call
+       9  kernel BUG in rxrpc_release_call
+       9  kernel BUG in rxrpc_release_call
       10  kernel BUG in rxrpc_release_call
-      10  kernel BUG in rxrpc_release_call
-      10  kernel BUG in rxrpc_release_call
-      10  kernel BUG in rxrpc_release_call
-      10  kernel BUG in rxrpc_release_call
-      10  kernel BUG in rxrpc_release_call
-      10  kernel BUG in rxrpc_release_call
-      11  kernel BUG in rxrpc_release_call
-      17  INFO: rcu detected stall in corrupted
-      21  INFO: rcu detected stall in corrupted
-      22  WARNING in tipc_msg_build
-      23  WARNING in tipc_msg_build
-Attempt 3:
-    Time  Bug Name
-       4  WARNING: ODEBUG bug in netdev_run_todo
-       7  kernel BUG in rxrpc_release_call
-       7  kernel BUG in rxrpc_release_call
-       7  kernel BUG in rxrpc_release_call
-      10  kernel BUG in rxrpc_release_call
-      10  kernel BUG in rxrpc_release_call
-      10  kernel BUG in rxrpc_release_call
-      10  kernel BUG in rxrpc_release_call
-      10  kernel BUG in rxrpc_release_call
-      10  kernel BUG in rxrpc_release_call
-      13  WARNING in tipc_msg_build
-      20  WARNING in tipc_msg_build
-      23  INFO: rcu detected stall in corrupted
 The bug was not found.
 About 6 commits remaining
 
-2025-03-05 06:39:04
-Session:   16
+2025-09-14 09:03:24
+Session:   15
 Kernel:    2023-01-06 - b4e9b8763e417db31c7088103cc557d55cb7a8f5
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
-Attempt 1:
-    Time  Bug Name
-       3  INFO: rcu detected stall in corrupted
-      10  kernel BUG in rxrpc_put_peer
-      11  WARNING in fib6_add
-      13  kernel BUG in rxrpc_put_peer
-      18  kernel BUG in rxrpc_put_peer
-      19  kernel BUG in rxrpc_put_peer
-      22  kernel BUG in rxrpc_put_peer
-      24  INFO: rcu detected stall in corrupted
-Attempt 2:
-    Time  Bug Name
-       9  kernel BUG in rxrpc_put_peer
-      14  WARNING in tipc_msg_build
-      14  kernel BUG in rxrpc_put_peer
-      15  kernel BUG in rxrpc_put_peer
-      15  kernel BUG in rxrpc_put_peer
-      21  kernel BUG in rxrpc_put_peer
-      23  kernel BUG in rxrpc_put_peer
-      23  kernel BUG in rxrpc_put_peer
-Attempt 3:
-    Time  Bug Name
-       5  WARNING: ODEBUG bug in netdev_run_todo
-       8  kernel BUG in rxrpc_put_peer
-       9  kernel BUG in rxrpc_put_peer
-      10  WARNING in fib6_add
-      10  WARNING in tipc_msg_build
-      10  kernel BUG in rxrpc_put_peer
-      18  kernel BUG in rxrpc_put_peer
-      18  kernel BUG in rxrpc_put_peer
-      19  WARNING in tipc_msg_build
-      20  kernel BUG in rxrpc_put_peer
-      23  INFO: rcu detected stall in corrupted
-      23  kernel BUG in rxrpc_put_peer
-      25  INFO: rcu detected stall in corrupted
-      25  INFO: rcu detected stall in corrupted
-The bug was not found.
-About 21 commits remaining
-
-2025-03-05 08:14:20
-Session:   17
-Kernel:    2023-01-07 - 42f229c350f57a8e825f7591e17cbc5c87e50235
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Compiler:  ccache gcc
 Attempt 1:
     Time  Bug Name
        2  INFO: rcu detected stall in corrupted
-***    6  kernel BUG in rxrpc_put_call
-***    6  kernel BUG in rxrpc_put_call
+       7  kernel BUG in rxrpc_put_peer
+The bug was not found.
+About 21 commits remaining
+
+2025-09-14 09:20:50
+Session:   16
+Kernel:    2023-01-07 - 42f229c350f57a8e825f7591e17cbc5c87e50235
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    2  kernel BUG in rxrpc_put_call
+***    2  kernel BUG in rxrpc_put_call
+***    2  kernel BUG in rxrpc_put_call
 The bug was found.
 About 20 commits remaining
 
-2025-03-05 08:40:54
-Session:   18
+2025-09-14 09:30:20
+Session:   17
 Kernel:    2023-01-06 - 9d35d880e0e4a3ab32d8c12f9e4d76198aadd42d
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Compiler:  ccache gcc
 Attempt 1:
     Time  Bug Name
-***    7  kernel BUG in rxrpc_put_call
-***    7  kernel BUG in rxrpc_put_call
-***    7  kernel BUG in rxrpc_put_call
+       2  INFO: rcu detected stall in corrupted
+***    2  kernel BUG in rxrpc_put_call
+***    2  kernel BUG in rxrpc_put_call
 The bug was found.
 About 19 commits remaining
 
 ==== Partial Result: Focused Fuzzing ====
-Reproducer:           /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/reproducers/repro-bug0082-2.prog
+Reproducer:           /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0082-0.prog
 Bisection Result:     2023-01-06 - 9d35d880e0e4a3ab32d8c12f9e4d76198aadd42d
 Bisected Commit Name: rxrpc: Move client call connection to the I/O thread
-Stage Time:           21h14m34s
-Run Time:             21h14m38s
+Stage Time:           5h8m55s
+Run Time:             5h8m57s
 =========================================
 
 ==== Anchor Commit ====
 
-2025-03-05 09:06:00
-Session:   19
-Kernel:    2023-01-06 - b4e9b8763e417db31c7088103cc557d55cb7a8f5
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+2025-09-14 09:39:41
+Session:   18
+Kernel:    2023-01-06 - 0d6bf319bc5aba4535bb46e1b607973688a2248a
+Compiler:  ccache gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0082-0.prog
 Attempt 0:
-    No crashes found.
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in devlink_unregister
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in del_device_store
+    INFO: task hung in rtnetlink_rcv_msg
 Attempt 1:
-    No crashes found.
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in linkwatch_event
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in del_device_store
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in devlink_unregister
+    INFO: task hung in del_device_store
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in del_device_store
 Attempt 2:
-    No crashes found.
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in linkwatch_event
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in devlink_unregister
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in del_device_store
+    INFO: task hung in del_device_store
 Attempt 3:
-    No crashes found.
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in nsim_destroy
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in linkwatch_event
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in del_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in new_device_store
+    INFO: task hung in del_device_store
 Attempt 4:
-    No crashes found.
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in ip_tunnel_delete_nets
+    INFO: task hung in switchdev_deferred_process_work
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in ieee80211_register_hw
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in devlink_unregister
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in new_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in rtnetlink_rcv_msg
 Attempt 5:
-    No crashes found.
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in linkwatch_event
+    INFO: task hung in new_device_store
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in del_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in new_device_store
 Attempt 6:
-    No crashes found.
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in nsim_create
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in devlink_unregister
+    INFO: task hung in del_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in del_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in del_device_store
 Attempt 7:
-    No crashes found.
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in del_device_store
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in new_device_store
+    INFO: task hung in devlink_unregister
+    INFO: task hung in new_device_store
+    INFO: task hung in new_device_store
 The bug was not found.
 
 Failure: This bug cannot be found at the anchor commit.
+
+==== Partial Result: Primary PoC Test ====
+Reproducer:           /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0082-0.prog
+Bisection Result:     Failed to reproduce at the anchor commit.
+Stage Time:           0h12m36s
+Run Time:             5h21m34s
+==========================================
+
+==== Anchor Commit ====
+
+2025-09-14 09:52:20
+Session:   19
+Kernel:    2023-01-06 - 0d6bf319bc5aba4535bb46e1b607973688a2248a
+Compiler:  ccache gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0082-1.prog
+Attempt 0:
+    kernel BUG in rxrpc_release_call
+    invalid opcode in rxrpc_release_call
+    kernel panic: Fatal exception
+Attempt 1:
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in l2tp_exit_net
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in devlink_unregister
+    INFO: task hung in del_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in del_device_store
+    INFO: task hung in del_device_store
+Attempt 2:
+    kernel BUG in rxrpc_release_call
+    invalid opcode in rxrpc_release_call
+    kernel panic: Fatal exception
+Attempt 3:
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in new_device_store
+    INFO: task hung in new_device_store
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in del_device_store
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in del_device_store
+Attempt 4:
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in netdev_run_todo
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in new_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in del_device_store
+Attempt 5:
+    kernel BUG in rxrpc_release_call
+    invalid opcode in rxrpc_release_call
+    kernel panic: Fatal exception
+Attempt 6:
+    kernel BUG in rxrpc_release_call
+    invalid opcode in rxrpc_release_call
+    kernel panic: Fatal exception
+Attempt 7:
+    kernel BUG in rxrpc_release_call
+    invalid opcode in rxrpc_release_call
+    kernel panic: Fatal exception
+The bug was not found.
+
+Failure: This bug cannot be found at the anchor commit.
+
+==== Partial Result: Subsequent PoC Test ====
+Reproducer:           /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0082-1.prog
+Bisection Result:     Failed to reproduce at the anchor commit.
+Stage Time:           0h12m8s
+Run Time:             5h33m42s
+=============================================
 
 ====================================================================================================================================================
 Bug Name:             kernel BUG in rxrpc_put_call
 Bug Link:             https://syzkaller.appspot.com/bug?id=4ed88f7c1c6d6d21f9bb9521d2efbf83dbd94b79
 Bisection Result:     2023-01-06 - 9d35d880e0e4a3ab32d8c12f9e4d76198aadd42d
 Bisected Commit Name: rxrpc: Move client call connection to the I/O thread
-Run Time:             21h36m9s
+Run Time:             5h33m42s
 
 Anchor Commit:        2023-01-13 - 97ec4d559d939743e8af83628be5af8da610d9dc
 Bisection Result:     2023-01-06 - 9d35d880e0e4a3ab32d8c12f9e4d76198aadd42d
