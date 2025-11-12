@@ -7,6 +7,7 @@ LIBDIR := lib/
 SRCDIR := src/
 TOOLDIR := tools/
 PROJECTNAME := meerkat
+PREFIX := mk-
 
 .DEFAULT_GOAL := $(PROJECTNAME)
 
@@ -38,27 +39,7 @@ $(PROJECTNAME): $(SRCDIR)$(PROJECTNAME).cpp $(ALL_OBJS) | $(BINDIR) $(BUILDDIR)
 	@echo "  LN     $(BINDIR)$(PROJECTNAME)"
 	@$(CC) $(BUILDDIR)$(PROJECTNAME).o $(ALL_OBJS) -o $(BINDIR)$(PROJECTNAME)
 
-tools: git_test description_test runner deduplicate
-
-GT_OBJS = $(BUILDDIR)git.o $(BUILDDIR)shell_api.o $(BUILDDIR)date.o $(BUILDDIR)file_api.o \
-			$(BUILDDIR)exec_api.o $(BUILDDIR)my_string.o $(BUILDDIR)version.o
-
-git_test: $(TOOLDIR)git_test.cpp $(GT_OBJS) | $(BINDIR) $(BUILDDIR)
-	@echo "  CC     $(BUILDDIR)git_test.o"
-	@$(CC) -I $(INCDIR) -c $(TOOLDIR)git_test.cpp -o $(BUILDDIR)git_test.o
-	@echo "  LN     $(TOOLDIR)git_test"
-	@$(CC) $(BUILDDIR)git_test.o $(GT_OBJS) -o $(BINDIR)git_test
-
-DT_OBJS = $(BUILDDIR)syzlang.o $(BUILDDIR)template_parse.o $(BUILDDIR)file_api.o \
-			$(BUILDDIR)argparse.o $(BUILDDIR)environment.o $(BUILDDIR)json.o \
-			$(BUILDDIR)my_string.o $(BUILDDIR)exec_api.o $(BUILDDIR)date.o \
-			$(BUILDDIR)port.o $(BUILDDIR)dedup.o $(BUILDDIR)report.o
-
-description_test: $(TOOLDIR)description_test.cpp $(DT_OBJS) | $(BINDIR) $(BUILDDIR)
-	@echo "  CC     $(BUILDDIR)description_test.o"
-	@$(CC) -I $(INCDIR) -c $(TOOLDIR)description_test.cpp -o $(BUILDDIR)description_test.o
-	@echo "  LN     $(TOOLDIR)description_test"
-	@$(CC) $(BUILDDIR)description_test.o $(DT_OBJS) -o $(BINDIR)description_test
+tools: runner deduplicate
 
 RR_OBJS = $(BUILDDIR)file_api.o $(BUILDDIR)argparse.o $(BUILDDIR)environment.o \
 			$(BUILDDIR)json.o $(BUILDDIR)my_string.o $(BUILDDIR)exec_api.o \
@@ -70,8 +51,8 @@ RR_OBJS = $(BUILDDIR)file_api.o $(BUILDDIR)argparse.o $(BUILDDIR)environment.o \
 runner: $(TOOLDIR)runner.cpp $(RR_OBJS) | $(BINDIR) $(BUILDDIR)
 	@echo "  CC     $(BUILDDIR)runner.o"
 	@$(CC) -I $(INCDIR) -c $(TOOLDIR)runner.cpp -o $(BUILDDIR)runner.o
-	@echo "  LN     $(TOOLDIR)runner"
-	@$(CC) $(BUILDDIR)runner.o $(RR_OBJS) -o $(BINDIR)runner
+	@echo "  LN     $(BINDIR)$(PREFIX)runner"
+	@$(CC) $(BUILDDIR)runner.o $(RR_OBJS) -o $(BINDIR)$(PREFIX)runner
 
 DD_OBJS = $(BUILDDIR)dedup.o $(BUILDDIR)file_api.o $(BUILDDIR)my_string.o $(BUILDDIR)report.o \
 			$(BUILDDIR)exec_api.o
@@ -79,8 +60,8 @@ DD_OBJS = $(BUILDDIR)dedup.o $(BUILDDIR)file_api.o $(BUILDDIR)my_string.o $(BUIL
 deduplicate: $(TOOLDIR)deduplicate.cpp $(DD_OBJS) | $(BINDIR) $(BUILDDIR)
 	@echo "  CC     $(BUILDDIR)deduplicate.o"
 	@$(CC) -I $(INCDIR) -c $(TOOLDIR)deduplicate.cpp -o $(BUILDDIR)deduplicate.o
-	@echo "  LN     $(TOOLDIR)deduplicate"
-	@$(CC) $(BUILDDIR)deduplicate.o $(DD_OBJS) -o $(BINDIR)deduplicate
+	@echo "  LN     $(BINDIR)$(PREFIX)deduplicate"
+	@$(CC) $(BUILDDIR)deduplicate.o $(DD_OBJS) -o $(BINDIR)$(PREFIX)deduplicate
 
 $(BUILDDIR):
 	@echo "DIR    $(BUILDDIR)"
