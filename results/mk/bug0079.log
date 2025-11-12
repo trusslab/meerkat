@@ -1,4 +1,4 @@
-./bin/bisector -i 1 -c /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/bisector.cfg -a 9b59ec8d50a1f28747ceff9a4f39af5deba9540e -F ff-test,poc-test,stateful-corpus,ff-no-find-backup
+./bin/meerkat -i 1 -c /home/syzretrospector/meerkat/wd-meerkat-1/meerkat.cfg -a 9b59ec8d50a1f28747ceff9a4f39af5deba9540e
 Bisecting:          KASAN: use-after-free Write in sctp_auth_shkey_hold
 Syzbot Link:        https://syzkaller.appspot.com/bug?id=4b0830ac666c3cae350904be00dca27f8be86715
 Working Name:       bug0079
@@ -10,130 +10,2394 @@ Repository:         https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/lin
 Branch:             master
 Arch:               amd64
 
-Bisector:           /mnt/sdd/jtbursey/SyzInspector/
-Version:            1.0.3
-Kernel:             /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/kernel/
-Syzkaller:          /mnt/sdd/jtbursey/SyzInspector/syzkaller/
-Compilers:          /mnt/sda/jtbursey/SyzInspector/compilers/
-Ccache:             ccache
-Image:              /mnt/sda/jtbursey/SyzInspector/image/stretch/stretch.img
-Image Key:          /mnt/sda/jtbursey/SyzInspector/image/stretch/stretch.id_rsa
+Meerkat:            /home/syzretrospector/meerkat/
+Version:            1.1.0
+Kernel:             /home/syzretrospector/meerkat/wd-meerkat-1/kernel/
+Syzkaller:          /home/syzretrospector/meerkat/syzkaller/
+Compilers:          /home/syzretrospector/meerkat/compilers/
+Compiler:           gcc (Ubuntu 12.3.0-1ubuntu1~22.04.2) 12.3.0
+Linker:             GNU ld (GNU Binutils for Ubuntu) 2.38
+Ccache:             ccache version 4.5.1
+Image:              /home/syzretrospector/images/stretch/stretch.img
+Image Key:          /home/syzretrospector/images/stretch/stretch.id_rsa
 
-Workdir:            /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/
-Kconfig:            /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/config-bug0079.txt
-Reproducers: (4)    /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/reproducers/
-Primary PoC:        /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/reproducers/repro-bug0079-4.prog
-Syzkaller Workdir:  /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/wd-kaller/
-Log Directory:      /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/log/
+Workdir:            /home/syzretrospector/meerkat/wd-meerkat-1/
+Kconfig:            /home/syzretrospector/meerkat/wd-meerkat-1/config-bug0079.txt
+Reproducers: (4)    /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/
+Primary PoC:        /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0079-4.prog
+Syzkaller Workdir:  /home/syzretrospector/meerkat/wd-meerkat-1/wd-kaller/
+Log Directory:      /home/syzretrospector/meerkat/wd-meerkat-1/log/
 
-Syscalls: (13)      ["sendto$inet6", "setsockopt", "setsockopt$inet_sctp6_SCTP_AUTH_CHUNK", "setsockopt$inet_sctp6_SCTP_AUTH_KEY", "setsockopt$inet_sctp_SCTP_SOCKOPT_BINDX_ADD", "socket$inet6_sctp", "socket$inet6", "socket", "socket$inet_sctp", "ioctl$EXT4_IOC_GROUP_EXTEND", "openat$sw_sync_info", "getsockopt$inet_sctp_SCTP_MAX_BURST", "socket$inet"]
+Syscalls: (13)      ["sendto$inet6", "setsockopt", "setsockopt$inet_sctp6_SCTP_AUTH_CHUNK", "setsockopt$inet_sctp6_SCTP_AUTH_KEY", "setsockopt$inet_sctp_SCTP_SOCKOPT_BINDX_ADD", "socket$inet6_sctp", "socket$inet6", "socket", "getsockopt", "socket$inet_sctp", "ioctl$F2FS_IOC_START_ATOMIC_WRITE", "openat$selinux_enforce", "socket$inet"]
 VM Count:           4
 CPU Count:          4
 Procs:              24
 Memory:             4096
 Make Procs:         16
-Max Time:           30
-Max Attempts:       3
+Max Time:           10
+Max Attempts:       1
 
 ==== Anchor Commit ====
 
-2025-03-02 03:02:04
+2025-09-19 16:33:36
 Session:   1
 Kernel:    2022-07-15 - 9b59ec8d50a1f28747ceff9a4f39af5deba9540e
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
-Warning: setsockopt$inet_sctp6_SCTP_AUTH_KEY was disabled by Syzkaller.
+Compiler:  ccache gcc
 Attempt 1:
     Time  Bug Name
        2  INFO: trying to register non-static key in ieee80211_do_stop
        4  INFO: trying to register non-static key in ieee80211_do_stop
+***    4  KASAN: use-after-free Write in sctp_auth_shkey_hold
+Attempt 2: (RETRY)
+    Time  Bug Name
+       2  INFO: trying to register non-static key in ieee80211_do_stop
+       3  INFO: trying to register non-static key in ieee80211_do_stop
+***    3  KASAN: use-after-free Write in sctp_auth_shkey_hold
+Attempt 3: (RETRY)
+    Time  Bug Name
+       2  INFO: trying to register non-static key in ieee80211_do_stop
+       3  INFO: trying to register non-static key in ieee80211_do_stop
        4  INFO: trying to register non-static key in ieee80211_do_stop
-       4  INFO: trying to register non-static key in ieee80211_do_stop
-       6  INFO: trying to register non-static key in ieee80211_do_stop
-       9  INFO: trying to register non-static key in ieee80211_do_stop
-       9  INFO: trying to register non-static key in ieee80211_do_stop
-       9  INFO: trying to register non-static key in ieee80211_do_stop
-      10  INFO: trying to register non-static key in ieee80211_do_stop
-      12  INFO: trying to register non-static key in ieee80211_do_stop
-      13  INFO: trying to register non-static key in ieee80211_do_stop
-      13  INFO: trying to register non-static key in ieee80211_do_stop
-      14  INFO: trying to register non-static key in ieee80211_do_stop
-      16  INFO: trying to register non-static key in ieee80211_do_stop
-      16  INFO: trying to register non-static key in ieee80211_do_stop
-      16  INFO: trying to register non-static key in ieee80211_do_stop
-      18  INFO: trying to register non-static key in ieee80211_do_stop
-      18  INFO: trying to register non-static key in ieee80211_do_stop
-      18  INFO: trying to register non-static key in ieee80211_do_stop
-      20  INFO: trying to register non-static key in ieee80211_do_stop
-      22  INFO: trying to register non-static key in ieee80211_do_stop
-      22  INFO: trying to register non-static key in ieee80211_do_stop
-      22  INFO: trying to register non-static key in ieee80211_do_stop
-      24  INFO: trying to register non-static key in ieee80211_do_stop
-      25  INFO: trying to register non-static key in ieee80211_do_stop
-      25  INFO: trying to register non-static key in ieee80211_do_stop
-      26  INFO: trying to register non-static key in ieee80211_do_stop
-      28  INFO: trying to register non-static key in ieee80211_do_stop
-      29  INFO: trying to register non-static key in ieee80211_do_stop
-      29  INFO: trying to register non-static key in ieee80211_do_stop
-      29  INFO: trying to register non-static key in ieee80211_do_stop
-Warning: setsockopt$inet_sctp6_SCTP_AUTH_KEY was disabled by Syzkaller.
+       5  INFO: trying to register non-static key in ieee80211_do_stop
+***    5  KASAN: use-after-free Write in sctp_auth_shkey_hold
+The bug was found.
+
+New Max Time: 10
+
+==== Major Release Search ====
+12 Releases
+
+2025-09-19 17:09:30
+Session:   2
+Kernel:    2022-05-22 - 4b0986a3613c92f4ec1bdc7f60ec66fea135991f (v5.18)
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    4  KASAN: use-after-free Write in sctp_auth_shkey_hold
+***    4  KASAN: use-after-free Write in sctp_auth_shkey_hold
+***    4  KASAN: use-after-free Write in sctp_auth_shkey_hold
+Running syz-repro.
+New PoC saved at /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0079-0.prog
+Primary PoC:     /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0079-0.prog
+Run Time:        0h36m0s
+The bug was found.
+About 11 releases remaining
+
+2025-09-19 18:14:14
+Session:   3
+Kernel:    2022-03-20 - f443e374ae131c168a065ea1748feac6b2e76613 (v5.17)
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    4  KASAN: use-after-free Write in sctp_auth_shkey_hold
+The bug was found.
+About 10 releases remaining
+
+2025-09-19 18:36:54
+Session:   4
+Kernel:    2022-01-09 - df0cc57e057f18e44dac8e6c18aba47ab53202f9 (v5.16)
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    4  KASAN: use-after-free Write in sctp_auth_shkey_hold
+The bug was found.
+About 9 releases remaining
+
+2025-09-19 19:00:06
+Session:   5
+Kernel:    2021-08-29 - 7d2a07b769330c34b4deabeed939325c77a7ec2f (v5.14)
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    3  KASAN: use-after-free Write in sctp_auth_shkey_hold
+Running syz-repro.
+New PoC saved at /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0079-1.prog
+Primary PoC:     /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0079-0.prog
+Run Time:        0h37m0s
+The bug was found.
+About 8 releases remaining
+
+2025-09-19 19:57:19
+Session:   6
+Kernel:    2021-04-25 - 9f4ad9e425a1d3b6a34617b8ea226d56a119a717 (v5.12)
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 7 releases remaining
+
+==== Kernel Bisection ====
+33059 Linux commits
+
+2025-09-19 20:24:47
+Session:   7
+Kernel:    2021-06-01 - e0ae757c32353f7d185779f104e7309af81491e1
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    4  KASAN: use-after-free Write in sctp_auth_shkey_hold
+The bug was found.
+About 16528 commits remaining
+
+2025-09-19 20:46:48
+Session:   8
+Kernel:    2021-04-29 - 3644286f6cbcea86f6fa4d308e7ac06bf2a3715a
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    4  KASAN: use-after-free Write in sctp_auth_shkey_hold
+The bug was found.
+About 8254 commits remaining
+
+2025-09-19 21:07:05
+Session:   9
+Kernel:    2021-04-26 - 070a7252d21b8e8900ee8540f82f0f1a348f8816
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    4  KASAN: use-after-free Write in sctp_auth_shkey_hold
+Running syz-repro.
+New PoC saved at /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0079-1.prog
+Primary PoC:     /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0079-1.prog
+Run Time:        0h36m0s
+The bug was found.
+About 4143 commits remaining
+
+2025-09-19 22:03:02
+Session:   10
+Kernel:    2021-04-26 - d08410d8c9908058a2f69b55e24edfb0d19da7a1
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    4  KASAN: use-after-free Write in sctp_auth_shkey_hold
+***    4  KASAN: use-after-free Write in sctp_auth_shkey_hold
+The bug was found.
+About 2143 commits remaining
+
+2025-09-19 22:23:18
+Session:   11
+Kernel:    2021-04-26 - c01c0716ccf5db2086d9693033472f37de96a699
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    4  KASAN: use-after-free Write in sctp_auth_shkey_hold
+The bug was found.
+About 1039 commits remaining
+
+2025-09-19 22:34:18
+Session:   12
+Kernel:    2021-04-26 - 8e47c5f0e23234659daea78256bc1b04ea019a4b
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    4  KASAN: use-after-free Write in sctp_auth_shkey_hold
+***    4  KASAN: use-after-free Write in sctp_auth_shkey_hold
+Running syz-repro.
+New PoC saved at /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0079-6.prog
+Primary PoC:     /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0079-6.prog
+Run Time:        0h35m0s
+The bug was found.
+About 518 commits remaining
+
+2025-09-19 23:28:35
+Session:   13
+Kernel:    2021-04-26 - 47e12f14108170c36af9a0ee2271abb3dfb73e0e
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    4  KASAN: use-after-free Write in sctp_auth_shkey_hold
+The bug was found.
+About 252 commits remaining
+
+2025-09-19 23:48:45
+Session:   14
+Kernel:    2021-04-09 - 63655b62f56023ef2fa661b8a426589cd27adda7
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    4  KASAN: use-after-free Write in sctp_auth_shkey_hold
+The bug was found.
+About 126 commits remaining
+
+2025-09-20 00:09:06
+Session:   15
+Kernel:    2021-03-26 - 3877869d13a043a2dbab0d034e5eac3b21f4994d
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    4  KASAN: use-after-free Write in sctp_auth_shkey_hold
+Running syz-repro.
+New PoC saved at /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0079-1.prog
+Primary PoC:     /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0079-6.prog
+Run Time:        0h35m0s
+The bug was found.
+About 67 commits remaining
+
+2025-09-20 00:53:40
+Session:   16
+Kernel:    2021-03-13 - 8123455a648581ed08b1740e4fc33863eb353687
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    4  KASAN: use-after-free Write in sctp_auth_shkey_hold
+The bug was found.
+About 34 commits remaining
+
+2025-09-20 01:03:19
+Session:   17
+Kernel:    2021-03-07 - 44b45cdea4e3d31a3be14fd7e2b8e1584b3e670c
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    4  KASAN: use-after-free Write in sctp_auth_shkey_hold
+***    4  KASAN: use-after-free Write in sctp_auth_shkey_hold
+The bug was found.
+About 17 commits remaining
+
+2025-09-20 01:13:37
+Session:   18
+Kernel:    2021-03-07 - 4ab6093ba4b1a29da192da666a73d74f54fde649
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    4  KASAN: use-after-free Write in sctp_auth_shkey_hold
+Running syz-repro.
+New PoC saved at /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0079-1.prog
+Primary PoC:     /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0079-6.prog
+Run Time:        0h36m0s
+The bug was found.
+About 9 commits remaining
+
+2025-09-20 01:58:34
+Session:   19
+Kernel:    2021-03-07 - 8fb7bd312fdb7e38261515b53f7dbd2665bda6ad
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    4  KASAN: use-after-free Write in sctp_auth_shkey_hold
+The bug was found.
+About 5 commits remaining
+
+2025-09-20 02:08:03
+Session:   20
+Kernel:    2021-03-07 - 3e2ccc7454510e0990104eaf6f24f34be121dabb
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       6  unregister_netdevice: waiting for DEV to become free
+       6  unregister_netdevice: waiting for DEV to become free
+       6  unregister_netdevice: waiting for DEV to become free
+       7  unregister_netdevice: waiting for DEV to become free
+***    8  KASAN: use-after-free Write in sctp_auth_shkey_hold
+The bug was found.
+About 3 commits remaining
+
+2025-09-20 02:21:20
+Session:   21
+Kernel:    2021-03-07 - da3c6c836fb1a0b9f08a7efabbfb7e31a0c816f7
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    4  KASAN: use-after-free Write in sctp_auth_shkey_hold
+Running syz-repro.
+New PoC saved at /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0079-1.prog
+Primary PoC:     /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0079-6.prog
+Run Time:        0h55m0s
+The bug was found.
+About 2 commits remaining
+
+==== Partial Result: Focused Fuzzing ====
+Reproducer:           /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0079-6.prog
+Bisection Result:     2021-03-07 - da3c6c836fb1a0b9f08a7efabbfb7e31a0c816f7
+Bisected Commit Name: crypto: powepc/sha1 - remove unneeded semicolon
+Stage Time:           10h52m1s
+Run Time:             10h52m2s
+=========================================
+
+==== Anchor Commit ====
+
+2025-09-20 03:25:37
+Session:   22
+Kernel:    2021-03-05 - a38fd8748464831584a19438cbb3082b5a2dab15
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0079-6.prog
+Attempt 0:
+*** KASAN: use-after-free Write in sctp_auth_shkey_hold
+Attempt 1:
+*** KASAN: use-after-free Write in sctp_auth_shkey_hold
 Attempt 2:
-    Time  Bug Name
-       2  INFO: trying to register non-static key in ieee80211_do_stop
-       7  INFO: trying to register non-static key in ieee80211_do_stop
-       7  INFO: trying to register non-static key in ieee80211_do_stop
-       7  INFO: trying to register non-static key in ieee80211_do_stop
-       7  INFO: trying to register non-static key in ieee80211_do_stop
-      10  INFO: trying to register non-static key in ieee80211_do_stop
-      10  INFO: trying to register non-static key in ieee80211_do_stop
-      10  INFO: trying to register non-static key in ieee80211_do_stop
-      10  INFO: trying to register non-static key in ieee80211_do_stop
-      13  INFO: trying to register non-static key in ieee80211_do_stop
-      14  INFO: trying to register non-static key in ieee80211_do_stop
-      14  INFO: trying to register non-static key in ieee80211_do_stop
-      14  INFO: trying to register non-static key in ieee80211_do_stop
-      17  INFO: trying to register non-static key in ieee80211_do_stop
-      17  INFO: trying to register non-static key in ieee80211_do_stop
-      18  INFO: trying to register non-static key in ieee80211_do_stop
-      18  INFO: trying to register non-static key in ieee80211_do_stop
-      20  INFO: trying to register non-static key in ieee80211_do_stop
-      20  INFO: trying to register non-static key in ieee80211_do_stop
-      20  INFO: trying to register non-static key in ieee80211_do_stop
-      21  INFO: trying to register non-static key in ieee80211_do_stop
-      24  INFO: trying to register non-static key in ieee80211_do_stop
-      24  INFO: trying to register non-static key in ieee80211_do_stop
-      24  INFO: trying to register non-static key in ieee80211_do_stop
-      25  INFO: trying to register non-static key in ieee80211_do_stop
-      28  INFO: trying to register non-static key in ieee80211_do_stop
-      28  INFO: trying to register non-static key in ieee80211_do_stop
-      28  INFO: trying to register non-static key in ieee80211_do_stop
-      29  INFO: trying to register non-static key in ieee80211_do_stop
-Warning: setsockopt$inet_sctp6_SCTP_AUTH_KEY was disabled by Syzkaller.
+*** KASAN: use-after-free Write in sctp_auth_shkey_hold
 Attempt 3:
-    Time  Bug Name
-       2  INFO: trying to register non-static key in ieee80211_do_stop
-       8  INFO: trying to register non-static key in ieee80211_do_stop
-       8  INFO: trying to register non-static key in ieee80211_do_stop
-       8  INFO: trying to register non-static key in ieee80211_do_stop
-       8  INFO: trying to register non-static key in ieee80211_do_stop
-      11  INFO: trying to register non-static key in ieee80211_do_stop
-      12  INFO: trying to register non-static key in ieee80211_do_stop
-      12  INFO: trying to register non-static key in ieee80211_do_stop
-      14  INFO: trying to register non-static key in ieee80211_do_stop
-      15  INFO: trying to register non-static key in ieee80211_do_stop
-      16  INFO: trying to register non-static key in ieee80211_do_stop
-      16  INFO: trying to register non-static key in ieee80211_do_stop
-      18  INFO: trying to register non-static key in ieee80211_do_stop
-      20  INFO: trying to register non-static key in ieee80211_do_stop
-      21  INFO: trying to register non-static key in ieee80211_do_stop
-      21  INFO: trying to register non-static key in ieee80211_do_stop
-      23  INFO: trying to register non-static key in ieee80211_do_stop
-      24  INFO: trying to register non-static key in ieee80211_do_stop
-      25  INFO: trying to register non-static key in ieee80211_do_stop
-      25  INFO: trying to register non-static key in ieee80211_do_stop
-      27  INFO: trying to register non-static key in ieee80211_do_stop
-      28  INFO: trying to register non-static key in ieee80211_do_stop
-      29  INFO: trying to register non-static key in ieee80211_do_stop
-      29  INFO: trying to register non-static key in ieee80211_do_stop
+*** KASAN: use-after-free Write in sctp_auth_shkey_hold
+Attempt 4:
+*** KASAN: use-after-free Write in sctp_auth_shkey_hold
+Attempt 5:
+*** KASAN: use-after-free Write in sctp_auth_shkey_hold
+Attempt 6:
+*** KASAN: use-after-free Write in sctp_auth_shkey_hold
+Attempt 7:
+*** KASAN: use-after-free Write in sctp_auth_shkey_hold
+The bug was found.
+
+==== Major Release Search ====
+9 Releases
+
+2025-09-20 03:35:07
+Session:   23
+Kernel:    2021-02-14 - f40ddce88593482919761f74910f42f4b84c004b (v5.11)
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 0:
+*** KASAN: use-after-free Write in sctp_auth_shkey_hold
+Attempt 1:
+*** KASAN: use-after-free Write in sctp_auth_shkey_hold
+Attempt 2:
+*** KASAN: use-after-free Write in sctp_auth_shkey_hold
+Attempt 3:
+*** KASAN: use-after-free Write in sctp_auth_shkey_hold
+Attempt 4:
+*** KASAN: use-after-free Write in sctp_auth_shkey_hold
+    WARNING: refcount bug in sctp_auth_shkey_hold
+Attempt 5:
+*** KASAN: use-after-free Write in sctp_auth_shkey_hold
+Attempt 6:
+*** KASAN: use-after-free Write in sctp_auth_shkey_hold
+    WARNING: refcount bug in sctp_auth_shkey_hold
+Attempt 7:
+*** KASAN: use-after-free Write in sctp_auth_shkey_hold
+The bug was found.
+About 8 releases remaining
+
+2025-09-20 03:54:40
+Session:   24
+Kernel:    2020-12-13 - 2c85ebc57b3e1817b6ce1a6b703928e113a90442 (v5.10)
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 0:
+*** KASAN: use-after-free Write in sctp_auth_shkey_hold
+    WARNING: refcount bug in corrupted
+Attempt 1:
+*** KASAN: use-after-free Write in sctp_auth_shkey_hold
+Attempt 2:
+*** KASAN: use-after-free Write in sctp_auth_shkey_hold
+Attempt 3:
+*** KASAN: use-after-free Write in sctp_auth_shkey_hold
+Attempt 4:
+*** KASAN: use-after-free Write in sctp_auth_shkey_hold
+    WARNING: refcount bug in corrupted
+Attempt 5:
+*** KASAN: use-after-free Write in sctp_auth_shkey_hold
+Attempt 6:
+*** KASAN: use-after-free Write in sctp_auth_shkey_hold
+Attempt 7:
+*** KASAN: use-after-free Write in sctp_auth_shkey_hold
+The bug was found.
+About 7 releases remaining
+
+2025-09-20 04:15:20
+Session:   25
+Kernel:    2020-10-11 - bbf5c979011a099af5dc76498918ed7df445635b (v5.9)
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 0:
+*** KASAN: use-after-free Write in sctp_auth_shkey_hold
+Attempt 1:
+*** KASAN: use-after-free Write in sctp_auth_shkey_hold
+Attempt 2:
+*** KASAN: use-after-free Write in sctp_auth_shkey_hold
+    WARNING: refcount bug in sctp_auth_shkey_hold
+    WARNING: refcount bug in corrupted
+Attempt 3:
+*** KASAN: use-after-free Write in sctp_auth_shkey_hold
+Attempt 4:
+*** KASAN: use-after-free Write in sctp_auth_shkey_hold
+    WARNING: refcount bug in sctp_auth_shkey_hold
+    WARNING: refcount bug in corrupted
+Attempt 5:
+*** KASAN: use-after-free Write in sctp_auth_shkey_hold
+Attempt 6:
+*** KASAN: use-after-free Write in sctp_auth_shkey_hold
+Attempt 7:
+*** KASAN: use-after-free Write in sctp_auth_shkey_hold
+The bug was found.
+About 6 releases remaining
+
+2025-09-20 04:34:13
+Session:   26
+Kernel:    2020-05-31 - 3d77e6a8804abcc0504c904bd6e5cdf3a5cf8162 (v5.7)
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-8.1.0/bin/gcc
+Attempt 0:
+*** KASAN: use-after-free Write in sctp_auth_shkey_hold
+Attempt 1:
+*** KASAN: use-after-free Write in sctp_auth_shkey_hold
+Attempt 2:
+*** KASAN: use-after-free Write in sctp_auth_shkey_hold
+Attempt 3:
+*** KASAN: use-after-free Write in sctp_auth_shkey_hold
+Attempt 4:
+*** KASAN: use-after-free Write in sctp_auth_shkey_hold
+Attempt 5:
+*** KASAN: use-after-free Write in sctp_auth_shkey_hold
+Attempt 6:
+*** KASAN: use-after-free Write in sctp_auth_shkey_hold
+Attempt 7:
+*** KASAN: use-after-free Write in sctp_auth_shkey_hold
+The bug was found.
+About 5 releases remaining
+
+2025-09-20 04:53:15
+Session:   27
+Kernel:    2020-01-26 - d5226fa6dbae0569ee43ecfc08bdcd6770fc4755 (v5.5)
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-8.1.0/bin/gcc
+Attempt 0:
+*** KASAN: use-after-free Write in sctp_auth_shkey_hold
+    WARNING: refcount bug in sctp_auth_shkey_release
+Attempt 1:
+*** KASAN: use-after-free Write in sctp_auth_shkey_hold
+Attempt 2:
+*** KASAN: use-after-free Write in sctp_auth_shkey_hold
+Attempt 3:
+*** KASAN: use-after-free Write in sctp_auth_shkey_hold
+Attempt 4:
+*** KASAN: use-after-free Write in sctp_auth_shkey_hold
+    WARNING: refcount bug in sctp_auth_shkey_hold
+    WARNING: refcount bug in sctp_auth_shkey_hold
+Attempt 5:
+*** KASAN: use-after-free Write in sctp_auth_shkey_hold
+Attempt 6:
+*** KASAN: use-after-free Write in sctp_auth_shkey_hold
+Attempt 7:
+    WARNING in __dev_mc_add
+The bug was found.
+About 4 releases remaining
+
+2025-09-20 05:13:03
+Session:   28
+Kernel:    2019-09-15 - 4d856f72c10ecb060868ed10ff1b1453943fc6c8 (v5.3)
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-8.1.0/bin/gcc
+Attempt 0:
+    BUG: spinlock bad magic in nf_connlabels_get
+Attempt 1:
+    BUG: spinlock bad magic in nf_connlabels_get
+Attempt 2:
+    BUG: spinlock bad magic in nf_connlabels_get
+Attempt 3:
+    BUG: spinlock bad magic in nf_connlabels_get
+Attempt 4:
+    BUG: spinlock bad magic in nf_connlabels_get
+Attempt 5:
+    BUG: spinlock bad magic in nf_connlabels_get
+Attempt 6:
+    BUG: spinlock bad magic in nf_connlabels_get
+Attempt 7:
+    BUG: spinlock bad magic in nf_connlabels_get
+The bug was not found.
+About 3 releases remaining
+
+==== Kernel Bisection ====
+31223 Linux commits
+
+2025-09-20 05:30:17
+Session:   29
+Kernel:    2019-10-30 - 60845e34f0c5c19a9e86af477b429993952f585b
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-8.1.0/bin/gcc
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+About 15619 commits remaining
+
+2025-09-20 05:46:23
+Session:   30
+Kernel:    2019-11-27 - 0dd09bc02c1bad55e92306ca83b38b3cf48b9f40
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-8.1.0/bin/gcc
+Attempt 0:
+    BUG: MAX_LOCKDEP_ENTRIES too low!
+Attempt 1:
+    BUG: MAX_LOCKDEP_ENTRIES too low!
+Attempt 2:
+    BUG: MAX_LOCKDEP_ENTRIES too low!
+Attempt 3:
+    WARNING in __dev_mc_add
+    WARNING in __crash_kexec
+    WARNING in __crash_kexec
+Attempt 4:
+    BUG: MAX_LOCKDEP_ENTRIES too low!
+Attempt 5:
+    BUG: MAX_LOCKDEP_ENTRIES too low!
+Attempt 6:
+    BUG: MAX_LOCKDEP_ENTRIES too low!
+Attempt 7:
+    BUG: MAX_LOCKDEP_ENTRIES too low!
+The bug was not found.
+About 8823 commits remaining
+
+2025-09-20 06:13:44
+Session:   31
+Kernel:    2019-12-04 - 6cdc7f2efc25a6dbddf7c57bb2eee5d6c033d678
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-8.1.0/bin/gcc
+Attempt 0:
+    BUG: MAX_LOCKDEP_ENTRIES too low!
+Attempt 1:
+    BUG: MAX_LOCKDEP_ENTRIES too low!
+Attempt 2:
+    BUG: MAX_LOCKDEP_ENTRIES too low!
+Attempt 3:
+    BUG: MAX_LOCKDEP_ENTRIES too low!
+Attempt 4:
+    BUG: MAX_LOCKDEP_ENTRIES too low!
+Attempt 5:
+    BUG: MAX_LOCKDEP_ENTRIES too low!
+Attempt 6:
+    BUG: MAX_LOCKDEP_ENTRIES too low!
+Attempt 7:
+    BUG: MAX_LOCKDEP_ENTRIES too low!
+The bug was not found.
+About 3787 commits remaining
+
+2025-09-20 06:40:35
+Session:   32
+Kernel:    2019-12-19 - a019739c1c32cbd07f62b1d84fa57620897464b1
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-8.1.0/bin/gcc
+Attempt 0:
+*** KASAN: use-after-free Write in sctp_auth_shkey_hold
+Attempt 1:
+*** KASAN: use-after-free Write in sctp_auth_shkey_hold
+Attempt 2:
+*** KASAN: use-after-free Write in sctp_auth_shkey_hold
+    WARNING: refcount bug in sctp_auth_shkey_hold
+Attempt 3:
+*** KASAN: use-after-free Write in sctp_auth_shkey_hold
+Attempt 4:
+*** KASAN: use-after-free Write in sctp_auth_shkey_hold
+Attempt 5:
+*** KASAN: use-after-free Write in sctp_auth_shkey_hold
+Attempt 6:
+*** KASAN: use-after-free Write in sctp_auth_shkey_hold
+Attempt 7:
+*** KASAN: use-after-free Write in sctp_auth_shkey_hold
+The bug was found.
+About 1895 commits remaining
+
+2025-09-20 07:00:58
+Session:   33
+Kernel:    2019-12-05 - eb275167d18684e07ee43bdc0e09a18326540461
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-8.1.0/bin/gcc
+Attempt 0:
+    BUG: MAX_LOCKDEP_ENTRIES too low!
+Attempt 1:
+    BUG: MAX_LOCKDEP_ENTRIES too low!
+Attempt 2:
+    BUG: MAX_LOCKDEP_ENTRIES too low!
+Attempt 3:
+*** KASAN: use-after-free Write in sctp_auth_shkey_hold
+Attempt 4:
+    BUG: MAX_LOCKDEP_ENTRIES too low!
+Attempt 5:
+    BUG: MAX_LOCKDEP_ENTRIES too low!
+Attempt 6:
+    BUG: MAX_LOCKDEP_ENTRIES too low!
+Attempt 7:
+    BUG: MAX_LOCKDEP_ENTRIES too low!
+The bug was found.
+About 1119 commits remaining
+
+2025-09-20 07:27:18
+Session:   34
+Kernel:    2019-11-08 - 44124df44db01b6ded323317f8d07b8541517c54
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-8.1.0/bin/gcc
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+About 14407 commits remaining
+
+2025-09-20 07:43:20
+Session:   35
+Kernel:    2019-12-05 - 38206c24ab09b4f4c2a57de5c1af0bb2e69cf5b6
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-8.1.0/bin/gcc
+Attempt 0:
+    BUG: MAX_LOCKDEP_ENTRIES too low!
+Attempt 1:
+    BUG: MAX_LOCKDEP_ENTRIES too low!
+Attempt 2:
+    BUG: MAX_LOCKDEP_ENTRIES too low!
+Attempt 3:
+    BUG: MAX_LOCKDEP_ENTRIES too low!
+Attempt 4:
+    BUG: MAX_LOCKDEP_ENTRIES too low!
+Attempt 5:
+    BUG: MAX_LOCKDEP_ENTRIES too low!
+Attempt 6:
+    BUG: MAX_LOCKDEP_ENTRIES too low!
+Attempt 7:
+    BUG: MAX_LOCKDEP_ENTRIES too low!
+The bug was not found.
+About 886 commits remaining
+
+2025-09-20 08:08:43
+Session:   36
+Kernel:    2019-11-11 - f1deadb5bed4432eac9b793b5b94ad4576082ba0
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-8.1.0/bin/gcc
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+About 14242 commits remaining
+
+2025-09-20 08:15:53
+Session:   37
+Kernel:    2019-11-03 - b4067b10502323f4e30a7a61baf7cae055ba32c4
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-8.1.0/bin/gcc
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+About 14881 commits remaining
+
+2025-09-20 08:23:20
+Session:   38
+Kernel:    2019-11-08 - e24eb5e6e9577360f54f19e4705991cd9ecd0001
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-8.1.0/bin/gcc
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+About 14841 commits remaining
+
+2025-09-20 08:30:38
+Session:   39
+Kernel:    2019-11-11 - 13c1eff1755bdea7fede4b238aadc0228e410dfe
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-8.1.0/bin/gcc
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+About 14821 commits remaining
+
+2025-09-20 08:39:52
+Session:   40
+Kernel:    2019-11-11 - 141bef44e123c101c0da0443ab6b3cfa750f251a
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-8.1.0/bin/gcc
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+About 15255 commits remaining
+
+2025-09-20 08:56:20
+Session:   41
+Kernel:    2019-11-16 - 3f6939aec712a15152c32516c1c543a91ac1e717
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-8.1.0/bin/gcc
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+About 14800 commits remaining
+
+2025-09-20 09:11:30
+Session:   42
+Kernel:    2019-11-11 - abb0e36b434d784864fe0e4d5dedd17f4d72f3e3
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-8.1.0/bin/gcc
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+About 15251 commits remaining
+
+2025-09-20 09:18:36
+Session:   43
+Kernel:    2019-11-12 - 5f1f15283419ded3e16617ac0b79abc6f2b73bba
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-8.1.0/bin/gcc
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+About 14238 commits remaining
+
+2025-09-20 09:26:08
+Session:   44
+Kernel:    2019-12-05 - ec939e4c94bd3ef2fd4f34c15f8aaf79bd0c5ee1
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-8.1.0/bin/gcc
+Attempt 0:
+    BUG: MAX_LOCKDEP_ENTRIES too low!
+Attempt 1:
+    BUG: MAX_LOCKDEP_ENTRIES too low!
+Attempt 2:
+    BUG: MAX_LOCKDEP_ENTRIES too low!
+Attempt 3:
+    BUG: MAX_LOCKDEP_ENTRIES too low!
+Attempt 4:
+    BUG: MAX_LOCKDEP_ENTRIES too low!
+Attempt 5:
+    BUG: MAX_LOCKDEP_ENTRIES too low!
+Attempt 6:
+    BUG: MAX_LOCKDEP_ENTRIES too low!
+Attempt 7:
+    BUG: MAX_LOCKDEP_ENTRIES too low!
+The bug was not found.
+About 710 commits remaining
+
+==== Partial Result: Primary PoC Test ====
+Reproducer:           /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0079-6.prog
+Bisection Result:     2019-12-05 - eb275167d18684e07ee43bdc0e09a18326540461
+Bisected Commit Name: Merge tag 'armsoc-dt' of git://git.kernel.org/pub/scm/linux/kernel/git/soc/soc
+Stage Time:           6h26m7s
+Run Time:             17h18m9s
+==========================================
+
+==== Anchor Commit ====
+
+2025-09-20 09:51:44
+Session:   45
+Kernel:    2019-12-05 - ec939e4c94bd3ef2fd4f34c15f8aaf79bd0c5ee1
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-8.1.0/bin/gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0079-3.prog
+Attempt 0:
+    BUG: MAX_LOCKDEP_ENTRIES too low!
+Attempt 1:
+    BUG: MAX_LOCKDEP_ENTRIES too low!
+Attempt 2:
+*** KASAN: use-after-free Write in sctp_auth_shkey_hold
+Attempt 3:
+    BUG: MAX_LOCKDEP_ENTRIES too low!
+*** KASAN: use-after-free Write in sctp_auth_shkey_hold
+Attempt 4:
+    BUG: MAX_LOCKDEP_ENTRIES too low!
+Attempt 5:
+    BUG: MAX_LOCKDEP_ENTRIES too low!
+Attempt 6:
+    BUG: MAX_LOCKDEP_ENTRIES too low!
+Attempt 7:
+    BUG: MAX_LOCKDEP_ENTRIES too low!
+The bug was found.
+
+==== Major Release Search ====
+6 Releases
+
+2025-09-20 10:08:53
+Session:   46
+Kernel:    2019-11-24 - 219d54332a09e8d8741c1e1982f5eae56099de85 (v5.4)
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-8.1.0/bin/gcc
+Attempt 0:
+    KASAN: use-after-free Read in sctp_packet_append_chunk
+    kernel BUG in sctp_auth_shkey_release
+    invalid opcode in sctp_auth_shkey_release
+    kernel panic: Fatal exception
+Attempt 1:
+    KASAN: use-after-free Read in sctp_packet_append_chunk
+    kernel BUG in sctp_auth_shkey_release
+    invalid opcode in sctp_auth_shkey_release
+    kernel BUG in corrupted
+Attempt 2:
+    KASAN: use-after-free Read in sctp_packet_append_chunk
+Attempt 3:
+    KASAN: use-after-free Read in sctp_packet_append_chunk
+Attempt 4:
+    KASAN: use-after-free Read in sctp_packet_append_chunk
+Attempt 5:
+    KASAN: use-after-free Read in sctp_packet_append_chunk
+Attempt 6:
+    KASAN: use-after-free Read in sctp_packet_append_chunk
+Attempt 7:
+    KASAN: use-after-free Read in sctp_packet_append_chunk
+The bug was not found.
+About 5 releases remaining
+
+==== Kernel Bisection ====
+12121 Linux commits
+
+2025-09-20 10:29:26
+Session:   47
+Kernel:    2019-11-27 - 8f56e4ebe05c26c30e167519273843476e39e244
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-8.1.0/bin/gcc
+Attempt 0:
+    BUG: MAX_LOCKDEP_ENTRIES too low!
+*** KASAN: use-after-free Write in sctp_auth_shkey_hold
+Attempt 1:
+    BUG: MAX_LOCKDEP_ENTRIES too low!
+Attempt 2:
+    BUG: MAX_LOCKDEP_ENTRIES too low!
+Attempt 3:
+    BUG: MAX_LOCKDEP_ENTRIES too low!
+Attempt 4:
+    BUG: MAX_LOCKDEP_ENTRIES too low!
+Attempt 5:
+    BUG: MAX_LOCKDEP_ENTRIES too low!
+Attempt 6:
+    BUG: MAX_LOCKDEP_ENTRIES too low!
+Attempt 7:
+    BUG: MAX_LOCKDEP_ENTRIES too low!
+The bug was found.
+About 6119 commits remaining
+
+2025-09-20 10:56:00
+Session:   48
+Kernel:    2019-11-25 - 386403a115f95997c2715691226e11a7b5cffcfd
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-8.1.0/bin/gcc
+Attempt 0:
+    BUG: MAX_LOCKDEP_ENTRIES too low!
+Attempt 1:
+    BUG: MAX_LOCKDEP_ENTRIES too low!
+    KASAN: use-after-free Read in sctp_packet_append_chunk
+Attempt 2:
+    BUG: MAX_LOCKDEP_ENTRIES too low!
+Attempt 3:
+    BUG: MAX_LOCKDEP_ENTRIES too low!
+Attempt 4:
+    BUG: MAX_LOCKDEP_ENTRIES too low!
+Attempt 5:
+    BUG: MAX_LOCKDEP_ENTRIES too low!
+Attempt 6:
+    BUG: MAX_LOCKDEP_ENTRIES too low!
+Attempt 7:
+    BUG: MAX_LOCKDEP_ENTRIES too low!
+The bug was not found.
+About 2700 commits remaining
+
+2025-09-20 11:22:13
+Session:   49
+Kernel:    2019-11-26 - 3f1b210a7f97f7e75c56174ada476fba2d36f340
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-8.1.0/bin/gcc
+Attempt 0:
+    BUG: MAX_LOCKDEP_ENTRIES too low!
+Attempt 1:
+    BUG: MAX_LOCKDEP_ENTRIES too low!
+Attempt 2:
+    BUG: MAX_LOCKDEP_ENTRIES too low!
+Attempt 3:
+    BUG: MAX_LOCKDEP_ENTRIES too low!
+Attempt 4:
+    BUG: MAX_LOCKDEP_ENTRIES too low!
+Attempt 5:
+    BUG: MAX_LOCKDEP_ENTRIES too low!
+Attempt 6:
+    BUG: MAX_LOCKDEP_ENTRIES too low!
+Attempt 7:
+    BUG: MAX_LOCKDEP_ENTRIES too low!
+The bug was not found.
+About 1202 commits remaining
+
+2025-09-20 11:44:43
+Session:   50
+Kernel:    2019-11-27 - 0e45384cecccaa950783e67e7a29ed470133f19d
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-8.1.0/bin/gcc
+Attempt 0:
+    BUG: MAX_LOCKDEP_ENTRIES too low!
+Attempt 1:
+    BUG: MAX_LOCKDEP_ENTRIES too low!
+Attempt 2:
+    BUG: MAX_LOCKDEP_ENTRIES too low!
+Attempt 3:
+    BUG: MAX_LOCKDEP_ENTRIES too low!
+Attempt 4:
+    BUG: MAX_LOCKDEP_ENTRIES too low!
+Attempt 5:
+    BUG: MAX_LOCKDEP_ENTRIES too low!
+Attempt 6:
+    BUG: MAX_LOCKDEP_ENTRIES too low!
+Attempt 7:
+    BUG: MAX_LOCKDEP_ENTRIES too low!
+The bug was not found.
+About 613 commits remaining
+
+2025-09-20 12:01:38
+Session:   51
+Kernel:    2019-11-21 - 91a9f2d3f9762e59cca251d2c6cef8cda1a4e62b
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-8.1.0/bin/gcc
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+About 6569 commits remaining
+
+2025-09-20 12:17:36
+Session:   52
+Kernel:    2019-11-21 - 7f74d4d335f1bdcb51fca584d5ad065c4ff996ac
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-8.1.0/bin/gcc
+Attempt 0:
+    KASAN: use-after-free Read in sctp_packet_append_chunk
+Attempt 1:
+    KASAN: use-after-free Read in sctp_packet_append_chunk
+Attempt 2:
+    KASAN: use-after-free Read in sctp_packet_append_chunk
+Attempt 3:
+    KASAN: use-after-free Read in sctp_packet_append_chunk
+Attempt 4:
+    KASAN: use-after-free Read in sctp_packet_append_chunk
+Attempt 5:
+    KASAN: use-after-free Read in sctp_packet_append_chunk
+    kernel BUG in sctp_auth_shkey_release
+    kernel BUG in sctp_auth_shkey_release
+    invalid opcode in sctp_auth_shkey_release
+    invalid opcode in sctp_auth_shkey_release
+    kernel panic: Fatal exception
+Attempt 6:
+    KASAN: use-after-free Read in sctp_packet_append_chunk
+Attempt 7:
+    KASAN: use-after-free Read in sctp_packet_append_chunk
+    kernel BUG in sctp_auth_shkey_release
+    invalid opcode in sctp_auth_shkey_release
+The bug was not found.
+About 6268 commits remaining
+
+2025-09-20 12:35:39
+Session:   53
+Kernel:    2019-10-28 - bb3dba330006fcf820136992afef64c3d2cdcc55
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-8.1.0/bin/gcc
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+About 7079 commits remaining
+
+2025-09-20 12:52:25
+Session:   54
+Kernel:    2019-11-14 - 64c264872b8879e2ab9017eefe9514d4c045c60e
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-8.1.0/bin/gcc
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+About 7035 commits remaining
+
+2025-09-20 13:01:04
+Session:   55
+Kernel:    2019-11-25 - e2b2744a06d35ba44f32c86e0579d986931187b3
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-8.1.0/bin/gcc
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+About 6982 commits remaining
+
+2025-09-20 13:13:52
+Session:   56
+Kernel:    2019-11-21 - e16ee4103770acf365372886eac7c750017c918e
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-8.1.0/bin/gcc
+Attempt 0:
+    KASAN: use-after-free Read in sctp_packet_append_chunk
+Attempt 1:
+    KASAN: use-after-free Read in sctp_packet_append_chunk
+Attempt 2:
+    KASAN: use-after-free Read in sctp_packet_append_chunk
+Attempt 3:
+    KASAN: use-after-free Read in sctp_packet_append_chunk
+Attempt 4:
+    KASAN: use-after-free Read in sctp_packet_append_chunk
+Attempt 5:
+    KASAN: use-after-free Read in sctp_packet_append_chunk
+Attempt 6:
+    KASAN: use-after-free Read in sctp_packet_append_chunk
+    kernel BUG in sctp_auth_shkey_release
+    invalid opcode in sctp_auth_shkey_release
+Attempt 7:
+    KASAN: use-after-free Read in sctp_packet_append_chunk
+The bug was not found.
+About 6257 commits remaining
+
+2025-09-20 13:22:53
+Session:   57
+Kernel:    2019-11-21 - b78cda795ac83333293f1bfa3165572a47e550c2
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-8.1.0/bin/gcc
+Attempt 0:
+    KASAN: use-after-free Read in sctp_packet_append_chunk
+    kernel BUG in sctp_auth_shkey_release
+    kernel BUG in sctp_auth_shkey_release
+    invalid opcode in sctp_auth_shkey_release
+    invalid opcode in sctp_auth_shkey_release
+Attempt 1:
+    KASAN: use-after-free Read in sctp_packet_append_chunk
+Attempt 2:
+    KASAN: use-after-free Read in sctp_packet_append_chunk
+Attempt 3:
+    KASAN: use-after-free Read in sctp_packet_append_chunk
+Attempt 4:
+    KASAN: use-after-free Read in sctp_packet_append_chunk
+Attempt 5:
+    KASAN: use-after-free Read in sctp_packet_append_chunk
+Attempt 6:
+    KASAN: use-after-free Read in sctp_packet_append_chunk
+Attempt 7:
+    KASAN: use-after-free Read in sctp_packet_append_chunk
+    kernel BUG in sctp_auth_shkey_release
+    invalid opcode in sctp_auth_shkey_release
+The bug was not found.
+About 6251 commits remaining
+
+2025-09-20 13:37:20
+Session:   58
+Kernel:    2019-11-25 - f295e4cece5cb4c60715fed539abcd62468f9ef1
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-8.1.0/bin/gcc
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+About 6979 commits remaining
+
+2025-09-20 13:44:53
+Session:   59
+Kernel:    2019-11-27 - 59274c7164807d27b24e6c068dfe734f7bea4623
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-8.1.0/bin/gcc
+Attempt 0:
+    BUG: MAX_LOCKDEP_ENTRIES too low!
+Attempt 1:
+    BUG: MAX_LOCKDEP_ENTRIES too low!
+Attempt 2:
+    BUG: MAX_LOCKDEP_ENTRIES too low!
+Attempt 3:
+    BUG: MAX_LOCKDEP_ENTRIES too low!
+Attempt 4:
+    BUG: MAX_LOCKDEP_ENTRIES too low!
+Attempt 5:
+    BUG: MAX_LOCKDEP_ENTRIES too low!
+Attempt 6:
+    WARNING in __dev_mc_add
+    WARNING in __crash_kexec
+    WARNING in __crash_kexec
+Attempt 7:
+*** KASAN: use-after-free Write in sctp_auth_shkey_hold
+The bug was found.
+About 6770 commits remaining
+
+2025-09-20 14:11:07
+Session:   60
+Kernel:    2019-11-27 - d76886972823ce456c0c61cd2284e85668e2131e
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-8.1.0/bin/gcc
+Attempt 0:
+    BUG: MAX_LOCKDEP_ENTRIES too low!
+Attempt 1:
+    BUG: MAX_LOCKDEP_ENTRIES too low!
+Attempt 2:
+    BUG: MAX_LOCKDEP_ENTRIES too low!
+*** KASAN: use-after-free Write in sctp_auth_shkey_hold
+Attempt 3:
+    BUG: MAX_LOCKDEP_ENTRIES too low!
+Attempt 4:
+    BUG: MAX_LOCKDEP_ENTRIES too low!
+Attempt 5:
+    BUG: MAX_LOCKDEP_ENTRIES too low!
+Attempt 6:
+    BUG: MAX_LOCKDEP_ENTRIES too low!
+Attempt 7:
+    BUG: MAX_LOCKDEP_ENTRIES too low!
+The bug was found.
+About 6540 commits remaining
+
+==== Partial Result: Subsequent PoC Test ====
+Reproducer:           /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0079-3.prog
+Bisection Result:     2019-11-27 - d76886972823ce456c0c61cd2284e85668e2131e
+Bisected Commit Name: Merge tag 'for-linus' of git://git.kernel.org/pub/scm/linux/kernel/git/rdma/rdma
+Stage Time:           4h36m29s
+Run Time:             21h54m38s
+=============================================
+
+==== Anchor Commit ====
+
+2025-09-20 14:28:13
+Session:   61
+Kernel:    2019-11-27 - 0e45384cecccaa950783e67e7a29ed470133f19d
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-8.1.0/bin/gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0079-0.prog
+Attempt 0:
+    BUG: MAX_LOCKDEP_ENTRIES too low!
+Attempt 1:
+    BUG: MAX_LOCKDEP_ENTRIES too low!
+*** KASAN: use-after-free Write in sctp_auth_shkey_hold
+Attempt 2:
+    BUG: MAX_LOCKDEP_ENTRIES too low!
+Attempt 3:
+    BUG: MAX_LOCKDEP_ENTRIES too low!
+Attempt 4:
+    BUG: MAX_LOCKDEP_ENTRIES too low!
+Attempt 5:
+    BUG: MAX_LOCKDEP_ENTRIES too low!
+Attempt 6:
+    BUG: MAX_LOCKDEP_ENTRIES too low!
+Attempt 7:
+    WARNING in __dev_mc_add
+    WARNING in __crash_kexec
+    WARNING in __crash_kexec
+The bug was found.
+
+==== Major Release Search ====
+6 Releases
+
+2025-09-20 14:50:39
+Session:   62
+Kernel:    2019-11-24 - 219d54332a09e8d8741c1e1982f5eae56099de85 (v5.4)
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-8.1.0/bin/gcc
+Attempt 0:
+    KASAN: use-after-free Read in sctp_packet_append_chunk
+Attempt 1:
+    KASAN: use-after-free Read in sctp_packet_append_chunk
+    kernel BUG in sctp_auth_shkey_release
+    invalid opcode in sctp_auth_shkey_release
+    kernel panic: Fatal exception
+Attempt 2:
+    KASAN: use-after-free Read in sctp_packet_append_chunk
+Attempt 3:
+    KASAN: use-after-free Read in sctp_packet_append_chunk
+Attempt 4:
+    KASAN: use-after-free Read in sctp_packet_append_chunk
+Attempt 5:
+    KASAN: use-after-free Read in sctp_packet_append_chunk
+Attempt 6:
+    KASAN: use-after-free Read in sctp_packet_append_chunk
+Attempt 7:
+    KASAN: use-after-free Read in sctp_packet_append_chunk
+    kernel BUG in sctp_auth_shkey_release
+    invalid opcode in sctp_auth_shkey_release
+The bug was not found.
+About 5 releases remaining
+
+2025-09-20 15:10:36
+Session:   63
+Kernel:    2019-09-15 - 4d856f72c10ecb060868ed10ff1b1453943fc6c8 (v5.3)
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-8.1.0/bin/gcc
+Attempt 0:
+    BUG: spinlock bad magic in nf_connlabels_get
+Attempt 1:
+    BUG: spinlock bad magic in nf_connlabels_get
+Attempt 2:
+    BUG: spinlock bad magic in nf_connlabels_get
+Attempt 3:
+    BUG: spinlock bad magic in nf_connlabels_get
+Attempt 4:
+    BUG: spinlock bad magic in nf_connlabels_get
+Attempt 5:
+    BUG: spinlock bad magic in nf_connlabels_get
+Attempt 6:
+    BUG: spinlock bad magic in nf_connlabels_get
+Attempt 7:
+    BUG: spinlock bad magic in nf_connlabels_get
+The bug was not found.
+About 4 releases remaining
+
+2025-09-20 15:27:21
+Session:   64
+Kernel:    2019-07-07 - 0ecfebd2b52404ae0c54a878c872bb93363ada36 (v5.2)
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-8.1.0/bin/gcc
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    general protection fault in batadv_iv_ogm_queue_add
+    kernel panic: Fatal exception
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+About 3 releases remaining
+
+==== Kernel Bisection ====
+37016 Linux commits
+
+2025-09-20 15:49:08
+Session:   65
+Kernel:    2019-09-17 - ea982ba7f79141d86eb7a440fcba6796ed718b9b
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-8.1.0/bin/gcc
+Attempt 0:
+    BUG: spinlock bad magic in nf_connlabels_get
+Attempt 1:
+    BUG: spinlock bad magic in nf_connlabels_get
+Attempt 2:
+    BUG: spinlock bad magic in nf_connlabels_get
+Attempt 3:
+    BUG: spinlock bad magic in nf_connlabels_get
+Attempt 4:
+    BUG: spinlock bad magic in nf_connlabels_get
+Attempt 5:
+    BUG: spinlock bad magic in nf_connlabels_get
+Attempt 6:
+    BUG: spinlock bad magic in nf_connlabels_get
+Attempt 7:
+    BUG: spinlock bad magic in nf_connlabels_get
+The bug was not found.
+About 18566 commits remaining
+
+2025-09-20 16:05:31
+Session:   66
+Kernel:    2019-09-23 - 299d14d4c31aff3b37a03894e012edf8421676ee
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-8.1.0/bin/gcc
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+About 9267 commits remaining
+
+2025-09-20 16:21:44
+Session:   67
+Kernel:    2019-11-12 - 4e4637b10374ede3cd33d7e1b389e6cea6343ea3
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-8.1.0/bin/gcc
+Attempt 0:
+    KASAN: use-after-free Read in sctp_packet_append_chunk
+Attempt 1:
+    KASAN: use-after-free Read in sctp_packet_append_chunk
+Attempt 2:
+    KASAN: use-after-free Read in sctp_packet_append_chunk
+    kernel BUG in sctp_auth_shkey_release
+    invalid opcode in sctp_auth_shkey_release
+Attempt 3:
+    KASAN: use-after-free Read in sctp_packet_append_chunk
+Attempt 4:
+    KASAN: use-after-free Read in sctp_packet_append_chunk
+Attempt 5:
+    KASAN: use-after-free Read in sctp_packet_append_chunk
+Attempt 6:
+    KASAN: use-after-free Read in sctp_packet_append_chunk
+Attempt 7:
+    KASAN: use-after-free Read in sctp_packet_append_chunk
+The bug was not found.
+About 4638 commits remaining
+
+2025-09-20 16:39:35
+Session:   68
+Kernel:    2019-11-25 - 386403a115f95997c2715691226e11a7b5cffcfd
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-8.1.0/bin/gcc
+Attempt 0:
+    BUG: MAX_LOCKDEP_ENTRIES too low!
+Attempt 1:
+    BUG: MAX_LOCKDEP_ENTRIES too low!
+Attempt 2:
+    BUG: MAX_LOCKDEP_ENTRIES too low!
+Attempt 3:
+    BUG: MAX_LOCKDEP_ENTRIES too low!
+Attempt 4:
+    BUG: MAX_LOCKDEP_ENTRIES too low!
+Attempt 5:
+    BUG: MAX_LOCKDEP_ENTRIES too low!
+Attempt 6:
+    BUG: MAX_LOCKDEP_ENTRIES too low!
+Attempt 7:
+    BUG: MAX_LOCKDEP_ENTRIES too low!
+The bug was not found.
+About 2088 commits remaining
+
+2025-09-20 17:05:17
+Session:   69
+Kernel:    2019-11-26 - 361b0d286afea0d867537536977a695b5557d133
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-8.1.0/bin/gcc
+Attempt 0:
+    BUG: MAX_LOCKDEP_ENTRIES too low!
+Attempt 1:
+    BUG: MAX_LOCKDEP_ENTRIES too low!
+Attempt 2:
+    WARNING in __dev_mc_add
+    WARNING in __crash_kexec
+    WARNING in __crash_kexec
+Attempt 3:
+    BUG: MAX_LOCKDEP_ENTRIES too low!
+Attempt 4:
+    BUG: MAX_LOCKDEP_ENTRIES too low!
+Attempt 5:
+    BUG: MAX_LOCKDEP_ENTRIES too low!
+Attempt 6:
+    BUG: MAX_LOCKDEP_ENTRIES too low!
+Attempt 7:
+    BUG: MAX_LOCKDEP_ENTRIES too low!
+The bug was not found.
+About 1097 commits remaining
+
+2025-09-20 17:31:24
+Session:   70
+Kernel:    2019-11-26 - 3f1b210a7f97f7e75c56174ada476fba2d36f340
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-8.1.0/bin/gcc
+Attempt 0:
+    BUG: MAX_LOCKDEP_ENTRIES too low!
+Attempt 1:
+    BUG: MAX_LOCKDEP_ENTRIES too low!
+Attempt 2:
+    BUG: MAX_LOCKDEP_ENTRIES too low!
+Attempt 3:
+    BUG: MAX_LOCKDEP_ENTRIES too low!
+Attempt 4:
+    BUG: MAX_LOCKDEP_ENTRIES too low!
+Attempt 5:
+    BUG: MAX_LOCKDEP_ENTRIES too low!
+Attempt 6:
+    BUG: MAX_LOCKDEP_ENTRIES too low!
+Attempt 7:
+    BUG: MAX_LOCKDEP_ENTRIES too low!
+The bug was not found.
+About 590 commits remaining
+
+2025-09-20 17:50:34
+Session:   71
+Kernel:    2019-11-05 - 8ffd573c25e5fac1daeeffc592e2ed6bc6a3d947
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-8.1.0/bin/gcc
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+About 7652 commits remaining
+
+2025-09-20 18:06:47
+Session:   72
+Kernel:    2019-11-27 - 3d9e3501a064eff90274f1ce927fe71ca1ff4205
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-8.1.0/bin/gcc
+Attempt 0:
+    BUG: MAX_LOCKDEP_ENTRIES too low!
+Attempt 1:
+    BUG: MAX_LOCKDEP_ENTRIES too low!
+Attempt 2:
+    BUG: MAX_LOCKDEP_ENTRIES too low!
+Attempt 3:
+    BUG: MAX_LOCKDEP_ENTRIES too low!
+Attempt 4:
+    BUG: MAX_LOCKDEP_ENTRIES too low!
+Attempt 5:
+    BUG: MAX_LOCKDEP_ENTRIES too low!
+Attempt 6:
+    BUG: MAX_LOCKDEP_ENTRIES too low!
+Attempt 7:
+    BUG: MAX_LOCKDEP_ENTRIES too low!
+The bug was not found.
+About 176 commits remaining
+
+2025-09-20 18:24:16
+Session:   73
+Kernel:    2019-11-13 - 08a96e43e349887c03dfd47e0021bfe43f0ffb47
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-8.1.0/bin/gcc
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+About 6484 commits remaining
+
+2025-09-20 18:41:19
+Session:   74
+Kernel:    2019-11-14 - c2a93d75c0e25d3191d3f150a0a2f16b6ab4c81a
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-8.1.0/bin/gcc
+Attempt 0:
+    KASAN: use-after-free Read in sctp_packet_append_chunk
+    kernel BUG in sctp_auth_shkey_release
+    invalid opcode in sctp_auth_shkey_release
+Attempt 1:
+    KASAN: use-after-free Read in sctp_packet_append_chunk
+Attempt 2:
+    KASAN: use-after-free Read in sctp_packet_append_chunk
+Attempt 3:
+    KASAN: use-after-free Read in sctp_packet_append_chunk
+Attempt 4:
+    KASAN: use-after-free Read in sctp_packet_append_chunk
+Attempt 5:
+    KASAN: use-after-free Read in sctp_packet_append_chunk
+    kernel BUG in sctp_auth_shkey_release
+    kernel BUG in sctp_auth_shkey_release
+    invalid opcode in sctp_auth_shkey_release
+    invalid opcode in sctp_auth_shkey_release
+Attempt 6:
+    KASAN: use-after-free Read in sctp_packet_append_chunk
+Attempt 7:
+    KASAN: use-after-free Read in sctp_packet_append_chunk
+The bug was not found.
+About 5803 commits remaining
+
+2025-09-20 19:00:17
+Session:   75
+Kernel:    2019-11-20 - 07a14d1df4547ebc0104331511f25e2a7f3a8858
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-8.1.0/bin/gcc
+Attempt 0:
+    KASAN: use-after-free Read in sctp_packet_append_chunk
+Attempt 1:
+    KASAN: use-after-free Read in sctp_packet_append_chunk
+Attempt 2:
+    KASAN: use-after-free Read in sctp_packet_append_chunk
+Attempt 3:
+    KASAN: use-after-free Read in sctp_packet_append_chunk
+Attempt 4:
+    KASAN: use-after-free Read in sctp_packet_append_chunk
+Attempt 5:
+    KASAN: use-after-free Read in sctp_packet_append_chunk
+Attempt 6:
+    KASAN: use-after-free Read in sctp_packet_append_chunk
+    kernel BUG in sctp_auth_shkey_release
+    invalid opcode in sctp_auth_shkey_release
+Attempt 7:
+    KASAN: use-after-free Read in sctp_packet_append_chunk
+The bug was not found.
+About 5780 commits remaining
+
+2025-09-20 19:09:48
+Session:   76
+Kernel:    2019-11-21 - 7009d046a60116a4066ee2c9b005b43f0972c9b2
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-8.1.0/bin/gcc
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+About 6473 commits remaining
+
+2025-09-20 19:16:59
+Session:   77
+Kernel:    2019-11-20 - a5c8b2ae2e5123c8a6b291e2c56ba5c39b645a95
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-8.1.0/bin/gcc
+Attempt 0:
+    KASAN: use-after-free Read in sctp_packet_append_chunk
+Attempt 1:
+    KASAN: use-after-free Read in sctp_packet_append_chunk
+Attempt 2:
+    KASAN: use-after-free Read in sctp_packet_append_chunk
+Attempt 3:
+    KASAN: use-after-free Read in sctp_packet_append_chunk
+    kernel BUG in sctp_auth_shkey_release
+    invalid opcode in sctp_auth_shkey_release
+Attempt 4:
+    KASAN: use-after-free Read in sctp_packet_append_chunk
+    kernel BUG in sctp_auth_shkey_release
+    invalid opcode in sctp_auth_shkey_release
+Attempt 5:
+    KASAN: use-after-free Read in sctp_packet_append_chunk
+    kernel BUG in sctp_auth_shkey_release
+    invalid opcode in sctp_auth_shkey_release
+    kernel BUG in sctp_auth_shkey_release
+    invalid opcode in sctp_auth_shkey_release
+    kernel BUG in sctp_auth_shkey_release
+    kernel BUG in sctp_auth_shkey_release
+    invalid opcode in sctp_auth_shkey_release
+    invalid opcode in sctp_auth_shkey_release
+    kernel BUG in corrupted
+Attempt 6:
+    KASAN: use-after-free Read in sctp_packet_append_chunk
+Attempt 7:
+    KASAN: use-after-free Read in sctp_packet_append_chunk
+The bug was not found.
+About 5775 commits remaining
+
+2025-09-20 19:26:30
+Session:   78
+Kernel:    2019-11-22 - def7bd940f8cceb41ec3d1383acd8ab937056dcb
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-8.1.0/bin/gcc
+Attempt 0:
+    KASAN: use-after-free Read in sctp_packet_append_chunk
+Attempt 1:
+    KASAN: use-after-free Read in sctp_packet_append_chunk
+Attempt 2:
+    KASAN: use-after-free Read in sctp_packet_append_chunk
+Attempt 3:
+    KASAN: use-after-free Read in sctp_packet_append_chunk
+Attempt 4:
+    KASAN: use-after-free Read in sctp_packet_append_chunk
+Attempt 5:
+    KASAN: use-after-free Read in sctp_packet_append_chunk
+    kernel BUG in sctp_auth_shkey_release
+    invalid opcode in sctp_auth_shkey_release
+Attempt 6:
+    KASAN: use-after-free Read in sctp_packet_append_chunk
+Attempt 7:
+    KASAN: use-after-free Read in sctp_packet_append_chunk
+The bug was not found.
+About 5772 commits remaining
+
+2025-09-20 19:41:09
+Session:   79
+Kernel:    2019-11-27 - dc5fa4656864d3391cdf13512ffa0733ef72fcdc
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-8.1.0/bin/gcc
+Attempt 0:
+    BUG: MAX_LOCKDEP_ENTRIES too low!
+Attempt 1:
+    BUG: MAX_LOCKDEP_ENTRIES too low!
+Attempt 2:
+    WARNING in __dev_mc_add
+    WARNING in __crash_kexec
+    WARNING in __crash_kexec
+Attempt 3:
+    BUG: MAX_LOCKDEP_ENTRIES too low!
+Attempt 4:
+    BUG: MAX_LOCKDEP_ENTRIES too low!
+Attempt 5:
+    BUG: MAX_LOCKDEP_ENTRIES too low!
+Attempt 6:
+    BUG: MAX_LOCKDEP_ENTRIES too low!
+Attempt 7:
+    BUG: MAX_LOCKDEP_ENTRIES too low!
+The bug was not found.
+About 76 commits remaining
+
+==== Partial Result: Subsequent PoC Test ====
+Reproducer:           /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0079-0.prog
+Bisection Result:     2019-11-27 - 0e45384cecccaa950783e67e7a29ed470133f19d
+Bisected Commit Name: Merge tag 'mmc-v5.5' of git://git.kernel.org/pub/scm/linux/kernel/git/ulfh/mmc
+Stage Time:           5h29m44s
+Run Time:             27h24m23s
+=============================================
+
+==== Anchor Commit ====
+
+2025-09-20 19:57:58
+Session:   80
+Kernel:    2019-11-27 - dc5fa4656864d3391cdf13512ffa0733ef72fcdc
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-8.1.0/bin/gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0079-2.prog
+Attempt 0:
+    BUG: MAX_LOCKDEP_ENTRIES too low!
+Attempt 1:
+    BUG: MAX_LOCKDEP_ENTRIES too low!
+Attempt 2:
+    BUG: MAX_LOCKDEP_ENTRIES too low!
+Attempt 3:
+    WARNING in __dev_mc_add
+    WARNING in __crash_kexec
+    WARNING in __crash_kexec
+Attempt 4:
+    BUG: MAX_LOCKDEP_ENTRIES too low!
+Attempt 5:
+    BUG: MAX_LOCKDEP_ENTRIES too low!
+Attempt 6:
+    BUG: MAX_LOCKDEP_ENTRIES too low!
+Attempt 7:
+    BUG: MAX_LOCKDEP_ENTRIES too low!
 The bug was not found.
 
 Failure: This bug cannot be found at the anchor commit.
+
+==== Partial Result: Subsequent PoC Test ====
+Reproducer:           /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0079-2.prog
+Bisection Result:     Failed to reproduce at the anchor commit.
+Stage Time:           0h17m24s
+Run Time:             27h41m48s
+=============================================
+
+==== Anchor Commit ====
+
+2025-09-20 20:15:26
+Session:   81
+Kernel:    2019-11-27 - dc5fa4656864d3391cdf13512ffa0733ef72fcdc
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-8.1.0/bin/gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0079-4.prog
+Attempt 0:
+    BUG: MAX_LOCKDEP_ENTRIES too low!
+Attempt 1:
+    BUG: MAX_LOCKDEP_ENTRIES too low!
+Attempt 2:
+*** KASAN: use-after-free Write in sctp_auth_shkey_hold
+Attempt 3:
+    BUG: MAX_LOCKDEP_ENTRIES too low!
+Attempt 4:
+    WARNING in devlink_port_type_warn
+Attempt 5:
+    BUG: MAX_LOCKDEP_ENTRIES too low!
+Attempt 6:
+    BUG: MAX_LOCKDEP_ENTRIES too low!
+Attempt 7:
+*** KASAN: use-after-free Write in sctp_auth_shkey_hold
+The bug was found.
+
+==== Major Release Search ====
+6 Releases
+
+2025-09-20 20:33:11
+Session:   82
+Kernel:    2019-11-24 - 219d54332a09e8d8741c1e1982f5eae56099de85 (v5.4)
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-8.1.0/bin/gcc
+Attempt 0:
+    KASAN: use-after-free Read in sctp_packet_append_chunk
+Attempt 1:
+    KASAN: use-after-free Read in sctp_packet_append_chunk
+    kernel BUG in sctp_auth_shkey_release
+    invalid opcode in sctp_auth_shkey_release
+    kernel panic: Fatal exception
+Attempt 2:
+    KASAN: use-after-free Read in sctp_packet_append_chunk
+Attempt 3:
+    KASAN: use-after-free Read in sctp_packet_append_chunk
+    kernel BUG in sctp_auth_shkey_release
+    invalid opcode in sctp_auth_shkey_release
+    kernel BUG in sctp_auth_shkey_release
+    invalid opcode in sctp_auth_shkey_release
+Attempt 4:
+    KASAN: use-after-free Read in sctp_packet_append_chunk
+Attempt 5:
+    KASAN: use-after-free Read in sctp_packet_append_chunk
+Attempt 6:
+    KASAN: use-after-free Read in sctp_packet_append_chunk
+Attempt 7:
+    KASAN: use-after-free Read in sctp_packet_append_chunk
+The bug was not found.
+About 5 releases remaining
+
+2025-09-20 20:53:41
+Session:   83
+Kernel:    2019-09-15 - 4d856f72c10ecb060868ed10ff1b1453943fc6c8 (v5.3)
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-8.1.0/bin/gcc
+Attempt 0:
+    BUG: spinlock bad magic in nf_connlabels_get
+Attempt 1:
+    BUG: spinlock bad magic in nf_connlabels_get
+Attempt 2:
+    BUG: spinlock bad magic in nf_connlabels_get
+Attempt 3:
+    BUG: spinlock bad magic in nf_connlabels_get
+Attempt 4:
+    BUG: spinlock bad magic in nf_connlabels_get
+Attempt 5:
+    BUG: spinlock bad magic in nf_connlabels_get
+Attempt 6:
+    BUG: spinlock bad magic in nf_connlabels_get
+Attempt 7:
+    BUG: spinlock bad magic in nf_connlabels_get
+The bug was not found.
+About 4 releases remaining
+
+2025-09-20 21:10:53
+Session:   84
+Kernel:    2019-07-07 - 0ecfebd2b52404ae0c54a878c872bb93363ada36 (v5.2)
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-8.1.0/bin/gcc
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+About 3 releases remaining
+
+2025-09-20 21:32:33
+Session:   85
+Kernel:    2019-03-03 - 1c163f4c7b3f621efff9b28a47abb36f7378d783 (v5.0)
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-8.1.0/bin/gcc
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+About 2 releases remaining
+
+==== Kernel Bisection ====
+66190 Linux commits
+
+2025-09-20 21:55:45
+Session:   86
+Kernel:    2019-07-11 - 8f6ccf6159aed1f04c6d179f61f6fb2691261e84
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-8.1.0/bin/gcc
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+About 33626 commits remaining
+
+2025-09-20 22:12:06
+Session:   87
+Kernel:    2019-09-18 - e444d51b14c4795074f485c79debd234931f0e49
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-8.1.0/bin/gcc
+Attempt 0:
+    BUG: spinlock bad magic in nf_connlabels_get
+Attempt 1:
+    BUG: spinlock bad magic in nf_connlabels_get
+Attempt 2:
+    BUG: spinlock bad magic in nf_connlabels_get
+Attempt 3:
+    BUG: spinlock bad magic in nf_connlabels_get
+Attempt 4:
+    BUG: spinlock bad magic in nf_connlabels_get
+Attempt 5:
+    BUG: spinlock bad magic in nf_connlabels_get
+Attempt 6:
+    BUG: spinlock bad magic in nf_connlabels_get
+Attempt 7:
+    BUG: spinlock bad magic in nf_connlabels_get
+The bug was not found.
+About 16888 commits remaining
+
+2025-09-20 22:28:58
+Session:   88
+Kernel:    2019-09-27 - 289991ce1cac18e7cd489902986ef986baa49568
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-8.1.0/bin/gcc
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+About 8436 commits remaining
+
+2025-09-20 22:45:24
+Session:   89
+Kernel:    2019-11-16 - 1e8795b1b20d2721620165434cdcf427ecd2ba85
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-8.1.0/bin/gcc
+Attempt 0:
+    KASAN: use-after-free Read in sctp_packet_append_chunk
+Attempt 1:
+    KASAN: use-after-free Read in sctp_packet_append_chunk
+Attempt 2:
+    KASAN: use-after-free Read in sctp_packet_append_chunk
+Attempt 3:
+    KASAN: use-after-free Read in sctp_packet_append_chunk
+Attempt 4:
+    KASAN: use-after-free Read in sctp_packet_append_chunk
+Attempt 5:
+    KASAN: use-after-free Read in sctp_packet_append_chunk
+Attempt 6:
+    KASAN: use-after-free Read in sctp_packet_append_chunk
+Attempt 7:
+    KASAN: use-after-free Read in sctp_packet_append_chunk
+The bug was not found.
+About 4253 commits remaining
+
+2025-09-20 23:04:05
+Session:   90
+Kernel:    2019-11-25 - 386403a115f95997c2715691226e11a7b5cffcfd
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-8.1.0/bin/gcc
+Attempt 0:
+    BUG: MAX_LOCKDEP_ENTRIES too low!
+    WARNING in devlink_port_type_warn
+Attempt 1:
+    KASAN: use-after-free Read in sctp_packet_append_chunk
+Attempt 2:
+    KASAN: use-after-free Read in sctp_packet_append_chunk
+Attempt 3:
+    KASAN: use-after-free Read in sctp_packet_append_chunk
+Attempt 4:
+    KASAN: use-after-free Read in sctp_packet_append_chunk
+Attempt 5:
+    BUG: MAX_LOCKDEP_ENTRIES too low!
+    WARNING in devlink_port_type_warn
+Attempt 6:
+    BUG: MAX_LOCKDEP_ENTRIES too low!
+    WARNING in devlink_port_type_warn
+Attempt 7:
+    BUG: MAX_LOCKDEP_ENTRIES too low!
+    WARNING in devlink_port_type_warn
+The bug was not found.
+About 2013 commits remaining
+
+2025-09-20 23:30:54
+Session:   91
+Kernel:    2019-11-26 - 361b0d286afea0d867537536977a695b5557d133
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-8.1.0/bin/gcc
+Attempt 0:
+    BUG: MAX_LOCKDEP_ENTRIES too low!
+Attempt 1:
+    BUG: MAX_LOCKDEP_ENTRIES too low!
+Attempt 2:
+*** KASAN: use-after-free Write in sctp_auth_shkey_hold
+Attempt 3:
+    BUG: MAX_LOCKDEP_ENTRIES too low!
+Attempt 4:
+    BUG: MAX_LOCKDEP_ENTRIES too low!
+Attempt 5:
+    WARNING in __dev_mc_add
+    WARNING in __crash_kexec
+    WARNING in __crash_kexec
+Attempt 6:
+    BUG: MAX_LOCKDEP_ENTRIES too low!
+Attempt 7:
+    BUG: MAX_LOCKDEP_ENTRIES too low!
+The bug was found.
+About 992 commits remaining
+
+2025-09-20 23:57:06
+Session:   92
+Kernel:    2019-11-26 - df28204bb0f29cc475c0a8893c99b46a11a4903f
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-8.1.0/bin/gcc
+Attempt 0:
+    BUG: MAX_LOCKDEP_ENTRIES too low!
+    WARNING in devlink_port_type_warn
+Attempt 1:
+    KASAN: use-after-free Read in sctp_packet_append_chunk
+Attempt 2:
+    BUG: MAX_LOCKDEP_ENTRIES too low!
+    WARNING in devlink_port_type_warn
+Attempt 3:
+    BUG: MAX_LOCKDEP_ENTRIES too low!
+Attempt 4:
+    BUG: MAX_LOCKDEP_ENTRIES too low!
+    WARNING in devlink_port_type_warn
+Attempt 5:
+    BUG: MAX_LOCKDEP_ENTRIES too low!
+Attempt 6:
+    BUG: MAX_LOCKDEP_ENTRIES too low!
+    WARNING in devlink_port_type_warn
+Attempt 7:
+    BUG: MAX_LOCKDEP_ENTRIES too low!
+The bug was not found.
+About 603 commits remaining
+
+2025-09-21 00:23:42
+Session:   93
+Kernel:    2019-11-26 - 3f59dbcace56fae7e4ed303bab90f1bedadcfdf4
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-8.1.0/bin/gcc
+Attempt 0:
+    BUG: MAX_LOCKDEP_ENTRIES too low!
+    WARNING in devlink_port_type_warn
+Attempt 1:
+    WARNING in devlink_port_type_warn
+Attempt 2:
+    KASAN: use-after-free Read in sctp_packet_append_chunk
+Attempt 3:
+    WARNING in devlink_port_type_warn
+Attempt 4:
+    WARNING in devlink_port_type_warn
+Attempt 5:
+    BUG: MAX_LOCKDEP_ENTRIES too low!
+Attempt 6:
+    WARNING in __dev_mc_add
+Attempt 7:
+    BUG: MAX_LOCKDEP_ENTRIES too low!
+    WARNING in devlink_port_type_warn
+The bug was not found.
+About 311 commits remaining
+
+2025-09-21 00:50:16
+Session:   94
+Kernel:    2019-11-26 - c2da5bdc66a377f0b82ee959f19f5a6774706b83
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-8.1.0/bin/gcc
+Attempt 0:
+*** KASAN: use-after-free Write in sctp_auth_shkey_hold
+Attempt 1:
+*** KASAN: use-after-free Write in sctp_auth_shkey_hold
+Attempt 2:
+    WARNING in devlink_port_type_warn
+Attempt 3:
+    WARNING in devlink_port_type_warn
+Attempt 4:
+*** KASAN: use-after-free Write in sctp_auth_shkey_hold
+Attempt 5:
+    WARNING in devlink_port_type_warn
+Attempt 6:
+*** KASAN: use-after-free Write in sctp_auth_shkey_hold
+Attempt 7:
+*** KASAN: use-after-free Write in sctp_auth_shkey_hold
+The bug was found.
+About 135 commits remaining
+
+2025-09-21 01:14:36
+Session:   95
+Kernel:    2019-10-31 - 43e0ae7ae0f567a3f8c10ec7a4078bc482660921
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-8.1.0/bin/gcc
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+About 5206 commits remaining
+
+2025-09-21 01:30:08
+Session:   96
+Kernel:    2019-11-18 - b21feab0b865c36b24d7a60b55a10c7033b03159
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-8.1.0/bin/gcc
+Attempt 0:
+    KASAN: use-after-free Read in sctp_packet_append_chunk
+Attempt 1:
+    KASAN: use-after-free Read in sctp_packet_append_chunk
+Attempt 2:
+    KASAN: use-after-free Read in sctp_packet_append_chunk
+Attempt 3:
+    KASAN: use-after-free Read in sctp_packet_append_chunk
+Attempt 4:
+    KASAN: use-after-free Read in sctp_packet_append_chunk
+Attempt 5:
+    KASAN: use-after-free Read in sctp_packet_append_chunk
+Attempt 6:
+    KASAN: use-after-free Read in sctp_packet_append_chunk
+Attempt 7:
+    KASAN: use-after-free Read in sctp_packet_append_chunk
+The bug was not found.
+About 4306 commits remaining
+
+2025-09-21 01:47:05
+Session:   97
+Kernel:    2019-11-25 - 7221762c48c6bbbcc6cc51d8b803c06930215e34
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-8.1.0/bin/gcc
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+About 6338 commits remaining
+
+2025-09-21 02:02:21
+Session:   98
+Kernel:    2019-11-26 - 77a05940eee7e9891cd6add7a690a3e762ee21b0
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-8.1.0/bin/gcc
+Attempt 0:
+    WARNING in devlink_port_type_warn
+Attempt 1:
+    BUG: MAX_LOCKDEP_ENTRIES too low!
+Attempt 2:
+    KASAN: use-after-free Read in sctp_packet_append_chunk
+Attempt 3:
+    BUG: MAX_LOCKDEP_ENTRIES too low!
+    WARNING in devlink_port_type_warn
+Attempt 4:
+    BUG: MAX_LOCKDEP_ENTRIES too low!
+Attempt 5:
+    KASAN: use-after-free Read in sctp_packet_append_chunk
+Attempt 6:
+    WARNING in devlink_port_type_warn
+Attempt 7:
+    BUG: MAX_LOCKDEP_ENTRIES too low!
+The bug was not found.
+About 85 commits remaining
+
+2025-09-21 02:27:28
+Session:   99
+Kernel:    2019-11-25 - fb041bb7c0a918b95c6889fc965cdc4a75b4c0ca
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-8.1.0/bin/gcc
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+About 6333 commits remaining
+
+2025-09-21 02:42:47
+Session:   100
+Kernel:    2019-11-25 - 500543c53a54134ced386aed85cd93cf1363f981
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-8.1.0/bin/gcc
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+About 6331 commits remaining
+
+2025-09-21 02:58:03
+Session:   101
+Kernel:    2019-11-26 - 168829ad09ca9cdfdc664b2110d0e3569932c12d
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-8.1.0/bin/gcc
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    BUG: MAX_LOCKDEP_ENTRIES too low!
+    WARNING in devlink_port_type_warn
+Attempt 2:
+*** KASAN: use-after-free Write in sctp_auth_shkey_hold
+Attempt 3:
+    BUG: MAX_LOCKDEP_ENTRIES too low!
+Attempt 4:
+*** KASAN: use-after-free Write in sctp_auth_shkey_hold
+Attempt 5:
+    BUG: MAX_LOCKDEP_ENTRIES too low!
+    WARNING in devlink_port_type_warn
+Attempt 6:
+    WARNING in devlink_port_type_warn
+Attempt 7:
+*** KASAN: use-after-free Write in sctp_auth_shkey_hold
+The bug was found.
+About 6329 commits remaining
+
+2025-09-21 03:23:22
+Session:   102
+Kernel:    2019-11-26 - 1ae78780eda54023a0fb49ee743dbba39da148e0
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-8.1.0/bin/gcc
+Attempt 0:
+    BUG: MAX_LOCKDEP_ENTRIES too low!
+    WARNING in devlink_port_type_warn
+Attempt 1:
+    KASAN: use-after-free Read in sctp_packet_append_chunk
+Attempt 2:
+    WARNING in devlink_port_type_warn
+Attempt 3:
+    WARNING in devlink_port_type_warn
+Attempt 4:
+    WARNING in devlink_port_type_warn
+Attempt 5:
+    WARNING in devlink_port_type_warn
+Attempt 6:
+    WARNING in print_bfs_bug
+Attempt 7:
+    BUG: MAX_LOCKDEP_ENTRIES too low!
+The bug was not found.
+About 29 commits remaining
+
+==== Partial Result: Subsequent PoC Test ====
+Reproducer:           /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0079-4.prog
+Bisection Result:     2019-11-26 - 168829ad09ca9cdfdc664b2110d0e3569932c12d
+Bisected Commit Name: Merge branch 'locking-core-for-linus' of git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip
+Stage Time:           7h32m56s
+Run Time:             35h14m45s
+=============================================
+
+==== Anchor Commit ====
+
+2025-09-21 03:48:19
+Session:   103
+Kernel:    2019-11-26 - 1ae78780eda54023a0fb49ee743dbba39da148e0
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-8.1.0/bin/gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0079-5.prog
+Attempt 0:
+    KASAN: use-after-free Read in sctp_packet_append_chunk
+Attempt 1:
+    BUG: MAX_LOCKDEP_ENTRIES too low!
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    WARNING in devlink_port_type_warn
+Attempt 4:
+    KASAN: use-after-free Read in sctp_packet_append_chunk
+Attempt 5:
+    BUG: MAX_LOCKDEP_ENTRIES too low!
+    WARNING in devlink_port_type_warn
+Attempt 6:
+    BUG: MAX_LOCKDEP_ENTRIES too low!
+Attempt 7:
+    BUG: MAX_LOCKDEP_ENTRIES too low!
+    WARNING in devlink_port_type_warn
+The bug was not found.
+
+Failure: This bug cannot be found at the anchor commit.
+
+==== Partial Result: Subsequent PoC Test ====
+Reproducer:           /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0079-5.prog
+Bisection Result:     Failed to reproduce at the anchor commit.
+Stage Time:           0h16m6s
+Run Time:             35h30m52s
+=============================================
+
+====================================================================================================================================================
+Bug Name:             KASAN: use-after-free Write in sctp_auth_shkey_hold
+Bug Link:             https://syzkaller.appspot.com/bug?id=4b0830ac666c3cae350904be00dca27f8be86715
+Bisection Result:     2019-11-26 - 168829ad09ca9cdfdc664b2110d0e3569932c12d
+Bisected Commit Name: Merge branch 'locking-core-for-linus' of git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip
+Run Time:             35h30m52s
+
+Anchor Commit:        2022-07-15 - 9b59ec8d50a1f28747ceff9a4f39af5deba9540e
+Bisection Result:     2019-11-26 - 168829ad09ca9cdfdc664b2110d0e3569932c12d

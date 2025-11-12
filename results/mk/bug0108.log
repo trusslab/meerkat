@@ -1,4 +1,4 @@
-./bin/bisector -i 1 -c /home/syzretrospector/syzinspector/wd-bisector-1/bisector.cfg -a ddec8ed2d4905d0967ce2ec432e440e582aa52c6 -F ff-test,poc-test,stateful-corpus,ff-no-find-backup,poc-all-pocs
+./bin/meerkat -i 3 -c /mnt/sdd/jtbursey/meerkat/wd-meerkat-3/meerkat.cfg -a ddec8ed2d4905d0967ce2ec432e440e582aa52c6 -F ff-test,poc-test,poc-all-pocs,stateful-corpus,ff-no-find-backup
 Bisecting:          KASAN: slab-out-of-bounds Read in decrypt_internal
 Syzbot Link:        https://syzkaller.appspot.com/bug?id=02617ac69815ae324053c954118c2dc7ba0e59b2
 Working Name:       bug0108
@@ -10,23 +10,25 @@ Repository:         https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/lin
 Branch:             master
 Arch:               amd64
 
-Bisector:           /home/syzretrospector/syzinspector/
-Version:            1.0.5
-Kernel:             /home/syzretrospector/syzinspector/wd-bisector-1/kernel/
-Syzkaller:          /home/syzretrospector/syzinspector/syzkaller/
-Compilers:          /home/syzretrospector/compilers/
-Ccache:             ccache
-Image:              /home/syzretrospector/images/stretch/stretch.img
-Image Key:          /home/syzretrospector/images/stretch/stretch.id_rsa
+Meerkat:            /mnt/sdd/jtbursey/meerkat/
+Version:            1.1.0
+Kernel:             /mnt/sdd/jtbursey/meerkat/wd-meerkat-3/kernel/
+Syzkaller:          /mnt/sdd/jtbursey/meerkat/syzkaller/
+Compilers:          /mnt/sdd/jtbursey/meerkat/compilers/
+Compiler:           gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0
+Linker:             GNU ld (GNU Binutils for Ubuntu) 2.34
+Ccache:             ccache version 3.7.7
+Image:              /mnt/sdd/jtbursey/meerkat/image/stretch/stretch.img
+Image Key:          /mnt/sdd/jtbursey/meerkat/image/stretch/stretch.id_rsa
 
-Workdir:            /home/syzretrospector/syzinspector/wd-bisector-1/
-Kconfig:            /home/syzretrospector/syzinspector/wd-bisector-1/config-bug0108.txt
-Reproducers: (1)    /home/syzretrospector/syzinspector/wd-bisector-1/reproducers/
-Primary PoC:        /home/syzretrospector/syzinspector/wd-bisector-1/reproducers/repro-bug0108-3.prog
-Syzkaller Workdir:  /home/syzretrospector/syzinspector/wd-bisector-1/wd-kaller/
-Log Directory:      /home/syzretrospector/syzinspector/wd-bisector-1/log/
+Workdir:            /mnt/sdd/jtbursey/meerkat/wd-meerkat-3/
+Kconfig:            /mnt/sdd/jtbursey/meerkat/wd-meerkat-3/config-bug0108.txt
+Reproducers: (1)    /mnt/sdd/jtbursey/meerkat/wd-meerkat-3/reproducers/
+Primary PoC:        /mnt/sdd/jtbursey/meerkat/wd-meerkat-3/reproducers/repro-bug0108-3.prog
+Syzkaller Workdir:  /mnt/sdd/jtbursey/meerkat/wd-meerkat-3/wd-kaller/
+Log Directory:      /mnt/sdd/jtbursey/meerkat/wd-meerkat-3/log/
 
-Syscalls: (20)      ["connect$inet6", "recvmmsg", "sendmsg$sock", "sendto$inet6", "setsockopt$inet6_tcp_TCP_REPAIR_QUEUE", "setsockopt$inet6_tcp_TCP_ULP", "setsockopt$inet6_tcp_TLS_TX", "setsockopt$inet6_tcp_int", "socket$inet6_tcp", "socket$inet6", "socket", "ioctl$F2FS_IOC_START_ATOMIC_WRITE", "openat$selinux_enforce", "getrusage", "clock_gettime", "ioctl$sock_SIOCGIFINDEX", "ioctl$ifreq_SIOCGIFINDEX_vcan", "ioctl$IOCTL_GET_NCIDEV_IDX", "utimes", "openat$nci"]
+Syscalls: (20)      ["connect$inet6", "recvmmsg", "sendmsg$sock", "sendto$inet6", "setsockopt$inet6_tcp_TCP_REPAIR_QUEUE", "setsockopt$inet6_tcp_TCP_ULP", "setsockopt$inet6_tcp_TLS_TX", "setsockopt$inet6_tcp_int", "socket$inet6_tcp", "socket$inet6", "socket", "ioctl$EXT4_IOC_GROUP_EXTEND", "openat$sw_sync_info", "getrusage", "clock_gettime", "ioctl$sock_SIOCGIFINDEX", "ioctl$ifreq_SIOCGIFINDEX_vcan", "ioctl$IOCTL_GET_NCIDEV_IDX", "utimes", "openat$nci"]
 VM Count:           8
 CPU Count:          2
 Procs:              16
@@ -37,490 +39,1838 @@ Max Attempts:       1
 
 ==== Anchor Commit ====
 
-2025-04-15 22:00:24
+2025-09-19 17:12:21
 Session:   1
 Kernel:    2022-01-06 - ddec8ed2d4905d0967ce2ec432e440e582aa52c6
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Compiler:  ccache /mnt/sdd/jtbursey/meerkat/compilers/gcc-10.1.0/bin/gcc
 Attempt 1:
-    Time  Bug Name
-***    3  KASAN: slab-out-of-bounds Read in decrypt_internal
-***    3  KASAN: slab-out-of-bounds Read in decrypt_internal
-***    3  KASAN: slab-out-of-bounds Read in decrypt_internal
-***    3  KASAN: slab-out-of-bounds Read in decrypt_internal
-***    3  KASAN: slab-out-of-bounds Read in decrypt_internal
+    No crashes found.
 Attempt 2: (RETRY)
     Time  Bug Name
-***    2  KASAN: slab-out-of-bounds Read in decrypt_internal
 ***    2  KASAN: slab-out-of-bounds Read in decrypt_internal
 ***    2  KASAN: slab-out-of-bounds Read in decrypt_internal
 Attempt 3: (RETRY)
     Time  Bug Name
 ***    2  KASAN: slab-out-of-bounds Read in decrypt_internal
 ***    2  KASAN: slab-out-of-bounds Read in decrypt_internal
-***    2  KASAN: slab-out-of-bounds Read in decrypt_internal
 The bug was found.
 
-New Max Time: 10
+New Max Time: 12
 
 ==== Major Release Search ====
-16 Releases
+11 Releases
 
-2025-04-15 22:18:22
+2025-09-19 17:42:16
 Session:   2
-Kernel:    2021-08-29 - 7d2a07b769330c34b4deabeed939325c77a7ec2f (v5.14)
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Kernel:    2021-10-31 - 8bb7eca972ad531c9b149c0a51ab43a417385813 (v5.15)
+Compiler:  ccache /mnt/sdd/jtbursey/meerkat/compilers/gcc-10.1.0/bin/gcc
 Attempt 1:
     Time  Bug Name
 ***    2  KASAN: slab-out-of-bounds Read in decrypt_internal
 ***    2  KASAN: slab-out-of-bounds Read in decrypt_internal
 Running syz-repro.
-New PoC saved at /home/syzretrospector/syzinspector/wd-bisector-1/reproducers/repro-bug0108-0.prog
-Primary PoC:     /home/syzretrospector/syzinspector/wd-bisector-1/reproducers/repro-bug0108-0.prog
-Run Time:        0h23m0s
-The bug was found.
-About 15 releases remaining
-
-2025-04-15 22:53:39
-Session:   3
-Kernel:    2021-06-27 - 62fb9874f5da54fdb243003b386128037319b219 (v5.13)
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
-Attempt 1:
-    Time  Bug Name
-       2  BUG: sleeping function called from invalid context in lock_sock_nested
-***    2  KASAN: slab-out-of-bounds Read in decrypt_internal
-***    2  KASAN: slab-out-of-bounds Read in decrypt_internal
-The bug was found.
-About 14 releases remaining
-
-2025-04-15 23:05:37
-Session:   4
-Kernel:    2021-04-25 - 9f4ad9e425a1d3b6a34617b8ea226d56a119a717 (v5.12)
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
-Attempt 1:
-    Time  Bug Name
-***    2  KASAN: slab-out-of-bounds Read in decrypt_internal
-***    2  KASAN: slab-out-of-bounds Read in decrypt_internal
-***    2  KASAN: slab-out-of-bounds Read in decrypt_internal
-The bug was found.
-About 13 releases remaining
-
-2025-04-15 23:17:32
-Session:   5
-Kernel:    2020-12-13 - 2c85ebc57b3e1817b6ce1a6b703928e113a90442 (v5.10)
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.1.0-syz/bin/gcc
-Attempt 1:
-    Time  Bug Name
-***    2  KASAN: slab-out-of-bounds Read in decrypt_internal
-***    2  KASAN: slab-out-of-bounds Read in decrypt_internal
-Running syz-repro.
-New PoC saved at /home/syzretrospector/syzinspector/wd-bisector-1/reproducers/repro-bug0108-1.prog
-Primary PoC:     /home/syzretrospector/syzinspector/wd-bisector-1/reproducers/repro-bug0108-0.prog
-Run Time:        0h23m0s
-The bug was found.
-About 12 releases remaining
-
-2025-04-15 23:52:27
-Session:   6
-Kernel:    2020-08-02 - bcf876870b95592b52519ed4aafcf9d95999bc9c (v5.8)
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.1.0-syz/bin/gcc
-Attempt 1:
-    Time  Bug Name
-       2  BUG: using smp_processor_id() in preemptible code in radix_tree_node_alloc
-       2  BUG: using smp_processor_id() in preemptible code in radix_tree_node_alloc
-***    4  KASAN: slab-out-of-bounds Read in decrypt_internal
-***    4  KASAN: slab-out-of-bounds Read in decrypt_internal
-       4  BUG: using smp_processor_id() in preemptible code in radix_tree_node_alloc
-The bug was found.
-About 11 releases remaining
-
-2025-04-16 00:05:43
-Session:   7
-Kernel:    2020-03-29 - 7111951b8d4973bda27ff663f2cf18b663d15b48 (v5.6)
-Compiler:  ccache /home/syzretrospector/compilers/gcc-9.0.0-20181231/bin/gcc
-grep: /home/syzretrospector/syzinspector/wd-bisector-1/kernel//include/linux/lsm_hook_defs.h: No such file or directory
-Attempt 1:
-    Time  Bug Name
-***    2  KASAN: slab-out-of-bounds Read in decrypt_internal
-***    2  KASAN: slab-out-of-bounds Read in decrypt_internal
+New PoC saved at /mnt/sdd/jtbursey/meerkat/wd-meerkat-3/reproducers/repro-bug0108-0.prog
+Primary PoC:     /mnt/sdd/jtbursey/meerkat/wd-meerkat-3/reproducers/repro-bug0108-0.prog
+Run Time:        0h21m0s
 The bug was found.
 About 10 releases remaining
 
-2025-04-16 00:16:52
-Session:   8
-Kernel:    2019-11-24 - 219d54332a09e8d8741c1e1982f5eae56099de85 (v5.4)
-Compiler:  ccache /home/syzretrospector/compilers/gcc-9.0.0-20181231/bin/gcc
+2025-09-19 18:19:37
+Session:   3
+Kernel:    2021-08-29 - 7d2a07b769330c34b4deabeed939325c77a7ec2f (v5.14)
+Compiler:  ccache /mnt/sdd/jtbursey/meerkat/compilers/gcc-10.1.0/bin/gcc
 Attempt 1:
     Time  Bug Name
-       4  WARNING in sta_info_insert_rcu
-       4  WARNING in sta_info_insert_rcu
-       4  WARNING in sta_info_insert_rcu
-       4  WARNING in sta_info_insert_rcu
-       7  BUG: MAX_LOCKDEP_CHAIN_HLOCKS too low!
-       7  BUG: MAX_LOCKDEP_CHAIN_HLOCKS too low!
-       7  BUG: MAX_LOCKDEP_CHAIN_HLOCKS too low!
-       7  BUG: MAX_LOCKDEP_CHAIN_HLOCKS too low!
-       9  WARNING in hsr_addr_subst_dest
-      10  BUG: MAX_LOCKDEP_CHAIN_HLOCKS too low!
-      10  BUG: MAX_LOCKDEP_CHAIN_HLOCKS too low!
-      10  BUG: MAX_LOCKDEP_CHAIN_HLOCKS too low!
-The bug was not found.
+***    2  KASAN: slab-out-of-bounds Read in decrypt_internal
+The bug was found.
 About 9 releases remaining
 
-==== Kernel Bisection ====
-29189 Linux commits
-
-2025-04-16 00:36:02
-Session:   9
-Kernel:    2020-01-03 - 3a562aee727a7bfbb3a37b1aa934118397dad701
-Compiler:  ccache /home/syzretrospector/compilers/gcc-9.0.0-20181231/bin/gcc
+2025-09-19 18:36:03
+Session:   4
+Kernel:    2021-06-27 - 62fb9874f5da54fdb243003b386128037319b219 (v5.13)
+Compiler:  ccache /mnt/sdd/jtbursey/meerkat/compilers/gcc-10.1.0/bin/gcc
 Attempt 1:
     Time  Bug Name
-       5  WARNING in hsr_addr_subst_dest
-       9  WARNING in hsr_addr_subst_dest
-      10  BUG: MAX_LOCKDEP_ENTRIES too low!
-      10  BUG: MAX_LOCKDEP_ENTRIES too low!
-      10  BUG: MAX_LOCKDEP_ENTRIES too low!
-      10  BUG: MAX_LOCKDEP_ENTRIES too low!
-      10  BUG: MAX_LOCKDEP_ENTRIES too low!
-      10  BUG: MAX_LOCKDEP_ENTRIES too low!
-The bug was not found.
-About 14608 commits remaining
+***    2  KASAN: slab-out-of-bounds Read in decrypt_internal
+The bug was found.
+About 8 releases remaining
 
-2025-04-16 00:55:10
-Session:   10
-Kernel:    2020-01-30 - 4cadc60d6bcfee9c626d4b55e9dc1475d21ad3bb
-Compiler:  ccache /home/syzretrospector/compilers/gcc-9.0.0-20181231/bin/gcc
-Attempt 1:
-    No crashes found.
-The bug was not found.
-About 8143 commits remaining
-
-2025-04-16 01:14:11
-Session:   11
-Kernel:    2020-02-06 - c1ef57a3a3f5e69e98baf89055b423da62791c13
-Compiler:  ccache /home/syzretrospector/compilers/gcc-9.0.0-20181231/bin/gcc
-Attempt 1:
-    Time  Bug Name
-       4  BUG: MAX_LOCKDEP_ENTRIES too low!
-       5  WARNING in hsr_addr_subst_dest
-       5  BUG: MAX_LOCKDEP_ENTRIES too low!
-       7  WARNING in sta_info_insert_rcu
-       8  WARNING in hsr_addr_subst_dest
-       8  WARNING in hsr_addr_subst_dest
-       8  WARNING in sta_info_insert_rcu
-       9  WARNING in hsr_addr_subst_dest
-      10  WARNING in sta_info_insert_rcu
-The bug was not found.
-About 4088 commits remaining
-
-2025-04-16 01:33:19
-Session:   12
-Kernel:    2020-02-16 - 44bfa9c5e5f06c72540273813e4c66beb5a8c213
-Compiler:  ccache /home/syzretrospector/compilers/gcc-9.0.0-20181231/bin/gcc
-Attempt 1:
-    Time  Bug Name
-       3  WARNING in hsr_addr_subst_dest
-       3  WARNING in hsr_addr_subst_dest
-       4  WARNING in sta_info_insert_rcu
-       5  WARNING in hsr_addr_subst_dest
-       5  WARNING in sta_info_insert_rcu
-       6  WARNING in hsr_addr_subst_dest
-       6  WARNING in hsr_addr_subst_dest
-       7  WARNING in hsr_addr_subst_dest
-       7  WARNING in hsr_addr_subst_dest
-       7  BUG: MAX_LOCKDEP_ENTRIES too low!
-       8  BUG: MAX_LOCKDEP_ENTRIES too low!
-       8  BUG: MAX_LOCKDEP_ENTRIES too low!
-       9  WARNING in hsr_addr_subst_dest
-       9  WARNING in sta_info_insert_rcu
-      10  BUG: MAX_LOCKDEP_ENTRIES too low!
-      10  BUG: MAX_LOCKDEP_ENTRIES too low!
-      10  BUG: MAX_LOCKDEP_ENTRIES too low!
-      10  WARNING in sta_info_insert_rcu
-The bug was not found.
-About 2045 commits remaining
-
-2025-04-16 01:52:25
-Session:   13
-Kernel:    2020-03-06 - c20c4a084a878df35a7e394a7e646f303b505eaf
-Compiler:  ccache /home/syzretrospector/compilers/gcc-9.0.0-20181231/bin/gcc
+2025-09-19 18:52:12
+Session:   5
+Kernel:    2021-02-14 - f40ddce88593482919761f74910f42f4b84c004b (v5.11)
+Compiler:  ccache /mnt/sdd/jtbursey/meerkat/compilers/gcc-10.1.0/bin/gcc
 Attempt 1:
     Time  Bug Name
 ***    2  KASAN: slab-out-of-bounds Read in decrypt_internal
 Running syz-repro.
-New PoC saved at /home/syzretrospector/syzinspector/wd-bisector-1/reproducers/repro-bug0108-1.prog
-Primary PoC:     /home/syzretrospector/syzinspector/wd-bisector-1/reproducers/repro-bug0108-0.prog
-Run Time:        0h23m0s
+New PoC saved at /mnt/sdd/jtbursey/meerkat/wd-meerkat-3/reproducers/repro-bug0108-1.prog
+Primary PoC:     /mnt/sdd/jtbursey/meerkat/wd-meerkat-3/reproducers/repro-bug0108-1.prog
+Run Time:        0h22m0s
 The bug was found.
-About 1021 commits remaining
+About 7 releases remaining
 
-2025-04-16 02:26:30
+2025-09-19 19:29:52
+Session:   6
+Kernel:    2020-10-11 - bbf5c979011a099af5dc76498918ed7df445635b (v5.9)
+Compiler:  ccache /mnt/sdd/jtbursey/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       3  BUG: using smp_processor_id() in preemptible code in radix_tree_node_alloc
+       3  BUG: using smp_processor_id() in preemptible code in radix_tree_node_alloc
+***    5  KASAN: slab-out-of-bounds Read in decrypt_internal
+***    5  KASAN: slab-out-of-bounds Read in decrypt_internal
+The bug was found.
+About 6 releases remaining
+
+2025-09-19 19:47:33
+Session:   7
+Kernel:    2020-05-31 - 3d77e6a8804abcc0504c904bd6e5cdf3a5cf8162 (v5.7)
+Compiler:  ccache /mnt/sdd/jtbursey/meerkat/compilers/gcc-8.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    4  KASAN: slab-out-of-bounds Read in decrypt_internal
+       4  BUG: MAX_LOCKDEP_ENTRIES too low!
+The bug was found.
+About 5 releases remaining
+
+2025-09-19 20:04:04
+Session:   8
+Kernel:    2020-01-26 - d5226fa6dbae0569ee43ecfc08bdcd6770fc4755 (v5.5)
+Compiler:  ccache /mnt/sdd/jtbursey/meerkat/compilers/gcc-8.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       5  BUG: MAX_LOCKDEP_CHAIN_HLOCKS too low!
+       8  WARNING in hsr_addr_subst_dest
+      11  BUG: MAX_LOCKDEP_CHAIN_HLOCKS too low!
+      11  BUG: MAX_LOCKDEP_CHAIN_HLOCKS too low!
+      12  BUG: MAX_LOCKDEP_CHAIN_HLOCKS too low!
+      12  BUG: MAX_LOCKDEP_CHAIN_HLOCKS too low!
+      12  BUG: MAX_LOCKDEP_CHAIN_HLOCKS too low!
+      12  BUG: MAX_LOCKDEP_CHAIN_HLOCKS too low!
+      12  BUG: MAX_LOCKDEP_CHAIN_HLOCKS too low!
+The bug was not found.
+About 4 releases remaining
+
+==== Kernel Bisection ====
+28717 Linux commits
+
+2025-09-19 20:29:28
+Session:   9
+Kernel:    2020-03-20 - 042539396ab95a06f8733501ea013fae0d8c726d
+Compiler:  ccache /mnt/sdd/jtbursey/meerkat/compilers/gcc-8.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /mnt/sdd/jtbursey/meerkat/wd-meerkat-3/log/bug0108-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+       1  WARNING: refcount bug in binderfs_evict_inode
+       1  WARNING: refcount bug in binderfs_evict_inode
+       2  WARNING: refcount bug in binderfs_evict_inode
+       2  WARNING: refcount bug in binderfs_evict_inode
+       2  WARNING: refcount bug in binderfs_evict_inode
+       2  WARNING: refcount bug in binderfs_evict_inode
+       2  WARNING: refcount bug in binderfs_evict_inode
+       2  WARNING: refcount bug in binderfs_evict_inode
+       2  WARNING: refcount bug in binderfs_evict_inode
+       2  WARNING: refcount bug in binderfs_evict_inode
+       2  WARNING: refcount bug in binderfs_evict_inode
+       3  WARNING: refcount bug in binderfs_evict_inode
+       3  WARNING: refcount bug in binderfs_evict_inode
+       3  WARNING: refcount bug in binderfs_evict_inode
+       3  WARNING: refcount bug in binderfs_evict_inode
+       3  WARNING: refcount bug in binderfs_evict_inode
+       3  WARNING: refcount bug in binderfs_evict_inode
+       4  WARNING: refcount bug in binderfs_evict_inode
+       4  WARNING: refcount bug in binderfs_evict_inode
+       4  WARNING: refcount bug in binderfs_evict_inode
+       4  WARNING: refcount bug in binderfs_evict_inode
+       4  WARNING: refcount bug in binderfs_evict_inode
+       4  WARNING: refcount bug in binderfs_evict_inode
+       5  WARNING: refcount bug in binderfs_evict_inode
+       5  WARNING: refcount bug in binderfs_evict_inode
+       5  WARNING: refcount bug in binderfs_evict_inode
+       5  WARNING: refcount bug in binderfs_evict_inode
+       5  WARNING: refcount bug in binderfs_evict_inode
+       5  WARNING: refcount bug in binderfs_evict_inode
+       6  WARNING: refcount bug in binderfs_evict_inode
+       6  WARNING: refcount bug in binderfs_evict_inode
+       6  WARNING: refcount bug in binderfs_evict_inode
+       6  WARNING: refcount bug in binderfs_evict_inode
+       6  WARNING: refcount bug in binderfs_evict_inode
+       7  WARNING: refcount bug in binderfs_evict_inode
+       7  WARNING: refcount bug in binderfs_evict_inode
+       7  WARNING: refcount bug in binderfs_evict_inode
+       7  WARNING: refcount bug in binderfs_evict_inode
+       7  WARNING: refcount bug in binderfs_evict_inode
+       7  WARNING: refcount bug in binderfs_evict_inode
+       8  WARNING: refcount bug in binderfs_evict_inode
+       8  WARNING: refcount bug in binderfs_evict_inode
+       8  WARNING: refcount bug in binderfs_evict_inode
+       8  WARNING: refcount bug in binderfs_evict_inode
+       8  WARNING: refcount bug in binderfs_evict_inode
+       8  WARNING: refcount bug in binderfs_evict_inode
+       9  WARNING: refcount bug in binderfs_evict_inode
+       9  WARNING: refcount bug in binderfs_evict_inode
+       9  WARNING: refcount bug in binderfs_evict_inode
+       9  WARNING: refcount bug in binderfs_evict_inode
+       9  WARNING: refcount bug in binderfs_evict_inode
+       9  WARNING: refcount bug in binderfs_evict_inode
+      10  WARNING: refcount bug in binderfs_evict_inode
+      10  WARNING: refcount bug in binderfs_evict_inode
+      10  WARNING: refcount bug in binderfs_evict_inode
+      10  WARNING: refcount bug in binderfs_evict_inode
+      10  WARNING: refcount bug in binderfs_evict_inode
+      10  WARNING: refcount bug in binderfs_evict_inode
+      11  WARNING: refcount bug in binderfs_evict_inode
+      11  WARNING: refcount bug in binderfs_evict_inode
+      11  WARNING: refcount bug in binderfs_evict_inode
+      11  WARNING: refcount bug in binderfs_evict_inode
+      11  WARNING: refcount bug in binderfs_evict_inode
+      11  WARNING: refcount bug in binderfs_evict_inode
+      12  WARNING: refcount bug in binderfs_evict_inode
+      12  WARNING: refcount bug in binderfs_evict_inode
+      12  WARNING: refcount bug in binderfs_evict_inode
+      12  WARNING: refcount bug in binderfs_evict_inode
+      12  WARNING: refcount bug in binderfs_evict_inode
+      12  WARNING: refcount bug in binderfs_evict_inode
+      12  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 28717 commits remaining
+
+2025-09-19 20:54:46
+Session:   10
+Kernel:    2020-02-05 - 8df14af42f00a434c492c9964a8095bf59831a45
+Compiler:  ccache /mnt/sdd/jtbursey/meerkat/compilers/gcc-8.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /mnt/sdd/jtbursey/meerkat/wd-meerkat-3/log/bug0108-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      11  KASAN: slab-out-of-bounds Write in hpet_alloc
+      11  KASAN: slab-out-of-bounds Write in hpet_alloc
+      11  KASAN: slab-out-of-bounds Write in hpet_alloc
+      11  KASAN: slab-out-of-bounds Write in hpet_alloc
+      11  KASAN: slab-out-of-bounds Write in hpet_alloc
+      11  KASAN: slab-out-of-bounds Write in hpet_alloc
+      11  KASAN: slab-out-of-bounds Write in hpet_alloc
+      11  KASAN: slab-out-of-bounds Write in hpet_alloc
+      12  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 28717 commits remaining
+
+2025-09-19 21:20:00
+Session:   11
+Kernel:    2020-03-23 - b0c40588161dafdafdbac537b4441be02c15aff2
+Compiler:  ccache /mnt/sdd/jtbursey/meerkat/compilers/gcc-8.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       5  BUG: MAX_LOCKDEP_CHAIN_HLOCKS too low!
+       5  BUG: MAX_LOCKDEP_CHAIN_HLOCKS too low!
+       5  BUG: MAX_LOCKDEP_CHAIN_HLOCKS too low!
+       8  WARNING in sta_info_insert_rcu
+       8  WARNING in sta_info_insert_rcu
+       8  WARNING in sta_info_insert_rcu
+       9  WARNING in sta_info_insert_rcu
+      12  BUG: MAX_LOCKDEP_CHAIN_HLOCKS too low!
+      12  BUG: MAX_LOCKDEP_CHAIN_HLOCKS too low!
+      12  BUG: MAX_LOCKDEP_CHAIN_HLOCKS too low!
+      12  BUG: MAX_LOCKDEP_CHAIN_HLOCKS too low!
+The bug was not found.
+About 15012 commits remaining
+
+2025-09-19 21:45:03
+Session:   12
+Kernel:    2020-04-01 - 50a5de895dbe5df947b3a695777db5b2c313e065
+Compiler:  ccache /mnt/sdd/jtbursey/meerkat/compilers/gcc-8.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /mnt/sdd/jtbursey/meerkat/wd-meerkat-3/log/bug0108-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      11  kernel panic: VFS: Unable to mount root fs on unknown-block(NUM,NUM)
+      11  kernel panic: VFS: Unable to mount root fs on unknown-block(NUM,NUM)
+      11  kernel panic: VFS: Unable to mount root fs on unknown-block(NUM,NUM)
+      11  kernel panic: VFS: Unable to mount root fs on unknown-block(NUM,NUM)
+      12  kernel panic: VFS: Unable to mount root fs on unknown-block(NUM,NUM)
+      12  kernel panic: VFS: Unable to mount root fs on unknown-block(NUM,NUM)
+      12  kernel panic: VFS: Unable to mount root fs on unknown-block(NUM,NUM)
+      12  kernel panic: VFS: Unable to mount root fs on unknown-block(NUM,NUM)
+      12  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 15012 commits remaining
+
+2025-09-19 22:09:13
+Session:   13
+Kernel:    2020-02-04 - 6471bd74713c1607c121395105ecea1a6eef394b
+Compiler:  ccache /mnt/sdd/jtbursey/meerkat/compilers/gcc-8.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /mnt/sdd/jtbursey/meerkat/wd-meerkat-3/log/bug0108-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      12  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 15012 commits remaining
+
+2025-09-19 22:34:19
 Session:   14
-Kernel:    2020-02-21 - e5553ac71e584c3aa443e211ca2afded6071b5b6
-Compiler:  ccache /home/syzretrospector/compilers/gcc-9.0.0-20181231/bin/gcc
+Kernel:    2020-04-04 - 78a515f9faf3af43cf9c4f61254dd1c5b3cb2d0b
+Compiler:  ccache /mnt/sdd/jtbursey/meerkat/compilers/gcc-8.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /mnt/sdd/jtbursey/meerkat/wd-meerkat-3/log/bug0108-boot_failure.log.
 Attempt 1:
     Time  Bug Name
-       4  WARNING in hsr_addr_subst_dest
-       5  BUG: MAX_LOCKDEP_ENTRIES too low!
-       5  BUG: MAX_LOCKDEP_ENTRIES too low!
-       6  WARNING in hsr_addr_subst_dest
-       6  WARNING in hsr_addr_subst_dest
-       6  WARNING in hsr_addr_subst_dest
-       7  WARNING in hsr_addr_subst_dest
-       7  WARNING in hsr_addr_subst_dest
-       7  WARNING in hsr_addr_subst_dest
-       7  WARNING in hsr_addr_subst_dest
-       7  WARNING in hsr_addr_subst_dest
-       8  WARNING in hsr_addr_subst_dest
-       8  WARNING in sta_info_insert_rcu
-       9  WARNING in hsr_addr_subst_dest
-       9  WARNING in hsr_addr_subst_dest
-      10  WARNING in hsr_addr_subst_dest
-      10  BUG: MAX_LOCKDEP_ENTRIES too low!
-      10  WARNING in sta_info_insert_rcu
+      11  kernel panic: VFS: Unable to mount root fs on unknown-block(NUM,NUM)
+      11  kernel panic: VFS: Unable to mount root fs on unknown-block(NUM,NUM)
+      11  kernel panic: VFS: Unable to mount root fs on unknown-block(NUM,NUM)
+      11  kernel panic: VFS: Unable to mount root fs on unknown-block(NUM,NUM)
+      12  kernel panic: VFS: Unable to mount root fs on unknown-block(NUM,NUM)
+      12  kernel panic: VFS: Unable to mount root fs on unknown-block(NUM,NUM)
+      12  kernel panic: VFS: Unable to mount root fs on unknown-block(NUM,NUM)
+      12  kernel panic: VFS: Unable to mount root fs on unknown-block(NUM,NUM)
+      12  boot failure
 The bug was not found.
-About 513 commits remaining
+This commit is flagged as unstable.
+About 15012 commits remaining
 
-2025-04-16 02:45:28
+2025-09-19 22:59:06
 Session:   15
-Kernel:    2020-02-27 - a2f0b878c3ca531a1706cb2a8b079cea3b17bafc
-Compiler:  ccache /home/syzretrospector/compilers/gcc-9.0.0-20181231/bin/gcc
+Kernel:    2020-03-15 - 8dcb5a119b9c04467697b1d2f40b7c85912af8b3
+Compiler:  ccache /mnt/sdd/jtbursey/meerkat/compilers/gcc-8.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /mnt/sdd/jtbursey/meerkat/wd-meerkat-3/log/bug0108-boot_failure.log.
 Attempt 1:
     Time  Bug Name
-       5  WARNING in hsr_addr_subst_dest
-       5  WARNING in hsr_addr_subst_dest
-       5  WARNING in hsr_addr_subst_dest
-       5  BUG: MAX_LOCKDEP_CHAIN_HLOCKS too low!
-       6  WARNING in hsr_addr_subst_dest
-       6  WARNING in hsr_addr_subst_dest
-       6  BUG: MAX_LOCKDEP_CHAIN_HLOCKS too low!
-       7  WARNING in hsr_addr_subst_dest
-       7  WARNING in hsr_addr_subst_dest
-       7  WARNING in sta_info_insert_rcu
-       7  WARNING in sta_info_insert_rcu
-       8  WARNING in hsr_addr_subst_dest
-       8  WARNING in hsr_addr_subst_dest
-       8  WARNING in hsr_addr_subst_dest
-       8  WARNING in hsr_addr_subst_dest
-       9  WARNING in hsr_addr_subst_dest
-      10  WARNING in hsr_addr_subst_dest
+       1  WARNING: refcount bug in binderfs_evict_inode
+       1  WARNING: refcount bug in binderfs_evict_inode
+       2  WARNING: refcount bug in binderfs_evict_inode
+       2  WARNING: refcount bug in binderfs_evict_inode
+       2  WARNING: refcount bug in binderfs_evict_inode
+       2  WARNING: refcount bug in binderfs_evict_inode
+       2  WARNING: refcount bug in binderfs_evict_inode
+       2  WARNING: refcount bug in binderfs_evict_inode
+       2  WARNING: refcount bug in binderfs_evict_inode
+       2  WARNING: refcount bug in binderfs_evict_inode
+       3  WARNING: refcount bug in binderfs_evict_inode
+       3  WARNING: refcount bug in binderfs_evict_inode
+       3  WARNING: refcount bug in binderfs_evict_inode
+       3  WARNING: refcount bug in binderfs_evict_inode
+       3  WARNING: refcount bug in binderfs_evict_inode
+       3  WARNING: refcount bug in binderfs_evict_inode
+       4  WARNING: refcount bug in binderfs_evict_inode
+       4  WARNING: refcount bug in binderfs_evict_inode
+       4  WARNING: refcount bug in binderfs_evict_inode
+       4  WARNING: refcount bug in binderfs_evict_inode
+       4  WARNING: refcount bug in binderfs_evict_inode
+       4  WARNING: refcount bug in binderfs_evict_inode
+       5  WARNING: refcount bug in binderfs_evict_inode
+       5  WARNING: refcount bug in binderfs_evict_inode
+       5  WARNING: refcount bug in binderfs_evict_inode
+       5  WARNING: refcount bug in binderfs_evict_inode
+       5  WARNING: refcount bug in binderfs_evict_inode
+       5  WARNING: refcount bug in binderfs_evict_inode
+       6  WARNING: refcount bug in binderfs_evict_inode
+       6  WARNING: refcount bug in binderfs_evict_inode
+       6  WARNING: refcount bug in binderfs_evict_inode
+       6  WARNING: refcount bug in binderfs_evict_inode
+       6  WARNING: refcount bug in binderfs_evict_inode
+       6  WARNING: refcount bug in binderfs_evict_inode
+       7  WARNING: refcount bug in binderfs_evict_inode
+       7  WARNING: refcount bug in binderfs_evict_inode
+       7  WARNING: refcount bug in binderfs_evict_inode
+       7  WARNING: refcount bug in binderfs_evict_inode
+       7  WARNING: refcount bug in binderfs_evict_inode
+       7  WARNING: refcount bug in binderfs_evict_inode
+       8  WARNING: refcount bug in binderfs_evict_inode
+       8  WARNING: refcount bug in binderfs_evict_inode
+       8  WARNING: refcount bug in binderfs_evict_inode
+       8  WARNING: refcount bug in binderfs_evict_inode
+       8  WARNING: refcount bug in binderfs_evict_inode
+       8  WARNING: refcount bug in binderfs_evict_inode
+       9  WARNING: refcount bug in binderfs_evict_inode
+       9  WARNING: refcount bug in binderfs_evict_inode
+       9  WARNING: refcount bug in binderfs_evict_inode
+       9  WARNING: refcount bug in binderfs_evict_inode
+       9  WARNING: refcount bug in binderfs_evict_inode
+       9  WARNING: refcount bug in binderfs_evict_inode
+      10  WARNING: refcount bug in binderfs_evict_inode
+      10  WARNING: refcount bug in binderfs_evict_inode
+      10  WARNING: refcount bug in binderfs_evict_inode
+      10  WARNING: refcount bug in binderfs_evict_inode
+      10  WARNING: refcount bug in binderfs_evict_inode
+      10  WARNING: refcount bug in binderfs_evict_inode
+      11  WARNING: refcount bug in binderfs_evict_inode
+      11  WARNING: refcount bug in binderfs_evict_inode
+      11  WARNING: refcount bug in binderfs_evict_inode
+      11  WARNING: refcount bug in binderfs_evict_inode
+      11  WARNING: refcount bug in binderfs_evict_inode
+      11  WARNING: refcount bug in binderfs_evict_inode
+      12  WARNING: refcount bug in binderfs_evict_inode
+      12  WARNING: refcount bug in binderfs_evict_inode
+      12  WARNING: refcount bug in binderfs_evict_inode
+      12  WARNING: refcount bug in binderfs_evict_inode
+      12  WARNING: refcount bug in binderfs_evict_inode
+      12  WARNING: refcount bug in binderfs_evict_inode
+      12  boot failure
 The bug was not found.
-About 288 commits remaining
+This commit is flagged as unstable.
+About 15012 commits remaining
 
-2025-04-16 03:01:01
+2025-09-19 23:23:46
 Session:   16
-Kernel:    2020-03-01 - f853ed90e2e49f4f6e585f995ffb25e093fe4df6
-Compiler:  ccache /home/syzretrospector/compilers/gcc-9.0.0-20181231/bin/gcc
+Kernel:    2020-04-02 - 4b13f64de25686583db3e359b1b8e59049278b50
+Compiler:  ccache /mnt/sdd/jtbursey/meerkat/compilers/gcc-8.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /mnt/sdd/jtbursey/meerkat/wd-meerkat-3/log/bug0108-boot_failure.log.
 Attempt 1:
     Time  Bug Name
-       3  WARNING in hsr_addr_subst_dest
-       3  WARNING in hsr_addr_subst_dest
-       4  WARNING in hsr_addr_subst_dest
-***    4  KASAN: slab-out-of-bounds Read in decrypt_internal
-The bug was found.
-About 145 commits remaining
+      11  kernel panic: VFS: Unable to mount root fs on unknown-block(NUM,NUM)
+      11  kernel panic: VFS: Unable to mount root fs on unknown-block(NUM,NUM)
+      11  kernel panic: VFS: Unable to mount root fs on unknown-block(NUM,NUM)
+      11  kernel panic: VFS: Unable to mount root fs on unknown-block(NUM,NUM)
+      12  kernel panic: VFS: Unable to mount root fs on unknown-block(NUM,NUM)
+      12  kernel panic: VFS: Unable to mount root fs on unknown-block(NUM,NUM)
+      12  kernel panic: VFS: Unable to mount root fs on unknown-block(NUM,NUM)
+      12  kernel panic: VFS: Unable to mount root fs on unknown-block(NUM,NUM)
+      12  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 15012 commits remaining
 
-2025-04-16 03:11:06
+2025-09-19 23:48:16
 Session:   17
-Kernel:    2020-02-27 - 7058b837899fc978c9f8a033fa29ab07360a85c8
-Compiler:  ccache /home/syzretrospector/compilers/gcc-9.0.0-20181231/bin/gcc
+Kernel:    2020-03-19 - 189ff97cca53e3fe2d8b38d64105040ce17fc62d
+Compiler:  ccache /mnt/sdd/jtbursey/meerkat/compilers/gcc-8.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /mnt/sdd/jtbursey/meerkat/wd-meerkat-3/log/bug0108-boot_failure.log.
 Attempt 1:
     Time  Bug Name
-       3  WARNING in hsr_addr_subst_dest
-       4  WARNING in hsr_addr_subst_dest
-***    4  KASAN: slab-out-of-bounds Read in decrypt_internal
-***    4  KASAN: slab-out-of-bounds Read in decrypt_internal
-       4  WARNING in sta_info_insert_rcu
-       4  WARNING in sta_info_insert_rcu
-The bug was found.
-About 69 commits remaining
+       1  WARNING: refcount bug in binderfs_evict_inode
+       2  WARNING: refcount bug in binderfs_evict_inode
+       2  WARNING: refcount bug in binderfs_evict_inode
+       2  WARNING: refcount bug in binderfs_evict_inode
+       2  WARNING: refcount bug in binderfs_evict_inode
+       2  WARNING: refcount bug in binderfs_evict_inode
+       2  WARNING: refcount bug in binderfs_evict_inode
+       2  WARNING: refcount bug in binderfs_evict_inode
+       2  WARNING: refcount bug in binderfs_evict_inode
+       2  WARNING: refcount bug in binderfs_evict_inode
+       3  WARNING: refcount bug in binderfs_evict_inode
+       3  WARNING: refcount bug in binderfs_evict_inode
+       3  WARNING: refcount bug in binderfs_evict_inode
+       3  WARNING: refcount bug in binderfs_evict_inode
+       3  WARNING: refcount bug in binderfs_evict_inode
+       3  WARNING: refcount bug in binderfs_evict_inode
+       3  WARNING: refcount bug in binderfs_evict_inode
+       3  WARNING: refcount bug in binderfs_evict_inode
+       3  WARNING: refcount bug in binderfs_evict_inode
+       4  WARNING: refcount bug in binderfs_evict_inode
+       4  WARNING: refcount bug in binderfs_evict_inode
+       4  WARNING: refcount bug in binderfs_evict_inode
+       4  WARNING: refcount bug in binderfs_evict_inode
+       4  WARNING: refcount bug in binderfs_evict_inode
+       4  WARNING: refcount bug in binderfs_evict_inode
+       5  WARNING: refcount bug in binderfs_evict_inode
+       5  WARNING: refcount bug in binderfs_evict_inode
+       5  WARNING: refcount bug in binderfs_evict_inode
+       5  WARNING: refcount bug in binderfs_evict_inode
+       5  WARNING: refcount bug in binderfs_evict_inode
+       5  WARNING: refcount bug in binderfs_evict_inode
+       6  WARNING: refcount bug in binderfs_evict_inode
+       6  WARNING: refcount bug in binderfs_evict_inode
+       6  WARNING: refcount bug in binderfs_evict_inode
+       6  WARNING: refcount bug in binderfs_evict_inode
+       6  WARNING: refcount bug in binderfs_evict_inode
+       6  WARNING: refcount bug in binderfs_evict_inode
+       7  WARNING: refcount bug in binderfs_evict_inode
+       7  WARNING: refcount bug in binderfs_evict_inode
+       7  WARNING: refcount bug in binderfs_evict_inode
+       7  WARNING: refcount bug in binderfs_evict_inode
+       7  WARNING: refcount bug in binderfs_evict_inode
+       7  WARNING: refcount bug in binderfs_evict_inode
+       8  WARNING: refcount bug in binderfs_evict_inode
+       8  WARNING: refcount bug in binderfs_evict_inode
+       8  WARNING: refcount bug in binderfs_evict_inode
+       8  WARNING: refcount bug in binderfs_evict_inode
+       8  WARNING: refcount bug in binderfs_evict_inode
+       8  WARNING: refcount bug in binderfs_evict_inode
+       9  WARNING: refcount bug in binderfs_evict_inode
+       9  WARNING: refcount bug in binderfs_evict_inode
+       9  WARNING: refcount bug in binderfs_evict_inode
+       9  WARNING: refcount bug in binderfs_evict_inode
+       9  WARNING: refcount bug in binderfs_evict_inode
+       9  WARNING: refcount bug in binderfs_evict_inode
+      10  WARNING: refcount bug in binderfs_evict_inode
+      10  WARNING: refcount bug in binderfs_evict_inode
+      10  WARNING: refcount bug in binderfs_evict_inode
+      10  WARNING: refcount bug in binderfs_evict_inode
+      10  WARNING: refcount bug in binderfs_evict_inode
+      10  WARNING: refcount bug in binderfs_evict_inode
+      11  WARNING: refcount bug in binderfs_evict_inode
+      11  WARNING: refcount bug in binderfs_evict_inode
+      11  WARNING: refcount bug in binderfs_evict_inode
+      11  WARNING: refcount bug in binderfs_evict_inode
+      11  WARNING: refcount bug in binderfs_evict_inode
+      11  WARNING: refcount bug in binderfs_evict_inode
+      12  WARNING: refcount bug in binderfs_evict_inode
+      12  WARNING: refcount bug in binderfs_evict_inode
+      12  WARNING: refcount bug in binderfs_evict_inode
+      12  WARNING: refcount bug in binderfs_evict_inode
+      12  WARNING: refcount bug in binderfs_evict_inode
+      12  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 15012 commits remaining
 
-2025-04-16 03:18:48
+2025-09-20 00:13:35
 Session:   18
-Kernel:    2020-02-26 - 574b238f64594cc0d87aad3f716ebab49fb663fa
-Compiler:  ccache /home/syzretrospector/compilers/gcc-9.0.0-20181231/bin/gcc
+Kernel:    2020-04-17 - 7289fdb5dcdbc5155b5531529c44105868a762f2
+Compiler:  ccache /mnt/sdd/jtbursey/meerkat/compilers/gcc-8.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /mnt/sdd/jtbursey/meerkat/wd-meerkat-3/log/bug0108-boot_failure.log.
 Attempt 1:
     Time  Bug Name
-       3  WARNING in sta_info_insert_rcu
-       4  WARNING in hsr_addr_subst_dest
-       4  WARNING in hsr_addr_subst_dest
-       4  WARNING in hsr_addr_subst_dest
-       4  WARNING in sta_info_insert_rcu
-       5  WARNING in hsr_addr_subst_dest
-       5  BUG: MAX_LOCKDEP_ENTRIES too low!
-       5  WARNING in sta_info_insert_rcu
-       6  WARNING in hsr_addr_subst_dest
-       7  WARNING in hsr_addr_subst_dest
-       7  WARNING in hsr_addr_subst_dest
-       7  WARNING in hsr_addr_subst_dest
-       7  WARNING in hsr_addr_subst_dest
-       7  WARNING in sta_info_insert_rcu
-       8  WARNING in hsr_addr_subst_dest
-       8  WARNING in hsr_addr_subst_dest
-       8  WARNING in hsr_addr_subst_dest
-       8  WARNING in sta_info_insert_rcu
-       9  WARNING in hsr_addr_subst_dest
-       9  WARNING in hsr_addr_subst_dest
-       9  WARNING in hsr_addr_subst_dest
-      10  WARNING in hsr_addr_subst_dest
-      10  WARNING in hsr_addr_subst_dest
+      11  kernel panic: VFS: Unable to mount root fs on unknown-block(NUM,NUM)
+      11  kernel panic: VFS: Unable to mount root fs on unknown-block(NUM,NUM)
+      11  kernel panic: VFS: Unable to mount root fs on unknown-block(NUM,NUM)
+      11  kernel panic: VFS: Unable to mount root fs on unknown-block(NUM,NUM)
+      12  kernel panic: VFS: Unable to mount root fs on unknown-block(NUM,NUM)
+      12  kernel panic: VFS: Unable to mount root fs on unknown-block(NUM,NUM)
+      12  kernel panic: VFS: Unable to mount root fs on unknown-block(NUM,NUM)
+      12  kernel panic: VFS: Unable to mount root fs on unknown-block(NUM,NUM)
+      12  boot failure
 The bug was not found.
-About 243 commits remaining
+This commit is flagged as unstable.
+About 15012 commits remaining
 
-2025-04-16 03:32:36
+2025-09-20 00:37:54
 Session:   19
-Kernel:    2020-02-27 - 3a12500ed5dd21a63da779ac73503f11085bbc1c
-Compiler:  ccache /home/syzretrospector/compilers/gcc-9.0.0-20181231/bin/gcc
+Kernel:    2020-03-04 - 391615d998367b6495ccf9e685120986e8d02fa6
+Compiler:  ccache /mnt/sdd/jtbursey/meerkat/compilers/gcc-8.1.0/bin/gcc
 Attempt 1:
     Time  Bug Name
-       4  WARNING in hsr_addr_subst_dest
-       4  WARNING in hsr_addr_subst_dest
+       2  WARNING in hsr_addr_subst_dest
+       2  WARNING in hsr_addr_subst_dest
+       2  WARNING in hsr_addr_subst_dest
+       2  WARNING in hsr_addr_subst_dest
+       2  WARNING in hsr_addr_subst_dest
+       3  WARNING in hsr_addr_subst_dest
+       3  WARNING in hsr_addr_subst_dest
+       3  WARNING in hsr_addr_subst_dest
+       3  WARNING in hsr_addr_subst_dest
+       3  WARNING in hsr_addr_subst_dest
+       3  WARNING in hsr_addr_subst_dest
+***    5  KASAN: slab-out-of-bounds Read in decrypt_internal
+***    5  KASAN: slab-out-of-bounds Read in decrypt_internal
        5  WARNING in hsr_addr_subst_dest
        5  WARNING in hsr_addr_subst_dest
-       5  WARNING in hsr_addr_subst_dest
-       6  WARNING in hsr_addr_subst_dest
-       6  WARNING in hsr_addr_subst_dest
-       6  WARNING in sta_info_insert_rcu
-       7  WARNING in hsr_addr_subst_dest
-       7  WARNING in sta_info_insert_rcu
-       8  WARNING in sta_info_insert_rcu
-       9  WARNING in hsr_addr_subst_dest
-       9  WARNING in hsr_addr_subst_dest
-      10  BUG: MAX_LOCKDEP_ENTRIES too low!
-      10  BUG: MAX_LOCKDEP_ENTRIES too low!
-      10  BUG: MAX_LOCKDEP_ENTRIES too low!
-      10  WARNING in sta_info_insert_rcu
-The bug was not found.
-About 226 commits remaining
+Running syz-repro.
+New PoC saved at /mnt/sdd/jtbursey/meerkat/wd-meerkat-3/reproducers/repro-bug0108-0.prog
+Primary PoC:     /mnt/sdd/jtbursey/meerkat/wd-meerkat-3/reproducers/repro-bug0108-0.prog
+Run Time:        0h21m0s
+The bug was found.
+About 678 commits remaining
 
-2025-04-16 03:46:08
+2025-09-20 01:16:38
 Session:   20
-Kernel:    2020-02-27 - 037f9cdf72fb8a7ff9ec2b5dd05336ec1492bdf1
-Compiler:  ccache /home/syzretrospector/compilers/gcc-9.0.0-20181231/bin/gcc
+Kernel:    2020-02-14 - 06d3ff6e745114852204ff6667df9a0420ab9931
+Compiler:  ccache /mnt/sdd/jtbursey/meerkat/compilers/gcc-8.1.0/bin/gcc
 Attempt 1:
     Time  Bug Name
+       2  WARNING in hsr_addr_subst_dest
+       2  WARNING in hsr_addr_subst_dest
+       2  WARNING in hsr_addr_subst_dest
+       2  WARNING in hsr_addr_subst_dest
+       2  WARNING in hsr_addr_subst_dest
        3  WARNING in hsr_addr_subst_dest
-       4  WARNING in sta_info_insert_rcu
+       3  WARNING in hsr_addr_subst_dest
+       3  WARNING in hsr_addr_subst_dest
+       3  WARNING in hsr_addr_subst_dest
+       3  WARNING in hsr_addr_subst_dest
+***    5  KASAN: slab-out-of-bounds Read in decrypt_internal
        5  WARNING in hsr_addr_subst_dest
        5  WARNING in hsr_addr_subst_dest
-       5  BUG: MAX_LOCKDEP_ENTRIES too low!
-       5  BUG: MAX_LOCKDEP_CHAIN_HLOCKS too low!
-       5  WARNING in sta_info_insert_rcu
-       7  WARNING in hsr_addr_subst_dest
-       7  WARNING in hsr_addr_subst_dest
-       7  WARNING in hsr_addr_subst_dest
-       7  WARNING in hsr_addr_subst_dest
-       7  WARNING in sta_info_insert_rcu
-       7  WARNING in sta_info_insert_rcu
-       8  WARNING in hsr_addr_subst_dest
-      10  WARNING in hsr_addr_subst_dest
-      10  WARNING in hsr_addr_subst_dest
-      10  WARNING in hsr_addr_subst_dest
-The bug was not found.
-About 218 commits remaining
+       5  WARNING in hsr_addr_subst_dest
+The bug was found.
+About 340 commits remaining
 
-2025-04-16 03:59:30
+2025-09-20 01:34:18
 Session:   21
-Kernel:    2020-02-27 - 5c05a164d441a1792791175e4959ea9df12f7e2b
-Compiler:  ccache /home/syzretrospector/compilers/gcc-9.0.0-20181231/bin/gcc
+Kernel:    2020-01-28 - a28477826aef031745e6e1194a1eabb22ee7d494
+Compiler:  ccache /mnt/sdd/jtbursey/meerkat/compilers/gcc-8.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /mnt/sdd/jtbursey/meerkat/wd-meerkat-3/log/bug0108-boot_failure.log.
 Attempt 1:
     Time  Bug Name
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      12  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 340 commits remaining
+
+2025-09-20 01:58:36
+Session:   22
+Kernel:    2020-01-29 - ba12993c5228015c42dc46d634f5fa5717206c3b
+Compiler:  ccache /mnt/sdd/jtbursey/meerkat/compilers/gcc-8.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /mnt/sdd/jtbursey/meerkat/wd-meerkat-3/log/bug0108-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      12  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 340 commits remaining
+
+2025-09-20 02:14:58
+Session:   23
+Kernel:    2020-02-04 - 1a2466fe13c6d20cd5d9537ada6beafa9cb9c7fb
+Compiler:  ccache /mnt/sdd/jtbursey/meerkat/compilers/gcc-8.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /mnt/sdd/jtbursey/meerkat/wd-meerkat-3/log/bug0108-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      12  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 340 commits remaining
+
+2025-09-20 02:31:35
+Session:   24
+Kernel:    2020-01-27 - d49e857c94f2d7604512e425d96fd79ac933d028
+Compiler:  ccache /mnt/sdd/jtbursey/meerkat/compilers/gcc-8.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /mnt/sdd/jtbursey/meerkat/wd-meerkat-3/log/bug0108-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      12  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 340 commits remaining
+
+2025-09-20 02:47:50
+Session:   25
+Kernel:    2020-02-04 - e9318906ad0b2b42123f44e00c0e13cb1a5f62f5
+Compiler:  ccache /mnt/sdd/jtbursey/meerkat/compilers/gcc-8.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /mnt/sdd/jtbursey/meerkat/wd-meerkat-3/log/bug0108-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      12  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 340 commits remaining
+
+2025-09-20 03:04:15
+Session:   26
+Kernel:    2020-01-29 - dc008bf0aa091c33caa76ea9d262f4ddffb054a7
+Compiler:  ccache /mnt/sdd/jtbursey/meerkat/compilers/gcc-8.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /mnt/sdd/jtbursey/meerkat/wd-meerkat-3/log/bug0108-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      12  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 340 commits remaining
+
+2025-09-20 03:20:34
+Session:   27
+Kernel:    2020-02-04 - 375e4fbd0bcfab459a8cd3c11e6049acf73c2120
+Compiler:  ccache /mnt/sdd/jtbursey/meerkat/compilers/gcc-8.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /mnt/sdd/jtbursey/meerkat/wd-meerkat-3/log/bug0108-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      12  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 340 commits remaining
+
+2025-09-20 03:36:49
+Session:   28
+Kernel:    2020-01-27 - e5429340bfa2dc43a07c3329e0c30cdae4cc0b35
+Compiler:  ccache /mnt/sdd/jtbursey/meerkat/compilers/gcc-8.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /mnt/sdd/jtbursey/meerkat/wd-meerkat-3/log/bug0108-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      12  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 340 commits remaining
+
+2025-09-20 03:53:38
+Session:   29
+Kernel:    2020-01-22 - 6fef8510a7a51227620de74cc495916e6ba54773
+Compiler:  ccache /mnt/sdd/jtbursey/meerkat/compilers/gcc-8.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /mnt/sdd/jtbursey/meerkat/wd-meerkat-3/log/bug0108-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      12  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 340 commits remaining
+
+2025-09-20 04:10:07
+Session:   30
+Kernel:    2020-01-28 - 6717f7c32b33c2b13627dce309400abe7ac68392
+Compiler:  ccache /mnt/sdd/jtbursey/meerkat/compilers/gcc-8.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /mnt/sdd/jtbursey/meerkat/wd-meerkat-3/log/bug0108-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      12  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 340 commits remaining
+
+2025-09-20 04:26:40
+Session:   31
+Kernel:    2020-02-04 - 48522d3eed540afd2017bcfa4360b89911f53e6e
+Compiler:  ccache /mnt/sdd/jtbursey/meerkat/compilers/gcc-8.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /mnt/sdd/jtbursey/meerkat/wd-meerkat-3/log/bug0108-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      12  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 340 commits remaining
+
+2025-09-20 04:43:24
+Session:   32
+Kernel:    2020-01-28 - 0543fbf4fd0082c8847a26809ce1935cd1c3e250
+Compiler:  ccache /mnt/sdd/jtbursey/meerkat/compilers/gcc-8.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /mnt/sdd/jtbursey/meerkat/wd-meerkat-3/log/bug0108-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      12  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 340 commits remaining
+
+2025-09-20 05:00:12
+Session:   33
+Kernel:    2020-02-04 - 6a0e032fb524c434a9a1b5f3c08d4563f7bdb066
+Compiler:  ccache /mnt/sdd/jtbursey/meerkat/compilers/gcc-8.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /mnt/sdd/jtbursey/meerkat/wd-meerkat-3/log/bug0108-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      12  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 340 commits remaining
+
+2025-09-20 05:17:20
+Session:   34
+Kernel:    2020-01-28 - ff3d4ff6c9e66ba1602d0b89255961ddd43e7db7
+Compiler:  ccache /mnt/sdd/jtbursey/meerkat/compilers/gcc-8.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /mnt/sdd/jtbursey/meerkat/wd-meerkat-3/log/bug0108-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      12  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 340 commits remaining
+
+2025-09-20 05:34:18
+Session:   35
+Kernel:    2020-01-24 - 58c34c4ca392ac9e658ee31f32db58abdf9fa352
+Compiler:  ccache /mnt/sdd/jtbursey/meerkat/compilers/gcc-8.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /mnt/sdd/jtbursey/meerkat/wd-meerkat-3/log/bug0108-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      12  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 340 commits remaining
+
+2025-09-20 05:51:19
+Session:   36
+Kernel:    2020-01-14 - 59a46ad9f86c235dd38760f7b487169662bff244
+Compiler:  ccache /mnt/sdd/jtbursey/meerkat/compilers/gcc-8.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /mnt/sdd/jtbursey/meerkat/wd-meerkat-3/log/bug0108-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      12  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 340 commits remaining
+
+2025-09-20 06:08:20
+Session:   37
+Kernel:    2020-01-31 - faea1792835d5608c6b4275b2c124ca3e754346e
+Compiler:  ccache /mnt/sdd/jtbursey/meerkat/compilers/gcc-8.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /mnt/sdd/jtbursey/meerkat/wd-meerkat-3/log/bug0108-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      12  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 340 commits remaining
+
+2025-09-20 06:25:01
+Session:   38
+Kernel:    2020-02-11 - 0b02f97f40d8e33306f4d724e90b1aff97c3bd46
+Compiler:  ccache /mnt/sdd/jtbursey/meerkat/compilers/gcc-8.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       2  WARNING in hsr_addr_subst_dest
+       2  WARNING in hsr_addr_subst_dest
+       2  WARNING in hsr_addr_subst_dest
+       2  WARNING in hsr_addr_subst_dest
+       2  WARNING in hsr_addr_subst_dest
+       2  WARNING in hsr_addr_subst_dest
+       3  WARNING in hsr_addr_subst_dest
+       3  WARNING in hsr_addr_subst_dest
+       3  WARNING in hsr_addr_subst_dest
+       3  WARNING in hsr_addr_subst_dest
        3  WARNING in hsr_addr_subst_dest
        4  WARNING in hsr_addr_subst_dest
+       4  WARNING in hsr_addr_subst_dest
        5  WARNING in hsr_addr_subst_dest
-       5  WARNING in hsr_addr_subst_dest
-       5  BUG: MAX_LOCKDEP_CHAIN_HLOCKS too low!
-       5  BUG: MAX_LOCKDEP_CHAIN_HLOCKS too low!
-       6  WARNING in hsr_addr_subst_dest
-       6  WARNING in hsr_addr_subst_dest
-       6  WARNING in hsr_addr_subst_dest
-       6  WARNING in hsr_addr_subst_dest
+***    7  KASAN: slab-out-of-bounds Read in decrypt_internal
+***    7  KASAN: slab-out-of-bounds Read in decrypt_internal
        7  WARNING in hsr_addr_subst_dest
-       7  WARNING in hsr_addr_subst_dest
-       7  WARNING in hsr_addr_subst_dest
-       7  WARNING in hsr_addr_subst_dest
-       7  WARNING in hsr_addr_subst_dest
-       8  WARNING in hsr_addr_subst_dest
-       8  WARNING in hsr_addr_subst_dest
-       9  WARNING in hsr_addr_subst_dest
-      10  WARNING in hsr_addr_subst_dest
-      10  WARNING in hsr_addr_subst_dest
-      10  WARNING in hsr_addr_subst_dest
-      10  WARNING in hsr_addr_subst_dest
-The bug was not found.
-About 214 commits remaining
+The bug was found.
+About 328 commits remaining
 
-2025-04-16 04:12:55
-Session:   22
-Kernel:    2020-02-27 - 23797b98909f34b75fd130369bde86f760db69d0
-Compiler:  ccache /home/syzretrospector/compilers/gcc-9.0.0-20181231/bin/gcc
+2025-09-20 06:45:17
+Session:   39
+Kernel:    2020-01-27 - 909438bbfb567dc21717933d460770e827280605
+Compiler:  ccache /mnt/sdd/jtbursey/meerkat/compilers/gcc-8.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /mnt/sdd/jtbursey/meerkat/wd-meerkat-3/log/bug0108-boot_failure.log.
 Attempt 1:
     Time  Bug Name
-       5  WARNING in hsr_addr_subst_dest
-       5  BUG: MAX_LOCKDEP_ENTRIES too low!
-       5  BUG: MAX_LOCKDEP_CHAIN_HLOCKS too low!
-       6  WARNING in hsr_addr_subst_dest
-       7  WARNING in hsr_addr_subst_dest
-       7  WARNING in hsr_addr_subst_dest
-       7  WARNING in hsr_addr_subst_dest
-       7  WARNING in hsr_addr_subst_dest
-       8  WARNING in sta_info_insert_rcu
-       8  WARNING in sta_info_insert_rcu
-       9  BUG: MAX_LOCKDEP_ENTRIES too low!
-       9  BUG: MAX_LOCKDEP_ENTRIES too low!
-      10  WARNING in hsr_addr_subst_dest
-      10  WARNING in hsr_addr_subst_dest
-      10  WARNING in hsr_addr_subst_dest
-      10  WARNING in hsr_addr_subst_dest
-      10  BUG: MAX_LOCKDEP_ENTRIES too low!
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      12  boot failure
 The bug was not found.
-About 212 commits remaining
+This commit is flagged as unstable.
+About 328 commits remaining
 
-2025-04-16 04:26:24
-Session:   23
-Kernel:    2020-02-27 - 3ee339eb28959629db33aaa2b8cde4c63c6289eb
-Compiler:  ccache /home/syzretrospector/compilers/gcc-9.0.0-20181231/bin/gcc
+2025-09-20 07:10:35
+Session:   40
+Kernel:    2020-01-27 - 3fd7c4504d1fb5d48e1af730e194ac638d09aed0
+Compiler:  ccache /mnt/sdd/jtbursey/meerkat/compilers/gcc-8.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /mnt/sdd/jtbursey/meerkat/wd-meerkat-3/log/bug0108-boot_failure.log.
 Attempt 1:
     Time  Bug Name
-       3  WARNING in sta_info_insert_rcu
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      12  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 328 commits remaining
+
+2025-09-20 07:27:23
+Session:   41
+Kernel:    2020-01-20 - ee34801cc0e8f07ad210c220986e77dd46dd0b3e
+Compiler:  ccache /mnt/sdd/jtbursey/meerkat/compilers/gcc-8.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /mnt/sdd/jtbursey/meerkat/wd-meerkat-3/log/bug0108-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      12  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 328 commits remaining
+
+2025-09-20 07:43:53
+Session:   42
+Kernel:    2020-01-30 - f70431023eb6e5827dbf25050a8afd75bef1f2b0
+Compiler:  ccache /mnt/sdd/jtbursey/meerkat/compilers/gcc-8.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /mnt/sdd/jtbursey/meerkat/wd-meerkat-3/log/bug0108-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      12  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 328 commits remaining
+
+2025-09-20 08:00:34
+Session:   43
+Kernel:    2020-01-20 - 7865559872074a9ab169c87915504661d630addf
+Compiler:  ccache /mnt/sdd/jtbursey/meerkat/compilers/gcc-8.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /mnt/sdd/jtbursey/meerkat/wd-meerkat-3/log/bug0108-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      12  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 328 commits remaining
+
+2025-09-20 08:17:20
+Session:   44
+Kernel:    2020-01-29 - 8a5746982e0fdabae85990d90a9b80e107fcd450
+Compiler:  ccache /mnt/sdd/jtbursey/meerkat/compilers/gcc-8.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /mnt/sdd/jtbursey/meerkat/wd-meerkat-3/log/bug0108-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      12  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 328 commits remaining
+
+2025-09-20 08:34:00
+Session:   45
+Kernel:    2020-02-04 - 0a3b94a2b88feec953e283e7022437a92a639847
+Compiler:  ccache /mnt/sdd/jtbursey/meerkat/compilers/gcc-8.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /mnt/sdd/jtbursey/meerkat/wd-meerkat-3/log/bug0108-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      12  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 328 commits remaining
+
+2025-09-20 08:50:43
+Session:   46
+Kernel:    2020-01-27 - 8192c82cc65b0cdb5a514a6ecc81b9863dadbf9a
+Compiler:  ccache /mnt/sdd/jtbursey/meerkat/compilers/gcc-8.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /mnt/sdd/jtbursey/meerkat/wd-meerkat-3/log/bug0108-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      12  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 328 commits remaining
+
+2025-09-20 09:07:16
+Session:   47
+Kernel:    2020-01-21 - fa7edcd25cd0ffd0321d89c2cf0257ce043c8e60
+Compiler:  ccache /mnt/sdd/jtbursey/meerkat/compilers/gcc-8.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /mnt/sdd/jtbursey/meerkat/wd-meerkat-3/log/bug0108-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      12  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 328 commits remaining
+
+2025-09-20 09:23:37
+Session:   48
+Kernel:    2020-01-27 - 82e1b12e30126f5b2d345ef18f0ed0963c2d3b17
+Compiler:  ccache /mnt/sdd/jtbursey/meerkat/compilers/gcc-8.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /mnt/sdd/jtbursey/meerkat/wd-meerkat-3/log/bug0108-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      12  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 328 commits remaining
+
+2025-09-20 09:40:04
+Session:   49
+Kernel:    2020-02-04 - 6efb1b7de746cb7b4a38cd3c7c0e53f6306e7d4b
+Compiler:  ccache /mnt/sdd/jtbursey/meerkat/compilers/gcc-8.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /mnt/sdd/jtbursey/meerkat/wd-meerkat-3/log/bug0108-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      12  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 328 commits remaining
+
+2025-09-20 09:56:45
+Session:   50
+Kernel:    2020-01-29 - cfe86292ec71569d9525815a2ad3883babb03b1b
+Compiler:  ccache /mnt/sdd/jtbursey/meerkat/compilers/gcc-8.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /mnt/sdd/jtbursey/meerkat/wd-meerkat-3/log/bug0108-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      12  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 328 commits remaining
+
+2025-09-20 10:13:30
+Session:   51
+Kernel:    2020-01-22 - 85c823ac9a54c4bb4db54d6c724df99c01d92a0b
+Compiler:  ccache /mnt/sdd/jtbursey/meerkat/compilers/gcc-8.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /mnt/sdd/jtbursey/meerkat/wd-meerkat-3/log/bug0108-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      12  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 328 commits remaining
+
+2025-09-20 10:30:14
+Session:   52
+Kernel:    2020-01-27 - 264c0247d8889124ec8aa08b03cc2bdb2544e249
+Compiler:  ccache /mnt/sdd/jtbursey/meerkat/compilers/gcc-8.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /mnt/sdd/jtbursey/meerkat/wd-meerkat-3/log/bug0108-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      12  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 328 commits remaining
+
+2025-09-20 10:46:54
+Session:   53
+Kernel:    2020-02-04 - 8afb292839bb7a7985822fde4d03d857d779464c
+Compiler:  ccache /mnt/sdd/jtbursey/meerkat/compilers/gcc-8.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /mnt/sdd/jtbursey/meerkat/wd-meerkat-3/log/bug0108-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      12  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 328 commits remaining
+
+2025-09-20 11:03:39
+Session:   54
+Kernel:    2020-01-28 - 6cc32f15f90b7e6d761dd0673af1898cc7f89f07
+Compiler:  ccache /mnt/sdd/jtbursey/meerkat/compilers/gcc-8.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /mnt/sdd/jtbursey/meerkat/wd-meerkat-3/log/bug0108-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      12  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 328 commits remaining
+
+2025-09-20 11:20:33
+Session:   55
+Kernel:    2020-01-22 - b2faf669866e715231fc2a43ea69adf97a13ca01
+Compiler:  ccache /mnt/sdd/jtbursey/meerkat/compilers/gcc-8.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /mnt/sdd/jtbursey/meerkat/wd-meerkat-3/log/bug0108-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      12  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 328 commits remaining
+
+2025-09-20 11:36:54
+Session:   56
+Kernel:    2020-01-27 - d1ab5b272740fa88c2bd0fd564c6bff0ff717706
+Compiler:  ccache /mnt/sdd/jtbursey/meerkat/compilers/gcc-8.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /mnt/sdd/jtbursey/meerkat/wd-meerkat-3/log/bug0108-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      12  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 328 commits remaining
+
+2025-09-20 11:53:46
+Session:   57
+Kernel:    2020-01-23 - 45e84648bb212278d3ac1d4d339cfbad0ff88cc4
+Compiler:  ccache /mnt/sdd/jtbursey/meerkat/compilers/gcc-8.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /mnt/sdd/jtbursey/meerkat/wd-meerkat-3/log/bug0108-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      12  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 328 commits remaining
+
+2025-09-20 12:10:30
+Session:   58
+Kernel:    2020-01-27 - 9c6527116e8f292c997b49cd791157b58f0286ac
+Compiler:  ccache /mnt/sdd/jtbursey/meerkat/compilers/gcc-8.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /mnt/sdd/jtbursey/meerkat/wd-meerkat-3/log/bug0108-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      12  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 328 commits remaining
+
+2025-09-20 12:27:25
+Session:   59
+Kernel:    2020-01-23 - 231946109ea4250129eb110e0b1e21e269ad59ca
+Compiler:  ccache /mnt/sdd/jtbursey/meerkat/compilers/gcc-8.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /mnt/sdd/jtbursey/meerkat/wd-meerkat-3/log/bug0108-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      12  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 328 commits remaining
+
+2025-09-20 12:44:05
+Session:   60
+Kernel:    2020-02-11 - f16ccb6445d3c2038998375a8491686c43e6026e
+Compiler:  ccache /mnt/sdd/jtbursey/meerkat/compilers/gcc-8.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       2  WARNING in hsr_addr_subst_dest
+       2  WARNING in hsr_addr_subst_dest
+       2  WARNING in hsr_addr_subst_dest
+       2  WARNING in hsr_addr_subst_dest
+       2  WARNING in hsr_addr_subst_dest
+       3  WARNING in hsr_addr_subst_dest
+       3  WARNING in hsr_addr_subst_dest
+       3  WARNING in hsr_addr_subst_dest
+       3  WARNING in hsr_addr_subst_dest
+       3  WARNING in hsr_addr_subst_dest
+       3  WARNING in hsr_addr_subst_dest
        4  WARNING in hsr_addr_subst_dest
        4  WARNING in hsr_addr_subst_dest
-       4  WARNING in hsr_addr_subst_dest
-       4  WARNING in sta_info_insert_rcu
-       6  WARNING in hsr_addr_subst_dest
-       6  WARNING in hsr_addr_subst_dest
-       6  WARNING in hsr_addr_subst_dest
-       6  WARNING in hsr_addr_subst_dest
+       5  WARNING in hsr_addr_subst_dest
+       5  WARNING in hsr_addr_subst_dest
        6  WARNING in sta_info_insert_rcu
+       6  WARNING in hsr_addr_subst_dest
+       6  WARNING in hsr_addr_subst_dest
+       6  WARNING in hsr_addr_subst_dest
+***    7  KASAN: slab-out-of-bounds Read in decrypt_internal
        7  WARNING in hsr_addr_subst_dest
-       7  WARNING in sta_info_insert_rcu
-       8  WARNING in hsr_addr_subst_dest
-       8  WARNING in hsr_addr_subst_dest
-       8  WARNING in hsr_addr_subst_dest
-       8  WARNING in sta_info_insert_rcu
-       9  WARNING in hsr_addr_subst_dest
-       9  WARNING in hsr_addr_subst_dest
-       9  WARNING in hsr_addr_subst_dest
-      10  WARNING in hsr_addr_subst_dest
-      10  WARNING in hsr_addr_subst_dest
-      10  WARNING in hsr_addr_subst_dest
+Running syz-repro.
+New PoC saved at /mnt/sdd/jtbursey/meerkat/wd-meerkat-3/reproducers/repro-bug0108-2.prog
+Primary PoC:     /mnt/sdd/jtbursey/meerkat/wd-meerkat-3/reproducers/repro-bug0108-2.prog
+Run Time:        0h37m0s
+The bug was found.
+About 326 commits remaining
+
+2025-09-20 13:41:01
+Session:   61
+Kernel:    2020-01-14 - 103605e0d1e77cfb5d0f5a9e8aba7d97f1b49339
+Compiler:  ccache /mnt/sdd/jtbursey/meerkat/compilers/gcc-8.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /mnt/sdd/jtbursey/meerkat/wd-meerkat-3/log/bug0108-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      12  boot failure
 The bug was not found.
-About 210 commits remaining
+This commit is flagged as unstable.
+About 326 commits remaining
+
+2025-09-20 14:06:02
+Session:   62
+Kernel:    2020-01-31 - fd1a9bba73fa10e1601a43264283fe4696d6f82c
+Compiler:  ccache /mnt/sdd/jtbursey/meerkat/compilers/gcc-8.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /mnt/sdd/jtbursey/meerkat/wd-meerkat-3/log/bug0108-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      12  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 326 commits remaining
+
+2025-09-20 14:22:30
+Session:   63
+Kernel:    2020-01-15 - a267ab8dec061c5a379a75a4c4f8206c63d87db9
+Compiler:  ccache /mnt/sdd/jtbursey/meerkat/compilers/gcc-8.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /mnt/sdd/jtbursey/meerkat/wd-meerkat-3/log/bug0108-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      12  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 326 commits remaining
+
+2025-09-20 14:39:08
+Session:   64
+Kernel:    2020-01-24 - 37f60b753bca112b4acda87683727fbcd820257b
+Compiler:  ccache /mnt/sdd/jtbursey/meerkat/compilers/gcc-8.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /mnt/sdd/jtbursey/meerkat/wd-meerkat-3/log/bug0108-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      12  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 326 commits remaining
+
+2025-09-20 14:55:48
+Session:   65
+Kernel:    2020-02-10 - 58d4ad5054d2c8f478286f0ef2242ca223ecd2fe
+Compiler:  ccache /mnt/sdd/jtbursey/meerkat/compilers/gcc-8.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       2  WARNING in hsr_addr_subst_dest
+       2  WARNING in hsr_addr_subst_dest
+       2  WARNING in hsr_addr_subst_dest
+       2  WARNING in hsr_addr_subst_dest
+       2  WARNING in hsr_addr_subst_dest
+       2  WARNING in hsr_addr_subst_dest
+***    3  KASAN: slab-out-of-bounds Read in decrypt_internal
+       3  WARNING in hsr_addr_subst_dest
+       3  WARNING in hsr_addr_subst_dest
+       3  WARNING in hsr_addr_subst_dest
+The bug was found.
+About 306 commits remaining
+
+2025-09-20 15:11:43
+Session:   66
+Kernel:    2020-01-27 - 988ff27b58a82c76abd7eb1fe20e883c7adebc84
+Compiler:  ccache /mnt/sdd/jtbursey/meerkat/compilers/gcc-8.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /mnt/sdd/jtbursey/meerkat/wd-meerkat-3/log/bug0108-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      12  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 306 commits remaining
+
+2025-09-20 15:36:28
+Session:   67
+Kernel:    2020-01-27 - f639c497aecd77147b23e62a68e78890c71e03ee
+Compiler:  ccache /mnt/sdd/jtbursey/meerkat/compilers/gcc-8.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /mnt/sdd/jtbursey/meerkat/wd-meerkat-3/log/bug0108-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      12  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 306 commits remaining
+
+2025-09-20 15:53:14
+Session:   68
+Kernel:    2020-02-02 - 6a79c28936dfc44019d42e36aaf8acd9c38f66c2
+Compiler:  ccache /mnt/sdd/jtbursey/meerkat/compilers/gcc-8.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /mnt/sdd/jtbursey/meerkat/wd-meerkat-3/log/bug0108-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      12  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 306 commits remaining
+
+2025-09-20 16:09:58
+Session:   69
+Kernel:    2020-01-27 - ef58902296da401c4422a1ae0df7729ee129505b
+Compiler:  ccache /mnt/sdd/jtbursey/meerkat/compilers/gcc-8.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /mnt/sdd/jtbursey/meerkat/wd-meerkat-3/log/bug0108-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      12  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 306 commits remaining
+
+2025-09-20 16:26:51
+Session:   70
+Kernel:    2020-01-22 - 3a47ae201e074945bbde0b088e4c1215c07f4d75
+Compiler:  ccache /mnt/sdd/jtbursey/meerkat/compilers/gcc-8.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /mnt/sdd/jtbursey/meerkat/wd-meerkat-3/log/bug0108-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      12  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 306 commits remaining
+
+2025-09-20 16:43:35
+Session:   71
+Kernel:    2020-01-27 - ac0e331a628b5ded087eab09fad2ffb082ac61ba
+Compiler:  ccache /mnt/sdd/jtbursey/meerkat/compilers/gcc-8.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /mnt/sdd/jtbursey/meerkat/wd-meerkat-3/log/bug0108-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      12  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 306 commits remaining
+
+2025-09-20 17:00:26
+Session:   72
+Kernel:    2020-01-31 - d1b9b5f127bc3797fc274cfa4f363e039f045c3a
+Compiler:  ccache /mnt/sdd/jtbursey/meerkat/compilers/gcc-8.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /mnt/sdd/jtbursey/meerkat/wd-meerkat-3/log/bug0108-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      12  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 306 commits remaining
+
+2025-09-20 17:16:55
+Session:   73
+Kernel:    2020-01-27 - 0fac5a7cd84241c699bfc8cf3a40fd66551f6676
+Compiler:  ccache /mnt/sdd/jtbursey/meerkat/compilers/gcc-8.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /mnt/sdd/jtbursey/meerkat/wd-meerkat-3/log/bug0108-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      12  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 306 commits remaining
+
+2025-09-20 17:33:19
+Session:   74
+Kernel:    2020-01-22 - 5dbd2b7be61e6de5740bab221bb1358c7c127762
+Compiler:  ccache /mnt/sdd/jtbursey/meerkat/compilers/gcc-8.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /mnt/sdd/jtbursey/meerkat/wd-meerkat-3/log/bug0108-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      12  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 306 commits remaining
+
+2025-09-20 17:49:56
+Session:   75
+Kernel:    2020-01-27 - d2afcc4441dfd267c60da28cc562987de770a12f
+Compiler:  ccache /mnt/sdd/jtbursey/meerkat/compilers/gcc-8.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /mnt/sdd/jtbursey/meerkat/wd-meerkat-3/log/bug0108-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      12  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 306 commits remaining
+
+2025-09-20 18:06:20
+Session:   76
+Kernel:    2020-01-22 - 58fa1760d08a792c9aceed6468a035250c22757b
+Compiler:  ccache /mnt/sdd/jtbursey/meerkat/compilers/gcc-8.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /mnt/sdd/jtbursey/meerkat/wd-meerkat-3/log/bug0108-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      11  general protection fault in drm_atomic_bridge_chain_check
+      12  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 306 commits remaining
+
+2025-09-20 18:22:44
+Session:   77
+Kernel:    2020-02-09 - 26208d876d372566264bb8be76beeb0bbbcdead8
+Compiler:  ccache /mnt/sdd/jtbursey/meerkat/compilers/gcc-8.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       2  WARNING in hsr_addr_subst_dest
+       2  WARNING in hsr_addr_subst_dest
+       2  WARNING in hsr_addr_subst_dest
+       2  WARNING in hsr_addr_subst_dest
+       2  WARNING in hsr_addr_subst_dest
+       2  WARNING in hsr_addr_subst_dest
+       3  WARNING in hsr_addr_subst_dest
+       3  WARNING in hsr_addr_subst_dest
+       3  WARNING in hsr_addr_subst_dest
+       4  WARNING in hsr_addr_subst_dest
+       4  WARNING in hsr_addr_subst_dest
+       4  WARNING in hsr_addr_subst_dest
+       5  WARNING in hsr_addr_subst_dest
+       6  WARNING in hsr_addr_subst_dest
+       6  WARNING in hsr_addr_subst_dest
+       6  WARNING in hsr_addr_subst_dest
+       7  WARNING in hsr_addr_subst_dest
+       8  WARNING in hsr_addr_subst_dest
+       8  WARNING in hsr_addr_subst_dest
+       8  WARNING in hsr_addr_subst_dest
+       8  WARNING in hsr_addr_subst_dest
+       9  WARNING in hsr_addr_subst_dest
+       9  WARNING in hsr_addr_subst_dest
+      10  WARNING in hsr_addr_subst_dest
+      10  WARNING in hsr_addr_subst_dest
+      11  WARNING in hsr_addr_subst_dest
+      12  WARNING in hsr_addr_subst_dest
+      12  WARNING in hsr_addr_subst_dest
+The bug was not found.
+About 5 commits remaining
+
+2025-09-20 18:47:44
+Session:   78
+Kernel:    2020-02-09 - 06f7a61c9b515e5f3a3793e6b4dec93d27b462fc
+Compiler:  ccache /mnt/sdd/jtbursey/meerkat/compilers/gcc-8.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    2  KASAN: slab-out-of-bounds Read in decrypt_internal
+The bug was found.
+About 3 commits remaining
+
+2025-09-20 18:54:30
+Session:   79
+Kernel:    2020-02-09 - 7d7569ac3336b3b91a3700295c2af5610cb01d67
+Compiler:  ccache /mnt/sdd/jtbursey/meerkat/compilers/gcc-8.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    4  KASAN: slab-out-of-bounds Read in decrypt_internal
+       4  WARNING in hsr_addr_subst_dest
+Running syz-repro.
+New PoC saved at /mnt/sdd/jtbursey/meerkat/wd-meerkat-3/reproducers/repro-bug0108-4.prog
+Primary PoC:     /mnt/sdd/jtbursey/meerkat/wd-meerkat-3/reproducers/repro-bug0108-4.prog
+Run Time:        0h20m0s
+The bug was found.
+About 2 commits remaining
 
 ==== Partial Result: Focused Fuzzing ====
-Reproducer:           /home/syzretrospector/syzinspector/wd-bisector-1/reproducers/repro-bug0108-0.prog
-Bisection Result:     2020-02-27 - 7058b837899fc978c9f8a033fa29ab07360a85c8
-Bisected Commit Name: Merge git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net
-Stage Time:           6h39m18s
-Run Time:             6h39m20s
+Reproducer:           /mnt/sdd/jtbursey/meerkat/wd-meerkat-3/reproducers/repro-bug0108-4.prog
+Bisection Result:     2020-02-09 - 7d7569ac3336b3b91a3700295c2af5610cb01d67
+Bisected Commit Name: drm/i915/execlists: Ignore tracek for nop process_csb
+Stage Time:           26h10m38s
+Run Time:             26h10m42s
 =========================================
 
 ==== Anchor Commit ====
 
-2025-04-16 04:39:42
-Session:   24
-Kernel:    2020-02-27 - a2f0b878c3ca531a1706cb2a8b079cea3b17bafc
-Compiler:  ccache /home/syzretrospector/compilers/gcc-9.0.0-20181231/bin/gcc
+2025-09-20 19:23:00
+Session:   80
+Kernel:    2020-02-09 - 26208d876d372566264bb8be76beeb0bbbcdead8
+Compiler:  ccache /mnt/sdd/jtbursey/meerkat/compilers/gcc-8.1.0/bin/gcc
+PoC:       /mnt/sdd/jtbursey/meerkat/wd-meerkat-3/reproducers/repro-bug0108-4.prog
 Attempt 0:
 *** KASAN: slab-out-of-bounds Read in decrypt_internal
 Attempt 1:
@@ -540,12 +1890,12 @@ Attempt 7:
 The bug was found.
 
 ==== Major Release Search ====
-13 Releases
+6 Releases
 
-2025-04-16 04:45:57
-Session:   25
+2025-09-20 19:29:44
+Session:   81
 Kernel:    2019-11-24 - 219d54332a09e8d8741c1e1982f5eae56099de85 (v5.4)
-Compiler:  ccache /home/syzretrospector/compilers/gcc-9.0.0-20181231/bin/gcc
+Compiler:  ccache /mnt/sdd/jtbursey/meerkat/compilers/gcc-8.1.0/bin/gcc
 Attempt 0:
 *** KASAN: slab-out-of-bounds Read in decrypt_internal
 Attempt 1:
@@ -563,130 +1913,92 @@ Attempt 6:
 Attempt 7:
 *** KASAN: slab-out-of-bounds Read in decrypt_internal
 The bug was found.
-About 12 releases remaining
+About 5 releases remaining
 
-2025-04-16 04:57:55
-Session:   26
+2025-09-20 19:44:30
+Session:   82
 Kernel:    2019-09-15 - 4d856f72c10ecb060868ed10ff1b1453943fc6c8 (v5.3)
-Compiler:  ccache /home/syzretrospector/compilers/gcc-9.0.0-20181231/bin/gcc
+Compiler:  ccache /mnt/sdd/jtbursey/meerkat/compilers/gcc-8.1.0/bin/gcc
 Attempt 0:
     BUG: spinlock bad magic in nf_connlabels_get
+*** KASAN: slab-out-of-bounds Read in decrypt_internal
 Attempt 1:
     BUG: spinlock bad magic in nf_connlabels_get
+*** KASAN: slab-out-of-bounds Read in decrypt_internal
 Attempt 2:
     BUG: spinlock bad magic in nf_connlabels_get
+*** KASAN: slab-out-of-bounds Read in decrypt_internal
 Attempt 3:
     BUG: spinlock bad magic in nf_connlabels_get
+*** KASAN: slab-out-of-bounds Read in decrypt_internal
 Attempt 4:
     BUG: spinlock bad magic in nf_connlabels_get
+*** KASAN: slab-out-of-bounds Read in decrypt_internal
 Attempt 5:
     BUG: spinlock bad magic in nf_connlabels_get
+*** KASAN: slab-out-of-bounds Read in decrypt_internal
 Attempt 6:
     BUG: spinlock bad magic in nf_connlabels_get
+*** KASAN: slab-out-of-bounds Read in decrypt_internal
 Attempt 7:
     BUG: spinlock bad magic in nf_connlabels_get
+*** KASAN: slab-out-of-bounds Read in decrypt_internal
+The bug was found.
+About 4 releases remaining
+
+2025-09-20 19:58:38
+Session:   83
+Kernel:    2019-07-07 - 0ecfebd2b52404ae0c54a878c872bb93363ada36 (v5.2)
+Compiler:  ccache /mnt/sdd/jtbursey/meerkat/compilers/gcc-8.1.0/bin/gcc
+Attempt 0:
+*** KASAN: slab-out-of-bounds Read in decrypt_internal
+Attempt 1:
+*** KASAN: slab-out-of-bounds Read in decrypt_internal
+Attempt 2:
+*** KASAN: slab-out-of-bounds Read in decrypt_internal
+Attempt 3:
+*** KASAN: slab-out-of-bounds Read in decrypt_internal
+Attempt 4:
+*** KASAN: slab-out-of-bounds Read in decrypt_internal
+Attempt 5:
+*** KASAN: slab-out-of-bounds Read in decrypt_internal
+Attempt 6:
+*** KASAN: slab-out-of-bounds Read in decrypt_internal
+Attempt 7:
+*** KASAN: slab-out-of-bounds Read in decrypt_internal
+The bug was found.
+About 3 releases remaining
+
+2025-09-20 20:12:04
+Session:   84
+Kernel:    2019-03-03 - 1c163f4c7b3f621efff9b28a47abb36f7378d783 (v5.0)
+Compiler:  ccache /mnt/sdd/jtbursey/meerkat/compilers/gcc-8.1.0/bin/gcc
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
 The bug was not found.
-About 11 releases remaining
+About 2 releases remaining
 
 ==== Kernel Bisection ====
-15726 Linux commits
+29250 Linux commits
 
-2025-04-16 05:09:04
-Session:   27
-Kernel:    2019-09-19 - a9f8b38a071b468276a243ea3ea5a0636e848cf2
-Compiler:  ccache /home/syzretrospector/compilers/gcc-9.0.0-20181231/bin/gcc
-Attempt 0:
-    No crashes found.
-Attempt 1:
-    No crashes found.
-Attempt 2:
-    No crashes found.
-Attempt 3:
-    No crashes found.
-Attempt 4:
-    No crashes found.
-Attempt 5:
-    No crashes found.
-Attempt 6:
-    No crashes found.
-Attempt 7:
-    No crashes found.
-The bug was not found.
-About 7884 commits remaining
-
-2025-04-16 05:19:45
-Session:   28
-Kernel:    2019-09-23 - 5825a95fe92566ada2292a65de030850b5cff1da
-Compiler:  ccache /home/syzretrospector/compilers/gcc-9.0.0-20181231/bin/gcc
-Attempt 0:
-    No crashes found.
-Attempt 1:
-    No crashes found.
-Attempt 2:
-    No crashes found.
-Attempt 3:
-    No crashes found.
-Attempt 4:
-    No crashes found.
-Attempt 5:
-    No crashes found.
-Attempt 6:
-    No crashes found.
-Attempt 7:
-    No crashes found.
-The bug was not found.
-About 3941 commits remaining
-
-2025-04-16 05:30:38
-Session:   29
-Kernel:    2019-10-12 - 48acba989ed5d8707500193048d6c4c5945d5f43
-Compiler:  ccache /home/syzretrospector/compilers/gcc-9.0.0-20181231/bin/gcc
-Attempt 0:
-    No crashes found.
-Attempt 1:
-    No crashes found.
-Attempt 2:
-    No crashes found.
-Attempt 3:
-    No crashes found.
-Attempt 4:
-    No crashes found.
-Attempt 5:
-    No crashes found.
-Attempt 6:
-    No crashes found.
-Attempt 7:
-    No crashes found.
-The bug was not found.
-About 1969 commits remaining
-
-2025-04-16 05:41:28
-Session:   30
-Kernel:    2019-11-01 - 65a5bf1c790039dc194507563478137b4314a59d
-Compiler:  ccache /home/syzretrospector/compilers/gcc-9.0.0-20181231/bin/gcc
-Attempt 0:
-    No crashes found.
-Attempt 1:
-    No crashes found.
-Attempt 2:
-    No crashes found.
-Attempt 3:
-    No crashes found.
-Attempt 4:
-    No crashes found.
-Attempt 5:
-    No crashes found.
-Attempt 6:
-    No crashes found.
-Attempt 7:
-    No crashes found.
-The bug was not found.
-About 990 commits remaining
-
-2025-04-16 05:52:11
-Session:   31
-Kernel:    2019-11-08 - 0058b0a506e40d9a2c62015fe92eb64a44d78cd9
-Compiler:  ccache /home/syzretrospector/compilers/gcc-9.0.0-20181231/bin/gcc
+2025-09-20 20:30:43
+Session:   85
+Kernel:    2019-04-25 - 938c7c80c78e2d372c6b9f220d66d7b5e624a8cb
+Compiler:  ccache /mnt/sdd/jtbursey/meerkat/compilers/gcc-8.1.0/bin/gcc
 Attempt 0:
 *** KASAN: slab-out-of-bounds Read in decrypt_internal
 Attempt 1:
@@ -704,12 +2016,37 @@ Attempt 6:
 Attempt 7:
 *** KASAN: slab-out-of-bounds Read in decrypt_internal
 The bug was found.
-About 548 commits remaining
+About 14625 commits remaining
 
-2025-04-16 06:04:01
-Session:   32
-Kernel:    2019-11-02 - 9d2345057538bb97b1e556508ad69983f446462f
-Compiler:  ccache /home/syzretrospector/compilers/gcc-9.0.0-20181231/bin/gcc
+2025-09-20 20:43:43
+Session:   86
+Kernel:    2019-03-07 - b5dd0c658c31b469ccff1b637e5124851e7a4a1c
+Compiler:  ccache /mnt/sdd/jtbursey/meerkat/compilers/gcc-8.1.0/bin/gcc
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    general protection fault in batadv_iv_ogm_queue_add
+    kernel panic: Fatal exception
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    general protection fault in batadv_iv_ogm_queue_add
+    kernel panic: Fatal exception
+Attempt 5:
+    KASAN: null-ptr-deref Read in batadv_tvlv_container_ogm_append
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+About 7540 commits remaining
+
+2025-09-20 21:01:52
+Session:   87
+Kernel:    2019-03-12 - 7b47a9e7c8f672b6fb0b77fca11a63a8a77f5a91
+Compiler:  ccache /mnt/sdd/jtbursey/meerkat/compilers/gcc-8.1.0/bin/gcc
 Attempt 0:
     No crashes found.
 Attempt 1:
@@ -727,12 +2064,36 @@ Attempt 6:
 Attempt 7:
     No crashes found.
 The bug was not found.
-About 274 commits remaining
+About 3766 commits remaining
 
-2025-04-16 06:14:43
-Session:   33
-Kernel:    2019-11-08 - 6737e763495185999b073303bf58a49ca0b1e64d
-Compiler:  ccache /home/syzretrospector/compilers/gcc-9.0.0-20181231/bin/gcc
+2025-09-20 21:20:26
+Session:   88
+Kernel:    2019-03-30 - 8d02a9a89729605c3026674e4a245839be98c913
+Compiler:  ccache /mnt/sdd/jtbursey/meerkat/compilers/gcc-8.1.0/bin/gcc
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    general protection fault in batadv_iv_ogm_schedule
+    kernel panic: Fatal exception
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+About 1873 commits remaining
+
+2025-09-20 21:38:49
+Session:   89
+Kernel:    2019-04-08 - 7f301cff1fc20c5b91203c5e610cf95782081d5d
+Compiler:  ccache /mnt/sdd/jtbursey/meerkat/compilers/gcc-8.1.0/bin/gcc
 Attempt 0:
 *** KASAN: slab-out-of-bounds Read in decrypt_internal
 Attempt 1:
@@ -750,12 +2111,12 @@ Attempt 6:
 Attempt 7:
 *** KASAN: slab-out-of-bounds Read in decrypt_internal
 The bug was found.
-About 137 commits remaining
+About 892 commits remaining
 
-2025-04-16 06:24:18
-Session:   34
-Kernel:    2019-11-07 - 847120f859cc45e074204f4cf33c8df069306eb2
-Compiler:  ccache /home/syzretrospector/compilers/gcc-9.0.0-20181231/bin/gcc
+2025-09-20 21:52:04
+Session:   90
+Kernel:    2019-04-04 - 9195948fbf3406f75b1f133ddb57304169c44341
+Compiler:  ccache /mnt/sdd/jtbursey/meerkat/compilers/gcc-8.1.0/bin/gcc
 Attempt 0:
 *** KASAN: slab-out-of-bounds Read in decrypt_internal
 Attempt 1:
@@ -773,58 +2134,12 @@ Attempt 6:
 Attempt 7:
 *** KASAN: slab-out-of-bounds Read in decrypt_internal
 The bug was found.
-About 66 commits remaining
+About 446 commits remaining
 
-2025-04-16 06:36:03
-Session:   35
-Kernel:    2019-10-31 - d8eca64eec7103ab1fbabc0a187dbf6acfb2af93
-Compiler:  ccache /home/syzretrospector/compilers/gcc-9.0.0-20181231/bin/gcc
-Attempt 0:
-    No crashes found.
-Attempt 1:
-    No crashes found.
-Attempt 2:
-    No crashes found.
-Attempt 3:
-    No crashes found.
-Attempt 4:
-    No crashes found.
-Attempt 5:
-    No crashes found.
-Attempt 6:
-    No crashes found.
-Attempt 7:
-    No crashes found.
-The bug was not found.
-About 383 commits remaining
-
-2025-04-16 06:46:25
-Session:   36
-Kernel:    2019-11-06 - 5cbf2fff3bba8d3c6a4d47c1754de1cf57e2b01f
-Compiler:  ccache /home/syzretrospector/compilers/gcc-9.0.0-20181231/bin/gcc
-Attempt 0:
-    No crashes found.
-Attempt 1:
-    No crashes found.
-Attempt 2:
-    No crashes found.
-Attempt 3:
-    No crashes found.
-Attempt 4:
-    No crashes found.
-Attempt 5:
-    No crashes found.
-Attempt 6:
-    No crashes found.
-Attempt 7:
-    No crashes found.
-The bug was not found.
-About 18 commits remaining
-
-2025-04-16 06:57:02
-Session:   37
-Kernel:    2019-11-05 - 26bc672134241a080a83b2ab9aa8abede8d30e1c
-Compiler:  ccache /home/syzretrospector/compilers/gcc-9.0.0-20181231/bin/gcc
+2025-09-20 22:05:24
+Session:   91
+Kernel:    2019-03-26 - 5133a4a800fd3a5d1ab7c016196fd416af3a3f1c
+Compiler:  ccache /mnt/sdd/jtbursey/meerkat/compilers/gcc-8.1.0/bin/gcc
 Attempt 0:
 *** KASAN: slab-out-of-bounds Read in decrypt_internal
 Attempt 1:
@@ -842,12 +2157,82 @@ Attempt 6:
 Attempt 7:
 *** KASAN: slab-out-of-bounds Read in decrypt_internal
 The bug was found.
-About 9 commits remaining
+About 228 commits remaining
 
-2025-04-16 07:08:42
-Session:   38
-Kernel:    2019-11-03 - 52c75f56703e1c40a2bc3f64a140602112dfa302
-Compiler:  ccache /home/syzretrospector/compilers/gcc-9.0.0-20181231/bin/gcc
+2025-09-20 22:18:17
+Session:   92
+Kernel:    2019-03-22 - eb86b0949183c5005ed33e57788d05d90bb72a5a
+Compiler:  ccache /mnt/sdd/jtbursey/meerkat/compilers/gcc-8.1.0/bin/gcc
+Attempt 0:
+*** KASAN: slab-out-of-bounds Read in decrypt_internal
+Attempt 1:
+*** KASAN: slab-out-of-bounds Read in decrypt_internal
+Attempt 2:
+*** KASAN: slab-out-of-bounds Read in decrypt_internal
+Attempt 3:
+*** KASAN: slab-out-of-bounds Read in decrypt_internal
+Attempt 4:
+*** KASAN: slab-out-of-bounds Read in decrypt_internal
+Attempt 5:
+*** KASAN: slab-out-of-bounds Read in decrypt_internal
+Attempt 6:
+*** KASAN: slab-out-of-bounds Read in decrypt_internal
+Attempt 7:
+*** KASAN: slab-out-of-bounds Read in decrypt_internal
+The bug was found.
+About 114 commits remaining
+
+2025-09-20 22:28:43
+Session:   93
+Kernel:    2019-03-20 - 1bfe45f4ae81dc961b4bcb2ce6860c4ee1af621a
+Compiler:  ccache /mnt/sdd/jtbursey/meerkat/compilers/gcc-8.1.0/bin/gcc
+Attempt 0:
+*** KASAN: slab-out-of-bounds Read in decrypt_internal
+Attempt 1:
+*** KASAN: slab-out-of-bounds Read in decrypt_internal
+Attempt 2:
+*** KASAN: slab-out-of-bounds Read in decrypt_internal
+Attempt 3:
+*** KASAN: slab-out-of-bounds Read in decrypt_internal
+Attempt 4:
+*** KASAN: slab-out-of-bounds Read in decrypt_internal
+Attempt 5:
+*** KASAN: slab-out-of-bounds Read in decrypt_internal
+Attempt 6:
+*** KASAN: slab-out-of-bounds Read in decrypt_internal
+Attempt 7:
+*** KASAN: slab-out-of-bounds Read in decrypt_internal
+The bug was found.
+About 57 commits remaining
+
+2025-09-20 22:37:57
+Session:   94
+Kernel:    2019-03-19 - 9bd5423fc75e8a1fc1f84c75c779bdc8aa4a36c2
+Compiler:  ccache /mnt/sdd/jtbursey/meerkat/compilers/gcc-8.1.0/bin/gcc
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    WARNING: ODEBUG bug in netdev_freemem
+    possible deadlock in debug_check_no_obj_freed
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+About 30 commits remaining
+
+2025-09-20 22:49:21
+Session:   95
+Kernel:    2019-03-19 - ad71b256ba4e6e469d60e3f7b9973fd195b04bee
+Compiler:  ccache /mnt/sdd/jtbursey/meerkat/compilers/gcc-8.1.0/bin/gcc
 Attempt 0:
     No crashes found.
 Attempt 1:
@@ -865,12 +2250,12 @@ Attempt 6:
 Attempt 7:
     No crashes found.
 The bug was not found.
-About 700 commits remaining
+About 45 commits remaining
 
-2025-04-16 07:19:28
-Session:   39
-Kernel:    2019-11-05 - 7111fa1151e3c66cde3a94250bda72d7144419ff
-Compiler:  ccache /home/syzretrospector/compilers/gcc-9.0.0-20181231/bin/gcc
+2025-09-20 23:03:55
+Session:   96
+Kernel:    2019-03-19 - ecad77fd29e4437e0488c5776fee1cc41a33aebb
+Compiler:  ccache /mnt/sdd/jtbursey/meerkat/compilers/gcc-8.1.0/bin/gcc
 Attempt 0:
     No crashes found.
 Attempt 1:
@@ -886,47 +2271,121 @@ Attempt 5:
 Attempt 6:
     No crashes found.
 Attempt 7:
+    general protection fault in batadv_iv_ogm_queue_add
+    kernel panic: Fatal exception
+The bug was not found.
+About 47 commits remaining
+
+2025-09-20 23:15:14
+Session:   97
+Kernel:    2019-03-20 - 5c5f626bcacee0a345b8fd0af81be45eedb9bda9
+Compiler:  ccache /mnt/sdd/jtbursey/meerkat/compilers/gcc-8.1.0/bin/gcc
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    general protection fault in batadv_iv_ogm_queue_add
+    kernel panic: Fatal exception
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    general protection fault in batadv_iv_ogm_queue_add
+    kernel panic: Fatal exception
+The bug was not found.
+About 6 commits remaining
+
+2025-09-20 23:27:04
+Session:   98
+Kernel:    2019-03-20 - 1e614b5086ee8b2287238f74a9fa6d7935084a3c
+Compiler:  ccache /mnt/sdd/jtbursey/meerkat/compilers/gcc-8.1.0/bin/gcc
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    KASAN: null-ptr-deref Read in batadv_tvlv_container_ogm_append
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    KASAN: use-after-free Read in batadv_iv_ogm_queue_add
+Attempt 7:
     No crashes found.
 The bug was not found.
+About 4 commits remaining
+
+2025-09-20 23:38:17
+Session:   99
+Kernel:    2019-03-20 - f295b3ae9f5927e084bd5decdff82390e3471801
+Compiler:  ccache /mnt/sdd/jtbursey/meerkat/compilers/gcc-8.1.0/bin/gcc
+Attempt 0:
+*** KASAN: slab-out-of-bounds Read in decrypt_internal
+Attempt 1:
+*** KASAN: slab-out-of-bounds Read in decrypt_internal
+Attempt 2:
+*** KASAN: slab-out-of-bounds Read in decrypt_internal
+Attempt 3:
+*** KASAN: slab-out-of-bounds Read in decrypt_internal
+Attempt 4:
+*** KASAN: slab-out-of-bounds Read in decrypt_internal
+Attempt 5:
+*** KASAN: slab-out-of-bounds Read in decrypt_internal
+Attempt 6:
+*** KASAN: slab-out-of-bounds Read in decrypt_internal
+Attempt 7:
+*** KASAN: slab-out-of-bounds Read in decrypt_internal
+The bug was found.
 About 3 commits remaining
 
-2025-04-16 07:30:06
-Session:   40
-Kernel:    2019-11-05 - fa729c4df558936b4a1a7b3e2234011f44ede28b
-Compiler:  ccache /home/syzretrospector/compilers/gcc-9.0.0-20181231/bin/gcc
+2025-09-20 23:44:29
+Session:   100
+Kernel:    2019-03-20 - 6a23c0a6af98c927f387353a219c1f5664bb3d5b
+Compiler:  ccache /mnt/sdd/jtbursey/meerkat/compilers/gcc-8.1.0/bin/gcc
 Attempt 0:
-*** KASAN: slab-out-of-bounds Read in decrypt_internal
+    No crashes found.
 Attempt 1:
-*** KASAN: slab-out-of-bounds Read in decrypt_internal
+    No crashes found.
 Attempt 2:
-*** KASAN: slab-out-of-bounds Read in decrypt_internal
+    general protection fault in batadv_iv_ogm_queue_add
+    kernel panic: Fatal exception
 Attempt 3:
-*** KASAN: slab-out-of-bounds Read in decrypt_internal
+    No crashes found.
 Attempt 4:
-*** KASAN: slab-out-of-bounds Read in decrypt_internal
+    No crashes found.
 Attempt 5:
-*** KASAN: slab-out-of-bounds Read in decrypt_internal
+    No crashes found.
 Attempt 6:
-*** KASAN: slab-out-of-bounds Read in decrypt_internal
+    No crashes found.
 Attempt 7:
-*** KASAN: slab-out-of-bounds Read in decrypt_internal
-The bug was found.
+    No crashes found.
+The bug was not found.
 About 2 commits remaining
 
 ==== Partial Result: Primary PoC Test ====
-Reproducer:           /home/syzretrospector/syzinspector/wd-bisector-1/reproducers/repro-bug0108-0.prog
-Bisection Result:     2019-11-05 - fa729c4df558936b4a1a7b3e2234011f44ede28b
-Bisected Commit Name: clone3: validate stack arguments
-Stage Time:           3h2m12s
-Run Time:             9h41m33s
+Reproducer:           /mnt/sdd/jtbursey/meerkat/wd-meerkat-3/reproducers/repro-bug0108-4.prog
+Bisection Result:     2019-03-20 - f295b3ae9f5927e084bd5decdff82390e3471801
+Bisected Commit Name: net/tls: Add support of AES128-CCM based ciphers
+Stage Time:           4h32m34s
+Run Time:             30h43m17s
 ==========================================
 
 ==== Anchor Commit ====
 
-2025-04-16 07:41:55
-Session:   41
-Kernel:    2019-10-27 - d6d5df1db6e9d7f8f76d2911707f7d5877251b02
-Compiler:  ccache /home/syzretrospector/compilers/gcc-9.0.0-20181231/bin/gcc
+2025-09-20 23:55:34
+Session:   101
+Kernel:    2019-03-20 - 6a23c0a6af98c927f387353a219c1f5664bb3d5b
+Compiler:  ccache /mnt/sdd/jtbursey/meerkat/compilers/gcc-8.1.0/bin/gcc
+PoC:       /mnt/sdd/jtbursey/meerkat/wd-meerkat-3/reproducers/repro-bug0108-2.prog
 Attempt 0:
     No crashes found.
 Attempt 1:
@@ -934,11 +2393,12 @@ Attempt 1:
 Attempt 2:
     No crashes found.
 Attempt 3:
-    No crashes found.
+    general protection fault in batadv_iv_ogm_queue_add
+    kernel panic: Fatal exception
 Attempt 4:
     No crashes found.
 Attempt 5:
-    No crashes found.
+    KASAN: null-ptr-deref Read in batadv_tvlv_container_ogm_append
 Attempt 6:
     No crashes found.
 Attempt 7:
@@ -948,18 +2408,127 @@ The bug was not found.
 Failure: This bug cannot be found at the anchor commit.
 
 ==== Partial Result: Subsequent PoC Test ====
-Reproducer:           /home/syzretrospector/syzinspector/wd-bisector-1/reproducers/repro-bug0108-3.prog
+Reproducer:           /mnt/sdd/jtbursey/meerkat/wd-meerkat-3/reproducers/repro-bug0108-2.prog
 Bisection Result:     Failed to reproduce at the anchor commit.
-Stage Time:           0h10m32s
-Run Time:             9h52m5s
+Stage Time:           0h11m3s
+Run Time:             30h54m20s
+=============================================
+
+==== Anchor Commit ====
+
+2025-09-21 00:06:40
+Session:   102
+Kernel:    2019-03-20 - 6a23c0a6af98c927f387353a219c1f5664bb3d5b
+Compiler:  ccache /mnt/sdd/jtbursey/meerkat/compilers/gcc-8.1.0/bin/gcc
+PoC:       /mnt/sdd/jtbursey/meerkat/wd-meerkat-3/reproducers/repro-bug0108-0.prog
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    general protection fault in batadv_iv_ogm_queue_add
+    kernel panic: Fatal exception
+The bug was not found.
+
+Failure: This bug cannot be found at the anchor commit.
+
+==== Partial Result: Subsequent PoC Test ====
+Reproducer:           /mnt/sdd/jtbursey/meerkat/wd-meerkat-3/reproducers/repro-bug0108-0.prog
+Bisection Result:     Failed to reproduce at the anchor commit.
+Stage Time:           0h11m8s
+Run Time:             31h5m28s
+=============================================
+
+==== Anchor Commit ====
+
+2025-09-21 00:17:48
+Session:   103
+Kernel:    2019-03-20 - 6a23c0a6af98c927f387353a219c1f5664bb3d5b
+Compiler:  ccache /mnt/sdd/jtbursey/meerkat/compilers/gcc-8.1.0/bin/gcc
+PoC:       /mnt/sdd/jtbursey/meerkat/wd-meerkat-3/reproducers/repro-bug0108-1.prog
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    INFO: task hung in rtnl_lock
+    INFO: task hung in rtnl_lock
+    INFO: task hung in rtnl_lock
+    INFO: task hung in rtnl_lock
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in rtnetlink_rcv_msg
+Attempt 7:
+    No crashes found.
+The bug was not found.
+
+Failure: This bug cannot be found at the anchor commit.
+
+==== Partial Result: Subsequent PoC Test ====
+Reproducer:           /mnt/sdd/jtbursey/meerkat/wd-meerkat-3/reproducers/repro-bug0108-1.prog
+Bisection Result:     Failed to reproduce at the anchor commit.
+Stage Time:           0h11m19s
+Run Time:             31h16m48s
+=============================================
+
+==== Anchor Commit ====
+
+2025-09-21 00:29:08
+Session:   104
+Kernel:    2019-03-20 - 6a23c0a6af98c927f387353a219c1f5664bb3d5b
+Compiler:  ccache /mnt/sdd/jtbursey/meerkat/compilers/gcc-8.1.0/bin/gcc
+PoC:       /mnt/sdd/jtbursey/meerkat/wd-meerkat-3/reproducers/repro-bug0108-3.prog
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    general protection fault in batadv_iv_ogm_queue_add
+    kernel panic: Fatal exception
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+
+Failure: This bug cannot be found at the anchor commit.
+
+==== Partial Result: Subsequent PoC Test ====
+Reproducer:           /mnt/sdd/jtbursey/meerkat/wd-meerkat-3/reproducers/repro-bug0108-3.prog
+Bisection Result:     Failed to reproduce at the anchor commit.
+Stage Time:           0h11m25s
+Run Time:             31h28m14s
 =============================================
 
 ====================================================================================================================================================
 Bug Name:             KASAN: slab-out-of-bounds Read in decrypt_internal
 Bug Link:             https://syzkaller.appspot.com/bug?id=02617ac69815ae324053c954118c2dc7ba0e59b2
-Bisection Result:     2019-11-05 - fa729c4df558936b4a1a7b3e2234011f44ede28b
-Bisected Commit Name: clone3: validate stack arguments
-Run Time:             9h52m5s
+Bisection Result:     2019-03-20 - f295b3ae9f5927e084bd5decdff82390e3471801
+Bisected Commit Name: net/tls: Add support of AES128-CCM based ciphers
+Run Time:             31h28m14s
 
 Anchor Commit:        2022-01-06 - ddec8ed2d4905d0967ce2ec432e440e582aa52c6
-Bisection Result:     2019-11-05 - fa729c4df558936b4a1a7b3e2234011f44ede28b
+Bisection Result:     2019-03-20 - f295b3ae9f5927e084bd5decdff82390e3471801
