@@ -1,1 +1,2 @@
-These files are longer patches that need to be applied to certain kernel or syzkaller versions so that they work properly. Please do not touch them.
+Files here are used with the obselete patching method. They should not be modified if you
+want that to work.
