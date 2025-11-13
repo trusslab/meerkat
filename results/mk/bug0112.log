@@ -1,4 +1,4 @@
-./bin/bisector -i 1 -c /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/bisector.cfg -a ff83fec8179e392be2f472f0a9ec3da8f6d529c6 -F ff-test,poc-test,stateful-corpus,ff-no-find-backup
+./bin/meerkat -i 1 -c /home/syzretrospector/meerkat/wd-meerkat-1/meerkat.cfg -a ff83fec8179e392be2f472f0a9ec3da8f6d529c6 -F ff-test,poc-test,poc-all-pocs,ff-no-find-backup,stateful-corpus
 Bisecting:          BUG: scheduling while atomic in msleep
 Syzbot Link:        https://syzkaller.appspot.com/bug?id=a1f37cddedf0664dddc8b42c26e248051691b834
 Working Name:       bug0112
@@ -10,23 +10,25 @@ Repository:         https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/lin
 Branch:             master
 Arch:               amd64
 
-Bisector:           /mnt/sdd/jtbursey/SyzInspector/
-Version:            1.0.4
-Kernel:             /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/kernel/
-Syzkaller:          /mnt/sdd/jtbursey/SyzInspector/syzkaller/
-Compilers:          /mnt/sda/jtbursey/SyzInspector/compilers/
-Ccache:             ccache
-Image:              /mnt/sda/jtbursey/SyzInspector/image/stretch/stretch.img
-Image Key:          /mnt/sda/jtbursey/SyzInspector/image/stretch/stretch.id_rsa
+Meerkat:            /home/syzretrospector/meerkat/
+Version:            1.1.0
+Kernel:             /home/syzretrospector/meerkat/wd-meerkat-1/kernel/
+Syzkaller:          /home/syzretrospector/meerkat/syzkaller/
+Compilers:          /home/syzretrospector/meerkat/compilers/
+Compiler:           gcc (Ubuntu 11.4.0-1ubuntu1~22.04.2) 11.4.0
+Linker:             GNU ld (GNU Binutils for Ubuntu) 2.38
+Ccache:             ccache version 4.5.1
+Image:              /home/syzretrospector/images/stretch/stretch.img
+Image Key:          /home/syzretrospector/images/stretch/stretch.id_rsa
 
-Workdir:            /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/
-Kconfig:            /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/config-bug0112.txt
-Reproducers: (1)    /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/reproducers/
-Primary PoC:        /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/reproducers/repro-bug0112-2.prog
-Syzkaller Workdir:  /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/wd-kaller/
-Log Directory:      /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/log/
+Workdir:            /home/syzretrospector/meerkat/wd-meerkat-1/
+Kconfig:            /home/syzretrospector/meerkat/wd-meerkat-1/config-bug0112.txt
+Reproducers: (1)    /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/
+Primary PoC:        /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0112-2.prog
+Syzkaller Workdir:  /home/syzretrospector/meerkat/wd-meerkat-1/wd-kaller/
+Log Directory:      /home/syzretrospector/meerkat/wd-meerkat-1/log/
 
-Syscalls: (9)       ["ioctl$ifreq_SIOCGIFINDEX_team", "sendmsg$nl_route_sched", "socket", "socket$netlink", "socket$nl_route", "ioctl$EXT4_IOC_GROUP_EXTEND", "openat$sw_sync_info", "ioctl$sock_SIOCGIFINDEX", "bpf$OBJ_GET_PROG"]
+Syscalls: (10)      ["ioctl$ifreq_SIOCGIFINDEX_team", "sendmsg$nl_route_sched", "socket", "socket$netlink", "socket$nl_route", "ioctl$F2FS_IOC_START_ATOMIC_WRITE", "openat$selinux_enforce", "ioctl$sock_SIOCGIFINDEX", "bpf$BPF_PROG_GET_FD_BY_ID", "bpf$BPF_PROG_GET_NEXT_ID"]
 VM Count:           8
 CPU Count:          2
 Procs:              16
@@ -37,847 +39,510 @@ Max Attempts:       1
 
 ==== Anchor Commit ====
 
-2025-03-09 04:31:48
+2025-09-19 04:54:26
 Session:   1
 Kernel:    2023-01-20 - ff83fec8179e392be2f472f0a9ec3da8f6d529c6
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Compiler:  ccache gcc
 Attempt 1:
-    No crashes found.
+    Time  Bug Name
+***    2  BUG: scheduling while atomic in msleep
+***    2  BUG: scheduling while atomic in msleep
+***    2  BUG: scheduling while atomic in msleep
+***    2  BUG: scheduling while atomic in msleep
+***    2  BUG: scheduling while atomic in msleep
+***    2  BUG: scheduling while atomic in msleep
+***    2  BUG: scheduling while atomic in msleep
+***    2  BUG: scheduling while atomic in msleep
 Attempt 2: (RETRY)
     Time  Bug Name
-       8  INFO: rcu detected stall in corrupted
-       9  INFO: rcu detected stall in corrupted
-       9  INFO: rcu detected stall in corrupted
-      10  INFO: rcu detected stall in corrupted
-      10  INFO: rcu detected stall in corrupted
+***    2  BUG: scheduling while atomic in msleep
+***    2  BUG: scheduling while atomic in msleep
+***    2  BUG: scheduling while atomic in msleep
+***    2  BUG: scheduling while atomic in msleep
+***    2  BUG: scheduling while atomic in msleep
+***    2  BUG: scheduling while atomic in msleep
+***    2  BUG: scheduling while atomic in msleep
+***    2  BUG: scheduling while atomic in msleep
 Attempt 3: (RETRY)
     Time  Bug Name
-       3  INFO: rcu detected stall in corrupted
-***    4  BUG: scheduling while atomic in msleep
-***    4  BUG: scheduling while atomic in msleep
-***    4  BUG: scheduling while atomic in msleep
-***    4  BUG: scheduling while atomic in msleep
-***    4  BUG: scheduling while atomic in msleep
-***    4  BUG: scheduling while atomic in msleep
-***    4  BUG: scheduling while atomic in msleep
+***    2  BUG: scheduling while atomic in msleep
+***    2  BUG: scheduling while atomic in msleep
+***    2  BUG: scheduling while atomic in msleep
+***    2  BUG: scheduling while atomic in msleep
+***    2  BUG: scheduling while atomic in msleep
+***    2  BUG: scheduling while atomic in msleep
 The bug was found.
 
-New Max Time: 12
+New Max Time: 10
 
 ==== Major Release Search ====
-18 Releases
+13 Releases
 
-2025-03-09 05:18:37
+2025-09-19 05:14:56
 Session:   2
-Kernel:    2022-10-02 - 4fe89d07dcc2804c8b562f6c7896a45643d34b2f (v6.0)
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
-Attempt 1:
-    Time  Bug Name
-       6  INFO: rcu detected stall in sys_open
-      10  KASAN: use-after-free Write in __netif_reschedule
-      11  KASAN: use-after-free Read in net_tx_action
-      12  INFO: rcu detected stall in tc_modify_qdisc
-The bug was not found.
-About 17 releases remaining
-
-==== Kernel Bisection ====
-30774 Linux commits
-
-2025-03-09 05:50:07
-Session:   3
-Kernel:    2022-12-02 - d03407183d97554dfffea70f385b5bdd520f846c
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
-Attempt 1:
-    Time  Bug Name
-       2  INFO: rcu detected stall in corrupted
-       7  INFO: rcu detected stall in corrupted
-       9  INFO: task hung in addrconf_verify_work
-      10  INFO: rcu detected stall in corrupted
-      10  INFO: rcu detected stall in corrupted
-      11  INFO: rcu detected stall in corrupted
-      11  no output from test machine
-      12  INFO: rcu detected stall in corrupted
-The bug was not found.
-About 15415 commits remaining
-
-2025-03-09 06:21:39
-Session:   4
-Kernel:    2022-12-13 - 531d2644f3b10098dadb25b2c26cf19ec0330f90
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
-Attempt 1:
-    Time  Bug Name
-       5  INFO: rcu detected stall in corrupted
-       6  INFO: rcu detected stall in corrupted
-       6  INFO: rcu detected stall in corrupted
-       6  INFO: rcu detected stall in corrupted
-       6  INFO: rcu detected stall in corrupted
-       9  KFENCE: use-after-free in net_tx_action
-      10  KASAN: use-after-free Read in net_tx_action
-The bug was not found.
-About 9004 commits remaining
-
-2025-03-09 06:54:36
-Session:   5
-Kernel:    2022-12-16 - 58bcac11fd94f950abc7b8466c5ceac7be07a00e
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
-Attempt 1:
-    Time  Bug Name
-       2  KASAN: use-after-free Read in rxrpc_lookup_local
-       2  KASAN: use-after-free Read in rxrpc_lookup_local
-       2  KASAN: use-after-free Read in rxrpc_lookup_local
-       3  general protection fault in rxrpc_lookup_local
-       3  KASAN: use-after-free Read in rxrpc_lookup_local
-       3  KASAN: use-after-free Read in rxrpc_lookup_local
-       3  KASAN: use-after-free Read in rxrpc_lookup_local
-       3  KASAN: use-after-free Read in rxrpc_lookup_local
-       4  KASAN: use-after-free Read in rxrpc_lookup_local
-       4  KASAN: use-after-free Read in rxrpc_lookup_local
-       4  KASAN: use-after-free Read in rxrpc_lookup_local
-       4  KASAN: use-after-free Read in rxrpc_lookup_local
-       4  KASAN: use-after-free Read in rxrpc_lookup_local
-       5  general protection fault in rxrpc_lookup_local
-       5  KASAN: use-after-free Read in rxrpc_lookup_local
-       5  KASAN: use-after-free Read in rxrpc_lookup_local
-       5  KASAN: use-after-free Read in rxrpc_lookup_local
-       5  KASAN: use-after-free Read in rxrpc_lookup_local
-       6  KASAN: use-after-free Read in rxrpc_lookup_local
-       6  KASAN: use-after-free Read in rxrpc_lookup_local
-       6  KASAN: use-after-free Read in rxrpc_lookup_local
-       7  general protection fault in rxrpc_lookup_local
-       7  KASAN: use-after-free Read in rxrpc_lookup_local
-       7  KASAN: use-after-free Read in rxrpc_lookup_local
-       7  KASAN: use-after-free Read in rxrpc_lookup_local
-       7  KASAN: use-after-free Read in rxrpc_lookup_local
-       8  KASAN: use-after-free Read in rxrpc_lookup_local
-       8  KASAN: use-after-free Read in rxrpc_lookup_local
-       8  KASAN: use-after-free Read in rxrpc_lookup_local
-       8  KASAN: use-after-free Read in rxrpc_lookup_local
-       8  KASAN: use-after-free Read in rxrpc_lookup_local
-       9  KASAN: use-after-free Read in rxrpc_lookup_local
-       9  KASAN: use-after-free Read in rxrpc_lookup_local
-       9  KASAN: use-after-free Read in rxrpc_lookup_local
-      10  KASAN: use-after-free Read in rxrpc_lookup_local
-      10  KASAN: use-after-free Read in rxrpc_lookup_local
-      10  KASAN: use-after-free Read in rxrpc_lookup_local
-      11  general protection fault in rxrpc_lookup_local
-      11  KASAN: use-after-free Read in rxrpc_lookup_local
-      11  KASAN: use-after-free Read in rxrpc_lookup_local
-      12  KASAN: use-after-free Read in rxrpc_lookup_local
-The bug was not found.
-About 3832 commits remaining
-
-2025-03-09 07:25:49
-Session:   6
-Kernel:    2022-12-19 - 9322af3e6aeae04c7eda3e6a0c977e97a13cf6ed
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
-Attempt 1:
-    Time  Bug Name
-       3  general protection fault in rxrpc_lookup_local
-       3  KASAN: use-after-free Read in rxrpc_lookup_local
-       3  KASAN: use-after-free Read in rxrpc_lookup_local
-       3  KASAN: use-after-free Read in rxrpc_lookup_local
-       3  KASAN: use-after-free Read in rxrpc_lookup_local
-       3  KASAN: use-after-free Read in rxrpc_lookup_local
-       3  KASAN: use-after-free Read in rxrpc_lookup_local
-       3  KASAN: use-after-free Read in rxrpc_lookup_local
-       4  KASAN: slab-out-of-bounds Read in rxrpc_lookup_local
-       4  general protection fault in rxrpc_lookup_local
-       4  KASAN: use-after-free Read in rxrpc_lookup_local
-       4  KASAN: use-after-free Read in rxrpc_lookup_local
-       4  KASAN: use-after-free Read in rxrpc_lookup_local
-       4  KASAN: use-after-free Read in rxrpc_lookup_local
-       5  general protection fault in rxrpc_lookup_local
-       5  KASAN: use-after-free Read in rxrpc_lookup_local
-       5  KASAN: use-after-free Read in rxrpc_lookup_local
-       5  KASAN: use-after-free Read in rxrpc_lookup_local
-       6  KASAN: use-after-free Read in rxrpc_lookup_local
-       6  KASAN: use-after-free Read in rxrpc_lookup_local
-       6  KASAN: use-after-free Read in rxrpc_lookup_local
-       6  KASAN: use-after-free Read in rxrpc_lookup_local
-       6  KASAN: use-after-free Read in rxrpc_lookup_local
-       6  KASAN: use-after-free Read in rxrpc_lookup_local
-       7  general protection fault in rxrpc_lookup_local
-       7  KASAN: use-after-free Read in rxrpc_lookup_local
-       7  KASAN: use-after-free Read in rxrpc_lookup_local
-       7  KASAN: use-after-free Read in rxrpc_lookup_local
-       7  KASAN: use-after-free Read in rxrpc_lookup_local
-       7  KASAN: use-after-free Read in rxrpc_lookup_local
-       8  KASAN: use-after-free Read in rxrpc_lookup_local
-       8  KASAN: use-after-free Read in rxrpc_lookup_local
-       9  general protection fault in rxrpc_lookup_local
-       9  KASAN: use-after-free Read in rxrpc_lookup_local
-       9  KASAN: use-after-free Read in rxrpc_lookup_local
-       9  KASAN: use-after-free Read in rxrpc_lookup_local
-       9  KASAN: use-after-free Read in rxrpc_lookup_local
-       9  KASAN: use-after-free Read in rxrpc_lookup_local
-      10  KASAN: use-after-free Read in rxrpc_lookup_local
-      10  KASAN: use-after-free Read in rxrpc_lookup_local
-      10  KASAN: use-after-free Read in rxrpc_lookup_local
-      11  general protection fault in rxrpc_lookup_local
-      11  KASAN: use-after-free Read in rxrpc_lookup_local
-      11  KASAN: use-after-free Read in rxrpc_lookup_local
-      11  KASAN: use-after-free Read in rxrpc_lookup_local
-      11  KASAN: use-after-free Read in rxrpc_lookup_local
-      12  general protection fault in rxrpc_lookup_local
-      12  KASAN: use-after-free Read in rxrpc_lookup_local
-The bug was not found.
-About 1938 commits remaining
-
-2025-03-09 07:59:16
-Session:   7
-Kernel:    2023-01-01 - 8b41948296b76588f5ebaf7cbc5be5c803ece70a
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
-Attempt 1:
-    Time  Bug Name
-       7  INFO: rcu detected stall in corrupted
-       8  no output from test machine
-       8  no output from test machine
-The bug was not found.
-About 967 commits remaining
-
-2025-03-09 08:32:06
-Session:   8
-Kernel:    2023-01-12 - d9fc1511728c15df49ff18e49a494d00f78b7cd4
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Kernel:    2022-12-11 - 830b3c68c1fb1e9176028d02ef86f3cf76aa2476 (v6.1)
+Compiler:  ccache gcc
 Attempt 1:
     Time  Bug Name
        2  INFO: rcu detected stall in corrupted
        4  INFO: rcu detected stall in corrupted
-       6  INFO: rcu detected stall in corrupted
-       7  INFO: task hung in del_device_store
-       8  INFO: task hung in del_device_store
-       8  INFO: task hung in del_device_store
-       9  INFO: rcu detected stall in corrupted
+       5  INFO: rcu detected stall in tc_modify_qdisc
+       5  INFO: rcu detected stall in batadv_nc_worker
+       9  INFO: rcu detected stall in tc_modify_qdisc
+       9  general protection fault in taprio_dequeue
+The bug was not found.
+About 12 releases remaining
+
+==== Kernel Bisection ====
+15665 Linux commits
+
+2025-09-19 05:39:16
+Session:   3
+Kernel:    2022-12-13 - 1ca06f1c1acecbe02124f14a37cce347b8c1a90c
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 8255 commits remaining
+
+2025-09-19 06:03:15
+Session:   4
+Kernel:    2022-12-15 - 785d21ba2f447fb26df4b22f45653763beb767ea
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  general protection fault in rxrpc_unuse_local
+       2  general protection fault in rxrpc_unuse_local
+       2  general protection fault in rxrpc_unuse_local
+       2  general protection fault in rxrpc_unuse_local
+       2  general protection fault in rxrpc_unuse_local
+       2  general protection fault in rxrpc_unuse_local
+       2  general protection fault in rxrpc_unuse_local
+       2  general protection fault in rxrpc_unuse_local
+       2  general protection fault in rxrpc_unuse_local
+       2  general protection fault in rxrpc_unuse_local
+       2  general protection fault in rxrpc_unuse_local
+       2  general protection fault in rxrpc_unuse_local
+       3  general protection fault in rxrpc_unuse_local
+       3  general protection fault in rxrpc_unuse_local
+       3  general protection fault in rxrpc_unuse_local
+       3  general protection fault in rxrpc_unuse_local
+       3  general protection fault in rxrpc_unuse_local
+       3  general protection fault in rxrpc_unuse_local
+       3  general protection fault in rxrpc_unuse_local
+       3  general protection fault in rxrpc_unuse_local
+       3  general protection fault in rxrpc_unuse_local
+       3  general protection fault in rxrpc_unuse_local
+       4  general protection fault in rxrpc_unuse_local
+       4  general protection fault in rxrpc_unuse_local
+       4  general protection fault in rxrpc_unuse_local
+       4  general protection fault in rxrpc_unuse_local
+       4  general protection fault in rxrpc_unuse_local
+       4  general protection fault in rxrpc_unuse_local
+       4  general protection fault in rxrpc_unuse_local
+       4  general protection fault in rxrpc_unuse_local
+       5  general protection fault in rxrpc_unuse_local
+       5  general protection fault in rxrpc_unuse_local
+       5  general protection fault in rxrpc_unuse_local
+       5  general protection fault in rxrpc_unuse_local
+       6  KASAN: use-after-free Read in rxrpc_lookup_local
+       6  KASAN: use-after-free Read in rxrpc_lookup_local
+       6  general protection fault in rxrpc_unuse_local
+       6  general protection fault in rxrpc_unuse_local
+       6  general protection fault in rxrpc_unuse_local
+       6  general protection fault in rxrpc_unuse_local
+       6  general protection fault in rxrpc_unuse_local
+       6  general protection fault in rxrpc_unuse_local
+       6  general protection fault in rxrpc_unuse_local
+       6  general protection fault in rxrpc_lookup_local
+       7  general protection fault in rxrpc_unuse_local
+       7  general protection fault in rxrpc_unuse_local
+       7  general protection fault in rxrpc_unuse_local
+       7  general protection fault in rxrpc_unuse_local
+       7  general protection fault in rxrpc_unuse_local
+       7  general protection fault in rxrpc_unuse_local
+       7  general protection fault in rxrpc_unuse_local
+       7  general protection fault in rxrpc_unuse_local
+       7  general protection fault in rxrpc_unuse_local
+       8  general protection fault in rxrpc_unuse_local
+       8  general protection fault in rxrpc_unuse_local
+       8  general protection fault in rxrpc_unuse_local
+       8  general protection fault in rxrpc_unuse_local
+       8  general protection fault in rxrpc_unuse_local
+       8  general protection fault in rxrpc_unuse_local
+       8  general protection fault in rxrpc_unuse_local
+       8  general protection fault in rxrpc_unuse_local
+       8  general protection fault in rxrpc_unuse_local
+       9  general protection fault in rxrpc_unuse_local
+       9  general protection fault in rxrpc_unuse_local
+       9  general protection fault in rxrpc_unuse_local
+       9  general protection fault in rxrpc_unuse_local
+       9  general protection fault in rxrpc_unuse_local
+       9  general protection fault in rxrpc_unuse_local
+       9  general protection fault in rxrpc_unuse_local
+       9  general protection fault in rxrpc_unuse_local
+       9  general protection fault in rxrpc_unuse_local
+       9  general protection fault in rxrpc_unuse_local
+      10  general protection fault in rxrpc_unuse_local
+      10  general protection fault in rxrpc_unuse_local
+      10  general protection fault in rxrpc_unuse_local
+      10  general protection fault in rxrpc_unuse_local
+      10  general protection fault in rxrpc_unuse_local
+      10  general protection fault in rxrpc_unuse_local
+      10  general protection fault in rxrpc_unuse_local
+The bug was not found.
+About 4112 commits remaining
+
+2025-09-19 06:27:14
+Session:   5
+Kernel:    2022-12-19 - e79041113b19b8c7b8410d862d4a3630debded58
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  general protection fault in rxrpc_unuse_local
+       2  general protection fault in rxrpc_unuse_local
+       2  general protection fault in rxrpc_unuse_local
+       2  general protection fault in rxrpc_unuse_local
+       2  general protection fault in rxrpc_unuse_local
+       2  general protection fault in rxrpc_unuse_local
+       2  general protection fault in rxrpc_unuse_local
+       2  general protection fault in rxrpc_unuse_local
+       2  general protection fault in rxrpc_unuse_local
+       2  general protection fault in rxrpc_unuse_local
+       3  general protection fault in rxrpc_unuse_local
+       3  general protection fault in rxrpc_unuse_local
+       3  general protection fault in rxrpc_unuse_local
+       3  general protection fault in rxrpc_unuse_local
+       3  general protection fault in rxrpc_unuse_local
+       3  general protection fault in rxrpc_unuse_local
+       3  general protection fault in rxrpc_unuse_local
+       3  general protection fault in rxrpc_unuse_local
+       3  general protection fault in rxrpc_unuse_local
+       3  general protection fault in rxrpc_unuse_local
+       4  general protection fault in rxrpc_unuse_local
+       4  general protection fault in rxrpc_unuse_local
+       4  general protection fault in rxrpc_unuse_local
+       4  general protection fault in rxrpc_unuse_local
+       4  general protection fault in rxrpc_unuse_local
+       4  general protection fault in rxrpc_unuse_local
+       4  general protection fault in rxrpc_unuse_local
+       4  general protection fault in rxrpc_unuse_local
+       4  general protection fault in rxrpc_unuse_local
+       5  KASAN: use-after-free Read in rxrpc_lookup_local
+       5  general protection fault in rxrpc_unuse_local
+       5  general protection fault in rxrpc_unuse_local
+       5  general protection fault in rxrpc_unuse_local
+       5  general protection fault in rxrpc_unuse_local
+       5  general protection fault in rxrpc_unuse_local
+       5  general protection fault in rxrpc_unuse_local
+       6  KASAN: use-after-free Read in rxrpc_lookup_local
+       6  general protection fault in rxrpc_unuse_local
+       6  general protection fault in rxrpc_unuse_local
+       6  general protection fault in rxrpc_unuse_local
+       6  general protection fault in rxrpc_unuse_local
+       6  general protection fault in rxrpc_unuse_local
+       6  general protection fault in rxrpc_unuse_local
+       7  general protection fault in rxrpc_unuse_local
+       7  general protection fault in rxrpc_unuse_local
+       7  general protection fault in rxrpc_unuse_local
+       7  general protection fault in rxrpc_unuse_local
+       7  general protection fault in rxrpc_unuse_local
+       7  general protection fault in rxrpc_unuse_local
+       7  general protection fault in rxrpc_unuse_local
+       7  general protection fault in rxrpc_unuse_local
+       7  general protection fault in rxrpc_unuse_local
+       8  general protection fault in rxrpc_unuse_local
+       8  general protection fault in rxrpc_unuse_local
+       8  general protection fault in rxrpc_unuse_local
+       8  general protection fault in rxrpc_unuse_local
+       8  general protection fault in rxrpc_unuse_local
+       8  general protection fault in rxrpc_unuse_local
+       8  general protection fault in rxrpc_unuse_local
+       8  general protection fault in rxrpc_unuse_local
+       8  general protection fault in rxrpc_unuse_local
+       9  general protection fault in rxrpc_unuse_local
+       9  general protection fault in rxrpc_unuse_local
+       9  general protection fault in rxrpc_unuse_local
+       9  general protection fault in rxrpc_unuse_local
+       9  general protection fault in rxrpc_unuse_local
+       9  general protection fault in rxrpc_unuse_local
+       9  general protection fault in rxrpc_unuse_local
+       9  general protection fault in rxrpc_unuse_local
+       9  general protection fault in rxrpc_unuse_local
+       9  general protection fault in rxrpc_unuse_local
+      10  general protection fault in rxrpc_unuse_local
+      10  general protection fault in rxrpc_unuse_local
+      10  general protection fault in rxrpc_unuse_local
+      10  general protection fault in rxrpc_unuse_local
+      10  general protection fault in rxrpc_unuse_local
+      10  general protection fault in rxrpc_unuse_local
+      10  general protection fault in rxrpc_unuse_local
+      10  general protection fault in rxrpc_unuse_local
+The bug was not found.
+About 2003 commits remaining
+
+2025-09-19 06:51:15
+Session:   6
+Kernel:    2022-12-29 - bff687b3dad6e0e56b27f4d3ed8a9695f35c7b1a
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  INFO: rcu detected stall in corrupted
+       5  INFO: rcu detected stall in corrupted
+The bug was not found.
+About 1002 commits remaining
+
+2025-09-19 07:15:31
+Session:   7
+Kernel:    2023-01-12 - d9fc1511728c15df49ff18e49a494d00f78b7cd4
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
 The bug was not found.
 About 467 commits remaining
 
-2025-03-09 09:03:04
-Session:   9
+2025-09-19 07:39:54
+Session:   8
 Kernel:    2023-01-17 - dc74a9e8a8c57966a563ab078ba91c8b2c0d0a72
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Compiler:  ccache gcc
 Attempt 1:
-    No crashes found.
+    Time  Bug Name
+       2  INFO: rcu detected stall in corrupted
+       5  INFO: rcu detected stall in corrupted
+       5  suppressed report
+       7  suppressed report
 The bug was not found.
 About 234 commits remaining
 
-2025-03-09 09:33:25
-Session:   10
+2025-09-19 07:59:23
+Session:   9
 Kernel:    2023-01-20 - 45a919bbb21c642e0c34dac483d1e003560159dc
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Compiler:  ccache gcc
 Attempt 1:
     Time  Bug Name
-***    3  BUG: scheduling while atomic in msleep
-***    3  BUG: scheduling while atomic in msleep
+***    2  BUG: scheduling while atomic in msleep
+***    2  BUG: scheduling while atomic in msleep
 Running syz-repro.
-Run Time:        0h7m0s
+Run Time:        0h31m0s
 The bug was found.
 About 100 commits remaining
 
-2025-03-09 10:02:40
-Session:   11
+2025-09-19 08:40:43
+Session:   10
 Kernel:    2023-01-17 - 010a74f52203eae037dd6aa111ba371f6a2dedc5
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Compiler:  ccache gcc
 Attempt 1:
     Time  Bug Name
-***    3  BUG: scheduling while atomic in msleep
-***    3  BUG: scheduling while atomic in msleep
-***    3  BUG: scheduling while atomic in msleep
-***    3  BUG: scheduling while atomic in msleep
+       2  INFO: rcu detected stall in corrupted
+***    2  BUG: scheduling while atomic in msleep
+***    2  BUG: scheduling while atomic in msleep
+***    2  BUG: scheduling while atomic in msleep
 Running syz-repro.
-Run Time:        0h16m0s
+Run Time:        0h6m0s
 The bug was found.
 About 55 commits remaining
 
-2025-03-09 10:40:39
-Session:   12
+2025-09-19 08:55:59
+Session:   11
 Kernel:    2023-01-16 - 21705c771934f24cab8beb554e3b7f40e3511ad7
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Compiler:  ccache gcc
 Attempt 1:
-    No crashes found.
+    Time  Bug Name
+       2  INFO: rcu detected stall in corrupted
 The bug was not found.
 About 28 commits remaining
 
-2025-03-09 11:13:49
-Session:   13
+2025-09-19 09:13:17
+Session:   12
 Kernel:    2023-01-17 - 1ed8b37cbaf14574c779064ef1372af62e8ba6aa
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Compiler:  ccache gcc
 Attempt 1:
     Time  Bug Name
-       5  INFO: rcu detected stall in corrupted
-       5  INFO: rcu detected stall in corrupted
-***    5  BUG: scheduling while atomic in msleep
+***    2  BUG: scheduling while atomic in msleep
+***    2  BUG: scheduling while atomic in msleep
+***    2  BUG: scheduling while atomic in msleep
 Running syz-repro.
-Run Time:        0h48m0s
+Run Time:        0h14m0s
 The bug was found.
 About 14 commits remaining
 
-2025-03-09 12:24:43
-Session:   14
+2025-09-19 09:37:12
+Session:   13
 Kernel:    2023-01-17 - ecf7cf8efb59789e2b21d2f9ab926142579092b2
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Compiler:  ccache gcc
 Attempt 1:
     Time  Bug Name
-      11  can't ssh into the instance
-      11  can't ssh into the instance
-      11  can't ssh into the instance
-      11  can't ssh into the instance
-      11  can't ssh into the instance
-      11  can't ssh into the instance
-      11  can't ssh into the instance
-      11  can't ssh into the instance
-The bug was not found.
-About 8 commits remaining
+***    2  BUG: scheduling while atomic in msleep
+Running syz-repro.
+Run Time:        0h11m0s
+The bug was found.
+About 7 commits remaining
 
-2025-03-09 12:58:05
-Session:   15
-Kernel:    2023-01-17 - 2185e0fdbb2137f22a9dd9fcbf6481400d56299b
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+2025-09-19 09:57:31
+Session:   14
+Kernel:    2023-01-16 - 0b2c59720e65885a394a017d0cf9cab118914682
+Compiler:  ccache gcc
 Attempt 1:
     Time  Bug Name
-       3  INFO: rcu detected stall in corrupted
-       7  no output from test machine
-       7  no output from test machine
-       8  INFO: rcu detected stall in corrupted
-***    9  BUG: scheduling while atomic in msleep
-***    9  BUG: scheduling while atomic in msleep
-***    9  BUG: scheduling while atomic in msleep
+***    2  BUG: scheduling while atomic in msleep
+***    2  BUG: scheduling while atomic in msleep
+***    2  BUG: scheduling while atomic in msleep
+***    2  BUG: scheduling while atomic in msleep
 Running syz-repro.
 Run Time:        0h7m0s
 The bug was found.
 About 4 commits remaining
 
-2025-03-09 13:32:11
-Session:   16
-Kernel:    2023-01-17 - 1f3bd64ad921f051254591fbed04fd30b306cde6
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+2025-09-19 10:13:59
+Session:   15
+Kernel:    2023-01-16 - c4d48a58f32c5972174a1d01c33b296fe378cce0
+Compiler:  ccache gcc
 Attempt 1:
     Time  Bug Name
-       4  INFO: rcu detected stall in corrupted
-       4  INFO: rcu detected stall in corrupted
-***    5  BUG: scheduling while atomic in msleep
-***    5  BUG: scheduling while atomic in msleep
-***    5  BUG: scheduling while atomic in msleep
+***    2  BUG: scheduling while atomic in msleep
+***    2  BUG: scheduling while atomic in msleep
+***    2  BUG: scheduling while atomic in msleep
 Running syz-repro.
-Run Time:        0h8m0s
+Run Time:        0h12m0s
 The bug was found.
 About 3 commits remaining
 
-2025-03-09 14:04:51
-Session:   17
-Kernel:    2023-01-17 - 867dbe784c5010a466f00a7d1467c1c5ea569c75
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+2025-09-19 10:35:22
+Session:   16
+Kernel:    2023-01-16 - 3a415d59c1dbec9d772dbfab2d2520d98360caae
+Compiler:  ccache gcc
 Attempt 1:
     Time  Bug Name
-***    3  BUG: scheduling while atomic in msleep
+***    2  BUG: scheduling while atomic in msleep
+***    2  BUG: scheduling while atomic in msleep
+***    2  BUG: scheduling while atomic in msleep
 Running syz-repro.
-Run Time:        0h50m0s
+Run Time:        0h8m0s
 The bug was found.
 About 2 commits remaining
 
 ==== Partial Result: Focused Fuzzing ====
-Reproducer:           /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/reproducers/repro-bug0112-2.prog
-Bisection Result:     2023-01-17 - 867dbe784c5010a466f00a7d1467c1c5ea569c75
-Bisected Commit Name: net: mdio: validate parameter addr in mdiobus_get_phy()
-Stage Time:           10h44m53s
-Run Time:             10h44m55s
+Reproducer:           /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0112-2.prog
+Bisection Result:     2023-01-16 - 3a415d59c1dbec9d772dbfab2d2520d98360caae
+Bisected Commit Name: net/sched: sch_taprio: fix possible use-after-free
+Stage Time:           5h58m17s
+Run Time:             5h58m18s
 =========================================
 
 ==== Anchor Commit ====
 
-2025-03-09 15:16:41
-Session:   18
-Kernel:    2023-01-17 - ecf7cf8efb59789e2b21d2f9ab926142579092b2
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
-Attempt 0:
-*** BUG: scheduling while atomic in msleep
-    kernel panic: scheduling while atomic: panic_on_warn set ...
-Attempt 1:
-*** BUG: scheduling while atomic in msleep
-    kernel panic: scheduling while atomic: panic_on_warn set ...
-Attempt 2:
-    INFO: rcu detected stall in corrupted
-    INFO: rcu detected stall in corrupted
-    INFO: task hung in devlink_unregister
-Attempt 3:
-*** BUG: scheduling while atomic in msleep
-    kernel panic: scheduling while atomic: panic_on_warn set ...
-Attempt 4:
-*** BUG: scheduling while atomic in msleep
-    kernel panic: scheduling while atomic: panic_on_warn set ...
-Attempt 5:
-*** BUG: scheduling while atomic in msleep
-    kernel panic: scheduling while atomic: panic_on_warn set ...
-Attempt 6:
-    INFO: rcu detected stall in corrupted
-    INFO: rcu detected stall in cleanup_net
-    INFO: task hung in devlink_unregister
-Attempt 7:
-*** BUG: scheduling while atomic in msleep
-    kernel panic: scheduling while atomic: panic_on_warn set ...
-The bug was found.
-
-==== Major Release Search ====
-18 Releases
-
-2025-03-09 15:43:44
-Session:   19
-Kernel:    2022-10-02 - 4fe89d07dcc2804c8b562f6c7896a45643d34b2f (v6.0)
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
-Attempt 0:
-    INFO: rcu detected stall in corrupted
-    INFO: rcu detected stall in corrupted
-    INFO: task hung in devlink_unregister
-Attempt 1:
-    No crashes found.
-Attempt 2:
-    No crashes found.
-Attempt 3:
-    No crashes found.
-Attempt 4:
-    INFO: rcu detected stall in corrupted
-    INFO: rcu detected stall in cleanup_net
-    INFO: task hung in devlink_unregister
-Attempt 5:
-    INFO: rcu detected stall in corrupted
-    INFO: rcu detected stall in corrupted
-    INFO: task hung in devlink_unregister
-Attempt 6:
-    No crashes found.
-Attempt 7:
-    INFO: rcu detected stall in corrupted
-    INFO: rcu detected stall in cleanup_net
-    INFO: task hung in devlink_unregister
-The bug was not found.
-About 17 releases remaining
-
-==== Kernel Bisection ====
-30341 Linux commits
-
-2025-03-09 16:12:54
-Session:   20
-Kernel:    2022-12-12 - f433cf2102fec78cf05ece06fb8e24fbfc6a64d8
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
-Attempt 0:
-    INFO: rcu detected stall in corrupted
-    INFO: rcu detected stall in corrupted
-    INFO: task hung in devlink_unregister
-Attempt 1:
-    INFO: rcu detected stall in corrupted
-    INFO: rcu detected stall in corrupted
-    INFO: task hung in devlink_unregister
-Attempt 2:
-    No crashes found.
-Attempt 3:
-    INFO: rcu detected stall in corrupted
-    INFO: rcu detected stall in corrupted
-    INFO: task hung in devlink_unregister
-Attempt 4:
-    No crashes found.
-Attempt 5:
-    No crashes found.
-Attempt 6:
-    No crashes found.
-Attempt 7:
-    No crashes found.
-The bug was not found.
-About 15171 commits remaining
-
-2025-03-09 16:42:25
-Session:   21
-Kernel:    2022-12-13 - 1ca06f1c1acecbe02124f14a37cce347b8c1a90c
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
-Attempt 0:
-    No crashes found.
-Attempt 1:
-    INFO: rcu detected stall in corrupted
-    INFO: rcu detected stall in cleanup_net
-    INFO: task hung in devlink_unregister
-Attempt 2:
-    No crashes found.
-Attempt 3:
-    No crashes found.
-Attempt 4:
-    No crashes found.
-Attempt 5:
-    No crashes found.
-Attempt 6:
-    No crashes found.
-Attempt 7:
-    No crashes found.
-The bug was not found.
-About 7822 commits remaining
-
-2025-03-09 17:09:25
-Session:   22
-Kernel:    2022-12-30 - 0948a9ef1d59d1bc7fae29f32058e463bbff4a6c
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
-Attempt 0:
-    No crashes found.
-Attempt 1:
-    No crashes found.
-Attempt 2:
-    No crashes found.
-Attempt 3:
-    INFO: rcu detected stall in corrupted
-    INFO: rcu detected stall in corrupted
-    INFO: task hung in devlink_unregister
-Attempt 4:
-    No crashes found.
-Attempt 5:
-    No crashes found.
-Attempt 6:
-    No crashes found.
-Attempt 7:
-    No crashes found.
-The bug was not found.
-About 4096 commits remaining
-
-2025-03-09 17:36:40
-Session:   23
-Kernel:    2022-12-17 - 4f292c4de4f6fb83776c0ff22674121eb6ddfa2f
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
-Attempt 0:
-    INFO: rcu detected stall in corrupted
-    INFO: rcu detected stall in cleanup_net
-    INFO: task hung in devlink_unregister
-Attempt 1:
-    No crashes found.
-Attempt 2:
-    INFO: rcu detected stall in corrupted
-    INFO: rcu detected stall in cleanup_net
-    INFO: task hung in devlink_unregister
-Attempt 3:
-    INFO: rcu detected stall in corrupted
-    INFO: rcu detected stall in cleanup_net
-    INFO: task hung in devlink_unregister
-Attempt 4:
-    No crashes found.
-Attempt 5:
-    No crashes found.
-Attempt 6:
-    No crashes found.
-Attempt 7:
-    No crashes found.
-The bug was not found.
-About 2054 commits remaining
-
-2025-03-09 18:05:42
-Session:   24
-Kernel:    2022-12-21 - 7a693ea78e3c48605a2d849fd241ff15561f10d5
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
-Warning: VM has not responded after 5 attempts.
-Warning: Only booted 7 VMs.
-Attempt 0:
-    No crashes found.
-Attempt 1:
-    No crashes found.
-Attempt 2:
-    No crashes found.
-Attempt 3:
-    No crashes found.
-Attempt 4:
-    INFO: rcu detected stall in corrupted
-    INFO: rcu detected stall in corrupted
-    INFO: task hung in devlink_unregister
-Attempt 5:
-    INFO: rcu detected stall in corrupted
-    INFO: rcu detected stall in cleanup_net
-    INFO: task hung in devlink_unregister
-Attempt 6:
-    INFO: rcu detected stall in corrupted
-    INFO: rcu detected stall in cleanup_net
-    INFO: task hung in devlink_unregister
-Attempt 7:
-    No crashes found.
-The bug was not found.
-About 1019 commits remaining
-
-2025-03-09 18:42:24
-Session:   25
-Kernel:    2023-01-03 - df9d44b645b83fffccfb4e28c1f93376585fdec8
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
-Attempt 0:
-    No crashes found.
-Attempt 1:
-    INFO: rcu detected stall in corrupted
-    INFO: rcu detected stall in corrupted
-    INFO: task hung in devlink_unregister
-Attempt 2:
-    INFO: rcu detected stall in corrupted
-    INFO: rcu detected stall in cleanup_net
-    INFO: task hung in devlink_unregister
-Attempt 3:
-    INFO: rcu detected stall in corrupted
-    INFO: rcu detected stall in cleanup_net
-    INFO: task hung in devlink_unregister
-Attempt 4:
-    INFO: rcu detected stall in corrupted
-    INFO: rcu detected stall in cleanup_net
-    INFO: task hung in devlink_unregister
-Attempt 5:
-    No crashes found.
-Attempt 6:
-    INFO: rcu detected stall in corrupted
-    INFO: rcu detected stall in cleanup_net
-    INFO: task hung in devlink_unregister
-Attempt 7:
-    INFO: rcu detected stall in corrupted
-    INFO: rcu detected stall in corrupted
-    INFO: task hung in devlink_unregister
-The bug was not found.
-About 505 commits remaining
-
-2025-03-09 19:13:36
-Session:   26
-Kernel:    2023-01-11 - eb25df88287b37a63b9fb9ca6d333af2f504407a
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
-Attempt 0:
-    INFO: rcu detected stall in corrupted
-    INFO: rcu detected stall in cleanup_net
-    INFO: task hung in devlink_unregister
-Attempt 1:
-    No crashes found.
-Attempt 2:
-    INFO: rcu detected stall in corrupted
-    INFO: rcu detected stall in corrupted
-    INFO: task hung in devlink_unregister
-Attempt 3:
-    INFO: rcu detected stall in corrupted
-    INFO: rcu detected stall in corrupted
-    INFO: task hung in devlink_unregister
-Attempt 4:
-    No crashes found.
-Attempt 5:
-    No crashes found.
-Attempt 6:
-    No crashes found.
-Attempt 7:
-    No crashes found.
-The bug was not found.
-About 252 commits remaining
-
-2025-03-09 19:42:33
-Session:   27
-Kernel:    2023-01-09 - 5268a2842066c227e6ccd94bac562f1e1000244f
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
-Attempt 0:
-    No crashes found.
-Attempt 1:
-    INFO: rcu detected stall in corrupted
-    INFO: rcu detected stall in cleanup_net
-    INFO: task hung in devlink_unregister
-Attempt 2:
-    No crashes found.
-Attempt 3:
-    No crashes found.
-Attempt 4:
-    No crashes found.
-Attempt 5:
-    No crashes found.
-Attempt 6:
-    INFO: rcu detected stall in corrupted
-    INFO: rcu detected stall in cleanup_net
-    INFO: task hung in devlink_unregister
-Attempt 7:
-    No crashes found.
-The bug was not found.
-About 195 commits remaining
-
-2025-03-09 20:12:27
-Session:   28
-Kernel:    2023-01-12 - c757fc92a3f73734872c7793b97f06434773d65d
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
-Attempt 0:
-    No crashes found.
-Attempt 1:
-    No crashes found.
-Attempt 2:
-    No crashes found.
-Attempt 3:
-    INFO: rcu detected stall in corrupted
-    INFO: rcu detected stall in cleanup_net
-    INFO: task hung in devlink_unregister
-Attempt 4:
-    No crashes found.
-Attempt 5:
-    No crashes found.
-Attempt 6:
-    INFO: rcu detected stall in corrupted
-    INFO: rcu detected stall in corrupted
-    INFO: task hung in devlink_unregister
-Attempt 7:
-    No crashes found.
-The bug was not found.
-About 139 commits remaining
-
-2025-03-09 20:46:50
-Session:   29
-Kernel:    2023-01-12 - d9fc1511728c15df49ff18e49a494d00f78b7cd4
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
-Attempt 0:
-    INFO: rcu detected stall in corrupted
-    INFO: rcu detected stall in corrupted
-    INFO: task hung in devlink_unregister
-Attempt 1:
-    No crashes found.
-Attempt 2:
-    INFO: rcu detected stall in corrupted
-    INFO: rcu detected stall in cleanup_net
-    INFO: task hung in devlink_unregister
-Attempt 3:
-    No crashes found.
-Attempt 4:
-    No crashes found.
-Attempt 5:
-    No crashes found.
-Attempt 6:
-    No crashes found.
-Attempt 7:
-    No crashes found.
-The bug was not found.
-About 34 commits remaining
-
-2025-03-09 21:16:56
-Session:   30
-Kernel:    2023-01-13 - 3c463721a73bdb57a913e0d3124677a3758886fc
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
-Attempt 0:
-    No crashes found.
-Attempt 1:
-    No crashes found.
-Attempt 2:
-    No crashes found.
-Attempt 3:
-    No crashes found.
-Attempt 4:
-    No crashes found.
-Attempt 5:
-    No crashes found.
-Attempt 6:
-    No crashes found.
-Attempt 7:
-    No crashes found.
-The bug was not found.
-About 18 commits remaining
-
-2025-03-09 21:44:46
-Session:   31
-Kernel:    2023-01-16 - c296c77efb66994d94d9f706446a115581226550
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
-Attempt 0:
-    No crashes found.
-Attempt 1:
-    No crashes found.
-Attempt 2:
-    INFO: rcu detected stall in corrupted
-    INFO: rcu detected stall in cleanup_net
-    INFO: task hung in devlink_unregister
-Attempt 3:
-    No crashes found.
-Attempt 4:
-    No crashes found.
-Attempt 5:
-    No crashes found.
-Attempt 6:
-    No crashes found.
-Attempt 7:
-    No crashes found.
-The bug was not found.
-About 11 commits remaining
-
-2025-03-09 22:10:57
-Session:   32
-Kernel:    2023-01-16 - 3a415d59c1dbec9d772dbfab2d2520d98360caae
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
-Attempt 0:
-    INFO: rcu detected stall in corrupted
-    INFO: rcu detected stall in cleanup_net
-    INFO: task hung in devlink_unregister
-Attempt 1:
-*** BUG: scheduling while atomic in msleep
-    kernel panic: scheduling while atomic: panic_on_warn set ...
-Attempt 2:
-    INFO: rcu detected stall in corrupted
-    INFO: rcu detected stall in corrupted
-    INFO: task hung in devlink_unregister
-Attempt 3:
-*** BUG: scheduling while atomic in msleep
-    kernel panic: scheduling while atomic: panic_on_warn set ...
-Attempt 4:
-*** BUG: scheduling while atomic in msleep
-    kernel panic: scheduling while atomic: panic_on_warn set ...
-Attempt 5:
-*** BUG: scheduling while atomic in msleep
-    kernel panic: scheduling while atomic: panic_on_warn set ...
-Attempt 6:
-*** BUG: scheduling while atomic in msleep
-    kernel panic: scheduling while atomic: panic_on_warn set ...
-Attempt 7:
-*** BUG: scheduling while atomic in msleep
-    kernel panic: scheduling while atomic: panic_on_warn set ...
-The bug was found.
-About 6 commits remaining
-
-2025-03-09 22:34:38
-Session:   33
-Kernel:    2023-01-11 - 9ea4b476cea1b7d461d16dda25ca3c7e616e2d15
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
-Attempt 0:
-    No crashes found.
-Attempt 1:
-    No crashes found.
-Attempt 2:
-    INFO: rcu detected stall in corrupted
-    INFO: rcu detected stall in corrupted
-    INFO: task hung in devlink_unregister
-Attempt 3:
-    INFO: rcu detected stall in corrupted
-    INFO: rcu detected stall in cleanup_net
-    INFO: task hung in devlink_unregister
-Attempt 4:
-    No crashes found.
-Attempt 5:
-    No crashes found.
-Attempt 6:
-    No crashes found.
-Attempt 7:
-    INFO: rcu detected stall in corrupted
-    INFO: rcu detected stall in cleanup_net
-    INFO: task hung in devlink_unregister
-The bug was not found.
-About 251 commits remaining
-
-2025-03-09 23:03:50
-Session:   34
+2025-09-19 10:52:43
+Session:   17
 Kernel:    2023-01-16 - 21705c771934f24cab8beb554e3b7f40e3511ad7
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Compiler:  ccache gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0112-2.prog
 Attempt 0:
     INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit
     INFO: rcu detected stall in corrupted
+    INFO: task hung in netdev_run_todo
+    INFO: task hung in switchdev_deferred_process_work
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in rtnetlink_rcv_msg
     INFO: task hung in devlink_unregister
+    INFO: task hung in del_device_store
+    INFO: task hung in del_device_store
 Attempt 1:
-    No crashes found.
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in netdev_run_todo
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in del_device_store
+    INFO: task hung in devlink_unregister
+    INFO: task hung in del_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in del_device_store
 Attempt 2:
-    No crashes found.
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in linkwatch_event
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in del_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in devlink_unregister
+    INFO: task hung in del_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in del_device_store
 Attempt 3:
-    No crashes found.
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in cleanup_net
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in linkwatch_event
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in del_device_store
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in del_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in devlink_unregister
+    INFO: task hung in del_device_store
 Attempt 4:
     INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in nsim_destroy
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in linkwatch_event
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in del_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in rtnetlink_rcv_msg
 Attempt 5:
-    No crashes found.
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in del_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in new_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in new_device_store
+    INFO: task hung in devlink_unregister
 Attempt 6:
-    No crashes found.
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in netdev_run_todo
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in linkwatch_event
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in del_device_store
+    INFO: task hung in devlink_unregister
+    INFO: task hung in del_device_store
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in del_device_store
 Attempt 7:
     No crashes found.
 The bug was not found.
-About 2 commits remaining
 
-====================================================================================================================================================
-Bug Name:             BUG: scheduling while atomic in msleep
-Bug Link:             https://syzkaller.appspot.com/bug?id=a1f37cddedf0664dddc8b42c26e248051691b834
-Bisection Result:     2023-01-16 - 3a415d59c1dbec9d772dbfab2d2520d98360caae
-Bisected Commit Name: net/sched: sch_taprio: fix possible use-after-free
-Run Time:             19h0m21s
+Failure: This bug cannot be found at the anchor commit.
 
-Anchor Commit:        2023-01-20 - ff83fec8179e392be2f472f0a9ec3da8f6d529c6
-Bisection Result:     2023-01-16 - 3a415d59c1dbec9d772dbfab2d2520d98360caae
+==== Partial Result: Primary PoC Test ====
+Reproducer:           /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0112-2.prog
+Bisection Result:     Failed to reproduce at the anchor commit.
+Stage Time:           0h16m8s
+Run Time:             6h14m26s
+==========================================
