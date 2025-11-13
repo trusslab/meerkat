@@ -54,6 +54,18 @@ bool ignore_functions(const std::string &func)
     return ignore.count(func) > 0;
 }
 
+int skip_to_call_trace(const std::vector<std::string> &lines, int &i)
+{
+    for (; i < lines.size() && !starts_with(to_lower(lines.at(i)), "call trace:"); i++);
+    if (i >= lines.size() - 1)
+    {
+        std::cerr << "Error: index error in parse_kasan_stack()\n" << std::flush;
+        return -1;
+    }
+    i += lines.at(i + 1).find("<TASK>") != std::string::npos ? 2 : 1;
+    return 0;
+}
+
 int parse_kasan_stack(const std::vector<std::string> &lines, int &i, std::vector<std::string> &stack)
 {
     /* KASAN call trace:
@@ -71,13 +83,8 @@ int parse_kasan_stack(const std::vector<std::string> &lines, int &i, std::vector
                                 "__kasan_report" };
 
     // To start, find the line after "Call trace:". There are no "RIP:"'s in KASAN reports
-    for (; i < lines.size() && !starts_with(to_lower(lines.at(i)), "call trace:"); i++);
-    if (i >= lines.size() - 1)
-    {
-        std::cerr << "Error: index error in parse_kasan_stack()\n" << std::flush;
+    if (skip_to_call_trace(lines, i) < 0)
         return -1;
-    }
-    i += lines.at(i + 1).find("<TASK>") != std::string::npos ? 2 : 1;
     
     int pos1 = lines.at(i).find_first_not_of(" "), pos2 = 0;
 
@@ -96,8 +103,49 @@ int parse_kasan_stack(const std::vector<std::string> &lines, int &i, std::vector
         func = parse_stack_line(lines.at(i));
         // __asan_report_load8_noabort, __asan_report_load1_noabort
         if (still_kasan && (kasan_functions.count(func) > 0 || starts_with(func, "__asan_report_load")))
+        {
+            stack.clear();
             continue;
-        still_kasan = false;
+        }
+
+        if (!ignore_functions(func))
+            stack.push_back(func);
+    }
+
+    return 0;
+}
+
+int parse_sleeping_stack(const std::vector<std::string> &lines, int &i, std::vector<std::string> &stack)
+{
+    std::set<std::string> forget_functions = { "dump_stack", "__dump_stack", "dump_stack_lvl", "show_stack",
+                                "__might_sleep", "__might_resched", "might_alloc", "kmalloc", "kzalloc",
+                                "__mutex_lock", "__mutex_lock_common" };
+
+    // There are no RIP's in these reports (that I have seen)
+    if (skip_to_call_trace(lines, i) < 0)
+        return -1;
+
+    int pos1 = lines.at(i).find_first_not_of(" "), pos2 = 0;
+
+    std::string func;
+    for (; i < lines.size(); i++)
+    {
+        // Look for the end of the stack
+        pos2 = lines.at(i).find_first_not_of(" ");
+        if (lines.at(i).empty() || lines.at(i).find("</TASK>") != std::string::npos || pos1 != pos2)
+        {
+            break;
+        }
+
+        // If we find certain functions, forget the stack above.
+        // This is a simple way to start the stack after certain functions while not
+        // having to be sure I know them all.
+        func = parse_stack_line(lines.at(i));
+        if (forget_functions.count(func) > 0)
+        {
+            stack.clear();
+            continue;
+        }
 
         if (!ignore_functions(func))
             stack.push_back(func);
@@ -113,6 +161,8 @@ int parse_one_stack(Crash_Type ct, const std::vector<std::string> &lines, int &i
     {
     case CT_KASAN:
         return parse_kasan_stack(lines, i, stack);
+    case CT_SLEEPING:
+        return parse_sleeping_stack(lines, i, stack);
     case CT_UNKNOWN:
     default:
         return -1;
@@ -130,6 +180,8 @@ Crash_Type identify_ct(const std::vector<std::string> &lines, int &i)
         {
             if (lines.at(i).find("KASAN: ") != std::string::npos)
                 return CT_KASAN;
+            else if (lines.at(i).find("sleeping function called from invalid context") != std::string::npos)
+                return CT_SLEEPING;
         }
     }
 

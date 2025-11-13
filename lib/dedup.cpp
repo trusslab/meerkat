@@ -176,19 +176,18 @@ bool simple_stack_comparison(const BugAlias &bug1, const BugAlias &bug2)
 bool mutation_stack_comparison(const BugAlias &bug1, const BugAlias &bug2)
 {
     bool maybe_change = false;
-    int additions = 0, removals = 0, changes = 0, count = 0;
+    int additions = 0, removals = 0, changes = 0, correct = 0;
     int j = 0, k = 0;
     for (int i = 0; i < bug1.stack.size() && i < MAX_STACK_COMPARE; i++)
     {
-        k = j;
-        for (; k < bug2.stack.size() && bug1.stack.at(i) != bug2.stack.at(k); k++);
+        for (k = j; k < bug2.stack.size() && bug1.stack.at(i) != bug2.stack.at(k); k++);
         if (k >= bug2.stack.size())
         {
             maybe_change = true;
             removals++;
             continue;
         }
-        count++;
+        correct++;
         if (maybe_change)
         {
             maybe_change = false;
@@ -199,21 +198,20 @@ bool mutation_stack_comparison(const BugAlias &bug1, const BugAlias &bug2)
             }
             if (k - j > 1)
             {
-                additions++;
+                additions += k - j - 1;
             }
             // if k == j, it was a removal.
         }
         else
         {
             if (k > j)
-                additions++;
+                additions += k - j;
         }
         j = k + 1;
     }
 
-    //std::cout << "add: " << additions << " rem: " << removals << " cha: " << changes << " cnt: " << count << std::endl << std::flush;
     // The threshold here could vary quite a bit. I'll need to tune it.
-    return (count + changes >= COMPARISON_THRESHOLD) && changes <= 1 && additions <= 1;
+    return (correct + changes >= COMPARISON_THRESHOLD) && changes <= 1 && additions + removals <= 1;
 }
 
 bool compare_stack_traces(const BugAlias &bug1, const BugAlias &bug2)
