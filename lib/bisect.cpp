@@ -900,7 +900,7 @@ void log_attempt_result(const Syzkaller_Result &attempt, int i, const Environmen
         std::cout << "    No crashes found.\n" << std::flush;
     
     for (Crash_Report cr : attempt.reports)
-        std::cout << (deduplicate(cr.alias, env.duplicates) ? "*** " : "    ") << std::right << std::setw(4) << cr.time << "  " << cr.alias.name << (cr.count > 1 ? " (" + std::to_string(cr.count) + ")" : "") << std::endl << std::flush;
+        std::cout << (deduplicate(cr.alias, env.duplicates) ? "*** " : "    ") << std::right << std::setw(4) << cr.time << "  " << cr.alias.name << (cr.count > 1 ? " (" + std::to_string(cr.count) + ")" : "") << (cr.alias.has_stack() ? " (has report)" : "") << std::endl << std::flush;
 }
 
 void log_attempt_result_poc(const Syzkaller_Result &attempt, int i, const Environment &env)
@@ -911,7 +911,7 @@ void log_attempt_result_poc(const Syzkaller_Result &attempt, int i, const Enviro
         std::cout << "    No crashes found.\n" << std::flush;
     
     for (Crash_Report cr : attempt.reports)
-        std::cout << (deduplicate(cr.alias, env.duplicates) ? "*** " : "    ") << cr.alias.name << std::endl << std::flush;
+        std::cout << (deduplicate(cr.alias, env.duplicates) ? "*** " : "    ") << cr.alias.name << (cr.alias.has_stack() ? " (has report)" : "") << std::endl << std::flush;
 }
 
 void log_session_result(const Test_Result &result)

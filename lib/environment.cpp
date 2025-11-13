@@ -410,7 +410,7 @@ void Environment::print() const
     // TODO: figure out a format to indicate if an alias has a stack trace
     std::cout << "\nAliases:\n";
     for (BugAlias a : duplicates)
-        std::cout << "    " << a.name << std::endl;
+        std::cout << "    " << a.name << (a.has_stack() ? " (has report)" : "") << std::endl;
     
     std::cout << std::endl;
     config_print("Anchor Commit", anchor_hash);
