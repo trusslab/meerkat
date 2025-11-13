@@ -54,6 +54,27 @@ bool ignore_functions(const std::string &func)
     return ignore.count(func) > 0;
 }
 
+int read_RIP_entries(const std::vector<std::string> &lines, int &i, std::vector<std::string> &stack)
+{
+    int j = i;
+    for (; j < lines.size() && !starts_with(lines.at(j), "RIP: "); j++);
+    if (j >= lines.size())
+        return 0;
+
+    for (i = j; i < lines.size() && starts_with(lines.at(i), "RIP: "); i++)
+    {
+        int pos = lines.at(i).find_first_of(":", 5);
+        if (pos == std::string::npos)
+            return -1;
+        std::string func = lines.at(i).substr(pos + 1);
+        func = parse_stack_line(func);
+        if (!ignore_functions(func))
+            stack.push_back(func);
+    }
+
+    return 0;
+}
+
 int skip_to_call_trace(const std::vector<std::string> &lines, int &i)
 {
     for (; i < lines.size() && !starts_with(to_lower(lines.at(i)), "call trace:"); i++);
@@ -154,6 +175,33 @@ int parse_sleeping_stack(const std::vector<std::string> &lines, int &i, std::vec
     return 0;
 }
 
+int parse_warning_stack(const std::vector<std::string> &lines, int &i, std::vector<std::string> &stack)
+{
+    if (read_RIP_entries(lines, i, stack) < 0)
+        return -1;
+
+    if (skip_to_call_trace(lines, i) < 0)
+        return -1;
+
+    int pos1 = lines.at(i).find_first_not_of(" "), pos2 = 0;
+
+    std::string func;
+    for (; i < lines.size(); i++)
+    {
+        pos2 = lines.at(i).find_first_not_of(" ");
+        if (lines.at(i).empty() || lines.at(i).find("</TASK>") != std::string::npos || pos1 != pos2)
+        {
+            break;
+        }
+
+        func = parse_stack_line(lines.at(i));
+        if (!ignore_functions(func))
+            stack.push_back(func);
+    }
+
+    return 0;
+}
+
 // parse one stack trace starting at index i, output to stack vector
 int parse_one_stack(Crash_Type ct, const std::vector<std::string> &lines, int &i, std::vector<std::string> &stack)
 {
@@ -163,6 +211,8 @@ int parse_one_stack(Crash_Type ct, const std::vector<std::string> &lines, int &i
         return parse_kasan_stack(lines, i, stack);
     case CT_SLEEPING:
         return parse_sleeping_stack(lines, i, stack);
+    case CT_WARNING:
+        return parse_warning_stack(lines, i, stack);
     case CT_UNKNOWN:
     default:
         return -1;
@@ -182,6 +232,10 @@ Crash_Type identify_ct(const std::vector<std::string> &lines, int &i)
                 return CT_KASAN;
             else if (lines.at(i).find("sleeping function called from invalid context") != std::string::npos)
                 return CT_SLEEPING;
+        }
+        else if (starts_with(lines.at(i), "WARNING: "))
+        {
+            return CT_WARNING;
         }
     }
 
