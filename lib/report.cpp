@@ -80,7 +80,7 @@ int skip_to_call_trace(const std::vector<std::string> &lines, int &i)
     for (; i < lines.size() && !starts_with(to_lower(lines.at(i)), "call trace:"); i++);
     if (i >= lines.size() - 1)
     {
-        std::cerr << "Error: index error in parse_kasan_stack()\n" << std::flush;
+        std::cerr << "Error: index error parsing report\n" << std::flush;
         return -1;
     }
     i += lines.at(i + 1).find("<TASK>") != std::string::npos ? 2 : 1;
@@ -180,6 +180,8 @@ int parse_warning_stack(const std::vector<std::string> &lines, int &i, std::vect
     if (read_RIP_entries(lines, i, stack) < 0)
         return -1;
 
+    // old syzkaller may inject register debugs in the middle of call traces.
+    // This will cause issues here.
     if (skip_to_call_trace(lines, i) < 0)
         return -1;
 
