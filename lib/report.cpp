@@ -80,7 +80,6 @@ int skip_to_call_trace(const std::vector<std::string> &lines, int &i)
     for (; i < lines.size() && !starts_with(to_lower(lines.at(i)), "call trace:"); i++);
     if (i >= lines.size() - 1)
     {
-        std::cerr << "Error: index error parsing report\n" << std::flush;
         return -1;
     }
     i += lines.at(i + 1).find("<TASK>") != std::string::npos ? 2 : 1;
@@ -105,7 +104,10 @@ int parse_kasan_stack(const std::vector<std::string> &lines, int &i, std::vector
 
     // To start, find the line after "Call trace:". There are no "RIP:"'s in KASAN reports
     if (skip_to_call_trace(lines, i) < 0)
+    {
+        std::cerr << "Error: index error parsing KASAN report\n" << std::flush;
         return -1;
+    }
     
     int pos1 = lines.at(i).find_first_not_of(" "), pos2 = 0;
 
@@ -140,11 +142,14 @@ int parse_sleeping_stack(const std::vector<std::string> &lines, int &i, std::vec
 {
     std::set<std::string> forget_functions = { "dump_stack", "__dump_stack", "dump_stack_lvl", "show_stack",
                                 "__might_sleep", "__might_resched", "might_alloc", "kmalloc", "kzalloc",
-                                "__mutex_lock", "__mutex_lock_common" };
+                                "__mutex_lock", "__mutex_lock_common", "kmem_cache_alloc_trace" };
 
     // There are no RIP's in these reports (that I have seen)
     if (skip_to_call_trace(lines, i) < 0)
+    {
+        std::cerr << "Error: index error parsing Sleeping Function report\n" << std::flush;
         return -1;
+    }
 
     int pos1 = lines.at(i).find_first_not_of(" "), pos2 = 0;
 
@@ -178,12 +183,18 @@ int parse_sleeping_stack(const std::vector<std::string> &lines, int &i, std::vec
 int parse_warning_stack(const std::vector<std::string> &lines, int &i, std::vector<std::string> &stack)
 {
     if (read_RIP_entries(lines, i, stack) < 0)
+    {
+        std::cerr << "Error: error parsing RIP values in Warning report\n" << std::flush;
         return -1;
+    }
 
     // old syzkaller may inject register debugs in the middle of call traces.
     // This will cause issues here.
     if (skip_to_call_trace(lines, i) < 0)
+    {
+        std::cerr << "Error: index error parsing Warning report\n" << std::flush;
         return -1;
+    }
 
     int pos1 = lines.at(i).find_first_not_of(" "), pos2 = 0;
 
@@ -234,6 +245,10 @@ Crash_Type identify_ct(const std::vector<std::string> &lines, int &i)
                 return CT_KASAN;
             else if (lines.at(i).find("sleeping function called from invalid context") != std::string::npos)
                 return CT_SLEEPING;
+        }
+        else if (starts_with(lines.at(i), "WARNING: possible circular locking dependency detected"))
+        {
+            return CT_UNKNOWN; // This shows up in some lockdep splats. ignore it.
         }
         else if (starts_with(lines.at(i), "WARNING: "))
         {
