@@ -476,7 +476,7 @@ std::string find_crash_log(const Environment &env)
     for (std::string hash : crash_hashes)
     {
         crash = BugAlias(hash);
-        crash.init(false);
+        crash.init();
         if (deduplicate(crash, env.duplicates))
             return hash + "/log0";
     }
