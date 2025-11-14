@@ -554,6 +554,7 @@ Test_Result Bisect::test_bisect_ff(Environment &env)
 
 Test_Result Bisect::test_bisect_poc(Environment &env)
 {
+    log_current_poc(env);
     Test_Result result = poc_loop(env);
     return result;
 }
