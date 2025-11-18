@@ -1,4 +1,4 @@
-./bin/bisector -i 5 -c /home/syzretrospector/syzinspector/wd-bisector-5/bisector.cfg -a 81ac25651a62c958bb0e074e0d4e25060ea557dd -F ff-test,poc-test,stateful-corpus,ff-no-find-backup
+./bin/meerkat -i 1 -c /home/syzretrospector/meerkat/wd-meerkat-1/meerkat.cfg -a 81ac25651a62c958bb0e074e0d4e25060ea557dd -F ff-test,poc-test,poc-all-pocs,ff-no-find-backup,stateful-corpus
 Bisecting:          possible deadlock in dccp_v4_ctl_send_reset
 Syzbot Link:        https://syzkaller.appspot.com/bug?id=f545f7c3545aae6dabe7070d64a4172ed79a9354
 Working Name:       bug0135
@@ -10,21 +10,23 @@ Repository:         https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/lin
 Branch:             master
 Arch:               amd64
 
-Bisector:           /home/syzretrospector/syzinspector/
-Version:            1.0.4
-Kernel:             /home/syzretrospector/syzinspector/wd-bisector-5/kernel/
-Syzkaller:          /home/syzretrospector/syzinspector/syzkaller/
-Compilers:          /home/syzretrospector/compilers/
-Ccache:             ccache
+Meerkat:            /home/syzretrospector/meerkat/
+Version:            1.1.0
+Kernel:             /home/syzretrospector/meerkat/wd-meerkat-1/kernel/
+Syzkaller:          /home/syzretrospector/meerkat/syzkaller/
+Compilers:          /home/syzretrospector/meerkat/compilers/
+Compiler:           gcc (Ubuntu 11.4.0-1ubuntu1~22.04.2) 11.4.0
+Linker:             GNU ld (GNU Binutils for Ubuntu) 2.38
+Ccache:             ccache version 4.5.1
 Image:              /home/syzretrospector/images/stretch/stretch.img
 Image Key:          /home/syzretrospector/images/stretch/stretch.id_rsa
 
-Workdir:            /home/syzretrospector/syzinspector/wd-bisector-5/
-Kconfig:            /home/syzretrospector/syzinspector/wd-bisector-5/config-bug0135.txt
-Reproducers: (1)    /home/syzretrospector/syzinspector/wd-bisector-5/reproducers/
-Primary PoC:        /home/syzretrospector/syzinspector/wd-bisector-5/reproducers/repro-bug0135-1.prog
-Syzkaller Workdir:  /home/syzretrospector/syzinspector/wd-bisector-5/wd-kaller/
-Log Directory:      /home/syzretrospector/syzinspector/wd-bisector-5/log/
+Workdir:            /home/syzretrospector/meerkat/wd-meerkat-1/
+Kconfig:            /home/syzretrospector/meerkat/wd-meerkat-1/config-bug0135.txt
+Reproducers: (1)    /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/
+Primary PoC:        /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0135-1.prog
+Syzkaller Workdir:  /home/syzretrospector/meerkat/wd-meerkat-1/wd-kaller/
+Log Directory:      /home/syzretrospector/meerkat/wd-meerkat-1/log/
 
 Syscalls: (17)      ["connect$inet", "sendmsg$L2TP_CMD_TUNNEL_CREATE", "socket$inet_dccp", "socket$inet_mptcp", "socket$nl_generic", "syz_genetlink_get_family_id$l2tp", "socket$inet", "socket", "socket$netlink", "socket$inet_tcp", "ioctl$F2FS_IOC_START_ATOMIC_WRITE", "openat$selinux_enforce", "socket$inet_udp", "socket$inet6_udp", "socket$l2tp", "socket$l2tp6", "socket$inet6"]
 VM Count:           8
@@ -37,29 +39,668 @@ Max Attempts:       1
 
 ==== Anchor Commit ====
 
-2025-03-06 22:40:51
+2025-09-23 03:58:54
 Session:   1
 Kernel:    2022-11-17 - 81ac25651a62c958bb0e074e0d4e25060ea557dd
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Compiler:  ccache gcc
 Attempt 1:
     Time  Bug Name
        2  INFO: rcu detected stall in corrupted
        2  possible deadlock in l2tp_tunnel_register
        2  possible deadlock in l2tp_tunnel_register
+       2  possible deadlock in l2tp_tunnel_register
+       3  possible deadlock in l2tp_tunnel_register
 Attempt 2: (RETRY)
     Time  Bug Name
+       2  INFO: rcu detected stall in corrupted
        2  possible deadlock in l2tp_tunnel_register
        2  possible deadlock in l2tp_tunnel_register
        2  possible deadlock in l2tp_tunnel_register
+       8  possible deadlock in l2tp_tunnel_register
+       9  inconsistent lock state in l2tp_tunnel_register
+      10  possible deadlock in l2tp_tunnel_register
+      10  possible deadlock in l2tp_tunnel_register
+      10  possible deadlock in l2tp_tunnel_register
+      10  possible deadlock in l2tp_tunnel_register
+      10  possible deadlock in l2tp_tunnel_register
+      10  possible deadlock in l2tp_tunnel_register
 Attempt 3: (RETRY)
     Time  Bug Name
        2  possible deadlock in l2tp_tunnel_register
        2  possible deadlock in l2tp_tunnel_register
        2  possible deadlock in l2tp_tunnel_register
+       2  possible deadlock in l2tp_tunnel_register
+       2  possible deadlock in l2tp_tunnel_register
+       2  possible deadlock in l2tp_tunnel_register
+       2  possible deadlock in l2tp_tunnel_register
+       2  inconsistent lock state in l2tp_tunnel_register
+***    3  possible deadlock in dccp_v4_ctl_send_reset
        3  possible deadlock in l2tp_tunnel_register
+       3  possible deadlock in l2tp_tunnel_register
+       3  possible deadlock in l2tp_tunnel_register
+       3  possible deadlock in l2tp_tunnel_register
+       3  possible deadlock in l2tp_tunnel_register
+       3  possible deadlock in l2tp_tunnel_register
+The bug was found.
+
+New Max Time: 12
+
+==== Major Release Search ====
+12 Releases
+
+2025-09-23 04:36:06
+Session:   2
+Kernel:    2022-10-02 - 4fe89d07dcc2804c8b562f6c7896a45643d34b2f (v6.0)
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+      10  WARNING in fib6_add
+The bug was not found.
+About 11 releases remaining
+
+==== Kernel Bisection ====
+14094 Linux commits
+
+2025-09-23 05:01:54
+Session:   3
+Kernel:    2022-10-07 - 3fb55dd14036b875b96c39d6e18fc53feb891891
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       1  WARNING in wireless_send_event
+       1  WARNING in wireless_send_event
+       2  WARNING in wireless_send_event
+       2  WARNING in wireless_send_event
+       2  WARNING in wireless_send_event
+       2  WARNING in wireless_send_event
+       2  WARNING in wireless_send_event
+       2  WARNING in wireless_send_event
+       3  WARNING in wireless_send_event
+       3  WARNING in wireless_send_event
+       3  WARNING in wireless_send_event
+       3  WARNING in wireless_send_event
+       3  WARNING in wireless_send_event
+       3  WARNING in wireless_send_event
+       4  WARNING in wireless_send_event
+       4  WARNING in wireless_send_event
+       4  WARNING in wireless_send_event
+       4  WARNING in wireless_send_event
+       4  WARNING in wireless_send_event
+       4  WARNING in wireless_send_event
+       5  WARNING in wireless_send_event
+       5  WARNING in wireless_send_event
+       5  WARNING in wireless_send_event
+       5  WARNING in wireless_send_event
+       5  WARNING in wireless_send_event
+       5  WARNING in wireless_send_event
+       6  WARNING in wireless_send_event
+       6  WARNING in wireless_send_event
+       6  WARNING in wireless_send_event
+       6  WARNING in wireless_send_event
+       6  WARNING in wireless_send_event
+       8  WARNING in fib6_add
+       8  WARNING in fib6_add
+The bug was not found.
+About 7053 commits remaining
+
+2025-09-23 05:27:44
+Session:   4
+Kernel:    2022-10-10 - 27bc50fc90647bbf7b734c3fc306a5e61350da53
+Compiler:  ccache gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/syzretrospector/meerkat/wd-meerkat-1/log/bug0135-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      11  WARNING in clocksource_watchdog
+      11  WARNING in clocksource_watchdog
+      11  WARNING in clocksource_watchdog
+      11  WARNING in clocksource_watchdog
+      11  WARNING in clocksource_watchdog
+      11  WARNING in clocksource_watchdog
+      11  WARNING in clocksource_watchdog
+      11  WARNING in clocksource_watchdog
+      12  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 7053 commits remaining
+
+2025-09-23 05:53:41
+Session:   5
+Kernel:    2022-11-02 - 780854186946e0de2be192ee7fa5125666533b3a
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  INFO: rcu detected stall in corrupted
+       3  WARNING in fib6_add
+The bug was not found.
+About 1704 commits remaining
+
+2025-09-23 06:19:35
+Session:   6
+Kernel:    2022-10-30 - 9f127546bb4341df88a51df8e6cc7d8a70cbacd7
+Compiler:  ccache gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/syzretrospector/meerkat/wd-meerkat-1/log/bug0135-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      11  WARNING in genl_register_family
+      11  WARNING in genl_register_family
+      11  WARNING in genl_register_family
+      11  WARNING in genl_register_family
+      11  WARNING in genl_register_family
+      11  WARNING in genl_register_family
+      11  WARNING in genl_register_family
+      11  WARNING in genl_register_family
+      12  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 1704 commits remaining
+
+2025-09-23 06:45:17
+Session:   7
+Kernel:    2022-09-24 - 3df52e584ed13a4451930d2d712580e3f2e63b6a
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       3  WARNING in fib6_add
+       3  WARNING in fib6_add
+       3  WARNING in fib6_add
+       8  INFO: rcu detected stall in corrupted
+      12  INFO: rcu detected stall in corrupted
+The bug was not found.
+About 16101 commits remaining
+
+2025-09-23 07:10:41
+Session:   8
+Kernel:    2022-11-04 - 980a2ff2cb987e2177a1bd02633f4259a0d1daab
+Compiler:  ccache gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/syzretrospector/meerkat/wd-meerkat-1/log/bug0135-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      11  WARNING in genl_register_family
+      11  WARNING in genl_register_family
+      11  WARNING in genl_register_family
+      11  WARNING in genl_register_family
+      11  WARNING in genl_register_family
+      11  WARNING in genl_register_family
+      11  WARNING in genl_register_family
+      11  WARNING in genl_register_family
+      12  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 16101 commits remaining
+
+2025-09-23 07:31:00
+Session:   9
+Kernel:    2022-10-21 - bed54aeb6ac1ced7e0ea27a82ee52af856610ff0
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       1  WARNING in wireless_send_event
+       1  WARNING in wireless_send_event
+       2  WARNING in wireless_send_event
+       2  WARNING in wireless_send_event
+       2  WARNING in wireless_send_event
+       2  WARNING in wireless_send_event
+       2  WARNING in wireless_send_event
+       2  WARNING in wireless_send_event
+       3  WARNING in wireless_send_event
+       3  WARNING in wireless_send_event
+       3  WARNING in wireless_send_event
+       3  WARNING in wireless_send_event
+       3  WARNING in wireless_send_event
+       3  WARNING in wireless_send_event
+       4  WARNING in wireless_send_event
+       4  WARNING in wireless_send_event
+       4  WARNING in wireless_send_event
+       4  WARNING in wireless_send_event
+       4  WARNING in wireless_send_event
+       4  WARNING in wireless_send_event
+       5  WARNING in wireless_send_event
+       5  WARNING in wireless_send_event
+       5  WARNING in wireless_send_event
+       5  WARNING in wireless_send_event
+       5  WARNING in wireless_send_event
+       5  WARNING in wireless_send_event
+       6  WARNING in wireless_send_event
+       6  WARNING in wireless_send_event
+       6  WARNING in wireless_send_event
+       6  WARNING in wireless_send_event
+       6  WARNING in wireless_send_event
+       6  WARNING in wireless_send_event
+       7  WARNING in wireless_send_event
+       7  WARNING in wireless_send_event
+       7  WARNING in wireless_send_event
+       7  WARNING in wireless_send_event
+       7  WARNING in wireless_send_event
+       8  WARNING in wireless_send_event
+       8  WARNING in wireless_send_event
+       8  WARNING in wireless_send_event
+       8  WARNING in wireless_send_event
+       8  WARNING in wireless_send_event
+       8  WARNING in wireless_send_event
+       9  WARNING in wireless_send_event
+       9  WARNING in wireless_send_event
+       9  WARNING in wireless_send_event
+       9  WARNING in wireless_send_event
+       9  WARNING in wireless_send_event
+       9  WARNING in wireless_send_event
+      10  WARNING in wireless_send_event
+      10  WARNING in wireless_send_event
+      10  WARNING in wireless_send_event
+      10  WARNING in wireless_send_event
+      10  WARNING in wireless_send_event
+      10  WARNING in wireless_send_event
+      11  WARNING in wireless_send_event
+      11  WARNING in wireless_send_event
+      11  WARNING in wireless_send_event
+      11  WARNING in wireless_send_event
+      11  WARNING in wireless_send_event
+      11  WARNING in wireless_send_event
+      11  WARNING in wireless_send_event
+      11  WARNING in wireless_send_event
+      11  WARNING in wireless_send_event
+      11  WARNING in wireless_send_event
+      12  WARNING in wireless_send_event
+      12  WARNING in wireless_send_event
+      12  WARNING in wireless_send_event
+      12  WARNING in wireless_send_event
+      12  WARNING in wireless_send_event
+      12  WARNING in wireless_send_event
+      12  WARNING in wireless_send_event
+      12  WARNING in wireless_send_event
+      12  WARNING in wireless_send_event
+      12  WARNING in wireless_send_event
+      12  WARNING in wireless_send_event
+      12  WARNING in wireless_send_event
+The bug was not found.
+About 11351 commits remaining
+
+2025-09-23 07:56:47
+Session:   10
+Kernel:    2022-11-04 - 1118b2049d77ca0b505775fc1a8d1909cf19a7ec
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       4  WARNING in fib6_add
+The bug was not found.
+About 669 commits remaining
+
+2025-09-23 08:18:54
+Session:   11
+Kernel:    2022-11-10 - 4bbf3422df78029f03161640dcb1e9d1ed64d1ea
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  INFO: rcu detected stall in corrupted
+       5  WARNING in fib6_add
+The bug was not found.
+About 318 commits remaining
+
+2025-09-23 08:44:47
+Session:   12
+Kernel:    2022-11-11 - 4e6b2b2e4f30c29caf89ecfa9ed4d9f97d151102
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+      11  WARNING: ODEBUG bug in netdev_run_todo
+The bug was not found.
+About 162 commits remaining
+
+2025-09-23 09:04:10
+Session:   13
+Kernel:    2022-11-15 - 59d0d52c30d4991ac4b329f049cc37118e00f5b0
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       5  WARNING in fib6_add
+The bug was not found.
+About 86 commits remaining
+
+2025-09-23 09:29:54
+Session:   14
+Kernel:    2022-11-15 - 598ab4b12eae70654b6d8af6038e6cdb45f22634
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  INFO: rcu detected stall in corrupted
+The bug was not found.
+About 276 commits remaining
+
+2025-09-23 09:49:29
+Session:   15
+Kernel:    2022-11-16 - 31c9c4c54ea9902af4b01545d3a10acd3cf815a9
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  INFO: rcu detected stall in corrupted
+The bug was not found.
+About 66 commits remaining
+
+2025-09-23 10:08:29
+Session:   16
+Kernel:    2022-11-16 - 064bc7312bd09a48798418663090be0c776183db
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  INFO: rcu detected stall in corrupted
+       2  possible deadlock in l2tp_tunnel_register
+       2  possible deadlock in l2tp_tunnel_register
+       2  possible deadlock in l2tp_tunnel_register
+       2  possible deadlock in l2tp_tunnel_register
+       2  possible deadlock in l2tp_tunnel_register
+       2  possible deadlock in l2tp_tunnel_register
+       2  possible deadlock in l2tp_tunnel_register
+       3  possible deadlock in l2tp_tunnel_register
+       3  possible deadlock in l2tp_tunnel_register
+       3  possible deadlock in l2tp_tunnel_register
+       3  possible deadlock in l2tp_tunnel_register
+       3  possible deadlock in l2tp_tunnel_register
+       3  possible deadlock in l2tp_tunnel_register
+       3  possible deadlock in l2tp_tunnel_register
+       3  BUG: sleeping function called from invalid context in static_key_slow_inc
+       3  BUG: sleeping function called from invalid context in static_key_slow_inc
+       4  possible deadlock in l2tp_tunnel_register
+       4  possible deadlock in l2tp_tunnel_register
+       4  possible deadlock in l2tp_tunnel_register
+       4  possible deadlock in l2tp_tunnel_register
+       4  possible deadlock in l2tp_tunnel_register
+       4  BUG: sleeping function called from invalid context in static_key_slow_inc
+       4  BUG: sleeping function called from invalid context in static_key_slow_inc
+       4  BUG: sleeping function called from invalid context in static_key_slow_inc
+***    5  possible deadlock in dccp_v4_ctl_send_reset
        5  possible deadlock in l2tp_tunnel_register
        5  possible deadlock in l2tp_tunnel_register
-      10  INFO: rcu detected stall in corrupted
+Running syz-repro.
+New PoC saved at /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0135-0.prog
+Primary PoC:     /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0135-0.prog
+Run Time:        0h38m0s
+The bug was found.
+About 54 commits remaining
+
+2025-09-23 10:59:45
+Session:   17
+Kernel:    2022-11-16 - 639f5d006e36bb303f525d9479448c412b720c39
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  INFO: rcu detected stall in corrupted
+       5  WARNING in fib6_add
+      12  INFO: rcu detected stall in corrupted
+The bug was not found.
+About 6 commits remaining
+
+2025-09-23 11:18:36
+Session:   18
+Kernel:    2022-11-16 - b68777d54fac21fc833ec26ea1a2a84f975ab035
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  possible deadlock in l2tp_tunnel_register
+       2  possible deadlock in l2tp_tunnel_register
+       2  possible deadlock in l2tp_tunnel_register
+       2  possible deadlock in l2tp_tunnel_register
+       2  possible deadlock in l2tp_tunnel_register
+       2  possible deadlock in l2tp_tunnel_register
+       2  possible deadlock in l2tp_tunnel_register
+       2  possible deadlock in l2tp_tunnel_register
+***    3  possible deadlock in dccp_v4_ctl_send_reset
+***    3  possible deadlock in dccp_v4_ctl_send_reset
+       3  possible deadlock in l2tp_tunnel_register
+       3  possible deadlock in l2tp_tunnel_register
+       3  possible deadlock in l2tp_tunnel_register
+       3  possible deadlock in l2tp_tunnel_register
+       3  possible deadlock in l2tp_tunnel_register
+       3  possible deadlock in l2tp_tunnel_register
+The bug was found.
+About 4 commits remaining
+
+2025-09-23 11:28:55
+Session:   19
+Kernel:    2022-11-16 - e4aa85cf0d43e293f474e3b415ff44e49ef768ae
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+      12  INFO: rcu detected stall in corrupted
+The bug was not found.
+About 3 commits remaining
+
+2025-09-23 11:47:34
+Session:   20
+Kernel:    2022-11-16 - f524b7289bbb0c8ffaa2ba3c34c146e43da54fb2
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 2 commits remaining
+
+==== Partial Result: Focused Fuzzing ====
+Reproducer:           /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0135-0.prog
+Bisection Result:     2022-11-16 - b68777d54fac21fc833ec26ea1a2a84f975ab035
+Bisected Commit Name: l2tp: Serialize access to sk_user_data with sk_callback_lock
+Stage Time:           8h7m54s
+Run Time:             8h7m55s
+=========================================
+
+==== Anchor Commit ====
+
+2025-09-23 12:06:49
+Session:   21
+Kernel:    2022-11-16 - f524b7289bbb0c8ffaa2ba3c34c146e43da54fb2
+Compiler:  ccache gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0135-0.prog
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in devlink_nl_port_fill
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in del_device_store
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in del_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in rtnetlink_rcv_msg
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in linkwatch_event
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in netdev_run_todo
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in del_device_store
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in del_device_store
+    INFO: task hung in new_device_store
+    INFO: task hung in del_device_store
+Attempt 5:
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in netdev_run_todo
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in new_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in devlink_unregister
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in new_device_store
+    INFO: task hung in del_device_store
+Attempt 6:
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in new_device_store
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in del_device_store
+    INFO: task hung in rtnetlink_rcv_msg
+Attempt 7:
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in cleanup_net
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in del_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in devlink_unregister
+    INFO: task hung in del_device_store
 The bug was not found.
 
 Failure: This bug cannot be found at the anchor commit.
+
+==== Partial Result: Primary PoC Test ====
+Reproducer:           /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0135-0.prog
+Bisection Result:     Failed to reproduce at the anchor commit.
+Stage Time:           0h14m59s
+Run Time:             8h22m55s
+==========================================
+
+==== Anchor Commit ====
+
+2025-09-23 12:21:51
+Session:   22
+Kernel:    2022-11-16 - f524b7289bbb0c8ffaa2ba3c34c146e43da54fb2
+Compiler:  ccache gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0135-1.prog
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in linkwatch_event
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in del_device_store
+    INFO: task hung in devlink_unregister
+Attempt 2:
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in netdev_run_todo
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in del_device_store
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in del_device_store
+    INFO: task hung in devlink_unregister
+    INFO: task hung in del_device_store
+    INFO: task hung in del_device_store
+Attempt 3:
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in switchdev_deferred_process_work
+    INFO: task hung in del_device_store
+    INFO: task hung in addrconf_dad_work
+Attempt 4:
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in ip6_tnl_exit_batch_net
+    INFO: task hung in linkwatch_event
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in devlink_nl_port_fill
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in del_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in rtnetlink_rcv_msg
+Attempt 5:
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in netdev_run_todo
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in devlink_unregister
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in del_device_store
+Attempt 6:
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in devlink_nl_port_fill
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in del_device_store
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in new_device_store
+Attempt 7:
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in linkwatch_event
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in devlink_unregister
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in del_device_store
+The bug was not found.
+
+Failure: This bug cannot be found at the anchor commit.
+
+==== Partial Result: Subsequent PoC Test ====
+Reproducer:           /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0135-1.prog
+Bisection Result:     Failed to reproduce at the anchor commit.
+Stage Time:           0h15m33s
+Run Time:             8h38m28s
+=============================================
+
+====================================================================================================================================================
+Bug Name:             possible deadlock in dccp_v4_ctl_send_reset
+Bug Link:             https://syzkaller.appspot.com/bug?id=f545f7c3545aae6dabe7070d64a4172ed79a9354
+Bisection Result:     2022-11-16 - b68777d54fac21fc833ec26ea1a2a84f975ab035
+Bisected Commit Name: l2tp: Serialize access to sk_user_data with sk_callback_lock
+Run Time:             8h38m28s
+
+Anchor Commit:        2022-11-17 - 81ac25651a62c958bb0e074e0d4e25060ea557dd
+Bisection Result:     2022-11-16 - b68777d54fac21fc833ec26ea1a2a84f975ab035

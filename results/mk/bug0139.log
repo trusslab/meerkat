@@ -1,4 +1,4 @@
-./bin/bisector -i 1 -c /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/bisector.cfg -a 84368d882b9688bfac77ce48d33b1e20a4e4a787 -F ff-test,poc-test,stateful-corpus,ff-no-find-backup
+./bin/meerkat -i 1 -c /home/syzretrospector/meerkat/wd-meerkat-1/meerkat.cfg -a 84368d882b9688bfac77ce48d33b1e20a4e4a787 -F ff-test,poc-test,poc-all-pocs,ff-no-find-backup,stateful-corpus
 Bisecting:          possible deadlock in __inet_inherit_port
 Syzbot Link:        https://syzkaller.appspot.com/bug?id=1665a0a4a1d6d4d3f61624353f8a9e5dbfff67bd
 Working Name:       bug0139
@@ -10,23 +10,25 @@ Repository:         https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/lin
 Branch:             master
 Arch:               amd64
 
-Bisector:           /mnt/sdd/jtbursey/SyzInspector/
-Version:            1.0.4
-Kernel:             /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/kernel/
-Syzkaller:          /mnt/sdd/jtbursey/SyzInspector/syzkaller/
-Compilers:          /mnt/sda/jtbursey/SyzInspector/compilers/
-Ccache:             ccache
-Image:              /mnt/sda/jtbursey/SyzInspector/image/stretch/stretch.img
-Image Key:          /mnt/sda/jtbursey/SyzInspector/image/stretch/stretch.id_rsa
+Meerkat:            /home/syzretrospector/meerkat/
+Version:            1.1.1
+Kernel:             /home/syzretrospector/meerkat/wd-meerkat-1/kernel/
+Syzkaller:          /home/syzretrospector/meerkat/syzkaller/
+Compilers:          /home/syzretrospector/meerkat/compilers/
+Compiler:           gcc (Ubuntu 11.4.0-1ubuntu1~22.04.2) 11.4.0
+Linker:             GNU ld (GNU Binutils for Ubuntu) 2.38
+Ccache:             ccache version 4.5.1
+Image:              /home/syzretrospector/images/stretch/stretch.img
+Image Key:          /home/syzretrospector/images/stretch/stretch.id_rsa
 
-Workdir:            /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/
-Kconfig:            /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/config-bug0139.txt
-Reproducers: (1)    /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/reproducers/
-Primary PoC:        /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/reproducers/repro-bug0139-3.prog
-Syzkaller Workdir:  /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/wd-kaller/
-Log Directory:      /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/log/
+Workdir:            /home/syzretrospector/meerkat/wd-meerkat-1/
+Kconfig:            /home/syzretrospector/meerkat/wd-meerkat-1/config-bug0139.txt
+Reproducers: (1)    /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/
+Primary PoC:        /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0139-3.prog
+Syzkaller Workdir:  /home/syzretrospector/meerkat/wd-meerkat-1/wd-kaller/
+Log Directory:      /home/syzretrospector/meerkat/wd-meerkat-1/log/
 
-Syscalls: (15)      ["bind$rds", "sendmsg$L2TP_CMD_TUNNEL_CREATE", "socket", "socket$nl_generic", "syz_genetlink_get_family_id$l2tp", "socket$rds", "socket$netlink", "ioctl$EXT4_IOC_GROUP_EXTEND", "openat$sw_sync_info", "socket$inet_udp", "socket$inet6_udp", "socket$l2tp", "socket$l2tp6", "socket$inet", "socket$inet6"]
+Syscalls: (15)      ["bind$rds", "sendmsg$L2TP_CMD_TUNNEL_CREATE", "socket", "socket$nl_generic", "syz_genetlink_get_family_id$l2tp", "socket$rds", "socket$netlink", "ioctl$F2FS_IOC_START_ATOMIC_WRITE", "openat$selinux_enforce", "socket$inet_udp", "socket$inet6_udp", "socket$l2tp", "socket$l2tp6", "socket$inet", "socket$inet6"]
 VM Count:           8
 CPU Count:          2
 Procs:              16
@@ -37,300 +39,179 @@ Max Attempts:       1
 
 ==== Anchor Commit ====
 
-2025-03-14 03:18:57
+2025-09-24 23:22:12
 Session:   1
 Kernel:    2022-11-17 - 84368d882b9688bfac77ce48d33b1e20a4e4a787
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Compiler:  ccache gcc
 Attempt 1:
     Time  Bug Name
-       2  possible deadlock in l2tp_tunnel_register
        2  INFO: rcu detected stall in corrupted
-       3  possible deadlock in l2tp_tunnel_register
-       3  possible deadlock in l2tp_tunnel_register
-       3  possible deadlock in l2tp_tunnel_register
-       9  WARNING: ODEBUG bug in netdev_run_todo
+***    2  possible deadlock in __inet_inherit_port
+***    2  possible deadlock in __inet_inherit_port
 Attempt 2: (RETRY)
     Time  Bug Name
-       2  possible deadlock in l2tp_tunnel_register
-       2  possible deadlock in l2tp_tunnel_register
-       2  possible deadlock in l2tp_tunnel_register
-***    2  possible deadlock in __inet_inherit_port
        2  INFO: rcu detected stall in corrupted
+       2  possible deadlock in l2tp_tunnel_register
+       2  possible deadlock in l2tp_tunnel_register
 Attempt 3: (RETRY)
     Time  Bug Name
        2  possible deadlock in l2tp_tunnel_register
        2  possible deadlock in l2tp_tunnel_register
        2  possible deadlock in l2tp_tunnel_register
        2  possible deadlock in l2tp_tunnel_register
-       2  INFO: rcu detected stall in corrupted
+       7  possible deadlock in l2tp_tunnel_register
+       7  possible deadlock in l2tp_tunnel_register
+       7  possible deadlock in l2tp_tunnel_register
+       7  possible deadlock in l2tp_tunnel_register
 The bug was found.
 
 New Max Time: 12
 
 ==== Major Release Search ====
-18 Releases
+12 Releases
 
-2025-03-14 03:58:55
+2025-09-24 23:53:56
 Session:   2
 Kernel:    2022-10-02 - 4fe89d07dcc2804c8b562f6c7896a45643d34b2f (v6.0)
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Compiler:  ccache gcc
 Attempt 1:
-    Time  Bug Name
-       8  WARNING: ODEBUG bug in netdev_run_todo
+    No crashes found.
 The bug was not found.
-About 17 releases remaining
+About 11 releases remaining
 
 ==== Kernel Bisection ====
 14135 Linux commits
 
-2025-03-14 04:28:17
+2025-09-25 00:20:12
 Session:   3
 Kernel:    2022-10-07 - 11c747e5a1f908e9e3a868461ba9992e5396402a
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Compiler:  ccache gcc
+Error: Waitpid on pid 2446865 failed.
+Error: Syzkaller has experienced a crash.
+Warning: Child process exited with error status 32764.
 Attempt 1:
-    Time  Bug Name
-       1  WARNING in wireless_send_event
-       1  WARNING in wireless_send_event
-       2  WARNING in wireless_send_event
-       2  WARNING in wireless_send_event
-       2  WARNING in wireless_send_event
-       2  WARNING in wireless_send_event
-       2  WARNING in wireless_send_event
-       2  WARNING in wireless_send_event
-       3  WARNING in wireless_send_event
-       3  WARNING in wireless_send_event
-       3  WARNING in wireless_send_event
-       3  WARNING in wireless_send_event
-       3  WARNING in wireless_send_event
-       3  WARNING in wireless_send_event
-       4  WARNING in wireless_send_event
-       4  WARNING in wireless_send_event
-       4  WARNING in wireless_send_event
-       4  WARNING in wireless_send_event
-       4  WARNING in wireless_send_event
-       4  WARNING in wireless_send_event
-       5  WARNING in wireless_send_event
-       5  WARNING in wireless_send_event
-       5  WARNING in wireless_send_event
-       5  WARNING in wireless_send_event
-       5  WARNING in wireless_send_event
-       6  WARNING in wireless_send_event
-       6  WARNING in wireless_send_event
-       6  WARNING in wireless_send_event
-       6  WARNING in wireless_send_event
-       6  WARNING in wireless_send_event
-       6  WARNING in wireless_send_event
-       7  WARNING in wireless_send_event
-       7  WARNING in wireless_send_event
-       7  WARNING in wireless_send_event
-       7  WARNING in wireless_send_event
-       7  WARNING in wireless_send_event
-       7  WARNING in wireless_send_event
-       8  WARNING in wireless_send_event
-       8  WARNING in wireless_send_event
-       8  WARNING in wireless_send_event
-       8  WARNING in wireless_send_event
-       8  WARNING in wireless_send_event
-       8  WARNING in wireless_send_event
-       9  WARNING in wireless_send_event
-       9  WARNING in wireless_send_event
-       9  WARNING in wireless_send_event
-       9  WARNING in wireless_send_event
-       9  WARNING in wireless_send_event
-       9  WARNING in wireless_send_event
-      10  WARNING in wireless_send_event
-      10  WARNING in wireless_send_event
-      10  WARNING in wireless_send_event
-      10  WARNING in wireless_send_event
-      10  WARNING in wireless_send_event
-      10  WARNING in wireless_send_event
-      11  WARNING in wireless_send_event
-      11  WARNING in wireless_send_event
-      11  WARNING in wireless_send_event
-      11  WARNING in wireless_send_event
-      11  WARNING in wireless_send_event
-      11  WARNING in wireless_send_event
-      12  WARNING in wireless_send_event
-      12  WARNING in wireless_send_event
-      12  WARNING in wireless_send_event
-      12  WARNING in wireless_send_event
-      12  WARNING in wireless_send_event
-      12  WARNING in wireless_send_event
+    No crashes found.
 The bug was not found.
 About 7063 commits remaining
 
-2025-03-14 04:57:30
+2025-09-25 00:35:06
 Session:   4
 Kernel:    2022-10-10 - 27bc50fc90647bbf7b734c3fc306a5e61350da53
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Compiler:  ccache gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/syzretrospector/meerkat/wd-meerkat-1/log/bug0139-boot_failure.log.
 Attempt 1:
     Time  Bug Name
-       1  WARNING in c_start
-       1  WARNING in c_start
-       1  WARNING in c_start
-       1  WARNING in c_start
-       1  WARNING in c_start
-       1  WARNING in c_start
-       1  WARNING in c_start
-       1  WARNING in c_start
-       2  WARNING in c_start
-       2  WARNING in c_start
-       2  WARNING in c_start
-       2  WARNING in c_start
-       2  WARNING in c_start
-       2  WARNING in c_start
-       2  WARNING in c_start
-       2  WARNING in c_start
-       3  WARNING in c_start
-       3  WARNING in c_start
-       3  WARNING in c_start
-       3  WARNING in c_start
-       3  WARNING in c_start
-       3  WARNING in c_start
-       3  WARNING in c_start
-       3  WARNING in c_start
-       3  WARNING in c_start
-       3  WARNING in c_start
-       3  WARNING in c_start
-       3  WARNING in c_start
-       3  WARNING in c_start
-       3  WARNING in c_start
-       3  WARNING in c_start
-       3  WARNING in c_start
-       4  WARNING in c_start
-       4  WARNING in c_start
-       4  WARNING in c_start
-       4  WARNING in c_start
-       4  WARNING in c_start
-       4  WARNING in c_start
-       4  WARNING in c_start
-       4  WARNING in c_start
-       5  WARNING in c_start
-       5  WARNING in c_start
-       5  WARNING in c_start
-       5  WARNING in c_start
-       5  WARNING in c_start
-       5  WARNING in c_start
-       5  WARNING in c_start
-       5  WARNING in c_start
-       5  WARNING in c_start
-       5  WARNING in c_start
-       5  WARNING in c_start
-       5  WARNING in c_start
-       5  WARNING in c_start
-       5  WARNING in c_start
-       5  WARNING in c_start
-       5  WARNING in c_start
-       6  WARNING in c_start
-       6  WARNING in c_start
-       6  WARNING in c_start
-       6  WARNING in c_start
-       6  WARNING in c_start
-       6  WARNING in c_start
-       6  WARNING in c_start
-       6  WARNING in c_start
-       7  WARNING in c_start
-       7  WARNING in c_start
-       7  WARNING in c_start
-       7  WARNING in c_start
-       7  WARNING in c_start
-       7  WARNING in c_start
-       7  WARNING in c_start
-       7  WARNING in c_start
-       8  WARNING in c_start
-       8  WARNING in c_start
-       8  WARNING in c_start
-       8  WARNING in c_start
-       8  WARNING in c_start
-       8  WARNING in c_start
-       8  WARNING in c_start
-       8  WARNING in c_start
-       8  WARNING in c_start
-       8  WARNING in c_start
-       8  WARNING in c_start
-       8  WARNING in c_start
-       8  WARNING in c_start
-       8  WARNING in c_start
-       8  WARNING in c_start
-       8  WARNING in c_start
-       9  WARNING in c_start
-       9  WARNING in c_start
-       9  WARNING in c_start
-       9  WARNING in c_start
-       9  WARNING in c_start
-       9  WARNING in c_start
-       9  WARNING in c_start
-       9  WARNING in c_start
-      10  WARNING in c_start
-      10  WARNING in c_start
-      10  WARNING in c_start
-      10  WARNING in c_start
+      11  WARNING in clocksource_watchdog
+      11  WARNING in clocksource_watchdog
+      11  WARNING in clocksource_watchdog
+      11  WARNING in clocksource_watchdog
+      11  WARNING in clocksource_watchdog
+      11  WARNING in clocksource_watchdog
+      11  WARNING in clocksource_watchdog
+      11  WARNING in clocksource_watchdog
+      12  boot failure
 The bug was not found.
-About 3423 commits remaining
+This commit is flagged as unstable.
+About 7063 commits remaining
 
-2025-03-14 05:26:31
+2025-09-25 01:01:16
 Session:   5
-Kernel:    2022-10-24 - e28c44450b14474009a7ac84eb2bd631357c9635
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Kernel:    2022-10-03 - 2de6f3bf75058e35eff04e6fab7ca41533bdb027
+Compiler:  ccache gcc
 Attempt 1:
     Time  Bug Name
-       2  INFO: rcu detected stall in corrupted
+       7  INFO: rcu detected stall in corrupted
+       7  WARNING: ODEBUG bug in netdev_run_todo
 The bug was not found.
-About 1712 commits remaining
+About 15050 commits remaining
 
-2025-03-14 05:55:47
+2025-09-25 01:27:11
 Session:   6
-Kernel:    2022-11-04 - 980a2ff2cb987e2177a1bd02633f4259a0d1daab
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Kernel:    2022-10-11 - eec4ed317dccdef610b54224f45e0e1f4fdb75fb
+Compiler:  ccache gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/syzretrospector/meerkat/wd-meerkat-1/log/bug0139-boot_failure.log.
 Attempt 1:
     Time  Bug Name
-      11  WARNING in genl_register_family
-      11  WARNING in genl_register_family
-      11  WARNING in genl_register_family
-      11  WARNING in genl_register_family
-      11  WARNING in genl_register_family
-      11  WARNING in genl_register_family
-      11  WARNING in genl_register_family
-      11  WARNING in genl_register_family
+      11  WARNING in clocksource_watchdog
+      11  WARNING in clocksource_watchdog
+      11  WARNING in clocksource_watchdog
+      11  WARNING in clocksource_watchdog
+      11  WARNING in clocksource_watchdog
+      11  WARNING in clocksource_watchdog
+      11  WARNING in clocksource_watchdog
+      11  WARNING in clocksource_watchdog
+      12  boot failure
 The bug was not found.
-About 854 commits remaining
+This commit is flagged as unstable.
+About 15050 commits remaining
 
-2025-03-14 06:25:06
+2025-09-25 01:52:50
 Session:   7
-Kernel:    2022-11-10 - 1767a722a708f1fa3b9af39eb091d79101f8c086
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Kernel:    2022-11-07 - bcdfa1f77ea7f67368d20384932a9d1e3047ddd2
+Compiler:  ccache gcc
 Attempt 1:
     Time  Bug Name
        2  INFO: rcu detected stall in corrupted
-      11  INFO: rcu detected stall in corrupted
 The bug was not found.
-About 473 commits remaining
+About 1834 commits remaining
 
-2025-03-14 06:54:17
+2025-09-25 02:18:45
 Session:   8
-Kernel:    2022-11-11 - 74bd160fd59f104ca15f4582fee97807146a3a7e
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Kernel:    2022-10-30 - c4d25ce6e9de47f6d9fb6cc1a34b47ce5f0a46ab
+Compiler:  ccache gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/syzretrospector/meerkat/wd-meerkat-1/log/bug0139-boot_failure.log.
 Attempt 1:
     Time  Bug Name
-      11  INFO: rcu detected stall in corrupted
+      11  WARNING in genl_register_family
+      11  WARNING in genl_register_family
+      11  WARNING in genl_register_family
+      11  WARNING in genl_register_family
+      11  WARNING in genl_register_family
+      11  WARNING in genl_register_family
+      11  WARNING in genl_register_family
+      11  WARNING in genl_register_family
+      12  boot failure
 The bug was not found.
-About 235 commits remaining
+This commit is flagged as unstable.
+About 1834 commits remaining
 
-2025-03-14 07:23:41
+2025-09-25 02:44:43
 Session:   9
-Kernel:    2022-11-16 - 941209ef89e3f5e5fd75bffdafe8e74d5c2d4d92
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Kernel:    2022-11-08 - cc674ab3c0188002917c8a2c28e4424131f1fd7e
+Compiler:  ccache gcc
 Attempt 1:
     Time  Bug Name
        2  INFO: rcu detected stall in corrupted
-      12  INFO: rcu detected stall in corrupted
 The bug was not found.
-About 114 commits remaining
+About 513 commits remaining
 
-2025-03-14 07:52:48
+2025-09-25 03:10:47
 Session:   10
+Kernel:    2022-11-11 - 5be07b3fb53d14581f470745d129141b97d15614
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 257 commits remaining
+
+2025-09-25 03:36:49
+Session:   11
+Kernel:    2022-11-15 - 59d0d52c30d4991ac4b329f049cc37118e00f5b0
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  INFO: rcu detected stall in corrupted
+       7  INFO: rcu detected stall in corrupted
+The bug was not found.
+About 127 commits remaining
+
+2025-09-25 04:02:43
+Session:   12
 Kernel:    2022-11-17 - 58e0be1ef6118c5352b56a4d06e974c5599993a5
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Compiler:  ccache gcc
 Attempt 1:
     Time  Bug Name
        2  possible deadlock in l2tp_tunnel_register
@@ -339,56 +220,71 @@ Attempt 1:
        2  possible deadlock in l2tp_tunnel_register
        2  possible deadlock in l2tp_tunnel_register
        2  possible deadlock in l2tp_tunnel_register
-       2  INFO: rcu detected stall in corrupted
+       2  possible deadlock in l2tp_tunnel_register
        2  BUG: sleeping function called from invalid context in static_key_slow_inc
-       3  possible deadlock in l2tp_tunnel_register
-       3  possible deadlock in l2tp_tunnel_register
-       3  possible deadlock in l2tp_tunnel_register
-       3  possible deadlock in l2tp_tunnel_register
-       3  possible deadlock in l2tp_tunnel_register
-       3  possible deadlock in l2tp_tunnel_register
-***    3  possible deadlock in __inet_inherit_port
        3  BUG: sleeping function called from invalid context in static_key_slow_inc
+***    3  possible deadlock in __inet_inherit_port
 Running syz-repro.
-Run Time:        0h12m0s
+Run Time:        0h22m0s
 The bug was found.
 About 57 commits remaining
 
-2025-03-14 08:25:01
-Session:   11
+2025-09-25 04:37:07
+Session:   13
 Kernel:    2022-11-14 - 9d3ff7131877fb092185c369fbb14b57ac4e7cec
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Compiler:  ccache gcc
 Attempt 1:
     No crashes found.
 The bug was not found.
 About 29 commits remaining
 
-2025-03-14 08:54:15
-Session:   12
+2025-09-25 04:56:53
+Session:   14
 Kernel:    2022-11-15 - 598ab4b12eae70654b6d8af6038e6cdb45f22634
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Compiler:  ccache gcc
 Attempt 1:
-    No crashes found.
+    Time  Bug Name
+       2  INFO: rcu detected stall in corrupted
 The bug was not found.
 About 15 commits remaining
 
-2025-03-14 09:23:10
-Session:   13
+2025-09-25 05:16:02
+Session:   15
 Kernel:    2022-11-16 - e4aa85cf0d43e293f474e3b415ff44e49ef768ae
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Compiler:  ccache gcc
 Attempt 1:
     Time  Bug Name
        2  INFO: rcu detected stall in corrupted
 The bug was not found.
 About 8 commits remaining
 
-2025-03-14 09:52:59
-Session:   14
-Kernel:    2022-11-16 - aeac4ec8f46d610a10adbaeff5e2edf6a88ffc62
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+2025-09-25 05:35:13
+Session:   16
+Kernel:    2022-11-16 - 064bc7312bd09a48798418663090be0c776183db
+Compiler:  ccache gcc
 Attempt 1:
     Time  Bug Name
+       2  INFO: rcu detected stall in corrupted
        2  possible deadlock in l2tp_tunnel_register
+       2  possible deadlock in l2tp_tunnel_register
+       2  possible deadlock in l2tp_tunnel_register
+       2  possible deadlock in l2tp_tunnel_register
+       2  possible deadlock in l2tp_tunnel_register
+       2  possible deadlock in l2tp_tunnel_register
+***    2  possible deadlock in __inet_inherit_port
+Running syz-repro.
+New PoC saved at /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0139-0.prog
+Primary PoC:     /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0139-0.prog
+Run Time:        0h15m0s
+The bug was found.
+About 5 commits remaining
+
+2025-09-25 05:59:23
+Session:   17
+Kernel:    2022-11-16 - b68777d54fac21fc833ec26ea1a2a84f975ab035
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
        2  possible deadlock in l2tp_tunnel_register
        2  possible deadlock in l2tp_tunnel_register
        2  possible deadlock in l2tp_tunnel_register
@@ -396,144 +292,246 @@ Attempt 1:
        2  possible deadlock in l2tp_tunnel_register
        2  possible deadlock in l2tp_tunnel_register
        2  BUG: sleeping function called from invalid context in static_key_slow_inc
-       3  possible deadlock in l2tp_tunnel_register
-       3  possible deadlock in l2tp_tunnel_register
-       3  possible deadlock in l2tp_tunnel_register
-       3  possible deadlock in l2tp_tunnel_register
-       3  possible deadlock in l2tp_tunnel_register
-       3  possible deadlock in l2tp_tunnel_register
-       3  possible deadlock in l2tp_tunnel_register
-       3  possible deadlock in sk_common_release
-       4  possible deadlock in l2tp_tunnel_register
-       4  possible deadlock in l2tp_tunnel_register
-       4  possible deadlock in l2tp_tunnel_register
-       4  possible deadlock in l2tp_tunnel_register
-       4  possible deadlock in l2tp_tunnel_register
-       4  BUG: sleeping function called from invalid context in static_key_slow_inc
-       4  BUG: sleeping function called from invalid context in static_key_slow_inc
-       5  possible deadlock in l2tp_tunnel_register
-       5  possible deadlock in l2tp_tunnel_register
-       5  possible deadlock in l2tp_tunnel_register
-       5  possible deadlock in l2tp_tunnel_register
-       6  possible deadlock in l2tp_tunnel_register
-       6  possible deadlock in l2tp_tunnel_register
-       6  possible deadlock in l2tp_tunnel_register
-       6  possible deadlock in l2tp_tunnel_register
-***    6  possible deadlock in __inet_inherit_port
-Running syz-repro.
-Run Time:        0h22m0s
-The bug was found.
-About 4 commits remaining
-
-2025-03-14 10:37:55
-Session:   15
-Kernel:    2022-11-16 - b68777d54fac21fc833ec26ea1a2a84f975ab035
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
-Attempt 1:
-    Time  Bug Name
-       2  possible deadlock in l2tp_tunnel_register
-       2  possible deadlock in l2tp_tunnel_register
-       2  possible deadlock in l2tp_tunnel_register
-       2  possible deadlock in l2tp_tunnel_register
-       2  possible deadlock in l2tp_tunnel_register
-       2  possible deadlock in l2tp_tunnel_register
-       2  possible deadlock in l2tp_tunnel_register
-       2  possible deadlock in l2tp_tunnel_register
-       3  possible deadlock in l2tp_tunnel_register
-       3  possible deadlock in l2tp_tunnel_register
-       3  possible deadlock in l2tp_tunnel_register
-       3  possible deadlock in l2tp_tunnel_register
-       3  possible deadlock in l2tp_tunnel_register
-       3  possible deadlock in l2tp_tunnel_register
-       3  BUG: sleeping function called from invalid context in static_key_slow_inc
-       3  BUG: sleeping function called from invalid context in static_key_slow_inc
-       4  possible deadlock in l2tp_tunnel_register
-       4  possible deadlock in l2tp_tunnel_register
-       4  possible deadlock in l2tp_tunnel_register
-       4  possible deadlock in l2tp_tunnel_register
-       4  possible deadlock in l2tp_tunnel_register
-       4  possible deadlock in l2tp_tunnel_register
-       5  possible deadlock in l2tp_tunnel_register
-       5  possible deadlock in l2tp_tunnel_register
-       5  possible deadlock in l2tp_tunnel_register
-       5  possible deadlock in l2tp_tunnel_register
-       6  possible deadlock in l2tp_tunnel_register
-       6  possible deadlock in l2tp_tunnel_register
-       6  possible deadlock in l2tp_tunnel_register
-       6  possible deadlock in l2tp_tunnel_register
-       6  possible deadlock in l2tp_tunnel_register
-       6  possible deadlock in l2tp_tunnel_register
-       7  possible deadlock in l2tp_tunnel_register
-       7  possible deadlock in l2tp_tunnel_register
-       7  possible deadlock in l2tp_tunnel_register
-       7  possible deadlock in l2tp_tunnel_register
-       7  possible deadlock in l2tp_tunnel_register
-       7  possible deadlock in l2tp_tunnel_register
-       7  possible deadlock in l2tp_tunnel_register
-       7  BUG: sleeping function called from invalid context in static_key_slow_inc
-       8  possible deadlock in l2tp_tunnel_register
-       8  possible deadlock in l2tp_tunnel_register
-       8  possible deadlock in l2tp_tunnel_register
-       8  possible deadlock in l2tp_tunnel_register
-       8  possible deadlock in l2tp_tunnel_register
-***    8  possible deadlock in __inet_inherit_port
-***    8  possible deadlock in __inet_inherit_port
-       8  BUG: sleeping function called from invalid context in static_key_slow_inc
-Running syz-repro.
-Run Time:        0h16m0s
+***    2  possible deadlock in __inet_inherit_port
 The bug was found.
 About 3 commits remaining
 
-2025-03-14 11:19:10
-Session:   16
+2025-09-25 06:08:46
+Session:   18
 Kernel:    2022-11-16 - f524b7289bbb0c8ffaa2ba3c34c146e43da54fb2
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Compiler:  ccache gcc
 Attempt 1:
-    Time  Bug Name
-      10  INFO: rcu detected stall in corrupted
+    No crashes found.
 The bug was not found.
 About 2 commits remaining
 
 ==== Partial Result: Focused Fuzzing ====
-Reproducer:           /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/reproducers/repro-bug0139-3.prog
+Reproducer:           /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0139-0.prog
 Bisection Result:     2022-11-16 - b68777d54fac21fc833ec26ea1a2a84f975ab035
 Bisected Commit Name: l2tp: Serialize access to sk_user_data with sk_callback_lock
-Stage Time:           8h29m0s
-Run Time:             8h29m2s
+Stage Time:           7h5m37s
+Run Time:             7h5m38s
 =========================================
 
 ==== Anchor Commit ====
 
-2025-03-14 11:47:57
-Session:   17
+2025-09-25 06:27:49
+Session:   19
 Kernel:    2022-11-16 - f524b7289bbb0c8ffaa2ba3c34c146e43da54fb2
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Compiler:  ccache gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0139-0.prog
 Attempt 0:
-    No crashes found.
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in devlink_nl_port_fill
+    INFO: task hung in linkwatch_event
+    INFO: task hung in switchdev_deferred_process_work
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in del_device_store
+    INFO: task hung in devlink_unregister
+    INFO: task hung in del_device_store
 Attempt 1:
     No crashes found.
 Attempt 2:
-    No crashes found.
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in netdev_run_todo
+    INFO: task hung in linkwatch_event
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in devlink_unregister
+    INFO: task hung in new_device_store
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in del_device_store
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in del_device_store
 Attempt 3:
     No crashes found.
 Attempt 4:
-    No crashes found.
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in del_device_store
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in del_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in del_device_store
 Attempt 5:
-    No crashes found.
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in del_device_store
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in del_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in devlink_unregister
 Attempt 6:
     No crashes found.
 Attempt 7:
-    No crashes found.
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in linkwatch_event
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in devlink_unregister
+    INFO: task hung in del_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in del_device_store
 The bug was not found.
 
 Failure: This bug cannot be found at the anchor commit.
 
+==== Partial Result: Primary PoC Test ====
+Reproducer:           /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0139-0.prog
+Bisection Result:     Failed to reproduce at the anchor commit.
+Stage Time:           0h15m1s
+Run Time:             7h20m40s
+==========================================
+
+==== Anchor Commit ====
+
+2025-09-25 06:42:53
+Session:   20
+Kernel:    2022-11-16 - f524b7289bbb0c8ffaa2ba3c34c146e43da54fb2
+Compiler:  ccache gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0139-3.prog
+Attempt 0:
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in netdev_run_todo
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in del_device_store
+    INFO: task hung in new_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in new_device_store
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in rtnetlink_rcv_msg
+Attempt 1:
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in linkwatch_event
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in del_device_store
+    INFO: task hung in devlink_unregister
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in del_device_store
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in rtnetlink_rcv_msg
+Attempt 2:
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in cleanup_net
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in linkwatch_event
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in del_device_store
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in del_device_store
+    INFO: task hung in new_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in del_device_store
+Attempt 3:
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in devlink_unregister
+    INFO: task hung in del_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in new_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in del_device_store
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in linkwatch_event
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in del_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in devlink_unregister
+    INFO: task hung in del_device_store
+    INFO: task hung in new_device_store
+Attempt 6:
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in register_nexthop_notifier
+    INFO: task hung in linkwatch_event
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in devlink_unregister
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in del_device_store
+Attempt 7:
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in l2tp_exit_net
+    INFO: task hung in linkwatch_event
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in new_device_store
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in del_device_store
+    INFO: task hung in new_device_store
+The bug was not found.
+
+Failure: This bug cannot be found at the anchor commit.
+
+==== Partial Result: Subsequent PoC Test ====
+Reproducer:           /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0139-3.prog
+Bisection Result:     Failed to reproduce at the anchor commit.
+Stage Time:           0h15m35s
+Run Time:             7h36m15s
+=============================================
+
 ====================================================================================================================================================
 Bug Name:             possible deadlock in __inet_inherit_port
+Big ID:               bug0139
 Bug Link:             https://syzkaller.appspot.com/bug?id=1665a0a4a1d6d4d3f61624353f8a9e5dbfff67bd
 Bisection Result:     2022-11-16 - b68777d54fac21fc833ec26ea1a2a84f975ab035
 Bisected Commit Name: l2tp: Serialize access to sk_user_data with sk_callback_lock
-Run Time:             8h53m45s
+Run Time:             7h36m15s
 
 Anchor Commit:        2022-11-17 - 84368d882b9688bfac77ce48d33b1e20a4e4a787
 Bisection Result:     2022-11-16 - b68777d54fac21fc833ec26ea1a2a84f975ab035
