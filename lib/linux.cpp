@@ -299,6 +299,11 @@ void apply_backports(const Environment &env, Git &linux_git, const Version &linu
         // Fixes `unregister_netdevice: waiting for batadv0 to become free. Usage count = 3`.
         // Several v6.15-rc* tags are essentially unfuzzeable because of this.
         Backport("00b35530811f2aa3d7ceec2dbada80861c7632a8", "10a77965760c6e2b3eef483be33ae407004df894", "batman-adv: Fix double-hold of meshif when getting enabled")
+
+        // WARNING: ODEBUG bug in mgmt_index_removed is patched by the commit
+        // 3f2893d3c142986aa935821460cb3adb77044722, and is relatively common during bisection.
+        // Fixes: 0ef08313cefdd60d ("Bluetooth: Convert delayed discov_off to hci_sync")
+        // Consider adding here.
     };
 
     for (Backport bp : backports)
