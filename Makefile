@@ -31,7 +31,7 @@ ALL_OBJS = $(BUILDDIR)argparse.o $(BUILDDIR)version.o $(BUILDDIR)template_parse.
 			$(BUILDDIR)file_api.o $(BUILDDIR)linux.o $(BUILDDIR)fuzz.o $(BUILDDIR)git.o \
 			$(BUILDDIR)my_string.o $(BUILDDIR)syzlang.o $(BUILDDIR)json.o $(BUILDDIR)dedup.o \
 			$(BUILDDIR)report.o $(BUILDDIR)bisect.o $(BUILDDIR)shell_api.o $(BUILDDIR)port.o \
-			$(BUILDDIR)syzkaller.o $(BUILDDIR)vm.o $(BUILDDIR)make.o
+			$(BUILDDIR)syzkaller.o $(BUILDDIR)vm.o $(BUILDDIR)make.o $(BUILDDIR)levenshtein.o
 
 $(PROJECTNAME): $(SRCDIR)$(PROJECTNAME).cpp $(ALL_OBJS) | $(BINDIR) $(BUILDDIR)
 	@echo "  CC     $(BUILDDIR)$(PROJECTNAME).o"
@@ -46,7 +46,7 @@ RR_OBJS = $(BUILDDIR)file_api.o $(BUILDDIR)argparse.o $(BUILDDIR)environment.o \
 			$(BUILDDIR)date.o $(BUILDDIR)port.o $(BUILDDIR)vm.o $(BUILDDIR)syzkaller.o \
 			$(BUILDDIR)fuzz.o $(BUILDDIR)linux.o $(BUILDDIR)shell_api.o $(BUILDDIR)report.o \
 			$(BUILDDIR)bisect.o $(BUILDDIR)git.o $(BUILDDIR)version.o $(BUILDDIR)make.o \
-			$(BUILDDIR)dedup.o
+			$(BUILDDIR)dedup.o $(BUILDDIR)levenshtein.o
 
 runner: $(TOOLDIR)runner.cpp $(RR_OBJS) | $(BINDIR) $(BUILDDIR)
 	@echo "  CC     $(BUILDDIR)runner.o"
@@ -55,7 +55,7 @@ runner: $(TOOLDIR)runner.cpp $(RR_OBJS) | $(BINDIR) $(BUILDDIR)
 	@$(CC) $(BUILDDIR)runner.o $(RR_OBJS) -o $(BINDIR)$(PREFIX)runner
 
 DD_OBJS = $(BUILDDIR)dedup.o $(BUILDDIR)file_api.o $(BUILDDIR)my_string.o $(BUILDDIR)report.o \
-			$(BUILDDIR)exec_api.o
+			$(BUILDDIR)exec_api.o $(BUILDDIR)levenshtein.o
 
 deduplicate: $(TOOLDIR)deduplicate.cpp $(DD_OBJS) | $(BINDIR) $(BUILDDIR)
 	@echo "  CC     $(BUILDDIR)deduplicate.o"

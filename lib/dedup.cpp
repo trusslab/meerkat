@@ -1,5 +1,6 @@
 #include <dedup.h>
 #include <file_api.h>
+#include <levenshtein.h>
 #include <my_string.h>
 #include <report.h>
 
@@ -212,6 +213,13 @@ bool mutation_stack_comparison(const BugAlias &bug1, const BugAlias &bug2)
 
     // The threshold here could vary quite a bit. I'll need to tune it.
     return (correct + changes >= COMPARISON_THRESHOLD) && changes <= 1 && additions + removals <= 1;
+}
+
+#define LEVENSHTEIN_THRESHOLD 0.8
+
+bool levenshtein_stack_comparison(const BugAlias &bug1, const BugAlias &bug2)
+{
+    return (1 - levenshtein_vec_norm(bug1.stack, bug2.stack)) >= LEVENSHTEIN_THRESHOLD;
 }
 
 bool compare_stack_traces(const BugAlias &bug1, const BugAlias &bug2)
