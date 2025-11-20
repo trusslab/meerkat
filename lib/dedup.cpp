@@ -217,6 +217,8 @@ bool mutation_stack_comparison(const BugAlias &bug1, const BugAlias &bug2)
 
 #define LEVENSHTEIN_THRESHOLD 0.8
 
+// This is the same method used by ClusterFuzz as well as
+// "An In-depth Analysis of Duplicated Linux Kernel Bug Reports" (Mu et al.)
 bool levenshtein_stack_comparison(const BugAlias &bug1, const BugAlias &bug2)
 {
     return (1 - levenshtein_vec_norm(bug1.stack, bug2.stack)) >= LEVENSHTEIN_THRESHOLD;
