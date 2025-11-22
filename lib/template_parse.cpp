@@ -462,6 +462,7 @@ void get_one_producer_syscall(const TypeTag &this_resource, std::vector<TypeTag>
         {"tail_call_map", "bpf$MAP_UPDATE_ELEM_TAIL_CALL"},
         {"fd_bpf_prog", "bpf$BPF_PROG_GET_FD_BY_ID"},
         {"assoc_id", "getsockopt"}, //$inet_sctp6_SCTP_AUTH_ACTIVE_KEY
+        {"fd_dir", "open$dir"},
     };
 
     if (problematic.count(this_resource.get_name()) == 1)
