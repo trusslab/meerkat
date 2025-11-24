@@ -1,32 +1,35 @@
-./bin/bisector -i 1 -c /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/bisector.cfg -a b9b4c79e58305ac64352286ee5030d193fc8aa22 -F ff-test,poc-test,stateful-corpus,ff-no-find-backup
+./bin/meerkat -i 1 -c /home/syzretrospector/meerkat/wd-meerkat-1/meerkat.cfg -a b9b4c79e58305ac64352286ee5030d193fc8aa22 -F ff-test,poc-test,poc-all-pocs,ff-no-find-backup,stateful-corpus
 Bisecting:          kernel BUG in commit_creds
 Syzbot Link:        https://syzkaller.appspot.com/bug?id=da0bb610bb28b9c0fd6d78b41bcf00b0976b6877
 Working Name:       bug0157
 
-No aliases given.
+Aliases:
+    kernel BUG in commit_creds
 
 Anchor Commit:      b9b4c79e58305ac64352286ee5030d193fc8aa22
 Repository:         https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
 Branch:             master
 Arch:               amd64
 
-Bisector:           /mnt/sdd/jtbursey/SyzInspector/
-Version:            1.0.4
-Kernel:             /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/kernel/
-Syzkaller:          /mnt/sdd/jtbursey/SyzInspector/syzkaller/
-Compilers:          /mnt/sda/jtbursey/SyzInspector/compilers/
-Ccache:             ccache
-Image:              /mnt/sda/jtbursey/SyzInspector/image/stretch/stretch.img
-Image Key:          /mnt/sda/jtbursey/SyzInspector/image/stretch/stretch.id_rsa
+Meerkat:            /home/syzretrospector/meerkat/
+Version:            1.2.0
+Kernel:             /home/syzretrospector/meerkat/wd-meerkat-1/kernel/
+Syzkaller:          /home/syzretrospector/meerkat/syzkaller/
+Compilers:          /home/syzretrospector/meerkat/compilers/
+Compiler:           gcc (Ubuntu 11.4.0-1ubuntu1~22.04.2) 11.4.0
+Linker:             GNU ld (GNU Binutils for Ubuntu) 2.38
+Ccache:             ccache version 4.5.1
+Image:              /home/syzretrospector/meerkat/image/stretch/stretch.img
+Image Key:          /home/syzretrospector/meerkat/image/stretch/stretch.id_rsa
 
-Workdir:            /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/
-Kconfig:            /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/config-bug0157.txt
-Reproducers: (2)    /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/reproducers/
-Primary PoC:        /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/reproducers/repro-bug0157-2.prog
-Syzkaller Workdir:  /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/wd-kaller/
-Log Directory:      /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/log/
+Workdir:            /home/syzretrospector/meerkat/wd-meerkat-1/
+Kconfig:            /home/syzretrospector/meerkat/wd-meerkat-1/config-bug0157.txt
+Reproducers: (2)    /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/
+Primary PoC:        /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0157-2.prog
+Syzkaller Workdir:  /home/syzretrospector/meerkat/wd-meerkat-1/wd-kaller/
+Log Directory:      /home/syzretrospector/meerkat/wd-meerkat-1/log/
 
-Syscalls: (32)      ["add_key$fscrypt_provisioning", "io_uring_enter", "io_uring_register$IORING_REGISTER_PERSONALITY", "syz_io_uring_setup", "syz_io_uring_submit", "add_key$keyring", "io_uring_register$IORING_UNREGISTER_PERSONALITY", "keyctl$get_keyring_id", "add_key", "ioctl$EXT4_IOC_GROUP_EXTEND", "openat$sw_sync_info", "statx", "socket", "syz_mount_image$bfs", "utimes", "getrusage", "clock_settime", "clock_gettime", "mount$9p_tcp", "getuid", "setgid", "getgid", "epoll_create", "sendmsg$TCPDIAG_GETSOCK", "ioctl$sock_SIOCGIFINDEX", "ioctl$ifreq_SIOCGIFINDEX_vcan", "bind$nfc_llcp", "ioctl$IOCTL_GET_NCIDEV_IDX", "socket$nl_sock_diag", "syz_init_net_socket$nfc_llcp", "openat$nci", "socket$netlink"]
+Syscalls: (31)      ["add_key$fscrypt_provisioning", "io_uring_enter", "io_uring_register$IORING_REGISTER_PERSONALITY", "syz_io_uring_setup", "syz_io_uring_submit", "add_key$keyring", "io_uring_register$IORING_UNREGISTER_PERSONALITY", "keyctl$get_keyring_id", "add_key", "ioctl$F2FS_IOC_START_ATOMIC_WRITE", "openat$selinux_enforce", "statx", "socket", "open$dir", "futex", "getrusage", "clock_gettime", "mount$bpf", "getuid", "setgid", "getgid", "epoll_create", "setsockopt$inet_mreqn", "ioctl$sock_SIOCGIFINDEX", "ioctl$ifreq_SIOCGIFINDEX_vcan", "bind$nfc_llcp", "ioctl$IOCTL_GET_NCIDEV_IDX", "socket$inet", "syz_init_net_socket$nfc_llcp", "openat$nci", "utimes"]
 VM Count:           8
 CPU Count:          2
 Procs:              16
@@ -37,19 +40,294 @@ Max Attempts:       1
 
 ==== Anchor Commit ====
 
-2025-03-17 20:24:26
+2025-11-22 00:19:31
 Session:   1
 Kernel:    2022-04-14 - b9b4c79e58305ac64352286ee5030d193fc8aa22
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
-Warning: syz_io_uring_submit was disabled by Syzkaller.
+Compiler:  ccache gcc
+Error: index error parsing Warning report
+Attempt 1:
+    Time  Bug Name
+       4  possible deadlock in io_assign_file (has report)
+       4  BUG: unable to handle kernel NULL pointer dereference in io_do_iopoll
+       5  possible deadlock in io_assign_file (has report)
+***    6  kernel BUG in commit_creds (2)
+Error: index error parsing Warning report
+Attempt 2: (RETRY)
+    Time  Bug Name
+       3  possible deadlock in io_assign_file (2) (has report)
+       5  possible deadlock in io_assign_file (has report)
+***    7  kernel BUG in commit_creds
+       7  KASAN: use-after-free Read in io_poll_remove_entries (2) (has report)
+Error: index error parsing Warning report
+Attempt 3: (RETRY)
+    Time  Bug Name
+       3  possible deadlock in io_assign_file (3) (has report)
+       3  KASAN: use-after-free Read in io_poll_remove_entries (has report)
+       4  KASAN: use-after-free Read in io_poll_remove_entries (has report)
+       6  KASAN: use-after-free Read in io_poll_remove_entries (2) (has report)
+       8  KASAN: use-after-free Read in io_poll_remove_entries (2) (has report)
+       8  BUG: unable to handle kernel NULL pointer dereference in io_do_iopoll
+      10  possible deadlock in io_assign_file (has report)
+The bug was found.
+
+New Max Time: 12
+
+==== Major Release Search ====
+11 Releases
+
+2025-11-22 00:53:19
+Session:   2
+Kernel:    2022-03-20 - f443e374ae131c168a065ea1748feac6b2e76613 (v5.17)
+Compiler:  ccache gcc
 Attempt 1:
     No crashes found.
-Warning: syz_io_uring_submit was disabled by Syzkaller.
-Attempt 2: (RETRY)
+The bug was not found.
+About 10 releases remaining
+
+==== Kernel Bisection ====
+14649 Linux commits
+
+2025-11-22 01:15:57
+Session:   3
+Kernel:    2022-03-24 - 169e77764adc041b1dacba84ea90516a895d43b2
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       8  WARNING: ODEBUG bug in netdev_run_todo (has report)
+The bug was not found.
+About 7098 commits remaining
+
+2025-11-22 01:38:24
+Session:   4
+Kernel:    2022-03-26 - 710f5d627a98e86f821aceb840b8f2f1fcc6cf75
+Compiler:  ccache gcc
+Attempt 1:
     No crashes found.
-Warning: syz_io_uring_submit was disabled by Syzkaller.
-Attempt 3: (RETRY)
+The bug was not found.
+About 3513 commits remaining
+
+2025-11-22 02:00:48
+Session:   5
+Kernel:    2022-03-30 - 2609f635a20d3691e7b5725edc3bdadb7bedf8fb
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 1758 commits remaining
+
+2025-11-22 02:23:12
+Session:   6
+Kernel:    2022-04-01 - aa240ee7883487201d0c6cc537ec1c4cd6cb2a9e
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 883 commits remaining
+
+2025-11-22 02:45:32
+Session:   7
+Kernel:    2022-04-07 - 73b193f265096080eac866b9a852627b475384fc
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       9  BUG: unable to handle kernel NULL pointer dereference in io_do_iopoll
+The bug was not found.
+About 425 commits remaining
+
+2025-11-22 03:07:59
+Session:   8
+Kernel:    2022-04-09 - e1f700ebd6bea293abe3c7e2807b252018efde01
+Compiler:  ccache gcc
+Error: index error parsing Warning report
+Attempt 1:
+    Time  Bug Name
+       3  KASAN: use-after-free Read in io_poll_remove_entries (2) (has report)
+       5  KASAN: use-after-free Read in io_poll_remove_entries (has report)
+       6  KASAN: use-after-free Read in io_poll_remove_entries (2) (has report)
+       7  KASAN: use-after-free Read in io_poll_remove_entries (2) (has report)
+       7  WARNING: ODEBUG bug in netdev_run_todo (has report)
+       8  KASAN: use-after-free Read in io_poll_remove_entries (2) (has report)
+       9  KASAN: use-after-free Read in io_poll_remove_entries (4) (has report)
+      10  KASAN: use-after-free Read in io_poll_remove_entries (3) (has report)
+      11  KASAN: use-after-free Read in io_poll_remove_entries (4) (has report)
+      12  possible deadlock in io_assign_file (has report)
+      12  KASAN: use-after-free Read in io_poll_remove_entries (3) (has report)
+The bug was not found.
+About 206 commits remaining
+
+2025-11-22 03:30:19
+Session:   9
+Kernel:    2022-04-12 - 7083b89ef3e9a6ec362585026f81cb165c51b78a
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       3  KASAN: use-after-free Read in io_poll_remove_entries (has report)
+       3  WARNING: ODEBUG bug in netdev_run_todo (has report)
+       4  KASAN: use-after-free Read in io_poll_remove_entries (2) (has report)
+       7  KASAN: use-after-free Read in io_poll_remove_entries (has report)
+      10  KASAN: use-after-free Read in io_poll_remove_entries (5) (has report)
+      11  KASAN: use-after-free Read in io_poll_remove_entries (has report)
+      12  KASAN: use-after-free Read in io_poll_remove_entries (2) (has report)
+The bug was not found.
+About 109 commits remaining
+
+2025-11-22 03:52:42
+Session:   10
+Kernel:    2022-04-14 - 722985e2f6ec9127064771ba526578ea8275834d
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       3  KASAN: use-after-free Read in io_poll_remove_entries (2) (has report)
+       4  KASAN: use-after-free Read in io_poll_remove_entries (5) (has report)
+       5  KASAN: use-after-free Read in io_poll_remove_entries (has report)
+       6  KASAN: use-after-free Read in io_poll_remove_entries (3) (has report)
+       7  KASAN: use-after-free Read in io_poll_remove_entries (3) (has report)
+       8  KASAN: use-after-free Read in io_poll_remove_entries (has report)
+       9  KASAN: use-after-free Read in io_poll_remove_entries (has report)
+      10  KASAN: use-after-free Read in io_poll_remove_entries (2) (has report)
+      12  KASAN: use-after-free Read in io_poll_remove_entries (has report)
+The bug was not found.
+About 54 commits remaining
+
+2025-11-22 04:12:23
+Session:   11
+Kernel:    2022-04-12 - de9a01bc95a9e5e36d0659521bb04579053d8566
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       6  WARNING: ODEBUG bug in netdev_run_todo (has report)
+      10  WARNING: ODEBUG bug in netdev_run_todo (has report)
+The bug was not found.
+About 16393 commits remaining
+
+2025-11-22 04:34:46
+Session:   12
+Kernel:    2022-04-12 - f0438155273f057fec9818bc9d1b782ba35cf6a1
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 16380 commits remaining
+
+2025-11-22 04:50:31
+Session:   13
+Kernel:    2022-04-12 - e2263f0bf7443a200a5c1c418baefd92f1674600
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 16373 commits remaining
+
+2025-11-22 05:06:13
+Session:   14
+Kernel:    2022-04-12 - 4fb27190879b82e48ce89a56e9d6c04437dbc065
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 16370 commits remaining
+
+2025-11-22 05:22:01
+Session:   15
+Kernel:    2022-04-13 - 925ca893b4a65177394581737b95d03fea2660f2
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 16368 commits remaining
+
+2025-11-22 05:38:03
+Session:   16
+Kernel:    2022-04-13 - 24d0c9f0e7de95fe3e3e0067cbea1cd5d413244b
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 16367 commits remaining
+
+==== Partial Result: Focused Fuzzing ====
+Reproducer:           /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0157-2.prog
+Bisection Result:     2022-04-14 - b9b4c79e58305ac64352286ee5030d193fc8aa22
+Bisected Commit Name: Merge tag 'sound-5.18-rc3' of git://git.kernel.org/pub/scm/linux/kernel/git/tiwai/sound
+Stage Time:           5h34m32s
+Run Time:             5h34m37s
+=========================================
+
+==== Anchor Commit ====
+
+2025-11-22 05:54:03
+Session:   17
+Kernel:    2022-04-14 - 722985e2f6ec9127064771ba526578ea8275834d
+Compiler:  ccache gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0157-2.prog
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
     No crashes found.
 The bug was not found.
 
 Failure: This bug cannot be found at the anchor commit.
+
+==== Partial Result: Primary PoC Test ====
+Reproducer:           /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0157-2.prog
+Bisection Result:     Failed to reproduce at the anchor commit.
+Stage Time:           0h11m11s
+Run Time:             5h45m49s
+==========================================
+
+==== Anchor Commit ====
+
+2025-11-22 06:05:16
+Session:   18
+Kernel:    2022-04-14 - 722985e2f6ec9127064771ba526578ea8275834d
+Compiler:  ccache gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0157-1.prog
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+
+Failure: This bug cannot be found at the anchor commit.
+
+==== Partial Result: Subsequent PoC Test ====
+Reproducer:           /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0157-1.prog
+Bisection Result:     Failed to reproduce at the anchor commit.
+Stage Time:           0h11m12s
+Run Time:             5h57m1s
+=============================================
+
+====================================================================================================================================================
+Bug Name:             kernel BUG in commit_creds
+Bug ID:               bug0157
+Bug Link:             https://syzkaller.appspot.com/bug?id=da0bb610bb28b9c0fd6d78b41bcf00b0976b6877
+Bisection Result:     2022-04-14 - b9b4c79e58305ac64352286ee5030d193fc8aa22
+Bisected Commit Name: Merge tag 'sound-5.18-rc3' of git://git.kernel.org/pub/scm/linux/kernel/git/tiwai/sound
+Run Time:             5h57m1s
+
+Anchor Commit:        2022-04-14 - b9b4c79e58305ac64352286ee5030d193fc8aa22
+Bisection Result:     2022-04-14 - b9b4c79e58305ac64352286ee5030d193fc8aa22

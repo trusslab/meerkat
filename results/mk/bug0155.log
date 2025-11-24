@@ -1,35 +1,38 @@
-./bin/bisector -i 1 -c /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/bisector.cfg -a 6bfb56e93bcef41859c2d5ab234ffd80b691be35 -F ff-test,poc-test,stateful-corpus,ff-no-find-backup
+./bin/meerkat -i 1 -c /home/syzretrospector/meerkat/wd-meerkat-1/meerkat.cfg -a 6bfb56e93bcef41859c2d5ab234ffd80b691be35 -F ff-test,poc-test,poc-all-pocs,ff-no-find-backup,stateful-corpus
 Bisecting:          KASAN: null-ptr-deref Write in io_file_get_normal
 Syzbot Link:        https://syzkaller.appspot.com/bug?id=bd729504526583afbae896e4862ba0e08afc95ba
 Working Name:       bug0155
 
-No aliases given.
+Aliases:
+    KASAN: null-ptr-deref Write in io_file_get_normal
 
 Anchor Commit:      6bfb56e93bcef41859c2d5ab234ffd80b691be35
 Repository:         https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
 Branch:             master
 Arch:               amd64
 
-Bisector:           /mnt/sdd/jtbursey/SyzInspector/
-Version:            1.0.4
-Kernel:             /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/kernel/
-Syzkaller:          /mnt/sdd/jtbursey/SyzInspector/syzkaller/
-Compilers:          /mnt/sda/jtbursey/SyzInspector/compilers/
-Ccache:             ccache
-Image:              /mnt/sda/jtbursey/SyzInspector/image/stretch/stretch.img
-Image Key:          /mnt/sda/jtbursey/SyzInspector/image/stretch/stretch.id_rsa
+Meerkat:            /home/syzretrospector/meerkat/
+Version:            1.2.0
+Kernel:             /home/syzretrospector/meerkat/wd-meerkat-1/kernel/
+Syzkaller:          /home/syzretrospector/meerkat/syzkaller/
+Compilers:          /home/syzretrospector/meerkat/compilers/
+Compiler:           gcc (Ubuntu 11.4.0-1ubuntu1~22.04.2) 11.4.0
+Linker:             GNU ld (GNU Binutils for Ubuntu) 2.38
+Ccache:             ccache version 4.5.1
+Image:              /home/syzretrospector/meerkat/image/stretch/stretch.img
+Image Key:          /home/syzretrospector/meerkat/image/stretch/stretch.id_rsa
 
-Workdir:            /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/
-Kconfig:            /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/config-bug0155.txt
-Reproducers: (5)    /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/reproducers/
-Primary PoC:        /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/reproducers/repro-bug0155-5.prog
-Syzkaller Workdir:  /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/wd-kaller/
-Log Directory:      /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/log/
+Workdir:            /home/syzretrospector/meerkat/wd-meerkat-1/
+Kconfig:            /home/syzretrospector/meerkat/wd-meerkat-1/config-bug0155.txt
+Reproducers: (5)    /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/
+Primary PoC:        /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0155-2.prog
+Syzkaller Workdir:  /home/syzretrospector/meerkat/wd-meerkat-1/wd-kaller/
+Log Directory:      /home/syzretrospector/meerkat/wd-meerkat-1/log/
 
-Syscalls: (29)      ["io_uring_enter", "openat$procfs", "syz_io_uring_setup", "syz_io_uring_submit", "syz_memcpy_off$IO_URING_METADATA_GENERIC", "ioctl$EXT4_IOC_GROUP_EXTEND", "statx", "socket", "syz_mount_image$bfs", "io_uring_register$IORING_UNREGISTER_PERSONALITY", "io_uring_register$IORING_REGISTER_PERSONALITY", "utimes", "getrusage", "clock_settime", "clock_gettime", "mount$9p_tcp", "getuid", "setgid", "getgid", "epoll_create", "sendmsg$TCPDIAG_GETSOCK", "ioctl$sock_SIOCGIFINDEX", "ioctl$ifreq_SIOCGIFINDEX_vcan", "bind$nfc_llcp", "ioctl$IOCTL_GET_NCIDEV_IDX", "socket$nl_sock_diag", "syz_init_net_socket$nfc_llcp", "openat$nci", "socket$netlink"]
-VM Count:           4
-CPU Count:          4
-Procs:              24
+Syscalls: (28)      ["io_uring_enter", "openat$procfs", "syz_io_uring_setup", "syz_io_uring_submit", "syz_memcpy_off$IO_URING_METADATA_GENERIC", "ioctl$F2FS_IOC_START_ATOMIC_WRITE", "statx", "socket", "open$dir", "io_uring_register$IORING_UNREGISTER_PERSONALITY", "io_uring_register$IORING_REGISTER_PERSONALITY", "futex", "getrusage", "clock_gettime", "mount$bpf", "getuid", "setgid", "getgid", "epoll_create", "setsockopt$inet_mreqn", "ioctl$sock_SIOCGIFINDEX", "ioctl$ifreq_SIOCGIFINDEX_vcan", "bind$nfc_llcp", "ioctl$IOCTL_GET_NCIDEV_IDX", "socket$inet", "syz_init_net_socket$nfc_llcp", "openat$nci", "utimes"]
+VM Count:           8
+CPU Count:          2
+Procs:              16
 Memory:             4096
 Make Procs:         16
 Max Time:           10
@@ -37,28 +40,508 @@ Max Attempts:       1
 
 ==== Anchor Commit ====
 
-2025-03-17 18:55:29
+2025-11-21 17:22:52
 Session:   1
 Kernel:    2022-06-08 - 6bfb56e93bcef41859c2d5ab234ffd80b691be35
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
-Warning: syz_io_uring_submit was disabled by Syzkaller.
+Compiler:  ccache gcc
 Attempt 1:
     Time  Bug Name
-       7  INFO: task hung in d_alloc_parallel
-       8  INFO: task hung in vfs_utimes
-Warning: syz_io_uring_submit was disabled by Syzkaller.
+***    2  KASAN: null-ptr-deref Write in io_file_get_normal (2) (has report)
 Attempt 2: (RETRY)
     Time  Bug Name
-       7  INFO: task hung in d_alloc_parallel
-       7  INFO: task hung in d_alloc_parallel
-       9  INFO: task hung in d_alloc_parallel
-Warning: syz_io_uring_submit was disabled by Syzkaller.
+***    2  KASAN: null-ptr-deref Write in io_file_get_normal (2) (has report)
 Attempt 3: (RETRY)
     Time  Bug Name
-       6  INFO: task hung in bfs_write_inode
-       7  INFO: task hung in d_alloc_parallel
-       8  INFO: task hung in d_alloc_parallel
-      10  INFO: task hung in d_alloc_parallel
+***    2  KASAN: null-ptr-deref Write in io_file_get_normal (has report)
+The bug was found.
+
+New Max Time: 10
+
+==== Major Release Search ====
+11 Releases
+
+2025-11-21 17:40:20
+Session:   2
+Kernel:    2022-05-22 - 4b0986a3613c92f4ec1bdc7f60ec66fea135991f (v5.18)
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       5  KASAN: use-after-free Read in io_poll_remove_entries (has report)
+       6  KASAN: use-after-free Read in io_poll_remove_entries (3) (has report)
+       7  KASAN: use-after-free Read in io_poll_remove_entries (2) (has report)
+       8  KASAN: use-after-free Read in io_poll_remove_entries (2) (has report)
+       9  KASAN: use-after-free Read in io_poll_remove_entries (5) (has report)
+      10  KASAN: use-after-free Read in io_poll_remove_entries (2) (has report)
+The bug was not found.
+About 10 releases remaining
+
+==== Kernel Bisection ====
+13998 Linux commits
+
+2025-11-21 18:01:08
+Session:   3
+Kernel:    2022-05-25 - 2518f226c60d8e04d18ba4295500a5b0b8ac7659
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       4  KASAN: use-after-free Read in io_poll_remove_entries (3) (has report)
+       7  KASAN: use-after-free Read in io_poll_remove_entries (3) (has report)
+       8  KASAN: use-after-free Read in io_poll_remove_entries (2) (has report)
+       9  KASAN: use-after-free Read in io_poll_remove_entries (2) (has report)
+      10  KASAN: use-after-free Read in io_poll_remove_entries (has report)
+The bug was not found.
+About 7056 commits remaining
+
+2025-11-21 18:21:39
+Session:   4
+Kernel:    2022-05-27 - bf272460d744112bacd4c4d562592decbf0edf64
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  KASAN: use-after-free Read in io_poll_remove_entries (has report)
+       3  KASAN: use-after-free Read in io_poll_remove_entries (has report)
+       4  KASAN: use-after-free Read in io_poll_remove_entries (2) (has report)
+       5  KASAN: use-after-free Read in io_poll_remove_entries (2) (has report)
+       6  KASAN: use-after-free Read in io_poll_remove_entries (has report)
+       7  KASAN: use-after-free Read in io_poll_remove_entries (2) (has report)
+       8  KASAN: use-after-free Read in io_poll_remove_entries (4) (has report)
+       9  KASAN: use-after-free Read in io_poll_remove_entries (has report)
+      10  KASAN: use-after-free Read in io_poll_remove_entries (2) (has report)
+The bug was not found.
+About 3528 commits remaining
+
+2025-11-21 18:42:19
+Session:   5
+Kernel:    2022-06-02 - 50fd82b3a9a9335df5d50c7ddcb81c81d358c4fc
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       3  KASAN: use-after-free Read in io_poll_remove_entries (2) (has report)
+       4  KASAN: use-after-free Read in io_poll_remove_entries (2) (has report)
+       5  KASAN: use-after-free Read in io_poll_remove_entries (3) (has report)
+       6  KASAN: use-after-free Read in io_poll_remove_entries (has report)
+       7  KASAN: use-after-free Read in io_poll_remove_entries (2) (has report)
+       8  KASAN: use-after-free Read in io_poll_remove_entries (3) (has report)
+       9  KASAN: use-after-free Read in io_poll_remove_entries (2) (has report)
+      10  KASAN: use-after-free Read in io_poll_remove_entries (5) (has report)
+The bug was not found.
+About 1764 commits remaining
+
+2025-11-21 19:03:00
+Session:   6
+Kernel:    2022-06-03 - 54c2cc79194c961a213c1d375fe3aa4165664cc4
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    4  KASAN: null-ptr-deref Write in io_file_get_normal (2) (has report)
+Running syz-repro.
+New PoC saved at /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0155-0.prog
+Primary PoC:     /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0155-0.prog
+Run Time:        0h20m0s
+The bug was found.
+About 905 commits remaining
+
+2025-11-21 19:36:52
+Session:   7
+Kernel:    2022-05-20 - 6a31a95135da0bb2c5349e49e37d76e9909ab7ea
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       3  KASAN: use-after-free Read in io_poll_remove_entries (2) (has report)
+       5  KASAN: use-after-free Read in io_poll_remove_entries (7) (has report)
+       6  KASAN: use-after-free Read in io_poll_remove_entries (5) (has report)
+       7  KASAN: use-after-free Read in io_poll_remove_entries (5) (has report)
+       8  KASAN: use-after-free Read in io_poll_remove_entries (4) (has report)
+       9  KASAN: use-after-free Read in io_poll_remove_entries (3) (has report)
+      10  KASAN: use-after-free Read in io_poll_remove_entries (8) (has report)
+The bug was not found.
+About 14452 commits remaining
+
+2025-11-21 19:57:21
+Session:   8
+Kernel:    2022-06-03 - 4ad680f083ec360e0991c453e18a38ed9ae500d7
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    3  KASAN: null-ptr-deref Write in io_file_get_normal (2) (has report)
+The bug was found.
+About 14125 commits remaining
+
+2025-11-21 20:05:38
+Session:   9
+Kernel:    2022-06-03 - 6f6ebb9899861c8a4e49cc7d9796d024f731b512
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       3  KASAN: use-after-free Read in io_poll_remove_entries (has report)
+       4  KASAN: use-after-free Read in io_poll_remove_entries (3) (has report)
+       5  KASAN: use-after-free Read in io_poll_remove_entries (3) (has report)
+       6  KASAN: use-after-free Read in io_poll_remove_entries (2) (has report)
+       7  KASAN: use-after-free Read in io_poll_remove_entries (4) (has report)
+       8  KASAN: use-after-free Read in io_poll_remove_entries (4) (has report)
+       9  KASAN: use-after-free Read in io_poll_remove_entries (6) (has report)
+      10  KASAN: use-after-free Read in io_poll_remove_entries (2) (has report)
+The bug was not found.
+About 497 commits remaining
+
+2025-11-21 20:19:47
+Session:   10
+Kernel:    2022-06-03 - 6e5f6a86915d65210e90acac0402e6f37e21fc7b
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       3  KASAN: use-after-free Read in io_poll_remove_entries (4) (has report)
+       4  KASAN: use-after-free Read in io_poll_remove_entries (3) (has report)
+       5  WARNING in ipgre_xmit (2) (has report)
+       5  KASAN: use-after-free Read in io_poll_remove_entries (has report)
+       6  KASAN: use-after-free Read in io_poll_remove_entries (2) (has report)
+       7  WARNING in ipgre_xmit (has report)
+       7  KASAN: use-after-free Read in io_poll_remove_entries (2) (has report)
+       8  WARNING in ipgre_xmit (has report)
+       8  KASAN: use-after-free Read in io_poll_remove_entries (4) (has report)
+       9  KASAN: use-after-free Read in io_poll_remove_entries (2) (has report)
+      10  KASAN: use-after-free Read in io_poll_remove_entries (7) (has report)
+The bug was not found.
+About 432 commits remaining
+
+2025-11-21 20:33:59
+Session:   11
+Kernel:    2022-06-03 - 72fbbc3d0e3e3117c29a73d0b4d928dc00ed99ce
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    3  KASAN: null-ptr-deref Write in io_file_get_normal (has report)
+The bug was found.
+About 29 commits remaining
+
+2025-11-21 20:44:40
+Session:   12
+Kernel:    2022-06-03 - 5ac8bdb9ad47334a9590e29daf7e4149b0a34729
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    4  KASAN: null-ptr-deref Write in io_file_get_normal (4) (has report)
+Running syz-repro.
+New PoC saved at /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0155-5.prog
+Primary PoC:     /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0155-5.prog
+Run Time:        0h29m0s
+The bug was found.
+About 14 commits remaining
+
+2025-11-21 21:21:53
+Session:   13
+Kernel:    2022-05-31 - 21870e02fcd385c39fe635e6531ce78302f3cd71
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       3  KASAN: use-after-free Read in io_poll_remove_entries (3) (has report)
+       4  KASAN: use-after-free Read in io_poll_remove_entries (2) (has report)
+       5  KASAN: use-after-free Read in io_poll_remove_entries (4) (has report)
+       6  KASAN: use-after-free Read in io_poll_remove_entries (4) (has report)
+       7  KASAN: use-after-free Read in io_poll_remove_entries (3) (has report)
+       8  KASAN: use-after-free Read in io_poll_remove_entries (6) (has report)
+       9  KASAN: use-after-free Read in io_poll_remove_entries (3) (has report)
+      10  KASAN: use-after-free Read in io_poll_remove_entries (6) (has report)
+The bug was not found.
+About 11877 commits remaining
+
+2025-11-21 21:42:26
+Session:   14
+Kernel:    2022-05-31 - 4278a0deb1f6cac40ded3362fe2a9827d7efee3d
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       3  KASAN: use-after-free Read in io_poll_remove_entries (4) (has report)
+       4  KASAN: use-after-free Read in io_poll_remove_entries (has report)
+       5  KASAN: use-after-free Read in io_poll_remove_entries (2) (has report)
+       6  KASAN: use-after-free Read in io_poll_remove_entries (5) (has report)
+       7  KASAN: use-after-free Read in io_poll_remove_entries (4) (has report)
+       8  KASAN: use-after-free Read in io_poll_remove_entries (4) (has report)
+       9  KASAN: use-after-free Read in io_poll_remove_entries (6) (has report)
+      10  KASAN: use-after-free Read in io_poll_remove_entries (4) (has report)
+The bug was not found.
+About 11874 commits remaining
+
+2025-11-21 21:56:29
+Session:   15
+Kernel:    2022-06-01 - 61c1b44a21d70d4783db02198fbf68b132f4953c
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       3  KASAN: use-after-free Read in io_poll_remove_entries (2) (has report)
+       4  KASAN: use-after-free Read in io_poll_remove_entries (5) (has report)
+       5  KASAN: use-after-free Read in io_poll_remove_entries (5) (has report)
+       6  KASAN: use-after-free Read in io_poll_remove_entries (3) (has report)
+       7  KASAN: use-after-free Read in io_poll_remove_entries (4) (has report)
+       8  KASAN: use-after-free Read in io_poll_remove_entries (3) (has report)
+       9  KASAN: use-after-free Read in io_poll_remove_entries (4) (has report)
+      10  KASAN: use-after-free Read in io_poll_remove_entries (4) (has report)
+The bug was not found.
+About 11872 commits remaining
+
+2025-11-21 22:10:26
+Session:   16
+Kernel:    2022-06-01 - 9cae36a094e7e9d6e5fe8b6dcd4642138b3eb0c7
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    4  KASAN: null-ptr-deref Write in io_file_get_normal (2) (has report)
+The bug was found.
+About 2 commits remaining
+
+==== Partial Result: Focused Fuzzing ====
+Reproducer:           /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0155-5.prog
+Bisection Result:     2022-06-01 - 9cae36a094e7e9d6e5fe8b6dcd4642138b3eb0c7
+Bisected Commit Name: io_uring: reinstate the inflight tracking
+Stage Time:           4h55m35s
+Run Time:             4h55m40s
+=========================================
+
+==== Anchor Commit ====
+
+2025-11-21 22:18:27
+Session:   17
+Kernel:    2022-06-01 - 61c1b44a21d70d4783db02198fbf68b132f4953c
+Compiler:  ccache gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0155-5.prog
+Attempt 0:
+    KASAN: use-after-free Read in io_poll_remove_entries (has report)
+Attempt 1:
+    KASAN: use-after-free Read in io_poll_remove_entries (has report)
+Attempt 2:
+    KASAN: use-after-free Read in io_poll_remove_entries (has report)
+Attempt 3:
+    KASAN: use-after-free Read in io_poll_remove_entries (has report)
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    KASAN: use-after-free Read in io_poll_remove_entries (has report)
+Attempt 6:
+    KASAN: use-after-free Read in io_poll_remove_entries (has report)
+Attempt 7:
+    No crashes found.
 The bug was not found.
 
 Failure: This bug cannot be found at the anchor commit.
+
+==== Partial Result: Primary PoC Test ====
+Reproducer:           /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0155-5.prog
+Bisection Result:     Failed to reproduce at the anchor commit.
+Stage Time:           0h11m36s
+Run Time:             5h7m16s
+==========================================
+
+==== Anchor Commit ====
+
+2025-11-21 22:30:05
+Session:   18
+Kernel:    2022-06-01 - 61c1b44a21d70d4783db02198fbf68b132f4953c
+Compiler:  ccache gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0155-4.prog
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+
+Failure: This bug cannot be found at the anchor commit.
+
+==== Partial Result: Subsequent PoC Test ====
+Reproducer:           /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0155-4.prog
+Bisection Result:     Failed to reproduce at the anchor commit.
+Stage Time:           0h11m15s
+Run Time:             5h18m32s
+=============================================
+
+==== Anchor Commit ====
+
+2025-11-21 22:41:21
+Session:   19
+Kernel:    2022-06-01 - 61c1b44a21d70d4783db02198fbf68b132f4953c
+Compiler:  ccache gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0155-6.prog
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+
+Failure: This bug cannot be found at the anchor commit.
+
+==== Partial Result: Subsequent PoC Test ====
+Reproducer:           /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0155-6.prog
+Bisection Result:     Failed to reproduce at the anchor commit.
+Stage Time:           0h11m16s
+Run Time:             5h29m49s
+=============================================
+
+==== Anchor Commit ====
+
+2025-11-21 22:52:38
+Session:   20
+Kernel:    2022-06-01 - 61c1b44a21d70d4783db02198fbf68b132f4953c
+Compiler:  ccache gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0155-3.prog
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+
+Failure: This bug cannot be found at the anchor commit.
+
+==== Partial Result: Subsequent PoC Test ====
+Reproducer:           /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0155-3.prog
+Bisection Result:     Failed to reproduce at the anchor commit.
+Stage Time:           0h11m12s
+Run Time:             5h41m1s
+=============================================
+
+==== Anchor Commit ====
+
+2025-11-21 23:03:50
+Session:   21
+Kernel:    2022-06-01 - 61c1b44a21d70d4783db02198fbf68b132f4953c
+Compiler:  ccache gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0155-1.prog
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+
+Failure: This bug cannot be found at the anchor commit.
+
+==== Partial Result: Subsequent PoC Test ====
+Reproducer:           /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0155-1.prog
+Bisection Result:     Failed to reproduce at the anchor commit.
+Stage Time:           0h11m13s
+Run Time:             5h52m14s
+=============================================
+
+==== Anchor Commit ====
+
+2025-11-21 23:15:03
+Session:   22
+Kernel:    2022-06-01 - 61c1b44a21d70d4783db02198fbf68b132f4953c
+Compiler:  ccache gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0155-0.prog
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+
+Failure: This bug cannot be found at the anchor commit.
+
+==== Partial Result: Subsequent PoC Test ====
+Reproducer:           /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0155-0.prog
+Bisection Result:     Failed to reproduce at the anchor commit.
+Stage Time:           0h11m15s
+Run Time:             6h3m30s
+=============================================
+
+==== Anchor Commit ====
+
+2025-11-21 23:26:20
+Session:   23
+Kernel:    2022-06-01 - 61c1b44a21d70d4783db02198fbf68b132f4953c
+Compiler:  ccache gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0155-2.prog
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+
+Failure: This bug cannot be found at the anchor commit.
+
+==== Partial Result: Subsequent PoC Test ====
+Reproducer:           /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0155-2.prog
+Bisection Result:     Failed to reproduce at the anchor commit.
+Stage Time:           0h11m14s
+Run Time:             6h14m45s
+=============================================
+
+====================================================================================================================================================
+Bug Name:             KASAN: null-ptr-deref Write in io_file_get_normal
+Bug ID:               bug0155
+Bug Link:             https://syzkaller.appspot.com/bug?id=bd729504526583afbae896e4862ba0e08afc95ba
+Bisection Result:     2022-06-01 - 9cae36a094e7e9d6e5fe8b6dcd4642138b3eb0c7
+Bisected Commit Name: io_uring: reinstate the inflight tracking
+Run Time:             6h14m45s
+
+Anchor Commit:        2022-06-08 - 6bfb56e93bcef41859c2d5ab234ffd80b691be35
+Bisection Result:     2022-06-01 - 9cae36a094e7e9d6e5fe8b6dcd4642138b3eb0c7
