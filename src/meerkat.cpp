@@ -41,6 +41,7 @@ using namespace std;
 
 // check for a patch of v4.19
 // check remaining disabled syscall cases
+// Fix bug where bisection continues with more PoCs after reaching OTR
 
 vector<string> order_pocs(const Environment &env)
 {
