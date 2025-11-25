@@ -13,6 +13,8 @@
 #include <set>
 #include <chrono>
 
+enum Bisect_Return {BIS_MULT = -3, BIS_ERR = -1, BIS_NORMAL = 0, BIS_DONE = 1, BIS_OTR = 2};
+
 enum Bisect_Mode {Mode_PoC, Mode_FF};
 enum Bisect_Phase {Bisect_Init, Bisect_Anchor, Bisect_Releases, Bisect_Kernel, Bisect_Done};
 
@@ -76,19 +78,19 @@ private:
     std::string gcc_mux(const Environment &, Git &, const std::string &);
     std::string get_compiler_for_commit(const Environment &, Git &, const std::string &);
 
-    int init_anchor_phase(Git &);
-    int init_releases_phase(const Environment &, Git &);
-    int init_bisect_phase(Git &);
+    Bisect_Return init_anchor_phase(Git &);
+    Bisect_Return init_releases_phase(const Environment &, Git &);
+    Bisect_Return init_bisect_phase(Git &);
 
     bool already_fuzzed(const Session &) const;
     bool session_was_found(const Session &) const;
     bool session_was_stable(const Session &) const;
 
-    int build_current_kernel(const Environment &, Git &, bool = false);
+    Bisect_Return build_current_kernel(const Environment &, Git &, bool = false);
 
-    int goto_anchor_session(const Environment &, Git &);
-    int goto_release_session(const Environment &, Git &);
-    int goto_bisect_session(const Environment &, Git &);
+    Bisect_Return goto_anchor_session(const Environment &, Git &);
+    Bisect_Return goto_release_session(const Environment &, Git &);
+    Bisect_Return goto_bisect_session(const Environment &, Git &);
 
     int do_syz_repro(Environment &);
 
@@ -103,9 +105,9 @@ private:
 
     int bisect_remaining(Git &) const;
 
-    int record_anchor(const Test_Result &);
-    int record_release(const Test_Result &);
-    int record_kernel(const Test_Result &, Git &);
+    Bisect_Return record_anchor(const Test_Result &);
+    Bisect_Return record_release(const Test_Result &);
+    Bisect_Return record_kernel(const Test_Result &, Git &);
     int _archive_session();
 
 public:
@@ -129,17 +131,17 @@ public:
 
     int remaining(Git &) const;
 
-    int next_phase(const Bisect_Phase, const Environment &, Git &);
+    Bisect_Return next_phase(const Bisect_Phase, const Environment &, Git &);
 
     // Goto the next session. Build everything as needed
     // Decide next session based on internal state
-    int next_session(const Environment &, Git &);
+    Bisect_Return next_session(const Environment &, Git &);
 
     // Fuzz and return a result
     Test_Result test_current(Environment &, Git &);
 
     int set_good_version(Git &);
-    int record(const Test_Result &, Git &);
+    Bisect_Return record(const Test_Result &, Git &);
     int archive_session(const Test_Result &);
 
     std::string print_anchor_fail(const Environment &, const std::chrono::steady_clock::time_point &, const std::chrono::steady_clock::time_point &, const std::string & = "", const std::string & = "") const;

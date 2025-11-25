@@ -55,9 +55,9 @@ vector<string> order_pocs(const Environment &env)
     return ret;
 }
 
-int do_bisection(Environment &env, Bisect &bisector, Git &linux_git)
+Bisect_Return do_bisection(Environment &env, Bisect &bisector, Git &linux_git)
 {
-    int err = 0;
+    Bisect_Return err = BIS_NORMAL;
     Test_Result result;
 
     // ======================================================================================================
@@ -66,7 +66,7 @@ int do_bisection(Environment &env, Bisect &bisector, Git &linux_git)
     if (bisector.next_phase(Bisect_Anchor, env, linux_git) < 0)
     {
         cerr << "Failed to advance to anchor commit phase.\n" << flush;
-        return -1;
+        return BIS_ERR;
     }
 
     cout << "\n==== Anchor Commit ====\n" << flush;
@@ -75,14 +75,14 @@ int do_bisection(Environment &env, Bisect &bisector, Git &linux_git)
     if (bisector.next_session(env, linux_git) < 0)
     {
         cerr << "Error: Failed to go to anchor commit\n" << flush;
-        return -1;
+        return BIS_ERR;
     }
 
     if (env.feats.setup_only)
     {
         write_syzkaller_config(env);
         cout << "Setup-only complete.\n" << flush;
-        return 1;
+        return BIS_DONE;
     }
 
     result = bisector.test_current(env, linux_git);
@@ -92,13 +92,13 @@ int do_bisection(Environment &env, Bisect &bisector, Git &linux_git)
         if (bisector.mode() == Mode_FF)
             cout << "Average TTF: " << result.suggest_ttf << endl;
         cout << "Find-only complete.\n";
-        return 1;
+        return BIS_DONE;
     }
 
     if (!result.found)
     {
         cout << "\nFailure: This bug cannot be found at the anchor commit.\n" << flush;
-        return 1;
+        return BIS_DONE;
     }
     else if (bisector.mode() == Mode_FF)
     {
@@ -114,7 +114,7 @@ int do_bisection(Environment &env, Bisect &bisector, Git &linux_git)
     if (err < 0)
     {
         cerr << "Failed to advance to Release search phase.\n" << flush;
-        return -1;
+        return BIS_ERR;
     }
 
     cout << "\n==== Major Release Search ====\n" 
@@ -129,12 +129,12 @@ int do_bisection(Environment &env, Bisect &bisector, Git &linux_git)
     if (err < 0)
     {
         cerr << "Failed to get or build next session.\n" << flush;
-        return -1;
+        return BIS_ERR;
     }
-    else if (err == 2 && bisector.remaining(linux_git) <= 0)
+    else if (err == BIS_OTR && bisector.remaining(linux_git) <= 0)
     {
         cout << "This bug was found on the oldest tested release.\n" << flush;
-        return err;
+        return BIS_OTR;
     }
 
     // Result: a bisect session and index into the releases.
@@ -147,7 +147,7 @@ int do_bisection(Environment &env, Bisect &bisector, Git &linux_git)
     if (err < 0)
     {
         cerr << "Failed to advance to kernel bisection phase.\n" << flush;
-        return -1;
+        return BIS_ERR;
     }
 
     cout << "\n==== Kernel Bisection ====\n"
@@ -158,19 +158,19 @@ int do_bisection(Environment &env, Bisect &bisector, Git &linux_git)
         result = bisector.test_current(env, linux_git);
         err = bisector.record(result, linux_git);
         cout << "About " << bisector.remaining(linux_git) << " commits remaining\n" << flush;
-        if (err == -3)
+        if (err == BIS_MULT)
             cout << "Git bisect reported multiple guilty commits\n" << flush;
     }
     if (err < 0)
     {
         cerr << "Failed to get or build next session.\n" << flush;
-        return -1;
+        return BIS_ERR;
     }
 
     // set bisector.good_version to bisector.bisect_version.first_parent()
     bisector.set_good_version(linux_git);
 
-    return 0;
+    return BIS_NORMAL;
 }
 
 int bisect(Environment &env)
@@ -264,16 +264,19 @@ redo_poc:
 
         if (env.feats.poc_all_pocs)
         {
+            if (err == BIS_OTR)
+                goto print_result;
+
             if (numPoCs <= 1)
             {
-                if (err != 1)
+                if (err != BIS_DONE)
                     goto print_result;
                 
                 cout << bisector.print_anchor_fail(env, starttime, stagetime, stage_title, env.primary_repro) << flush;
                 goto finish;
             }
 
-            if (err == 1)
+            if (err == BIS_DONE)
                 cout << bisector.print_anchor_fail(env, starttime, stagetime, stage_title, env.primary_repro) << flush;
             else
             {
