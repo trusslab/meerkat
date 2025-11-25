@@ -1,4 +1,4 @@
-./bin/bisector -i 5 -c /home/syzretrospector/syzinspector/wd-bisector-5/bisector.cfg -a a70385240892bcbc6442b054e847c74100e72f1a -F ff-test,poc-test,stateful-corpus,ff-no-find-backup
+./bin/meerkat -i 1 -c /home/syzretrospector/meerkat/wd-meerkat-1/meerkat.cfg -a a70385240892bcbc6442b054e847c74100e72f1a -F ff-test,poc-test,poc-all-pocs,ff-no-find-backup,stateful-corpus
 Bisecting:          WARNING in btf_type_id_size
 Syzbot Link:        https://syzkaller.appspot.com/bug?id=3897413eb15aa1bd9cd201cea5e58c4326448b51
 Working Name:       bug0196
@@ -10,23 +10,25 @@ Repository:         https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/lin
 Branch:             master
 Arch:               amd64
 
-Bisector:           /home/syzretrospector/syzinspector/
-Version:            1.0.4
-Kernel:             /home/syzretrospector/syzinspector/wd-bisector-5/kernel/
-Syzkaller:          /home/syzretrospector/syzinspector/syzkaller/
-Compilers:          /home/syzretrospector/compilers/
-Ccache:             ccache
+Meerkat:            /home/syzretrospector/meerkat/
+Version:            1.1.1
+Kernel:             /home/syzretrospector/meerkat/wd-meerkat-1/kernel/
+Syzkaller:          /home/syzretrospector/meerkat/syzkaller/
+Compilers:          /home/syzretrospector/meerkat/compilers/
+Compiler:           gcc (Ubuntu 11.4.0-1ubuntu1~22.04.2) 11.4.0
+Linker:             GNU ld (GNU Binutils for Ubuntu) 2.38
+Ccache:             ccache version 4.5.1
 Image:              /home/syzretrospector/images/stretch/stretch.img
 Image Key:          /home/syzretrospector/images/stretch/stretch.id_rsa
 
-Workdir:            /home/syzretrospector/syzinspector/wd-bisector-5/
-Kconfig:            /home/syzretrospector/syzinspector/wd-bisector-5/config-bug0196.txt
-Reproducers: (2)    /home/syzretrospector/syzinspector/wd-bisector-5/reproducers/
-Primary PoC:        /home/syzretrospector/syzinspector/wd-bisector-5/reproducers/repro-bug0196-3.prog
-Syzkaller Workdir:  /home/syzretrospector/syzinspector/wd-bisector-5/wd-kaller/
-Log Directory:      /home/syzretrospector/syzinspector/wd-bisector-5/log/
+Workdir:            /home/syzretrospector/meerkat/wd-meerkat-1/
+Kconfig:            /home/syzretrospector/meerkat/wd-meerkat-1/config-bug0196.txt
+Reproducers: (2)    /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/
+Primary PoC:        /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0196-3.prog
+Syzkaller Workdir:  /home/syzretrospector/meerkat/wd-meerkat-1/wd-kaller/
+Log Directory:      /home/syzretrospector/meerkat/wd-meerkat-1/log/
 
-Syscalls: (3)       ["bpf$BPF_BTF_LOAD", "ioctl$F2FS_IOC_START_ATOMIC_WRITE", "openat$selinux_enforce"]
+Syscalls: (5)       ["bpf$BPF_BTF_LOAD", "bpf$TOKEN_CREATE", "openat$selinux_enforce", "bpf$BPF_PROG_GET_FD_BY_ID", "bpf$BPF_PROG_GET_NEXT_ID"]
 VM Count:           8
 CPU Count:          2
 Procs:              16
@@ -37,28 +39,481 @@ Max Attempts:       1
 
 ==== Anchor Commit ====
 
-2025-03-13 21:01:19
+2025-10-02 16:27:20
 Session:   1
 Kernel:    2022-10-23 - a70385240892bcbc6442b054e847c74100e72f1a
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
-Warning: bpf$BPF_BTF_LOAD was disabled by Syzkaller.
-Error: Waitpid on pid 4136742 failed.
-Error: Syzkaller has experienced a crash.
-Warning: Child process exited with error status 32765.
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    2  WARNING in btf_type_id_size
+***    2  WARNING in btf_type_id_size
+***    2  WARNING in btf_type_id_size
+***    2  WARNING in btf_type_id_size
+***    2  WARNING in btf_type_id_size
+***    2  WARNING in btf_type_id_size
+***    2  WARNING in btf_type_id_size
+***    2  WARNING in btf_type_id_size
+***    2  WARNING in btf_type_id_size
+***    2  WARNING in btf_type_id_size
+***    2  WARNING in btf_type_id_size
+Attempt 2: (RETRY)
+    Time  Bug Name
+***    1  WARNING in btf_type_id_size
+Attempt 3: (RETRY)
+    Time  Bug Name
+       2  INFO: rcu detected stall in corrupted
+***    2  WARNING in btf_type_id_size
+***    2  WARNING in btf_type_id_size
+***    2  WARNING in btf_type_id_size
+***    2  WARNING in btf_type_id_size
+***    2  WARNING in btf_type_id_size
+***    2  WARNING in btf_type_id_size
+***    2  WARNING in btf_type_id_size
+***    2  WARNING in btf_type_id_size
+The bug was found.
+
+New Max Time: 10
+
+==== Major Release Search ====
+12 Releases
+
+2025-10-02 16:44:53
+Session:   2
+Kernel:    2022-10-02 - 4fe89d07dcc2804c8b562f6c7896a45643d34b2f (v6.0)
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    2  WARNING in btf_type_id_size
+***    2  WARNING in btf_type_id_size
+***    2  WARNING in btf_type_id_size
+***    2  WARNING in btf_type_id_size
+***    2  WARNING in btf_type_id_size
+***    2  WARNING in btf_type_id_size
+***    2  WARNING in btf_type_id_size
+***    2  WARNING in btf_type_id_size
+***    2  WARNING in btf_type_id_size
+***    2  WARNING in btf_type_id_size
+Running syz-repro.
+New PoC saved at /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0196-0.prog
+Primary PoC:     /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0196-0.prog
+Run Time:        0h4m0s
+The bug was found.
+About 11 releases remaining
+
+2025-10-02 17:02:42
+Session:   3
+Kernel:    2022-07-31 - 3d7cb6b04c3f3115719235cc6866b10326de34cd (v5.19)
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    2  WARNING in btf_type_id_size
+***    2  WARNING in btf_type_id_size
+***    2  WARNING in btf_type_id_size
+***    2  WARNING in btf_type_id_size
+***    2  WARNING in btf_type_id_size
+***    2  WARNING in btf_type_id_size
+***    2  WARNING in btf_type_id_size
+***    2  WARNING in btf_type_id_size
+***    2  WARNING in btf_type_id_size
+The bug was found.
+About 10 releases remaining
+
+2025-10-02 17:16:08
+Session:   4
+Kernel:    2022-05-22 - 4b0986a3613c92f4ec1bdc7f60ec66fea135991f (v5.18)
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    2  WARNING in btf_type_id_size
+***    2  WARNING in btf_type_id_size
+***    2  WARNING in btf_type_id_size
+***    2  WARNING in btf_type_id_size
+***    2  WARNING in btf_type_id_size
+***    2  WARNING in btf_type_id_size
+***    2  WARNING in btf_type_id_size
+***    2  WARNING in btf_type_id_size
+The bug was found.
+About 9 releases remaining
+
+2025-10-02 17:28:40
+Session:   5
+Kernel:    2022-01-09 - df0cc57e057f18e44dac8e6c18aba47ab53202f9 (v5.16)
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    2  WARNING in btf_type_id_size
+***    2  WARNING in btf_type_id_size
+***    2  WARNING in btf_type_id_size
+***    2  WARNING in btf_type_id_size
+***    2  WARNING in btf_type_id_size
+***    2  WARNING in btf_type_id_size
+***    2  WARNING in btf_type_id_size
+Running syz-repro.
+New PoC saved at /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0196-1.prog
+Primary PoC:     /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0196-0.prog
+Run Time:        0h4m0s
+The bug was found.
+About 8 releases remaining
+
+2025-10-02 17:45:18
+Session:   6
+Kernel:    2021-08-29 - 7d2a07b769330c34b4deabeed939325c77a7ec2f (v5.14)
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
 Attempt 1:
     No crashes found.
-Warning: bpf$BPF_BTF_LOAD was disabled by Syzkaller.
-Error: Waitpid on pid 4138825 failed.
-Error: Syzkaller has experienced a crash.
-Warning: Child process exited with error status 32765.
-Attempt 2: (RETRY)
+The bug was not found.
+About 7 releases remaining
+
+==== Kernel Bisection ====
+28858 Linux commits
+
+2025-10-02 18:06:00
+Session:   7
+Kernel:    2021-10-28 - 970eae15600a883e4ad27dd0757b18871cc983ab
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       5  WARNING: ODEBUG bug in netdev_run_todo
+The bug was not found.
+About 14451 commits remaining
+
+2025-10-02 18:26:43
+Session:   8
+Kernel:    2021-11-03 - ae45d84fc36d01dcb1007f4298871eec37907904
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    2  WARNING in btf_type_id_size
+***    2  WARNING in btf_type_id_size
+***    2  WARNING in btf_type_id_size
+***    2  WARNING in btf_type_id_size
+***    2  WARNING in btf_type_id_size
+***    2  WARNING in btf_type_id_size
+***    2  WARNING in btf_type_id_size
+***    2  WARNING in btf_type_id_size
+The bug was found.
+About 7349 commits remaining
+
+2025-10-02 18:39:32
+Session:   9
+Kernel:    2021-11-02 - fc02cb2b37fe2cbf1d3334b9f0f0eab9431766c4
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    2  WARNING in btf_type_id_size
+***    2  WARNING in btf_type_id_size
+***    2  WARNING in btf_type_id_size
+***    2  WARNING in btf_type_id_size
+***    2  WARNING in btf_type_id_size
+***    2  WARNING in btf_type_id_size
+***    2  WARNING in btf_type_id_size
+***    2  WARNING in btf_type_id_size
+The bug was found.
+About 4799 commits remaining
+
+2025-10-02 18:52:17
+Session:   10
+Kernel:    2021-11-01 - d2fac0afe89fe30c39eaa98dda71f7c4cea190c2
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
     No crashes found.
-Warning: bpf$BPF_BTF_LOAD was disabled by Syzkaller.
-Error: Waitpid on pid 4140917 failed.
-Error: Syzkaller has experienced a crash.
-Warning: Child process exited with error status 32765.
-Attempt 3: (RETRY)
+The bug was not found.
+About 2400 commits remaining
+
+2025-10-02 19:13:01
+Session:   11
+Kernel:    2021-10-18 - 8e25a2bc6687cd45aef909d6d862718745b5a3fc
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    2  WARNING in btf_type_id_size
+***    2  WARNING in btf_type_id_size
+***    2  WARNING in btf_type_id_size
+***    2  WARNING in btf_type_id_size
+***    2  WARNING in btf_type_id_size
+***    2  WARNING in btf_type_id_size
+***    2  WARNING in btf_type_id_size
+Running syz-repro.
+New PoC saved at /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0196-1.prog
+Primary PoC:     /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0196-0.prog
+Run Time:        0h4m0s
+The bug was found.
+About 1200 commits remaining
+
+2025-10-02 19:29:36
+Session:   12
+Kernel:    2021-10-04 - cfbe9b002109621bf9a282a4a24f9415ef14b57b
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    2  WARNING in btf_type_id_size
+***    2  WARNING in btf_type_id_size
+***    2  WARNING in btf_type_id_size
+***    2  WARNING in btf_type_id_size
+***    2  WARNING in btf_type_id_size
+***    2  WARNING in btf_type_id_size
+***    2  WARNING in btf_type_id_size
+The bug was found.
+About 601 commits remaining
+
+2025-10-02 19:42:10
+Session:   13
+Kernel:    2021-09-25 - 8765de69e7a18d7d17b9c367ae9ca653bc50e8b0
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    2  WARNING in btf_type_id_size
+***    2  WARNING in btf_type_id_size
+***    2  WARNING in btf_type_id_size
+***    2  WARNING in btf_type_id_size
+***    2  WARNING in btf_type_id_size
+***    2  WARNING in btf_type_id_size
+The bug was found.
+About 301 commits remaining
+
+2025-10-02 19:54:47
+Session:   14
+Kernel:    2021-09-17 - f68d08c437f98ee19a14142b9de2d7afe2032d5c
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 448 commits remaining
+
+2025-10-02 20:15:17
+Session:   15
+Kernel:    2021-09-19 - 9ce4e3d6d85600153e61c4b8c3c346bd84d84470
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    2  WARNING in btf_type_id_size
+***    2  WARNING in btf_type_id_size
+***    2  WARNING in btf_type_id_size
+***    2  WARNING in btf_type_id_size
+***    2  WARNING in btf_type_id_size
+***    2  WARNING in btf_type_id_size
+***    2  WARNING in btf_type_id_size
+***    2  WARNING in btf_type_id_size
+Running syz-repro.
+New PoC saved at /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0196-1.prog
+Primary PoC:     /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0196-0.prog
+Run Time:        0h4m0s
+The bug was found.
+About 88 commits remaining
+
+2025-10-02 20:30:20
+Session:   16
+Kernel:    2021-09-14 - 67dfac47dac67a44d5bbdab2541a35ce33a2729a
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 1823 commits remaining
+
+2025-10-02 20:50:53
+Session:   17
+Kernel:    2021-09-17 - 60aed22076b0d0ec2b7c7f9dba3ccd642520e1f3
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    2  WARNING in btf_type_id_size
+***    2  WARNING in btf_type_id_size
+***    2  WARNING in btf_type_id_size
+***    2  WARNING in btf_type_id_size
+***    2  WARNING in btf_type_id_size
+***    2  WARNING in btf_type_id_size
+***    2  WARNING in btf_type_id_size
+The bug was found.
+About 23 commits remaining
+
+2025-10-02 20:58:05
+Session:   18
+Kernel:    2021-09-14 - ad526474aec1d9abb9838e3fb1330bb991715c22
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    2  WARNING in btf_type_id_size
+***    2  WARNING in btf_type_id_size
+***    2  WARNING in btf_type_id_size
+***    2  WARNING in btf_type_id_size
+***    2  WARNING in btf_type_id_size
+***    2  WARNING in btf_type_id_size
+***    2  WARNING in btf_type_id_size
+***    2  WARNING in btf_type_id_size
+The bug was found.
+About 12 commits remaining
+
+2025-10-02 21:04:13
+Session:   19
+Kernel:    2021-09-14 - 30025e8bd80fdc5a4159ec7f9511121ea561f456
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    2  WARNING in btf_type_id_size
+***    2  WARNING in btf_type_id_size
+***    2  WARNING in btf_type_id_size
+***    2  WARNING in btf_type_id_size
+***    2  WARNING in btf_type_id_size
+***    2  WARNING in btf_type_id_size
+***    2  WARNING in btf_type_id_size
+***    2  WARNING in btf_type_id_size
+Running syz-repro.
+New PoC saved at /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0196-1.prog
+Primary PoC:     /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0196-0.prog
+Run Time:        0h4m0s
+The bug was found.
+About 6 commits remaining
+
+2025-10-02 21:14:26
+Session:   20
+Kernel:    2021-09-14 - 8987ede3ed276f669eb88d952184e1d2bf42ea6b
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 4 commits remaining
+
+2025-10-02 21:28:40
+Session:   21
+Kernel:    2021-09-14 - b5ea834dde6b6e7f75e51d5f66dac8cd7c97b5ef
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    2  WARNING in btf_type_id_size
+***    2  WARNING in btf_type_id_size
+The bug was found.
+About 3 commits remaining
+
+2025-10-02 21:34:54
+Session:   22
+Kernel:    2021-09-14 - 41ced4cd88020c9d4b71ff7c50d020f081efa4a0
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 2 commits remaining
+
+==== Partial Result: Focused Fuzzing ====
+Reproducer:           /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0196-0.prog
+Bisection Result:     2021-09-14 - b5ea834dde6b6e7f75e51d5f66dac8cd7c97b5ef
+Bisected Commit Name: bpf: Support for new btf kind BTF_KIND_TAG
+Stage Time:           5h21m48s
+Run Time:             5h21m48s
+=========================================
+
+==== Anchor Commit ====
+
+2025-10-02 21:49:08
+Session:   23
+Kernel:    2021-09-14 - 41ced4cd88020c9d4b71ff7c50d020f081efa4a0
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0196-0.prog
+Warning: VM has not responded after 5 attempts.
+Warning: Only booted 7 VMs.
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    KFENCE: use-after-free in kvm_fastop_exception
+Attempt 7:
+    KFENCE: use-after-free in kvm_fastop_exception
+The bug was not found.
+
+Failure: This bug cannot be found at the anchor commit.
+
+==== Partial Result: Primary PoC Test ====
+Reproducer:           /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0196-0.prog
+Bisection Result:     Failed to reproduce at the anchor commit.
+Stage Time:           0h12m30s
+Run Time:             5h34m19s
+==========================================
+
+==== Anchor Commit ====
+
+2025-10-02 22:01:41
+Session:   24
+Kernel:    2021-09-14 - 41ced4cd88020c9d4b71ff7c50d020f081efa4a0
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0196-7.prog
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
     No crashes found.
 The bug was not found.
 
 Failure: This bug cannot be found at the anchor commit.
+
+==== Partial Result: Subsequent PoC Test ====
+Reproducer:           /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0196-7.prog
+Bisection Result:     Failed to reproduce at the anchor commit.
+Stage Time:           0h11m27s
+Run Time:             5h45m47s
+=============================================
+
+==== Anchor Commit ====
+
+2025-10-02 22:13:08
+Session:   25
+Kernel:    2021-09-14 - 41ced4cd88020c9d4b71ff7c50d020f081efa4a0
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0196-3.prog
+Warning: VM has not responded after 5 attempts.
+Warning: Only booted 7 VMs.
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    KFENCE: use-after-free in kvm_fastop_exception
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    KFENCE: use-after-free in kvm_fastop_exception
+Attempt 7:
+    No crashes found.
+The bug was not found.
+
+Failure: This bug cannot be found at the anchor commit.
+
+==== Partial Result: Subsequent PoC Test ====
+Reproducer:           /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0196-3.prog
+Bisection Result:     Failed to reproduce at the anchor commit.
+Stage Time:           0h12m30s
+Run Time:             5h58m17s
+=============================================
+
+====================================================================================================================================================
+Bug Name:             WARNING in btf_type_id_size
+Big ID:               bug0196
+Bug Link:             https://syzkaller.appspot.com/bug?id=3897413eb15aa1bd9cd201cea5e58c4326448b51
+Bisection Result:     2021-09-14 - b5ea834dde6b6e7f75e51d5f66dac8cd7c97b5ef
+Bisected Commit Name: bpf: Support for new btf kind BTF_KIND_TAG
+Run Time:             5h58m17s
+
+Anchor Commit:        2022-10-23 - a70385240892bcbc6442b054e847c74100e72f1a
+Bisection Result:     2021-09-14 - b5ea834dde6b6e7f75e51d5f66dac8cd7c97b5ef

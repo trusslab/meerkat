@@ -1,4 +1,4 @@
-./bin/bisector -i 5 -c /home/syzretrospector/syzinspector/wd-bisector-5/bisector.cfg -a 200e340f2196d7fd427a5810d06e893b932f145a -F ff-test,poc-test,stateful-corpus,ff-no-find-backup
+./bin/meerkat -i 1 -c /home/syzretrospector/meerkat/wd-meerkat-1/meerkat.cfg -a 200e340f2196d7fd427a5810d06e893b932f145a -F ff-test,poc-test,poc-all-pocs,ff-no-find-backup,stateful-corpus
 Bisecting:          WARNING in blk_mq_release
 Syzbot Link:        https://syzkaller.appspot.com/bug?id=1abe2db081aaca3d3ca9eef2108f8131ec128bd4
 Working Name:       bug0199
@@ -10,20 +10,22 @@ Repository:         https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/lin
 Branch:             master
 Arch:               amd64
 
-Bisector:           /home/syzretrospector/syzinspector/
-Version:            1.0.4
-Kernel:             /home/syzretrospector/syzinspector/wd-bisector-5/kernel/
-Syzkaller:          /home/syzretrospector/syzinspector/syzkaller/
-Compilers:          /home/syzretrospector/compilers/
-Ccache:             ccache
+Meerkat:            /home/syzretrospector/meerkat/
+Version:            1.1.1
+Kernel:             /home/syzretrospector/meerkat/wd-meerkat-1/kernel/
+Syzkaller:          /home/syzretrospector/meerkat/syzkaller/
+Compilers:          /home/syzretrospector/meerkat/compilers/
+Compiler:           gcc (Ubuntu 11.4.0-1ubuntu1~22.04.2) 11.4.0
+Linker:             GNU ld (GNU Binutils for Ubuntu) 2.38
+Ccache:             ccache version 4.5.1
 Image:              /home/syzretrospector/images/stretch/stretch.img
 Image Key:          /home/syzretrospector/images/stretch/stretch.id_rsa
 
-Workdir:            /home/syzretrospector/syzinspector/wd-bisector-5/
-Kconfig:            /home/syzretrospector/syzinspector/wd-bisector-5/config-bug0199.txt
-Reproducers: (2)    /home/syzretrospector/syzinspector/wd-bisector-5/reproducers/
-Syzkaller Workdir:  /home/syzretrospector/syzinspector/wd-bisector-5/wd-kaller/
-Log Directory:      /home/syzretrospector/syzinspector/wd-bisector-5/log/
+Workdir:            /home/syzretrospector/meerkat/wd-meerkat-1/
+Kconfig:            /home/syzretrospector/meerkat/wd-meerkat-1/config-bug0199.txt
+Reproducers: (2)    /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/
+Syzkaller Workdir:  /home/syzretrospector/meerkat/wd-meerkat-1/wd-kaller/
+Log Directory:      /home/syzretrospector/meerkat/wd-meerkat-1/log/
 
 Syscalls: (6)       ["ioctl$LOOP_CTL_ADD", "ioctl$LOOP_CTL_GET_FREE", "ioctl$LOOP_CTL_REMOVE", "openat$loop_ctrl", "ioctl$F2FS_IOC_START_ATOMIC_WRITE", "openat$selinux_enforce"]
 VM Count:           8
@@ -36,16 +38,326 @@ Max Attempts:       1
 
 ==== Anchor Commit ====
 
-2025-03-13 22:13:12
+2025-10-02 23:11:55
 Session:   1
 Kernel:    2022-08-03 - 200e340f2196d7fd427a5810d06e893b932f145a
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    3  WARNING in blk_mq_release
+Attempt 2: (RETRY)
+    Time  Bug Name
+***    2  WARNING in blk_mq_release
+***    2  WARNING in blk_mq_release
+Attempt 3: (RETRY)
+    Time  Bug Name
+***    2  WARNING in blk_mq_release
+The bug was found.
+
+New Max Time: 10
+
+==== Major Release Search ====
+12 Releases
+
+2025-10-02 23:30:48
+Session:   2
+Kernel:    2022-07-31 - 3d7cb6b04c3f3115719235cc6866b10326de34cd (v5.19)
+Compiler:  ccache gcc
 Attempt 1:
     No crashes found.
-Attempt 2: (RETRY)
+The bug was not found.
+About 11 releases remaining
+
+==== Kernel Bisection ====
+2973 Linux commits
+
+2025-10-02 23:52:21
+Session:   3
+Kernel:    2022-08-02 - 3976d758e045ed0485e0e665fb3b6692572576d7
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       8  WARNING: ODEBUG bug in netdev_run_todo
+The bug was not found.
+About 1465 commits remaining
+
+2025-10-03 00:13:30
+Session:   4
+Kernel:    2022-08-02 - 42df1cbf6a4726934cc5dac12bf263aa73c49fa3
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       7  WARNING: ODEBUG bug in netdev_run_todo
+The bug was not found.
+About 737 commits remaining
+
+2025-10-03 00:34:33
+Session:   5
+Kernel:    2022-08-02 - c2a24a7a036b3bd3a2e6c66730dfc777cae6540a
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    2  WARNING in blk_mq_release
+***    2  WARNING in blk_mq_release
+***    2  WARNING in blk_mq_release
+Running syz-repro.
+syz-repro was terminated after 60 minutes
+Run Time:        1h0m0s
+The bug was found.
+About 365 commits remaining
+
+2025-10-03 01:47:33
+Session:   6
+Kernel:    2022-08-02 - c013d0af81f60cc7dbe357c4e2a925fb6738dbfe
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    2  WARNING in blk_mq_release
+***    2  WARNING in blk_mq_release
+The bug was found.
+About 180 commits remaining
+
+2025-10-03 01:59:08
+Session:   7
+Kernel:    2022-07-14 - 4664954c9421ce326bb5c84f175902b03f17237e
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    2  WARNING in blk_mq_release
+***    2  WARNING in blk_mq_release
+***    2  WARNING in blk_mq_release
+***    2  WARNING in blk_mq_release
+***    2  WARNING in blk_mq_release
+***    2  WARNING in blk_mq_release
+***    2  WARNING in blk_mq_release
+***    2  WARNING in blk_mq_release
+***    2  WARNING in blk_mq_release
+***    2  WARNING in blk_mq_release
+***    2  WARNING in blk_mq_release
+***    2  WARNING in blk_mq_release
+***    2  WARNING in blk_mq_release
+The bug was found.
+About 90 commits remaining
+
+2025-10-03 02:12:23
+Session:   8
+Kernel:    2022-06-28 - 4a8d14bba486cca6880062f1ef240cf1d45f3367
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    2  WARNING in blk_mq_release
+***    2  WARNING in blk_mq_release
+***    2  WARNING in blk_mq_release
+***    2  WARNING in blk_mq_release
+***    2  WARNING in blk_mq_release
+***    2  WARNING in blk_mq_release
+***    2  WARNING in blk_mq_release
+***    2  WARNING in blk_mq_release
+***    2  WARNING in blk_mq_release
+***    2  WARNING in blk_mq_release
+***    2  WARNING in blk_mq_release
+***    2  WARNING in blk_mq_release
+Running syz-repro.
+New PoC saved at /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0199-0.prog
+Primary PoC:     /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0199-0.prog
+Run Time:        0h32m0s
+The bug was found.
+About 45 commits remaining
+
+2025-10-03 02:52:33
+Session:   9
+Kernel:    2022-06-27 - 6c77b152f5f1324972cdbdb71e9a6e02d601f49f
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       8  WARNING: ODEBUG bug in netdev_run_todo
+The bug was not found.
+About 23 commits remaining
+
+2025-10-03 03:13:30
+Session:   10
+Kernel:    2022-06-27 - 9c6227e04355a430aa59709bbf869d9126112d0d
+Compiler:  ccache gcc
+Attempt 1:
     No crashes found.
-Attempt 3: (RETRY)
+The bug was not found.
+About 12 commits remaining
+
+2025-10-03 03:29:45
+Session:   11
+Kernel:    2022-06-28 - 1f90307e5f0d7bc9a336ead528f616a5df8e5944
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 7 commits remaining
+
+2025-10-03 03:46:00
+Session:   12
+Kernel:    2022-06-28 - 8b9ab62662048a3274361c7e5f64037c2c133e2c
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    2  WARNING in blk_mq_release
+***    2  WARNING in blk_mq_release
+***    2  WARNING in blk_mq_release
+***    2  WARNING in blk_mq_release
+***    2  WARNING in blk_mq_release
+***    2  WARNING in blk_mq_release
+***    2  WARNING in blk_mq_release
+***    2  WARNING in blk_mq_release
+***    2  WARNING in blk_mq_release
+***    2  WARNING in blk_mq_release
+***    2  WARNING in blk_mq_release
+***    2  WARNING in blk_mq_release
+The bug was found.
+About 4 commits remaining
+
+2025-10-03 03:53:10
+Session:   13
+Kernel:    2022-06-28 - 6f8191fdf41d3a53cc1d63fe2234e812c55a0092
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    2  WARNING in blk_mq_release
+***    2  WARNING in blk_mq_release
+***    2  WARNING in blk_mq_release
+***    2  WARNING in blk_mq_release
+***    2  WARNING in blk_mq_release
+***    2  WARNING in blk_mq_release
+***    2  WARNING in blk_mq_release
+***    2  WARNING in blk_mq_release
+***    2  WARNING in blk_mq_release
+***    2  WARNING in blk_mq_release
+The bug was found.
+About 3 commits remaining
+
+2025-10-03 04:01:22
+Session:   14
+Kernel:    2022-06-28 - 0e3534022f26ae51f7cf28347a253230604b6f4e
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 2 commits remaining
+
+==== Partial Result: Focused Fuzzing ====
+Reproducer:           /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0199-0.prog
+Bisection Result:     2022-06-28 - 6f8191fdf41d3a53cc1d63fe2234e812c55a0092
+Bisected Commit Name: block: simplify disk shutdown
+Stage Time:           5h4m25s
+Run Time:             5h4m26s
+=========================================
+
+==== Anchor Commit ====
+
+2025-10-03 04:16:20
+Session:   15
+Kernel:    2022-06-28 - 0e3534022f26ae51f7cf28347a253230604b6f4e
+Compiler:  ccache gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0199-0.prog
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
     No crashes found.
 The bug was not found.
 
 Failure: This bug cannot be found at the anchor commit.
+
+==== Partial Result: Primary PoC Test ====
+Reproducer:           /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0199-0.prog
+Bisection Result:     Failed to reproduce at the anchor commit.
+Stage Time:           0h12m14s
+Run Time:             5h16m41s
+==========================================
+
+==== Anchor Commit ====
+
+2025-10-03 04:28:37
+Session:   16
+Kernel:    2022-06-28 - 0e3534022f26ae51f7cf28347a253230604b6f4e
+Compiler:  ccache gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0199-1.prog
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+
+Failure: This bug cannot be found at the anchor commit.
+
+==== Partial Result: Subsequent PoC Test ====
+Reproducer:           /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0199-1.prog
+Bisection Result:     Failed to reproduce at the anchor commit.
+Stage Time:           0h12m16s
+Run Time:             5h28m57s
+=============================================
+
+==== Anchor Commit ====
+
+2025-10-03 04:40:54
+Session:   17
+Kernel:    2022-06-28 - 0e3534022f26ae51f7cf28347a253230604b6f4e
+Compiler:  ccache gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0199-2.prog
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    WARNING: ODEBUG bug in netdev_run_todo
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+
+Failure: This bug cannot be found at the anchor commit.
+
+==== Partial Result: Subsequent PoC Test ====
+Reproducer:           /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0199-2.prog
+Bisection Result:     Failed to reproduce at the anchor commit.
+Stage Time:           0h12m26s
+Run Time:             5h41m23s
+=============================================
+
+====================================================================================================================================================
+Bug Name:             WARNING in blk_mq_release
+Big ID:               bug0199
+Bug Link:             https://syzkaller.appspot.com/bug?id=1abe2db081aaca3d3ca9eef2108f8131ec128bd4
+Bisection Result:     2022-06-28 - 6f8191fdf41d3a53cc1d63fe2234e812c55a0092
+Bisected Commit Name: block: simplify disk shutdown
+Run Time:             5h41m24s
+
+Anchor Commit:        2022-08-03 - 200e340f2196d7fd427a5810d06e893b932f145a
+Bisection Result:     2022-06-28 - 6f8191fdf41d3a53cc1d63fe2234e812c55a0092

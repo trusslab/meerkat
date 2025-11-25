@@ -1,4 +1,4 @@
-./bin/bisector -i 5 -c /home/syzretrospector/syzinspector/wd-bisector-5/bisector.cfg -a 1d1df41c5a33359a00e919d54eaebfb789711fdc -F ff-test,poc-test,stateful-corpus,ff-no-find-backup
+./bin/meerkat -i 1 -c /home/syzretrospector/meerkat/wd-meerkat-1/meerkat.cfg -a 1d1df41c5a33359a00e919d54eaebfb789711fdc -F ff-test,poc-test,poc-all-pocs,ff-no-find-backup,stateful-corpus
 Bisecting:          KASAN: use-after-free Read in srcu_invoke_callbacks
 Syzbot Link:        https://syzkaller.appspot.com/bug?id=e6bbec1dac645e4ff5e5ffe74912a2808e95fe62
 Working Name:       bug0224
@@ -10,20 +10,22 @@ Repository:         https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/lin
 Branch:             master
 Arch:               amd64
 
-Bisector:           /home/syzretrospector/syzinspector/
-Version:            1.0.4
-Kernel:             /home/syzretrospector/syzinspector/wd-bisector-5/kernel/
-Syzkaller:          /home/syzretrospector/syzinspector/syzkaller/
-Compilers:          /home/syzretrospector/compilers/
-Ccache:             ccache
+Meerkat:            /home/syzretrospector/meerkat/
+Version:            1.1.1
+Kernel:             /home/syzretrospector/meerkat/wd-meerkat-1/kernel/
+Syzkaller:          /home/syzretrospector/meerkat/syzkaller/
+Compilers:          /home/syzretrospector/meerkat/compilers/
+Compiler:           gcc (Ubuntu 11.4.0-1ubuntu1~22.04.2) 11.4.0
+Linker:             GNU ld (GNU Binutils for Ubuntu) 2.38
+Ccache:             ccache version 4.5.1
 Image:              /home/syzretrospector/images/stretch/stretch.img
 Image Key:          /home/syzretrospector/images/stretch/stretch.id_rsa
 
-Workdir:            /home/syzretrospector/syzinspector/wd-bisector-5/
-Kconfig:            /home/syzretrospector/syzinspector/wd-bisector-5/config-bug0224.txt
-Reproducers: (2)    /home/syzretrospector/syzinspector/wd-bisector-5/reproducers/
-Syzkaller Workdir:  /home/syzretrospector/syzinspector/wd-bisector-5/wd-kaller/
-Log Directory:      /home/syzretrospector/syzinspector/wd-bisector-5/log/
+Workdir:            /home/syzretrospector/meerkat/wd-meerkat-1/
+Kconfig:            /home/syzretrospector/meerkat/wd-meerkat-1/config-bug0224.txt
+Reproducers: (2)    /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/
+Syzkaller Workdir:  /home/syzretrospector/meerkat/wd-meerkat-1/wd-kaller/
+Log Directory:      /home/syzretrospector/meerkat/wd-meerkat-1/log/
 
 Syscalls: (7)       ["sendmsg$NBD_CMD_CONNECT", "syz_genetlink_get_family_id$nbd", "syz_init_net_socket$nl_generic", "socketpair$nbd", "socket", "ioctl$F2FS_IOC_START_ATOMIC_WRITE", "openat$selinux_enforce"]
 VM Count:           4
@@ -36,194 +38,543 @@ Max Attempts:       1
 
 ==== Anchor Commit ====
 
-2025-03-14 18:51:38
+2025-10-03 18:15:25
 Session:   1
 Kernel:    2022-01-19 - 1d1df41c5a33359a00e919d54eaebfb789711fdc
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Compiler:  ccache gcc
 Attempt 1:
     Time  Bug Name
-***    3  KASAN: use-after-free Read in srcu_invoke_callbacks
+***    5  KASAN: use-after-free Read in srcu_invoke_callbacks
 Attempt 2: (RETRY)
     No crashes found.
 Attempt 3: (RETRY)
-    Time  Bug Name
-      10  WARNING in fib6_add
+    No crashes found.
 The bug was found.
 
 New Max Time: 12
 
 ==== Major Release Search ====
-17 Releases
+11 Releases
 
-2025-03-14 19:29:19
+2025-10-03 18:51:22
 Session:   2
-Kernel:    2021-10-31 - 8bb7eca972ad531c9b149c0a51ab43a417385813 (v5.15)
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Kernel:    2022-01-09 - df0cc57e057f18e44dac8e6c18aba47ab53202f9 (v5.16)
+Compiler:  ccache gcc
 Attempt 1:
     No crashes found.
 The bug was not found.
-About 16 releases remaining
+About 10 releases remaining
 
 ==== Kernel Bisection ====
-26585 Linux commits
+11201 Linux commits
 
-2025-03-14 19:56:29
+2025-10-03 19:14:04
 Session:   3
-Kernel:    2021-11-27 - 335302dbc2e4d041b579614beed83124f341ff43
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Kernel:    2022-01-11 - 5c947d0dbae8038ec1c8b538891f6475350542ee
+Compiler:  ccache gcc
 Attempt 1:
     No crashes found.
 The bug was not found.
-About 13291 commits remaining
+About 5623 commits remaining
 
-2025-03-14 20:23:19
+2025-10-03 19:36:31
 Session:   4
-Kernel:    2022-01-10 - 8efd0d9c316af470377894a6a0f9ff63ce18c177
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Kernel:    2022-01-14 - e1a7aa25ff45636a6c1930bf2430c8b802e93d9c
+Compiler:  ccache gcc
 Attempt 1:
     No crashes found.
 The bug was not found.
-About 6141 commits remaining
+About 2777 commits remaining
 
-2025-03-14 20:49:36
+2025-10-03 19:58:52
 Session:   5
-Kernel:    2022-01-12 - 455e73a07f6e288b0061dfcf4fcf54fa9fe06458
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Kernel:    2022-01-15 - f56caedaf94f9ced5dbfcdb0060a3e788d2078af
+Compiler:  ccache gcc
 Attempt 1:
     No crashes found.
 The bug was not found.
-About 3151 commits remaining
+About 1381 commits remaining
 
-2025-03-14 21:15:42
+2025-10-03 20:21:17
 Session:   6
-Kernel:    2022-01-15 - a33f5c380c4bd3fa5278d690421b72052456d9fe
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Kernel:    2022-01-17 - 6661224e66f03706daea8e27714436851cf01731
+Compiler:  ccache gcc
 Attempt 1:
     No crashes found.
 The bug was not found.
-About 1528 commits remaining
+About 705 commits remaining
 
-2025-03-14 21:41:45
+2025-10-03 20:43:40
 Session:   7
-Kernel:    2022-01-16 - 79e06c4c4950be2abd8ca5d2428a8c915aa62c24
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Kernel:    2022-01-18 - 46a10fc3a2beddd79dafc3cd800f14bde0844387
+Compiler:  ccache gcc
 Attempt 1:
-    Time  Bug Name
-***    3  KASAN: use-after-free Read in srcu_invoke_callbacks
-Running syz-repro.
-syz-repro was terminated after 60 minutes
-Run Time:        1h0m0s
-The bug was found.
-About 812 commits remaining
+    No crashes found.
+The bug was not found.
+About 355 commits remaining
 
-2025-03-14 22:58:54
+2025-10-03 21:06:07
 Session:   8
-Kernel:    2022-01-16 - d0a231f01e5b25bacd23e6edc7c979a18a517b2b
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Kernel:    2022-01-18 - a254a0e4093fce8c832414a83940736067eed515
+Compiler:  ccache gcc
 Attempt 1:
-    No crashes found.
+    Time  Bug Name
+      12  WARNING: ODEBUG bug in netdev_run_todo
 The bug was not found.
-About 356 commits remaining
+About 189 commits remaining
 
-2025-03-14 23:24:54
+2025-10-03 21:22:37
 Session:   9
-Kernel:    2022-01-06 - 497685f2c743f552ec5626d60fc12e7c00faaf06
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Kernel:    2022-01-19 - fd6f57bfda7c36f2d465cee39d5d8c623db5d7aa
+Compiler:  ccache gcc
 Attempt 1:
     No crashes found.
 The bug was not found.
-About 11353 commits remaining
+About 88 commits remaining
 
-2025-03-14 23:51:14
+2025-10-03 21:44:47
 Session:   10
-Kernel:    2022-01-07 - 14243b387137a4afbe1df5d9dc15182d6657bb79
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Kernel:    2022-01-09 - 8fc6e62a549c61abd594e8435017a31cfca43475
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
 Attempt 1:
-    No crashes found.
+    Time  Bug Name
+       9  general protection fault in nfc_genl_dump_devices_done
+       9  general protection fault in nfc_genl_dump_devices_done
+       9  general protection fault in nfc_genl_dump_devices_done
+      10  general protection fault in nfc_genl_dump_devices_done
+      10  general protection fault in nfc_genl_dump_devices_done
+      11  suppressed report
 The bug was not found.
-About 11252 commits remaining
+About 13405 commits remaining
 
-2025-03-15 00:09:16
+2025-10-03 22:07:36
 Session:   11
-Kernel:    2022-01-14 - f37c3bbc635994eda203a6da4ba0f9d05165a8d6
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Kernel:    2022-01-04 - dd9d4a3a30d009c77139d0cab0f2d08b30fa3941
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
 Attempt 1:
     Time  Bug Name
        9  general protection fault in nfc_genl_dump_devices_done
        9  general protection fault in nfc_genl_dump_devices_done
+       9  general protection fault in nfc_genl_dump_devices_done
 The bug was not found.
-About 11533 commits remaining
+About 13423 commits remaining
 
-2025-03-15 00:28:00
+2025-10-03 22:24:10
 Session:   12
-Kernel:    2022-01-14 - 5429cead01192ff4019ea0b13316268d14fd1ec2
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
-Attempt 1:
-    No crashes found.
-The bug was not found.
-About 11227 commits remaining
-
-2025-03-15 00:54:08
-Session:   13
-Kernel:    2022-01-10 - 4eea5332d67d8ae6ba5717ec0f4e671fdbd222e7
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
-Attempt 1:
-    No crashes found.
-The bug was not found.
-About 11170 commits remaining
-
-2025-03-15 01:20:35
-Session:   14
-Kernel:    2022-01-16 - 4d66020dcef83314092f2c8c89152a8d122627e2
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
-Attempt 1:
-    No crashes found.
-The bug was not found.
-About 299 commits remaining
-
-2025-03-15 01:40:02
-Session:   15
-Kernel:    2022-01-14 - 6559b4a523cd65f6005b4592833b16ba970abdf5
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
-Attempt 1:
-    No crashes found.
-The bug was not found.
-About 11224 commits remaining
-
-2025-03-15 01:56:06
-Session:   16
-Kernel:    2022-01-14 - c862dcd199759d4a45e65dab47b03e3e8a144e3a
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Kernel:    2022-01-11 - b579dfe71a6a5c3967ca9ad648673b6ca10ab0d5
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
 Attempt 1:
     Time  Bug Name
-       9  general protection fault in nfc_genl_dump_ses_done
-       9  general protection fault in nfc_genl_dump_ses_done
-      10  general protection fault in nfc_genl_dump_ses_done
+      10  no output from test machine
 The bug was not found.
-About 11222 commits remaining
+About 13394 commits remaining
 
-2025-03-15 02:22:00
-Session:   17
-Kernel:    2022-01-16 - cb3f09f9afe5286c0aed7a1c5cc71495de166efb
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+2025-10-03 22:40:28
+Session:   13
+Kernel:    2022-01-04 - d361b690b6fcd0acdb34a56e9054a6eb6be4b0c3
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       4  WARNING in skb_try_coalesce
+       9  general protection fault in nfc_genl_dump_devices_done
+The bug was not found.
+About 13418 commits remaining
+
+2025-10-03 22:57:06
+Session:   14
+Kernel:    2022-01-19 - e9f5cbc0c851c1cf98e4ecc5d72b5563d3fc5605
+Compiler:  ccache gcc
 Attempt 1:
     No crashes found.
 The bug was not found.
-About 286 commits remaining
+About 31 commits remaining
+
+2025-10-03 23:13:26
+Session:   15
+Kernel:    2022-01-10 - 5fed0be8583f08c1548b4dcd9e5ee0d1133d0730
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       8  general protection fault in nfc_genl_dump_devices_done
+       8  general protection fault in nfc_genl_dump_devices_done
+The bug was not found.
+About 13416 commits remaining
 
 ==== Partial Result: Focused Fuzzing ====
-Bisection Result:     2022-01-16 - 79e06c4c4950be2abd8ca5d2428a8c915aa62c24
-Bisected Commit Name: Merge tag 'for-linus' of git://git.kernel.org/pub/scm/virt/kvm/kvm
-Stage Time:           7h46m20s
-Run Time:             7h46m22s
+Bisection Result:     2022-01-19 - 1d1df41c5a33359a00e919d54eaebfb789711fdc
+Bisected Commit Name: Merge tag 'f2fs-for-5.17-rc1' of git://git.kernel.org/pub/scm/linux/kernel/git/jaegeuk/f2fs
+Stage Time:           5h14m31s
+Run Time:             5h14m32s
 =========================================
 
 ==== Anchor Commit ====
 
-2025-03-15 02:37:58
+2025-10-03 23:29:57
+Session:   16
+Kernel:    2022-01-19 - e9f5cbc0c851c1cf98e4ecc5d72b5563d3fc5605
+Compiler:  ccache gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0224-2.prog
+Attempt 0:
+    No crashes found.
+Attempt 1:
+*** KASAN: use-after-free Read in srcu_invoke_callbacks
+Attempt 2:
+*** KASAN: use-after-free Read in srcu_invoke_callbacks
+Attempt 3:
+    No crashes found.
+Attempt 4:
+*** KASAN: use-after-free Read in srcu_invoke_callbacks
+Attempt 5:
+    No crashes found.
+Attempt 6:
+*** KASAN: use-after-free Read in srcu_invoke_callbacks
+Attempt 7:
+    No crashes found.
+The bug was found.
+
+==== Major Release Search ====
+11 Releases
+
+2025-10-03 23:42:07
+Session:   17
+Kernel:    2022-01-09 - df0cc57e057f18e44dac8e6c18aba47ab53202f9 (v5.16)
+Compiler:  ccache gcc
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+About 10 releases remaining
+
+==== Kernel Bisection ====
+11171 Linux commits
+
+2025-10-04 00:00:07
 Session:   18
-Kernel:    2022-01-16 - cb3f09f9afe5286c0aed7a1c5cc71495de166efb
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Kernel:    2022-01-11 - 5c947d0dbae8038ec1c8b538891f6475350542ee
+Compiler:  ccache gcc
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+About 5593 commits remaining
+
+2025-10-04 00:17:58
+Session:   19
+Kernel:    2022-01-14 - e1a7aa25ff45636a6c1930bf2430c8b802e93d9c
+Compiler:  ccache gcc
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+*** KASAN: use-after-free Read in srcu_invoke_callbacks
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+*** KASAN: use-after-free Read in srcu_invoke_callbacks
+Attempt 7:
+*** KASAN: use-after-free Read in srcu_invoke_callbacks
+The bug was found.
+About 2847 commits remaining
+
+2025-10-04 00:36:05
+Session:   20
+Kernel:    2022-01-12 - 6dc69d3d0d18d587ab9d809fe060ba4417cf0279
+Compiler:  ccache gcc
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+*** KASAN: use-after-free Read in srcu_invoke_callbacks
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was found.
+About 1316 commits remaining
+
+2025-10-04 00:53:59
+Session:   21
+Kernel:    2022-01-11 - d601e58c5f2901783428bc1181e83ff783592b6b
+Compiler:  ccache gcc
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+About 603 commits remaining
+
+2025-10-04 01:11:25
+Session:   22
+Kernel:    2022-01-12 - 42a7b4ed45e7667836fae4fb0e1ac6340588b1b0
+Compiler:  ccache gcc
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+About 331 commits remaining
+
+2025-10-04 01:29:10
+Session:   23
+Kernel:    2022-01-12 - c9193f48e94deaeff0c9abbc67b9584e8ddc42ed
+Compiler:  ccache gcc
+Attempt 0:
+*** KASAN: use-after-free Read in srcu_invoke_callbacks
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+*** KASAN: use-after-free Read in srcu_invoke_callbacks
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was found.
+About 169 commits remaining
+
+2025-10-04 01:47:03
+Session:   24
+Kernel:    2021-12-06 - 41adf531e390e7969f00a560b8971cbf42f5a6da
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+*** KASAN: use-after-free Read in srcu_invoke_callbacks
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was found.
+About 85 commits remaining
+
+2025-10-04 02:05:24
+Session:   25
+Kernel:    2021-11-29 - e8dc17e2893b4107366004810ca2a4acf1fc8563
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+About 43 commits remaining
+
+2025-10-04 02:23:13
+Session:   26
+Kernel:    2021-11-29 - 8ffc13680eac16a1eec86275b65fc6f0e27a30d8
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+About 22 commits remaining
+
+2025-10-04 02:41:01
+Session:   27
+Kernel:    2021-11-29 - 8a7518931baa8ea023700987f3db31cb0a80610b
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+About 12 commits remaining
+
+2025-10-04 02:53:09
+Session:   28
+Kernel:    2021-12-03 - ceaa762527f41a431b552bc000de4b626d2d8cb7
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+About 7 commits remaining
+
+2025-10-04 03:06:12
+Session:   29
+Kernel:    2021-12-03 - 704b914f15fb7daaf517e3acc4bed472b50ca19e
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 0:
+    No crashes found.
+Attempt 1:
+*** KASAN: use-after-free Read in srcu_invoke_callbacks
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was found.
+About 4 commits remaining
+
+2025-10-04 03:18:08
+Session:   30
+Kernel:    2021-12-03 - 2a904d00855f94cb85751e45fa494f225d44ae0d
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+About 2 commits remaining
+
+==== Partial Result: Primary PoC Test ====
+Reproducer:           /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0224-2.prog
+Bisection Result:     2021-12-03 - 704b914f15fb7daaf517e3acc4bed472b50ca19e
+Bisected Commit Name: blk-mq: move srcu from blk_mq_hw_ctx to request_queue
+Stage Time:           4h0m22s
+Run Time:             9h14m55s
+==========================================
+
+==== Anchor Commit ====
+
+2025-10-04 03:30:20
+Session:   31
+Kernel:    2021-12-03 - 2a904d00855f94cb85751e45fa494f225d44ae0d
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0224-1.prog
 Attempt 0:
     No crashes found.
 Attempt 1:
@@ -244,12 +595,20 @@ The bug was not found.
 
 Failure: This bug cannot be found at the anchor commit.
 
+==== Partial Result: Subsequent PoC Test ====
+Reproducer:           /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0224-1.prog
+Bisection Result:     Failed to reproduce at the anchor commit.
+Stage Time:           0h11m39s
+Run Time:             9h26m34s
+=============================================
+
 ====================================================================================================================================================
 Bug Name:             KASAN: use-after-free Read in srcu_invoke_callbacks
+Big ID:               bug0224
 Bug Link:             https://syzkaller.appspot.com/bug?id=e6bbec1dac645e4ff5e5ffe74912a2808e95fe62
-Bisection Result:     2022-01-16 - 79e06c4c4950be2abd8ca5d2428a8c915aa62c24
-Bisected Commit Name: Merge tag 'for-linus' of git://git.kernel.org/pub/scm/virt/kvm/kvm
-Run Time:             7h52m7s
+Bisection Result:     2021-12-03 - 704b914f15fb7daaf517e3acc4bed472b50ca19e
+Bisected Commit Name: blk-mq: move srcu from blk_mq_hw_ctx to request_queue
+Run Time:             9h26m34s
 
 Anchor Commit:        2022-01-19 - 1d1df41c5a33359a00e919d54eaebfb789711fdc
-Bisection Result:     2022-01-16 - 79e06c4c4950be2abd8ca5d2428a8c915aa62c24
+Bisection Result:     2021-12-03 - 704b914f15fb7daaf517e3acc4bed472b50ca19e
