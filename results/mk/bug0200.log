@@ -1,4 +1,4 @@
-./bin/bisector -i 5 -c /home/syzretrospector/syzinspector/wd-bisector-5/bisector.cfg -a 15b3f48a4339e3c16acf18624e2b7f60bc5e9a2c -F ff-test,poc-test,stateful-corpus,ff-no-find-backup
+./bin/meerkat -i 3 -c /mnt/sdd/jtbursey/meerkat/wd-meerkat-3/meerkat.cfg -a 15b3f48a4339e3c16acf18624e2b7f60bc5e9a2c -F ff-test,poc-test,poc-all-pocs,stateful-corpus,ff-no-find-backup
 Bisecting:          WARNING in find_vma
 Syzbot Link:        https://syzkaller.appspot.com/bug?id=84950da5f4452669e5a1ec286c06815fc1596767
 Working Name:       bug0200
@@ -10,21 +10,23 @@ Repository:         https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/lin
 Branch:             master
 Arch:               amd64
 
-Bisector:           /home/syzretrospector/syzinspector/
-Version:            1.0.4
-Kernel:             /home/syzretrospector/syzinspector/wd-bisector-5/kernel/
-Syzkaller:          /home/syzretrospector/syzinspector/syzkaller/
-Compilers:          /home/syzretrospector/compilers/
-Ccache:             ccache
-Image:              /home/syzretrospector/images/stretch/stretch.img
-Image Key:          /home/syzretrospector/images/stretch/stretch.id_rsa
+Meerkat:            /mnt/sdd/jtbursey/meerkat/
+Version:            1.1.1
+Kernel:             /mnt/sdd/jtbursey/meerkat/wd-meerkat-3/kernel/
+Syzkaller:          /mnt/sdd/jtbursey/meerkat/syzkaller/
+Compilers:          /mnt/sdd/jtbursey/meerkat/compilers/
+Compiler:           gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0
+Linker:             GNU ld (GNU Binutils for Ubuntu) 2.34
+Ccache:             ccache version 3.7.7
+Image:              /mnt/sdd/jtbursey/meerkat/image/stretch/stretch.img
+Image Key:          /mnt/sdd/jtbursey/meerkat/image/stretch/stretch.id_rsa
 
-Workdir:            /home/syzretrospector/syzinspector/wd-bisector-5/
-Kconfig:            /home/syzretrospector/syzinspector/wd-bisector-5/config-bug0200.txt
-Reproducers: (2)    /home/syzretrospector/syzinspector/wd-bisector-5/reproducers/
-Primary PoC:        /home/syzretrospector/syzinspector/wd-bisector-5/reproducers/repro-bug0200-1.prog
-Syzkaller Workdir:  /home/syzretrospector/syzinspector/wd-bisector-5/wd-kaller/
-Log Directory:      /home/syzretrospector/syzinspector/wd-bisector-5/log/
+Workdir:            /mnt/sdd/jtbursey/meerkat/wd-meerkat-3/
+Kconfig:            /mnt/sdd/jtbursey/meerkat/wd-meerkat-3/config-bug0200.txt
+Reproducers: (2)    /mnt/sdd/jtbursey/meerkat/wd-meerkat-3/reproducers/
+Primary PoC:        /mnt/sdd/jtbursey/meerkat/wd-meerkat-3/reproducers/repro-bug0200-1.prog
+Syzkaller Workdir:  /mnt/sdd/jtbursey/meerkat/wd-meerkat-3/wd-kaller/
+Log Directory:      /mnt/sdd/jtbursey/meerkat/wd-meerkat-3/log/
 
 Syscalls: (5)       ["dup2", "ioctl$BINDER_SET_CONTEXT_MGR_EXT", "ioctl$BINDER_WRITE_READ", "mmap$binder", "openat$binderfs"]
 VM Count:           4
@@ -37,18 +39,1036 @@ Max Attempts:       1
 
 ==== Anchor Commit ====
 
-2025-03-13 22:59:51
+2025-09-24 10:24:40
 Session:   1
 Kernel:    2022-08-20 - 15b3f48a4339e3c16acf18624e2b7f60bc5e9a2c
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Compiler:  ccache gcc
 Attempt 1:
-    Time  Bug Name
-       2  INFO: rcu detected stall in corrupted
+    No crashes found.
 Attempt 2: (RETRY)
     No crashes found.
 Attempt 3: (RETRY)
     Time  Bug Name
        2  INFO: rcu detected stall in corrupted
+***    8  WARNING in find_vma
+The bug was found.
+
+New Max Time: 12
+
+==== Major Release Search ====
+12 Releases
+
+2025-09-24 11:09:14
+Session:   2
+Kernel:    2022-07-31 - 3d7cb6b04c3f3115719235cc6866b10326de34cd (v5.19)
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+      11  WARNING: ODEBUG bug in netdev_run_todo
+The bug was not found.
+About 11 releases remaining
+
+==== Kernel Bisection ====
+14778 Linux commits
+
+2025-09-24 11:37:15
+Session:   3
+Kernel:    2022-08-04 - 798cd57cd5f871452461746032cf6ee50b0fd69a
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       1  WARNING: ODEBUG bug in mgmt_index_removed
+       6  WARNING: ODEBUG bug in mgmt_index_removed
+       6  WARNING: ODEBUG bug in mgmt_index_removed
+       6  WARNING: ODEBUG bug in mgmt_index_removed
+       6  WARNING: ODEBUG bug in mgmt_index_removed
+       8  WARNING: ODEBUG bug in mgmt_index_removed
+       8  WARNING: ODEBUG bug in mgmt_index_removed
+       8  WARNING: ODEBUG bug in mgmt_index_removed
+       8  WARNING: ODEBUG bug in mgmt_index_removed
+      11  WARNING: ODEBUG bug in mgmt_index_removed
+      11  WARNING: ODEBUG bug in mgmt_index_removed
+      11  WARNING: ODEBUG bug in mgmt_index_removed
+      11  WARNING: ODEBUG bug in mgmt_index_removed
+The bug was not found.
+About 7497 commits remaining
+
+2025-09-24 12:05:00
+Session:   4
+Kernel:    2022-08-06 - 48a577dc1b09c1d35f2b8b37e7fa9a7169d50f5d
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       1  WARNING: ODEBUG bug in mgmt_index_removed
+       4  WARNING: ODEBUG bug in mgmt_index_removed
+       4  WARNING: ODEBUG bug in mgmt_index_removed
+       4  WARNING: ODEBUG bug in mgmt_index_removed
+       4  WARNING: ODEBUG bug in mgmt_index_removed
+       7  WARNING: ODEBUG bug in mgmt_index_removed
+       7  WARNING: ODEBUG bug in mgmt_index_removed
+       7  WARNING: ODEBUG bug in mgmt_index_removed
+       7  WARNING: ODEBUG bug in mgmt_index_removed
+       9  WARNING: ODEBUG bug in mgmt_index_removed
+       9  WARNING: ODEBUG bug in mgmt_index_removed
+       9  WARNING: ODEBUG bug in mgmt_index_removed
+       9  WARNING: ODEBUG bug in mgmt_index_removed
+      12  WARNING: ODEBUG bug in mgmt_index_removed
+      12  WARNING: ODEBUG bug in mgmt_index_removed
+      12  WARNING: ODEBUG bug in mgmt_index_removed
+      12  WARNING: ODEBUG bug in mgmt_index_removed
+The bug was not found.
+About 3664 commits remaining
+
+2025-09-24 12:32:48
+Session:   5
+Kernel:    2022-08-08 - 607ca0f742b7d990b6efb3c3e7a52830f7e96419
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       1  WARNING: ODEBUG bug in mgmt_index_removed
+       3  WARNING: ODEBUG bug in mgmt_index_removed
+       3  WARNING: ODEBUG bug in mgmt_index_removed
+       3  WARNING: ODEBUG bug in mgmt_index_removed
+       4  WARNING: ODEBUG bug in mgmt_index_removed
+       6  WARNING: ODEBUG bug in mgmt_index_removed
+       6  WARNING: ODEBUG bug in mgmt_index_removed
+       6  WARNING: ODEBUG bug in mgmt_index_removed
+       7  WARNING: ODEBUG bug in mgmt_index_removed
+       8  WARNING: ODEBUG bug in mgmt_index_removed
+       8  WARNING: ODEBUG bug in mgmt_index_removed
+       9  WARNING: ODEBUG bug in mgmt_index_removed
+       9  WARNING: ODEBUG bug in mgmt_index_removed
+      11  WARNING: ODEBUG bug in mgmt_index_removed
+      11  WARNING: ODEBUG bug in mgmt_index_removed
+      11  WARNING: ODEBUG bug in mgmt_index_removed
+      12  WARNING: ODEBUG bug in mgmt_index_removed
+The bug was not found.
+About 1794 commits remaining
+
+2025-09-24 13:00:28
+Session:   6
+Kernel:    2022-08-11 - 7ebfc85e2cd7b08f518b526173e9a33b56b3913b
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  INFO: rcu detected stall in corrupted
+The bug was not found.
+About 848 commits remaining
+
+2025-09-24 13:28:30
+Session:   7
+Kernel:    2022-08-14 - 96f86ff08332d88defd35c330fc6dae219b9e264
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 413 commits remaining
+
+2025-09-24 13:56:20
+Session:   8
+Kernel:    2022-08-19 - f52679b78877f17e95a317e18a4c9c46cc3d845a
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  INFO: rcu detected stall in corrupted
+***    8  WARNING in find_vma
+Running syz-repro.
+syz-repro was terminated after 60 minutes
+Run Time:        1h0m0s
+The bug was found.
+About 192 commits remaining
+
+2025-09-24 15:16:53
+Session:   9
+Kernel:    2022-08-18 - 90b6b686c1e0273ce6d1724fab9b9651a276217e
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  INFO: rcu detected stall in corrupted
+***    7  WARNING in find_vma
+Running syz-repro.
+syz-repro was terminated after 60 minutes
+Run Time:        1h0m0s
+The bug was found.
+About 88 commits remaining
+
+2025-09-24 16:37:38
+Session:   10
+Kernel:    2022-08-10 - d4073595d0c61463ec3a87411b19e2a90f76d3f8
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 30801 commits remaining
+
+2025-09-24 17:04:36
+Session:   11
+Kernel:    2022-08-16 - 339800d50b411d617fb3298d478921e6626032e7
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  INFO: rcu detected stall in corrupted
+***    3  WARNING in find_vma
+Running syz-repro.
+New PoC saved at /mnt/sdd/jtbursey/meerkat/wd-meerkat-3/reproducers/repro-bug0200-0.prog
+Primary PoC:     /mnt/sdd/jtbursey/meerkat/wd-meerkat-3/reproducers/repro-bug0200-0.prog
+Run Time:        0h39m0s
+The bug was found.
+About 30776 commits remaining
+
+2025-09-24 18:02:37
+Session:   12
+Kernel:    2022-08-14 - 74cbb480d0efa61efa09e5ebd081a32e1d355bba
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  INFO: rcu detected stall in corrupted
+***    6  WARNING in find_vma
+The bug was found.
+About 30764 commits remaining
+
+2025-09-24 18:17:26
+Session:   13
+Kernel:    2022-08-12 - 32ad11127b95236dfc52375f3707853194a7f4b4
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 14367 commits remaining
+
+2025-09-24 18:44:10
+Session:   14
+Kernel:    2022-08-12 - 5ad3134dcf5201c4d51c981e52557939256b02c7
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       9  WARNING: ODEBUG bug in netdev_run_todo
+The bug was not found.
+About 14364 commits remaining
+
+2025-09-24 19:02:18
+Session:   15
+Kernel:    2022-08-14 - 3f61631d47f115b83c935d0039f95cb68b0c8ab7
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  INFO: rcu detected stall in corrupted
+***    4  WARNING in find_vma
+The bug was found.
+About 14363 commits remaining
+
+2025-09-24 19:21:20
+Session:   16
+Kernel:    2022-08-14 - 5d6a0f4da9275f6c212de33777778673ba91241a
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  INFO: rcu detected stall in corrupted
+***    4  WARNING in find_vma
+Running syz-repro.
+New PoC saved at /mnt/sdd/jtbursey/meerkat/wd-meerkat-3/reproducers/repro-bug0200-3.prog
+Primary PoC:     /mnt/sdd/jtbursey/meerkat/wd-meerkat-3/reproducers/repro-bug0200-3.prog
+Run Time:        0h45m0s
+The bug was found.
+About 14362 commits remaining
+
+==== Partial Result: Focused Fuzzing ====
+Reproducer:           /mnt/sdd/jtbursey/meerkat/wd-meerkat-3/reproducers/repro-bug0200-3.prog
+Bisection Result:     2022-08-14 - 5d6a0f4da9275f6c212de33777778673ba91241a
+Bisected Commit Name: Merge tag 'for-linus-6.0-rc1b-tag' of git://git.kernel.org/pub/scm/linux/kernel/git/xen/tip
+Stage Time:           9h50m47s
+Run Time:             9h50m48s
+=========================================
+
+==== Anchor Commit ====
+
+2025-09-24 20:15:27
+Session:   17
+Kernel:    2022-08-14 - 96f86ff08332d88defd35c330fc6dae219b9e264
+Compiler:  ccache gcc
+PoC:       /mnt/sdd/jtbursey/meerkat/wd-meerkat-3/reproducers/repro-bug0200-3.prog
+Attempt 0:
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in linkwatch_event
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in new_device_store
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in del_device_store
+    INFO: task hung in new_device_store
+    INFO: task hung in devlink_unregister
+    INFO: task hung in del_device_store
+Attempt 1:
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in netdev_run_todo
+    INFO: task hung in linkwatch_event
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in new_device_store
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in del_device_store
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in del_device_store
+    INFO: task hung in devlink_unregister
+Attempt 2:
+*** WARNING in find_vma
+*** WARNING in find_vma
+Attempt 3:
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit
+    inconsistent lock state in find_vmap_area
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in del_device_store
+    INFO: task hung in new_device_store
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in del_device_store
+    INFO: task hung in rtnetlink_rcv_msg
+Attempt 4:
+*** WARNING in find_vma
+Attempt 5:
+*** WARNING in find_vma
+Attempt 6:
+*** WARNING in find_vma
+Attempt 7:
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit
+    inconsistent lock state in find_vmap_area
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in del_device_store
+    INFO: task hung in new_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in devlink_nl_port_fill
+    INFO: task hung in del_device_store
+    INFO: task hung in del_device_store
+The bug was found.
+
+==== Major Release Search ====
+12 Releases
+
+2025-09-24 20:25:15
+Session:   18
+Kernel:    2022-07-31 - 3d7cb6b04c3f3115719235cc6866b10326de34cd (v5.19)
+Compiler:  ccache gcc
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+About 11 releases remaining
+
+==== Kernel Bisection ====
+14366 Linux commits
+
+2025-09-24 20:47:09
+Session:   19
+Kernel:    2022-08-03 - b44f2fd87919b5ae6e1756d4c7ba2cbba22238e1
+Compiler:  ccache gcc
+Attempt 0:
+    WARNING: ODEBUG bug in mgmt_index_removed
+Attempt 1:
+    WARNING: ODEBUG bug in mgmt_index_removed
+Attempt 2:
+    WARNING: ODEBUG bug in mgmt_index_removed
+Attempt 3:
+    WARNING: ODEBUG bug in mgmt_index_removed
+Attempt 4:
+    WARNING: ODEBUG bug in mgmt_index_removed
+Attempt 5:
+    WARNING: ODEBUG bug in mgmt_index_removed
+Attempt 6:
+    WARNING: ODEBUG bug in mgmt_index_removed
+Attempt 7:
+    WARNING: ODEBUG bug in mgmt_index_removed
+The bug was not found.
+About 7086 commits remaining
+
+2025-09-24 21:03:03
+Session:   20
+Kernel:    2022-08-05 - 6614a3c3164a5df2b54abb0b3559f51041cf705b
+Compiler:  ccache gcc
+Attempt 0:
+    WARNING: ODEBUG bug in mgmt_index_removed
+Attempt 1:
+    WARNING: ODEBUG bug in mgmt_index_removed
+Attempt 2:
+    WARNING: ODEBUG bug in mgmt_index_removed
+Attempt 3:
+    WARNING: ODEBUG bug in mgmt_index_removed
+Attempt 4:
+    WARNING: ODEBUG bug in mgmt_index_removed
+Attempt 5:
+    WARNING: ODEBUG bug in mgmt_index_removed
+Attempt 6:
+    WARNING: ODEBUG bug in mgmt_index_removed
+Attempt 7:
+    WARNING: ODEBUG bug in mgmt_index_removed
+The bug was not found.
+About 3471 commits remaining
+
+2025-09-24 21:18:53
+Session:   21
+Kernel:    2022-08-07 - b5a8466d37d30cfcc8015789f4a3f0c44b6c7bc6
+Compiler:  ccache gcc
+Attempt 0:
+    WARNING: ODEBUG bug in mgmt_index_removed
+Attempt 1:
+    WARNING: ODEBUG bug in mgmt_index_removed
+Attempt 2:
+    WARNING: ODEBUG bug in mgmt_index_removed
+Attempt 3:
+    WARNING: ODEBUG bug in mgmt_index_removed
+Attempt 4:
+    WARNING: ODEBUG bug in mgmt_index_removed
+Attempt 5:
+    WARNING: ODEBUG bug in mgmt_index_removed
+Attempt 6:
+    WARNING: ODEBUG bug in mgmt_index_removed
+Attempt 7:
+    WARNING: ODEBUG bug in mgmt_index_removed
+The bug was not found.
+About 1771 commits remaining
+
+2025-09-24 21:34:47
+Session:   22
+Kernel:    2022-08-10 - 5e2e7383b57fa03ec2b00c82bb7f49a4a707c1f7
+Compiler:  ccache gcc
+Attempt 0:
+    WARNING: ODEBUG bug in mgmt_index_removed
+Attempt 1:
+    WARNING: ODEBUG bug in mgmt_index_removed
+Attempt 2:
+    WARNING: ODEBUG bug in mgmt_index_removed
+Attempt 3:
+    WARNING: ODEBUG bug in mgmt_index_removed
+Attempt 4:
+    WARNING: ODEBUG bug in mgmt_index_removed
+Attempt 5:
+    WARNING: ODEBUG bug in mgmt_index_removed
+Attempt 6:
+    WARNING: ODEBUG bug in mgmt_index_removed
+Attempt 7:
+    WARNING: ODEBUG bug in mgmt_index_removed
+The bug was not found.
+About 855 commits remaining
+
+2025-09-24 21:51:05
+Session:   23
+Kernel:    2022-08-11 - c3adefb5baf377868f45de78eb9f72f87eb498b0
+Compiler:  ccache gcc
+Attempt 0:
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in l2tp_exit_net
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in linkwatch_event
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in del_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in new_device_store
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in del_device_store
+Attempt 1:
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in linkwatch_event
+    INFO: task hung in del_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in del_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in del_device_store
+Attempt 2:
+*** WARNING in find_vma
+Attempt 3:
+*** WARNING in find_vma
+Attempt 4:
+*** WARNING in find_vma
+Attempt 5:
+*** WARNING in find_vma
+Attempt 6:
+*** WARNING in find_vma
+Attempt 7:
+*** WARNING in find_vma
+The bug was found.
+About 430 commits remaining
+
+2025-09-24 22:10:28
+Session:   24
+Kernel:    2022-08-11 - 2ae08b36c06ea8df73a79f6b80ff7964e006e9e3
+Compiler:  ccache gcc
+Attempt 0:
+    WARNING: ODEBUG bug in mgmt_index_removed
+Attempt 1:
+    WARNING: ODEBUG bug in mgmt_index_removed
+Attempt 2:
+    WARNING: ODEBUG bug in mgmt_index_removed
+Attempt 3:
+    WARNING: ODEBUG bug in mgmt_index_removed
+Attempt 4:
+    WARNING: ODEBUG bug in mgmt_index_removed
+Attempt 5:
+    WARNING: ODEBUG bug in mgmt_index_removed
+Attempt 6:
+    WARNING: ODEBUG bug in mgmt_index_removed
+Attempt 7:
+    WARNING: ODEBUG bug in mgmt_index_removed
+The bug was not found.
+About 216 commits remaining
+
+2025-09-24 22:26:41
+Session:   25
+Kernel:    2022-08-10 - fbe8870f72e8e71bb57b883d29c600aaaca6cd20
+Compiler:  ccache gcc
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit
+    inconsistent lock state in find_vmap_area
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in l2tp_exit_net
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in del_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in del_device_store
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in del_device_store
+    INFO: task hung in devlink_unregister
+Attempt 3:
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in linkwatch_event
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in del_device_store
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in switchdev_deferred_process_work
+    INFO: task hung in new_device_store
+    INFO: task hung in rtnetlink_rcv_msg
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in cangw_pernet_exit_batch
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in ieee80211_register_hw
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in new_device_store
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in devlink_nl_port_fill
+    INFO: task hung in rtnetlink_rcv_msg
+Attempt 7:
+    No crashes found.
+The bug was not found.
+About 8538 commits remaining
+
+2025-09-24 22:48:35
+Session:   26
+Kernel:    2022-08-11 - 786da5da5671c2d4cf812fe1ccc980bdde30c69e
+Compiler:  ccache gcc
+Attempt 0:
+    WARNING: ODEBUG bug in mgmt_index_removed
+Attempt 1:
+    WARNING: ODEBUG bug in mgmt_index_removed
+Attempt 2:
+    WARNING: ODEBUG bug in mgmt_index_removed
+Attempt 3:
+    WARNING: ODEBUG bug in mgmt_index_removed
+Attempt 4:
+    WARNING: ODEBUG bug in mgmt_index_removed
+Attempt 5:
+    WARNING: ODEBUG bug in mgmt_index_removed
+Attempt 6:
+    WARNING: ODEBUG bug in mgmt_index_removed
+Attempt 7:
+    WARNING: ODEBUG bug in mgmt_index_removed
+The bug was not found.
+About 161 commits remaining
+
+2025-09-24 23:05:08
+Session:   27
+Kernel:    2022-08-11 - e091ba5cf82714c8691d978781696cd1fc2dec70
+Compiler:  ccache gcc
+Attempt 0:
+    WARNING: ODEBUG bug in mgmt_index_removed
+Attempt 1:
+    WARNING: ODEBUG bug in mgmt_index_removed
+Attempt 2:
+    WARNING: ODEBUG bug in mgmt_index_removed
+Attempt 3:
+    WARNING: ODEBUG bug in mgmt_index_removed
+Attempt 4:
+    WARNING: ODEBUG bug in mgmt_index_removed
+Attempt 5:
+    WARNING: ODEBUG bug in mgmt_index_removed
+Attempt 6:
+    WARNING: ODEBUG bug in mgmt_index_removed
+Attempt 7:
+    WARNING: ODEBUG bug in mgmt_index_removed
+The bug was not found.
+About 144 commits remaining
+
+2025-09-24 23:13:54
+Session:   28
+Kernel:    2022-08-11 - 5c221f0af68cfa9edcffd26ba6dbbc4b7ddb1700
+Compiler:  ccache gcc
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in linkwatch_event
+    INFO: task hung in l2tp_exit_net
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in del_device_store
+    INFO: task hung in devlink_unregister
+    INFO: task hung in del_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in del_device_store
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in linkwatch_event
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in wg_set_device
+    INFO: task hung in del_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in devlink_unregister
+    INFO: task hung in del_device_store
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in rtnetlink_rcv_msg
+The bug was not found.
+About 8525 commits remaining
+
+2025-09-24 23:35:54
+Session:   29
+Kernel:    2022-08-11 - 7ce2aa6d7fe121e243e1c8a8093911fecdf1c88e
+Compiler:  ccache gcc
+Attempt 0:
+*** WARNING in find_vma
+Attempt 1:
+*** WARNING in find_vma
+Attempt 2:
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in l2tp_exit_net
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in linkwatch_event
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in devlink_unregister
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in new_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in new_device_store
+    INFO: task hung in del_device_store
+Attempt 3:
+*** WARNING in find_vma
+Attempt 4:
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in linkwatch_event
+    INFO: task hung in nl80211_pre_doit
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in del_device_store
+    INFO: task hung in devlink_nl_port_fill
+    INFO: task hung in del_device_store
+Attempt 5:
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in ip_tunnel_delete_nets
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in del_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in devlink_unregister
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in synchronize_rcu
+Attempt 6:
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit
+    inconsistent lock state in find_vmap_area
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in linkwatch_event
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in devlink_unregister
+    INFO: task hung in del_device_store
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in del_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in del_device_store
+Attempt 7:
+*** WARNING in find_vma
+The bug was found.
+About 8519 commits remaining
+
+2025-09-24 23:55:43
+Session:   30
+Kernel:    2022-08-12 - 36fa1cb56ac5189c78dacbbb14d452d0c44b86c0
+Compiler:  ccache gcc
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+About 13255 commits remaining
+
+2025-09-25 00:17:10
+Session:   31
+Kernel:    2022-08-11 - c2e75634cbe368065f140dd30bf8b1a0355158fd
+Compiler:  ccache gcc
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in new_device_store
+    INFO: task hung in nl80211_pre_doit
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in ieee80211_register_hw
+    INFO: task hung in devlink_nl_port_fill
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in del_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in rtnetlink_rcv_msg
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in l2tp_exit_net
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in new_device_store
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in del_device_store
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in new_device_store
+    INFO: task hung in linkwatch_event
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in rtnetlink_rcv_msg
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in cleanup_net
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in del_device_store
+    INFO: task hung in devlink_unregister
+    INFO: task hung in del_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in linkwatch_event
+    INFO: task hung in del_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in del_device_store
+Attempt 7:
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in l2tp_exit_net
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in new_device_store
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in del_device_store
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in del_device_store
+The bug was not found.
+About 8517 commits remaining
+
+2025-09-25 00:39:10
+Session:   32
+Kernel:    2022-08-11 - 7ebfc85e2cd7b08f518b526173e9a33b56b3913b
+Compiler:  ccache gcc
+Attempt 0:
+*** WARNING in find_vma
+Attempt 1:
+*** WARNING in find_vma
+Attempt 2:
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in devlink_unregister
+    INFO: task hung in del_device_store
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in del_device_store
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in rtnetlink_rcv_msg
+Attempt 3:
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit
+    inconsistent lock state in find_vmap_area
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in linkwatch_event
+    INFO: task hung in switchdev_deferred_process_work
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in del_device_store
+    INFO: task hung in del_device_store
+Attempt 4:
+*** WARNING in find_vma
+*** WARNING in find_vma
+Attempt 5:
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in linkwatch_event
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in del_device_store
+    INFO: task hung in del_device_store
+Attempt 6:
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in cleanup_net
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in linkwatch_event
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in del_device_store
+    INFO: task hung in devlink_unregister
+    INFO: task hung in synchronize_rcu
+Attempt 7:
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit
+    inconsistent lock state in find_vmap_area
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in linkwatch_event
+    INFO: task hung in del_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in devlink_unregister
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in del_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in synchronize_rcu
+The bug was found.
+About 8513 commits remaining
+
+==== Partial Result: Primary PoC Test ====
+Reproducer:           /mnt/sdd/jtbursey/meerkat/wd-meerkat-3/reproducers/repro-bug0200-3.prog
+Bisection Result:     2022-08-11 - 7ebfc85e2cd7b08f518b526173e9a33b56b3913b
+Bisected Commit Name: Merge tag 'net-6.0-rc1' of git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net
+Stage Time:           4h43m24s
+Run Time:             14h34m13s
+==========================================
+
+==== Anchor Commit ====
+
+2025-09-25 00:58:52
+Session:   33
+Kernel:    2022-08-11 - e091ba5cf82714c8691d978781696cd1fc2dec70
+Compiler:  ccache gcc
+PoC:       /mnt/sdd/jtbursey/meerkat/wd-meerkat-3/reproducers/repro-bug0200-0.prog
+Attempt 0:
+    WARNING: ODEBUG bug in mgmt_index_removed
+Attempt 1:
+    WARNING: ODEBUG bug in mgmt_index_removed
+Attempt 2:
+    WARNING: ODEBUG bug in mgmt_index_removed
+Attempt 3:
+    WARNING: ODEBUG bug in mgmt_index_removed
+Attempt 4:
+    WARNING: ODEBUG bug in mgmt_index_removed
+Attempt 5:
+    WARNING: ODEBUG bug in mgmt_index_removed
+Attempt 6:
+    WARNING: ODEBUG bug in mgmt_index_removed
+Attempt 7:
+    WARNING: ODEBUG bug in mgmt_index_removed
 The bug was not found.
 
 Failure: This bug cannot be found at the anchor commit.
+
+==== Partial Result: Subsequent PoC Test ====
+Reproducer:           /mnt/sdd/jtbursey/meerkat/wd-meerkat-3/reproducers/repro-bug0200-0.prog
+Bisection Result:     Failed to reproduce at the anchor commit.
+Stage Time:           0h10m52s
+Run Time:             14h45m5s
+=============================================
+
+==== Anchor Commit ====
+
+2025-09-25 01:09:47
+Session:   34
+Kernel:    2022-08-11 - e091ba5cf82714c8691d978781696cd1fc2dec70
+Compiler:  ccache gcc
+PoC:       /mnt/sdd/jtbursey/meerkat/wd-meerkat-3/reproducers/repro-bug0200-2.prog
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+
+Failure: This bug cannot be found at the anchor commit.
+
+==== Partial Result: Subsequent PoC Test ====
+Reproducer:           /mnt/sdd/jtbursey/meerkat/wd-meerkat-3/reproducers/repro-bug0200-2.prog
+Bisection Result:     Failed to reproduce at the anchor commit.
+Stage Time:           0h12m38s
+Run Time:             14h57m43s
+=============================================
+
+==== Anchor Commit ====
+
+2025-09-25 01:22:25
+Session:   35
+Kernel:    2022-08-11 - e091ba5cf82714c8691d978781696cd1fc2dec70
+Compiler:  ccache gcc
+PoC:       /mnt/sdd/jtbursey/meerkat/wd-meerkat-3/reproducers/repro-bug0200-1.prog
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+
+Failure: This bug cannot be found at the anchor commit.
+
+==== Partial Result: Subsequent PoC Test ====
+Reproducer:           /mnt/sdd/jtbursey/meerkat/wd-meerkat-3/reproducers/repro-bug0200-1.prog
+Bisection Result:     Failed to reproduce at the anchor commit.
+Stage Time:           0h12m32s
+Run Time:             15h10m15s
+=============================================
+
+====================================================================================================================================================
+Bug Name:             WARNING in find_vma
+Big ID:               bug0200
+Bug Link:             https://syzkaller.appspot.com/bug?id=84950da5f4452669e5a1ec286c06815fc1596767
+Bisection Result:     2022-08-11 - 7ebfc85e2cd7b08f518b526173e9a33b56b3913b
+Bisected Commit Name: Merge tag 'net-6.0-rc1' of git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net
+Run Time:             15h10m15s
+
+Anchor Commit:        2022-08-20 - 15b3f48a4339e3c16acf18624e2b7f60bc5e9a2c
+Bisection Result:     2022-08-11 - 7ebfc85e2cd7b08f518b526173e9a33b56b3913b
