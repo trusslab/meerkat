@@ -36,7 +36,7 @@ class Environment
 {
 private:
     void default_features();
-    void config_print(const std::string &, const std::string &, const int = -1) const;
+    void config_print(std::string, const std::string &, const int = -1) const;
 
 public:
     bool try_patch;

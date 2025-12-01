@@ -1,7 +1,7 @@
 #ifndef CONSTS_H
 #define CONSTS_H
 
-#define PROJECT_NAME "Meerkat"
+#define PROJECT_NAME "meerkat"
 #define REVISION "1.2.0"
 
 #define REPRO_FREQ 3

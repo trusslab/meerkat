@@ -380,8 +380,10 @@ std::string Environment::syscall_string() const
     return ss.str();
 }
 
-void Environment::config_print(const std::string &label, const std::string &config, const int n) const
+void Environment::config_print(std::string label, const std::string &config, const int n) const
 {
+    if (!label.empty())
+        label.at(0) = std::toupper(label.at(0));
     std::cout << std::left << std::setw(CONFW) << (label + ":" + (n != -1 ? " (" + std::to_string(n) + ")" : ""))
               << config << std::endl << std::flush;
 }

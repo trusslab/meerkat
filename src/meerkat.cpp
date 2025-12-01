@@ -319,8 +319,14 @@ void print_help()
         << "    --anchor (a) [hash]: REQUIRED. the hash of the commit where the bug was found.\n"
         << "    --feature (F) [feature list]: features to use.\n"
         << "         [ default, poc-test, ff-test, setup-only, find-only, poc-all-pocs, ff-no-find-backup, stateful-corpus, no-patch-kernel, obselete-patches, old-syzkaller ]\n"
-        << "    --debug\n"
+        << "    --debug: print certain debug information during bisection.\n"
+        << "    --version: print the version number and exit.\n"
         << flush;
+}
+
+void print_version()
+{
+    cout << PROJECT_NAME << " " << REVISION << endl << flush;
 }
 
 int handle_config(Environment &env, const Argparse &args)
@@ -365,11 +371,17 @@ int main(int argc, char ** argv)
     Environment env;
 
     args.expect("mihcaF");
-    args.expect(vector<string>({ "help", "config", "feature", "anchor", "debug" }));
+    args.expect(vector<string>({ "help", "config", "feature", "anchor", "debug", "version" }));
     args.parse(argc, argv);
     if (args.is_set('h') || args.is_set("help"))
     {
         print_help();
+        return 0;
+    }
+
+    if (args.is_set("version"))
+    {
+        print_version();
         return 0;
     }
 
