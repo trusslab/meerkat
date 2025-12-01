@@ -1,32 +1,35 @@
-./bin/bisector -i 5 -c /home/syzretrospector/syzinspector/wd-bisector-5/bisector.cfg -a 55be6084c8e0e0ada9278c2ab60b7a584378efda -F ff-test,poc-test,stateful-corpus,ff-no-find-backup
+./bin/meerkat -i 1 -c /home/syzretrospector/meerkat/wd-meerkat-1/meerkat.cfg -a 55be6084c8e0e0ada9278c2ab60b7a584378efda -F ff-test,poc-test,poc-all-pocs,ff-no-find-backup,stateful-corpus
 Bisecting:          WARNING in inet_csk_destroy_sock
 Syzbot Link:        https://syzkaller.appspot.com/bug?id=8e2620ee4ac7306654859489a322c33c4de99b20
 Working Name:       bug0187
 
-No aliases given.
+Aliases:
+    WARNING in inet_csk_destroy_sock
 
 Anchor Commit:      55be6084c8e0e0ada9278c2ab60b7a584378efda
 Repository:         https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
 Branch:             master
 Arch:               amd64
 
-Bisector:           /home/syzretrospector/syzinspector/
-Version:            1.0.4
-Kernel:             /home/syzretrospector/syzinspector/wd-bisector-5/kernel/
-Syzkaller:          /home/syzretrospector/syzinspector/syzkaller/
-Compilers:          /home/syzretrospector/compilers/
-Ccache:             ccache
-Image:              /home/syzretrospector/images/stretch/stretch.img
-Image Key:          /home/syzretrospector/images/stretch/stretch.id_rsa
+Meerkat:            /home/syzretrospector/meerkat/
+Version:            1.2.0
+Kernel:             /home/syzretrospector/meerkat/wd-meerkat-1/kernel/
+Syzkaller:          /home/syzretrospector/meerkat/syzkaller/
+Compilers:          /home/syzretrospector/meerkat/compilers/
+Compiler:           gcc (Ubuntu 11.4.0-1ubuntu1~22.04.2) 11.4.0
+Linker:             GNU ld (GNU Binutils for Ubuntu) 2.38
+Ccache:             ccache version 4.5.1
+Image:              /home/syzretrospector/meerkat/image/stretch/stretch.img
+Image Key:          /home/syzretrospector/meerkat/image/stretch/stretch.id_rsa
 
-Workdir:            /home/syzretrospector/syzinspector/wd-bisector-5/
-Kconfig:            /home/syzretrospector/syzinspector/wd-bisector-5/config-bug0187.txt
-Reproducers: (3)    /home/syzretrospector/syzinspector/wd-bisector-5/reproducers/
-Primary PoC:        /home/syzretrospector/syzinspector/wd-bisector-5/reproducers/repro-bug0187-1.prog
-Syzkaller Workdir:  /home/syzretrospector/syzinspector/wd-bisector-5/wd-kaller/
-Log Directory:      /home/syzretrospector/syzinspector/wd-bisector-5/log/
+Workdir:            /home/syzretrospector/meerkat/wd-meerkat-1/
+Kconfig:            /home/syzretrospector/meerkat/wd-meerkat-1/config-bug0187.txt
+Reproducers: (3)    /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/
+Primary PoC:        /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0187-1.prog
+Syzkaller Workdir:  /home/syzretrospector/meerkat/wd-meerkat-1/wd-kaller/
+Log Directory:      /home/syzretrospector/meerkat/wd-meerkat-1/log/
 
-Syscalls: (28)      ["io_uring_enter", "socket$inet", "syz_io_uring_setup", "syz_io_uring_submit", "syz_memcpy_off$IO_URING_METADATA_GENERIC", "ioctl$F2FS_IOC_START_ATOMIC_WRITE", "openat$selinux_enforce", "socket", "statx", "syz_mount_image$bfs", "io_uring_register$IORING_UNREGISTER_PERSONALITY", "io_uring_register$IORING_REGISTER_PERSONALITY", "futex", "getrusage", "clock_gettime", "mount$bpf", "getuid", "setgid", "getgid", "epoll_create", "setsockopt$inet_mreqn", "ioctl$sock_SIOCGIFINDEX", "ioctl$ifreq_SIOCGIFINDEX_vcan", "bind$nfc_llcp", "ioctl$IOCTL_GET_NCIDEV_IDX", "syz_init_net_socket$nfc_llcp", "openat$nci", "utimes"]
+Syscalls: (28)      ["io_uring_enter", "socket$inet", "syz_io_uring_setup", "syz_io_uring_submit", "syz_memcpy_off$IO_URING_METADATA_GENERIC", "ioctl$F2FS_IOC_START_ATOMIC_WRITE", "openat$selinux_enforce", "socket", "statx", "open$dir", "io_uring_register$IORING_UNREGISTER_PERSONALITY", "io_uring_register$IORING_REGISTER_PERSONALITY", "futex", "getrusage", "clock_gettime", "mount$bpf", "getuid", "setgid", "getgid", "epoll_create", "setsockopt$inet_mreqn", "ioctl$sock_SIOCGIFINDEX", "ioctl$ifreq_SIOCGIFINDEX_vcan", "bind$nfc_llcp", "ioctl$IOCTL_GET_NCIDEV_IDX", "syz_init_net_socket$nfc_llcp", "openat$nci", "utimes"]
 VM Count:           8
 CPU Count:          2
 Procs:              16
@@ -37,41 +40,43 @@ Max Attempts:       1
 
 ==== Anchor Commit ====
 
-2025-03-13 01:35:22
+2025-11-25 12:52:57
 Session:   1
 Kernel:    2022-10-10 - 55be6084c8e0e0ada9278c2ab60b7a584378efda
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
-Warning: syz_io_uring_submit was disabled by Syzkaller.
-Error: Waitpid on pid 3630547 failed.
-Error: Syzkaller has experienced a crash.
-Warning: Child process exited with error status 32765.
+Compiler:  ccache gcc
 Attempt 1:
     Time  Bug Name
-       1  WARNING in wireless_send_event
-       1  WARNING in wireless_send_event
-Warning: syz_io_uring_submit was disabled by Syzkaller.
+       1  WARNING in wireless_send_event (has report)
+       2  WARNING in wireless_send_event (6) (has report)
+       3  WARNING in wireless_send_event (6) (has report)
+       4  WARNING in wireless_send_event (3) (has report)
+       7  INFO: rcu detected stall in corrupted (5)
+       8  INFO: rcu detected stall in corrupted (4)
+       9  INFO: rcu detected stall in corrupted (6)
+      10  INFO: rcu detected stall in corrupted (3)
 Attempt 2: (RETRY)
     Time  Bug Name
-       1  WARNING in wireless_send_event
-       1  WARNING in wireless_send_event
-       2  WARNING in wireless_send_event
-       2  WARNING in wireless_send_event
-       6  INFO: task hung in d_alloc_parallel
-       6  INFO: task hung in d_alloc_parallel
-       7  INFO: task hung in d_alloc_parallel
-       7  INFO: task hung in d_alloc_parallel
-       7  INFO: task hung in d_alloc_parallel
-       8  INFO: task hung in d_alloc_parallel
-       8  INFO: task hung in d_alloc_parallel
-      10  INFO: rcu detected stall in corrupted
-      10  INFO: task hung in d_alloc_parallel
-      10  INFO: task hung in d_alloc_parallel
-Warning: syz_io_uring_submit was disabled by Syzkaller.
-Error: Waitpid on pid 3635123 failed.
-Error: Syzkaller has experienced a crash.
-Warning: Child process exited with error status 32765.
+       1  WARNING in wireless_send_event (2) (has report)
+       2  WARNING in wireless_send_event (6) (has report)
+       3  WARNING in wireless_send_event (6) (has report)
+       4  WARNING in wireless_send_event (6) (has report)
+       5  WARNING in wireless_send_event (6) (has report)
+       6  WARNING in wireless_send_event (6) (has report)
+       7  WARNING in wireless_send_event (5) (has report)
+       9  INFO: rcu detected stall in corrupted
+      10  INFO: rcu detected stall in corrupted (2)
 Attempt 3: (RETRY)
-    No crashes found.
+    Time  Bug Name
+       1  WARNING in wireless_send_event (2) (has report)
+       2  WARNING in wireless_send_event (6) (has report)
+       3  WARNING in wireless_send_event (6) (has report)
+       4  WARNING in wireless_send_event (6) (has report)
+       5  WARNING in wireless_send_event (6) (has report)
+       6  WARNING in wireless_send_event (has report)
+       7  INFO: rcu detected stall in corrupted (5)
+       8  INFO: rcu detected stall in corrupted (2)
+       9  INFO: rcu detected stall in corrupted (5)
+      10  INFO: rcu detected stall in corrupted (5)
 The bug was not found.
 
 Failure: This bug cannot be found at the anchor commit.
