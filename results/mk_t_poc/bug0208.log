@@ -1,29 +1,32 @@
-./bin/bisector -i 2 -c /mnt/sdd/jtbursey/SyzInspector/wd-bisector-2/bisector.cfg -a 88603b6dc419445847923fcb7fe5080067a30f98 -F poc-test,poc-all-pocs
+./bin/meerkat -i 1 -c /home/syzretrospector/meerkat/wd-meerkat-1/meerkat.cfg -a 88603b6dc419445847923fcb7fe5080067a30f98 -F poc-test,poc-all-pocs
 Bisecting:          general protection fault in cache_first_page
 Syzbot Link:        https://syzkaller.appspot.com/bug?id=8cf937ba2cde11be769fe8a1330c8d9153e3d7fa
 Working Name:       bug0208
 
-No aliases given.
+Aliases:
+    general protection fault in cache_first_page
 
 Anchor Commit:      88603b6dc419445847923fcb7fe5080067a30f98
 Repository:         https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
 Branch:             master
 Arch:               amd64
 
-Bisector:           /mnt/sdd/jtbursey/SyzInspector/
-Version:            1.0.4
-Kernel:             /mnt/sdd/jtbursey/SyzInspector/wd-bisector-2/kernel/
-Syzkaller:          /mnt/sdd/jtbursey/SyzInspector/syzkaller/
-Compilers:          /mnt/sda/jtbursey/SyzInspector/compilers/
-Ccache:             ccache
-Image:              /mnt/sda/jtbursey/SyzInspector/image/stretch/stretch.img
-Image Key:          /mnt/sda/jtbursey/SyzInspector/image/stretch/stretch.id_rsa
+Meerkat:            /home/syzretrospector/meerkat/
+Version:            1.2.0
+Kernel:             /home/syzretrospector/meerkat/wd-meerkat-1/kernel/
+Syzkaller:          /home/syzretrospector/meerkat/syzkaller/
+Compilers:          /home/syzretrospector/meerkat/compilers/
+Compiler:           gcc (Ubuntu 12.3.0-1ubuntu1~22.04.2) 12.3.0
+Linker:             GNU ld (GNU Binutils for Ubuntu) 2.38
+Ccache:             ccache version 4.5.1
+Image:              /home/syzretrospector/meerkat/image/stretch/stretch.img
+Image Key:          /home/syzretrospector/meerkat/image/stretch/stretch.id_rsa
 
-Workdir:            /mnt/sdd/jtbursey/SyzInspector/wd-bisector-2/
-Kconfig:            /mnt/sdd/jtbursey/SyzInspector/wd-bisector-2/config-bug0208.txt
-Reproducers: (1)    /mnt/sdd/jtbursey/SyzInspector/wd-bisector-2/reproducers/
-Syzkaller Workdir:  /mnt/sdd/jtbursey/SyzInspector/wd-bisector-2/wd-kaller/
-Log Directory:      /mnt/sdd/jtbursey/SyzInspector/wd-bisector-2/log/
+Workdir:            /home/syzretrospector/meerkat/wd-meerkat-1/
+Kconfig:            /home/syzretrospector/meerkat/wd-meerkat-1/config-bug0208.txt
+Reproducers: (1)    /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/
+Syzkaller Workdir:  /home/syzretrospector/meerkat/wd-meerkat-1/wd-kaller/
+Log Directory:      /home/syzretrospector/meerkat/wd-meerkat-1/log/
 
 VM Count:           8
 CPU Count:          2
@@ -33,687 +36,369 @@ Make Procs:         16
 
 ==== Anchor Commit ====
 
-2025-03-10 01:38:23
+2025-12-01 11:16:14
 Session:   1
 Kernel:    2023-01-01 - 88603b6dc419445847923fcb7fe5080067a30f98
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Compiler:  ccache gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0208-2.prog
 Attempt 0:
-    INFO: rcu detected stall in corrupted
-    INFO: rcu detected stall in cleanup_net
-    INFO: task hung in devlink_unregister
-Attempt 1:
-    INFO: rcu detected stall in corrupted
-    INFO: rcu detected stall in corrupted
-    INFO: task hung in devlink_unregister
-Attempt 2:
 *** general protection fault in cache_first_page
-    kernel panic: Fatal exception
+Attempt 1:
+    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in new_device_store
+    INFO: task hung in wg_set_device
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in devlink_unregister
+    INFO: task hung in linkwatch_event
+    INFO: task hung in rtnetlink_rcv_msg
+Attempt 2:
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in new_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in linkwatch_event
+    INFO: task hung in rtnetlink_rcv_msg
 Attempt 3:
 *** general protection fault in cache_first_page
-    kernel panic: Fatal exception
 Attempt 4:
 *** general protection fault in cache_first_page
-    kernel panic: Fatal exception
 Attempt 5:
 *** general protection fault in cache_first_page
-    kernel panic: Fatal exception
 Attempt 6:
-*** general protection fault in cache_first_page
-    kernel panic: Fatal exception
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in wg_destruct
+    INFO: task hung in del_device_store
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in devlink_unregister
+    INFO: task hung in rtnetlink_rcv_msg
 Attempt 7:
-*** general protection fault in cache_first_page
-    kernel panic: Fatal exception
+    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in new_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in devlink_unregister
+    INFO: task hung in rtnetlink_rcv_msg
 The bug was found.
 
 ==== Major Release Search ====
-18 Releases
+12 Releases
 
-2025-03-10 02:02:37
+2025-12-01 11:39:36
 Session:   2
-Kernel:    2022-10-02 - 4fe89d07dcc2804c8b562f6c7896a45643d34b2f (v6.0)
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Kernel:    2022-12-11 - 830b3c68c1fb1e9176028d02ef86f3cf76aa2476 (v6.1)
+Compiler:  ccache gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0208-2.prog
 Attempt 0:
-*** general protection fault in cache_first_page
-    kernel panic: Fatal exception
-Attempt 1:
+    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit
     INFO: rcu detected stall in corrupted
-    INFO: rcu detected stall in cleanup_net
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in del_device_store
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in rtnetlink_rcv_msg
+Attempt 1:
+*** general protection fault in cache_first_page
+Attempt 2:
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in del_device_store
+Attempt 3:
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in switchdev_deferred_process_work
+    INFO: task hung in new_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in linkwatch_event
+    INFO: task hung in rtnetlink_rcv_msg
+Attempt 4:
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in new_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in addrconf_dad_work
     INFO: task hung in devlink_unregister
-Attempt 2:
-    INFO: rcu detected stall in corrupted
-    INFO: rcu detected stall in cleanup_net
-    INFO: task hung in devlink_unregister
-Attempt 3:
-    INFO: rcu detected stall in corrupted
-    INFO: rcu detected stall in corrupted
-    INFO: task hung in devlink_unregister
-Attempt 4:
-*** general protection fault in cache_first_page
-    kernel panic: Fatal exception
 Attempt 5:
-    INFO: rcu detected stall in corrupted
-    INFO: rcu detected stall in corrupted
-    INFO: task hung in devlink_unregister
-Attempt 6:
-    INFO: rcu detected stall in corrupted
-    INFO: rcu detected stall in corrupted
-    INFO: task hung in devlink_unregister
-Attempt 7:
 *** general protection fault in cache_first_page
-    kernel panic: Fatal exception
+Attempt 6:
+*** general protection fault in cache_first_page
+Attempt 7:
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in del_device_store
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in rtnetlink_rcv_msg
 The bug was found.
-About 17 releases remaining
-
-2025-03-10 02:26:12
-Session:   3
-Kernel:    2022-07-31 - 3d7cb6b04c3f3115719235cc6866b10326de34cd (v5.19)
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
-Attempt 0:
-*** general protection fault in cache_first_page
-    kernel panic: Fatal exception
-Attempt 1:
-*** general protection fault in cache_first_page
-    kernel panic: Fatal exception
-Attempt 2:
-*** general protection fault in cache_first_page
-    kernel panic: Fatal exception
-Attempt 3:
-*** general protection fault in cache_first_page
-    kernel panic: Fatal exception
-Attempt 4:
-*** general protection fault in cache_first_page
-    kernel panic: Fatal exception
-Attempt 5:
-*** general protection fault in cache_first_page
-    kernel panic: Fatal exception
-Attempt 6:
-*** general protection fault in cache_first_page
-    kernel panic: Fatal exception
-Attempt 7:
-*** general protection fault in cache_first_page
-    kernel panic: Fatal exception
-The bug was found.
-About 16 releases remaining
-
-2025-03-10 02:46:02
-Session:   4
-Kernel:    2022-05-22 - 4b0986a3613c92f4ec1bdc7f60ec66fea135991f (v5.18)
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
-Warning: VM has not responded after 5 attempts.
-Warning: Only booted 7 VMs.
-Attempt 0:
-*** general protection fault in cache_first_page
-    kernel panic: Fatal exception
-Attempt 1:
-*** general protection fault in cache_first_page
-    kernel panic: Fatal exception
-Attempt 2:
-*** general protection fault in cache_first_page
-    kernel panic: Fatal exception
-Attempt 3:
-*** general protection fault in cache_first_page
-    kernel panic: Fatal exception
-Attempt 4:
-    No crashes found.
-Attempt 5:
-*** general protection fault in cache_first_page
-    kernel panic: Fatal exception
-Attempt 6:
-*** general protection fault in cache_first_page
-    kernel panic: Fatal exception
-Attempt 7:
-*** general protection fault in cache_first_page
-    kernel panic: Fatal exception
-The bug was found.
-About 15 releases remaining
-
-2025-03-10 03:20:57
-Session:   5
-Kernel:    2022-01-09 - df0cc57e057f18e44dac8e6c18aba47ab53202f9 (v5.16)
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
-Attempt 0:
-*** general protection fault in cache_first_page
-    kernel panic: Fatal exception
-Attempt 1:
-*** general protection fault in cache_first_page
-    kernel panic: Fatal exception
-Attempt 2:
-*** general protection fault in cache_first_page
-    kernel panic: Fatal exception
-Attempt 3:
-*** general protection fault in cache_first_page
-    kernel panic: Fatal exception
-Attempt 4:
-*** general protection fault in cache_first_page
-    kernel panic: Fatal exception
-Attempt 5:
-*** general protection fault in cache_first_page
-    kernel panic: Fatal exception
-Attempt 6:
-*** general protection fault in cache_first_page
-    kernel panic: Fatal exception
-Attempt 7:
-*** general protection fault in cache_first_page
-    kernel panic: Fatal exception
-The bug was found.
-About 14 releases remaining
-
-2025-03-10 03:38:10
-Session:   6
-Kernel:    2021-08-29 - 7d2a07b769330c34b4deabeed939325c77a7ec2f (v5.14)
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
-Attempt 0:
-*** general protection fault in cache_first_page
-    kernel panic: Fatal exception
-Attempt 1:
-*** general protection fault in cache_first_page
-    kernel panic: Fatal exception
-Attempt 2:
-*** general protection fault in cache_first_page
-    kernel panic: Fatal exception
-Attempt 3:
-*** general protection fault in cache_first_page
-    kernel panic: Fatal exception
-Attempt 4:
-*** general protection fault in cache_first_page
-    kernel panic: Fatal exception
-Attempt 5:
-*** general protection fault in cache_first_page
-    kernel panic: Fatal exception
-Attempt 6:
-*** general protection fault in cache_first_page
-    kernel panic: Fatal exception
-Attempt 7:
-*** general protection fault in cache_first_page
-    kernel panic: Fatal exception
-The bug was found.
-About 13 releases remaining
-
-2025-03-10 03:55:17
-Session:   7
-Kernel:    2021-04-25 - 9f4ad9e425a1d3b6a34617b8ea226d56a119a717 (v5.12)
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
-Attempt 0:
-*** general protection fault in cache_first_page
-    kernel panic: Fatal exception
-Attempt 1:
-*** general protection fault in cache_first_page
-    kernel panic: Fatal exception
-Attempt 2:
-*** general protection fault in cache_first_page
-    kernel panic: Fatal exception
-Attempt 3:
-*** general protection fault in cache_first_page
-    kernel panic: Fatal exception
-Attempt 4:
-*** general protection fault in cache_first_page
-    kernel panic: Fatal exception
-Attempt 5:
-*** general protection fault in cache_first_page
-    kernel panic: Fatal exception
-Attempt 6:
-*** general protection fault in cache_first_page
-    kernel panic: Fatal exception
-Attempt 7:
-*** general protection fault in cache_first_page
-    kernel panic: Fatal exception
-The bug was found.
-About 12 releases remaining
-
-2025-03-10 04:12:33
-Session:   8
-Kernel:    2020-12-13 - 2c85ebc57b3e1817b6ce1a6b703928e113a90442 (v5.10)
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.1.0-syz/bin/gcc
-Warning: VM has not responded after 5 attempts.
-Warning: Only booted 0 VMs.
-Attempt 0:
-    inconsistent lock state in vdpasim_map_page
-Attempt 1:
-    inconsistent lock state in vdpasim_map_page
-Attempt 2:
-    inconsistent lock state in vdpasim_map_page
-Attempt 3:
-    inconsistent lock state in vdpasim_map_page
-Attempt 4:
-    inconsistent lock state in vdpasim_map_page
-Attempt 5:
-    inconsistent lock state in vdpasim_map_page
-Attempt 6:
-    inconsistent lock state in vdpasim_map_page
-Attempt 7:
-    inconsistent lock state in vdpasim_map_page
-The bug was not found.
 About 11 releases remaining
 
-==== Kernel Bisection ====
-29645 Linux commits
+2025-12-01 12:08:19
+Session:   3
+Kernel:    2022-10-02 - 4fe89d07dcc2804c8b562f6c7896a45643d34b2f (v6.0)
+Compiler:  ccache gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0208-2.prog
+Attempt 0:
+*** general protection fault in cache_first_page
+Attempt 1:
+    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in wiphy_unregister
+    INFO: task hung in new_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in devlink_unregister
+    INFO: task hung in linkwatch_event
+    INFO: task hung in rtnetlink_rcv_msg
+Attempt 2:
+    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in ip6gre_exit_batch_net
+    INFO: task hung in new_device_store
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in devlink_unregister
+    INFO: task hung in rtnetlink_rcv_msg
+Attempt 3:
+*** general protection fault in cache_first_page
+Attempt 4:
+    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in new_device_store
+    INFO: task hung in del_device_store
+Attempt 5:
+    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in del_device_store
+Attempt 6:
+*** general protection fault in cache_first_page
+Attempt 7:
+*** general protection fault in cache_first_page
+The bug was found.
+About 10 releases remaining
 
-2025-03-10 05:22:03
+2025-12-01 12:36:32
+Session:   4
+Kernel:    2022-07-31 - 3d7cb6b04c3f3115719235cc6866b10326de34cd (v5.19)
+Compiler:  ccache gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0208-2.prog
+Attempt 0:
+*** general protection fault in cache_first_page
+Attempt 1:
+*** general protection fault in cache_first_page
+Attempt 2:
+*** general protection fault in cache_first_page
+Attempt 3:
+*** general protection fault in cache_first_page
+Attempt 4:
+*** general protection fault in cache_first_page
+Attempt 5:
+*** general protection fault in cache_first_page
+Attempt 6:
+*** general protection fault in cache_first_page
+Attempt 7:
+*** general protection fault in cache_first_page
+The bug was found.
+About 9 releases remaining
+
+2025-12-01 13:00:23
+Session:   5
+Kernel:    2022-03-20 - f443e374ae131c168a065ea1748feac6b2e76613 (v5.17)
+Compiler:  ccache gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0208-2.prog
+Attempt 0:
+*** general protection fault in cache_first_page
+Attempt 1:
+*** general protection fault in cache_first_page
+Attempt 2:
+*** general protection fault in cache_first_page
+Attempt 3:
+*** general protection fault in cache_first_page
+Attempt 4:
+*** general protection fault in cache_first_page
+Attempt 5:
+*** general protection fault in cache_first_page
+Attempt 6:
+*** general protection fault in cache_first_page
+Attempt 7:
+*** general protection fault in cache_first_page
+The bug was found.
+About 8 releases remaining
+
+2025-12-01 13:20:56
+Session:   6
+Kernel:    2021-10-31 - 8bb7eca972ad531c9b149c0a51ab43a417385813 (v5.15)
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0208-2.prog
+Attempt 0:
+*** general protection fault in cache_first_page
+Attempt 1:
+*** general protection fault in cache_first_page
+Attempt 2:
+*** general protection fault in cache_first_page
+Attempt 3:
+*** general protection fault in cache_first_page
+Attempt 4:
+*** general protection fault in cache_first_page
+Attempt 5:
+*** general protection fault in cache_first_page
+Attempt 6:
+*** general protection fault in cache_first_page
+Attempt 7:
+*** general protection fault in cache_first_page
+The bug was found.
+About 7 releases remaining
+
+2025-12-01 13:40:42
+Session:   7
+Kernel:    2021-06-27 - 62fb9874f5da54fdb243003b386128037319b219 (v5.13)
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0208-2.prog
+Attempt 0:
+*** general protection fault in cache_first_page
+    BUG: sleeping function called from invalid context in lock_sock_nested (has report)
+    possible deadlock in hci_sock_dev_event
+Attempt 1:
+    kernel panic: scheduling while atomic
+    BUG: sleeping function called from invalid context in lock_sock_nested (has report)
+    possible deadlock in hci_sock_dev_event
+    BUG: scheduling while atomic in __lock_sock
+Attempt 2:
+*** general protection fault in cache_first_page
+    BUG: sleeping function called from invalid context in lock_sock_nested (has report)
+    possible deadlock in hci_sock_dev_event
+Attempt 3:
+    kernel panic: scheduling while atomic
+    BUG: sleeping function called from invalid context in lock_sock_nested (has report)
+    possible deadlock in hci_sock_dev_event
+    BUG: scheduling while atomic in __lock_sock
+Attempt 4:
+*** general protection fault in cache_first_page
+Attempt 5:
+*** general protection fault in cache_first_page
+Attempt 6:
+    kernel panic: scheduling while atomic
+    BUG: sleeping function called from invalid context in lock_sock_nested (has report)
+    BUG: scheduling while atomic in __lock_sock
+Attempt 7:
+*** general protection fault in cache_first_page
+    BUG: sleeping function called from invalid context in lock_sock_nested (has report)
+    possible deadlock in hci_sock_dev_event
+The bug was found.
+About 6 releases remaining
+
+2025-12-01 14:00:22
+Session:   8
+Kernel:    2021-02-14 - f40ddce88593482919761f74910f42f4b84c004b (v5.11)
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0208-2.prog
+Warning: VM has not responded after 5 attempts.
+Warning: Only booted 0 VMs.
+The bug was not found.
+This commit is flagged as unstable.
+About 5 releases remaining
+
+2025-12-01 15:07:00
 Session:   9
-Kernel:    2021-01-22 - e87e4b5caa5db4ab14508e75ec5926a1c05020ac
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Kernel:    2020-10-11 - bbf5c979011a099af5dc76498918ed7df445635b (v5.9)
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0208-2.prog
 Warning: VM has not responded after 5 attempts.
 Warning: Only booted 0 VMs.
-Attempt 0:
-    inconsistent lock state in vdpasim_map_page
-    kernel panic: System is deadlocked on memory
-Attempt 1:
-    possible deadlock in virtnet_poll_tx
-    kernel panic: System is deadlocked on memory
-Attempt 2:
-    inconsistent lock state in vdpasim_map_page
-    kernel panic: System is deadlocked on memory
-Attempt 3:
-    inconsistent lock state in vdpasim_map_page
-    kernel panic: System is deadlocked on memory
-Attempt 4:
-    inconsistent lock state in vdpasim_map_page
-    kernel panic: System is deadlocked on memory
-Attempt 5:
-    inconsistent lock state in vdpasim_map_page
-    kernel panic: System is deadlocked on memory
-Attempt 6:
-    inconsistent lock state in vdpasim_map_page
-    kernel panic: System is deadlocked on memory
-Attempt 7:
-    inconsistent lock state in vdpasim_map_page
-    kernel panic: System is deadlocked on memory
 The bug was not found.
-About 14823 commits remaining
+This commit is flagged as unstable.
+About 4 releases remaining
 
-2025-03-10 06:06:32
+2025-12-01 16:12:43
 Session:   10
-Kernel:    2021-02-21 - d99676af540c2dc829999928fb81c58c80a1dce4
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Kernel:    2020-05-31 - 3d77e6a8804abcc0504c904bd6e5cdf3a5cf8162 (v5.7)
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-8.1.0/bin/gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0208-2.prog
 Warning: VM has not responded after 5 attempts.
 Warning: Only booted 0 VMs.
-Attempt 0:
-    inconsistent lock state in vdpasim_map_page
-Attempt 1:
-    inconsistent lock state in vdpasim_map_page
-Attempt 2:
-    WARNING in kvm_wait
-Attempt 3:
-    WARNING in kvm_wait
-Attempt 4:
-    inconsistent lock state in vdpasim_map_page
-Attempt 5:
-    possible deadlock in virtnet_poll_tx
-Attempt 6:
-    inconsistent lock state in vdpasim_map_page
-Attempt 7:
-    inconsistent lock state in vdpasim_map_page
 The bug was not found.
-About 6800 commits remaining
+This commit is flagged as unstable.
+About 3 releases remaining
 
-2025-03-10 07:01:48
+2025-12-01 17:18:49
 Session:   11
-Kernel:    2021-03-09 - 69264b4a43aff7307283e2bae29e9305ab6b7d47
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
-Warning: VM has not responded after 5 attempts.
-Warning: Only booted 0 VMs.
+Kernel:    2019-11-24 - 219d54332a09e8d8741c1e1982f5eae56099de85 (v5.4)
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-8.1.0/bin/gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0208-2.prog
 Attempt 0:
-    inconsistent lock state in vdpasim_map_page
+*** general protection fault in cache_first_page
 Attempt 1:
-    inconsistent lock state in vdpasim_map_page
+*** general protection fault in cache_first_page
 Attempt 2:
-    inconsistent lock state in vdpasim_map_page
+*** general protection fault in cache_first_page
 Attempt 3:
-    inconsistent lock state in vdpasim_map_page
+*** general protection fault in cache_first_page
 Attempt 4:
-    inconsistent lock state in vdpasim_map_page
+*** general protection fault in cache_first_page
 Attempt 5:
-    inconsistent lock state in vdpasim_map_page
+*** general protection fault in cache_first_page
 Attempt 6:
-    WARNING in kvm_wait
+*** general protection fault in cache_first_page
 Attempt 7:
-    WARNING in kvm_wait
-The bug was not found.
-About 3478 commits remaining
+*** general protection fault in cache_first_page
+The bug was found.
+About 2 releases remaining
 
-2025-03-10 07:58:00
+2025-12-01 17:36:28
 Session:   12
-Kernel:    2021-03-12 - f296bfd5cd04cbb49b8fc9585adc280ab2b58624
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
-Warning: VM has not responded after 5 attempts.
-Warning: Only booted 5 VMs.
+Kernel:    2019-05-05 - e93c9c99a629c61837d5a7fc2120cd2b6c70dbdd (v5.1)
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-8.1.0/bin/gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0208-2.prog
 Attempt 0:
-    WARNING in kvm_wait
+*** general protection fault in cache_first_page
 Attempt 1:
-    WARNING in kvm_wait
+*** general protection fault in cache_first_page
 Attempt 2:
 *** general protection fault in cache_first_page
-    kernel panic: Fatal exception
 Attempt 3:
 *** general protection fault in cache_first_page
-    kernel panic: Fatal exception
 Attempt 4:
-    WARNING in kvm_wait
+*** general protection fault in cache_first_page
 Attempt 5:
-    WARNING in kvm_wait
+*** general protection fault in cache_first_page
 Attempt 6:
-    WARNING in kvm_wait
+*** general protection fault in cache_first_page
 Attempt 7:
-    WARNING in kvm_wait
+*** general protection fault in cache_first_page
 The bug was found.
-About 1740 commits remaining
+About 1 releases remaining
 
-2025-03-10 08:15:44
+2025-12-01 17:51:52
 Session:   13
-Kernel:    2021-02-26 - efba6d3a7c4bb59f0750609fae0f9644d82304b6
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
-Warning: VM has not responded after 5 attempts.
-Warning: Only booted 5 VMs.
+Kernel:    2018-10-22 - 84df9525b0c27f3ebc2ebb1864fa62a97fdedb7d (v4.19)
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-8.1.0/bin/gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0208-2.prog
 Attempt 0:
 *** general protection fault in cache_first_page
-    kernel panic: Fatal exception
 Attempt 1:
-    WARNING in kvm_wait
+*** general protection fault in cache_first_page
 Attempt 2:
 *** general protection fault in cache_first_page
-    kernel panic: Fatal exception
 Attempt 3:
-    WARNING in kvm_wait
+*** general protection fault in cache_first_page
 Attempt 4:
 *** general protection fault in cache_first_page
-    kernel panic: Fatal exception
 Attempt 5:
 *** general protection fault in cache_first_page
-    kernel panic: Fatal exception
 Attempt 6:
 *** general protection fault in cache_first_page
-    kernel panic: Fatal exception
 Attempt 7:
-    WARNING in kvm_wait
+*** general protection fault in cache_first_page
 The bug was found.
-About 864 commits remaining
-
-2025-03-10 08:32:04
-Session:   14
-Kernel:    2021-02-26 - 64427985c76fcb54c783de617edf353009499a03
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
-Warning: VM has not responded after 5 attempts.
-Warning: Only booted 0 VMs.
-Attempt 0:
-    WARNING in kvm_wait
-Attempt 1:
-    inconsistent lock state in vdpasim_map_page
-Attempt 2:
-    inconsistent lock state in vdpasim_map_page
-Attempt 3:
-    WARNING in kvm_wait
-Attempt 4:
-    UBSAN: shift-out-of-bounds in load_balance
-Attempt 5:
-    possible deadlock in virtnet_poll_tx
-Attempt 6:
-    possible deadlock in virtnet_poll_tx
-Attempt 7:
-    WARNING in kvm_wait
-The bug was not found.
-About 433 commits remaining
-
-2025-03-10 09:15:45
-Session:   15
-Kernel:    2021-02-26 - 1c9077cdecd027714736e70704da432ee2b946bb
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
-Warning: VM has not responded after 5 attempts.
-Warning: Only booted 4 VMs.
-Attempt 0:
-    WARNING in kvm_wait
-Attempt 1:
-*** general protection fault in cache_first_page
-    kernel panic: Fatal exception
-Attempt 2:
-    WARNING in kvm_wait
-Attempt 3:
-    WARNING in kvm_wait
-Attempt 4:
-    WARNING in kvm_wait
-Attempt 5:
-*** general protection fault in cache_first_page
-    kernel panic: Fatal exception
-Attempt 6:
-    WARNING in kvm_wait
-Attempt 7:
-    WARNING in kvm_wait
-The bug was found.
-About 219 commits remaining
-
-2025-03-10 09:35:25
-Session:   16
-Kernel:    2021-02-25 - fdce29602f865b016012eadeaec99800da916d3d
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
-Warning: VM has not responded after 5 attempts.
-Warning: Only booted 0 VMs.
-Attempt 0:
-    inconsistent lock state in vdpasim_map_page
-Attempt 1:
-    inconsistent lock state in vdpasim_map_page
-Attempt 2:
-    inconsistent lock state in vdpasim_map_page
-Attempt 3:
-    inconsistent lock state in vdpasim_map_page
-Attempt 4:
-    inconsistent lock state in vdpasim_map_page
-Attempt 5:
-    inconsistent lock state in vdpasim_map_page
-Attempt 6:
-    inconsistent lock state in vdpasim_map_page
-Attempt 7:
-    inconsistent lock state in vdpasim_map_page
-The bug was not found.
-About 85 commits remaining
-
-2025-03-10 10:43:42
-Session:   17
-Kernel:    2021-02-25 - ffc1759676bed0bff046427dd7d00cb68660190d
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
-Warning: VM has not responded after 5 attempts.
-Warning: Only booted 4 VMs.
-Attempt 0:
-    WARNING in kvm_wait
-Attempt 1:
-    WARNING in kvm_wait
-Attempt 2:
-    WARNING in kvm_wait
-Attempt 3:
-    WARNING in kvm_wait
-Attempt 4:
-*** general protection fault in cache_first_page
-    kernel panic: Fatal exception
-Attempt 5:
-    WARNING in kvm_wait
-Attempt 6:
-    WARNING in kvm_wait
-Attempt 7:
-*** general protection fault in cache_first_page
-    kernel panic: Fatal exception
-The bug was found.
-About 47 commits remaining
-
-2025-03-10 11:01:53
-Session:   18
-Kernel:    2021-02-23 - 8000a6b602a4aec0f54a9131623a407d6d44a605
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
-Attempt 0:
-*** general protection fault in cache_first_page
-    kernel panic: Fatal exception
-Attempt 1:
-*** general protection fault in cache_first_page
-    kernel panic: Fatal exception
-Attempt 2:
-*** general protection fault in cache_first_page
-    kernel panic: Fatal exception
-Attempt 3:
-*** general protection fault in cache_first_page
-    kernel panic: Fatal exception
-Attempt 4:
-*** general protection fault in cache_first_page
-    kernel panic: Fatal exception
-Attempt 5:
-*** general protection fault in cache_first_page
-    kernel panic: Fatal exception
-Attempt 6:
-*** general protection fault in cache_first_page
-    kernel panic: Fatal exception
-Attempt 7:
-*** general protection fault in cache_first_page
-    kernel panic: Fatal exception
-The bug was found.
-About 24 commits remaining
-
-2025-03-10 11:18:43
-Session:   19
-Kernel:    2021-02-23 - 117a9de2826ccb0d338afb03f07223b3cb789371
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
-Warning: VM has not responded after 5 attempts.
-Warning: Only booted 7 VMs.
-Attempt 0:
-    No crashes found.
-Attempt 1:
-*** general protection fault in cache_first_page
-    kernel panic: Fatal exception
-Attempt 2:
-*** general protection fault in cache_first_page
-    kernel panic: Fatal exception
-Attempt 3:
-*** general protection fault in cache_first_page
-    kernel panic: Fatal exception
-Attempt 4:
-*** general protection fault in cache_first_page
-    kernel panic: Fatal exception
-Attempt 5:
-*** general protection fault in cache_first_page
-    kernel panic: Fatal exception
-Attempt 6:
-*** general protection fault in cache_first_page
-    kernel panic: Fatal exception
-Attempt 7:
-*** general protection fault in cache_first_page
-    kernel panic: Fatal exception
-The bug was found.
-About 12 commits remaining
-
-2025-03-10 11:48:15
-Session:   20
-Kernel:    2021-02-23 - 903f7bcaedb84ca47998e609015a34ddde93742e
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
-Warning: VM has not responded after 5 attempts.
-Warning: Only booted 0 VMs.
-Attempt 0:
-    inconsistent lock state in vdpasim_map_page
-Attempt 1:
-    WARNING: suspicious RCU usage in seq_read_iter
-    inconsistent lock state in vdpasim_map_page
-Attempt 2:
-    inconsistent lock state in vdpasim_map_page
-Attempt 3:
-    inconsistent lock state in vdpasim_map_page
-Attempt 4:
-    inconsistent lock state in vdpasim_map_page
-Attempt 5:
-    inconsistent lock state in vdpasim_map_page
-Attempt 6:
-    WARNING: inconsistent lock state
-Attempt 7:
-    inconsistent lock state in vdpasim_map_page
-The bug was not found.
-About 7 commits remaining
-
-2025-03-10 12:54:36
-Session:   21
-Kernel:    2021-02-23 - 489084dd3f7e4bd649814bd62839aef4456659e8
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
-Attempt 0:
-*** general protection fault in cache_first_page
-    kernel panic: Fatal exception
-Attempt 1:
-*** general protection fault in cache_first_page
-    kernel panic: Fatal exception
-Attempt 2:
-*** general protection fault in cache_first_page
-    kernel panic: Fatal exception
-Attempt 3:
-*** general protection fault in cache_first_page
-    kernel panic: Fatal exception
-Attempt 4:
-*** general protection fault in cache_first_page
-    kernel panic: Fatal exception
-Attempt 5:
-*** general protection fault in cache_first_page
-    kernel panic: Fatal exception
-Attempt 6:
-*** general protection fault in cache_first_page
-    kernel panic: Fatal exception
-Attempt 7:
-*** general protection fault in cache_first_page
-    kernel panic: Fatal exception
-The bug was found.
-About 4 commits remaining
-
-2025-03-10 13:11:01
-Session:   22
-Kernel:    2021-02-23 - a3c06ae158dd6fa8336157c31d9234689d068d02
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
-Attempt 0:
-*** general protection fault in cache_first_page
-    kernel panic: Fatal exception
-Attempt 1:
-*** general protection fault in cache_first_page
-    kernel panic: Fatal exception
-Attempt 2:
-*** general protection fault in cache_first_page
-    kernel panic: Fatal exception
-Attempt 3:
-*** general protection fault in cache_first_page
-    kernel panic: Fatal exception
-Attempt 4:
-*** general protection fault in cache_first_page
-    kernel panic: Fatal exception
-Attempt 5:
-*** general protection fault in cache_first_page
-    kernel panic: Fatal exception
-Attempt 6:
-*** general protection fault in cache_first_page
-    kernel panic: Fatal exception
-Attempt 7:
-*** general protection fault in cache_first_page
-    kernel panic: Fatal exception
-The bug was found.
-About 3 commits remaining
-
-2025-03-10 13:27:14
-Session:   23
-Kernel:    2021-02-23 - bc0d90ee021f1baecd6aaa010d787eb373aa74dd
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
-Warning: VM has not responded after 5 attempts.
-Warning: Only booted 0 VMs.
-Attempt 0:
-    inconsistent lock state in vdpasim_map_page
-Attempt 1:
-    inconsistent lock state in vdpasim_map_page
-Attempt 2:
-    inconsistent lock state in vdpasim_map_page
-Attempt 3:
-    inconsistent lock state in vdpasim_map_page
-Attempt 4:
-    inconsistent lock state in vdpasim_map_page
-Attempt 5:
-    inconsistent lock state in vdpasim_map_page
-Attempt 6:
-    inconsistent lock state in vdpasim_map_page
-Attempt 7:
-    inconsistent lock state in vdpasim_map_page
-The bug was not found.
-About 2 commits remaining
+About 0 releases remaining
+This bug was found on the oldest tested release.
 
 ====================================================================================================================================================
 Bug Name:             general protection fault in cache_first_page
+Bug ID:               bug0208
 Bug Link:             https://syzkaller.appspot.com/bug?id=8cf937ba2cde11be769fe8a1330c8d9153e3d7fa
-Bisection Result:     2021-02-23 - a3c06ae158dd6fa8336157c31d9234689d068d02
-Bisected Commit Name: vdpa_sim_net: Add support for user supported devices
-Run Time:             12h55m44s
+Bisection Result:     2018-10-22 - 84df9525b0c27f3ebc2ebb1864fa62a97fdedb7d
+Bisected Commit Name: Linux 4.19
+Run Time:             6h50m30s
 
 Anchor Commit:        2023-01-01 - 88603b6dc419445847923fcb7fe5080067a30f98
-Bisection Result:     2021-02-23 - a3c06ae158dd6fa8336157c31d9234689d068d02
+Bisection Result:     2018-10-22 - 84df9525b0c27f3ebc2ebb1864fa62a97fdedb7d
