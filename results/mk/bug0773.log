@@ -1,4 +1,4 @@
-./bin/bisector -i 5 -c /home/syzretrospector/syzinspector/wd-bisector-5/bisector.cfg -a 994d5c58e50e91bb02c7be4a91d5186292a895c8 -F ff-test,poc-test,stateful-corpus,ff-no-find-backup
+./bin/meerkat -i 1 -c /home/syzretrospector/meerkat/wd-meerkat-1/meerkat.cfg -a 994d5c58e50e91bb02c7be4a91d5186292a895c8 -F ff-test,poc-test,poc-all-pocs,ff-no-find-backup,stateful-corpus
 Bisecting:          KASAN: null-ptr-deref Write in unix_stream_bpf_update_proto
 Syzbot Link:        https://syzkaller.appspot.com/bug?extid=e8030702aefd3444fb9e
 Working Name:       bug0773
@@ -10,23 +10,25 @@ Repository:         https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/lin
 Branch:             master
 Arch:               amd64
 
-Bisector:           /home/syzretrospector/syzinspector/
-Version:            1.0.4
-Kernel:             /home/syzretrospector/syzinspector/wd-bisector-5/kernel/
-Syzkaller:          /home/syzretrospector/syzinspector/syzkaller/
-Compilers:          /home/syzretrospector/compilers/
-Ccache:             ccache
+Meerkat:            /home/syzretrospector/meerkat/
+Version:            1.1.1
+Kernel:             /home/syzretrospector/meerkat/wd-meerkat-1/kernel/
+Syzkaller:          /home/syzretrospector/meerkat/syzkaller/
+Compilers:          /home/syzretrospector/meerkat/compilers/
+Compiler:           gcc (Ubuntu 11.4.0-1ubuntu1~22.04.2) 11.4.0
+Linker:             GNU ld (GNU Binutils for Ubuntu) 2.38
+Ccache:             ccache version 4.5.1
 Image:              /home/syzretrospector/images/stretch/stretch.img
 Image Key:          /home/syzretrospector/images/stretch/stretch.id_rsa
 
-Workdir:            /home/syzretrospector/syzinspector/wd-bisector-5/
-Kconfig:            /home/syzretrospector/syzinspector/wd-bisector-5/config-bug0773.txt
-Reproducers: (1)    /home/syzretrospector/syzinspector/wd-bisector-5/reproducers/
-Primary PoC:        /home/syzretrospector/syzinspector/wd-bisector-5/reproducers/repro-bug0773-1.prog
-Syzkaller Workdir:  /home/syzretrospector/syzinspector/wd-bisector-5/wd-kaller/
-Log Directory:      /home/syzretrospector/syzinspector/wd-bisector-5/log/
+Workdir:            /home/syzretrospector/meerkat/wd-meerkat-1/
+Kconfig:            /home/syzretrospector/meerkat/wd-meerkat-1/config-bug0773.txt
+Reproducers: (1)    /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/
+Primary PoC:        /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0773-1.prog
+Syzkaller Workdir:  /home/syzretrospector/meerkat/wd-meerkat-1/wd-kaller/
+Log Directory:      /home/syzretrospector/meerkat/wd-meerkat-1/log/
 
-Syscalls: (13)      ["bpf$MAP_CREATE", "bpf$MAP_UPDATE_ELEM", "socket", "ioctl$F2FS_IOC_START_ATOMIC_WRITE", "openat$selinux_enforce", "socket$inet_udp", "socket$inet6_udp", "socket$inet_tcp", "socket$inet6_tcp", "ioctl$sock_SIOCGIFINDEX", "bpf$BPF_BTF_LOAD", "socket$inet", "socket$inet6"]
+Syscalls: (16)      ["bpf$MAP_CREATE", "bpf$MAP_UPDATE_ELEM", "socket", "ioctl$F2FS_IOC_START_ATOMIC_WRITE", "openat$selinux_enforce", "socket$inet_udp", "socket$inet6_udp", "socket$inet_tcp", "socket$inet6_tcp", "ioctl$sock_SIOCGIFINDEX", "bpf$BPF_BTF_LOAD", "socket$inet", "socket$inet6", "bpf$TOKEN_CREATE", "bpf$BPF_PROG_GET_FD_BY_ID", "bpf$BPF_PROG_GET_NEXT_ID"]
 VM Count:           8
 CPU Count:          2
 Procs:              16
@@ -37,23 +39,282 @@ Max Attempts:       1
 
 ==== Anchor Commit ====
 
-2025-03-18 03:00:16
+2025-10-29 17:08:09
 Session:   1
 Kernel:    2023-12-01 - 994d5c58e50e91bb02c7be4a91d5186292a895c8
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
-Warning: bpf$MAP_CREATE was disabled by Syzkaller.
-Warning: bpf$MAP_UPDATE_ELEM was disabled by Syzkaller.
+Compiler:  ccache gcc
 Attempt 1:
-    No crashes found.
-Warning: bpf$MAP_CREATE was disabled by Syzkaller.
-Warning: bpf$MAP_UPDATE_ELEM was disabled by Syzkaller.
+    Time  Bug Name
+***    2  KASAN: null-ptr-deref Write in unix_stream_bpf_update_proto
+***    2  KASAN: null-ptr-deref Write in unix_stream_bpf_update_proto
+***    2  KASAN: null-ptr-deref Write in unix_stream_bpf_update_proto
 Attempt 2: (RETRY)
-    No crashes found.
-Warning: bpf$MAP_CREATE was disabled by Syzkaller.
-Warning: bpf$MAP_UPDATE_ELEM was disabled by Syzkaller.
+    Time  Bug Name
+***    2  KASAN: null-ptr-deref Write in unix_stream_bpf_update_proto
+***    2  KASAN: null-ptr-deref Write in unix_stream_bpf_update_proto
+***    2  KASAN: null-ptr-deref Write in unix_stream_bpf_update_proto
+***    2  KASAN: null-ptr-deref Write in unix_stream_bpf_update_proto
 Attempt 3: (RETRY)
     Time  Bug Name
-       5  suppressed report
+***    2  KASAN: null-ptr-deref Write in unix_stream_bpf_update_proto
+***    2  KASAN: null-ptr-deref Write in unix_stream_bpf_update_proto
+***    2  KASAN: null-ptr-deref Write in unix_stream_bpf_update_proto
+The bug was found.
+
+New Max Time: 10
+
+==== Major Release Search ====
+14 Releases
+
+2025-10-29 17:27:42
+Session:   2
+Kernel:    2023-10-29 - ffc253263a1375a65fa6c9f62a893e9767fbebfa (v6.6)
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 13 releases remaining
+
+==== Kernel Bisection ====
+16979 Linux commits
+
+2025-10-29 17:50:55
+Session:   3
+Kernel:    2023-11-01 - 7d461b291e65938f15f56fe58da2303b07578a76
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 8330 commits remaining
+
+2025-10-29 18:14:06
+Session:   4
+Kernel:    2023-11-03 - 707df298cbde200b939c70be2577b20775fe3345
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 4161 commits remaining
+
+2025-10-29 18:37:45
+Session:   5
+Kernel:    2023-11-06 - be3ca57cfb777ad820c6659d52e60bbdd36bf5ff
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 1950 commits remaining
+
+2025-10-29 19:00:57
+Session:   6
+Kernel:    2023-11-10 - b456259e1544daa337fa00cda8bd3bea04c8d914
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 974 commits remaining
+
+2025-10-29 19:24:15
+Session:   7
+Kernel:    2023-11-18 - 9ea991a50dd559ad2f1a5094d73f9583811979a5
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 476 commits remaining
+
+2025-10-29 19:43:26
+Session:   8
+Kernel:    2023-11-24 - afa0f6ee000abd220a8160f0375b5b8d3e4284f2
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 242 commits remaining
+
+2025-10-29 20:06:32
+Session:   9
+Kernel:    2023-11-27 - df60cee26a2e3d937a319229e335cb3f9c1f16d2
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 121 commits remaining
+
+2025-10-29 20:25:54
+Session:   10
+Kernel:    2023-11-30 - 777f245eec8152926b411e3d4f4545310f52cbed
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    2  KASAN: null-ptr-deref Write in unix_stream_bpf_update_proto
+***    2  KASAN: null-ptr-deref Write in unix_stream_bpf_update_proto
+***    2  KASAN: null-ptr-deref Write in unix_stream_bpf_update_proto
+***    2  KASAN: null-ptr-deref Write in unix_stream_bpf_update_proto
+***    2  KASAN: null-ptr-deref Write in unix_stream_bpf_update_proto
+***    2  KASAN: null-ptr-deref Write in unix_stream_bpf_update_proto
+***    2  KASAN: null-ptr-deref Write in unix_stream_bpf_update_proto
+***    2  KASAN: null-ptr-deref Write in unix_stream_bpf_update_proto
+Running syz-repro.
+New PoC saved at /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0773-0.prog
+Primary PoC:     /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0773-0.prog
+Run Time:        0h9m0s
+The bug was found.
+About 58 commits remaining
+
+2025-10-29 20:46:38
+Session:   11
+Kernel:    2023-11-29 - 83f2df9d66bc9e1e0dbd5d5586a701088f6a1d42
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 32 commits remaining
+
+2025-10-29 21:02:19
+Session:   12
+Kernel:    2023-11-27 - 4ded3bfe1db655367642aadba91aee770cbab317
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 14829 commits remaining
+
+2025-10-29 21:25:10
+Session:   13
+Kernel:    2023-11-29 - 9f74a3dfcf83e11aedcb98250b8040dbc6d9659a
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    2  KASAN: null-ptr-deref Write in unix_stream_bpf_update_proto
+***    2  KASAN: null-ptr-deref Write in unix_stream_bpf_update_proto
+***    2  KASAN: null-ptr-deref Write in unix_stream_bpf_update_proto
+***    2  KASAN: null-ptr-deref Write in unix_stream_bpf_update_proto
+***    2  KASAN: null-ptr-deref Write in unix_stream_bpf_update_proto
+***    2  KASAN: null-ptr-deref Write in unix_stream_bpf_update_proto
+***    2  KASAN: null-ptr-deref Write in unix_stream_bpf_update_proto
+***    2  KASAN: null-ptr-deref Write in unix_stream_bpf_update_proto
+The bug was found.
+About 14821 commits remaining
+
+2025-10-29 21:32:27
+Session:   14
+Kernel:    2023-11-30 - 8866730aed5100f06d3d965c22f1c61f74942541
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    2  KASAN: null-ptr-deref Write in unix_stream_bpf_update_proto
+***    2  KASAN: null-ptr-deref Write in unix_stream_bpf_update_proto
+***    2  KASAN: null-ptr-deref Write in unix_stream_bpf_update_proto
+***    2  KASAN: null-ptr-deref Write in unix_stream_bpf_update_proto
+***    2  KASAN: null-ptr-deref Write in unix_stream_bpf_update_proto
+***    2  KASAN: null-ptr-deref Write in unix_stream_bpf_update_proto
+***    2  KASAN: null-ptr-deref Write in unix_stream_bpf_update_proto
+***    2  KASAN: null-ptr-deref Write in unix_stream_bpf_update_proto
+The bug was found.
+About 14791 commits remaining
+
+2025-10-29 21:39:49
+Session:   15
+Kernel:    2023-11-26 - 75a442581d05edaee168222ffbe00d4389785636
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 3 commits remaining
+
+2025-10-29 21:55:06
+Session:   16
+Kernel:    2023-11-27 - 0bad281d0ecdf8391b0f42678b663336e7c3ceb0
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 2 commits remaining
+
+==== Partial Result: Focused Fuzzing ====
+Reproducer:           /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0773-0.prog
+Bisection Result:     2023-11-30 - 8866730aed5100f06d3d965c22f1c61f74942541
+Bisected Commit Name: bpf, sockmap: af_unix stream sockets need to hold ref for pair sock
+Stage Time:           5h2m14s
+Run Time:             5h2m15s
+=========================================
+
+==== Anchor Commit ====
+
+2025-10-29 22:10:23
+Session:   17
+Kernel:    2023-11-27 - 0bad281d0ecdf8391b0f42678b663336e7c3ceb0
+Compiler:  ccache gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0773-0.prog
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
 The bug was not found.
 
 Failure: This bug cannot be found at the anchor commit.
+
+==== Partial Result: Primary PoC Test ====
+Reproducer:           /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0773-0.prog
+Bisection Result:     Failed to reproduce at the anchor commit.
+Stage Time:           0h12m37s
+Run Time:             5h14m52s
+==========================================
+
+==== Anchor Commit ====
+
+2025-10-29 22:23:03
+Session:   18
+Kernel:    2023-11-27 - 0bad281d0ecdf8391b0f42678b663336e7c3ceb0
+Compiler:  ccache gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0773-1.prog
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+
+Failure: This bug cannot be found at the anchor commit.
+
+==== Partial Result: Subsequent PoC Test ====
+Reproducer:           /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0773-1.prog
+Bisection Result:     Failed to reproduce at the anchor commit.
+Stage Time:           0h12m40s
+Run Time:             5h27m33s
+=============================================
+
+====================================================================================================================================================
+Bug Name:             KASAN: null-ptr-deref Write in unix_stream_bpf_update_proto
+Big ID:               bug0773
+Bug Link:             https://syzkaller.appspot.com/bug?extid=e8030702aefd3444fb9e
+Bisection Result:     2023-11-30 - 8866730aed5100f06d3d965c22f1c61f74942541
+Bisected Commit Name: bpf, sockmap: af_unix stream sockets need to hold ref for pair sock
+Run Time:             5h27m33s
+
+Anchor Commit:        2023-12-01 - 994d5c58e50e91bb02c7be4a91d5186292a895c8
+Bisection Result:     2023-11-30 - 8866730aed5100f06d3d965c22f1c61f74942541

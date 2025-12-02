@@ -1,7 +1,5 @@
-./bin/bisector -i 5 -c /home/syzretrospector/syzinspector/wd-bisector-5/bisector.cfg -a 9106536c1aa37bcf60202ad93bb8b94bcd29f3f0 -F ff-test,poc-test,stateful-corpus,ff-no-find-backup
+./bin/meerkat -i 1 -c /home/syzretrospector/meerkat/wd-meerkat-1/meerkat.cfg -a 9106536c1aa37bcf60202ad93bb8b94bcd29f3f0 -F ff-test,poc-test,poc-all-pocs,ff-no-find-backup,stateful-corpus
 Bisecting:          WARNING in ip6_tnl_exit_batch_net
-Warning: No syscall found that produces tail_call_map.
-Warning: No syscall found that produces fd_bpf_const_str.
 Syzbot Link:        https://syzkaller.appspot.com/bug?extid=d810d3cd45ed1848c3f7
 Working Name:       bug0821
 
@@ -12,23 +10,25 @@ Repository:         https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/lin
 Branch:             master
 Arch:               amd64
 
-Bisector:           /home/syzretrospector/syzinspector/
-Version:            1.0.4
-Kernel:             /home/syzretrospector/syzinspector/wd-bisector-5/kernel/
-Syzkaller:          /home/syzretrospector/syzinspector/syzkaller/
-Compilers:          /home/syzretrospector/compilers/
-Ccache:             ccache
+Meerkat:            /home/syzretrospector/meerkat/
+Version:            1.1.1
+Kernel:             /home/syzretrospector/meerkat/wd-meerkat-1/kernel/
+Syzkaller:          /home/syzretrospector/meerkat/syzkaller/
+Compilers:          /home/syzretrospector/meerkat/compilers/
+Compiler:           gcc (Ubuntu 11.4.0-1ubuntu1~22.04.2) 11.4.0
+Linker:             GNU ld (GNU Binutils for Ubuntu) 2.38
+Ccache:             ccache version 4.5.1
 Image:              /home/syzretrospector/images/stretch/stretch.img
 Image Key:          /home/syzretrospector/images/stretch/stretch.id_rsa
 
-Workdir:            /home/syzretrospector/syzinspector/wd-bisector-5/
-Kconfig:            /home/syzretrospector/syzinspector/wd-bisector-5/config-bug0821.txt
-Reproducers: (1)    /home/syzretrospector/syzinspector/wd-bisector-5/reproducers/
-Primary PoC:        /home/syzretrospector/syzinspector/wd-bisector-5/reproducers/repro-bug0821-1.prog
-Syzkaller Workdir:  /home/syzretrospector/syzinspector/wd-bisector-5/wd-kaller/
-Log Directory:      /home/syzretrospector/syzinspector/wd-bisector-5/log/
+Workdir:            /home/syzretrospector/meerkat/wd-meerkat-1/
+Kconfig:            /home/syzretrospector/meerkat/wd-meerkat-1/config-bug0821.txt
+Reproducers: (1)    /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/
+Primary PoC:        /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0821-1.prog
+Syzkaller Workdir:  /home/syzretrospector/meerkat/wd-meerkat-1/wd-kaller/
+Log Directory:      /home/syzretrospector/meerkat/wd-meerkat-1/log/
 
-Syscalls: (37)      ["bpf$BPF_PROG_RAW_TRACEPOINT_LOAD", "bpf$BPF_TASK_FD_QUERY", "getsockname$packet", "openat$cgroup_int", "openat$cgroup_root", "sendmsg$nl_route", "socket", "write$cgroup_int", "socket$packet", "socket$nl_route", "bpf$OBJ_GET_PROG", "syz_clone", "bpf$BPF_RAW_TRACEPOINT_OPEN_UNNAMED", "bpf$BPF_PROG_GET_FD_BY_ID", "openat$selinux_enforce", "socket$netlink", "bpf$BPF_BTF_LOAD", "bpf$OBJ_GET_MAP", "ioctl$TUNGETDEVNETNS", "mount$bpf", "getuid", "ioctl$ifreq_SIOCGIFINDEX_vcan", "bpf$BPF_PROG_WITH_BTFID_LOAD", "openat$tun", "socket$inet_udp", "socket$inet6_udp", "setgid", "getgid", "bpf$BPF_MAP_CONST_STR_FREEZE", "bpf$MAP_CREATE_RINGBUF", "socket$inet", "socket$inet6", "bpf$MAP_CREATE_TAIL_CALL", "bpf$MAP_CREATE_CONST_STR", "syz_btf_id_by_name$bpf_lsm", "bpf$BPF_BTF_GET_FD_BY_ID", "bpf$BPF_BTF_GET_NEXT_ID"]
+Syscalls: (36)      ["bpf$BPF_PROG_RAW_TRACEPOINT_LOAD", "bpf$BPF_TASK_FD_QUERY", "getsockname$packet", "openat$cgroup_int", "openat$cgroup_root", "sendmsg$nl_route", "socket", "write$cgroup_int", "bpf$MAP_UPDATE_ELEM_TAIL_CALL", "socket$packet", "socket$nl_route", "bpf$BPF_PROG_GET_FD_BY_ID", "bpf$MAP_CREATE_TAIL_CALL", "syz_clone", "perf_event_open", "ioctl$F2FS_IOC_START_ATOMIC_WRITE", "openat$selinux_enforce", "socket$netlink", "bpf$BPF_BTF_LOAD", "bpf$OBJ_GET_MAP", "ioctl$TUNGETDEVNETNS", "mount$bpf", "getuid", "ioctl$ifreq_SIOCGIFINDEX_vcan", "bpf$TOKEN_CREATE", "openat$tun", "socket$inet_udp", "socket$inet6_udp", "setgid", "getgid", "bpf$BPF_MAP_CONST_STR_FREEZE", "bpf$MAP_CREATE_RINGBUF", "socket$inet", "socket$inet6", "bpf$MAP_UPDATE_CONST_STR", "bpf$MAP_CREATE_CONST_STR"]
 VM Count:           4
 CPU Count:          4
 Procs:              24
@@ -39,34 +39,1146 @@ Max Attempts:       1
 
 ==== Anchor Commit ====
 
-2025-03-22 07:33:20
+2025-11-08 04:45:15
 Session:   1
 Kernel:    2023-08-11 - 9106536c1aa37bcf60202ad93bb8b94bcd29f3f0
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
-Warning: bpf$BPF_PROG_RAW_TRACEPOINT_LOAD was disabled by Syzkaller.
-Warning: bpf$BPF_TASK_FD_QUERY was disabled by Syzkaller.
+Compiler:  ccache gcc
 Attempt 1:
     Time  Bug Name
-       3  suppressed report
-       5  suppressed report
-       5  suppressed report
-Warning: bpf$BPF_PROG_RAW_TRACEPOINT_LOAD was disabled by Syzkaller.
-Warning: bpf$BPF_TASK_FD_QUERY was disabled by Syzkaller.
+       2  WARNING in reserve_ds_buffers
+       2  WARNING in reserve_ds_buffers
+       3  WARNING in reserve_ds_buffers
+       4  WARNING in reserve_ds_buffers
+       4  WARNING in reserve_ds_buffers
+       4  suppressed report
+       5  WARNING in reserve_ds_buffers
+       6  WARNING in reserve_ds_buffers
+       6  WARNING in reserve_ds_buffers
+       6  WARNING in reserve_ds_buffers
+       6  suppressed report
+       7  WARNING in reserve_ds_buffers
+       7  WARNING in reserve_ds_buffers
+       7  WARNING in reserve_ds_buffers
+       8  WARNING in reserve_ds_buffers
+       8  WARNING in reserve_ds_buffers
+       9  suppressed report
+      10  WARNING in reserve_ds_buffers
+      10  WARNING in reserve_ds_buffers
+      10  suppressed report
 Attempt 2: (RETRY)
     Time  Bug Name
-       8  kernel BUG in unregister_vlan_dev
-       8  kernel BUG in unregister_vlan_dev
-       8  kernel BUG in unregister_vlan_dev
-       8  kernel BUG in unregister_vlan_dev
-      10  suppressed report
-Warning: bpf$BPF_PROG_RAW_TRACEPOINT_LOAD was disabled by Syzkaller.
-Warning: bpf$BPF_TASK_FD_QUERY was disabled by Syzkaller.
+       2  WARNING in reserve_ds_buffers
+       2  WARNING in reserve_ds_buffers
+       2  WARNING in reserve_ds_buffers
+       4  WARNING in reserve_ds_buffers
+       4  WARNING in reserve_ds_buffers
+       4  WARNING in reserve_ds_buffers
+       4  WARNING in reserve_ds_buffers
+       5  WARNING in reserve_ds_buffers
+       5  WARNING in reserve_ds_buffers
+       5  WARNING in reserve_ds_buffers
+       5  WARNING in reserve_ds_buffers
+       6  WARNING in reserve_ds_buffers
+       6  WARNING in reserve_ds_buffers
+***    7  WARNING in ip6_tnl_exit_batch_net
+       7  WARNING in reserve_ds_buffers
 Attempt 3: (RETRY)
     Time  Bug Name
+       2  WARNING in reserve_ds_buffers
+***    4  WARNING in ip6_tnl_exit_batch_net
+       4  WARNING in reserve_ds_buffers
+       4  WARNING in reserve_ds_buffers
+       4  WARNING in reserve_ds_buffers
        4  suppressed report
-       6  suppressed report
-       7  suppressed report
-      10  suppressed report
-The bug was not found.
+The bug was found.
 
-Failure: This bug cannot be found at the anchor commit.
+New Max Time: 12
+
+==== Major Release Search ====
+13 Releases
+
+2025-11-08 05:19:07
+Session:   2
+Kernel:    2023-06-25 - 6995e2de6891c724bfeb2db33d7b87775f913ad1 (v6.4)
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  WARNING in reserve_ds_buffers
+       3  WARNING in reserve_ds_buffers
+       4  WARNING in reserve_ds_buffers
+       4  WARNING in reserve_ds_buffers
+       4  WARNING in reserve_ds_buffers
+       4  WARNING in reserve_ds_buffers
+       5  WARNING in reserve_ds_buffers
+       5  WARNING in reserve_ds_buffers
+       5  WARNING in reserve_ds_buffers
+       5  WARNING in reserve_ds_buffers
+       6  WARNING in reserve_ds_buffers
+       6  WARNING in reserve_ds_buffers
+       6  WARNING in reserve_ds_buffers
+       8  WARNING in reserve_ds_buffers
+       9  WARNING in reserve_ds_buffers
+       9  WARNING in reserve_ds_buffers
+       9  WARNING in reserve_ds_buffers
+      10  WARNING in reserve_ds_buffers
+      11  WARNING in reserve_ds_buffers
+      11  WARNING in reserve_ds_buffers
+      12  WARNING in reserve_ds_buffers
+The bug was not found.
+About 12 releases remaining
+
+==== Kernel Bisection ====
+14068 Linux commits
+
+2025-11-08 05:44:36
+Session:   3
+Kernel:    2023-06-29 - 1b722407a13b7f8658d2e26917791f32805980a2
+Compiler:  ccache gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/syzretrospector/meerkat/wd-meerkat-1/log/bug0821-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+       1  lost connection to test machine
+       1  lost connection to test machine
+       2  UBSAN: array-index-out-of-bounds in copy_process
+       2  lost connection to test machine
+       3  UBSAN: array-index-out-of-bounds in copy_process
+       3  lost connection to test machine
+       3  lost connection to test machine
+       3  lost connection to test machine
+       4  UBSAN: array-index-out-of-bounds in alloc_pid
+       4  UBSAN: array-index-out-of-bounds in alloc_pid
+       4  UBSAN: array-index-out-of-bounds in copy_process
+       4  lost connection to test machine
+       5  UBSAN: array-index-out-of-bounds in copy_process
+       6  lost connection to test machine
+       6  lost connection to test machine
+       6  no output from test machine
+       7  UBSAN: array-index-out-of-bounds in copy_process
+       7  lost connection to test machine
+       7  lost connection to test machine
+       8  UBSAN: array-index-o
+       8  UBSAN: array-index-out-of-bounds in corrupted
+       8  lost connection to test machine
+       8  lost connection to test machine
+      10  UBSAN: array-index-out-of-bounds in corrupted
+      10  UBSAN: array-index-out-of-bounds in corrupted
+      10  lost connection to test machine
+      10  no output from test machine
+      11  UBSAN: array-index-out-of-bounds in corrupted
+      11  UBSAN: array-index-out-of-bounds in alloc_pid
+      11  UBSAN: array-index-out-of-bounds in copy_process
+      11  UBSAN: array-index-out-of-bounds in copy_process
+      11  UBSAN: array-index-out-of-bounds in copy_process
+      12  UBSAN: array-index-out-of-bounds in corrupted
+      12  UBSAN: array-index-out-of-bounds in corrupted
+      12  UBSAN: array-index-out-of-bounds in copy_process
+      12  UBSAN: array-index-out-of-bounds in copy_process
+      12  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 14068 commits remaining
+
+2025-11-08 06:09:05
+Session:   4
+Kernel:    2023-06-29 - d35ac6ac0e80e55bcea79af18d935f19a3e8554c
+Compiler:  ccache gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/syzretrospector/meerkat/wd-meerkat-1/log/bug0821-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+       1  UBSAN: array-index-out-of-bounds in corrupted
+       1  UBSAN: array-index-out-of-bounds in corrupted
+       1  UBSAN: array-index-out-of-bounds in alloc_pid
+       1  UBSAN: array-index-out-of-bounds in copy_process
+       2  UBSAN: array-index-out-of-bounds in corrupted
+       2  UBSAN: array-index-out-of-bounds in corrupted
+       2  lost connection to test machine
+       3  UBSAN: array-index-out-of-bounds in corrupted
+       3  UBSAN: array-index-out-of-bounds in copy_process
+       3  lost connection to test machine
+       3  lost connection to test machine
+       4  UBSAN: array-index
+       4  UBSAN: array-index-out-of-bounds in copy_process
+       4  UBSAN: array-index-out-of-bounds in copy_process
+       4  lost connection to test machine
+       5  UBSAN: array-index-out-of-bounds in copy_process
+       7  UBSAN: array-index-out-of-bounds in copy_process
+       7  lost connection to test machine
+       7  no output from test machine
+       8  UBSAN: array-index-out-of-bounds in corrupted
+       8  UBSAN: array-index-out-of-bounds in corrupted
+       8  lost connection to test machine
+      10  UBSAN: array-index-out-of-bounds in corrupted
+      10  UBSAN: array-index-out-of-bounds in copy_process
+      10  UBSAN: array-index-out-of-bounds in copy_process
+      10  no output from test machine
+      11  UBSAN: array-index-out-of-bounds in copy_process
+      11  UBSAN: array-index-out-of-bounds in copy_process
+      11  lost connection to test machine
+      12  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 14068 commits remaining
+
+2025-11-08 06:33:37
+Session:   5
+Kernel:    2023-06-13 - 6090368abcb40554c660c8c3140ce19ff0f8f66f
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       3  WARNING in reserve_ds_buffers
+       4  suppressed report
+       5  suppressed report
+       5  suppressed report
+       6  WARNING in reserve_ds_buffers
+       6  WARNING in reserve_ds_buffers
+       6  WARNING in reserve_ds_buffers
+       6  suppressed report
+       7  WARNING in reserve_ds_buffers
+       7  WARNING in reserve_ds_buffers
+       7  WARNING in reserve_ds_buffers
+       7  WARNING in reserve_ds_buffers
+       8  WARNING in reserve_ds_buffers
+       8  WARNING in reserve_ds_buffers
+       8  WARNING in reserve_ds_buffers
+       9  WARNING in reserve_ds_buffers
+       9  WARNING in reserve_ds_buffers
+       9  WARNING in reserve_ds_buffers
+      10  WARNING in reserve_ds_buffers
+      10  WARNING in reserve_ds_buffers
+      10  suppressed report
+      11  WARNING in reserve_ds_buffers
+      11  WARNING in reserve_ds_buffers
+      12  WARNING in reserve_ds_buffers
+      12  WARNING in reserve_ds_buffers
+      12  suppressed report
+The bug was not found.
+About 15785 commits remaining
+
+2025-11-08 06:58:48
+Session:   6
+Kernel:    2023-06-29 - 53ea167b212f675e40420498e46fa31553b406ac
+Compiler:  ccache gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/syzretrospector/meerkat/wd-meerkat-1/log/bug0821-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+       1  UBSAN: array-index-out-of-bounds in corrupted
+       1  UBSAN: array-index-out-of-bounds in copy_process
+       1  UBSAN: array-index-out-of-bounds in copy_process
+       2  UBSAN: array-index-
+       2  UBSAN: array-index-out-of-bounds in copy_process
+       2  lost connection to test machine
+       6  UBSAN: array-index-out-of-bounds in alloc_pid
+       6  UBSAN: array-index-out-of-bounds in copy_process
+       6  no output from test machine
+       7  UBSAN: array-index-out-of-bounds in corrupted
+       7  UBSAN: array-index-out-of-bounds in alloc_pid
+       7  UBSAN: array-index-out-of-bounds in copy_process
+       7  lost connection to test machine
+       8  UBSAN: array-index-out-of-bounds in alloc_pid
+       8  UBSAN: array-index-out-of-bounds in copy_process
+       8  UBSAN: array-index-out-of-bounds in copy_process
+       8  lost connection to test machine
+       8  lost connection to test machine
+       8  no output from test machine
+       9  UBSAN: array-index-out-of-bounds in alloc_pid
+       9  lost connection to test machine
+       9  lost connection to test machine
+       9  lost connection to test machine
+       9  lost connection to test machine
+      10  UBSAN: array-index-out-of-bounds in corrupted
+      10  UBSAN: array-index-out-of-bounds in corrupted
+      10  UBSAN: array-index-out-of-bounds in alloc_pid
+      10  lost connection to test machine
+      10  lost connection to test machine
+      11  UBSAN: array-index-out-of-bounds in corrupted
+      11  lost connection to test machine
+      11  lost connection to test machine
+      11  lost connection to test machine
+      12  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 15785 commits remaining
+
+2025-11-08 07:16:17
+Session:   7
+Kernel:    2023-06-01 - 31e9ccc67ce24f82120e41fcafd841f98838ff5c
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       3  WARNING in reserve_ds_buffers
+       3  WARNING in reserve_ds_buffers
+       3  WARNING in reserve_ds_buffers
+       5  WARNING in reserve_ds_buffers
+       5  suppressed report
+       6  WARNING in reserve_ds_buffers
+       6  WARNING in reserve_ds_buffers
+       6  WARNING in reserve_ds_buffers
+       7  WARNING in reserve_ds_buffers
+       7  WARNING in reserve_ds_buffers
+       7  WARNING in reserve_ds_buffers
+       7  WARNING in reserve_ds_buffers
+       8  WARNING in reserve_ds_buffers
+       8  WARNING in reserve_ds_buffers
+       9  WARNING in reserve_ds_buffers
+       9  WARNING in reserve_ds_buffers
+       9  WARNING in reserve_ds_buffers
+       9  WARNING in reserve_ds_buffers
+      10  WARNING in reserve_ds_buffers
+      10  WARNING in reserve_ds_buffers
+      11  WARNING in reserve_ds_buffers
+      11  WARNING in reserve_ds_buffers
+      12  WARNING in reserve_ds_buffers
+      12  WARNING in reserve_ds_buffers
+The bug was not found.
+About 16001 commits remaining
+
+2025-11-08 07:41:04
+Session:   8
+Kernel:    2023-05-30 - 05e916f1db2fff88f316b6f94929b4b3b8414498
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       3  WARNING in reserve_ds_buffers
+       3  WARNING in reserve_ds_buffers
+       4  WARNING in reserve_ds_buffers
+       4  WARNING in reserve_ds_buffers
+       6  WARNING in reserve_ds_buffers
+       6  WARNING in reserve_ds_buffers
+       6  WARNING in reserve_ds_buffers
+       6  WARNING in reserve_ds_buffers
+       7  WARNING in reserve_ds_buffers
+       7  WARNING in reserve_ds_buffers
+       7  WARNING in reserve_ds_buffers
+       7  WARNING in reserve_ds_buffers
+       7  WARNING in reserve_ds_buffers
+       8  WARNING in reserve_ds_buffers
+       8  WARNING in reserve_ds_buffers
+       8  WARNING in reserve_ds_buffers
+       8  WARNING in reserve_ds_buffers
+       9  WARNING in reserve_ds_buffers
+       9  WARNING in reserve_ds_buffers
+       9  WARNING in reserve_ds_buffers
+       9  WARNING in reserve_ds_buffers
+      10  WARNING in reserve_ds_buffers
+      10  WARNING in reserve_ds_buffers
+      10  WARNING in reserve_ds_buffers
+      11  WARNING in reserve_ds_buffers
+      11  WARNING in reserve_ds_buffers
+The bug was not found.
+About 16193 commits remaining
+
+2025-11-08 08:03:20
+Session:   9
+Kernel:    2023-07-07 - 36b93aed9ec07607e26630ecf210e065662f6b0d
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       4  WARNING in reserve_ds_buffers
+       5  WARNING in reserve_ds_buffers
+       5  WARNING in reserve_ds_buffers
+       5  WARNING in reserve_ds_buffers
+       5  WARNING in reserve_ds_buffers
+       6  WARNING in reserve_ds_buffers
+       6  WARNING in reserve_ds_buffers
+       6  WARNING in reserve_ds_buffers
+       6  WARNING in reserve_ds_buffers
+       7  WARNING in reserve_ds_buffers
+       7  WARNING in reserve_ds_buffers
+       7  WARNING in reserve_ds_buffers
+       7  WARNING in reserve_ds_buffers
+       8  WARNING in reserve_ds_buffers
+       8  WARNING in reserve_ds_buffers
+       8  WARNING in reserve_ds_buffers
+       9  WARNING in reserve_ds_buffers
+       9  WARNING in reserve_ds_buffers
+       9  WARNING in reserve_ds_buffers
+      10  WARNING in reserve_ds_buffers
+      10  WARNING in reserve_ds_buffers
+      12  WARNING in reserve_ds_buffers
+      12  WARNING in reserve_ds_buffers
+      12  WARNING in reserve_ds_buffers
+The bug was not found.
+About 1732 commits remaining
+
+2025-11-08 08:27:39
+Session:   10
+Kernel:    2023-07-25 - 18b44bc5a67275641fb26f2c54ba7eef80ac5950
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  possible deadlock in bcm_notifier
+       2  possible deadlock in bcm_notifier
+       3  possible deadlock in bcm_notifier
+       3  possible deadlock in bcm_notifier
+       5  WARNING in reserve_ds_buffers
+       7  WARNING in reserve_ds_buffers
+       7  WARNING in reserve_ds_buffers
+       7  WARNING in reserve_ds_buffers
+       7  WARNING in reserve_ds_buffers
+       8  WARNING in reserve_ds_buffers
+       8  WARNING in reserve_ds_buffers
+       8  WARNING in reserve_ds_buffers
+       9  WARNING in reserve_ds_buffers
+       9  WARNING in reserve_ds_buffers
+       9  WARNING in reserve_ds_buffers
+      10  WARNING in reserve_ds_buffers
+      10  WARNING in reserve_ds_buffers
+      10  possible deadlock in bcm_notifier
+      11  WARNING in reserve_ds_buffers
+      11  WARNING in reserve_ds_buffers
+      11  possible deadlock in bcm_notifier
+The bug was not found.
+About 867 commits remaining
+
+2025-11-08 08:52:00
+Session:   11
+Kernel:    2023-08-03 - 7bafbd4027ae86572f308c4ddf93120c90126332
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       4  WARNING in reserve_ds_buffers
+       6  WARNING in reserve_ds_buffers
+       6  WARNING in reserve_ds_buffers
+       6  WARNING in reserve_ds_buffers
+       6  WARNING in reserve_ds_buffers
+       6  WARNING in reserve_ds_buffers
+       7  WARNING in reserve_ds_buffers
+       7  WARNING in reserve_ds_buffers
+       7  WARNING in reserve_ds_buffers
+       7  WARNING in reserve_ds_buffers
+       8  WARNING in reserve_ds_buffers
+       8  WARNING in reserve_ds_buffers
+       8  WARNING in reserve_ds_buffers
+       8  WARNING in reserve_ds_buffers
+       9  WARNING in reserve_ds_buffers
+       9  WARNING in reserve_ds_buffers
+       9  WARNING in reserve_ds_buffers
+       9  WARNING in reserve_ds_buffers
+       9  WARNING in reserve_ds_buffers
+      10  WARNING in reserve_ds_buffers
+      10  WARNING in reserve_ds_buffers
+      10  WARNING in reserve_ds_buffers
+The bug was not found.
+About 450 commits remaining
+
+2025-11-08 09:16:16
+Session:   12
+Kernel:    2023-08-07 - a027b2eca0b7e90b11a0b0ddfad0dc4068707799
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       6  WARNING in reserve_ds_buffers
+       6  WARNING in reserve_ds_buffers
+       6  WARNING in reserve_ds_buffers
+       6  WARNING in reserve_ds_buffers
+       7  WARNING in reserve_ds_buffers
+       7  WARNING in reserve_ds_buffers
+       7  WARNING in reserve_ds_buffers
+       7  WARNING in reserve_ds_buffers
+       8  WARNING in reserve_ds_buffers
+       8  WARNING in reserve_ds_buffers
+       8  WARNING in reserve_ds_buffers
+       8  WARNING in reserve_ds_buffers
+       9  WARNING in reserve_ds_buffers
+       9  WARNING in reserve_ds_buffers
+       9  WARNING in reserve_ds_buffers
+       9  WARNING in reserve_ds_buffers
+      11  WARNING in reserve_ds_buffers
+      12  WARNING in reserve_ds_buffers
+The bug was not found.
+About 223 commits remaining
+
+2025-11-08 09:40:19
+Session:   13
+Kernel:    2023-08-10 - 5e3d20617b055e725e785e0058426368269949f3
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       3  WARNING in rtnl_dellink
+       3  WARNING in rtnl_dellink
+       3  WARNING in rtnl_dellink
+       3  WARNING in rtnl_dellink
+       4  WARNING in rtnl_dellink
+       4  WARNING in rtnl_dellink
+       4  WARNING in rtnl_dellink
+       5  WARNING in rtnl_dellink
+       5  WARNING in rtnl_dellink
+       6  WARNING in rtnl_dellink
+***    7  WARNING in ip6_tnl_exit_batch_net
+Running syz-repro.
+syz-repro was terminated after 60 minutes
+Run Time:        1h0m0s
+The bug was found.
+About 109 commits remaining
+
+2025-11-08 10:55:18
+Session:   14
+Kernel:    2023-08-09 - c992fde9f977da9beec584528f9026d21c27a053
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       6  WARNING in reserve_ds_buffers
+       6  WARNING in reserve_ds_buffers
+       6  WARNING in reserve_ds_buffers
+       6  WARNING in reserve_ds_buffers
+       7  WARNING in reserve_ds_buffers
+       7  WARNING in reserve_ds_buffers
+       7  WARNING in reserve_ds_buffers
+       7  WARNING in reserve_ds_buffers
+       8  WARNING in reserve_ds_buffers
+       8  WARNING in reserve_ds_buffers
+       8  WARNING in reserve_ds_buffers
+       8  WARNING in reserve_ds_buffers
+       9  WARNING in reserve_ds_buffers
+       9  WARNING in reserve_ds_buffers
+       9  WARNING in reserve_ds_buffers
+       9  WARNING in reserve_ds_buffers
+      10  WARNING in reserve_ds_buffers
+      10  WARNING in reserve_ds_buffers
+      10  WARNING in reserve_ds_buffers
+      10  WARNING in reserve_ds_buffers
+      11  WARNING in reserve_ds_buffers
+      11  WARNING in reserve_ds_buffers
+      11  WARNING in reserve_ds_buffers
+      11  WARNING in reserve_ds_buffers
+      12  WARNING in reserve_ds_buffers
+      12  WARNING in reserve_ds_buffers
+      12  WARNING in reserve_ds_buffers
+The bug was not found.
+About 55 commits remaining
+
+2025-11-08 11:12:50
+Session:   15
+Kernel:    2023-08-09 - acaaffc570f7743ce6395ffba31d34a566e32b85
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       3  WARNING in rtnl_dellink
+       3  WARNING in rtnl_dellink
+       3  WARNING in rtnl_dellink
+       3  WARNING in rtnl_dellink
+       5  WARNING in rtnl_dellink
+       5  WARNING in reserve_ds_buffers
+       6  WARNING in rtnl_dellink
+       6  WARNING in rtnl_dellink
+       7  WARNING in rtnl_dellink
+       7  WARNING in reserve_ds_buffers
+       8  WARNING in reserve_ds_buffers
+       8  WARNING in reserve_ds_buffers
+       8  WARNING in reserve_ds_buffers
+       8  WARNING in reserve_ds_buffers
+       9  WARNING in reserve_ds_buffers
+       9  WARNING in reserve_ds_buffers
+       9  WARNING in reserve_ds_buffers
+       9  WARNING in reserve_ds_buffers
+      10  WARNING in reserve_ds_buffers
+      10  WARNING in reserve_ds_buffers
+      10  WARNING in reserve_ds_buffers
+      10  WARNING in reserve_ds_buffers
+      11  WARNING in reserve_ds_buffers
+      11  WARNING in reserve_ds_buffers
+      11  WARNING in reserve_ds_buffers
+      11  WARNING in reserve_ds_buffers
+      12  WARNING in reserve_ds_buffers
+      12  WARNING in reserve_ds_buffers
+      12  WARNING in reserve_ds_buffers
+      12  WARNING in reserve_ds_buffers
+The bug was not found.
+About 31 commits remaining
+
+2025-11-08 11:29:49
+Session:   16
+Kernel:    2023-08-10 - 6db541ae279bd4e76dbd939e5fbf298396166242
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       4  WARNING in rtnl_dellink
+***    4  WARNING in ip6_tnl_exit_batch_net
+The bug was found.
+About 16 commits remaining
+
+2025-11-08 11:39:04
+Session:   17
+Kernel:    2023-08-09 - 06f2ab86a5b6ed55f013258de4be9319841853ea
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       3  possible deadlock in bcm_notifier
+       6  WARNING in reserve_ds_buffers
+       6  WARNING in reserve_ds_buffers
+       6  WARNING in reserve_ds_buffers
+       6  WARNING in reserve_ds_buffers
+       7  WARNING in reserve_ds_buffers
+       7  WARNING in reserve_ds_buffers
+       7  WARNING in reserve_ds_buffers
+       7  WARNING in reserve_ds_buffers
+       8  WARNING in reserve_ds_buffers
+       8  WARNING in reserve_ds_buffers
+       8  WARNING in reserve_ds_buffers
+       8  WARNING in reserve_ds_buffers
+       9  WARNING in reserve_ds_buffers
+       9  WARNING in reserve_ds_buffers
+       9  WARNING in reserve_ds_buffers
+       9  WARNING in reserve_ds_buffers
+      10  WARNING in reserve_ds_buffers
+      10  WARNING in reserve_ds_buffers
+      10  WARNING in reserve_ds_buffers
+      10  WARNING in reserve_ds_buffers
+      11  WARNING in reserve_ds_buffers
+      11  WARNING in reserve_ds_buffers
+      11  WARNING in reserve_ds_buffers
+      12  WARNING in reserve_ds_buffers
+      12  WARNING in reserve_ds_buffers
+      12  WARNING in reserve_ds_buffers
+The bug was not found.
+About 1079 commits remaining
+
+2025-11-08 12:03:27
+Session:   18
+Kernel:    2023-08-10 - db17ba719bceb52f0ae4ebca0e4c17d9a3bebf05
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    4  WARNING in ip6_tnl_exit_batch_net
+***    4  WARNING in ip6_tnl_exit_batch_net
+       4  WARNING in reserve_ds_buffers
+The bug was found.
+About 1075 commits remaining
+
+2025-11-08 12:12:23
+Session:   19
+Kernel:    2023-08-09 - 048c796beb6eb4fa3a5a647ee1c81f5c6f0f6a2a
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       3  WARNING in reserve_ds_buffers
+       4  WARNING in rtnl_dellink
+       4  WARNING in rtnl_dellink
+       5  WARNING in rtnl_dellink
+       6  WARNING in rtnl_dellink
+       6  WARNING in reserve_ds_buffers
+       7  WARNING in reserve_ds_buffers
+       7  WARNING in reserve_ds_buffers
+       7  WARNING in reserve_ds_buffers
+       7  suppressed report
+       8  WARNING in reserve_ds_buffers
+       8  WARNING in reserve_ds_buffers
+       8  WARNING in reserve_ds_buffers
+       8  WARNING in reserve_ds_buffers
+       9  WARNING in reserve_ds_buffers
+       9  WARNING in reserve_ds_buffers
+       9  WARNING in reserve_ds_buffers
+       9  WARNING in reserve_ds_buffers
+      10  WARNING in reserve_ds_buffers
+      10  WARNING in reserve_ds_buffers
+      10  WARNING in reserve_ds_buffers
+      10  WARNING in reserve_ds_buffers
+      11  WARNING in reserve_ds_buffers
+      12  WARNING in rtnl_dellink
+      12  WARNING in rtnl_dellink
+      12  WARNING in reserve_ds_buffers
+The bug was not found.
+About 3 commits remaining
+
+2025-11-08 12:29:21
+Session:   20
+Kernel:    2023-08-10 - a7dfeda6fdeccab4c7c3dce9a72c4262b9530c80
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       3  WARNING in rtnl_dellink
+       3  WARNING in rtnl_dellink
+       4  WARNING in reserve_ds_buffers
+       4  WARNING in reserve_ds_buffers
+       5  WARNING in reserve_ds_buffers
+       5  WARNING in reserve_ds_buffers
+       5  WARNING in reserve_ds_buffers
+       6  WARNING in rtnl_dellink
+       6  WARNING in rtnl_dellink
+       6  WARNING in rtnl_dellink
+       7  WARNING in rtnl_dellink
+       8  WARNING in rtnl_dellink
+       8  WARNING in rtnl_dellink
+       8  WARNING in rtnl_dellink
+       8  suppressed report
+      10  WARNING in rtnl_dellink
+      10  WARNING in reserve_ds_buffers
+      10  WARNING in reserve_ds_buffers
+      10  WARNING in reserve_ds_buffers
+      10  WARNING in reserve_ds_buffers
+      11  WARNING in reserve_ds_buffers
+      11  WARNING in reserve_ds_buffers
+      11  WARNING in reserve_ds_buffers
+      11  WARNING in reserve_ds_buffers
+      11  WARNING in reserve_ds_buffers
+      11  WARNING in reserve_ds_buffers
+      11  WARNING in reserve_ds_buffers
+      12  WARNING in reserve_ds_buffers
+      12  WARNING in reserve_ds_buffers
+      12  WARNING in reserve_ds_buffers
+      12  WARNING in reserve_ds_buffers
+The bug was not found.
+About 2 commits remaining
+
+==== Partial Result: Focused Fuzzing ====
+Reproducer:           /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0821-1.prog
+Bisection Result:     2023-08-10 - db17ba719bceb52f0ae4ebca0e4c17d9a3bebf05
+Bisected Commit Name: ibmvnic: Enforce stronger sanity checks on login response
+Stage Time:           8h0m55s
+Run Time:             8h0m58s
+=========================================
+
+==== Anchor Commit ====
+
+2025-11-08 12:46:10
+Session:   21
+Kernel:    2023-08-10 - a7dfeda6fdeccab4c7c3dce9a72c4262b9530c80
+Compiler:  ccache gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0821-1.prog
+Attempt 0:
+*** WARNING in ip6_tnl_exit_batch_net
+    kernel panic: kernel: panic_on_warn set ...
+Attempt 1:
+*** WARNING in ip6_tnl_exit_batch_net
+    kernel panic: kernel: panic_on_warn set ...
+Attempt 2:
+*** WARNING in ip6_tnl_exit_batch_net
+    kernel panic: kernel: panic_on_warn set ...
+Attempt 3:
+*** WARNING in ip6_tnl_exit_batch_net
+    kernel panic: kernel: panic_on_warn set ...
+Attempt 4:
+*** WARNING in ip6_tnl_exit_batch_net
+    kernel panic: kernel: panic_on_warn set ...
+Attempt 5:
+*** WARNING in ip6_tnl_exit_batch_net
+    kernel panic: kernel: panic_on_warn set ...
+Attempt 6:
+*** WARNING in ip6_tnl_exit_batch_net
+    kernel panic: kernel: panic_on_warn set ...
+Attempt 7:
+*** WARNING in ip6_tnl_exit_batch_net
+    kernel panic: kernel: panic_on_warn set ...
+The bug was found.
+
+==== Major Release Search ====
+13 Releases
+
+2025-11-08 12:54:01
+Session:   22
+Kernel:    2023-06-25 - 6995e2de6891c724bfeb2db33d7b87775f913ad1 (v6.4)
+Compiler:  ccache gcc
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+About 12 releases remaining
+
+==== Kernel Bisection ====
+13817 Linux commits
+
+2025-11-08 13:15:02
+Session:   23
+Kernel:    2023-06-29 - 1b722407a13b7f8658d2e26917791f32805980a2
+Compiler:  ccache gcc
+Attempt 0:
+    UBSAN: array-index-out-of-bounds in copy_process
+    kernel panic: UBSAN: panic_on_warn set ...
+Attempt 1:
+    UBSAN: array-index-out-of-bounds in corrupted
+    UBSAN: array-index-out-of-bounds in corrupted
+    UBSAN: array-index-out-of-bounds in copy_process
+    kernel panic: UBSAN: panic_on_warn set ...
+Attempt 2:
+    UBSAN: array-index-out-of-bounds in alloc_pid
+    UBSAN: array-index-out-of-bounds in corrupted
+    kernel panic: UBSAN: panic_on_warn set ...
+    UBSAN: array-index-out-of-bounds in copy_process
+    UBSAN: array-index-out-of-bounds in copy_process
+    UBSAN: array-index-out-of-bounds in copy_process
+Attempt 3:
+    UBSAN: array-index-out-of-bounds in alloc_pid
+    UBSAN: array-index-out-of-bounds in corrupted
+    UBSAN: array-index-out-of-bounds in copy_process
+    kernel panic: UBSAN: panic_on_warn set ...
+Attempt 4:
+    UBSAN: array-index-out-of-bounds in corrupted
+    UBSAN: array-index-out-of-bounds in copy_process
+    kernel panic: UBSAN: panic_on_warn set ...
+Attempt 5:
+    UBSAN: array-index-out-of-bounds in alloc_pid
+    UBSAN: array-index-out-of-bounds in copy_process
+    kernel panic: UBSAN: panic_on_warn set ...
+Attempt 6:
+    UBSAN: array-index-out-of-bounds in alloc_pid
+    UBSAN: array-index-out-of-bounds in alloc_pid
+    UBSAN: array-index-out-of-bounds in copy_process
+    kernel panic: UBSAN: panic_on_warn set ...
+Attempt 7:
+    UBSAN: array-index-out-of-bounds in corrupted
+    UBSAN: array-index-out-of-bounds in alloc_pid
+    UBSAN: array-index-out-of-bounds in copy_process
+    kernel panic: UBSAN: panic_on_warn set ...
+The bug was not found.
+About 6751 commits remaining
+
+2025-11-08 13:29:47
+Session:   24
+Kernel:    2023-07-03 - 0a8d6c9c7128a93689fba384cdd7f72b0ce19abd
+Compiler:  ccache gcc
+Attempt 0:
+    WARNING: suspicious RCU usage in mas_walk
+    WARNING: suspicious RCU usage in mtree_range_walk
+Attempt 1:
+    WARNING: suspicious RCU usage in mas_walk
+    WARNING: suspicious RCU usage in mtree_range_walk
+Attempt 2:
+    WARNING: suspicious RCU usage in mas_walk
+    WARNING: suspicious RCU usage in mtree_range_walk
+Attempt 3:
+    WARNING: suspicious RCU usage in mas_walk
+    WARNING: suspicious RCU usage in mtree_range_walk
+Attempt 4:
+    WARNING: suspicious RCU usage in mas_walk
+    WARNING: suspicious RCU usage in mtree_range_walk
+Attempt 5:
+    WARNING: suspicious RCU usage in mas_walk
+    WARNING: suspicious RCU usage in mtree_range_walk
+Attempt 6:
+    WARNING: suspicious RCU usage in mas_walk
+    WARNING: suspicious RCU usage in mtree_range_walk
+Attempt 7:
+    WARNING: suspicious RCU usage in mas_walk
+    WARNING: suspicious RCU usage in mtree_range_walk
+The bug was not found.
+About 3494 commits remaining
+
+2025-11-08 13:49:32
+Session:   25
+Kernel:    2023-07-05 - c17414a273b81fe4e34e11d69fc30cc8b1431614
+Compiler:  ccache gcc
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+About 1748 commits remaining
+
+2025-11-08 14:09:26
+Session:   26
+Kernel:    2023-07-20 - 57f1f9dd3abea322173ea75a15887ccf14bbbe51
+Compiler:  ccache gcc
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+About 838 commits remaining
+
+2025-11-08 14:29:18
+Session:   27
+Kernel:    2023-07-28 - 81eef8909d171bdca6af37028a11a24e011ed312
+Compiler:  ccache gcc
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+About 419 commits remaining
+
+2025-11-08 14:49:01
+Session:   28
+Kernel:    2023-08-02 - ec351c8f2e6211054e51e661589cddd1fe856425
+Compiler:  ccache gcc
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+About 209 commits remaining
+
+2025-11-08 15:08:32
+Session:   29
+Kernel:    2023-08-03 - 0d48a84b31f5beaded651a115f102c1d2e19a3a9
+Compiler:  ccache gcc
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+About 417 commits remaining
+
+2025-11-08 15:24:22
+Session:   30
+Kernel:    2023-08-08 - 81f3768d91ac535528e9a7ad07cfefe5c705629f
+Compiler:  ccache gcc
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+About 56 commits remaining
+
+2025-11-08 15:40:06
+Session:   31
+Kernel:    2023-08-09 - 8a70ed9520c5fafaac91053cacdd44625c39e188
+Compiler:  ccache gcc
+Attempt 0:
+*** WARNING in ip6_tnl_exit_batch_net
+    kernel panic: kernel: panic_on_warn set ...
+Attempt 1:
+*** WARNING in ip6_tnl_exit_batch_net
+    kernel panic: kernel: panic_on_warn set ...
+Attempt 2:
+*** WARNING in ip6_tnl_exit_batch_net
+    kernel panic: kernel: panic_on_warn set ...
+Attempt 3:
+*** WARNING in ip6_tnl_exit_batch_net
+    kernel panic: kernel: panic_on_warn set ...
+Attempt 4:
+*** WARNING in ip6_tnl_exit_batch_net
+    kernel panic: kernel: panic_on_warn set ...
+Attempt 5:
+*** WARNING in ip6_tnl_exit_batch_net
+    kernel panic: kernel: panic_on_warn set ...
+Attempt 6:
+*** WARNING in ip6_tnl_exit_batch_net
+    kernel panic: kernel: panic_on_warn set ...
+Attempt 7:
+*** WARNING in ip6_tnl_exit_batch_net
+    kernel panic: kernel: panic_on_warn set ...
+The bug was found.
+About 28 commits remaining
+
+2025-11-08 15:48:20
+Session:   32
+Kernel:    2023-08-08 - 06b412589eef780b792e73df131d35dc43cc4a49
+Compiler:  ccache gcc
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+About 15 commits remaining
+
+2025-11-08 16:00:40
+Session:   33
+Kernel:    2023-08-09 - 30c3c4a4497c3765bf6b298f5072c8165aeaf7cc
+Compiler:  ccache gcc
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+About 8 commits remaining
+
+2025-11-08 16:13:23
+Session:   34
+Kernel:    2023-08-09 - 913f60cacda73ccac8eead94983e5884c03e04cd
+Compiler:  ccache gcc
+Attempt 0:
+*** WARNING in ip6_tnl_exit_batch_net
+    kernel panic: kernel: panic_on_warn set ...
+Attempt 1:
+*** WARNING in ip6_tnl_exit_batch_net
+    kernel panic: kernel: panic_on_warn set ...
+Attempt 2:
+*** WARNING in ip6_tnl_exit_batch_net
+    kernel panic: kernel: panic_on_warn set ...
+    WARNING in serial8250_clear_IER
+Attempt 3:
+*** WARNING in ip6_tnl_exit_batch_net
+    kernel panic: kernel: panic_on_warn set ...
+Attempt 4:
+*** WARNING in ip6_tnl_exit_batch_net
+    kernel panic: kernel: panic_on_warn set ...
+Attempt 5:
+*** WARNING in ip6_tnl_exit_batch_net
+    kernel panic: kernel: panic_on_warn set ...
+Attempt 6:
+*** WARNING in ip6_tnl_exit_batch_net
+    kernel panic: kernel: panic_on_warn set ...
+Attempt 7:
+*** WARNING in ip6_tnl_exit_batch_net
+    kernel panic: kernel: panic_on_warn set ...
+The bug was found.
+About 4 commits remaining
+
+2025-11-08 16:21:26
+Session:   35
+Kernel:    2023-08-09 - 718cb09aaa6fa78cc8124e9517efbc6c92665384
+Compiler:  ccache gcc
+Attempt 0:
+*** WARNING in ip6_tnl_exit_batch_net
+    kernel panic: kernel: panic_on_warn set ...
+Attempt 1:
+*** WARNING in ip6_tnl_exit_batch_net
+    kernel panic: kernel: panic_on_warn set ...
+Attempt 2:
+*** WARNING in ip6_tnl_exit_batch_net
+    kernel panic: kernel: panic_on_warn set ...
+Attempt 3:
+*** WARNING in ip6_tnl_exit_batch_net
+    kernel panic: kernel: panic_on_warn set ...
+Attempt 4:
+*** WARNING in ip6_tnl_exit_batch_net
+    kernel panic: kernel: panic_on_warn set ...
+    WARNING in serial8250_clear_IER
+Attempt 5:
+*** WARNING in ip6_tnl_exit_batch_net
+    kernel panic: kernel: panic_on_warn set ...
+    WARNING in serial8250_clear_IER
+Attempt 6:
+*** WARNING in ip6_tnl_exit_batch_net
+    kernel panic: kernel: panic_on_warn set ...
+Attempt 7:
+*** WARNING in ip6_tnl_exit_batch_net
+    kernel panic: kernel: panic_on_warn set ...
+The bug was found.
+About 3 commits remaining
+
+2025-11-08 16:29:12
+Session:   36
+Kernel:    2023-08-09 - c992fde9f977da9beec584528f9026d21c27a053
+Compiler:  ccache gcc
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+About 2 commits remaining
+
+====================================================================================================================================================
+Bug Name:             WARNING in ip6_tnl_exit_batch_net
+Big ID:               bug0821
+Bug Link:             https://syzkaller.appspot.com/bug?extid=d810d3cd45ed1848c3f7
+Bisection Result:     2023-08-09 - 718cb09aaa6fa78cc8124e9517efbc6c92665384
+Bisected Commit Name: vlan: Fix VLAN 0 memory leak
+Run Time:             11h56m46s
+
+Anchor Commit:        2023-08-11 - 9106536c1aa37bcf60202ad93bb8b94bcd29f3f0
+Bisection Result:     2023-08-09 - 718cb09aaa6fa78cc8124e9517efbc6c92665384

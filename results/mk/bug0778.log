@@ -1,4 +1,4 @@
-./bin/bisector -i 5 -c /home/syzretrospector/syzinspector/wd-bisector-5/bisector.cfg -a 4652b8e4f3ffa48c706ec334f048c217a7d9750d -F ff-test,poc-test,stateful-corpus,ff-no-find-backup
+./bin/meerkat -i 1 -c /home/syzretrospector/meerkat/wd-meerkat-1/meerkat.cfg -a 4652b8e4f3ffa48c706ec334f048c217a7d9750d -F ff-test,poc-test,poc-all-pocs,ff-no-find-backup,stateful-corpus
 Bisecting:          WARNING in blk_mq_start_request
 Syzbot Link:        https://syzkaller.appspot.com/bug?extid=fcc47ba2476570cbbeb0
 Working Name:       bug0778
@@ -10,21 +10,23 @@ Repository:         https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/lin
 Branch:             master
 Arch:               amd64
 
-Bisector:           /home/syzretrospector/syzinspector/
-Version:            1.0.4
-Kernel:             /home/syzretrospector/syzinspector/wd-bisector-5/kernel/
-Syzkaller:          /home/syzretrospector/syzinspector/syzkaller/
-Compilers:          /home/syzretrospector/compilers/
-Ccache:             ccache
+Meerkat:            /home/syzretrospector/meerkat/
+Version:            1.1.1
+Kernel:             /home/syzretrospector/meerkat/wd-meerkat-1/kernel/
+Syzkaller:          /home/syzretrospector/meerkat/syzkaller/
+Compilers:          /home/syzretrospector/meerkat/compilers/
+Compiler:           gcc (Ubuntu 11.4.0-1ubuntu1~22.04.2) 11.4.0
+Linker:             GNU ld (GNU Binutils for Ubuntu) 2.38
+Ccache:             ccache version 4.5.1
 Image:              /home/syzretrospector/images/stretch/stretch.img
 Image Key:          /home/syzretrospector/images/stretch/stretch.id_rsa
 
-Workdir:            /home/syzretrospector/syzinspector/wd-bisector-5/
-Kconfig:            /home/syzretrospector/syzinspector/wd-bisector-5/config-bug0778.txt
-Reproducers: (2)    /home/syzretrospector/syzinspector/wd-bisector-5/reproducers/
-Primary PoC:        /home/syzretrospector/syzinspector/wd-bisector-5/reproducers/repro-bug0778-2.prog
-Syzkaller Workdir:  /home/syzretrospector/syzinspector/wd-bisector-5/wd-kaller/
-Log Directory:      /home/syzretrospector/syzinspector/wd-bisector-5/log/
+Workdir:            /home/syzretrospector/meerkat/wd-meerkat-1/
+Kconfig:            /home/syzretrospector/meerkat/wd-meerkat-1/config-bug0778.txt
+Reproducers: (2)    /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/
+Primary PoC:        /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0778-2.prog
+Syzkaller Workdir:  /home/syzretrospector/meerkat/wd-meerkat-1/wd-kaller/
+Log Directory:      /home/syzretrospector/meerkat/wd-meerkat-1/log/
 
 Syscalls: (3)       ["creat", "mount", "ioctl$F2FS_IOC_START_ATOMIC_WRITE"]
 VM Count:           8
@@ -37,16 +39,695 @@ Max Attempts:       1
 
 ==== Anchor Commit ====
 
-2025-03-18 16:04:23
+2025-10-30 14:02:55
 Session:   1
 Kernel:    2023-11-02 - 4652b8e4f3ffa48c706ec334f048c217a7d9750d
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    2  WARNING in blk_mq_start_request
+Attempt 2: (RETRY)
+    Time  Bug Name
+***    3  WARNING in blk_mq_start_request
+***    3  WARNING in blk_mq_start_request
+***    3  WARNING in blk_mq_start_request
+Attempt 3: (RETRY)
+    Time  Bug Name
+***    2  WARNING in blk_mq_start_request
+The bug was found.
+
+New Max Time: 10
+
+==== Major Release Search ====
+14 Releases
+
+2025-10-30 14:23:24
+Session:   2
+Kernel:    2023-10-29 - ffc253263a1375a65fa6c9f62a893e9767fbebfa (v6.6)
+Compiler:  ccache gcc
 Attempt 1:
     No crashes found.
-Attempt 2: (RETRY)
+The bug was not found.
+About 13 releases remaining
+
+==== Kernel Bisection ====
+10397 Linux commits
+
+2025-10-30 14:46:22
+Session:   3
+Kernel:    2023-10-31 - 89ed67ef126c4160349c1b96fdb775ea6170ac90
+Compiler:  ccache gcc
+Attempt 1:
     No crashes found.
-Attempt 3: (RETRY)
+The bug was not found.
+About 4554 commits remaining
+
+2025-10-30 15:09:16
+Session:   4
+Kernel:    2023-10-31 - 631808095a82e6b6f8410a95f8b12b8d0d38b161
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 8769 commits remaining
+
+2025-10-30 15:31:48
+Session:   5
+Kernel:    2023-11-01 - 0364249d2073c32c5214f02866999ce940bc35a2
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 1370 commits remaining
+
+2025-10-30 15:54:55
+Session:   6
+Kernel:    2023-10-25 - c505e1e4b10d751e93ca361d56d2270d6180a183
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 11128 commits remaining
+
+2025-10-30 16:17:28
+Session:   7
+Kernel:    2023-11-01 - 4684e928dbee00d625b5102ea23c216cc2d85f46
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 338 commits remaining
+
+2025-10-30 16:33:02
+Session:   8
+Kernel:    2023-11-01 - 7dc0e9c7dda66bd91eeada00d90033e3eb647fc3
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    2  WARNING in blk_mq_start_request
+Running syz-repro.
+New PoC saved at /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0778-0.prog
+Primary PoC:     /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0778-0.prog
+Run Time:        0h15m0s
+The bug was found.
+About 165 commits remaining
+
+2025-10-30 17:03:09
+Session:   9
+Kernel:    2023-11-01 - 463f46e114f74465cf8d01b124e7b74ad1ce2afd
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    2  WARNING in blk_mq_start_request
+***    2  WARNING in blk_mq_start_request
+The bug was found.
+About 97 commits remaining
+
+2025-10-30 17:11:04
+Session:   10
+Kernel:    2023-10-26 - 03476e687eb07b94f7cdb07cd3c7c4304b6c58b3
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 11966 commits remaining
+
+2025-10-30 17:33:57
+Session:   11
+Kernel:    2023-11-01 - 05bf73aa27ba89474763cea7b9cd2626eda61e01
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    2  WARNING in blk_mq_start_request
+The bug was found.
+About 11942 commits remaining
+
+2025-10-30 17:45:41
+Session:   12
+Kernel:    2023-11-01 - 1e0c505e13162a2abe7c984309cfe2ae976b428d
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 14 commits remaining
+
+2025-10-30 18:01:56
+Session:   13
+Kernel:    2023-10-19 - f46e8939de80bf029787111bf488ee86355b111c
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 11268 commits remaining
+
+2025-10-30 18:25:59
+Session:   14
+Kernel:    2023-10-31 - acbc3ecb806e24eb9c0cafc29e0884490dda6169
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 11271 commits remaining
+
+2025-10-30 18:42:19
+Session:   15
+Kernel:    2023-10-24 - 4758560fa268cecfa1144f015aa9f2525d164b7e
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 11266 commits remaining
+
+2025-10-30 18:57:55
+Session:   16
+Kernel:    2023-11-01 - 1b10d2c8c6219bfc86d8c7d53a4f97a0a706d1ba
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    2  WARNING in blk_mq_start_request
+Running syz-repro.
+New PoC saved at /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0778-3.prog
+Primary PoC:     /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0778-0.prog
+Run Time:        0h8m0s
+The bug was found.
+About 11265 commits remaining
+
+==== Partial Result: Focused Fuzzing ====
+Reproducer:           /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0778-0.prog
+Bisection Result:     2023-11-01 - 1b10d2c8c6219bfc86d8c7d53a4f97a0a706d1ba
+Bisected Commit Name: Merge tag 'bootconfig-v6.7' of git://git.kernel.org/pub/scm/linux/kernel/git/trace/linux-trace
+Stage Time:           5h10m47s
+Run Time:             5h10m48s
+=========================================
+
+==== Anchor Commit ====
+
+2025-10-30 19:13:42
+Session:   17
+Kernel:    2023-11-01 - 1e0c505e13162a2abe7c984309cfe2ae976b428d
+Compiler:  ccache gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0778-0.prog
+Attempt 0:
+*** WARNING in blk_mq_start_request
+    kernel panic: kernel: panic_on_warn set ...
+Attempt 1:
+*** WARNING in blk_mq_start_request
+    kernel panic: kernel: panic_on_warn set ...
+Attempt 2:
+*** WARNING in blk_mq_start_request
+    kernel panic: kernel: panic_on_warn set ...
+Attempt 3:
+*** WARNING in blk_mq_start_request
+    kernel panic: kernel: panic_on_warn set ...
+Attempt 4:
+*** WARNING in blk_mq_start_request
+    kernel panic: kernel: panic_on_warn set ...
+Attempt 5:
+*** WARNING in blk_mq_start_request
+    kernel panic: kernel: panic_on_warn set ...
+Attempt 6:
+*** WARNING in blk_mq_start_request
+    kernel panic: kernel: panic_on_warn set ...
+Attempt 7:
+*** WARNING in blk_mq_start_request
+    kernel panic: kernel: panic_on_warn set ...
+The bug was found.
+
+==== Major Release Search ====
+14 Releases
+
+2025-10-30 19:21:57
+Session:   18
+Kernel:    2023-10-29 - ffc253263a1375a65fa6c9f62a893e9767fbebfa (v6.6)
+Compiler:  ccache gcc
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+About 13 releases remaining
+
+==== Kernel Bisection ====
+10071 Linux commits
+
+2025-10-30 19:43:41
+Session:   19
+Kernel:    2023-10-31 - 89ed67ef126c4160349c1b96fdb775ea6170ac90
+Compiler:  ccache gcc
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+About 4228 commits remaining
+
+2025-10-30 20:05:18
+Session:   20
+Kernel:    2023-10-31 - 631808095a82e6b6f8410a95f8b12b8d0d38b161
+Compiler:  ccache gcc
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+About 8443 commits remaining
+
+2025-10-30 20:26:54
+Session:   21
+Kernel:    2023-11-01 - ffa059b262ba72571e7fefe7fa2b4ebb6776b277
+Compiler:  ccache gcc
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+About 1207 commits remaining
+
+2025-10-30 20:48:12
+Session:   22
+Kernel:    2023-10-19 - 79d01625c3c77d823e987610cf289fcfd6f31cad
+Compiler:  ccache gcc
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+About 10891 commits remaining
+
+2025-10-30 21:09:58
+Session:   23
+Kernel:    2023-11-01 - deefd5024f0772cf56052ace9a8c347dc70bcaf3
+Compiler:  ccache gcc
+Attempt 0:
+*** WARNING in blk_mq_start_request
+    kernel panic: kernel: panic_on_warn set ...
+Attempt 1:
+*** WARNING in blk_mq_start_request
+    kernel panic: kernel: panic_on_warn set ...
+Attempt 2:
+*** WARNING in blk_mq_start_request
+    kernel panic: kernel: panic_on_warn set ...
+Attempt 3:
+*** WARNING in blk_mq_start_request
+    kernel panic: kernel: panic_on_warn set ...
+Attempt 4:
+*** WARNING in blk_mq_start_request
+    kernel panic: kernel: panic_on_warn set ...
+Attempt 5:
+*** WARNING in blk_mq_start_request
+    kernel panic: kernel: panic_on_warn set ...
+Attempt 6:
+*** WARNING in blk_mq_start_request
+    kernel panic: kernel: panic_on_warn set ...
+Attempt 7:
+*** WARNING in blk_mq_start_request
+    kernel panic: kernel: panic_on_warn set ...
+The bug was found.
+About 10569 commits remaining
+
+2025-10-30 21:22:08
+Session:   24
+Kernel:    2023-11-01 - 39714efc23beb38ce850b29f4f132da6d997fc22
+Compiler:  ccache gcc
+Attempt 0:
+*** WARNING in blk_mq_start_request
+    kernel panic: kernel: panic_on_warn set ...
+Attempt 1:
+*** WARNING in blk_mq_start_request
+    kernel panic: kernel: panic_on_warn set ...
+Attempt 2:
+*** WARNING in blk_mq_start_request
+    kernel panic: kernel: panic_on_warn set ...
+Attempt 3:
+*** WARNING in blk_mq_start_request
+    kernel panic: kernel: panic_on_warn set ...
+Attempt 4:
+*** WARNING in blk_mq_start_request
+    kernel panic: kernel: panic_on_warn set ...
+Attempt 5:
+*** WARNING in blk_mq_start_request
+    kernel panic: kernel: panic_on_warn set ...
+Attempt 6:
+*** WARNING in blk_mq_start_request
+    kernel panic: kernel: panic_on_warn set ...
+Attempt 7:
+*** WARNING in blk_mq_start_request
+    kernel panic: kernel: panic_on_warn set ...
+The bug was found.
+About 10432 commits remaining
+
+2025-10-30 21:30:23
+Session:   25
+Kernel:    2023-10-17 - ec8cf230ceccfcc2bd29990c2902be168a92dee4
+Compiler:  ccache gcc
+Attempt 0:
+*** WARNING in blk_mq_start_request
+    kernel panic: kernel: panic_on_warn set ...
+Attempt 1:
+*** WARNING in blk_mq_start_request
+    kernel panic: kernel: panic_on_warn set ...
+Attempt 2:
+*** WARNING in blk_mq_start_request
+    kernel panic: kernel: panic_on_warn set ...
+Attempt 3:
+*** WARNING in blk_mq_start_request
+    kernel panic: kernel: panic_on_warn set ...
+Attempt 4:
+*** WARNING in blk_mq_start_request
+    kernel panic: kernel: panic_on_warn set ...
+Attempt 5:
+*** WARNING in blk_mq_start_request
+    kernel panic: kernel: panic_on_warn set ...
+Attempt 6:
+*** WARNING in blk_mq_start_request
+    kernel panic: kernel: panic_on_warn set ...
+Attempt 7:
+*** WARNING in blk_mq_start_request
+    kernel panic: kernel: panic_on_warn set ...
+The bug was found.
+About 87 commits remaining
+
+2025-10-30 21:46:11
+Session:   26
+Kernel:    2023-10-10 - cfa078c8b80d0daf8f2fd4a2ab8e26fa8c33bca1
+Compiler:  ccache gcc
+Attempt 0:
+*** WARNING in blk_mq_start_request
+    kernel panic: kernel: panic_on_warn set ...
+Attempt 1:
+*** WARNING in blk_mq_start_request
+    kernel panic: kernel: panic_on_warn set ...
+Attempt 2:
+*** WARNING in blk_mq_start_request
+    kernel panic: kernel: panic_on_warn set ...
+Attempt 3:
+*** WARNING in blk_mq_start_request
+    kernel panic: kernel: panic_on_warn set ...
+Attempt 4:
+*** WARNING in blk_mq_start_request
+    kernel panic: kernel: panic_on_warn set ...
+Attempt 5:
+*** WARNING in blk_mq_start_request
+    kernel panic: kernel: panic_on_warn set ...
+Attempt 6:
+*** WARNING in blk_mq_start_request
+    kernel panic: kernel: panic_on_warn set ...
+Attempt 7:
+*** WARNING in blk_mq_start_request
+    kernel panic: kernel: panic_on_warn set ...
+The bug was found.
+About 37 commits remaining
+
+2025-10-30 21:54:24
+Session:   27
+Kernel:    2023-09-22 - a2a9f16838509475ea6801f7794a89e03d55e3ed
+Compiler:  ccache gcc
+Attempt 0:
+*** WARNING in blk_mq_start_request
+    kernel panic: kernel: panic_on_warn set ...
+Attempt 1:
+*** WARNING in blk_mq_start_request
+    kernel panic: kernel: panic_on_warn set ...
+Attempt 2:
+*** WARNING in blk_mq_start_request
+    kernel panic: kernel: panic_on_warn set ...
+Attempt 3:
+*** WARNING in blk_mq_start_request
+    kernel panic: kernel: panic_on_warn set ...
+Attempt 4:
+*** WARNING in blk_mq_start_request
+    kernel panic: kernel: panic_on_warn set ...
+Attempt 5:
+*** WARNING in blk_mq_start_request
+    kernel panic: kernel: panic_on_warn set ...
+Attempt 6:
+*** WARNING in blk_mq_start_request
+    kernel panic: kernel: panic_on_warn set ...
+Attempt 7:
+*** WARNING in blk_mq_start_request
+    kernel panic: kernel: panic_on_warn set ...
+The bug was found.
+About 19 commits remaining
+
+2025-10-30 22:02:40
+Session:   28
+Kernel:    2023-09-22 - 3389d57f97531efe9e285a0740c9b767d6f29f6c
+Compiler:  ccache gcc
+Attempt 0:
+*** WARNING in blk_mq_start_request
+    kernel panic: kernel: panic_on_warn set ...
+Attempt 1:
+*** WARNING in blk_mq_start_request
+    kernel panic: kernel: panic_on_warn set ...
+Attempt 2:
+*** WARNING in blk_mq_start_request
+    kernel panic: kernel: panic_on_warn set ...
+Attempt 3:
+*** WARNING in blk_mq_start_request
+    kernel panic: kernel: panic_on_warn set ...
+Attempt 4:
+*** WARNING in blk_mq_start_request
+    kernel panic: kernel: panic_on_warn set ...
+Attempt 5:
+*** WARNING in blk_mq_start_request
+    kernel panic: kernel: panic_on_warn set ...
+Attempt 6:
+*** WARNING in blk_mq_start_request
+    kernel panic: kernel: panic_on_warn set ...
+Attempt 7:
+*** WARNING in blk_mq_start_request
+    kernel panic: kernel: panic_on_warn set ...
+The bug was found.
+About 10 commits remaining
+
+2025-10-30 22:12:02
+Session:   29
+Kernel:    2023-09-22 - 217b613a53d3a430aa2e5d1523819dc271f02ff0
+Compiler:  ccache gcc
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+About 6 commits remaining
+
+2025-10-30 22:26:35
+Session:   30
+Kernel:    2023-09-22 - ac619781967bd5663c29606246b50dbebd8b3473
+Compiler:  ccache gcc
+Attempt 0:
+*** WARNING in blk_mq_start_request
+    kernel panic: kernel: panic_on_warn set ...
+Attempt 1:
+*** WARNING in blk_mq_start_request
+    kernel panic: kernel: panic_on_warn set ...
+Attempt 2:
+*** WARNING in blk_mq_start_request
+    kernel panic: kernel: panic_on_warn set ...
+Attempt 3:
+*** WARNING in blk_mq_start_request
+    kernel panic: kernel: panic_on_warn set ...
+Attempt 4:
+*** WARNING in blk_mq_start_request
+    kernel panic: kernel: panic_on_warn set ...
+Attempt 5:
+*** WARNING in blk_mq_start_request
+    kernel panic: kernel: panic_on_warn set ...
+Attempt 6:
+*** WARNING in blk_mq_start_request
+    kernel panic: kernel: panic_on_warn set ...
+Attempt 7:
+*** WARNING in blk_mq_start_request
+    kernel panic: kernel: panic_on_warn set ...
+The bug was found.
+About 3 commits remaining
+
+2025-10-30 22:36:00
+Session:   31
+Kernel:    2023-09-22 - d78bfa1346ab1fe04d20aa45a0678d1fc866f37c
+Compiler:  ccache gcc
+Attempt 0:
+*** WARNING in blk_mq_start_request
+    kernel panic: kernel: panic_on_warn set ...
+Attempt 1:
+*** WARNING in blk_mq_start_request
+    kernel panic: kernel: panic_on_warn set ...
+Attempt 2:
+*** WARNING in blk_mq_start_request
+    kernel panic: kernel: panic_on_warn set ...
+Attempt 3:
+*** WARNING in blk_mq_start_request
+    kernel panic: kernel: panic_on_warn set ...
+Attempt 4:
+*** WARNING in blk_mq_start_request
+    kernel panic: kernel: panic_on_warn set ...
+Attempt 5:
+*** WARNING in blk_mq_start_request
+    kernel panic: kernel: panic_on_warn set ...
+Attempt 6:
+*** WARNING in blk_mq_start_request
+    kernel panic: kernel: panic_on_warn set ...
+Attempt 7:
+*** WARNING in blk_mq_start_request
+    kernel panic: kernel: panic_on_warn set ...
+The bug was found.
+About 2 commits remaining
+
+==== Partial Result: Primary PoC Test ====
+Reproducer:           /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0778-0.prog
+Bisection Result:     2023-09-22 - d78bfa1346ab1fe04d20aa45a0678d1fc866f37c
+Bisected Commit Name: block/null_blk: add queue_rqs() support
+Stage Time:           3h30m25s
+Run Time:             8h41m14s
+==========================================
+
+==== Anchor Commit ====
+
+2025-10-30 22:44:08
+Session:   32
+Kernel:    2023-09-22 - 217b613a53d3a430aa2e5d1523819dc271f02ff0
+Compiler:  ccache gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0778-1.prog
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
     No crashes found.
 The bug was not found.
 
 Failure: This bug cannot be found at the anchor commit.
+
+==== Partial Result: Subsequent PoC Test ====
+Reproducer:           /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0778-1.prog
+Bisection Result:     Failed to reproduce at the anchor commit.
+Stage Time:           0h13m50s
+Run Time:             8h55m5s
+=============================================
+
+==== Anchor Commit ====
+
+2025-10-30 22:58:02
+Session:   33
+Kernel:    2023-09-22 - 217b613a53d3a430aa2e5d1523819dc271f02ff0
+Compiler:  ccache gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0778-2.prog
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+
+Failure: This bug cannot be found at the anchor commit.
+
+==== Partial Result: Subsequent PoC Test ====
+Reproducer:           /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0778-2.prog
+Bisection Result:     Failed to reproduce at the anchor commit.
+Stage Time:           0h14m53s
+Run Time:             9h9m58s
+=============================================
+
+====================================================================================================================================================
+Bug Name:             WARNING in blk_mq_start_request
+Big ID:               bug0778
+Bug Link:             https://syzkaller.appspot.com/bug?extid=fcc47ba2476570cbbeb0
+Bisection Result:     2023-09-22 - d78bfa1346ab1fe04d20aa45a0678d1fc866f37c
+Bisected Commit Name: block/null_blk: add queue_rqs() support
+Run Time:             9h9m58s
+
+Anchor Commit:        2023-11-02 - 4652b8e4f3ffa48c706ec334f048c217a7d9750d
+Bisection Result:     2023-09-22 - d78bfa1346ab1fe04d20aa45a0678d1fc866f37c

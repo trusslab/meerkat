@@ -1,4 +1,4 @@
-./bin/bisector -i 5 -c /home/syzretrospector/syzinspector/wd-bisector-5/bisector.cfg -a 305230142ae0637213bf6e04f6d9f10bbcb74af8 -F ff-test,poc-test,stateful-corpus,ff-no-find-backup
+./bin/meerkat -i 1 -c /home/syzretrospector/meerkat/wd-meerkat-1/meerkat.cfg -a 305230142ae0637213bf6e04f6d9f10bbcb74af8 -F ff-test,poc-test,poc-all-pocs,ff-no-find-backup,stateful-corpus
 Bisecting:          WARNING in create_pending_snapshot
 Syzbot Link:        https://syzkaller.appspot.com/bug?extid=4d81015bc10889fd12ea
 Working Name:       bug0780
@@ -10,21 +10,23 @@ Repository:         https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/lin
 Branch:             master
 Arch:               amd64
 
-Bisector:           /home/syzretrospector/syzinspector/
-Version:            1.0.4
-Kernel:             /home/syzretrospector/syzinspector/wd-bisector-5/kernel/
-Syzkaller:          /home/syzretrospector/syzinspector/syzkaller/
-Compilers:          /home/syzretrospector/compilers/
-Ccache:             ccache
+Meerkat:            /home/syzretrospector/meerkat/
+Version:            1.1.1
+Kernel:             /home/syzretrospector/meerkat/wd-meerkat-1/kernel/
+Syzkaller:          /home/syzretrospector/meerkat/syzkaller/
+Compilers:          /home/syzretrospector/meerkat/compilers/
+Compiler:           gcc (Ubuntu 11.4.0-1ubuntu1~22.04.2) 11.4.0
+Linker:             GNU ld (GNU Binutils for Ubuntu) 2.38
+Ccache:             ccache version 4.5.1
 Image:              /home/syzretrospector/images/stretch/stretch.img
 Image Key:          /home/syzretrospector/images/stretch/stretch.id_rsa
 
-Workdir:            /home/syzretrospector/syzinspector/wd-bisector-5/
-Kconfig:            /home/syzretrospector/syzinspector/wd-bisector-5/config-bug0780.txt
-Reproducers: (1)    /home/syzretrospector/syzinspector/wd-bisector-5/reproducers/
-Primary PoC:        /home/syzretrospector/syzinspector/wd-bisector-5/reproducers/repro-bug0780-1.prog
-Syzkaller Workdir:  /home/syzretrospector/syzinspector/wd-bisector-5/wd-kaller/
-Log Directory:      /home/syzretrospector/syzinspector/wd-bisector-5/log/
+Workdir:            /home/syzretrospector/meerkat/wd-meerkat-1/
+Kconfig:            /home/syzretrospector/meerkat/wd-meerkat-1/config-bug0780.txt
+Reproducers: (1)    /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/
+Primary PoC:        /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0780-1.prog
+Syzkaller Workdir:  /home/syzretrospector/meerkat/wd-meerkat-1/wd-kaller/
+Log Directory:      /home/syzretrospector/meerkat/wd-meerkat-1/log/
 
 Syscalls: (12)      ["ioctl$BTRFS_IOC_QGROUP_CREATE", "ioctl$BTRFS_IOC_QUOTA_CTL", "ioctl$BTRFS_IOC_SNAP_CREATE", "open", "openat", "openat$cgroup_ro", "syz_mount_image$btrfs", "openat$cgroup_root", "mount$bpf", "getuid", "setgid", "getgid"]
 VM Count:           8
@@ -37,10 +39,10 @@ Max Attempts:       1
 
 ==== Anchor Commit ====
 
-2025-03-18 16:49:29
+2025-10-30 23:13:23
 Session:   1
 Kernel:    2023-11-07 - 305230142ae0637213bf6e04f6d9f10bbcb74af8
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Compiler:  ccache gcc
 Attempt 1:
     Time  Bug Name
 ***    2  WARNING in create_pending_snapshot
@@ -50,372 +52,225 @@ Attempt 2: (RETRY)
 Attempt 3: (RETRY)
     Time  Bug Name
 ***    2  WARNING in create_pending_snapshot
+***    2  WARNING in create_pending_snapshot
 The bug was found.
 
 New Max Time: 10
 
 ==== Major Release Search ====
-19 Releases
+14 Releases
 
-2025-03-18 17:09:54
+2025-10-30 23:32:47
 Session:   2
 Kernel:    2023-10-29 - ffc253263a1375a65fa6c9f62a893e9767fbebfa (v6.6)
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Compiler:  ccache gcc
 Attempt 1:
-    Time  Bug Name
-       8  BUG: MAX_LOCKDEP_KEYS too low!
-       8  BUG: MAX_LOCKDEP_KEYS too low!
-       8  BUG: MAX_LOCKDEP_KEYS too low!
-       8  BUG: MAX_LOCKDEP_KEYS too low!
-       8  BUG: MAX_LOCKDEP_KEYS too low!
+    No crashes found.
 The bug was not found.
-About 18 releases remaining
+About 13 releases remaining
 
 ==== Kernel Bisection ====
 15366 Linux commits
 
-2025-03-18 17:32:20
+2025-10-30 23:55:49
 Session:   3
 Kernel:    2023-10-31 - 8bc9e6515183935fa0cccaf67455c439afe4982b
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Compiler:  ccache gcc
 Attempt 1:
     Time  Bug Name
 ***    2  WARNING in create_pending_snapshot
 Running syz-repro.
-New PoC saved at /home/syzretrospector/syzinspector/wd-bisector-5/reproducers/repro-bug0780-0.prog
-Primary PoC:     /home/syzretrospector/syzinspector/wd-bisector-5/reproducers/repro-bug0780-0.prog
+New PoC saved at /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0780-0.prog
+Primary PoC:     /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0780-0.prog
 Run Time:        0h13m0s
 The bug was found.
 About 6825 commits remaining
 
-2025-03-18 17:59:48
+2025-10-31 00:23:34
 Session:   4
 Kernel:    2023-10-30 - 3cf3fabccb9dc821ffaec3ad6bf0cd6b278bd012
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Compiler:  ccache gcc
 Attempt 1:
     Time  Bug Name
-       7  BUG: MAX_LOCKDEP_KEYS too low!
-       7  BUG: MAX_LOCKDEP_KEYS too low!
-       7  BUG: MAX_LOCKDEP_KEYS too low!
-       7  BUG: MAX_LOCKDEP_KEYS too low!
-       7  BUG: MAX_LOCKDEP_KEYS too low!
-       7  BUG: MAX_LOCKDEP_KEYS too low!
-       7  BUG: MAX_LOCKDEP_KEYS too low!
-       7  BUG: MAX_LOCKDEP_KEYS too low!
-***   10  WARNING in create_pending_snapshot
-***   10  WARNING in create_pending_snapshot
-***   10  WARNING in create_pending_snapshot
-***   10  WARNING in create_pending_snapshot
-***   10  WARNING in create_pending_snapshot
+***    2  WARNING in create_pending_snapshot
 The bug was found.
-Switching to Safe Mode: Fuzzing 3 times at 10 minutes
 About 3381 commits remaining
 
-2025-03-18 18:22:25
+2025-10-31 00:38:06
 Session:   5
 Kernel:    2023-10-22 - fbec3b8800ac8244ce751d0ba5b83d94ee48fc76
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Compiler:  ccache gcc
 Attempt 1:
     Time  Bug Name
-       9  general protection fault in nfc_register_device
-       9  general protection fault in netdev_register_kobject
-       9  general protection fault in netdev_register_kobject
-Attempt 2:
-    Time  Bug Name
-       9  general protection fault in nfc_register_device
-       9  general protection fault in netdev_register_kobject
-       9  general protection fault in netdev_register_kobject
-Attempt 3:
-    Time  Bug Name
-      10  general protection fault in netdev_register_kobject
-      10  general protection fault in netdev_register_kobject
-      10  general protection fault in netdev_register_kobject
-      10  general protection fault in netdev_register_kobject
-      10  general protection fault in netdev_register_kobject
-      10  general protection fault in netdev_register_kobject
-      10  general protection fault in netdev_register_kobject
+       6  general protection fault in netdev_register_kobject
+       6  general protection fault in netdev_register_kobject
+       7  general protection fault in netdev_register_kobject
 The bug was not found.
 About 3820 commits remaining
 
-2025-03-18 19:04:54
+2025-10-31 01:00:38
 Session:   6
 Kernel:    2023-10-22 - 75da97640a75878cd197f6dd9c50b46cac6cb9a8
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Compiler:  ccache gcc
 Attempt 1:
     Time  Bug Name
-      10  general protection fault in nfc_register_device
-      10  general protection fault in netdev_register_kobject
-      10  general protection fault in netdev_register_kobject
-      10  general protection fault in netdev_register_kobject
-Attempt 2:
-    No crashes found.
-Attempt 3:
-    No crashes found.
+       7  general protection fault in nfc_register_device
+       7  general protection fault in netdev_register_kobject
+       7  general protection fault in netdev_register_kobject
+       7  general protection fault in netdev_register_kobject
+       7  general protection fault in netdev_register_kobject
+       7  general protection fault in netdev_register_kobject
 The bug was not found.
 About 2975 commits remaining
 
-2025-03-18 19:40:06
+2025-10-31 01:16:37
 Session:   7
 Kernel:    2023-10-30 - d5acbc60fafbe0fc94c552ce916dd592cd4c6371
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Compiler:  ccache gcc
 Attempt 1:
     Time  Bug Name
-***    3  WARNING in create_pending_snapshot
 ***    3  WARNING in create_pending_snapshot
 ***    3  WARNING in create_pending_snapshot
 The bug was found.
 About 2629 commits remaining
 
-2025-03-18 19:55:08
+2025-10-31 01:32:10
 Session:   8
 Kernel:    2023-10-30 - 14ab6d425e80674b6a0145f05719b11e82e64824
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Compiler:  ccache gcc
 Attempt 1:
     Time  Bug Name
-       6  BUG: MAX_LOCKDEP_KEYS too low!
-       6  BUG: MAX_LOCKDEP_KEYS too low!
-       6  BUG: MAX_LOCKDEP_KEYS too low!
-       6  BUG: MAX_LOCKDEP_KEYS too low!
-       6  BUG: MAX_LOCKDEP_KEYS too low!
-       6  BUG: MAX_LOCKDEP_KEYS too low!
-       7  BUG: MAX_LOCKDEP_KEYS too low!
-       7  BUG: MAX_LOCKDEP_KEYS too low!
-Attempt 2:
-    Time  Bug Name
-       6  BUG: MAX_LOCKDEP_KEYS too low!
-       6  BUG: MAX_LOCKDEP_KEYS too low!
-       6  BUG: MAX_LOCKDEP_KEYS too low!
-       6  BUG: MAX_LOCKDEP_KEYS too low!
-       6  BUG: MAX_LOCKDEP_KEYS too low!
-       6  BUG: MAX_LOCKDEP_KEYS too low!
-       7  BUG: MAX_LOCKDEP_KEYS too low!
-       7  BUG: MAX_LOCKDEP_KEYS too low!
-Attempt 3:
-    Time  Bug Name
-       6  BUG: MAX_LOCKDEP_KEYS too low!
-       6  BUG: MAX_LOCKDEP_KEYS too low!
-       6  BUG: MAX_LOCKDEP_KEYS too low!
-       6  BUG: MAX_LOCKDEP_KEYS too low!
-       6  BUG: MAX_LOCKDEP_KEYS too low!
-       6  BUG: MAX_LOCKDEP_KEYS too low!
-       7  BUG: MAX_LOCKDEP_KEYS too low!
-       7  BUG: MAX_LOCKDEP_KEYS too low!
+       2  KASAN: slab-use-after-free Read in bdev_release
+       2  KASAN: slab-out-of-bounds Read in blkdev_put
+       3  KASAN: slab-use-after-free Read in bdev_release
+       3  KASAN: slab-use-after-free Read in bdev_release
+       3  KASAN: slab-use-after-free Read in bdev_release
+       3  KASAN: slab-use-after-free Read in bdev_release
+       3  KASAN: slab-use-after-free Read in bdev_release
+       4  KASAN: slab-use-after-free Read in bdev_release
+       4  KASAN: slab-use-after-free Read in bdev_release
+       5  KASAN: slab-use-after-free Read in bdev_release
+       5  KASAN: slab-use-after-free Read in bdev_release
+       5  KASAN: slab-use-after-free Read in bdev_release
+       6  KASAN: slab-use-after-free Read in bdev_release
+       6  KASAN: slab-use-after-free Read in bdev_release
+       6  KASAN: slab-use-after-free Read in bdev_release
+       6  KASAN: slab-out-of-bounds Read in blkdev_put
+       7  KASAN: slab-use-after-free Read in bdev_release
+       8  KASAN: slab-use-after-free Read in bdev_release
+       8  KASAN: slab-use-after-free Read in bdev_release
+       8  KASAN: slab-use-after-free Read in bdev_release
+       8  KASAN: slab-use-after-free Read in bdev_release
+       9  KASAN: slab-use-after-free Read in bdev_release
+       9  KASAN: slab-use-after-free Read in bdev_release
+       9  KASAN: slab-use-after-free Read in bdev_release
+       9  KASAN: slab-out-of-bounds Read in blkdev_put
+      10  KASAN: slab-use-after-free Read in bdev_release
+      10  KASAN: slab-use-after-free Read in bdev_release
 The bug was not found.
 About 294 commits remaining
 
-2025-03-18 20:37:48
+2025-10-31 01:54:40
 Session:   9
 Kernel:    2023-10-12 - 0124855ff18b9bdfe6aec87f7b29d3fdc6f575db
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Compiler:  ccache gcc
 Attempt 1:
     Time  Bug Name
 ***    3  WARNING in create_pending_snapshot
 ***    3  WARNING in create_pending_snapshot
+***    3  WARNING in create_pending_snapshot
 Running syz-repro.
-New PoC saved at /home/syzretrospector/syzinspector/wd-bisector-5/reproducers/repro-bug0780-2.prog
-Primary PoC:     /home/syzretrospector/syzinspector/wd-bisector-5/reproducers/repro-bug0780-0.prog
+New PoC saved at /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0780-2.prog
+Primary PoC:     /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0780-0.prog
 Run Time:        0h13m0s
 The bug was found.
 About 147 commits remaining
 
-2025-03-18 21:05:52
+2025-10-31 02:23:12
 Session:   10
 Kernel:    2023-10-12 - ca41504efda646d9c4b00c37be52f5ba07cebebf
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Compiler:  ccache gcc
 Attempt 1:
-    Time  Bug Name
-       6  BUG: MAX_LOCKDEP_KEYS too low!
-       6  BUG: MAX_LOCKDEP_KEYS too low!
-       6  BUG: MAX_LOCKDEP_KEYS too low!
-       6  BUG: MAX_LOCKDEP_KEYS too low!
-       6  BUG: MAX_LOCKDEP_KEYS too low!
-       6  BUG: MAX_LOCKDEP_KEYS too low!
-       6  BUG: MAX_LOCKDEP_KEYS too low!
-       7  BUG: MAX_LOCKDEP_KEYS too low!
-Attempt 2:
-    Time  Bug Name
-       6  BUG: MAX_LOCKDEP_KEYS too low!
-       6  BUG: MAX_LOCKDEP_KEYS too low!
-       6  BUG: MAX_LOCKDEP_KEYS too low!
-       6  BUG: MAX_LOCKDEP_KEYS too low!
-       6  BUG: MAX_LOCKDEP_KEYS too low!
-       6  BUG: MAX_LOCKDEP_KEYS too low!
-       6  BUG: MAX_LOCKDEP_KEYS too low!
-       7  BUG: MAX_LOCKDEP_KEYS too low!
-Attempt 3:
-    Time  Bug Name
-       6  BUG: MAX_LOCKDEP_KEYS too low!
-       6  BUG: MAX_LOCKDEP_KEYS too low!
-       6  BUG: MAX_LOCKDEP_KEYS too low!
-       6  BUG: MAX_LOCKDEP_KEYS too low!
-       6  BUG: MAX_LOCKDEP_KEYS too low!
-       6  BUG: MAX_LOCKDEP_KEYS too low!
-       7  BUG: MAX_LOCKDEP_KEYS too low!
-       7  BUG: MAX_LOCKDEP_KEYS too low!
+    No crashes found.
 The bug was not found.
 About 74 commits remaining
 
-2025-03-18 21:41:10
+2025-10-31 02:38:37
 Session:   11
 Kernel:    2023-10-12 - 1723270f0c29cc27dbe9e554a3f35abd2e4eb945
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Compiler:  ccache gcc
 Attempt 1:
     Time  Bug Name
-***    3  WARNING in create_pending_snapshot
 ***    3  WARNING in create_pending_snapshot
 The bug was found.
 About 37 commits remaining
 
-2025-03-18 21:48:46
+2025-10-31 02:47:05
 Session:   12
 Kernel:    2023-10-12 - 457cb1ddf5e8d895e9c551cad6b84bafae41f32c
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Compiler:  ccache gcc
 Attempt 1:
     Time  Bug Name
-***    3  WARNING in create_pending_snapshot
-***    3  WARNING in create_pending_snapshot
+***    2  WARNING in create_pending_snapshot
 The bug was found.
 About 19 commits remaining
 
-2025-03-18 21:56:32
+2025-10-31 02:54:31
 Session:   13
 Kernel:    2023-10-12 - 078b8b90b8ffec54f7dc1e8ef6c1078d1e7d3dae
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Compiler:  ccache gcc
 Attempt 1:
-    Time  Bug Name
-       6  BUG: MAX_LOCKDEP_KEYS too low!
-       6  BUG: MAX_LOCKDEP_KEYS too low!
-       6  BUG: MAX_LOCKDEP_KEYS too low!
-       6  BUG: MAX_LOCKDEP_KEYS too low!
-       6  BUG: MAX_LOCKDEP_KEYS too low!
-       6  BUG: MAX_LOCKDEP_KEYS too low!
-       6  BUG: MAX_LOCKDEP_KEYS too low!
-       6  BUG: MAX_LOCKDEP_KEYS too low!
-Attempt 2:
-    Time  Bug Name
-       6  BUG: MAX_LOCKDEP_KEYS too low!
-       6  BUG: MAX_LOCKDEP_KEYS too low!
-       6  BUG: MAX_LOCKDEP_KEYS too low!
-       6  BUG: MAX_LOCKDEP_KEYS too low!
-       6  BUG: MAX_LOCKDEP_KEYS too low!
-       6  BUG: MAX_LOCKDEP_KEYS too low!
-       6  BUG: MAX_LOCKDEP_KEYS too low!
-       7  BUG: MAX_LOCKDEP_KEYS too low!
-Attempt 3:
-    Time  Bug Name
-       6  BUG: MAX_LOCKDEP_KEYS too low!
-       6  BUG: MAX_LOCKDEP_KEYS too low!
-       6  BUG: MAX_LOCKDEP_KEYS too low!
-       6  BUG: MAX_LOCKDEP_KEYS too low!
-       6  BUG: MAX_LOCKDEP_KEYS too low!
-       6  BUG: MAX_LOCKDEP_KEYS too low!
-       6  BUG: MAX_LOCKDEP_KEYS too low!
-       6  BUG: MAX_LOCKDEP_KEYS too low!
+    No crashes found.
 The bug was not found.
 About 10 commits remaining
 
-2025-03-18 22:31:42
+2025-10-31 03:10:11
 Session:   14
 Kernel:    2023-10-12 - a744986ac4dbe42496410780800fbbc00afaa910
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Compiler:  ccache gcc
 Attempt 1:
-    Time  Bug Name
-       6  BUG: MAX_LOCKDEP_KEYS too low!
-       6  BUG: MAX_LOCKDEP_KEYS too low!
-       6  BUG: MAX_LOCKDEP_KEYS too low!
-       6  BUG: MAX_LOCKDEP_KEYS too low!
-       6  BUG: MAX_LOCKDEP_KEYS too low!
-       6  BUG: MAX_LOCKDEP_KEYS too low!
-       6  BUG: MAX_LOCKDEP_KEYS too low!
-       6  BUG: MAX_LOCKDEP_KEYS too low!
-Attempt 2:
-    Time  Bug Name
-       6  BUG: MAX_LOCKDEP_KEYS too low!
-       6  BUG: MAX_LOCKDEP_KEYS too low!
-       6  BUG: MAX_LOCKDEP_KEYS too low!
-       6  BUG: MAX_LOCKDEP_KEYS too low!
-       6  BUG: MAX_LOCKDEP_KEYS too low!
-       6  BUG: MAX_LOCKDEP_KEYS too low!
-       6  BUG: MAX_LOCKDEP_KEYS too low!
-       6  BUG: MAX_LOCKDEP_KEYS too low!
-Attempt 3:
-    Time  Bug Name
-       6  BUG: MAX_LOCKDEP_KEYS too low!
-       6  BUG: MAX_LOCKDEP_KEYS too low!
-       6  BUG: MAX_LOCKDEP_KEYS too low!
-       6  BUG: MAX_LOCKDEP_KEYS too low!
-       6  BUG: MAX_LOCKDEP_KEYS too low!
-       6  BUG: MAX_LOCKDEP_KEYS too low!
-       6  BUG: MAX_LOCKDEP_KEYS too low!
-       6  BUG: MAX_LOCKDEP_KEYS too low!
+    No crashes found.
 The bug was not found.
 About 6 commits remaining
 
-2025-03-18 23:07:12
+2025-10-31 03:25:41
 Session:   15
 Kernel:    2023-10-12 - 6ed05643ddb166c0fddabac8ee092659006214a9
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Compiler:  ccache gcc
 Attempt 1:
     Time  Bug Name
 ***    3  WARNING in create_pending_snapshot
 Running syz-repro.
-New PoC saved at /home/syzretrospector/syzinspector/wd-bisector-5/reproducers/repro-bug0780-2.prog
-Primary PoC:     /home/syzretrospector/syzinspector/wd-bisector-5/reproducers/repro-bug0780-0.prog
+New PoC saved at /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0780-2.prog
+Primary PoC:     /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0780-0.prog
 Run Time:        0h13m0s
 The bug was found.
 About 3 commits remaining
 
-2025-03-18 23:27:44
+2025-10-31 03:47:11
 Session:   16
 Kernel:    2023-10-12 - af0e2aab3b70b7844232bbce2a619ec70e049df4
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Compiler:  ccache gcc
 Attempt 1:
-    Time  Bug Name
-       6  BUG: MAX_LOCKDEP_KEYS too low!
-       6  BUG: MAX_LOCKDEP_KEYS too low!
-       6  BUG: MAX_LOCKDEP_KEYS too low!
-       6  BUG: MAX_LOCKDEP_KEYS too low!
-       6  BUG: MAX_LOCKDEP_KEYS too low!
-       6  BUG: MAX_LOCKDEP_KEYS too low!
-       6  BUG: MAX_LOCKDEP_KEYS too low!
-       6  BUG: MAX_LOCKDEP_KEYS too low!
-Attempt 2:
-    Time  Bug Name
-       5  BUG: MAX_LOCKDEP_KEYS too low!
-       6  BUG: MAX_LOCKDEP_KEYS too low!
-       6  BUG: MAX_LOCKDEP_KEYS too low!
-       6  BUG: MAX_LOCKDEP_KEYS too low!
-       6  BUG: MAX_LOCKDEP_KEYS too low!
-       6  BUG: MAX_LOCKDEP_KEYS too low!
-       6  BUG: MAX_LOCKDEP_KEYS too low!
-       6  BUG: MAX_LOCKDEP_KEYS too low!
-Attempt 3:
-    Time  Bug Name
-       6  BUG: MAX_LOCKDEP_KEYS too low!
-       6  BUG: MAX_LOCKDEP_KEYS too low!
-       6  BUG: MAX_LOCKDEP_KEYS too low!
-       6  BUG: MAX_LOCKDEP_KEYS too low!
-       6  BUG: MAX_LOCKDEP_KEYS too low!
-       6  BUG: MAX_LOCKDEP_KEYS too low!
-       6  BUG: MAX_LOCKDEP_KEYS too low!
-       6  BUG: MAX_LOCKDEP_KEYS too low!
+    No crashes found.
 The bug was not found.
 About 2 commits remaining
 
 ==== Partial Result: Focused Fuzzing ====
-Reproducer:           /home/syzretrospector/syzinspector/wd-bisector-5/reproducers/repro-bug0780-0.prog
+Reproducer:           /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0780-0.prog
 Bisection Result:     2023-10-12 - 6ed05643ddb166c0fddabac8ee092659006214a9
 Bisected Commit Name: btrfs: create qgroup earlier in snapshot creation
-Stage Time:           7h13m23s
-Run Time:             7h13m24s
+Stage Time:           4h49m5s
+Run Time:             4h49m6s
 =========================================
 
 ==== Anchor Commit ====
 
-2025-03-19 00:02:52
+2025-10-31 04:02:29
 Session:   17
 Kernel:    2023-10-12 - af0e2aab3b70b7844232bbce2a619ec70e049df4
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Compiler:  ccache gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0780-0.prog
 Attempt 0:
     No crashes found.
 Attempt 1:
@@ -436,12 +291,54 @@ The bug was not found.
 
 Failure: This bug cannot be found at the anchor commit.
 
+==== Partial Result: Primary PoC Test ====
+Reproducer:           /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0780-0.prog
+Bisection Result:     Failed to reproduce at the anchor commit.
+Stage Time:           0h12m45s
+Run Time:             5h1m51s
+==========================================
+
+==== Anchor Commit ====
+
+2025-10-31 04:15:18
+Session:   18
+Kernel:    2023-10-12 - af0e2aab3b70b7844232bbce2a619ec70e049df4
+Compiler:  ccache gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0780-1.prog
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+
+Failure: This bug cannot be found at the anchor commit.
+
+==== Partial Result: Subsequent PoC Test ====
+Reproducer:           /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0780-1.prog
+Bisection Result:     Failed to reproduce at the anchor commit.
+Stage Time:           0h12m50s
+Run Time:             5h14m42s
+=============================================
+
 ====================================================================================================================================================
 Bug Name:             WARNING in create_pending_snapshot
+Big ID:               bug0780
 Bug Link:             https://syzkaller.appspot.com/bug?extid=4d81015bc10889fd12ea
 Bisection Result:     2023-10-12 - 6ed05643ddb166c0fddabac8ee092659006214a9
 Bisected Commit Name: btrfs: create qgroup earlier in snapshot creation
-Run Time:             7h19m58s
+Run Time:             5h14m42s
 
 Anchor Commit:        2023-11-07 - 305230142ae0637213bf6e04f6d9f10bbcb74af8
 Bisection Result:     2023-10-12 - 6ed05643ddb166c0fddabac8ee092659006214a9

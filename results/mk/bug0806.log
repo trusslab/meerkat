@@ -1,4 +1,4 @@
-./bin/bisector -i 5 -c /home/syzretrospector/syzinspector/wd-bisector-5/bisector.cfg -a 92901222f83d988617aee37680cb29e1a743b5e4 -F ff-test,poc-test,stateful-corpus,ff-no-find-backup
+./bin/meerkat -i 1 -c /home/syzretrospector/meerkat/wd-meerkat-1/meerkat.cfg -a 92901222f83d988617aee37680cb29e1a743b5e4 -F ff-test,poc-test,poc-all-pocs,ff-no-find-backup,stateful-corpus
 Bisecting:          general protection fault in hci_register_dev
 Syzbot Link:        https://syzkaller.appspot.com/bug?extid=410a8e33c6a740b40d51
 Working Name:       bug0806
@@ -10,21 +10,23 @@ Repository:         https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/lin
 Branch:             master
 Arch:               amd64
 
-Bisector:           /home/syzretrospector/syzinspector/
-Version:            1.0.4
-Kernel:             /home/syzretrospector/syzinspector/wd-bisector-5/kernel/
-Syzkaller:          /home/syzretrospector/syzinspector/syzkaller/
-Compilers:          /home/syzretrospector/compilers/
-Ccache:             ccache
+Meerkat:            /home/syzretrospector/meerkat/
+Version:            1.1.1
+Kernel:             /home/syzretrospector/meerkat/wd-meerkat-1/kernel/
+Syzkaller:          /home/syzretrospector/meerkat/syzkaller/
+Compilers:          /home/syzretrospector/meerkat/compilers/
+Compiler:           gcc (Ubuntu 11.4.0-1ubuntu1~22.04.2) 11.4.0
+Linker:             GNU ld (GNU Binutils for Ubuntu) 2.38
+Ccache:             ccache version 4.5.1
 Image:              /home/syzretrospector/images/stretch/stretch.img
 Image Key:          /home/syzretrospector/images/stretch/stretch.id_rsa
 
-Workdir:            /home/syzretrospector/syzinspector/wd-bisector-5/
-Kconfig:            /home/syzretrospector/syzinspector/wd-bisector-5/config-bug0806.txt
-Reproducers: (1)    /home/syzretrospector/syzinspector/wd-bisector-5/reproducers/
-Primary PoC:        /home/syzretrospector/syzinspector/wd-bisector-5/reproducers/repro-bug0806-1.prog
-Syzkaller Workdir:  /home/syzretrospector/syzinspector/wd-bisector-5/wd-kaller/
-Log Directory:      /home/syzretrospector/syzinspector/wd-bisector-5/log/
+Workdir:            /home/syzretrospector/meerkat/wd-meerkat-1/
+Kconfig:            /home/syzretrospector/meerkat/wd-meerkat-1/config-bug0806.txt
+Reproducers: (1)    /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/
+Primary PoC:        /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0806-1.prog
+Syzkaller Workdir:  /home/syzretrospector/meerkat/wd-meerkat-1/wd-kaller/
+Log Directory:      /home/syzretrospector/meerkat/wd-meerkat-1/log/
 
 Syscalls: (5)       ["ioctl$KDADDIO", "ioctl$TIOCSETD", "openat$ptmx", "ioctl$F2FS_IOC_START_ATOMIC_WRITE", "openat$selinux_enforce"]
 VM Count:           8
@@ -37,242 +39,220 @@ Max Attempts:       1
 
 ==== Anchor Commit ====
 
-2025-03-20 17:12:01
+2025-11-02 15:07:14
 Session:   1
 Kernel:    2023-09-02 - 92901222f83d988617aee37680cb29e1a743b5e4
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Compiler:  ccache gcc
 Attempt 1:
     Time  Bug Name
-       3  general protection fault in netdev_register_kobject
-       3  general protection fault in netdev_register_kobject
-       3  general protection fault in netdev_register_kobject
-       3  general protection fault in netdev_register_kobject
-       3  general protection fault in netdev_register_kobject
-       4  general protection fault in netdev_register_kobject
-       4  general protection fault in netdev_register_kobject
-       4  general protection fault in netdev_register_kobject
-       4  general protection fault in netdev_register_kobject
-       5  general protection fault in netdev_register_kobject
-***    5  general protection fault in hci_register_dev
+       2  general protection fault in netdev_register_kobject
+***    2  general protection fault in hci_register_dev
+***    2  general protection fault in hci_register_dev
 Attempt 2: (RETRY)
     Time  Bug Name
-       3  general protection fault in tty_register_device_attr
-       4  general protection fault in netdev_register_kobject
-       6  general protection fault in netdev_register_kobject
-       7  general protection fault in tty_register_device_attr
-       7  general protection fault in netdev_register_kobject
+***    2  general protection fault in hci_register_dev
+***    2  general protection fault in hci_register_dev
 Attempt 3: (RETRY)
     Time  Bug Name
-       3  general protection fault in netdev_register_kobject
-       4  general protection fault in netdev_register_kobject
-       4  general protection fault in netdev_register_kobject
-       4  general protection fault in netdev_register_kobject
-       4  general protection fault in netdev_register_kobject
-       4  general protection fault in netdev_register_kobject
-       4  general protection fault in netdev_register_kobject
-***    7  general protection fault in hci_register_dev
+***    2  general protection fault in hci_register_dev
+***    2  general protection fault in hci_register_dev
+***    2  general protection fault in hci_register_dev
 The bug was found.
 
-New Max Time: 12
+New Max Time: 10
 
 ==== Major Release Search ====
-19 Releases
+14 Releases
 
-2025-03-20 17:46:55
+2025-11-02 15:26:20
 Session:   2
-Kernel:    2023-06-25 - 6995e2de6891c724bfeb2db33d7b87775f913ad1 (v6.4)
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Kernel:    2023-08-27 - 2dde18cd1d8fac735875f2e4987f11817cc0bc2c (v6.5)
+Compiler:  ccache gcc
 Attempt 1:
     No crashes found.
 The bug was not found.
-About 18 releases remaining
+About 13 releases remaining
 
 ==== Kernel Bisection ====
-25750 Linux commits
+11076 Linux commits
 
-2025-03-20 18:12:21
+2025-11-02 15:49:28
 Session:   3
-Kernel:    2023-07-19 - 09c4a16d020f0d8ad9160e6d4db47fb890e2e487
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Kernel:    2023-08-30 - 53ea7f624fb91074c2f9458832ed74975ee5d64c
+Compiler:  ccache gcc
 Attempt 1:
     No crashes found.
 The bug was not found.
-About 12882 commits remaining
+About 6055 commits remaining
 
-2025-03-20 18:36:17
+2025-11-02 16:12:24
 Session:   4
-Kernel:    2023-08-29 - adfd671676c922bada16477eb68b5eb5f065addc
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
-Attempt 1:
-    No crashes found.
-The bug was not found.
-About 6452 commits remaining
-
-2025-03-20 19:00:13
-Session:   5
 Kernel:    2023-08-30 - 0e72db77672ff4758a31fb5259c754a7bb229751
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Compiler:  ccache gcc
 Attempt 1:
     No crashes found.
 The bug was not found.
 About 2893 commits remaining
 
-2025-03-20 19:24:23
-Session:   6
+2025-11-02 16:35:16
+Session:   5
 Kernel:    2023-09-01 - 51e7accbe8ab51476fbe55fbb5616c12fb3a0beb
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Compiler:  ccache gcc
 Attempt 1:
     No crashes found.
 The bug was not found.
 About 1472 commits remaining
 
-2025-03-20 19:48:33
-Session:   7
+2025-11-02 16:57:57
+Session:   6
 Kernel:    2023-09-01 - b84acc11b1c9552c9ca3a099b1610a6018619332
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Compiler:  ccache gcc
 Attempt 1:
     Time  Bug Name
        4  general protection fault in netdev_register_kobject
        4  general protection fault in netdev_register_kobject
        4  general protection fault in netdev_register_kobject
        4  general protection fault in netdev_register_kobject
-       4  general protection fault in netdev_register_kobject
-       4  general protection fault in netdev_register_kobject
-       5  general protection fault in netdev_register_kobject
-       6  general protection fault in netdev_register_kobject
-       6  general protection fault in netdev_register_kobject
-***    7  general protection fault in hci_register_dev
-***    7  general protection fault in hci_register_dev
-***    7  general protection fault in hci_register_dev
+***    5  general protection fault in hci_register_dev
 Running syz-repro.
-New PoC saved at /home/syzretrospector/syzinspector/wd-bisector-5/reproducers/repro-bug0806-0.prog
-Primary PoC:     /home/syzretrospector/syzinspector/wd-bisector-5/reproducers/repro-bug0806-0.prog
-Run Time:        0h12m0s
+New PoC saved at /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0806-0.prog
+Primary PoC:     /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0806-0.prog
+Run Time:        0h6m0s
 The bug was found.
 About 601 commits remaining
 
-2025-03-20 20:19:41
-Session:   8
+2025-11-02 17:21:35
+Session:   7
 Kernel:    2023-09-01 - 28a4f91f5f251689c69155bc6a0b1afc9916c874
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Compiler:  ccache gcc
 Attempt 1:
     Time  Bug Name
-       4  general protection fault in tty_register_device_attr
-       4  general protection fault in netdev_register_kobject
-       4  general protection fault in netdev_register_kobject
-       4  general protection fault in netdev_register_kobject
-       4  general protection fault in netdev_register_kobject
-       4  general protection fault in netdev_register_kobject
-       5  general protection fault in netdev_register_kobject
-       5  general protection fault in netdev_register_kobject
-       6  general protection fault in netdev_register_kobject
-       7  general protection fault in tty_register_device_attr
-***    7  general protection fault in hci_register_dev
+***    2  general protection fault in hci_register_dev
+***    2  general protection fault in hci_register_dev
+***    2  general protection fault in hci_register_dev
 The bug was found.
 About 309 commits remaining
 
-2025-03-20 20:38:34
-Session:   9
+2025-11-02 17:36:10
+Session:   8
 Kernel:    2023-08-22 - ebee41c8490aeb3ef2e7d25f5e97ce45c996da4d
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Compiler:  ccache gcc
 Attempt 1:
     No crashes found.
 The bug was not found.
 About 9951 commits remaining
 
-2025-03-20 21:02:41
-Session:   10
+2025-11-02 17:59:00
+Session:   9
 Kernel:    2023-09-01 - e925992671907314b7db6793a28eb39b36bc21a4
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Compiler:  ccache gcc
 Attempt 1:
     No crashes found.
 The bug was not found.
 About 236 commits remaining
 
-2025-03-20 21:24:25
-Session:   11
+2025-11-02 18:18:44
+Session:   10
 Kernel:    2023-08-27 - 008304079da79ab8dd122fe9e581494d10c0a3cc
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Compiler:  ccache gcc
 Attempt 1:
-    Time  Bug Name
-      11  KASAN: slab-use-after-free Read in __dev_queue_xmit
+    No crashes found.
 The bug was not found.
 About 9911 commits remaining
 
-2025-03-20 21:41:06
-Session:   12
+2025-11-02 18:34:13
+Session:   11
 Kernel:    2023-08-12 - 189057a1b61b7ee14fe40911eabc0a74da3cdf88
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Compiler:  ccache gcc
 Attempt 1:
     No crashes found.
 The bug was not found.
 About 11000 commits remaining
 
-2025-03-20 22:04:56
-Session:   13
+2025-11-02 18:57:02
+Session:   12
 Kernel:    2023-08-19 - 1b28cb81dab7c1eedc6034206f4e8d644046ad31
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Compiler:  ccache gcc
 Attempt 1:
     No crashes found.
 The bug was not found.
 About 10990 commits remaining
 
-2025-03-20 22:21:18
-Session:   14
+2025-11-02 19:12:29
+Session:   13
 Kernel:    2023-08-27 - 2aa91851ffa7cdfc0a63330d273115d38324b585
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Compiler:  ccache gcc
 Attempt 1:
     No crashes found.
 The bug was not found.
 About 9906 commits remaining
 
-2025-03-20 22:38:03
-Session:   15
+2025-11-02 19:28:05
+Session:   14
 Kernel:    2023-09-01 - 8e1e49550dc85694abd04d86a8ee36bc98bd8b9e
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Compiler:  ccache gcc
 Attempt 1:
-    No crashes found.
+    Time  Bug Name
+      10  KASAN: slab-use-after-free Read in __dev_queue_xmit
 The bug was not found.
 About 34 commits remaining
 
-2025-03-20 22:55:11
-Session:   16
+2025-11-02 19:44:10
+Session:   15
 Kernel:    2023-08-22 - 29c8ab79e91d35b93cfab87bf67a11516f7b2051
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Compiler:  ccache gcc
 Attempt 1:
     Time  Bug Name
-       3  general protection fault in netdev_register_kobject
-***    4  general protection fault in hci_register_dev
+***    2  general protection fault in hci_register_dev
+***    2  general protection fault in hci_register_dev
+***    2  general protection fault in hci_register_dev
+***    2  general protection fault in hci_register_dev
+***    2  general protection fault in hci_register_dev
+***    2  general protection fault in hci_register_dev
+***    2  general protection fault in hci_register_dev
+***    2  general protection fault in hci_register_dev
+***    2  general protection fault in hci_register_dev
+***    2  general protection fault in hci_register_dev
 The bug was found.
 About 33 commits remaining
 
-2025-03-20 23:03:30
-Session:   17
+2025-11-02 19:51:28
+Session:   16
 Kernel:    2023-08-22 - d21fdd07cea418c0d98c8a15fc95b8b8970801e7
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Compiler:  ccache gcc
 Attempt 1:
     Time  Bug Name
-       3  general protection fault in netdev_register_kobject
-       3  general protection fault in netdev_register_kobject
-       4  general protection fault in netdev_register_kobject
-       4  general protection fault in netdev_register_kobject
-The bug was not found.
-About 2 commits remaining
+***    2  general protection fault in hci_register_dev
+***    2  general protection fault in hci_register_dev
+***    2  general protection fault in hci_register_dev
+***    2  general protection fault in hci_register_dev
+***    2  general protection fault in hci_register_dev
+***    2  general protection fault in hci_register_dev
+***    2  general protection fault in hci_register_dev
+***    2  general protection fault in hci_register_dev
+***    2  general protection fault in hci_register_dev
+Running syz-repro.
+New PoC saved at /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0806-2.prog
+Primary PoC:     /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0806-0.prog
+Run Time:        0h6m0s
+The bug was found.
+About 32 commits remaining
 
 ==== Partial Result: Focused Fuzzing ====
-Reproducer:           /home/syzretrospector/syzinspector/wd-bisector-5/reproducers/repro-bug0806-0.prog
-Bisection Result:     2023-08-22 - 29c8ab79e91d35b93cfab87bf67a11516f7b2051
-Bisected Commit Name: driver core: Call in reversed order in device_platform_notify_remove()
-Stage Time:           6h7m30s
-Run Time:             6h7m31s
+Reproducer:           /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0806-0.prog
+Bisection Result:     2023-08-22 - d21fdd07cea418c0d98c8a15fc95b8b8970801e7
+Bisected Commit Name: driver core: Return proper error code when dev_set_name() fails
+Stage Time:           4h57m21s
+Run Time:             4h57m21s
 =========================================
 
 ==== Anchor Commit ====
 
-2025-03-20 23:19:31
-Session:   18
-Kernel:    2023-08-22 - d21fdd07cea418c0d98c8a15fc95b8b8970801e7
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+2025-11-02 20:04:35
+Session:   17
+Kernel:    2023-08-19 - 1b28cb81dab7c1eedc6034206f4e8d644046ad31
+Compiler:  ccache gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0806-0.prog
 Attempt 0:
     No crashes found.
 Attempt 1:
@@ -293,12 +273,54 @@ The bug was not found.
 
 Failure: This bug cannot be found at the anchor commit.
 
+==== Partial Result: Primary PoC Test ====
+Reproducer:           /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0806-0.prog
+Bisection Result:     Failed to reproduce at the anchor commit.
+Stage Time:           0h13m23s
+Run Time:             5h10m45s
+==========================================
+
+==== Anchor Commit ====
+
+2025-11-02 20:18:02
+Session:   18
+Kernel:    2023-08-19 - 1b28cb81dab7c1eedc6034206f4e8d644046ad31
+Compiler:  ccache gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0806-1.prog
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+
+Failure: This bug cannot be found at the anchor commit.
+
+==== Partial Result: Subsequent PoC Test ====
+Reproducer:           /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0806-1.prog
+Bisection Result:     Failed to reproduce at the anchor commit.
+Stage Time:           0h13m23s
+Run Time:             5h24m9s
+=============================================
+
 ====================================================================================================================================================
 Bug Name:             general protection fault in hci_register_dev
+Big ID:               bug0806
 Bug Link:             https://syzkaller.appspot.com/bug?extid=410a8e33c6a740b40d51
-Bisection Result:     2023-08-22 - 29c8ab79e91d35b93cfab87bf67a11516f7b2051
-Bisected Commit Name: driver core: Call in reversed order in device_platform_notify_remove()
-Run Time:             6h13m38s
+Bisection Result:     2023-08-22 - d21fdd07cea418c0d98c8a15fc95b8b8970801e7
+Bisected Commit Name: driver core: Return proper error code when dev_set_name() fails
+Run Time:             5h24m9s
 
 Anchor Commit:        2023-09-02 - 92901222f83d988617aee37680cb29e1a743b5e4
-Bisection Result:     2023-08-22 - 29c8ab79e91d35b93cfab87bf67a11516f7b2051
+Bisection Result:     2023-08-22 - d21fdd07cea418c0d98c8a15fc95b8b8970801e7

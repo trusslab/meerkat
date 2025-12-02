@@ -1,4 +1,4 @@
-./bin/bisector -i 5 -c /home/syzretrospector/syzinspector/wd-bisector-5/bisector.cfg -a 6e2332e0ab532eb01f1fde39080dbfa9bf65c4cf -F ff-test,poc-test,stateful-corpus,ff-no-find-backup
+./bin/meerkat -i 1 -c /home/syzretrospector/meerkat/wd-meerkat-1/meerkat.cfg -a 6e2332e0ab532eb01f1fde39080dbfa9bf65c4cf -F ff-test,poc-test,poc-all-pocs,ff-no-find-backup,stateful-corpus
 Bisecting:          WARNING in rate_control_rate_init
 Syzbot Link:        https://syzkaller.appspot.com/bug?extid=62d7eef57b09bfebcd84
 Working Name:       bug0770
@@ -10,21 +10,23 @@ Repository:         https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/lin
 Branch:             master
 Arch:               amd64
 
-Bisector:           /home/syzretrospector/syzinspector/
-Version:            1.0.4
-Kernel:             /home/syzretrospector/syzinspector/wd-bisector-5/kernel/
-Syzkaller:          /home/syzretrospector/syzinspector/syzkaller/
-Compilers:          /home/syzretrospector/compilers/
-Ccache:             ccache
+Meerkat:            /home/syzretrospector/meerkat/
+Version:            1.1.1
+Kernel:             /home/syzretrospector/meerkat/wd-meerkat-1/kernel/
+Syzkaller:          /home/syzretrospector/meerkat/syzkaller/
+Compilers:          /home/syzretrospector/meerkat/compilers/
+Compiler:           gcc (Ubuntu 11.4.0-1ubuntu1~22.04.2) 11.4.0
+Linker:             GNU ld (GNU Binutils for Ubuntu) 2.38
+Ccache:             ccache version 4.5.1
 Image:              /home/syzretrospector/images/stretch/stretch.img
 Image Key:          /home/syzretrospector/images/stretch/stretch.id_rsa
 
-Workdir:            /home/syzretrospector/syzinspector/wd-bisector-5/
-Kconfig:            /home/syzretrospector/syzinspector/wd-bisector-5/config-bug0770.txt
-Reproducers: (3)    /home/syzretrospector/syzinspector/wd-bisector-5/reproducers/
-Primary PoC:        /home/syzretrospector/syzinspector/wd-bisector-5/reproducers/repro-bug0770-3.prog
-Syzkaller Workdir:  /home/syzretrospector/syzinspector/wd-bisector-5/wd-kaller/
-Log Directory:      /home/syzretrospector/syzinspector/wd-bisector-5/log/
+Workdir:            /home/syzretrospector/meerkat/wd-meerkat-1/
+Kconfig:            /home/syzretrospector/meerkat/wd-meerkat-1/config-bug0770.txt
+Reproducers: (3)    /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/
+Primary PoC:        /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0770-3.prog
+Syzkaller Workdir:  /home/syzretrospector/meerkat/wd-meerkat-1/wd-kaller/
+Log Directory:      /home/syzretrospector/meerkat/wd-meerkat-1/log/
 
 Syscalls: (10)      ["ioctl$sock_SIOCGIFINDEX_80211", "sendmsg$NL80211_CMD_NEW_STATION", "sendmsg$NL80211_CMD_SET_INTERFACE", "socket$nl_generic", "syz_genetlink_get_family_id$nl80211", "socket", "sendmsg$NL80211_CMD_GET_INTERFACE", "ioctl$F2FS_IOC_START_ATOMIC_WRITE", "openat$selinux_enforce", "socket$netlink"]
 VM Count:           8
@@ -37,14 +39,12 @@ Max Attempts:       1
 
 ==== Anchor Commit ====
 
-2025-03-17 19:17:22
+2025-10-29 09:25:41
 Session:   1
 Kernel:    2023-06-27 - 6e2332e0ab532eb01f1fde39080dbfa9bf65c4cf
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Compiler:  ccache gcc
 Attempt 1:
     Time  Bug Name
-***    2  WARNING in rate_control_rate_init
-***    2  WARNING in rate_control_rate_init
 ***    2  WARNING in rate_control_rate_init
 ***    2  WARNING in rate_control_rate_init
 ***    2  WARNING in rate_control_rate_init
@@ -52,7 +52,15 @@ Attempt 1:
 ***    2  WARNING in rate_control_rate_init
 ***    2  WARNING in rate_control_rate_init
 Attempt 2: (RETRY)
-    No crashes found.
+    Time  Bug Name
+***    2  WARNING in rate_control_rate_init
+***    2  WARNING in rate_control_rate_init
+***    2  WARNING in rate_control_rate_init
+***    2  WARNING in rate_control_rate_init
+***    2  WARNING in rate_control_rate_init
+***    2  WARNING in rate_control_rate_init
+***    2  WARNING in rate_control_rate_init
+***    2  WARNING in rate_control_rate_init
 Attempt 3: (RETRY)
     Time  Bug Name
 ***    2  WARNING in rate_control_rate_init
@@ -60,52 +68,56 @@ Attempt 3: (RETRY)
 ***    2  WARNING in rate_control_rate_init
 ***    2  WARNING in rate_control_rate_init
 ***    2  WARNING in rate_control_rate_init
+***    2  WARNING in rate_control_rate_init
+***    2  WARNING in rate_control_rate_init
+***    2  WARNING in rate_control_rate_init
 The bug was found.
 
-New Max Time: 12
+New Max Time: 10
 
 ==== Major Release Search ====
-19 Releases
+13 Releases
 
-2025-03-17 19:44:27
+2025-10-29 09:45:03
 Session:   2
 Kernel:    2023-06-25 - 6995e2de6891c724bfeb2db33d7b87775f913ad1 (v6.4)
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Compiler:  ccache gcc
 Attempt 1:
     Time  Bug Name
-***    2  WARNING in rate_control_rate_init
-***    2  WARNING in rate_control_rate_init
-***    2  WARNING in rate_control_rate_init
 ***    2  WARNING in rate_control_rate_init
 ***    2  WARNING in rate_control_rate_init
 ***    2  WARNING in rate_control_rate_init
 ***    2  WARNING in rate_control_rate_init
 Running syz-repro.
-New PoC saved at /home/syzretrospector/syzinspector/wd-bisector-5/reproducers/repro-bug0770-0.prog
-Primary PoC:     /home/syzretrospector/syzinspector/wd-bisector-5/reproducers/repro-bug0770-0.prog
-Run Time:        0h15m0s
+New PoC saved at /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0770-0.prog
+Primary PoC:     /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0770-0.prog
+Run Time:        0h33m0s
 The bug was found.
-About 18 releases remaining
+About 12 releases remaining
 
-2025-03-17 20:14:25
+2025-10-29 10:33:57
 Session:   3
 Kernel:    2023-04-23 - 457391b0380335d5e9a5babdec90ac53928b23b4 (v6.3)
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Compiler:  ccache gcc
 Attempt 1:
     Time  Bug Name
 ***    2  WARNING in rate_control_rate_init
 ***    2  WARNING in rate_control_rate_init
 ***    2  WARNING in rate_control_rate_init
 ***    2  WARNING in rate_control_rate_init
+***    2  WARNING in rate_control_rate_init
+***    2  WARNING in rate_control_rate_init
+***    2  WARNING in rate_control_rate_init
 The bug was found.
-About 17 releases remaining
+About 11 releases remaining
 
-2025-03-17 20:29:18
+2025-10-29 10:49:58
 Session:   4
 Kernel:    2023-02-19 - c9c3395d5e3dcc6daee66c6908354d47bf98cb0c (v6.2)
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Compiler:  ccache gcc
 Attempt 1:
     Time  Bug Name
+       2  INFO: rcu detected stall in corrupted
 ***    2  WARNING in rate_control_rate_init
 ***    2  WARNING in rate_control_rate_init
 ***    2  WARNING in rate_control_rate_init
@@ -114,99 +126,28 @@ Attempt 1:
 ***    2  WARNING in rate_control_rate_init
 ***    2  WARNING in rate_control_rate_init
 The bug was found.
-About 16 releases remaining
+About 10 releases remaining
 
-2025-03-17 20:44:54
+2025-10-29 11:06:28
 Session:   5
 Kernel:    2022-10-02 - 4fe89d07dcc2804c8b562f6c7896a45643d34b2f (v6.0)
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Compiler:  ccache gcc
 Attempt 1:
     Time  Bug Name
-       3  WARNING in ieee80211_bss_info_change_notify
-       3  WARNING in ieee80211_bss_info_change_notify
-       3  WARNING in ieee80211_bss_info_change_notify
-       3  WARNING in ieee80211_bss_info_change_notify
-       3  WARNING in ieee80211_bss_info_change_notify
-       3  WARNING in ieee80211_bss_info_change_notify
-       3  WARNING in ieee80211_bss_info_change_notify
-       4  general protection fault in cfg80211_off_channel_oper_allowed
-       4  WARNING in ieee80211_bss_info_change_notify
-       4  WARNING in ieee80211_bss_info_change_notify
-       4  WARNING in ieee80211_bss_info_change_notify
-       4  WARNING in ieee80211_bss_info_change_notify
-       4  WARNING in ieee80211_bss_info_change_notify
-       4  WARNING in ieee80211_bss_info_change_notify
-       4  WARNING in ieee80211_bss_info_change_notify
-       5  WARNING in ieee80211_bss_info_change_notify
-       5  WARNING in ieee80211_bss_info_change_notify
-       5  WARNING in ieee80211_bss_info_change_notify
-       5  WARNING in ieee80211_bss_info_change_notify
-       5  WARNING in ieee80211_bss_info_change_notify
-       6  WARNING in ieee80211_bss_info_change_notify
-       6  WARNING in ieee80211_bss_info_change_notify
-       6  WARNING in ieee80211_bss_info_change_notify
-       6  WARNING in ieee80211_bss_info_change_notify
-       6  WARNING in ieee80211_bss_info_change_notify
-       6  WARNING in ieee80211_bss_info_change_notify
-       6  WARNING in ieee80211_bss_info_change_notify
-       6  WARNING in ieee80211_bss_info_change_notify
-       7  WARNING in ieee80211_bss_info_change_notify
-       7  WARNING in ieee80211_bss_info_change_notify
-       7  WARNING in ieee80211_bss_info_change_notify
-       7  WARNING in ieee80211_bss_info_change_notify
-       8  WARNING in ieee80211_bss_info_change_notify
-       8  WARNING in ieee80211_bss_info_change_notify
-       8  WARNING in ieee80211_bss_info_change_notify
-       8  WARNING in ieee80211_bss_info_change_notify
-       8  WARNING in ieee80211_bss_info_change_notify
-       8  WARNING in ieee80211_bss_info_change_notify
-       8  WARNING in ieee80211_bss_info_change_notify
-       8  WARNING in ieee80211_bss_info_change_notify
-       9  WARNING in ieee80211_bss_info_change_notify
-       9  WARNING in ieee80211_bss_info_change_notify
-       9  WARNING in ieee80211_bss_info_change_notify
-       9  WARNING in ieee80211_bss_info_change_notify
-       9  WARNING in ieee80211_bss_info_change_notify
-       9  WARNING in ieee80211_bss_info_change_notify
-       9  WARNING in ieee80211_bss_info_change_notify
-       9  WARNING in ieee80211_bss_info_change_notify
-      10  WARNING in ieee80211_bss_info_change_notify
-      10  WARNING in ieee80211_bss_info_change_notify
-      10  WARNING in ieee80211_bss_info_change_notify
-      10  WARNING in ieee80211_bss_info_change_notify
-      10  WARNING in ieee80211_bss_info_change_notify
-      10  WARNING in ieee80211_bss_info_change_notify
-      10  WARNING in ieee80211_bss_info_change_notify
-      11  WARNING in ieee80211_bss_info_change_notify
-      11  WARNING in ieee80211_bss_info_change_notify
-      11  WARNING in ieee80211_bss_info_change_notify
-      11  WARNING in ieee80211_bss_info_change_notify
-      11  WARNING in ieee80211_bss_info_change_notify
-      11  WARNING in ieee80211_bss_info_change_notify
-      11  WARNING in ieee80211_bss_info_change_notify
-      11  WARNING in ieee80211_bss_info_change_notify
-      12  WARNING in ieee80211_bss_info_change_notify
-      12  WARNING in ieee80211_bss_info_change_notify
-      12  WARNING in ieee80211_bss_info_change_notify
-      12  WARNING in ieee80211_bss_info_change_notify
-      12  WARNING in ieee80211_bss_info_change_notify
-      12  WARNING in ieee80211_bss_info_change_notify
-      12  WARNING in ieee80211_bss_info_change_notify
-      12  WARNING in ieee80211_bss_info_change_notify
+       7  WARNING: ODEBUG bug in netdev_run_todo
 The bug was not found.
-About 15 releases remaining
+About 9 releases remaining
 
 ==== Kernel Bisection ====
 31950 Linux commits
 
-2025-03-17 21:10:10
+2025-10-29 11:31:05
 Session:   6
 Kernel:    2022-12-22 - fe8f5b2f7bec504021b395d24f7efca415d21e2b
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Compiler:  ccache gcc
 Attempt 1:
     Time  Bug Name
-***    2  WARNING in rate_control_rate_init
-***    2  WARNING in rate_control_rate_init
+       2  INFO: rcu detected stall in corrupted
 ***    2  WARNING in rate_control_rate_init
 ***    2  WARNING in rate_control_rate_init
 ***    2  WARNING in rate_control_rate_init
@@ -214,16 +155,18 @@ Attempt 1:
 ***    2  WARNING in rate_control_rate_init
 ***    2  WARNING in rate_control_rate_init
 Running syz-repro.
-New PoC saved at /home/syzretrospector/syzinspector/wd-bisector-5/reproducers/repro-bug0770-2.prog
-Primary PoC:     /home/syzretrospector/syzinspector/wd-bisector-5/reproducers/repro-bug0770-0.prog
-Run Time:        0h40m0s
+New PoC saved at /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0770-2.prog
+Primary PoC:     /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0770-2.prog
+Run Time:        0h15m0s
 The bug was found.
 About 15831 commits remaining
 
-2025-03-17 22:05:13
+2025-10-29 12:01:57
 Session:   7
 Kernel:    2022-10-07 - d3dcbe24a0fc6373ce7e4a65acd5c785aa8e2396
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Compiler:  ccache gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/syzretrospector/meerkat/wd-meerkat-1/log/bug0770-boot_failure.log.
 Attempt 1:
     Time  Bug Name
        1  WARNING in wireless_send_event
@@ -233,255 +176,514 @@ Attempt 1:
        2  WARNING in wireless_send_event
        2  WARNING in wireless_send_event
        2  WARNING in wireless_send_event
-       3  INFO: rcu detected stall in corrupted
+       2  WARNING in wireless_send_event
        3  WARNING in wireless_send_event
        3  WARNING in wireless_send_event
+       3  WARNING in wireless_send_event
+       3  WARNING in wireless_send_event
+       3  WARNING in wireless_send_event
+       3  WARNING in wireless_send_event
+       4  WARNING in wireless_send_event
+       4  WARNING in wireless_send_event
+       4  WARNING in wireless_send_event
+       4  WARNING in wireless_send_event
+       4  WARNING in wireless_send_event
+       4  WARNING in wireless_send_event
+       5  WARNING in wireless_send_event
+       5  WARNING in wireless_send_event
+       5  WARNING in wireless_send_event
+       5  WARNING in wireless_send_event
+       5  WARNING in wireless_send_event
+       5  WARNING in wireless_send_event
+       6  WARNING in wireless_send_event
+       6  WARNING in wireless_send_event
+       6  WARNING in wireless_send_event
+       6  WARNING in wireless_send_event
+       6  WARNING in wireless_send_event
+       6  WARNING in wireless_send_event
+       7  WARNING in wireless_send_event
+       7  WARNING in wireless_send_event
+       7  WARNING in wireless_send_event
+       7  WARNING in wireless_send_event
+       7  WARNING in wireless_send_event
+       8  WARNING in wireless_send_event
+       8  WARNING in wireless_send_event
+       8  WARNING in wireless_send_event
+       8  WARNING in wireless_send_event
+       8  WARNING in wireless_send_event
+       8  WARNING in wireless_send_event
+       9  WARNING in wireless_send_event
+       9  WARNING in wireless_send_event
+       9  WARNING in wireless_send_event
+       9  WARNING in wireless_send_event
+       9  WARNING in wireless_send_event
+       9  WARNING in wireless_send_event
+      10  WARNING in wireless_send_event
+      10  WARNING in wireless_send_event
+      10  WARNING in wireless_send_event
+      10  WARNING in wireless_send_event
+      10  WARNING in wireless_send_event
+      10  WARNING in wireless_send_event
+      10  boot failure
 The bug was not found.
-About 7914 commits remaining
+This commit is flagged as unstable.
+About 15831 commits remaining
 
-2025-03-17 22:30:13
+2025-10-29 12:25:45
 Session:   8
-Kernel:    2022-10-13 - a521fc3cfbf45f910d6f4438cc222fda15a4987b
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Kernel:    2022-10-04 - 3ea8e52ec94de6cd5e8a9dc7b2ec72a7745b4e47
+Compiler:  ccache gcc
 Attempt 1:
     Time  Bug Name
-      11  WARNING in clocksource_watchdog
-      11  WARNING in clocksource_watchdog
-      11  WARNING in clocksource_watchdog
-      11  WARNING in clocksource_watchdog
-      11  WARNING in clocksource_watchdog
-      11  WARNING in clocksource_watchdog
-      11  WARNING in clocksource_watchdog
-      11  WARNING in clocksource_watchdog
+       2  INFO: rcu detected stall in corrupted
 The bug was not found.
-About 3955 commits remaining
+About 15828 commits remaining
 
-2025-03-17 22:55:18
+2025-10-29 12:42:30
 Session:   9
-Kernel:    2022-11-11 - a83e18ccc486dc20fdb46109944ea1b450ac771e
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Kernel:    2022-09-29 - 5ee35abb461e34ec8727dd8abc621ba9abec3e31
+Compiler:  ccache gcc
 Attempt 1:
     Time  Bug Name
        2  INFO: rcu detected stall in corrupted
 ***    2  WARNING in rate_control_rate_init
 ***    2  WARNING in rate_control_rate_init
 ***    2  WARNING in rate_control_rate_init
+***    2  WARNING in rate_control_rate_init
+***    2  WARNING in rate_control_rate_init
+***    2  WARNING in rate_control_rate_init
+***    2  WARNING in rate_control_rate_init
 The bug was found.
-About 1971 commits remaining
+About 825 commits remaining
 
-2025-03-17 23:10:28
+2025-10-29 12:58:06
 Session:   10
-Kernel:    2022-10-27 - ef3556ee16c68735ec69bd08df41d1cd83b14ad3
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Kernel:    2022-08-31 - 4516c873e3b55856012ddd6db9d4366ce3c60c5d
+Compiler:  ccache gcc
 Attempt 1:
     Time  Bug Name
-      11  possible deadlock in vivid_update_format_cap
-      11  possible deadlock in vivid_update_format_cap
-      11  possible deadlock in vivid_update_format_cap
-      11  possible deadlock in vivid_update_format_cap
-      11  possible deadlock in vivid_update_format_cap
-      11  possible deadlock in vivid_update_format_cap
-      11  possible deadlock in vivid_update_format_cap
-      11  possible deadlock in vivid_update_format_cap
-The bug was not found.
-About 987 commits remaining
+       2  INFO: rcu detected stall in corrupted
+***    2  WARNING in rate_control_rate_init
+***    2  WARNING in rate_control_rate_init
+***    2  WARNING in rate_control_rate_init
+***    2  WARNING in rate_control_rate_init
+***    2  WARNING in rate_control_rate_init
+The bug was found.
+About 413 commits remaining
 
-2025-03-17 23:35:37
+2025-10-29 13:13:35
 Session:   11
-Kernel:    2022-11-06 - f4298cac2bfcced49ab308756dc8fef684f3da81
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Kernel:    2022-08-24 - 73ef239cd8439b33273cd95d08cffaf8022b01a8
+Compiler:  ccache gcc
 Attempt 1:
     Time  Bug Name
-      11  WARNING in genl_register_family
-      11  WARNING in genl_register_family
-      11  WARNING in genl_register_family
-      11  WARNING in genl_register_family
-      11  WARNING in genl_register_family
-      11  WARNING in genl_register_family
-      11  WARNING in genl_register_family
-      11  WARNING in genl_register_family
+       2  INFO: rcu detected stall in corrupted
+       3  WARNING in ieee80211_bss_info_change_notify
+       3  WARNING in ieee80211_bss_info_change_notify
+       3  WARNING in ieee80211_bss_info_change_notify
+       3  WARNING in ieee80211_bss_info_change_notify
+       4  WARNING in ieee80211_bss_info_change_notify
+       6  WARNING in ieee80211_bss_info_change_notify
 The bug was not found.
-About 513 commits remaining
+About 636 commits remaining
 
-2025-03-18 00:00:37
+2025-10-29 13:37:03
 Session:   12
-Kernel:    2022-11-06 - 35697d81a778223727c2a01a3480735cf51edd93
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Kernel:    2022-08-26 - 643952f3ecace9e20b8a0c5cd1bbd7409ac2d02c
+Compiler:  ccache gcc
 Attempt 1:
     Time  Bug Name
+       2  INFO: rcu detected stall in corrupted
 ***    2  WARNING in rate_control_rate_init
 ***    2  WARNING in rate_control_rate_init
 ***    2  WARNING in rate_control_rate_init
 ***    2  WARNING in rate_control_rate_init
+***    2  WARNING in rate_control_rate_init
+***    2  WARNING in rate_control_rate_init
+       2  WARNING in ieee80211_bss_info_change_notify
+Running syz-repro.
+New PoC saved at /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0770-5.prog
+Primary PoC:     /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0770-5.prog
+Run Time:        0h52m0s
 The bug was found.
-About 255 commits remaining
+About 547 commits remaining
 
-2025-03-18 00:15:09
+2025-10-29 14:40:36
 Session:   13
-Kernel:    2022-11-04 - fde25beb382b7dd6f2eab8022ab017cbdfaa3ff6
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Kernel:    2022-08-26 - 77baa37a9be948562c8b7630e3afd9d497e14550
+Compiler:  ccache gcc
 Attempt 1:
     Time  Bug Name
        2  INFO: rcu detected stall in corrupted
-***    2  WARNING in rate_control_rate_init
-***    2  WARNING in rate_control_rate_init
-***    2  WARNING in rate_control_rate_init
-***    2  WARNING in rate_control_rate_init
-Running syz-repro.
-Run Time:        0h26m0s
-The bug was found.
-About 137 commits remaining
+       2  WARNING in ieee80211_bss_info_change_notify
+       2  WARNING in ieee80211_bss_info_change_notify
+       2  WARNING in ieee80211_bss_info_change_notify
+       3  WARNING in ieee80211_bss_info_change_notify
+       3  WARNING in ieee80211_bss_info_change_notify
+       3  WARNING in ieee80211_bss_info_change_notify
+       3  WARNING in ieee80211_bss_info_change_notify
+       3  WARNING in ieee80211_bss_info_change_notify
+       3  WARNING in ieee80211_bss_info_change_notify
+       4  WARNING in ieee80211_bss_info_change_notify
+       4  WARNING in ieee80211_bss_info_change_notify
+       4  WARNING in ieee80211_bss_info_change_notify
+       4  WARNING in ieee80211_bss_info_change_notify
+       4  WARNING in ieee80211_bss_info_change_notify
+       5  WARNING in ieee80211_bss_info_change_notify
+       5  WARNING in ieee80211_bss_info_change_notify
+       5  WARNING in ieee80211_bss_info_change_notify
+       6  WARNING in ieee80211_bss_info_change_notify
+       6  WARNING in ieee80211_bss_info_change_notify
+       6  WARNING in ieee80211_bss_info_change_notify
+       7  WARNING in ieee80211_bss_info_change_notify
+       8  WARNING in ieee80211_bss_info_change_notify
+       9  WARNING in ieee80211_bss_info_change_notify
+       9  WARNING in ieee80211_bss_info_change_notify
+      10  WARNING in ieee80211_bss_info_change_notify
+      10  WARNING in ieee80211_bss_info_change_notify
+      10  WARNING in ieee80211_bss_info_change_notify
+The bug was not found.
+About 58 commits remaining
 
-2025-03-18 00:52:03
+2025-10-29 14:57:49
 Session:   14
-Kernel:    2022-11-03 - 9521c9d6a53df9c44a5f5ddbc229ceaf3cf79ef6
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Kernel:    2022-08-25 - 9d2bb84d54a40361c7008b33a60dc24f78724746
+Compiler:  ccache gcc
 Attempt 1:
     Time  Bug Name
-       2  INFO: rcu detected stall in corrupted
+       1  WARNING: ODEBUG bug in mgmt_index_removed
 ***    2  WARNING in rate_control_rate_init
 ***    2  WARNING in rate_control_rate_init
 ***    2  WARNING in rate_control_rate_init
-Running syz-repro.
-New PoC saved at /home/syzretrospector/syzinspector/wd-bisector-5/reproducers/repro-bug0770-2.prog
-Primary PoC:     /home/syzretrospector/syzinspector/wd-bisector-5/reproducers/repro-bug0770-0.prog
-Run Time:        0h18m0s
+***    2  WARNING in rate_control_rate_init
+***    2  WARNING in rate_control_rate_init
+       2  WARNING in ieee80211_bss_info_change_notify
+       2  WARNING in ieee80211_bss_info_change_notify
 The bug was found.
-About 68 commits remaining
+About 30 commits remaining
 
-2025-03-18 01:17:36
+2025-10-29 15:13:40
 Session:   15
-Kernel:    2022-11-02 - 3aff8aaca4e36dc8b17eaa011684881a80238966
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Kernel:    2022-08-10 - 5606aeaad01e0b0ad09c021cfa44ee18fc4ae33b
+Compiler:  ccache gcc
 Attempt 1:
     Time  Bug Name
-***    2  WARNING in rate_control_rate_init
-***    2  WARNING in rate_control_rate_init
-***    2  WARNING in rate_control_rate_init
-***    2  WARNING in rate_control_rate_init
-The bug was found.
-About 34 commits remaining
+       1  WARNING: ODEBUG bug in mgmt_index_removed
+       2  WARNING in ieee80211_bss_info_change_notify
+       2  WARNING in ieee80211_bss_info_change_notify
+       2  WARNING in ieee80211_bss_info_change_notify
+       3  WARNING in ieee80211_bss_info_change_notify
+       3  WARNING in ieee80211_bss_info_change_notify
+       3  WARNING in ieee80211_bss_info_change_notify
+       3  WARNING in ieee80211_bss_info_change_notify
+       3  WARNING in ieee80211_bss_info_change_notify
+       3  WARNING in ieee80211_bss_info_change_notify
+       4  WARNING in ieee80211_bss_info_change_notify
+       4  WARNING in ieee80211_bss_info_change_notify
+       4  WARNING in ieee80211_bss_info_change_notify
+       4  WARNING in ieee80211_bss_info_change_notify
+       4  WARNING in ieee80211_bss_info_change_notify
+       4  WARNING in ieee80211_bss_info_change_notify
+       5  WARNING in corrupted
+       5  WARNING in ieee80211_bss_info_change_notify
+       5  WARNING in ieee80211_bss_info_change_notify
+       6  WARNING in ieee80211_bss_info_change_notify
+       6  WARNING in ieee80211_bss_info_change_notify
+       6  WARNING in ieee80211_bss_info_change_notify
+       6  WARNING in ieee80211_bss_info_change_notify
+       7  WARNING in corrupted
+       7  WARNING in ieee80211_bss_info_change_notify
+       7  WARNING in ieee80211_bss_info_change_notify
+       7  WARNING in ieee80211_bss_info_change_notify
+       8  WARNING: ODEBUG bug in mgmt_index_removed
+       8  WARNING: ODEBUG bug in mgmt_index_removed
+       8  WARNING in ieee80211_bss_info_change_notify
+       9  WARNING: ODEBUG bug in mgmt_index_removed
+       9  WARNING in ieee80211_bss_info_change_notify
+      10  WARNING: ODEBUG bug in mgmt_index_removed
+      10  WARNING in ieee80211_bss_info_change_notify
+      10  WARNING in ieee80211_bss_info_change_notify
+      10  WARNING in ieee80211_bss_info_change_notify
+The bug was not found.
+About 15 commits remaining
 
-2025-03-18 01:32:22
+2025-10-29 15:31:12
 Session:   16
-Kernel:    2022-10-30 - 5715a502447b07f067ee5af36465c7c2b813ff38
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Kernel:    2022-08-10 - 6bf3a083407b5d404d70efc3a5ac75b472e5efa9
+Compiler:  ccache gcc
 Attempt 1:
     Time  Bug Name
-       2  INFO: rcu detected stall in corrupted
-***    2  WARNING in rate_control_rate_init
-***    2  WARNING in rate_control_rate_init
-***    2  WARNING in rate_control_rate_init
-***    2  WARNING in rate_control_rate_init
-The bug was found.
-About 18 commits remaining
+       1  WARNING: ODEBUG bug in mgmt_index_removed
+       2  WARNING in ieee80211_bss_info_change_notify
+       2  WARNING in ieee80211_bss_info_change_notify
+       3  WARNING in ieee80211_bss_info_change_notify
+       4  WARNING in ieee80211_bss_info_change_notify
+       4  WARNING in ieee80211_bss_info_change_notify
+       4  WARNING in ieee80211_bss_info_change_notify
+       5  WARNING in ieee80211_bss_info_change_notify
+       7  WARNING: ODEBUG bug in mgmt_index_removed
+       7  WARNING: ODEBUG bug in mgmt_index_removed
+       7  WARNING: ODEBUG bug in mgmt_index_removed
+       7  WARNING: ODEBUG bug in mgmt_index_removed
+       7  WARNING: ODEBUG bug in mgmt_index_removed
+       7  WARNING: ODEBUG bug in mgmt_index_removed
+       7  WARNING: ODEBUG bug in mgmt_index_removed
+       7  WARNING in ieee80211_bss_info_change_notify
+       8  WARNING in ieee80211_bss_info_change_notify
+       8  WARNING in ieee80211_bss_info_change_notify
+       8  WARNING in ieee80211_bss_info_change_notify
+      10  WARNING: ODEBUG bug in mgmt_index_removed
+      10  WARNING: ODEBUG bug in mgmt_index_removed
+The bug was not found.
+About 8 commits remaining
 
-2025-03-18 01:42:32
+2025-10-29 15:48:20
 Session:   17
-Kernel:    2022-10-28 - e276d62dcfdee6582486e8b8344dd869518e14be
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Kernel:    2022-08-25 - a8f62399daa6917e7f9efeb79bce4dd2cd494a1e
+Compiler:  ccache gcc
 Attempt 1:
     Time  Bug Name
+       1  WARNING: ODEBUG bug in mgmt_index_removed
 ***    2  WARNING in rate_control_rate_init
 ***    2  WARNING in rate_control_rate_init
-Running syz-repro.
-New PoC saved at /home/syzretrospector/syzinspector/wd-bisector-5/reproducers/repro-bug0770-2.prog
-Primary PoC:     /home/syzretrospector/syzinspector/wd-bisector-5/reproducers/repro-bug0770-0.prog
-Run Time:        0h14m0s
+***    2  WARNING in rate_control_rate_init
+***    2  WARNING in rate_control_rate_init
+       2  WARNING in ieee80211_bss_info_change_notify
 The bug was found.
-About 9 commits remaining
+About 4 commits remaining
 
-2025-03-18 02:04:20
+2025-10-29 15:57:35
 Session:   18
-Kernel:    2022-10-28 - e4ba4554209f626c52e2e57f26cba49a62663c8b
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Kernel:    2022-08-10 - 7dad3e39fde1eef97bc1a0b92e5d0f3500c9ed56
+Compiler:  ccache gcc
 Attempt 1:
     Time  Bug Name
-       2  INFO: rcu detected stall in corrupted
-***    2  WARNING in rate_control_rate_init
-***    2  WARNING in rate_control_rate_init
-***    2  WARNING in rate_control_rate_init
-***    2  WARNING in rate_control_rate_init
-***    2  WARNING in rate_control_rate_init
-The bug was found.
-About 5 commits remaining
-
-2025-03-18 02:14:22
-Session:   19
-Kernel:    2022-10-28 - 8fdf3f6aba7cfa0c0e2bf66ecca7bb5783acd0d6
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
-Attempt 1:
-    Time  Bug Name
-      11  WARNING in genl_register_family
-      11  WARNING in genl_register_family
-      11  WARNING in genl_register_family
-      11  WARNING in genl_register_family
-      11  WARNING in genl_register_family
-      11  WARNING in genl_register_family
-      11  WARNING in genl_register_family
-      11  WARNING in genl_register_family
+       1  WARNING: ODEBUG bug in mgmt_index_removed
+       2  WARNING in ieee80211_bss_info_change_notify
+       3  WARNING in ieee80211_bss_info_change_notify
+       4  WARNING in ieee80211_bss_info_change_notify
+       5  WARNING in corrupted
+       5  WARNING: ODEBUG bug in mgmt_index_removed
+       5  WARNING: ODEBUG bug in mgmt_index_removed
+       5  WARNING: ODEBUG bug in mgmt_index_removed
+       5  WARNING: ODEBUG bug in mgmt_index_removed
+       5  WARNING: ODEBUG bug in mgmt_index_removed
+       5  WARNING: ODEBUG bug in mgmt_index_removed
+       7  WARNING: ODEBUG bug in mgmt_index_removed
+       7  WARNING in ieee80211_bss_info_change_notify
+       8  WARNING in ieee80211_bss_info_change_notify
+       9  WARNING: ODEBUG bug in mgmt_index_removed
+       9  WARNING: ODEBUG bug in mgmt_index_removed
+       9  WARNING: ODEBUG bug in mgmt_index_removed
+       9  WARNING: ODEBUG bug in mgmt_index_removed
+       9  WARNING: ODEBUG bug in mgmt_index_removed
+       9  WARNING: ODEBUG bug in mgmt_index_removed
+      10  WARNING in ieee80211_bss_info_change_notify
 The bug was not found.
 About 3 commits remaining
 
-2025-03-18 02:34:19
-Session:   20
-Kernel:    2022-10-28 - 7354c9024f2835f6122ed9612e21ab379df050f9
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+2025-10-29 16:14:36
+Session:   19
+Kernel:    2022-08-25 - b303835dabe0340f932ebb4e260d2229f79b0684
+Compiler:  ccache gcc
 Attempt 1:
     Time  Bug Name
-      11  WARNING in genl_register_family
-      11  WARNING in genl_register_family
-      11  WARNING in genl_register_family
-      11  WARNING in genl_register_family
-      11  WARNING in genl_register_family
-      11  WARNING in genl_register_family
-      11  WARNING in genl_register_family
-      11  WARNING in genl_register_family
-The bug was not found.
+       1  WARNING: ODEBUG bug in mgmt_index_removed
+***    2  WARNING in rate_control_rate_init
+***    2  WARNING in rate_control_rate_init
+***    2  WARNING in rate_control_rate_init
+***    2  WARNING in rate_control_rate_init
+***    2  WARNING in rate_control_rate_init
+Running syz-repro.
+Run Time:        0h3m0s
+The bug was found.
 About 2 commits remaining
 
 ==== Partial Result: Focused Fuzzing ====
-Reproducer:           /home/syzretrospector/syzinspector/wd-bisector-5/reproducers/repro-bug0770-0.prog
-Bisection Result:     2022-10-28 - e4ba4554209f626c52e2e57f26cba49a62663c8b
-Bisected Commit Name: net: openvswitch: add missing .resv_start_op
-Stage Time:           7h34m32s
-Run Time:             7h34m34s
+Reproducer:           /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0770-5.prog
+Bisection Result:     2022-08-25 - b303835dabe0340f932ebb4e260d2229f79b0684
+Bisected Commit Name: wifi: mac80211: accept STA changes without link changes
+Stage Time:           7h0m50s
+Run Time:             7h0m51s
 =========================================
 
 ==== Anchor Commit ====
 
-2025-03-18 02:51:54
-Session:   21
-Kernel:    2022-10-28 - 7354c9024f2835f6122ed9612e21ab379df050f9
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
-Warning: VM has not responded after 5 attempts.
-Warning: Only booted 0 VMs.
+2025-10-29 16:26:31
+Session:   20
+Kernel:    2022-08-10 - 7dad3e39fde1eef97bc1a0b92e5d0f3500c9ed56
+Compiler:  ccache gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0770-5.prog
 Attempt 0:
-    WARNING in genl_register_family
+    WARNING: ODEBUG bug in mgmt_index_removed
 Attempt 1:
-    WARNING in genl_register_family
+    WARNING: ODEBUG bug in mgmt_index_removed
 Attempt 2:
-    WARNING in genl_register_family
+    WARNING: ODEBUG bug in mgmt_index_removed
 Attempt 3:
-    WARNING in genl_register_family
+    WARNING: ODEBUG bug in mgmt_index_removed
 Attempt 4:
-    WARNING in genl_register_family
+    WARNING: ODEBUG bug in mgmt_index_removed
 Attempt 5:
-    WARNING in genl_register_family
+    WARNING: ODEBUG bug in mgmt_index_removed
 Attempt 6:
-    WARNING in genl_register_family
+    WARNING: ODEBUG bug in mgmt_index_removed
 Attempt 7:
-    WARNING in genl_register_family
+    WARNING: ODEBUG bug in mgmt_index_removed
 The bug was not found.
 
 Failure: This bug cannot be found at the anchor commit.
 
+==== Partial Result: Primary PoC Test ====
+Reproducer:           /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0770-5.prog
+Bisection Result:     Failed to reproduce at the anchor commit.
+Stage Time:           0h8m20s
+Run Time:             7h9m11s
+==========================================
+
+==== Anchor Commit ====
+
+2025-10-29 16:34:54
+Session:   21
+Kernel:    2022-08-10 - 7dad3e39fde1eef97bc1a0b92e5d0f3500c9ed56
+Compiler:  ccache gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0770-1.prog
+Attempt 0:
+    WARNING: ODEBUG bug in mgmt_index_removed
+Attempt 1:
+    WARNING: ODEBUG bug in mgmt_index_removed
+Attempt 2:
+    WARNING: ODEBUG bug in mgmt_index_removed
+Attempt 3:
+    WARNING: ODEBUG bug in mgmt_index_removed
+Attempt 4:
+    WARNING: ODEBUG bug in mgmt_index_removed
+Attempt 5:
+    WARNING: ODEBUG bug in mgmt_index_removed
+Attempt 6:
+    WARNING: ODEBUG bug in mgmt_index_removed
+Attempt 7:
+    WARNING: ODEBUG bug in mgmt_index_removed
+The bug was not found.
+
+Failure: This bug cannot be found at the anchor commit.
+
+==== Partial Result: Subsequent PoC Test ====
+Reproducer:           /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0770-1.prog
+Bisection Result:     Failed to reproduce at the anchor commit.
+Stage Time:           0h8m24s
+Run Time:             7h17m35s
+=============================================
+
+==== Anchor Commit ====
+
+2025-10-29 16:43:17
+Session:   22
+Kernel:    2022-08-10 - 7dad3e39fde1eef97bc1a0b92e5d0f3500c9ed56
+Compiler:  ccache gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0770-4.prog
+Attempt 0:
+    WARNING: ODEBUG bug in mgmt_index_removed
+Attempt 1:
+    WARNING: ODEBUG bug in mgmt_index_removed
+Attempt 2:
+    WARNING: ODEBUG bug in mgmt_index_removed
+Attempt 3:
+    WARNING: ODEBUG bug in mgmt_index_removed
+Attempt 4:
+    WARNING: ODEBUG bug in mgmt_index_removed
+Attempt 5:
+    WARNING: ODEBUG bug in mgmt_index_removed
+Attempt 6:
+    WARNING: ODEBUG bug in mgmt_index_removed
+Attempt 7:
+    WARNING: ODEBUG bug in mgmt_index_removed
+The bug was not found.
+
+Failure: This bug cannot be found at the anchor commit.
+
+==== Partial Result: Subsequent PoC Test ====
+Reproducer:           /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0770-4.prog
+Bisection Result:     Failed to reproduce at the anchor commit.
+Stage Time:           0h8m15s
+Run Time:             7h25m50s
+=============================================
+
+==== Anchor Commit ====
+
+2025-10-29 16:51:33
+Session:   23
+Kernel:    2022-08-10 - 7dad3e39fde1eef97bc1a0b92e5d0f3500c9ed56
+Compiler:  ccache gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0770-3.prog
+Attempt 0:
+    WARNING: ODEBUG bug in mgmt_index_removed
+Attempt 1:
+    WARNING: ODEBUG bug in mgmt_index_removed
+Attempt 2:
+    WARNING: ODEBUG bug in mgmt_index_removed
+Attempt 3:
+    WARNING: ODEBUG bug in mgmt_index_removed
+Attempt 4:
+    WARNING: ODEBUG bug in mgmt_index_removed
+Attempt 5:
+    WARNING: ODEBUG bug in mgmt_index_removed
+Attempt 6:
+    WARNING: ODEBUG bug in mgmt_index_removed
+Attempt 7:
+    WARNING: ODEBUG bug in mgmt_index_removed
+The bug was not found.
+
+Failure: This bug cannot be found at the anchor commit.
+
+==== Partial Result: Subsequent PoC Test ====
+Reproducer:           /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0770-3.prog
+Bisection Result:     Failed to reproduce at the anchor commit.
+Stage Time:           0h7m59s
+Run Time:             7h33m50s
+=============================================
+
+==== Anchor Commit ====
+
+2025-10-29 16:59:32
+Session:   24
+Kernel:    2022-08-10 - 7dad3e39fde1eef97bc1a0b92e5d0f3500c9ed56
+Compiler:  ccache gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0770-0.prog
+Attempt 0:
+    WARNING: ODEBUG bug in mgmt_index_removed
+Attempt 1:
+    WARNING: ODEBUG bug in mgmt_index_removed
+Attempt 2:
+    WARNING: ODEBUG bug in mgmt_index_removed
+Attempt 3:
+    WARNING: ODEBUG bug in mgmt_index_removed
+Attempt 4:
+    WARNING: ODEBUG bug in mgmt_index_removed
+Attempt 5:
+    WARNING: ODEBUG bug in mgmt_index_removed
+Attempt 6:
+    WARNING: ODEBUG bug in mgmt_index_removed
+Attempt 7:
+    WARNING: ODEBUG bug in mgmt_index_removed
+The bug was not found.
+
+Failure: This bug cannot be found at the anchor commit.
+
+==== Partial Result: Subsequent PoC Test ====
+Reproducer:           /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0770-0.prog
+Bisection Result:     Failed to reproduce at the anchor commit.
+Stage Time:           0h8m6s
+Run Time:             7h41m56s
+=============================================
+
 ====================================================================================================================================================
 Bug Name:             WARNING in rate_control_rate_init
+Big ID:               bug0770
 Bug Link:             https://syzkaller.appspot.com/bug?extid=62d7eef57b09bfebcd84
-Bisection Result:     2022-10-28 - e4ba4554209f626c52e2e57f26cba49a62663c8b
-Bisected Commit Name: net: openvswitch: add missing .resv_start_op
-Run Time:             7h42m15s
+Bisection Result:     2022-08-25 - b303835dabe0340f932ebb4e260d2229f79b0684
+Bisected Commit Name: wifi: mac80211: accept STA changes without link changes
+Run Time:             7h41m56s
 
 Anchor Commit:        2023-06-27 - 6e2332e0ab532eb01f1fde39080dbfa9bf65c4cf
-Bisection Result:     2022-10-28 - e4ba4554209f626c52e2e57f26cba49a62663c8b
+Bisection Result:     2022-08-25 - b303835dabe0340f932ebb4e260d2229f79b0684

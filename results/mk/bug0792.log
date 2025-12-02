@@ -1,4 +1,4 @@
-./bin/bisector -i 5 -c /home/syzretrospector/syzinspector/wd-bisector-5/bisector.cfg -a b84acc11b1c9552c9ca3a099b1610a6018619332 -F ff-test,poc-test,stateful-corpus,ff-no-find-backup
+./bin/meerkat -i 1 -c /home/syzretrospector/meerkat/wd-meerkat-1/meerkat.cfg -a b84acc11b1c9552c9ca3a099b1610a6018619332 -F ff-test,poc-test,poc-all-pocs,ff-no-find-backup,stateful-corpus
 Bisecting:          general protection fault in usb_hub_create_port_device
 Syzbot Link:        https://syzkaller.appspot.com/bug?extid=c063a4e176681d2e0380
 Working Name:       bug0792
@@ -10,21 +10,23 @@ Repository:         https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/lin
 Branch:             master
 Arch:               amd64
 
-Bisector:           /home/syzretrospector/syzinspector/
-Version:            1.0.4
-Kernel:             /home/syzretrospector/syzinspector/wd-bisector-5/kernel/
-Syzkaller:          /home/syzretrospector/syzinspector/syzkaller/
-Compilers:          /home/syzretrospector/compilers/
-Ccache:             ccache
+Meerkat:            /home/syzretrospector/meerkat/
+Version:            1.1.1
+Kernel:             /home/syzretrospector/meerkat/wd-meerkat-1/kernel/
+Syzkaller:          /home/syzretrospector/meerkat/syzkaller/
+Compilers:          /home/syzretrospector/meerkat/compilers/
+Compiler:           gcc (Ubuntu 11.4.0-1ubuntu1~22.04.2) 11.4.0
+Linker:             GNU ld (GNU Binutils for Ubuntu) 2.38
+Ccache:             ccache version 4.5.1
 Image:              /home/syzretrospector/images/stretch/stretch.img
 Image Key:          /home/syzretrospector/images/stretch/stretch.id_rsa
 
-Workdir:            /home/syzretrospector/syzinspector/wd-bisector-5/
-Kconfig:            /home/syzretrospector/syzinspector/wd-bisector-5/config-bug0792.txt
-Reproducers: (1)    /home/syzretrospector/syzinspector/wd-bisector-5/reproducers/
-Primary PoC:        /home/syzretrospector/syzinspector/wd-bisector-5/reproducers/repro-bug0792-2.prog
-Syzkaller Workdir:  /home/syzretrospector/syzinspector/wd-bisector-5/wd-kaller/
-Log Directory:      /home/syzretrospector/syzinspector/wd-bisector-5/log/
+Workdir:            /home/syzretrospector/meerkat/wd-meerkat-1/
+Kconfig:            /home/syzretrospector/meerkat/wd-meerkat-1/config-bug0792.txt
+Reproducers: (1)    /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/
+Primary PoC:        /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0792-2.prog
+Syzkaller Workdir:  /home/syzretrospector/meerkat/wd-meerkat-1/wd-kaller/
+Log Directory:      /home/syzretrospector/meerkat/wd-meerkat-1/log/
 
 Syscalls: (4)       ["ioctl$USBDEVFS_IOCTL", "syz_open_dev$usbfs", "ioctl$F2FS_IOC_START_ATOMIC_WRITE", "openat$selinux_enforce"]
 VM Count:           8
@@ -37,20 +39,398 @@ Max Attempts:       1
 
 ==== Anchor Commit ====
 
-2025-03-19 21:40:16
+2025-11-01 06:22:08
 Session:   1
 Kernel:    2023-09-01 - b84acc11b1c9552c9ca3a099b1610a6018619332
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Compiler:  ccache gcc
 Attempt 1:
     Time  Bug Name
-       4  WARNING in call_timer_fn
-      10  SYZFAIL: repeatedly failed to execute the program
-      10  SYZFAIL: repeatedly failed to execute the program
+***    2  general protection fault in usb_hub_create_port_device
+***    2  general protection fault in usb_hub_create_port_device
+***    2  general protection fault in usb_hub_create_port_device
 Attempt 2: (RETRY)
     Time  Bug Name
-       8  SYZFAIL: repeatedly failed to execute the program
+***    2  general protection fault in usb_hub_create_port_device
+***    2  general protection fault in usb_hub_create_port_device
+***    2  general protection fault in usb_hub_create_port_device
+***    2  general protection fault in usb_hub_create_port_device
+***    2  general protection fault in usb_hub_create_port_device
+***    2  general protection fault in usb_hub_create_port_device
+***    2  general protection fault in usb_hub_create_port_device
+***    2  general protection fault in usb_hub_create_port_device
 Attempt 3: (RETRY)
+    Time  Bug Name
+***    2  general protection fault in usb_hub_create_port_device
+***    2  general protection fault in usb_hub_create_port_device
+***    2  general protection fault in usb_hub_create_port_device
+***    2  general protection fault in usb_hub_create_port_device
+***    2  general protection fault in usb_hub_create_port_device
+***    2  general protection fault in usb_hub_create_port_device
+***    2  general protection fault in usb_hub_create_port_device
+The bug was found.
+
+New Max Time: 10
+
+==== Major Release Search ====
+14 Releases
+
+2025-11-01 06:41:11
+Session:   2
+Kernel:    2023-08-27 - 2dde18cd1d8fac735875f2e4987f11817cc0bc2c (v6.5)
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 13 releases remaining
+
+==== Kernel Bisection ====
+10205 Linux commits
+
+2025-11-01 07:04:21
+Session:   3
+Kernel:    2023-08-30 - 53ea7f624fb91074c2f9458832ed74975ee5d64c
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       7  SYZFAIL: repeatedly failed to execute the program
+The bug was not found.
+This commit is flagged as unstable.
+About 10205 commits remaining
+
+2025-11-01 07:27:12
+Session:   4
+Kernel:    2023-07-13 - ccf61486fe1e1a48e18c638d1813cda77b3c0737
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 12384 commits remaining
+
+2025-11-01 07:49:38
+Session:   5
+Kernel:    2023-08-18 - 70e969eb235ee6a030ff140b1852b598bf66f9c8
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       9  SYZFAIL: repeatedly failed to execute the program
+       9  SYZFAIL: repeatedly failed to execute the program
+The bug was not found.
+This commit is flagged as unstable.
+About 12384 commits remaining
+
+2025-11-01 08:12:13
+Session:   6
+Kernel:    2023-08-21 - 70befedaf5b020a08d397e2d6a9c306f0f611cfb
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       3  SYZFAIL: repeatedly failed to execute the program
+The bug was not found.
+This commit is flagged as unstable.
+About 12384 commits remaining
+
+2025-11-01 08:34:24
+Session:   7
+Kernel:    2023-07-25 - 2d59478308685f95346e2289c2dc519d8d8ecc48
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 11519 commits remaining
+
+2025-11-01 08:57:01
+Session:   8
+Kernel:    2023-08-18 - 5a97858b51658ccb1a20a3273eb9fedf8fcef6a5
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 11247 commits remaining
+
+2025-11-01 09:19:27
+Session:   9
+Kernel:    2023-08-09 - 803fe2098ae89d4ce52169f5fd92d4d69626568d
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 11183 commits remaining
+
+2025-11-01 09:41:48
+Session:   10
+Kernel:    2023-08-30 - 87fa732dc5ff9ea6a2e75b630f7931899e845eb1
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 5328 commits remaining
+
+2025-11-01 10:04:47
+Session:   11
+Kernel:    2023-08-30 - 0e72db77672ff4758a31fb5259c754a7bb229751
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       6  SYZFAIL: repeatedly failed to execute the program
+The bug was not found.
+This commit is flagged as unstable.
+About 5328 commits remaining
+
+2025-11-01 10:27:23
+Session:   12
+Kernel:    2023-07-31 - 9bc289b8123ce149bc4088dbe74300057fa244c3
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 12377 commits remaining
+
+2025-11-01 10:49:56
+Session:   13
+Kernel:    2023-07-21 - 489d7a8cc286f37f52156100b95751b10e240941
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 12361 commits remaining
+
+2025-11-01 11:05:10
+Session:   14
+Kernel:    2023-08-12 - 08fcaae1dc8887bd899266785d1e9081dca4b97e
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 11929 commits remaining
+
+2025-11-01 11:27:27
+Session:   15
+Kernel:    2023-08-07 - d27224a45e5457ad89195d92decdd57596253428
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 11003 commits remaining
+
+2025-11-01 11:50:14
+Session:   16
+Kernel:    2023-08-30 - 8f447694c23a432b2e9cfe67fb2651f8f6655bfd
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 1956 commits remaining
+
+2025-11-01 12:12:30
+Session:   17
+Kernel:    2023-08-31 - 8ae5d298ef2005da5454fc1680f983e85d3e1622
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 1009 commits remaining
+
+2025-11-01 12:35:04
+Session:   18
+Kernel:    2023-09-01 - e925992671907314b7db6793a28eb39b36bc21a4
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 528 commits remaining
+
+2025-11-01 12:52:39
+Session:   19
+Kernel:    2023-08-24 - 704e2c6107f1a5353a1038bac137dda0df2a6dd0
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 10360 commits remaining
+
+2025-11-01 13:15:09
+Session:   20
+Kernel:    2023-08-11 - a8d9cd2318606627d3c0e4747dbd7bbc44c48e27
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 11191 commits remaining
+
+2025-11-01 13:37:35
+Session:   21
+Kernel:    2023-08-22 - 42a569cd0d774fd575395a84481f87a1aaa530df
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 10215 commits remaining
+
+2025-11-01 14:00:20
+Session:   22
+Kernel:    2023-08-19 - 1b28cb81dab7c1eedc6034206f4e8d644046ad31
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 11282 commits remaining
+
+2025-11-01 14:22:46
+Session:   23
+Kernel:    2023-08-27 - b9b96b2089e9563a77a69e0fcfbedc5285ce890c
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 10200 commits remaining
+
+2025-11-01 14:38:11
+Session:   24
+Kernel:    2023-09-01 - 28a4f91f5f251689c69155bc6a0b1afc9916c874
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    2  general protection fault in usb_hub_create_port_device
+***    2  general protection fault in usb_hub_create_port_device
+***    2  general protection fault in usb_hub_create_port_device
+***    2  general protection fault in usb_hub_create_port_device
+***    2  general protection fault in usb_hub_create_port_device
+***    2  general protection fault in usb_hub_create_port_device
+***    2  general protection fault in usb_hub_create_port_device
+***    2  general protection fault in usb_hub_create_port_device
+Running syz-repro.
+New PoC saved at /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0792-0.prog
+Primary PoC:     /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0792-0.prog
+Run Time:        0h8m0s
+The bug was found.
+About 9908 commits remaining
+
+2025-11-01 15:01:04
+Session:   25
+Kernel:    2023-08-27 - ebf05c7dc92c11b0355aaa0e94064beadaa4b05c
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 9904 commits remaining
+
+2025-11-01 15:16:34
+Session:   26
+Kernel:    2023-08-22 - 29c8ab79e91d35b93cfab87bf67a11516f7b2051
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    2  general protection fault in usb_hub_create_port_device
+***    2  general protection fault in usb_hub_create_port_device
+***    2  general protection fault in usb_hub_create_port_device
+***    2  general protection fault in usb_hub_create_port_device
+***    2  general protection fault in usb_hub_create_port_device
+***    2  general protection fault in usb_hub_create_port_device
+***    2  general protection fault in usb_hub_create_port_device
+***    2  general protection fault in usb_hub_create_port_device
+The bug was found.
+About 33 commits remaining
+
+2025-11-01 15:24:00
+Session:   27
+Kernel:    2023-08-22 - d21fdd07cea418c0d98c8a15fc95b8b8970801e7
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    2  general protection fault in usb_hub_create_port_device
+***    2  general protection fault in usb_hub_create_port_device
+***    2  general protection fault in usb_hub_create_port_device
+***    2  general protection fault in usb_hub_create_port_device
+***    2  general protection fault in usb_hub_create_port_device
+***    2  general protection fault in usb_hub_create_port_device
+***    2  general protection fault in usb_hub_create_port_device
+***    2  general protection fault in usb_hub_create_port_device
+The bug was found.
+About 32 commits remaining
+
+==== Partial Result: Focused Fuzzing ====
+Reproducer:           /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0792-0.prog
+Bisection Result:     2023-08-22 - d21fdd07cea418c0d98c8a15fc95b8b8970801e7
+Bisected Commit Name: driver core: Return proper error code when dev_set_name() fails
+Stage Time:           9h9m8s
+Run Time:             9h9m9s
+=========================================
+
+==== Anchor Commit ====
+
+2025-11-01 15:31:16
+Session:   28
+Kernel:    2023-08-19 - 1b28cb81dab7c1eedc6034206f4e8d644046ad31
+Compiler:  ccache gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0792-0.prog
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
     No crashes found.
 The bug was not found.
 
 Failure: This bug cannot be found at the anchor commit.
+
+==== Partial Result: Primary PoC Test ====
+Reproducer:           /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0792-0.prog
+Bisection Result:     Failed to reproduce at the anchor commit.
+Stage Time:           0h13m12s
+Run Time:             9h22m21s
+==========================================
+
+==== Anchor Commit ====
+
+2025-11-01 15:44:31
+Session:   29
+Kernel:    2023-08-19 - 1b28cb81dab7c1eedc6034206f4e8d644046ad31
+Compiler:  ccache gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0792-2.prog
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+
+Failure: This bug cannot be found at the anchor commit.
+
+==== Partial Result: Subsequent PoC Test ====
+Reproducer:           /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0792-2.prog
+Bisection Result:     Failed to reproduce at the anchor commit.
+Stage Time:           0h13m10s
+Run Time:             9h35m32s
+=============================================
+
+====================================================================================================================================================
+Bug Name:             general protection fault in usb_hub_create_port_device
+Big ID:               bug0792
+Bug Link:             https://syzkaller.appspot.com/bug?extid=c063a4e176681d2e0380
+Bisection Result:     2023-08-22 - d21fdd07cea418c0d98c8a15fc95b8b8970801e7
+Bisected Commit Name: driver core: Return proper error code when dev_set_name() fails
+Run Time:             9h35m32s
+
+Anchor Commit:        2023-09-01 - b84acc11b1c9552c9ca3a099b1610a6018619332
+Bisection Result:     2023-08-22 - d21fdd07cea418c0d98c8a15fc95b8b8970801e7
