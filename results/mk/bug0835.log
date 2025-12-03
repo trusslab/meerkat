@@ -1,4 +1,4 @@
-./bin/bisector -i 5 -c /home/syzretrospector/syzinspector/wd-bisector-5/bisector.cfg -a b229b6ca5abbd63ff40c1396095b1b36b18139c3 -F ff-test,poc-test,stateful-corpus,ff-no-find-backup
+./bin/meerkat -i 2 -c /home/syzretrospector/meerkat/wd-meerkat-2/meerkat.cfg -a b229b6ca5abbd63ff40c1396095b1b36b18139c3 -F ff-test,poc-test,pos-all-pocs,stateful-corpus,ff-no-find-backup
 Bisecting:          KASAN: use-after-free Read in gsm_cleanup_mux
 Syzbot Link:        https://syzkaller.appspot.com/bug?extid=893c55305230e719a203
 Working Name:       bug0835
@@ -10,21 +10,23 @@ Repository:         https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/lin
 Branch:             master
 Arch:               amd64
 
-Bisector:           /home/syzretrospector/syzinspector/
-Version:            1.0.4
-Kernel:             /home/syzretrospector/syzinspector/wd-bisector-5/kernel/
-Syzkaller:          /home/syzretrospector/syzinspector/syzkaller/
-Compilers:          /home/syzretrospector/compilers/
-Ccache:             ccache
+Meerkat:            /home/syzretrospector/meerkat/
+Version:            1.1.1
+Kernel:             /home/syzretrospector/meerkat/wd-meerkat-2/kernel/
+Syzkaller:          /home/syzretrospector/meerkat/syzkaller/
+Compilers:          /home/syzretrospector/meerkat/compilers/
+Compiler:           gcc (Ubuntu 12.3.0-1ubuntu1~22.04.2) 12.3.0
+Linker:             GNU ld (GNU Binutils for Ubuntu) 2.38
+Ccache:             ccache version 4.5.1
 Image:              /home/syzretrospector/images/stretch/stretch.img
 Image Key:          /home/syzretrospector/images/stretch/stretch.id_rsa
 
-Workdir:            /home/syzretrospector/syzinspector/wd-bisector-5/
-Kconfig:            /home/syzretrospector/syzinspector/wd-bisector-5/config-bug0835.txt
-Reproducers: (4)    /home/syzretrospector/syzinspector/wd-bisector-5/reproducers/
-Primary PoC:        /home/syzretrospector/syzinspector/wd-bisector-5/reproducers/repro-bug0835-3.prog
-Syzkaller Workdir:  /home/syzretrospector/syzinspector/wd-bisector-5/wd-kaller/
-Log Directory:      /home/syzretrospector/syzinspector/wd-bisector-5/log/
+Workdir:            /home/syzretrospector/meerkat/wd-meerkat-2/
+Kconfig:            /home/syzretrospector/meerkat/wd-meerkat-2/config-bug0835.txt
+Reproducers: (4)    /home/syzretrospector/meerkat/wd-meerkat-2/reproducers/
+Primary PoC:        /home/syzretrospector/meerkat/wd-meerkat-2/reproducers/repro-bug0835-3.prog
+Syzkaller Workdir:  /home/syzretrospector/meerkat/wd-meerkat-2/wd-kaller/
+Log Directory:      /home/syzretrospector/meerkat/wd-meerkat-2/log/
 
 Syscalls: (10)      ["ioctl$TCSETSF2", "ioctl$TIOCSETD", "syz_genetlink_get_family_id$tipc", "syz_open_dev$tty20", "socket$nl_generic", "sendmsg$TIPC_CMD_SET_LINK_TOL", "ioctl$F2FS_IOC_START_ATOMIC_WRITE", "openat$selinux_enforce", "socket$netlink", "socket"]
 VM Count:           8
@@ -37,246 +39,325 @@ Max Attempts:       1
 
 ==== Anchor Commit ====
 
-2025-03-24 08:36:07
+2025-10-06 13:38:16
 Session:   1
 Kernel:    2022-10-26 - b229b6ca5abbd63ff40c1396095b1b36b18139c3
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Compiler:  ccache gcc
 Attempt 1:
     Time  Bug Name
-       2  INFO: rcu detected stall in corrupted
-***    2  KASAN: use-after-free Read in gsm_cleanup_mux
-***    2  KASAN: use-after-free Read in gsm_cleanup_mux
-***    2  KASAN: use-after-free Read in gsm_cleanup_mux
+       3  INFO: rcu detected stall in corrupted
+***    4  KASAN: use-after-free Read in gsm_cleanup_mux
+***    4  KASAN: use-after-free Read in gsm_cleanup_mux
+***    4  KASAN: use-after-free Read in gsm_cleanup_mux
 Attempt 2: (RETRY)
     Time  Bug Name
-       2  INFO: rcu detected stall in corrupted
-***    2  KASAN: use-after-free Read in gsm_cleanup_mux
-***    2  KASAN: use-after-free Read in gsm_cleanup_mux
-***    2  KASAN: use-after-free Read in gsm_cleanup_mux
-***    2  KASAN: use-after-free Read in gsm_cleanup_mux
-***    2  KASAN: use-after-free Read in gsm_cleanup_mux
+***    4  KASAN: use-after-free Read in gsm_cleanup_mux
+***    4  KASAN: use-after-free Read in gsm_cleanup_mux
 Attempt 3: (RETRY)
     Time  Bug Name
-       2  INFO: rcu detected stall in corrupted
-***    2  KASAN: use-after-free Read in gsm_cleanup_mux
-***    2  KASAN: use-after-free Read in gsm_cleanup_mux
+       3  WARNING: ODEBUG bug in netdev_run_todo
+***    4  KASAN: use-after-free Read in gsm_cleanup_mux
+***    4  KASAN: use-after-free Read in gsm_cleanup_mux
 The bug was found.
 
 New Max Time: 10
 
 ==== Major Release Search ====
-18 Releases
+12 Releases
 
-2025-03-24 08:53:27
+2025-10-06 14:10:44
 Session:   2
 Kernel:    2022-10-02 - 4fe89d07dcc2804c8b562f6c7896a45643d34b2f (v6.0)
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Compiler:  ccache gcc
 Attempt 1:
     Time  Bug Name
-       2  INFO: rcu detected stall in corrupted
-***    3  KASAN: use-after-free Read in gsm_cleanup_mux
-***    3  KASAN: use-after-free Read in gsm_cleanup_mux
-***    3  KASAN: use-after-free Read in gsm_cleanup_mux
-***    3  KASAN: use-after-free Read in gsm_cleanup_mux
+       3  INFO: rcu detected stall in corrupted
+***    6  KASAN: use-after-free Read in gsm_cleanup_mux
+***    6  KASAN: use-after-free Read in gsm_cleanup_mux
 Running syz-repro.
-Run Time:        0h25m0s
+Run Time:        0h8m0s
 The bug was found.
-About 17 releases remaining
+About 11 releases remaining
 
-2025-03-24 09:31:59
+2025-10-06 14:44:10
 Session:   3
 Kernel:    2022-07-31 - 3d7cb6b04c3f3115719235cc6866b10326de34cd (v5.19)
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       4  KASAN: use-after-free Read in hci_cmd_timeout
+       6  KASAN: use-after-free Read in hci_cmd_timeout
+       7  KASAN: use-after-free Read in hci_cmd_timeout
+***   10  KASAN: use-after-free Read in gsm_cleanup_mux
+The bug was found.
+About 10 releases remaining
+
+2025-10-06 15:12:41
+Session:   4
+Kernel:    2022-05-22 - 4b0986a3613c92f4ec1bdc7f60ec66fea135991f (v5.18)
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       7  KASAN: use-after-free Read in hci_cmd_timeout
+      10  WARNING: ODEBUG bug in netdev_run_todo
+The bug was not found.
+About 9 releases remaining
+
+==== Kernel Bisection ====
+16400 Linux commits
+
+2025-10-06 15:40:08
+Session:   5
+Kernel:    2022-05-26 - c011dd537ffe47462051930413fed07dbdc80313
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       6  KASAN: use-after-free Read in hci_cmd_timeout
+       6  KASAN: use-after-free Read in hci_cmd_timeout
+       7  INFO: task hung in hci_dev_do_open
+       8  KASAN: use-after-free Read in hci_cmd_timeout
+The bug was not found.
+About 8495 commits remaining
+
+2025-10-06 16:07:12
+Session:   6
+Kernel:    2022-06-08 - 5d4af9c1f04ab0411ba5818baad9a68e87f33099
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       5  KASAN: use-after-free Read in hci_cmd_timeout
+***    6  KASAN: use-after-free Read in gsm_cleanup_mux
+The bug was found.
+About 4250 commits remaining
+
+2025-10-06 16:30:50
+Session:   7
+Kernel:    2022-05-26 - 7e284070abe53d448517b80493863595af4ab5f0
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       9  INFO: task hung in hci_dev_do_open
+      10  KASAN: use-after-free Read in hci_cmd_timeout
+The bug was not found.
+About 2118 commits remaining
+
+2025-10-06 16:58:24
+Session:   8
+Kernel:    2022-05-28 - 664a393a2663a0f62fc1b18157ccae33dcdbb8c8
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       7  INFO: task hung in hci_dev_do_open
+       7  INFO: task hung in hci_dev_do_open
+      10  INFO: task hung in hci_dev_do_open
+The bug was not found.
+About 1075 commits remaining
+
+2025-10-06 17:25:59
+Session:   9
+Kernel:    2022-05-31 - f8a52af9d00d59fd887d8ad1fa0c2c88a5d775b9
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       9  INFO: task hung in hci_dev_do_open
+       9  KASAN: use-after-free Read in hci_cmd_timeout
+The bug was not found.
+About 525 commits remaining
+
+2025-10-06 17:48:19
+Session:   10
+Kernel:    2022-06-01 - 96752be4d7b443e6f1e322428d61f777d7d8bd4d
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       9  INFO: task hung in hci_dev_do_open
+      10  KASAN: use-after-free Read in hci_cmd_timeout
+***   10  KASAN: use-after-free Read in gsm_cleanup_mux
+***   10  KASAN: use-after-free Read in gsm_cleanup_mux
+Running syz-repro.
+New PoC saved at /home/syzretrospector/meerkat/wd-meerkat-2/reproducers/repro-bug0835-0.prog
+Primary PoC:     /home/syzretrospector/meerkat/wd-meerkat-2/reproducers/repro-bug0835-0.prog
+Run Time:        0h29m0s
+The bug was found.
+About 269 commits remaining
+
+2025-10-06 18:33:53
+Session:   11
+Kernel:    2022-06-01 - 68e6134bb70ab20e9f7c36c1ae7dc96b8ed778ae
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    6  KASAN: use-after-free Read in gsm_cleanup_mux
+The bug was found.
+About 120 commits remaining
+
+2025-10-06 18:46:27
+Session:   12
+Kernel:    2022-05-31 - 1501f707d2b24316b41d45bdc95a73bc8cc8dd49
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       7  INFO: task hung in hci_dev_do_open
+       8  INFO: task hung in hci_dev_do_open
+       8  INFO: task hung in hci_dev_do_open
+***    8  KASAN: use-after-free Read in gsm_cleanup_mux
+***    8  KASAN: use-after-free Read in gsm_cleanup_mux
+***    8  KASAN: use-after-free Read in gsm_cleanup_mux
+The bug was found.
+About 62 commits remaining
+
+2025-10-06 19:00:51
+Session:   13
+Kernel:    2022-05-17 - c81d5bae404abc6b257667e84d39b9b50c7063d4
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       5  WARNING: ODEBUG bug in netdev_run_todo
+The bug was not found.
+About 12708 commits remaining
+
+2025-10-06 19:27:50
+Session:   14
+Kernel:    2022-05-07 - 92db043f030225f1fbfdbe105db7ac2b8a420068
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       5  WARNING: ODEBUG bug in netdev_run_todo
+The bug was not found.
+About 13767 commits remaining
+
+2025-10-06 19:54:58
+Session:   15
+Kernel:    2022-05-25 - 908ea6541661d72c6852650f91adebba88b0de0b
+Compiler:  ccache gcc
 Attempt 1:
     Time  Bug Name
        4  KASAN: use-after-free Read in hci_cmd_timeout
 The bug was not found.
-About 16 releases remaining
+About 12700 commits remaining
 
-==== Kernel Bisection ====
-16585 Linux commits
-
-2025-03-24 09:52:25
-Session:   4
-Kernel:    2022-08-04 - 78acd4ca433425e6dd4032cfc2156c60e34931f2
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
-Attempt 1:
-    Time  Bug Name
-       1  WARNING: ODEBUG bug in mgmt_index_removed
-       4  WARNING: ODEBUG bug in mgmt_index_removed
-       4  WARNING: ODEBUG bug in mgmt_index_removed
-       4  WARNING: ODEBUG bug in mgmt_index_removed
-       5  WARNING: ODEBUG bug in mgmt_index_removed
-       5  WARNING: ODEBUG bug in mgmt_index_removed
-       5  WARNING: ODEBUG bug in mgmt_index_removed
-       5  WARNING: ODEBUG bug in mgmt_index_removed
-***    6  KASAN: use-after-free Read in gsm_cleanup_mux
-       6  WARNING: ODEBUG bug in mgmt_index_removed
-Running syz-repro.
-Run Time:        0h3m0s
-The bug was found.
-About 8200 commits remaining
-
-2025-03-24 10:11:35
-Session:   5
-Kernel:    2022-08-03 - 526942b8134cc34d25d27f95dfff98b8ce2f6fcd
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
-Attempt 1:
-    Time  Bug Name
-       4  KASAN: use-after-free Read in hci_cmd_timeout
-***    6  KASAN: use-after-free Read in gsm_cleanup_mux
-Running syz-repro.
-New PoC saved at /home/syzretrospector/syzinspector/wd-bisector-5/reproducers/repro-bug0835-0.prog
-Primary PoC:     /home/syzretrospector/syzinspector/wd-bisector-5/reproducers/repro-bug0835-0.prog
-Run Time:        0h10m0s
-The bug was found.
-About 3209 commits remaining
-
-2025-03-24 10:37:38
-Session:   6
-Kernel:    2022-08-02 - 2e7a95156d64667a8ded606829d57c6fc92e41df
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
-Attempt 1:
-    Time  Bug Name
-***    2  KASAN: use-after-free Read in gsm_cleanup_mux
-***    2  KASAN: use-after-free Read in gsm_cleanup_mux
-The bug was found.
-About 1607 commits remaining
-
-2025-03-24 10:49:38
-Session:   7
-Kernel:    2022-07-19 - 26c350fe7ae013dda37b6a7771e5a67062bfe7c8
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
-Attempt 1:
-    Time  Bug Name
-***    2  KASAN: use-after-free Read in gsm_cleanup_mux
-The bug was found.
-About 804 commits remaining
-
-2025-03-24 11:01:38
-Session:   8
-Kernel:    2022-07-11 - 8128bfe3d7dc84c5896b77338babcd2197977776
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
-Attempt 1:
-    Time  Bug Name
-***    2  KASAN: use-after-free Read in gsm_cleanup_mux
-Running syz-repro.
-New PoC saved at /home/syzretrospector/syzinspector/wd-bisector-5/reproducers/repro-bug0835-1.prog
-Primary PoC:     /home/syzretrospector/syzinspector/wd-bisector-5/reproducers/repro-bug0835-1.prog
-Run Time:        0h6m0s
-The bug was found.
-About 400 commits remaining
-
-2025-03-24 11:13:03
-Session:   9
-Kernel:    2022-07-06 - ec21041bb35fa32b4fb9748211db34305afb3cd5
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
-Attempt 1:
-    Time  Bug Name
-***    3  KASAN: use-after-free Read in gsm_cleanup_mux
-***    3  KASAN: use-after-free Read in gsm_cleanup_mux
-***    3  KASAN: use-after-free Read in gsm_cleanup_mux
-***    3  KASAN: use-after-free Read in gsm_cleanup_mux
-The bug was found.
-About 199 commits remaining
-
-2025-03-24 11:19:30
-Session:   10
-Kernel:    2022-07-01 - 5d16aa7458a4b1c5f9d939f3e25353ade733d053
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
-Attempt 1:
-    Time  Bug Name
-***    3  KASAN: use-after-free Read in gsm_cleanup_mux
-***    3  KASAN: use-after-free Read in gsm_cleanup_mux
-The bug was found.
-About 92 commits remaining
-
-2025-03-24 11:25:53
-Session:   11
-Kernel:    2022-07-01 - 813b0808907511ea30a7c648a52ccf625b4d5f6d
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
-Attempt 1:
-    Time  Bug Name
-***    3  KASAN: use-after-free Read in gsm_cleanup_mux
-Running syz-repro.
-New PoC saved at /home/syzretrospector/syzinspector/wd-bisector-5/reproducers/repro-bug0835-0.prog
-Primary PoC:     /home/syzretrospector/syzinspector/wd-bisector-5/reproducers/repro-bug0835-1.prog
-Run Time:        0h11m0s
-The bug was found.
-About 38 commits remaining
-
-2025-03-24 11:43:16
-Session:   12
-Kernel:    2022-06-22 - 99f6b77f74c88ac1bc4c81e089dd0cbbf882aea6
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
-Attempt 1:
-    Time  Bug Name
-       4  KASAN: use-after-free Read in hci_cmd_timeout
-       4  KASAN: use-after-free Read in hci_cmd_timeout
-***    4  KASAN: use-after-free Read in gsm_cleanup_mux
-The bug was found.
-About 19 commits remaining
-
-2025-03-24 11:57:27
-Session:   13
-Kernel:    2022-06-15 - 8b86f733c0e512f92e43a9db1559498ef64d244e
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
-Attempt 1:
-    Time  Bug Name
-***    3  KASAN: use-after-free Read in gsm_cleanup_mux
-The bug was found.
-About 10 commits remaining
-
-2025-03-24 12:03:45
-Session:   14
-Kernel:    2022-06-07 - 729abb9b376efef58d4d5b77f1ce06ce197f459e
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
-Attempt 1:
-    Time  Bug Name
-       5  KASAN: use-after-free Read in hci_cmd_timeout
-       7  INFO: trying to register non-static key in hci_uart_send_frame
-***    7  KASAN: use-after-free Read in gsm_cleanup_mux
-Running syz-repro.
-New PoC saved at /home/syzretrospector/syzinspector/wd-bisector-5/reproducers/repro-bug0835-0.prog
-Primary PoC:     /home/syzretrospector/syzinspector/wd-bisector-5/reproducers/repro-bug0835-0.prog
-Run Time:        0h11m0s
-The bug was found.
-About 5 commits remaining
-
-2025-03-24 12:25:32
-Session:   15
-Kernel:    2022-06-07 - 3b0a91e586dc92da738af9eb35352d5897b8b279
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
-Attempt 1:
-    Time  Bug Name
-***    3  KASAN: use-after-free Read in gsm_cleanup_mux
-The bug was found.
-About 3 commits remaining
-
-2025-03-24 12:31:59
+2025-10-06 20:10:49
 Session:   16
-Kernel:    2022-06-06 - 6c52573bf4c3a0f6e7142264fb36b31ae2c3707a
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Kernel:    2022-05-24 - e98a860f65428a3cae7ed7b3e8ebcf6320d7fc5e
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 13763 commits remaining
+
+2025-10-06 20:26:24
+Session:   17
+Kernel:    2022-05-27 - 2d1fe8a86bf5e0663866fd0da83c2af1e1b0e362
+Compiler:  ccache gcc
 Attempt 1:
     Time  Bug Name
-***    2  KASAN: use-after-free Read in gsm_cleanup_mux
+      10  KASAN: use-after-free Read in hci_cmd_timeout
+The bug was not found.
+About 12698 commits remaining
+
+2025-10-06 20:42:18
+Session:   18
+Kernel:    2022-05-31 - 2a5699b0de4ee623d77f183c8e8e62691bd60a70
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    6  KASAN: use-after-free Read in gsm_cleanup_mux
+Running syz-repro.
+New PoC saved at /home/syzretrospector/meerkat/wd-meerkat-2/reproducers/repro-bug0835-1.prog
+Primary PoC:     /home/syzretrospector/meerkat/wd-meerkat-2/reproducers/repro-bug0835-1.prog
+Run Time:        0h11m0s
 The bug was found.
-About 2 commits remaining
+About 12697 commits remaining
 
 ==== Partial Result: Focused Fuzzing ====
-Reproducer:           /home/syzretrospector/syzinspector/wd-bisector-5/reproducers/repro-bug0835-0.prog
-Bisection Result:     2022-06-06 - 6c52573bf4c3a0f6e7142264fb36b31ae2c3707a
-Bisected Commit Name: ARM: dts: exynos: add panel and backlight to p4note
-Stage Time:           4h1m14s
-Run Time:             4h1m15s
+Reproducer:           /home/syzretrospector/meerkat/wd-meerkat-2/reproducers/repro-bug0835-1.prog
+Bisection Result:     2022-05-31 - 2a5699b0de4ee623d77f183c8e8e62691bd60a70
+Bisected Commit Name: Merge tag 'leds-5.19-rc1' of git://git.kernel.org/pub/scm/linux/kernel/git/pavel/linux-leds
+Stage Time:           7h27m23s
+Run Time:             7h27m26s
 =========================================
 
 ==== Anchor Commit ====
 
-2025-03-24 12:37:21
-Session:   17
-Kernel:    2022-06-05 - f2906aa863381afb0015a9eb7fefad885d4e5a56
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+2025-10-06 21:05:40
+Session:   19
+Kernel:    2022-05-31 - f8a52af9d00d59fd887d8ad1fa0c2c88a5d775b9
+Compiler:  ccache gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-2/reproducers/repro-bug0835-1.prog
+Attempt 0:
+*** KASAN: use-after-free Read in gsm_cleanup_mux
+Attempt 1:
+*** KASAN: use-after-free Read in gsm_cleanup_mux
+Attempt 2:
+*** KASAN: use-after-free Read in gsm_cleanup_mux
+Attempt 3:
+*** KASAN: use-after-free Read in gsm_cleanup_mux
+Attempt 4:
+*** KASAN: use-after-free Read in gsm_cleanup_mux
+Attempt 5:
+*** KASAN: use-after-free Read in gsm_cleanup_mux
+Attempt 6:
+*** KASAN: use-after-free Read in gsm_cleanup_mux
+Attempt 7:
+*** KASAN: use-after-free Read in gsm_cleanup_mux
+The bug was found.
+
+==== Major Release Search ====
+11 Releases
+
+2025-10-06 21:15:24
+Session:   20
+Kernel:    2022-05-22 - 4b0986a3613c92f4ec1bdc7f60ec66fea135991f (v5.18)
+Compiler:  ccache gcc
+Attempt 0:
+*** KASAN: use-after-free Read in gsm_cleanup_mux
+Attempt 1:
+*** KASAN: use-after-free Read in gsm_cleanup_mux
+Attempt 2:
+*** KASAN: use-after-free Read in gsm_cleanup_mux
+Attempt 3:
+*** KASAN: use-after-free Read in gsm_cleanup_mux
+Attempt 4:
+*** KASAN: use-after-free Read in gsm_cleanup_mux
+Attempt 5:
+*** KASAN: use-after-free Read in gsm_cleanup_mux
+Attempt 6:
+*** KASAN: use-after-free Read in gsm_cleanup_mux
+Attempt 7:
+*** KASAN: use-after-free Read in gsm_cleanup_mux
+The bug was found.
+About 10 releases remaining
+
+2025-10-06 21:36:07
+Session:   21
+Kernel:    2022-03-20 - f443e374ae131c168a065ea1748feac6b2e76613 (v5.17)
+Compiler:  ccache gcc
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    WARNING: ODEBUG bug in netdev_run_todo
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+About 9 releases remaining
+
+==== Kernel Bisection ====
+16206 Linux commits
+
+2025-10-06 22:01:33
+Session:   22
+Kernel:    2022-03-24 - 25fd2d41b505d0640bdfe67aa77c549de2d3c18a
+Compiler:  ccache gcc
 Attempt 0:
     No crashes found.
 Attempt 1:
@@ -294,15 +375,314 @@ Attempt 6:
 Attempt 7:
     No crashes found.
 The bug was not found.
+About 8500 commits remaining
 
-Failure: This bug cannot be found at the anchor commit.
+2025-10-06 22:26:44
+Session:   23
+Kernel:    2022-03-28 - 02e2af20f4f9f2aa0c84e9a30a35c02f0fbb7daa
+Compiler:  ccache gcc
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+About 4035 commits remaining
+
+2025-10-06 22:51:59
+Session:   24
+Kernel:    2022-04-13 - 887f75cfd0da44c19dda93b2ff9e70ca8792cdc1
+Compiler:  ccache gcc
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+About 2019 commits remaining
+
+2025-10-06 23:17:23
+Session:   25
+Kernel:    2022-04-26 - cf424ef014ac30b0da27125dd1fbdf10b0d3a520
+Compiler:  ccache gcc
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+About 1017 commits remaining
+
+2025-10-06 23:42:36
+Session:   26
+Kernel:    2022-05-05 - 4e707344e18525b4edf5c2bc2e3eb60692e8c92e
+Compiler:  ccache gcc
+Attempt 0:
+*** KASAN: use-after-free Read in gsm_cleanup_mux
+Attempt 1:
+*** KASAN: use-after-free Read in gsm_cleanup_mux
+Attempt 2:
+*** KASAN: use-after-free Read in gsm_cleanup_mux
+Attempt 3:
+*** KASAN: use-after-free Read in gsm_cleanup_mux
+Attempt 4:
+*** KASAN: use-after-free Read in gsm_cleanup_mux
+Attempt 5:
+*** KASAN: use-after-free Read in gsm_cleanup_mux
+Attempt 6:
+*** KASAN: use-after-free Read in gsm_cleanup_mux
+Attempt 7:
+*** KASAN: use-after-free Read in gsm_cleanup_mux
+The bug was found.
+About 509 commits remaining
+
+2025-10-07 00:03:14
+Session:   27
+Kernel:    2022-04-29 - 8013d1d3d2e33236dee13a133fba49ad55045e79
+Compiler:  ccache gcc
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+About 254 commits remaining
+
+2025-10-07 00:28:27
+Session:   28
+Kernel:    2022-05-01 - b2da7df52e16110c8d8dda0602db81c15711e7ff
+Compiler:  ccache gcc
+Attempt 0:
+*** KASAN: use-after-free Read in gsm_cleanup_mux
+Attempt 1:
+*** KASAN: use-after-free Read in gsm_cleanup_mux
+Attempt 2:
+*** KASAN: use-after-free Read in gsm_cleanup_mux
+Attempt 3:
+*** KASAN: use-after-free Read in gsm_cleanup_mux
+Attempt 4:
+*** KASAN: use-after-free Read in gsm_cleanup_mux
+Attempt 5:
+*** KASAN: use-after-free Read in gsm_cleanup_mux
+Attempt 6:
+*** KASAN: use-after-free Read in gsm_cleanup_mux
+Attempt 7:
+*** KASAN: use-after-free Read in gsm_cleanup_mux
+The bug was found.
+About 134 commits remaining
+
+2025-10-07 00:49:00
+Session:   29
+Kernel:    2022-04-30 - a6b5c5dc06a4b25fc7690a7a25a7c095d3f16fa9
+Compiler:  ccache gcc
+Attempt 0:
+*** KASAN: use-after-free Read in gsm_cleanup_mux
+Attempt 1:
+*** KASAN: use-after-free Read in gsm_cleanup_mux
+Attempt 2:
+*** KASAN: use-after-free Read in gsm_cleanup_mux
+Attempt 3:
+*** KASAN: use-after-free Read in gsm_cleanup_mux
+Attempt 4:
+*** KASAN: use-after-free Read in gsm_cleanup_mux
+Attempt 5:
+*** KASAN: use-after-free Read in gsm_cleanup_mux
+Attempt 6:
+*** KASAN: use-after-free Read in gsm_cleanup_mux
+Attempt 7:
+*** KASAN: use-after-free Read in gsm_cleanup_mux
+The bug was found.
+About 64 commits remaining
+
+2025-10-07 00:58:36
+Session:   30
+Kernel:    2022-04-26 - c7428dbddcf4ea1919e1c8e15f715b94ca359268
+Compiler:  ccache gcc
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+About 1362 commits remaining
+
+2025-10-07 01:22:59
+Session:   31
+Kernel:    2022-04-15 - ff9166c623704337bd6fe66fce2838d9768a6634
+Compiler:  ccache gcc
+Attempt 0:
+*** KASAN: use-after-free Read in gsm_cleanup_mux
+Attempt 1:
+*** KASAN: use-after-free Read in gsm_cleanup_mux
+Attempt 2:
+*** KASAN: use-after-free Read in gsm_cleanup_mux
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+*** KASAN: use-after-free Read in gsm_cleanup_mux
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was found.
+About 428 commits remaining
+
+2025-10-07 01:48:47
+Session:   32
+Kernel:    2022-04-15 - 535bf600de75a859698892ee873521a48d289ec1
+Compiler:  ccache gcc
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+About 9 commits remaining
+
+2025-10-07 02:02:51
+Session:   33
+Kernel:    2022-04-15 - 398867f59f956985f4c324f173eff7b946e14bd8
+Compiler:  ccache gcc
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+*** KASAN: use-after-free Read in gsm_cleanup_mux
+Attempt 6:
+*** KASAN: use-after-free Read in gsm_cleanup_mux
+Attempt 7:
+    No crashes found.
+The bug was found.
+About 5 commits remaining
+
+2025-10-07 02:17:03
+Session:   34
+Kernel:    2022-04-15 - 17eac652028501df7ea296b1d9b9c134db262b7d
+Compiler:  ccache gcc
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+About 3 commits remaining
+
+2025-10-07 02:31:02
+Session:   35
+Kernel:    2022-04-15 - d0bcdffcad5a22f202e3bf37190c0dd8c080ea92
+Compiler:  ccache gcc
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+*** KASAN: use-after-free Read in gsm_cleanup_mux
+Attempt 3:
+*** KASAN: use-after-free Read in gsm_cleanup_mux
+Attempt 4:
+    No crashes found.
+Attempt 5:
+*** KASAN: use-after-free Read in gsm_cleanup_mux
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was found.
+About 2 commits remaining
 
 ====================================================================================================================================================
 Bug Name:             KASAN: use-after-free Read in gsm_cleanup_mux
+Big ID:               bug0835
 Bug Link:             https://syzkaller.appspot.com/bug?extid=893c55305230e719a203
-Bisection Result:     2022-06-06 - 6c52573bf4c3a0f6e7142264fb36b31ae2c3707a
-Bisected Commit Name: ARM: dts: exynos: add panel and backlight to p4note
-Run Time:             4h6m39s
+Bisection Result:     2022-04-15 - d0bcdffcad5a22f202e3bf37190c0dd8c080ea92
+Bisected Commit Name: tty: n_gsm: fix wrong command retry handling
+Run Time:             13h7m2s
 
 Anchor Commit:        2022-10-26 - b229b6ca5abbd63ff40c1396095b1b36b18139c3
-Bisection Result:     2022-06-06 - 6c52573bf4c3a0f6e7142264fb36b31ae2c3707a
+Bisection Result:     2022-04-15 - d0bcdffcad5a22f202e3bf37190c0dd8c080ea92

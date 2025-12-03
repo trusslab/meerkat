@@ -1,4 +1,4 @@
-./bin/bisector -i 5 -c /home/syzretrospector/syzinspector/wd-bisector-5/bisector.cfg -a 533925cb760431cb496a8c965cfd765a1a21d37e -F ff-test,poc-test,stateful-corpus,ff-no-find-backup
+./bin/meerkat -i 2 -c /home/syzretrospector/meerkat/wd-meerkat-2/meerkat.cfg -a 533925cb760431cb496a8c965cfd765a1a21d37e -F ff-test,poc-test,pos-all-pocs,stateful-corpus,ff-no-find-backup
 Bisecting:          INFO: task hung in pipe_release
 Syzbot Link:        https://syzkaller.appspot.com/bug?extid=f527b971b4bdc8e79f9e
 Working Name:       bug0830
@@ -10,21 +10,23 @@ Repository:         https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/lin
 Branch:             master
 Arch:               amd64
 
-Bisector:           /home/syzretrospector/syzinspector/
-Version:            1.0.4
-Kernel:             /home/syzretrospector/syzinspector/wd-bisector-5/kernel/
-Syzkaller:          /home/syzretrospector/syzinspector/syzkaller/
-Compilers:          /home/syzretrospector/compilers/
-Ccache:             ccache
+Meerkat:            /home/syzretrospector/meerkat/
+Version:            1.1.1
+Kernel:             /home/syzretrospector/meerkat/wd-meerkat-2/kernel/
+Syzkaller:          /home/syzretrospector/meerkat/syzkaller/
+Compilers:          /home/syzretrospector/meerkat/compilers/
+Compiler:           gcc (Ubuntu 12.3.0-1ubuntu1~22.04.2) 12.3.0
+Linker:             GNU ld (GNU Binutils for Ubuntu) 2.38
+Ccache:             ccache version 4.5.1
 Image:              /home/syzretrospector/images/stretch/stretch.img
 Image Key:          /home/syzretrospector/images/stretch/stretch.id_rsa
 
-Workdir:            /home/syzretrospector/syzinspector/wd-bisector-5/
-Kconfig:            /home/syzretrospector/syzinspector/wd-bisector-5/config-bug0830.txt
-Reproducers: (1)    /home/syzretrospector/syzinspector/wd-bisector-5/reproducers/
-Primary PoC:        /home/syzretrospector/syzinspector/wd-bisector-5/reproducers/repro-bug0830-1.prog
-Syzkaller Workdir:  /home/syzretrospector/syzinspector/wd-bisector-5/wd-kaller/
-Log Directory:      /home/syzretrospector/syzinspector/wd-bisector-5/log/
+Workdir:            /home/syzretrospector/meerkat/wd-meerkat-2/
+Kconfig:            /home/syzretrospector/meerkat/wd-meerkat-2/config-bug0830.txt
+Reproducers: (1)    /home/syzretrospector/meerkat/wd-meerkat-2/reproducers/
+Primary PoC:        /home/syzretrospector/meerkat/wd-meerkat-2/reproducers/repro-bug0830-1.prog
+Syzkaller Workdir:  /home/syzretrospector/meerkat/wd-meerkat-2/wd-kaller/
+Log Directory:      /home/syzretrospector/meerkat/wd-meerkat-2/log/
 
 Syscalls: (17)      ["bind$inet", "close", "connect$inet", "pipe", "sendmmsg", "setsockopt$sock_int", "socket$inet_udp", "splice", "write$binfmt_misc", "socket$inet", "socket", "openat$binfmt", "syz_create_resource$binfmt", "ioctl$sock_SIOCGIFINDEX", "ioctl$ifreq_SIOCGIFINDEX_vcan", "ioctl$IOCTL_GET_NCIDEV_IDX", "openat$nci"]
 VM Count:           8
@@ -37,83 +39,64 @@ Max Attempts:       1
 
 ==== Anchor Commit ====
 
-2025-03-23 11:08:45
+2025-10-05 13:24:27
 Session:   1
 Kernel:    2023-06-30 - 533925cb760431cb496a8c965cfd765a1a21d37e
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Compiler:  ccache gcc
 Attempt 1:
     Time  Bug Name
 ***    5  INFO: task hung in pipe_release
 ***    5  INFO: task hung in pipe_release
-***    5  INFO: task hung in pipe_release
 Attempt 2: (RETRY)
     Time  Bug Name
-***    5  INFO: task hung in pipe_release
-***    5  INFO: task hung in pipe_release
-***    5  INFO: task hung in pipe_release
+***    6  INFO: task hung in pipe_release
+***    6  INFO: task hung in pipe_release
+***    6  INFO: task hung in pipe_release
 Attempt 3: (RETRY)
     Time  Bug Name
-***    5  INFO: task hung in pipe_release
-***    5  INFO: task hung in pipe_release
-***    5  INFO: task hung in pipe_release
+***    6  INFO: task hung in pipe_release
+***    6  INFO: task hung in pipe_release
 The bug was found.
 
 New Max Time: 10
 
 ==== Major Release Search ====
-19 Releases
+13 Releases
 
-2025-03-23 11:36:33
+2025-10-05 14:03:59
 Session:   2
 Kernel:    2023-06-25 - 6995e2de6891c724bfeb2db33d7b87775f913ad1 (v6.4)
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Compiler:  ccache gcc
 Attempt 1:
     No crashes found.
 The bug was not found.
-About 18 releases remaining
+About 12 releases remaining
 
 ==== Kernel Bisection ====
 8882 Linux commits
 
-2025-03-23 11:59:58
+2025-10-05 14:37:12
 Session:   3
 Kernel:    2023-06-29 - ff7ddcf0db48a7d9ae536eb0875428117be1d1f1
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Compiler:  ccache gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/syzretrospector/meerkat/wd-meerkat-2/log/bug0830-boot_failure.log.
 Attempt 1:
     Time  Bug Name
-       1  UBSAN: array-index-out-of-bounds in corrupted
-       1  UBSAN: array-index-out-of-bounds in corrupted
-       1  UBSAN: array-index-out-of-bounds in alloc_pid
-       2  UBSAN: array-index-out-of-bounds in corrupted
-       2  UBSAN: array-index-out-of-bounds in corrupted
-       2  UBSAN: array-index-out-of-bounds in corrupted
        2  UBSAN: array-index-out-of-bounds in corrupted
        2  UBSAN: array-index-out-of-bounds in corrupted
        2  UBSAN: array-index-out-of-bounds in corrupted
        2  UBSAN: array-index-out-of-bounds in corrupted
        2  UBSAN: array-index-out-of-bounds in corrupted
        2  UBSAN: array-index-out-of-bounds in alloc_pid
-       2  UBSAN: array-index-out-of-bounds in alloc_pid
        2  UBSAN: array-index-out-of-bounds in copy_process
        2  UBSAN: array-index-out-of-bounds in copy_process
-       2  UBSAN: array-index-out-of-bounds in copy_process
        3  UBSAN: array-index-out-of-bounds in corrupted
        3  UBSAN: array-index-out-of-bounds in corrupted
-       3  UBSAN: array-index-out-of-bounds in corrupted
-       3  UBSAN: array-index-out-of-bounds in corrupted
-       3  UBSAN: array-index-out-of-bounds in corrupted
+       3  UBSAN: array-index-out-of-bounds in alloc_pid
        3  UBSAN: array-index-out-of-bounds in copy_process
        3  UBSAN: array-index-out-of-bounds in copy_process
        3  UBSAN: array-index-out-of-bounds in copy_process
-       4  UBSAN: array-index-out-of-bounds in corrupted
-       4  UBSAN: array-index-out-of-bounds in corrupted
-       4  UBSAN: array-index-out-of-bounds in corrupted
-       4  UBSAN: array-index-out-of-bounds in corrupted
-       4  UBSAN: array-index-out-of-bounds in corrupted
-       4  UBSAN: array-index-out-of-bounds in corrupted
-       4  UBSAN: array-index-out-of-bounds in alloc_pid
-       4  UBSAN: array-index-out-of-bounds in alloc_pid
-       4  UBSAN: array-index-out-of-bounds in copy_process
        4  UBSAN: array-index-out-of-bounds in copy_process
        4  UBSAN: array-index-out-of-bounds in copy_process
        5  UBSAN: array-index-out-of-bounds in corrupted
@@ -121,628 +104,208 @@ Attempt 1:
        5  UBSAN: array-index-out-of-bounds in corrupted
        5  UBSAN: array-index-out-of-bounds in corrupted
        5  UBSAN: array-index-out-of-bounds in alloc_pid
-       5  UBSAN: array-index-out-of-bounds in alloc_pid
-       5  UBSAN: array-index-out-of-bounds in alloc_pid
-       5  UBSAN: array-index-out-of-bounds in copy_process
-       5  UBSAN: array-index-out-of-bounds in copy_process
-       5  UBSAN: array-index-out-of-bounds in copy_process
        5  UBSAN: array-index-out-of-bounds in copy_process
        5  UBSAN: array-index-out-of-bounds in copy_process
        5  UBSAN: array-index-out-of-bounds in copy_process
        6  UBSAN: array-index-out-of-bounds in corrupted
-       6  UBSAN: array-index-out-of-bounds in alloc_pid
-       6  UBSAN: array-index-out-of-bounds in alloc_pid
-       6  UBSAN: array-index-out-of-bounds in copy_process
+       6  UBSAN: array-index-out-of-bounds in corrupted
+       6  UBSAN: array-index-out-of-bounds in corrupted
+       6  UBSAN: array-index-out-of-bounds in corrupted
        6  UBSAN: array-index-out-of-bounds in copy_process
        6  UBSAN: array-index-out-of-bounds in copy_process
        6  UBSAN: array-index-out-of-bounds in copy_process
        6  UBSAN: array-index-out-of-bounds in copy_process
        7  UBSAN: array-index-out-of-bounds in corrupted
        7  UBSAN: array-index-out-of-bounds in corrupted
-       7  UBSAN: array-index-out-of-bounds in corrupted
-       7  UBSAN: array-index-out-of-bounds in corrupted
-       7  UBSAN: array-index-out-of-bounds in corrupted
-       7  UBSAN: array-index-out-of-bounds in alloc_pid
-       7  UBSAN: array-index-out-of-bounds in alloc_pid
        7  UBSAN: array-index-out-of-bounds in copy_process
        7  UBSAN: array-index-out-of-bounds in copy_process
        7  UBSAN: array-index-out-of-bounds in copy_process
        7  UBSAN: array-index-out-of-bounds in copy_process
        8  UBSAN: array-index-out-of-bounds in corrupted
        8  UBSAN: array-index-out-of-bounds in corrupted
-       8  UBSAN: array-index-out-of-bounds in corrupted
-       8  UBSAN: array-index-out-of-bounds in corrupted
-       8  UBSAN: array-index-out-of-bounds in corrupted
-       8  UBSAN: array-index-out-of-bounds in alloc_pid
-       8  UBSAN: array-index-out-of-bounds in alloc_pid
-       8  UBSAN: array-index-out-of-bounds in alloc_pid
-       8  UBSAN: array-index-out-of-bounds in copy_process
-       8  UBSAN: array-index-out-of-bounds in copy_process
        8  UBSAN: array-index-out-of-bounds in copy_process
        8  UBSAN: array-index-out-of-bounds in copy_process
        8  UBSAN: array-index-out-of-bounds in copy_process
        9  UBSAN: array-index-out-of-bounds in corrupted
        9  UBSAN: array-index-out-of-bounds in corrupted
        9  UBSAN: array-index-out-of-bounds in corrupted
-       9  UBSAN: array-index-out-of-bounds in corrupted
-       9  UBSAN: array-index-out-of-bounds in corrupted
-       9  UBSAN: array-index-out-of-bounds in alloc_pid
-       9  UBSAN: array-index-out-of-bounds in alloc_pid
+       9  UBSAN: array-index-out-of-bounds in copy_process
        9  UBSAN: array-index-out-of-bounds in copy_process
       10  UBSAN: array-index-out-of-bounds in corrupted
       10  UBSAN: array-index-out-of-bounds in corrupted
       10  UBSAN: array-index-out-of-bounds in corrupted
       10  UBSAN: array-index-out-of-bounds in corrupted
-      10  UBSAN: array-index-out-of-bounds in corrupted
-      10  UBSAN: array-index-out-of-bounds in corrupted
-      10  UBSAN: array-index-out-of-bounds in corrupted
-      10  UBSAN: array-index-out-of-bounds in alloc_pid
       10  UBSAN: array-index-out-of-bounds in copy_process
+      10  UBSAN: array-index-out-of-bounds in copy_process
+      10  UBSAN: array-index-out-of-bounds in copy_process
+      10  UBSAN: array-index-out-of-bounds in copy_process
+      10  boot failure
 The bug was not found.
-About 4403 commits remaining
+This commit is flagged as unstable.
+About 8882 commits remaining
 
-2025-03-23 12:22:08
+2025-10-05 15:09:17
 Session:   4
-Kernel:    2023-06-29 - 5ff2977b19769fd24b0cfbe7cbe4d5114b6106af
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Kernel:    2023-06-21 - ec7023e6745e6fb34cd855522cb8f995194bdbf1
+Compiler:  ccache gcc
 Attempt 1:
-    No crashes found.
-The bug was not found.
-About 7301 commits remaining
+    Time  Bug Name
+***    7  INFO: task hung in pipe_release
+***    7  INFO: task hung in pipe_release
+Running syz-repro.
+syz-repro was terminated after 60 minutes
+Run Time:        1h0m0s
+The bug was found.
+About 1195 commits remaining
 
-2025-03-23 12:45:30
+2025-10-05 16:38:54
 Session:   5
-Kernel:    2023-06-29 - b775d6c5859affe00527cbe74263de05cfe6b9f9
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Kernel:    2023-06-01 - a395b8d1c7c3a074bfa83b9759a4a11901a295c5
+Compiler:  ccache gcc
 Attempt 1:
     Time  Bug Name
-       1  UBSAN: array-index-out-of-bounds in corrupted
-       1  UBSAN: array-index-out-of-bounds in corrupted
-       1  UBSAN: array-index-out-of-bounds in alloc_pid
-       2  UBSAN: array-index-out-of-bounds in corrupted
-       2  UBSAN: array-index-out-of-bounds in corrupted
-       2  UBSAN: array-index-out-of-bounds in alloc_pid
-       2  UBSAN: array-index-out-of-bounds in alloc_pid
-       2  UBSAN: array-index-out-of-bounds in alloc_pid
-       2  UBSAN: array-index-out-of-bounds in alloc_pid
-       2  UBSAN: array-index-out-of-bounds in alloc_pid
-       2  UBSAN: array-index-out-of-bounds in copy_process
-       2  UBSAN: array-index-out-of-bounds in copy_process
-       2  UBSAN: array-index-out-of-bounds in copy_process
-       2  UBSAN: array-index-out-of-bounds in copy_process
-       2  UBSAN: array-index-out-of-bounds in copy_process
-       2  UBSAN: array-index-out-of-bounds in copy_process
-       3  UBSAN: array-index-out-of-bounds in corrupted
-       3  UBSAN: array-index-out-of-bounds in corrupted
-       3  UBSAN: array-index-out-of-bounds in corrupted
-       3  UBSAN: array-index-out-of-bounds in corrupted
-       3  UBSAN: array-index-out-of-bounds in corrupted
-       3  UBSAN: array-index-out-of-bounds in alloc_pid
-       3  UBSAN: array-index-out-of-bounds in copy_process
-       3  UBSAN: array-index-out-of-bounds in copy_process
-       4  UBSAN: array-index-out-of-bounds in corrupted
-       4  UBSAN: array-index-out-of-bounds in corrupted
-       4  UBSAN: array-index-out-of-bounds in corrupted
-       4  UBSAN: array-index-out-of-bounds in corrupted
-       4  UBSAN: array-index-out-of-bounds in alloc_pid
-       4  UBSAN: array-index-out-of-bounds in alloc_pid
-       4  UBSAN: array-index-out-of-bounds in copy_process
-       4  UBSAN: array-index-out-of-bounds in copy_process
-       4  UBSAN: array-index-out-of-bounds in copy_process
-       4  UBSAN: array-index-out-of-bounds in copy_process
-       4  UBSAN: array-index-out-of-bounds in copy_process
-       5  UBSAN: array-index-out-of-bounds in corrupted
-       5  UBSAN: array-index-out-of-bounds in corrupted
-       5  UBSAN: array-index-out-of-bounds in corrupted
-       5  UBSAN: array-index-out-of-bounds in corrupted
-       5  UBSAN: array-index-out-of-bounds in corrupted
-       5  UBSAN: array-index-out-of-bounds in alloc_pid
-       5  UBSAN: array-index-out-of-bounds in copy_process
-       5  UBSAN: array-index-out-of-bounds in copy_process
-       5  UBSAN: array-index-out-of-bounds in copy_process
-       5  UBSAN: array-index-out-of-bounds in copy_process
-       5  UBSAN: array-index-out-of-bounds in copy_process
-       6  UBSAN: array-index-out-of-bounds in corrupted
-       6  UBSAN: array-index-out-of-bounds in corrupted
-       6  UBSAN: array-index-out-of-bounds in alloc_pid
-       6  UBSAN: array-index-out-of-bounds in copy_process
-       6  UBSAN: array-index-out-of-bounds in copy_process
-       6  UBSAN: array-index-out-of-bounds in copy_process
-       6  UBSAN: array-index-out-of-bounds in copy_process
-       6  UBSAN: array-index-out-of-bounds in copy_process
-       6  UBSAN: array-index-out-of-bounds in copy_process
-       6  UBSAN: array-index-out-of-bounds in copy_process
-       7  UBSAN: array-index-out-of-bounds in corrupted
-       7  UBSAN: array-index-out-of-bounds in corrupted
-       7  UBSAN: array-index-out-of-bounds in corrupted
-       7  UBSAN: array-index-out-of-bounds in corrupted
-       7  UBSAN: array-index-out-of-bounds in alloc_pid
-       7  UBSAN: array-index-out-of-bounds in copy_process
-       7  UBSAN: array-index-out-of-bounds in copy_process
-       7  UBSAN: array-index-out-of-bounds in copy_process
-       7  UBSAN: array-index-out-of-bounds in copy_process
-       8  UBSAN: array-index-out-of-bounds in corrupted
-       8  UBSAN: array-index-out-of-bounds in corrupted
-       8  UBSAN: array-index-out-of-bounds in corrupted
-       8  UBSAN: array-index-out-of-bounds in corrupted
-       8  UBSAN: array-index-out-of-bounds in corrupted
-       8  UBSAN: array-index-out-of-bounds in corrupted
-       8  UBSAN: array-index-out-of-bounds in alloc_pid
-       8  UBSAN: array-index-out-of-bounds in alloc_pid
-       8  UBSAN: array-index-out-of-bounds in copy_process
-       8  UBSAN: array-index-out-of-bounds in copy_process
-       8  UBSAN: array-index-out-of-bounds in copy_process
-       8  UBSAN: array-index-out-of-bounds in copy_process
-       8  UBSAN: array-index-out-of-bounds in copy_process
-       9  UBSAN: array-index-out-of-bounds in corrupted
-       9  UBSAN: array-index-out-of-bounds in corrupted
-       9  UBSAN: array-index-out-of-bounds in corrupted
-       9  UBSAN: array-index-out-of-bounds in alloc_pid
-       9  UBSAN: array-index-out-of-bounds in alloc_pid
-       9  UBSAN: array-index-out-of-bounds in alloc_pid
-       9  UBSAN: array-index-out-of-bounds in copy_process
-       9  UBSAN: array-index-out-of-bounds in copy_process
-       9  UBSAN: array-index-out-of-bounds in copy_process
-       9  UBSAN: array-index-out-of-bounds in copy_process
-      10  UBSAN: array-index-out-of-bounds in corrupted
-      10  UBSAN: array-index-out-of-bounds in corrupted
-      10  UBSAN: array-index-out-of-bounds in corrupted
-      10  UBSAN: array-index-out-of-bounds in corrupted
-      10  UBSAN: array-index-out-of-bounds in corrupted
-      10  UBSAN: array-index-out-of-bounds in corrupted
-      10  UBSAN: array-index-out-of-bounds in corrupted
-      10  UBSAN: array-index-out-of-bounds in copy_process
-The bug was not found.
-About 1573 commits remaining
+***    7  INFO: task hung in pipe_release
+***    7  INFO: task hung in pipe_release
+***    7  INFO: task hung in pipe_release
+The bug was found.
+About 598 commits remaining
 
-2025-03-23 13:07:22
+2025-10-05 17:09:08
 Session:   6
-Kernel:    2023-06-20 - 055fdcac930b103372ea19a25de6c406fc245be2
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Kernel:    2023-05-18 - 1ecaf17d097c91a7bd2979c57f7c81c5eeaf526b
+Compiler:  ccache gcc
 Attempt 1:
-    No crashes found.
+    Time  Bug Name
+       6  INFO: task hung in del_device_store
+       7  INFO: task hung in new_device_store
+       7  INFO: task hung in new_device_store
+       7  INFO: task hung in del_device_store
+       7  INFO: task hung in del_device_store
+       7  INFO: task hung in del_device_store
+       7  INFO: task hung in del_device_store
+       7  INFO: task hung in del_device_store
+      10  BUG: corrupted list in nfc_llcp_register_device
 The bug was not found.
-About 9583 commits remaining
+About 1347 commits remaining
 
-2025-03-23 13:30:26
+2025-10-05 17:42:25
 Session:   7
-Kernel:    2023-06-29 - bf1fa6f15553df04f2bdd06190ccd5f388ab0777
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Kernel:    2023-05-26 - 4781e965e655b0f1736856908f861939dac79b4e
+Compiler:  ccache gcc
 Attempt 1:
     Time  Bug Name
-       1  UBSAN: array-index-out-of-bounds in corrupted
-       1  UBSAN: array-index-out-of-bounds in corrupted
-       1  UBSAN: array-index-out-of-bounds in copy_process
-       2  UBSAN: array-index-out-of-bounds in corrupted
-       2  UBSAN: array-index-out-of-bounds in corrupted
-       2  UBSAN: array-index-out-of-bounds in corrupted
-       2  UBSAN: array-index-out-of-bounds in alloc_pid
-       2  UBSAN: array-index-out-of-bounds in alloc_pid
-       2  UBSAN: array-index-out-of-bounds in alloc_pid
-       2  UBSAN: array-index-out-of-bounds in alloc_pid
-       2  UBSAN: array-index-out-of-bounds in alloc_pid
-       2  UBSAN: array-index-out-of-bounds in alloc_pid
-       2  UBSAN: array-index-out-of-bounds in copy_process
-       2  UBSAN: array-index-out-of-bounds in copy_process
-       2  UBSAN: array-index-out-of-bounds in copy_process
-       2  UBSAN: array-index-out-of-bounds in copy_process
-       3  UBSAN: array-index-out-of-bounds in corrupted
-       3  UBSAN: array-index-out-of-bounds in corrupted
-       3  UBSAN: array-index-out-of-bounds in corrupted
-       3  UBSAN: array-index-out-of-bounds in corrupted
-       3  UBSAN: array-index-out-of-bounds in corrupted
-       3  UBSAN: array-index-out-of-bounds in corrupted
-       3  UBSAN: array-index-out-of-bounds in alloc_pid
-       3  UBSAN: array-index-out-of-bounds in copy_process
-       4  UBSAN: array-index-out-of-bounds in corrupted
-       4  UBSAN: array-index-out-of-bounds in corrupted
-       4  UBSAN: array-index-out-of-bounds in corrupted
-       4  UBSAN: array-index-out-of-bounds in corrupted
-       4  UBSAN: array-index-out-of-bounds in corrupted
-       4  UBSAN: array-index-out-of-bounds in corrupted
-       4  UBSAN: array-index-out-of-bounds in corrupted
-       4  UBSAN: array-index-out-of-bounds in corrupted
-       4  UBSAN: array-index-out-of-bounds in corrupted
-       4  UBSAN: array-index-out-of-bounds in copy_process
-       4  UBSAN: array-index-out-of-bounds in copy_process
-       5  UBSAN: array-index-out-of-bounds in corrupted
-       5  UBSAN: array-index-out-of-bounds in corrupted
-       5  UBSAN: array-index-out-of-bounds in corrupted
-       5  UBSAN: array-index-out-of-bounds in corrupted
-       5  UBSAN: array-index-out-of-bounds in corrupted
-       5  UBSAN: array-index-out-of-bounds in corrupted
-       5  UBSAN: array-index-out-of-bounds in corrupted
-       5  UBSAN: array-index-out-of-bounds in corrupted
-       5  UBSAN: array-index-out-of-bounds in alloc_pid
-       5  UBSAN: array-index-out-of-bounds in alloc_pid
-       5  UBSAN: array-index-out-of-bounds in copy_process
-       6  UBSAN: array-index-out-of-bounds in corrupted
-       6  UBSAN: array-index-out-of-bounds in corrupted
-       6  UBSAN: array-index-out-of-bounds in corrupted
-       6  UBSAN: array-index-out-of-bounds in corrupted
-       6  UBSAN: array-index-out-of-bounds in corrupted
-       6  UBSAN: array-index-out-of-bounds in corrupted
-       6  UBSAN: array-index-out-of-bounds in copy_process
-       6  UBSAN: array-index-out-of-bounds in copy_process
-       6  UBSAN: array-index-out-of-bounds in copy_process
-       6  UBSAN: array-index-out-of-bounds in copy_process
-       7  UBSAN: array-index-out-of-bounds in corrupted
-       7  UBSAN: array-index-out-of-bounds in corrupted
-       7  UBSAN: array-index-out-of-bounds in corrupted
-       7  UBSAN: array-index-out-of-bounds in corrupted
-       7  UBSAN: array-index-out-of-bounds in corrupted
-       7  UBSAN: array-index-out-of-bounds in corrupted
-       7  UBSAN: array-index-out-of-bounds in corrupted
-       7  UBSAN: array-index-out-of-bounds in corrupted
-       7  UBSAN: array-index-out-of-bounds in alloc_pid
-       7  UBSAN: array-index-out-of-bounds in copy_process
-       7  UBSAN: array-index-out-of-bounds in copy_process
-       8  UBSAN: array-index-out-of-bounds in corrupted
-       8  UBSAN: array-index-out-of-bounds in corrupted
-       8  UBSAN: array-index-out-of-bounds in alloc_pid
-       8  UBSAN: array-index-out-of-bounds in alloc_pid
-       8  UBSAN: array-index-out-of-bounds in copy_process
-       8  UBSAN: array-index-out-of-bounds in copy_process
-       8  UBSAN: array-index-out-of-bounds in copy_process
-       8  UBSAN: array-index-out-of-bounds in copy_process
-       8  UBSAN: array-index-out-of-bounds in copy_process
-       8  UBSAN: array-index-out-of-bounds in copy_process
-       8  UBSAN: array-index-out-of-bounds in copy_process
-       9  UBSAN: array-index-out-of-bounds in corrupted
-       9  UBSAN: array-index-out-of-bounds in corrupted
-       9  UBSAN: array-index-out-of-bounds in corrupted
-       9  UBSAN: array-index-out-of-bounds in corrupted
-       9  UBSAN: array-index-out-of-bounds in corrupted
-       9  UBSAN: array-index-out-of-bounds in alloc_pid
-       9  UBSAN: array-index-out-of-bounds in alloc_pid
-       9  UBSAN: array-index-out-of-bounds in copy_process
-       9  UBSAN: array-index-out-of-bounds in copy_process
-       9  UBSAN: array-index-out-of-bounds in copy_process
-      10  UBSAN: array-index-out-of-bounds in corrupted
-      10  UBSAN: array-index-out-of-bounds in corrupted
-      10  UBSAN: array-index-out-of-bounds in corrupted
-      10  UBSAN: array-index-out-of-bounds in corrupted
-      10  UBSAN: array-index-out-of-bounds in alloc_pid
-      10  UBSAN: array-index-out-of-bounds in alloc_pid
-      10  UBSAN: array-index-out-of-bounds in copy_process
-      10  UBSAN: array-index-out-of-bounds in copy_process
-The bug was not found.
-About 368 commits remaining
+***    7  INFO: task hung in pipe_release
+The bug was found.
+About 841 commits remaining
 
-2025-03-23 13:45:10
+2025-10-05 18:11:58
 Session:   8
-Kernel:    2023-06-29 - e55e5df193d247a38a5e1ac65a5316a0adcc22fa
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Kernel:    2023-05-23 - 96449f90240713bd9bd653d6b15266a1044cfa7b
+Compiler:  ccache gcc
 Attempt 1:
     Time  Bug Name
-       1  UBSAN: array-index-out-of-bounds in corrupted
-       1  UBSAN: array-index-out-of-bounds in corrupted
-       1  UBSAN: array-index-out-of-bounds in corrupted
-       2  UBSAN: array-index-out-of-bounds in corrupted
-       2  UBSAN: array-index-out-of-bounds in corrupted
-       2  UBSAN: array-index-out-of-bounds in corrupted
-       2  UBSAN: array-index-out-of-bounds in corrupted
-       2  UBSAN: array-index-out-of-bounds in corrupted
-       2  UBSAN: array-index-out-of-bounds in corrupted
-       2  UBSAN: array-index-out-of-bounds in corrupted
-       2  UBSAN: array-index-out-of-bounds in alloc_pid
-       2  UBSAN: array-index-out-of-bounds in alloc_pid
-       2  UBSAN: array-index-out-of-bounds in alloc_pid
-       2  UBSAN: array-index-out-of-bounds in copy_process
-       2  UBSAN: array-index-out-of-bounds in copy_process
-       2  UBSAN: array-index-out-of-bounds in copy_process
-       3  UBSAN: array-index-out-of-bounds in corrupted
-       3  UBSAN: array-index-out-of-bounds in corrupted
-       3  UBSAN: array-index-out-of-bounds in corrupted
-       3  UBSAN: array-index-out-of-bounds in corrupted
-       3  UBSAN: array-index-out-of-bounds in alloc_pid
-       3  UBSAN: array-index-out-of-bounds in copy_process
-       3  UBSAN: array-index-out-of-bounds in copy_process
-       3  UBSAN: array-index-out-of-bounds in copy_process
-       4  UBSAN: array-index-out-of-bounds in corrupted
-       4  UBSAN: array-index-out-of-bounds in corrupted
-       4  UBSAN: array-index-out-of-bounds in corrupted
-       4  UBSAN: array-index-out-of-bounds in corrupted
-       4  UBSAN: array-index-out-of-bounds in corrupted
-       4  UBSAN: array-index-out-of-bounds in alloc_pid
-       4  UBSAN: array-index-out-of-bounds in alloc_pid
-       4  UBSAN: array-index-out-of-bounds in alloc_pid
-       4  UBSAN: array-index-out-of-bounds in copy_process
-       4  UBSAN: array-index-out-of-bounds in copy_process
-       4  UBSAN: array-index-out-of-bounds in copy_process
-       5  UBSAN: array-index-out-of-bounds in corrupted
-       5  UBSAN: array-index-out-of-bounds in corrupted
-       5  UBSAN: array-index-out-of-bounds in corrupted
-       5  UBSAN: array-index-out-of-bounds in corrupted
-       5  UBSAN: array-index-out-of-bounds in corrupted
-       5  UBSAN: array-index-out-of-bounds in alloc_pid
-       5  UBSAN: array-index-out-of-bounds in copy_process
-       5  UBSAN: array-index-out-of-bounds in copy_process
-       5  UBSAN: array-index-out-of-bounds in copy_process
-       5  UBSAN: array-index-out-of-bounds in copy_process
-       5  UBSAN: array-index-out-of-bounds in copy_process
-       5  UBSAN: array-index-out-of-bounds in copy_process
-       6  UBSAN: array-index-out-of-bounds in corrupted
-       6  UBSAN: array-index-out-of-bounds in corrupted
-       6  UBSAN: array-index-out-of-bounds in corrupted
-       6  UBSAN: array-index-out-of-bounds in alloc_pid
-       6  UBSAN: array-index-out-of-bounds in alloc_pid
-       6  UBSAN: array-index-out-of-bounds in copy_process
-       6  UBSAN: array-index-out-of-bounds in copy_process
-       6  UBSAN: array-index-out-of-bounds in copy_process
-       6  UBSAN: array-index-out-of-bounds in copy_process
-       7  UBSAN: array-index-out-of-bounds in corrupted
-       7  UBSAN: array-index-out-of-bounds in corrupted
-       7  UBSAN: array-index-out-of-bounds in corrupted
-       7  UBSAN: array-index-out-of-bounds in corrupted
-       7  UBSAN: array-index-out-of-bounds in corrupted
-       7  UBSAN: array-index-out-of-bounds in alloc_pid
-       7  UBSAN: array-index-out-of-bounds in copy_process
-       7  UBSAN: array-index-out-of-bounds in copy_process
-       7  UBSAN: array-index-out-of-bounds in copy_process
-       7  UBSAN: array-index-out-of-bounds in copy_process
-       8  UBSAN: array-index-out-of-bounds in corrupted
-       8  UBSAN: array-index-out-of-bounds in corrupted
-       8  UBSAN: array-index-out-of-bounds in corrupted
-       8  UBSAN: array-index-out-of-bounds in corrupted
-       8  UBSAN: array-index-out-of-bounds in alloc_pid
-       8  UBSAN: array-index-out-of-bounds in alloc_pid
-       8  UBSAN: array-index-out-of-bounds in alloc_pid
-       8  UBSAN: array-index-out-of-bounds in copy_process
-       8  UBSAN: array-index-out-of-bounds in copy_process
-       8  UBSAN: array-index-out-of-bounds in copy_process
-       8  UBSAN: array-index-out-of-bounds in copy_process
-       8  UBSAN: array-index-out-of-bounds in copy_process
-       9  UBSAN: array-index-out-of-bounds in corrupted
-       9  UBSAN: array-index-out-of-bounds in corrupted
-       9  UBSAN: array-index-out-of-bounds in corrupted
-       9  UBSAN: array-index-out-of-bounds in corrupted
-       9  UBSAN: array-index-out-of-bounds in corrupted
-       9  UBSAN: array-index-out-of-bounds in corrupted
-       9  UBSAN: array-index-out-of-bounds in corrupted
-       9  UBSAN: array-index-out-of-bounds in alloc_pid
-       9  UBSAN: array-index-out-of-bounds in alloc_pid
-       9  UBSAN: array-index-out-of-bounds in alloc_pid
-      10  UBSAN: array-index-out-of-bounds in corrupted
-      10  UBSAN: array-index-out-of-bounds in corrupted
-      10  UBSAN: array-index-out-of-bounds in corrupted
-      10  UBSAN: array-index-out-of-bounds in alloc_pid
-      10  UBSAN: array-index-out-of-bounds in alloc_pid
-      10  UBSAN: array-index-out-of-bounds in copy_process
-      10  UBSAN: array-index-out-of-bounds in copy_process
-      10  UBSAN: array-index-out-of-bounds in copy_process
+       9  WARNING: ODEBUG bug in netdev_run_todo
 The bug was not found.
-About 196 commits remaining
+About 488 commits remaining
 
-2025-03-23 14:07:21
+2025-10-05 18:44:17
 Session:   9
-Kernel:    2023-06-30 - d8b0bd57c2d68eb500f356f0f9228e6183da94ae
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Kernel:    2023-05-24 - dad987484eaaa7cd7f7f7459f4aee1470d8ec8ef
+Compiler:  ccache gcc
 Attempt 1:
     Time  Bug Name
-***    5  INFO: task hung in pipe_release
-***    5  INFO: task hung in pipe_release
+***    8  INFO: task hung in pipe_release
+***    8  INFO: task hung in pipe_release
+***    8  INFO: task hung in pipe_release
+***    8  INFO: task hung in pipe_release
 Running syz-repro.
 syz-repro was terminated after 60 minutes
 Run Time:        1h0m0s
 The bug was found.
-About 110 commits remaining
+About 32 commits remaining
 
-2025-03-23 15:24:35
+2025-10-05 20:07:41
 Session:   10
-Kernel:    2023-06-21 - 384e338a9187e479349c97c9cfb36f6060708db8
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
-Attempt 1:
-    No crashes found.
-The bug was not found.
-About 10668 commits remaining
-
-2025-03-23 15:47:54
-Session:   11
-Kernel:    2023-06-29 - 6e320363339b585a36bf40d74592db3db021e017
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
-Attempt 1:
-    No crashes found.
-The bug was not found.
-About 8762 commits remaining
-
-2025-03-23 16:11:10
-Session:   12
-Kernel:    2023-06-21 - 6f3136326ee47ae2dd5dac9306c9b08ccbc7e81e
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
-Attempt 1:
-    No crashes found.
-The bug was not found.
-About 10654 commits remaining
-
-2025-03-23 16:27:03
-Session:   13
-Kernel:    2023-06-26 - d61cd13e732c0eaa7d66b45edb2d0de8eab65a1e
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
-Attempt 1:
-    No crashes found.
-The bug was not found.
-About 10647 commits remaining
-
-2025-03-23 16:42:45
-Session:   14
-Kernel:    2023-06-30 - 112e7e21519422b6f2bb0fa8061f5685e9757170
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Kernel:    2023-05-23 - 51c78a4d532efe9543a4df019ff405f05c6157f6
+Compiler:  ccache gcc
 Attempt 1:
     Time  Bug Name
-       1  UBSAN: array-index-out-of-bounds in corrupted
-       1  UBSAN: array-index-out-of-bounds in corrupted
-       1  UBSAN: array-index-out-of-bounds in alloc_pid
-       2  UBSAN: array-index-out-of-bounds in corrupted
-       2  UBSAN: array-index-out-of-bounds in corrupted
-       2  UBSAN: array-index-out-of-bounds in corrupted
-       2  UBSAN: array-index-out-of-bounds in corrupted
-       2  UBSAN: array-index-out-of-bounds in corrupted
-       2  UBSAN: array-index-out-of-bounds in corrupted
-       2  UBSAN: array-index-out-of-bounds in alloc_pid
-       2  UBSAN: array-index-out-of-bounds in alloc_pid
-       2  UBSAN: array-index-out-of-bounds in alloc_pid
-       2  UBSAN: array-index-out-of-bounds in alloc_pid
-       2  UBSAN: array-index-out-of-bounds in alloc_pid
-       2  UBSAN: array-index-out-of-bounds in alloc_pid
-       2  UBSAN: array-index-out-of-bounds in copy_process
-       3  UBSAN: array-index-out-of-bounds in corrupted
-       3  UBSAN: array-index-out-of-bounds in corrupted
-       3  UBSAN: array-index-out-of-bounds in alloc_pid
-       3  UBSAN: array-index-out-of-bounds in alloc_pid
-       3  UBSAN: array-index-out-of-bounds in alloc_pid
-       3  UBSAN: array-index-out-of-bounds in copy_process
-       3  UBSAN: array-index-out-of-bounds in copy_process
-       3  UBSAN: array-index-out-of-bounds in copy_process
-       4  UBSAN: array-index-out-of-bounds in corrupted
-       4  UBSAN: array-index-out-of-bounds in corrupted
-       4  UBSAN: array-index-out-of-bounds in corrupted
-       4  UBSAN: array-index-out-of-bounds in corrupted
-       4  UBSAN: array-index-out-of-bounds in corrupted
-       4  UBSAN: array-index-out-of-bounds in corrupted
-       4  UBSAN: array-index-out-of-bounds in corrupted
-       4  UBSAN: array-index-out-of-bounds in alloc_pid
-       4  UBSAN: array-index-out-of-bounds in copy_process
-       4  UBSAN: array-index-out-of-bounds in copy_process
-       4  UBSAN: array-index-out-of-bounds in copy_process
-       5  UBSAN: array-index-out-of-bounds in corrupted
-       5  UBSAN: array-index-out-of-bounds in corrupted
-       5  UBSAN: array-index-out-of-bounds in corrupted
-       5  UBSAN: array-index-out-of-bounds in corrupted
-       5  UBSAN: array-index-out-of-bounds in corrupted
-       5  UBSAN: array-index-out-of-bounds in corrupted
-       5  UBSAN: array-index-out-of-bounds in corrupted
-       5  UBSAN: array-index-out-of-bounds in alloc_pid
-       5  UBSAN: array-index-out-of-bounds in alloc_pid
-       5  UBSAN: array-index-out-of-bounds in copy_process
-       5  UBSAN: array-index-out-of-bounds in copy_process
-       5  UBSAN: array-index-out-of-bounds in copy_process
-       6  UBSAN: array-index-out-of-bounds in corrupted
-       6  UBSAN: array-index-out-of-bounds in corrupted
-       6  UBSAN: array-index-out-of-bounds in corrupted
-       6  UBSAN: array-index-out-of-bounds in corrupted
-       6  UBSAN: array-index-out-of-bounds in corrupted
-       6  UBSAN: array-index-out-of-bounds in alloc_pid
-       6  UBSAN: array-index-out-of-bounds in alloc_pid
-       6  UBSAN: array-index-out-of-bounds in copy_process
-       6  UBSAN: array-index-out-of-bounds in copy_process
-       7  UBSAN: array-index-out-of-bounds in corrupted
-       7  UBSAN: array-index-out-of-bounds in corrupted
-       7  UBSAN: array-index-out-of-bounds in corrupted
-       7  UBSAN: array-index-out-of-bounds in corrupted
-       7  UBSAN: array-index-out-of-bounds in corrupted
-       7  UBSAN: array-index-out-of-bounds in alloc_pid
-       7  UBSAN: array-index-out-of-bounds in alloc_pid
-       7  UBSAN: array-index-out-of-bounds in alloc_pid
-       7  UBSAN: array-index-out-of-bounds in copy_process
-       8  UBSAN: array-index-out-of-bounds in corrupted
-       8  UBSAN: array-index-out-of-bounds in corrupted
-       8  UBSAN: array-index-out-of-bounds in corrupted
-       8  UBSAN: array-index-out-of-bounds in corrupted
-       8  UBSAN: array-index-out-of-bounds in alloc_pid
-       8  UBSAN: array-index-out-of-bounds in copy_process
-       8  UBSAN: array-index-out-of-bounds in copy_process
-       8  UBSAN: array-index-out-of-bounds in copy_process
-       8  UBSAN: array-index-out-of-bounds in copy_process
-       8  UBSAN: array-index-out-of-bounds in copy_process
-       8  UBSAN: array-index-out-of-bounds in copy_process
-       8  UBSAN: array-index-out-of-bounds in copy_process
-       8  UBSAN: array-index-out-of-bounds in copy_process
-       9  UBSAN: array-index-out-of-bounds in corrupted
-       9  UBSAN: array-index-out-of-bounds in corrupted
-       9  UBSAN: array-index-out-of-bounds in corrupted
-       9  UBSAN: array-index-out-of-bounds in corrupted
-       9  UBSAN: array-index-out-of-bounds in corrupted
-       9  UBSAN: array-index-out-of-bounds in corrupted
-       9  UBSAN: array-index-out-of-bounds in corrupted
-       9  UBSAN: array-index-out-of-bounds in copy_process
-       9  UBSAN: array-index-out-of-bounds in copy_process
-       9  UBSAN: array-index-out-of-bounds in copy_process
-      10  UBSAN: array-index-out-of-bounds in corrupted
-      10  UBSAN: array-index-out-of-bounds in corrupted
-      10  UBSAN: array-index-out-of-bounds in corrupted
-      10  UBSAN: array-index-out-of-bounds in alloc_pid
-      10  UBSAN: array-index-out-of-bounds in copy_process
-      10  UBSAN: array-index-out-of-bounds in copy_process
-      10  UBSAN: array-index-out-of-bounds in copy_process
-      10  UBSAN: array-index-out-of-bounds in copy_process
-The bug was not found.
-About 80 commits remaining
-
-2025-03-23 17:03:35
-Session:   15
-Kernel:    2023-06-27 - 54a11654de163994e32b24e3aa90ef81f4a3184d
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
-Attempt 1:
-    No crashes found.
-The bug was not found.
-About 10645 commits remaining
-
-2025-03-23 17:19:15
-Session:   16
-Kernel:    2023-06-30 - b69f0aeb068980af983d399deafc7477cec8bc04
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
-Attempt 1:
-    Time  Bug Name
-***    6  INFO: task hung in pipe_release
-***    6  INFO: task hung in pipe_release
-***    6  INFO: task hung in pipe_release
-***    6  INFO: task hung in pipe_release
-***    6  INFO: task hung in pipe_release
-Running syz-repro.
-syz-repro was terminated after 60 minutes
-Run Time:        1h0m0s
+***    8  INFO: task hung in pipe_release
+***    8  INFO: task hung in pipe_release
+***    8  INFO: task hung in pipe_release
 The bug was found.
-About 10644 commits remaining
+About 16 commits remaining
+
+2025-10-05 20:27:36
+Session:   11
+Kernel:    2023-05-23 - 5367f9bbb86a9fa377f8cfc673d9b8a446f3e917
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 8 commits remaining
+
+2025-10-05 20:49:09
+Session:   12
+Kernel:    2023-05-23 - 7ac7c987850c3ec617c778f7bd871804dc1c648d
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    7  INFO: task hung in pipe_release
+The bug was found.
+About 4 commits remaining
+
+2025-10-05 21:06:10
+Session:   13
+Kernel:    2023-05-23 - 6d8192bd69bb431ef6b2558be3b5746b706cd252
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 2 commits remaining
 
 ==== Partial Result: Focused Fuzzing ====
-Reproducer:           /home/syzretrospector/syzinspector/wd-bisector-5/reproducers/repro-bug0830-1.prog
-Bisection Result:     2023-06-30 - b69f0aeb068980af983d399deafc7477cec8bc04
-Bisected Commit Name: pid: Replace struct pid 1-element array with flex-array
-Stage Time:           7h28m39s
-Run Time:             7h28m41s
+Reproducer:           /home/syzretrospector/meerkat/wd-meerkat-2/reproducers/repro-bug0830-1.prog
+Bisection Result:     2023-05-23 - 7ac7c987850c3ec617c778f7bd871804dc1c648d
+Bisected Commit Name: udp: Convert udp_sendpage() to use MSG_SPLICE_PAGES
+Stage Time:           8h1m1s
+Run Time:             8h1m4s
 =========================================
 
 ==== Anchor Commit ====
 
-2025-03-23 18:37:25
-Session:   17
-Kernel:    2023-06-30 - 112e7e21519422b6f2bb0fa8061f5685e9757170
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+2025-10-05 21:25:29
+Session:   14
+Kernel:    2023-05-23 - 6d8192bd69bb431ef6b2558be3b5746b706cd252
+Compiler:  ccache gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-2/reproducers/repro-bug0830-1.prog
 Attempt 0:
-    UBSAN: array-index-out-of-bounds in alloc_pid
-    kernel panic: UBSAN: panic_on_warn set ...
+    No crashes found.
 Attempt 1:
-    UBSAN: array-index-out-of-bounds in alloc_pid
-    kernel panic: UBSAN: panic_on_warn set ...
+    No crashes found.
 Attempt 2:
-    UBSAN: array-index-out-of-bounds in alloc_pid
-    kernel panic: UBSAN: panic_on_warn set ...
+    No crashes found.
 Attempt 3:
-    UBSAN: array-index-out-of-bounds in alloc_pid
-    kernel panic: UBSAN: panic_on_warn set ...
+    No crashes found.
 Attempt 4:
-    UBSAN: array-index-out-of-bounds in alloc_pid
-    kernel panic: UBSAN: panic_on_warn set ...
+    No crashes found.
 Attempt 5:
-    UBSAN: array-index-out-of-bounds in alloc_pid
-    kernel panic: UBSAN: panic_on_warn set ...
+    No crashes found.
 Attempt 6:
-    UBSAN: array-index-out-of-bounds in alloc_pid
-    kernel panic: UBSAN: panic_on_warn set ...
+    No crashes found.
 Attempt 7:
-    UBSAN: array-index-out-of-bounds in alloc_pid
-    kernel panic: UBSAN: panic_on_warn set ...
+    No crashes found.
 The bug was not found.
 
 Failure: This bug cannot be found at the anchor commit.
 
 ====================================================================================================================================================
 Bug Name:             INFO: task hung in pipe_release
+Big ID:               bug0830
 Bug Link:             https://syzkaller.appspot.com/bug?extid=f527b971b4bdc8e79f9e
-Bisection Result:     2023-06-30 - b69f0aeb068980af983d399deafc7477cec8bc04
-Bisected Commit Name: pid: Replace struct pid 1-element array with flex-array
-Run Time:             7h41m26s
+Bisection Result:     2023-05-23 - 7ac7c987850c3ec617c778f7bd871804dc1c648d
+Bisected Commit Name: udp: Convert udp_sendpage() to use MSG_SPLICE_PAGES
+Run Time:             8h18m43s
 
 Anchor Commit:        2023-06-30 - 533925cb760431cb496a8c965cfd765a1a21d37e
-Bisection Result:     2023-06-30 - b69f0aeb068980af983d399deafc7477cec8bc04
+Bisection Result:     2023-05-23 - 7ac7c987850c3ec617c778f7bd871804dc1c648d
