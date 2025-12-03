@@ -1,4 +1,4 @@
-./bin/bisector -i 4 -c /home/syzretrospector/syzinspector/wd-bisector-4/bisector.cfg -a 58390c8ce1bddb6c623f62e7ed36383e7fa5c02f -F ff-test,poc-test,stateful-corpus,ff-no-find-backup
+./bin/meerkat -i 2 -c /home/syzretrospector/meerkat/wd-meerkat-2/meerkat.cfg -a 58390c8ce1bddb6c623f62e7ed36383e7fa5c02f -F ff-test,poc-test,pos-all-pocs,stateful-corpus,ff-no-find-backup
 Bisecting:          KASAN: null-ptr-deref Read in filemap_fault
 Syzbot Link:        https://syzkaller.appspot.com/bug?extid=48011b86c8ea329af1b9
 Working Name:       bug0874
@@ -10,21 +10,23 @@ Repository:         https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/lin
 Branch:             master
 Arch:               amd64
 
-Bisector:           /home/syzretrospector/syzinspector/
-Version:            1.0.4
-Kernel:             /home/syzretrospector/syzinspector/wd-bisector-4/kernel/
-Syzkaller:          /home/syzretrospector/syzinspector/syzkaller/
-Compilers:          /home/syzretrospector/compilers/
-Ccache:             ccache
+Meerkat:            /home/syzretrospector/meerkat/
+Version:            1.1.1
+Kernel:             /home/syzretrospector/meerkat/wd-meerkat-2/kernel/
+Syzkaller:          /home/syzretrospector/meerkat/syzkaller/
+Compilers:          /home/syzretrospector/meerkat/compilers/
+Compiler:           gcc (Ubuntu 12.3.0-1ubuntu1~22.04.2) 12.3.0
+Linker:             GNU ld (GNU Binutils for Ubuntu) 2.38
+Ccache:             ccache version 4.5.1
 Image:              /home/syzretrospector/images/stretch/stretch.img
 Image Key:          /home/syzretrospector/images/stretch/stretch.id_rsa
 
-Workdir:            /home/syzretrospector/syzinspector/wd-bisector-4/
-Kconfig:            /home/syzretrospector/syzinspector/wd-bisector-4/config-bug0874.txt
-Reproducers: (1)    /home/syzretrospector/syzinspector/wd-bisector-4/reproducers/
-Primary PoC:        /home/syzretrospector/syzinspector/wd-bisector-4/reproducers/repro-bug0874-1.prog
-Syzkaller Workdir:  /home/syzretrospector/syzinspector/wd-bisector-4/wd-kaller/
-Log Directory:      /home/syzretrospector/syzinspector/wd-bisector-4/log/
+Workdir:            /home/syzretrospector/meerkat/wd-meerkat-2/
+Kconfig:            /home/syzretrospector/meerkat/wd-meerkat-2/config-bug0874.txt
+Reproducers: (1)    /home/syzretrospector/meerkat/wd-meerkat-2/reproducers/
+Primary PoC:        /home/syzretrospector/meerkat/wd-meerkat-2/reproducers/repro-bug0874-1.prog
+Syzkaller Workdir:  /home/syzretrospector/meerkat/wd-meerkat-2/wd-kaller/
+Log Directory:      /home/syzretrospector/meerkat/wd-meerkat-2/log/
 
 Syscalls: (12)      ["ftruncate", "mmap", "open", "openat$cgroup_ro", "syz_mount_image$udf", "write$binfmt_script", "openat$cgroup_root", "openat$binfmt", "getgid", "mount$bpf", "getuid", "syz_create_resource$binfmt"]
 VM Count:           8
@@ -37,36 +39,298 @@ Max Attempts:       1
 
 ==== Anchor Commit ====
 
-2025-03-10 16:56:56
+2025-10-31 22:41:17
 Session:   1
 Kernel:    2023-04-30 - 58390c8ce1bddb6c623f62e7ed36383e7fa5c02f
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Compiler:  ccache gcc
 Attempt 1:
     Time  Bug Name
-       7  INFO: task hung in corrupted
-       7  INFO: task hung in new_device_store
-       7  INFO: task hung in new_device_store
-       7  INFO: task hung in new_device_store
-       7  INFO: task hung in new_device_store
-       7  INFO: task hung in new_device_store
-       7  INFO: task hung in del_device_store
+       8  INFO: task hung in del_device_store
+       8  INFO: task hung in del_device_store
+       8  INFO: task hung in del_device_store
 Attempt 2: (RETRY)
     Time  Bug Name
-       6  WARNING: ODEBUG bug in netdev_run_todo
-       7  INFO: task hung in new_device_store
-       7  INFO: task hung in new_device_store
-       7  INFO: task hung in del_device_store
-       7  INFO: task hung in del_device_store
-       7  INFO: task hung in del_device_store
-       9  INFO: task hung in del_device_store
-      10  INFO: task hung in del_device_store
+***    3  KASAN: null-ptr-deref Read in filemap_fault
+***    3  KASAN: null-ptr-deref Read in filemap_fault
+***    3  KASAN: null-ptr-deref Read in filemap_fault
 Attempt 3: (RETRY)
     Time  Bug Name
+***    3  KASAN: null-ptr-deref Read in filemap_fault
+***    3  KASAN: null-ptr-deref Read in filemap_fault
+***    3  KASAN: null-ptr-deref Read in filemap_fault
+The bug was found.
+
+New Max Time: 12
+
+==== Major Release Search ====
+13 Releases
+
+2025-10-31 23:20:43
+Session:   2
+Kernel:    2023-04-23 - 457391b0380335d5e9a5babdec90ac53928b23b4 (v6.3)
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       5  WARNING: ODEBUG bug in netdev_run_todo
+       7  INFO: task hung in del_device_store
+       7  INFO: task hung in del_device_store
+       8  INFO: task hung in devlink_free
+       8  INFO: task hung in del_device_store
+       9  INFO: task hung in devlink_free
+       9  INFO: task hung in del_device_store
+       9  INFO: task hung in del_device_store
+The bug was not found.
+About 12 releases remaining
+
+==== Kernel Bisection ====
+12048 Linux commits
+
+2025-10-31 23:56:06
+Session:   3
+Kernel:    2023-04-26 - b68ee1c6131c540a62ecd443be89c406401df091
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       7  INFO: task hung in del_device_store
+       7  INFO: task hung in del_device_store
+       7  INFO: task hung in del_device_store
+       8  INFO: task hung in del_device_store
+      10  INFO: task hung in del_device_store
+      11  INFO: task hung in del_device_store
+      11  INFO: task hung in del_device_store
+The bug was not found.
+About 6408 commits remaining
+
+2025-11-01 00:30:24
+Session:   4
+Kernel:    2023-04-27 - fc2e58b8b7c94b8fe23977775550de00472f6a74
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       5  INFO: task hung in new_device_store
+       7  INFO: task hung in del_device_store
+       8  INFO: task hung in del_device_store
+       9  INFO: task hung in del_device_store
+      10  INFO: task hung in del_device_store
+      11  no output from test machine
+      12  INFO: task hung in del_device_store
+The bug was not found.
+About 3110 commits remaining
+
+2025-11-01 01:04:49
+Session:   5
+Kernel:    2023-04-27 - 7fa8a8ee9400fe8ec188426e40e481717bc5e924
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    4  KASAN: null-ptr-deref Read in filemap_fault
+***    4  KASAN: null-ptr-deref Read in filemap_fault
+***    4  KASAN: null-ptr-deref Read in filemap_fault
+Running syz-repro.
+New PoC saved at /home/syzretrospector/meerkat/wd-meerkat-2/reproducers/repro-bug0874-0.prog
+Primary PoC:     /home/syzretrospector/meerkat/wd-meerkat-2/reproducers/repro-bug0874-0.prog
+Run Time:        0h14m0s
+The bug was found.
+About 1632 commits remaining
+
+2025-11-01 01:45:55
+Session:   6
+Kernel:    2023-04-27 - 556eb8b79190151506187bf0b16dda423c34d9a8
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       7  INFO: task hung in del_device_store
+       8  INFO: task hung in del_device_store
+       8  INFO: task hung in del_device_store
+       8  INFO: task hung in del_device_store
+       9  INFO: task hung in del_device_store
+The bug was not found.
+About 892 commits remaining
+
+2025-11-01 02:20:08
+Session:   7
+Kernel:    2023-04-27 - 35fab9271b7e6d193b47005c4d07369714db4fd1
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
        7  INFO: task hung in new_device_store
+       7  INFO: task hung in del_device_store
+       8  INFO: task hung in del_device_store
+      10  INFO: task hung in del_device_store
+      10  INFO: task hung in del_device_store
+      10  INFO: task hung in del_device_store
+      11  INFO: task hung in del_device_store
+The bug was not found.
+About 445 commits remaining
+
+2025-11-01 02:54:50
+Session:   8
+Kernel:    2023-04-18 - e961cc5652c68610d8acb65f20267b8c55444e5b
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    4  KASAN: null-ptr-deref Read in filemap_fault
+***    4  KASAN: null-ptr-deref Read in filemap_fault
+The bug was found.
+About 223 commits remaining
+
+2025-11-01 03:21:41
+Session:   9
+Kernel:    2023-04-05 - 60bcbe70bff5fa8a36bf2ed3a6629ea42e1c147d
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    4  KASAN: null-ptr-deref Read in filemap_fault
+***    4  KASAN: null-ptr-deref Read in filemap_fault
+The bug was found.
+About 112 commits remaining
+
+2025-11-01 03:48:14
+Session:   10
+Kernel:    2023-03-28 - 1f514bee0c086e70fb8137c15dc91c9711a3feeb
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       8  INFO: task hung in del_device_store
+       8  INFO: task hung in del_device_store
+       8  INFO: task hung in del_device_store
+      11  INFO: task hung in del_device_store
+      11  INFO: task hung in del_device_store
+      12  WARNING in udf_setsize
+      12  INFO: task hung in del_device_store
+The bug was not found.
+About 57 commits remaining
+
+2025-11-01 04:22:32
+Session:   11
+Kernel:    2023-04-05 - 9d062a8a4c6d5e6d1591cde41ac844d11f953ad8
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
        7  INFO: task hung in new_device_store
        7  INFO: task hung in del_device_store
        7  INFO: task hung in del_device_store
-       9  WARNING in udf_truncate_extents
+      10  INFO: task hung in del_device_store
+      11  INFO: task hung in new_device_store
+      11  INFO: task hung in new_device_store
+The bug was not found.
+About 29 commits remaining
+
+2025-11-01 04:57:03
+Session:   12
+Kernel:    2023-04-05 - c6a690e0c978bda8106e7a489c13323f90b087d0
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    5  KASAN: null-ptr-deref Read in filemap_fault
+***    5  KASAN: null-ptr-deref Read in filemap_fault
+Running syz-repro.
+New PoC saved at /home/syzretrospector/meerkat/wd-meerkat-2/reproducers/repro-bug0874-2.prog
+Primary PoC:     /home/syzretrospector/meerkat/wd-meerkat-2/reproducers/repro-bug0874-2.prog
+Run Time:        0h15m0s
+The bug was found.
+About 15 commits remaining
+
+2025-11-01 05:30:45
+Session:   13
+Kernel:    2023-04-05 - aaeb94eb86c58a89e70ae2dda46e137a72508ae3
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       7  INFO: task hung in devlink_free
+       7  INFO: task hung in del_device_store
+       7  INFO: task hung in del_device_store
+       8  INFO: task hung in del_device_store
+       8  INFO: task hung in del_device_store
+       8  INFO: task hung in del_device_store
+      11  INFO: task hung in del_device_store
+      12  INFO: task hung in del_device_store
+The bug was not found.
+About 8 commits remaining
+
+2025-11-01 05:56:30
+Session:   14
+Kernel:    2023-04-05 - e34f1e2ee0982a0ebed9e71f18d1b9529df43cd5
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    4  KASAN: null-ptr-deref Read in filemap_fault
+***    4  KASAN: null-ptr-deref Read in filemap_fault
+The bug was found.
+About 4 commits remaining
+
+2025-11-01 06:10:00
+Session:   15
+Kernel:    2023-04-05 - 66dabbb65d673aef40dd17bf62c042be8f6d4a4b
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    5  KASAN: null-ptr-deref Read in filemap_fault
+***    5  KASAN: null-ptr-deref Read in filemap_fault
+***    5  KASAN: null-ptr-deref Read in filemap_fault
+The bug was found.
+About 3 commits remaining
+
+2025-11-01 06:24:12
+Session:   16
+Kernel:    2023-04-05 - 48c9d11375fc66f1e59d0e9b27d121e015a50904
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       7  INFO: task hung in del_device_store
+       7  INFO: task hung in del_device_store
+       7  INFO: task hung in del_device_store
+       8  INFO: task hung in del_device_store
+       8  INFO: task hung in del_device_store
+       8  INFO: task hung in del_device_store
+       8  INFO: task hung in del_device_store
+      11  INFO: task hung in del_device_store
+The bug was not found.
+About 2 commits remaining
+
+==== Partial Result: Focused Fuzzing ====
+Reproducer:           /home/syzretrospector/meerkat/wd-meerkat-2/reproducers/repro-bug0874-2.prog
+Bisection Result:     2023-04-05 - 66dabbb65d673aef40dd17bf62c042be8f6d4a4b
+Bisected Commit Name: mm: return an ERR_PTR from __filemap_get_folio
+Stage Time:           8h8m47s
+Run Time:             8h8m49s
+=========================================
+
+==== Anchor Commit ====
+
+2025-11-01 06:50:04
+Session:   17
+Kernel:    2023-04-05 - 48c9d11375fc66f1e59d0e9b27d121e015a50904
+Compiler:  ccache gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-2/reproducers/repro-bug0874-2.prog
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    INFO: task hung in devlink_free
+Attempt 2:
+    WARNING: ODEBUG bug in netdev_run_todo
+    kernel panic: kernel: panic_on_warn set ...
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    INFO: task hung in devlink_free
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    INFO: task hung in devlink_free
 The bug was not found.
 
 Failure: This bug cannot be found at the anchor commit.
+
+====================================================================================================================================================
+Bug Name:             KASAN: null-ptr-deref Read in filemap_fault
+Big ID:               bug0874
+Bug Link:             https://syzkaller.appspot.com/bug?extid=48011b86c8ea329af1b9
+Bisection Result:     2023-04-05 - 66dabbb65d673aef40dd17bf62c042be8f6d4a4b
+Bisected Commit Name: mm: return an ERR_PTR from __filemap_get_folio
+Run Time:             8h26m59s
+
+Anchor Commit:        2023-04-30 - 58390c8ce1bddb6c623f62e7ed36383e7fa5c02f
+Bisection Result:     2023-04-05 - 66dabbb65d673aef40dd17bf62c042be8f6d4a4b
