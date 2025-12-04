@@ -528,7 +528,7 @@ void push_syscall_depends(std::vector<Syscall> &syscalls, int index, std::vector
         {"setsockopt$inet_sctp6_SCTP_AUTH_KEY", {TypeTag(resourceClass, "assoc_id")}},
         {"bpf$TOKEN_CREATE", {TypeTag(resourceClass, "fd_bpf_prog")}},
         {"bpf$BPF_PROG_DETACH", {TypeTag(resourceClass, "fd_cgroup"), TypeTag(resourceClass, "fd_bpf_link")}},
-        {"bpf$BPF_LINK_CREATE_XDP", {TypeTag(syscallClass, "bpf$BPF_LINK_CREATE")}},
+        {"bpf$BPF_LINK_CREATE_XDP", {TypeTag(syscallClass, "bpf$LINK_GET_FD_BY_ID")}},
     };
 
     if (problematic.count(syscalls.at(index).get_name()) == 1)
