@@ -190,7 +190,7 @@ int parse_warning_stack(const std::vector<std::string> &lines, int &i, std::vect
 
     // old syzkaller may inject register debugs in the middle of call traces.
     // This will cause issues here.
-    if (skip_to_call_trace(lines, i) < 0)
+    if (skip_to_call_trace(lines, i) < 0 || i >= lines.size())
     {
         std::cerr << "Error: index error parsing Warning report\n" << std::flush;
         return -1;
