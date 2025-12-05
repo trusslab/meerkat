@@ -1,4 +1,4 @@
-./bin/bisector -i 4 -c /home/syzretrospector/syzinspector/wd-bisector-4/bisector.cfg -a 0280e3c58f92b2fe0e8fbbdf8d386449168de4a8 -F ff-test,poc-test,stateful-corpus,ff-no-find-backup
+./bin/meerkat -i 2 -c /home/syzretrospector/meerkat/wd-meerkat-2/meerkat.cfg -a 0280e3c58f92b2fe0e8fbbdf8d386449168de4a8 -F ff-test,poc-test,pos-all-pocs,stateful-corpus,ff-no-find-backup
 Bisecting:          kernel BUG in vhost_get_vq_desc
 Warning: No syscall found that produces fd_vhost.
 Syzbot Link:        https://syzkaller.appspot.com/bug?extid=3140b17cb44a7b174008
@@ -11,21 +11,23 @@ Repository:         https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/lin
 Branch:             master
 Arch:               amd64
 
-Bisector:           /home/syzretrospector/syzinspector/
-Version:            1.0.4
-Kernel:             /home/syzretrospector/syzinspector/wd-bisector-4/kernel/
-Syzkaller:          /home/syzretrospector/syzinspector/syzkaller/
-Compilers:          /home/syzretrospector/compilers/
-Ccache:             ccache
+Meerkat:            /home/syzretrospector/meerkat/
+Version:            1.1.1
+Kernel:             /home/syzretrospector/meerkat/wd-meerkat-2/kernel/
+Syzkaller:          /home/syzretrospector/meerkat/syzkaller/
+Compilers:          /home/syzretrospector/meerkat/compilers/
+Compiler:           gcc (Ubuntu 12.3.0-1ubuntu1~22.04.2) 12.3.0
+Linker:             GNU ld (GNU Binutils for Ubuntu) 2.38
+Ccache:             ccache version 4.5.1
 Image:              /home/syzretrospector/images/stretch/stretch.img
 Image Key:          /home/syzretrospector/images/stretch/stretch.id_rsa
 
-Workdir:            /home/syzretrospector/syzinspector/wd-bisector-4/
-Kconfig:            /home/syzretrospector/syzinspector/wd-bisector-4/config-bug0913.txt
-Reproducers: (1)    /home/syzretrospector/syzinspector/wd-bisector-4/reproducers/
-Primary PoC:        /home/syzretrospector/syzinspector/wd-bisector-4/reproducers/repro-bug0913-1.prog
-Syzkaller Workdir:  /home/syzretrospector/syzinspector/wd-bisector-4/wd-kaller/
-Log Directory:      /home/syzretrospector/syzinspector/wd-bisector-4/log/
+Workdir:            /home/syzretrospector/meerkat/wd-meerkat-2/
+Kconfig:            /home/syzretrospector/meerkat/wd-meerkat-2/config-bug0913.txt
+Reproducers: (1)    /home/syzretrospector/meerkat/wd-meerkat-2/reproducers/
+Primary PoC:        /home/syzretrospector/meerkat/wd-meerkat-2/reproducers/repro-bug0913-1.prog
+Syzkaller Workdir:  /home/syzretrospector/meerkat/wd-meerkat-2/wd-kaller/
+Log Directory:      /home/syzretrospector/meerkat/wd-meerkat-2/log/
 
 Syscalls: (12)      ["eventfd", "ioctl$VHOST_SET_LOG_FD", "ioctl$VHOST_SET_MEM_TABLE", "ioctl$VHOST_SET_VRING_ADDR", "ioctl$VHOST_SET_VRING_BASE", "ioctl$VHOST_SET_VRING_KICK", "ioctl$VHOST_VSOCK_SET_RUNNING", "openat$vhost_vsock", "socketpair$unix", "ioctl$F2FS_IOC_START_ATOMIC_WRITE", "openat$selinux_enforce", "socket"]
 VM Count:           8
@@ -38,12 +40,16 @@ Max Attempts:       1
 
 ==== Anchor Commit ====
 
-2025-03-18 08:09:21
+2025-11-10 02:03:04
 Session:   1
 Kernel:    2022-01-25 - 0280e3c58f92b2fe0e8fbbdf8d386449168de4a8
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Compiler:  ccache gcc
 Attempt 1:
     Time  Bug Name
+       5  WARNING in vhost_dev_cleanup
+       5  WARNING in vhost_dev_cleanup
+       5  WARNING in vhost_dev_cleanup
+       5  WARNING in vhost_dev_cleanup
        5  WARNING in vhost_dev_cleanup
 ***    5  kernel BUG in vhost_get_vq_desc
 ***    5  kernel BUG in vhost_get_vq_desc
@@ -52,485 +58,575 @@ Attempt 2: (RETRY)
        3  WARNING in vhost_dev_cleanup
        5  WARNING in vhost_dev_cleanup
        5  WARNING in vhost_dev_cleanup
-***    5  kernel BUG in vhost_get_vq_desc
-***    5  kernel BUG in vhost_get_vq_desc
-***    5  kernel BUG in vhost_get_vq_desc
+       5  WARNING in vhost_dev_cleanup
+       5  WARNING in vhost_dev_cleanup
 ***    5  kernel BUG in vhost_get_vq_desc
 Attempt 3: (RETRY)
     Time  Bug Name
-       5  WARNING in vhost_dev_cleanup
-       5  WARNING in vhost_dev_cleanup
-       5  WARNING in vhost_dev_cleanup
-***    5  kernel BUG in vhost_get_vq_desc
-***    5  kernel BUG in vhost_get_vq_desc
-***    5  kernel BUG in vhost_get_vq_desc
+       3  WARNING in vhost_dev_cleanup
+***    3  kernel BUG in vhost_get_vq_desc
 The bug was found.
 
 New Max Time: 10
 
 ==== Major Release Search ====
-17 Releases
+11 Releases
 
-2025-03-18 08:40:27
+2025-11-10 02:33:41
 Session:   2
-Kernel:    2021-10-31 - 8bb7eca972ad531c9b149c0a51ab43a417385813 (v5.15)
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
-Attempt 1:
-    Time  Bug Name
-***    5  kernel BUG in vhost_get_vq_desc
-***    5  kernel BUG in vhost_get_vq_desc
-***    5  kernel BUG in vhost_get_vq_desc
-Running syz-repro.
-New PoC saved at /home/syzretrospector/syzinspector/wd-bisector-4/reproducers/repro-bug0913-0.prog
-Primary PoC:     /home/syzretrospector/syzinspector/wd-bisector-4/reproducers/repro-bug0913-0.prog
-Run Time:        0h53m0s
-The bug was found.
-About 16 releases remaining
-
-2025-03-18 09:53:52
-Session:   3
-Kernel:    2021-08-29 - 7d2a07b769330c34b4deabeed939325c77a7ec2f (v5.14)
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
-Attempt 1:
-    Time  Bug Name
-       3  WARNING in vhost_dev_cleanup
-***    3  kernel BUG in vhost_get_vq_desc
-The bug was found.
-About 15 releases remaining
-
-2025-03-18 10:12:06
-Session:   4
-Kernel:    2021-06-27 - 62fb9874f5da54fdb243003b386128037319b219 (v5.13)
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
-Attempt 1:
-    Time  Bug Name
-       3  BUG: sleeping function called from invalid context in lock_sock_nested
-***    3  kernel BUG in vhost_get_vq_desc
-***    3  kernel BUG in vhost_get_vq_desc
-The bug was found.
-About 14 releases remaining
-
-2025-03-18 10:29:58
-Session:   5
-Kernel:    2021-02-14 - f40ddce88593482919761f74910f42f4b84c004b (v5.11)
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
-Attempt 1:
-    Time  Bug Name
-***    3  kernel BUG in vhost_get_vq_desc
-Running syz-repro.
-syz-repro was terminated after 60 minutes
-Run Time:        1h0m0s
-The bug was found.
-About 13 releases remaining
-
-2025-03-18 11:47:33
-Session:   6
-Kernel:    2020-10-11 - bbf5c979011a099af5dc76498918ed7df445635b (v5.9)
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.1.0-syz/bin/gcc
-Attempt 1:
-    Time  Bug Name
-***    3  kernel BUG in vhost_get_vq_desc
-Running syz-repro.
-syz-repro was terminated after 60 minutes
-Run Time:        1h0m0s
-The bug was found.
-About 12 releases remaining
-
-2025-03-18 13:04:25
-Session:   7
-Kernel:    2020-05-31 - 3d77e6a8804abcc0504c904bd6e5cdf3a5cf8162 (v5.7)
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.1.0-syz/bin/gcc
-Attempt 1:
-    Time  Bug Name
-       3  WARNING in vhost_dev_cleanup
-       3  WARNING in vhost_dev_cleanup
-***    3  kernel BUG in vhost_get_vq_desc
-Running syz-repro.
-syz-repro was terminated after 60 minutes
-Run Time:        1h0m0s
-The bug was found.
-About 11 releases remaining
-
-2025-03-18 14:20:49
-Session:   8
-Kernel:    2020-01-26 - d5226fa6dbae0569ee43ecfc08bdcd6770fc4755 (v5.5)
-Compiler:  ccache /home/syzretrospector/compilers/gcc-9.0.0-20181231/bin/gcc
+Kernel:    2022-01-09 - df0cc57e057f18e44dac8e6c18aba47ab53202f9 (v5.16)
+Compiler:  ccache gcc
 Attempt 1:
     Time  Bug Name
        3  WARNING in vhost_dev_cleanup
        5  WARNING in vhost_dev_cleanup
        5  WARNING in vhost_dev_cleanup
-***    5  kernel BUG in vhost_get_vq_desc
-***    5  kernel BUG in vhost_get_vq_desc
-***    5  kernel BUG in vhost_get_vq_desc
+       5  WARNING in vhost_dev_cleanup
+       6  WARNING in vhost_dev_cleanup
+       6  WARNING in vhost_dev_cleanup
+       6  WARNING in vhost_dev_cleanup
+       7  WARNING in vhost_dev_cleanup
+***    7  kernel BUG in vhost_get_vq_desc
 Running syz-repro.
-syz-repro was terminated after 60 minutes
-Run Time:        1h0m0s
+New PoC saved at /home/syzretrospector/meerkat/wd-meerkat-2/reproducers/repro-bug0913-0.prog
+Primary PoC:     /home/syzretrospector/meerkat/wd-meerkat-2/reproducers/repro-bug0913-0.prog
+Run Time:        0h32m0s
 The bug was found.
 About 10 releases remaining
 
-2025-03-18 15:40:04
-Session:   9
-Kernel:    2019-09-15 - 4d856f72c10ecb060868ed10ff1b1453943fc6c8 (v5.3)
-Compiler:  ccache /home/syzretrospector/compilers/gcc-9.0.0-20181231/bin/gcc
+2025-11-10 03:30:13
+Session:   3
+Kernel:    2021-10-31 - 8bb7eca972ad531c9b149c0a51ab43a417385813 (v5.15)
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
 Attempt 1:
     Time  Bug Name
-       2  lost connection to test machine
-       2  lost connection to test machine
-       2  lost connection to test machine
-       2  lost connection to test machine
-       2  lost connection to test machine
-       2  lost connection to test machine
-       2  lost connection to test machine
-       2  lost connection to test machine
-       3  lost connection to test machine
-       3  lost connection to test machine
-       3  lost connection to test machine
-       3  lost connection to test machine
-       3  lost connection to test machine
-       3  lost connection to test machine
-       3  lost connection to test machine
-       3  lost connection to test machine
-       5  lost connection to test machine
-       5  lost connection to test machine
-       5  lost connection to test machine
-       5  lost connection to test machine
-       5  lost connection to test machine
-       5  lost connection to test machine
-       5  lost connection to test machine
-       5  lost connection to test machine
-       6  lost connection to test machine
-       6  lost connection to test machine
-       6  lost connection to test machine
-       6  lost connection to test machine
-       6  lost connection to test machine
-       6  lost connection to test machine
-       6  lost connection to test machine
-       6  lost connection to test machine
-       8  lost connection to test machine
-       8  lost connection to test machine
-       8  lost connection to test machine
-       8  lost connection to test machine
-       8  lost connection to test machine
-       8  lost connection to test machine
-       8  lost connection to test machine
-       8  lost connection to test machine
-       9  lost connection to test machine
-       9  lost connection to test machine
-       9  lost connection to test machine
-       9  lost connection to test machine
-       9  lost connection to test machine
-       9  lost connection to test machine
-       9  lost connection to test machine
-       9  lost connection to test machine
-      10  lost connection to test machine
-      10  lost connection to test machine
-      10  lost connection to test machine
-      10  lost connection to test machine
-      10  lost connection to test machine
-      10  lost connection to test machine
-      10  lost connection to test machine
-      10  lost connection to test machine
-The bug was not found.
+       3  WARNING in vhost_dev_cleanup
+       7  WARNING in vhost_dev_cleanup
+       7  WARNING in vhost_dev_cleanup
+       7  WARNING: ODEBUG bug in netdev_run_todo
+       8  WARNING in vhost_dev_cleanup
+       8  WARNING in vhost_dev_cleanup
+***    8  kernel BUG in vhost_get_vq_desc
+The bug was found.
 About 9 releases remaining
 
-==== Kernel Bisection ====
-31223 Linux commits
-
-2025-03-18 16:04:41
-Session:   10
-Kernel:    2019-10-30 - 60845e34f0c5c19a9e86af477b429993952f585b
-Compiler:  ccache /home/syzretrospector/compilers/gcc-9.0.0-20181231/bin/gcc
+2025-11-10 03:54:47
+Session:   4
+Kernel:    2021-08-29 - 7d2a07b769330c34b4deabeed939325c77a7ec2f (v5.14)
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
 Attempt 1:
     Time  Bug Name
-       2  lost connection to test machine
-       2  lost connection to test machine
-       2  lost connection to test machine
-       2  lost connection to test machine
-       2  lost connection to test machine
-       2  lost connection to test machine
-       2  lost connection to test machine
-       2  lost connection to test machine
-       4  lost connection to test machine
-       4  lost connection to test machine
-       4  lost connection to test machine
-       4  lost connection to test machine
-       4  lost connection to test machine
-       4  lost connection to test machine
-       4  lost connection to test machine
-       4  lost connection to test machine
-       5  lost connection to test machine
-       5  lost connection to test machine
-       5  lost connection to test machine
-       5  lost connection to test machine
-       5  lost connection to test machine
-       5  lost connection to test machine
-       5  lost connection to test machine
-       5  lost connection to test machine
-       6  lost connection to test machine
-       6  lost connection to test machine
-       6  lost connection to test machine
-       6  lost connection to test machine
-       6  lost connection to test machine
-       6  lost connection to test machine
-       6  lost connection to test machine
-       6  lost connection to test machine
-       8  lost connection to test machine
-       8  lost connection to test machine
-       8  lost connection to test machine
-       8  lost connection to test machine
-       8  lost connection to test machine
-       8  lost connection to test machine
-       8  lost connection to test machine
-       8  lost connection to test machine
-       9  lost connection to test machine
-       9  lost connection to test machine
-       9  lost connection to test machine
-       9  lost connection to test machine
-       9  lost connection to test machine
-       9  lost connection to test machine
-       9  lost connection to test machine
-       9  lost connection to test machine
-The bug was not found.
-About 15619 commits remaining
+       7  WARNING in vhost_dev_cleanup
+       7  WARNING in vhost_dev_cleanup
+       7  WARNING in vhost_dev_cleanup
+***    7  kernel BUG in vhost_get_vq_desc
+The bug was found.
+About 8 releases remaining
 
-2025-03-18 16:28:47
-Session:   11
-Kernel:    2019-11-27 - 0dd09bc02c1bad55e92306ca83b38b3cf48b9f40
-Compiler:  ccache /home/syzretrospector/compilers/gcc-9.0.0-20181231/bin/gcc
+2025-11-10 04:17:49
+Session:   5
+Kernel:    2021-04-25 - 9f4ad9e425a1d3b6a34617b8ea226d56a119a717 (v5.12)
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
 Attempt 1:
     Time  Bug Name
-       7  no output from test machine
-       7  no output from test machine
-       7  no output from test machine
-       7  no output from test machine
-       7  no output from test machine
-       7  no output from test machine
-       8  BUG: MAX_LOCKDEP_ENTRIES too low!
-       9  BUG: MAX_LOCKDEP_ENTRIES too low!
-The bug was not found.
-About 8823 commits remaining
-
-2025-03-18 16:53:01
-Session:   12
-Kernel:    2019-12-04 - 6cdc7f2efc25a6dbddf7c57bb2eee5d6c033d678
-Compiler:  ccache /home/syzretrospector/compilers/gcc-9.0.0-20181231/bin/gcc
-Attempt 1:
-    Time  Bug Name
-       7  no output from test machine
-       7  no output from test machine
-       7  no output from test machine
-       7  no output from test machine
-       7  no output from test machine
-       8  BUG: MAX_LOCKDEP_ENTRIES too low!
-       8  no output from test machine
-       9  BUG: MAX_LOCKDEP_ENTRIES too low!
-The bug was not found.
-About 3787 commits remaining
-
-2025-03-18 17:17:08
-Session:   13
-Kernel:    2019-12-19 - a019739c1c32cbd07f62b1d84fa57620897464b1
-Compiler:  ccache /home/syzretrospector/compilers/gcc-9.0.0-20181231/bin/gcc
-Attempt 1:
-    Time  Bug Name
+       3  WARNING in vhost_dev_cleanup
 ***    3  kernel BUG in vhost_get_vq_desc
 Running syz-repro.
 syz-repro was terminated after 60 minutes
 Run Time:        1h0m0s
 The bug was found.
-About 1895 commits remaining
+About 7 releases remaining
 
-2025-03-18 18:34:15
+2025-11-10 05:36:46
+Session:   6
+Kernel:    2020-12-13 - 2c85ebc57b3e1817b6ce1a6b703928e113a90442 (v5.10)
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 6 releases remaining
+
+==== Kernel Bisection ====
+29645 Linux commits
+
+2025-11-10 06:02:50
+Session:   7
+Kernel:    2021-01-22 - 5225d5f57b3574c0954f03d8d21dfac92ea7e729
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       3  WARNING in vhost_dev_cleanup
+       3  WARNING in vhost_dev_cleanup
+       4  WARNING in vhost_dev_cleanup
+The bug was not found.
+About 14821 commits remaining
+
+2025-11-10 06:27:50
+Session:   8
+Kernel:    2021-02-21 - d99676af540c2dc829999928fb81c58c80a1dce4
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       5  WARNING in vhost_dev_cleanup
+The bug was not found.
+About 6800 commits remaining
+
+2025-11-10 06:53:06
+Session:   9
+Kernel:    2021-03-09 - 69264b4a43aff7307283e2bae29e9305ab6b7d47
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       7  WARNING in vhost_dev_cleanup
+       7  WARNING in vhost_dev_cleanup
+       7  WARNING in vhost_dev_cleanup
+The bug was not found.
+About 3478 commits remaining
+
+2025-11-10 07:18:21
+Session:   10
+Kernel:    2021-03-12 - f296bfd5cd04cbb49b8fc9585adc280ab2b58624
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       4  WARNING in vhost_dev_cleanup
+***    4  kernel BUG in vhost_get_vq_desc
+The bug was found.
+About 1740 commits remaining
+
+2025-11-10 07:37:30
+Session:   11
+Kernel:    2021-02-26 - efba6d3a7c4bb59f0750609fae0f9644d82304b6
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    3  kernel BUG in vhost_get_vq_desc
+The bug was found.
+About 864 commits remaining
+
+2025-11-10 07:55:34
+Session:   12
+Kernel:    2021-02-26 - 64427985c76fcb54c783de617edf353009499a03
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       5  WARNING in vhost_dev_cleanup
+      10  WARNING in vhost_dev_cleanup
+The bug was not found.
+About 433 commits remaining
+
+2025-11-10 08:20:44
+Session:   13
+Kernel:    2021-02-26 - 1c9077cdecd027714736e70704da432ee2b946bb
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    6  kernel BUG in vhost_get_vq_desc
+***    6  kernel BUG in vhost_get_vq_desc
+Running syz-repro.
+syz-repro was terminated after 60 minutes
+Run Time:        1h0m0s
+The bug was found.
+About 219 commits remaining
+
+2025-11-10 09:41:56
 Session:   14
-Kernel:    2019-12-05 - eb275167d18684e07ee43bdc0e09a18326540461
-Compiler:  ccache /home/syzretrospector/compilers/gcc-9.0.0-20181231/bin/gcc
+Kernel:    2021-02-25 - fdce29602f865b016012eadeaec99800da916d3d
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
 Attempt 1:
     Time  Bug Name
-       7  no output from test machine
-       7  no output from test machine
-       7  no output from test machine
-       7  no output from test machine
-       7  no output from test machine
-       7  no output from test machine
-       7  no output from test machine
-       8  BUG: MAX_LOCKDEP_ENTRIES too low!
-The bug was not found.
-About 777 commits remaining
+***    3  kernel BUG in vhost_get_vq_desc
+The bug was found.
+About 135 commits remaining
 
-2025-03-18 18:58:29
+2025-11-10 09:52:09
 Session:   15
-Kernel:    2019-12-07 - 94e89b40235476a83a53a47b9ffb0cb91a4c335e
-Compiler:  ccache /home/syzretrospector/compilers/gcc-9.0.0-20181231/bin/gcc
+Kernel:    2021-02-25 - 5ad3dbab569ac39e88fae31690401895c37368b6
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
 Attempt 1:
     Time  Bug Name
-       3  WARNING in vhost_dev_cleanup
-       3  WARNING in vhost_dev_cleanup
-***    5  kernel BUG in vhost_get_vq_desc
-***    5  kernel BUG in vhost_get_vq_desc
-***    5  kernel BUG in vhost_get_vq_desc
-Running syz-repro.
-syz-repro was terminated after 60 minutes
-Run Time:        1h0m0s
+       6  WARNING in vhost_dev_cleanup
+       6  WARNING in vhost_dev_cleanup
+***    6  kernel BUG in vhost_get_vq_desc
 The bug was found.
-About 376 commits remaining
+About 69 commits remaining
 
-2025-03-18 20:15:16
+2025-11-10 10:03:54
 Session:   16
-Kernel:    2019-12-06 - 9feb1af97e7366b512ecb9e4dd61d3252074cda3
-Compiler:  ccache /home/syzretrospector/compilers/gcc-9.0.0-20181231/bin/gcc
+Kernel:    2021-02-23 - 2c8396de7225b25b5c76e92f993aa067b1972217
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
 Attempt 1:
     Time  Bug Name
-       3  WARNING in vhost_dev_cleanup
-       3  WARNING in vhost_dev_cleanup
-***    4  kernel BUG in vhost_get_vq_desc
-Running syz-repro.
-syz-repro was terminated after 60 minutes
-Run Time:        1h0m0s
-The bug was found.
-About 153 commits remaining
+      10  WARNING in vhost_dev_cleanup
+The bug was not found.
+About 6473 commits remaining
 
-2025-03-18 21:33:26
+2025-11-10 10:29:11
 Session:   17
-Kernel:    2019-12-05 - 7ce4fab8191396a1b8e4bc42d3b90029876b2bcd
-Compiler:  ccache /home/syzretrospector/compilers/gcc-9.0.0-20181231/bin/gcc
+Kernel:    2021-02-24 - 88eee9b7b42e69fb622ddb3ff6f37e8e4347f5b2
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
 Attempt 1:
     Time  Bug Name
-       7  no output from test machine
-       7  no output from test machine
-       7  no output from test machine
-       7  no output from test machine
-       7  no output from test machine
-       7  no output from test machine
-       7  no output from test machine
-       8  BUG: MAX_LOCKDEP_ENTRIES too low!
-The bug was not found.
-About 85 commits remaining
-
-2025-03-18 21:57:04
-Session:   18
-Kernel:    2019-12-05 - b0d4beaa5a4b7d31070c41c2e50740304a3f1138
-Compiler:  ccache /home/syzretrospector/compilers/gcc-9.0.0-20181231/bin/gcc
-Attempt 1:
-    Time  Bug Name
-       7  no output from test machine
-       7  no output from test machine
-       7  no output from test machine
-       7  no output from test machine
-       7  no output from test machine
-       7  no output from test machine
-       8  BUG: MAX_LOCKDEP_ENTRIES too low!
-       8  BUG: MAX_LOCKDEP_ENTRIES too low!
-The bug was not found.
-About 41 commits remaining
-
-2025-03-18 22:12:07
-Session:   19
-Kernel:    2019-12-03 - 87f80d623c6c93c721b2aaead8a45e848bc8ffbf
-Compiler:  ccache /home/syzretrospector/compilers/gcc-9.0.0-20181231/bin/gcc
-Attempt 1:
-    Time  Bug Name
-       5  WARNING in vhost_dev_cleanup
-***    5  kernel BUG in vhost_get_vq_desc
-***    5  kernel BUG in vhost_get_vq_desc
-***    5  kernel BUG in vhost_get_vq_desc
-Running syz-repro.
-syz-repro was terminated after 60 minutes
-Run Time:        1h0m0s
-The bug was found.
-About 21 commits remaining
-
-2025-03-18 23:31:11
-Session:   20
-Kernel:    2019-12-03 - 8cdda87a4414092cd210e766189cf0353a844861
-Compiler:  ccache /home/syzretrospector/compilers/gcc-9.0.0-20181231/bin/gcc
-Attempt 1:
-    Time  Bug Name
-       5  WARNING in vhost_dev_cleanup
-       5  WARNING in vhost_dev_cleanup
-***    5  kernel BUG in vhost_get_vq_desc
-Running syz-repro.
-syz-repro was terminated after 60 minutes
-Run Time:        1h0m0s
-The bug was found.
-About 11 commits remaining
-
-2025-03-19 00:47:17
-Session:   21
-Kernel:    2019-12-02 - f67676d160c6ee2ed82917fadfed6d29cab8237c
-Compiler:  ccache /home/syzretrospector/compilers/gcc-9.0.0-20181231/bin/gcc
-Attempt 1:
-    Time  Bug Name
+       3  WARNING in vhost_dev_cleanup
+       3  WARNING in vhost_dev_cleanup
 ***    4  kernel BUG in vhost_get_vq_desc
 Running syz-repro.
-syz-repro was terminated after 60 minutes
-Run Time:        1h0m0s
+New PoC saved at /home/syzretrospector/meerkat/wd-meerkat-2/reproducers/repro-bug0913-2.prog
+Primary PoC:     /home/syzretrospector/meerkat/wd-meerkat-2/reproducers/repro-bug0913-2.prog
+Run Time:        0h33m0s
 The bug was found.
-About 6 commits remaining
+About 18 commits remaining
 
-2025-03-19 02:01:14
-Session:   22
-Kernel:    2019-12-02 - 441cdbd5449b4923cd413d3ba748124f91388be9
-Compiler:  ccache /home/syzretrospector/compilers/gcc-9.0.0-20181231/bin/gcc
+2025-11-10 11:11:19
+Session:   18
+Kernel:    2021-02-23 - 8b5553ace83cced775eefd0f3f18b5c6214ccf7a
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
 Attempt 1:
     Time  Bug Name
-       7  no output from test machine
-       7  no output from test machine
-       7  no output from test machine
-       7  no output from test machine
-       7  no output from test machine
-       7  no output from test machine
-       9  BUG: MAX_LOCKDEP_ENTRIES too low!
-       9  BUG: MAX_LOCKDEP_ENTRIES too low!
-The bug was not found.
-About 4 commits remaining
+       3  WARNING in vhost_dev_cleanup
+       3  WARNING in vhost_dev_cleanup
+***    4  kernel BUG in vhost_get_vq_desc
+The bug was found.
+About 9 commits remaining
 
-2025-03-19 02:16:14
-Session:   23
-Kernel:    2019-12-02 - 1a6b74fc87024db59d41cd7346bd437f20fb3e2d
-Compiler:  ccache /home/syzretrospector/compilers/gcc-9.0.0-20181231/bin/gcc
+2025-11-10 11:20:28
+Session:   19
+Kernel:    2021-02-23 - 7f57bd8dc22de35ddd895294aa554003e4f19a72
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
 Attempt 1:
     Time  Bug Name
-       6  BUG: MAX_LOCKDEP_ENTRIES too low!
-       6  BUG: MAX_LOCKDEP_ENTRIES too low!
-       7  BUG: MAX_LOCKDEP_ENTRIES too low!
-***    7  kernel BUG in vhost_get_vq_desc
-***    7  kernel BUG in vhost_get_vq_desc
+       5  WARNING in vhost_dev_cleanup
+***    9  kernel BUG in vhost_get_vq_desc
+The bug was found.
+About 5 commits remaining
+
+2025-11-10 11:34:38
+Session:   20
+Kernel:    2021-02-23 - fc0494ead6398609c49afa37bc949b61c5c16b91
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    3  kernel BUG in vhost_get_vq_desc
 Running syz-repro.
 syz-repro was terminated after 60 minutes
 Run Time:        1h0m0s
 The bug was found.
 About 3 commits remaining
 
-2025-03-19 03:28:07
-Session:   24
-Kernel:    2019-12-02 - 490547ca2df66b8413bce97cb651630f2c531487
-Compiler:  ccache /home/syzretrospector/compilers/gcc-9.0.0-20181231/bin/gcc
+2025-11-10 12:42:45
+Session:   21
+Kernel:    2021-02-23 - 92584ddf550ae72d492858c19d1f9025e07a9350
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
 Attempt 1:
     Time  Bug Name
-       6  BUG: MAX_LOCKDEP_ENTRIES too low!
-***    6  kernel BUG in vhost_get_vq_desc
-***    6  kernel BUG in vhost_get_vq_desc
-Running syz-repro.
-syz-repro was terminated after 60 minutes
-Run Time:        1h0m0s
-The bug was found.
+       4  WARNING in vhost_dev_cleanup
+       4  WARNING in vhost_dev_cleanup
+       9  WARNING in vhost_dev_cleanup
+       9  WARNING in vhost_dev_cleanup
+      10  WARNING in vhost_dev_cleanup
+      10  WARNING in vhost_dev_cleanup
+      10  WARNING in vhost_dev_cleanup
+The bug was not found.
 About 2 commits remaining
 
 ==== Partial Result: Focused Fuzzing ====
-Reproducer:           /home/syzretrospector/syzinspector/wd-bisector-4/reproducers/repro-bug0913-0.prog
-Bisection Result:     2019-12-02 - 490547ca2df66b8413bce97cb651630f2c531487
-Bisected Commit Name: block: don't send uevent for empty disk when not invalidating
-Stage Time:           20h29m42s
-Run Time:             20h29m44s
+Reproducer:           /home/syzretrospector/meerkat/wd-meerkat-2/reproducers/repro-bug0913-2.prog
+Bisection Result:     2021-02-23 - fc0494ead6398609c49afa37bc949b61c5c16b91
+Bisected Commit Name: net: qrtr: Fix memory leak in qrtr_tun_open
+Stage Time:           10h54m55s
+Run Time:             10h54m59s
 =========================================
 
 ==== Anchor Commit ====
 
-2025-03-19 04:39:03
+2025-11-10 12:57:59
+Session:   22
+Kernel:    2021-02-23 - 92584ddf550ae72d492858c19d1f9025e07a9350
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-2/reproducers/repro-bug0913-2.prog
+Attempt 0:
+*** kernel BUG in vhost_get_vq_desc
+    invalid opcode in vhost_get_vq_desc
+    kernel panic: Fatal exception
+Attempt 1:
+*** kernel BUG in vhost_get_vq_desc
+    invalid opcode in vhost_get_vq_desc
+    kernel panic: Fatal exception
+Attempt 2:
+    WARNING in vhost_dev_cleanup
+Attempt 3:
+*** kernel BUG in vhost_get_vq_desc
+    invalid opcode in vhost_get_vq_desc
+*** kernel BUG in vhost_get_vq_desc
+    invalid opcode in vhost_get_vq_desc
+    kernel panic: Fatal exception
+Attempt 4:
+*** kernel BUG in vhost_get_vq_desc
+    invalid opcode in vhost_get_vq_desc
+    kernel panic: Fatal exception
+Attempt 5:
+    WARNING in vhost_dev_cleanup
+Attempt 6:
+*** kernel BUG in vhost_get_vq_desc
+    invalid opcode in vhost_get_vq_desc
+*** kernel BUG in vhost_get_vq_desc
+    invalid opcode in vhost_get_vq_desc
+    kernel panic: Fatal exception
+Attempt 7:
+*** kernel BUG in vhost_get_vq_desc
+    invalid opcode in vhost_get_vq_desc
+    kernel panic: Fatal exception
+The bug was found.
+
+==== Major Release Search ====
+9 Releases
+
+2025-11-10 13:06:44
+Session:   23
+Kernel:    2021-02-14 - f40ddce88593482919761f74910f42f4b84c004b (v5.11)
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 0:
+*** kernel BUG in vhost_get_vq_desc
+    invalid opcode in vhost_get_vq_desc
+    kernel panic: Fatal exception
+Attempt 1:
+*** kernel BUG in vhost_get_vq_desc
+    invalid opcode in vhost_get_vq_desc
+    kernel panic: Fatal exception
+Attempt 2:
+*** kernel BUG in vhost_get_vq_desc
+    invalid opcode in vhost_get_vq_desc
+    WARNING in vhost_dev_cleanup
+    kernel panic: Fatal exception
+Attempt 3:
+*** kernel BUG in vhost_get_vq_desc
+    invalid opcode in vhost_get_vq_desc
+    kernel panic: Fatal exception
+Attempt 4:
+*** kernel BUG in vhost_get_vq_desc
+    invalid opcode in vhost_get_vq_desc
+    kernel panic: Fatal exception
+Attempt 5:
+*** kernel BUG in vhost_get_vq_desc
+    invalid opcode in vhost_get_vq_desc
+    kernel panic: Fatal exception
+Attempt 6:
+*** kernel BUG in vhost_get_vq_desc
+    invalid opcode in vhost_get_vq_desc
+    kernel panic: Fatal exception
+Attempt 7:
+*** kernel BUG in vhost_get_vq_desc
+    invalid opcode in vhost_get_vq_desc
+    kernel panic: Fatal exception
+The bug was found.
+About 8 releases remaining
+
+2025-11-10 13:25:18
+Session:   24
+Kernel:    2020-12-13 - 2c85ebc57b3e1817b6ce1a6b703928e113a90442 (v5.10)
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 0:
+*** kernel BUG in vhost_get_vq_desc
+    invalid opcode in vhost_get_vq_desc
+    kernel panic: Fatal exception
+Attempt 1:
+*** kernel BUG in vhost_get_vq_desc
+    invalid opcode in vhost_get_vq_desc
+    kernel panic: Fatal exception
+Attempt 2:
+*** kernel BUG in vhost_get_vq_desc
+    invalid opcode in vhost_get_vq_desc
+    kernel panic: Fatal exception
+Attempt 3:
+*** kernel BUG in vhost_get_vq_desc
+    invalid opcode in vhost_get_vq_desc
+    kernel panic: Fatal exception
+Attempt 4:
+*** kernel BUG in vhost_get_vq_desc
+    invalid opcode in vhost_get_vq_desc
+    kernel panic: Fatal exception
+Attempt 5:
+*** kernel BUG in vhost_get_vq_desc
+*** kernel BUG in vhost_get_vq_desc
+    invalid opcode in vhost_get_vq_desc
+    invalid opcode in vhost_get_vq_desc
+    kernel panic: Fatal exception
+Attempt 6:
+*** kernel BUG in vhost_get_vq_desc
+    invalid opcode in vhost_get_vq_desc
+    kernel panic: Fatal exception
+Attempt 7:
+    WARNING in vhost_dev_cleanup
+The bug was found.
+About 7 releases remaining
+
+2025-11-10 13:44:09
 Session:   25
-Kernel:    2019-12-02 - 441cdbd5449b4923cd413d3ba748124f91388be9
-Compiler:  ccache /home/syzretrospector/compilers/gcc-9.0.0-20181231/bin/gcc
+Kernel:    2020-10-11 - bbf5c979011a099af5dc76498918ed7df445635b (v5.9)
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 0:
+*** kernel BUG in vhost_get_vq_desc
+    invalid opcode in vhost_get_vq_desc
+    kernel panic: Fatal exception
+Attempt 1:
+*** kernel BUG in vhost_get_vq_desc
+    invalid opcode in vhost_get_vq_desc
+    kernel panic: Fatal exception
+Attempt 2:
+*** kernel BUG in vhost_get_vq_desc
+    invalid opcode in vhost_get_vq_desc
+    kernel panic: Fatal exception
+Attempt 3:
+*** kernel BUG in vhost_get_vq_desc
+    invalid opcode in vhost_get_vq_desc
+    kernel panic: Fatal exception
+Attempt 4:
+*** kernel BUG in vhost_get_vq_desc
+    invalid opcode in vhost_get_vq_desc
+    kernel panic: Fatal exception
+Attempt 5:
+*** kernel BUG in vhost_get_vq_desc
+    invalid opcode in vhost_get_vq_desc
+    kernel panic: Fatal exception
+Attempt 6:
+*** kernel BUG in vhost_get_vq_desc
+    invalid opcode in vhost_get_vq_desc
+    kernel panic: Fatal exception
+Attempt 7:
+*** kernel BUG in vhost_get_vq_desc
+    invalid opcode in vhost_get_vq_desc
+    kernel panic: Fatal exception
+The bug was found.
+About 6 releases remaining
+
+2025-11-10 14:02:06
+Session:   26
+Kernel:    2020-05-31 - 3d77e6a8804abcc0504c904bd6e5cdf3a5cf8162 (v5.7)
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-8.1.0/bin/gcc
+Attempt 0:
+*** kernel BUG in vhost_get_vq_desc
+    invalid opcode in vhost_get_vq_desc
+    kernel panic: Fatal exception
+Attempt 1:
+*** kernel BUG in vhost_get_vq_desc
+    invalid opcode in vhost_get_vq_desc
+    kernel panic: Fatal exception
+Attempt 2:
+*** kernel BUG in vhost_get_vq_desc
+    invalid opcode in vhost_get_vq_desc
+    kernel panic: Fatal exception
+Attempt 3:
+*** kernel BUG in vhost_get_vq_desc
+    invalid opcode in vhost_get_vq_desc
+    kernel panic: Fatal exception
+Attempt 4:
+*** kernel BUG in vhost_get_vq_desc
+    invalid opcode in vhost_get_vq_desc
+    kernel panic: Fatal exception
+Attempt 5:
+*** kernel BUG in vhost_get_vq_desc
+    invalid opcode in vhost_get_vq_desc
+    kernel panic: Fatal exception
+Attempt 6:
+*** kernel BUG in vhost_get_vq_desc
+    invalid opcode in vhost_get_vq_desc
+    kernel panic: Fatal exception
+Attempt 7:
+*** kernel BUG in vhost_get_vq_desc
+    invalid opcode in vhost_get_vq_desc
+*** kernel BUG in vhost_get_vq_desc
+    invalid opcode in vhost_get_vq_desc
+    kernel panic: Fatal exception
+The bug was found.
+About 5 releases remaining
+
+2025-11-10 14:21:01
+Session:   27
+Kernel:    2020-01-26 - d5226fa6dbae0569ee43ecfc08bdcd6770fc4755 (v5.5)
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-8.1.0/bin/gcc
+Attempt 0:
+    WARNING in __dev_mc_add
+Attempt 1:
+*** kernel BUG in vhost_get_vq_desc
+    invalid opcode in vhost_get_vq_desc
+    kernel panic: Fatal exception
+    kernel BUG in corrupted
+Attempt 2:
+*** kernel BUG in vhost_get_vq_desc
+    invalid opcode in vhost_get_vq_desc
+*** kernel BUG in vhost_get_vq_desc
+*** kernel BUG in vhost_get_vq_desc
+*** kernel BUG in vhost_get_vq_desc
+    invalid opcode in vhost_get_vq_desc
+    invalid opcode in vhost_get_vq_desc
+    invalid opcode in vhost_get_vq_desc
+*** kernel BUG in vhost_get_vq_desc
+*** kernel BUG in vhost_get_vq_desc
+    invalid opcode in vhost_get_vq_desc
+    invalid opcode in vhost_get_vq_desc
+    kernel panic: Fatal exception
+Attempt 3:
+*** kernel BUG in vhost_get_vq_desc
+    invalid opcode in vhost_get_vq_desc
+    kernel BUG in corrupted
+    kernel panic: Fatal exception
+Attempt 4:
+*** kernel BUG in vhost_get_vq_desc
+*** kernel BUG in vhost_get_vq_desc
+    invalid opcode in vhost_get_vq_desc
+    invalid opcode in vhost_get_vq_desc
+*** kernel BUG in vhost_get_vq_desc
+*** kernel BUG in vhost_get_vq_desc
+    invalid opcode in vhost_get_vq_desc
+    invalid opcode in vhost_get_vq_desc
+*** kernel BUG in vhost_get_vq_desc
+    invalid opcode in vhost_get_vq_desc
+*** kernel BUG in vhost_get_vq_desc
+    invalid opcode in vhost_get_vq_desc
+    kernel panic: Fatal exception
+Attempt 5:
+*** kernel BUG in vhost_get_vq_desc
+    invalid opcode in vhost_get_vq_desc
+    kernel panic: Fatal exception
+Attempt 6:
+    WARNING in vhost_dev_cleanup
+Attempt 7:
+*** kernel BUG in vhost_get_vq_desc
+    invalid opcode in vhost_get_vq_desc
+    kernel panic: Fatal exception
+The bug was found.
+About 4 releases remaining
+
+2025-11-10 14:40:01
+Session:   28
+Kernel:    2019-09-15 - 4d856f72c10ecb060868ed10ff1b1453943fc6c8 (v5.3)
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-8.1.0/bin/gcc
+Attempt 0:
+    BUG: spinlock bad magic in nf_connlabels_get
+Attempt 1:
+    BUG: spinlock bad magic in nf_connlabels_get
+Attempt 2:
+    BUG: spinlock bad magic in nf_connlabels_get
+Attempt 3:
+    BUG: spinlock bad magic in nf_connlabels_get
+Attempt 4:
+    BUG: spinlock bad magic in nf_connlabels_get
+Attempt 5:
+    BUG: spinlock bad magic in nf_connlabels_get
+Attempt 6:
+    BUG: spinlock bad magic in nf_connlabels_get
+Attempt 7:
+    BUG: spinlock bad magic in nf_connlabels_get
+The bug was not found.
+About 3 releases remaining
+
+==== Kernel Bisection ====
+31223 Linux commits
+
+2025-11-10 14:57:41
+Session:   29
+Kernel:    2019-10-30 - 60845e34f0c5c19a9e86af477b429993952f585b
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-8.1.0/bin/gcc
 Attempt 0:
     No crashes found.
 Attempt 1:
@@ -548,15 +644,487 @@ Attempt 6:
 Attempt 7:
     No crashes found.
 The bug was not found.
+About 15619 commits remaining
 
-Failure: This bug cannot be found at the anchor commit.
+2025-11-10 15:13:53
+Session:   30
+Kernel:    2019-11-27 - 0dd09bc02c1bad55e92306ca83b38b3cf48b9f40
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-8.1.0/bin/gcc
+Attempt 0:
+    BUG: MAX_LOCKDEP_ENTRIES too low!
+Attempt 1:
+    BUG: MAX_LOCKDEP_ENTRIES too low!
+Attempt 2:
+    BUG: MAX_LOCKDEP_ENTRIES too low!
+Attempt 3:
+    BUG: MAX_LOCKDEP_ENTRIES too low!
+Attempt 4:
+    BUG: MAX_LOCKDEP_ENTRIES too low!
+Attempt 5:
+    BUG: MAX_LOCKDEP_ENTRIES too low!
+Attempt 6:
+    BUG: MAX_LOCKDEP_ENTRIES too low!
+Attempt 7:
+    BUG: MAX_LOCKDEP_ENTRIES too low!
+*** kernel BUG in vhost_get_vq_desc
+    invalid opcode in vhost_get_vq_desc
+    kernel panic: Fatal exception
+The bug was found.
+About 8050 commits remaining
+
+2025-11-10 15:39:19
+Session:   31
+Kernel:    2019-11-25 - 622dc5ad8052f4f0c6b7a12787696a5caa3c6a58
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-8.1.0/bin/gcc
+Attempt 0:
+*** kernel BUG in vhost_get_vq_desc
+    invalid opcode in vhost_get_vq_desc
+*** kernel BUG in vhost_get_vq_desc
+*** kernel BUG in vhost_get_vq_desc
+    invalid opcode in vhost_get_vq_desc
+    invalid opcode in vhost_get_vq_desc
+    WARNING in corrupted
+Attempt 1:
+    kernel BUG in corrupted
+*** kernel BUG in vhost_get_vq_desc
+    invalid opcode in vhost_get_vq_desc
+    kernel panic: Fatal exception
+Attempt 2:
+*** kernel BUG in vhost_get_vq_desc
+*** kernel BUG in vhost_get_vq_desc
+    invalid opcode in vhost_get_vq_desc
+    invalid opcode in vhost_get_vq_desc
+    kernel panic: Fatal exception
+Attempt 3:
+    WARNING in hci_cmd_timeout
+Attempt 4:
+*** kernel BUG in vhost_get_vq_desc
+*** kernel BUG in vhost_get_vq_desc
+    invalid opcode in vhost_get_vq_desc
+    invalid opcode in vhost_get_vq_desc
+*** kernel BUG in vhost_get_vq_desc
+    invalid opcode in vhost_get_vq_desc
+    WARNING in corrupted
+Attempt 5:
+*** kernel BUG in vhost_get_vq_desc
+    invalid opcode in vhost_get_vq_desc
+    kernel panic: Fatal exception
+Attempt 6:
+*** kernel BUG in vhost_get_vq_desc
+    invalid opcode in vhost_get_vq_desc
+    kernel panic: Fatal exception
+Attempt 7:
+*** kernel BUG in vhost_get_vq_desc
+    invalid opcode in vhost_get_vq_desc
+*** kernel BUG in vhost_get_vq_desc
+    invalid opcode in vhost_get_vq_desc
+    kernel panic: Fatal exception
+The bug was found.
+About 3423 commits remaining
+
+2025-11-10 15:56:38
+Session:   32
+Kernel:    2019-11-06 - 83e3a6729d5c501be1e59ba61434831aa0407e5c
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-8.1.0/bin/gcc
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+About 1713 commits remaining
+
+2025-11-10 16:12:48
+Session:   33
+Kernel:    2019-11-16 - 1e8795b1b20d2721620165434cdcf427ecd2ba85
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-8.1.0/bin/gcc
+Attempt 0:
+*** kernel BUG in vhost_get_vq_desc
+    invalid opcode in vhost_get_vq_desc
+    kernel panic: Fatal exception
+Attempt 1:
+*** kernel BUG in vhost_get_vq_desc
+    invalid opcode in vhost_get_vq_desc
+    kernel panic: Fatal exception
+Attempt 2:
+*** kernel BUG in vhost_get_vq_desc
+    invalid opcode in vhost_get_vq_desc
+    WARNING in corrupted
+Attempt 3:
+*** kernel BUG in vhost_get_vq_desc
+    invalid opcode in vhost_get_vq_desc
+*** kernel BUG in vhost_get_vq_desc
+    invalid opcode in vhost_get_vq_desc
+    kernel panic: Fatal exception
+Attempt 4:
+*** kernel BUG in vhost_get_vq_desc
+    invalid opcode in vhost_get_vq_desc
+*** kernel BUG in vhost_get_vq_desc
+    invalid opcode in vhost_get_vq_desc
+    kernel BUG in corrupted
+    WARNING in corrupted
+Attempt 5:
+*** kernel BUG in vhost_get_vq_desc
+    invalid opcode in vhost_get_vq_desc
+    kernel panic: Fatal exception
+Attempt 6:
+*** kernel BUG in vhost_get_vq_desc
+    invalid opcode in vhost_get_vq_desc
+    kernel panic: Fatal exception
+Attempt 7:
+*** kernel BUG in vhost_get_vq_desc
+    invalid opcode in vhost_get_vq_desc
+    WARNING in corrupted
+The bug was found.
+About 844 commits remaining
+
+2025-11-10 16:30:19
+Session:   34
+Kernel:    2019-11-09 - 14684b93019a2d2ece0df5acaf921924541b928d
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-8.1.0/bin/gcc
+Attempt 0:
+*** kernel BUG in vhost_get_vq_desc
+    invalid opcode in vhost_get_vq_desc
+    kernel panic: Fatal exception
+Attempt 1:
+*** kernel BUG in vhost_get_vq_desc
+    invalid opcode in vhost_get_vq_desc
+    kernel panic: Fatal exception
+Attempt 2:
+*** kernel BUG in vhost_get_vq_desc
+    invalid opcode in vhost_get_vq_desc
+    WARNING in corrupted
+Attempt 3:
+*** kernel BUG in vhost_get_vq_desc
+    invalid opcode in vhost_get_vq_desc
+    WARNING in corrupted
+Attempt 4:
+*** kernel BUG in vhost_get_vq_desc
+    invalid opcode in vhost_get_vq_desc
+    kernel panic: Fatal exception
+Attempt 5:
+*** kernel BUG in vhost_get_vq_desc
+*** kernel BUG in vhost_get_vq_desc
+    invalid opcode in vhost_get_vq_desc
+    invalid opcode in vhost_get_vq_desc
+    kernel panic: Fatal exception
+Attempt 6:
+*** kernel BUG in vhost_get_vq_desc
+    invalid opcode in vhost_get_vq_desc
+    WARNING in corrupted
+Attempt 7:
+*** kernel BUG in vhost_get_vq_desc
+    invalid opcode in vhost_get_vq_desc
+    kernel panic: Fatal exception
+The bug was found.
+About 458 commits remaining
+
+2025-11-10 16:42:58
+Session:   35
+Kernel:    2019-11-08 - 5cb8418cb533222709f362d264653a634eb8c7ac
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-8.1.0/bin/gcc
+Attempt 0:
+*** kernel BUG in vhost_get_vq_desc
+    invalid opcode in vhost_get_vq_desc
+    kernel panic: Fatal exception
+Attempt 1:
+*** kernel BUG in vhost_get_vq_desc
+    invalid opcode in vhost_get_vq_desc
+    WARNING in corrupted
+Attempt 2:
+*** kernel BUG in vhost_get_vq_desc
+    invalid opcode in vhost_get_vq_desc
+    kernel panic: Fatal exception
+Attempt 3:
+*** kernel BUG in vhost_get_vq_desc
+    invalid opcode in vhost_get_vq_desc
+*** kernel BUG in vhost_get_vq_desc
+    invalid opcode in vhost_get_vq_desc
+    kernel panic: Fatal exception
+Attempt 4:
+*** kernel BUG in vhost_get_vq_desc
+    invalid opcode in vhost_get_vq_desc
+*** kernel BUG in vhost_get_vq_desc
+    invalid opcode in vhost_get_vq_desc
+    WARNING in corrupted
+    kernel panic: Fatal exception
+Attempt 5:
+*** kernel BUG in vhost_get_vq_desc
+    invalid opcode in vhost_get_vq_desc
+    WARNING in corrupted
+Attempt 6:
+    WARNING in vhost_dev_cleanup
+Attempt 7:
+*** kernel BUG in vhost_get_vq_desc
+    invalid opcode in vhost_get_vq_desc
+*** kernel BUG in vhost_get_vq_desc
+    invalid opcode in vhost_get_vq_desc
+    WARNING in corrupted
+The bug was found.
+About 178 commits remaining
+
+2025-11-10 17:00:22
+Session:   36
+Kernel:    2019-11-07 - 847120f859cc45e074204f4cf33c8df069306eb2
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-8.1.0/bin/gcc
+Attempt 0:
+*** kernel BUG in vhost_get_vq_desc
+    WARNING in vhost_dev_cleanup
+    invalid opcode in vhost_get_vq_desc
+Attempt 1:
+    WARNING in vhost_dev_cleanup
+Attempt 2:
+*** kernel BUG in vhost_get_vq_desc
+    invalid opcode in vhost_get_vq_desc
+    kernel panic: Fatal exception
+Attempt 3:
+    WARNING in vhost_dev_cleanup
+Attempt 4:
+*** kernel BUG in vhost_get_vq_desc
+    invalid opcode in vhost_get_vq_desc
+*** kernel BUG in vhost_get_vq_desc
+    invalid opcode in vhost_get_vq_desc
+    WARNING in corrupted
+Attempt 5:
+*** kernel BUG in vhost_get_vq_desc
+    invalid opcode in vhost_get_vq_desc
+    WARNING in corrupted
+Attempt 6:
+*** kernel BUG in vhost_get_vq_desc
+    invalid opcode in vhost_get_vq_desc
+    WARNING in corrupted
+Attempt 7:
+*** kernel BUG in vhost_get_vq_desc
+    invalid opcode in vhost_get_vq_desc
+*** kernel BUG in vhost_get_vq_desc
+    invalid opcode in vhost_get_vq_desc
+    WARNING in corrupted
+The bug was found.
+About 90 commits remaining
+
+2025-11-10 17:17:39
+Session:   37
+Kernel:    2019-10-31 - d8eca64eec7103ab1fbabc0a187dbf6acfb2af93
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-8.1.0/bin/gcc
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+About 383 commits remaining
+
+2025-11-10 17:33:41
+Session:   38
+Kernel:    2019-11-03 - a99d8080aaf358d5d23581244e5da23b35e340b9
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-8.1.0/bin/gcc
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+About 30 commits remaining
+
+2025-11-10 17:49:43
+Session:   39
+Kernel:    2019-11-06 - 221ec5c0a46c1a1740f34fb36fc661a5284d01b0
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-8.1.0/bin/gcc
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+About 16 commits remaining
+
+2025-11-10 18:05:39
+Session:   40
+Kernel:    2019-11-05 - 26bc672134241a080a83b2ab9aa8abede8d30e1c
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-8.1.0/bin/gcc
+Attempt 0:
+*** kernel BUG in vhost_get_vq_desc
+    invalid opcode in vhost_get_vq_desc
+*** kernel BUG in vhost_get_vq_desc
+    invalid opcode in vhost_get_vq_desc
+    WARNING in corrupted
+Attempt 1:
+*** kernel BUG in vhost_get_vq_desc
+    invalid opcode in vhost_get_vq_desc
+    kernel panic: Fatal exception
+Attempt 2:
+*** kernel BUG in vhost_get_vq_desc
+    invalid opcode in vhost_get_vq_desc
+    kernel panic: Fatal exception
+Attempt 3:
+*** kernel BUG in vhost_get_vq_desc
+    invalid opcode in vhost_get_vq_desc
+    WARNING in corrupted
+Attempt 4:
+*** kernel BUG in vhost_get_vq_desc
+*** kernel BUG in vhost_get_vq_desc
+    invalid opcode in vhost_get_vq_desc
+    invalid opcode in vhost_get_vq_desc
+    WARNING in corrupted
+Attempt 5:
+*** kernel BUG in vhost_get_vq_desc
+    invalid opcode in vhost_get_vq_desc
+    kernel panic: Fatal exception
+Attempt 6:
+*** kernel BUG in vhost_get_vq_desc
+    invalid opcode in vhost_get_vq_desc
+*** kernel BUG in vhost_get_vq_desc
+    invalid opcode in vhost_get_vq_desc
+    WARNING in corrupted
+Attempt 7:
+*** kernel BUG in vhost_get_vq_desc
+    invalid opcode in vhost_get_vq_desc
+    WARNING in corrupted
+The bug was found.
+About 9 commits remaining
+
+2025-11-10 18:23:14
+Session:   41
+Kernel:    2019-11-03 - 52c75f56703e1c40a2bc3f64a140602112dfa302
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-8.1.0/bin/gcc
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+About 700 commits remaining
+
+2025-11-10 18:39:11
+Session:   42
+Kernel:    2019-11-05 - 7111fa1151e3c66cde3a94250bda72d7144419ff
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-8.1.0/bin/gcc
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+About 3 commits remaining
+
+2025-11-10 18:46:49
+Session:   43
+Kernel:    2019-11-05 - fa729c4df558936b4a1a7b3e2234011f44ede28b
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-8.1.0/bin/gcc
+Attempt 0:
+*** kernel BUG in vhost_get_vq_desc
+*** kernel BUG in vhost_get_vq_desc
+*** kernel BUG in vhost_get_vq_desc
+    invalid opcode in vhost_get_vq_desc
+    invalid opcode in vhost_get_vq_desc
+    invalid opcode in vhost_get_vq_desc
+    WARNING in corrupted
+Attempt 1:
+*** kernel BUG in vhost_get_vq_desc
+    invalid opcode in vhost_get_vq_desc
+    WARNING in corrupted
+Attempt 2:
+    WARNING in vhost_dev_cleanup
+Attempt 3:
+    WARNING in vhost_dev_cleanup
+Attempt 4:
+*** kernel BUG in vhost_get_vq_desc
+    invalid opcode in vhost_get_vq_desc
+    kernel panic: Fatal exception
+Attempt 5:
+*** kernel BUG in vhost_get_vq_desc
+    invalid opcode in vhost_get_vq_desc
+*** kernel BUG in vhost_get_vq_desc
+    invalid opcode in vhost_get_vq_desc
+    WARNING in corrupted
+Attempt 6:
+*** kernel BUG in vhost_get_vq_desc
+    invalid opcode in vhost_get_vq_desc
+*** kernel BUG in vhost_get_vq_desc
+    invalid opcode in vhost_get_vq_desc
+    kernel panic: Fatal exception
+Attempt 7:
+*** kernel BUG in vhost_get_vq_desc
+*** kernel BUG in vhost_get_vq_desc
+    invalid opcode in vhost_get_vq_desc
+    invalid opcode in vhost_get_vq_desc
+    WARNING in corrupted
+The bug was found.
+About 2 commits remaining
 
 ====================================================================================================================================================
 Bug Name:             kernel BUG in vhost_get_vq_desc
+Big ID:               bug0913
 Bug Link:             https://syzkaller.appspot.com/bug?extid=3140b17cb44a7b174008
-Bisection Result:     2019-12-02 - 490547ca2df66b8413bce97cb651630f2c531487
-Bisected Commit Name: block: don't send uevent for empty disk when not invalidating
-Run Time:             20h39m24s
+Bisection Result:     2019-11-05 - fa729c4df558936b4a1a7b3e2234011f44ede28b
+Bisected Commit Name: clone3: validate stack arguments
+Run Time:             17h0m50s
 
 Anchor Commit:        2022-01-25 - 0280e3c58f92b2fe0e8fbbdf8d386449168de4a8
-Bisection Result:     2019-12-02 - 490547ca2df66b8413bce97cb651630f2c531487
+Bisection Result:     2019-11-05 - fa729c4df558936b4a1a7b3e2234011f44ede28b

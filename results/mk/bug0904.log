@@ -1,4 +1,4 @@
-./bin/bisector -i 4 -c /home/syzretrospector/syzinspector/wd-bisector-4/bisector.cfg -a 7e364e56293bb98cae1b55fd835f5991c4e96e7d -F ff-test,poc-test,stateful-corpus,ff-no-find-backup
+./bin/meerkat -i 2 -c /home/syzretrospector/meerkat/wd-meerkat-2/meerkat.cfg -a 7e364e56293bb98cae1b55fd835f5991c4e96e7d -F ff-test,poc-test,pos-all-pocs,stateful-corpus,ff-no-find-backup
 Bisecting:          general protection fault in sctp_outq_tail
 Syzbot Link:        https://syzkaller.appspot.com/bug?extid=47c24ca20a2fa01f082e
 Working Name:       bug0904
@@ -10,22 +10,24 @@ Repository:         https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/lin
 Branch:             master
 Arch:               amd64
 
-Bisector:           /home/syzretrospector/syzinspector/
-Version:            1.0.4
-Kernel:             /home/syzretrospector/syzinspector/wd-bisector-4/kernel/
-Syzkaller:          /home/syzretrospector/syzinspector/syzkaller/
-Compilers:          /home/syzretrospector/compilers/
-Ccache:             ccache
+Meerkat:            /home/syzretrospector/meerkat/
+Version:            1.1.1
+Kernel:             /home/syzretrospector/meerkat/wd-meerkat-2/kernel/
+Syzkaller:          /home/syzretrospector/meerkat/syzkaller/
+Compilers:          /home/syzretrospector/meerkat/compilers/
+Compiler:           gcc (Ubuntu 12.3.0-1ubuntu1~22.04.2) 12.3.0
+Linker:             GNU ld (GNU Binutils for Ubuntu) 2.38
+Ccache:             ccache version 4.5.1
 Image:              /home/syzretrospector/images/stretch/stretch.img
 Image Key:          /home/syzretrospector/images/stretch/stretch.id_rsa
 
-Workdir:            /home/syzretrospector/syzinspector/wd-bisector-4/
-Kconfig:            /home/syzretrospector/syzinspector/wd-bisector-4/config-bug0904.txt
-Reproducers: (2)    /home/syzretrospector/syzinspector/wd-bisector-4/reproducers/
-Syzkaller Workdir:  /home/syzretrospector/syzinspector/wd-bisector-4/wd-kaller/
-Log Directory:      /home/syzretrospector/syzinspector/wd-bisector-4/log/
+Workdir:            /home/syzretrospector/meerkat/wd-meerkat-2/
+Kconfig:            /home/syzretrospector/meerkat/wd-meerkat-2/config-bug0904.txt
+Reproducers: (2)    /home/syzretrospector/meerkat/wd-meerkat-2/reproducers/
+Syzkaller Workdir:  /home/syzretrospector/meerkat/wd-meerkat-2/wd-kaller/
+Log Directory:      /home/syzretrospector/meerkat/wd-meerkat-2/log/
 
-Syscalls: (12)      ["bind$inet6", "sendto$inet6", "setsockopt$inet_sctp6_SCTP_DEFAULT_SEND_PARAM", "setsockopt$inet_sctp6_SCTP_INITMSG", "socket$inet6_sctp", "socket$inet6", "socket", "getsockopt$inet_sctp_SCTP_MAX_BURST", "ioctl$F2FS_IOC_START_ATOMIC_WRITE", "openat$selinux_enforce", "socket$inet_sctp", "socket$inet"]
+Syscalls: (10)      ["bind$inet6", "sendto$inet6", "setsockopt$inet_sctp6_SCTP_DEFAULT_SEND_PARAM", "setsockopt$inet_sctp6_SCTP_INITMSG", "socket$inet6_sctp", "socket$inet6", "socket", "getsockopt", "ioctl$F2FS_IOC_START_ATOMIC_WRITE", "openat$selinux_enforce"]
 VM Count:           4
 CPU Count:          4
 Procs:              24
@@ -36,23 +38,1162 @@ Max Attempts:       1
 
 ==== Anchor Commit ====
 
-2025-03-17 23:20:30
+2025-11-07 13:22:33
 Session:   1
 Kernel:    2023-04-02 - 7e364e56293bb98cae1b55fd835f5991c4e96e7d
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Compiler:  ccache gcc
 Attempt 1:
     Time  Bug Name
-       7  INFO: task hung in del_device_store
-       8  INFO: task hung in del_device_store
-       8  INFO: task hung in del_device_store
-       9  INFO: task hung in del_device_store
+***    4  general protection fault in sctp_outq_tail
 Attempt 2: (RETRY)
     Time  Bug Name
-       8  INFO: task hung in del_device_store
-       8  INFO: task hung in del_device_store
+       9  suppressed report
+       9  INFO: task hung in devlink_free
+       9  INFO: task hung in del_device_store
+       9  INFO: task hung in del_device_store
 Attempt 3: (RETRY)
     Time  Bug Name
-       8  INFO: task hung in del_device_store
-The bug was not found.
+       7  INFO: task hung in devlink_free
+       9  INFO: task hung in del_device_store
+      10  INFO: task hung in del_device_store
+The bug was found.
 
-Failure: This bug cannot be found at the anchor commit.
+New Max Time: 12
+
+==== Major Release Search ====
+13 Releases
+
+2025-11-07 14:10:25
+Session:   2
+Kernel:    2023-02-19 - c9c3395d5e3dcc6daee66c6908354d47bf98cb0c (v6.2)
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       3  INFO: rcu detected stall in corrupted
+       6  INFO: task hung in new_device_store
+       6  INFO: task hung in new_device_store
+       6  INFO: task hung in del_device_store
+       9  suppressed report
+      12  INFO: task hung in del_device_store
+The bug was not found.
+About 12 releases remaining
+
+==== Kernel Bisection ====
+14959 Linux commits
+
+2025-11-07 14:48:56
+Session:   3
+Kernel:    2023-02-22 - 307e14c039063f0c9bd7a18a7add8f940580dcc9
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       6  INFO: task hung in new_device_store
+       6  INFO: task hung in del_device_store
+       6  INFO: task hung in del_device_store
+       6  INFO: task hung in del_device_store
+The bug was not found.
+About 8217 commits remaining
+
+2025-11-07 15:27:07
+Session:   4
+Kernel:    2023-02-25 - d8e473182ab9e85708067be81d20424045d939fa
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       6  INFO: task hung in new_device_store
+       6  INFO: task hung in del_device_store
+       7  INFO: task hung in new_device_store
+       7  INFO: task hung in del_device_store
+The bug was not found.
+About 4123 commits remaining
+
+2025-11-07 16:04:45
+Session:   5
+Kernel:    2023-03-08 - 2d8cb0bfca6a05f1731d4570941e85d65c669386
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       6  INFO: task hung in new_device_store
+       7  INFO: task hung in devlink_free
+       7  INFO: task hung in del_device_store
+       7  INFO: task hung in del_device_store
+The bug was not found.
+About 2063 commits remaining
+
+2025-11-07 16:43:11
+Session:   6
+Kernel:    2023-03-23 - 072a28c8907c841f7d4b56c78bce46d3ee211e73
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       6  suppressed report
+       6  INFO: task hung in new_device_store
+       6  INFO: task hung in del_device_store
+       6  INFO: task hung in del_device_store
+The bug was not found.
+About 1032 commits remaining
+
+2025-11-07 17:20:07
+Session:   7
+Kernel:    2023-03-24 - 608f1b136616ff09d717776922c9ea9e9f9f3947
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       6  INFO: task hung in del_device_store
+       6  INFO: task hung in del_device_store
+       6  INFO: task hung in del_device_store
+       6  INFO: task hung in del_device_store
+The bug was not found.
+About 498 commits remaining
+
+2025-11-07 17:53:54
+Session:   8
+Kernel:    2023-03-26 - 0ec57cfa721fbd36b4c4c0d9ccc5d78a78f7fa35
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       6  INFO: task hung in new_device_store
+       6  INFO: task hung in del_device_store
+       6  INFO: task hung in del_device_store
+       7  INFO: task hung in new_device_store
+The bug was not found.
+About 246 commits remaining
+
+2025-11-07 18:31:25
+Session:   9
+Kernel:    2023-03-30 - b2bc47e9b2011a183f9d3d3454a294a938082fb9
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       6  INFO: task hung in devlink_free
+       6  INFO: task hung in new_device_store
+       6  INFO: task hung in del_device_store
+       7  INFO: task hung in del_device_store
+The bug was not found.
+About 93 commits remaining
+
+2025-11-07 18:58:05
+Session:   10
+Kernel:    2023-03-31 - a0264d198aad19429df0ca2e320caf8b1f98ec64
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       6  INFO: task hung in del_device_store
+       6  INFO: task hung in del_device_store
+       6  INFO: task hung in del_device_store
+       7  INFO: task hung in del_device_store
+The bug was not found.
+About 47 commits remaining
+
+2025-11-07 19:21:38
+Session:   11
+Kernel:    2023-04-01 - 00c7b5f4ddc5b346df62b757ec73f9357bb452af
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       6  INFO: task hung in new_device_store
+       6  INFO: task hung in del_device_store
+       6  INFO: task hung in del_device_store
+       6  INFO: task hung in del_device_store
+The bug was not found.
+About 21 commits remaining
+
+2025-11-07 19:50:57
+Session:   12
+Kernel:    2023-04-02 - 95d0b9d89d78e0983d4feb012b0f12d13d1ae19a
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       6  INFO: task hung in new_device_store
+       6  INFO: task hung in del_device_store
+       6  INFO: task hung in del_device_store
+       7  INFO: task hung in new_device_store
+The bug was not found.
+About 12 commits remaining
+
+2025-11-07 20:14:08
+Session:   13
+Kernel:    2023-04-02 - f95b8ea79c47c0ad3d18f45ad538f9970e414d1f
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       6  INFO: task hung in new_device_store
+       6  INFO: task hung in new_device_store
+       6  INFO: task hung in del_device_store
+       6  INFO: task hung in del_device_store
+      12  INFO: task hung in del_device_store
+The bug was not found.
+About 7 commits remaining
+
+2025-11-07 20:36:53
+Session:   14
+Kernel:    2023-03-28 - 2d82a40aa7d6fcae0250ec68b8566cdee7bfd44c
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       4  INFO: trying to register non-static key in net_free
+       5  INFO: trying to register non-static key in net_free
+       5  INFO: trying to register non-static key in net_free
+       5  INFO: trying to register non-static key in net_free
+       9  WARNING in devl_port_unregister
+      10  WARNING in devl_port_unregister
+      10  WARNING in devl_port_unregister
+      11  unregister_netdevice: waiting for DEV to become free
+      12  WARNING in devl_port_unregister
+The bug was not found.
+About 14984 commits remaining
+
+2025-11-07 21:15:09
+Session:   15
+Kernel:    2023-04-02 - 6ab608fe852b50fe809b22cdf7db6cbe006d7cb3
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       6  INFO: task hung in del_device_store
+       6  INFO: task hung in del_device_store
+       6  INFO: task hung in del_device_store
+       6  INFO: task hung in del_device_store
+The bug was not found.
+About 2 commits remaining
+
+==== Partial Result: Focused Fuzzing ====
+Bisection Result:     2023-04-02 - 7e364e56293bb98cae1b55fd835f5991c4e96e7d
+Bisected Commit Name: Linux 6.3-rc5
+Stage Time:           8h14m0s
+Run Time:             8h14m1s
+=========================================
+
+==== Anchor Commit ====
+
+2025-11-07 21:36:34
+Session:   16
+Kernel:    2023-04-02 - 6ab608fe852b50fe809b22cdf7db6cbe006d7cb3
+Compiler:  ccache gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-2/reproducers/repro-bug0904-1.prog
+Attempt 0:
+*** general protection fault in sctp_outq_tail
+*** general protection fault in sctp_outq_tail
+*** general protection fault in sctp_outq_tail
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+Attempt 1:
+*** general protection fault in sctp_outq_tail
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+Attempt 2:
+*** general protection fault in sctp_outq_tail
+*** general protection fault in sctp_outq_tail
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+Attempt 3:
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+Attempt 4:
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+Attempt 5:
+*** general protection fault in sctp_outq_tail
+*** general protection fault in sctp_outq_tail
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+Attempt 6:
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+Attempt 7:
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+The bug was found.
+
+==== Major Release Search ====
+13 Releases
+
+2025-11-07 21:49:04
+Session:   17
+Kernel:    2023-02-19 - c9c3395d5e3dcc6daee66c6908354d47bf98cb0c (v6.2)
+Compiler:  ccache gcc
+Attempt 0:
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+Attempt 1:
+    INFO: rcu detected stall in corrupted
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+Attempt 2:
+    INFO: rcu detected stall in corrupted
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+Attempt 3:
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+Attempt 4:
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in del_device_store
+Attempt 5:
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+Attempt 6:
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in del_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in new_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in new_device_store
+    INFO: task hung in del_device_store
+Attempt 7:
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+The bug was found.
+About 12 releases remaining
+
+2025-11-07 22:19:04
+Session:   18
+Kernel:    2022-12-11 - 830b3c68c1fb1e9176028d02ef86f3cf76aa2476 (v6.1)
+Compiler:  ccache gcc
+Attempt 0:
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+Attempt 1:
+*** general protection fault in sctp_outq_tail
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+Attempt 2:
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in linkwatch_event
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in new_device_store
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in del_device_store
+    INFO: task hung in new_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in rtnetlink_rcv_msg
+Attempt 3:
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+Attempt 4:
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in new_device_store
+    INFO: task hung in new_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in del_device_store
+Attempt 5:
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in del_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in new_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in del_device_store
+Attempt 6:
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+Attempt 7:
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+The bug was found.
+About 11 releases remaining
+
+2025-11-07 22:48:34
+Session:   19
+Kernel:    2022-10-02 - 4fe89d07dcc2804c8b562f6c7896a45643d34b2f (v6.0)
+Compiler:  ccache gcc
+Attempt 0:
+*** general protection fault in sctp_outq_tail
+*** general protection fault in sctp_outq_tail
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+Attempt 1:
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in linkwatch_event
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in devlink_unregister
+    INFO: task hung in del_device_store
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in del_device_store
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in rtnetlink_rcv_msg
+Attempt 2:
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+Attempt 3:
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+Attempt 4:
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in del_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in del_device_store
+Attempt 5:
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in linkwatch_event
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in del_device_store
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in devlink_unregister
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in del_device_store
+Attempt 6:
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in l2tp_exit_net
+    INFO: task hung in linkwatch_event
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in devlink_unregister
+    INFO: task hung in del_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in del_device_store
+Attempt 7:
+    INFO: rcu detected stall in corrupted
+    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in del_device_store
+    INFO: task hung in new_device_store
+    INFO: task hung in new_device_store
+The bug was found.
+About 10 releases remaining
+
+2025-11-07 23:17:43
+Session:   20
+Kernel:    2022-05-22 - 4b0986a3613c92f4ec1bdc7f60ec66fea135991f (v5.18)
+Compiler:  ccache gcc
+Attempt 0:
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+Attempt 1:
+*** general protection fault in sctp_outq_tail
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+Attempt 2:
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+Attempt 3:
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+Attempt 4:
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+Attempt 5:
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+Attempt 6:
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+Attempt 7:
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+The bug was found.
+About 9 releases remaining
+
+2025-11-07 23:42:12
+Session:   21
+Kernel:    2022-01-09 - df0cc57e057f18e44dac8e6c18aba47ab53202f9 (v5.16)
+Compiler:  ccache gcc
+Attempt 0:
+*** general protection fault in sctp_outq_tail
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+Attempt 1:
+*** general protection fault in sctp_outq_tail
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+Attempt 2:
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+Attempt 3:
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+Attempt 4:
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+Attempt 5:
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+Attempt 6:
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+Attempt 7:
+*** general protection fault in sctp_outq_tail
+*** general protection fault in sctp_outq_tail
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+The bug was found.
+About 8 releases remaining
+
+2025-11-08 00:04:30
+Session:   22
+Kernel:    2021-08-29 - 7d2a07b769330c34b4deabeed939325c77a7ec2f (v5.14)
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 0:
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+Attempt 1:
+*** general protection fault in sctp_outq_tail
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+Attempt 2:
+*** general protection fault in sctp_outq_tail
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+Attempt 3:
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+Attempt 4:
+*** general protection fault in sctp_outq_tail
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+Attempt 5:
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+Attempt 6:
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+Attempt 7:
+*** general protection fault in sctp_outq_tail
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+The bug was found.
+About 7 releases remaining
+
+2025-11-08 00:25:12
+Session:   23
+Kernel:    2021-04-25 - 9f4ad9e425a1d3b6a34617b8ea226d56a119a717 (v5.12)
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 0:
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+Attempt 1:
+*** general protection fault in sctp_outq_tail
+*** general protection fault in sctp_outq_tail
+*** general protection fault in sctp_outq_tail
+*** general protection fault in sctp_outq_tail
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+Attempt 2:
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+Attempt 3:
+*** general protection fault in sctp_outq_tail
+*** general protection fault in sctp_outq_tail
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+Attempt 4:
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+Attempt 5:
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+Attempt 6:
+*** general protection fault in sctp_outq_tail
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+Attempt 7:
+*** general protection fault in sctp_outq_tail
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+The bug was found.
+About 6 releases remaining
+
+2025-11-08 00:45:23
+Session:   24
+Kernel:    2020-12-13 - 2c85ebc57b3e1817b6ce1a6b703928e113a90442 (v5.10)
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+Warning: VM has not responded after 5 attempts.
+Warning: Only booted 0 VMs.
+The bug was not found.
+This commit is flagged as unstable.
+About 5 releases remaining
+
+2025-11-08 01:52:45
+Session:   25
+Kernel:    2020-08-02 - bcf876870b95592b52519ed4aafcf9d95999bc9c (v5.8)
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-8.1.0/bin/gcc
+Warning: VM has not responded after 5 attempts.
+Warning: Only booted 0 VMs.
+The bug was not found.
+This commit is flagged as unstable.
+About 4 releases remaining
+
+2025-11-08 02:58:05
+Session:   26
+Kernel:    2020-01-26 - d5226fa6dbae0569ee43ecfc08bdcd6770fc4755 (v5.5)
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-8.1.0/bin/gcc
+Attempt 0:
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+Attempt 1:
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+Attempt 2:
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+Attempt 3:
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+Attempt 4:
+*** general protection fault in sctp_outq_tail
+*** general protection fault in sctp_outq_tail
+*** general protection fault in sctp_outq_tail
+*** general protection fault in sctp_outq_tail
+*** general protection fault in sctp_outq_tail
+*** general protection fault in sctp_outq_tail
+*** general protection fault in sctp_outq_tail
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+Attempt 5:
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+Attempt 6:
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+Attempt 7:
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+The bug was found.
+About 3 releases remaining
+
+2025-11-08 03:17:38
+Session:   27
+Kernel:    2019-07-07 - 0ecfebd2b52404ae0c54a878c872bb93363ada36 (v5.2)
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-8.1.0/bin/gcc
+Attempt 0:
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+Attempt 1:
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+Attempt 2:
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+Attempt 3:
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+Attempt 4:
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+Attempt 5:
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+Attempt 6:
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+Attempt 7:
+*** general protection fault in sctp_outq_tail
+*** general protection fault in sctp_outq_tail
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+The bug was found.
+About 2 releases remaining
+
+2025-11-08 03:35:46
+Session:   28
+Kernel:    2018-12-23 - 8fe28cb58bcb235034b64cbbb7550a8a43fd88be (v4.20)
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-8.1.0/bin/gcc
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+About 1 releases remaining
+
+==== Kernel Bisection ====
+43171 Linux commits
+
+2025-11-08 03:58:20
+Session:   29
+Kernel:    2019-03-07 - b5dd0c658c31b469ccff1b637e5124851e7a4a1c
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-8.1.0/bin/gcc
+Attempt 0:
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+Attempt 1:
+*** general protection fault in sctp_outq_tail
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+Attempt 2:
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+Attempt 3:
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+Attempt 4:
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+Attempt 5:
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+Attempt 6:
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+Attempt 7:
+*** general protection fault in sctp_outq_tail
+*** general protection fault in sctp_outq_tail
+*** general protection fault in sctp_outq_tail
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+The bug was found.
+About 21007 commits remaining
+
+2025-11-08 04:14:23
+Session:   30
+Kernel:    2019-01-01 - 78e8696c234ab637c4dd516cabeac344d84ec10b
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-8.1.0/bin/gcc
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+About 10492 commits remaining
+
+2025-11-08 04:34:43
+Session:   31
+Kernel:    2019-02-24 - caf337bdef33a71c5e38a41f4f49c163018c375a
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-8.1.0/bin/gcc
+Attempt 0:
+*** general protection fault in sctp_outq_tail
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+Attempt 1:
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+Attempt 2:
+*** general protection fault in sctp_outq_tail
+*** general protection fault in sctp_outq_tail
+*** general protection fault in sctp_outq_tail
+*** general protection fault in sctp_outq_tail
+*** general protection fault in sctp_outq_tail
+*** general protection fault in sctp_outq_tail
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+Attempt 3:
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+Attempt 4:
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+Attempt 5:
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+Attempt 6:
+*** general protection fault in sctp_outq_tail
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+Attempt 7:
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+The bug was found.
+About 5247 commits remaining
+
+2025-11-08 04:50:14
+Session:   32
+Kernel:    2019-02-13 - 7fc38225363dd8f19e667ad7c77b63bc4a5c065d
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-8.1.0/bin/gcc
+Warning: VM has not responded after 5 attempts.
+Warning: Only booted 0 VMs.
+The bug was not found.
+This commit is flagged as unstable.
+About 5247 commits remaining
+
+2025-11-08 05:04:02
+Session:   33
+Kernel:    2019-02-16 - a3419ce3356cf1fdc69a0524eced84cef730b3bf
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-8.1.0/bin/gcc
+Warning: VM has not responded after 5 attempts.
+Warning: Only booted 0 VMs.
+The bug was not found.
+This commit is flagged as unstable.
+About 5247 commits remaining
+
+2025-11-08 05:10:17
+Session:   34
+Kernel:    2019-01-28 - 870f193d48c25a97d61a8e6c04e3c29a2c606850
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-8.1.0/bin/gcc
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+About 4199 commits remaining
+
+2025-11-08 05:30:39
+Session:   35
+Kernel:    2019-02-06 - 6dcfa2343802b1550530f3ba284cb0179cf2efc8
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-8.1.0/bin/gcc
+Attempt 0:
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+Attempt 1:
+*** general protection fault in sctp_outq_tail
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+Attempt 2:
+*** general protection fault in sctp_outq_tail
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+Attempt 3:
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+Attempt 4:
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+Attempt 5:
+*** general protection fault in sctp_outq_tail
+*** general protection fault in sctp_outq_tail
+*** general protection fault in sctp_outq_tail
+*** general protection fault in sctp_outq_tail
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+Attempt 6:
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+Attempt 7:
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+The bug was found.
+About 2100 commits remaining
+
+2025-11-08 05:51:33
+Session:   36
+Kernel:    2019-01-24 - beb74ac878c8defeb5c862f432a524a032ef2609
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-8.1.0/bin/gcc
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+About 1059 commits remaining
+
+2025-11-08 06:11:50
+Session:   37
+Kernel:    2019-01-29 - c829f5f52db9bae0379b98fca2645f6ca9b0fb1e
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-8.1.0/bin/gcc
+Warning: VM has not responded after 5 attempts.
+Warning: Only booted 0 VMs.
+The bug was not found.
+This commit is flagged as unstable.
+About 1059 commits remaining
+
+2025-11-08 06:18:16
+Session:   38
+Kernel:    2019-01-29 - f4601dee25d5fe8010023552b10879f3d62e45ce
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-8.1.0/bin/gcc
+Attempt 0:
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+Attempt 1:
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+Attempt 2:
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+Attempt 3:
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+Attempt 4:
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+Attempt 5:
+*** general protection fault in sctp_outq_tail
+*** general protection fault in sctp_outq_tail
+*** general protection fault in sctp_outq_tail
+*** general protection fault in sctp_outq_tail
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+Attempt 6:
+*** general protection fault in sctp_outq_tail
+*** general protection fault in sctp_outq_tail
+*** general protection fault in sctp_outq_tail
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+Attempt 7:
+*** general protection fault in sctp_outq_tail
+*** general protection fault in sctp_outq_tail
+*** general protection fault in sctp_outq_tail
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+The bug was found.
+About 629 commits remaining
+
+2025-11-08 06:32:39
+Session:   39
+Kernel:    2019-01-27 - 1fc7f56db7a7c467e46a5d2e2a009d2f337e0338
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-8.1.0/bin/gcc
+Warning: VM has not responded after 5 attempts.
+Warning: Only booted 0 VMs.
+The bug was not found.
+This commit is flagged as unstable.
+About 629 commits remaining
+
+2025-11-08 06:44:31
+Session:   40
+Kernel:    2019-01-24 - ecf938fe7d0088077ee1280419a2b3c5429b47c8
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-8.1.0/bin/gcc
+Attempt 0:
+*** general protection fault in sctp_outq_tail
+*** general protection fault in sctp_outq_tail
+*** general protection fault in sctp_outq_tail
+*** general protection fault in sctp_outq_tail
+*** general protection fault in sctp_outq_tail
+*** general protection fault in sctp_outq_tail
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+Attempt 1:
+*** general protection fault in sctp_outq_tail
+*** general protection fault in sctp_outq_tail
+*** general protection fault in sctp_outq_tail
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+Attempt 2:
+*** general protection fault in sctp_outq_tail
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+Attempt 3:
+    general protection fault in corrupted
+    WARNING: locking bug in sctp_outq_tail
+Attempt 4:
+*** general protection fault in sctp_outq_tail
+*** general protection fault in sctp_outq_tail
+*** general protection fault in sctp_outq_tail
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+Attempt 5:
+*** general protection fault in sctp_outq_tail
+*** general protection fault in sctp_outq_tail
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+Attempt 6:
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+Attempt 7:
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+The bug was found.
+About 21 commits remaining
+
+2025-11-08 06:55:43
+Session:   41
+Kernel:    2019-01-22 - 7c62b8dd5ca89dabd9f455d19e663bad60951bd5
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-8.1.0/bin/gcc
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+About 11 commits remaining
+
+2025-11-08 07:08:22
+Session:   42
+Kernel:    2019-01-23 - 63530aba7826a0f8e129874df9c4d264f9db3f9e
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-8.1.0/bin/gcc
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+About 6 commits remaining
+
+2025-11-08 07:21:05
+Session:   43
+Kernel:    2019-01-24 - 2e6dc4d95110becfe0ff4c3d4749c33ea166e9e7
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-8.1.0/bin/gcc
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+About 4 commits remaining
+
+2025-11-08 07:33:45
+Session:   44
+Kernel:    2019-01-24 - 4ff40b86262b73553ee47cc3784ce8ba0f220bd8
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-8.1.0/bin/gcc
+Attempt 0:
+*** general protection fault in sctp_outq_tail
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+Attempt 1:
+    general protection fault in corrupted
+    WARNING: locking bug in sctp_outq_tail
+Attempt 2:
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+Attempt 3:
+*** general protection fault in sctp_outq_tail
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+Attempt 4:
+*** general protection fault in sctp_outq_tail
+*** general protection fault in sctp_outq_tail
+*** general protection fault in sctp_outq_tail
+*** general protection fault in sctp_outq_tail
+    WARNING: locking bug in sctp_do_sm
+Attempt 5:
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+Attempt 6:
+*** general protection fault in sctp_outq_tail
+*** general protection fault in sctp_outq_tail
+*** general protection fault in sctp_outq_tail
+*** general protection fault in sctp_outq_tail
+*** general protection fault in sctp_outq_tail
+*** general protection fault in sctp_outq_tail
+*** general protection fault in sctp_outq_tail
+*** general protection fault in sctp_outq_tail
+*** general protection fault in sctp_outq_tail
+*** general protection fault in sctp_outq_tail
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+Attempt 7:
+*** general protection fault in sctp_outq_tail
+    kernel panic: Fatal exception
+The bug was found.
+About 3 commits remaining
+
+2025-11-08 07:41:46
+Session:   45
+Kernel:    2019-01-24 - 8220c870cb0f4eaa4e335c9645dbd9a1c461c1dd
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-8.1.0/bin/gcc
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+About 2 commits remaining
+
+====================================================================================================================================================
+Bug Name:             general protection fault in sctp_outq_tail
+Big ID:               bug0904
+Bug Link:             https://syzkaller.appspot.com/bug?extid=47c24ca20a2fa01f082e
+Bisection Result:     2019-01-24 - 4ff40b86262b73553ee47cc3784ce8ba0f220bd8
+Bisected Commit Name: sctp: set chunk transport correctly when it's a new asoc
+Run Time:             18h31m48s
+
+Anchor Commit:        2023-04-02 - 7e364e56293bb98cae1b55fd835f5991c4e96e7d
+Bisection Result:     2019-01-24 - 4ff40b86262b73553ee47cc3784ce8ba0f220bd8
