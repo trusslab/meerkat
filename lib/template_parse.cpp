@@ -529,9 +529,9 @@ void push_syscall_depends(std::vector<Syscall> &syscalls, int index, std::vector
         {"bpf$TOKEN_CREATE", {TypeTag(resourceClass, "fd_bpf_prog")}},
         {"bpf$BPF_PROG_DETACH", {TypeTag(resourceClass, "fd_cgroup"), TypeTag(resourceClass, "fd_bpf_link")}},
         {"bpf$BPF_LINK_CREATE_XDP", {TypeTag(syscallClass, "bpf$LINK_GET_FD_BY_ID")}},
-        {"nanosleep", {TypeTag(resourceClass, "timespec")}},
-        {"timer_settime", {TypeTag(resourceClass, "timespec")}},
-        {"utimes", {TypeTag(resourceClass, "timespec")}},
+        {"nanosleep", {TypeTag(syscallClass, "clock_gettime")}},
+        {"timer_settime", {TypeTag(syscallClass, "clock_gettime")}},
+        {"utimes", {TypeTag(syscallClass, "clock_gettime")}},
     };
 
     if (problematic.count(syscalls.at(index).get_name()) == 1)

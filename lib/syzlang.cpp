@@ -858,7 +858,7 @@ int find_in_items(const std::vector<TypeTag> &items, const TypeTag &query)
     if (l >= items.size() || l < 0 || h < 0)
         return -1;
 
-    return (items.at(l).get_name() == query.get_name() && query.get_class() == items.at(m).get_class() ? l : -1);
+    return (items.at(l).get_name() == query.get_name() && query.get_class() == items.at(l).get_class() ? l : -1);
 }
 
 // Turns out that items of different type can have the same name.
