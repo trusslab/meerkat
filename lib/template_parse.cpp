@@ -532,6 +532,7 @@ void push_syscall_depends(std::vector<Syscall> &syscalls, int index, std::vector
         {"nanosleep", {TypeTag(syscallClass, "clock_gettime")}},
         {"timer_settime", {TypeTag(syscallClass, "clock_gettime")}},
         {"utimes", {TypeTag(syscallClass, "clock_gettime")}},
+        {"write$input_event", {TypeTag(syscallClass, "clock_gettime")}},
     };
 
     if (problematic.count(syscalls.at(index).get_name()) == 1)
