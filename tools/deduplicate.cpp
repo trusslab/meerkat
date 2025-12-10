@@ -4,7 +4,7 @@
 
 void usage()
 {
-    std::cout << "Usage: ./bin/deduplicate bug1/ [bug2/]" << std::flush;
+    std::cout << "Usage: ./bin/deduplicate bug1/ [bug2/]\n" << std::flush;
 }
 
 int main(int argc, char ** argv)
