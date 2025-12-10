@@ -246,7 +246,7 @@ Crash_Type identify_ct(const std::vector<std::string> &lines, int &i)
             else if (lines.at(i).find("sleeping function called from invalid context") != std::string::npos)
                 return CT_SLEEPING;
         }
-        else if (starts_with(lines.at(i), "WARNING: possible circular locking dependency detected"))
+        else if (starts_with(lines.at(i), "WARNING: possible"))
         {
             return CT_UNKNOWN; // This shows up in some lockdep splats. ignore it.
         }
