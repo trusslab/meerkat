@@ -18,7 +18,7 @@ int Git::git(const std::vector<std::string> &args, const std::string &outfile, b
 {
     std::string old_dir = pwd();
     cd (local);
-    std::vector<std::string> cmd = {"git"};
+    std::vector<std::string> cmd = {"git", "--no-pager"};
     
     for (std::string o : args)
         if (!o.empty())
@@ -43,7 +43,7 @@ std::string Git::git_read(const std::vector<std::string> &args)
 {
     std::string old_dir = pwd();
     cd(local);
-    std::vector<std::string> cmd = {"git"};
+    std::vector<std::string> cmd = {"git", "--no-pager"};
     
     for (std::string o : args)
         if (!o.empty())
