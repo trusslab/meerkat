@@ -112,7 +112,7 @@ Bisect_Return do_bisection(Environment &env, Bisect &bisector, Git &linux_git)
 
     if ((err = bisector.next_phase(Bisect_Releases, env, linux_git)) == BIS_ERR)
     {
-        cerr << "Failed to advance to Release search phase.\n" << flush;
+        cerr << "Error: Failed to advance to Release search phase.\n" << flush;
         return BIS_ERR;
     }
 
@@ -127,7 +127,7 @@ Bisect_Return do_bisection(Environment &env, Bisect &bisector, Git &linux_git)
     }
     if (err == BIS_ERR)
     {
-        cerr << "Failed to get or build next session.\n" << flush;
+        cerr << "Error: Failed to get or build next session.\n" << flush;
         return BIS_ERR;
     }
     else if (err == BIS_OTR)
@@ -158,7 +158,7 @@ Bisect_Return do_bisection(Environment &env, Bisect &bisector, Git &linux_git)
         cout << "About " << bisector.remaining(linux_git) << " commits remaining\n" << flush;
         switch (err) {
         case BIS_ERR:
-            cout << "Error: Git failure while recording session result.\n" << flush;
+            cerr << "Error: Git failure while recording session result.\n" << flush;
             return BIS_ERR;
         case BIS_COMPLETE:
         case BIS_MULT:
@@ -172,7 +172,6 @@ Bisect_Return do_bisection(Environment &env, Bisect &bisector, Git &linux_git)
         cerr << "Failed to get or build next session.\n" << flush;
         return BIS_ERR;
     }
-    //cout << "Git bisect reported multiple guilty commits\n" << flush;
 
     // set bisector.good_version to bisector.bisect_version.first_parent()
     bisector.set_good_version(linux_git);
