@@ -13,7 +13,18 @@
 #include <set>
 #include <chrono>
 
-enum Bisect_Return {BIS_MULT = -3, BIS_ERR = -1, BIS_NORMAL = 0, BIS_DONE = 1, BIS_OTR = 2};
+
+/* Bisector return values
+ * 
+ * BIS_MULT: bisection reached multiple possible BiCs
+ * BIS_ERR: bisection reached an unrecoverable error
+ * BIS_NORMAL: operation normal. continue.
+ * BIS_STOP: stop bisection without error
+ * BIS_ANCHOR: bisection stopped at the anchor commit (failed to reproduce)
+ * BIS_COMPLETE: reached a good result
+ * BIS_OTR: bisection reached the oldest tested release
+ */
+enum Bisect_Return {BIS_MULT = -3, BIS_ERR = -1, BIS_NORMAL = 0, BIS_STOP = 1, BIS_ANCHOR = 2, BIS_COMPLETE = 3, BIS_OTR = 4};
 
 enum Bisect_Mode {Mode_PoC, Mode_FF};
 enum Bisect_Phase {Bisect_Init, Bisect_Anchor, Bisect_Releases, Bisect_Kernel, Bisect_Done};
@@ -62,9 +73,9 @@ private:
 
     int index;
 
-    bool treat_error_as_good;
+    bool treat_error_as_good; // error = "boot error"
 
-    bool git_stop;
+    Bisect_Return git_stop;
 
     unsigned int repro_count;
     bool defer_repro;

@@ -63,7 +63,7 @@ Bisect_Return do_bisection(Environment &env, Bisect &bisector, Git &linux_git)
     // ======================================================================================================
     // Fuzz at the anchor commit
 
-    if (bisector.next_phase(Bisect_Anchor, env, linux_git) < 0)
+    if (bisector.next_phase(Bisect_Anchor, env, linux_git) == BIS_ERR)
     {
         cerr << "Failed to advance to anchor commit phase.\n" << flush;
         return BIS_ERR;
@@ -72,7 +72,7 @@ Bisect_Return do_bisection(Environment &env, Bisect &bisector, Git &linux_git)
     cout << "\n==== Anchor Commit ====\n" << flush;
 
     // Begin with Syzkaller from finding date. This emulates Syzbot for any algorithm
-    if (bisector.next_session(env, linux_git) < 0)
+    if (bisector.next_session(env, linux_git) == BIS_ERR)
     {
         cerr << "Error: Failed to go to anchor commit\n" << flush;
         return BIS_ERR;
@@ -82,7 +82,7 @@ Bisect_Return do_bisection(Environment &env, Bisect &bisector, Git &linux_git)
     {
         write_syzkaller_config(env);
         cout << "Setup-only complete.\n" << flush;
-        return BIS_DONE;
+        return BIS_STOP;
     }
 
     result = bisector.test_current(env, linux_git);
@@ -92,13 +92,13 @@ Bisect_Return do_bisection(Environment &env, Bisect &bisector, Git &linux_git)
         if (bisector.mode() == Mode_FF)
             cout << "Average TTF: " << result.suggest_ttf << endl;
         cout << "Find-only complete.\n";
-        return BIS_DONE;
+        return BIS_STOP;
     }
 
     if (!result.found)
     {
         cout << "\nFailure: This bug cannot be found at the anchor commit.\n" << flush;
-        return BIS_DONE;
+        return BIS_ANCHOR;
     }
     else if (bisector.mode() == Mode_FF)
     {
@@ -110,8 +110,7 @@ Bisect_Return do_bisection(Environment &env, Bisect &bisector, Git &linux_git)
     // ======================================================================================================
     // Major Release Search
 
-    err = bisector.next_phase(Bisect_Releases, env, linux_git);
-    if (err < 0)
+    if ((err = bisector.next_phase(Bisect_Releases, env, linux_git)) == BIS_ERR)
     {
         cerr << "Failed to advance to Release search phase.\n" << flush;
         return BIS_ERR;
@@ -120,18 +119,18 @@ Bisect_Return do_bisection(Environment &env, Bisect &bisector, Git &linux_git)
     cout << "\n==== Major Release Search ====\n" 
          << bisector.remaining(linux_git) << " Release" << (bisector.remaining(linux_git) == 1 ? "" : "s") << "\n" << flush;
 
-    while ((err = bisector.next_session(env, linux_git)) == 0)
+    while ((err = bisector.next_session(env, linux_git)) == BIS_NORMAL)
     {
         result = bisector.test_current(env, linux_git);
         bisector.record(result, linux_git);
         cout << "About " << bisector.remaining(linux_git) << " releases remaining\n" << flush;
     }
-    if (err < 0)
+    if (err == BIS_ERR)
     {
         cerr << "Failed to get or build next session.\n" << flush;
         return BIS_ERR;
     }
-    else if (err == BIS_OTR && bisector.remaining(linux_git) <= 0)
+    else if (err == BIS_OTR)
     {
         cout << "This bug was found on the oldest tested release.\n" << flush;
         return BIS_OTR;
@@ -143,8 +142,7 @@ Bisect_Return do_bisection(Environment &env, Bisect &bisector, Git &linux_git)
     // ======================================================================================================
     // Kernel Bisection
 
-    err = bisector.next_phase(Bisect_Kernel, env, linux_git);
-    if (err < 0)
+    if ((err = bisector.next_phase(Bisect_Kernel, env, linux_git)) == BIS_ERR)
     {
         cerr << "Failed to advance to kernel bisection phase.\n" << flush;
         return BIS_ERR;
@@ -153,24 +151,33 @@ Bisect_Return do_bisection(Environment &env, Bisect &bisector, Git &linux_git)
     cout << "\n==== Kernel Bisection ====\n"
          << bisector.remaining(linux_git) << " Linux commit" << (bisector.remaining(linux_git) == 1 ? "" : "s") << endl << flush;
 
-    while ((err = bisector.next_session(env, linux_git)) == 0)
+    while ((err = bisector.next_session(env, linux_git)) == BIS_NORMAL)
     {
         result = bisector.test_current(env, linux_git);
         err = bisector.record(result, linux_git);
         cout << "About " << bisector.remaining(linux_git) << " commits remaining\n" << flush;
-        if (err == BIS_MULT)
-            cout << "Git bisect reported multiple guilty commits\n" << flush;
+        switch (err) {
+        case BIS_ERR:
+            cout << "Error: Git failure while recording session result.\n" << flush;
+            return BIS_ERR;
+        case BIS_COMPLETE:
+        case BIS_MULT:
+            return err;
+        default:
+            break;
+        }
     }
-    if (err < 0)
+    if (err == BIS_ERR)
     {
         cerr << "Failed to get or build next session.\n" << flush;
         return BIS_ERR;
     }
+    //cout << "Git bisect reported multiple guilty commits\n" << flush;
 
     // set bisector.good_version to bisector.bisect_version.first_parent()
     bisector.set_good_version(linux_git);
 
-    return BIS_NORMAL;
+    return err;
 }
 
 int bisect(Environment &env)
@@ -229,16 +236,36 @@ int bisect(Environment &env)
         stage_title = "Focused Fuzzing";
 
         err = do_bisection(env, bisector, linux_git);
-        if (err < 0 || env.feats.setup_only || env.feats.find_only)
+        switch (err) {
+        case BIS_ERR:
+        case BIS_STOP:
             goto finish;
-        if (err == 1 && env.feats.ff_no_find_backup)
-            goto finish;
-        if (err == 2)
+            break;
+
+        case BIS_ANCHOR:
+            cout << bisector.print_anchor_fail(env, starttime, stagetime, stage_title) << flush;
+            if (env.feats.ff_no_find_backup || !env.feats.poc_test)
+                goto finish;
+            break;
+
+        case BIS_OTR:
             goto print_result;
-        if (err == 0)
+            break;
+
+        case BIS_MULT:
+            cout << "Git bisect reported multiple guilty commits\n" << flush;
+        case BIS_NORMAL:
+        case BIS_COMPLETE:
             found = true;
-        if (env.feats.poc_test)
-            cout << bisector.print_partial_result(env, linux_git, starttime, stagetime, stage_title, env.primary_repro) << flush;
+            if (env.feats.poc_test)
+                cout << bisector.print_partial_result(env, linux_git, starttime, stagetime, stage_title, env.primary_repro) << flush;
+            goto print_result;
+            break;
+
+        default:
+            cerr << "Unhandled return value " << err << " at end of mutation phase\n" << flush;
+            break;
+        }
     }
 
     if (env.feats.poc_test)
@@ -246,9 +273,11 @@ int bisect(Environment &env)
 
     if (bisector.mode() == Mode_PoC)
     {
+        // Make a Primary PoC
         if (env.primary_repro.empty())
             env.primary_repro = list_dir(env.reprodir).front();
 
+        // Get the rest of the PoCs
         vector<string> ordered_pocs = order_pocs(env);
         int numPoCs = ordered_pocs.size() + 1;
         stage_title = "Primary PoC Test";
@@ -259,29 +288,34 @@ int bisect(Environment &env)
 redo_poc:
         stagetime = chrono::steady_clock::now();
         err = do_bisection(env, bisector, linux_git);
-        if (err < 0 || env.feats.setup_only || env.feats.find_only)
+        if (err == BIS_ERR || err == BIS_STOP)
             goto finish;
 
+        // We just finished a bisection run. Do we consider other PoCs?
         if (env.feats.poc_all_pocs)
         {
-            if (err == BIS_OTR)
+            switch (err) {
+            case BIS_OTR: // Does the bug reproduce on OTR?
                 goto print_result;
 
-            if (numPoCs <= 1)
-            {
-                if (err != BIS_DONE)
-                    goto print_result;
-                
+            case BIS_ANCHOR:
                 cout << bisector.print_anchor_fail(env, starttime, stagetime, stage_title, env.primary_repro) << flush;
-                goto finish;
-            }
 
-            if (err == BIS_DONE)
-                cout << bisector.print_anchor_fail(env, starttime, stagetime, stage_title, env.primary_repro) << flush;
-            else
-            {
+                // If there was only one PoC to begin with and this was the only test done, don't print the final result.
+                if (numPoCs <= 1 && !env.feats.ff_test)
+                    goto finish;
+                break;
+
+            case BIS_MULT:
+                cout << "Git bisect reported multiple guilty commits\n" << flush;
+            case BIS_COMPLETE:
                 cout << bisector.print_partial_result(env, linux_git, starttime, stagetime, stage_title, env.primary_repro) << flush;
                 found = true;
+                break;
+
+            default:
+                cerr << "Unhandled return value " << err << " at end of PoC phase\n" << flush;
+                break;
             }
 
             if (ordered_pocs.empty() && found)

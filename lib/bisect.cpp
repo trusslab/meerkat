@@ -25,7 +25,7 @@ int Bisect::init(const Environment &env, Git &linux_git)
     repro_count = 0;
     phase = Bisect_Init;
     treat_error_as_good = false;
-    git_stop = false;
+    git_stop = BIS_NORMAL;
     defer_repro = false;
 
     if (set_compiler_type(env.compiler) < 0)
@@ -251,7 +251,10 @@ Bisect_Return Bisect::init_releases_phase(const Environment &env, Git &linux_git
     releases = std::vector<Version>(releases.begin() + i, releases.end());
     skip_tags(releases);
     if (releases.size() <= 0)
+    {
+        std::cerr << "Error: Skipping tags is broken.\n" << std::flush;
         return BIS_ERR;
+    }
     
     // Set index to -1 here so it is 0 when we increment the first time.
     index = -1;
@@ -260,7 +263,7 @@ Bisect_Return Bisect::init_releases_phase(const Environment &env, Git &linux_git
 
 Bisect_Return Bisect::init_bisect_phase(Git &linux_git)
 {
-    git_stop = false;
+    git_stop = BIS_NORMAL;
     // Switch over to git bisect for this phase
     std::string bad = bisect_version.id;
     std::string good = good_version.id;
@@ -278,6 +281,7 @@ Bisect_Return Bisect::init_bisect_phase(Git &linux_git)
     return BIS_NORMAL;
 }
 
+// Returns normal if phase was setup, err otherwise
 Bisect_Return Bisect::next_phase(const Bisect_Phase next, const Environment &env, Git &linux_git)
 {
     Bisect_Return err = BIS_NORMAL;
@@ -296,6 +300,7 @@ Bisect_Return Bisect::next_phase(const Bisect_Phase next, const Environment &env
         break;
     default:
         err = BIS_ERR;
+        break;
     }
 
     return err;
@@ -322,6 +327,7 @@ bool Bisect::session_was_stable(const Session &session) const
     return past_sessions.find(session)->stable;
 }
 
+// Returns either error or normal
 Bisect_Return Bisect::build_current_kernel(const Environment &env, Git &linux_git, bool bisecting)
 {
     std::string compiler;
@@ -337,7 +343,7 @@ Bisect_Return Bisect::goto_anchor_session(const Environment &env, Git &linux_git
     if (linux_git.cleanup() < 0)
         return BIS_ERR;
 
-    // Choose the anchor commit if this is the first round, or good versino if second round
+    // Choose the anchor commit if this is the first round, or good version if second round
     Version linux_version = good_version.id.empty() ? anchor_version : good_version;
 
     current_session = Session(linux_version, mode(), false);
@@ -353,6 +359,11 @@ Bisect_Return Bisect::goto_anchor_session(const Environment &env, Git &linux_git
     return BIS_NORMAL;
 }
 
+// Can return:
+// NORMAL: keep testing
+// COMPLETE: we have found a release range
+// OTR: bug reproduces on oldest release
+// ERR: error
 Bisect_Return Bisect::goto_release_session(const Environment &env, Git &linux_git)
 {
     Bisect_Return err = BIS_NORMAL;
@@ -362,11 +373,20 @@ retry:
     index++;    // starts at -1 and increments each time
     if (index > 0 && !last_session.found && last_session.stable)
     {
-        return BIS_DONE;
+        return BIS_COMPLETE;
     }
     else if (index >= releases.size())
     {
-        return BIS_OTR;
+        if (last_session.stable && last_session.found)
+            return BIS_OTR;
+        else if (last_session.stable)
+            return BIS_COMPLETE;
+        else if (!last_session.stable) // could be an else
+        {
+            // For unstable OTR
+            treat_error_as_good = true;
+            return BIS_COMPLETE;
+        }
     }
     else if (index < 0)
     {
@@ -382,8 +402,7 @@ retry:
     if (last_session.kernel.id == current_session.kernel.id)
         return BIS_NORMAL;
 
-    err = build_current_kernel(env, linux_git);
-    if (err < 0)
+    if ((err = build_current_kernel(env, linux_git)) == BIS_ERR)
     {
         log_kernel_build_error();
         std::cout << "Attempting to recover.\n" << std::flush;
@@ -395,12 +414,18 @@ retry:
     return err;
 }
 
+// Builds the next git bisect session
+// Can return:
+// NORMAL: continue testing this session
+// COMPLETE: A result has been reached (BiC)
+// MULT: git bisect returned multiple possible BiCs
+// ERR: error
 Bisect_Return Bisect::goto_bisect_session(const Environment &env, Git &linux_git)
 {
     int res = 0;
     Bisect_Return err = BIS_NORMAL;
-    if (git_stop)
-        return BIS_DONE;
+    if (git_stop != BIS_NORMAL)
+        return git_stop;
 
 retry:
     // For git bisect, we should already be at the next commit to test
@@ -410,29 +435,37 @@ retry:
     log_session_info(current_session, inc_session());
 
     err = build_current_kernel(env, linux_git, true);
-    if (err < 0)
+    if (err == BIS_ERR)
     {
         log_kernel_build_error();
         std::cout << "Attempting to recover.\n" << std::flush;
         current_session.stable = false;
         _archive_session();
         linux_git.cleanup();
+
         res = linux_git.bisect_skip();
-        // TODO: Fix this return value nonsense to better handle multiple guilty commits
-        if (res == -3)
-            std::cout << "Git bisect reported multiple guilty commits\n" << std::flush;
-        if (res <= -2)
-            return BIS_DONE;
+        switch (res) {
+        case -3:
+            return BIS_MULT;
+        case -2:
+            return BIS_COMPLETE;
+        case -1:    
+            if (linux_git.error() < 0)
+                return BIS_ERR;
+        default:
+            break;
+        }   
         goto retry;
     }
 
-    return err;
+    return BIS_NORMAL;
 }
 
 // Goto the next session based on the internal state. Called functions should:
-// update internal indices as needed
-// build kernel and syzkaller
-// return 0 to continue same phase, return 1 to indicate phase is done.
+// Detect end state (COMPLETE, MULT, OTR)
+// or
+// Goto next session, build, and return NORMAL
+// ERR is error.
 Bisect_Return Bisect::next_session(const Environment &env, Git &linux_git)
 {
     Bisect_Return err = BIS_NORMAL;
@@ -615,6 +648,37 @@ int Bisect::set_good_version(Git &linux_git)
     return 0;
 }
 
+Bisect_Return Bisect::record_anchor(const Test_Result &result)
+{
+    bisect_version = current_session.kernel;
+    archive_session(result);
+    return BIS_NORMAL;
+}
+
+Bisect_Return Bisect::record_release(const Test_Result &result)
+{
+    bool last_stable = last_session.stable;
+    if (!already_fuzzed(current_session))
+        archive_session(result);
+    
+    if (result.found)
+    {
+        bisect_version = current_session.kernel;
+    }
+    else if (result.stable)
+    {
+        good_version = current_session.kernel;
+        treat_error_as_good = false;
+    }
+    else if (!result.stable && last_stable)
+    {
+        good_version = current_session.kernel;
+        treat_error_as_good = true;
+    }
+
+    return BIS_NORMAL;
+}
+
 Bisect_Return Bisect::record_kernel(const Test_Result &result, Git &linux_git)
 {
     if (!already_fuzzed(current_session))
@@ -644,45 +708,19 @@ Bisect_Return Bisect::record_kernel(const Test_Result &result, Git &linux_git)
         linux_git.cleanup();
         res = linux_git.bisect_skip();
     }
-    if (res <= -2)
-        git_stop = true;
 
-    if (res == -3)
+    switch (res) {
+    case -3:
+        git_stop = BIS_MULT;
         return BIS_MULT;
-    else if (res == -1)
+    case -2:
+        git_stop = BIS_COMPLETE;
+        return BIS_COMPLETE;
+    case -1:
         return BIS_ERR;
-    else
-        return BIS_NORMAL;
-}
-
-Bisect_Return Bisect::record_release(const Test_Result &result)
-{
-    bool last_stable = last_session.stable;
-    if (!already_fuzzed(current_session))
-        archive_session(result);
-    
-    if (result.found)
-    {
-        bisect_version = current_session.kernel;
+    default:
+        break;
     }
-    else if (result.stable)
-    {
-        good_version = current_session.kernel;
-        treat_error_as_good = false;
-    }
-    else if (!result.stable && last_stable)
-    {
-        good_version = current_session.kernel;
-        treat_error_as_good = true;
-    }
-
-    return BIS_NORMAL;
-}
-
-Bisect_Return Bisect::record_anchor(const Test_Result &result)
-{
-    bisect_version = current_session.kernel;
-    archive_session(result);
     return BIS_NORMAL;
 }
 
