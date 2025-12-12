@@ -230,7 +230,7 @@ bool compare_stack_traces(const BugAlias &bug1, const BugAlias &bug2)
     if (!bug1.has_stack() || !bug2.has_stack())
         return false;
 
-    return simple_stack_comparison(bug1, bug2);
+    return levenshtein_stack_comparison(bug1, bug2);
 }
 
 std::string cluster_crash_type(const std::string &ct)
