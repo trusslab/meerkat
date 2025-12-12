@@ -1,33 +1,34 @@
-./bin/bisector -i 5 -c /home/syzretrospector/syzinspector/wd-bisector-5/bisector.cfg -a 041fae9c105ae342a4245cf1e0dc56a23fbb9d3c -F ff-test,poc-test,stateful-corpus,ff-no-find-backup
+./bin/meerkat -i 1 -c /home/syzretrospector/meerkat/wd-meerkat-1/meerkat.cfg -a 041fae9c105ae342a4245cf1e0dc56a23fbb9d3c -F ff-test,poc-test,poc-all-pocs,ff-no-find-backup,stateful-corpus
 Bisecting:          KASAN: slab-out-of-bounds Write in copy_verifier_state
-Warning: No syscall found that produces tail_call_map.
-Warning: No syscall found that produces fd_bpf_const_str.
 Syzbot Link:        https://syzkaller.appspot.com/bug?id=7988319f1caa70d683b9cb540b8b656f534caef7
 Working Name:       bug0197
 
-No aliases given.
+Aliases:
+    KASAN: slab-out-of-bounds Write in copy_verifier_state (has report)
 
 Anchor Commit:      041fae9c105ae342a4245cf1e0dc56a23fbb9d3c
 Repository:         https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
 Branch:             master
 Arch:               amd64
 
-Bisector:           /home/syzretrospector/syzinspector/
-Version:            1.0.4
-Kernel:             /home/syzretrospector/syzinspector/wd-bisector-5/kernel/
-Syzkaller:          /home/syzretrospector/syzinspector/syzkaller/
-Compilers:          /home/syzretrospector/compilers/
-Ccache:             ccache
-Image:              /home/syzretrospector/images/stretch/stretch.img
-Image Key:          /home/syzretrospector/images/stretch/stretch.id_rsa
+Meerkat:            /home/syzretrospector/meerkat/
+Version:            1.2.0
+Kernel:             /home/syzretrospector/meerkat/wd-meerkat-1/kernel/
+Syzkaller:          /home/syzretrospector/meerkat/syzkaller/
+Compilers:          /home/syzretrospector/meerkat/compilers/
+Compiler:           gcc (Ubuntu 11.4.0-1ubuntu1~22.04.2) 11.4.0
+Linker:             GNU ld (GNU Binutils for Ubuntu) 2.38
+Ccache:             ccache version 4.5.1
+Image:              /home/syzretrospector/meerkat/image/stretch/stretch.img
+Image Key:          /home/syzretrospector/meerkat/image/stretch/stretch.id_rsa
 
-Workdir:            /home/syzretrospector/syzinspector/wd-bisector-5/
-Kconfig:            /home/syzretrospector/syzinspector/wd-bisector-5/config-bug0197.txt
-Reproducers: (1)    /home/syzretrospector/syzinspector/wd-bisector-5/reproducers/
-Syzkaller Workdir:  /home/syzretrospector/syzinspector/wd-bisector-5/wd-kaller/
-Log Directory:      /home/syzretrospector/syzinspector/wd-bisector-5/log/
+Workdir:            /home/syzretrospector/meerkat/wd-meerkat-1/
+Kconfig:            /home/syzretrospector/meerkat/wd-meerkat-1/config-bug0197.txt
+Reproducers: (1)    /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/
+Syzkaller Workdir:  /home/syzretrospector/meerkat/wd-meerkat-1/wd-kaller/
+Log Directory:      /home/syzretrospector/meerkat/wd-meerkat-1/log/
 
-Syscalls: (12)      ["bpf$PROG_LOAD", "bpf$BPF_BTF_GET_NEXT_ID", "ioctl$F2FS_IOC_START_ATOMIC_WRITE", "openat$selinux_enforce", "ioctl$sock_SIOCGIFINDEX", "bpf$BPF_BTF_LOAD", "bpf$OBJ_GET_MAP", "socket", "bpf$BPF_MAP_CONST_STR_FREEZE", "bpf$MAP_CREATE_RINGBUF", "bpf$MAP_CREATE_TAIL_CALL", "bpf$MAP_CREATE_CONST_STR"]
+Syscalls: (17)      ["bpf$PROG_LOAD", "bpf$BPF_PROG_GET_FD_BY_ID", "bpf$BPF_BTF_GET_NEXT_ID", "ioctl$F2FS_IOC_START_ATOMIC_WRITE", "openat$selinux_enforce", "ioctl$sock_SIOCGIFINDEX", "bpf$BPF_BTF_LOAD", "bpf$OBJ_GET_MAP", "bpf$TOKEN_CREATE", "bpf$BPF_PROG_GET_NEXT_ID", "socket", "bpf$BPF_MAP_CONST_STR_FREEZE", "bpf$MAP_UPDATE_ELEM_TAIL_CALL", "bpf$MAP_CREATE_RINGBUF", "bpf$MAP_UPDATE_CONST_STR", "bpf$MAP_CREATE_TAIL_CALL", "bpf$MAP_CREATE_CONST_STR"]
 VM Count:           8
 CPU Count:          2
 Procs:              16
@@ -38,22 +39,519 @@ Max Attempts:       1
 
 ==== Anchor Commit ====
 
-2025-03-13 21:22:24
+2025-12-10 14:48:44
 Session:   1
 Kernel:    2022-12-14 - 041fae9c105ae342a4245cf1e0dc56a23fbb9d3c
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
-Warning: bpf$PROG_LOAD was disabled by Syzkaller.
+Compiler:  ccache gcc
 Attempt 1:
-    No crashes found.
-Warning: bpf$PROG_LOAD was disabled by Syzkaller.
+    Time  Bug Name
+       2  INFO: rcu detected stall in corrupted
+       2  general protection fault in rxrpc_unuse_local (7)
+       3  general protection fault in rxrpc_unuse_local (7)
+***    3  KASAN: slab-out-of-bounds Write in copy_array (has report)
 Attempt 2: (RETRY)
     Time  Bug Name
-      10  INFO: rcu detected stall in corrupted
-Warning: bpf$PROG_LOAD was disabled by Syzkaller.
+       2  INFO: rcu detected stall in corrupted
+       2  general protection fault in rxrpc_unuse_local (7)
+       3  general protection fault in rxrpc_unuse_local (8)
+       4  general protection fault in rxrpc_unuse_local (8)
+       5  general protection fault in rxrpc_unuse_local (8)
+       6  general protection fault in rxrpc_unuse_local (7)
+***    6  KASAN: slab-out-of-bounds Write in copy_array (has report)
 Attempt 3: (RETRY)
     Time  Bug Name
-       8  INFO: rcu detected stall in corrupted
-       9  INFO: rcu detected stall in corrupted
+       2  general protection fault in rxrpc_unuse_local (8)
+       3  general protection fault in rxrpc_unuse_local (7)
+***    3  KASAN: slab-out-of-bounds Write in copy_array (has report)
+The bug was found.
+
+New Max Time: 10
+
+==== Major Release Search ====
+12 Releases
+
+2025-12-10 15:17:02
+Session:   2
+Kernel:    2022-12-11 - 830b3c68c1fb1e9176028d02ef86f3cf76aa2476 (v6.1)
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       4  suppressed report
+       5  suppressed report (3)
+       6  suppressed report
+       8  suppressed report
+The bug was not found.
+About 11 releases remaining
+
+==== Kernel Bisection ====
+10971 Linux commits
+
+2025-12-10 15:41:01
+Session:   3
+Kernel:    2022-12-13 - a594533df0f6ca391da003f43d53b336a2d23ffa
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  INFO: rcu detected stall in corrupted
+       4  suppressed report
+       6  suppressed report
+       8  suppressed report
+The bug was not found.
+About 4857 commits remaining
+
+2025-12-10 16:04:37
+Session:   4
+Kernel:    2022-12-13 - 7c4a6309e27f411743817fe74a832ec2d2798a4b
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  general protection fault in rxrpc_unuse_local (8)
+       3  general protection fault in rxrpc_unuse_local (8)
+       4  general protection fault in rxrpc_unuse_local (8)
+       5  general protection fault in rxrpc_unuse_local (8)
+       6  general protection fault in rxrpc_unuse_local (7)
+       7  general protection fault in rxrpc_unuse_local (7)
+       8  general protection fault in rxrpc_unuse_local (4)
+       9  general protection fault in rxrpc_unuse_local (7)
+      10  general protection fault in rxrpc_unuse_local (5)
+The bug was not found.
+About 8791 commits remaining
+
+2025-12-10 16:28:13
+Session:   5
+Kernel:    2022-12-13 - 7e68dd7d07a28faa2e6574dd6b9dbd90cdeaae91
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  general protection fault in rxrpc_unuse_local (8)
+       3  general protection fault in rxrpc_unuse_local (8)
+       4  general protection fault in rxrpc_unuse_local (8)
+       5  general protection fault in rxrpc_unuse_local (4)
+       6  general protection fault in rxrpc_unuse_local (8)
+       7  general protection fault in rxrpc_unuse_local (7)
+       8  general protection fault in rxrpc_unuse_local (8)
+       9  general protection fault in rxrpc_unuse_local (6)
+      10  general protection fault in rxrpc_unuse_local (6)
+The bug was not found.
+About 1347 commits remaining
+
+2025-12-10 16:52:04
+Session:   6
+Kernel:    2022-12-14 - a0a6c76cf2a506c061072db6c187f8a641dc85de
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  general protection fault in rxrpc_unuse_local (8)
+       3  general protection fault in rxrpc_unuse_local (8)
+       4  general protection fault in rxrpc_unuse_local (8)
+       5  general protection fault in rxrpc_unuse_local (8)
+       6  general protection fault in rxrpc_unuse_local (6)
+       7  general protection fault in rxrpc_unuse_local (5)
+       8  general protection fault in rxrpc_unuse_local (7)
+       9  general protection fault in rxrpc_unuse_local (6)
+      10  general protection fault in rxrpc_unuse_local (7)
+The bug was not found.
+About 695 commits remaining
+
+2025-12-10 17:16:00
+Session:   7
+Kernel:    2022-12-14 - 64e7003c6b85626a533a67c1ba938b75a3db24e6
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    2  KASAN: slab-out-of-bounds Write in copy_array (8) (has report)
+Running syz-repro.
+Run Time:        0h17m0s
+The bug was found.
+About 419 commits remaining
+
+2025-12-10 17:48:56
+Session:   8
+Kernel:    2022-12-14 - ad76bf1ff18e059d64b70047940d298641d4cc2f
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  INFO: rcu detected stall in corrupted
+       2  general protection fault in rxrpc_unuse_local (7)
+       3  general protection fault in rxrpc_unuse_local (8)
+       4  general protection fault in rxrpc_unuse_local (7)
+       5  general protection fault in rxrpc_unuse_local (6)
+       6  general protection fault in rxrpc_unuse_local (7)
+       7  general protection fault in rxrpc_unuse_local (6)
+       8  general protection fault in rxrpc_unuse_local (7)
+       9  general protection fault in rxrpc_unuse_local (6)
+      10  general protection fault in rxrpc_unuse_local (8)
+The bug was not found.
+About 220 commits remaining
+
+2025-12-10 18:06:38
+Session:   9
+Kernel:    2022-11-25 - 8bd9974b6bfcd1e14a001deeca051aed7295559a
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       4  suppressed report
+       5  INFO: rcu detected stall in corrupted
+       6  suppressed report
+       7  suppressed report
+       8  suppressed report
+       9  suppressed report
+      10  INFO: rcu detected stall in corrupted
+The bug was not found.
+About 13405 commits remaining
+
+2025-12-10 18:30:13
+Session:   10
+Kernel:    2022-12-09 - 3564f5a2144355cadb4f0c5c14d2bc7fcd2418b9
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       5  suppressed report
+       6  suppressed report
+       7  suppressed report
+The bug was not found.
+About 13350 commits remaining
+
+2025-12-10 18:46:43
+Session:   11
+Kernel:    2022-12-02 - 8b05aa26336113c4cea25f1c333ee8cd4fc212a6
+Compiler:  ccache gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/syzretrospector/meerkat/wd-meerkat-1/log/bug0197-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 13350 commits remaining
+
+2025-12-10 19:10:15
+Session:   12
+Kernel:    2022-12-02 - 5abf698754b8e5e4f1ca1058ee2b9785fbce6d23
+Compiler:  ccache gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/syzretrospector/meerkat/wd-meerkat-1/log/bug0197-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 13350 commits remaining
+
+2025-12-10 19:25:31
+Session:   13
+Kernel:    2022-12-02 - de92f65719cd672f4b48397540b9f9eff67eca40
+Compiler:  ccache gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/syzretrospector/meerkat/wd-meerkat-1/log/bug0197-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 13350 commits remaining
+
+2025-12-10 19:49:01
+Session:   14
+Kernel:    2022-12-09 - 80b61baca4c8698139881f41473e652bedc65a73
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  INFO: rcu detected stall in corrupted
+       6  suppressed report
+       8  suppressed report
+      10  INFO: rcu detected stall in corrupted
+The bug was not found.
+About 13340 commits remaining
+
+2025-12-10 20:04:18
+Session:   15
+Kernel:    2022-12-01 - 9db89b41117024f80b38b15954017fb293133364
+Compiler:  ccache gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/syzretrospector/meerkat/wd-meerkat-1/log/bug0197-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 13340 commits remaining
+
+2025-12-10 20:19:47
+Session:   16
+Kernel:    2022-12-01 - d4ccd54d28d3c8598e2354acc13e28c060961dbb
+Compiler:  ccache gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/syzretrospector/meerkat/wd-meerkat-1/log/bug0197-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 13340 commits remaining
+
+2025-12-10 20:35:14
+Session:   17
+Kernel:    2022-11-01 - 6dd142d9013ca82155d0c069434c60a0d5755ec0
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  INFO: rcu detected stall in corrupted
+       4  suppressed report
+       7  suppressed report
+       9  suppressed report (2)
+The bug was not found.
+About 13500 commits remaining
+
+2025-12-10 20:58:43
+Session:   18
+Kernel:    2022-12-02 - 3a017d6355f24de42f2ad688df9fa19e0cb128f2
+Compiler:  ccache gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/syzretrospector/meerkat/wd-meerkat-1/log/bug0197-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 13500 commits remaining
+
+2025-12-10 21:16:10
+Session:   19
+Kernel:    2022-11-18 - 74c8e6bffbe10c4470139496f930c0b0752c85c9
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       7  suppressed report (2)
+       8  suppressed report (2)
+       9  suppressed report
+The bug was not found.
+About 13496 commits remaining
+
+2025-12-10 21:31:40
+Session:   20
+Kernel:    2022-12-02 - bdc77507fecd00ddad2f502f86a48a9ec38f0f84
+Compiler:  ccache gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/syzretrospector/meerkat/wd-meerkat-1/log/bug0197-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 13496 commits remaining
+
+2025-12-10 21:46:58
+Session:   21
+Kernel:    2022-12-09 - 0a55f4e38556f7e59b0f30fac0751e3a04be44c2
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 13337 commits remaining
+
+2025-12-10 22:02:17
+Session:   22
+Kernel:    2022-12-02 - 79cc1ba7badf9e7a12af99695a557e9ce27ee967
+Compiler:  ccache gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/syzretrospector/meerkat/wd-meerkat-1/log/bug0197-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 13337 commits remaining
+
+2025-12-10 22:17:47
+Session:   23
+Kernel:    2022-11-22 - 9124a26401483bf2b13a99cb4317dce3f677060f
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       5  suppressed report
+       6  suppressed report (2)
+The bug was not found.
+About 13493 commits remaining
+
+2025-12-10 22:33:07
+Session:   24
+Kernel:    2022-12-02 - d272e01fa0a2f15c5c331a37cd99c6875c7b7186
+Compiler:  ccache gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/syzretrospector/meerkat/wd-meerkat-1/log/bug0197-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 13493 commits remaining
+
+2025-12-10 22:48:21
+Session:   25
+Kernel:    2022-12-01 - 9360d035a579d95d1e76c471061b9065b18a0eb1
+Compiler:  ccache gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/syzretrospector/meerkat/wd-meerkat-1/log/bug0197-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 13493 commits remaining
+
+2025-12-10 23:03:52
+Session:   26
+Kernel:    2022-12-02 - d662198e03bc7fb4635156ee7e8b8d325e2d8512
+Compiler:  ccache gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/syzretrospector/meerkat/wd-meerkat-1/log/bug0197-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 13493 commits remaining
+
+2025-12-10 23:19:11
+Session:   27
+Kernel:    2022-12-09 - 9f6ec8dc574efb7f4f3d7ee9cd59ae307e78f445
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       5  suppressed report
+       6  INFO: rcu detected stall in corrupted
+       6  suppressed report
+      10  suppressed report
+The bug was not found.
+About 13333 commits remaining
+
+2025-12-10 23:34:29
+Session:   28
+Kernel:    2022-12-09 - 0b496efbd2d00f658dbf906882d935e7fa3dfd03
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  INFO: rcu detected stall in corrupted
+       6  suppressed report
+      10  suppressed report (2)
+The bug was not found.
+About 13330 commits remaining
+
+2025-12-10 23:49:45
+Session:   29
+Kernel:    2022-12-02 - 9fc9e278a5c0b708eeffaf47d6eb0c82aa74ed78
+Compiler:  ccache gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/syzretrospector/meerkat/wd-meerkat-1/log/bug0197-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 13330 commits remaining
+
+2025-12-11 00:05:17
+Session:   30
+Kernel:    2022-12-14 - 48ea09cddae0b794cde2070f106ef676703dbcd3
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    2  KASAN: slab-out-of-bounds Write in copy_array (8) (has report)
+The bug was found.
+About 13328 commits remaining
+
+2025-12-11 00:21:16
+Session:   31
+Kernel:    2022-12-01 - 25226df4b9be7f6d5d722af5b75e86e76e5c3a80
+Compiler:  ccache gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/syzretrospector/meerkat/wd-meerkat-1/log/bug0197-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 13328 commits remaining
+
+2025-12-11 00:40:13
+Session:   32
+Kernel:    2022-12-01 - 38931d8989b5760b0bd17c9ec99e81986258e4cb
+Compiler:  ccache gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/syzretrospector/meerkat/wd-meerkat-1/log/bug0197-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+Warning: Child process git exited with error status 2.
+About 13328 commits remaining
+Git bisect reported multiple guilty commits
+
+==== Partial Result: Focused Fuzzing ====
+Bisection Result:     2022-12-14 - 48ea09cddae0b794cde2070f106ef676703dbcd3
+Bisected Commit Name: Merge tag 'hardening-v6.2-rc1' of git://git.kernel.org/pub/scm/linux/kernel/git/kees/linux
+Stage Time:           10h6m56s
+Run Time:             10h6m58s
+=========================================
+
+==== Anchor Commit ====
+
+2025-12-11 00:55:40
+Session:   33
+Kernel:    2022-12-14 - ad76bf1ff18e059d64b70047940d298641d4cc2f
+Compiler:  ccache gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0197-1.prog
+Attempt 0:
+    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in unregister_nexthop_notifier
+    INFO: task hung in devlink_unregister
+    INFO: task hung in linkwatch_event
+    INFO: task hung in rtnetlink_rcv_msg
+Attempt 1:
+    INFO: rcu detected stall in cleanup_net
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in devlink_unregister
+    INFO: task hung in rtnetlink_rcv_msg
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in switchdev_deferred_process_work
+    INFO: task hung in fqdir_free_fn
+    INFO: task hung in del_device_store
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in devlink_unregister
+    INFO: task hung in linkwatch_event
+    INFO: task hung in rtnetlink_rcv_msg
+Attempt 4:
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in switchdev_deferred_process_work
+    INFO: task hung in l2tp_exit_net
+    INFO: task hung in new_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in devlink_unregister
+    INFO: task hung in linkwatch_event
+    INFO: task hung in rtnetlink_rcv_msg
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
 The bug was not found.
 
 Failure: This bug cannot be found at the anchor commit.
+
+==== Partial Result: Primary PoC Test ====
+Reproducer:           /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0197-1.prog
+Bisection Result:     Failed to reproduce at the anchor commit.
+Stage Time:           0h22m20s
+Run Time:             10h29m18s
+==========================================
