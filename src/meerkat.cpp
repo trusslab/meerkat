@@ -40,6 +40,8 @@ using namespace std;
     */
 
 // check for a patch of v4.19
+// Find a way to identify corrupted reports
+// Copy identified aliases to aliases
 
 vector<string> order_pocs(const Environment &env)
 {

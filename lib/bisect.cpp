@@ -858,34 +858,37 @@ int uniqify_reproducers(Environment &env)
         return -1;
     }
 
-    std::vector<std::string> keep, remove;
-    bool removed = false;
-    bool saved_primary = false;
-    keep.push_back(repros.front());
-    for (int i = 1; i < repros.size(); i++)
+    std::set<std::string> keep;
+    if (!env.primary_repro.empty())
     {
-        removed = false;
+        for (std::string file : repros)
+        {
+            if (file.find(env.primary_repro) != std::string::npos)
+            {
+                keep.insert(file);
+            }
+        }
+    }
+    else
+    {
+        keep.insert(repros.front());
+    }
+
+    for (int i = 0; i < repros.size(); i++)
+    {
         for (std::string kept : keep)
         {
-            if (compare_files(kept, repros.at(i)))
+            if (keep.count(repros.at(i)) == 0 && !compare_files(kept, repros.at(i)))
             {
-                if (!saved_primary && !env.primary_repro.empty()
-                    && repros.at(i).find(env.primary_repro) != std::string::npos)
-                {
-                    saved_primary = true;
-                    env.primary_repro = kept;
-                }
-                remove.push_back(repros.at(i));
-                removed = true;
+                keep.insert(repros.at(i));
                 break;
             }
         }
-        if (!removed)
-            keep.push_back(repros.at(i));
     }
 
-    for (std::string r : remove)
-        remove_file(r);
+    for (std::string file : repros)
+        if (keep.count(file) <= 0)
+            remove_file(file);
 
     return 0;
 }
