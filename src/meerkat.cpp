@@ -40,8 +40,6 @@ using namespace std;
     */
 
 // check for a patch of v4.19
-// check remaining disabled syscall cases
-// Fix bug where bisection continues with more PoCs after reaching OTR
 
 vector<string> order_pocs(const Environment &env)
 {
@@ -228,7 +226,7 @@ int bisect(Environment &env)
 
     // ======================================================================================================
     // Break off here by mode
-    
+
     if (bisector.mode() == Mode_FF)
     {
         stagetime = chrono::steady_clock::now();
@@ -258,7 +256,8 @@ int bisect(Environment &env)
             found = true;
             if (env.feats.poc_test)
                 cout << bisector.print_partial_result(env, linux_git, starttime, stagetime, stage_title, env.primary_repro) << flush;
-            goto print_result;
+            else
+                goto print_result;
             break;
 
         default:
@@ -294,7 +293,7 @@ redo_poc:
         if (env.feats.poc_all_pocs)
         {
             switch (err) {
-            case BIS_OTR: // Does the bug reproduce on OTR?
+            case BIS_OTR:
                 goto print_result;
 
             case BIS_ANCHOR:
