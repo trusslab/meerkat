@@ -87,8 +87,6 @@ Bisect_Return do_bisection(Environment &env, Bisect &bisector, Git &linux_git)
 
     if (env.feats.find_only)
     {
-        if (bisector.mode() == Mode_FF)
-            cout << "Average TTF: " << result.suggest_ttf << endl;
         cout << "Find-only complete.\n";
         return BIS_STOP;
     }
