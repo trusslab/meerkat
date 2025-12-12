@@ -1,4 +1,5 @@
 #include <dedup.h>
+#include <levenshtein.h>
 
 #include <iostream>
 
@@ -41,7 +42,8 @@ int main(int argc, char ** argv)
     // Do the comparison
     std::cout << "Crash Types: " << (compare_crash_types(bug1, bug2) ? "same" : "different") << std::endl << std::flush;
     std::cout << "Crash Names: " << (compare_crash_names(bug1, bug2) ? "same" : "different") << std::endl << std::flush;
-    std::cout << "Stack Traces: " << (compare_stack_traces(bug1, bug2) ? "same" : "different") << std::endl << std::flush;
+    std::cout << "Stack Traces: " << (compare_stack_traces(bug1, bug2) ? "same" : "different") 
+              << " (" << 1 - levenshtein_vec_norm(bug1.stack, bug2.stack) << ")" << std::endl << std::flush;
 
     return 0;
 }
