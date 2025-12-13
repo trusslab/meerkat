@@ -875,8 +875,6 @@ int uniqify_reproducers(Environment &env)
         keep.insert(repros.front());
     }
 
-    std::cout << keep.size() << "\n" << std::flush;
-
     bool already_have = false;
     for (int i = 0; i < repros.size(); i++)
     {
@@ -893,8 +891,6 @@ int uniqify_reproducers(Environment &env)
         if (!already_have)
             keep.insert(repros.at(i));
     }
-
-    std::cout << keep.size() << "\n" << std::flush;
 
     for (std::string file : repros)
         if (keep.count(file) == 0)
