@@ -866,6 +866,7 @@ int uniqify_reproducers(Environment &env)
             if (file.find(env.primary_repro) != std::string::npos)
             {
                 keep.insert(file);
+                break;
             }
         }
     }
@@ -874,20 +875,29 @@ int uniqify_reproducers(Environment &env)
         keep.insert(repros.front());
     }
 
+    std::cout << keep.size() << "\n" << std::flush;
+
+    bool already_have = false;
     for (int i = 0; i < repros.size(); i++)
     {
+        already_have = false;
         for (std::string kept : keep)
         {
-            if (keep.count(repros.at(i)) == 0 && !compare_files(kept, repros.at(i)))
+            if (keep.count(repros.at(i)) > 0 || compare_files(kept, repros.at(i)))
             {
-                keep.insert(repros.at(i));
+                already_have = true;
                 break;
             }
         }
+
+        if (!already_have)
+            keep.insert(repros.at(i));
     }
 
+    std::cout << keep.size() << "\n" << std::flush;
+
     for (std::string file : repros)
-        if (keep.count(file) <= 0)
+        if (keep.count(file) == 0)
             remove_file(file);
 
     return 0;
