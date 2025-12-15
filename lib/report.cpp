@@ -75,14 +75,30 @@ int read_RIP_entries(const std::vector<std::string> &lines, int &i, std::vector<
     return 0;
 }
 
+// Sets the index to the beginning of the call trace based on "call trace:" and/or "<TASK>".
+// Does nothing if the identifiers are not found.
 int skip_to_call_trace(const std::vector<std::string> &lines, int &i)
 {
-    for (; i < lines.size() && !starts_with(to_lower(lines.at(i)), "call trace:"); i++);
-    if (i >= lines.size() - 1)
-    {
+    int j = i;
+    for (; j < lines.size() && !starts_with(to_lower(lines.at(j)), "call trace:"); j++);
+    if (j >= lines.size() - 1)
         return -1;
-    }
-    i += lines.at(i + 1).find("<TASK>") != std::string::npos ? 2 : 1;
+    j += lines.at(j + 1).find("<TASK>") != std::string::npos ? 2 : 1;
+    if (j >= lines.size())
+        return -1;
+    i = j;
+    return 0;
+}
+
+// Sets the index to the beginning of the stack trace based on the next indentation.
+// Does nothing if an indentation is not found.
+int skip_to_indent(const std::vector<std::string> &lines, int &i)
+{
+    int j = i;
+    for (; j < lines.size() && !starts_with(lines.at(j), " "); j++);
+    if (j >= lines.size())
+        return -1;
+    i = j;
     return 0;
 }
 
@@ -188,9 +204,8 @@ int parse_warning_stack(const std::vector<std::string> &lines, int &i, std::vect
         return -1;
     }
 
-    // old syzkaller may inject register debugs in the middle of call traces.
-    // This will cause issues here.
-    if (skip_to_call_trace(lines, i) < 0 || i >= lines.size())
+    // old kernel may inject register debugs in the middle of call traces.
+    if ((skip_to_call_trace(lines, i) < 0 && skip_to_indent(lines, i) < 0)|| i >= lines.size())
     {
         std::cerr << "Error: index error parsing Warning report\n" << std::flush;
         return -1;
