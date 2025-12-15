@@ -230,6 +230,35 @@ int parse_warning_stack(const std::vector<std::string> &lines, int &i, std::vect
     return 0;
 }
 
+int parse_warning_rcu_stack(const std::vector<std::string> &lines, int &i, std::vector<std::string> &stack)
+{
+
+    // old kernel may inject register debugs in the middle of call traces.
+    if (skip_to_call_trace(lines, i) < 0|| i >= lines.size())
+    {
+        std::cerr << "Error: index error parsing Warning RCU report\n" << std::flush;
+        return -1;
+    }
+
+    int pos1 = lines.at(i).find_first_not_of(" "), pos2 = 0;
+
+    std::string func;
+    for (; i < lines.size(); i++)
+    {
+        pos2 = lines.at(i).find_first_not_of(" ");
+        if (lines.at(i).empty() || lines.at(i).find("</TASK>") != std::string::npos || pos1 != pos2)
+        {
+            break;
+        }
+
+        func = parse_stack_line(lines.at(i));
+        if (!ignore_functions(func))
+            stack.push_back(func);
+    }
+
+    return 0;
+}
+
 // parse one stack trace starting at index i, output to stack vector
 int parse_one_stack(Crash_Type ct, const std::vector<std::string> &lines, int &i, std::vector<std::string> &stack)
 {
@@ -241,6 +270,8 @@ int parse_one_stack(Crash_Type ct, const std::vector<std::string> &lines, int &i
         return parse_sleeping_stack(lines, i, stack);
     case CT_WARNING:
         return parse_warning_stack(lines, i, stack);
+    case CT_WARNING_RCU:
+        return parse_warning_rcu_stack(lines, i, stack);
     case CT_UNKNOWN:
     default:
         return -1;
@@ -264,6 +295,10 @@ Crash_Type identify_ct(const std::vector<std::string> &lines, int &i)
         else if (starts_with(lines.at(i), "WARNING: possible"))
         {
             return CT_UNKNOWN; // This shows up in some lockdep splats. ignore it.
+        }
+        else if (starts_with(lines.at(i), "WARNING: suspicious RCU usage"))
+        {
+            return CT_WARNING_RCU;
         }
         else if (starts_with(lines.at(i), "WARNING: "))
         {
