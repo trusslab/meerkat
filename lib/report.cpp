@@ -232,6 +232,10 @@ int parse_warning_stack(const std::vector<std::string> &lines, int &i, std::vect
 
 int parse_warning_rcu_stack(const std::vector<std::string> &lines, int &i, std::vector<std::string> &stack)
 {
+    std::set<std::string> forget_functions = { "dump_stack", "__dump_stack", "dump_stack_lvl", "show_stack",
+                                "__might_sleep", "__might_resched", "might_alloc", "kmalloc", "kzalloc",
+                                "__mutex_lock", "__mutex_lock_common", "kmem_cache_alloc_trace",
+                                "lockdep_rcu_suspicious" };
 
     // old kernel may inject register debugs in the middle of call traces.
     if (skip_to_call_trace(lines, i) < 0|| i >= lines.size())
@@ -252,6 +256,11 @@ int parse_warning_rcu_stack(const std::vector<std::string> &lines, int &i, std::
         }
 
         func = parse_stack_line(lines.at(i));
+        if (forget_functions.count(func) > 0)
+        {
+            stack.clear();
+            continue;
+        }
         if (!ignore_functions(func))
             stack.push_back(func);
     }
