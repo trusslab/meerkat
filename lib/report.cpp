@@ -154,6 +154,54 @@ int parse_kasan_stack(const std::vector<std::string> &lines, int &i, std::vector
     return 0;
 }
 
+int parse_kasan_nullptr_stack(const std::vector<std::string> &lines, int &i, std::vector<std::string> &stack)
+{
+    std::set<std::string> kasan_functions = { "dump_stack", "__dump_stack", "dump_stack_lvl", "show_stack",
+                                "print_address_description", "print_report", "kasan_report", "kasan_tag_mismatch",
+                                "__hwasan_tag_mismatch", "__asan_memcpy", "check_region_inline", "kasan_check_range",
+                                "__kasan_report" };
+
+    if (read_RIP_entries(lines, i, stack) < 0)
+    {
+        std::cerr << "Error: error parsing RIP values in KASAN null-ptr-deref report\n" << std::flush;
+        return -1;
+    }
+
+    if (skip_to_call_trace(lines, i) < 0)
+    {
+        std::cerr << "Error: index error parsing KASAN report\n" << std::flush;
+        return -1;
+    }
+    
+    int pos1 = lines.at(i).find_first_not_of(" "), pos2 = 0;
+
+    bool still_kasan = true;
+    std::string func;
+    for (; i < lines.size(); i++)
+    {
+        // Look for the end of the stack
+        pos2 = lines.at(i).find_first_not_of(" ");
+        //std::cout << lines.at(i) << " " << pos1 << " " << pos2 << std::endl << std::flush;
+        if (lines.at(i).empty() || lines.at(i).find("</TASK>") != std::string::npos || pos1 != pos2)
+        {
+            break;
+        }
+
+        func = parse_stack_line(lines.at(i));
+        // __asan_report_load8_noabort, __asan_report_load1_noabort
+        if (still_kasan && (kasan_functions.count(func) > 0 || starts_with(func, "__asan_report_load")))
+        {
+            stack.clear();
+            continue;
+        }
+
+        if (!ignore_functions(func))
+            stack.push_back(func);
+    }
+
+    return 0;
+}
+
 int parse_sleeping_stack(const std::vector<std::string> &lines, int &i, std::vector<std::string> &stack)
 {
     std::set<std::string> forget_functions = { "dump_stack", "__dump_stack", "dump_stack_lvl", "show_stack",
@@ -275,6 +323,8 @@ int parse_one_stack(Crash_Type ct, const std::vector<std::string> &lines, int &i
     {
     case CT_KASAN:
         return parse_kasan_stack(lines, i, stack);
+    case CT_KASAN_NULLPTR:
+        return parse_kasan_nullptr_stack(lines, i, stack);
     case CT_SLEEPING:
         return parse_sleeping_stack(lines, i, stack);
     case CT_WARNING:
@@ -300,6 +350,10 @@ Crash_Type identify_ct(const std::vector<std::string> &lines, int &i)
                 return CT_KASAN;
             else if (lines.at(i).find("sleeping function called from invalid context") != std::string::npos)
                 return CT_SLEEPING;
+        }
+        else if (starts_with(lines.at(i), "KASAN: null-ptr-deref"))
+        {
+            return CT_KASAN_NULLPTR;
         }
         else if (starts_with(lines.at(i), "WARNING: possible"))
         {
