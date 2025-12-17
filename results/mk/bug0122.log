@@ -1,4 +1,4 @@
-./bin/bisector -i 1 -c /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/bisector.cfg -a f71077a4d84bbe8c7b91b7db7c4ef815755ac5e3 -F ff-test,poc-test,stateful-corpus,ff-no-find-backup
+./bin/meerkat -i 1 -c /home/syzretrospector/meerkat/wd-meerkat-1/meerkat.cfg -a f71077a4d84bbe8c7b91b7db7c4ef815755ac5e3 -F ff-test,poc-test,poc-all-pocs,ff-no-find-backup,stateful-corpus
 Bisecting:          WARNING: kmalloc bug in bpf
 Syzbot Link:        https://syzkaller.appspot.com/bug?id=24452f89446639c901ac07379ccc702808471e8e
 Working Name:       bug0122
@@ -10,23 +10,25 @@ Repository:         https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/lin
 Branch:             master
 Arch:               amd64
 
-Bisector:           /mnt/sdd/jtbursey/SyzInspector/
-Version:            1.0.4
-Kernel:             /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/kernel/
-Syzkaller:          /mnt/sdd/jtbursey/SyzInspector/syzkaller/
-Compilers:          /mnt/sda/jtbursey/SyzInspector/compilers/
-Ccache:             ccache
-Image:              /mnt/sda/jtbursey/SyzInspector/image/stretch/stretch.img
-Image Key:          /mnt/sda/jtbursey/SyzInspector/image/stretch/stretch.id_rsa
+Meerkat:            /home/syzretrospector/meerkat/
+Version:            1.1.0
+Kernel:             /home/syzretrospector/meerkat/wd-meerkat-1/kernel/
+Syzkaller:          /home/syzretrospector/meerkat/syzkaller/
+Compilers:          /home/syzretrospector/meerkat/compilers/
+Compiler:           gcc (Ubuntu 11.4.0-1ubuntu1~22.04.2) 11.4.0
+Linker:             GNU ld (GNU Binutils for Ubuntu) 2.38
+Ccache:             ccache version 4.5.1
+Image:              /home/syzretrospector/images/stretch/stretch.img
+Image Key:          /home/syzretrospector/images/stretch/stretch.id_rsa
 
-Workdir:            /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/
-Kconfig:            /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/config-bug0122.txt
-Reproducers: (2)    /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/reproducers/
-Primary PoC:        /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/reproducers/repro-bug0122-4.prog
-Syzkaller Workdir:  /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/wd-kaller/
-Log Directory:      /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/log/
+Workdir:            /home/syzretrospector/meerkat/wd-meerkat-1/
+Kconfig:            /home/syzretrospector/meerkat/wd-meerkat-1/config-bug0122.txt
+Reproducers: (2)    /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/
+Primary PoC:        /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0122-1.prog
+Syzkaller Workdir:  /home/syzretrospector/meerkat/wd-meerkat-1/wd-kaller/
+Log Directory:      /home/syzretrospector/meerkat/wd-meerkat-1/log/
 
-Syscalls: (14)      ["bpf$MAP_CREATE", "bpf$MAP_LOOKUP_ELEM", "bpf$MAP_UPDATE_ELEM", "ioctl$EXT4_IOC_GROUP_EXTEND", "openat$sw_sync_info", "socket$inet_udp", "socket$inet6_udp", "socket$inet_tcp", "socket$inet6_tcp", "ioctl$sock_SIOCGIFINDEX", "bpf$BPF_BTF_LOAD", "socket$inet", "socket$inet6", "socket"]
+Syscalls: (15)      ["bpf$MAP_CREATE", "bpf$MAP_LOOKUP_ELEM", "bpf$MAP_UPDATE_ELEM", "ioctl$F2FS_IOC_START_ATOMIC_WRITE", "openat$selinux_enforce", "socket$inet_udp", "socket$inet6_udp", "socket$inet_tcp", "socket$inet6_tcp", "ioctl$sock_SIOCGIFINDEX", "bpf$BPF_BTF_LOAD", "socket$inet", "socket$inet6", "bpf$TOKEN_CREATE", "socket"]
 VM Count:           8
 CPU Count:          2
 Procs:              16
@@ -37,27 +39,621 @@ Max Attempts:       1
 
 ==== Anchor Commit ====
 
-2025-03-11 09:27:02
+2025-09-21 09:58:11
 Session:   1
 Kernel:    2022-02-16 - f71077a4d84bbe8c7b91b7db7c4ef815755ac5e3
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
-Warning: bpf$MAP_CREATE was disabled by Syzkaller.
-Warning: bpf$MAP_LOOKUP_ELEM was disabled by Syzkaller.
-Warning: bpf$MAP_UPDATE_ELEM was disabled by Syzkaller.
+Compiler:  ccache gcc
 Attempt 1:
     Time  Bug Name
-       9  INFO: task hung in del_device_store
-       9  INFO: task hung in addrconf_dad_work
-Warning: bpf$MAP_CREATE was disabled by Syzkaller.
-Warning: bpf$MAP_LOOKUP_ELEM was disabled by Syzkaller.
-Warning: bpf$MAP_UPDATE_ELEM was disabled by Syzkaller.
+***    2  WARNING: kmalloc bug in bpf
+***    2  WARNING: kmalloc bug in bpf
+***    2  WARNING: kmalloc bug in bpf
+***    2  WARNING: kmalloc bug in bpf
 Attempt 2: (RETRY)
-    No crashes found.
-Warning: bpf$MAP_CREATE was disabled by Syzkaller.
-Warning: bpf$MAP_LOOKUP_ELEM was disabled by Syzkaller.
-Warning: bpf$MAP_UPDATE_ELEM was disabled by Syzkaller.
+    Time  Bug Name
+***    2  WARNING: kmalloc bug in bpf
+***    2  WARNING: kmalloc bug in bpf
+***    2  WARNING: kmalloc bug in bpf
+***    2  WARNING: kmalloc bug in bpf
+***    2  WARNING: kmalloc bug in bpf
 Attempt 3: (RETRY)
+    Time  Bug Name
+***    2  WARNING: kmalloc bug in bpf
+***    2  WARNING: kmalloc bug in bpf
+***    2  WARNING: kmalloc bug in bpf
+***    2  WARNING: kmalloc bug in bpf
+The bug was found.
+
+New Max Time: 10
+
+==== Major Release Search ====
+11 Releases
+
+2025-09-21 10:15:29
+Session:   2
+Kernel:    2022-01-09 - df0cc57e057f18e44dac8e6c18aba47ab53202f9 (v5.16)
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    2  WARNING: kmalloc bug in bpf
+***    2  WARNING: kmalloc bug in bpf
+***    2  WARNING: kmalloc bug in bpf
+***    2  WARNING: kmalloc bug in bpf
+***    2  WARNING: kmalloc bug in bpf
+Running syz-repro.
+New PoC saved at /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0122-0.prog
+Primary PoC:     /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0122-0.prog
+Run Time:        0h4m0s
+The bug was found.
+About 10 releases remaining
+
+2025-09-21 10:32:19
+Session:   3
+Kernel:    2021-10-31 - 8bb7eca972ad531c9b149c0a51ab43a417385813 (v5.15)
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       4  suppressed report
+       7  suppressed report
+       9  suppressed report
+      10  suppressed report
+      10  suppressed report
+The bug was not found.
+About 9 releases remaining
+
+==== Kernel Bisection ====
+15385 Linux commits
+
+2025-09-21 10:53:15
+Session:   4
+Kernel:    2021-11-03 - 2219b0ceefe835b92a8a74a73fe964aa052742a2
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    2  WARNING: kmalloc bug in bpf
+***    2  WARNING: kmalloc bug in bpf
+***    2  WARNING: kmalloc bug in bpf
+***    2  WARNING: kmalloc bug in bpf
+The bug was found.
+About 7514 commits remaining
+
+2025-09-21 11:06:09
+Session:   5
+Kernel:    2021-11-02 - fc02cb2b37fe2cbf1d3334b9f0f0eab9431766c4
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    2  WARNING: kmalloc bug in bpf
+***    2  WARNING: kmalloc bug in bpf
+***    2  WARNING: kmalloc bug in bpf
+The bug was found.
+About 4567 commits remaining
+
+2025-09-21 11:19:08
+Session:   6
+Kernel:    2021-11-01 - b7b98f868987cd3e86c9bd9a6db048614933d7a0
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/syzretrospector/meerkat/wd-meerkat-1/log/bug0122-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+       1  WARNING in skb_try_coalesce
+       1  WARNING in skb_try_coalesce
+       1  WARNING in skb_try_coalesce
+       1  WARNING in skb_try_coalesce
+       1  WARNING in skb_try_coalesce
+       1  WARNING in skb_try_coalesce
+       1  WARNING in skb_try_coalesce
+       1  WARNING in skb_try_coalesce
+       2  WARNING in skb_try_coalesce
+       2  WARNING in skb_try_coalesce
+       2  WARNING in skb_try_coalesce
+       2  WARNING in skb_try_coalesce
+       2  WARNING in skb_try_coalesce
+       2  WARNING in skb_try_coalesce
+       2  WARNING in skb_try_coalesce
+       2  WARNING in skb_try_coalesce
+       3  WARNING in skb_try_coalesce
+       3  WARNING in skb_try_coalesce
+       3  WARNING in skb_try_coalesce
+       3  WARNING in skb_try_coalesce
+       3  WARNING in skb_try_coalesce
+       3  WARNING in skb_try_coalesce
+       3  WARNING in skb_try_coalesce
+       3  WARNING in skb_try_coalesce
+       4  WARNING in skb_try_coalesce
+       4  WARNING in skb_try_coalesce
+       4  WARNING in skb_try_coalesce
+       4  WARNING in skb_try_coalesce
+       4  WARNING in skb_try_coalesce
+       4  WARNING in skb_try_coalesce
+       4  WARNING in skb_try_coalesce
+       4  WARNING in skb_try_coalesce
+       4  WARNING in skb_try_coalesce
+       5  WARNING in skb_try_coalesce
+       5  WARNING in skb_try_coalesce
+       5  WARNING in skb_try_coalesce
+       5  WARNING in skb_try_coalesce
+       5  WARNING in skb_try_coalesce
+       5  WARNING in skb_try_coalesce
+       5  WARNING in skb_try_coalesce
+       5  WARNING in skb_try_coalesce
+       5  WARNING in skb_try_coalesce
+       5  WARNING in skb_try_coalesce
+       5  WARNING in skb_try_coalesce
+       5  WARNING in skb_try_coalesce
+       5  WARNING in skb_try_coalesce
+       5  WARNING in skb_try_coalesce
+       5  WARNING in skb_try_coalesce
+       6  WARNING in skb_try_coalesce
+       6  WARNING in skb_try_coalesce
+       6  WARNING in skb_try_coalesce
+       6  WARNING in skb_try_coalesce
+       6  WARNING in skb_try_coalesce
+       6  WARNING in skb_try_coalesce
+       6  WARNING in skb_try_coalesce
+       6  WARNING in skb_try_coalesce
+       7  WARNING in skb_try_coalesce
+       7  WARNING in skb_try_coalesce
+       7  WARNING in skb_try_coalesce
+       7  WARNING in skb_try_coalesce
+       7  WARNING in skb_try_coalesce
+       7  WARNING in skb_try_coalesce
+       7  WARNING in skb_try_coalesce
+       7  WARNING in skb_try_coalesce
+       8  WARNING in skb_try_coalesce
+       8  WARNING in skb_try_coalesce
+       8  WARNING in skb_try_coalesce
+       8  WARNING in skb_try_coalesce
+       8  WARNING in skb_try_coalesce
+       8  WARNING in skb_try_coalesce
+       8  WARNING in skb_try_coalesce
+       8  WARNING in skb_try_coalesce
+       8  WARNING in skb_try_coalesce
+       8  WARNING in skb_try_coalesce
+       9  WARNING in skb_try_coalesce
+       9  WARNING in skb_try_coalesce
+       9  WARNING in skb_try_coalesce
+       9  WARNING in skb_try_coalesce
+       9  WARNING in skb_try_coalesce
+       9  WARNING in skb_try_coalesce
+       9  WARNING in skb_try_coalesce
+       9  WARNING in skb_try_coalesce
+       9  WARNING in skb_try_coalesce
+       9  WARNING in skb_try_coalesce
+       9  WARNING in skb_try_coalesce
+       9  WARNING in skb_try_coalesce
+       9  WARNING in skb_try_coalesce
+       9  WARNING in skb_try_coalesce
+      10  WARNING in skb_try_coalesce
+      10  WARNING in skb_try_coalesce
+      10  WARNING in skb_try_coalesce
+      10  WARNING in skb_try_coalesce
+      10  WARNING in skb_try_coalesce
+      10  WARNING in skb_try_coalesce
+      10  WARNING in skb_try_coalesce
+      10  WARNING in skb_try_coalesce
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 4567 commits remaining
+
+2025-09-21 11:39:50
+Session:   7
+Kernel:    2021-10-19 - 7ce1bb83a14019f8c396d57ec704d19478747716
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+      10  suppressed report
+The bug was not found.
+About 6141 commits remaining
+
+2025-09-21 12:00:39
+Session:   8
+Kernel:    2021-10-26 - 38c310eb46f5f80213a92093af11af270c209a76
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       2  WARNING in devlink_trap_groups_unregister
+       4  WARNING in devlink_trap_groups_unregister
+       6  suppressed report
+       6  WARNING in devlink_trap_groups_unregister
+       7  suppressed report
+       8  suppressed report
+       8  suppressed report
+       8  WARNING in devlink_trap_groups_unregister
+       8  WARNING in devlink_trap_groups_unregister
+       8  WARNING in devlink_trap_groups_unregister
+       9  suppressed report
+       9  WARNING in devlink_trap_groups_unregister
+The bug was not found.
+About 3126 commits remaining
+
+2025-09-21 12:21:33
+Session:   9
+Kernel:    2021-11-01 - 6f2b76a4a384e05ac8d3349831f29dff5de1e1e2
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       9  suppressed report
+      10  suppressed report
+      10  suppressed report
+The bug was not found.
+About 3206 commits remaining
+
+2025-09-21 12:42:41
+Session:   10
+Kernel:    2021-11-01 - 79ef0c00142519bc34e1341447f3797436cc48bf
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       5  suppressed report
+       6  kernel BUG in ext4_da_get_block_prep
+       8  suppressed report
+      10  suppressed report
+The bug was not found.
+About 2477 commits remaining
+
+2025-09-21 13:03:41
+Session:   11
+Kernel:    2021-11-01 - 52fa3ee0cce60a04739f4a5ca1c9d5c2a8ee1578
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/syzretrospector/meerkat/wd-meerkat-1/log/bug0122-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+       1  WARNING in skb_try_coalesce
+       1  WARNING in skb_try_coalesce
+       1  WARNING in skb_try_coalesce
+       1  WARNING in skb_try_coalesce
+       1  WARNING in skb_try_coalesce
+       1  WARNING in skb_try_coalesce
+       2  WARNING in skb_try_coalesce
+       2  WARNING in skb_try_coalesce
+       2  WARNING in skb_try_coalesce
+       2  WARNING in skb_try_coalesce
+       2  WARNING in skb_try_coalesce
+       2  WARNING in skb_try_coalesce
+       2  WARNING in skb_try_coalesce
+       2  WARNING in skb_try_coalesce
+       2  WARNING in skb_try_coalesce
+       2  WARNING in skb_try_coalesce
+       3  WARNING in skb_try_coalesce
+       3  WARNING in skb_try_coalesce
+       3  WARNING in skb_try_coalesce
+       3  WARNING in skb_try_coalesce
+       3  WARNING in skb_try_coalesce
+       3  WARNING in skb_try_coalesce
+       3  WARNING in skb_try_coalesce
+       3  WARNING in skb_try_coalesce
+       4  WARNING in skb_try_coalesce
+       4  WARNING in skb_try_coalesce
+       4  WARNING in skb_try_coalesce
+       4  WARNING in skb_try_coalesce
+       4  WARNING in skb_try_coalesce
+       4  WARNING in skb_try_coalesce
+       4  WARNING in skb_try_coalesce
+       4  WARNING in skb_try_coalesce
+       5  WARNING in skb_try_coalesce
+       5  WARNING in skb_try_coalesce
+       5  WARNING in skb_try_coalesce
+       5  WARNING in skb_try_coalesce
+       5  WARNING in skb_try_coalesce
+       5  WARNING in skb_try_coalesce
+       5  WARNING in skb_try_coalesce
+       5  WARNING in skb_try_coalesce
+       5  WARNING in skb_try_coalesce
+       5  WARNING in skb_try_coalesce
+       5  WARNING in skb_try_coalesce
+       5  WARNING in skb_try_coalesce
+       5  WARNING in skb_try_coalesce
+       5  WARNING in skb_try_coalesce
+       5  WARNING in skb_try_coalesce
+       5  WARNING in skb_try_coalesce
+       6  WARNING in skb_try_coalesce
+       6  WARNING in skb_try_coalesce
+       6  WARNING in skb_try_coalesce
+       6  WARNING in skb_try_coalesce
+       6  WARNING in skb_try_coalesce
+       6  WARNING in skb_try_coalesce
+       6  WARNING in skb_try_coalesce
+       6  WARNING in skb_try_coalesce
+       7  WARNING in skb_try_coalesce
+       7  WARNING in skb_try_coalesce
+       7  WARNING in skb_try_coalesce
+       7  WARNING in skb_try_coalesce
+       7  WARNING in skb_try_coalesce
+       7  WARNING in skb_try_coalesce
+       7  WARNING in skb_try_coalesce
+       7  WARNING in skb_try_coalesce
+       8  WARNING in skb_try_coalesce
+       8  WARNING in skb_try_coalesce
+       8  WARNING in skb_try_coalesce
+       8  WARNING in skb_try_coalesce
+       8  WARNING in skb_try_coalesce
+       8  WARNING in skb_try_coalesce
+       8  WARNING in skb_try_coalesce
+       8  WARNING in skb_try_coalesce
+       9  WARNING in skb_try_coalesce
+       9  WARNING in skb_try_coalesce
+       9  WARNING in skb_try_coalesce
+       9  WARNING in skb_try_coalesce
+       9  WARNING in skb_try_coalesce
+       9  WARNING in skb_try_coalesce
+       9  WARNING in skb_try_coalesce
+       9  WARNING in skb_try_coalesce
+       9  WARNING in skb_try_coalesce
+       9  WARNING in skb_try_coalesce
+       9  WARNING in skb_try_coalesce
+       9  WARNING in skb_try_coalesce
+       9  WARNING in skb_try_coalesce
+      10  WARNING in skb_try_coalesce
+      10  WARNING in skb_try_coalesce
+      10  WARNING in skb_try_coalesce
+      10  WARNING in skb_try_coalesce
+      10  WARNING in skb_try_coalesce
+      10  WARNING in skb_try_coalesce
+      10  WARNING in skb_try_coalesce
+      10  WARNING in skb_try_coalesce
+      10  WARNING in skb_try_coalesce
+      10  WARNING in skb_try_coalesce
+      10  WARNING in skb_try_coalesce
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 2477 commits remaining
+
+2025-09-21 13:24:36
+Session:   12
+Kernel:    2021-09-16 - 2010776f8ccb68b85efbade3f19a11b17fb33d74
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       6  suppressed report
+       7  suppressed report
+      10  suppressed report
+The bug was not found.
+About 6813 commits remaining
+
+2025-09-21 13:45:34
+Session:   13
+Kernel:    2021-10-22 - a77f879ba1178437e5df87090165e5a45a91ba7f
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       4  suppressed report
+       5  suppressed report
+       7  suppressed report
+       9  suppressed report
+       9  suppressed report
+The bug was not found.
+About 5104 commits remaining
+
+2025-09-21 14:06:09
+Session:   14
+Kernel:    2021-11-01 - 894d08443470cb3878153cb9ca6b14231579fd52
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       8  suppressed report
+       9  suppressed report
+       9  suppressed report
+The bug was not found.
+About 2615 commits remaining
+
+2025-09-21 14:26:41
+Session:   15
+Kernel:    2021-11-01 - ad10c381d133d9f786564bff4b223be1372f6c2a
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    2  WARNING: kmalloc bug in bpf
+***    2  WARNING: kmalloc bug in bpf
+***    2  WARNING: kmalloc bug in bpf
+Running syz-repro.
+New PoC saved at /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0122-2.prog
+Primary PoC:     /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0122-0.prog
+Run Time:        0h4m0s
+The bug was found.
+About 201 commits remaining
+
+2025-09-21 14:41:40
+Session:   16
+Kernel:    2021-10-27 - 547208a386fa2066fa2d6d48bda145f78c38604f
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       5  suppressed report
+       6  suppressed report
+       8  suppressed report
+       8  suppressed report
+The bug was not found.
+About 41 commits remaining
+
+2025-09-21 14:58:08
+Session:   17
+Kernel:    2021-10-28 - b9989b59123b3ced5387a5360c05a7bb2fb92d94
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    2  WARNING: kmalloc bug in bpf
+***    2  WARNING: kmalloc bug in bpf
+***    2  WARNING: kmalloc bug in bpf
+***    2  WARNING: kmalloc bug in bpf
+The bug was found.
+About 21 commits remaining
+
+2025-09-21 15:09:09
+Session:   18
+Kernel:    2021-10-28 - f44bc543a079c2ebc534cbfabd6fbfcfc2b09f72
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    2  WARNING: kmalloc bug in bpf
+***    2  WARNING: kmalloc bug in bpf
+***    2  WARNING: kmalloc bug in bpf
+The bug was found.
+About 11 commits remaining
+
+2025-09-21 15:19:53
+Session:   19
+Kernel:    2021-10-28 - b066abba3ef16a4a085d237e95da0de3f0b87713
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       5  suppressed report
+       7  suppressed report
+       8  suppressed report
+       9  suppressed report
+      10  suppressed report
+The bug was not found.
+About 6 commits remaining
+
+2025-09-21 15:34:05
+Session:   20
+Kernel:    2021-10-28 - 47512102cde2d252d7b984d9675cfd3420b48ad9
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    2  WARNING: kmalloc bug in bpf
+***    2  WARNING: kmalloc bug in bpf
+***    2  WARNING: kmalloc bug in bpf
+Running syz-repro.
+New PoC saved at /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0122-2.prog
+Primary PoC:     /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0122-0.prog
+Run Time:        0h4m0s
+The bug was found.
+About 3 commits remaining
+
+2025-09-21 15:44:18
+Session:   21
+Kernel:    2021-10-28 - 9330986c03006ab1d33d243b7cfe598a7a3c1baa
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    2  WARNING: kmalloc bug in bpf
+***    2  WARNING: kmalloc bug in bpf
+***    2  WARNING: kmalloc bug in bpf
+***    2  WARNING: kmalloc bug in bpf
+The bug was found.
+About 2 commits remaining
+
+==== Partial Result: Focused Fuzzing ====
+Reproducer:           /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0122-0.prog
+Bisection Result:     2021-10-28 - 9330986c03006ab1d33d243b7cfe598a7a3c1baa
+Bisected Commit Name: bpf: Add bloom filter map implementation
+Stage Time:           5h52m16s
+Run Time:             5h52m17s
+=========================================
+
+==== Anchor Commit ====
+
+2025-09-21 15:50:28
+Session:   22
+Kernel:    2021-10-28 - b066abba3ef16a4a085d237e95da0de3f0b87713
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0122-0.prog
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
     No crashes found.
 The bug was not found.
 
 Failure: This bug cannot be found at the anchor commit.
+
+==== Partial Result: Primary PoC Test ====
+Reproducer:           /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0122-0.prog
+Bisection Result:     Failed to reproduce at the anchor commit.
+Stage Time:           0h11m22s
+Run Time:             6h3m40s
+==========================================
+
+==== Anchor Commit ====
+
+2025-09-21 16:01:52
+Session:   23
+Kernel:    2021-10-28 - b066abba3ef16a4a085d237e95da0de3f0b87713
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0122-6.prog
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+
+Failure: This bug cannot be found at the anchor commit.
+
+==== Partial Result: Subsequent PoC Test ====
+Reproducer:           /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0122-6.prog
+Bisection Result:     Failed to reproduce at the anchor commit.
+Stage Time:           0h11m39s
+Run Time:             6h15m20s
+=============================================
+
+==== Anchor Commit ====
+
+2025-09-21 16:13:32
+Session:   24
+Kernel:    2021-10-28 - b066abba3ef16a4a085d237e95da0de3f0b87713
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0122-1.prog
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+
+Failure: This bug cannot be found at the anchor commit.
+
+==== Partial Result: Subsequent PoC Test ====
+Reproducer:           /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0122-1.prog
+Bisection Result:     Failed to reproduce at the anchor commit.
+Stage Time:           0h11m36s
+Run Time:             6h26m56s
+=============================================
+
+====================================================================================================================================================
+Bug Name:             WARNING: kmalloc bug in bpf
+Bug Link:             https://syzkaller.appspot.com/bug?id=24452f89446639c901ac07379ccc702808471e8e
+Bisection Result:     2021-10-28 - 9330986c03006ab1d33d243b7cfe598a7a3c1baa
+Bisected Commit Name: bpf: Add bloom filter map implementation
+Run Time:             6h26m56s
+
+Anchor Commit:        2022-02-16 - f71077a4d84bbe8c7b91b7db7c4ef815755ac5e3
+Bisection Result:     2021-10-28 - 9330986c03006ab1d33d243b7cfe598a7a3c1baa
