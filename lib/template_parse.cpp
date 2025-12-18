@@ -463,6 +463,7 @@ void get_one_producer_syscall(const TypeTag &this_resource, std::vector<TypeTag>
         {"fd_bpf_prog", "bpf$BPF_PROG_GET_FD_BY_ID"},
         {"assoc_id", "getsockopt"}, //$inet_sctp6_SCTP_AUTH_ACTIVE_KEY
         {"fd_dir", "open$dir"},
+        {"rdma_cm_id", "write$RDMA_USER_CM_CMD_CREATE_ID"},
     };
 
     if (problematic.count(this_resource.get_name()) == 1)
@@ -534,6 +535,7 @@ void push_syscall_depends(std::vector<Syscall> &syscalls, int index, std::vector
         {"utimes", {TypeTag(syscallClass, "clock_gettime")}},
         {"write$input_event", {TypeTag(syscallClass, "clock_gettime")}},
         {"syz_io_uring_submit", {TypeTag(syscallClass, "ioctl$sock_SIOCGIFINDEX"), TypeTag(syscallClass, "ioctl$IOCTL_GET_NCIDEV_IDX")}},
+        //{"write$RDMA_USER_CM_CMD_ACCEPT", {TypeTag(syscallClass, "write$RDMA_USER_CM_CMD_CREATE_ID")}},
     };
 
     if (problematic.count(syscalls.at(index).get_name()) == 1)
