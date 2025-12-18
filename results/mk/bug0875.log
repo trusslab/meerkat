@@ -1,36 +1,39 @@
-./bin/bisector -i 4 -c /home/syzretrospector/syzinspector/wd-bisector-4/bisector.cfg -a fff5a5e7f528b2ed2c335991399a766c2cf01103 -F ff-test,poc-test,stateful-corpus,ff-no-find-backup
+./bin/meerkat -i 1 -c /home/syzretrospector/meerkat/wd-meerkat-1/meerkat.cfg -a fff5a5e7f528b2ed2c335991399a766c2cf01103 -F ff-test,poc-test,poc-all-pocs,ff-no-find-backup,stateful-corpus
 Bisecting:          general protection fault in virtio_transport_purge_skbs
 Warning: No syscall found that produces sock_vsock.
 Syzbot Link:        https://syzkaller.appspot.com/bug?extid=befff0a9536049e7902e
 Working Name:       bug0875
 
-No aliases given.
+Aliases:
+    general protection fault in virtio_transport_purge_skbs
 
 Anchor Commit:      fff5a5e7f528b2ed2c335991399a766c2cf01103
 Repository:         https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
 Branch:             master
 Arch:               amd64
 
-Bisector:           /home/syzretrospector/syzinspector/
-Version:            1.0.4
-Kernel:             /home/syzretrospector/syzinspector/wd-bisector-4/kernel/
-Syzkaller:          /home/syzretrospector/syzinspector/syzkaller/
-Compilers:          /home/syzretrospector/compilers/
-Ccache:             ccache
-Image:              /home/syzretrospector/images/stretch/stretch.img
-Image Key:          /home/syzretrospector/images/stretch/stretch.id_rsa
+Meerkat:            /home/syzretrospector/meerkat/
+Version:            1.2.0
+Kernel:             /home/syzretrospector/meerkat/wd-meerkat-1/kernel/
+Syzkaller:          /home/syzretrospector/meerkat/syzkaller/
+Compilers:          /home/syzretrospector/meerkat/compilers/
+Compiler:           gcc (Ubuntu 11.4.0-1ubuntu1~22.04.2) 11.4.0
+Linker:             GNU ld (GNU Binutils for Ubuntu) 2.38
+Ccache:             ccache version 4.5.1
+Image:              /home/syzretrospector/meerkat/image/stretch/stretch.img
+Image Key:          /home/syzretrospector/meerkat/image/stretch/stretch.id_rsa
 
-Workdir:            /home/syzretrospector/syzinspector/wd-bisector-4/
-Kconfig:            /home/syzretrospector/syzinspector/wd-bisector-4/config-bug0875.txt
-Reproducers: (2)    /home/syzretrospector/syzinspector/wd-bisector-4/reproducers/
-Primary PoC:        /home/syzretrospector/syzinspector/wd-bisector-4/reproducers/repro-bug0875-1.prog
-Syzkaller Workdir:  /home/syzretrospector/syzinspector/wd-bisector-4/wd-kaller/
-Log Directory:      /home/syzretrospector/syzinspector/wd-bisector-4/log/
+Workdir:            /home/syzretrospector/meerkat/wd-meerkat-1/
+Kconfig:            /home/syzretrospector/meerkat/wd-meerkat-1/config-bug0875.txt
+Reproducers: (2)    /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/
+Primary PoC:        /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0875-1.prog
+Syzkaller Workdir:  /home/syzretrospector/meerkat/wd-meerkat-1/wd-kaller/
+Log Directory:      /home/syzretrospector/meerkat/wd-meerkat-1/log/
 
-Syscalls: (30)      ["connect$vsock_stream", "io_uring_enter", "shutdown", "socket$vsock_stream", "syz_io_uring_setup", "syz_io_uring_submit", "socket", "ioctl$F2FS_IOC_START_ATOMIC_WRITE", "openat$selinux_enforce", "statx", "syz_mount_image$bfs", "io_uring_register$IORING_UNREGISTER_PERSONALITY", "io_uring_register$IORING_REGISTER_PERSONALITY", "futex", "getrusage", "clock_gettime", "mount$bpf", "getuid", "setgid", "getgid", "epoll_create", "setsockopt$inet_mreqn", "ioctl$sock_SIOCGIFINDEX", "ioctl$ifreq_SIOCGIFINDEX_vcan", "bind$nfc_llcp", "ioctl$IOCTL_GET_NCIDEV_IDX", "socket$inet", "syz_init_net_socket$nfc_llcp", "openat$nci", "utimes"]
-VM Count:           4
-CPU Count:          4
-Procs:              24
+Syscalls: (30)      ["connect$vsock_stream", "io_uring_enter", "shutdown", "socket$vsock_stream", "syz_io_uring_setup", "syz_io_uring_submit", "socket", "ioctl$F2FS_IOC_START_ATOMIC_WRITE", "openat$selinux_enforce", "statx", "open$dir", "io_uring_register$IORING_UNREGISTER_PERSONALITY", "io_uring_register$IORING_REGISTER_PERSONALITY", "futex", "getrusage", "clock_gettime", "mount$bpf", "getuid", "setgid", "getgid", "epoll_create", "setsockopt$inet_mreqn", "ioctl$sock_SIOCGIFINDEX", "ioctl$ifreq_SIOCGIFINDEX_vcan", "bind$nfc_llcp", "ioctl$IOCTL_GET_NCIDEV_IDX", "socket$inet", "syz_init_net_socket$nfc_llcp", "openat$nci", "utimes"]
+VM Count:           8
+CPU Count:          2
+Procs:              16
 Memory:             4096
 Make Procs:         16
 Max Time:           10
@@ -38,27 +41,22 @@ Max Attempts:       1
 
 ==== Anchor Commit ====
 
-2025-03-10 17:47:10
+2025-12-18 12:51:50
 Session:   1
 Kernel:    2023-03-22 - fff5a5e7f528b2ed2c335991399a766c2cf01103
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
-Warning: syz_io_uring_submit was disabled by Syzkaller.
+Compiler:  ccache gcc
 Attempt 1:
-    Time  Bug Name
-       8  INFO: task hung in del_device_store
-       8  INFO: task hung in del_device_store
-       8  INFO: task hung in del_device_store
-Warning: syz_io_uring_submit was disabled by Syzkaller.
+    No crashes found.
 Attempt 2: (RETRY)
-    Time  Bug Name
-       7  INFO: task hung in del_device_store
-       7  INFO: task hung in del_device_store
-       8  INFO: task hung in del_device_store
-Warning: syz_io_uring_submit was disabled by Syzkaller.
+    No crashes found.
 Attempt 3: (RETRY)
-    Time  Bug Name
-       8  INFO: task hung in del_device_store
-       8  INFO: task hung in del_device_store
+    No crashes found.
 The bug was not found.
 
 Failure: This bug cannot be found at the anchor commit.
+
+==== Partial Result: Focused Fuzzing ====
+Bisection Result:     Failed to reproduce at the anchor commit.
+Stage Time:           0h46m27s
+Run Time:             0h46m32s
+=========================================
