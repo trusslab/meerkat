@@ -533,6 +533,7 @@ void push_syscall_depends(std::vector<Syscall> &syscalls, int index, std::vector
         {"timer_settime", {TypeTag(syscallClass, "clock_gettime")}},
         {"utimes", {TypeTag(syscallClass, "clock_gettime")}},
         {"write$input_event", {TypeTag(syscallClass, "clock_gettime")}},
+        {"syz_io_uring_submit", {TypeTag(syscallClass, "ioctl$sock_SIOCGIFINDEX"), TypeTag(syscallClass, "ioctl$IOCTL_GET_NCIDEV_IDX")}},
     };
 
     if (problematic.count(syscalls.at(index).get_name()) == 1)
