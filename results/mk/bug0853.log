@@ -1,32 +1,34 @@
-./bin/bisector -i 4 -c /home/syzretrospector/syzinspector/wd-bisector-4/bisector.cfg -a fff5a5e7f528b2ed2c335991399a766c2cf01103 -F ff-test,poc-test,stateful-corpus,ff-no-find-backup
+./bin/meerkat -i 2 -c /home/jtbursey/meerkat/wd-meerkat-2/meerkat.cfg -a fff5a5e7f528b2ed2c335991399a766c2cf01103 -F ff-test,poc-test,poc-all-pocs,ff-no-find-backup,stateful-corpus
 Bisecting:          INFO: task hung in btrfs_sync_file
-Warning: No syscall found that produces rdma_cm_id.
 Syzbot Link:        https://syzkaller.appspot.com/bug?extid=a694851c6ab28cbcfb9c
 Working Name:       bug0853
 
-No aliases given.
+Aliases:
+    INFO: task hung in btrfs_sync_file
 
 Anchor Commit:      fff5a5e7f528b2ed2c335991399a766c2cf01103
 Repository:         https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
 Branch:             master
 Arch:               amd64
 
-Bisector:           /home/syzretrospector/syzinspector/
-Version:            1.0.4
-Kernel:             /home/syzretrospector/syzinspector/wd-bisector-4/kernel/
-Syzkaller:          /home/syzretrospector/syzinspector/syzkaller/
-Compilers:          /home/syzretrospector/compilers/
-Ccache:             ccache
-Image:              /home/syzretrospector/images/stretch/stretch.img
-Image Key:          /home/syzretrospector/images/stretch/stretch.id_rsa
+Meerkat:            /home/jtbursey/meerkat/
+Version:            1.2.0
+Kernel:             /home/jtbursey/meerkat/wd-meerkat-2/kernel/
+Syzkaller:          /home/jtbursey/meerkat/syzkaller/
+Compilers:          /home/jtbursey/meerkat/compilers/
+Compiler:           gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0
+Linker:             GNU ld (GNU Binutils for Ubuntu) 2.34
+Ccache:             ccache version 3.7.7
+Image:              /home/jtbursey/meerkat/image/stretch/stretch.img
+Image Key:          /home/jtbursey/meerkat/image/stretch/stretch.id_rsa
 
-Workdir:            /home/syzretrospector/syzinspector/wd-bisector-4/
-Kconfig:            /home/syzretrospector/syzinspector/wd-bisector-4/config-bug0853.txt
-Reproducers: (1)    /home/syzretrospector/syzinspector/wd-bisector-4/reproducers/
-Syzkaller Workdir:  /home/syzretrospector/syzinspector/wd-bisector-4/wd-kaller/
-Log Directory:      /home/syzretrospector/syzinspector/wd-bisector-4/log/
+Workdir:            /home/jtbursey/meerkat/wd-meerkat-2/
+Kconfig:            /home/jtbursey/meerkat/wd-meerkat-2/config-bug0853.txt
+Reproducers: (1)    /home/jtbursey/meerkat/wd-meerkat-2/reproducers/
+Syzkaller Workdir:  /home/jtbursey/meerkat/wd-meerkat-2/wd-kaller/
+Log Directory:      /home/jtbursey/meerkat/wd-meerkat-2/log/
 
-Syscalls: (12)      ["creat", "fallocate", "ioctl$FS_IOC_FIEMAP", "mmap", "open", "syz_mount_image$btrfs", "write$RDMA_USER_CM_CMD_ACCEPT", "openat$rdma_cm", "mount$bpf", "getuid", "setgid", "getgid"]
+Syscalls: (14)      ["creat", "fallocate", "ioctl$FS_IOC_FIEMAP", "mmap", "open", "syz_mount_image$btrfs", "write$RDMA_USER_CM_CMD_ACCEPT", "open$dir", "openat$rdma_cm", "write$RDMA_USER_CM_CMD_CREATE_ID", "mount$9p_tcp", "getuid", "setgid", "getgid"]
 VM Count:           8
 CPU Count:          2
 Procs:              16
@@ -37,28 +39,22 @@ Max Attempts:       1
 
 ==== Anchor Commit ====
 
-2025-03-06 22:38:09
+2025-12-18 15:12:38
 Session:   1
 Kernel:    2023-03-22 - fff5a5e7f528b2ed2c335991399a766c2cf01103
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
-Warning: write$RDMA_USER_CM_CMD_ACCEPT was disabled by Syzkaller.
+Compiler:  ccache gcc
 Attempt 1:
-    Time  Bug Name
-       6  INFO: task hung in new_device_store
-       6  INFO: task hung in new_device_store
-       6  INFO: task hung in del_device_store
-       7  INFO: task hung in new_device_store
-Warning: write$RDMA_USER_CM_CMD_ACCEPT was disabled by Syzkaller.
+    No crashes found.
 Attempt 2: (RETRY)
-    Time  Bug Name
-       6  INFO: task hung in new_device_store
-       6  INFO: task hung in del_device_store
-Warning: write$RDMA_USER_CM_CMD_ACCEPT was disabled by Syzkaller.
+    No crashes found.
 Attempt 3: (RETRY)
-    Time  Bug Name
-       6  INFO: task hung in new_device_store
-       6  INFO: task hung in new_device_store
-       6  INFO: task hung in del_device_store
+    No crashes found.
 The bug was not found.
 
 Failure: This bug cannot be found at the anchor commit.
+
+==== Partial Result: Focused Fuzzing ====
+Bisection Result:     Failed to reproduce at the anchor commit.
+Stage Time:           0h37m59s
+Run Time:             0h38m1s
+=========================================
