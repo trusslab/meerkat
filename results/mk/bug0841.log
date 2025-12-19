@@ -1,78 +1,64 @@
-./bin/bisector -i 4 -c /home/syzretrospector/syzinspector/wd-bisector-4/bisector.cfg -a b19edac5992da0188be98454ca592621d3d89844 -F ff-test,poc-test,stateful-corpus,ff-no-find-backup
+./bin/meerkat -i 1 -c /home/syzretrospector/meerkat/wd-meerkat-1/meerkat.cfg -a b19edac5992da0188be98454ca592621d3d89844 -F ff-test,poc-test,poc-all-pocs,ff-no-find-backup,stateful-corpus
 Bisecting:          kernel BUG in prepare_to_merge
 Warning: No syscall found that uses dirid.
-Warning: No syscall found that produces rdma_cm_id.
 Syzbot Link:        https://syzkaller.appspot.com/bug?extid=ae97a827ae1c3336bbb4
 Working Name:       bug0841
 
-No aliases given.
+Aliases:
+    kernel BUG in prepare_to_merge
 
 Anchor Commit:      b19edac5992da0188be98454ca592621d3d89844
 Repository:         https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
 Branch:             master
 Arch:               amd64
 
-Bisector:           /home/syzretrospector/syzinspector/
-Version:            1.0.3
-Kernel:             /home/syzretrospector/syzinspector/wd-bisector-4/kernel/
-Syzkaller:          /home/syzretrospector/syzinspector/syzkaller/
-Compilers:          /home/syzretrospector/compilers/
-Ccache:             ccache
-Image:              /home/syzretrospector/images/stretch/stretch.img
-Image Key:          /home/syzretrospector/images/stretch/stretch.id_rsa
+Meerkat:            /home/syzretrospector/meerkat/
+Version:            1.2.0
+Kernel:             /home/syzretrospector/meerkat/wd-meerkat-1/kernel/
+Syzkaller:          /home/syzretrospector/meerkat/syzkaller/
+Compilers:          /home/syzretrospector/meerkat/compilers/
+Compiler:           gcc (Ubuntu 11.4.0-1ubuntu1~22.04.2) 11.4.0
+Linker:             GNU ld (GNU Binutils for Ubuntu) 2.38
+Ccache:             ccache version 4.5.1
+Image:              /home/syzretrospector/meerkat/image/stretch/stretch.img
+Image Key:          /home/syzretrospector/meerkat/image/stretch/stretch.id_rsa
 
-Workdir:            /home/syzretrospector/syzinspector/wd-bisector-4/
-Kconfig:            /home/syzretrospector/syzinspector/wd-bisector-4/config-bug0841.txt
-Reproducers: (4)    /home/syzretrospector/syzinspector/wd-bisector-4/reproducers/
-Primary PoC:        /home/syzretrospector/syzinspector/wd-bisector-4/reproducers/repro-bug0841-3.prog
-Syzkaller Workdir:  /home/syzretrospector/syzinspector/wd-bisector-4/wd-kaller/
-Log Directory:      /home/syzretrospector/syzinspector/wd-bisector-4/log/
+Workdir:            /home/syzretrospector/meerkat/wd-meerkat-1/
+Kconfig:            /home/syzretrospector/meerkat/wd-meerkat-1/config-bug0841.txt
+Reproducers: (4)    /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/
+Primary PoC:        /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0841-3.prog
+Syzkaller Workdir:  /home/syzretrospector/meerkat/wd-meerkat-1/wd-kaller/
+Log Directory:      /home/syzretrospector/meerkat/wd-meerkat-1/log/
 
-Syscalls: (33)      ["creat", "fallocate", "fsconfig$FSCONFIG_SET_FLAG", "io_uring_setup", "ioctl$BTRFS_IOC_GET_SUBVOL_INFO", "ioctl$BTRFS_IOC_GET_SUBVOL_ROOTREF", "ioctl$BTRFS_IOC_INO_LOOKUP", "ioctl$BTRFS_IOC_INO_LOOKUP_USER", "ioctl$BTRFS_IOC_QUOTA_CTL", "ioctl$BTRFS_IOC_SNAP_CREATE", "ioctl$BTRFS_IOC_SUBVOL_CREATE_V2", "ioctl$BTRFS_IOC_TREE_SEARCH", "ioctl$BTRFS_IOC_TREE_SEARCH_V2", "open", "openat", "openat$smack_thread_current", "openat$sndseq", "read$FUSE", "sendfile", "syz_mount_image$btrfs", "syz_mount_image$msdos", "truncate", "unlink", "write$RDMA_USER_CM_CMD_RESOLVE_IP", "fsopen", "openat$fuse", "openat$rdma_cm", "write$FUSE_INTERRUPT", "getuid", "setgid", "getgid", "get_robust_list", "ioctl$BTRFS_IOC_BALANCE_PROGRESS"]
+Syscalls: (35)      ["creat", "fallocate", "fsconfig$FSCONFIG_SET_FLAG", "io_uring_setup", "ioctl$BTRFS_IOC_GET_SUBVOL_INFO", "ioctl$BTRFS_IOC_GET_SUBVOL_ROOTREF", "ioctl$BTRFS_IOC_INO_LOOKUP", "ioctl$BTRFS_IOC_INO_LOOKUP_USER", "ioctl$BTRFS_IOC_QUOTA_CTL", "ioctl$BTRFS_IOC_SNAP_CREATE", "ioctl$BTRFS_IOC_SUBVOL_CREATE_V2", "ioctl$BTRFS_IOC_TREE_SEARCH", "ioctl$BTRFS_IOC_TREE_SEARCH_V2", "open", "openat", "openat$smack_thread_current", "openat$sndseq", "read$FUSE", "sendfile", "syz_mount_image$btrfs", "syz_mount_image$msdos", "truncate", "unlink", "write$RDMA_USER_CM_CMD_RESOLVE_IP", "fsopen", "open$dir", "openat$fuse", "openat$rdma_cm", "write$FUSE_INTERRUPT", "getuid", "setgid", "getgid", "get_robust_list", "write$RDMA_USER_CM_CMD_CREATE_ID", "ioctl$BTRFS_IOC_BALANCE_PROGRESS"]
 VM Count:           4
 CPU Count:          4
 Procs:              24
 Memory:             4096
 Make Procs:         16
-Max Time:           30
-Max Attempts:       3
+Max Time:           10
+Max Attempts:       1
 
 ==== Anchor Commit ====
 
-2025-03-04 01:40:32
+2025-12-18 15:24:29
 Session:   1
 Kernel:    2023-06-27 - b19edac5992da0188be98454ca592621d3d89844
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
-Warning: write$RDMA_USER_CM_CMD_RESOLVE_IP was disabled by Syzkaller.
+Compiler:  ccache gcc
 Attempt 1:
+    No crashes found.
+Attempt 2: (RETRY)
+    No crashes found.
+Attempt 3: (RETRY)
     Time  Bug Name
-      15  suppressed report
-      15  suppressed report
-      18  suppressed report
-      21  suppressed report
-      25  suppressed report
-      28  kernel BUG in close_ctree
-      29  suppressed report
-      30  suppressed report
-Warning: write$RDMA_USER_CM_CMD_RESOLVE_IP was disabled by Syzkaller.
-Attempt 2:
-    Time  Bug Name
-      12  suppressed report
-      13  suppressed report
-      16  suppressed report
-      17  suppressed report
-      25  suppressed report
-      28  suppressed report
-      29  suppressed report
-Warning: write$RDMA_USER_CM_CMD_RESOLVE_IP was disabled by Syzkaller.
-Attempt 3:
-    Time  Bug Name
-       6  suppressed report
-      14  suppressed report
-      23  SYZFAIL: repeatedly failed to execute the program
-      23  SYZFAIL: repeatedly failed to execute the program
-      28  suppressed report
+      10  KASAN: stack-out-of-bounds Read in profile_pc (has report)
+      10  kernel BUG in close_ctree
 The bug was not found.
-This commit is flagged as unstable.
 
 Failure: This bug cannot be found at the anchor commit.
+
+==== Partial Result: Focused Fuzzing ====
+Bisection Result:     Failed to reproduce at the anchor commit.
+Stage Time:           0h45m43s
+Run Time:             0h45m46s
+=========================================
