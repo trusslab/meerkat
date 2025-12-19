@@ -316,6 +316,40 @@ int parse_warning_rcu_stack(const std::vector<std::string> &lines, int &i, std::
     return 0;
 }
 
+int parse_basic_stack(const std::vector<std::string> &lines, int &i, std::vector<std::string> &stack)
+{
+    if (read_RIP_entries(lines, i, stack) < 0)
+    {
+        std::cerr << "Error: error parsing RIP values in basic report\n" << std::flush;
+        return -1;
+    }
+
+    // old kernel may inject register debugs in the middle of call traces.
+    if (skip_to_call_trace(lines, i) < 0 || i >= lines.size())
+    {
+        std::cerr << "Error: index error parsing basic report\n" << std::flush;
+        return -1;
+    }
+
+    int pos1 = lines.at(i).find_first_not_of(" "), pos2 = 0;
+
+    std::string func;
+    for (; i < lines.size(); i++)
+    {
+        pos2 = lines.at(i).find_first_not_of(" ");
+        if (lines.at(i).empty() || lines.at(i).find("</TASK>") != std::string::npos || pos1 != pos2)
+        {
+            break;
+        }
+
+        func = parse_stack_line(lines.at(i));
+        if (!ignore_functions(func))
+            stack.push_back(func);
+    }
+
+    return 0;
+}
+
 // parse one stack trace starting at index i, output to stack vector
 int parse_one_stack(Crash_Type ct, const std::vector<std::string> &lines, int &i, std::vector<std::string> &stack)
 {
@@ -325,6 +359,8 @@ int parse_one_stack(Crash_Type ct, const std::vector<std::string> &lines, int &i
         return parse_kasan_stack(lines, i, stack);
     case CT_KASAN_NULLPTR:
         return parse_kasan_nullptr_stack(lines, i, stack);
+    case CT_KBUG:
+        return parse_basic_stack(lines, i, stack);
     case CT_SLEEPING:
         return parse_sleeping_stack(lines, i, stack);
     case CT_WARNING:
@@ -354,6 +390,10 @@ Crash_Type identify_ct(const std::vector<std::string> &lines, int &i)
         else if (starts_with(lines.at(i), "KASAN: null-ptr-deref"))
         {
             return CT_KASAN_NULLPTR;
+        }
+        else if (starts_with(lines.at(i), "kernel BUG at"))
+        {
+            return CT_KBUG;
         }
         else if (starts_with(lines.at(i), "WARNING: possible"))
         {
