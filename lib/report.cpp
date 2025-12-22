@@ -387,7 +387,7 @@ Crash_Type identify_ct(const std::vector<std::string> &lines, int &i)
             else if (lines.at(i).find("sleeping function called from invalid context") != std::string::npos)
                 return CT_SLEEPING;
         }
-        else if (starts_with(lines.at(i), "KASAN: null-ptr-deref"))
+        else if (starts_with(lines.at(i), "KASAN: null-ptr-deref") || starts_with(lines.at(i), "KASAN: probably user-memory-access"))
         {
             return CT_KASAN_NULLPTR;
         }
