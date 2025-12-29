@@ -1,30 +1,33 @@
-./bin/bisector -i 5 -c /home/syzretrospector/syzinspector/wd-bisector-5/bisector.cfg -a b25f62ccb490680a8cee755ac4528909395e0711 -F ff-test,poc-test,stateful-corpus,ff-no-find-backup
+./bin/meerkat -i 1 -c /home/syzretrospector/meerkat/wd-meerkat-1/meerkat.cfg -a b25f62ccb490680a8cee755ac4528909395e0711 -F ff-test,poc-test,poc-all-pocs,ff-no-find-backup,stateful-corpus
 Bisecting:          general protection fault in sys_finit_module
 Warning: No syscall found that produces sock_can.
 Syzbot Link:        https://syzkaller.appspot.com/bug?extid=9e4e94a2689427009d35
 Working Name:       bug0832
 
-No aliases given.
+Aliases:
+    general protection fault in sys_finit_module (has report)
 
 Anchor Commit:      b25f62ccb490680a8cee755ac4528909395e0711
 Repository:         https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
 Branch:             master
 Arch:               amd64
 
-Bisector:           /home/syzretrospector/syzinspector/
-Version:            1.0.4
-Kernel:             /home/syzretrospector/syzinspector/wd-bisector-5/kernel/
-Syzkaller:          /home/syzretrospector/syzinspector/syzkaller/
-Compilers:          /home/syzretrospector/compilers/
-Ccache:             ccache
-Image:              /home/syzretrospector/images/stretch/stretch.img
-Image Key:          /home/syzretrospector/images/stretch/stretch.id_rsa
+Meerkat:            /home/syzretrospector/meerkat/
+Version:            1.2.0
+Kernel:             /home/syzretrospector/meerkat/wd-meerkat-1/kernel/
+Syzkaller:          /home/syzretrospector/meerkat/syzkaller/
+Compilers:          /home/syzretrospector/meerkat/compilers/
+Compiler:           gcc (Ubuntu 11.4.0-1ubuntu1~22.04.2) 11.4.0
+Linker:             GNU ld (GNU Binutils for Ubuntu) 2.38
+Ccache:             ccache version 4.5.1
+Image:              /home/syzretrospector/meerkat/image/stretch/stretch.img
+Image Key:          /home/syzretrospector/meerkat/image/stretch/stretch.id_rsa
 
-Workdir:            /home/syzretrospector/syzinspector/wd-bisector-5/
-Kconfig:            /home/syzretrospector/syzinspector/wd-bisector-5/config-bug0832.txt
-Reproducers: (6)    /home/syzretrospector/syzinspector/wd-bisector-5/reproducers/
-Syzkaller Workdir:  /home/syzretrospector/syzinspector/wd-bisector-5/wd-kaller/
-Log Directory:      /home/syzretrospector/syzinspector/wd-bisector-5/log/
+Workdir:            /home/syzretrospector/meerkat/wd-meerkat-1/
+Kconfig:            /home/syzretrospector/meerkat/wd-meerkat-1/config-bug0832.txt
+Reproducers: (6)    /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/
+Syzkaller Workdir:  /home/syzretrospector/meerkat/wd-meerkat-1/wd-kaller/
+Log Directory:      /home/syzretrospector/meerkat/wd-meerkat-1/log/
 
 Syscalls: (16)      ["finit_module", "madvise", "openat$sysfs", "openat$ttyprintk", "socket$can_bcm", "socket$inet6_sctp", "socket$inet6_udplite", "socket$nl_generic", "syz_clone", "openat$binfmt", "ioctl$F2FS_IOC_START_ATOMIC_WRITE", "get_robust_list", "socket$inet6", "socket$netlink", "syz_create_resource$binfmt", "socket"]
 VM Count:           8
@@ -37,247 +40,1922 @@ Max Attempts:       1
 
 ==== Anchor Commit ====
 
-2025-03-23 18:50:48
+2025-12-22 14:39:57
 Session:   1
 Kernel:    2023-06-30 - b25f62ccb490680a8cee755ac4528909395e0711
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Compiler:  ccache gcc
 Attempt 1:
     Time  Bug Name
-       2  BUG: unable to handle kernel paging request in init_module_from_file
-       2  BUG: unable to handle kernel paging request in init_module_from_file
-       2  BUG: unable to handle kernel paging request in init_module_from_file
-       2  BUG: unable to handle kernel paging request in init_module_from_file
-       2  kernel panic: stack is corrupted in do_epoll_wait
-       2  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
-       2  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
-       2  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
+       2  BUG: unable to handle kernel paging request in init_module_from_file (3)
+       2  KASAN: vmalloc-out-of-bounds Read in init_module_from_file (4) (has report)
        3  BUG: unable to handle kernel paging request in init_module_from_file
-       3  BUG: unable to handle kernel paging request in init_module_from_file
-       3  general protection fault in init_module_from_file
-       3  general protection fault in init_module_from_file
-       3  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
-       3  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
-       3  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
-       3  KASAN: slab-out-of-bounds Read in init_module_from_file
-       4  BUG: unable to handle kernel paging request in init_module_from_file
-       4  KASAN: stack-out-of-bounds Read in init_module_from_file
-       4  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
-       4  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
-       4  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
-       4  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
-       4  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
-       4  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
-       5  BUG: unable to handle kernel paging request in init_module_from_file
-       5  KASAN: stack-out-of-bounds Read in init_module_from_file
-       5  general protection fault in init_module_from_file
-       5  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
-       5  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
-       5  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
-       5  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
-       5  KASAN: slab-out-of-bounds Read in init_module_from_file
-       6  KASAN: stack-out-of-bounds Read in init_module_from_file
-       6  general protection fault in init_module_from_file
-       6  general protection fault in init_module_from_file
-       6  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
-       6  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
-       6  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
-       6  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
-       6  KASAN: slab-out-of-bounds Read in init_module_from_file
-       7  BUG: unable to handle kernel paging request in init_module_from_file
-       7  KASAN: stack-out-of-bounds Read in init_module_from_file
-       7  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
-       7  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
-       7  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
-       7  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
-       7  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
-       7  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
-       8  KASAN: stack-out-of-bounds Read in init_module_from_file
-       8  KASAN: stack-out-of-bounds Read in init_module_from_file
-       8  KASAN: stack-out-of-bounds Read in init_module_from_file
-       8  general protection fault in init_module_from_file
-       8  general protection fault in init_module_from_file
-       8  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
-       8  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
-       8  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
-       9  KASAN: stack-out-of-bounds Read in init_module_from_file
-       9  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
-       9  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
-       9  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
-       9  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
-       9  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
-       9  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
-       9  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
-       9  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
-      10  KASAN: stack-out-of-bounds Read in init_module_from_file
-      10  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
-      10  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
-      10  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
-      10  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
-      10  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
-      10  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
-      10  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
+       3  KASAN: stack-out-of-bounds Read in init_module_from_file (2) (has report)
+       3  KASAN: vmalloc-out-of-bounds Read in init_module_from_file (4) (has report)
+       4  BUG: unable to handle kernel paging request in init_module_from_file (3)
+       4  INFO: rcu detected stall in corrupted
+       4  KASAN: vmalloc-out-of-bounds Read in init_module_from_file (4) (has report)
+       5  KASAN: stack-out-of-bounds Read in init_module_from_file (has report)
+***    5  general protection fault in init_module_from_file (has report)
+       5  KASAN: vmalloc-out-of-bounds Read in init_module_from_file (6) (has report)
 Attempt 2: (RETRY)
     Time  Bug Name
-       2  BUG: unable to handle kernel paging request in init_module_from_file
-       2  BUG: unable to handle kernel paging request in init_module_from_file
-       2  general protection fault in init_module_from_file
-       2  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
-       2  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
-       2  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
-       2  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
-       2  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
+       2  BUG: unable to handle kernel paging request in init_module_from_file (2)
+       2  KASAN: vmalloc-out-of-bounds Read in init_module_from_file (6) (has report)
        3  BUG: unable to handle kernel paging request in init_module_from_file
-       3  KASAN: stack-out-of-bounds Read in init_module_from_file
-       3  KASAN: stack-out-of-bounds Read in init_module_from_file
-       3  general protection fault in init_module_from_file
-       3  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
-       3  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
-       3  lost connection to test machine
-       3  KASAN: slab-out-of-bounds Read in init_module_from_file
-       4  BUG: unable to handle kernel paging request in init_module_from_file
-       4  KASAN: stack-out-of-bounds Read in init_module_from_file
-       4  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
-       4  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
-       4  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
-       4  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
-       4  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
-       4  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
-       4  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
-       5  general protection fault in init_module_from_file
-       5  general protection fault in init_module_from_file
-       5  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
-       5  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
-       5  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
-       5  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
-       5  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
-       5  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
-       6  general protection fault in init_module_from_file
-       6  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
-       6  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
-       6  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
-       6  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
-       6  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
-       6  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
-       6  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
-       6  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
-       7  KASAN: stack-out-of-bounds Read in init_module_from_file
-       7  KASAN: stack-out-of-bounds Read in init_module_from_file
-       7  general protection fault in init_module_from_file
-       7  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
-       7  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
-       7  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
-       7  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
-       7  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
-       7  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
-       7  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
-       7  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
-       7  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
-       7  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
-       8  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
-       8  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
-       8  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
-       8  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
-       8  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
-       8  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
-       8  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
-       8  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
-       8  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
-       9  general protection fault in init_module_from_file
-       9  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
-       9  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
-       9  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
-       9  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
-       9  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
-       9  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
-       9  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
-      10  KASAN: stack-out-of-bounds Read in init_module_from_file
-      10  general protection fault in init_module_from_file
-      10  general protection fault in init_module_from_file
-      10  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
-      10  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
-      10  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
-      10  KASAN: slab-out-of-bounds Read in init_module_from_file
-      10  KASAN: slab-out-of-bounds Read in init_module_from_file
+       3  KASAN: stack-out-of-bounds Read in init_module_from_file (has report)
+***    3  general protection fault in init_module_from_file (2) (has report)
+       3  KASAN: vmalloc-out-of-bounds Read in init_module_from_file (4) (has report)
 Attempt 3: (RETRY)
     Time  Bug Name
-       2  BUG: unable to handle kernel paging request in init_module_from_file
-       2  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
-       2  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
-       2  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
-       2  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
-       2  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
-       2  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
-       2  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
-       3  BUG: unable to handle kernel paging request in init_module_from_file
-       3  general protection fault in init_module_from_file
-       3  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
-       3  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
-       3  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
-       3  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
-       3  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
-       3  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
-       4  KASAN: stack-out-of-bounds Read in init_module_from_file
-       4  KASAN: stack-out-of-bounds Read in init_module_from_file
-       4  KASAN: stack-out-of-bounds Read in init_module_from_file
-       4  KASAN: stack-out-of-bounds Read in init_module_from_file
-       4  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
-       4  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
-       4  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
-       4  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
-       4  KASAN: slab-out-of-bounds Read in init_module_from_file
-       5  KASAN: stack-out-of-bounds Read in init_module_from_file
-       5  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
-       5  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
-       5  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
-       5  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
-       5  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
-       5  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
-       5  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
-       5  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
-       5  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
-       6  KASAN: stack-out-of-bounds Read in init_module_from_file
-       6  KASAN: stack-out-of-bounds Read in init_module_from_file
-       6  general protection fault in init_module_from_file
-       6  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
-       6  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
-       6  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
-       6  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
-       6  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
-       7  BUG: unable to handle kernel paging request in init_module_from_file
-       7  KASAN: stack-out-of-bounds Read in init_module_from_file
-       7  KASAN: stack-out-of-bounds Read in init_module_from_file
-       7  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
-       7  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
-       7  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
-       7  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
-       7  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
-       7  KASAN: slab-out-of-bounds Read in init_module_from_file
-       8  INFO: rcu detected stall in corrupted
-       8  KASAN: stack-out-of-bounds Read in init_module_from_file
-       8  KASAN: stack-out-of-bounds Read in init_module_from_file
-       8  general protection fault in init_module_from_file
-       8  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
-       8  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
-       8  KASAN: slab-out-of-bounds Read in init_module_from_file
-       8  KASAN: slab-out-of-bounds Read in init_module_from_file
-       9  KASAN: stack-out-of-bounds Read in init_module_from_file
-       9  KASAN: stack-out-of-bounds Read in init_module_from_file
-       9  general protection fault in init_module_from_file
-       9  general protection fault in init_module_from_file
-       9  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
-       9  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
-       9  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
-       9  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
-       9  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
-      10  KASAN: stack-out-of-bounds Read in init_module_from_file
-      10  KASAN: stack-out-of-bounds Read in init_module_from_file
-      10  KASAN: stack-out-of-bounds Read in init_module_from_file
-      10  KASAN: stack-out-of-bounds Read in init_module_from_file
-      10  general protection fault in init_module_from_file
-      10  general protection fault in init_module_from_file
-      10  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
-      10  KASAN: vmalloc-out-of-bounds Read in init_module_from_file
-      10  KASAN: slab-out-of-bounds Read in init_module_from_file
-The bug was not found.
+       2  BUG: unable to handle kernel paging request in init_module_from_file (7)
+       2  KASAN: vmalloc-out-of-bounds Read in init_module_from_file (has report)
+       3  BUG: unable to handle kernel paging request in init_module_from_file (2)
+***    3  general protection fault in init_module_from_file (has report)
+       3  KASAN: vmalloc-out-of-bounds Read in init_module_from_file (5) (has report)
+The bug was found.
 
-Failure: This bug cannot be found at the anchor commit.
+New Max Time: 10
+
+==== Major Release Search ====
+13 Releases
+
+2025-12-22 14:57:15
+Session:   2
+Kernel:    2023-06-25 - 6995e2de6891c724bfeb2db33d7b87775f913ad1 (v6.4)
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 12 releases remaining
+
+==== Kernel Bisection ====
+9775 Linux commits
+
+2025-12-22 15:22:12
+Session:   3
+Kernel:    2023-06-29 - 86e203edf24bb327ce8fcd3c5c8c6bf530a846df
+Compiler:  ccache gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/syzretrospector/meerkat/wd-meerkat-1/log/bug0832-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+       1  UBSAN: array-index-out-of-bounds in corrupted
+       1  UBSAN: array-index-out-of-bounds in copy_process (2)
+       2  UBSAN: array-index-out-of-bounds in corrupted (10)
+       2  UBSAN: array-index-out-of-bounds in alloc_pid
+       2  UBSAN: array-index-out-of-bounds in copy_process (2)
+       3  UBSAN: array-index-out-of-bounds in corrupted (6)
+       3  UBSAN: array-index-out-of-bounds in copy_process (2)
+       4  UBSAN: array-index-out-of-bounds in corrupted (11)
+       5  UBSAN: array-index-out-of-bounds in corrupted (10)
+       5  UBSAN: array-index-out-of-bounds in alloc_pid (2)
+       5  UBSAN: array-index-out-of-bounds in copy_process
+       6  UBSAN: array-index-out-of-bounds in corrupted (7)
+       6  UBSAN: array-index-out-of-bounds in copy_process
+       7  UBSAN: array-index-out-of-bounds in corrupted (8)
+       7  UBSAN: array-index-out-of-bounds in alloc_pid
+       7  UBSAN: array-index-out-of-bounds in copy_process (2)
+       8  UBSAN: array-index-out-of-bounds in corrupted (10)
+       8  UBSAN: array-index-out-of-bounds in copy_process (3)
+       9  UBSAN: array-index-out-of-bounds in corrupted (4)
+       9  UBSAN: array-index-out-of-bounds in copy_process (4)
+      10  UBSAN: array-index-out-of-bounds in corrupted (7)
+      10  UBSAN: array-index-out-of-bounds in alloc_pid (3)
+      10  UBSAN: array-index-out-of-bounds in copy_process
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 9775 commits remaining
+
+2025-12-22 15:45:53
+Session:   4
+Kernel:    2023-06-06 - bf5c04ddd378dbd62d41d9c5bd18cca03bee2946
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       6  INFO: task hung in del_device_store (2)
+       7  suppressed report
+       7  INFO: task hung in del_device_store (2)
+       8  INFO: task hung in del_device_store
+      10  INFO: task hung in del_device_store
+The bug was not found.
+About 11914 commits remaining
+
+2025-12-22 16:10:21
+Session:   5
+Kernel:    2023-06-02 - 8ad13cdc92f66333ae475251ae7722313f84e496
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 11101 commits remaining
+
+2025-12-22 16:34:50
+Session:   6
+Kernel:    2023-06-07 - f71be9d084c92e0ef36e248303f32f8e4cf623da
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       5  WARNING: ODEBUG bug in netdev_run_todo (has report)
+The bug was not found.
+About 10122 commits remaining
+
+2025-12-22 16:59:20
+Session:   7
+Kernel:    2023-06-29 - f8824e151fbfa0ac0a258015d606ea6f4a10251b
+Compiler:  ccache gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/syzretrospector/meerkat/wd-meerkat-1/log/bug0832-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+       1  UBSAN: array-index-out-of-bounds in corrupted (3)
+       2  UBSAN: array-index-out-of-bounds in corrupted (6)
+       2  UBSAN: array-index-out-of-bounds in alloc_pid (4)
+       2  UBSAN: array-index-out-of-bounds in copy_process (3)
+       3  UBSAN: array-index-out-of-bounds in corrupted (4)
+       3  UBSAN: array-index-out-of-bounds in alloc_pid
+       3  UBSAN: array-index-out-of-bounds in copy_process (3)
+       4  UBSAN: array-index-out-of-bounds in corrupted (5)
+       4  UBSAN: array-index-out-of-bounds in alloc_pid
+       4  UBSAN: array-index-out-of-bounds in copy_process (5)
+       5  UBSAN: array-index-out-of-bounds in corrupted (10)
+       5  UBSAN: array-index-out-of-bounds in copy_process (3)
+       6  UBSAN: array-index-out-of-bounds in corrupted (7)
+       6  UBSAN: array-index-out-of-bounds in copy_process
+       7  UBSAN: array-index-out-of-bounds in corrupted (2)
+       7  UBSAN: array-index-out-of-bounds in alloc_pid (4)
+       7  UBSAN: array-index-out-of-bounds in copy_process (5)
+       8  UBSAN: array-index-out-of-bounds in corrupted (7)
+       8  UBSAN: array-index-out-of-bounds in alloc_pid
+       8  UBSAN: array-index-out-of-bounds in copy_process (3)
+       9  UBSAN: array-index-out-of-bounds in corrupted (7)
+       9  UBSAN: array-index-out-of-bounds in copy_process (3)
+      10  UBSAN: array-index-out-of-bounds in corrupted (8)
+      10  UBSAN: array-index-out-of-bounds in alloc_pid
+      10  UBSAN: array-index-out-of-bounds in copy_process (2)
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 10122 commits remaining
+
+2025-12-22 17:20:59
+Session:   8
+Kernel:    2023-05-31 - bd780aea671eda9660837c05d9ba58de22ceecad
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 10967 commits remaining
+
+2025-12-22 17:45:31
+Session:   9
+Kernel:    2023-06-09 - 101827e13026a981e887527620fe9710adc0e481
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       6  INFO: task hung in del_device_store (3)
+       8  INFO: task hung in del_device_store (2)
+      10  INFO: task hung in new_device_store
+The bug was not found.
+About 24414 commits remaining
+
+2025-12-22 18:10:21
+Session:   10
+Kernel:    2023-06-28 - 9471f1f2f50282b9e8f59198ec6bb738b4ccc009
+Compiler:  ccache gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/syzretrospector/meerkat/wd-meerkat-1/log/bug0832-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+       1  UBSAN: array-index-out-of-bounds in corrupted (3)
+       2  UBSAN: array-index-out-of-bounds in corrupted (9)
+       2  UBSAN: array-index-out-of-bounds in alloc_pid (4)
+       3  UBSAN: array-index-out-of-bounds in corrupted (8)
+       4  UBSAN: array-index-out-of-bounds in corrupted (5)
+       4  UBSAN: array-index-out-of-bounds in alloc_pid (2)
+       4  UBSAN: array-index-out-of-bounds in copy_process (4)
+       5  UBSAN: array-index-out-of-bounds in corrupted (9)
+       5  UBSAN: array-index-out-of-bounds in alloc_pid (2)
+       5  UBSAN: array-index-out-of-bounds in copy_process (2)
+       6  UBSAN: array-index-out-of-bounds in corrupted
+       6  UBSAN: array-index-out-of-bounds in alloc_pid (3)
+       6  UBSAN: array-index-out-of-bounds in copy_process (4)
+       7  UBSAN: array-index-out-of-bounds in corrupted (5)
+       7  UBSAN: array-index-out-of-bounds in alloc_pid (2)
+       7  UBSAN: array-index-out-of-bounds in copy_process (4)
+       8  UBSAN: array-index-out-of-bounds in corrupted (9)
+       8  UBSAN: array-index-out-of-bounds in copy_process (3)
+       9  UBSAN: array-index-out-of-bounds in corrupted (5)
+       9  UBSAN: array-index-out-of-bounds in alloc_pid
+       9  UBSAN: array-index-out-of-bounds in copy_process (3)
+      10  UBSAN: array-index-out-of-bounds in corrupted (3)
+      10  UBSAN: array-index-out-of-bounds in alloc_pid
+      10  UBSAN: array-index-out-of-bounds in copy_process (7)
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 24414 commits remaining
+
+2025-12-22 18:27:12
+Session:   11
+Kernel:    2023-06-06 - 3b67a20bb0cb9e2f03dbe0af2074b7f4aa5fa811
+Compiler:  ccache gcc
+Error: index error parsing Warning report
+Warning: Syzkaller never completed machine check.
+Saved log at /home/syzretrospector/meerkat/wd-meerkat-1/log/bug0832-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+       1  WARNING in register_net_sysctl (5) (has report)
+       2  WARNING in register_net_sysctl (11) (has report)
+       3  WARNING in register_net_sysctl (8) (has report)
+       4  WARNING in corrupted
+       4  WARNING in register_net_sysctl (10) (has report)
+       5  WARNING in register_net_sysctl (13) (has report)
+       6  WARNING in register_net_sysctl (8) (has report)
+       7  WARNING in register_net_sysctl (11) (has report)
+       8  WARNING in register_net_sysctl (13) (has report)
+       9  WARNING in register_net_sysctl (8) (has report)
+      10  WARNING in register_net_sysctl (11) (has report)
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 24414 commits remaining
+
+2025-12-22 18:51:51
+Session:   12
+Kernel:    2023-05-08 - 47e0255989560fbfd6cd0e03407982f37fdabe5a
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       6  INFO: task hung in new_device_store (2)
+       6  INFO: task hung in del_device_store (3)
+       7  INFO: task hung in del_device_store
+       8  INFO: task hung in del_device_store
+       9  INFO: task hung in del_device_store
+      10  suppressed report
+The bug was not found.
+About 11914 commits remaining
+
+2025-12-22 19:12:10
+Session:   13
+Kernel:    2023-06-09 - b0cc5e89caadc21c2d8f7dc4c97947761b358876
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 10873 commits remaining
+
+2025-12-22 19:36:35
+Session:   14
+Kernel:    2023-05-27 - b167b530eb83dfd791061e1d312236bffde772a4
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       6  INFO: task hung in new_device_store
+       6  INFO: task hung in del_device_store
+       7  INFO: task hung in devlink_free
+       7  INFO: task hung in del_device_store (2)
+      10  INFO: task hung in del_device_store
+The bug was not found.
+About 11769 commits remaining
+
+2025-12-22 19:53:22
+Session:   15
+Kernel:    2023-06-19 - e8c2af660ba0790afd14d5cbc2fd05c6dc85e207
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 9396 commits remaining
+
+2025-12-22 20:17:53
+Session:   16
+Kernel:    2023-06-19 - 50b5d1fc41da21a4ecf219f37fbca23c79020b08
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 9836 commits remaining
+
+2025-12-22 20:42:12
+Session:   17
+Kernel:    2023-06-21 - bfcd5714f6424c03e385e0e9296dcd69855cfea7
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       6  INFO: task hung in del_device_store (2)
+       7  suppressed report
+       9  suppressed report
+       9  INFO: task hung in del_device_store
+The bug was not found.
+About 11905 commits remaining
+
+2025-12-22 20:58:40
+Session:   18
+Kernel:    2023-05-27 - 1b2b6039bd76f2ece9c0ba82b8116c4eb6ab2445
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       6  INFO: task hung in del_device_store (2)
+       7  INFO: task hung in del_device_store (3)
+       9  INFO: task hung in register_netdevice_notifier
+       9  INFO: task hung in del_device_store
+The bug was not found.
+About 11891 commits remaining
+
+2025-12-22 21:15:23
+Session:   19
+Kernel:    2023-06-16 - 6a80d794d796d22910c03d3e52a3bf0d885326a7
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       8  WARNING: ODEBUG bug in netdev_run_todo (has report)
+The bug was not found.
+About 10864 commits remaining
+
+2025-12-22 21:39:55
+Session:   20
+Kernel:    2023-06-15 - 444f312a73f789bb9f10bbb423f7ae6c3aa76198
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       6  INFO: task hung in del_device_store
+       7  INFO: task hung in del_device_store (5)
+      10  INFO: task hung in del_device_store
+The bug was not found.
+About 11775 commits remaining
+
+2025-12-22 21:56:24
+Session:   21
+Kernel:    2023-05-24 - ec8bb9c5b1c6963db3ed09e4a9148ae85804b962
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       6  suppressed report
+       7  INFO: task hung in devlink_free
+       7  INFO: task hung in del_device_store
+       9  suppressed report
+       9  INFO: task hung in devlink_free
+The bug was not found.
+About 11813 commits remaining
+
+2025-12-22 22:12:50
+Session:   22
+Kernel:    2023-05-08 - d90171dd0da50212f5950cc708240831e82f2f91
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       6  INFO: task hung in del_device_store (2)
+       7  INFO: task hung in del_device_store (4)
+       9  INFO: task hung in del_device_store
+      10  INFO: task hung in del_device_store
+The bug was not found.
+About 11914 commits remaining
+
+2025-12-22 22:29:22
+Session:   23
+Kernel:    2023-06-09 - 3c435a0fe35c220bec442dffff04a64aacf952b0
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 10814 commits remaining
+
+2025-12-22 22:53:40
+Session:   24
+Kernel:    2023-06-08 - 8a20b381644528794a78f791fd1a7ae87f3fc6ff
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       6  INFO: task hung in del_device_store
+       7  INFO: task hung in del_device_store (4)
+       9  INFO: task hung in del_device_store
+The bug was not found.
+About 11324 commits remaining
+
+2025-12-22 23:14:58
+Session:   25
+Kernel:    2023-05-24 - 3a48d2127f4dbd767d43bf8280b67d585e701f75
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 11286 commits remaining
+
+2025-12-22 23:38:47
+Session:   26
+Kernel:    2023-06-07 - e0a9349b4c590145c6a83e6c9f7701cec42debbd
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       6  INFO: task hung in del_device_store
+       7  suppressed report
+       8  INFO: task hung in devlink_free
+       8  INFO: task hung in del_device_store (2)
+      10  INFO: task hung in del_device_store
+The bug was not found.
+About 11684 commits remaining
+
+2025-12-23 00:02:19
+Session:   27
+Kernel:    2023-06-22 - f40df95d375dc9c96da541a2c4ac0ce1e630309d
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 8580 commits remaining
+
+2025-12-23 00:26:28
+Session:   28
+Kernel:    2023-05-29 - 9dd5f6dba72928e1f16b259fb1c984f80bfa4120
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       6  INFO: task hung in del_device_store
+       7  INFO: task hung in del_device_store (3)
+      10  INFO: task hung in del_device_store (2)
+The bug was not found.
+About 11735 commits remaining
+
+2025-12-23 00:49:52
+Session:   29
+Kernel:    2023-06-19 - e774a7bc7f0adba785d814ce9a329b6c5c32706a
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 10681 commits remaining
+
+2025-12-23 01:14:10
+Session:   30
+Kernel:    2023-05-22 - a31988510689e6116921d6c67521c6cf472737f6
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       7  INFO: task hung in devlink_free (2)
+       7  INFO: task hung in del_device_store (2)
+The bug was not found.
+About 11913 commits remaining
+
+2025-12-23 01:30:55
+Session:   31
+Kernel:    2023-06-02 - d3369a4b6f0164b8869a097547846ed4e5c9c47f
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       6  INFO: task hung in del_device_store
+       7  INFO: task hung in del_device_store (2)
+       9  INFO: task hung in del_device_store
+The bug was not found.
+About 11912 commits remaining
+
+2025-12-23 01:47:26
+Session:   32
+Kernel:    2023-06-23 - 3291e09a463870610b8227f32b16b19a587edf33
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 10547 commits remaining
+
+2025-12-23 02:11:42
+Session:   33
+Kernel:    2023-05-08 - 7f91fe3a71aa43700eac2650e3b01d50cbbb6f48
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       4  WARNING: ODEBUG bug in netdev_run_todo (has report)
+       6  INFO: task hung in del_device_store (3)
+       7  INFO: task hung in del_device_store (3)
+The bug was not found.
+About 11914 commits remaining
+
+2025-12-23 02:28:35
+Session:   34
+Kernel:    2023-06-20 - c467c8f081859d4f4ca4eee4fba54bb5d85d6c97
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 10235 commits remaining
+
+2025-12-23 02:53:00
+Session:   35
+Kernel:    2023-06-08 - 3186acba5cdc10b5eb0f45a5ff7ce8c1c6e8c16c
+Compiler:  ccache gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/syzretrospector/meerkat/wd-meerkat-1/log/bug0832-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 10235 commits remaining
+
+2025-12-23 03:17:54
+Session:   36
+Kernel:    2023-06-24 - 4bce37a68ff884e821a02a731897a8119e0c37b7
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 10009 commits remaining
+
+2025-12-23 03:42:30
+Session:   37
+Kernel:    2023-06-15 - d24028606e7642261d33ad2a50aed940d35cfb66
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 10970 commits remaining
+
+2025-12-23 04:06:48
+Session:   38
+Kernel:    2023-06-05 - 3ba12d8de3faa666ba2d6d01863feca73518a743
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       4  suppressed report
+The bug was not found.
+About 10607 commits remaining
+
+2025-12-23 04:30:32
+Session:   39
+Kernel:    2023-06-26 - 310ee0902b8d9d0a13a5a13e94688a5863fa29c2
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       9  suppressed report
+The bug was not found.
+About 10563 commits remaining
+
+2025-12-23 04:47:53
+Session:   40
+Kernel:    2023-06-19 - c07ce33a1ddd5a2e74ddcfc8cfcf7f94c3ee2347
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       7  INFO: task hung in del_device_store (5)
+       8  INFO: task hung in del_device_store
+       9  INFO: task hung in del_device_store
+      10  INFO: task hung in new_device_store
+The bug was not found.
+About 11858 commits remaining
+
+2025-12-23 05:12:21
+Session:   41
+Kernel:    2023-06-15 - ca0b954a4315ca2228001c439ae1062561c81989
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       6  INFO: task hung in del_device_store (4)
+       7  INFO: task hung in del_device_store (2)
+      10  INFO: task hung in del_device_store (2)
+The bug was not found.
+About 10131 commits remaining
+
+2025-12-23 05:33:18
+Session:   42
+Kernel:    2023-06-21 - 6b164eaecd154930532afe8dce0d0562f629d23d
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       6  INFO: task hung in del_device_store (4)
+       7  INFO: task hung in del_device_store
+       8  INFO: task hung in del_device_store (2)
+The bug was not found.
+About 11539 commits remaining
+
+2025-12-23 05:52:06
+Session:   43
+Kernel:    2023-06-29 - 675285ad819293844018aa8096ba9a6d7c77b90b
+Compiler:  ccache gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/syzretrospector/meerkat/wd-meerkat-1/log/bug0832-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+       1  UBSAN: array-index-out-of-bounds in corrupted (2)
+       1  UBSAN: array-index-out-of-bounds in copy_process
+       2  UBSAN: array-index-out-of-bounds in corrupted (9)
+       2  UBSAN: array-index-out-of-bounds in alloc_pid (3)
+       2  UBSAN: array-index-out-of-bounds in copy_process
+       3  UBSAN: array-index-out-of-bounds in corrupted (5)
+       3  UBSAN: array-index-out-of-bounds in alloc_pid
+       3  UBSAN: array-index-out-of-bounds in copy_process (2)
+       4  UBSAN: array-index-out-of-bounds in corrupted
+       4  UBSAN: array-index-out-of-bounds in alloc_pid (3)
+       4  UBSAN: array-index-out-of-bounds in copy_process (7)
+       5  UBSAN: array-index-out-of-bounds in corrupted (8)
+       5  UBSAN: array-index-out-of-bounds in alloc_pid
+       5  UBSAN: array-index-out-of-bounds in copy_process (4)
+       6  UBSAN: array-index-out-of-bounds in corrupted (3)
+       6  UBSAN: array-index-out-of-bounds in alloc_pid (2)
+       6  UBSAN: array-index-out-of-bounds in copy_process (3)
+       7  UBSAN: array-index-out-of-bounds in corrupted (9)
+       7  UBSAN: array-index-out-of-bounds in copy_process (2)
+       8  UBSAN: array-index-out-of-bounds in corrupted (10)
+       8  UBSAN: array-index-out-of-bounds in alloc_pid
+       8  UBSAN: array-index-out-of-bounds in copy_process
+       9  UBSAN: array-index-out-of-bounds in corrupted (5)
+       9  UBSAN: array-index-out-of-bounds in copy_process (4)
+      10  UBSAN: array-index-out-of-bounds in corrupted (8)
+      10  UBSAN: array-index-out-of-bounds in alloc_pid
+      10  UBSAN: array-index-out-of-bounds in copy_process (2)
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 11539 commits remaining
+
+2025-12-23 06:15:55
+Session:   44
+Kernel:    2023-06-13 - a19a3dcb0d190254ded4ac1cabb0f402e4b7c8c4
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       7  INFO: task hung in del_device_store (3)
+       8  INFO: task hung in new_device_store
+       8  INFO: task hung in del_device_store
+The bug was not found.
+About 11906 commits remaining
+
+2025-12-23 06:32:44
+Session:   45
+Kernel:    2023-06-16 - fa375646241b5350f7326fd4d686891b95d9fbe5
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       6  INFO: task hung in del_device_store (2)
+       7  INFO: task hung in del_device_store (2)
+      10  INFO: task hung in del_device_store (3)
+The bug was not found.
+About 11423 commits remaining
+
+2025-12-23 06:57:06
+Session:   46
+Kernel:    2023-06-02 - 1a2c4e5635177939a088d22fa35c6a7032725663
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       6  INFO: task hung in del_device_store (3)
+       7  INFO: task hung in del_device_store (3)
+       8  INFO: task hung in del_device_store
+       9  INFO: task hung in del_device_store
+The bug was not found.
+About 11898 commits remaining
+
+2025-12-23 07:13:47
+Session:   47
+Kernel:    2023-05-18 - 632c60ecd25dbacee54d5581fe3aeb834b57010a
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       6  INFO: task hung in del_device_store
+       7  INFO: task hung in del_device_store (2)
+       8  INFO: task hung in del_device_store
+      10  INFO: task hung in del_device_store
+The bug was not found.
+About 11911 commits remaining
+
+2025-12-23 07:30:25
+Session:   48
+Kernel:    2023-05-17 - 616db8779b1e3f93075df691432cccc5ef3c3ba0
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       6  INFO: task hung in del_device_store (3)
+       7  INFO: task hung in del_device_store (3)
+       9  INFO: task hung in del_device_store
+The bug was not found.
+About 11908 commits remaining
+
+2025-12-23 07:47:15
+Session:   49
+Kernel:    2023-05-17 - a34ebb17546d209cbb0b9b2c94303f25749557d7
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       6  INFO: task hung in del_device_store (2)
+       7  INFO: task hung in del_device_store (2)
+      10  INFO: task hung in del_device_store (2)
+The bug was not found.
+About 11905 commits remaining
+
+2025-12-23 08:03:34
+Session:   50
+Kernel:    2023-06-05 - f739287ef57bc01155e556033462e9a6ff020c97
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       6  INFO: task hung in new_device_store
+       6  INFO: task hung in del_device_store
+       7  INFO: task hung in del_device_store (2)
+       9  INFO: task hung in del_device_store
+The bug was not found.
+About 11695 commits remaining
+
+2025-12-23 08:27:51
+Session:   51
+Kernel:    2023-05-23 - 0f2b1cb89ccdbdcedf7143f4153a4da700a05f48
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 11293 commits remaining
+
+2025-12-23 08:51:58
+Session:   52
+Kernel:    2023-06-26 - 0ab83a6459604c566a745875c4df1aec8e8866c0
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       5  INFO: task hung in del_device_store
+       6  INFO: task hung in del_device_store (2)
+       7  INFO: task hung in del_device_store
+       8  INFO: task hung in del_device_store
+       9  INFO: task hung in del_device_store
+      10  INFO: task hung in del_device_store
+The bug was not found.
+About 11645 commits remaining
+
+2025-12-23 09:12:39
+Session:   53
+Kernel:    2023-06-20 - 1ab391684c9e195c05834def0d08779500b0b319
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       6  INFO: task hung in del_device_store
+       7  INFO: task hung in del_device_store (2)
+       8  INFO: task hung in del_device_store (2)
+The bug was not found.
+About 11909 commits remaining
+
+2025-12-23 09:29:51
+Session:   54
+Kernel:    2023-05-25 - 60a0aab7463ee69296692d980b96510ccce3934e
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 11288 commits remaining
+
+2025-12-23 09:46:43
+Session:   55
+Kernel:    2023-06-01 - 714aa1d1c8cad1c005bb93a1ba46dfa145ec2e6f
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       6  INFO: task hung in del_device_store
+       7  INFO: task hung in del_device_store (2)
+       9  INFO: task hung in del_device_store
+The bug was not found.
+About 11896 commits remaining
+
+2025-12-23 10:03:33
+Session:   56
+Kernel:    2023-06-22 - b7a0345723385c3cc0438cf4266ccc110dc7b583
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 8873 commits remaining
+
+2025-12-23 10:28:06
+Session:   57
+Kernel:    2023-05-09 - 01c10f88c9b7ab5767922531167f933cac32e9e9
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       6  INFO: task hung in del_device_store (3)
+       7  INFO: task hung in del_device_store
+      10  INFO: task hung in del_device_store
+The bug was not found.
+About 11898 commits remaining
+
+2025-12-23 10:45:01
+Session:   58
+Kernel:    2023-06-26 - cd336f6562d3d7646a9cf071b902db200a1dd77b
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 8936 commits remaining
+
+2025-12-23 11:09:40
+Session:   59
+Kernel:    2023-06-19 - 5bb578a0c1b86d6eb95f8d08ed6444b227fb674c
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       6  INFO: task hung in del_device_store (6)
+      10  INFO: task hung in del_device_store
+The bug was not found.
+About 11914 commits remaining
+
+2025-12-23 11:26:25
+Session:   60
+Kernel:    2023-06-19 - a42e988b6265dcd489feb1adab8551b40c988f43
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 10908 commits remaining
+
+2025-12-23 11:44:57
+Session:   61
+Kernel:    2023-05-09 - f771ec85b626c3e30362841cbc7b82f398e64469
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       6  INFO: task hung in new_device_store
+       6  INFO: task hung in del_device_store (2)
+       7  INFO: task hung in del_device_store
+      10  INFO: task hung in del_device_store
+The bug was not found.
+About 11875 commits remaining
+
+2025-12-23 12:02:17
+Session:   62
+Kernel:    2023-06-19 - 98480a181a08ceeede417e5b28f6d0429d8ae156
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       5  WARNING: ODEBUG bug in netdev_run_todo (has report)
+       6  INFO: task hung in del_device_store (2)
+       7  INFO: task hung in del_device_store
+The bug was not found.
+About 11905 commits remaining
+
+2025-12-23 12:18:50
+Session:   63
+Kernel:    2023-06-16 - 30d65d1b19850c9bc8c17dba8ebe9be5e0c17054
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       6  INFO: task hung in del_device_store (4)
+       7  INFO: task hung in del_device_store (3)
+       8  INFO: task hung in del_device_store
+The bug was not found.
+About 11897 commits remaining
+
+2025-12-23 12:35:38
+Session:   64
+Kernel:    2023-06-09 - 16c6006af4d4e70ecef93977a5314409d931020b
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 10930 commits remaining
+
+2025-12-23 12:59:55
+Session:   65
+Kernel:    2023-06-29 - 1b722407a13b7f8658d2e26917791f32805980a2
+Compiler:  ccache gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/syzretrospector/meerkat/wd-meerkat-1/log/bug0832-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+       1  UBSAN: array-index-out-of-bounds in corrupted (2)
+       1  UBSAN: array-index-out-of-bounds in copy_process (2)
+       2  UBSAN: array-index-out-of-bounds in corrupted (5)
+       2  UBSAN: array-index-out-of-bounds in alloc_pid (2)
+       2  UBSAN: array-index-out-of-bounds in copy_process (5)
+       3  UBSAN: array-index-out-of-bounds in corrupted (6)
+       3  UBSAN: array-index-out-of-bounds in alloc_pid
+       3  UBSAN: array-index-out-of-bounds in copy_process
+       4  UBSAN: array-index-out-of-bounds in corrupted (12)
+       4  UBSAN: array-index-out-of-bounds in alloc_pid (2)
+       5  UBSAN: array-index-out-of-bounds in corrupted (5)
+       5  UBSAN: array-index-out-of-bounds in alloc_pid
+       5  UBSAN: array-index-out-of-bounds in copy_process (4)
+       6  UBSAN: array-index-out-of-bounds in corrupted (5)
+       6  UBSAN: array-index-out-of-bounds in alloc_pid
+       6  UBSAN: array-index-out-of-bounds in copy_process (2)
+       7  UBSAN: array-index-out-of-bounds in corrupted (6)
+       7  UBSAN: array-index-out-of-bounds in alloc_pid (2)
+       7  UBSAN: array-index-out-of-bounds in copy_process (6)
+       8  UBSAN: array-index-out-of-bounds in corrupted (6)
+       8  UBSAN: array-index-out-of-bounds in alloc_pid (3)
+       8  UBSAN: array-index-out-of-bounds in copy_process
+       9  UBSAN: array-index-out-of-bounds in corrupted (7)
+       9  UBSAN: array-index-out-of-bounds in alloc_pid
+       9  UBSAN: array-index-out-of-bounds in copy_process (2)
+      10  UBSAN: array-index-out-of-bounds in corrupted (9)
+      10  UBSAN: array-index-out-of-bounds in alloc_pid (2)
+      10  UBSAN: array-index-out-of-bounds in copy_process
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 10930 commits remaining
+
+2025-12-23 13:23:07
+Session:   66
+Kernel:    2023-06-20 - 5e64ee4204479ed2bf2abd7d6095686288ea008f
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 10728 commits remaining
+
+2025-12-23 13:46:44
+Session:   67
+Kernel:    2023-06-05 - 0dd37d6dd33a9c23351e6115ae8cdac7863bc7de
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       6  INFO: task hung in new_device_store
+       6  INFO: task hung in del_device_store (2)
+       7  INFO: task hung in del_device_store
+       9  INFO: task hung in del_device_store (3)
+The bug was not found.
+About 11892 commits remaining
+
+2025-12-23 14:10:54
+Session:   68
+Kernel:    2023-06-08 - 6a01a12d7e1609defa9a025e22e8730008a62104
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       6  INFO: task hung in del_device_store (2)
+       7  INFO: task hung in del_device_store
+       9  INFO: task hung in del_device_store (2)
+      10  INFO: task hung in del_device_store
+The bug was not found.
+About 11704 commits remaining
+
+2025-12-23 14:34:36
+Session:   69
+Kernel:    2023-05-26 - edc24de71648d500928ddf2d575cd2f3ae9f9103
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 11279 commits remaining
+
+2025-12-23 14:51:04
+Session:   70
+Kernel:    2023-06-19 - 7a71d8e650b06833095e7a0d4206585e8585c00f
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 10924 commits remaining
+
+2025-12-23 15:15:18
+Session:   71
+Kernel:    2023-06-08 - 064433f84e6b69055379aa11a4084627537ee64e
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       6  suppressed report
+       6  INFO: task hung in del_device_store (4)
+       9  INFO: task hung in del_device_store
+The bug was not found.
+About 11872 commits remaining
+
+2025-12-23 15:36:07
+Session:   72
+Kernel:    2023-06-27 - ed3b7923a816ded62dccef377c9ee346c7d3b1b4
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 8318 commits remaining
+
+2025-12-23 16:00:38
+Session:   73
+Kernel:    2023-06-29 - eee9c708cc89b4600c6e6cdda5bc2b8b4dad96cb
+Compiler:  ccache gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/syzretrospector/meerkat/wd-meerkat-1/log/bug0832-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+       1  UBSAN: array-index-out-of-bounds in corrupted (3)
+       2  UBSAN: array-index-out-of-bounds in corrupted (6)
+       2  UBSAN: array-index-out-of-bounds in alloc_pid (2)
+       2  UBSAN: array-index-out-of-bounds in copy_process (5)
+       3  UBSAN: array-index-out-of-bounds in corrupted (7)
+       3  UBSAN: array-index-out-of-bounds in copy_process
+       4  UBSAN: array-index-out-of-bounds in corrupted (10)
+       4  UBSAN: array-index-out-of-bounds in alloc_pid (2)
+       5  UBSAN: array-index-out-of-bounds in corrupted (10)
+       5  UBSAN: array-index-out-of-bounds in copy_process (2)
+       6  UBSAN: array-index-out-of-bounds in corrupted (5)
+       6  UBSAN: array-index-out-of-bounds in alloc_pid
+       6  UBSAN: array-index-out-of-bounds in copy_process (2)
+       7  UBSAN: array-index-out-of-bounds in corrupted (9)
+       7  UBSAN: array-index-out-of-bounds in alloc_pid (3)
+       7  UBSAN: array-index-out-of-bounds in copy_process
+       8  UBSAN: array-index-out-of-bounds in corrupted (6)
+       8  UBSAN: array-index-out-of-bounds in alloc_pid
+       8  UBSAN: array-index-out-of-bounds in copy_process (4)
+       9  UBSAN: array-index-out-of-bounds in corrupted (7)
+       9  UBSAN: array-index-out-of-bounds in copy_process
+      10  UBSAN: array-index-out-of-bounds in corrupted (8)
+      10  UBSAN: array-index-out-of-bounds in copy_process (4)
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 8318 commits remaining
+
+2025-12-23 16:24:09
+Session:   74
+Kernel:    2023-06-08 - fb9c384625dd604e8a5be1f42b35e83104b90670
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       6  INFO: task hung in del_device_store (3)
+       9  INFO: task hung in del_device_store
+      10  INFO: task hung in del_device_store
+The bug was not found.
+About 11906 commits remaining
+
+2025-12-23 16:40:23
+Session:   75
+Kernel:    2023-06-24 - 2fe11c9d36ee2f3dc3c642588c5d9a22190674c9
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 8202 commits remaining
+
+2025-12-23 17:04:41
+Session:   76
+Kernel:    2023-06-29 - 18f38fedfa71b5b7e954fc8f1e31bda75d8f1d7c
+Compiler:  ccache gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/syzretrospector/meerkat/wd-meerkat-1/log/bug0832-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+       1  UBSAN: array-index-out-of-bounds in corrupted (3)
+       2  UBSAN: array-index-out-of-bounds in corrupted (9)
+       2  UBSAN: array-index-out-of-bounds in alloc_pid (3)
+       2  UBSAN: array-index-out-of-bounds in copy_process
+       3  UBSAN: array-index-out-of-bounds in corrupted (5)
+       3  UBSAN: array-index-out-of-bounds in alloc_pid
+       3  UBSAN: array-index-out-of-bounds in copy_process (2)
+       4  UBSAN: array-index-out-of-bounds in corrupted (7)
+       4  UBSAN: array-index-out-of-bounds in alloc_pid
+       4  UBSAN: array-index-out-of-bounds in copy_process (4)
+       5  UBSAN: array-index-out-of-bounds in corrupted (8)
+       5  UBSAN: array-index-out-of-bounds in alloc_pid (2)
+       5  UBSAN: array-index-out-of-bounds in copy_process (2)
+       6  UBSAN: array-index-out-of-bounds in corrupted (5)
+       6  UBSAN: array-index-out-of-bounds in alloc_pid (2)
+       6  UBSAN: array-index-out-of-bounds in copy_process
+       7  UBSAN: array-index-out-of-bounds in corrupted (6)
+       7  UBSAN: array-index-out-of-bounds in copy_process (5)
+       8  UBSAN: array-index-out-of-bounds in corrupted (6)
+       8  UBSAN: array-index-out-of-bounds in alloc_pid (4)
+       8  UBSAN: array-index-out-of-bounds in copy_process (3)
+       9  UBSAN: array-index-out-of-bounds in corrupted (6)
+       9  UBSAN: array-index-out-of-bounds in copy_process (2)
+      10  UBSAN: array-index-out-of-bounds in corrupted (7)
+      10  UBSAN: array-index-out-of-bounds in alloc_pid (3)
+      10  UBSAN: array-index-out-of-bounds in copy_process
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 8202 commits remaining
+
+2025-12-23 17:27:58
+Session:   77
+Kernel:    2023-06-10 - 4e739807ca96e56d0a7f6256f13c4ff416850ef9
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       6  INFO: task hung in new_device_store
+       6  INFO: task hung in del_device_store (3)
+       7  INFO: task hung in del_device_store (2)
+      10  INFO: task hung in del_device_store
+The bug was not found.
+About 11865 commits remaining
+
+2025-12-23 17:44:22
+Session:   78
+Kernel:    2023-06-18 - 37e9981e33e4d308c323a56bb908aa54c8f041a8
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       6  INFO: task hung in del_device_store (4)
+       9  INFO: task hung in del_device_store (2)
+      10  INFO: task hung in del_device_store
+The bug was not found.
+About 11701 commits remaining
+
+2025-12-23 18:08:28
+Session:   79
+Kernel:    2023-05-24 - fc493f83a25835c14cd96379c1a07459230881bc
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 11296 commits remaining
+
+2025-12-23 18:32:31
+Session:   80
+Kernel:    2023-05-08 - 6a516506aad6a6aae8b70c3dd9e180d060426f1b
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       3  WARNING: ODEBUG bug in netdev_run_todo (has report)
+       6  INFO: task hung in del_device_store (5)
+       7  INFO: task hung in del_device_store
+       8  INFO: task hung in new_device_store
+The bug was not found.
+About 11913 commits remaining
+
+2025-12-23 18:48:47
+Session:   81
+Kernel:    2023-06-26 - b58d6d89ae020b107b2afa945a873dcadab44062
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       6  INFO: task hung in new_device_store
+       6  INFO: task hung in del_device_store (2)
+       7  INFO: task hung in del_device_store
+       9  INFO: task hung in del_device_store
+The bug was not found.
+About 11912 commits remaining
+
+2025-12-23 19:06:26
+Session:   82
+Kernel:    2023-06-14 - 1ff35e66cae53f7090a671afddaee45d4ccd9396
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 10564 commits remaining
+
+2025-12-23 19:30:28
+Session:   83
+Kernel:    2023-06-19 - c0c87738a19d3e6d15dac4174d4b90c38a615112
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 10910 commits remaining
+
+2025-12-23 19:47:04
+Session:   84
+Kernel:    2023-06-19 - 487c9129c9d856eb8dd0dfa6e09c646649c91399
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 10905 commits remaining
+
+2025-12-23 20:03:33
+Session:   85
+Kernel:    2023-06-26 - 04d684875b30393c3e5cd0daf2fa737b562a7ad9
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 9774 commits remaining
+
+2025-12-23 20:27:51
+Session:   86
+Kernel:    2023-06-15 - afc6386815a88d067d9f567dcc6266800286f626
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       6  INFO: task hung in del_device_store (3)
+       7  INFO: task hung in del_device_store
+       9  INFO: task hung in del_device_store
+      10  INFO: task hung in del_device_store (2)
+The bug was not found.
+About 11670 commits remaining
+
+2025-12-23 20:51:15
+Session:   87
+Kernel:    2023-05-22 - d80d7f8912a8cbec16ec55793f4b20fc5e76640f
+Compiler:  ccache gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/syzretrospector/meerkat/wd-meerkat-1/log/bug0832-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 11670 commits remaining
+
+2025-12-23 21:15:29
+Session:   88
+Kernel:    2023-06-13 - e280427384269fba93c7ec0373afe87bc39d7945
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       6  INFO: task hung in del_device_store (2)
+       7  INFO: task hung in del_device_store
+       9  INFO: task hung in del_device_store
+      10  suppressed report
+      10  INFO: task hung in del_device_store (2)
+The bug was not found.
+About 11887 commits remaining
+
+2025-12-23 21:35:53
+Session:   89
+Kernel:    2023-05-29 - 04c3140312693a939ae55c8e368b79a0b8475c82
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       5  INFO: task hung in del_device_store
+       8  INFO: task hung in del_device_store
+       9  INFO: task hung in del_device_store
+The bug was not found.
+About 11891 commits remaining
+
+2025-12-23 21:52:08
+Session:   90
+Kernel:    2023-06-18 - 63204be2806b09ab75e03e42c477f69bfd050efc
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       6  INFO: task hung in new_device_store
+       6  INFO: task hung in del_device_store (3)
+       7  INFO: task hung in del_device_store
+      10  suppressed report
+The bug was not found.
+About 10889 commits remaining
+
+2025-12-23 22:09:21
+Session:   91
+Kernel:    2023-06-29 - b775d6c5859affe00527cbe74263de05cfe6b9f9
+Compiler:  ccache gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/syzretrospector/meerkat/wd-meerkat-1/log/bug0832-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+       1  UBSAN: array-index-out-of-bounds in corrupted (5)
+       2  UBSAN: array-index-out-of-bounds in corrupted (7)
+       2  UBSAN: array-index-out-of-bounds in alloc_pid (3)
+       2  UBSAN: array-index-out-of-bounds in copy_process
+       3  UBSAN: array-index-out-of-bounds in corrupted (5)
+       3  UBSAN: array-index-out-of-bounds in alloc_pid
+       3  UBSAN: array-index-out-of-bounds in copy_process (2)
+       4  UBSAN: array-index-out-of-bounds in corrupted (7)
+       4  UBSAN: array-index-out-of-bounds in alloc_pid
+       4  UBSAN: array-index-out-of-bounds in copy_process (5)
+       5  UBSAN: array-index-out-of-bounds in corrupted (6)
+       5  UBSAN: array-index-out-of-bounds in alloc_pid
+       5  UBSAN: array-index-out-of-bounds in copy_process (4)
+       6  UBSAN: array-index-out-of-bounds in corrupted (5)
+       6  UBSAN: array-index-out-of-bounds in alloc_pid (3)
+       7  UBSAN: array-index-out-of-bounds in corrupted (8)
+       7  UBSAN: array-index-out-of-bounds in alloc_pid
+       7  UBSAN: array-index-out-of-bounds in copy_process (4)
+       8  UBSAN: array-index-out-of-bounds in corrupted (6)
+       8  UBSAN: array-index-out-of-bounds in alloc_pid
+       8  UBSAN: array-index-out-of-bounds in copy_process (4)
+       9  UBSAN: array-index-out-of-bounds in corrupted (4)
+       9  UBSAN: array-index-out-of-bounds in copy_process (4)
+      10  UBSAN: array-index-out-of-bounds in corrupted (8)
+      10  UBSAN: array-index-out-of-bounds in copy_process (5)
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 10889 commits remaining
+
+2025-12-23 22:32:41
+Session:   92
+Kernel:    2023-06-23 - a3eb95484f276488e3d59cffa8eec29f79be416e
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 11215 commits remaining
+
+2025-12-23 22:56:58
+Session:   93
+Kernel:    2023-05-26 - a9ae9c526cc232b69b0bc9d668e303c90600e848
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       7  INFO: task hung in new_device_store
+The bug was not found.
+About 11289 commits remaining
+
+2025-12-23 23:13:57
+Session:   94
+Kernel:    2023-06-30 - 1546cd4bfda49fd6faad47eb30f4e744e2d79a8f
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  BUG: unable to handle kernel paging request in init_module_from_file (2)
+       2  KASAN: vmalloc-out-of-bounds Read in init_module_from_file (6) (has report)
+       3  BUG: unable to handle kernel paging request in init_module_from_file
+       3  KASAN: vmalloc-out-of-bounds Read in init_module_from_file (2) (has report)
+       4  BUG: unable to handle kernel paging request in init_module_from_file (2)
+       4  KASAN: stack-out-of-bounds Read in init_module_from_file (has report)
+       4  KASAN: vmalloc-out-of-bounds Read in init_module_from_file (4) (has report)
+       5  BUG: unable to handle kernel paging request in init_module_from_file
+       5  KASAN: stack-out-of-bounds Read in init_module_from_file (has report)
+***    5  general protection fault in init_module_from_file (has report)
+       5  KASAN: vmalloc-out-of-bounds Read in init_module_from_file (5) (has report)
+Running syz-repro.
+New PoC saved at /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0832-0.prog
+Primary PoC:     /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0832-0.prog
+Run Time:        0h8m0s
+The bug was found.
+About 10731 commits remaining
+
+2025-12-23 23:40:20
+Session:   95
+Kernel:    2023-06-23 - 793bef570951431cdf257b637fcb21356d7faec9
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 10681 commits remaining
+
+2025-12-23 23:56:51
+Session:   96
+Kernel:    2023-05-23 - 809d0810e3520da669d231303608cdf5fe5c1a70
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 10739 commits remaining
+
+2025-12-24 00:13:23
+Session:   97
+Kernel:    2023-06-08 - 1fd96a3e9d5d4febe1a8486590ad52c048d1be77
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       5  INFO: task hung in del_device_store
+       6  INFO: task hung in new_device_store
+       6  INFO: task hung in del_device_store (4)
+       9  INFO: task hung in del_device_store
+      10  INFO: task hung in del_device_store
+The bug was not found.
+About 11336 commits remaining
+
+2025-12-24 00:37:20
+Session:   98
+Kernel:    2023-06-14 - eab5abdeb79f0f694c007c3a76a97902705c86f0
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 9714 commits remaining
+
+2025-12-24 01:01:18
+Session:   99
+Kernel:    2023-05-24 - 2e43c85b0d96c6ae2ab60132313bb7a814bcfb44
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       6  INFO: task hung in del_device_store (3)
+       7  INFO: task hung in del_device_store (2)
+       8  INFO: task hung in del_device_store
+The bug was not found.
+About 11341 commits remaining
+
+2025-12-24 01:24:41
+Session:   100
+Kernel:    2023-06-01 - 76edc27eda068fb8222c452d522d4c93bcebe557
+Compiler:  ccache gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/syzretrospector/meerkat/wd-meerkat-1/log/bug0832-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+       1  UBSAN: array-index-out-of-bounds in corrupted (4)
+       2  UBSAN: array-index-out-of-bounds in corrupted (6)
+       2  UBSAN: array-index-out-of-bounds in alloc_pid (4)
+       2  UBSAN: array-index-out-of-bounds in copy_process (2)
+       3  UBSAN: array-index-out-of-bounds in corrupted (6)
+       3  UBSAN: array-index-out-of-bounds in alloc_pid
+       3  UBSAN: array-index-out-of-bounds in copy_process
+       4  UBSAN: array-index-out-of-bounds in corrupted (7)
+       4  UBSAN: array-index-out-of-bounds in alloc_pid (3)
+       4  UBSAN: array-index-out-of-bounds in copy_process (4)
+       5  UBSAN: array-index-out-of-bounds in corrupted (5)
+       5  UBSAN: array-index-out-of-bounds in alloc_pid (2)
+       5  UBSAN: array-index-out-of-bounds in copy_process (3)
+       6  UBSAN: array-index-out-of-bounds in corrupted (3)
+       6  UBSAN: array-index-out-of-bounds in alloc_pid (2)
+       6  UBSAN: array-index-out-of-bounds in copy_process (5)
+       7  UBSAN: array-index-out-of-bounds in corrupted (7)
+       7  UBSAN: array-index-out-of-bounds in alloc_pid (2)
+       7  UBSAN: array-index-out-of-bounds in copy_process (3)
+       8  UBSAN: array-index-out-of-bounds in corrupted (6)
+       8  UBSAN: array-index-out-of-bounds in alloc_pid (2)
+       8  UBSAN: array-index-out-of-bounds in copy_process (2)
+       9  UBSAN: array-index-out-of-bounds in corrupted (9)
+       9  UBSAN: array-index-out-of-bounds in copy_process (2)
+      10  UBSAN: array-index-out-of-bounds in corrupted (9)
+      10  UBSAN: array-index-out-of-bounds in copy_process (2)
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 11341 commits remaining
+
+2025-12-24 01:48:33
+Session:   101
+Kernel:    2023-06-26 - 96b2ef9b16cb302d0b47c5670d30a05963e0e1e3
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       9  WARNING: ODEBUG bug in netdev_run_todo (has report)
+The bug was not found.
+About 9978 commits remaining
+
+2025-12-24 02:12:31
+Session:   102
+Kernel:    2023-06-13 - 90c8c4eb4bbb5e2e241fd5286bd43dd30a850b9d
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       6  INFO: task hung in del_device_store (6)
+       7  INFO: task hung in del_device_store
+The bug was not found.
+About 11099 commits remaining
+
+2025-12-24 02:29:10
+Session:   103
+Kernel:    2023-06-16 - daecb57cc4e735439d3366778705b21e7bf6f397
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       6  INFO: task hung in del_device_store (2)
+       7  INFO: task hung in del_device_store (3)
+       9  INFO: task hung in del_device_store
+      10  INFO: task hung in del_device_store
+The bug was not found.
+About 11354 commits remaining
+
+2025-12-24 02:45:44
+Session:   104
+Kernel:    2023-06-30 - b30d7a77c53ec04a6d94683d7680ec406b7f3ac8
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  KASAN: stack-out-of-bounds Read in init_module_from_file (has report)
+***    2  general protection fault in init_module_from_file (has report)
+       2  KASAN: vmalloc-out-of-bounds Read in init_module_from_file (5) (has report)
+The bug was found.
+About 11324 commits remaining
+
+2025-12-24 03:01:31
+Session:   105
+Kernel:    2023-06-20 - 9e70e49474bb37ba8f43336d8a775d503b20aebc
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       6  INFO: task hung in new_device_store
+       6  INFO: task hung in del_device_store (4)
+The bug was not found.
+About 11325 commits remaining
+
+2025-12-24 03:17:50
+Session:   106
+Kernel:    2023-06-19 - 1a73f5b8f079fd42a544c1600beface50c63af7c
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 9704 commits remaining
+
+2025-12-24 03:41:45
+Session:   107
+Kernel:    2023-05-25 - 96b2b072ee62be8ae68c8ecf14854c4d0505a8f8
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       5  INFO: task hung in del_device_store
+       6  INFO: task hung in del_device_store (5)
+       7  INFO: task hung in del_device_store
+       8  INFO: task hung in del_device_store
+The bug was not found.
+About 11123 commits remaining
+
+2025-12-24 04:03:00
+Session:   108
+Kernel:    2023-06-27 - a193cc7506fde23185a7c0d99474a03a8ec5ee4c
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 7679 commits remaining
+
+2025-12-24 04:27:04
+Session:   109
+Kernel:    2023-06-06 - ea85370df14011255c60e1951ef4ef749806aa5c
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       6  INFO: task hung in del_device_store (4)
+       9  INFO: task hung in del_device_store
+      10  INFO: task hung in del_device_store (2)
+The bug was not found.
+About 11324 commits remaining
+
+2025-12-24 04:43:39
+Session:   110
+Kernel:    2023-06-21 - ef8e341075330b3d0e06d4b026d971e7e4ce378b
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       6  INFO: task hung in del_device_store (4)
+       7  INFO: task hung in del_device_store
+      10  INFO: task hung in del_device_store (2)
+The bug was not found.
+About 11051 commits remaining
+
+2025-12-24 05:07:15
+Session:   111
+Kernel:    2023-06-26 - 6f67fbf8192da80c4db01a1800c7fceaca9cf1f9
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 9210 commits remaining
+
+2025-12-24 05:31:09
+Session:   112
+Kernel:    2023-06-21 - ee44484c12edcf9ad81c816d383f28b63c712fdb
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 9743 commits remaining
+
+2025-12-24 05:55:19
+Session:   113
+Kernel:    2023-06-06 - 95526d13038c2bbddd567a4d8e39fac42484e182
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       6  INFO: task hung in del_device_store (4)
+       8  INFO: task hung in del_device_store (2)
+       9  INFO: task hung in del_device_store
+      10  INFO: task hung in del_device_store
+The bug was not found.
+About 11121 commits remaining
+
+2025-12-24 06:18:19
+Session:   114
+Kernel:    2023-06-08 - fa0dadde058404bca3ba2269bf6163f0147b50a6
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       6  INFO: task hung in del_device_store (2)
+       7  INFO: task hung in del_device_store (2)
+The bug was not found.
+About 11268 commits remaining
+
+2025-12-24 06:39:05
+Session:   115
+Kernel:    2023-06-27 - 4251f631fdfba0b38e4634510c5950ee157cc069
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       6  INFO: task hung in del_device_store (3)
+       7  INFO: task hung in del_device_store
+       9  INFO: task hung in del_device_store
+      10  INFO: task hung in del_device_store
+The bug was not found.
+About 11055 commits remaining
+
+2025-12-24 06:55:32
+Session:   116
+Kernel:    2023-05-16 - aecc83f11dd8712f9b0bcdb4cf1eb0f30f12b226
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       3  WARNING: ODEBUG bug in netdev_run_todo (has report)
+       6  INFO: task hung in del_device_store (6)
+       7  INFO: task hung in del_device_store
+      10  INFO: task hung in del_device_store
+The bug was not found.
+About 11322 commits remaining
+
+2025-12-24 07:11:47
+Session:   117
+Kernel:    2023-06-20 - 02478c98f2c2da448e2cb3fd95b209a84850e09b
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       5  INFO: task hung in del_device_store
+       6  INFO: task hung in new_device_store
+       6  INFO: task hung in del_device_store (3)
+       8  INFO: task hung in del_device_store (2)
+The bug was not found.
+About 11097 commits remaining
+
+2025-12-24 07:28:17
+Session:   118
+Kernel:    2023-05-23 - d99be00f42eac9fc35a164f3f6c8c7a56b295aa9
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 10692 commits remaining
+
+2025-12-24 07:44:58
+Session:   119
+Kernel:    2023-06-27 - fa87c54693ae248db9ff867baa28b792db671b24
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 7521 commits remaining
+
+2025-12-24 08:08:46
+Session:   120
+Kernel:    2023-06-29 - b9d02c224d00a412d9c7fb1f92c358604038a783
+Compiler:  ccache gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/syzretrospector/meerkat/wd-meerkat-1/log/bug0832-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+       1  UBSAN: array-index-out-of-bounds in corrupted (2)
+       1  UBSAN: array-index-out-of-bounds in copy_process
+       2  UBSAN: array-index-out-of-bounds in corrupted (6)
+       2  UBSAN: array-index-out-of-bounds in alloc_pid (7)
+       3  UBSAN: array-index-out-of-bounds in corrupted (6)
+       3  UBSAN: array-index-out-of-bounds in alloc_pid (2)
+       4  UBSAN: array-index-out-of-bounds in corrupted (11)
+       4  UBSAN: array-index-out-of-bounds in alloc_pid
+       4  UBSAN: array-index-out-of-bounds in copy_process
+       5  UBSAN: array-index-out-of-bounds in corrupted (9)
+       5  UBSAN: array-index-out-of-bounds in alloc_pid
+       5  UBSAN: array-index-out-of-bounds in copy_process
+       6  UBSAN: array-index-out-of-bounds in corrupted (2)
+       6  UBSAN: array-index-out-of-bounds in alloc_pid (5)
+       6  UBSAN: array-index-out-of-bounds in copy_process
+       7  UBSAN: array-index-out-of-bounds in corrupted (9)
+       7  UBSAN: array-index-out-of-bounds in alloc_pid
+       7  UBSAN: array-index-out-of-bounds in copy_process (2)
+       8  UBSAN: array-index-out-of-bounds in corrupted (7)
+       8  UBSAN: array-index-out-of-bounds in alloc_pid (3)
+       8  UBSAN: array-index-out-of-bounds in copy_process (2)
+       9  UBSAN: array-index-out-of-bounds in corrupted (6)
+       9  UBSAN: array-index-out-of-bounds in copy_process (2)
+      10  UBSAN: array-index-out-of-bounds in corrupted (7)
+      10  UBSAN: array-index-out-of-bounds in alloc_pid (3)
+      10  UBSAN: array-index-out-of-bounds in copy_process (2)
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 7521 commits remaining
+
+2025-12-24 08:32:19
+Session:   121
+Kernel:    2023-06-09 - 301cf77e21317b3465c5e2bb0188df24bbf1c2e2
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       6  INFO: task hung in del_device_store (3)
+       7  INFO: task hung in del_device_store (4)
+The bug was not found.
+About 11084 commits remaining
+
+2025-12-24 08:55:42
+Session:   122
+Kernel:    2023-06-29 - f02644e32c9e4bd1a9b286dc0b84f9cbe294f4e2
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 9158 commits remaining
+
+2025-12-24 09:19:48
+Session:   123
+Kernel:    2023-06-29 - 554588e8e932e7a0fac7d3ae2132f2b727d9acfe
+Compiler:  ccache gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/syzretrospector/meerkat/wd-meerkat-1/log/bug0832-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+       1  UBSAN: array-index-out-of-bounds in corrupted (3)
+       2  UBSAN: array-index-out-of-bounds in corrupted (10)
+       2  UBSAN: array-index-out-of-bounds in alloc_pid (2)
+       2  UBSAN: array-index-out-of-bounds in copy_process
+       3  UBSAN: array-index-out-of-bounds in corrupted (5)
+       3  UBSAN: array-index-out-of-bounds in alloc_pid
+       3  UBSAN: array-index-out-of-bounds in copy_process (2)
+       4  UBSAN: array-index-out-of-bounds in corrupted (10)
+       4  UBSAN: array-index-out-of-bounds in alloc_pid
+       4  UBSAN: array-index-out-of-bounds in copy_process
+       5  UBSAN: array-index-out-of-bounds in corrupted (5)
+       5  UBSAN: array-index-out-of-bounds in alloc_pid
+       5  UBSAN: array-index-out-of-bounds in copy_process (6)
+       6  UBSAN: array-index-out-of-bounds in corrupted (5)
+       6  UBSAN: array-index-out-of-bounds in alloc_pid
+       6  UBSAN: array-index-out-of-bounds in copy_process (2)
+       7  UBSAN: array-index-out-of-bounds in corrupted (8)
+       7  UBSAN: array-index-out-of-bounds in copy_process (4)
+       8  UBSAN: array-index-out-of-bounds in corrupted (8)
+       8  UBSAN: array-index-out-of-bounds in alloc_pid (2)
+       8  UBSAN: array-index-out-of-bounds in copy_process (2)
+       9  UBSAN: array-index-out-of-bounds in corrupted (6)
+       9  UBSAN: array-index-out-of-bounds in alloc_pid
+       9  UBSAN: array-index-out-of-bounds in copy_process (2)
+      10  UBSAN: array-index-out-of-bounds in corrupted (7)
+      10  UBSAN: array-index-out-of-bounds in alloc_pid
+      10  UBSAN: array-index-out-of-bounds in copy_process (3)
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 9158 commits remaining
+
+2025-12-24 09:42:36
+Session:   124
+Kernel:    2023-06-09 - 24138ec0a39a27c179cdb2465ee4a5242754b45d
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       7  suppressed report
+The bug was not found.
+About 10680 commits remaining
+
+2025-12-24 10:06:55
+Session:   125
+Kernel:    2023-06-05 - 4cc2272447b806ba17d4fdfdfadcb9d1c5c3fe1f
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       5  suppressed report
+       6  INFO: task hung in del_device_store (4)
+       7  INFO: task hung in del_device_store
+      10  INFO: task hung in del_device_store (2)
+The bug was not found.
+About 11124 commits remaining
+
+2025-12-24 10:31:07
+Session:   126
+Kernel:    2023-06-08 - e180cf836433185d0674ade52f8db911d89f6422
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       6  INFO: task hung in del_device_store (4)
+       9  INFO: task hung in del_device_store
+      10  INFO: task hung in del_device_store (2)
+The bug was not found.
+About 11324 commits remaining
+
+2025-12-24 10:51:37
+Session:   127
+Kernel:    2023-05-18 - df9fe0e653c28756ab98f58175f8c58baf156ef1
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       6  INFO: task hung in del_device_store (5)
+       7  INFO: task hung in del_device_store
+       9  INFO: task hung in del_device_store
+      10  INFO: task hung in del_device_store
+The bug was not found.
+About 26918 commits remaining
+
+2025-12-24 11:16:31
+Session:   128
+Kernel:    2023-06-20 - bc06026d1420e006503c69dc6829cc45590db106
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 10261 commits remaining
+
+2025-12-24 11:40:26
+Session:   129
+Kernel:    2023-06-08 - 7cf6198ce22d92590f9aaa13431001fa97bc0b2b
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       6  INFO: task hung in del_device_store (2)
+       7  INFO: task hung in del_device_store (3)
+      10  suppressed report
+      10  INFO: task hung in del_device_store (2)
+The bug was not found.
+About 11301 commits remaining
+
+2025-12-24 12:04:39
+Session:   130
+Kernel:    2023-06-27 - 356fa4975950d48d12b6ee9f9050ad429db25852
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       8  WARNING: ODEBUG bug in netdev_run_todo (has report)
+      10  WARNING: ODEBUG bug in netdev_run_todo (has report)
+The bug was not found.
+About 10564 commits remaining
+
+2025-12-24 12:28:19
+Session:   131
+Kernel:    2023-06-22 - 83f74441bcb16c324b7bdba0ab4261a44cb1ac21
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       7  WARNING: ODEBUG bug in netdev_run_todo (has report)
+The bug was not found.
+About 10012 commits remaining
+
+2025-12-24 12:52:39
+Session:   132
+Kernel:    2023-06-19 - c6399b893043a5bb634de8677362f96684f1c0c8
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       6  suppressed report
+       6  INFO: task hung in del_device_store (4)
+       7  INFO: task hung in del_device_store
+The bug was not found.
+About 11270 commits remaining
+
+2025-12-24 13:09:11
+Session:   133
+Kernel:    2023-06-29 - 0e382fa72bbf0610be40af9af9b03b0cd149df82
+Compiler:  ccache gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/syzretrospector/meerkat/wd-meerkat-1/log/bug0832-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+       1  UBSAN: array-index-out-of-bounds in corrupted
+       1  UBSAN: array-index-out-of-bounds in alloc_pid
+       1  UBSAN: array-index-out-of-bounds in copy_process
+       2  UBSAN: array-index-out-of-bounds in corrupted (7)
+       2  UBSAN: array-index-out-of-bounds in alloc_pid (2)
+       2  UBSAN: array-index-out-of-bounds in copy_process (4)
+       3  UBSAN: array-index-out-of-bounds in corrupted (6)
+       3  UBSAN: array-index-out-of-bounds in alloc_pid (2)
+       4  UBSAN: array-index-out-of-bounds in corrupted (8)
+       4  UBSAN: array-index-out-of-bounds in alloc_pid (4)
+       4  UBSAN: array-index-out-of-bounds in copy_process
+       5  UBSAN: array-index-out-of-bounds in corrupted (8)
+       5  UBSAN: array-index-out-of-bounds in alloc_pid
+       5  UBSAN: array-index-out-of-bounds in copy_process (2)
+       6  UBSAN: array-index-out-of-bounds in corrupted (5)
+       6  UBSAN: array-index-out-of-bounds in alloc_pid (2)
+       6  UBSAN: array-index-out-of-bounds in copy_process
+       7  UBSAN: array-index-out-of-bounds in corrupted (11)
+       7  UBSAN: array-index-out-of-bounds in alloc_pid
+       7  UBSAN: array-index-out-of-bounds in copy_process (2)
+       8  UBSAN: array-index-out-of-bounds in corrupted (8)
+       8  UBSAN: array-index-out-of-bounds in alloc_pid
+       8  UBSAN: array-index-out-of-bounds in copy_process
+       9  UBSAN: array-index-out-of-bounds in corrupted (6)
+       9  UBSAN: array-index-out-of-bounds in alloc_pid
+       9  UBSAN: array-index-out-of-bounds in copy_process
+      10  UBSAN: array-index-out-of-bounds in corrupted (6)
+      10  UBSAN: array-index-out-of-bounds in alloc_pid (5)
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 11270 commits remaining
+
+2025-12-24 13:32:28
+Session:   134
+Kernel:    2023-05-26 - 88813f05b834756dfcadb7fbd7bf8f21e69b7811
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 10698 commits remaining
+
+2025-12-24 13:55:30
+Session:   135
+Kernel:    2023-06-17 - fc669e922ecff02c173a8484f7a5ed4810089209
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       6  INFO: task hung in del_device_store (6)
+       7  INFO: task hung in del_device_store
+       9  INFO: task hung in del_device_store
+      10  INFO: task hung in del_device_store
+The bug was not found.
+About 11088 commits remaining
+
+2025-12-24 14:19:57
+Session:   136
+Kernel:    2023-06-16 - a0e9911ac14baf46d8a8bea322c5bd7b3845825c
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 10708 commits remaining
+
+2025-12-24 14:36:59
+Session:   137
+Kernel:    2023-05-09 - 4e486a650162a20e5c3c7987715f8297c84c85f4
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       5  INFO: task hung in del_device_store
+       6  INFO: task hung in del_device_store (3)
+       7  INFO: task hung in del_device_store
+      10  INFO: task hung in del_device_store (3)
+The bug was not found.
+About 11325 commits remaining
+
+2025-12-24 14:57:53
+Session:   138
+Kernel:    2023-06-07 - efa76afdde16f195f8faff0e8dbe58ec18aad70c
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 10017 commits remaining
+
