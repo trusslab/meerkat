@@ -242,14 +242,16 @@ std::string cluster_crash_type(const std::string &ct)
         {"KASAN: slab-use-after-free", "KASAN: use-after-free"},
         {"KASAN: use-after-free Write", "KASAN: use-after-free"},
         {"KASAN: use-after-free Read", "KASAN: use-after-free"},
-        // KASAN: slab-out-of-bounds
-        {"KASAN: slab-out-of-bounds Write", "KASAN: slab-out-of-bounds"},
-        {"KASAN: slab-out-of-bounds Read", "KASAN: slab-out-of-bounds"},
-        {"KASAN: slab-out-of-bounds", "KASAN: slab-out-of-bounds"},
-        // KASAN: stack-out-of-bounds
-        {"KASAN: stack-out-of-bounds Read", "KASAN: stack-out-of-bounds"},
-        {"KASAN: stack-out-of-bounds Write", "KASAN: stack-out-of-bounds"},
-        {"KASAN: stack-out-of-bounds", "KASAN: stack-out-of-bounds"},
+        // KASAN: out-of-bounds
+        {"KASAN: slab-out-of-bounds Write", "KASAN: out-of-bounds"},
+        {"KASAN: slab-out-of-bounds Read", "KASAN: out-of-bounds"},
+        {"KASAN: slab-out-of-bounds", "KASAN: out-of-bounds"},
+        {"KASAN: stack-out-of-bounds Read", "KASAN: out-of-bounds"},
+        {"KASAN: stack-out-of-bounds Write", "KASAN: out-of-bounds"},
+        {"KASAN: stack-out-of-bounds", "KASAN: out-of-bounds"},
+        {"KASAN: vmalloc-out-of-bounds", "KASAN: out-of-bounds"},
+        {"KASAN: vmalloc-out-of-bounds Read", "KASAN: out-of-bounds"},
+        {"KASAN: vmalloc-out-of-bounds Write", "KASAN: out-of-bounds"},
         // null-ptr-deref
         {"KASAN: null-ptr-deref Read", "null-ptr-deref"},
         {"KASAN: null-ptr-deref Write", "null-ptr-deref"},
