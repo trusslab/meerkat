@@ -1,29 +1,33 @@
-./bin/bisector -i 6 -c /home/syzretrospector/syzinspector/wd-bisector-6/bisector.cfg -a b25f62ccb490680a8cee755ac4528909395e0711 -F poc-test,poc-all-pocs
+./bin/meerkat -i 1 -c /home/syzretrospector/meerkat/wd-meerkat-1/meerkat.cfg -a b25f62ccb490680a8cee755ac4528909395e0711 -F poc-test,poc-all-pocs
 Bisecting:          general protection fault in sys_finit_module
 Syzbot Link:        https://syzkaller.appspot.com/bug?extid=9e4e94a2689427009d35
 Working Name:       bug0832
 
-No aliases given.
+Aliases:
+    KASAN: vmalloc-out-of-bounds Read in init_module_from_file (has report)
+    general protection fault in sys_finit_module (has report)
 
 Anchor Commit:      b25f62ccb490680a8cee755ac4528909395e0711
 Repository:         https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
 Branch:             master
 Arch:               amd64
 
-Bisector:           /home/syzretrospector/syzinspector/
-Version:            1.0.4
-Kernel:             /home/syzretrospector/syzinspector/wd-bisector-6/kernel/
-Syzkaller:          /home/syzretrospector/syzinspector/syzkaller/
-Compilers:          /home/syzretrospector/compilers/
-Ccache:             ccache
-Image:              /home/syzretrospector/images/stretch/stretch.img
-Image Key:          /home/syzretrospector/images/stretch/stretch.id_rsa
+Meerkat:            /home/syzretrospector/meerkat/
+Version:            1.2.0
+Kernel:             /home/syzretrospector/meerkat/wd-meerkat-1/kernel/
+Syzkaller:          /home/syzretrospector/meerkat/syzkaller/
+Compilers:          /home/syzretrospector/meerkat/compilers/
+Compiler:           gcc (Ubuntu 11.4.0-1ubuntu1~22.04.2) 11.4.0
+Linker:             GNU ld (GNU Binutils for Ubuntu) 2.38
+Ccache:             ccache version 4.5.1
+Image:              /home/syzretrospector/meerkat/image/stretch/stretch.img
+Image Key:          /home/syzretrospector/meerkat/image/stretch/stretch.id_rsa
 
-Workdir:            /home/syzretrospector/syzinspector/wd-bisector-6/
-Kconfig:            /home/syzretrospector/syzinspector/wd-bisector-6/config-bug0832.txt
-Reproducers: (6)    /home/syzretrospector/syzinspector/wd-bisector-6/reproducers/
-Syzkaller Workdir:  /home/syzretrospector/syzinspector/wd-bisector-6/wd-kaller/
-Log Directory:      /home/syzretrospector/syzinspector/wd-bisector-6/log/
+Workdir:            /home/syzretrospector/meerkat/wd-meerkat-1/
+Kconfig:            /home/syzretrospector/meerkat/wd-meerkat-1/config-bug0832.txt
+Reproducers: (7)    /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/
+Syzkaller Workdir:  /home/syzretrospector/meerkat/wd-meerkat-1/wd-kaller/
+Log Directory:      /home/syzretrospector/meerkat/wd-meerkat-1/log/
 
 VM Count:           8
 CPU Count:          2
@@ -33,239 +37,840 @@ Make Procs:         16
 
 ==== Anchor Commit ====
 
-2025-03-28 06:09:08
+2025-12-30 13:15:47
 Session:   1
 Kernel:    2023-06-30 - b25f62ccb490680a8cee755ac4528909395e0711
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Compiler:  ccache gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0832-1.prog
 Attempt 0:
-    KASAN: vmalloc-out-of-bounds Read in init_module_from_file
-    kernel panic: KASAN: panic_on_warn set ...
+*** KASAN: vmalloc-out-of-bounds Read in init_module_from_file (has report)
 Attempt 1:
-    KASAN: vmalloc-out-of-bounds Read in init_module_from_file
-    kernel panic: KASAN: panic_on_warn set ...
+    general protection fault in init_module_from_file (has report)
 Attempt 2:
-    KASAN: vmalloc-out-of-bounds Read in init_module_from_file
-    kernel panic: KASAN: panic_on_warn set ...
+*** KASAN: vmalloc-out-of-bounds Read in init_module_from_file (has report)
 Attempt 3:
-    INFO: rcu detected stall in corrupted
-    INFO: rcu detected stall in corrupted
-    INFO: rcu detected stall in corrupted
-    INFO: task hung in init_module_from_file
+    KASAN: out-of-bounds Read in init_module_from_file (has report)
 Attempt 4:
-    general protection fault in init_module_from_file
-    kernel panic: Fatal exception
+    INFO: task hung in cleanup_net
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in switchdev_deferred_process_work
+    INFO: task hung in genl_rcv_msg
+    INFO: task hung in linkwatch_event
+    INFO: task hung in rtnetlink_rcv_msg
 Attempt 5:
-    KASAN: vmalloc-out-of-bounds Read in init_module_from_file
-    kernel panic: KASAN: panic_on_warn set ...
+*** KASAN: stack-out-of-bounds Read in init_module_from_file (has report)
 Attempt 6:
-    KASAN: vmalloc-out-of-bounds Read in init_module_from_file
-    kernel panic: KASAN: panic_on_warn set ...
+*** KASAN: vmalloc-out-of-bounds Read in init_module_from_file (has report)
 Attempt 7:
-    KASAN: vmalloc-out-of-bounds Read in init_module_from_file
-    kernel panic: KASAN: panic_on_warn set ...
-The bug was not found.
+*** KASAN: vmalloc-out-of-bounds Read in init_module_from_file (has report)
+The bug was found.
 
-Failure: This bug cannot be found at the anchor commit.
+==== Major Release Search ====
+13 Releases
+
+2025-12-30 13:37:37
+Session:   2
+Kernel:    2023-06-25 - 6995e2de6891c724bfeb2db33d7b87775f913ad1 (v6.4)
+Compiler:  ccache gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0832-1.prog
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+About 12 releases remaining
+
+==== Kernel Bisection ====
+9775 Linux commits
+
+2025-12-30 14:00:16
+Session:   3
+Kernel:    2023-06-29 - 86e203edf24bb327ce8fcd3c5c8c6bf530a846df
+Compiler:  ccache gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0832-1.prog
+Attempt 0:
+    kernel panic: UBSAN: panic_on_warn set ...
+    UBSAN: array-index-out-of-bounds in corrupted
+    UBSAN: array-index-out-of-bounds in copy_process
+Attempt 1:
+    kernel panic: UBSAN: panic_on_warn set ...
+    UBSAN: array-index-out-of-bounds in corrupted
+    UBSAN: array-index-out-of-bounds in copy_process
+Attempt 2:
+    kernel panic: UBSAN: panic_on_warn set ...
+    UBSAN: array-index-out-of-bounds in corrupted
+    UBSAN: array-index-out-of-bounds in copy_process
+Attempt 3:
+    kernel panic: UBSAN: panic_on_warn set ...
+    UBSAN: array-index-out-of-bounds in alloc_pid
+    UBSAN: array-index-out-of-bounds in copy_process
+Attempt 4:
+    kernel panic: UBSAN: panic_on_warn set ...
+    UBSAN: array-index-out-of-bounds in corrupted
+    UBSAN: array-index-out-of-bounds in copy_process
+Attempt 5:
+    kernel panic: UBSAN: panic_on_warn set ...
+    UBSAN: array-index-out-of-bounds in alloc_pid
+    UBSAN: array-index-out-of-bounds in copy_process
+Attempt 6:
+    kernel panic: UBSAN: panic_on_warn set ...
+    UBSAN: array-index-out-of-bounds in corrupted
+    UBSAN: array-index-out-of-bounds in copy_process
+Attempt 7:
+    kernel panic: UBSAN: panic_on_warn set ...
+    UBSAN: array-index-out-of-bounds in alloc_pid
+    UBSAN: array-index-out-of-bounds in copy_process
+The bug was not found.
+About 5145 commits remaining
+
+2025-12-30 14:21:49
+Session:   4
+Kernel:    2023-06-29 - c6b0271053e7a5ae57511363213777f706b60489
+Compiler:  ccache gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0832-1.prog
+Attempt 0:
+    kernel panic: UBSAN: panic_on_warn set ...
+    UBSAN: array-index-out-of-bounds in corrupted
+    UBSAN: array-index-out-of-bounds in alloc_pid
+    UBSAN: array-index-out-of-bounds in copy_process
+Attempt 1:
+    kernel panic: UBSAN: panic_on_warn set ...
+    UBSAN: array-index-out-of-bounds in corrupted
+    UBSAN: array-index-out-of-bounds in copy_process
+Attempt 2:
+    kernel panic: UBSAN: panic_on_warn set ...
+    UBSAN: array-index-out-of-bounds in alloc_pid
+    UBSAN: array-index-out-of-bounds in copy_process
+Attempt 3:
+    kernel panic: UBSAN: panic_on_warn set ...
+    UBSAN: array-index-out-of-bounds in corrupted
+    UBSAN: array-index-out-of-bounds in copy_process
+Attempt 4:
+    kernel panic: UBSAN: panic_on_warn set ...
+    UBSAN: array-index-out-of-bounds in alloc_pid
+    UBSAN: array-index-out-of-bounds in copy_process
+Attempt 5:
+    kernel panic: UBSAN: panic_on_warn set ...
+    UBSAN: array-index-out-of-bounds in alloc_pid
+    UBSAN: array-index-out-of-bounds in copy_process
+Attempt 6:
+    kernel panic: UBSAN: panic_on_warn set ...
+    UBSAN: array-index-out-of-bounds in corrupted
+    UBSAN: array-index-out-of-bounds in copy_process
+Attempt 7:
+    kernel panic: UBSAN: panic_on_warn set ...
+    UBSAN: array-index-out-of-bounds in copy_process
+The bug was not found.
+About 2567 commits remaining
+
+2025-12-30 14:43:17
+Session:   5
+Kernel:    2023-06-29 - 0873694a339821277d9f2cae7ef981a1283b44f5
+Compiler:  ccache gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0832-1.prog
+Attempt 0:
+    kernel panic: UBSAN: panic_on_warn set ...
+    UBSAN: array-index-out-of-bounds in alloc_pid
+    UBSAN: array-index-out-of-bounds in copy_process
+Attempt 1:
+    kernel panic: UBSAN: panic_on_warn set ...
+    UBSAN: array-index-out-of-bounds in corrupted
+    UBSAN: array-index-out-of-bounds in copy_process
+Attempt 2:
+    kernel panic: UBSAN: panic_on_warn set ...
+    UBSAN: array-index-out-of-bounds in corrupted
+    UBSAN: array-index-out-of-bounds in copy_process
+Attempt 3:
+    kernel panic: UBSAN: panic_on_warn set ...
+    UBSAN: array-index-out-of-bounds in corrupted
+    UBSAN: array-index-out-of-bounds in copy_process
+Attempt 4:
+    kernel panic: UBSAN: panic_on_warn set ...
+    UBSAN: array-index-out-of-bounds in corrupted
+    UBSAN: array-index-out-of-bounds in alloc_pid
+    UBSAN: array-index-out-of-bounds in copy_process
+Attempt 5:
+    kernel panic: UBSAN: panic_on_warn set ...
+    UBSAN: array-index-out-of-bounds in copy_process
+Attempt 6:
+    kernel panic: UBSAN: panic_on_warn set ...
+    UBSAN: array-index-out-of-bounds in corrupted
+    UBSAN: array-index-out-of-bounds in copy_process
+Attempt 7:
+    kernel panic: UBSAN: panic_on_warn set ...
+    UBSAN: array-index-out-of-bounds in corrupted
+    UBSAN: array-index-out-of-bounds in copy_process
+The bug was not found.
+About 1290 commits remaining
+
+2025-12-30 14:51:20
+Session:   6
+Kernel:    2023-06-30 - b30d7a77c53ec04a6d94683d7680ec406b7f3ac8
+Compiler:  ccache gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0832-1.prog
+Attempt 0:
+*** KASAN: vmalloc-out-of-bounds Read in init_module_from_file (has report)
+Attempt 1:
+*** KASAN: stack-out-of-bounds Read in init_module_from_file (has report)
+Attempt 2:
+*** KASAN: stack-out-of-bounds Read in init_module_from_file (has report)
+Attempt 3:
+    general protection fault in init_module_from_file (has report)
+Attempt 4:
+*** KASAN: vmalloc-out-of-bounds Read in init_module_from_file (has report)
+Attempt 5:
+    general protection fault in init_module_from_file
+Attempt 6:
+*** KASAN: vmalloc-out-of-bounds Read in init_module_from_file (has report)
+Attempt 7:
+    general protection fault in init_module_from_file (has report)
+The bug was found.
+About 702 commits remaining
+
+2025-12-30 15:13:07
+Session:   7
+Kernel:    2023-06-30 - d8b0bd57c2d68eb500f356f0f9228e6183da94ae
+Compiler:  ccache gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0832-1.prog
+Attempt 0:
+*** KASAN: vmalloc-out-of-bounds Read in init_module_from_file (has report)
+Attempt 1:
+*** KASAN: stack-out-of-bounds Read in init_module_from_file (has report)
+Attempt 2:
+*** KASAN: stack-out-of-bounds Read in init_module_from_file (has report)
+Attempt 3:
+    general protection fault in init_module_from_file
+Attempt 4:
+*** KASAN: vmalloc-out-of-bounds Read in init_module_from_file (has report)
+Attempt 5:
+    general protection fault in init_module_from_file
+Attempt 6:
+    general protection fault in init_module_from_file (has report)
+Attempt 7:
+*** KASAN: stack-out-of-bounds Read in init_module_from_file (has report)
+The bug was found.
+About 311 commits remaining
+
+2025-12-30 15:34:48
+Session:   8
+Kernel:    2023-06-29 - 7ede5f78a0d74b574791c7eb0e2ca6e54b80c93c
+Compiler:  ccache gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0832-1.prog
+Attempt 0:
+    kernel panic: UBSAN: panic_on_warn set ...
+    UBSAN: array-index-out-of-bounds in corrupted
+    UBSAN: array-index-out-of-bounds in alloc_pid
+    UBSAN: array-index-out-of-bounds in copy_process
+Attempt 1:
+    kernel panic: UBSAN: panic_on_warn set ...
+    UBSAN: array-index-out-of-bounds in alloc_pid
+    UBSAN: array-index-out-of-bounds in copy_process
+Attempt 2:
+    kernel panic: UBSAN: panic_on_warn set ...
+    UBSAN: array-index-out-of-bounds in corrupted
+    UBSAN: array-index-out-of-bounds in alloc_pid
+    UBSAN: array-index-out-of-bounds in copy_process
+Attempt 3:
+    kernel panic: UBSAN: panic_on_warn set ...
+    UBSAN: array-index-out-of-bounds in corrupted
+    UBSAN: array-index-out-of-bounds in copy_process
+Attempt 4:
+    kernel panic: UBSAN: panic_on_warn set ...
+    UBSAN: array-index-out-of-bounds in alloc_pid
+    UBSAN: array-index-out-of-bounds in copy_process
+Attempt 5:
+    kernel panic: UBSAN: panic_on_warn set ...
+    UBSAN: array-index-out-of-bounds in corrupted
+    UBSAN: array-index-out-of-bounds in copy_process
+Attempt 6:
+    kernel panic: UBSAN: panic_on_warn set ...
+    UBSAN: array-index-out-of-bounds in corrupted
+    UBSAN: array-index-out-of-bounds in alloc_pid
+    UBSAN: array-index-out-of-bounds in copy_process
+Attempt 7:
+    kernel panic: UBSAN: panic_on_warn set ...
+    UBSAN: array-index-out-of-bounds in corrupted
+    UBSAN: array-index-out-of-bounds in copy_process
+The bug was not found.
+About 123 commits remaining
+
+2025-12-30 15:56:38
+Session:   9
+Kernel:    2023-06-21 - be0f9ca024b3ae17fac6b15c04519840f3418269
+Compiler:  ccache gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0832-1.prog
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+About 10661 commits remaining
+
+2025-12-30 16:19:09
+Session:   10
+Kernel:    2023-06-29 - 5ee35c769663cb1c5f26e12cad84904dc3002de8
+Compiler:  ccache gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0832-1.prog
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+About 8760 commits remaining
+
+2025-12-30 16:41:39
+Session:   11
+Kernel:    2023-06-27 - 54a11654de163994e32b24e3aa90ef81f4a3184d
+Compiler:  ccache gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0832-1.prog
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+About 10645 commits remaining
+
+2025-12-30 16:56:09
+Session:   12
+Kernel:    2023-06-29 - ea3f8272876f2958463992f6736ab690fde7fa9c
+Compiler:  ccache gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0832-1.prog
+Attempt 0:
+    kernel panic: UBSAN: panic_on_warn set ...
+    UBSAN: array-index-out-of-bounds in corrupted
+    UBSAN: array-index-out-of-bounds in copy_process
+Attempt 1:
+    kernel panic: UBSAN: panic_on_warn set ...
+    UBSAN: array-index-out-of-bounds in corrupted
+    UBSAN: array-index-out-of-bounds in copy_process
+Attempt 2:
+    kernel panic: UBSAN: panic_on_warn set ...
+    UBSAN: array-index-out-of-bounds in corrupted
+    UBSAN: array-index-out-of-bounds in copy_process
+Attempt 3:
+    kernel panic: UBSAN: panic_on_warn set ...
+    UBSAN: array-index-out-of-bounds in corrupted
+    UBSAN: array-index-out-of-bounds in copy_process
+Attempt 4:
+    kernel panic: UBSAN: panic_on_warn set ...
+    UBSAN: array-index-out-of-bounds in corrupted
+    UBSAN: array-index-out-of-bounds in copy_process
+Attempt 5:
+    kernel panic: UBSAN: panic_on_warn set ...
+    UBSAN: array-index-out-of-bounds in corrupted
+    UBSAN: array-index-out-of-bounds in copy_process
+Attempt 6:
+    kernel panic: UBSAN: panic_on_warn set ...
+    UBSAN: array-index-out-of-bounds in corrupted
+    UBSAN: array-index-out-of-bounds in alloc_pid
+    UBSAN: array-index-out-of-bounds in copy_process
+Attempt 7:
+    kernel panic: UBSAN: panic_on_warn set ...
+    UBSAN: array-index-out-of-bounds in corrupted
+    UBSAN: array-index-out-of-bounds in copy_process
+The bug was not found.
+About 116 commits remaining
+
+2025-12-30 17:10:06
+Session:   13
+Kernel:    2023-06-02 - de649e7f5edb2e61dbd3d64deae44cb165e657ad
+Compiler:  ccache gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0832-1.prog
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+About 10315 commits remaining
+
+2025-12-30 17:32:33
+Session:   14
+Kernel:    2023-06-29 - e55e5df193d247a38a5e1ac65a5316a0adcc22fa
+Compiler:  ccache gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0832-1.prog
+Attempt 0:
+    kernel panic: UBSAN: panic_on_warn set ...
+    UBSAN: array-index-out-of-bounds in corrupted
+    UBSAN: array-index-out-of-bounds in copy_process
+Attempt 1:
+    kernel panic: UBSAN: panic_on_warn set ...
+    UBSAN: array-index-out-of-bounds in corrupted
+    UBSAN: array-index-out-of-bounds in copy_process
+Attempt 2:
+    kernel panic: UBSAN: panic_on_warn set ...
+    UBSAN: array-index-out-of-bounds in corrupted
+    UBSAN: array-index-out-of-bounds in copy_process
+Attempt 3:
+    kernel panic: UBSAN: panic_on_warn set ...
+    UBSAN: array-index-out-of-bounds in corrupted
+    UBSAN: array-index-out-of-bounds in copy_process
+Attempt 4:
+    kernel panic: UBSAN: panic_on_warn set ...
+    UBSAN: array-index-out-of-bounds in corrupted
+    UBSAN: array-index-out-of-bounds in copy_process
+Attempt 5:
+    kernel panic: UBSAN: panic_on_warn set ...
+    UBSAN: array-index-out-of-bounds in alloc_pid
+    UBSAN: array-index-out-of-bounds in copy_process
+Attempt 6:
+    kernel panic: UBSAN: panic_on_warn set ...
+    UBSAN: array-index-out-of-bounds in corrupted
+    UBSAN: array-index-out-of-bounds in alloc_pid
+    UBSAN: array-index-out-of-bounds in copy_process
+Attempt 7:
+    kernel panic: UBSAN: panic_on_warn set ...
+    UBSAN: array-index-out-of-bounds in corrupted
+    UBSAN: array-index-out-of-bounds in copy_process
+The bug was not found.
+About 110 commits remaining
+
+2025-12-30 17:46:28
+Session:   15
+Kernel:    2023-06-30 - b69f0aeb068980af983d399deafc7477cec8bc04
+Compiler:  ccache gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0832-1.prog
+Attempt 0:
+*** KASAN: vmalloc-out-of-bounds Read in init_module_from_file (has report)
+Attempt 1:
+*** KASAN: vmalloc-out-of-bounds Read in init_module_from_file (has report)
+Attempt 2:
+*** KASAN: vmalloc-out-of-bounds Read in init_module_from_file (has report)
+Attempt 3:
+*** KASAN: vmalloc-out-of-bounds Read in init_module_from_file (has report)
+Attempt 4:
+*** KASAN: vmalloc-out-of-bounds Read in init_module_from_file (has report)
+Attempt 5:
+*** KASAN: stack-out-of-bounds Read in init_module_from_file (has report)
+Attempt 6:
+*** KASAN: vmalloc-out-of-bounds Read in init_module_from_file (has report)
+Attempt 7:
+*** KASAN: stack-out-of-bounds Read in init_module_from_file (has report)
+The bug was found.
+About 32 commits remaining
+
+2025-12-30 18:02:40
+Session:   16
+Kernel:    2023-06-30 - 112e7e21519422b6f2bb0fa8061f5685e9757170
+Compiler:  ccache gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0832-1.prog
+Attempt 0:
+    kernel panic: UBSAN: panic_on_warn set ...
+    UBSAN: array-index-out-of-bounds in corrupted
+    UBSAN: array-index-out-of-bounds in copy_process
+Attempt 1:
+    kernel panic: UBSAN: panic_on_warn set ...
+    UBSAN: array-index-out-of-bounds in corrupted
+    UBSAN: array-index-out-of-bounds in alloc_pid
+    UBSAN: array-index-out-of-bounds in copy_process
+Attempt 2:
+    kernel panic: UBSAN: panic_on_warn set ...
+    UBSAN: array-index-out-of-bounds in corrupted
+    UBSAN: array-index-out-of-bounds in copy_process
+Attempt 3:
+    kernel panic: UBSAN: panic_on_warn set ...
+    UBSAN: array-index-out-of-bounds in alloc_pid
+    UBSAN: array-index-out-of-bounds in copy_process
+Attempt 4:
+    kernel panic: UBSAN: panic_on_warn set ...
+    UBSAN: array-index-out-of-bounds in alloc_pid
+    UBSAN: array-index-out-of-bounds in copy_process
+Attempt 5:
+    kernel panic: UBSAN: panic_on_warn set ...
+    UBSAN: array-index-out-of-bounds in alloc_pid
+    UBSAN: array-index-out-of-bounds in copy_process
+Attempt 6:
+    kernel panic: UBSAN: panic_on_warn set ...
+    UBSAN: array-index-out-of-bounds in corrupted
+    UBSAN: array-index-out-of-bounds in alloc_pid
+    UBSAN: array-index-out-of-bounds in copy_process
+Attempt 7:
+    kernel panic: UBSAN: panic_on_warn set ...
+    UBSAN: array-index-out-of-bounds in alloc_pid
+    UBSAN: array-index-out-of-bounds in copy_process
+The bug was not found.
+About 2 commits remaining
 
 ==== Partial Result: Primary PoC Test ====
-Reproducer:           /home/syzretrospector/syzinspector/wd-bisector-6/reproducers/repro-bug0832-1.prog
-Bisection Result:     Failed to reproduce at the anchor commit.
-Stage Time:           0h18m1s
-Run Time:             0h18m1s
+Reproducer:           /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0832-1.prog
+Bisection Result:     2023-06-30 - b69f0aeb068980af983d399deafc7477cec8bc04
+Bisected Commit Name: pid: Replace struct pid 1-element array with flex-array
+Stage Time:           4h54m50s
+Run Time:             4h54m50s
 ==========================================
 
 ==== Anchor Commit ====
 
-2025-03-28 06:27:12
-Session:   2
-Kernel:    2023-06-30 - b25f62ccb490680a8cee755ac4528909395e0711
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+2025-12-30 18:10:38
+Session:   17
+Kernel:    2023-06-30 - 112e7e21519422b6f2bb0fa8061f5685e9757170
+Compiler:  ccache gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0832-3.prog
 Attempt 0:
-    No crashes found.
+    kernel panic: UBSAN: panic_on_warn set ...
+    UBSAN: array-index-out-of-bounds in corrupted
+    UBSAN: array-index-out-of-bounds in alloc_pid
+    UBSAN: array-index-out-of-bounds in copy_process
 Attempt 1:
-    No crashes found.
+    kernel panic: UBSAN: panic_on_warn set ...
+    UBSAN: array-index-out-of-bounds in corrupted
+    UBSAN: array-index-out-of-bounds in copy_process
 Attempt 2:
-    No crashes found.
+    kernel panic: UBSAN: panic_on_warn set ...
+    UBSAN: array-index-out-of-bounds in corrupted
+    UBSAN: array-index-out-of-bounds in alloc_pid
+    UBSAN: array-index-out-of-bounds in copy_process
 Attempt 3:
-    No crashes found.
+    kernel panic: UBSAN: panic_on_warn set ...
+    UBSAN: array-index-out-of-bounds in corrupted
+    UBSAN: array-index-out-of-bounds in alloc_pid
+    UBSAN: array-index-out-of-bounds in copy_process
 Attempt 4:
-    No crashes found.
+    kernel panic: UBSAN: panic_on_warn set ...
+    UBSAN: array-index-out-of-bounds in copy_process
 Attempt 5:
-    No crashes found.
+    kernel panic: UBSAN: panic_on_warn set ...
+    UBSAN: array-index-out-of-bounds in alloc_pid
+    UBSAN: array-index-out-of-bounds in copy_process
 Attempt 6:
-    No crashes found.
+    kernel panic: UBSAN: panic_on_warn set ...
+    UBSAN: array-index-out-of-bounds in corrupted
+    UBSAN: array-index-out-of-bounds in copy_process
 Attempt 7:
-    No crashes found.
+    kernel panic: UBSAN: panic_on_warn set ...
+    UBSAN: array-index-out-of-bounds in corrupted
+    UBSAN: array-index-out-of-bounds in copy_process
 The bug was not found.
 
 Failure: This bug cannot be found at the anchor commit.
 
 ==== Partial Result: Subsequent PoC Test ====
-Reproducer:           /home/syzretrospector/syzinspector/wd-bisector-6/reproducers/repro-bug0832-3.prog
+Reproducer:           /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0832-3.prog
 Bisection Result:     Failed to reproduce at the anchor commit.
-Stage Time:           0h6m42s
-Run Time:             0h24m44s
+Stage Time:           0h7m54s
+Run Time:             5h2m45s
 =============================================
 
 ==== Anchor Commit ====
 
-2025-03-28 06:33:54
-Session:   3
-Kernel:    2023-06-30 - b25f62ccb490680a8cee755ac4528909395e0711
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+2025-12-30 18:18:34
+Session:   18
+Kernel:    2023-06-30 - 112e7e21519422b6f2bb0fa8061f5685e9757170
+Compiler:  ccache gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0832-2.prog
 Attempt 0:
-    general protection fault in init_module_from_file
-    kernel panic: Fatal exception
+    kernel panic: UBSAN: panic_on_warn set ...
+    UBSAN: array-index-out-of-bounds in corrupted
+    UBSAN: array-index-out-of-bounds in copy_process
 Attempt 1:
-    KASAN: stack-out-of-bounds Read in init_module_from_file
-    kernel panic: KASAN: panic_on_warn set ...
+    kernel panic: UBSAN: panic_on_warn set ...
+    UBSAN: array-index-out-of-bounds in corrupted
+    UBSAN: array-index-out-of-bounds in copy_process
 Attempt 2:
-    KASAN: vmalloc-out-of-bounds Read in init_module_from_file
-    kernel panic: KASAN: panic_on_warn set ...
+    kernel panic: UBSAN: panic_on_warn set ...
+    UBSAN: array-index-out-of-bounds in alloc_pid
+    UBSAN: array-index-out-of-bounds in copy_process
 Attempt 3:
-    KASAN: stack-out-of-bounds Read in init_module_from_file
-    kernel panic: KASAN: panic_on_warn set ...
+    kernel panic: UBSAN: panic_on_warn set ...
+    UBSAN: array-index-out-of-bounds in corrupted
+    UBSAN: array-index-out-of-bounds in alloc_pid
+    UBSAN: array-index-out-of-bounds in copy_process
 Attempt 4:
-    KASAN: vmalloc-out-of-bounds Read in init_module_from_file
-    kernel panic: KASAN: panic_on_warn set ...
+    kernel panic: UBSAN: panic_on_warn set ...
+    UBSAN: array-index-out-of-bounds in corrupted
+    UBSAN: array-index-out-of-bounds in copy_process
 Attempt 5:
-    KASAN: slab-use-after-free Read in init_module_from_file
-    kernel panic: KASAN: panic_on_warn set ...
+    kernel panic: UBSAN: panic_on_warn set ...
+    UBSAN: array-index-out-of-bounds in corrupted
+    UBSAN: array-index-out-of-bounds in copy_process
 Attempt 6:
-    KASAN: stack-out-of-bounds Read in init_module_from_file
-    kernel panic: KASAN: panic_on_warn set ...
+    kernel panic: UBSAN: panic_on_warn set ...
+    UBSAN: array-index-out-of-bounds in corrupted
+    UBSAN: array-index-out-of-bounds in copy_process
 Attempt 7:
-    INFO: rcu detected stall in corrupted
-    BUG: soft lockup in sys_finit_module
-    kernel panic: softlockup: hung tasks
+    kernel panic: UBSAN: panic_on_warn set ...
+    UBSAN: array-index-out-of-bounds in alloc_pid
+    UBSAN: array-index-out-of-bounds in copy_process
 The bug was not found.
 
 Failure: This bug cannot be found at the anchor commit.
 
 ==== Partial Result: Subsequent PoC Test ====
-Reproducer:           /home/syzretrospector/syzinspector/wd-bisector-6/reproducers/repro-bug0832-2.prog
+Reproducer:           /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0832-2.prog
 Bisection Result:     Failed to reproduce at the anchor commit.
-Stage Time:           0h11m21s
-Run Time:             0h36m5s
+Stage Time:           0h8m1s
+Run Time:             5h10m46s
 =============================================
 
 ==== Anchor Commit ====
 
-2025-03-28 06:45:16
-Session:   4
-Kernel:    2023-06-30 - b25f62ccb490680a8cee755ac4528909395e0711
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+2025-12-30 18:26:36
+Session:   19
+Kernel:    2023-06-30 - 112e7e21519422b6f2bb0fa8061f5685e9757170
+Compiler:  ccache gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0832-6.prog
 Attempt 0:
-    general protection fault in init_module_from_file
-    kernel panic: Fatal exception
+    kernel panic: UBSAN: panic_on_warn set ...
+    UBSAN: array-index-out-of-bounds in corrupted
+    UBSAN: array-index-out-of-bounds in alloc_pid
+    UBSAN: array-index-out-of-bounds in copy_process
 Attempt 1:
-    general protection fault in init_module_from_file
-    kernel panic: Fatal exception
+    kernel panic: UBSAN: panic_on_warn set ...
+    UBSAN: array-index-out-of-bounds in alloc_pid
+    UBSAN: array-index-out-of-bounds in copy_process
 Attempt 2:
-    KASAN: vmalloc-out-of-bounds Read in init_module_from_file
-    kernel panic: KASAN: panic_on_warn set ...
+    kernel panic: UBSAN: panic_on_warn set ...
+    UBSAN: array-index-out-of-bounds in corrupted
+    UBSAN: array-index-out-of-bounds in alloc_pid
+    UBSAN: array-index-out-of-bounds in copy_process
 Attempt 3:
-    INFO: rcu detected stall in corrupted
-    INFO: rcu detected stall in corrupted
-    INFO: rcu detected stall in corrupted
-    INFO: task hung in init_module_from_file
+    kernel panic: UBSAN: panic_on_warn set ...
+    UBSAN: array-index-out-of-bounds in corrupted
+    UBSAN: array-index-out-of-bounds in copy_process
 Attempt 4:
-    KASAN: vmalloc-out-of-bounds Read in init_module_from_file
-    kernel panic: KASAN: panic_on_warn set ...
+    kernel panic: UBSAN: panic_on_warn set ...
+    UBSAN: array-index-out-of-bounds in copy_process
 Attempt 5:
-    KASAN: stack-out-of-bounds Read in init_module_from_file
-    kernel panic: KASAN: panic_on_warn set ...
+    kernel panic: UBSAN: panic_on_warn set ...
+    UBSAN: array-index-out-of-bounds in corrupted
+    UBSAN: array-index-out-of-bounds in copy_process
 Attempt 6:
-    KASAN: vmalloc-out-of-bounds Read in init_module_from_file
-    kernel panic: KASAN: panic_on_warn set ...
+    kernel panic: UBSAN: panic_on_warn set ...
+    UBSAN: array-index-out-of-bounds in copy_process
 Attempt 7:
-    general protection fault in init_module_from_file
-    kernel panic: Fatal exception
+    kernel panic: UBSAN: panic_on_warn set ...
+    UBSAN: array-index-out-of-bounds in copy_process
 The bug was not found.
 
 Failure: This bug cannot be found at the anchor commit.
 
 ==== Partial Result: Subsequent PoC Test ====
-Reproducer:           /home/syzretrospector/syzinspector/wd-bisector-6/reproducers/repro-bug0832-6.prog
+Reproducer:           /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0832-6.prog
 Bisection Result:     Failed to reproduce at the anchor commit.
-Stage Time:           0h9m38s
-Run Time:             0h45m44s
+Stage Time:           0h13m48s
+Run Time:             5h24m35s
 =============================================
 
 ==== Anchor Commit ====
 
-2025-03-28 06:54:54
-Session:   5
-Kernel:    2023-06-30 - b25f62ccb490680a8cee755ac4528909395e0711
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+2025-12-30 18:40:24
+Session:   20
+Kernel:    2023-06-30 - 112e7e21519422b6f2bb0fa8061f5685e9757170
+Compiler:  ccache gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0832-4.prog
 Attempt 0:
-    INFO: task hung in init_module_from_file
+    kernel panic: UBSAN: panic_on_warn set ...
+    UBSAN: array-index-out-of-bounds in corrupted
+    UBSAN: array-index-out-of-bounds in copy_process
 Attempt 1:
-    KASAN: stack-out-of-bounds Read in init_module_from_file
-    kernel panic: KASAN: panic_on_warn set ...
+    kernel panic: UBSAN: panic_on_warn set ...
+    UBSAN: array-index-out-of-bounds in corrupted
+    UBSAN: array-index-out-of-bounds in copy_process
 Attempt 2:
-    KASAN: stack-out-of-bounds Read in init_module_from_file
-    kernel panic: KASAN: panic_on_warn set ...
+    kernel panic: UBSAN: panic_on_warn set ...
+    UBSAN: array-index-out-of-bounds in corrupted
+    UBSAN: array-index-out-of-bounds in copy_process
 Attempt 3:
-    INFO: task hung in init_module_from_file
+    kernel panic: UBSAN: panic_on_warn set ...
+    UBSAN: array-index-out-of-bounds in corrupted
+    UBSAN: array-index-out-of-bounds in copy_process
 Attempt 4:
-    KASAN: stack-out-of-bounds Read in init_module_from_file
-    kernel panic: KASAN: panic_on_warn set ...
+    kernel panic: UBSAN: panic_on_warn set ...
+    UBSAN: array-index-out-of-bounds in corrupted
+    UBSAN: array-index-out-of-bounds in alloc_pid
+    UBSAN: array-index-out-of-bounds in copy_process
 Attempt 5:
-    INFO: task hung in init_module_from_file
+    kernel panic: UBSAN: panic_on_warn set ...
+    UBSAN: array-index-out-of-bounds in corrupted
+    UBSAN: array-index-out-of-bounds in copy_process
 Attempt 6:
-    INFO: task hung in init_module_from_file
+    kernel panic: UBSAN: panic_on_warn set ...
+    UBSAN: array-index-out-of-bounds in copy_process
 Attempt 7:
-    KASAN: stack-out-of-bounds Read in init_module_from_file
-    kernel panic: KASAN: panic_on_warn set ...
+    kernel panic: UBSAN: panic_on_warn set ...
+    UBSAN: array-index-out-of-bounds in corrupted
+    UBSAN: array-index-out-of-bounds in copy_process
 The bug was not found.
 
 Failure: This bug cannot be found at the anchor commit.
 
 ==== Partial Result: Subsequent PoC Test ====
-Reproducer:           /home/syzretrospector/syzinspector/wd-bisector-6/reproducers/repro-bug0832-4.prog
+Reproducer:           /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0832-4.prog
 Bisection Result:     Failed to reproduce at the anchor commit.
-Stage Time:           0h9m56s
-Run Time:             0h55m41s
+Stage Time:           0h13m43s
+Run Time:             5h38m19s
 =============================================
 
 ==== Anchor Commit ====
 
-2025-03-28 07:04:51
-Session:   6
-Kernel:    2023-06-30 - b25f62ccb490680a8cee755ac4528909395e0711
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+2025-12-30 18:54:08
+Session:   21
+Kernel:    2023-06-30 - 112e7e21519422b6f2bb0fa8061f5685e9757170
+Compiler:  ccache gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0832-0.prog
 Attempt 0:
-    general protection fault in init_module_from_file
-    kernel panic: Fatal exception
+    kernel panic: UBSAN: panic_on_warn set ...
+    UBSAN: array-index-out-of-bounds in copy_process
 Attempt 1:
-    general protection fault in init_module_from_file
-    kernel panic: Fatal exception
+    kernel panic: UBSAN: panic_on_warn set ...
+    UBSAN: array-index-out-of-bounds in corrupted
+    UBSAN: array-index-out-of-bounds in alloc_pid
+    UBSAN: array-index-out-of-bounds in copy_process
 Attempt 2:
-    KASAN: slab-out-of-bounds Read in init_module_from_file
-    kernel panic: KASAN: panic_on_warn set ...
+    kernel panic: UBSAN: panic_on_warn set ...
+    UBSAN: array-index-out-of-bounds in corrupted
+    UBSAN: array-index-out-of-bounds in alloc_pid
+    UBSAN: array-index-out-of-bounds in copy_process
 Attempt 3:
-    KASAN: slab-out-of-bounds Read in init_module_from_file
-    kernel panic: KASAN: panic_on_warn set ...
+    kernel panic: UBSAN: panic_on_warn set ...
+    UBSAN: array-index-out-of-bounds in corrupted
+    UBSAN: array-index-out-of-bounds in alloc_pid
+    UBSAN: array-index-out-of-bounds in copy_process
 Attempt 4:
-    KASAN: vmalloc-out-of-bounds Read in init_module_from_file
-    kernel panic: KASAN: panic_on_warn set ...
+    kernel panic: UBSAN: panic_on_warn set ...
+    UBSAN: array-index-out-of-bounds in copy_process
 Attempt 5:
-    KASAN: vmalloc-out-of-bounds Read in init_module_from_file
-    kernel panic: KASAN: panic_on_warn set ...
+    kernel panic: UBSAN: panic_on_warn set ...
+    UBSAN: array-index-out-of-bounds in copy_process
 Attempt 6:
-    general protection fault in init_module_from_file
-    kernel panic: Fatal exception
+    kernel panic: UBSAN: panic_on_warn set ...
+    UBSAN: array-index-out-of-bounds in alloc_pid
+    UBSAN: array-index-out-of-bounds in copy_process
 Attempt 7:
-    KASAN: vmalloc-out-of-bounds Read in init_module_from_file
-    kernel panic: KASAN: panic_on_warn set ...
+    kernel panic: UBSAN: panic_on_warn set ...
+    UBSAN: array-index-out-of-bounds in corrupted
+    UBSAN: array-index-out-of-bounds in alloc_pid
+    UBSAN: array-index-out-of-bounds in copy_process
 The bug was not found.
 
 Failure: This bug cannot be found at the anchor commit.
 
 ==== Partial Result: Subsequent PoC Test ====
-Reproducer:           /home/syzretrospector/syzinspector/wd-bisector-6/reproducers/repro-bug0832-5.prog
+Reproducer:           /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0832-0.prog
 Bisection Result:     Failed to reproduce at the anchor commit.
-Stage Time:           0h12m50s
-Run Time:             1h8m32s
+Stage Time:           0h7m55s
+Run Time:             5h46m14s
 =============================================
+
+==== Anchor Commit ====
+
+2025-12-30 19:02:04
+Session:   22
+Kernel:    2023-06-30 - 112e7e21519422b6f2bb0fa8061f5685e9757170
+Compiler:  ccache gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0832-5.prog
+Attempt 0:
+    kernel panic: UBSAN: panic_on_warn set ...
+    UBSAN: array-index-out-of-bounds in corrupted
+    UBSAN: array-index-out-of-bounds in copy_process
+Attempt 1:
+    kernel panic: UBSAN: panic_on_warn set ...
+    UBSAN: array-index-out-of-bounds in corrupted
+    UBSAN: array-index-out-of-bounds in alloc_pid
+    UBSAN: array-index-out-of-bounds in copy_process
+Attempt 2:
+    kernel panic: UBSAN: panic_on_warn set ...
+    UBSAN: array-index-out-of-bounds in corrupted
+    UBSAN: array-index-out-of-bounds in alloc_pid
+    UBSAN: array-index-out-of-bounds in copy_process
+Attempt 3:
+    kernel panic: UBSAN: panic_on_warn set ...
+    UBSAN: array-index-out-of-bounds in corrupted
+    UBSAN: array-index-out-of-bounds in alloc_pid
+    UBSAN: array-index-out-of-bounds in copy_process
+Attempt 4:
+    kernel panic: UBSAN: panic_on_warn set ...
+    UBSAN: array-index-out-of-bounds in corrupted
+    UBSAN: array-index-out-of-bounds in copy_process
+Attempt 5:
+    kernel panic: UBSAN: panic_on_warn set ...
+    UBSAN: array-index-out-of-bounds in corrupted
+    UBSAN: array-index-out-of-bounds in copy_process
+Attempt 6:
+    kernel panic: UBSAN: panic_on_warn set ...
+    UBSAN: array-index-out-of-bounds in copy_process
+Attempt 7:
+    kernel panic: UBSAN: panic_on_warn set ...
+    UBSAN: array-index-out-of-bounds in corrupted
+    UBSAN: array-index-out-of-bounds in copy_process
+The bug was not found.
+
+Failure: This bug cannot be found at the anchor commit.
+
+==== Partial Result: Subsequent PoC Test ====
+Reproducer:           /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0832-5.prog
+Bisection Result:     Failed to reproduce at the anchor commit.
+Stage Time:           0h13m45s
+Run Time:             6h0m0s
+=============================================
+
+====================================================================================================================================================
+Bug Name:             general protection fault in sys_finit_module
+Bug ID:               bug0832
+Bug Link:             https://syzkaller.appspot.com/bug?extid=9e4e94a2689427009d35
+Bisection Result:     2023-06-30 - b69f0aeb068980af983d399deafc7477cec8bc04
+Bisected Commit Name: pid: Replace struct pid 1-element array with flex-array
+Run Time:             6h0m0s
+
+Anchor Commit:        2023-06-30 - b25f62ccb490680a8cee755ac4528909395e0711
+Bisection Result:     2023-06-30 - b69f0aeb068980af983d399deafc7477cec8bc04
