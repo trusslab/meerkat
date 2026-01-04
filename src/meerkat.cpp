@@ -212,7 +212,11 @@ int bisect(Environment &env)
     if (env.feats.ff_test)
         bisector.set_mode(Mode_FF);
     else if (env.feats.poc_test)
+    {
         bisector.set_mode(Mode_PoC);
+        // Set this early so it shows up when we print.
+        env.vmc = env.vmst;
+    }
     else
     {
         cerr << "Error: Invalid bisection mode state.\n" << flush;
