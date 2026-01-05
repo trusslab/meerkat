@@ -360,6 +360,7 @@ int parse_one_stack(Crash_Type ct, const std::vector<std::string> &lines, int &i
     case CT_KASAN_NULLPTR:
         return parse_kasan_nullptr_stack(lines, i, stack);
     case CT_KBUG:
+    case CT_GENERIC_BUG:
         return parse_basic_stack(lines, i, stack);
     case CT_SLEEPING:
         return parse_sleeping_stack(lines, i, stack);
@@ -386,6 +387,8 @@ Crash_Type identify_ct(const std::vector<std::string> &lines, int &i)
                 return CT_KASAN;
             else if (lines.at(i).find("sleeping function called from invalid context") != std::string::npos)
                 return CT_SLEEPING;
+            else
+                return CT_GENERIC_BUG;
         }
         else if (starts_with(lines.at(i), "KASAN: null-ptr-deref") || starts_with(lines.at(i), "KASAN: probably user-memory-access"))
         {
