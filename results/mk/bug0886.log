@@ -1,31 +1,34 @@
-./bin/bisector -i 4 -c /home/syzretrospector/syzinspector/wd-bisector-4/bisector.cfg -a b7b275e60bcd5f89771e865a8239325f86d9927d -F ff-test,poc-test,stateful-corpus,ff-no-find-backup
+./bin/meerkat -i 1 -c /home/syzretrospector/meerkat/wd-meerkat-1/meerkat.cfg -a b7b275e60bcd5f89771e865a8239325f86d9927d -F ff-test,poc-test,poc-all-pocs,ff-no-find-backup,stateful-corpus
 Bisecting:          WARNING in rmqueue
 Syzbot Link:        https://syzkaller.appspot.com/bug?extid=aafb3f37cfeb6534c4ac
 Working Name:       bug0886
 
-No aliases given.
+Aliases:
+    WARNING in rmqueue (has report)
 
 Anchor Commit:      b7b275e60bcd5f89771e865a8239325f86d9927d
 Repository:         https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
 Branch:             master
 Arch:               amd64
 
-Bisector:           /home/syzretrospector/syzinspector/
-Version:            1.0.4
-Kernel:             /home/syzretrospector/syzinspector/wd-bisector-4/kernel/
-Syzkaller:          /home/syzretrospector/syzinspector/syzkaller/
-Compilers:          /home/syzretrospector/compilers/
-Ccache:             ccache
-Image:              /home/syzretrospector/images/stretch/stretch.img
-Image Key:          /home/syzretrospector/images/stretch/stretch.id_rsa
+Meerkat:            /home/syzretrospector/meerkat/
+Version:            1.2.0
+Kernel:             /home/syzretrospector/meerkat/wd-meerkat-1/kernel/
+Syzkaller:          /home/syzretrospector/meerkat/syzkaller/
+Compilers:          /home/syzretrospector/meerkat/compilers/
+Compiler:           gcc (Ubuntu 11.4.0-1ubuntu1~22.04.2) 11.4.0
+Linker:             GNU ld (GNU Binutils for Ubuntu) 2.38
+Ccache:             ccache version 4.5.1
+Image:              /home/syzretrospector/meerkat/image/stretch/stretch.img
+Image Key:          /home/syzretrospector/meerkat/image/stretch/stretch.id_rsa
 
-Workdir:            /home/syzretrospector/syzinspector/wd-bisector-4/
-Kconfig:            /home/syzretrospector/syzinspector/wd-bisector-4/config-bug0886.txt
-Reproducers: (1)    /home/syzretrospector/syzinspector/wd-bisector-4/reproducers/
-Syzkaller Workdir:  /home/syzretrospector/syzinspector/wd-bisector-4/wd-kaller/
-Log Directory:      /home/syzretrospector/syzinspector/wd-bisector-4/log/
+Workdir:            /home/syzretrospector/meerkat/wd-meerkat-1/
+Kconfig:            /home/syzretrospector/meerkat/wd-meerkat-1/config-bug0886.txt
+Reproducers: (1)    /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/
+Syzkaller Workdir:  /home/syzretrospector/meerkat/wd-meerkat-1/wd-kaller/
+Log Directory:      /home/syzretrospector/meerkat/wd-meerkat-1/log/
 
-Syscalls: (7)       ["open", "syz_mount_image$erofs", "ioctl$F2FS_IOC_START_ATOMIC_WRITE", "mount$bpf", "getuid", "setgid", "getgid"]
+Syscalls: (8)       ["open", "syz_mount_image$erofs", "ioctl$F2FS_IOC_START_ATOMIC_WRITE", "open$dir", "mount$bpf", "getuid", "setgid", "getgid"]
 VM Count:           8
 CPU Count:          2
 Procs:              16
@@ -36,29 +39,335 @@ Max Attempts:       1
 
 ==== Anchor Commit ====
 
-2025-03-14 05:10:40
+2026-01-04 14:22:04
 Session:   1
 Kernel:    2022-11-27 - b7b275e60bcd5f89771e865a8239325f86d9927d
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Compiler:  ccache gcc
 Attempt 1:
     Time  Bug Name
-       3  WARNING in get_page_from_freelist
-       3  WARNING in get_page_from_freelist
-       3  WARNING in get_page_from_freelist
-       3  WARNING in get_page_from_freelist
+***    2  WARNING in get_page_from_freelist (4) (has report)
 Attempt 2: (RETRY)
     Time  Bug Name
-       3  WARNING in get_page_from_freelist
-       3  WARNING in get_page_from_freelist
-       3  WARNING in get_page_from_freelist
-       3  WARNING in get_page_from_freelist
-       8  WARNING: ODEBUG bug in netdev_run_todo
+***    2  WARNING in get_page_from_freelist (4) (has report)
 Attempt 3: (RETRY)
     Time  Bug Name
-       2  WARNING in get_page_from_freelist
-       3  WARNING in get_page_from_freelist
-       3  WARNING in get_page_from_freelist
-       3  WARNING in get_page_from_freelist
+***    2  WARNING in get_page_from_freelist (4) (has report)
+The bug was found.
+
+New Max Time: 10
+
+==== Major Release Search ====
+12 Releases
+
+2026-01-04 14:33:28
+Session:   2
+Kernel:    2022-10-02 - 4fe89d07dcc2804c8b562f6c7896a45643d34b2f (v6.0)
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    2  WARNING in get_page_from_freelist (4) (has report)
+Running syz-repro.
+New PoC saved at /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0886-0.prog
+Primary PoC:     /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0886-0.prog
+Run Time:        0h4m0s
+The bug was found.
+About 11 releases remaining
+
+2026-01-04 14:52:17
+Session:   3
+Kernel:    2022-07-31 - 3d7cb6b04c3f3115719235cc6866b10326de34cd (v5.19)
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  WARNING: bad unlock balance in z_erofs_do_read_page (4) (has report)
+The bug was not found.
+About 10 releases remaining
+
+==== Kernel Bisection ====
+16585 Linux commits
+
+2026-01-04 15:14:41
+Session:   4
+Kernel:    2022-08-04 - 78acd4ca433425e6dd4032cfc2156c60e34931f2
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       1  WARNING: ODEBUG bug in mgmt_index_removed (has report)
+       2  INFO: rcu detected stall in corrupted
+       2  WARNING: ODEBUG bug in mgmt_index_removed (7) (has report)
+       3  WARNING: ODEBUG bug in mgmt_index_removed (8) (has report)
+       4  BUG: unable to handle kernel paging request in z_erofs_do_decompressed_bvec
+       4  WARNING: ODEBUG bug in mgmt_index_removed (7) (has report)
+       5  BUG: unable to handle kernel paging request in z_erofs_do_decompressed_bvec
+       5  WARNING: ODEBUG bug in mgmt_index_removed (7) (has report)
+       6  BUG: unable to handle kernel paging request in z_erofs_do_decompressed_bvec
+       6  WARNING: ODEBUG bug in mgmt_index_removed (7) (has report)
+       7  WARNING: ODEBUG bug in mgmt_index_removed (9) (has report)
+       8  WARNING: ODEBUG bug in mgmt_index_removed (10) (has report)
+       9  WARNING: ODEBUG bug in mgmt_index_removed (10) (has report)
+      10  WARNING: ODEBUG bug in mgmt_index_removed (9) (has report)
+The bug was not found.
+About 8386 commits remaining
+
+2026-01-04 15:37:11
+Session:   5
+Kernel:    2022-08-12 - 5cef38dd03f33ef206eb792df0fb3b200d762546
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       1  WARNING: ODEBUG bug in mgmt_index_removed (has report)
+***    2  WARNING in get_page_from_freelist (2) (has report)
+       2  WARNING: ODEBUG bug in mgmt_index_removed (8) (has report)
+The bug was found.
+About 4132 commits remaining
+
+2026-01-04 15:51:26
+Session:   6
+Kernel:    2022-08-04 - fa9db655d0e112c108fe838809608caf759bdf5e
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       1  WARNING: ODEBUG bug in mgmt_index_removed (has report)
+       2  WARNING: ODEBUG bug in mgmt_index_removed (9) (has report)
+       3  BUG: unable to handle kernel paging request in z_erofs_do_decompressed_bvec (3)
+       3  WARNING: ODEBUG bug in mgmt_index_removed (6) (has report)
+       4  BUG: unable to handle kernel paging request in z_erofs_do_decompressed_bvec
+       4  WARNING: ODEBUG bug in mgmt_index_removed (9) (has report)
+       5  WARNING: ODEBUG bug in mgmt_index_removed (9) (has report)
+       6  WARNING: ODEBUG bug in mgmt_index_removed (7) (has report)
+       7  WARNING: ODEBUG bug in mgmt_index_removed (11) (has report)
+       8  WARNING: ODEBUG bug in mgmt_index_removed (8) (has report)
+       9  WARNING: ODEBUG bug in mgmt_index_removed (8) (has report)
+      10  WARNING: ODEBUG bug in mgmt_index_removed (8) (has report)
+The bug was not found.
+About 2045 commits remaining
+
+2026-01-04 16:13:46
+Session:   7
+Kernel:    2022-08-03 - 24df5428ef9d1ca1edd54eca7eb667110f2dfae3
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  WARNING: bad unlock balance in z_erofs_do_read_page (4) (has report)
+The bug was not found.
+About 13471 commits remaining
+
+2026-01-04 16:35:58
+Session:   8
+Kernel:    2022-08-05 - 6614a3c3164a5df2b54abb0b3559f51041cf705b
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       1  WARNING: ODEBUG bug in mgmt_index_removed (has report)
+***    2  WARNING in get_page_from_freelist (2) (has report)
+       2  WARNING: ODEBUG bug in mgmt_index_removed (6) (has report)
+The bug was found.
+About 12891 commits remaining
+
+2026-01-04 16:48:33
+Session:   9
+Kernel:    2022-08-05 - 74cae210a335d159f2eb822e261adee905b6951a
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       1  WARNING: ODEBUG bug in mgmt_index_removed (has report)
+       2  BUG: unable to handle kernel paging request in z_erofs_do_decompressed_bvec (2)
+       2  WARNING: ODEBUG bug in mgmt_index_removed (6) (has report)
+       3  WARNING: ODEBUG bug in mgmt_index_removed (9) (has report)
+       4  BUG: unable to handle kernel paging request in z_erofs_do_decompressed_bvec
+       4  WARNING: ODEBUG bug in mgmt_index_removed (8) (has report)
+       5  BUG: unable to handle kernel paging request in z_erofs_do_decompressed_bvec
+       5  WARNING: ODEBUG bug in mgmt_index_removed (7) (has report)
+       6  WARNING: ODEBUG bug in mgmt_index_removed (10) (has report)
+       7  WARNING: ODEBUG bug in mgmt_index_removed (11) (has report)
+       8  WARNING: ODEBUG bug in mgmt_index_removed (8) (has report)
+       9  WARNING: ODEBUG bug in mgmt_index_removed (8) (has report)
+      10  WARNING: ODEBUG bug in mgmt_index_removed (8) (has report)
+The bug was not found.
+About 285 commits remaining
+
+2026-01-04 17:10:38
+Session:   10
+Kernel:    2022-07-17 - e28cd3e50f3041186ba7fe74a9c7443cd8afc2da
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  WARNING: bad unlock balance in z_erofs_do_read_page (4) (has report)
+The bug was not found.
+About 12083 commits remaining
+
+2026-01-04 17:32:42
+Session:   11
+Kernel:    2022-07-17 - 64c5ed22d6080f8ad07ed782087582a5f023f788
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  WARNING: bad unlock balance in z_erofs_do_read_page (3) (has report)
+       3  WARNING: bad unlock balance in z_erofs_do_read_page (has report)
+The bug was not found.
+About 12012 commits remaining
+
+2026-01-04 17:54:37
+Session:   12
+Kernel:    2022-07-29 - ac3ced5fc12fb3d7268054485cbc36441c05cf24
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  WARNING: bad unlock balance in z_erofs_do_read_page (4) (has report)
+The bug was not found.
+About 11977 commits remaining
+
+2026-01-04 18:16:06
+Session:   13
+Kernel:    2022-07-29 - 873f64b791a2b43c246e78b7d9fdd64ce909685b
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  WARNING: bad unlock balance in z_erofs_do_read_page (3) (has report)
+       3  WARNING: bad unlock balance in z_erofs_do_read_page (has report)
+The bug was not found.
+About 11959 commits remaining
+
+2026-01-04 18:33:18
+Session:   14
+Kernel:    2022-07-29 - d00365175e092a3144ecbee3181f46682b5b5e97
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  WARNING: bad unlock balance in z_erofs_do_read_page (4) (has report)
+The bug was not found.
+About 11950 commits remaining
+
+2026-01-04 18:55:18
+Session:   15
+Kernel:    2022-07-29 - 116807634569bdb9defe1c01e442e76e4f432961
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  WARNING: bad unlock balance in z_erofs_do_read_page (4) (has report)
+The bug was not found.
+About 11946 commits remaining
+
+2026-01-04 19:10:17
+Session:   16
+Kernel:    2022-07-29 - 96f96763de26d6ee333d5b2446d1b04a4e6bc75b
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  WARNING: bad unlock balance in z_erofs_do_read_page (4) (has report)
+       4  WARNING: ODEBUG bug in netdev_run_todo (has report)
+The bug was not found.
+About 11944 commits remaining
+
+2026-01-04 19:25:14
+Session:   17
+Kernel:    2022-08-03 - 360614c01f81f48a89d8b13f8fa69c3ae0a1f5c7
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  WARNING: bad unlock balance in z_erofs_do_read_page (4) (has report)
+The bug was not found.
+About 11942 commits remaining
+
+==== Partial Result: Focused Fuzzing ====
+Reproducer:           /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0886-0.prog
+Bisection Result:     2022-08-05 - 6614a3c3164a5df2b54abb0b3559f51041cf705b
+Bisected Commit Name: Merge tag 'mm-stable-2022-08-03' of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+Stage Time:           5h17m52s
+Run Time:             5h17m53s
+=========================================
+
+==== Anchor Commit ====
+
+2026-01-04 19:39:56
+Session:   18
+Kernel:    2022-08-03 - 360614c01f81f48a89d8b13f8fa69c3ae0a1f5c7
+Compiler:  ccache gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0886-0.prog
+Attempt 0:
+    WARNING: bad unlock balance in z_erofs_do_read_page (has report)
+    BUG: unable to handle kernel paging request in z_erofs_decompress_pcluster
+Attempt 1:
+    WARNING: bad unlock balance in z_erofs_do_read_page (has report)
+    BUG: unable to handle kernel paging request in z_erofs_decompress_pcluster
+Attempt 2:
+    WARNING: bad unlock balance in z_erofs_do_read_page (has report)
+    BUG: unable to handle kernel paging request in z_erofs_decompress_pcluster
+Attempt 3:
+    WARNING: bad unlock balance in z_erofs_do_read_page (has report)
+    BUG: unable to handle kernel paging request in z_erofs_decompress_pcluster
+Attempt 4:
+    WARNING: bad unlock balance in z_erofs_do_read_page (has report)
+    BUG: unable to handle kernel paging request in z_erofs_decompress_pcluster
+Attempt 5:
+    WARNING: bad unlock balance in z_erofs_do_read_page (has report)
+    BUG: unable to handle kernel paging request in z_erofs_decompress_pcluster
+Attempt 6:
+    WARNING: bad unlock balance in z_erofs_do_read_page (has report)
+    BUG: unable to handle kernel paging request in z_erofs_decompress_pcluster
+Attempt 7:
+    WARNING: bad unlock balance in z_erofs_do_read_page (has report)
+    BUG: unable to handle kernel paging request in z_erofs_decompress_pcluster
 The bug was not found.
 
 Failure: This bug cannot be found at the anchor commit.
+
+==== Partial Result: Primary PoC Test ====
+Reproducer:           /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0886-0.prog
+Bisection Result:     Failed to reproduce at the anchor commit.
+Stage Time:           0h6m42s
+Run Time:             5h24m36s
+==========================================
+
+==== Anchor Commit ====
+
+2026-01-04 19:46:41
+Session:   19
+Kernel:    2022-08-03 - 360614c01f81f48a89d8b13f8fa69c3ae0a1f5c7
+Compiler:  ccache gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0886-1.prog
+Attempt 0:
+    WARNING: bad unlock balance in z_erofs_do_read_page (has report)
+    BUG: unable to handle kernel paging request in z_erofs_decompress_pcluster
+Attempt 1:
+    WARNING: bad unlock balance in z_erofs_do_read_page (has report)
+    BUG: unable to handle kernel paging request in z_erofs_decompress_pcluster
+Attempt 2:
+    WARNING: bad unlock balance in z_erofs_do_read_page (has report)
+    BUG: unable to handle kernel paging request in z_erofs_decompress_pcluster
+Attempt 3:
+    WARNING: bad unlock balance in z_erofs_do_read_page (has report)
+    BUG: unable to handle kernel paging request in z_erofs_decompress_pcluster
+Attempt 4:
+    WARNING: bad unlock balance in z_erofs_do_read_page (has report)
+    BUG: unable to handle kernel paging request in z_erofs_decompress_pcluster
+Attempt 5:
+    WARNING: bad unlock balance in z_erofs_do_read_page (has report)
+    BUG: unable to handle kernel paging request in z_erofs_decompress_pcluster
+Attempt 6:
+    WARNING: bad unlock balance in z_erofs_do_read_page (has report)
+    BUG: unable to handle kernel paging request in z_erofs_decompress_pcluster
+Attempt 7:
+    WARNING: bad unlock balance in z_erofs_do_read_page (has report)
+    BUG: unable to handle kernel paging request in z_erofs_decompress_pcluster
+The bug was not found.
+
+Failure: This bug cannot be found at the anchor commit.
+
+==== Partial Result: Subsequent PoC Test ====
+Reproducer:           /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0886-1.prog
+Bisection Result:     Failed to reproduce at the anchor commit.
+Stage Time:           0h6m54s
+Run Time:             5h31m30s
+=============================================
+
+====================================================================================================================================================
+Bug Name:             WARNING in rmqueue
+Bug ID:               bug0886
+Bug Link:             https://syzkaller.appspot.com/bug?extid=aafb3f37cfeb6534c4ac
+Bisection Result:     2022-08-05 - 6614a3c3164a5df2b54abb0b3559f51041cf705b
+Bisected Commit Name: Merge tag 'mm-stable-2022-08-03' of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+Run Time:             5h31m31s
+
+Anchor Commit:        2022-11-27 - b7b275e60bcd5f89771e865a8239325f86d9927d
+Bisection Result:     2022-08-05 - 6614a3c3164a5df2b54abb0b3559f51041cf705b
