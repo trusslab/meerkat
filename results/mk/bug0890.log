@@ -1,31 +1,34 @@
-./bin/bisector -i 4 -c /home/syzretrospector/syzinspector/wd-bisector-4/bisector.cfg -a 148341f0a2f53b5e8808d093333d85170586a15d -F ff-test,poc-test,stateful-corpus,ff-no-find-backup
+./bin/meerkat -i 1 -c /home/syzretrospector/meerkat/wd-meerkat-1/meerkat.cfg -a 148341f0a2f53b5e8808d093333d85170586a15d -F ff-test,poc-test,poc-all-pocs,ff-no-find-backup,stateful-corpus
 Bisecting:          KASAN: slab-use-after-free Read in mas_next_entry
 Syzbot Link:        https://syzkaller.appspot.com/bug?extid=a7c1ec5b1d71ceaa5186
 Working Name:       bug0890
 
-No aliases given.
+Aliases:
+    KASAN: slab-use-after-free Read in mas_next_entry (has report)
 
 Anchor Commit:      148341f0a2f53b5e8808d093333d85170586a15d
 Repository:         https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
 Branch:             master
 Arch:               amd64
 
-Bisector:           /home/syzretrospector/syzinspector/
-Version:            1.0.4
-Kernel:             /home/syzretrospector/syzinspector/wd-bisector-4/kernel/
-Syzkaller:          /home/syzretrospector/syzinspector/syzkaller/
-Compilers:          /home/syzretrospector/compilers/
-Ccache:             ccache
-Image:              /home/syzretrospector/images/stretch/stretch.img
-Image Key:          /home/syzretrospector/images/stretch/stretch.id_rsa
+Meerkat:            /home/syzretrospector/meerkat/
+Version:            1.2.0
+Kernel:             /home/syzretrospector/meerkat/wd-meerkat-1/kernel/
+Syzkaller:          /home/syzretrospector/meerkat/syzkaller/
+Compilers:          /home/syzretrospector/meerkat/compilers/
+Compiler:           gcc (Ubuntu 11.4.0-1ubuntu1~22.04.2) 11.4.0
+Linker:             GNU ld (GNU Binutils for Ubuntu) 2.38
+Ccache:             ccache version 4.5.1
+Image:              /home/syzretrospector/meerkat/image/stretch/stretch.img
+Image Key:          /home/syzretrospector/meerkat/image/stretch/stretch.id_rsa
 
-Workdir:            /home/syzretrospector/syzinspector/wd-bisector-4/
-Kconfig:            /home/syzretrospector/syzinspector/wd-bisector-4/config-bug0890.txt
-Reproducers: (1)    /home/syzretrospector/syzinspector/wd-bisector-4/reproducers/
-Syzkaller Workdir:  /home/syzretrospector/syzinspector/wd-bisector-4/wd-kaller/
-Log Directory:      /home/syzretrospector/syzinspector/wd-bisector-4/log/
+Workdir:            /home/syzretrospector/meerkat/wd-meerkat-1/
+Kconfig:            /home/syzretrospector/meerkat/wd-meerkat-1/config-bug0890.txt
+Reproducers: (3)    /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/
+Syzkaller Workdir:  /home/syzretrospector/meerkat/wd-meerkat-1/wd-kaller/
+Log Directory:      /home/syzretrospector/meerkat/wd-meerkat-1/log/
 
-Syscalls: (29)      ["mbind", "set_mempolicy_home_node", "syz_io_uring_setup", "syz_memcpy_off$IO_URING_METADATA_GENERIC", "syz_io_uring_submit", "ioctl$F2FS_IOC_START_ATOMIC_WRITE", "openat$selinux_enforce", "statx", "socket", "syz_mount_image$bfs", "io_uring_register$IORING_UNREGISTER_PERSONALITY", "io_uring_register$IORING_REGISTER_PERSONALITY", "futex", "getrusage", "clock_gettime", "mount$bpf", "getuid", "setgid", "getgid", "epoll_create", "setsockopt$inet_mreqn", "ioctl$sock_SIOCGIFINDEX", "ioctl$ifreq_SIOCGIFINDEX_vcan", "bind$nfc_llcp", "ioctl$IOCTL_GET_NCIDEV_IDX", "socket$inet", "syz_init_net_socket$nfc_llcp", "openat$nci", "utimes"]
+Syscalls: (31)      ["bind$nfc_llcp", "mbind", "open$dir", "set_mempolicy_home_node", "socket$inet_icmp", "socket$inet_sctp", "statx", "syz_io_uring_setup", "syz_init_net_socket$nfc_llcp", "syz_memcpy_off$IO_URING_METADATA_GENERIC", "syz_io_uring_submit", "socket", "ioctl$IOCTL_GET_NCIDEV_IDX", "ioctl$F2FS_IOC_START_ATOMIC_WRITE", "openat$selinux_enforce", "socket$inet", "mount$bpf", "getuid", "setgid", "getgid", "ioctl$sock_SIOCGIFINDEX", "openat$nci", "setsockopt$inet_mreqn", "io_uring_register$IORING_UNREGISTER_PERSONALITY", "io_uring_register$IORING_REGISTER_PERSONALITY", "futex", "getrusage", "clock_gettime", "epoll_create", "ioctl$ifreq_SIOCGIFINDEX_vcan", "utimes"]
 VM Count:           4
 CPU Count:          4
 Procs:              24
@@ -36,299 +39,490 @@ Max Attempts:       1
 
 ==== Anchor Commit ====
 
-2025-03-14 14:01:46
+2026-01-05 16:04:46
 Session:   1
 Kernel:    2023-04-03 - 148341f0a2f53b5e8808d093333d85170586a15d
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Compiler:  ccache gcc
 Attempt 1:
     Time  Bug Name
-***    3  KASAN: slab-use-after-free Read in mas_next_entry
-***    3  KASAN: slab-use-after-free Read in mas_next_entry
-***    3  KASAN: slab-use-after-free Read in mas_next_entry
+***    2  KASAN: slab-use-after-free Read in mas_next_entry (5) (has report)
 Attempt 2: (RETRY)
     Time  Bug Name
-***    3  KASAN: slab-use-after-free Read in mas_next_entry
+***    2  KASAN: slab-use-after-free Read in mas_next_entry (5) (has report)
 Attempt 3: (RETRY)
     Time  Bug Name
-***    4  KASAN: slab-use-after-free Read in mas_next_entry
+***    2  KASAN: slab-use-after-free Read in mas_next_entry (5) (has report)
 The bug was found.
 
 New Max Time: 10
 
 ==== Major Release Search ====
-18 Releases
+13 Releases
 
-2025-03-14 14:32:58
+2026-01-05 16:25:36
 Session:   2
 Kernel:    2023-02-19 - c9c3395d5e3dcc6daee66c6908354d47bf98cb0c (v6.2)
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Compiler:  ccache gcc
 Attempt 1:
     Time  Bug Name
-       3  KASAN: use-after-free Read in mas_next_nentry
-       4  KASAN: use-after-free Read in mas_next_nentry
-       4  KASAN: use-after-free Read in mas_next_nentry
-       4  KASAN: use-after-free Read in mas_next_nentry
-       5  KASAN: use-after-free Read in mas_next_nentry
-       6  KASAN: use-after-free Read in mas_next_nentry
-       7  KASAN: use-after-free Read in mas_next_nentry
-       7  KASAN: use-after-free Read in mas_next_nentry
-       8  KASAN: use-after-free Read in mas_next_nentry
-       9  KASAN: use-after-free Read in mas_next_nentry
-       9  KASAN: use-after-free Read in mas_next_nentry
-      10  KASAN: use-after-free Read in mas_next_nentry
-      10  KASAN: use-after-free Read in mas_next_nentry
+       2  INFO: rcu detected stall in corrupted
+***    2  KASAN: use-after-free Read in mas_next_nentry (4) (has report)
+Running syz-repro.
+New PoC saved at /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0890-2.prog
+Primary PoC:     /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0890-2.prog
+Run Time:        0h6m0s
+The bug was found.
+About 12 releases remaining
+
+2026-01-05 16:49:10
+Session:   3
+Kernel:    2022-12-11 - 830b3c68c1fb1e9176028d02ef86f3cf76aa2476 (v6.1)
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  INFO: rcu detected stall in corrupted
+***    2  KASAN: use-after-free Read in mas_next_nentry (4) (has report)
+The bug was found.
+About 11 releases remaining
+
+2026-01-05 17:05:52
+Session:   4
+Kernel:    2022-10-02 - 4fe89d07dcc2804c8b562f6c7896a45643d34b2f (v6.0)
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  INFO: rcu detected stall in corrupted
+       2  KASAN: use-after-free Read in set_mempolicy_home_node (4) (has report)
+       3  KASAN: use-after-free Read in set_mempolicy_home_node (4) (has report)
+       4  KASAN: use-after-free Read in set_mempolicy_home_node (has report)
+       5  KASAN: use-after-free Read in set_mempolicy_home_node (3) (has report)
+       6  KASAN: use-after-free Read in set_mempolicy_home_node (2) (has report)
+       7  KASAN: use-after-free Read in set_mempolicy_home_node (has report)
+       8  INFO: rcu detected stall in corrupted
+       9  INFO: rcu detected stall in corrupted (2)
+      10  INFO: rcu detected stall in corrupted
+      10  KASAN: use-after-free Read in set_mempolicy_home_node (has report)
 The bug was not found.
-About 17 releases remaining
+About 10 releases remaining
 
 ==== Kernel Bisection ====
-14964 Linux commits
+15110 Linux commits
 
-2025-03-14 15:04:23
-Session:   3
-Kernel:    2023-02-22 - 307e14c039063f0c9bd7a18a7add8f940580dcc9
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
-Attempt 1:
-    Time  Bug Name
-       4  KASAN: use-after-free Read in mas_next_nentry
-       4  KASAN: use-after-free Read in mas_next_nentry
-       4  KASAN: use-after-free Read in mas_next_nentry
-       4  KASAN: use-after-free Read in mas_next_nentry
-       6  KASAN: use-after-free Read in mas_next_nentry
-       6  KASAN: use-after-free Read in mas_next_nentry
-       7  KASAN: use-after-free Read in mas_next_nentry
-       7  KASAN: use-after-free Read in mas_next_nentry
-       8  KASAN: use-after-free Read in mas_next_nentry
-       9  KASAN: use-after-free Read in mas_next_nentry
-       9  KASAN: use-after-free Read in mas_next_nentry
-       9  KASAN: use-after-free Read in mas_next_nentry
-The bug was not found.
-About 8222 commits remaining
-
-2025-03-14 15:35:13
-Session:   4
-Kernel:    2023-02-25 - d8e473182ab9e85708067be81d20424045d939fa
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
-Attempt 1:
-    Time  Bug Name
-***    3  KASAN: slab-use-after-free Read in mas_next_entry
-***    3  KASAN: slab-use-after-free Read in mas_next_entry
-Running syz-repro.
-New PoC saved at /home/syzretrospector/syzinspector/wd-bisector-4/reproducers/repro-bug0890-0.prog
-Primary PoC:     /home/syzretrospector/syzinspector/wd-bisector-4/reproducers/repro-bug0890-0.prog
-Run Time:        0h45m0s
-The bug was found.
-About 4095 commits remaining
-
-2025-03-14 16:44:01
+2026-01-05 17:30:33
 Session:   5
-Kernel:    2023-02-23 - e4bc15889506723d7b93c053ad4a75cd58248d74
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Kernel:    2022-10-07 - 33e591dee915832c618cf68bb1058c8e7d296128
+Compiler:  ccache gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/syzretrospector/meerkat/wd-meerkat-1/log/bug0890-boot_failure.log.
 Attempt 1:
     Time  Bug Name
-       3  KASAN: use-after-free Read in mas_next_nentry
-       3  KASAN: use-after-free Read in mas_next_nentry
-       3  KASAN: use-after-free Read in mas_next_nentry
-       5  KASAN: use-after-free Read in mas_next_nentry
-       5  KASAN: use-after-free Read in mas_next_nentry
-       5  KASAN: use-after-free Read in mas_next_nentry
-       6  KASAN: use-after-free Read in mas_next_nentry
-       7  KASAN: use-after-free Read in mas_next_nentry
-       7  KASAN: use-after-free Read in mas_next_nentry
-       7  KASAN: use-after-free Read in mas_next_nentry
-       9  KASAN: use-after-free Read in mas_next_nentry
-       9  KASAN: use-after-free Read in mas_next_nentry
-       9  KASAN: use-after-free Read in mas_next_nentry
-      10  KASAN: use-after-free Read in mas_next_nentry
+       1  WARNING in wireless_send_event (2) (has report)
+       2  WARNING in wireless_send_event (6) (has report)
+       3  WARNING in wireless_send_event (6) (has report)
+       4  WARNING in wireless_send_event (5) (has report)
+       5  WARNING in wireless_send_event (6) (has report)
+       6  WARNING in wireless_send_event (6) (has report)
+       7  WARNING in wireless_send_event (6) (has report)
+       8  WARNING in wireless_send_event (6) (has report)
+       9  WARNING in wireless_send_event (6) (has report)
+      10  WARNING in wireless_send_event (6) (has report)
+      10  boot failure
 The bug was not found.
-About 2176 commits remaining
+This commit is flagged as unstable.
+About 15110 commits remaining
 
-2025-03-14 17:14:56
+2026-01-05 17:54:49
 Session:   6
-Kernel:    2023-02-24 - 0601f25d1c4937c678db786961705ce56fbd6bb6
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Kernel:    2022-10-03 - 79dbd006a6d6f51777ba4948046561b6d9270504
+Compiler:  ccache gcc
 Attempt 1:
     Time  Bug Name
-***    4  KASAN: slab-use-after-free Read in mas_next_entry
-***    4  KASAN: slab-use-after-free Read in mas_next_entry
+       2  INFO: rcu detected stall in corrupted
+***    2  KASAN: use-after-free Read in mas_next_nentry (3) (has report)
 The bug was found.
-About 1191 commits remaining
+About 468 commits remaining
 
-2025-03-14 17:39:48
+2026-01-05 18:10:45
 Session:   7
-Kernel:    2023-02-24 - ab7362d04d7c14923420c1e19e889da512a65cd7
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Kernel:    2022-09-26 - 69dbe6daf1041e32e003f966d71f70f20c63af53
+Compiler:  ccache gcc
 Attempt 1:
     Time  Bug Name
-***    4  KASAN: slab-use-after-free Read in mas_next_entry
-The bug was found.
-About 579 commits remaining
+       2  KASAN: use-after-free Read in set_mempolicy_home_node (4) (has report)
+       3  KASAN: use-after-free Read in set_mempolicy_home_node (2) (has report)
+       4  INFO: rcu detected stall in corrupted (2)
+       4  KASAN: use-after-free Read in set_mempolicy_home_node (has report)
+       5  INFO: rcu detected stall in corrupted
+       6  INFO: rcu detected stall in corrupted
+       7  INFO: rcu detected stall in corrupted (3)
+       8  INFO: rcu detected stall in corrupted
+       9  INFO: rcu detected stall in corrupted (3)
+The bug was not found.
+About 234 commits remaining
 
-2025-03-14 18:04:47
+2026-01-05 18:34:42
 Session:   8
-Kernel:    2023-02-02 - 076cf7ea67010d11a97912423f4cdbeff1bd1f5f
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Kernel:    2022-10-03 - 2f3568017268fc34eb0b6b4b3163c0f2e619fde6
+Compiler:  ccache gcc
 Attempt 1:
     Time  Bug Name
-       3  KASAN: use-after-free Read in mas_next_nentry
-       3  KASAN: use-after-free Read in mas_next_nentry
-       4  KASAN: use-after-free Read in mas_next_nentry
-       5  KASAN: use-after-free Read in mas_next_nentry
-       5  KASAN: use-after-free Read in mas_next_nentry
-       6  KASAN: use-after-free Read in mas_next_nentry
-       7  KASAN: use-after-free Read in mas_next_nentry
-       8  KASAN: use-after-free Read in mas_next_nentry
-       8  KASAN: use-after-free Read in mas_next_nentry
-       9  suppressed report
-      10  KASAN: use-after-free Read in mas_next_nentry
-      10  KASAN: use-after-free Read in mas_next_nentry
-      10  KASAN: use-after-free Read in mas_next_nentry
-The bug was not found.
-About 10320 commits remaining
+***    2  KASAN: use-after-free Read in mas_next_nentry (4) (has report)
+Running syz-repro.
+Run Time:        0h25m0s
+The bug was found.
+About 118 commits remaining
 
-2025-03-14 18:36:07
+2026-01-05 19:15:53
 Session:   9
-Kernel:    2023-02-09 - edad1bb1fbf7e28b49bf76b2aa66bfcaba00f627
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Kernel:    2022-10-03 - 4081f7446d95a9d3ced12dc04ff02c187a761e90
+Compiler:  ccache gcc
 Attempt 1:
     Time  Bug Name
-       3  INFO: rcu detected stall in corrupted
-***    4  KASAN: slab-use-after-free Read in mas_next_entry
-Running syz-repro.
-syz-repro was terminated after 60 minutes
-Run Time:        1h0m0s
+       2  INFO: rcu detected stall in corrupted
+***    2  KASAN: use-after-free Read in mas_next_nentry (3) (has report)
 The bug was found.
-About 145 commits remaining
+About 60 commits remaining
 
-2025-03-14 20:01:16
+2026-01-05 19:29:43
 Session:   10
-Kernel:    2023-02-09 - d60beb1f698a429825ea2c463ee9e3dc3b1a79b7
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Kernel:    2022-09-26 - b3541d912a84dc40cabb516f2deeac9ae6fa30da
+Compiler:  ccache gcc
 Attempt 1:
-    No crashes found.
-The bug was not found.
-About 73 commits remaining
+    Time  Bug Name
+       2  INFO: rcu detected stall in corrupted
+***    2  KASAN: use-after-free Read in mas_next_nentry (3) (has report)
+The bug was found.
+About 30 commits remaining
 
-2025-03-14 20:32:27
+2026-01-05 19:45:37
 Session:   11
-Kernel:    2023-02-09 - 06e78b614e3780f9ac32056f2861159fd19d9702
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Kernel:    2022-09-26 - 396a44cc58910317b03dd73a93ab4fe6b76df658
+Compiler:  ccache gcc
 Attempt 1:
     Time  Bug Name
-***    4  KASAN: use-after-free Read in mas_next_entry
+       2  INFO: rcu detected stall in corrupted
+***    2  KASAN: use-after-free Read in mas_next_nentry (3) (has report)
 Running syz-repro.
-Run Time:        0h7m0s
+Run Time:        0h25m0s
 The bug was found.
-About 37 commits remaining
+About 16 commits remaining
 
-2025-03-14 21:03:25
+2026-01-05 20:19:22
 Session:   12
-Kernel:    2023-02-09 - 9e56044625a1f472edc278105f41a60726991d89
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
-Attempt 1:
-    No crashes found.
-The bug was not found.
-About 19 commits remaining
-
-2025-03-14 21:33:26
-Session:   13
-Kernel:    2023-02-09 - 9303d3e1c3f8d8863d561a070489cf44ce5e4103
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
-Attempt 1:
-    No crashes found.
-The bug was not found.
-About 10 commits remaining
-
-2025-03-14 22:03:26
-Session:   14
-Kernel:    2023-02-09 - cf51e86dfbe39b7cae3a9de650d035af22dd5fb4
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
-Attempt 1:
-    No crashes found.
-The bug was not found.
-About 6 commits remaining
-
-2025-03-14 22:21:55
-Session:   15
-Kernel:    2023-02-09 - 287051b185048c4aabe666439e64232ac59135a6
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
-Attempt 1:
-    No crashes found.
-The bug was not found.
-About 4 commits remaining
-
-2025-03-14 22:40:27
-Session:   16
-Kernel:    2023-02-09 - 18b098af2890cdeab07368405409111197f190d2
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Kernel:    2022-09-26 - 685405020b9f24ec979d41e6c27207be97c000cf
+Compiler:  ccache gcc
 Attempt 1:
     Time  Bug Name
-***    3  KASAN: use-after-free Read in mas_next_entry
-Running syz-repro.
-New PoC saved at /home/syzretrospector/syzinspector/wd-bisector-4/reproducers/repro-bug0890-2.prog
-Primary PoC:     /home/syzretrospector/syzinspector/wd-bisector-4/reproducers/repro-bug0890-2.prog
-Run Time:        0h11m0s
+       2  INFO: rcu detected stall in corrupted
+       2  KASAN: use-after-free Read in set_mempolicy_home_node (3) (has report)
+       3  KASAN: use-after-free Read in set_mempolicy_home_node (3) (has report)
+       4  INFO: rcu detected stall in corrupted
+       5  INFO: rcu detected stall in corrupted
+       6  INFO: rcu detected stall in corrupted (2)
+       6  WARNING in __vma_adjust (has report)
+       7  INFO: rcu detected stall in corrupted
+       8  INFO: rcu detected stall in corrupted (3)
+       9  INFO: rcu detected stall in corrupted
+      10  INFO: rcu detected stall in corrupted (2)
+The bug was not found.
+About 8 commits remaining
+
+2026-01-05 20:35:52
+Session:   13
+Kernel:    2022-09-26 - 66850be55e8e5f371db2c091751a932a656c5f4d
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    2  KASAN: use-after-free Read in mas_next_nentry (4) (has report)
 The bug was found.
+About 5 commits remaining
+
+2026-01-05 20:44:49
+Session:   14
+Kernel:    2022-09-26 - 3547481831acd99d6f9c3b2cef16f269e6eaad9c
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  KASAN: use-after-free Read in set_mempolicy_home_node (4) (has report)
+       3  KASAN: use-after-free Read in set_mempolicy_home_node (3) (has report)
+       5  INFO: rcu detected stall in corrupted
+       6  INFO: rcu detected stall in corrupted (3)
+       7  INFO: rcu detected stall in corrupted
+       8  INFO: rcu detected stall in corrupted (3)
+       9  INFO: rcu detected stall in corrupted
+      10  INFO: rcu detected stall in corrupted (3)
+The bug was not found.
 About 3 commits remaining
 
-2025-03-14 23:02:56
-Session:   17
-Kernel:    2023-02-09 - 0503ea8f5ba73eb3ab13a81c1eefbaf51405385a
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+2026-01-05 21:01:26
+Session:   15
+Kernel:    2022-09-26 - ba0aff8ea6ff0ba4dacfc896facadf3d91c8cd8a
+Compiler:  ccache gcc
 Attempt 1:
-    No crashes found.
+    Time  Bug Name
+       2  KASAN: use-after-free Read in set_mempolicy_home_node (3) (has report)
+       3  INFO: rcu detected stall in corrupted
+       3  KASAN: use-after-free Read in set_mempolicy_home_node (has report)
+       4  INFO: rcu detected stall in corrupted (2)
+       5  INFO: rcu detected stall in corrupted
+       6  INFO: rcu detected stall in corrupted (3)
+       7  INFO: rcu detected stall in corrupted (2)
+       8  INFO: rcu detected stall in corrupted (2)
+       9  INFO: rcu detected stall in corrupted (2)
+      10  INFO: rcu detected stall in corrupted
 The bug was not found.
 About 2 commits remaining
 
 ==== Partial Result: Focused Fuzzing ====
-Reproducer:           /home/syzretrospector/syzinspector/wd-bisector-4/reproducers/repro-bug0890-2.prog
-Bisection Result:     2023-02-09 - 18b098af2890cdeab07368405409111197f190d2
-Bisected Commit Name: vma_merge: set vma iterator to correct position.
-Stage Time:           9h19m51s
-Run Time:             9h20m0s
+Reproducer:           /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0890-2.prog
+Bisection Result:     2022-09-26 - 66850be55e8e5f371db2c091751a932a656c5f4d
+Bisected Commit Name: mm/mempolicy: use vma iterator & maple state instead of vma linked list
+Stage Time:           5h13m38s
+Run Time:             5h13m43s
 =========================================
 
 ==== Anchor Commit ====
 
-2025-03-14 23:21:37
-Session:   18
-Kernel:    2023-02-09 - 0503ea8f5ba73eb3ab13a81c1eefbaf51405385a
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
-Warning: VM has not responded after 5 attempts.
-Warning: Only booted 0 VMs.
+2026-01-05 21:18:24
+Session:   16
+Kernel:    2022-09-26 - ba0aff8ea6ff0ba4dacfc896facadf3d91c8cd8a
+Compiler:  ccache gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0890-2.prog
 Attempt 0:
-    WARNING in vma_merge
-    kernel panic: kernel: panic_on_warn set ...
+    No crashes found.
 Attempt 1:
-    WARNING in vma_merge
-    kernel panic: kernel: panic_on_warn set ...
+    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in del_device_store
+    INFO: task hung in devlink_unregister
+    INFO: task hung in linkwatch_event
+    INFO: task hung in rtnetlink_rcv_msg
 Attempt 2:
-    WARNING in vma_merge
-    kernel panic: kernel: panic_on_warn set ...
+    No crashes found.
 Attempt 3:
-    WARNING in mprotect_fixup
-    kernel panic: kernel: panic_on_warn set ...
+    INFO: rcu detected stall in cleanup_net
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in del_device_store
+    INFO: task hung in devlink_unregister
+    INFO: task hung in linkwatch_event
 Attempt 4:
-    WARNING in vma_merge
-    kernel panic: kernel: panic_on_warn set ...
+    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in switchdev_deferred_process_work
+    INFO: task hung in del_device_store
+    INFO: task hung in linkwatch_event
+    INFO: task hung in rtnetlink_rcv_msg
 Attempt 5:
-    WARNING in vma_merge
-    kernel panic: kernel: panic_on_warn set ...
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in new_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in ip_tunnel_delete_nets
 Attempt 6:
-    WARNING in vma_merge
-    kernel panic: kernel: panic_on_warn set ...
+    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in sit_exit_batch_net
+    INFO: task hung in ieee80211_register_hw
+    INFO: task hung in del_device_store
+    INFO: task hung in linkwatch_event
+    INFO: task hung in nl80211_pre_doit
+    INFO: task hung in rtnetlink_rcv_msg
 Attempt 7:
-    WARNING in vma_merge
-    kernel panic: kernel: panic_on_warn set ...
+    No crashes found.
 The bug was not found.
 
 Failure: This bug cannot be found at the anchor commit.
 
+==== Partial Result: Primary PoC Test ====
+Reproducer:           /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0890-2.prog
+Bisection Result:     Failed to reproduce at the anchor commit.
+Stage Time:           0h14m52s
+Run Time:             5h28m35s
+==========================================
+
+==== Anchor Commit ====
+
+2026-01-05 21:33:19
+Session:   17
+Kernel:    2022-09-26 - ba0aff8ea6ff0ba4dacfc896facadf3d91c8cd8a
+Compiler:  ccache gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0890-3.prog
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in new_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in rtnetlink_rcv_msg
+Attempt 2:
+    WARNING: ODEBUG bug in netdev_run_todo (has report)
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in netdev_run_todo
+    INFO: task hung in del_device_store
+    INFO: task hung in linkwatch_event
+    INFO: task hung in rtnetlink_rcv_msg
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+
+Failure: This bug cannot be found at the anchor commit.
+
+==== Partial Result: Subsequent PoC Test ====
+Reproducer:           /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0890-3.prog
+Bisection Result:     Failed to reproduce at the anchor commit.
+Stage Time:           0h14m49s
+Run Time:             5h43m24s
+=============================================
+
+==== Anchor Commit ====
+
+2026-01-05 21:48:09
+Session:   18
+Kernel:    2022-09-26 - ba0aff8ea6ff0ba4dacfc896facadf3d91c8cd8a
+Compiler:  ccache gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0890-0.prog
+Attempt 0:
+    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in netdev_run_todo
+    INFO: task hung in del_device_store
+    INFO: task hung in devlink_unregister
+    INFO: task hung in linkwatch_event
+    INFO: task hung in rtnetlink_rcv_msg
+Attempt 1:
+    KASAN: use-after-free Read in set_mempolicy_home_node (has report)
+Attempt 2:
+    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in new_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in rtnetlink_rcv_msg
+Attempt 3:
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in switchdev_deferred_process_work
+    INFO: task hung in devlink_nl_port_fill
+    INFO: task hung in new_device_store
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in rtnetlink_rcv_msg
+Attempt 4:
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in del_device_store
+    INFO: task hung in devlink_unregister
+Attempt 5:
+    INFO: rcu detected stall in cleanup_net
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in del_device_store
+    INFO: task hung in devlink_unregister
+    INFO: task hung in linkwatch_event
+Attempt 6:
+    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in ieee80211_register_hw
+    INFO: task hung in ip6gre_exit_batch_net
+    INFO: task hung in del_device_store
+    INFO: task hung in linkwatch_event
+    INFO: task hung in rtnetlink_rcv_msg
+Attempt 7:
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in devlink_unregister
+    INFO: task hung in linkwatch_event
+    INFO: task hung in rtnetlink_rcv_msg
+The bug was not found.
+
+Failure: This bug cannot be found at the anchor commit.
+
+==== Partial Result: Subsequent PoC Test ====
+Reproducer:           /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0890-0.prog
+Bisection Result:     Failed to reproduce at the anchor commit.
+Stage Time:           0h12m17s
+Run Time:             5h55m41s
+=============================================
+
+==== Anchor Commit ====
+
+2026-01-05 22:00:25
+Session:   19
+Kernel:    2022-09-26 - ba0aff8ea6ff0ba4dacfc896facadf3d91c8cd8a
+Compiler:  ccache gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0890-1.prog
+Attempt 0:
+    INFO: rcu detected stall in cleanup_net
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in del_device_store
+    INFO: task hung in devlink_unregister
+    INFO: task hung in linkwatch_event
+    INFO: task hung in rtnetlink_rcv_msg
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in ieee80211_register_hw
+    INFO: task hung in new_device_store
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in linkwatch_event
+    INFO: task hung in nl80211_pre_doit
+    INFO: task hung in rtnetlink_rcv_msg
+Attempt 3:
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in devlink_nl_port_fill
+    INFO: task hung in l2tp_exit_net
+    INFO: task hung in del_device_store
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in rtnetlink_rcv_msg
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in del_device_store
+    INFO: task hung in linkwatch_event
+    INFO: task hung in rtnetlink_rcv_msg
+The bug was not found.
+
+Failure: This bug cannot be found at the anchor commit.
+
+==== Partial Result: Subsequent PoC Test ====
+Reproducer:           /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0890-1.prog
+Bisection Result:     Failed to reproduce at the anchor commit.
+Stage Time:           0h15m2s
+Run Time:             6h10m44s
+=============================================
+
 ====================================================================================================================================================
 Bug Name:             KASAN: slab-use-after-free Read in mas_next_entry
+Bug ID:               bug0890
 Bug Link:             https://syzkaller.appspot.com/bug?extid=a7c1ec5b1d71ceaa5186
-Bisection Result:     2023-02-09 - 18b098af2890cdeab07368405409111197f190d2
-Bisected Commit Name: vma_merge: set vma iterator to correct position.
-Run Time:             9h31m35s
+Bisection Result:     2022-09-26 - 66850be55e8e5f371db2c091751a932a656c5f4d
+Bisected Commit Name: mm/mempolicy: use vma iterator & maple state instead of vma linked list
+Run Time:             6h10m44s
 
 Anchor Commit:        2023-04-03 - 148341f0a2f53b5e8808d093333d85170586a15d
-Bisection Result:     2023-02-09 - 18b098af2890cdeab07368405409111197f190d2
+Bisection Result:     2022-09-26 - 66850be55e8e5f371db2c091751a932a656c5f4d
