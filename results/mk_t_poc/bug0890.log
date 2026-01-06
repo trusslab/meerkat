@@ -1,48 +1,154 @@
-./bin/bisector -i 5 -c /home/syzretrospector/syzinspector/wd-bisector-5/bisector.cfg -a 148341f0a2f53b5e8808d093333d85170586a15d -F poc-test,poc-all-pocs
+./bin/meerkat -i 1 -c /home/syzretrospector/meerkat/wd-meerkat-1/meerkat.cfg -a 148341f0a2f53b5e8808d093333d85170586a15d -F poc-test,poc-all-pocs
 Bisecting:          KASAN: slab-use-after-free Read in mas_next_entry
 Syzbot Link:        https://syzkaller.appspot.com/bug?extid=a7c1ec5b1d71ceaa5186
 Working Name:       bug0890
 
-No aliases given.
+Aliases:
+    KASAN: slab-use-after-free Read in mas_next_entry (has report)
 
 Anchor Commit:      148341f0a2f53b5e8808d093333d85170586a15d
 Repository:         https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
 Branch:             master
 Arch:               amd64
 
-Bisector:           /home/syzretrospector/syzinspector/
-Version:            1.0.4
-Kernel:             /home/syzretrospector/syzinspector/wd-bisector-5/kernel/
-Syzkaller:          /home/syzretrospector/syzinspector/syzkaller/
-Compilers:          /home/syzretrospector/compilers/
-Ccache:             ccache
-Image:              /home/syzretrospector/images/stretch/stretch.img
-Image Key:          /home/syzretrospector/images/stretch/stretch.id_rsa
+Meerkat:            /home/syzretrospector/meerkat/
+Version:            1.2.0
+Kernel:             /home/syzretrospector/meerkat/wd-meerkat-1/kernel/
+Syzkaller:          /home/syzretrospector/meerkat/syzkaller/
+Compilers:          /home/syzretrospector/meerkat/compilers/
+Compiler:           gcc (Ubuntu 12.3.0-1ubuntu1~22.04.2) 12.3.0
+Linker:             GNU ld (GNU Binutils for Ubuntu) 2.38
+Ccache:             ccache version 4.5.1
+Image:              /home/syzretrospector/meerkat/image/stretch/stretch.img
+Image Key:          /home/syzretrospector/meerkat/image/stretch/stretch.id_rsa
 
-Workdir:            /home/syzretrospector/syzinspector/wd-bisector-5/
-Kconfig:            /home/syzretrospector/syzinspector/wd-bisector-5/config-bug0890.txt
-Reproducers: (1)    /home/syzretrospector/syzinspector/wd-bisector-5/reproducers/
-Syzkaller Workdir:  /home/syzretrospector/syzinspector/wd-bisector-5/wd-kaller/
-Log Directory:      /home/syzretrospector/syzinspector/wd-bisector-5/log/
+Workdir:            /home/syzretrospector/meerkat/wd-meerkat-1/
+Kconfig:            /home/syzretrospector/meerkat/wd-meerkat-1/config-bug0890.txt
+Reproducers: (1)    /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/
+Syzkaller Workdir:  /home/syzretrospector/meerkat/wd-meerkat-1/wd-kaller/
+Log Directory:      /home/syzretrospector/meerkat/wd-meerkat-1/log/
 
-VM Count:           4
-CPU Count:          4
-Procs:              24
+VM Count:           8
+CPU Count:          2
+Procs:              16
 Memory:             4096
 Make Procs:         16
 
 ==== Anchor Commit ====
 
-2025-03-23 21:20:49
+2026-01-05 10:37:19
 Session:   1
 Kernel:    2023-04-03 - 148341f0a2f53b5e8808d093333d85170586a15d
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Compiler:  ccache gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0890-1.prog
 Attempt 0:
-    No crashes found.
+*** KASAN: slab-use-after-free Read in mas_next_entry (has report)
 Attempt 1:
-    No crashes found.
+*** KASAN: slab-use-after-free Read in mas_next_entry (has report)
 Attempt 2:
-    No crashes found.
+*** KASAN: slab-use-after-free Read in mas_next_entry (has report)
+Attempt 3:
+*** KASAN: slab-use-after-free Read in mas_next_entry (has report)
+Attempt 4:
+*** KASAN: slab-use-after-free Read in mas_next_entry (has report)
+Attempt 5:
+*** KASAN: slab-use-after-free Read in mas_next_entry (has report)
+Attempt 6:
+*** KASAN: slab-use-after-free Read in mas_next_entry (has report)
+Attempt 7:
+*** KASAN: slab-use-after-free Read in mas_next_entry (has report)
+The bug was found.
+
+==== Major Release Search ====
+13 Releases
+
+2026-01-05 11:07:30
+Session:   2
+Kernel:    2023-02-19 - c9c3395d5e3dcc6daee66c6908354d47bf98cb0c (v6.2)
+Compiler:  ccache gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0890-1.prog
+Attempt 0:
+*** KASAN: use-after-free Read in mas_next_nentry (has report)
+Attempt 1:
+    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in new_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in linkwatch_event
+    INFO: task hung in rtnetlink_rcv_msg
+Attempt 2:
+    INFO: rcu detected stall in corrupted
+*** KASAN: use-after-free Read in mas_next_nentry (has report)
+Attempt 3:
+*** KASAN: use-after-free Read in mas_next_nentry (has report)
+Attempt 4:
+*** KASAN: use-after-free Read in mas_next_nentry (has report)
+Attempt 5:
+    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in new_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in rtnetlink_rcv_msg
+Attempt 6:
+*** KASAN: use-after-free Read in mas_next_nentry (has report)
+Attempt 7:
+*** KASAN: use-after-free Read in mas_next_nentry (has report)
+The bug was found.
+About 12 releases remaining
+
+2026-01-05 11:25:13
+Session:   3
+Kernel:    2022-12-11 - 830b3c68c1fb1e9176028d02ef86f3cf76aa2476 (v6.1)
+Compiler:  ccache gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0890-1.prog
+Attempt 0:
+*** KASAN: use-after-free Read in mas_next_nentry (has report)
+Attempt 1:
+*** KASAN: use-after-free Read in mas_next_nentry (has report)
+Attempt 2:
+*** KASAN: use-after-free Read in mas_next_nentry (has report)
+Attempt 3:
+    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in del_device_store
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in devlink_unregister
+    INFO: task hung in rtnetlink_rcv_msg
+Attempt 4:
+*** KASAN: use-after-free Read in mas_next_nentry (has report)
+Attempt 5:
+*** KASAN: use-after-free Read in mas_next_nentry (has report)
+Attempt 6:
+*** KASAN: use-after-free Read in mas_next_nentry (has report)
+Attempt 7:
+*** KASAN: use-after-free Read in mas_next_nentry (has report)
+The bug was found.
+About 11 releases remaining
+
+2026-01-05 11:57:13
+Session:   4
+Kernel:    2022-10-02 - 4fe89d07dcc2804c8b562f6c7896a45643d34b2f (v6.0)
+Compiler:  ccache gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0890-1.prog
+Attempt 0:
+    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in del_device_store
+Attempt 1:
+    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in devlink_nl_port_fill
+    INFO: task hung in l2tp_exit_net
+    INFO: task hung in new_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in linkwatch_event
+    INFO: task hung in rtnetlink_rcv_msg
+Attempt 2:
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in del_device_store
 Attempt 3:
     No crashes found.
 Attempt 4:
@@ -54,12 +160,613 @@ Attempt 6:
 Attempt 7:
     No crashes found.
 The bug was not found.
+About 10 releases remaining
 
-Failure: This bug cannot be found at the anchor commit.
+==== Kernel Bisection ====
+15110 Linux commits
+
+2026-01-05 12:32:51
+Session:   5
+Kernel:    2022-10-07 - 33e591dee915832c618cf68bb1058c8e7d296128
+Compiler:  ccache gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0890-1.prog
+Attempt 0:
+    possible deadlock in vivid_update_format_cap
+    WARNING in wireless_send_event (has report)
+Attempt 1:
+    possible deadlock in vivid_update_format_cap
+    WARNING in wireless_send_event (has report)
+Attempt 2:
+    possible deadlock in vivid_update_format_cap
+    WARNING in wireless_send_event (has report)
+Attempt 3:
+    possible deadlock in vivid_update_format_cap
+    WARNING in wireless_send_event (has report)
+Attempt 4:
+    possible deadlock in vivid_update_format_cap
+    WARNING in wireless_send_event (has report)
+Attempt 5:
+    possible deadlock in vivid_update_format_cap
+    WARNING in wireless_send_event (has report)
+Attempt 6:
+    possible deadlock in vivid_update_format_cap
+    WARNING in wireless_send_event (has report)
+Attempt 7:
+    possible deadlock in vivid_update_format_cap
+    WARNING in wireless_send_event (has report)
+The bug was not found.
+About 7516 commits remaining
+
+2026-01-05 13:11:27
+Session:   6
+Kernel:    2022-10-11 - de492c83cae0af72de370b9404aacda93dafcad5
+Compiler:  ccache gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0890-1.prog
+Warning: VM has not responded after 5 attempts.
+Warning: Only booted 0 VMs.
+The bug was not found.
+This commit is flagged as unstable.
+About 7516 commits remaining
+
+2026-01-05 13:44:40
+Session:   7
+Kernel:    2022-10-19 - 8e77860c62b6eac8bb5b567efe6b8cd232d5f72f
+Compiler:  ccache gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0890-1.prog
+Attempt 0:
+    INFO: rcu detected stall in cleanup_net
+    INFO: rcu detected stall in corrupted
+    possible deadlock in vivid_update_format_cap
+    INFO: task hung in devlink_unregister
+    INFO: task hung in linkwatch_event
+    INFO: task hung in rtnetlink_rcv_msg
+Attempt 1:
+    possible deadlock in vivid_update_format_cap
+Attempt 2:
+    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in switchdev_deferred_process_work
+    INFO: task hung in new_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in addrconf_dad_work
+    possible deadlock in vivid_update_format_cap
+    INFO: task hung in devlink_unregister
+    INFO: task hung in linkwatch_event
+    INFO: task hung in rtnetlink_rcv_msg
+Attempt 3:
+    possible deadlock in vivid_update_format_cap
+Attempt 4:
+    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in wg_destruct
+    INFO: task hung in del_device_store
+    INFO: task hung in addrconf_dad_work
+    possible deadlock in vivid_update_format_cap
+    INFO: task hung in devlink_unregister
+    INFO: task hung in linkwatch_event
+    INFO: task hung in rtnetlink_rcv_msg
+Attempt 5:
+    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in new_device_store
+    INFO: task hung in del_device_store
+    possible deadlock in vivid_update_format_cap
+Attempt 6:
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in switchdev_deferred_process_work
+    INFO: task hung in wg_destruct
+    INFO: task hung in del_device_store
+    INFO: task hung in addrconf_dad_work
+    possible deadlock in vivid_update_format_cap
+    INFO: task hung in devlink_unregister
+    INFO: task hung in linkwatch_event
+    INFO: task hung in rtnetlink_rcv_msg
+Attempt 7:
+    possible deadlock in vivid_update_format_cap
+The bug was not found.
+About 2812 commits remaining
+
+2026-01-05 14:22:39
+Session:   8
+Kernel:    2022-12-09 - 4a7ba45b1a435e7097ca0f79a847d0949d0eb088
+Compiler:  ccache gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0890-1.prog
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in netdev_run_todo
+    INFO: task hung in del_device_store
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in devlink_unregister
+    INFO: task hung in linkwatch_event
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in new_device_store
+    INFO: task hung in del_device_store
+Attempt 4:
+    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in del_device_store
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in del_device_store
+Attempt 7:
+    No crashes found.
+The bug was not found.
+About 1423 commits remaining
+
+2026-01-05 14:58:50
+Session:   9
+Kernel:    2022-11-20 - c6c67bf9bc2714d9c2c2e7ecfbf29d912b8c4f17
+Compiler:  ccache gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0890-1.prog
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in fib6_rules_net_exit_batch
+    INFO: task hung in switchdev_deferred_process_work
+    INFO: task hung in new_device_store
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in devlink_unregister
+    INFO: task hung in linkwatch_event
+    INFO: task hung in rtnetlink_rcv_msg
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in switchdev_deferred_process_work
+    INFO: task hung in cangw_pernet_exit_batch
+    INFO: task hung in new_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in devlink_unregister
+    INFO: task hung in linkwatch_event
+    INFO: task hung in rtnetlink_rcv_msg
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in netdev_run_todo
+    INFO: task hung in new_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in devlink_unregister
+The bug was not found.
+About 757 commits remaining
+
+2026-01-05 15:35:31
+Session:   10
+Kernel:    2022-11-29 - 2f3830544a89af2e72e7fd3d6ca44dd9cffec197
+Compiler:  ccache gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0890-1.prog
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in del_device_store
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in new_device_store
+    WARNING in io_ring_exit_work (has report)
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in genl_rcv_msg
+The bug was not found.
+About 379 commits remaining
+
+2026-01-05 16:12:54
+Session:   11
+Kernel:    2022-12-03 - 6085bc95797caa55a68bc0f7dd73e8c33e91037f
+Compiler:  ccache gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0890-1.prog
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in cangw_pernet_exit_batch
+    INFO: task hung in new_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in rtnetlink_rcv_msg
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in netdev_run_todo
+    INFO: task hung in del_device_store
+    INFO: task hung in devlink_unregister
+Attempt 7:
+    No crashes found.
+The bug was not found.
+About 186 commits remaining
+
+2026-01-05 16:48:26
+Session:   12
+Kernel:    2022-12-08 - f8bac7f9fdb0017b32157957ffffd490f95faa07
+Compiler:  ccache gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0890-1.prog
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in netdev_run_todo
+    INFO: task hung in del_device_store
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in linkwatch_event
+Attempt 5:
+    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in del_device_store
+Attempt 6:
+    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit
+    INFO: task hung in caif_exit_net
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in new_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in rtnetlink_rcv_msg
+Attempt 7:
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in devlink_nl_port_fill
+    INFO: task hung in new_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in linkwatch_event
+The bug was not found.
+About 193 commits remaining
+
+2026-01-05 17:08:44
+Session:   13
+Kernel:    2022-12-08 - a4c3a07e5b9ffb525435fedd94b5082c928e56dd
+Compiler:  ccache gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0890-1.prog
+Attempt 0:
+    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in netdev_run_todo
+    INFO: task hung in new_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in devlink_unregister
+Attempt 1:
+    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in new_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in devlink_unregister
+    INFO: task hung in linkwatch_event
+Attempt 2:
+    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in new_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in devlink_unregister
+Attempt 3:
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in new_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in linkwatch_event
+    INFO: task hung in rtnetlink_rcv_msg
+Attempt 4:
+*** KASAN: use-after-free Read in mas_next_nentry (has report)
+Attempt 5:
+*** KASAN: use-after-free Read in mas_next_nentry (has report)
+Attempt 6:
+    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in del_device_store
+    INFO: task hung in linkwatch_event
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in ip_tunnel_delete_nets
+Attempt 7:
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in new_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in linkwatch_event
+    INFO: task hung in rtnetlink_rcv_msg
+The bug was found.
+About 139 commits remaining
+
+2026-01-05 17:46:17
+Session:   14
+Kernel:    2022-12-07 - 7dfa764e0223a324366a2a1fc056d4d9d4e95491
+Compiler:  ccache gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0890-1.prog
+Attempt 0:
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in new_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in linkwatch_event
+    INFO: task hung in rtnetlink_rcv_msg
+Attempt 1:
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in del_device_store
+    INFO: task hung in devlink_unregister
+    INFO: task hung in linkwatch_event
+    INFO: task hung in rtnetlink_rcv_msg
+Attempt 2:
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in l2tp_exit_net
+    INFO: task hung in new_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in devlink_unregister
+Attempt 3:
+*** KASAN: use-after-free Read in mas_next_nentry (has report)
+Attempt 4:
+*** KASAN: use-after-free Read in mas_next_nentry (has report)
+Attempt 5:
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in new_device_store
+    INFO: task hung in del_device_store
+Attempt 6:
+    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in l2tp_exit_net
+    INFO: task hung in new_device_store
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in linkwatch_event
+Attempt 7:
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in switchdev_deferred_process_work
+    INFO: task hung in del_device_store
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in linkwatch_event
+    INFO: task hung in rtnetlink_rcv_msg
+The bug was found.
+About 115 commits remaining
+
+2026-01-05 18:08:14
+Session:   15
+Kernel:    2022-12-04 - ae6bb71711713e7b6b2d9ed2af7318dc8ae5cfb2
+Compiler:  ccache gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0890-1.prog
+Attempt 0:
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in devlink_nl_port_fill
+    INFO: task hung in del_device_store
+    INFO: task hung in rtnetlink_rcv_msg
+Attempt 1:
+    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in l2tp_exit_net
+    INFO: task hung in del_device_store
+    INFO: task hung in devlink_unregister
+Attempt 2:
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in l2tp_exit_net
+    INFO: task hung in new_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in devlink_unregister
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in new_device_store
+    INFO: task hung in devlink_unregister
+    INFO: task hung in rtnetlink_rcv_msg
+Attempt 7:
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in switchdev_deferred_process_work
+    INFO: task hung in new_device_store
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in linkwatch_event
+    INFO: task hung in rtnetlink_rcv_msg
+The bug was not found.
+About 11 commits remaining
+
+2026-01-05 18:30:04
+Session:   16
+Kernel:    2022-12-04 - 23393c6461422df5bf8084a086ada9a7e17dc2ba
+Compiler:  ccache gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0890-1.prog
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in switchdev_deferred_process_work
+    INFO: task hung in cangw_pernet_exit_batch
+    INFO: task hung in del_device_store
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in devlink_unregister
+    INFO: task hung in linkwatch_event
+    INFO: task hung in rtnetlink_rcv_msg
+Attempt 3:
+    INFO: rcu detected stall in cleanup_net
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in del_device_store
+    INFO: task hung in devlink_unregister
+    INFO: task hung in linkwatch_event
+    INFO: task hung in rtnetlink_rcv_msg
+Attempt 4:
+    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in l2tp_exit_net
+    INFO: task hung in del_device_store
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in linkwatch_event
+Attempt 5:
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in new_device_store
+    INFO: task hung in del_device_store
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+About 6 commits remaining
+
+2026-01-05 18:51:01
+Session:   17
+Kernel:    2022-12-04 - 76dcd734eca23168cb008912c0f69ff408905235
+Compiler:  ccache gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0890-1.prog
+Attempt 0:
+*** KASAN: use-after-free Read in mas_next_nentry (has report)
+Attempt 1:
+    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in new_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in devlink_unregister
+    INFO: task hung in linkwatch_event
+    INFO: task hung in rtnetlink_rcv_msg
+Attempt 2:
+*** KASAN: use-after-free Read in mas_next_nentry (has report)
+Attempt 3:
+*** KASAN: use-after-free Read in mas_next_nentry (has report)
+Attempt 4:
+    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in devlink_nl_port_fill
+    INFO: task hung in del_device_store
+    INFO: task hung in rtnetlink_rcv_msg
+Attempt 5:
+*** KASAN: use-after-free Read in mas_next_nentry (has report)
+Attempt 6:
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in del_device_store
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in rtnetlink_rcv_msg
+Attempt 7:
+    INFO: rcu detected stall in cleanup_net
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in del_device_store
+    INFO: task hung in linkwatch_event
+    INFO: task hung in rtnetlink_rcv_msg
+The bug was found.
+About 3 commits remaining
+
+2026-01-05 19:11:13
+Session:   18
+Kernel:    2022-12-04 - 0ba09b1733878afe838fe35c310715fda3d46428
+Compiler:  ccache gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0890-1.prog
+Attempt 0:
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in switchdev_deferred_process_work
+    INFO: task hung in del_device_store
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in devlink_unregister
+    INFO: task hung in linkwatch_event
+    INFO: task hung in rtnetlink_rcv_msg
+Attempt 1:
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in new_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in devlink_unregister
+Attempt 2:
+*** KASAN: use-after-free Read in mas_next_nentry (has report)
+Attempt 3:
+*** KASAN: use-after-free Read in mas_next_nentry (has report)
+Attempt 4:
+*** KASAN: use-after-free Read in mas_next_nentry (has report)
+Attempt 5:
+*** KASAN: use-after-free Read in mas_next_nentry (has report)
+Attempt 6:
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in switchdev_deferred_process_work
+    INFO: task hung in netdev_run_todo
+    INFO: task hung in del_device_store
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in devlink_unregister
+    INFO: task hung in linkwatch_event
+    INFO: task hung in rtnetlink_rcv_msg
+Attempt 7:
+    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in new_device_store
+    INFO: task hung in del_device_store
+The bug was found.
+About 2 commits remaining
 
 ==== Partial Result: Primary PoC Test ====
-Reproducer:           /home/syzretrospector/syzinspector/wd-bisector-5/reproducers/repro-bug0890-1.prog
-Bisection Result:     Failed to reproduce at the anchor commit.
-Stage Time:           0h24m1s
-Run Time:             0h24m1s
+Reproducer:           /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0890-1.prog
+Bisection Result:     2022-12-04 - 0ba09b1733878afe838fe35c310715fda3d46428
+Bisected Commit Name: Revert "mm: align larger anonymous mappings on THP boundaries"
+Stage Time:           8h56m49s
+Run Time:             8h56m52s
 ==========================================
+
+====================================================================================================================================================
+Bug Name:             KASAN: slab-use-after-free Read in mas_next_entry
+Bug ID:               bug0890
+Bug Link:             https://syzkaller.appspot.com/bug?extid=a7c1ec5b1d71ceaa5186
+Bisection Result:     2022-12-04 - 0ba09b1733878afe838fe35c310715fda3d46428
+Bisected Commit Name: Revert "mm: align larger anonymous mappings on THP boundaries"
+Run Time:             8h56m52s
+
+Anchor Commit:        2023-04-03 - 148341f0a2f53b5e8808d093333d85170586a15d
+Bisection Result:     2022-12-04 - 0ba09b1733878afe838fe35c310715fda3d46428
