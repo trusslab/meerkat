@@ -1,30 +1,33 @@
-./bin/bisector -i 2 -c /mnt/sdd/jtbursey/SyzInspector/wd-bisector-2/bisector.cfg -a 555f3d7be91a873114c9656069f1a9fa476ec41a -F poc-test,poc-all-pocs
-Bisecting:          BUG: corrupted list in rdma_listen
+./bin/meerkat -i 1 -c /home/syzretrospector/meerkat/wd-meerkat-1/meerkat.cfg -a 555f3d7be91a873114c9656069f1a9fa476ec41a -F poc-test,poc-all-pocs
+Bisecting:          KASAN: use-after-free Read in rdma_listen
 Syzbot Link:        https://syzkaller.appspot.com/bug?id=362b5b49fced29361c0ba3007a2b3e5cd13776b5
 Working Name:       bug0211
 
-No aliases given.
+Aliases:
+    KASAN: use-after-free Read in rdma_listen
 
 Anchor Commit:      555f3d7be91a873114c9656069f1a9fa476ec41a
 Repository:         https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
 Branch:             master
 Arch:               amd64
 
-Bisector:           /mnt/sdd/jtbursey/SyzInspector/
-Version:            1.0.4
-Kernel:             /mnt/sdd/jtbursey/SyzInspector/wd-bisector-2/kernel/
-Syzkaller:          /mnt/sdd/jtbursey/SyzInspector/syzkaller/
-Compilers:          /mnt/sda/jtbursey/SyzInspector/compilers/
-Ccache:             ccache
-Image:              /mnt/sda/jtbursey/SyzInspector/image/stretch/stretch.img
-Image Key:          /mnt/sda/jtbursey/SyzInspector/image/stretch/stretch.id_rsa
+Meerkat:            /home/syzretrospector/meerkat/
+Version:            1.2.0
+Kernel:             /home/syzretrospector/meerkat/wd-meerkat-1/kernel/
+Syzkaller:          /home/syzretrospector/meerkat/syzkaller/
+Compilers:          /home/syzretrospector/meerkat/compilers/
+Compiler:           gcc (Ubuntu 12.3.0-1ubuntu1~22.04.2) 12.3.0
+Linker:             GNU ld (GNU Binutils for Ubuntu) 2.38
+Ccache:             ccache version 4.5.1
+Image:              /home/syzretrospector/meerkat/image/stretch/stretch.img
+Image Key:          /home/syzretrospector/meerkat/image/stretch/stretch.id_rsa
 
-Workdir:            /mnt/sdd/jtbursey/SyzInspector/wd-bisector-2/
-Kconfig:            /mnt/sdd/jtbursey/SyzInspector/wd-bisector-2/config-bug0211.txt
-Reproducers: (1)    /mnt/sdd/jtbursey/SyzInspector/wd-bisector-2/reproducers/
-Primary PoC:        /mnt/sdd/jtbursey/SyzInspector/wd-bisector-2/reproducers/repro-bug0211-1.prog
-Syzkaller Workdir:  /mnt/sdd/jtbursey/SyzInspector/wd-bisector-2/wd-kaller/
-Log Directory:      /mnt/sdd/jtbursey/SyzInspector/wd-bisector-2/log/
+Workdir:            /home/syzretrospector/meerkat/wd-meerkat-1/
+Kconfig:            /home/syzretrospector/meerkat/wd-meerkat-1/config-bug0211.txt
+Reproducers: (1)    /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/
+Primary PoC:        /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0211-1.prog
+Syzkaller Workdir:  /home/syzretrospector/meerkat/wd-meerkat-1/wd-kaller/
+Log Directory:      /home/syzretrospector/meerkat/wd-meerkat-1/log/
 
 VM Count:           8
 CPU Count:          2
@@ -34,33 +37,1779 @@ Make Procs:         16
 
 ==== Anchor Commit ====
 
-2025-03-10 15:03:24
+2026-01-07 09:36:12
 Session:   1
 Kernel:    2022-02-07 - 555f3d7be91a873114c9656069f1a9fa476ec41a
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Compiler:  ccache gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0211-1.prog
 Attempt 0:
-    KASAN: use-after-free Read in rdma_listen
+*** KASAN: use-after-free Read in rdma_listen (has report)
 Attempt 1:
-    KASAN: use-after-free Read in rdma_listen
+*** KASAN: use-after-free Read in rdma_listen (has report)
 Attempt 2:
-    KASAN: use-after-free Read in rdma_listen
+*** KASAN: use-after-free Read in rdma_listen (has report)
 Attempt 3:
-    KASAN: use-after-free Read in rdma_listen
+*** KASAN: use-after-free Read in rdma_listen (has report)
 Attempt 4:
-    KASAN: use-after-free Read in rdma_listen
+*** KASAN: use-after-free Read in rdma_listen (has report)
 Attempt 5:
-    KASAN: use-after-free Read in rdma_listen
+*** KASAN: use-after-free Read in rdma_listen (has report)
 Attempt 6:
-    KASAN: use-after-free Read in rdma_listen
+*** KASAN: use-after-free Read in rdma_listen (has report)
 Attempt 7:
-    KASAN: use-after-free Read in rdma_listen
-The bug was not found.
+*** KASAN: use-after-free Read in rdma_listen (has report)
+The bug was found.
 
-Failure: This bug cannot be found at the anchor commit.
+==== Major Release Search ====
+11 Releases
+
+2026-01-07 09:59:15
+Session:   2
+Kernel:    2022-01-09 - df0cc57e057f18e44dac8e6c18aba47ab53202f9 (v5.16)
+Compiler:  ccache gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0211-1.prog
+Attempt 0:
+*** KASAN: use-after-free Read in rdma_listen (has report)
+Attempt 1:
+*** KASAN: use-after-free Read in rdma_listen (has report)
+Attempt 2:
+*** KASAN: use-after-free Read in rdma_listen (has report)
+Attempt 3:
+*** KASAN: use-after-free Read in rdma_listen (has report)
+Attempt 4:
+*** KASAN: use-after-free Read in rdma_listen (has report)
+Attempt 5:
+*** KASAN: use-after-free Read in rdma_listen (has report)
+Attempt 6:
+*** KASAN: use-after-free Read in rdma_listen (has report)
+Attempt 7:
+*** KASAN: use-after-free Read in rdma_listen (has report)
+The bug was found.
+About 10 releases remaining
+
+2026-01-07 10:22:44
+Session:   3
+Kernel:    2021-10-31 - 8bb7eca972ad531c9b149c0a51ab43a417385813 (v5.15)
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0211-1.prog
+Attempt 0:
+*** KASAN: use-after-free Read in rdma_listen (has report)
+Attempt 1:
+*** KASAN: use-after-free Read in rdma_listen (has report)
+Attempt 2:
+*** KASAN: use-after-free Read in rdma_listen (has report)
+Attempt 3:
+*** KASAN: use-after-free Read in rdma_listen (has report)
+Attempt 4:
+*** KASAN: use-after-free Read in rdma_listen (has report)
+Attempt 5:
+*** KASAN: use-after-free Read in rdma_listen (has report)
+Attempt 6:
+*** KASAN: use-after-free Read in rdma_listen (has report)
+Attempt 7:
+*** KASAN: use-after-free Read in rdma_listen (has report)
+The bug was found.
+About 9 releases remaining
+
+2026-01-07 10:43:59
+Session:   4
+Kernel:    2021-08-29 - 7d2a07b769330c34b4deabeed939325c77a7ec2f (v5.14)
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0211-1.prog
+Attempt 0:
+*** KASAN: use-after-free Read in rdma_listen (has report)
+Attempt 1:
+*** KASAN: use-after-free Read in rdma_listen (has report)
+Attempt 2:
+*** KASAN: use-after-free Read in rdma_listen (has report)
+Attempt 3:
+*** KASAN: use-after-free Read in rdma_listen (has report)
+Attempt 4:
+*** KASAN: use-after-free Read in rdma_listen (has report)
+Attempt 5:
+*** KASAN: use-after-free Read in rdma_listen (has report)
+Attempt 6:
+*** KASAN: use-after-free Read in rdma_listen (has report)
+Attempt 7:
+*** KASAN: use-after-free Read in rdma_listen (has report)
+The bug was found.
+About 8 releases remaining
+
+2026-01-07 11:04:48
+Session:   5
+Kernel:    2021-04-25 - 9f4ad9e425a1d3b6a34617b8ea226d56a119a717 (v5.12)
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0211-1.prog
+Attempt 0:
+*** KASAN: use-after-free Read in rdma_listen (has report)
+Attempt 1:
+*** KASAN: use-after-free Read in rdma_listen (has report)
+Attempt 2:
+*** KASAN: use-after-free Read in rdma_listen (has report)
+Attempt 3:
+*** KASAN: use-after-free Read in rdma_listen (has report)
+Attempt 4:
+*** KASAN: use-after-free Read in rdma_listen (has report)
+Attempt 5:
+*** KASAN: use-after-free Read in rdma_listen (has report)
+Attempt 6:
+*** KASAN: use-after-free Read in rdma_listen (has report)
+Attempt 7:
+*** KASAN: use-after-free Read in rdma_listen (has report)
+The bug was found.
+About 7 releases remaining
+
+2026-01-07 11:25:24
+Session:   6
+Kernel:    2020-12-13 - 2c85ebc57b3e1817b6ce1a6b703928e113a90442 (v5.10)
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0211-1.prog
+Attempt 0:
+*** KASAN: use-after-free Read in rdma_listen (has report)
+Attempt 1:
+*** KASAN: use-after-free Read in rdma_listen (has report)
+Attempt 2:
+*** KASAN: use-after-free Read in rdma_listen (has report)
+Attempt 3:
+*** KASAN: use-after-free Read in rdma_listen (has report)
+Attempt 4:
+*** KASAN: use-after-free Read in rdma_listen (has report)
+Attempt 5:
+*** KASAN: use-after-free Read in rdma_listen (has report)
+Attempt 6:
+*** KASAN: use-after-free Read in rdma_listen (has report)
+Attempt 7:
+*** KASAN: use-after-free Read in rdma_listen (has report)
+The bug was found.
+About 6 releases remaining
+
+2026-01-07 11:45:58
+Session:   7
+Kernel:    2020-08-02 - bcf876870b95592b52519ed4aafcf9d95999bc9c (v5.8)
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0211-1.prog
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+About 5 releases remaining
+
+==== Kernel Bisection ====
+33530 Linux commits
+
+2026-01-07 12:09:28
+Session:   8
+Kernel:    2020-10-12 - 1c6890707eb1438b0fb4e0a10d4afe48a217628b
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0211-1.prog
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+About 16775 commits remaining
+
+2026-01-07 12:32:30
+Session:   9
+Kernel:    2020-10-16 - 4d0e9df5e43dba52d38b251e3b909df8fa1110be
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0211-1.prog
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+About 9596 commits remaining
+
+2026-01-07 12:55:55
+Session:   10
+Kernel:    2020-10-28 - 6694875ef8045cdb1e6712ee9b68fe08763507d8
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0211-1.prog
+Attempt 0:
+*** KASAN: use-after-free Read in rdma_listen (has report)
+Attempt 1:
+*** KASAN: use-after-free Read in rdma_listen (has report)
+Attempt 2:
+*** KASAN: use-after-free Read in rdma_listen (has report)
+Attempt 3:
+*** KASAN: use-after-free Read in rdma_listen (has report)
+Attempt 4:
+*** KASAN: use-after-free Read in rdma_listen (has report)
+Attempt 5:
+*** KASAN: use-after-free Read in rdma_listen (has report)
+Attempt 6:
+*** KASAN: use-after-free Read in rdma_listen (has report)
+Attempt 7:
+*** KASAN: use-after-free Read in rdma_listen (has report)
+The bug was found.
+About 4721 commits remaining
+
+2026-01-07 13:16:17
+Session:   11
+Kernel:    2020-10-02 - 14c914fcb515c424177bb6848cc2858ebfe717a8
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0211-1.prog
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    WARNING in __cfg80211_ibss_joined (has report)
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+About 10729 commits remaining
+
+2026-01-07 13:40:33
+Session:   12
+Kernel:    2020-10-17 - 6f78b9acf04fbf9ede7f4265e7282f9fb39d2c8c
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0211-1.prog
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+About 1134 commits remaining
+
+2026-01-07 14:04:26
+Session:   13
+Kernel:    2020-10-19 - bbe85027ce8019c73ab99ad1c2603e2dcd1afa49
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0211-1.prog
+Attempt 0:
+*** KASAN: use-after-free Read in rdma_listen (has report)
+Attempt 1:
+*** KASAN: use-after-free Read in rdma_listen (has report)
+Attempt 2:
+*** KASAN: use-after-free Read in rdma_listen (has report)
+Attempt 3:
+*** KASAN: use-after-free Read in rdma_listen (has report)
+Attempt 4:
+*** KASAN: use-after-free Read in rdma_listen (has report)
+Attempt 5:
+*** KASAN: use-after-free Read in rdma_listen (has report)
+Attempt 6:
+*** KASAN: use-after-free Read in rdma_listen (has report)
+Attempt 7:
+*** KASAN: use-after-free Read in rdma_listen (has report)
+The bug was found.
+About 576 commits remaining
+
+2026-01-07 14:24:14
+Session:   14
+Kernel:    2020-10-17 - 9d9af1007bc08971953ae915d88dc9bb21344b53
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0211-1.prog
+Attempt 0:
+*** KASAN: use-after-free Read in rdma_listen (has report)
+Attempt 1:
+*** KASAN: use-after-free Read in rdma_listen (has report)
+Attempt 2:
+*** KASAN: use-after-free Read in rdma_listen (has report)
+Attempt 3:
+*** KASAN: use-after-free Read in rdma_listen (has report)
+Attempt 4:
+*** KASAN: use-after-free Read in rdma_listen (has report)
+Attempt 5:
+*** KASAN: use-after-free Read in rdma_listen (has report)
+Attempt 6:
+*** KASAN: use-after-free Read in rdma_listen (has report)
+Attempt 7:
+*** KASAN: use-after-free Read in rdma_listen (has report)
+The bug was found.
+About 318 commits remaining
+
+2026-01-07 14:43:31
+Session:   15
+Kernel:    2020-09-29 - 21c2fe94abb2abe894e6aabe6b4e84a255c8d339
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0211-1.prog
+Attempt 0:
+*** KASAN: use-after-free Read in rdma_listen (has report)
+Attempt 1:
+*** KASAN: use-after-free Read in rdma_listen (has report)
+Attempt 2:
+*** KASAN: use-after-free Read in rdma_listen (has report)
+Attempt 3:
+*** KASAN: use-after-free Read in rdma_listen (has report)
+Attempt 4:
+*** KASAN: use-after-free Read in rdma_listen (has report)
+Attempt 5:
+*** KASAN: use-after-free Read in rdma_listen (has report)
+Attempt 6:
+*** KASAN: use-after-free Read in rdma_listen (has report)
+Attempt 7:
+*** KASAN: use-after-free Read in rdma_listen (has report)
+The bug was found.
+About 159 commits remaining
+
+2026-01-07 15:02:36
+Session:   16
+Kernel:    2020-09-11 - 68363052ff5addd3817a104cc453f4e2045704c9
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0211-1.prog
+Warning: VM has not responded after 5 attempts.
+Warning: Only booted 0 VMs.
+The bug was not found.
+This commit is flagged as unstable.
+About 159 commits remaining
+
+2026-01-07 15:18:09
+Session:   17
+Kernel:    2020-08-27 - 308571debccd7004acf02ea1b7163a96ad772292
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0211-1.prog
+Warning: VM has not responded after 5 attempts.
+Warning: Only booted 0 VMs.
+The bug was not found.
+This commit is flagged as unstable.
+About 159 commits remaining
+
+2026-01-07 15:34:08
+Session:   18
+Kernel:    2020-09-09 - 3361c29e9279e682c0e9a7d7461b4e3bbc77830b
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0211-1.prog
+Warning: VM has not responded after 5 attempts.
+Warning: Only booted 0 VMs.
+The bug was not found.
+This commit is flagged as unstable.
+About 159 commits remaining
+
+2026-01-07 15:40:18
+Session:   19
+Kernel:    2020-09-18 - 5eb29f0d13a66502b91954597270003c90fb66c5
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0211-1.prog
+Attempt 0:
+*** KASAN: use-after-free Read in rdma_listen (has report)
+Attempt 1:
+*** KASAN: use-after-free Read in rdma_listen (has report)
+Attempt 2:
+*** KASAN: use-after-free Read in rdma_listen (has report)
+Attempt 3:
+*** KASAN: use-after-free Read in rdma_listen (has report)
+Attempt 4:
+*** KASAN: use-after-free Read in rdma_listen (has report)
+Attempt 5:
+*** KASAN: use-after-free Read in rdma_listen (has report)
+Attempt 6:
+*** KASAN: use-after-free Read in rdma_listen (has report)
+Attempt 7:
+*** KASAN: use-after-free Read in rdma_listen (has report)
+The bug was found.
+About 124 commits remaining
+
+2026-01-07 15:49:57
+Session:   20
+Kernel:    2020-09-09 - 558d52b2976b1db3098139aa83ceb9af9066a0e7
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0211-1.prog
+Warning: VM has not responded after 5 attempts.
+Warning: Only booted 0 VMs.
+The bug was not found.
+This commit is flagged as unstable.
+About 124 commits remaining
+
+2026-01-07 15:56:14
+Session:   21
+Kernel:    2020-09-09 - 119181d1d4327d3259ab25aa0ea3d3bc364afcdc
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0211-1.prog
+Warning: VM has not responded after 5 attempts.
+Warning: Only booted 0 VMs.
+The bug was not found.
+This commit is flagged as unstable.
+About 124 commits remaining
+
+2026-01-07 16:02:55
+Session:   22
+Kernel:    2020-08-27 - 620db1a1183d69cc49981ee59c9207e53befeae4
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0211-1.prog
+Warning: VM has not responded after 5 attempts.
+Warning: Only booted 0 VMs.
+The bug was not found.
+This commit is flagged as unstable.
+About 124 commits remaining
+
+2026-01-07 16:09:34
+Session:   23
+Kernel:    2020-09-09 - fd89099d635e67f22c3eda263bef1f27f9d5dcb5
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0211-1.prog
+Warning: VM has not responded after 5 attempts.
+Warning: Only booted 0 VMs.
+The bug was not found.
+This commit is flagged as unstable.
+About 124 commits remaining
+
+2026-01-07 16:16:11
+Session:   24
+Kernel:    2020-09-11 - 8a5a10a1a74465065c75d9de1aa6685e1f1aa117
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0211-1.prog
+Warning: VM has not responded after 5 attempts.
+Warning: Only booted 0 VMs.
+The bug was not found.
+This commit is flagged as unstable.
+About 124 commits remaining
+
+2026-01-07 16:23:11
+Session:   25
+Kernel:    2020-09-09 - f553246f7f794675da1794ae7ee07d1f35e561ae
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0211-1.prog
+Warning: VM has not responded after 5 attempts.
+Warning: Only booted 0 VMs.
+The bug was not found.
+This commit is flagged as unstable.
+About 124 commits remaining
+
+2026-01-07 16:28:48
+Session:   26
+Kernel:    2020-08-27 - 98837c6c3d7285f6eca86480b6f7fac6880e27a8
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0211-1.prog
+Warning: VM has not responded after 5 attempts.
+Warning: Only booted 0 VMs.
+The bug was not found.
+This commit is flagged as unstable.
+About 124 commits remaining
+
+2026-01-07 16:34:35
+Session:   27
+Kernel:    2020-09-09 - 9a9ebf8cd72b809405ad571fb2f635ffc9df2420
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0211-1.prog
+Warning: VM has not responded after 5 attempts.
+Warning: Only booted 0 VMs.
+The bug was not found.
+This commit is flagged as unstable.
+About 124 commits remaining
+
+2026-01-07 16:40:01
+Session:   28
+Kernel:    2020-08-27 - 38e03d092699891c3237b5aee9e8029d4ede0956
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0211-1.prog
+Warning: VM has not responded after 5 attempts.
+Warning: Only booted 0 VMs.
+The bug was not found.
+This commit is flagged as unstable.
+About 124 commits remaining
+
+2026-01-07 16:45:54
+Session:   29
+Kernel:    2020-09-09 - 91a7c58fce065506fd98954d27694e5d83c96638
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0211-1.prog
+Warning: VM has not responded after 5 attempts.
+Warning: Only booted 0 VMs.
+The bug was not found.
+This commit is flagged as unstable.
+About 124 commits remaining
+
+2026-01-07 16:52:22
+Session:   30
+Kernel:    2020-09-11 - b3003a74456f0c1f614a46c07e16abe33bfdd087
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0211-1.prog
+Warning: VM has not responded after 5 attempts.
+Warning: Only booted 0 VMs.
+The bug was not found.
+This commit is flagged as unstable.
+About 124 commits remaining
+
+2026-01-07 16:58:12
+Session:   31
+Kernel:    2020-09-09 - a2f3d4479fe9641672665d495ebec883ac9917b5
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0211-1.prog
+Warning: VM has not responded after 5 attempts.
+Warning: Only booted 0 VMs.
+The bug was not found.
+This commit is flagged as unstable.
+About 124 commits remaining
+
+2026-01-07 17:03:57
+Session:   32
+Kernel:    2020-09-11 - 81655d3c4a95f05495f3213acbbc5423fc4dbdfb
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0211-1.prog
+Warning: VM has not responded after 5 attempts.
+Warning: Only booted 0 VMs.
+The bug was not found.
+This commit is flagged as unstable.
+About 124 commits remaining
+
+2026-01-07 17:09:46
+Session:   33
+Kernel:    2020-08-18 - 156f378985819e55431c7d7a09c7764d029ef49f
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0211-1.prog
+Warning: VM has not responded after 5 attempts.
+Warning: Only booted 0 VMs.
+The bug was not found.
+This commit is flagged as unstable.
+About 124 commits remaining
+
+2026-01-07 17:16:05
+Session:   34
+Kernel:    2020-09-11 - b8387f8189bbd75d588b165395f92ee1af52765f
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0211-1.prog
+Warning: VM has not responded after 5 attempts.
+Warning: Only booted 0 VMs.
+The bug was not found.
+This commit is flagged as unstable.
+About 124 commits remaining
+
+2026-01-07 17:21:29
+Session:   35
+Kernel:    2020-09-17 - 9d8feb460adb90e89e64101ce2c1cfcd548a6d83
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0211-1.prog
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+About 121 commits remaining
+
+2026-01-07 17:35:11
+Session:   36
+Kernel:    2020-09-11 - 1f9b6827c85f9d9786f31a1434a16c917aae23b2
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0211-1.prog
+Warning: VM has not responded after 5 attempts.
+Warning: Only booted 0 VMs.
+The bug was not found.
+This commit is flagged as unstable.
+About 121 commits remaining
+
+2026-01-07 17:41:03
+Session:   37
+Kernel:    2020-08-18 - a4e6a1dd57469d6ecee084db1507d3e37908d1e2
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0211-1.prog
+Warning: VM has not responded after 5 attempts.
+Warning: Only booted 0 VMs.
+The bug was not found.
+This commit is flagged as unstable.
+About 121 commits remaining
+
+2026-01-07 17:47:06
+Session:   38
+Kernel:    2020-08-31 - 5d985d724bfa3ab7acf9edc2b3042f66fca9da99
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0211-1.prog
+Warning: VM has not responded after 5 attempts.
+Warning: Only booted 0 VMs.
+The bug was not found.
+This commit is flagged as unstable.
+About 121 commits remaining
+
+2026-01-07 17:53:25
+Session:   39
+Kernel:    2020-08-18 - c97119b6d3135fe173751cf8bf53136f322bd506
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0211-1.prog
+Warning: VM has not responded after 5 attempts.
+Warning: Only booted 0 VMs.
+The bug was not found.
+This commit is flagged as unstable.
+About 121 commits remaining
+
+2026-01-07 17:59:08
+Session:   40
+Kernel:    2020-09-09 - ebc24096c4c40017d9f9b0fddc5d69b94ad10369
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0211-1.prog
+Warning: VM has not responded after 5 attempts.
+Warning: Only booted 0 VMs.
+The bug was not found.
+This commit is flagged as unstable.
+About 121 commits remaining
+
+2026-01-07 18:04:48
+Session:   41
+Kernel:    2020-08-24 - e7d087fce63fada387afcc6c31a2eaf81452baee
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0211-1.prog
+Warning: VM has not responded after 5 attempts.
+Warning: Only booted 0 VMs.
+The bug was not found.
+This commit is flagged as unstable.
+About 121 commits remaining
+
+2026-01-07 18:10:39
+Session:   42
+Kernel:    2020-08-31 - 6989aa62d342d79d447a9af12477b907d211bebe
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0211-1.prog
+Warning: VM has not responded after 5 attempts.
+Warning: Only booted 0 VMs.
+The bug was not found.
+This commit is flagged as unstable.
+About 121 commits remaining
+
+2026-01-07 18:17:44
+Session:   43
+Kernel:    2020-08-24 - 7fd1507df7cee9c533f38152fcd1dd769fcac6ce
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0211-1.prog
+Warning: VM has not responded after 5 attempts.
+Warning: Only booted 0 VMs.
+The bug was not found.
+This commit is flagged as unstable.
+About 121 commits remaining
+
+2026-01-07 18:23:48
+Session:   44
+Kernel:    2020-08-31 - d2598bb809d13a47e48a39a96ae8599ee8468025
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0211-1.prog
+Warning: VM has not responded after 5 attempts.
+Warning: Only booted 0 VMs.
+The bug was not found.
+This commit is flagged as unstable.
+About 121 commits remaining
+
+2026-01-07 18:29:19
+Session:   45
+Kernel:    2020-08-24 - 785167a114855c5aa75efca97000e405c2cc85bf
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0211-1.prog
+Warning: VM has not responded after 5 attempts.
+Warning: Only booted 0 VMs.
+The bug was not found.
+This commit is flagged as unstable.
+About 121 commits remaining
+
+2026-01-07 18:35:55
+Session:   46
+Kernel:    2020-09-09 - 71ff3f6268644783d556fab10066f1027030135f
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0211-1.prog
+Warning: VM has not responded after 5 attempts.
+Warning: Only booted 0 VMs.
+The bug was not found.
+This commit is flagged as unstable.
+About 121 commits remaining
+
+2026-01-07 18:42:27
+Session:   47
+Kernel:    2020-09-17 - 732d41c545bb359cbb8c94698bdc1f8bcf82279c
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0211-1.prog
+Warning: VM has not responded after 5 attempts.
+Warning: Only booted 0 VMs.
+The bug was not found.
+This commit is flagged as unstable.
+About 121 commits remaining
+
+2026-01-07 18:48:44
+Session:   48
+Kernel:    2020-09-02 - 7d11b4787d538295f65dcd002954a0f8ed2c393c
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0211-1.prog
+Warning: VM has not responded after 5 attempts.
+Warning: Only booted 0 VMs.
+The bug was not found.
+This commit is flagged as unstable.
+About 121 commits remaining
+
+2026-01-07 18:54:25
+Session:   49
+Kernel:    2020-09-17 - 2a7cec538169ada48a7810e77abff2ca99dbb098
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0211-1.prog
+Warning: VM has not responded after 5 attempts.
+Warning: Only booted 0 VMs.
+The bug was not found.
+This commit is flagged as unstable.
+About 121 commits remaining
+
+2026-01-07 19:00:47
+Session:   50
+Kernel:    2020-09-02 - 4f680cb9f1bb6c2b5cd3574533702334709e50ad
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0211-1.prog
+Warning: VM has not responded after 5 attempts.
+Warning: Only booted 0 VMs.
+The bug was not found.
+This commit is flagged as unstable.
+About 121 commits remaining
+
+2026-01-07 19:06:55
+Session:   51
+Kernel:    2020-08-24 - 75874b3d50717ec6a821cf4de4284822204a3574
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0211-1.prog
+Warning: VM has not responded after 5 attempts.
+Warning: Only booted 0 VMs.
+The bug was not found.
+This commit is flagged as unstable.
+About 121 commits remaining
+
+2026-01-07 19:13:16
+Session:   52
+Kernel:    2020-09-09 - 43d781b9fa562f0c6e50f62c870fbfeb9dc85213
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0211-1.prog
+Warning: VM has not responded after 5 attempts.
+Warning: Only booted 0 VMs.
+The bug was not found.
+This commit is flagged as unstable.
+About 121 commits remaining
+
+2026-01-07 19:19:45
+Session:   53
+Kernel:    2020-09-11 - 9e054b13b2f747868c28539b3eb28256e237755f
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0211-1.prog
+Warning: VM has not responded after 5 attempts.
+Warning: Only booted 0 VMs.
+The bug was not found.
+This commit is flagged as unstable.
+About 121 commits remaining
+
+2026-01-07 19:26:00
+Session:   54
+Kernel:    2020-09-09 - 7e3c66c9a989d5b53387ceebc88b9e4a9b1d6434
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0211-1.prog
+Warning: VM has not responded after 5 attempts.
+Warning: Only booted 0 VMs.
+The bug was not found.
+This commit is flagged as unstable.
+About 121 commits remaining
+
+2026-01-07 19:32:23
+Session:   55
+Kernel:    2020-09-11 - fbf58026b2256e9cd5f241a4801d79d3b2b7b89d
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0211-1.prog
+Warning: VM has not responded after 5 attempts.
+Warning: Only booted 0 VMs.
+The bug was not found.
+This commit is flagged as unstable.
+About 121 commits remaining
+
+2026-01-07 19:38:23
+Session:   56
+Kernel:    2020-09-03 - 53c2a706ae78589380d5fa8c2bbaac04136d25f4
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0211-1.prog
+Warning: VM has not responded after 5 attempts.
+Warning: Only booted 0 VMs.
+The bug was not found.
+This commit is flagged as unstable.
+About 121 commits remaining
+
+2026-01-07 19:44:10
+Session:   57
+Kernel:    2020-08-27 - ca2968c1efcbeb547906cf6211874ec881beafec
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0211-1.prog
+Warning: VM has not responded after 5 attempts.
+Warning: Only booted 0 VMs.
+The bug was not found.
+This commit is flagged as unstable.
+About 121 commits remaining
+
+2026-01-07 19:50:42
+Session:   58
+Kernel:    2020-09-03 - 4e95f849993bccd8994a898627f34d8e07a6a854
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0211-1.prog
+Warning: VM has not responded after 5 attempts.
+Warning: Only booted 0 VMs.
+The bug was not found.
+This commit is flagged as unstable.
+About 121 commits remaining
+
+2026-01-07 19:56:27
+Session:   59
+Kernel:    2020-08-27 - 07e266a7753d952978f317aa2b206b4da4769567
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0211-1.prog
+Warning: VM has not responded after 5 attempts.
+Warning: Only booted 0 VMs.
+The bug was not found.
+This commit is flagged as unstable.
+About 121 commits remaining
+
+2026-01-07 20:02:35
+Session:   60
+Kernel:    2020-09-03 - a23afb448ba8cec3970727b97ce2c8ed5a289694
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0211-1.prog
+Warning: VM has not responded after 5 attempts.
+Warning: Only booted 0 VMs.
+The bug was not found.
+This commit is flagged as unstable.
+About 121 commits remaining
+
+2026-01-07 20:08:27
+Session:   61
+Kernel:    2020-08-27 - 95fe51096b7adf1d1e7315c49c75e2f75f162584
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0211-1.prog
+Warning: VM has not responded after 5 attempts.
+Warning: Only booted 0 VMs.
+The bug was not found.
+This commit is flagged as unstable.
+About 121 commits remaining
+
+2026-01-07 20:14:58
+Session:   62
+Kernel:    2020-09-03 - 00b3c11879d790f51cac6477abe870936a2323ae
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0211-1.prog
+Warning: VM has not responded after 5 attempts.
+Warning: Only booted 0 VMs.
+The bug was not found.
+This commit is flagged as unstable.
+About 121 commits remaining
+
+2026-01-07 20:21:03
+Session:   63
+Kernel:    2020-08-27 - d114c6feedfe0600c19b9f9479a4026354d1f7fd
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0211-1.prog
+Warning: VM has not responded after 5 attempts.
+Warning: Only booted 0 VMs.
+The bug was not found.
+This commit is flagged as unstable.
+About 121 commits remaining
+
+2026-01-07 20:27:21
+Session:   64
+Kernel:    2020-09-03 - 55db47d0828c7cba4a9def51e4686da5da7c8a85
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0211-1.prog
+Warning: VM has not responded after 5 attempts.
+Warning: Only booted 0 VMs.
+The bug was not found.
+This commit is flagged as unstable.
+About 121 commits remaining
+
+2026-01-07 20:33:02
+Session:   65
+Kernel:    2020-09-11 - b60b9c0274007fe68439cd9cefdabbd7fb8a2ce6
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0211-1.prog
+Warning: VM has not responded after 5 attempts.
+Warning: Only booted 0 VMs.
+The bug was not found.
+This commit is flagged as unstable.
+About 121 commits remaining
+
+2026-01-07 20:39:15
+Session:   66
+Kernel:    2020-09-18 - 8310e327046df6b8d729ffa41ed7cfd6676abc42
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0211-1.prog
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+About 120 commits remaining
+
+2026-01-07 20:52:31
+Session:   67
+Kernel:    2020-09-11 - 87aebd3f8c7490b845f5ec3ce9c8658f17e0f96d
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0211-1.prog
+Warning: VM has not responded after 5 attempts.
+Warning: Only booted 0 VMs.
+The bug was not found.
+This commit is flagged as unstable.
+About 120 commits remaining
+
+2026-01-07 20:58:24
+Session:   68
+Kernel:    2020-08-18 - 70c1430fba7bc904403c4202776d7bfa697a294d
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0211-1.prog
+Warning: VM has not responded after 5 attempts.
+Warning: Only booted 0 VMs.
+The bug was not found.
+This commit is flagged as unstable.
+About 120 commits remaining
+
+2026-01-07 21:04:41
+Session:   69
+Kernel:    2020-08-27 - 310ca1a7dcd1fd430f0d72e774d480cc200b4fdc
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0211-1.prog
+Warning: VM has not responded after 5 attempts.
+Warning: Only booted 0 VMs.
+The bug was not found.
+This commit is flagged as unstable.
+About 120 commits remaining
+
+2026-01-07 21:10:42
+Session:   70
+Kernel:    2020-09-18 - 22d3e1ed2cc837af87f76c3c8a4ccf4455e225c5
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0211-1.prog
+Attempt 0:
+*** KASAN: use-after-free Read in rdma_listen (has report)
+Attempt 1:
+*** KASAN: use-after-free Read in rdma_listen (has report)
+Attempt 2:
+*** KASAN: use-after-free Read in rdma_listen (has report)
+Attempt 3:
+*** KASAN: use-after-free Read in rdma_listen (has report)
+Attempt 4:
+*** KASAN: use-after-free Read in rdma_listen (has report)
+Attempt 5:
+*** KASAN: use-after-free Read in rdma_listen (has report)
+Attempt 6:
+*** KASAN: use-after-free Read in rdma_listen (has report)
+Attempt 7:
+*** KASAN: use-after-free Read in rdma_listen (has report)
+The bug was found.
+About 117 commits remaining
+
+2026-01-07 21:19:25
+Session:   71
+Kernel:    2020-09-11 - 22123a0e4974fe03d1d8446b132a6c455f95a516
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0211-1.prog
+Warning: VM has not responded after 5 attempts.
+Warning: Only booted 0 VMs.
+The bug was not found.
+This commit is flagged as unstable.
+About 117 commits remaining
+
+2026-01-07 21:25:12
+Session:   72
+Kernel:    2020-09-17 - c0a6b5ecc5b7dd028c2921415ea036074a8f8b00
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0211-1.prog
+Warning: VM has not responded after 5 attempts.
+Warning: Only booted 0 VMs.
+The bug was not found.
+This commit is flagged as unstable.
+About 117 commits remaining
+
+2026-01-07 21:32:00
+Session:   73
+Kernel:    2020-09-11 - a665aca89a411115e35ea937c2d3fb2ee4f5a701
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0211-1.prog
+Warning: VM has not responded after 5 attempts.
+Warning: Only booted 0 VMs.
+The bug was not found.
+This commit is flagged as unstable.
+About 117 commits remaining
+
+2026-01-07 21:37:48
+Session:   74
+Kernel:    2020-08-18 - e6ac9f60066414b30c3086219fd66c2d5b087781
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0211-1.prog
+Warning: VM has not responded after 5 attempts.
+Warning: Only booted 0 VMs.
+The bug was not found.
+This commit is flagged as unstable.
+About 117 commits remaining
+
+2026-01-07 21:43:59
+Session:   75
+Kernel:    2020-08-27 - e0ef0f68c4c0d85b1eb63f38d5d10324361280e8
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0211-1.prog
+Warning: VM has not responded after 5 attempts.
+Warning: Only booted 0 VMs.
+The bug was not found.
+This commit is flagged as unstable.
+About 117 commits remaining
+
+2026-01-07 21:49:59
+Session:   76
+Kernel:    2020-08-18 - c0f4979e90eaa4cd4a63ae95fbf8e65a85150a5f
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0211-1.prog
+Warning: VM has not responded after 5 attempts.
+Warning: Only booted 0 VMs.
+The bug was not found.
+This commit is flagged as unstable.
+About 117 commits remaining
+
+2026-01-07 21:55:59
+Session:   77
+Kernel:    2020-08-27 - 5f9e2822d12fe5050da5db0e65924d5ddc86bf29
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0211-1.prog
+Warning: VM has not responded after 5 attempts.
+Warning: Only booted 0 VMs.
+The bug was not found.
+This commit is flagged as unstable.
+About 117 commits remaining
+
+2026-01-07 22:01:39
+Session:   78
+Kernel:    2020-09-17 - 7e85bcda8bfe883f4244672ed79f81b7762a1a7e
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0211-1.prog
+Warning: VM has not responded after 5 attempts.
+Warning: Only booted 0 VMs.
+The bug was not found.
+This commit is flagged as unstable.
+About 117 commits remaining
+
+2026-01-07 22:07:45
+Session:   79
+Kernel:    2020-09-09 - 10c75ccb54e4fe548cb16d7ed426d7d709e6ae76
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0211-1.prog
+Warning: VM has not responded after 5 attempts.
+Warning: Only booted 0 VMs.
+The bug was not found.
+This commit is flagged as unstable.
+About 117 commits remaining
+
+2026-01-07 22:14:12
+Session:   80
+Kernel:    2020-09-17 - d490ee52f0a5dbd9d1bccabd6bf00c40c1234a79
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0211-1.prog
+Warning: VM has not responded after 5 attempts.
+Warning: Only booted 0 VMs.
+The bug was not found.
+This commit is flagged as unstable.
+About 117 commits remaining
+
+2026-01-07 22:20:06
+Session:   81
+Kernel:    2020-09-09 - a40c20dabdf9045270767c75918feb67f0727c89
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0211-1.prog
+Warning: VM has not responded after 5 attempts.
+Warning: Only booted 0 VMs.
+The bug was not found.
+This commit is flagged as unstable.
+About 117 commits remaining
+
+2026-01-07 22:26:14
+Session:   82
+Kernel:    2020-08-24 - 227a0e142e375909959a74b7782403e14331f6f3
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0211-1.prog
+Warning: VM has not responded after 5 attempts.
+Warning: Only booted 0 VMs.
+The bug was not found.
+This commit is flagged as unstable.
+About 117 commits remaining
+
+2026-01-07 22:32:17
+Session:   83
+Kernel:    2020-08-31 - 63fa15dbd488457117e779f8a6b4917ba83f4b77
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0211-1.prog
+Warning: VM has not responded after 5 attempts.
+Warning: Only booted 0 VMs.
+The bug was not found.
+This commit is flagged as unstable.
+About 117 commits remaining
+
+2026-01-07 22:38:29
+Session:   84
+Kernel:    2020-08-24 - fd49ddaf7e266b5892d659eb99d9f77841e5b4c0
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0211-1.prog
+Warning: VM has not responded after 5 attempts.
+Warning: Only booted 0 VMs.
+The bug was not found.
+This commit is flagged as unstable.
+About 117 commits remaining
+
+2026-01-07 22:44:17
+Session:   85
+Kernel:    2020-09-09 - add53535fb3033c249d9327ae3e7c36d3382bbd1
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0211-1.prog
+Warning: VM has not responded after 5 attempts.
+Warning: Only booted 0 VMs.
+The bug was not found.
+This commit is flagged as unstable.
+About 117 commits remaining
+
+2026-01-07 22:50:41
+Session:   86
+Kernel:    2020-08-24 - 62cbff326788e4612cb541030d09c943caf78e29
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0211-1.prog
+Warning: VM has not responded after 5 attempts.
+Warning: Only booted 0 VMs.
+The bug was not found.
+This commit is flagged as unstable.
+About 117 commits remaining
+
+2026-01-07 22:56:13
+Session:   87
+Kernel:    2020-08-31 - 7672dac30435b6e28aebaea189ffcb233e61760d
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0211-1.prog
+Warning: VM has not responded after 5 attempts.
+Warning: Only booted 0 VMs.
+The bug was not found.
+This commit is flagged as unstable.
+About 117 commits remaining
+
+2026-01-07 23:02:14
+Session:   88
+Kernel:    2020-08-24 - 8d9290a4a8aa5d46073d558692d66a7190b81b90
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0211-1.prog
+Warning: VM has not responded after 5 attempts.
+Warning: Only booted 0 VMs.
+The bug was not found.
+This commit is flagged as unstable.
+About 117 commits remaining
+
+2026-01-07 23:07:57
+Session:   89
+Kernel:    2020-09-09 - d0c45c8556e57342d44c9548763609ffcc4e3866
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0211-1.prog
+Warning: VM has not responded after 5 attempts.
+Warning: Only booted 0 VMs.
+The bug was not found.
+This commit is flagged as unstable.
+About 117 commits remaining
+
+2026-01-07 23:14:25
+Session:   90
+Kernel:    2020-08-24 - b3d03daa7cd19a91266dc2cea3587dcf60e7a1f0
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0211-1.prog
+Warning: VM has not responded after 5 attempts.
+Warning: Only booted 0 VMs.
+The bug was not found.
+This commit is flagged as unstable.
+About 117 commits remaining
+
+2026-01-07 23:20:27
+Session:   91
+Kernel:    2020-08-31 - 524d8ffd07f0ca10b24011487339f836ed859b32
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0211-1.prog
+Warning: VM has not responded after 5 attempts.
+Warning: Only booted 0 VMs.
+The bug was not found.
+This commit is flagged as unstable.
+About 117 commits remaining
+
+2026-01-07 23:26:15
+Session:   92
+Kernel:    2020-09-11 - 97fb3e33474897c35b7cfe6ff0e16a3e172d9249
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0211-1.prog
+Warning: VM has not responded after 5 attempts.
+Warning: Only booted 0 VMs.
+The bug was not found.
+This commit is flagged as unstable.
+About 117 commits remaining
+
+2026-01-07 23:32:04
+Session:   93
+Kernel:    2020-08-31 - 61690d01db32eb1f94adc9ac2b8bb741d34e4671
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0211-1.prog
+Warning: VM has not responded after 5 attempts.
+Warning: Only booted 0 VMs.
+The bug was not found.
+This commit is flagged as unstable.
+About 117 commits remaining
+
+2026-01-07 23:37:38
+Session:   94
+Kernel:    2020-08-24 - 8dc105befe16b6504ecc17a235b3c22932fa33dc
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0211-1.prog
+Warning: VM has not responded after 5 attempts.
+Warning: Only booted 0 VMs.
+The bug was not found.
+This commit is flagged as unstable.
+About 117 commits remaining
+
+2026-01-07 23:43:38
+Session:   95
+Kernel:    2020-09-03 - 4b916ed9f9e85f705213ca8d69771d3c1cd6ee5a
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0211-1.prog
+Warning: VM has not responded after 5 attempts.
+Warning: Only booted 0 VMs.
+The bug was not found.
+This commit is flagged as unstable.
+About 117 commits remaining
+
+2026-01-07 23:49:15
+Session:   96
+Kernel:    2020-08-27 - 8f3243a0479e3c817262eacb31157a3f95fc272e
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0211-1.prog
+Warning: VM has not responded after 5 attempts.
+Warning: Only booted 0 VMs.
+The bug was not found.
+This commit is flagged as unstable.
+About 117 commits remaining
+
+2026-01-07 23:54:54
+Session:   97
+Kernel:    2020-08-31 - 074bf2c2c7a1f5722eabccee7d919fe20ada0cda
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0211-1.prog
+Warning: VM has not responded after 5 attempts.
+Warning: Only booted 0 VMs.
+The bug was not found.
+This commit is flagged as unstable.
+About 117 commits remaining
+
+2026-01-08 00:00:41
+Session:   98
+Kernel:    2020-09-11 - a379ad54e55a12618cae7f6333fd1b3071de9606
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0211-1.prog
+Warning: VM has not responded after 5 attempts.
+Warning: Only booted 0 VMs.
+The bug was not found.
+This commit is flagged as unstable.
+About 117 commits remaining
+
+2026-01-08 00:06:19
+Session:   99
+Kernel:    2020-09-09 - 89603f7e7e5a6b719f1a163a05bd8a9231b58318
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0211-1.prog
+Warning: VM has not responded after 5 attempts.
+Warning: Only booted 0 VMs.
+The bug was not found.
+This commit is flagged as unstable.
+About 117 commits remaining
+
+2026-01-08 00:11:57
+Session:   100
+Kernel:    2020-09-11 - 0b1eddc1964351cd5ce57aff46853ed4ce9ebbff
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0211-1.prog
+Warning: VM has not responded after 5 attempts.
+Warning: Only booted 0 VMs.
+The bug was not found.
+This commit is flagged as unstable.
+About 117 commits remaining
+
+2026-01-08 00:17:46
+Session:   101
+Kernel:    2020-09-18 - 54a38b6627d3f11028f806f1f529a68453a77f46
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0211-1.prog
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+About 116 commits remaining
+
+2026-01-08 00:31:04
+Session:   102
+Kernel:    2020-09-11 - 098e345a1a8faaad6e4e54d138773466cecc45d4
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0211-1.prog
+Warning: VM has not responded after 5 attempts.
+Warning: Only booted 0 VMs.
+The bug was not found.
+This commit is flagged as unstable.
+About 116 commits remaining
+
+2026-01-08 00:36:53
+Session:   103
+Kernel:    2020-09-18 - 376ceb31ff879c2ee6b48eef841d6fa7720f6f43
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0211-1.prog
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+About 118 commits remaining
+
+2026-01-08 00:50:28
+Session:   104
+Kernel:    2020-09-11 - 1d4299ed774205cfe4218a351834a137853fa9c2
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0211-1.prog
+Warning: VM has not responded after 5 attempts.
+Warning: Only booted 0 VMs.
+The bug was not found.
+This commit is flagged as unstable.
+About 118 commits remaining
+
+2026-01-08 00:56:02
+Session:   105
+Kernel:    2020-09-18 - a1255fff5d9066f9f3c761cba258b75d49bd8750
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0211-1.prog
+Attempt 0:
+*** KASAN: use-after-free Read in rdma_listen (has report)
+Attempt 1:
+*** KASAN: use-after-free Read in rdma_listen (has report)
+Attempt 2:
+*** KASAN: use-after-free Read in rdma_listen (has report)
+Attempt 3:
+*** KASAN: use-after-free Read in rdma_listen (has report)
+Attempt 4:
+*** KASAN: use-after-free Read in rdma_listen (has report)
+Attempt 5:
+*** KASAN: use-after-free Read in rdma_listen (has report)
+Attempt 6:
+*** KASAN: use-after-free Read in rdma_listen (has report)
+Attempt 7:
+*** KASAN: use-after-free Read in rdma_listen (has report)
+The bug was found.
+About 115 commits remaining
+
+2026-01-08 01:03:54
+Session:   106
+Kernel:    2020-09-11 - 84e71b4d9bd8bb5dfde6a298875d32e8ddf7f06e
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0211-1.prog
+Warning: VM has not responded after 5 attempts.
+Warning: Only booted 0 VMs.
+The bug was not found.
+This commit is flagged as unstable.
+About 115 commits remaining
+
+2026-01-08 01:09:19
+Session:   107
+Kernel:    2020-08-18 - 34eb009ffe2e2b09e356e24bba548bec80708e86
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0211-1.prog
+Warning: VM has not responded after 5 attempts.
+Warning: Only booted 0 VMs.
+The bug was not found.
+This commit is flagged as unstable.
+About 115 commits remaining
+
+2026-01-08 01:14:38
+Session:   108
+Kernel:    2020-09-11 - 901bca71cd5bb940c7a57042c4c1cc15bc847ffe
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0211-1.prog
+Warning: VM has not responded after 5 attempts.
+Warning: Only booted 0 VMs.
+The bug was not found.
+This commit is flagged as unstable.
+About 115 commits remaining
+
+2026-01-08 01:20:02
+Session:   109
+Kernel:    2020-08-18 - ab67badd1c5e0c82a6cc09c3e9389d97672075b3
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0211-1.prog
+Warning: VM has not responded after 5 attempts.
+Warning: Only booted 0 VMs.
+The bug was not found.
+This commit is flagged as unstable.
+About 115 commits remaining
+
+2026-01-08 01:25:29
+Session:   110
+Kernel:    2020-08-27 - 09e328e47a695b0d346598f5d6593ee598e64885
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0211-1.prog
+Warning: VM has not responded after 5 attempts.
+Warning: Only booted 0 VMs.
+The bug was not found.
+This commit is flagged as unstable.
+About 115 commits remaining
+
+2026-01-08 01:31:04
+Session:   111
+Kernel:    2020-08-18 - 22c50e0660f40173eec8a5b714b27ef9e64b93c7
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0211-1.prog
+Warning: VM has not responded after 5 attempts.
+Warning: Only booted 0 VMs.
+The bug was not found.
+This commit is flagged as unstable.
+About 115 commits remaining
+
+2026-01-08 01:36:27
+Session:   112
+Kernel:    2020-08-27 - 26c15dec490c3a65f4eba6704c6648c299adb7a6
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0211-1.prog
+Warning: VM has not responded after 5 attempts.
+Warning: Only booted 0 VMs.
+The bug was not found.
+This commit is flagged as unstable.
+About 115 commits remaining
+
+2026-01-08 01:42:04
+Session:   113
+Kernel:    2020-09-17 - 1bb5091def706732c749df9aae45fbca003696f2
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0211-1.prog
+Warning: VM has not responded after 5 attempts.
+Warning: Only booted 0 VMs.
+The bug was not found.
+This commit is flagged as unstable.
+About 115 commits remaining
+
+2026-01-08 01:47:41
+Session:   114
+Kernel:    2020-08-27 - a1d33b70dbbc2c331c788ae12d5d54ac36c6744d
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0211-1.prog
+Warning: VM has not responded after 5 attempts.
+Warning: Only booted 0 VMs.
+The bug was not found.
+This commit is flagged as unstable.
+About 115 commits remaining
+
+2026-01-08 01:53:17
+Session:   115
+Kernel:    2020-08-18 - c531024bb166f5bb6a5bd951e07a33294b895884
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0211-1.prog
+Warning: VM has not responded after 5 attempts.
+Warning: Only booted 0 VMs.
+The bug was not found.
+This commit is flagged as unstable.
+About 115 commits remaining
+
+2026-01-08 01:58:34
+Session:   116
+Kernel:    2020-08-27 - 657360d6c74148f8ade5a39430407d64aa157c38
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0211-1.prog
+Warning: VM has not responded after 5 attempts.
+Warning: Only booted 0 VMs.
+The bug was not found.
+This commit is flagged as unstable.
+About 115 commits remaining
+
+2026-01-08 02:03:56
+Session:   117
+Kernel:    2020-09-17 - 5cfbf9291e1d56b28df30929a5b4bb2d70193855
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0211-1.prog
+Warning: VM has not responded after 5 attempts.
+Warning: Only booted 0 VMs.
+The bug was not found.
+This commit is flagged as unstable.
+About 115 commits remaining
+
+2026-01-08 02:09:27
+Session:   118
+Kernel:    2020-09-11 - cf9ce3c8ab803bb76504e53b0b23b542ab96ed02
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0211-1.prog
+Warning: VM has not responded after 5 attempts.
+Warning: Only booted 0 VMs.
+The bug was not found.
+This commit is flagged as unstable.
+About 115 commits remaining
+
+2026-01-08 02:14:49
+Session:   119
+Kernel:    2020-09-16 - 3cc30e8dfcb625ba4bd62a75aba475581c967639
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0211-1.prog
+Warning: VM has not responded after 5 attempts.
+Warning: Only booted 0 VMs.
+The bug was not found.
+This commit is flagged as unstable.
+About 115 commits remaining
+
+2026-01-08 02:20:21
+Session:   120
+Kernel:    2020-08-27 - b9caebb290d298a114ed6426e644db9a09560055
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0211-1.prog
+Warning: VM has not responded after 5 attempts.
+Warning: Only booted 0 VMs.
+The bug was not found.
+This commit is flagged as unstable.
+About 115 commits remaining
+
+2026-01-08 02:25:35
+Session:   121
+Kernel:    2020-08-24 - 094619449a16672f9815964e1ad39e11ff84ae2c
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0211-1.prog
+Warning: VM has not responded after 5 attempts.
+Warning: Only booted 0 VMs.
+The bug was not found.
+This commit is flagged as unstable.
+About 115 commits remaining
+
+2026-01-08 02:30:54
+Session:   122
+Kernel:    2020-08-27 - c07e12d8e9b4b6e532f52ecc89e52d10f3f8e8f5
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0211-1.prog
+Warning: VM has not responded after 5 attempts.
+Warning: Only booted 0 VMs.
+The bug was not found.
+This commit is flagged as unstable.
+About 115 commits remaining
+
+2026-01-08 02:36:27
+Session:   123
+Kernel:    2020-09-17 - 3788d2997bc0150ea911a964d5b5a2e11808a936
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0211-1.prog
+Warning: VM has not responded after 5 attempts.
+Warning: Only booted 0 VMs.
+The bug was not found.
+This commit is flagged as unstable.
+About 115 commits remaining
+
+2026-01-08 02:41:59
+Session:   124
+Kernel:    2020-08-27 - 7c4b1ab9f16732fb921b3f11cd127fa65f26ad5c
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0211-1.prog
+Warning: VM has not responded after 5 attempts.
+Warning: Only booted 0 VMs.
+The bug was not found.
+This commit is flagged as unstable.
+About 115 commits remaining
+
+2026-01-08 02:47:18
+Session:   125
+Kernel:    2020-09-16 - 1d7c995820277944b7aafca1d05ce0c32775145c
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0211-1.prog
+Warning: VM has not responded after 5 attempts.
+Warning: Only booted 0 VMs.
+The bug was not found.
+This commit is flagged as unstable.
+About 115 commits remaining
+
+2026-01-08 02:52:37
+Session:   126
+Kernel:    2020-09-11 - cc293f5420e5726bdf2bb0fcb165c73e007e426e
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0211-1.prog
+Warning: VM has not responded after 5 attempts.
+Warning: Only booted 0 VMs.
+The bug was not found.
+This commit is flagged as unstable.
+About 115 commits remaining
+
+2026-01-08 02:58:01
+Session:   127
+Kernel:    2020-09-17 - d18bb3e15201918b8d07e85a6e010ca5ed28dad5
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0211-1.prog
+Warning: VM has not responded after 5 attempts.
+Warning: Only booted 0 VMs.
+The bug was not found.
+This commit is flagged as unstable.
+About 115 commits remaining
+
+2026-01-08 03:04:02
+Session:   128
+Kernel:    2020-09-16 - 06e8d1df46ed52eca6915a2a76341ca65cc428b9
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0211-1.prog
+Warning: VM has not responded after 5 attempts.
+Warning: Only booted 0 VMs.
+The bug was not found.
+This commit is flagged as unstable.
+About 115 commits remaining
+
+2026-01-08 03:09:23
+Session:   129
+Kernel:    2020-09-17 - b5de0c60cc30c2a3513c7188c73f3f29acc29234
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0211-1.prog
+Warning: VM has not responded after 5 attempts.
+Warning: Only booted 0 VMs.
+The bug was not found.
+This commit is flagged as unstable.
+About 115 commits remaining
+
+2026-01-08 03:14:58
+Session:   130
+Kernel:    2020-08-24 - 0ae207fb91a897780f0853864d80c48edec7f374
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0211-1.prog
+Warning: VM has not responded after 5 attempts.
+Warning: Only booted 0 VMs.
+The bug was not found.
+This commit is flagged as unstable.
+About 115 commits remaining
+
+2026-01-08 03:20:33
+Session:   131
+Kernel:    2020-08-18 - d6673746d69909f9ab52cf9fe1f9a21fca202e0c
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0211-1.prog
+Warning: VM has not responded after 5 attempts.
+Warning: Only booted 0 VMs.
+The bug was not found.
+This commit is flagged as unstable.
+About 115 commits remaining
+
+2026-01-08 03:25:56
+Session:   132
+Kernel:    2020-09-18 - 5dee5872f87552cfb173c899d35fc1413c2aa77f
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0211-1.prog
+Attempt 0:
+*** KASAN: use-after-free Read in rdma_listen (has report)
+Attempt 1:
+*** KASAN: use-after-free Read in rdma_listen (has report)
+Attempt 2:
+*** KASAN: use-after-free Read in rdma_listen (has report)
+Attempt 3:
+*** KASAN: use-after-free Read in rdma_listen (has report)
+Attempt 4:
+*** KASAN: use-after-free Read in rdma_listen (has report)
+Attempt 5:
+*** KASAN: use-after-free Read in rdma_listen (has report)
+Attempt 6:
+*** KASAN: use-after-free Read in rdma_listen (has report)
+Attempt 7:
+*** KASAN: use-after-free Read in rdma_listen (has report)
+The bug was found.
+Warning: Child process git exited with error status 2.
+About 111 commits remaining
+Git bisect reported multiple guilty commits
 
 ==== Partial Result: Primary PoC Test ====
-Reproducer:           /mnt/sdd/jtbursey/SyzInspector/wd-bisector-2/reproducers/repro-bug0211-1.prog
-Bisection Result:     Failed to reproduce at the anchor commit.
-Stage Time:           0h16m20s
-Run Time:             0h16m20s
+Reproducer:           /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0211-1.prog
+Bisection Result:     2020-09-18 - 5dee5872f87552cfb173c899d35fc1413c2aa77f
+Bisected Commit Name: Merge branch 'mlx5_active_speed' into rdma.git for-next
+Stage Time:           17h57m54s
+Run Time:             17h57m54s
 ==========================================
+
+====================================================================================================================================================
+Bug Name:             KASAN: use-after-free Read in rdma_listen
+Bug ID:               bug0211
+Bug Link:             https://syzkaller.appspot.com/bug?id=362b5b49fced29361c0ba3007a2b3e5cd13776b5
+Bisection Result:     2020-09-18 - 5dee5872f87552cfb173c899d35fc1413c2aa77f
+Bisected Commit Name: Merge branch 'mlx5_active_speed' into rdma.git for-next
+Run Time:             17h57m54s
+
+Anchor Commit:        2022-02-07 - 555f3d7be91a873114c9656069f1a9fa476ec41a
+Bisection Result:     2020-09-18 - 5dee5872f87552cfb173c899d35fc1413c2aa77f

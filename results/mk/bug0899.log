@@ -1,34 +1,35 @@
-./bin/bisector -i 4 -c /home/syzretrospector/syzinspector/wd-bisector-4/bisector.cfg -a f9ff5644bcc04221bae56f922122f2b7f5d24d62 -F ff-test,poc-test,stateful-corpus,ff-no-find-backup
+./bin/meerkat -i 1 -c /home/syzretrospector/meerkat/wd-meerkat-1/meerkat.cfg -a f9ff5644bcc04221bae56f922122f2b7f5d24d62 -F ff-test,poc-test,poc-all-pocs,stateful-corpus,ff-no-find-backup
 Bisecting:          WARNING in _copy_from_iter
 Warning: No syscall found that produces fd_block_trace.
-Warning: No syscall found that produces tail_call_map.
-Warning: No syscall found that produces fd_bpf_const_str.
 Syzbot Link:        https://syzkaller.appspot.com/bug?extid=d43608d061e8847ec9f3
 Working Name:       bug0899
 
-No aliases given.
+Aliases:
+    WARNING in _copy_from_iter (has report)
 
 Anchor Commit:      f9ff5644bcc04221bae56f922122f2b7f5d24d62
 Repository:         https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
 Branch:             master
 Arch:               amd64
 
-Bisector:           /home/syzretrospector/syzinspector/
-Version:            1.0.4
-Kernel:             /home/syzretrospector/syzinspector/wd-bisector-4/kernel/
-Syzkaller:          /home/syzretrospector/syzinspector/syzkaller/
-Compilers:          /home/syzretrospector/compilers/
-Ccache:             ccache
-Image:              /home/syzretrospector/images/stretch/stretch.img
-Image Key:          /home/syzretrospector/images/stretch/stretch.id_rsa
+Meerkat:            /home/syzretrospector/meerkat/
+Version:            1.2.0
+Kernel:             /home/syzretrospector/meerkat/wd-meerkat-1/kernel/
+Syzkaller:          /home/syzretrospector/meerkat/syzkaller/
+Compilers:          /home/syzretrospector/meerkat/compilers/
+Compiler:           gcc (Ubuntu 12.3.0-1ubuntu1~22.04.2) 12.3.0
+Linker:             GNU ld (GNU Binutils for Ubuntu) 2.38
+Ccache:             ccache version 4.5.1
+Image:              /home/syzretrospector/meerkat/image/stretch/stretch.img
+Image Key:          /home/syzretrospector/meerkat/image/stretch/stretch.id_rsa
 
-Workdir:            /home/syzretrospector/syzinspector/wd-bisector-4/
-Kconfig:            /home/syzretrospector/syzinspector/wd-bisector-4/config-bug0899.txt
-Reproducers: (8)    /home/syzretrospector/syzinspector/wd-bisector-4/reproducers/
-Syzkaller Workdir:  /home/syzretrospector/syzinspector/wd-bisector-4/wd-kaller/
-Log Directory:      /home/syzretrospector/syzinspector/wd-bisector-4/log/
+Workdir:            /home/syzretrospector/meerkat/wd-meerkat-1/
+Kconfig:            /home/syzretrospector/meerkat/wd-meerkat-1/config-bug0899.txt
+Reproducers: (8)    /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/
+Syzkaller Workdir:  /home/syzretrospector/meerkat/wd-meerkat-1/wd-kaller/
+Log Directory:      /home/syzretrospector/meerkat/wd-meerkat-1/log/
 
-Syscalls: (32)      ["bpf$BPF_RAW_TRACEPOINT_OPEN", "connect$tipc", "mmap", "mount", "openat$cgroup_ro", "sendmsg", "socket", "syz_mount_image$exfat", "syz_open_dev$sg", "write$FUSE_NOTIFY_RETRIEVE", "write$binfmt_script", "writev", "socket$tipc", "openat$cgroup_root", "openat$fuse", "openat$binfmt", "bpf$BPF_PROG_RAW_TRACEPOINT_LOAD", "getuid", "setgid", "getgid", "bpf$OBJ_GET_PROG", "syz_create_resource$binfmt", "ioctl$sock_SIOCGIFINDEX", "ioctl$ifreq_SIOCGIFINDEX_vcan", "ioctl$IOCTL_GET_NCIDEV_IDX", "bpf$BPF_BTF_LOAD", "bpf$OBJ_GET_MAP", "openat$nci", "bpf$BPF_MAP_CONST_STR_FREEZE", "bpf$MAP_CREATE_RINGBUF", "bpf$MAP_CREATE_TAIL_CALL", "bpf$MAP_CREATE_CONST_STR"]
+Syscalls: (39)      ["bpf$BPF_RAW_TRACEPOINT_OPEN", "connect$tipc", "mmap", "mount", "openat$cgroup_ro", "sendmsg", "socket", "syz_mount_image$exfat", "syz_open_dev$sg", "write$FUSE_NOTIFY_RETRIEVE", "write$binfmt_script", "writev", "perf_event_open", "socket$tipc", "openat$cgroup_root", "open$dir", "openat$fuse", "openat$binfmt", "bpf$BPF_PROG_RAW_TRACEPOINT_LOAD", "getuid", "setgid", "getgid", "bpf$BPF_PROG_GET_FD_BY_ID", "syz_clone", "syz_create_resource$binfmt", "bpf$MAP_UPDATE_ELEM_TAIL_CALL", "ioctl$sock_SIOCGIFINDEX", "ioctl$ifreq_SIOCGIFINDEX_vcan", "ioctl$IOCTL_GET_NCIDEV_IDX", "bpf$MAP_CREATE_TAIL_CALL", "bpf$BPF_PROG_GET_NEXT_ID", "bpf$BPF_BTF_LOAD", "bpf$OBJ_GET_MAP", "openat$nci", "bpf$TOKEN_CREATE", "bpf$BPF_MAP_CONST_STR_FREEZE", "bpf$MAP_CREATE_RINGBUF", "bpf$MAP_UPDATE_CONST_STR", "bpf$MAP_CREATE_CONST_STR"]
 VM Count:           4
 CPU Count:          4
 Procs:              24
@@ -39,86 +40,797 @@ Max Attempts:       1
 
 ==== Anchor Commit ====
 
-2025-03-16 20:21:37
+2026-01-06 17:10:12
 Session:   1
 Kernel:    2022-12-17 - f9ff5644bcc04221bae56f922122f2b7f5d24d62
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
-Warning: bpf$BPF_RAW_TRACEPOINT_OPEN was disabled by Syzkaller.
+Compiler:  ccache gcc
 Attempt 1:
     Time  Bug Name
-       2  WARNING in tipc_msg_build
-       2  WARNING in tipc_msg_build
-       3  WARNING in tipc_msg_build
-       3  WARNING in blk_rq_map_user_iov
-       4  WARNING in tipc_msg_build
-       4  WARNING in tipc_msg_build
-       4  WARNING in tipc_msg_build
-       4  WARNING in tipc_msg_build
-       6  WARNING in tipc_msg_build
-       6  WARNING in tipc_msg_build
-       6  WARNING in tipc_msg_build
-       6  WARNING in tipc_msg_build
-       7  WARNING in tipc_msg_build
-       7  WARNING in tipc_msg_build
-       7  WARNING in tipc_msg_build
-       7  WARNING in tipc_msg_build
-       9  WARNING in tipc_msg_build
-       9  WARNING in tipc_msg_build
-       9  WARNING in tipc_msg_build
-       9  WARNING in tipc_msg_build
-Warning: bpf$BPF_RAW_TRACEPOINT_OPEN was disabled by Syzkaller.
+       2  general protection fault in rxrpc_unuse_local (3) (has report)
+***    2  WARNING in blk_rq_map_user_iov (has report)
 Attempt 2: (RETRY)
     Time  Bug Name
-       2  WARNING in tipc_msg_build
-       2  WARNING in tipc_msg_build
-       2  WARNING in tipc_msg_build
-       2  WARNING in tipc_msg_build
-       4  WARNING in tipc_msg_build
-       4  WARNING in tipc_msg_build
-       4  WARNING in tipc_msg_build
-       4  WARNING in blk_rq_map_user_iov
-       5  WARNING in tipc_msg_build
-       5  WARNING in tipc_msg_build
-       6  WARNING in tipc_msg_build
-       6  WARNING in tipc_msg_build
-       7  WARNING in tipc_msg_build
-       7  WARNING in tipc_msg_build
-       7  WARNING in tipc_msg_build
-       7  WARNING in blk_rq_map_user_iov
-       8  WARNING in tipc_msg_build
-       8  WARNING in tipc_msg_build
-       9  WARNING in tipc_msg_build
-       9  WARNING in blk_rq_map_user_iov
-      10  WARNING in tipc_msg_build
-      10  WARNING in tipc_msg_build
-      10  WARNING in tipc_msg_build
-      10  WARNING in tipc_msg_build
-Warning: bpf$BPF_RAW_TRACEPOINT_OPEN was disabled by Syzkaller.
+       2  general protection fault in rxrpc_unuse_local (4) (has report)
+       4  WARNING in tipc_msg_build (has report)
+       4  general protection fault in rxrpc_unuse_local (2) (has report)
+***    4  WARNING in blk_rq_map_user_iov (has report)
 Attempt 3: (RETRY)
     Time  Bug Name
-       2  WARNING in tipc_msg_build
-       2  WARNING in tipc_msg_build
-       2  WARNING in tipc_msg_build
-       2  WARNING in tipc_msg_build
-       4  WARNING in tipc_msg_build
-       4  WARNING in tipc_msg_build
-       4  WARNING in tipc_msg_build
-       4  WARNING in blk_rq_map_user_iov
-       5  WARNING in tipc_msg_build
-       5  WARNING in blk_rq_map_user_iov
-       6  WARNING in tipc_msg_build
-       6  WARNING in tipc_msg_build
-       7  WARNING in tipc_msg_build
-       7  WARNING in tipc_msg_build
-       7  WARNING in tipc_msg_build
-       7  WARNING in tipc_msg_build
-       9  WARNING in tipc_msg_build
-       9  WARNING in tipc_msg_build
-       9  WARNING in tipc_msg_build
-       9  WARNING in blk_rq_map_user_iov
-      10  WARNING in tipc_msg_build
-      10  WARNING in tipc_msg_build
-      10  WARNING in tipc_msg_build
+       2  general protection fault in rxrpc_unuse_local (3) (has report)
+***    2  WARNING in blk_rq_map_user_iov (has report)
+The bug was found.
+
+New Max Time: 10
+
+==== Major Release Search ====
+12 Releases
+
+2026-01-06 17:36:56
+Session:   2
+Kernel:    2022-12-11 - 830b3c68c1fb1e9176028d02ef86f3cf76aa2476 (v6.1)
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       3  INFO: rcu detected stall in corrupted
+       3  suppressed report
+       8  suppressed report
+       9  INFO: rcu detected stall in corrupted
+      10  suppressed report
+The bug was not found.
+About 11 releases remaining
+
+==== Kernel Bisection ====
+13139 Linux commits
+
+2026-01-06 18:12:17
+Session:   3
+Kernel:    2022-12-13 - 361c89a0da59c04b1d3d33568965fe426b0f18de
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  WARNING in tipc_msg_build (3) (has report)
+       3  INFO: rcu detected stall in corrupted
+       4  WARNING in tipc_msg_build (4) (has report)
+       5  WARNING in tipc_msg_build (3) (has report)
+       6  WARNING in tipc_msg_build (2) (has report)
+       7  WARNING in tipc_msg_build (3) (has report)
+       8  WARNING in tipc_msg_build (3) (has report)
+       9  WARNING in tipc_msg_build (2) (has report)
+      10  WARNING in tipc_msg_build (has report)
+***   10  WARNING in blk_rq_map_user_iov (2) (has report)
+Running syz-repro.
+New PoC saved at /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0899-0.prog
+Primary PoC:     /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0899-0.prog
+Run Time:        0h12m0s
+The bug was found.
+About 6580 commits remaining
+
+2026-01-06 18:56:35
+Session:   4
+Kernel:    2022-12-13 - c76ff350bd57682ae12bea6383dd8baf4824ac96
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  WARNING in tipc_msg_build (4) (has report)
+       4  WARNING in tipc_msg_build (4) (has report)
+       5  WARNING in tipc_msg_build (4) (has report)
+       7  WARNING in tipc_msg_build (3) (has report)
+***    7  WARNING in blk_rq_map_user_iov (has report)
+The bug was found.
+About 3293 commits remaining
+
+2026-01-06 19:26:03
+Session:   5
+Kernel:    2022-12-12 - 01f3cbb296a9ad378167c01758c99557b5bc3208
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  INFO: rcu detected stall in corrupted
+       6  INFO: task hung in new_device_store
+       7  suppressed report
+       8  suppressed report (2)
+      10  INFO: rcu detected stall in corrupted
+The bug was not found.
+About 1626 commits remaining
+
+2026-01-06 19:58:16
+Session:   6
+Kernel:    2022-12-12 - eb4511538191ac758faa0735fe06c5ce8202ae04
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       3  INFO: rcu detected stall in corrupted
+       8  suppressed report (4)
+The bug was not found.
+About 825 commits remaining
+
+2026-01-06 20:30:23
+Session:   7
+Kernel:    2022-12-12 - cda6a60acc95cba93e9c17352ed485555adc661f
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  INFO: rcu detected stall in corrupted
+       2  WARNING in tipc_msg_build (3) (has report)
+       4  WARNING in tipc_msg_build (3) (has report)
+       5  WARNING in tipc_msg_build (2) (has report)
+       6  WARNING in tipc_msg_build (has report)
+***    6  WARNING in blk_rq_map_user_iov (3) (has report)
+The bug was found.
+About 408 commits remaining
+
+2026-01-06 20:54:30
+Session:   8
+Kernel:    2022-12-12 - 268369b171ff1be6a68ae8f33d0602c6bea48d2e
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       7  suppressed report
+       8  suppressed report
+The bug was not found.
+About 206 commits remaining
+
+2026-01-06 21:25:31
+Session:   9
+Kernel:    2022-12-12 - 9b93f5069fd95cea7915aab321fd74d2548ba75c
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  WARNING in tipc_msg_build (4) (has report)
+       4  WARNING in tipc_msg_build (4) (has report)
+       5  WARNING in tipc_msg_build (2) (has report)
+       6  WARNING in tipc_msg_build (2) (has report)
+       7  WARNING in tipc_msg_build (2) (has report)
+***    7  WARNING in blk_rq_map_user_iov (2) (has report)
+Running syz-repro.
+New PoC saved at /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0899-1.prog
+Primary PoC:     /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0899-1.prog
+Run Time:        0h17m0s
+The bug was found.
+About 84 commits remaining
+
+2026-01-06 22:00:44
+Session:   10
+Kernel:    2022-10-24 - 03fd1402bd7d93bd4598fc961632ef2737a500fd
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       7  suppressed report
+       8  INFO: rcu detected stall in corrupted
+       9  suppressed report
+      10  suppressed report
+The bug was not found.
+About 5537 commits remaining
+
+2026-01-06 22:32:41
+Session:   11
+Kernel:    2022-12-12 - bd90741318ee0a48244e8e4b9364023d730a80a9
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  INFO: rcu detected stall in corrupted
+       2  WARNING in tipc_msg_build (2) (has report)
+       3  WARNING in tipc_msg_build (has report)
+***    4  WARNING in blk_rq_map_user_iov (2) (has report)
+The bug was found.
+About 5513 commits remaining
+
+2026-01-06 22:58:12
+Session:   12
+Kernel:    2022-11-25 - fc02f33787d8dd227b54f263eba983d5b249c032
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       7  suppressed report
+       8  suppressed report (2)
+       9  suppressed report
+The bug was not found.
+About 3437 commits remaining
+
+2026-01-06 23:29:58
+Session:   13
+Kernel:    2022-12-12 - 13c574fec815f449fa812df60844bbb4b1548d19
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  WARNING in tipc_msg_build (has report)
+       3  WARNING in tipc_msg_build (2) (has report)
+***    3  WARNING in blk_rq_map_user_iov (has report)
+The bug was found.
+About 3431 commits remaining
+
+2026-01-06 23:54:11
+Session:   14
+Kernel:    2022-11-25 - de4eda9de2d957ef2d6a8365a01e26a435e958cb
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  INFO: rcu detected stall in corrupted
+       2  WARNING in tipc_msg_build (2) (has report)
+       3  WARNING in tipc_msg_build (has report)
+       4  WARNING in tipc_msg_build (4) (has report)
+       6  WARNING in tipc_msg_build (4) (has report)
+       7  WARNING in tipc_msg_build (2) (has report)
+       8  WARNING in tipc_msg_build (has report)
+***    8  WARNING in blk_rq_map_user_iov (has report)
+Running syz-repro.
+Run Time:        0h7m0s
+The bug was found.
+About 3 commits remaining
+
+2026-01-07 00:27:52
+Session:   15
+Kernel:    2022-11-25 - a41dad905e5a388f88435a517de102e9b2c8e43d
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       3  INFO: rcu detected stall in corrupted
+       3  WARNING in tipc_msg_build (2) (has report)
+***    3  WARNING in blk_rq_map_user_iov (has report)
+The bug was found.
+About 2 commits remaining
+
+==== Partial Result: Focused Fuzzing ====
+Reproducer:           /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0899-1.prog
+Bisection Result:     2022-11-25 - a41dad905e5a388f88435a517de102e9b2c8e43d
+Bisected Commit Name: iov_iter: saner checks for attempt to copy to/from iterator
+Stage Time:           7h29m40s
+Run Time:             7h29m44s
+=========================================
+
+==== Anchor Commit ====
+
+2026-01-07 00:39:52
+Session:   16
+Kernel:    2022-11-25 - fc02f33787d8dd227b54f263eba983d5b249c032
+Compiler:  ccache gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0899-1.prog
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in del_device_store
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in ip6_tnl_exit_batch_net
+    INFO: task hung in new_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in devlink_unregister
+    INFO: task hung in linkwatch_event
+    INFO: task hung in rtnetlink_rcv_msg
+Attempt 5:
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in switchdev_deferred_process_work
+    INFO: task hung in new_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in rtnetlink_rcv_msg
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in new_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in devlink_unregister
+    INFO: task hung in rtnetlink_rcv_msg
 The bug was not found.
 
 Failure: This bug cannot be found at the anchor commit.
+
+==== Partial Result: Primary PoC Test ====
+Reproducer:           /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0899-1.prog
+Bisection Result:     Failed to reproduce at the anchor commit.
+Stage Time:           0h18m9s
+Run Time:             7h47m54s
+==========================================
+
+==== Anchor Commit ====
+
+2026-01-07 00:58:05
+Session:   17
+Kernel:    2022-11-25 - fc02f33787d8dd227b54f263eba983d5b249c032
+Compiler:  ccache gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0899-11.prog
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in new_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in rtnetlink_rcv_msg
+Attempt 3:
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in l2tp_exit_net
+    INFO: task hung in new_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in devlink_unregister
+Attempt 4:
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in devlink_nl_port_fill
+    INFO: task hung in l2tp_exit_net
+    INFO: task hung in del_device_store
+    INFO: task hung in linkwatch_event
+    INFO: task hung in rtnetlink_rcv_msg
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in netdev_run_todo
+    INFO: task hung in del_device_store
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in linkwatch_event
+Attempt 7:
+    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in new_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in linkwatch_event
+    INFO: task hung in rtnetlink_rcv_msg
+The bug was not found.
+
+Failure: This bug cannot be found at the anchor commit.
+
+==== Partial Result: Subsequent PoC Test ====
+Reproducer:           /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0899-11.prog
+Bisection Result:     Failed to reproduce at the anchor commit.
+Stage Time:           0h18m39s
+Run Time:             8h6m33s
+=============================================
+
+==== Anchor Commit ====
+
+2026-01-07 01:16:44
+Session:   18
+Kernel:    2022-11-25 - fc02f33787d8dd227b54f263eba983d5b249c032
+Compiler:  ccache gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0899-28.prog
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+
+Failure: This bug cannot be found at the anchor commit.
+
+==== Partial Result: Subsequent PoC Test ====
+Reproducer:           /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0899-28.prog
+Bisection Result:     Failed to reproduce at the anchor commit.
+Stage Time:           0h17m21s
+Run Time:             8h23m55s
+=============================================
+
+==== Anchor Commit ====
+
+2026-01-07 01:34:06
+Session:   19
+Kernel:    2022-11-25 - fc02f33787d8dd227b54f263eba983d5b249c032
+Compiler:  ccache gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0899-0.prog
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in wg_destruct
+    INFO: task hung in del_device_store
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in devlink_unregister
+    INFO: task hung in rtnetlink_rcv_msg
+Attempt 3:
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in new_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in rtnetlink_rcv_msg
+Attempt 4:
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in del_device_store
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in devlink_unregister
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in new_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in devlink_unregister
+    INFO: task hung in linkwatch_event
+    INFO: task hung in rtnetlink_rcv_msg
+Attempt 7:
+    No crashes found.
+The bug was not found.
+
+Failure: This bug cannot be found at the anchor commit.
+
+==== Partial Result: Subsequent PoC Test ====
+Reproducer:           /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0899-0.prog
+Bisection Result:     Failed to reproduce at the anchor commit.
+Stage Time:           0h17m41s
+Run Time:             8h41m37s
+=============================================
+
+==== Anchor Commit ====
+
+2026-01-07 01:51:48
+Session:   20
+Kernel:    2022-11-25 - fc02f33787d8dd227b54f263eba983d5b249c032
+Compiler:  ccache gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0899-24.prog
+Attempt 0:
+    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in wg_set_device
+    INFO: task hung in del_device_store
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in linkwatch_event
+    INFO: task hung in rtnetlink_rcv_msg
+Attempt 1:
+    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in devlink_nl_port_fill
+    INFO: task hung in wiphy_unregister
+    INFO: task hung in del_device_store
+    INFO: task hung in rtnetlink_rcv_msg
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in del_device_store
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in rtnetlink_rcv_msg
+Attempt 4:
+    WARNING: ODEBUG bug in netdev_run_todo (has report)
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in switchdev_deferred_process_work
+    INFO: task hung in new_device_store
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in linkwatch_event
+    INFO: task hung in nl80211_pre_doit
+    INFO: task hung in rtnetlink_rcv_msg
+Attempt 7:
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in new_device_store
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in rtnetlink_rcv_msg
+The bug was not found.
+
+Failure: This bug cannot be found at the anchor commit.
+
+==== Partial Result: Subsequent PoC Test ====
+Reproducer:           /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0899-24.prog
+Bisection Result:     Failed to reproduce at the anchor commit.
+Stage Time:           0h18m43s
+Run Time:             9h0m20s
+=============================================
+
+==== Anchor Commit ====
+
+2026-01-07 02:10:31
+Session:   21
+Kernel:    2022-11-25 - fc02f33787d8dd227b54f263eba983d5b249c032
+Compiler:  ccache gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0899-29.prog
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in del_device_store
+Attempt 3:
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in l2tp_exit_net
+    INFO: task hung in del_device_store
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in devlink_unregister
+    INFO: task hung in linkwatch_event
+Attempt 4:
+    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in new_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in devlink_unregister
+    INFO: task hung in linkwatch_event
+    INFO: task hung in rtnetlink_rcv_msg
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in del_device_store
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in devlink_unregister
+    INFO: task hung in rtnetlink_rcv_msg
+The bug was not found.
+
+Failure: This bug cannot be found at the anchor commit.
+
+==== Partial Result: Subsequent PoC Test ====
+Reproducer:           /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0899-29.prog
+Bisection Result:     Failed to reproduce at the anchor commit.
+Stage Time:           0h17m56s
+Run Time:             9h18m17s
+=============================================
+
+==== Anchor Commit ====
+
+2026-01-07 02:28:28
+Session:   22
+Kernel:    2022-11-25 - fc02f33787d8dd227b54f263eba983d5b249c032
+Compiler:  ccache gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0899-12.prog
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in rtnetlink_rcv_msg
+Attempt 3:
+    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in cangw_pernet_exit_batch
+    INFO: task hung in del_device_store
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in devlink_unregister
+Attempt 4:
+    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in fqdir_free_fn
+    INFO: task hung in new_device_store
+    INFO: task hung in rtnetlink_rcv_msg
+Attempt 5:
+    WARNING: ODEBUG bug in netdev_run_todo (has report)
+Attempt 6:
+    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in del_device_store
+    INFO: task hung in rtnetlink_rcv_msg
+Attempt 7:
+    No crashes found.
+The bug was not found.
+
+Failure: This bug cannot be found at the anchor commit.
+
+==== Partial Result: Subsequent PoC Test ====
+Reproducer:           /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0899-12.prog
+Bisection Result:     Failed to reproduce at the anchor commit.
+Stage Time:           0h17m55s
+Run Time:             9h36m12s
+=============================================
+
+==== Anchor Commit ====
+
+2026-01-07 02:46:24
+Session:   23
+Kernel:    2022-11-25 - fc02f33787d8dd227b54f263eba983d5b249c032
+Compiler:  ccache gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0899-23.prog
+Attempt 0:
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in new_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in linkwatch_event
+    INFO: task hung in rtnetlink_rcv_msg
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in del_device_store
+    INFO: task hung in devlink_unregister
+    INFO: task hung in linkwatch_event
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in ip_tunnel_delete_nets
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit
+    INFO: task hung in caif_exit_net
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in new_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in rtnetlink_rcv_msg
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in del_device_store
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in devlink_unregister
+Attempt 7:
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in l2tp_exit_net
+    INFO: task hung in new_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in devlink_unregister
+The bug was not found.
+
+Failure: This bug cannot be found at the anchor commit.
+
+==== Partial Result: Subsequent PoC Test ====
+Reproducer:           /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0899-23.prog
+Bisection Result:     Failed to reproduce at the anchor commit.
+Stage Time:           0h17m58s
+Run Time:             9h54m11s
+=============================================
+
+==== Anchor Commit ====
+
+2026-01-07 03:04:23
+Session:   24
+Kernel:    2022-11-25 - fc02f33787d8dd227b54f263eba983d5b249c032
+Compiler:  ccache gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0899-9.prog
+Attempt 0:
+    WARNING: ODEBUG bug in netdev_run_todo (has report)
+Attempt 1:
+    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in new_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in linkwatch_event
+    INFO: task hung in rtnetlink_rcv_msg
+Attempt 2:
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in netdev_run_todo
+    INFO: task hung in new_device_store
+    INFO: task hung in del_device_store
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in fqdir_free_fn
+    INFO: task hung in del_device_store
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in devlink_unregister
+    INFO: task hung in linkwatch_event
+    INFO: task hung in rtnetlink_rcv_msg
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in netdev_run_todo
+    INFO: task hung in new_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in devlink_unregister
+    INFO: task hung in rtnetlink_rcv_msg
+The bug was not found.
+
+Failure: This bug cannot be found at the anchor commit.
+
+==== Partial Result: Subsequent PoC Test ====
+Reproducer:           /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0899-9.prog
+Bisection Result:     Failed to reproduce at the anchor commit.
+Stage Time:           0h18m30s
+Run Time:             10h12m42s
+=============================================
+
+==== Anchor Commit ====
+
+2026-01-07 03:22:53
+Session:   25
+Kernel:    2022-11-25 - fc02f33787d8dd227b54f263eba983d5b249c032
+Compiler:  ccache gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0899-6.prog
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in new_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in rtnetlink_rcv_msg
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in fqdir_free_fn
+    INFO: task hung in devlink_nl_port_fill
+    INFO: task hung in del_device_store
+    INFO: task hung in rtnetlink_rcv_msg
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in del_device_store
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in devlink_unregister
+    INFO: task hung in linkwatch_event
+    INFO: task hung in rtnetlink_rcv_msg
+The bug was not found.
+
+Failure: This bug cannot be found at the anchor commit.
+
+==== Partial Result: Subsequent PoC Test ====
+Reproducer:           /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0899-6.prog
+Bisection Result:     Failed to reproduce at the anchor commit.
+Stage Time:           0h18m11s
+Run Time:             10h30m53s
+=============================================
+
+====================================================================================================================================================
+Bug Name:             WARNING in _copy_from_iter
+Bug ID:               bug0899
+Bug Link:             https://syzkaller.appspot.com/bug?extid=d43608d061e8847ec9f3
+Bisection Result:     2022-11-25 - a41dad905e5a388f88435a517de102e9b2c8e43d
+Bisected Commit Name: iov_iter: saner checks for attempt to copy to/from iterator
+Run Time:             10h30m53s
+
+Anchor Commit:        2022-12-17 - f9ff5644bcc04221bae56f922122f2b7f5d24d62
+Bisection Result:     2022-11-25 - a41dad905e5a388f88435a517de102e9b2c8e43d
