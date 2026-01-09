@@ -32,7 +32,7 @@ int levenshtein_str(const std::string &s1, const std::string &s2)
 
 // Levenshtein implementation using indices to minimize memory copies.
 // This could be templated, but that would be even harder than duplicating the code.
-int _levenshtein_vec(const std::vector<std::string> &v1, unsigned int i1, const std::vector<std::string> &v2, unsigned int i2, std::map<std::pair<unsigned int, unsigned int>, int> &mem)
+unsigned int _levenshtein_vec(const std::vector<std::string> &v1, unsigned int i1, const std::vector<std::string> &v2, unsigned int i2, std::map<std::pair<unsigned int, unsigned int>, unsigned int> &mem)
 {
     if (mem.count({i1, i2}) > 0)
         goto out;
@@ -53,7 +53,7 @@ out:
 
 int levenshtein_vec(const std::vector<std::string> &v1, const std::vector<std::string> &v2)
 {
-    std::map<std::pair<unsigned int, unsigned int>, int> mem;
+    std::map<std::pair<unsigned int, unsigned int>, unsigned int> mem;
     return _levenshtein_vec(v1, 0, v2, 0, mem);
 }
 
