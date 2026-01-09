@@ -1,10 +1,9 @@
-./bin/meerkat -i 1 -c /home/syzretrospector/meerkat/wd-meerkat-1/meerkat.cfg -a 6e2332e0ab532eb01f1fde39080dbfa9bf65c4cf -F poc-test,poc-all-pocs
+./bin/meerkat -i 1 -c /home/syzretrospector/meerkat/wd-meerkat-1/meerkat.cfg -a 6e2332e0ab532eb01f1fde39080dbfa9bf65c4cf -F ff-test,poc-test,poc-all-pocs,ff-no-find-backup,stateful-corpus
 Bisecting:          WARNING in rate_control_rate_init
 Syzbot Link:        https://syzkaller.appspot.com/bug?extid=62d7eef57b09bfebcd84
 Working Name:       bug0770
 
-Aliases:
-    WARNING in rate_control_rate_init
+No aliases given.
 
 Anchor Commit:      6e2332e0ab532eb01f1fde39080dbfa9bf65c4cf
 Repository:         https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
@@ -12,15 +11,15 @@ Branch:             master
 Arch:               amd64
 
 Meerkat:            /home/syzretrospector/meerkat/
-Version:            1.2.0
+Version:            1.1.1
 Kernel:             /home/syzretrospector/meerkat/wd-meerkat-1/kernel/
 Syzkaller:          /home/syzretrospector/meerkat/syzkaller/
 Compilers:          /home/syzretrospector/meerkat/compilers/
-Compiler:           gcc (Ubuntu 12.3.0-1ubuntu1~22.04.2) 12.3.0
+Compiler:           gcc (Ubuntu 11.4.0-1ubuntu1~22.04.2) 11.4.0
 Linker:             GNU ld (GNU Binutils for Ubuntu) 2.38
 Ccache:             ccache version 4.5.1
-Image:              /home/syzretrospector/meerkat/image/stretch/stretch.img
-Image Key:          /home/syzretrospector/meerkat/image/stretch/stretch.id_rsa
+Image:              /home/syzretrospector/images/stretch/stretch.img
+Image Key:          /home/syzretrospector/images/stretch/stretch.id_rsa
 
 Workdir:            /home/syzretrospector/meerkat/wd-meerkat-1/
 Kconfig:            /home/syzretrospector/meerkat/wd-meerkat-1/config-bug0770.txt
@@ -29,1420 +28,542 @@ Primary PoC:        /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro
 Syzkaller Workdir:  /home/syzretrospector/meerkat/wd-meerkat-1/wd-kaller/
 Log Directory:      /home/syzretrospector/meerkat/wd-meerkat-1/log/
 
+Syscalls: (10)      ["ioctl$sock_SIOCGIFINDEX_80211", "sendmsg$NL80211_CMD_NEW_STATION", "sendmsg$NL80211_CMD_SET_INTERFACE", "socket$nl_generic", "syz_genetlink_get_family_id$nl80211", "socket", "sendmsg$NL80211_CMD_GET_INTERFACE", "ioctl$F2FS_IOC_START_ATOMIC_WRITE", "openat$selinux_enforce", "socket$netlink"]
 VM Count:           8
 CPU Count:          2
 Procs:              16
 Memory:             4096
 Make Procs:         16
+Max Time:           10
+Max Attempts:       1
 
 ==== Anchor Commit ====
 
-2025-12-04 15:13:18
+2025-10-29 09:25:41
 Session:   1
 Kernel:    2023-06-27 - 6e2332e0ab532eb01f1fde39080dbfa9bf65c4cf
 Compiler:  ccache gcc
-PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0770-3.prog
-Attempt 0:
-*** WARNING in rate_control_rate_init (has report)
-Error: index error parsing Warning report
 Attempt 1:
-*** WARNING in rate_control_rate_init (has report)
-Attempt 2:
-*** WARNING in rate_control_rate_init (has report)
-Attempt 3:
-*** WARNING in rate_control_rate_init (has report)
-Attempt 4:
-*** WARNING in rate_control_rate_init (has report)
-Attempt 5:
-*** WARNING in rate_control_rate_init (has report)
-Attempt 6:
-*** WARNING in rate_control_rate_init (has report)
-Attempt 7:
-*** WARNING in rate_control_rate_init (has report)
+    Time  Bug Name
+***    2  WARNING in rate_control_rate_init
+***    2  WARNING in rate_control_rate_init
+***    2  WARNING in rate_control_rate_init
+***    2  WARNING in rate_control_rate_init
+***    2  WARNING in rate_control_rate_init
+***    2  WARNING in rate_control_rate_init
+Attempt 2: (RETRY)
+    Time  Bug Name
+***    2  WARNING in rate_control_rate_init
+***    2  WARNING in rate_control_rate_init
+***    2  WARNING in rate_control_rate_init
+***    2  WARNING in rate_control_rate_init
+***    2  WARNING in rate_control_rate_init
+***    2  WARNING in rate_control_rate_init
+***    2  WARNING in rate_control_rate_init
+***    2  WARNING in rate_control_rate_init
+Attempt 3: (RETRY)
+    Time  Bug Name
+***    2  WARNING in rate_control_rate_init
+***    2  WARNING in rate_control_rate_init
+***    2  WARNING in rate_control_rate_init
+***    2  WARNING in rate_control_rate_init
+***    2  WARNING in rate_control_rate_init
+***    2  WARNING in rate_control_rate_init
+***    2  WARNING in rate_control_rate_init
+***    2  WARNING in rate_control_rate_init
 The bug was found.
+
+New Max Time: 10
 
 ==== Major Release Search ====
 13 Releases
 
-2025-12-04 15:25:45
+2025-10-29 09:45:03
 Session:   2
 Kernel:    2023-06-25 - 6995e2de6891c724bfeb2db33d7b87775f913ad1 (v6.4)
 Compiler:  ccache gcc
-PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0770-3.prog
-Attempt 0:
-*** WARNING in rate_control_rate_init (has report)
 Attempt 1:
-*** WARNING in rate_control_rate_init (has report)
-Attempt 2:
-*** WARNING in rate_control_rate_init (has report)
-Attempt 3:
-*** WARNING in rate_control_rate_init (has report)
-Attempt 4:
-*** WARNING in rate_control_rate_init (has report)
-Attempt 5:
-*** WARNING in rate_control_rate_init (has report)
-Attempt 6:
-*** WARNING in rate_control_rate_init (has report)
-Attempt 7:
-*** WARNING in rate_control_rate_init (has report)
+    Time  Bug Name
+***    2  WARNING in rate_control_rate_init
+***    2  WARNING in rate_control_rate_init
+***    2  WARNING in rate_control_rate_init
+***    2  WARNING in rate_control_rate_init
+Running syz-repro.
+New PoC saved at /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0770-0.prog
+Primary PoC:     /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0770-0.prog
+Run Time:        0h33m0s
 The bug was found.
 About 12 releases remaining
 
-2025-12-04 15:52:07
+2025-10-29 10:33:57
 Session:   3
 Kernel:    2023-04-23 - 457391b0380335d5e9a5babdec90ac53928b23b4 (v6.3)
 Compiler:  ccache gcc
-PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0770-3.prog
-Attempt 0:
-*** WARNING in rate_control_rate_init (has report)
 Attempt 1:
-*** WARNING in rate_control_rate_init (has report)
-Attempt 2:
-*** WARNING in rate_control_rate_init (has report)
-Attempt 3:
-*** WARNING in rate_control_rate_init (has report)
-Attempt 4:
-*** WARNING in rate_control_rate_init (has report)
-Attempt 5:
-*** WARNING in rate_control_rate_init (has report)
-Attempt 6:
-*** WARNING in rate_control_rate_init (has report)
-Attempt 7:
-*** WARNING in rate_control_rate_init (has report)
+    Time  Bug Name
+***    2  WARNING in rate_control_rate_init
+***    2  WARNING in rate_control_rate_init
+***    2  WARNING in rate_control_rate_init
+***    2  WARNING in rate_control_rate_init
+***    2  WARNING in rate_control_rate_init
+***    2  WARNING in rate_control_rate_init
+***    2  WARNING in rate_control_rate_init
 The bug was found.
 About 11 releases remaining
 
-2025-12-04 16:18:33
+2025-10-29 10:49:58
 Session:   4
 Kernel:    2023-02-19 - c9c3395d5e3dcc6daee66c6908354d47bf98cb0c (v6.2)
 Compiler:  ccache gcc
-PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0770-3.prog
-Attempt 0:
-    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit
-    INFO: rcu detected stall in corrupted
-    INFO: task hung in del_device_store
 Attempt 1:
-    INFO: rcu detected stall in corrupted
-    INFO: task hung in synchronize_rcu
-    INFO: task hung in switchdev_deferred_process_work
-    INFO: task hung in new_device_store
-    INFO: task hung in del_device_store
-    INFO: task hung in linkwatch_event
-    INFO: task hung in rtnetlink_rcv_msg
-Attempt 2:
-    INFO: rcu detected stall in corrupted
-    INFO: task hung in del_device_store
-Attempt 3:
-*** WARNING in rate_control_rate_init (has report)
-Attempt 4:
-*** WARNING in rate_control_rate_init (has report)
-Attempt 5:
-    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit
-    INFO: rcu detected stall in corrupted
-    INFO: task hung in del_device_store
-Attempt 6:
-*** WARNING in rate_control_rate_init (has report)
-Attempt 7:
-    INFO: rcu detected stall in corrupted
-    INFO: task hung in switchdev_deferred_process_work
-    INFO: task hung in new_device_store
-    INFO: task hung in del_device_store
-    INFO: task hung in addrconf_dad_work
-    INFO: task hung in devlink_unregister
-    INFO: task hung in linkwatch_event
-    INFO: task hung in rtnetlink_rcv_msg
+    Time  Bug Name
+       2  INFO: rcu detected stall in corrupted
+***    2  WARNING in rate_control_rate_init
+***    2  WARNING in rate_control_rate_init
+***    2  WARNING in rate_control_rate_init
+***    2  WARNING in rate_control_rate_init
+***    2  WARNING in rate_control_rate_init
+***    2  WARNING in rate_control_rate_init
+***    2  WARNING in rate_control_rate_init
 The bug was found.
 About 10 releases remaining
 
-2025-12-04 16:49:53
+2025-10-29 11:06:28
 Session:   5
 Kernel:    2022-10-02 - 4fe89d07dcc2804c8b562f6c7896a45643d34b2f (v6.0)
 Compiler:  ccache gcc
-PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0770-3.prog
-Attempt 0:
-    No crashes found.
 Attempt 1:
-    No crashes found.
-Attempt 2:
-    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit
-    INFO: rcu detected stall in corrupted
-    INFO: task hung in synchronize_rcu
-    INFO: task hung in switchdev_deferred_process_work
-    INFO: task hung in new_device_store
-    INFO: task hung in del_device_store
-    INFO: task hung in addrconf_dad_work
-    INFO: task hung in rtnetlink_rcv_msg
-Attempt 3:
-    No crashes found.
-Attempt 4:
-    INFO: rcu detected stall in corrupted
-    INFO: rcu detected stall in hci_rx_work
-    INFO: task hung in new_device_store
-    INFO: task hung in del_device_store
-    INFO: task hung in devlink_unregister
-    INFO: task hung in linkwatch_event
-    INFO: task hung in rtnetlink_rcv_msg
-Attempt 5:
-    No crashes found.
-Attempt 6:
-    INFO: rcu detected stall in corrupted
-    INFO: task hung in synchronize_rcu
-    INFO: task hung in del_device_store
-    INFO: task hung in addrconf_dad_work
-    INFO: task hung in devlink_unregister
-    INFO: task hung in linkwatch_event
-    INFO: task hung in rtnetlink_rcv_msg
-Attempt 7:
-    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit
-    INFO: rcu detected stall in corrupted
-    INFO: task hung in synchronize_rcu
-    INFO: task hung in wg_set_device
-    INFO: task hung in del_device_store
-    INFO: task hung in addrconf_dad_work
-    INFO: task hung in genl_rcv_msg
-    INFO: task hung in linkwatch_event
-    INFO: task hung in rtnetlink_rcv_msg
+    Time  Bug Name
+       7  WARNING: ODEBUG bug in netdev_run_todo
 The bug was not found.
 About 9 releases remaining
 
 ==== Kernel Bisection ====
 31950 Linux commits
 
-2025-12-04 17:22:18
+2025-10-29 11:31:05
 Session:   6
 Kernel:    2022-12-22 - fe8f5b2f7bec504021b395d24f7efca415d21e2b
 Compiler:  ccache gcc
-PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0770-3.prog
-Attempt 0:
-    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit
-    INFO: rcu detected stall in corrupted
-    INFO: task hung in synchronize_rcu
-    INFO: task hung in netdev_run_todo
-    INFO: task hung in new_device_store
-    INFO: task hung in del_device_store
-    INFO: task hung in addrconf_dad_work
-    INFO: task hung in devlink_unregister
-    INFO: task hung in linkwatch_event
-    INFO: task hung in rtnetlink_rcv_msg
 Attempt 1:
-    INFO: rcu detected stall in corrupted
-    INFO: task hung in synchronize_rcu
-    INFO: task hung in new_device_store
-    INFO: task hung in del_device_store
-    INFO: task hung in devlink_unregister
-    INFO: task hung in linkwatch_event
-    INFO: task hung in rtnetlink_rcv_msg
-Attempt 2:
-    INFO: rcu detected stall in corrupted
-    INFO: task hung in synchronize_rcu
-    INFO: task hung in new_device_store
-    INFO: task hung in addrconf_dad_work
-    INFO: task hung in devlink_unregister
-    INFO: task hung in rtnetlink_rcv_msg
-Attempt 3:
-    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit
-    INFO: rcu detected stall in corrupted
-    INFO: task hung in synchronize_rcu
-    INFO: task hung in ieee80211_register_hw
-    INFO: task hung in fib_net_exit_batch
-    INFO: task hung in new_device_store
-    INFO: task hung in linkwatch_event
-    INFO: task hung in rtnetlink_rcv_msg
-Attempt 4:
-    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit
-    INFO: rcu detected stall in corrupted
-    INFO: task hung in devlink_nl_port_fill
-    INFO: task hung in del_device_store
-    INFO: task hung in devlink_unregister
-    INFO: task hung in linkwatch_event
-    INFO: task hung in rtnetlink_rcv_msg
-Attempt 5:
-*** WARNING in rate_control_rate_init (has report)
-Attempt 6:
-    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit
-    INFO: rcu detected stall in corrupted
-    INFO: task hung in synchronize_rcu
-    INFO: task hung in new_device_store
-    INFO: task hung in del_device_store
-    INFO: task hung in addrconf_dad_work
-    INFO: task hung in rtnetlink_rcv_msg
-Attempt 7:
-    INFO: rcu detected stall in corrupted
-    INFO: task hung in devlink_nl_port_fill
-    INFO: task hung in wg_set_device
-    INFO: task hung in del_device_store
-    INFO: task hung in linkwatch_event
+    Time  Bug Name
+       2  INFO: rcu detected stall in corrupted
+***    2  WARNING in rate_control_rate_init
+***    2  WARNING in rate_control_rate_init
+***    2  WARNING in rate_control_rate_init
+***    2  WARNING in rate_control_rate_init
+***    2  WARNING in rate_control_rate_init
+***    2  WARNING in rate_control_rate_init
+Running syz-repro.
+New PoC saved at /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0770-2.prog
+Primary PoC:     /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0770-2.prog
+Run Time:        0h15m0s
 The bug was found.
 About 15831 commits remaining
 
-2025-12-04 17:52:10
+2025-10-29 12:01:57
 Session:   7
 Kernel:    2022-10-07 - d3dcbe24a0fc6373ce7e4a65acd5c785aa8e2396
 Compiler:  ccache gcc
-PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0770-3.prog
-Attempt 0:
-    possible deadlock in vivid_update_format_cap
-    WARNING in wireless_send_event (has report)
+Warning: Syzkaller never completed machine check.
+Saved log at /home/syzretrospector/meerkat/wd-meerkat-1/log/bug0770-boot_failure.log.
 Attempt 1:
-    possible deadlock in vivid_update_format_cap
-    WARNING in wireless_send_event (has report)
-Attempt 2:
-    possible deadlock in vivid_update_format_cap
-    WARNING in wireless_send_event (has report)
-Attempt 3:
-    possible deadlock in vivid_update_format_cap
-    WARNING in wireless_send_event (has report)
-Attempt 4:
-    possible deadlock in vivid_update_format_cap
-    WARNING in wireless_send_event (has report)
-Attempt 5:
-    possible deadlock in vivid_update_format_cap
-    WARNING in wireless_send_event (has report)
-Attempt 6:
-    possible deadlock in vivid_update_format_cap
-    WARNING in wireless_send_event (has report)
-Attempt 7:
-    possible deadlock in vivid_update_format_cap
-    WARNING in wireless_send_event (has report)
+    Time  Bug Name
+       1  WARNING in wireless_send_event
+       1  WARNING in wireless_send_event
+       2  WARNING in wireless_send_event
+       2  WARNING in wireless_send_event
+       2  WARNING in wireless_send_event
+       2  WARNING in wireless_send_event
+       2  WARNING in wireless_send_event
+       2  WARNING in wireless_send_event
+       3  WARNING in wireless_send_event
+       3  WARNING in wireless_send_event
+       3  WARNING in wireless_send_event
+       3  WARNING in wireless_send_event
+       3  WARNING in wireless_send_event
+       3  WARNING in wireless_send_event
+       4  WARNING in wireless_send_event
+       4  WARNING in wireless_send_event
+       4  WARNING in wireless_send_event
+       4  WARNING in wireless_send_event
+       4  WARNING in wireless_send_event
+       4  WARNING in wireless_send_event
+       5  WARNING in wireless_send_event
+       5  WARNING in wireless_send_event
+       5  WARNING in wireless_send_event
+       5  WARNING in wireless_send_event
+       5  WARNING in wireless_send_event
+       5  WARNING in wireless_send_event
+       6  WARNING in wireless_send_event
+       6  WARNING in wireless_send_event
+       6  WARNING in wireless_send_event
+       6  WARNING in wireless_send_event
+       6  WARNING in wireless_send_event
+       6  WARNING in wireless_send_event
+       7  WARNING in wireless_send_event
+       7  WARNING in wireless_send_event
+       7  WARNING in wireless_send_event
+       7  WARNING in wireless_send_event
+       7  WARNING in wireless_send_event
+       8  WARNING in wireless_send_event
+       8  WARNING in wireless_send_event
+       8  WARNING in wireless_send_event
+       8  WARNING in wireless_send_event
+       8  WARNING in wireless_send_event
+       8  WARNING in wireless_send_event
+       9  WARNING in wireless_send_event
+       9  WARNING in wireless_send_event
+       9  WARNING in wireless_send_event
+       9  WARNING in wireless_send_event
+       9  WARNING in wireless_send_event
+       9  WARNING in wireless_send_event
+      10  WARNING in wireless_send_event
+      10  WARNING in wireless_send_event
+      10  WARNING in wireless_send_event
+      10  WARNING in wireless_send_event
+      10  WARNING in wireless_send_event
+      10  WARNING in wireless_send_event
+      10  boot failure
 The bug was not found.
-About 7914 commits remaining
+This commit is flagged as unstable.
+About 15831 commits remaining
 
-2025-12-04 18:17:17
+2025-10-29 12:25:45
 Session:   8
-Kernel:    2022-10-13 - a521fc3cfbf45f910d6f4438cc222fda15a4987b
+Kernel:    2022-10-04 - 3ea8e52ec94de6cd5e8a9dc7b2ec72a7745b4e47
 Compiler:  ccache gcc
-PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0770-3.prog
-Warning: VM has not responded after 5 attempts.
-Warning: Only booted 0 VMs.
+Attempt 1:
+    Time  Bug Name
+       2  INFO: rcu detected stall in corrupted
 The bug was not found.
-This commit is flagged as unstable.
-About 7914 commits remaining
+About 15828 commits remaining
 
-2025-12-04 18:40:31
+2025-10-29 12:42:30
 Session:   9
-Kernel:    2022-10-19 - ebda44da44f6f309d302522b049f43d6f829f7aa
+Kernel:    2022-09-29 - 5ee35abb461e34ec8727dd8abc621ba9abec3e31
 Compiler:  ccache gcc
-PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0770-3.prog
-Warning: VM has not responded after 5 attempts.
-Warning: Only booted 0 VMs.
-The bug was not found.
-This commit is flagged as unstable.
-About 7914 commits remaining
+Attempt 1:
+    Time  Bug Name
+       2  INFO: rcu detected stall in corrupted
+***    2  WARNING in rate_control_rate_init
+***    2  WARNING in rate_control_rate_init
+***    2  WARNING in rate_control_rate_init
+***    2  WARNING in rate_control_rate_init
+***    2  WARNING in rate_control_rate_init
+***    2  WARNING in rate_control_rate_init
+***    2  WARNING in rate_control_rate_init
+The bug was found.
+About 825 commits remaining
 
-2025-12-04 18:56:48
+2025-10-29 12:58:06
 Session:   10
-Kernel:    2022-11-11 - 1ff36351309e3eadcff297480baf4785e726de9b
+Kernel:    2022-08-31 - 4516c873e3b55856012ddd6db9d4366ce3c60c5d
 Compiler:  ccache gcc
-PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0770-3.prog
-Attempt 0:
-*** WARNING in rate_control_rate_init (has report)
-    possible deadlock in vivid_update_format_cap
 Attempt 1:
-*** WARNING in rate_control_rate_init (has report)
-    possible deadlock in vivid_update_format_cap
-Attempt 2:
-*** WARNING in rate_control_rate_init (has report)
-    possible deadlock in vivid_update_format_cap
-Attempt 3:
-*** WARNING in rate_control_rate_init (has report)
-    possible deadlock in vivid_update_format_cap
-Error: index error parsing Warning report
-Attempt 4:
-*** WARNING in rate_control_rate_init (has report)
-    possible deadlock in vivid_update_format_cap
-Attempt 5:
-*** WARNING in rate_control_rate_init (has report)
-    possible deadlock in vivid_update_format_cap
-Attempt 6:
-*** WARNING in rate_control_rate_init (has report)
-    possible deadlock in vivid_update_format_cap
-Attempt 7:
-    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit
-    INFO: rcu detected stall in corrupted
-    INFO: task hung in synchronize_rcu
-    INFO: task hung in fqdir_free_fn
-    INFO: task hung in del_device_store
-    INFO: task hung in addrconf_dad_work
-    possible deadlock in vivid_update_format_cap
-    INFO: task hung in rtnetlink_rcv_msg
+    Time  Bug Name
+       2  INFO: rcu detected stall in corrupted
+***    2  WARNING in rate_control_rate_init
+***    2  WARNING in rate_control_rate_init
+***    2  WARNING in rate_control_rate_init
+***    2  WARNING in rate_control_rate_init
+***    2  WARNING in rate_control_rate_init
 The bug was found.
-About 4387 commits remaining
+About 413 commits remaining
 
-2025-12-04 19:25:10
+2025-10-29 13:13:35
 Session:   11
-Kernel:    2022-10-10 - aa512c115a09d9133dcb09466e39f93f99a82fdb
+Kernel:    2022-08-24 - 73ef239cd8439b33273cd95d08cffaf8022b01a8
 Compiler:  ccache gcc
-PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0770-3.prog
-Warning: VM has not responded after 5 attempts.
-Warning: Only booted 0 VMs.
+Attempt 1:
+    Time  Bug Name
+       2  INFO: rcu detected stall in corrupted
+       3  WARNING in ieee80211_bss_info_change_notify
+       3  WARNING in ieee80211_bss_info_change_notify
+       3  WARNING in ieee80211_bss_info_change_notify
+       3  WARNING in ieee80211_bss_info_change_notify
+       4  WARNING in ieee80211_bss_info_change_notify
+       6  WARNING in ieee80211_bss_info_change_notify
 The bug was not found.
-This commit is flagged as unstable.
-About 4387 commits remaining
+About 636 commits remaining
 
-2025-12-04 19:48:24
+2025-10-29 13:37:03
 Session:   12
-Kernel:    2022-09-04 - 7476a636d3100120330145d6dc408cd279a31039
+Kernel:    2022-08-26 - 643952f3ecace9e20b8a0c5cd1bbd7409ac2d02c
 Compiler:  ccache gcc
-PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0770-3.prog
-Attempt 0:
-    INFO: rcu detected stall in corrupted
-    INFO: task hung in synchronize_rcu
-    INFO: task hung in ppp_exit_net
-    INFO: task hung in del_device_store
-    INFO: task hung in addrconf_dad_work
-    INFO: task hung in rtnetlink_rcv_msg
 Attempt 1:
-    INFO: rcu detected stall in corrupted
-    INFO: task hung in synchronize_rcu
-    INFO: task hung in del_device_store
-    INFO: task hung in addrconf_dad_work
-    INFO: task hung in rtnetlink_rcv_msg
-Attempt 2:
-    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit (has report)
-    INFO: rcu detected stall in corrupted
-    INFO: task hung in synchronize_rcu
-    inconsistent lock state in find_vmap_area (has report)
-    INFO: task hung in l2tp_exit_net
-    INFO: task hung in new_device_store
-    INFO: task hung in del_device_store
-    INFO: task hung in addrconf_dad_work
-    INFO: task hung in devlink_unregister
-Error: index error parsing Warning report
-Error: index error parsing Warning report
-Attempt 3:
-    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit (has report)
-    INFO: rcu detected stall in corrupted
-    INFO: task hung in synchronize_rcu
-    inconsistent lock state in find_vmap_area (has report)
-    INFO: task hung in cangw_pernet_exit_batch
-    INFO: task hung in new_device_store
-    INFO: task hung in del_device_store
-    INFO: task hung in addrconf_dad_work
-    INFO: task hung in devlink_unregister
-    INFO: task hung in linkwatch_event
-Attempt 4:
-    INFO: rcu detected stall in corrupted
-    INFO: task hung in switchdev_deferred_process_work
-    INFO: task hung in cangw_pernet_exit_batch
-    INFO: task hung in new_device_store
-    INFO: task hung in del_device_store
-    INFO: task hung in addrconf_dad_work
-    INFO: task hung in devlink_unregister
-    INFO: task hung in rtnetlink_rcv_msg
-Attempt 5:
-    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit (has report)
-    INFO: rcu detected stall in corrupted
-    INFO: task hung in synchronize_rcu
-    inconsistent lock state in find_vmap_area (has report)
-    INFO: task hung in new_device_store
-    INFO: task hung in del_device_store
-    INFO: task hung in addrconf_dad_work
-    INFO: task hung in linkwatch_event
-    INFO: task hung in rtnetlink_rcv_msg
-Attempt 6:
-    INFO: rcu detected stall in corrupted
-    INFO: task hung in synchronize_rcu
-    INFO: task hung in devlink_nl_port_fill
-    INFO: task hung in del_device_store
-    INFO: task hung in addrconf_dad_work
-    INFO: task hung in linkwatch_event
-    INFO: task hung in rtnetlink_rcv_msg
-Attempt 7:
-    No crashes found.
-The bug was not found.
-About 14489 commits remaining
-
-2025-12-04 20:20:45
-Session:   13
-Kernel:    2022-10-10 - 0e0073eb1b60f4ec6faecea034a6772fe1409a88
-Compiler:  ccache gcc
-PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0770-3.prog
-Warning: VM has not responded after 5 attempts.
-Warning: Only booted 0 VMs.
-The bug was not found.
-This commit is flagged as unstable.
-About 14489 commits remaining
-
-2025-12-04 20:31:02
-Session:   14
-Kernel:    2022-10-04 - 187c7723e4aae6d5729e27179542956975624ff8
-Compiler:  ccache gcc
-PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0770-3.prog
-Warning: VM has not responded after 5 attempts.
-Warning: Only booted 0 VMs.
-The bug was not found.
-This commit is flagged as unstable.
-About 14489 commits remaining
-
-2025-12-04 20:54:33
-Session:   15
-Kernel:    2022-10-13 - 977bb6530807a9a8e7f29d7dfba5737135b50df6
-Compiler:  ccache gcc
-PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0770-3.prog
-Warning: VM has not responded after 5 attempts.
-Warning: Only booted 0 VMs.
-The bug was not found.
-This commit is flagged as unstable.
-About 14489 commits remaining
-
-2025-12-04 21:18:01
-Session:   16
-Kernel:    2022-09-15 - edd100634a5eb99cf97868c419bdf44d44355c4f
-Compiler:  ccache gcc
-PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0770-3.prog
-Attempt 0:
-    WARNING: ODEBUG bug in netdev_run_todo (has report)
-Error: index error parsing Warning report
-Error: index error parsing Warning report
-Attempt 1:
-    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit (has report)
-    INFO: rcu detected stall in corrupted
-    INFO: task hung in synchronize_rcu
-    inconsistent lock state in find_vmap_area (has report)
-    INFO: task hung in devlink_nl_port_fill
-    INFO: task hung in del_device_store
-    INFO: task hung in addrconf_dad_work
-    INFO: task hung in rtnetlink_rcv_msg
-Attempt 2:
-    No crashes found.
-Error: index error parsing Warning report
-Error: index error parsing Warning report
-Attempt 3:
-    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit (has report)
-    INFO: rcu detected stall in corrupted
-    INFO: task hung in synchronize_rcu
-    INFO: task hung in br_net_exit_batch
-    inconsistent lock state in find_vmap_area (has report)
-    INFO: task hung in new_device_store
-    INFO: task hung in addrconf_dad_work
-    INFO: task hung in linkwatch_event
-    INFO: task hung in rtnetlink_rcv_msg
-Attempt 4:
-    No crashes found.
-Attempt 5:
-    INFO: rcu detected stall in corrupted
-    INFO: task hung in synchronize_rcu
-    INFO: task hung in new_device_store
-    INFO: task hung in del_device_store
-    INFO: task hung in addrconf_dad_work
-    INFO: task hung in rtnetlink_rcv_msg
-Attempt 6:
-    No crashes found.
-Attempt 7:
-    No crashes found.
-The bug was not found.
-About 14011 commits remaining
-
-2025-12-04 21:49:38
-Session:   17
-Kernel:    2022-10-17 - 3753af778dd9d0d5199d6a7d01b0ead33135d095
-Compiler:  ccache gcc
-PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0770-3.prog
-Warning: VM has not responded after 5 attempts.
-Warning: Only booted 0 VMs.
-The bug was not found.
-This commit is flagged as unstable.
-About 14011 commits remaining
-
-2025-12-04 22:08:03
-Session:   18
-Kernel:    2022-09-09 - e662d349ab6601ffaadd3403bca2775c8ffc050d
-Compiler:  ccache gcc
-PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0770-3.prog
-Attempt 0:
-    No crashes found.
-Attempt 1:
-    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit (has report)
-    INFO: rcu detected stall in corrupted
-    INFO: task hung in synchronize_rcu
-    inconsistent lock state in find_vmap_area (has report)
-    INFO: task hung in new_device_store
-    INFO: task hung in nl80211_pre_doit
-    INFO: task hung in rtnetlink_rcv_msg
-Attempt 2:
-    No crashes found.
-Attempt 3:
-    INFO: rcu detected stall in corrupted
-    INFO: task hung in synchronize_rcu
-    INFO: task hung in fqdir_free_fn
-    INFO: task hung in del_device_store
-    INFO: task hung in addrconf_dad_work
-    INFO: task hung in linkwatch_event
-    INFO: task hung in rtnetlink_rcv_msg
-Attempt 4:
-    No crashes found.
-Error: index error parsing Warning report
-Error: index error parsing Warning report
-Attempt 5:
-    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit (has report)
-    INFO: rcu detected stall in corrupted
-    INFO: task hung in synchronize_rcu
-    inconsistent lock state in find_vmap_area (has report)
-    INFO: task hung in new_device_store
-    INFO: task hung in del_device_store
-    INFO: task hung in rtnetlink_rcv_msg
-Error: index error parsing Warning report
-Error: index error parsing Warning report
-Attempt 6:
-    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit (has report)
-    INFO: rcu detected stall in corrupted
-    inconsistent lock state in find_vmap_area (has report)
-    INFO: task hung in del_device_store
-Attempt 7:
-    No crashes found.
-The bug was not found.
-About 14446 commits remaining
-
-2025-12-04 22:39:55
-Session:   19
-Kernel:    2022-09-07 - b87d6d7fa405e23478f1e1dff6d66b5a533a5433
-Compiler:  ccache gcc
-PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0770-3.prog
-Attempt 0:
-    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit
-    INFO: rcu detected stall in corrupted
-    INFO: task hung in synchronize_rcu
-    INFO: task hung in switchdev_deferred_process_work
-    INFO: task hung in new_device_store
-    INFO: task hung in del_device_store
-    INFO: task hung in addrconf_dad_work
-    INFO: task hung in linkwatch_event
-    INFO: task hung in rtnetlink_rcv_msg
-Attempt 1:
-    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit (has report)
-    INFO: rcu detected stall in corrupted
-    inconsistent lock state in find_vmap_area (has report)
-    INFO: task hung in new_device_store
-    INFO: task hung in del_device_store
-Attempt 2:
-    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit (has report)
-    INFO: rcu detected stall in corrupted
-    inconsistent lock state in find_vmap_area (has report)
-    INFO: task hung in l2tp_exit_net
-    INFO: task hung in new_device_store
-    INFO: task hung in del_device_store
-    INFO: task hung in addrconf_dad_work
-    INFO: task hung in linkwatch_event
-Attempt 3:
-    INFO: rcu detected stall in corrupted
-    INFO: task hung in devlink_unregister
-    INFO: task hung in linkwatch_event
-    INFO: task hung in rtnetlink_rcv_msg
-Attempt 4:
-    No crashes found.
-Attempt 5:
-    INFO: rcu detected stall in corrupted
-    KASAN: out-of-bounds Read in __show_regs (has report)
-    INFO: rcu detected stall in clone3 (has report)
-Attempt 6:
-    No crashes found.
-Attempt 7:
-    INFO: rcu detected stall in corrupted
-    INFO: task hung in del_device_store
-The bug was not found.
-About 13319 commits remaining
-
-2025-12-04 23:11:56
-Session:   20
-Kernel:    2022-10-10 - 8aeab132e05fefc3a1a5277878629586bd7a3547
-Compiler:  ccache gcc
-PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0770-3.prog
-Warning: VM has not responded after 5 attempts.
-Warning: Only booted 0 VMs.
-The bug was not found.
-This commit is flagged as unstable.
-About 13319 commits remaining
-
-2025-12-04 23:22:32
-Session:   21
-Kernel:    2022-10-10 - 1298d9ab848653fc35431581d6e36662c7b6935a
-Compiler:  ccache gcc
-PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0770-3.prog
-Attempt 0:
-    No crashes found.
-Attempt 1:
-    No crashes found.
-Error: index error parsing Warning report
-Error: index error parsing Warning report
-Attempt 2:
-    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit (has report)
-    INFO: rcu detected stall in corrupted
-    inconsistent lock state in find_vmap_area (has report)
-    INFO: task hung in fib_net_exit_batch
-    INFO: task hung in devlink_nl_port_fill
-    INFO: task hung in del_device_store
-    INFO: task hung in linkwatch_event
-Attempt 3:
-    No crashes found.
-Attempt 4:
-    INFO: rcu detected stall in corrupted
-    INFO: task hung in cangw_pernet_exit_batch
-    INFO: task hung in new_device_store
-    INFO: task hung in del_device_store
-    INFO: task hung in addrconf_dad_work
-    INFO: task hung in rtnetlink_rcv_msg
-Attempt 5:
-    No crashes found.
-Attempt 6:
-    No crashes found.
-Attempt 7:
-    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit (has report)
-    INFO: rcu detected stall in corrupted
-    INFO: task hung in synchronize_rcu
-    inconsistent lock state in find_vmap_area (has report)
-    INFO: task hung in new_device_store
-    INFO: task hung in del_device_store
-    INFO: task hung in devlink_unregister
-    INFO: task hung in linkwatch_event
-    INFO: task hung in rtnetlink_rcv_msg
-The bug was not found.
-About 12579 commits remaining
-
-2025-12-04 23:52:23
-Session:   22
-Kernel:    2022-10-10 - f848b3cda39b5d41746040eb51f8e87a685bf0d9
-Compiler:  ccache gcc
-PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0770-3.prog
-Warning: VM has not responded after 5 attempts.
-Warning: Only booted 0 VMs.
-The bug was not found.
-This commit is flagged as unstable.
-About 12579 commits remaining
-
-2025-12-05 00:03:07
-Session:   23
-Kernel:    2022-10-11 - 5bc73bb3451b9e449828694733a4c6b413ceeb3b
-Compiler:  ccache gcc
-PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0770-3.prog
-Attempt 0:
-    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit (has report)
-    INFO: rcu detected stall in corrupted
-    INFO: task hung in synchronize_rcu
-    inconsistent lock state in find_vmap_area (has report)
-    INFO: task hung in netdev_run_todo
-    INFO: task hung in new_device_store
-    INFO: task hung in del_device_store
-    INFO: task hung in addrconf_dad_work
-    INFO: task hung in rtnetlink_rcv_msg
-Error: index error parsing Warning report
-Error: index error parsing Warning report
-Attempt 1:
-    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit (has report)
-    INFO: task hung in cleanup_net
-    INFO: rcu detected stall in corrupted
-    INFO: task hung in synchronize_rcu
-    INFO: task hung in switchdev_deferred_process_work
-    inconsistent lock state in find_vmap_area (has report)
-    INFO: task hung in del_device_store
-    INFO: task hung in devlink_unregister
-    INFO: task hung in rtnetlink_rcv_msg
-Attempt 2:
-    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit (has report)
-    INFO: rcu detected stall in corrupted
-    inconsistent lock state in find_vmap_area (has report)
-    INFO: task hung in del_device_store
-Error: index error parsing Warning report
-Error: index error parsing Warning report
-Attempt 3:
-    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit (has report)
-    INFO: rcu detected stall in corrupted
-    inconsistent lock state in find_vmap_area (has report)
-    INFO: task hung in del_device_store
-Attempt 4:
-    No crashes found.
-Error: index error parsing Warning report
-Error: index error parsing Warning report
-Attempt 5:
-    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit (has report)
-    INFO: rcu detected stall in corrupted
-    INFO: task hung in synchronize_rcu
-    inconsistent lock state in find_vmap_area (has report)
-    INFO: task hung in netdev_run_todo
-    INFO: task hung in del_device_store
-    INFO: task hung in devlink_unregister
-    INFO: task hung in linkwatch_event
-    INFO: task hung in rtnetlink_rcv_msg
-Attempt 6:
-    No crashes found.
-Attempt 7:
-    No crashes found.
-The bug was not found.
-About 13655 commits remaining
-
-2025-12-05 00:35:25
-Session:   24
-Kernel:    2022-10-10 - f23cdfcd04f7c044ee47dac04484b8d289088776
-Compiler:  ccache gcc
-PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0770-3.prog
-Warning: VM has not responded after 5 attempts.
-Warning: Only booted 0 VMs.
-The bug was not found.
-This commit is flagged as unstable.
-About 13655 commits remaining
-
-2025-12-05 00:58:27
-Session:   25
-Kernel:    2022-10-10 - d4013bc4d49f6da8178a340348369bb9920225c9
-Compiler:  ccache gcc
-PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0770-3.prog
-Warning: VM has not responded after 5 attempts.
-Warning: Only booted 0 VMs.
-The bug was not found.
-This commit is flagged as unstable.
-About 13655 commits remaining
-
-2025-12-05 01:13:22
-Session:   26
-Kernel:    2022-09-02 - cc40b04c08400d86d2d6ea0159e0617e717f729c
-Compiler:  ccache gcc
-PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0770-3.prog
-Attempt 0:
-    INFO: rcu detected stall in corrupted
-    INFO: task hung in cangw_pernet_exit_batch
-    INFO: task hung in devlink_nl_port_fill
-    INFO: task hung in del_device_store
-    INFO: task hung in rtnetlink_rcv_msg
-Attempt 1:
-    No crashes found.
-Attempt 2:
-    INFO: rcu detected stall in corrupted
-    INFO: task hung in l2tp_exit_net
-    INFO: task hung in new_device_store
-    INFO: task hung in del_device_store
-    INFO: task hung in devlink_unregister
-Attempt 3:
-    No crashes found.
-Attempt 4:
-    INFO: rcu detected stall in corrupted
-    INFO: task hung in new_device_store
-    INFO: task hung in del_device_store
-Attempt 5:
-    No crashes found.
-Attempt 6:
-    INFO: rcu detected stall in corrupted
-    INFO: task hung in new_device_store
-    INFO: task hung in del_device_store
-Attempt 7:
-    No crashes found.
-The bug was not found.
-About 14437 commits remaining
-
-2025-12-05 01:44:10
-Session:   27
-Kernel:    2022-09-29 - cb2bb85f7ed8740ab5fc06bbec386faa39ba44ef
-Compiler:  ccache gcc
-PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0770-3.prog
-Attempt 0:
-    No crashes found.
-Attempt 1:
-    INFO: rcu detected stall in corrupted
-    INFO: task hung in del_device_store
-Attempt 2:
-    No crashes found.
-Attempt 3:
-    No crashes found.
-Attempt 4:
-    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit (has report)
-    INFO: rcu detected stall in corrupted
-    INFO: task hung in synchronize_rcu
-    inconsistent lock state in find_vmap_area (has report)
-    INFO: task hung in new_device_store
-    INFO: task hung in del_device_store
-    INFO: task hung in rtnetlink_rcv_msg
-Attempt 5:
-    No crashes found.
-Attempt 6:
-    No crashes found.
-Error: index error parsing Warning report
-Error: index error parsing Warning report
-Attempt 7:
-    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit (has report)
-    INFO: rcu detected stall in corrupted
-    inconsistent lock state in find_vmap_area (has report)
-    INFO: task hung in new_device_store
-    INFO: task hung in del_device_store
-The bug was not found.
-About 12486 commits remaining
-
-2025-12-05 02:15:10
-Session:   28
-Kernel:    2022-10-13 - 9ee2afe5207b63b20426ee081f486d831bae871d
-Compiler:  ccache gcc
-PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0770-3.prog
-Warning: VM has not responded after 5 attempts.
-Warning: Only booted 0 VMs.
-The bug was not found.
-This commit is flagged as unstable.
-About 12486 commits remaining
-
-2025-12-05 02:38:42
-Session:   29
-Kernel:    2022-09-26 - 8d178f460772ecdee8e6d72389b43a8d35a14ff5
-Compiler:  ccache gcc
-PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0770-3.prog
-Error: index error parsing Warning report
-Error: index error parsing Warning report
-Attempt 0:
-    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit (has report)
-    INFO: rcu detected stall in corrupted
-    inconsistent lock state in find_vmap_area (has report)
-    INFO: task hung in del_device_store
-Attempt 1:
-    INFO: rcu detected stall in corrupted
-    INFO: task hung in synchronize_rcu
-    INFO: task hung in netdev_run_todo
-    INFO: task hung in new_device_store
-    INFO: task hung in del_device_store
-    INFO: task hung in addrconf_dad_work
-    INFO: task hung in devlink_unregister
-    INFO: task hung in rtnetlink_rcv_msg
-Attempt 2:
-    INFO: rcu detected stall in corrupted
-    INFO: task hung in del_device_store
-Attempt 3:
-    No crashes found.
-Attempt 4:
-    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit (has report)
-    INFO: rcu detected stall in corrupted
-    inconsistent lock state in find_vmap_area (has report)
-    INFO: task hung in del_device_store
-    INFO: task hung in devlink_compat_running_version
-Attempt 5:
-    No crashes found.
-Attempt 6:
-    INFO: rcu detected stall in corrupted
-    INFO: task hung in del_device_store
-Attempt 7:
-    INFO: rcu detected stall in corrupted
-    INFO: task hung in synchronize_rcu
-    INFO: task hung in devlink_nl_port_fill
-    INFO: task hung in wg_set_device
-    INFO: task hung in del_device_store
-    INFO: task hung in addrconf_dad_work
-    INFO: task hung in linkwatch_event
-    INFO: task hung in rtnetlink_rcv_msg
-The bug was not found.
-About 14430 commits remaining
-
-2025-12-05 03:10:36
-Session:   30
-Kernel:    2022-10-10 - 70442fc54e6889a2a77f0e9554e8188a1557f00e
-Compiler:  ccache gcc
-PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0770-3.prog
-Warning: VM has not responded after 5 attempts.
-Warning: Only booted 0 VMs.
-The bug was not found.
-This commit is flagged as unstable.
-About 14430 commits remaining
-
-2025-12-05 03:34:07
-Session:   31
-Kernel:    2022-10-03 - 0d83b2d89dbfad17b62d4e7fb8f0b0525ba1a204
-Compiler:  ccache gcc
-PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0770-3.prog
-Attempt 0:
-    INFO: rcu detected stall in corrupted
-    INFO: task hung in synchronize_rcu
-    INFO: task hung in new_device_store
-    INFO: task hung in del_device_store
-    INFO: task hung in devlink_unregister
-    INFO: task hung in linkwatch_event
-    INFO: task hung in rtnetlink_rcv_msg
-Attempt 1:
-    INFO: rcu detected stall in corrupted
-    INFO: task hung in synchronize_rcu
-    INFO: task hung in new_device_store
-    INFO: task hung in del_device_store
-    INFO: task hung in devlink_unregister
-    INFO: task hung in rtnetlink_rcv_msg
-Attempt 2:
-    No crashes found.
-Attempt 3:
-    No crashes found.
-Attempt 4:
-    No crashes found.
-Attempt 5:
-    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit
-    INFO: rcu detected stall in corrupted
-    INFO: task hung in synchronize_rcu
-    INFO: task hung in del_device_store
-    INFO: task hung in addrconf_dad_work
-    INFO: task hung in devlink_unregister
-    INFO: task hung in rtnetlink_rcv_msg
-Attempt 6:
-    No crashes found.
-Attempt 7:
-    INFO: rcu detected stall in corrupted
-    INFO: task hung in del_device_store
-    INFO: task hung in devlink_unregister
-    INFO: task hung in linkwatch_event
-    INFO: task hung in rtnetlink_rcv_msg
-The bug was not found.
-About 13295 commits remaining
-
-2025-12-05 04:05:41
-Session:   32
-Kernel:    2022-10-10 - 3604a7f568d3f67be8c13736201411ee83b210a1
-Compiler:  ccache gcc
-PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0770-3.prog
-Warning: VM has not responded after 5 attempts.
-Warning: Only booted 0 VMs.
-The bug was not found.
-This commit is flagged as unstable.
-About 13295 commits remaining
-
-2025-12-05 04:28:26
-Session:   33
-Kernel:    2022-10-13 - 6224db7881936c8e1c3b352b5debbbbd8856911a
-Compiler:  ccache gcc
-PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0770-3.prog
-Attempt 0:
-    possible deadlock in vivid_update_format_cap
-    WARNING in wireless_send_event (has report)
-Attempt 1:
-    possible deadlock in vivid_update_format_cap
-    WARNING in wireless_send_event (has report)
-Attempt 2:
-    possible deadlock in vivid_update_format_cap
-    WARNING in wireless_send_event (has report)
-Attempt 3:
-    possible deadlock in vivid_update_format_cap
-    WARNING in wireless_send_event (has report)
-Attempt 4:
-    possible deadlock in vivid_update_format_cap
-    WARNING in wireless_send_event (has report)
-Attempt 5:
-    possible deadlock in vivid_update_format_cap
-    WARNING in wireless_send_event (has report)
-Attempt 6:
-    possible deadlock in vivid_update_format_cap
-    WARNING in wireless_send_event (has report)
-Attempt 7:
-    possible deadlock in vivid_update_format_cap
-    WARNING in wireless_send_event (has report)
-The bug was not found.
-About 3097 commits remaining
-
-2025-12-05 04:53:21
-Session:   34
-Kernel:    2022-10-11 - 694b37a5dd3c87235e02fabbe7b394f6ab1f444b
-Compiler:  ccache gcc
-PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0770-3.prog
-Warning: VM has not responded after 5 attempts.
-Warning: Only booted 0 VMs.
-The bug was not found.
-This commit is flagged as unstable.
-About 3097 commits remaining
-
-2025-12-05 05:16:45
-Session:   35
-Kernel:    2022-09-14 - ee83ef13dc405f6b55ad8d931cd0df9dee3a8ae8
-Compiler:  ccache gcc
-PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0770-3.prog
-Attempt 0:
-    INFO: rcu detected stall in corrupted
-    INFO: task hung in synchronize_rcu
-    INFO: task hung in fqdir_free_fn
-    INFO: task hung in new_device_store
-    INFO: task hung in del_device_store
-    INFO: task hung in addrconf_dad_work
-    INFO: task hung in linkwatch_event
-    INFO: task hung in rtnetlink_rcv_msg
-Attempt 1:
-    INFO: task hung in caif_exit_net
-    INFO: rcu detected stall in corrupted
-    INFO: task hung in synchronize_rcu
-    INFO: task hung in new_device_store
-    INFO: task hung in del_device_store
-    INFO: task hung in addrconf_dad_work
-    INFO: task hung in devlink_unregister
-    INFO: task hung in rtnetlink_rcv_msg
-Attempt 2:
-    No crashes found.
-Attempt 3:
-    No crashes found.
-Attempt 4:
-    No crashes found.
-Attempt 5:
-    INFO: rcu detected stall in corrupted
-    INFO: task hung in synchronize_rcu
-    INFO: task hung in switchdev_deferred_process_work
-    INFO: task hung in new_device_store
-    INFO: task hung in linkwatch_event
-    INFO: task hung in rtnetlink_rcv_msg
-Attempt 6:
-    No crashes found.
-Attempt 7:
-    INFO: rcu detected stall in corrupted
-    INFO: task hung in netdev_run_todo
-    INFO: task hung in new_device_store
-    INFO: task hung in del_device_store
-    INFO: task hung in devlink_unregister
-The bug was not found.
-About 14413 commits remaining
-
-2025-12-05 05:47:42
-Session:   36
-Kernel:    2022-10-02 - 5946401e25b36f755f401447e3ffb6d0e6a3769a
-Compiler:  ccache gcc
-PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0770-3.prog
-Attempt 0:
-    No crashes found.
-Attempt 1:
-    INFO: rcu detected stall in corrupted
-    INFO: task hung in cangw_pernet_exit_batch
-    INFO: task hung in del_device_store
-    INFO: task hung in devlink_unregister
-    INFO: task hung in linkwatch_event
-Attempt 2:
-    No crashes found.
-Error: index error parsing Warning report
-Error: index error parsing Warning report
-Attempt 3:
-    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit (has report)
-    INFO: rcu detected stall in corrupted
-    INFO: task hung in synchronize_rcu
-    inconsistent lock state in find_vmap_area (has report)
-    INFO: task hung in del_device_store
-    INFO: task hung in devlink_unregister
-    INFO: task hung in linkwatch_event
-Attempt 4:
-    No crashes found.
-Attempt 5:
-    No crashes found.
-Attempt 6:
-    INFO: rcu detected stall in cleanup_net
-    INFO: rcu detected stall in corrupted
-    INFO: task hung in synchronize_rcu
-    INFO: task hung in devlink_unregister
-    INFO: task hung in rtnetlink_rcv_msg
-Attempt 7:
-    No crashes found.
-The bug was not found.
-About 13700 commits remaining
-
-2025-12-05 06:19:00
-Session:   37
-Kernel:    2022-10-04 - 280dfeae56e6fbfff21cfece356379e318ae10fe
-Compiler:  ccache gcc
-PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0770-3.prog
-Attempt 0:
-    No crashes found.
-Attempt 1:
-    No crashes found.
-Attempt 2:
-    No crashes found.
-Attempt 3:
-    No crashes found.
-Attempt 4:
-    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit (has report)
-    INFO: rcu detected stall in corrupted
-    INFO: task hung in synchronize_rcu
-    inconsistent lock state in find_vmap_area (has report)
-    INFO: task hung in new_device_store
-    INFO: task hung in del_device_store
-    INFO: task hung in addrconf_dad_work
-    INFO: task hung in devlink_unregister
-    INFO: task hung in rtnetlink_rcv_msg
-Attempt 5:
-    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit
-    INFO: rcu detected stall in corrupted
-    INFO: task hung in synchronize_rcu
-    INFO: task hung in new_device_store
-    INFO: task hung in del_device_store
-    INFO: task hung in addrconf_dad_work
-    INFO: task hung in rtnetlink_rcv_msg
-Attempt 6:
-    No crashes found.
-Error: index error parsing Warning report
-Error: index error parsing Warning report
-Attempt 7:
-    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit (has report)
-    INFO: rcu detected stall in corrupted
-    INFO: task hung in synchronize_rcu
-    inconsistent lock state in find_vmap_area (has report)
-    INFO: task hung in cangw_pernet_exit_batch
-    INFO: task hung in new_device_store
-    INFO: task hung in addrconf_dad_work
-    INFO: task hung in rtnetlink_rcv_msg
-The bug was not found.
-About 13707 commits remaining
-
-2025-12-05 06:50:50
-Session:   38
-Kernel:    2022-10-13 - 76894f3e2f71177747b8b4763fb180e800279585
-Compiler:  ccache gcc
-PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0770-3.prog
-Warning: VM has not responded after 5 attempts.
-Warning: Only booted 0 VMs.
-The bug was not found.
-This commit is flagged as unstable.
-About 13707 commits remaining
-
-2025-12-05 07:09:17
-Session:   39
-Kernel:    2022-10-10 - 589a2004881f0941ca46146a5de68b3666d1d54a
-Compiler:  ccache gcc
-PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0770-3.prog
-Attempt 0:
-    No crashes found.
-Attempt 1:
-    No crashes found.
-Attempt 2:
-    No crashes found.
-Attempt 3:
-    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit (has report)
-    INFO: rcu detected stall in corrupted
-    inconsistent lock state in find_vmap_area (has report)
-    INFO: task hung in l2tp_exit_net
-    INFO: task hung in del_device_store
-    INFO: task hung in addrconf_dad_work
-    INFO: task hung in devlink_unregister
-    INFO: task hung in rtnetlink_rcv_msg
-Error: index error parsing Warning report
-Error: index error parsing Warning report
-Attempt 4:
-    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit (has report)
-    INFO: rcu detected stall in corrupted
-    INFO: task hung in synchronize_rcu
-    inconsistent lock state in find_vmap_area (has report)
-    INFO: task hung in del_device_store
-    INFO: task hung in devlink_unregister
-    INFO: task hung in rtnetlink_rcv_msg
-Attempt 5:
-    No crashes found.
-Attempt 6:
-    WARNING: ODEBUG bug in netdev_run_todo (has report)
-Attempt 7:
-    No crashes found.
-The bug was not found.
-About 14483 commits remaining
-
-2025-12-05 07:35:01
-Session:   40
-Kernel:    2022-10-11 - abf93f369419249ca482a8911039fe1c75a94227
-Compiler:  ccache gcc
-PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0770-3.prog
-Attempt 0:
-*** WARNING in rate_control_rate_init (has report)
-Attempt 1:
-*** WARNING in rate_control_rate_init (has report)
-Attempt 2:
-*** WARNING in rate_control_rate_init (has report)
-Attempt 3:
-*** WARNING in rate_control_rate_init (has report)
-Attempt 4:
-    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit
-    INFO: rcu detected stall in corrupted
-    INFO: task hung in synchronize_rcu
-    INFO: task hung in del_device_store
-    INFO: task hung in addrconf_dad_work
-    INFO: task hung in linkwatch_event
-    INFO: task hung in rtnetlink_rcv_msg
-Attempt 5:
-    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit
-    INFO: rcu detected stall in corrupted
-    INFO: task hung in synchronize_rcu
-    INFO: task hung in new_device_store
-    INFO: task hung in del_device_store
-    INFO: task hung in addrconf_dad_work
-    INFO: task hung in rtnetlink_rcv_msg
-Attempt 6:
-    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit
-    INFO: rcu detected stall in corrupted
-    INFO: task hung in l2tp_exit_net
-    INFO: task hung in new_device_store
-    INFO: task hung in del_device_store
-Attempt 7:
-    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit
-    INFO: rcu detected stall in corrupted
-    INFO: task hung in del_device_store
+    Time  Bug Name
+       2  INFO: rcu detected stall in corrupted
+***    2  WARNING in rate_control_rate_init
+***    2  WARNING in rate_control_rate_init
+***    2  WARNING in rate_control_rate_init
+***    2  WARNING in rate_control_rate_init
+***    2  WARNING in rate_control_rate_init
+***    2  WARNING in rate_control_rate_init
+       2  WARNING in ieee80211_bss_info_change_notify
+Running syz-repro.
+New PoC saved at /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0770-5.prog
+Primary PoC:     /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0770-5.prog
+Run Time:        0h52m0s
 The bug was found.
-About 4955 commits remaining
+About 547 commits remaining
 
-2025-12-05 08:03:56
-Session:   41
-Kernel:    2022-10-07 - c95014e1d05b5acfd9e6fbe5d1f048b07c6902ff
+2025-10-29 14:40:36
+Session:   13
+Kernel:    2022-08-26 - 77baa37a9be948562c8b7630e3afd9d497e14550
 Compiler:  ccache gcc
-PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0770-3.prog
-Attempt 0:
-    WARNING in wireless_send_event (has report)
 Attempt 1:
-    WARNING in wireless_send_event (has report)
-Attempt 2:
-    WARNING in wireless_send_event (has report)
-Attempt 3:
-    WARNING in wireless_send_event (has report)
-Attempt 4:
-    WARNING in wireless_send_event (has report)
-Attempt 5:
-    WARNING in wireless_send_event (has report)
-Attempt 6:
-    WARNING in wireless_send_event (has report)
-Attempt 7:
-    WARNING in wireless_send_event (has report)
+    Time  Bug Name
+       2  INFO: rcu detected stall in corrupted
+       2  WARNING in ieee80211_bss_info_change_notify
+       2  WARNING in ieee80211_bss_info_change_notify
+       2  WARNING in ieee80211_bss_info_change_notify
+       3  WARNING in ieee80211_bss_info_change_notify
+       3  WARNING in ieee80211_bss_info_change_notify
+       3  WARNING in ieee80211_bss_info_change_notify
+       3  WARNING in ieee80211_bss_info_change_notify
+       3  WARNING in ieee80211_bss_info_change_notify
+       3  WARNING in ieee80211_bss_info_change_notify
+       4  WARNING in ieee80211_bss_info_change_notify
+       4  WARNING in ieee80211_bss_info_change_notify
+       4  WARNING in ieee80211_bss_info_change_notify
+       4  WARNING in ieee80211_bss_info_change_notify
+       4  WARNING in ieee80211_bss_info_change_notify
+       5  WARNING in ieee80211_bss_info_change_notify
+       5  WARNING in ieee80211_bss_info_change_notify
+       5  WARNING in ieee80211_bss_info_change_notify
+       6  WARNING in ieee80211_bss_info_change_notify
+       6  WARNING in ieee80211_bss_info_change_notify
+       6  WARNING in ieee80211_bss_info_change_notify
+       7  WARNING in ieee80211_bss_info_change_notify
+       8  WARNING in ieee80211_bss_info_change_notify
+       9  WARNING in ieee80211_bss_info_change_notify
+       9  WARNING in ieee80211_bss_info_change_notify
+      10  WARNING in ieee80211_bss_info_change_notify
+      10  WARNING in ieee80211_bss_info_change_notify
+      10  WARNING in ieee80211_bss_info_change_notify
+The bug was not found.
+About 58 commits remaining
+
+2025-10-29 14:57:49
+Session:   14
+Kernel:    2022-08-25 - 9d2bb84d54a40361c7008b33a60dc24f78724746
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       1  WARNING: ODEBUG bug in mgmt_index_removed
+***    2  WARNING in rate_control_rate_init
+***    2  WARNING in rate_control_rate_init
+***    2  WARNING in rate_control_rate_init
+***    2  WARNING in rate_control_rate_init
+***    2  WARNING in rate_control_rate_init
+       2  WARNING in ieee80211_bss_info_change_notify
+       2  WARNING in ieee80211_bss_info_change_notify
+The bug was found.
+About 30 commits remaining
+
+2025-10-29 15:13:40
+Session:   15
+Kernel:    2022-08-10 - 5606aeaad01e0b0ad09c021cfa44ee18fc4ae33b
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       1  WARNING: ODEBUG bug in mgmt_index_removed
+       2  WARNING in ieee80211_bss_info_change_notify
+       2  WARNING in ieee80211_bss_info_change_notify
+       2  WARNING in ieee80211_bss_info_change_notify
+       3  WARNING in ieee80211_bss_info_change_notify
+       3  WARNING in ieee80211_bss_info_change_notify
+       3  WARNING in ieee80211_bss_info_change_notify
+       3  WARNING in ieee80211_bss_info_change_notify
+       3  WARNING in ieee80211_bss_info_change_notify
+       3  WARNING in ieee80211_bss_info_change_notify
+       4  WARNING in ieee80211_bss_info_change_notify
+       4  WARNING in ieee80211_bss_info_change_notify
+       4  WARNING in ieee80211_bss_info_change_notify
+       4  WARNING in ieee80211_bss_info_change_notify
+       4  WARNING in ieee80211_bss_info_change_notify
+       4  WARNING in ieee80211_bss_info_change_notify
+       5  WARNING in corrupted
+       5  WARNING in ieee80211_bss_info_change_notify
+       5  WARNING in ieee80211_bss_info_change_notify
+       6  WARNING in ieee80211_bss_info_change_notify
+       6  WARNING in ieee80211_bss_info_change_notify
+       6  WARNING in ieee80211_bss_info_change_notify
+       6  WARNING in ieee80211_bss_info_change_notify
+       7  WARNING in corrupted
+       7  WARNING in ieee80211_bss_info_change_notify
+       7  WARNING in ieee80211_bss_info_change_notify
+       7  WARNING in ieee80211_bss_info_change_notify
+       8  WARNING: ODEBUG bug in mgmt_index_removed
+       8  WARNING: ODEBUG bug in mgmt_index_removed
+       8  WARNING in ieee80211_bss_info_change_notify
+       9  WARNING: ODEBUG bug in mgmt_index_removed
+       9  WARNING in ieee80211_bss_info_change_notify
+      10  WARNING: ODEBUG bug in mgmt_index_removed
+      10  WARNING in ieee80211_bss_info_change_notify
+      10  WARNING in ieee80211_bss_info_change_notify
+      10  WARNING in ieee80211_bss_info_change_notify
+The bug was not found.
+About 15 commits remaining
+
+2025-10-29 15:31:12
+Session:   16
+Kernel:    2022-08-10 - 6bf3a083407b5d404d70efc3a5ac75b472e5efa9
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       1  WARNING: ODEBUG bug in mgmt_index_removed
+       2  WARNING in ieee80211_bss_info_change_notify
+       2  WARNING in ieee80211_bss_info_change_notify
+       3  WARNING in ieee80211_bss_info_change_notify
+       4  WARNING in ieee80211_bss_info_change_notify
+       4  WARNING in ieee80211_bss_info_change_notify
+       4  WARNING in ieee80211_bss_info_change_notify
+       5  WARNING in ieee80211_bss_info_change_notify
+       7  WARNING: ODEBUG bug in mgmt_index_removed
+       7  WARNING: ODEBUG bug in mgmt_index_removed
+       7  WARNING: ODEBUG bug in mgmt_index_removed
+       7  WARNING: ODEBUG bug in mgmt_index_removed
+       7  WARNING: ODEBUG bug in mgmt_index_removed
+       7  WARNING: ODEBUG bug in mgmt_index_removed
+       7  WARNING: ODEBUG bug in mgmt_index_removed
+       7  WARNING in ieee80211_bss_info_change_notify
+       8  WARNING in ieee80211_bss_info_change_notify
+       8  WARNING in ieee80211_bss_info_change_notify
+       8  WARNING in ieee80211_bss_info_change_notify
+      10  WARNING: ODEBUG bug in mgmt_index_removed
+      10  WARNING: ODEBUG bug in mgmt_index_removed
 The bug was not found.
 About 8 commits remaining
 
-2025-12-05 08:16:30
-Session:   42
-Kernel:    2022-10-07 - 10d5ea5a436da8d60cdb5845f454d595accdbce0
+2025-10-29 15:48:20
+Session:   17
+Kernel:    2022-08-25 - a8f62399daa6917e7f9efeb79bce4dd2cd494a1e
 Compiler:  ccache gcc
-PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0770-3.prog
-Attempt 0:
-    INFO: rcu detected stall in corrupted
-    INFO: task hung in synchronize_rcu
-    INFO: task hung in switchdev_deferred_process_work
-    INFO: task hung in del_device_store
-    INFO: task hung in addrconf_dad_work
-    INFO: task hung in linkwatch_event
-    INFO: task hung in rtnetlink_rcv_msg
 Attempt 1:
-    INFO: rcu detected stall in corrupted
-    INFO: task hung in synchronize_rcu
-    INFO: task hung in new_device_store
-    INFO: task hung in del_device_store
-    INFO: task hung in devlink_unregister
-    INFO: task hung in rtnetlink_rcv_msg
-Attempt 2:
-    INFO: rcu detected stall in corrupted
-    INFO: task hung in synchronize_rcu
-    INFO: task hung in switchdev_deferred_process_work
-    INFO: task hung in new_device_store
-    INFO: task hung in addrconf_dad_work
-    INFO: task hung in devlink_unregister
-    INFO: task hung in rtnetlink_rcv_msg
-Attempt 3:
-    INFO: rcu detected stall in corrupted
-    INFO: task hung in del_device_store
-Attempt 4:
-    INFO: rcu detected stall in corrupted
-    INFO: task hung in del_device_store
-    INFO: task hung in devlink_unregister
-    INFO: task hung in linkwatch_event
-    INFO: task hung in rtnetlink_rcv_msg
-    INFO: task hung in ip_tunnel_delete_nets
-Attempt 5:
-*** WARNING in rate_control_rate_init (has report)
-Attempt 6:
-*** WARNING in rate_control_rate_init (has report)
-Attempt 7:
-    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit
-    INFO: rcu detected stall in corrupted
-    INFO: task hung in synchronize_rcu
-    INFO: task hung in new_device_store
-    INFO: task hung in del_device_store
-    INFO: task hung in addrconf_dad_work
-    INFO: task hung in devlink_unregister
-    INFO: task hung in rtnetlink_rcv_msg
+    Time  Bug Name
+       1  WARNING: ODEBUG bug in mgmt_index_removed
+***    2  WARNING in rate_control_rate_init
+***    2  WARNING in rate_control_rate_init
+***    2  WARNING in rate_control_rate_init
+***    2  WARNING in rate_control_rate_init
+       2  WARNING in ieee80211_bss_info_change_notify
 The bug was found.
 About 4 commits remaining
 
-2025-12-05 08:33:17
-Session:   43
-Kernel:    2022-10-07 - d9e249704084982ac7581a560ffa284e11621d43
+2025-10-29 15:57:35
+Session:   18
+Kernel:    2022-08-10 - 7dad3e39fde1eef97bc1a0b92e5d0f3500c9ed56
 Compiler:  ccache gcc
-PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0770-3.prog
-Attempt 0:
-    WARNING in wireless_send_event (has report)
 Attempt 1:
-    WARNING in wireless_send_event (has report)
-Attempt 2:
-    WARNING in wireless_send_event (has report)
-Attempt 3:
-    WARNING in wireless_send_event (has report)
-Attempt 4:
-    WARNING in wireless_send_event (has report)
-Attempt 5:
-    WARNING in wireless_send_event (has report)
-Attempt 6:
-    WARNING in wireless_send_event (has report)
-Attempt 7:
-    WARNING in wireless_send_event (has report)
+    Time  Bug Name
+       1  WARNING: ODEBUG bug in mgmt_index_removed
+       2  WARNING in ieee80211_bss_info_change_notify
+       3  WARNING in ieee80211_bss_info_change_notify
+       4  WARNING in ieee80211_bss_info_change_notify
+       5  WARNING in corrupted
+       5  WARNING: ODEBUG bug in mgmt_index_removed
+       5  WARNING: ODEBUG bug in mgmt_index_removed
+       5  WARNING: ODEBUG bug in mgmt_index_removed
+       5  WARNING: ODEBUG bug in mgmt_index_removed
+       5  WARNING: ODEBUG bug in mgmt_index_removed
+       5  WARNING: ODEBUG bug in mgmt_index_removed
+       7  WARNING: ODEBUG bug in mgmt_index_removed
+       7  WARNING in ieee80211_bss_info_change_notify
+       8  WARNING in ieee80211_bss_info_change_notify
+       9  WARNING: ODEBUG bug in mgmt_index_removed
+       9  WARNING: ODEBUG bug in mgmt_index_removed
+       9  WARNING: ODEBUG bug in mgmt_index_removed
+       9  WARNING: ODEBUG bug in mgmt_index_removed
+       9  WARNING: ODEBUG bug in mgmt_index_removed
+       9  WARNING: ODEBUG bug in mgmt_index_removed
+      10  WARNING in ieee80211_bss_info_change_notify
 The bug was not found.
 About 3 commits remaining
 
-2025-12-05 08:45:34
-Session:   44
-Kernel:    2022-10-07 - e3e6e1d16a4cf7b63159ec71774e822194071954
+2025-10-29 16:14:36
+Session:   19
+Kernel:    2022-08-25 - b303835dabe0340f932ebb4e260d2229f79b0684
 Compiler:  ccache gcc
-PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0770-3.prog
-Attempt 0:
-*** WARNING in rate_control_rate_init (has report)
 Attempt 1:
-*** WARNING in rate_control_rate_init (has report)
-Attempt 2:
-    INFO: rcu detected stall in corrupted
-    INFO: task hung in synchronize_rcu
-    INFO: task hung in switchdev_deferred_process_work
-    INFO: task hung in new_device_store
-    INFO: task hung in del_device_store
-    INFO: task hung in addrconf_dad_work
-    INFO: task hung in rtnetlink_rcv_msg
-Attempt 3:
-    INFO: rcu detected stall in corrupted
-    INFO: task hung in synchronize_rcu
-    INFO: task hung in del_device_store
-    INFO: task hung in addrconf_dad_work
-    INFO: task hung in devlink_unregister
-    INFO: task hung in rtnetlink_rcv_msg
-Attempt 4:
-    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit
-    INFO: rcu detected stall in corrupted
-    INFO: task hung in synchronize_rcu
-    INFO: task hung in cangw_pernet_exit_batch
-    INFO: task hung in new_device_store
-    INFO: task hung in del_device_store
-    INFO: task hung in addrconf_dad_work
-    INFO: task hung in devlink_unregister
-    INFO: task hung in rtnetlink_rcv_msg
-Attempt 5:
-*** WARNING in rate_control_rate_init (has report)
-Attempt 6:
-    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit
-    INFO: rcu detected stall in corrupted
-    INFO: task hung in synchronize_rcu
-    INFO: task hung in pedit_exit_net
-    INFO: task hung in del_device_store
-    INFO: task hung in linkwatch_event
-    INFO: task hung in nl80211_pre_doit
-    INFO: task hung in rtnetlink_rcv_msg
-Attempt 7:
-*** WARNING in rate_control_rate_init (has report)
+    Time  Bug Name
+       1  WARNING: ODEBUG bug in mgmt_index_removed
+***    2  WARNING in rate_control_rate_init
+***    2  WARNING in rate_control_rate_init
+***    2  WARNING in rate_control_rate_init
+***    2  WARNING in rate_control_rate_init
+***    2  WARNING in rate_control_rate_init
+Running syz-repro.
+Run Time:        0h3m0s
 The bug was found.
 About 2 commits remaining
 
+==== Partial Result: Focused Fuzzing ====
+Reproducer:           /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0770-5.prog
+Bisection Result:     2022-08-25 - b303835dabe0340f932ebb4e260d2229f79b0684
+Bisected Commit Name: wifi: mac80211: accept STA changes without link changes
+Stage Time:           7h0m50s
+Run Time:             7h0m51s
+=========================================
+
+==== Anchor Commit ====
+
+2025-10-29 16:26:31
+Session:   20
+Kernel:    2022-08-10 - 7dad3e39fde1eef97bc1a0b92e5d0f3500c9ed56
+Compiler:  ccache gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0770-5.prog
+Attempt 0:
+    WARNING: ODEBUG bug in mgmt_index_removed
+Attempt 1:
+    WARNING: ODEBUG bug in mgmt_index_removed
+Attempt 2:
+    WARNING: ODEBUG bug in mgmt_index_removed
+Attempt 3:
+    WARNING: ODEBUG bug in mgmt_index_removed
+Attempt 4:
+    WARNING: ODEBUG bug in mgmt_index_removed
+Attempt 5:
+    WARNING: ODEBUG bug in mgmt_index_removed
+Attempt 6:
+    WARNING: ODEBUG bug in mgmt_index_removed
+Attempt 7:
+    WARNING: ODEBUG bug in mgmt_index_removed
+The bug was not found.
+
+Failure: This bug cannot be found at the anchor commit.
+
 ==== Partial Result: Primary PoC Test ====
-Reproducer:           /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0770-3.prog
-Bisection Result:     2022-10-07 - e3e6e1d16a4cf7b63159ec71774e822194071954
-Bisected Commit Name: wifi: wext: use flex array destination for memcpy()
-Stage Time:           17h48m21s
-Run Time:             17h48m21s
+Reproducer:           /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0770-5.prog
+Bisection Result:     Failed to reproduce at the anchor commit.
+Stage Time:           0h8m20s
+Run Time:             7h9m11s
 ==========================================
 
 ==== Anchor Commit ====
 
-2025-12-05 09:01:39
-Session:   45
-Kernel:    2022-10-07 - d9e249704084982ac7581a560ffa284e11621d43
+2025-10-29 16:34:54
+Session:   21
+Kernel:    2022-08-10 - 7dad3e39fde1eef97bc1a0b92e5d0f3500c9ed56
 Compiler:  ccache gcc
 PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0770-1.prog
 Attempt 0:
-    WARNING in wireless_send_event (has report)
+    WARNING: ODEBUG bug in mgmt_index_removed
 Attempt 1:
-    WARNING in wireless_send_event (has report)
+    WARNING: ODEBUG bug in mgmt_index_removed
 Attempt 2:
-    WARNING in wireless_send_event (has report)
+    WARNING: ODEBUG bug in mgmt_index_removed
 Attempt 3:
-    WARNING in wireless_send_event (has report)
+    WARNING: ODEBUG bug in mgmt_index_removed
 Attempt 4:
-    WARNING in wireless_send_event (has report)
+    WARNING: ODEBUG bug in mgmt_index_removed
 Attempt 5:
-    WARNING in wireless_send_event (has report)
+    WARNING: ODEBUG bug in mgmt_index_removed
 Attempt 6:
-    WARNING in wireless_send_event (has report)
+    WARNING: ODEBUG bug in mgmt_index_removed
 Attempt 7:
-    WARNING in wireless_send_event (has report)
+    WARNING: ODEBUG bug in mgmt_index_removed
 The bug was not found.
 
 Failure: This bug cannot be found at the anchor commit.
@@ -1450,33 +571,33 @@ Failure: This bug cannot be found at the anchor commit.
 ==== Partial Result: Subsequent PoC Test ====
 Reproducer:           /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0770-1.prog
 Bisection Result:     Failed to reproduce at the anchor commit.
-Stage Time:           0h12m17s
-Run Time:             18h0m39s
+Stage Time:           0h8m24s
+Run Time:             7h17m35s
 =============================================
 
 ==== Anchor Commit ====
 
-2025-12-05 09:14:00
-Session:   46
-Kernel:    2022-10-07 - d9e249704084982ac7581a560ffa284e11621d43
+2025-10-29 16:43:17
+Session:   22
+Kernel:    2022-08-10 - 7dad3e39fde1eef97bc1a0b92e5d0f3500c9ed56
 Compiler:  ccache gcc
 PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0770-4.prog
 Attempt 0:
-    WARNING in wireless_send_event (has report)
+    WARNING: ODEBUG bug in mgmt_index_removed
 Attempt 1:
-    WARNING in wireless_send_event (has report)
+    WARNING: ODEBUG bug in mgmt_index_removed
 Attempt 2:
-    WARNING in wireless_send_event (has report)
+    WARNING: ODEBUG bug in mgmt_index_removed
 Attempt 3:
-    WARNING in wireless_send_event (has report)
+    WARNING: ODEBUG bug in mgmt_index_removed
 Attempt 4:
-    WARNING in wireless_send_event (has report)
+    WARNING: ODEBUG bug in mgmt_index_removed
 Attempt 5:
-    WARNING in wireless_send_event (has report)
+    WARNING: ODEBUG bug in mgmt_index_removed
 Attempt 6:
-    WARNING in wireless_send_event (has report)
+    WARNING: ODEBUG bug in mgmt_index_removed
 Attempt 7:
-    WARNING in wireless_send_event (has report)
+    WARNING: ODEBUG bug in mgmt_index_removed
 The bug was not found.
 
 Failure: This bug cannot be found at the anchor commit.
@@ -1484,17 +605,85 @@ Failure: This bug cannot be found at the anchor commit.
 ==== Partial Result: Subsequent PoC Test ====
 Reproducer:           /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0770-4.prog
 Bisection Result:     Failed to reproduce at the anchor commit.
-Stage Time:           0h12m16s
-Run Time:             18h12m56s
+Stage Time:           0h8m15s
+Run Time:             7h25m50s
+=============================================
+
+==== Anchor Commit ====
+
+2025-10-29 16:51:33
+Session:   23
+Kernel:    2022-08-10 - 7dad3e39fde1eef97bc1a0b92e5d0f3500c9ed56
+Compiler:  ccache gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0770-3.prog
+Attempt 0:
+    WARNING: ODEBUG bug in mgmt_index_removed
+Attempt 1:
+    WARNING: ODEBUG bug in mgmt_index_removed
+Attempt 2:
+    WARNING: ODEBUG bug in mgmt_index_removed
+Attempt 3:
+    WARNING: ODEBUG bug in mgmt_index_removed
+Attempt 4:
+    WARNING: ODEBUG bug in mgmt_index_removed
+Attempt 5:
+    WARNING: ODEBUG bug in mgmt_index_removed
+Attempt 6:
+    WARNING: ODEBUG bug in mgmt_index_removed
+Attempt 7:
+    WARNING: ODEBUG bug in mgmt_index_removed
+The bug was not found.
+
+Failure: This bug cannot be found at the anchor commit.
+
+==== Partial Result: Subsequent PoC Test ====
+Reproducer:           /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0770-3.prog
+Bisection Result:     Failed to reproduce at the anchor commit.
+Stage Time:           0h7m59s
+Run Time:             7h33m50s
+=============================================
+
+==== Anchor Commit ====
+
+2025-10-29 16:59:32
+Session:   24
+Kernel:    2022-08-10 - 7dad3e39fde1eef97bc1a0b92e5d0f3500c9ed56
+Compiler:  ccache gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0770-0.prog
+Attempt 0:
+    WARNING: ODEBUG bug in mgmt_index_removed
+Attempt 1:
+    WARNING: ODEBUG bug in mgmt_index_removed
+Attempt 2:
+    WARNING: ODEBUG bug in mgmt_index_removed
+Attempt 3:
+    WARNING: ODEBUG bug in mgmt_index_removed
+Attempt 4:
+    WARNING: ODEBUG bug in mgmt_index_removed
+Attempt 5:
+    WARNING: ODEBUG bug in mgmt_index_removed
+Attempt 6:
+    WARNING: ODEBUG bug in mgmt_index_removed
+Attempt 7:
+    WARNING: ODEBUG bug in mgmt_index_removed
+The bug was not found.
+
+Failure: This bug cannot be found at the anchor commit.
+
+==== Partial Result: Subsequent PoC Test ====
+Reproducer:           /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0770-0.prog
+Bisection Result:     Failed to reproduce at the anchor commit.
+Stage Time:           0h8m6s
+Run Time:             7h41m56s
 =============================================
 
 ====================================================================================================================================================
 Bug Name:             WARNING in rate_control_rate_init
-Bug ID:               bug0770
+Big ID:               bug0770
 Bug Link:             https://syzkaller.appspot.com/bug?extid=62d7eef57b09bfebcd84
-Bisection Result:     2022-10-07 - e3e6e1d16a4cf7b63159ec71774e822194071954
-Bisected Commit Name: wifi: wext: use flex array destination for memcpy()
-Run Time:             18h12m56s
+Bisection Result:     2022-08-25 - b303835dabe0340f932ebb4e260d2229f79b0684
+Bisected Commit Name: wifi: mac80211: accept STA changes without link changes
+Run Time:             7h41m56s
 
 Anchor Commit:        2023-06-27 - 6e2332e0ab532eb01f1fde39080dbfa9bf65c4cf
-Bisection Result:     2022-10-07 - e3e6e1d16a4cf7b63159ec71774e822194071954
+Bisection Result:     2022-08-25 - b303835dabe0340f932ebb4e260d2229f79b0684
