@@ -1,32 +1,35 @@
-./bin/bisector -i 1 -c /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/bisector.cfg -a 8379c0b31fbc5d20946f617f8e2fe4791e6f58c1 -F ff-test,poc-test,stateful-corpus,ff-no-find-backup
+./bin/meerkat -i 1 -c /home/syzretrospector/meerkat/wd-meerkat-1/meerkat.cfg -a 8379c0b31fbc5d20946f617f8e2fe4791e6f58c1 -F ff-test,poc-test,poc-all-pocs,ff-no-find-backup,stateful-corpus
 Bisecting:          KASAN: slab-out-of-bounds Read in __fscache_acquire_volume
 Syzbot Link:        https://syzkaller.appspot.com/bug?id=cb9bdbd80adefc7da4aa5c2894a9c89f3bafd60c
 Working Name:       bug0163
 
-No aliases given.
+Aliases:
+    KASAN: slab-out-of-bounds Read in __fscache_acquire_volume
 
 Anchor Commit:      8379c0b31fbc5d20946f617f8e2fe4791e6f58c1
 Repository:         https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
 Branch:             master
 Arch:               amd64
 
-Bisector:           /mnt/sdd/jtbursey/SyzInspector/
-Version:            1.0.4
-Kernel:             /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/kernel/
-Syzkaller:          /mnt/sdd/jtbursey/SyzInspector/syzkaller/
-Compilers:          /mnt/sda/jtbursey/SyzInspector/compilers/
-Ccache:             ccache
-Image:              /mnt/sda/jtbursey/SyzInspector/image/stretch/stretch.img
-Image Key:          /mnt/sda/jtbursey/SyzInspector/image/stretch/stretch.id_rsa
+Meerkat:            /home/syzretrospector/meerkat/
+Version:            1.2.0
+Kernel:             /home/syzretrospector/meerkat/wd-meerkat-1/kernel/
+Syzkaller:          /home/syzretrospector/meerkat/syzkaller/
+Compilers:          /home/syzretrospector/meerkat/compilers/
+Compiler:           gcc (Ubuntu 12.3.0-1ubuntu1~22.04.2) 12.3.0
+Linker:             GNU ld (GNU Binutils for Ubuntu) 2.38
+Ccache:             ccache version 4.5.1
+Image:              /home/syzretrospector/meerkat/image/stretch/stretch.img
+Image Key:          /home/syzretrospector/meerkat/image/stretch/stretch.id_rsa
 
-Workdir:            /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/
-Kconfig:            /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/config-bug0163.txt
-Reproducers: (1)    /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/reproducers/
-Primary PoC:        /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/reproducers/repro-bug0163-1.prog
-Syzkaller Workdir:  /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/wd-kaller/
-Log Directory:      /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/log/
+Workdir:            /home/syzretrospector/meerkat/wd-meerkat-1/
+Kconfig:            /home/syzretrospector/meerkat/wd-meerkat-1/config-bug0163.txt
+Reproducers: (1)    /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/
+Primary PoC:        /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0163-1.prog
+Syzkaller Workdir:  /home/syzretrospector/meerkat/wd-meerkat-1/wd-kaller/
+Log Directory:      /home/syzretrospector/meerkat/wd-meerkat-1/log/
 
-Syscalls: (12)      ["mount$9p_fd", "pipe2$9p", "syz_mount_image$tmpfs", "write$FUSE_BMAP", "openat$fuse", "ioctl$EXT4_IOC_GROUP_EXTEND", "openat$sw_sync_info", "getuid", "setgid", "getgid", "read$FUSE", "move_pages"]
+Syscalls: (13)      ["mount$9p_fd", "pipe2$9p", "syz_mount_image$tmpfs", "write$FUSE_BMAP", "open$dir", "openat$fuse", "ioctl$F2FS_IOC_START_ATOMIC_WRITE", "openat$selinux_enforce", "getuid", "setgid", "getgid", "read$FUSE", "get_robust_list"]
 VM Count:           4
 CPU Count:          4
 Procs:              24
@@ -37,262 +40,643 @@ Max Attempts:       1
 
 ==== Anchor Commit ====
 
-2025-03-18 13:18:30
+2026-01-08 11:29:47
 Session:   1
 Kernel:    2022-08-28 - 8379c0b31fbc5d20946f617f8e2fe4791e6f58c1
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Compiler:  ccache gcc
 Attempt 1:
     Time  Bug Name
-       2  INFO: rcu detected stall in corrupted
-***    2  KASAN: slab-out-of-bounds Read in __fscache_acquire_volume
-***    2  KASAN: slab-out-of-bounds Read in __fscache_acquire_volume
-***    2  KASAN: slab-out-of-bounds Read in __fscache_acquire_volume
+       3  INFO: rcu detected stall in corrupted
+***    3  KASAN: slab-out-of-bounds Read in __fscache_acquire_volume (2) (has report)
 Attempt 2: (RETRY)
     Time  Bug Name
-       2  INFO: rcu detected stall in corrupted
-***    2  KASAN: slab-out-of-bounds Read in __fscache_acquire_volume
+       3  INFO: rcu detected stall in corrupted
+***    3  KASAN: slab-out-of-bounds Read in __fscache_acquire_volume (2) (has report)
 Attempt 3: (RETRY)
     Time  Bug Name
-***    2  KASAN: slab-out-of-bounds Read in __fscache_acquire_volume
-***    2  KASAN: slab-out-of-bounds Read in __fscache_acquire_volume
-***    2  KASAN: slab-out-of-bounds Read in __fscache_acquire_volume
-***    2  KASAN: slab-out-of-bounds Read in __fscache_acquire_volume
+***    3  KASAN: slab-out-of-bounds Read in __fscache_acquire_volume (3) (has report)
 The bug was found.
 
 New Max Time: 10
 
 ==== Major Release Search ====
-18 Releases
+12 Releases
 
-2025-03-18 13:39:19
+2026-01-08 11:59:56
 Session:   2
 Kernel:    2022-07-31 - 3d7cb6b04c3f3115719235cc6866b10326de34cd (v5.19)
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Compiler:  ccache gcc
 Attempt 1:
     Time  Bug Name
-***    2  KASAN: slab-out-of-bounds Read in __fscache_acquire_volume
-***    2  KASAN: slab-out-of-bounds Read in __fscache_acquire_volume
-***    2  KASAN: slab-out-of-bounds Read in __fscache_acquire_volume
+***    3  KASAN: slab-out-of-bounds Read in __fscache_acquire_volume (has report)
 Running syz-repro.
-New PoC saved at /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/reproducers/repro-bug0163-0.prog
-Primary PoC:     /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/reproducers/repro-bug0163-0.prog
-Run Time:        0h7m0s
+New PoC saved at /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0163-0.prog
+Primary PoC:     /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0163-0.prog
+Run Time:        0h9m0s
 The bug was found.
-About 17 releases remaining
+About 11 releases remaining
 
-2025-03-18 14:01:57
+2026-01-08 12:31:29
 Session:   3
 Kernel:    2022-05-22 - 4b0986a3613c92f4ec1bdc7f60ec66fea135991f (v5.18)
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Compiler:  ccache gcc
 Attempt 1:
     Time  Bug Name
-***    2  KASAN: slab-out-of-bounds Read in __fscache_acquire_volume
-***    2  KASAN: slab-out-of-bounds Read in __fscache_acquire_volume
-***    2  KASAN: slab-out-of-bounds Read in __fscache_acquire_volume
-***    2  KASAN: slab-out-of-bounds Read in __fscache_acquire_volume
+***    4  KASAN: slab-out-of-bounds Read in __fscache_acquire_volume (has report)
 The bug was found.
-About 16 releases remaining
+About 10 releases remaining
 
-2025-03-18 14:17:38
+2026-01-08 12:54:09
 Session:   4
 Kernel:    2022-03-20 - f443e374ae131c168a065ea1748feac6b2e76613 (v5.17)
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Compiler:  ccache gcc
 Attempt 1:
     Time  Bug Name
-***    2  KASAN: slab-out-of-bounds Read in __fscache_acquire_volume
-***    2  KASAN: slab-out-of-bounds Read in __fscache_acquire_volume
+***    3  KASAN: slab-out-of-bounds Read in __fscache_acquire_volume (2) (has report)
 The bug was found.
-About 15 releases remaining
+About 9 releases remaining
 
-2025-03-18 14:32:54
+2026-01-08 13:15:25
 Session:   5
 Kernel:    2021-10-31 - 8bb7eca972ad531c9b149c0a51ab43a417385813 (v5.15)
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
 Attempt 1:
-    Time  Bug Name
-       5  general protection fault in fscache_free_cookie
-       6  suppressed report
-       6  suppressed report
-       6  suppressed report
+    No crashes found.
 The bug was not found.
-About 14 releases remaining
+About 8 releases remaining
 
 ==== Kernel Bisection ====
 29584 Linux commits
 
-2025-03-18 14:56:44
+2026-01-08 13:43:07
 Session:   6
-Kernel:    2021-12-03 - 119c1a336d8e92df059a86302e7f11f9262bbc00
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Kernel:    2021-12-02 - 0109841fc4565bb3cefcdfb2991da0c47cd94b23
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
 Attempt 1:
-    Time  Bug Name
-       6  WARNING: ODEBUG bug in netdev_run_todo
-       8  suppressed report
-      10  WARNING in send_hsr_supervision_frame
+    No crashes found.
 The bug was not found.
-About 14792 commits remaining
+About 14804 commits remaining
 
-2025-03-18 15:20:40
+2026-01-08 14:10:33
 Session:   7
 Kernel:    2022-01-12 - e3084ed48fd6b661fe434da0cb36d7d6706cf27f
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Compiler:  ccache gcc
 Attempt 1:
-    Time  Bug Name
-       8  WARNING in new_slab
-       8  suppressed report
-       8  suppressed report
-       8  suppressed report
+    No crashes found.
 The bug was not found.
 About 7351 commits remaining
 
-2025-03-18 15:43:34
+2026-01-08 14:39:14
 Session:   8
 Kernel:    2022-01-17 - 35ce8ae9ae2e471f92759f9d6880eab42cc1c3b6
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Compiler:  ccache gcc
 Attempt 1:
     Time  Bug Name
-       8  suppressed report
-       8  suppressed report
-       8  suppressed report
-       9  suppressed report
-The bug was not found.
-About 3657 commits remaining
+***    3  KASAN: slab-out-of-bounds Read in __fscache_acquire_volume (3) (has report)
+Running syz-repro.
+New PoC saved at /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0163-2.prog
+Primary PoC:     /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0163-2.prog
+Run Time:        0h9m0s
+The bug was found.
+About 3695 commits remaining
 
-2025-03-18 16:06:30
+2026-01-08 15:09:25
 Session:   9
-Kernel:    2022-02-03 - 551007a8f10afdc45959ad637d6bee816716769f
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Kernel:    2022-01-14 - 3ceff4ea07410763d5d4cccd60349bf7691e7e61
+Compiler:  ccache gcc
 Attempt 1:
-    Time  Bug Name
-***    2  KASAN: slab-out-of-bounds Read in __fscache_acquire_volume
-***    2  KASAN: slab-out-of-bounds Read in __fscache_acquire_volume
-Running syz-repro.
-New PoC saved at /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/reproducers/repro-bug0163-2.prog
-Primary PoC:     /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/reproducers/repro-bug0163-0.prog
-Run Time:        0h7m0s
-The bug was found.
-About 1810 commits remaining
+    No crashes found.
+The bug was not found.
+About 1664 commits remaining
 
-2025-03-18 16:28:22
+2026-01-08 15:37:57
 Session:   10
-Kernel:    2022-01-27 - 9e0db41e7a0b6f1271cbcfb16dbf5b8641b4e440
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Kernel:    2022-01-15 - a33f5c380c4bd3fa5278d690421b72052456d9fe
+Compiler:  ccache gcc
 Attempt 1:
     Time  Bug Name
-***    2  KASAN: slab-out-of-bounds Read in __fscache_acquire_volume
-***    2  KASAN: slab-out-of-bounds Read in __fscache_acquire_volume
+***    3  KASAN: slab-out-of-bounds Read in __fscache_acquire_volume (has report)
 The bug was found.
-About 905 commits remaining
+About 794 commits remaining
 
-2025-03-18 16:43:10
+2026-01-08 15:59:14
 Session:   11
-Kernel:    2022-01-18 - fe81ba137ebcc7f236780996a0b375732c07e85c
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Kernel:    2021-12-30 - 0880603c8401505d237c8bfd29538a064e3aaf0f
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
 Attempt 1:
-    Time  Bug Name
-***    5  KASAN: slab-out-of-bounds Read in __fscache_acquire_volume
-The bug was found.
-About 454 commits remaining
+    No crashes found.
+The bug was not found.
+About 9975 commits remaining
 
-2025-03-18 17:01:03
+2026-01-08 16:27:00
 Session:   12
-Kernel:    2022-01-18 - 57d17378a4a042401b0c2fe211e5a0e3a276cb3d
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Kernel:    2021-12-23 - c49f5d88ff0166ffa4e48ee8ce84d63719f346be
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
 Attempt 1:
-    Time  Bug Name
-***    2  KASAN: slab-out-of-bounds Read in __fscache_acquire_volume
-***    2  KASAN: slab-out-of-bounds Read in __fscache_acquire_volume
-Running syz-repro.
-New PoC saved at /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/reproducers/repro-bug0163-2.prog
-Primary PoC:     /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/reproducers/repro-bug0163-0.prog
-Run Time:        0h8m0s
-The bug was found.
-About 242 commits remaining
+    No crashes found.
+The bug was not found.
+About 11332 commits remaining
 
-2025-03-18 17:23:57
+2026-01-08 16:55:21
 Session:   13
-Kernel:    2022-01-18 - f0033681f0fe8421baf8db125e57fa6157824c2d
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Kernel:    2022-01-14 - 29ec39fcf11e4583eb8d5174f756ea109c77cc44
+Compiler:  ccache gcc
 Attempt 1:
     Time  Bug Name
-       8  suppressed report
-       9  suppressed report
-      10  suppressed report
-      10  suppressed report
-The bug was not found.
-About 122 commits remaining
+       7  WARNING: ODEBUG bug in netdev_run_todo (has report)
+***    8  KASAN: slab-out-of-bounds Read in __fscache_acquire_volume (has report)
+The bug was found.
+About 10842 commits remaining
 
-2025-03-18 17:37:00
+2026-01-08 17:12:50
 Session:   14
-Kernel:    2022-01-12 - 88031a0de7d68d132014154b9e5307428e8ed70d
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Kernel:    2022-01-09 - 15e690af5cc3cd8f5d14ee2aa3a093f80196110e
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
 Attempt 1:
     Time  Bug Name
-      10  suppressed report
+       7  INFO: task hung in p9_fd_close (2)
 The bug was not found.
-About 9735 commits remaining
+About 10561 commits remaining
 
-2025-03-18 18:00:11
+2026-01-08 17:40:45
 Session:   15
-Kernel:    2022-01-12 - 7ac0089d138f80dcd7ba8ca368a9b2bdfe780b16
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Kernel:    2021-12-23 - a3483c3dd18c136785a31406fe27210649fc4fba
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
 Attempt 1:
     Time  Bug Name
-       9  suppressed report
+       5  WARNING: ODEBUG bug in netdev_run_todo (has report)
 The bug was not found.
-About 9705 commits remaining
+About 10816 commits remaining
 
-2025-03-18 18:13:14
+2026-01-08 17:56:57
 Session:   16
-Kernel:    2022-01-12 - 6dd8646939a770e4ec0220c1c19d6af25c5877b7
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Kernel:    2022-01-04 - e57c2fd6cdf8db581ac93b909b2664751e7cf30c
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
 Attempt 1:
     No crashes found.
 The bug was not found.
-About 9690 commits remaining
+About 10803 commits remaining
 
-2025-03-18 18:26:09
+2026-01-08 18:13:15
 Session:   17
-Kernel:    2022-01-14 - 46f57d2410150985f81da7cbbb5fdcda01d02ac2
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
-Attempt 1:
-    Time  Bug Name
-***    2  KASAN: slab-out-of-bounds Read in __fscache_acquire_volume
-The bug was found.
-About 7069 commits remaining
-
-2025-03-18 18:41:03
-Session:   18
-Kernel:    2022-01-13 - 35cb8c713a496e8c114eed5e2a5a30b359876df2
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
-Attempt 1:
-    Time  Bug Name
-***    3  KASAN: slab-out-of-bounds Read in __fscache_acquire_volume
-The bug was found.
-About 7065 commits remaining
-
-2025-03-18 18:47:04
-Session:   19
-Kernel:    2022-01-12 - c0dd94558d0e473aa92254e1c48a47900c911e69
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+Kernel:    2022-01-11 - d3115128bdafb62628ab41861a4f06f6d02ac320
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
 Attempt 1:
     No crashes found.
 The bug was not found.
-About 7063 commits remaining
+About 10554 commits remaining
 
-2025-03-18 19:10:16
-Session:   20
-Kernel:    2022-01-13 - 1aa77e716c6f2332f2d4664f747ff4eba731825b
-Compiler:  ccache /mnt/sda/jtbursey/SyzInspector/compilers/gcc-10.2.1-20210110/bin/gcc
+2026-01-08 18:29:16
+Session:   18
+Kernel:    2022-01-05 - 2bdf3f9e9df0a4ce7709fc916b9997ca2dc30d25
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
 Attempt 1:
-    Time  Bug Name
-***    2  KASAN: slab-out-of-bounds Read in __fscache_acquire_volume
-Running syz-repro.
-New PoC saved at /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/reproducers/repro-bug0163-2.prog
-Primary PoC:     /mnt/sdd/jtbursey/SyzInspector/wd-bisector-1/reproducers/repro-bug0163-0.prog
-Run Time:        0h7m0s
+    No crashes found.
+The bug was not found.
+About 10800 commits remaining
+
+2026-01-08 18:45:16
+Session:   19
+Kernel:    2022-01-06 - f1aa0e47c29268776205698f2453dc07fab49855
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 10798 commits remaining
+
+2026-01-08 19:02:00
+Session:   20
+Kernel:    2022-01-14 - 3fb561b1e0bf4c75bc5f4d799845b08fa5ab3853
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 244 commits remaining
+
+==== Partial Result: Focused Fuzzing ====
+Reproducer:           /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0163-2.prog
+Bisection Result:     2022-01-14 - 29ec39fcf11e4583eb8d5174f756ea109c77cc44
+Bisected Commit Name: Merge tag 'powerpc-5.17-1' of git://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux
+Stage Time:           7h49m41s
+Run Time:             7h49m46s
+=========================================
+
+==== Anchor Commit ====
+
+2026-01-08 19:19:29
+Session:   21
+Kernel:    2022-01-14 - 3fb561b1e0bf4c75bc5f4d799845b08fa5ab3853
+Compiler:  ccache gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0163-2.prog
+Attempt 0:
+*** KASAN: slab-out-of-bounds Read in __fscache_acquire_volume (has report)
+Attempt 1:
+*** KASAN: slab-out-of-bounds Read in __fscache_acquire_volume (has report)
+Attempt 2:
+*** KASAN: slab-out-of-bounds Read in __fscache_acquire_volume (has report)
+Attempt 3:
+*** KASAN: slab-out-of-bounds Read in __fscache_acquire_volume (has report)
+Attempt 4:
+*** KASAN: slab-out-of-bounds Read in __fscache_acquire_volume (has report)
+Attempt 5:
+*** KASAN: slab-out-of-bounds Read in __fscache_acquire_volume (has report)
+Attempt 6:
+*** KASAN: slab-out-of-bounds Read in __fscache_acquire_volume (has report)
+Attempt 7:
+*** KASAN: slab-out-of-bounds Read in __fscache_acquire_volume (has report)
 The bug was found.
 
-JTBURSEY: Git hanged at this point. Manual inspection of the bisect log shows that 1aa77e716c6f
-is the first bad commit.
-JTBURSEY: runtime ~6h10m
+==== Major Release Search ====
+11 Releases
+
+2026-01-08 19:30:10
+Session:   22
+Kernel:    2022-01-09 - df0cc57e057f18e44dac8e6c18aba47ab53202f9 (v5.16)
+Compiler:  ccache gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0163-2.prog
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+About 10 releases remaining
+
+==== Kernel Bisection ====
+8941 Linux commits
+
+2026-01-08 19:57:31
+Session:   23
+Kernel:    2022-01-10 - 8efd0d9c316af470377894a6a0f9ff63ce18c177
+Compiler:  ccache gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0163-2.prog
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+About 3881 commits remaining
+
+2026-01-08 20:24:43
+Session:   24
+Kernel:    2022-01-12 - 6dc69d3d0d18d587ab9d809fe060ba4417cf0279
+Compiler:  ccache gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0163-2.prog
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+About 2048 commits remaining
+
+2026-01-08 20:51:44
+Session:   25
+Kernel:    2022-01-12 - d9b5941bb5933932051e315de18a43db7d3c9e13
+Compiler:  ccache gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0163-2.prog
+Attempt 0:
+*** KASAN: slab-out-of-bounds Read in __fscache_acquire_volume (has report)
+Attempt 1:
+*** KASAN: slab-out-of-bounds Read in __fscache_acquire_volume (has report)
+Attempt 2:
+*** KASAN: slab-out-of-bounds Read in __fscache_acquire_volume (has report)
+Attempt 3:
+*** KASAN: slab-out-of-bounds Read in __fscache_acquire_volume (has report)
+Attempt 4:
+*** KASAN: slab-out-of-bounds Read in __fscache_acquire_volume (has report)
+Attempt 5:
+*** KASAN: slab-out-of-bounds Read in __fscache_acquire_volume (has report)
+Attempt 6:
+*** KASAN: slab-out-of-bounds Read in __fscache_acquire_volume (has report)
+Attempt 7:
+*** KASAN: slab-out-of-bounds Read in __fscache_acquire_volume (has report)
+The bug was found.
+About 1008 commits remaining
+
+2026-01-08 21:13:56
+Session:   26
+Kernel:    2022-01-12 - 57ea81971b7296b42fc77424af44c5915d3d4ae2
+Compiler:  ccache gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0163-2.prog
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+About 458 commits remaining
+
+2026-01-08 21:33:17
+Session:   27
+Kernel:    2022-01-12 - 362f533a2a1098fe95020cb59340023e9b11d062
+Compiler:  ccache gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0163-2.prog
+Attempt 0:
+*** KASAN: slab-out-of-bounds Read in __fscache_acquire_volume (has report)
+Attempt 1:
+*** KASAN: slab-out-of-bounds Read in __fscache_acquire_volume (has report)
+Attempt 2:
+*** KASAN: slab-out-of-bounds Read in __fscache_acquire_volume (has report)
+Attempt 3:
+*** KASAN: slab-out-of-bounds Read in __fscache_acquire_volume (has report)
+Attempt 4:
+*** KASAN: slab-out-of-bounds Read in __fscache_acquire_volume (has report)
+Attempt 5:
+*** KASAN: slab-out-of-bounds Read in __fscache_acquire_volume (has report)
+Attempt 6:
+*** KASAN: slab-out-of-bounds Read in __fscache_acquire_volume (has report)
+Attempt 7:
+*** KASAN: slab-out-of-bounds Read in __fscache_acquire_volume (has report)
+The bug was found.
+About 228 commits remaining
+
+2026-01-08 21:55:18
+Session:   28
+Kernel:    2022-01-12 - 8975f8974888b3cd25aa8cf9eba24edbb9230bb2
+Compiler:  ccache gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0163-2.prog
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+About 123 commits remaining
+
+2026-01-08 22:22:06
+Session:   29
+Kernel:    2022-01-10 - a6b5a28eb56c3f4988f7ff5290b954ba296e309a
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0163-2.prog
+Attempt 0:
+*** KASAN: slab-out-of-bounds Read in __fscache_acquire_volume (has report)
+Attempt 1:
+*** KASAN: slab-out-of-bounds Read in __fscache_acquire_volume (has report)
+Attempt 2:
+*** KASAN: slab-out-of-bounds Read in __fscache_acquire_volume (has report)
+Attempt 3:
+*** KASAN: slab-out-of-bounds Read in __fscache_acquire_volume (has report)
+Attempt 4:
+*** KASAN: slab-out-of-bounds Read in __fscache_acquire_volume (has report)
+Attempt 5:
+*** KASAN: slab-out-of-bounds Read in __fscache_acquire_volume (has report)
+Attempt 6:
+*** KASAN: slab-out-of-bounds Read in __fscache_acquire_volume (has report)
+Attempt 7:
+*** KASAN: slab-out-of-bounds Read in __fscache_acquire_volume (has report)
+The bug was found.
+About 62 commits remaining
+
+2026-01-08 22:44:33
+Session:   30
+Kernel:    2022-01-07 - 77443f6171f32626f24b2f97494c71a6bd83831a
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0163-2.prog
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+About 32 commits remaining
+
+2026-01-08 23:08:51
+Session:   31
+Kernel:    2022-01-07 - 72b957856b0c09eee542afcff29705dd0adda654
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0163-2.prog
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+About 17 commits remaining
+
+2026-01-08 23:25:14
+Session:   32
+Kernel:    2022-01-07 - ecd1a5f62eed35d812de8fe20703e21b551c6560
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0163-2.prog
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+About 9 commits remaining
+
+2026-01-08 23:39:17
+Session:   33
+Kernel:    2022-01-07 - c7f75ef33b6dcd4269d0f6ee8c50221ee3390733
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0163-2.prog
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+About 5 commits remaining
+
+2026-01-08 23:55:26
+Session:   34
+Kernel:    2022-01-10 - 24e42e32d347f0787a6f99aeb590f3aaa7221093
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0163-2.prog
+Attempt 0:
+*** KASAN: slab-out-of-bounds Read in __fscache_acquire_volume (has report)
+Attempt 1:
+*** KASAN: slab-out-of-bounds Read in __fscache_acquire_volume (has report)
+Attempt 2:
+*** KASAN: slab-out-of-bounds Read in __fscache_acquire_volume (has report)
+Attempt 3:
+*** KASAN: slab-out-of-bounds Read in __fscache_acquire_volume (has report)
+Attempt 4:
+*** KASAN: slab-out-of-bounds Read in __fscache_acquire_volume (has report)
+Attempt 5:
+*** KASAN: slab-out-of-bounds Read in __fscache_acquire_volume (has report)
+Attempt 6:
+*** KASAN: slab-out-of-bounds Read in __fscache_acquire_volume (has report)
+Attempt 7:
+*** KASAN: slab-out-of-bounds Read in __fscache_acquire_volume (has report)
+The bug was found.
+About 3 commits remaining
+
+2026-01-09 00:07:07
+Session:   35
+Kernel:    2022-01-07 - 0770bd4187c555e6df087f7abc252eeacb0842ec
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0163-2.prog
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+About 2 commits remaining
+
+==== Partial Result: Primary PoC Test ====
+Reproducer:           /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0163-2.prog
+Bisection Result:     2022-01-10 - 24e42e32d347f0787a6f99aeb590f3aaa7221093
+Bisected Commit Name: 9p: Use fscache indexing rewrite and reenable caching
+Stage Time:           5h1m50s
+Run Time:             12h51m36s
+==========================================
+
+==== Anchor Commit ====
+
+2026-01-09 00:21:19
+Session:   36
+Kernel:    2022-01-07 - 0770bd4187c555e6df087f7abc252eeacb0842ec
+Compiler:  ccache /home/syzretrospector/meerkat/compilers/gcc-10.1.0/bin/gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0163-1.prog
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+
+Failure: This bug cannot be found at the anchor commit.
+
+==== Partial Result: Subsequent PoC Test ====
+Reproducer:           /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0163-1.prog
+Bisection Result:     Failed to reproduce at the anchor commit.
+Stage Time:           0h14m0s
+Run Time:             13h5m37s
+=============================================
+
+====================================================================================================================================================
+Bug Name:             KASAN: slab-out-of-bounds Read in __fscache_acquire_volume
+Bug ID:               bug0163
+Bug Link:             https://syzkaller.appspot.com/bug?id=cb9bdbd80adefc7da4aa5c2894a9c89f3bafd60c
+Bisection Result:     2022-01-10 - 24e42e32d347f0787a6f99aeb590f3aaa7221093
+Bisected Commit Name: 9p: Use fscache indexing rewrite and reenable caching
+Run Time:             13h5m37s
+
+Anchor Commit:        2022-08-28 - 8379c0b31fbc5d20946f617f8e2fe4791e6f58c1
+Bisection Result:     2022-01-10 - 24e42e32d347f0787a6f99aeb590f3aaa7221093
