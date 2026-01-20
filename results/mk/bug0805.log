@@ -1,32 +1,35 @@
-./bin/bisector -i 5 -c /home/syzretrospector/syzinspector/wd-bisector-5/bisector.cfg -a 9f3ebbef746f89f860a90ced99a359202ea86fde -F ff-test,poc-test,stateful-corpus,ff-no-find-backup
+./bin/meerkat -i 1 -c /home/syzretrospector/meerkat/wd-meerkat-1/meerkat.cfg -a 9f3ebbef746f89f860a90ced99a359202ea86fde -F ff-test,poc-test,poc-all-pocs,stateful-corpus,ff-no-find-backup
 Bisecting:          general protection fault in io_get_cqe_overflow
 Syzbot Link:        https://syzkaller.appspot.com/bug?extid=efc45d4e7ba6ab4ef1eb
 Working Name:       bug0805
 
-No aliases given.
+Aliases:
+    general protection fault in io_get_cqe_overflow (has report)
 
 Anchor Commit:      9f3ebbef746f89f860a90ced99a359202ea86fde
 Repository:         https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
 Branch:             master
 Arch:               amd64
 
-Bisector:           /home/syzretrospector/syzinspector/
-Version:            1.0.4
-Kernel:             /home/syzretrospector/syzinspector/wd-bisector-5/kernel/
-Syzkaller:          /home/syzretrospector/syzinspector/syzkaller/
-Compilers:          /home/syzretrospector/compilers/
-Ccache:             ccache
-Image:              /home/syzretrospector/images/stretch/stretch.img
-Image Key:          /home/syzretrospector/images/stretch/stretch.id_rsa
+Meerkat:            /home/syzretrospector/meerkat/
+Version:            1.2.0
+Kernel:             /home/syzretrospector/meerkat/wd-meerkat-1/kernel/
+Syzkaller:          /home/syzretrospector/meerkat/syzkaller/
+Compilers:          /home/syzretrospector/meerkat/compilers/
+Compiler:           gcc (Ubuntu 12.3.0-1ubuntu1~22.04.2) 12.3.0
+Linker:             GNU ld (GNU Binutils for Ubuntu) 2.38
+Ccache:             ccache version 4.5.1
+Image:              /home/syzretrospector/meerkat/image/stretch/stretch.img
+Image Key:          /home/syzretrospector/meerkat/image/stretch/stretch.id_rsa
 
-Workdir:            /home/syzretrospector/syzinspector/wd-bisector-5/
-Kconfig:            /home/syzretrospector/syzinspector/wd-bisector-5/config-bug0805.txt
-Reproducers: (1)    /home/syzretrospector/syzinspector/wd-bisector-5/reproducers/
-Primary PoC:        /home/syzretrospector/syzinspector/wd-bisector-5/reproducers/repro-bug0805-1.prog
-Syzkaller Workdir:  /home/syzretrospector/syzinspector/wd-bisector-5/wd-kaller/
-Log Directory:      /home/syzretrospector/syzinspector/wd-bisector-5/log/
+Workdir:            /home/syzretrospector/meerkat/wd-meerkat-1/
+Kconfig:            /home/syzretrospector/meerkat/wd-meerkat-1/config-bug0805.txt
+Reproducers: (1)    /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/
+Primary PoC:        /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0805-1.prog
+Syzkaller Workdir:  /home/syzretrospector/meerkat/wd-meerkat-1/wd-kaller/
+Log Directory:      /home/syzretrospector/meerkat/wd-meerkat-1/log/
 
-Syscalls: (29)      ["io_uring_register$IORING_REGISTER_BUFFERS2", "io_uring_register$IORING_REGISTER_BUFFERS_UPDATE", "syz_io_uring_setup", "syz_memcpy_off$IO_URING_METADATA_GENERIC", "syz_io_uring_submit", "ioctl$F2FS_IOC_START_ATOMIC_WRITE", "openat$selinux_enforce", "statx", "socket", "syz_mount_image$bfs", "io_uring_register$IORING_UNREGISTER_PERSONALITY", "io_uring_register$IORING_REGISTER_PERSONALITY", "futex", "getrusage", "clock_gettime", "mount$bpf", "getuid", "setgid", "getgid", "epoll_create", "setsockopt$inet_mreqn", "ioctl$sock_SIOCGIFINDEX", "ioctl$ifreq_SIOCGIFINDEX_vcan", "bind$nfc_llcp", "ioctl$IOCTL_GET_NCIDEV_IDX", "socket$inet", "syz_init_net_socket$nfc_llcp", "openat$nci", "utimes"]
+Syscalls: (29)      ["io_uring_register$IORING_REGISTER_BUFFERS2", "io_uring_register$IORING_REGISTER_BUFFERS_UPDATE", "syz_io_uring_setup", "syz_memcpy_off$IO_URING_METADATA_GENERIC", "syz_io_uring_submit", "ioctl$F2FS_IOC_START_ATOMIC_WRITE", "openat$selinux_enforce", "ioctl$sock_SIOCGIFINDEX", "ioctl$IOCTL_GET_NCIDEV_IDX", "statx", "socket", "setsockopt$inet_mreqn", "openat$nci", "bind$nfc_llcp", "open$dir", "io_uring_register$IORING_UNREGISTER_PERSONALITY", "io_uring_register$IORING_REGISTER_PERSONALITY", "futex", "getrusage", "clock_gettime", "mount$bpf", "getuid", "setgid", "getgid", "epoll_create", "socket$inet", "syz_init_net_socket$nfc_llcp", "ioctl$ifreq_SIOCGIFINDEX_vcan", "utimes"]
 VM Count:           8
 CPU Count:          2
 Procs:              16
@@ -37,429 +40,353 @@ Max Attempts:       1
 
 ==== Anchor Commit ====
 
-2025-03-20 12:09:17
+2026-01-19 11:37:55
 Session:   1
 Kernel:    2023-09-29 - 9f3ebbef746f89f860a90ced99a359202ea86fde
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Compiler:  ccache gcc
 Attempt 1:
-    Time  Bug Name
-***    2  general protection fault in io_get_cqe_overflow
-***    2  general protection fault in io_get_cqe_overflow
-***    2  general protection fault in io_get_cqe_overflow
+    No crashes found.
 Attempt 2: (RETRY)
     Time  Bug Name
-***    2  general protection fault in io_get_cqe_overflow
-***    2  general protection fault in io_get_cqe_overflow
-***    2  general protection fault in io_get_cqe_overflow
+***    3  general protection fault in io_get_cqe_overflow (2) (has report)
 Attempt 3: (RETRY)
     Time  Bug Name
-***    2  general protection fault in io_get_cqe_overflow
-***    2  general protection fault in io_get_cqe_overflow
-***    2  general protection fault in io_get_cqe_overflow
+***    3  general protection fault in io_get_cqe_overflow (2) (has report)
 The bug was found.
 
-New Max Time: 10
+New Max Time: 12
 
 ==== Major Release Search ====
-19 Releases
+14 Releases
 
-2025-03-20 12:27:59
+2026-01-19 12:19:43
 Session:   2
-Kernel:    2023-06-25 - 6995e2de6891c724bfeb2db33d7b87775f913ad1 (v6.4)
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Kernel:    2023-08-27 - 2dde18cd1d8fac735875f2e4987f11817cc0bc2c (v6.5)
+Compiler:  ccache gcc
 Attempt 1:
     Time  Bug Name
-***    2  general protection fault in io_get_cqe_overflow
-***    2  general protection fault in io_get_cqe_overflow
-***    2  general protection fault in io_get_cqe_overflow
-***    2  general protection fault in io_get_cqe_overflow
-***    2  general protection fault in io_get_cqe_overflow
+***    3  general protection fault in io_get_cqe_overflow (2) (has report)
 Running syz-repro.
-New PoC saved at /home/syzretrospector/syzinspector/wd-bisector-5/reproducers/repro-bug0805-0.prog
-Primary PoC:     /home/syzretrospector/syzinspector/wd-bisector-5/reproducers/repro-bug0805-0.prog
-Run Time:        0h13m0s
+New PoC saved at /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0805-0.prog
+Primary PoC:     /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0805-0.prog
+Run Time:        0h21m0s
 The bug was found.
-About 18 releases remaining
+About 13 releases remaining
 
-2025-03-20 12:55:52
+2026-01-19 13:07:05
 Session:   3
-Kernel:    2023-04-23 - 457391b0380335d5e9a5babdec90ac53928b23b4 (v6.3)
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Kernel:    2023-06-25 - 6995e2de6891c724bfeb2db33d7b87775f913ad1 (v6.4)
+Compiler:  ccache gcc
 Attempt 1:
     Time  Bug Name
-       2  general protection fault in io_fill_cqe_aux
-       2  general protection fault in io_fill_cqe_aux
-       2  general protection fault in io_fill_cqe_aux
-       2  general protection fault in io_fill_cqe_aux
-       2  general protection fault in io_fill_cqe_aux
-       3  general protection fault in io_fill_cqe_aux
-       3  general protection fault in io_fill_cqe_aux
-       3  general protection fault in io_fill_cqe_aux
-       3  general protection fault in io_fill_cqe_aux
-       3  general protection fault in io_fill_cqe_aux
-       3  general protection fault in io_fill_cqe_aux
-       3  general protection fault in io_fill_cqe_aux
-       3  general protection fault in io_fill_cqe_aux
-       4  general protection fault in io_fill_cqe_aux
-       4  general protection fault in io_fill_cqe_aux
-       4  general protection fault in io_fill_cqe_aux
-       4  general protection fault in io_fill_cqe_aux
-       4  general protection fault in io_fill_cqe_aux
-       4  general protection fault in io_fill_cqe_aux
-       5  general protection fault in io_fill_cqe_aux
-       5  general protection fault in io_fill_cqe_aux
-       5  general protection fault in io_fill_cqe_aux
-       5  general protection fault in io_fill_cqe_aux
-       5  general protection fault in io_fill_cqe_aux
-       5  general protection fault in io_fill_cqe_aux
-       5  general protection fault in io_fill_cqe_aux
-       6  general protection fault in io_fill_cqe_aux
-       6  general protection fault in io_fill_cqe_aux
-       6  general protection fault in io_fill_cqe_aux
-       6  general protection fault in io_fill_cqe_aux
-       6  general protection fault in io_fill_cqe_aux
-       6  general protection fault in io_fill_cqe_aux
-       7  general protection fault in io_fill_cqe_aux
-       7  general protection fault in io_fill_cqe_aux
-       7  general protection fault in io_fill_cqe_aux
-       7  general protection fault in io_fill_cqe_aux
-       7  general protection fault in io_fill_cqe_aux
-       7  general protection fault in io_fill_cqe_aux
-       7  general protection fault in io_fill_cqe_aux
-       8  general protection fault in io_fill_cqe_aux
-       8  general protection fault in io_fill_cqe_aux
-       8  general protection fault in io_fill_cqe_aux
-       8  general protection fault in io_fill_cqe_aux
-       8  general protection fault in io_fill_cqe_aux
-       8  general protection fault in io_fill_cqe_aux
-       8  general protection fault in io_fill_cqe_aux
-       8  general protection fault in io_fill_cqe_aux
-       9  general protection fault in io_fill_cqe_aux
-       9  general protection fault in io_fill_cqe_aux
-       9  general protection fault in io_fill_cqe_aux
-       9  general protection fault in io_fill_cqe_aux
-       9  general protection fault in io_fill_cqe_aux
-       9  general protection fault in io_fill_cqe_aux
-      10  general protection fault in io_fill_cqe_aux
-      10  general protection fault in io_fill_cqe_aux
-      10  general protection fault in io_fill_cqe_aux
-      10  general protection fault in io_fill_cqe_aux
-      10  general protection fault in io_fill_cqe_aux
-      10  general protection fault in io_fill_cqe_aux
+***    3  general protection fault in io_get_cqe_overflow (has report)
+The bug was found.
+About 12 releases remaining
+
+2026-01-19 13:34:35
+Session:   4
+Kernel:    2023-04-23 - 457391b0380335d5e9a5babdec90ac53928b23b4 (v6.3)
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    3  general protection fault in io_fill_cqe_aux (3) (has report)
+The bug was found.
+About 11 releases remaining
+
+2026-01-19 14:01:38
+Session:   5
+Kernel:    2022-12-11 - 830b3c68c1fb1e9176028d02ef86f3cf76aa2476 (v6.1)
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       3  INFO: rcu detected stall in corrupted
 The bug was not found.
-About 17 releases remaining
+About 10 releases remaining
 
 ==== Kernel Bisection ====
-16012 Linux commits
+32478 Linux commits
 
-2025-03-20 13:18:51
-Session:   4
-Kernel:    2023-04-27 - d42b1c47570eb2ed818dc3fe94b2678124af109d
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
-Attempt 1:
-    Time  Bug Name
-***    2  general protection fault in io_get_cqe_overflow
-***    2  general protection fault in io_get_cqe_overflow
-The bug was found.
-About 7999 commits remaining
-
-2025-03-20 13:34:03
-Session:   5
-Kernel:    2023-04-25 - 088e0c188513b58a0056a488cf5b7df094a8a48a
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
-Attempt 1:
-    Time  Bug Name
-       2  general protection fault in io_fill_cqe_aux
-       2  general protection fault in io_fill_cqe_aux
-       2  general protection fault in io_fill_cqe_aux
-       2  general protection fault in io_fill_cqe_aux
-       2  general protection fault in io_fill_cqe_aux
-       2  general protection fault in io_fill_cqe_aux
-       3  general protection fault in io_fill_cqe_aux
-       3  general protection fault in io_fill_cqe_aux
-       3  general protection fault in io_fill_cqe_aux
-       3  general protection fault in io_fill_cqe_aux
-       3  general protection fault in io_fill_cqe_aux
-       3  general protection fault in io_fill_cqe_aux
-       3  general protection fault in io_fill_cqe_aux
-       3  general protection fault in io_fill_cqe_aux
-       4  general protection fault in io_fill_cqe_aux
-       4  general protection fault in io_fill_cqe_aux
-       4  general protection fault in io_fill_cqe_aux
-       4  general protection fault in io_fill_cqe_aux
-       4  general protection fault in io_fill_cqe_aux
-       5  general protection fault in io_fill_cqe_aux
-       5  general protection fault in io_fill_cqe_aux
-       5  general protection fault in io_fill_cqe_aux
-       5  general protection fault in io_fill_cqe_aux
-       5  general protection fault in io_fill_cqe_aux
-       5  general protection fault in io_fill_cqe_aux
-       5  general protection fault in io_fill_cqe_aux
-       5  general protection fault in io_fill_cqe_aux
-       6  general protection fault in io_fill_cqe_aux
-       6  general protection fault in io_fill_cqe_aux
-       6  general protection fault in io_fill_cqe_aux
-       6  general protection fault in io_fill_cqe_aux
-       6  general protection fault in io_fill_cqe_aux
-       6  general protection fault in io_fill_cqe_aux
-       6  general protection fault in io_fill_cqe_aux
-       6  general protection fault in io_fill_cqe_aux
-       7  general protection fault in io_fill_cqe_aux
-       7  general protection fault in io_fill_cqe_aux
-       7  general protection fault in io_fill_cqe_aux
-       7  general protection fault in io_fill_cqe_aux
-       7  general protection fault in io_fill_cqe_aux
-       7  general protection fault in io_fill_cqe_aux
-       7  general protection fault in io_fill_cqe_aux
-       7  general protection fault in io_fill_cqe_aux
-       8  general protection fault in io_fill_cqe_aux
-       8  general protection fault in io_fill_cqe_aux
-       8  general protection fault in io_fill_cqe_aux
-       8  general protection fault in io_fill_cqe_aux
-       8  general protection fault in io_fill_cqe_aux
-       8  general protection fault in io_fill_cqe_aux
-       8  general protection fault in io_fill_cqe_aux
-       8  general protection fault in io_fill_cqe_aux
-       9  general protection fault in io_fill_cqe_aux
-       9  general protection fault in io_fill_cqe_aux
-       9  general protection fault in io_fill_cqe_aux
-       9  general protection fault in io_fill_cqe_aux
-       9  general protection fault in io_fill_cqe_aux
-       9  general protection fault in io_fill_cqe_aux
-      10  general protection fault in io_fill_cqe_aux
-      10  general protection fault in io_fill_cqe_aux
-      10  general protection fault in io_fill_cqe_aux
-      10  general protection fault in io_fill_cqe_aux
-      10  general protection fault in io_fill_cqe_aux
-      10  general protection fault in io_fill_cqe_aux
-      10  general protection fault in io_fill_cqe_aux
-      10  general protection fault in io_fill_cqe_aux
-The bug was not found.
-About 4007 commits remaining
-
-2025-03-20 13:56:47
+2026-01-19 14:39:26
 Session:   6
-Kernel:    2023-04-22 - c3c060adc0249355411a93e61888051e6902b8a1
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Kernel:    2023-01-23 - 62be69397e53ab14f607698bb41343ce576713e8
+Compiler:  ccache gcc
 Attempt 1:
     Time  Bug Name
-       2  general protection fault in io_fill_cqe_aux
-       2  general protection fault in io_fill_cqe_aux
-       2  general protection fault in io_fill_cqe_aux
-       2  general protection fault in io_fill_cqe_aux
-       2  general protection fault in io_fill_cqe_aux
-The bug was not found.
-About 6063 commits remaining
-
-2025-03-20 14:19:42
-Session:   7
-Kernel:    2023-04-26 - 85d7ab2463822a4ab096c0b7b59feec962552572
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
-Attempt 1:
-    Time  Bug Name
-       2  general protection fault in io_fill_cqe_aux
-       2  general protection fault in io_fill_cqe_aux
-       2  general protection fault in io_fill_cqe_aux
-       2  general protection fault in io_fill_cqe_aux
-       3  general protection fault in io_fill_cqe_aux
-       3  general protection fault in io_fill_cqe_aux
-       3  general protection fault in io_fill_cqe_aux
-       3  general protection fault in io_fill_cqe_aux
-       3  general protection fault in io_fill_cqe_aux
-       3  general protection fault in io_fill_cqe_aux
-       3  general protection fault in io_fill_cqe_aux
-       3  general protection fault in io_fill_cqe_aux
-       4  general protection fault in io_fill_cqe_aux
-       4  general protection fault in io_fill_cqe_aux
-       4  general protection fault in io_fill_cqe_aux
-       4  general protection fault in io_fill_cqe_aux
-       4  general protection fault in io_fill_cqe_aux
-       5  general protection fault in io_fill_cqe_aux
-       5  general protection fault in io_fill_cqe_aux
-       5  general protection fault in io_fill_cqe_aux
-       5  general protection fault in io_fill_cqe_aux
-       5  general protection fault in io_fill_cqe_aux
-       5  general protection fault in io_fill_cqe_aux
-       6  general protection fault in io_fill_cqe_aux
-       6  general protection fault in io_fill_cqe_aux
-       6  general protection fault in io_fill_cqe_aux
-       6  general protection fault in io_fill_cqe_aux
-       6  general protection fault in io_fill_cqe_aux
-       6  general protection fault in io_fill_cqe_aux
-       6  general protection fault in io_fill_cqe_aux
-       6  general protection fault in io_fill_cqe_aux
-       7  general protection fault in io_fill_cqe_aux
-       7  general protection fault in io_fill_cqe_aux
-       7  general protection fault in io_fill_cqe_aux
-       7  general protection fault in io_fill_cqe_aux
-       7  general protection fault in io_fill_cqe_aux
-       8  general protection fault in io_fill_cqe_aux
-       8  general protection fault in io_fill_cqe_aux
-       8  general protection fault in io_fill_cqe_aux
-       8  general protection fault in io_fill_cqe_aux
-       8  general protection fault in io_fill_cqe_aux
-       8  general protection fault in io_fill_cqe_aux
-       8  general protection fault in io_fill_cqe_aux
-       8  general protection fault in io_fill_cqe_aux
-       9  general protection fault in io_fill_cqe_aux
-       9  general protection fault in io_fill_cqe_aux
-       9  general protection fault in io_fill_cqe_aux
-       9  general protection fault in io_fill_cqe_aux
-       9  general protection fault in io_fill_cqe_aux
-       9  general protection fault in io_fill_cqe_aux
-       9  general protection fault in io_fill_cqe_aux
-       9  general protection fault in io_fill_cqe_aux
-      10  general protection fault in io_fill_cqe_aux
-      10  general protection fault in io_fill_cqe_aux
-      10  general protection fault in io_fill_cqe_aux
-      10  general protection fault in io_fill_cqe_aux
-      10  general protection fault in io_fill_cqe_aux
-The bug was not found.
-About 2950 commits remaining
-
-2025-03-20 14:42:20
-Session:   8
-Kernel:    2023-04-26 - 36006b1d5c04692924f011aa949e8788f1c604de
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
-Attempt 1:
-    Time  Bug Name
-***    2  general protection fault in io_get_cqe_overflow
-***    2  general protection fault in io_get_cqe_overflow
-***    2  general protection fault in io_get_cqe_overflow
-***    2  general protection fault in io_get_cqe_overflow
-The bug was found.
-About 371 commits remaining
-
-2025-03-20 14:56:45
-Session:   9
-Kernel:    2023-04-26 - 5b9a7bb72fddbc5247f56ede55d485fab7abdf92
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
-Attempt 1:
-    Time  Bug Name
-***    2  general protection fault in io_get_cqe_overflow
-***    2  general protection fault in io_get_cqe_overflow
-***    2  general protection fault in io_get_cqe_overflow
+***    4  general protection fault in io_fill_cqe_aux (4) (has report)
 Running syz-repro.
-New PoC saved at /home/syzretrospector/syzinspector/wd-bisector-5/reproducers/repro-bug0805-2.prog
-Primary PoC:     /home/syzretrospector/syzinspector/wd-bisector-5/reproducers/repro-bug0805-2.prog
-Run Time:        0h13m0s
+New PoC saved at /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0805-2.prog
+Primary PoC:     /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0805-2.prog
+Run Time:        0h28m0s
 The bug was found.
-About 151 commits remaining
+About 16239 commits remaining
 
-2025-03-20 15:22:29
-Session:   10
-Kernel:    2023-04-26 - 5c7ecada25d2086aee607ff7deb69e77faa4aa92
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+2026-01-19 15:37:43
+Session:   7
+Kernel:    2022-12-13 - 1ca06f1c1acecbe02124f14a37cce347b8c1a90c
+Compiler:  ccache gcc
 Attempt 1:
     Time  Bug Name
-       2  general protection fault in io_fill_cqe_aux
-       2  general protection fault in io_fill_cqe_aux
-       2  general protection fault in io_fill_cqe_aux
+       8  INFO: rcu detected stall in corrupted
+The bug was not found.
+About 8829 commits remaining
+
+2026-01-19 16:13:25
+Session:   8
+Kernel:    2022-12-16 - 58bcac11fd94f950abc7b8466c5ceac7be07a00e
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       3  INFO: rcu detected stall in corrupted
+       3  general protection fault in rxrpc_unuse_local (7) (has report)
+       4  general protection fault in rxrpc_unuse_local (has report)
+       5  general protection fault in rxrpc_unuse_local (7) (has report)
+       6  general protection fault in rxrpc_unuse_local (has report)
+       7  general protection fault in rxrpc_unuse_local (7) (has report)
+       8  general protection fault in rxrpc_unuse_local (4) (has report)
+       9  general protection fault in rxrpc_unuse_local (5) (has report)
+      10  general protection fault in rxrpc_unuse_local (3) (has report)
+      11  general protection fault in rxrpc_unuse_local (5) (has report)
+      12  general protection fault in rxrpc_unuse_local (5) (has report)
+The bug was not found.
+About 4406 commits remaining
+
+2026-01-19 16:51:50
+Session:   9
+Kernel:    2022-12-30 - c7f5e34d906320fdc996afa616676161c029cc02
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+      10  INFO: rcu detected stall in corrupted
+The bug was not found.
+About 2205 commits remaining
+
+2026-01-19 17:32:41
+Session:   10
+Kernel:    2023-01-12 - 5be413a6e2a16e08c8f0f1b59794a7203b5eca2c
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    3  general protection fault in io_fill_cqe_aux (3) (has report)
+The bug was found.
+About 1095 commits remaining
+
+2026-01-19 18:01:14
+Session:   11
+Kernel:    2022-12-23 - 55c7d6a91d42ad98cbfb10da077ce8bb7084dc0e
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       3  INFO: rcu detected stall in corrupted
+The bug was not found.
+About 627 commits remaining
+
+2026-01-19 18:33:37
+Session:   12
+Kernel:    2023-01-05 - 5e9af4b42660b2a8db067db8ff03db8a268d6a95
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       4  KASAN: use-after-free Read in nfc_llcp_find_local (has report)
+       8  INFO: rcu detected stall in corrupted
+The bug was not found.
+About 354 commits remaining
+
+2026-01-19 19:00:26
+Session:   13
+Kernel:    2023-01-06 - 0a71553536d270e988580a3daa9fc87535908221
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       3  INFO: rcu detected stall in corrupted
+***    4  general protection fault in io_fill_cqe_aux (has report)
+The bug was found.
+About 220 commits remaining
+
+2026-01-19 19:18:32
+Session:   14
+Kernel:    2023-01-06 - d7a0853d650b381921732ff5bca618432a279033
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       8  INFO: rcu detected stall in corrupted
 The bug was not found.
 About 73 commits remaining
 
-2025-03-20 15:38:14
-Session:   11
-Kernel:    2023-04-06 - 6e7248adf8f7adb5e36ec1e91efcc85a83bf8aeb
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
-Attempt 1:
-    Time  Bug Name
-       2  general protection fault in io_fill_cqe_aux
-       2  general protection fault in io_fill_cqe_aux
-       2  general protection fault in io_fill_cqe_aux
-       5  general protection fault in io_fill_cqe_aux
-       7  general protection fault in io_fill_cqe_aux
-       7  general protection fault in io_fill_cqe_aux
-The bug was not found.
-About 5843 commits remaining
-
-2025-03-20 16:01:36
-Session:   12
-Kernel:    2023-04-15 - eef81fcaa61e1bc6b7735be65f41bbf1a8efd133
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
-Attempt 1:
-    Time  Bug Name
-***    2  general protection fault in io_get_cqe_overflow
-***    2  general protection fault in io_get_cqe_overflow
-***    2  general protection fault in io_get_cqe_overflow
-***    2  general protection fault in io_get_cqe_overflow
-The bug was found.
-About 19 commits remaining
-
-2025-03-20 16:09:30
-Session:   13
-Kernel:    2023-04-12 - 8ce4269eeedc5b31f5817f610b42cba8be8fa9de
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
-Attempt 1:
-    Time  Bug Name
-***    2  general protection fault in io_get_cqe_overflow
-***    2  general protection fault in io_get_cqe_overflow
-***    2  general protection fault in io_get_cqe_overflow
-The bug was found.
-About 10 commits remaining
-
-2025-03-20 16:17:01
-Session:   14
-Kernel:    2023-04-06 - c66ae3ec38f946edb1776d25c1c8cd63803b8ec3
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
-Attempt 1:
-    Time  Bug Name
-       2  general protection fault in io_fill_cqe_aux
-       2  general protection fault in io_fill_cqe_aux
-       2  general protection fault in io_fill_cqe_aux
-       2  general protection fault in io_fill_cqe_aux
-The bug was not found.
-About 6 commits remaining
-
-2025-03-20 16:32:38
+2026-01-19 19:46:30
 Session:   15
-Kernel:    2023-04-12 - 27a67079c0e548d5c3232c40951517cfa630fe51
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Kernel:    2023-01-06 - ef1a4a770994b97a86988fd86f5a2784b87449f7
+Compiler:  ccache gcc
 Attempt 1:
     Time  Bug Name
-       2  general protection fault in io_fill_cqe_aux
-       2  general protection fault in io_fill_cqe_aux
+***    3  general protection fault in io_fill_cqe_aux (2) (has report)
+Running syz-repro.
+syz-repro was terminated after 60 minutes
+Run Time:        1h0m0s
+The bug was found.
+About 39 commits remaining
+
+2026-01-19 21:08:21
+Session:   16
+Kernel:    2023-01-06 - a389e54642a86c91d683b2f0b248f1d2f4e52611
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       3  INFO: rcu detected stall in corrupted
+       9  INFO: rcu detected stall in corrupted
 The bug was not found.
+About 23 commits remaining
+
+2026-01-19 21:29:43
+Session:   17
+Kernel:    2023-01-06 - 7b8c854cfe8c94b2ec382a3632b1bd7c970c80b4
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       3  INFO: rcu detected stall in corrupted
+       4  WARNING: ODEBUG bug in netdev_run_todo (has report)
+The bug was not found.
+About 12 commits remaining
+
+2026-01-19 21:51:37
+Session:   18
+Kernel:    2023-01-06 - 93387d499e49429eef2c343ab6f9f5d92ec780a2
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       3  INFO: rcu detected stall in corrupted
+       7  INFO: rcu detected stall in corrupted
+       8  WARNING: ODEBUG bug in netdev_run_todo (has report)
+The bug was not found.
+About 7 commits remaining
+
+2026-01-19 22:13:52
+Session:   19
+Kernel:    2023-01-03 - f26cc9593581bd734c846bf827401350b36dc3c9
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  general protection fault in rxrpc_unuse_local (2) (has report)
+       3  general protection fault in rxrpc_unuse_local (6) (has report)
+       4  general protection fault in rxrpc_unuse_local (3) (has report)
+       5  general protection fault in rxrpc_unuse_local (5) (has report)
+       6  general protection fault in rxrpc_unuse_local (3) (has report)
+***    6  general protection fault in io_fill_cqe_aux (has report)
+The bug was found.
 About 4 commits remaining
 
-2025-03-20 16:48:21
-Session:   16
-Kernel:    2023-04-12 - ceac766a5581e4e671ec8e5236b8fdaed8e4c8c9
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+2026-01-19 22:43:00
+Session:   20
+Kernel:    2023-01-03 - 9ffa13ff78a0a55df968a72d6f0ebffccee5c9f4
+Compiler:  ccache gcc
 Attempt 1:
     Time  Bug Name
-       2  general protection fault in io_fill_cqe_aux
-       2  general protection fault in io_fill_cqe_aux
-       6  general protection fault in io_fill_cqe_aux
+       3  general protection fault in rxrpc_unuse_local (8) (has report)
+       4  general protection fault in rxrpc_unuse_local (2) (has report)
+       5  general protection fault in rxrpc_unuse_local (6) (has report)
+       6  general protection fault in rxrpc_unuse_local (has report)
+       7  general protection fault in rxrpc_unuse_local (7) (has report)
+       8  general protection fault in rxrpc_unuse_local (has report)
+       9  general protection fault in rxrpc_unuse_local (7) (has report)
+      10  general protection fault in rxrpc_unuse_local (3) (has report)
+      11  general protection fault in rxrpc_unuse_local (3) (has report)
+      12  general protection fault in rxrpc_unuse_local (2) (has report)
 The bug was not found.
 About 2 commits remaining
 
 ==== Partial Result: Focused Fuzzing ====
-Reproducer:           /home/syzretrospector/syzinspector/wd-bisector-5/reproducers/repro-bug0805-2.prog
-Bisection Result:     2023-04-12 - 8ce4269eeedc5b31f5817f610b42cba8be8fa9de
-Bisected Commit Name: io_uring: add irq lockdep checks
-Stage Time:           4h54m48s
-Run Time:             4h54m52s
+Reproducer:           /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0805-2.prog
+Bisection Result:     2023-01-03 - f26cc9593581bd734c846bf827401350b36dc3c9
+Bisected Commit Name: io_uring: lockdep annotate CQ locking
+Stage Time:           11h26m49s
+Run Time:             11h26m59s
 =========================================
 
 ==== Anchor Commit ====
 
-2025-03-20 17:04:06
-Session:   17
-Kernel:    2023-04-12 - ceac766a5581e4e671ec8e5236b8fdaed8e4c8c9
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+2026-01-19 23:04:44
+Session:   21
+Kernel:    2023-01-03 - 9ffa13ff78a0a55df968a72d6f0ebffccee5c9f4
+Compiler:  ccache gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0805-2.prog
 Attempt 0:
+    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in del_device_store
+Attempt 1:
     No crashes found.
+Attempt 2:
+    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in new_device_store
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in del_device_store
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in devlink_unregister
+    INFO: task hung in linkwatch_event
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in cfg80211_dfs_channels_update_work
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    INFO: task hung in mpls_net_exit
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in del_device_store
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in devlink_unregister
+    INFO: task hung in rtnetlink_rcv_msg
+Attempt 7:
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in new_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in devlink_unregister
+    INFO: task hung in linkwatch_event
+    INFO: task hung in rtnetlink_rcv_msg
+The bug was not found.
+
+Failure: This bug cannot be found at the anchor commit.
+
+==== Partial Result: Primary PoC Test ====
+Reproducer:           /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0805-2.prog
+Bisection Result:     Failed to reproduce at the anchor commit.
+Stage Time:           0h20m9s
+Run Time:             11h47m8s
+==========================================
+
+==== Anchor Commit ====
+
+2026-01-19 23:24:57
+Session:   22
+Kernel:    2023-01-03 - 9ffa13ff78a0a55df968a72d6f0ebffccee5c9f4
+Compiler:  ccache gcc
+PoC:       /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0805-1.prog
+Attempt 0:
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in del_device_store
 Attempt 1:
     No crashes found.
 Attempt 2:
     No crashes found.
 Attempt 3:
-    No crashes found.
+    INFO: task hung in cleanup_net
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in linkwatch_event
+    INFO: task hung in rtnetlink_rcv_msg
 Attempt 4:
     No crashes found.
 Attempt 5:
-    No crashes found.
+    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in del_device_store
 Attempt 6:
     No crashes found.
 Attempt 7:
@@ -468,12 +395,20 @@ The bug was not found.
 
 Failure: This bug cannot be found at the anchor commit.
 
+==== Partial Result: Subsequent PoC Test ====
+Reproducer:           /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0805-1.prog
+Bisection Result:     Failed to reproduce at the anchor commit.
+Stage Time:           0h18m34s
+Run Time:             12h5m43s
+=============================================
+
 ====================================================================================================================================================
 Bug Name:             general protection fault in io_get_cqe_overflow
+Bug ID:               bug0805
 Bug Link:             https://syzkaller.appspot.com/bug?extid=efc45d4e7ba6ab4ef1eb
-Bisection Result:     2023-04-12 - 8ce4269eeedc5b31f5817f610b42cba8be8fa9de
-Bisected Commit Name: io_uring: add irq lockdep checks
-Run Time:             5h2m14s
+Bisection Result:     2023-01-03 - f26cc9593581bd734c846bf827401350b36dc3c9
+Bisected Commit Name: io_uring: lockdep annotate CQ locking
+Run Time:             12h5m43s
 
 Anchor Commit:        2023-09-29 - 9f3ebbef746f89f860a90ced99a359202ea86fde
-Bisection Result:     2023-04-12 - 8ce4269eeedc5b31f5817f610b42cba8be8fa9de
+Bisection Result:     2023-01-03 - f26cc9593581bd734c846bf827401350b36dc3c9
