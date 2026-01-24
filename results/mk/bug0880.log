@@ -1,32 +1,35 @@
-./bin/bisector -i 4 -c /home/syzretrospector/syzinspector/wd-bisector-4/bisector.cfg -a e8d018dd0257f744ca50a729e3d042cf2ec9da65 -F ff-test,poc-test,stateful-corpus,ff-no-find-backup
+./bin/meerkat -i 1 -c /home/jtbursey/meerkat/wd-meerkat-1/meerkat.cfg -a e8d018dd0257f744ca50a729e3d042cf2ec9da65 -F ff-test,poc-test,poc-all-pocs,stateful-corpus,ff-no-find-backup
 Bisecting:          WARNING in ip6erspan_tunnel_xmit
 Syzbot Link:        https://syzkaller.appspot.com/bug?id=c203af981f0f7cc27debda75f35d852546cc6013
 Working Name:       bug0880
 
-No aliases given.
+Aliases:
+    WARNING in ip6erspan_tunnel_xmit
 
 Anchor Commit:      e8d018dd0257f744ca50a729e3d042cf2ec9da65
 Repository:         https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
 Branch:             master
 Arch:               amd64
 
-Bisector:           /home/syzretrospector/syzinspector/
-Version:            1.0.4
-Kernel:             /home/syzretrospector/syzinspector/wd-bisector-4/kernel/
-Syzkaller:          /home/syzretrospector/syzinspector/syzkaller/
-Compilers:          /home/syzretrospector/compilers/
-Ccache:             ccache
-Image:              /home/syzretrospector/images/stretch/stretch.img
-Image Key:          /home/syzretrospector/images/stretch/stretch.id_rsa
+Meerkat:            /home/jtbursey/meerkat/
+Version:            1.2.0
+Kernel:             /home/jtbursey/meerkat/wd-meerkat-1/kernel/
+Syzkaller:          /home/jtbursey/meerkat/syzkaller/
+Compilers:          /home/jtbursey/meerkat/compilers/
+Compiler:           gcc (Ubuntu 10.5.0-1ubuntu1~20.04) 10.5.0
+Linker:             GNU ld (GNU Binutils for Ubuntu) 2.34
+Ccache:             ccache version 3.7.7
+Image:              /home/jtbursey/meerkat/image/stretch/stretch.img
+Image Key:          /home/jtbursey/meerkat/image/stretch/stretch.id_rsa
 
-Workdir:            /home/syzretrospector/syzinspector/wd-bisector-4/
-Kconfig:            /home/syzretrospector/syzinspector/wd-bisector-4/config-bug0880.txt
-Reproducers: (1)    /home/syzretrospector/syzinspector/wd-bisector-4/reproducers/
-Primary PoC:        /home/syzretrospector/syzinspector/wd-bisector-4/reproducers/repro-bug0880-1.prog
-Syzkaller Workdir:  /home/syzretrospector/syzinspector/wd-bisector-4/wd-kaller/
-Log Directory:      /home/syzretrospector/syzinspector/wd-bisector-4/log/
+Workdir:            /home/jtbursey/meerkat/wd-meerkat-1/
+Kconfig:            /home/jtbursey/meerkat/wd-meerkat-1/config-bug0880.txt
+Reproducers: (1)    /home/jtbursey/meerkat/wd-meerkat-1/reproducers/
+Primary PoC:        /home/jtbursey/meerkat/wd-meerkat-1/reproducers/repro-bug0880-3.prog
+Syzkaller Workdir:  /home/jtbursey/meerkat/wd-meerkat-1/wd-kaller/
+Log Directory:      /home/jtbursey/meerkat/wd-meerkat-1/log/
 
-Syscalls: (27)      ["getsockname$packet", "sendmsg$SMC_PNETID_GET", "sendmsg$nl_route", "sendto$packet", "setsockopt$packet_int", "socket", "socket$nl_route", "socket$packet", "socket$nl_generic", "socket$netlink", "syz_genetlink_get_family_id$smc", "ioctl$F2FS_IOC_START_ATOMIC_WRITE", "openat$selinux_enforce", "get_robust_list", "syz_clone", "ioctl$TUNGETDEVNETNS", "mount$bpf", "getuid", "ioctl$ifreq_SIOCGIFINDEX_vcan", "bpf$OBJ_GET_PROG", "openat$tun", "socket$inet_udp", "socket$inet6_udp", "setgid", "getgid", "socket$inet", "socket$inet6"]
+Syscalls: (27)      ["getsockname$packet", "sendmsg$SMC_PNETID_GET", "sendmsg$nl_route", "sendto$packet", "setsockopt$packet_int", "socket", "socket$nl_route", "socket$packet", "socket$nl_generic", "socket$netlink", "syz_genetlink_get_family_id$smc", "ioctl$EXT4_IOC_GROUP_EXTEND", "openat$sw_sync_info", "move_pages", "syz_clone", "syz_open_procfs$namespace", "mount$9p_tcp", "getuid", "ioctl$ifreq_SIOCGIFINDEX_vcan", "bpf$BPF_PROG_GET_FD_BY_ID", "socket$inet_udp", "socket$inet6_udp", "socket$inet", "socket$inet6", "bpf$BPF_PROG_GET_NEXT_ID", "setgid", "getgid"]
 VM Count:           8
 CPU Count:          2
 Procs:              16
@@ -37,282 +40,265 @@ Max Attempts:       1
 
 ==== Anchor Commit ====
 
-2025-03-12 12:29:14
+2026-01-22 18:24:41
 Session:   1
 Kernel:    2023-03-19 - e8d018dd0257f744ca50a729e3d042cf2ec9da65
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Compiler:  ccache gcc
 Attempt 1:
     Time  Bug Name
-       6  INFO: task hung in del_device_store
-       7  INFO: task hung in del_device_store
-       7  INFO: task hung in del_device_store
-       7  INFO: task hung in del_device_store
+       7  WARNING: ODEBUG bug in netdev_run_todo (has report)
+       7  suppressed report
+***    9  WARNING in ip6erspan_tunnel_xmit (has report)
 Attempt 2: (RETRY)
     Time  Bug Name
-***    3  WARNING in ip6erspan_tunnel_xmit
-***    3  WARNING in ip6erspan_tunnel_xmit
+***    2  WARNING in ip6erspan_tunnel_xmit (2) (has report)
 Attempt 3: (RETRY)
     Time  Bug Name
-***    3  WARNING in ip6erspan_tunnel_xmit
-***    3  WARNING in ip6erspan_tunnel_xmit
+***    2  WARNING in ip6erspan_tunnel_xmit (2) (has report)
 The bug was found.
 
-New Max Time: 12
+New Max Time: 11
 
 ==== Major Release Search ====
-18 Releases
+13 Releases
 
-2025-03-12 13:05:18
+2026-01-22 18:54:44
 Session:   2
 Kernel:    2023-02-19 - c9c3395d5e3dcc6daee66c6908354d47bf98cb0c (v6.2)
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Compiler:  ccache gcc
 Attempt 1:
     Time  Bug Name
-***    3  WARNING in ip6erspan_tunnel_xmit
-***    3  WARNING in ip6erspan_tunnel_xmit
-***    3  WARNING in ip6erspan_tunnel_xmit
+***    2  WARNING in ip6erspan_tunnel_xmit (2) (has report)
 Running syz-repro.
-syz-repro was terminated after 60 minutes
-Run Time:        1h0m0s
+New PoC saved at /home/jtbursey/meerkat/wd-meerkat-1/reproducers/repro-bug0880-0.prog
+Primary PoC:     /home/jtbursey/meerkat/wd-meerkat-1/reproducers/repro-bug0880-0.prog
+Run Time:        0h17m0s
 The bug was found.
-About 17 releases remaining
+About 12 releases remaining
 
-2025-03-12 14:28:24
+2026-01-22 19:30:52
 Session:   3
 Kernel:    2022-12-11 - 830b3c68c1fb1e9176028d02ef86f3cf76aa2476 (v6.1)
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Compiler:  ccache gcc
 Attempt 1:
     Time  Bug Name
-***    3  WARNING in ip6erspan_tunnel_xmit
-***    3  WARNING in ip6erspan_tunnel_xmit
-***    3  WARNING in ip6erspan_tunnel_xmit
-Running syz-repro.
-New PoC saved at /home/syzretrospector/syzinspector/wd-bisector-4/reproducers/repro-bug0880-0.prog
-Primary PoC:     /home/syzretrospector/syzinspector/wd-bisector-4/reproducers/repro-bug0880-0.prog
-Run Time:        0h30m0s
+***    2  WARNING in ip6erspan_tunnel_xmit (2) (has report)
+       2  INFO: rcu detected stall in corrupted
 The bug was found.
-About 16 releases remaining
+About 11 releases remaining
 
-2025-03-12 15:20:34
+2026-01-22 19:49:32
 Session:   4
 Kernel:    2022-10-02 - 4fe89d07dcc2804c8b562f6c7896a45643d34b2f (v6.0)
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Compiler:  ccache gcc
 Attempt 1:
     Time  Bug Name
-***    3  WARNING in ip6erspan_tunnel_xmit
+***    2  WARNING in ip6erspan_tunnel_xmit (2) (has report)
+       2  INFO: rcu detected stall in corrupted
 The bug was found.
-About 15 releases remaining
+About 10 releases remaining
 
-2025-03-12 15:42:18
+2026-01-22 20:07:54
 Session:   5
 Kernel:    2022-05-22 - 4b0986a3613c92f4ec1bdc7f60ec66fea135991f (v5.18)
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Compiler:  ccache gcc
 Attempt 1:
-    No crashes found.
+    Time  Bug Name
+       6  WARNING: ODEBUG bug in netdev_run_todo (has report)
 The bug was not found.
-About 14 releases remaining
+About 9 releases remaining
 
 ==== Kernel Bisection ====
 32984 Linux commits
 
-2025-03-12 16:11:34
+2026-01-22 20:34:46
 Session:   6
-Kernel:    2022-08-01 - 0fac198def2b41138850867b6aa92044c76ff802
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
-Attempt 1:
-    No crashes found.
-The bug was not found.
-About 16505 commits remaining
-
-2025-03-12 16:41:32
-Session:   7
-Kernel:    2022-08-04 - 723c188d5cd42a07344f997b0b7e1d83b4173c8d
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Kernel:    2022-08-01 - 92598ae22f582547ebb060cf76f5869bc9780b80
+Compiler:  ccache gcc
 Attempt 1:
     Time  Bug Name
-       2  WARNING: ODEBUG bug in mgmt_index_removed
-***    3  WARNING in ip6erspan_tunnel_xmit
-The bug was found.
-About 8315 commits remaining
+      11  WARNING: ODEBUG bug in netdev_run_todo (has report)
+The bug was not found.
+About 16494 commits remaining
 
-2025-03-12 17:02:33
+2026-01-22 21:01:26
+Session:   7
+Kernel:    2022-08-04 - 723c188d5cd42a07344f997b0b7e1d83b4173c8d
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       1  WARNING: ODEBUG bug in mgmt_index_removed (has report)
+***    2  WARNING in ip6erspan_tunnel_xmit (has report)
+Running syz-repro.
+Run Time:        0h3m0s
+The bug was found.
+About 8304 commits remaining
+
+2026-01-22 21:22:11
 Session:   8
 Kernel:    2022-08-03 - 526942b8134cc34d25d27f95dfff98b8ce2f6fcd
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Compiler:  ccache gcc
 Attempt 1:
     No crashes found.
 The bug was not found.
 About 5187 commits remaining
 
-2025-03-12 17:32:41
+2026-01-22 21:48:53
 Session:   9
 Kernel:    2022-08-03 - 12b68040a5e468068fd7f4af1150eab8f6e96235
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Compiler:  ccache gcc
 Attempt 1:
     Time  Bug Name
-       2  WARNING: ODEBUG bug in mgmt_index_removed
-***    3  WARNING in ip6erspan_tunnel_xmit
-***    3  WARNING in ip6erspan_tunnel_xmit
-Running syz-repro.
-Run Time:        0h4m0s
+       1  WARNING: ODEBUG bug in mgmt_index_removed (has report)
+***    3  WARNING in ip6erspan_tunnel_xmit (has report)
 The bug was found.
 About 2564 commits remaining
 
-2025-03-12 17:58:02
+2026-01-22 22:07:36
 Session:   10
 Kernel:    2022-07-21 - b945804d993072e24138741ab67e28f6b09b2502
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Compiler:  ccache gcc
 Attempt 1:
     Time  Bug Name
        2  INFO: trying to register non-static key in ieee80211_do_stop
-***    3  WARNING in ip6erspan_tunnel_xmit
-Running syz-repro.
-Run Time:        0h5m0s
+***    3  WARNING in ip6erspan_tunnel_xmit (2) (has report)
 The bug was found.
 About 1282 commits remaining
 
-2025-03-12 18:24:06
+2026-01-22 22:26:14
 Session:   11
 Kernel:    2022-07-01 - 7fa2d1707d4102a5b3dcd3f49b235015f4d66955
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Compiler:  ccache gcc
 Attempt 1:
-    Time  Bug Name
-***    3  WARNING in ip6erspan_tunnel_xmit
-Running syz-repro.
-New PoC saved at /home/syzretrospector/syzinspector/wd-bisector-4/reproducers/repro-bug0880-2.prog
-Primary PoC:     /home/syzretrospector/syzinspector/wd-bisector-4/reproducers/repro-bug0880-0.prog
-Run Time:        0h50m0s
-The bug was found.
-About 641 commits remaining
+    No crashes found.
+The bug was not found.
+About 1627 commits remaining
 
-2025-03-12 19:35:00
+2026-01-22 22:52:54
 Session:   12
-Kernel:    2022-06-20 - dd326565c59e8f675a1e7e795dee9eae1f8956bc
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Kernel:    2022-07-12 - 3ad14f54bd7448384458e69f0183843f683ecce8
+Compiler:  ccache gcc
 Attempt 1:
-    Time  Bug Name
-***    3  WARNING in ip6erspan_tunnel_xmit
-***    3  WARNING in ip6erspan_tunnel_xmit
-***    3  WARNING in ip6erspan_tunnel_xmit
-The bug was found.
-About 321 commits remaining
+    No crashes found.
+The bug was not found.
+About 1008 commits remaining
 
-2025-03-12 19:56:09
+2026-01-22 23:19:53
 Session:   13
-Kernel:    2022-06-15 - fbb89d02e33a8c8f522d75882f5f19c65b722b46
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Kernel:    2022-07-13 - d4893978f9f171f417c346cbeb33121f997c51d7
+Compiler:  ccache gcc
 Attempt 1:
     Time  Bug Name
-***    3  WARNING in ip6erspan_tunnel_xmit
-***    3  WARNING in ip6erspan_tunnel_xmit
-***    3  WARNING in ip6erspan_tunnel_xmit
+***    3  WARNING in ip6erspan_tunnel_xmit (has report)
+Running syz-repro.
+New PoC saved at /home/jtbursey/meerkat/wd-meerkat-1/reproducers/repro-bug0880-1.prog
+Primary PoC:     /home/jtbursey/meerkat/wd-meerkat-1/reproducers/repro-bug0880-1.prog
+Run Time:        0h15m0s
 The bug was found.
 About 161 commits remaining
 
-2025-03-12 20:16:53
+2026-01-22 23:48:51
 Session:   14
-Kernel:    2022-06-10 - b97dcb85750b7e8bc5aaed5403ddf4b0552c7993
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Kernel:    2022-06-21 - 29363fb666bc8deee5acf27a3966f14ff63189d6
+Compiler:  ccache gcc
 Attempt 1:
     Time  Bug Name
-***    3  WARNING in ip6erspan_tunnel_xmit
-***    3  WARNING in ip6erspan_tunnel_xmit
-***    3  WARNING in ip6erspan_tunnel_xmit
-Running syz-repro.
-New PoC saved at /home/syzretrospector/syzinspector/wd-bisector-4/reproducers/repro-bug0880-2.prog
-Primary PoC:     /home/syzretrospector/syzinspector/wd-bisector-4/reproducers/repro-bug0880-2.prog
-Run Time:        0h29m0s
+***    3  WARNING in ip6erspan_tunnel_xmit (4) (has report)
 The bug was found.
-About 94 commits remaining
+About 81 commits remaining
 
-2025-03-12 21:01:20
+2026-01-23 00:07:25
 Session:   15
-Kernel:    2022-06-09 - 3000024ccc8e080a4c1fd10bba3fd596f8117a7a
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Kernel:    2022-06-20 - 6b41f832a26e41d82b751afc4bfc3ce8034d68d0
+Compiler:  ccache gcc
 Attempt 1:
     Time  Bug Name
-***    3  WARNING in ip6erspan_tunnel_xmit
-***    3  WARNING in ip6erspan_tunnel_xmit
-***    3  WARNING in ip6erspan_tunnel_xmit
-***    3  WARNING in ip6erspan_tunnel_xmit
+***    3  WARNING in ip6erspan_tunnel_xmit (5) (has report)
 The bug was found.
-About 46 commits remaining
+About 41 commits remaining
 
-2025-03-12 21:12:01
+2026-01-23 00:17:24
 Session:   16
-Kernel:    2022-06-09 - e4c437cd9214e61a4fc4bb40e83f2ea12dbeff0e
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Kernel:    2022-06-06 - 4c1fc4f60a534728a34ed224281d17a33f2bf2bd
+Compiler:  ccache gcc
 Attempt 1:
-    Time  Bug Name
-***    3  WARNING in ip6erspan_tunnel_xmit
-The bug was found.
-About 24 commits remaining
+    No crashes found.
+The bug was not found.
+About 14083 commits remaining
 
-2025-03-12 21:32:24
+2026-01-23 00:43:28
 Session:   17
-Kernel:    2022-06-08 - a84a434baf9427a1c49782fb1f0973d1308016df
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Kernel:    2022-06-20 - 8e14130d3faf7b6b0fc57b530bb601cd9d6a1dab
+Compiler:  ccache gcc
 Attempt 1:
     Time  Bug Name
-***    4  WARNING in ip6erspan_tunnel_xmit
-***    4  WARNING in ip6erspan_tunnel_xmit
-***    4  WARNING in ip6erspan_tunnel_xmit
+***    3  WARNING in ip6erspan_tunnel_xmit (3) (has report)
 Running syz-repro.
-syz-repro was terminated after 60 minutes
-Run Time:        1h0m0s
+New PoC saved at /home/jtbursey/meerkat/wd-meerkat-1/reproducers/repro-bug0880-0.prog
+Primary PoC:     /home/jtbursey/meerkat/wd-meerkat-1/reproducers/repro-bug0880-0.prog
+Run Time:        0h15m0s
 The bug was found.
-About 11 commits remaining
+About 14073 commits remaining
 
-2025-03-12 22:42:30
+2026-01-23 01:17:04
 Session:   18
-Kernel:    2022-06-07 - b160f7270e6df0f4ccadcf6750696b380eb3b811
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Kernel:    2022-06-20 - 7b0a0e3c3a88260b6fcb017e49f198463aa62ed1
+Compiler:  ccache gcc
 Attempt 1:
     Time  Bug Name
-***    3  WARNING in ip6erspan_tunnel_xmit
-Running syz-repro.
-New PoC saved at /home/syzretrospector/syzinspector/wd-bisector-4/reproducers/repro-bug0880-3.prog
-Primary PoC:     /home/syzretrospector/syzinspector/wd-bisector-4/reproducers/repro-bug0880-3.prog
-Run Time:        0h51m0s
+***    3  WARNING in ip6erspan_tunnel_xmit (2) (has report)
+       3  WARNING: ODEBUG bug in netdev_run_todo (has report)
 The bug was found.
-About 6 commits remaining
+About 14068 commits remaining
 
-2025-03-12 23:46:04
+2026-01-23 01:27:01
 Session:   19
-Kernel:    2022-06-07 - 12de1ebd2ae3999b5454b5d6efd0c7365ce61c41
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Kernel:    2022-06-08 - cc2609eda6981d65b3b1c81e2807910d718b2b98
+Compiler:  ccache gcc
 Attempt 1:
-    Time  Bug Name
-***    3  WARNING in ip6erspan_tunnel_xmit
-***    3  WARNING in ip6erspan_tunnel_xmit
-The bug was found.
-About 3 commits remaining
+    No crashes found.
+The bug was not found.
+About 14066 commits remaining
 
-2025-03-13 00:00:32
+2026-01-23 01:53:08
 Session:   20
-Kernel:    2022-06-07 - 6fa4a6d20c168fa83810f03b1c43e0cec69bbdbc
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+Kernel:    2022-06-20 - 92ea8df110b8ca92f9664ec7bd76dea109115348
+Compiler:  ccache gcc
 Attempt 1:
     Time  Bug Name
-***    3  WARNING in ip6erspan_tunnel_xmit
-***    3  WARNING in ip6erspan_tunnel_xmit
+***    3  WARNING in ip6erspan_tunnel_xmit (2) (has report)
 The bug was found.
-About 2 commits remaining
+About 14065 commits remaining
+
+2026-01-23 02:11:44
+Session:   21
+Kernel:    2022-06-15 - 8092a0eed4080a33a4c8681f4231c40c0bb7cb5c
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    3  WARNING in ip6erspan_tunnel_xmit (5) (has report)
+Running syz-repro.
+New PoC saved at /home/jtbursey/meerkat/wd-meerkat-1/reproducers/repro-bug0880-2.prog
+Primary PoC:     /home/jtbursey/meerkat/wd-meerkat-1/reproducers/repro-bug0880-2.prog
+Run Time:        0h11m0s
+The bug was found.
+About 14064 commits remaining
 
 ==== Partial Result: Focused Fuzzing ====
-Reproducer:           /home/syzretrospector/syzinspector/wd-bisector-4/reproducers/repro-bug0880-3.prog
-Bisection Result:     2022-06-07 - 6fa4a6d20c168fa83810f03b1c43e0cec69bbdbc
-Bisected Commit Name: WAN: Fix syntax errors in comments
-Stage Time:           11h40m26s
-Run Time:             11h40m29s
+Reproducer:           /home/jtbursey/meerkat/wd-meerkat-1/reproducers/repro-bug0880-2.prog
+Bisection Result:     2022-06-15 - 8092a0eed4080a33a4c8681f4231c40c0bb7cb5c
+Bisected Commit Name: Merge ath-next from git://git.kernel.org/pub/scm/linux/kernel/git/kvalo/ath.git
+Stage Time:           8h7m37s
+Run Time:             8h7m40s
 =========================================
 
 ==== Anchor Commit ====
 
-2025-03-13 00:09:40
-Session:   21
-Kernel:    2022-06-02 - 58f9d52ff689a262bec7f5713c07f5a79e115168
-Compiler:  ccache /home/syzretrospector/compilers/gcc-10.2.1-20210110/bin/gcc
+2026-01-23 02:32:17
+Session:   22
+Kernel:    2022-06-08 - cc2609eda6981d65b3b1c81e2807910d718b2b98
+Compiler:  ccache gcc
+PoC:       /home/jtbursey/meerkat/wd-meerkat-1/reproducers/repro-bug0880-2.prog
 Attempt 0:
     No crashes found.
 Attempt 1:
@@ -333,12 +319,88 @@ The bug was not found.
 
 Failure: This bug cannot be found at the anchor commit.
 
+==== Partial Result: Primary PoC Test ====
+Reproducer:           /home/jtbursey/meerkat/wd-meerkat-1/reproducers/repro-bug0880-2.prog
+Bisection Result:     Failed to reproduce at the anchor commit.
+Stage Time:           0h22m34s
+Run Time:             8h30m14s
+==========================================
+
+==== Anchor Commit ====
+
+2026-01-23 02:54:53
+Session:   23
+Kernel:    2022-06-08 - cc2609eda6981d65b3b1c81e2807910d718b2b98
+Compiler:  ccache gcc
+PoC:       /home/jtbursey/meerkat/wd-meerkat-1/reproducers/repro-bug0880-3.prog
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+
+Failure: This bug cannot be found at the anchor commit.
+
+==== Partial Result: Subsequent PoC Test ====
+Reproducer:           /home/jtbursey/meerkat/wd-meerkat-1/reproducers/repro-bug0880-3.prog
+Bisection Result:     Failed to reproduce at the anchor commit.
+Stage Time:           0h13m10s
+Run Time:             8h43m24s
+=============================================
+
+==== Anchor Commit ====
+
+2026-01-23 03:08:04
+Session:   24
+Kernel:    2022-06-08 - cc2609eda6981d65b3b1c81e2807910d718b2b98
+Compiler:  ccache gcc
+PoC:       /home/jtbursey/meerkat/wd-meerkat-1/reproducers/repro-bug0880-1.prog
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    WARNING: ODEBUG bug in netdev_run_todo (has report)
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+
+Failure: This bug cannot be found at the anchor commit.
+
+==== Partial Result: Subsequent PoC Test ====
+Reproducer:           /home/jtbursey/meerkat/wd-meerkat-1/reproducers/repro-bug0880-1.prog
+Bisection Result:     Failed to reproduce at the anchor commit.
+Stage Time:           0h13m7s
+Run Time:             8h56m32s
+=============================================
+
 ====================================================================================================================================================
 Bug Name:             WARNING in ip6erspan_tunnel_xmit
+Bug ID:               bug0880
 Bug Link:             https://syzkaller.appspot.com/bug?id=c203af981f0f7cc27debda75f35d852546cc6013
-Bisection Result:     2022-06-07 - 6fa4a6d20c168fa83810f03b1c43e0cec69bbdbc
-Bisected Commit Name: WAN: Fix syntax errors in comments
-Run Time:             11h49m15s
+Bisection Result:     2022-06-15 - 8092a0eed4080a33a4c8681f4231c40c0bb7cb5c
+Bisected Commit Name: Merge ath-next from git://git.kernel.org/pub/scm/linux/kernel/git/kvalo/ath.git
+Run Time:             8h56m32s
 
 Anchor Commit:        2023-03-19 - e8d018dd0257f744ca50a729e3d042cf2ec9da65
-Bisection Result:     2022-06-07 - 6fa4a6d20c168fa83810f03b1c43e0cec69bbdbc
+Bisection Result:     2022-06-15 - 8092a0eed4080a33a4c8681f4231c40c0bb7cb5c
