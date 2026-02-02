@@ -1,4 +1,4 @@
-TrussLab starts bisection 2025-03-20 16:52:40.811519367 -0700 PDT m=+4.497514867
+server starts bisection 2025-03-20 16:52:40.811519367 -0700 PDT m=+4.497514867
 bisecting cause commit starting from dcb85f85fa6f142aae1fe86f399d4503d49f2b60
 building syzkaller on HEAD
 ensuring issue is reproducible on original commit dcb85f85fa6f142aae1fe86f399d4503d49f2b60
@@ -239,177 +239,177 @@ BUG: MAX_LOCK_DEPTH too low!
 turning off the locking correctness validator.
 depth: 48  max: 48!
 48 locks held by syz-executor.0/7547:
- #0: ffff88811475e810 (&sb->s_type->i_mutex_key#13){+.+.}-{3:3}, at: inode_lock mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/./include/linux/fs.h:777 [inline]
- #0: ffff88811475e810 (&sb->s_type->i_mutex_key#13){+.+.}-{3:3}, at: __sock_release+0x86/0x280 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/socket.c:649
- #1: ffff888019649f78 (&smc->clcsock_release_lock){+.+.}-{3:3}, at: smc_clcsock_release+0x71/0xe0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/smc_close.c:30
- #2: ffff88801d3a3130 (k-sk_lock-AF_INET){+.+.}-{0:0}, at: lock_sock mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/./include/net/sock.h:1668 [inline]
- #2: ffff88801d3a3130 (k-sk_lock-AF_INET){+.+.}-{0:0}, at: tcp_close+0x1e/0xc0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/ipv4/tcp.c:2918
- #3: ffffffff8bb827e0 (rcu_read_lock){....}-{1:2}, at: smc_fback_forward_wakeup+0x0/0x540 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:2890
- #4: ffffffff8bb827e0 (rcu_read_lock){....}-{1:2}, at: smc_fback_forward_wakeup+0x0/0x540 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:2890
- #5: ffffffff8bb827e0 (rcu_read_lock){....}-{1:2}, at: smc_fback_forward_wakeup+0x0/0x540 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:2890
- #6: ffffffff8bb827e0 (rcu_read_lock){....}-{1:2}, at: smc_fback_forward_wakeup+0x0/0x540 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:2890
- #7: ffffffff8bb827e0 (rcu_read_lock){....}-{1:2}, at: smc_fback_forward_wakeup+0x0/0x540 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:2890
- #8: ffffffff8bb827e0 (rcu_read_lock){....}-{1:2}, at: smc_fback_forward_wakeup+0x0/0x540 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:2890
- #9: ffffffff8bb827e0 (rcu_read_lock){....}-{1:2}, at: smc_fback_forward_wakeup+0x0/0x540 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:2890
- #10: ffffffff8bb827e0 (rcu_read_lock){....}-{1:2}, at: smc_fback_forward_wakeup+0x0/0x540 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:2890
- #11: ffffffff8bb827e0 (rcu_read_lock){....}-{1:2}, at: smc_fback_forward_wakeup+0x0/0x540 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:2890
- #12: ffffffff8bb827e0 (rcu_read_lock){....}-{1:2}, at: smc_fback_forward_wakeup+0x0/0x540 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:2890
- #13: ffffffff8bb827e0 (rcu_read_lock){....}-{1:2}, at: smc_fback_forward_wakeup+0x0/0x540 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:2890
- #14: ffffffff8bb827e0 (rcu_read_lock){....}-{1:2}, at: smc_fback_forward_wakeup+0x0/0x540 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:2890
- #15: ffffffff8bb827e0 (rcu_read_lock){....}-{1:2}, at: smc_fback_forward_wakeup+0x0/0x540 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:2890
- #16: ffffffff8bb827e0 (rcu_read_lock){....}-{1:2}, at: smc_fback_forward_wakeup+0x0/0x540 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:2890
- #17: ffffffff8bb827e0 (rcu_read_lock){....}-{1:2}, at: smc_fback_forward_wakeup+0x0/0x540 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:2890
- #18: ffffffff8bb827e0 (rcu_read_lock){....}-{1:2}, at: smc_fback_forward_wakeup+0x0/0x540 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:2890
- #19: ffffffff8bb827e0 (rcu_read_lock){....}-{1:2}, at: smc_fback_forward_wakeup+0x0/0x540 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:2890
- #20: ffffffff8bb827e0 (rcu_read_lock){....}-{1:2}, at: smc_fback_forward_wakeup+0x0/0x540 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:2890
- #21: ffffffff8bb827e0 (rcu_read_lock){....}-{1:2}, at: smc_fback_forward_wakeup+0x0/0x540 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:2890
- #22: ffffffff8bb827e0 (rcu_read_lock){....}-{1:2}, at: smc_fback_forward_wakeup+0x0/0x540 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:2890
- #23: ffffffff8bb827e0 (rcu_read_lock){....}-{1:2}, at: smc_fback_forward_wakeup+0x0/0x540 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:2890
- #24: ffffffff8bb827e0 (rcu_read_lock){....}-{1:2}, at: smc_fback_forward_wakeup+0x0/0x540 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:2890
- #25: ffffffff8bb827e0 (rcu_read_lock){....}-{1:2}, at: smc_fback_forward_wakeup+0x0/0x540 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:2890
- #26: ffffffff8bb827e0 (rcu_read_lock){....}-{1:2}, at: smc_fback_forward_wakeup+0x0/0x540 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:2890
- #27: ffffffff8bb827e0 (rcu_read_lock){....}-{1:2}, at: smc_fback_forward_wakeup+0x0/0x540 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:2890
- #28: ffffffff8bb827e0 (rcu_read_lock){....}-{1:2}, at: smc_fback_forward_wakeup+0x0/0x540 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:2890
- #29: ffffffff8bb827e0 (rcu_read_lock){....}-{1:2}, at: smc_fback_forward_wakeup+0x0/0x540 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:2890
- #30: ffffffff8bb827e0 (rcu_read_lock){....}-{1:2}, at: smc_fback_forward_wakeup+0x0/0x540 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:2890
- #31: ffffffff8bb827e0 (rcu_read_lock){....}-{1:2}, at: smc_fback_forward_wakeup+0x0/0x540 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:2890
- #32: ffffffff8bb827e0 (rcu_read_lock){....}-{1:2}, at: smc_fback_forward_wakeup+0x0/0x540 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:2890
- #33: ffffffff8bb827e0 (rcu_read_lock){....}-{1:2}, at: smc_fback_forward_wakeup+0x0/0x540 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:2890
- #34: ffffffff8bb827e0 (rcu_read_lock){....}-{1:2}, at: smc_fback_forward_wakeup+0x0/0x540 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:2890
- #35: ffffffff8bb827e0 (rcu_read_lock){....}-{1:2}, at: smc_fback_forward_wakeup+0x0/0x540 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:2890
- #36: ffffffff8bb827e0 (rcu_read_lock){....}-{1:2}, at: smc_fback_forward_wakeup+0x0/0x540 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:2890
- #37: ffffffff8bb827e0 (rcu_read_lock){....}-{1:2}, at: smc_fback_forward_wakeup+0x0/0x540 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:2890
- #38: ffffffff8bb827e0 (rcu_read_lock){....}-{1:2}, at: smc_fback_forward_wakeup+0x0/0x540 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:2890
- #39: ffffffff8bb827e0 (rcu_read_lock){....}-{1:2}, at: smc_fback_forward_wakeup+0x0/0x540 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:2890
- #40: ffffffff8bb827e0 (rcu_read_lock){....}-{1:2}, at: smc_fback_forward_wakeup+0x0/0x540 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:2890
- #41: ffffffff8bb827e0 (rcu_read_lock){....}-{1:2}, at: smc_fback_forward_wakeup+0x0/0x540 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:2890
- #42: ffffffff8bb827e0 (rcu_read_lock){....}-{1:2}, at: smc_fback_forward_wakeup+0x0/0x540 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:2890
- #43: ffffffff8bb827e0 (rcu_read_lock){....}-{1:2}, at: smc_fback_forward_wakeup+0x0/0x540 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:2890
- #44: ffffffff8bb827e0 (rcu_read_lock){....}-{1:2}, at: smc_fback_forward_wakeup+0x0/0x540 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:2890
- #45: ffffffff8bb827e0 (rcu_read_lock){....}-{1:2}, at: smc_fback_forward_wakeup+0x0/0x540 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:2890
- #46: ffffffff8bb827e0 (rcu_read_lock){....}-{1:2}, at: smc_fback_forward_wakeup+0x0/0x540 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:2890
- #47: ffff88811475f258 (&ei->socket.wq.wait){..-.}-{2:2}, at: add_wait_queue+0x42/0x260 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/kernel/sched/wait.c:23
+ #0: ffff88811475e810 (&sb->s_type->i_mutex_key#13){+.+.}-{3:3}, at: inode_lock mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/./include/linux/fs.h:777 [inline]
+ #0: ffff88811475e810 (&sb->s_type->i_mutex_key#13){+.+.}-{3:3}, at: __sock_release+0x86/0x280 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/socket.c:649
+ #1: ffff888019649f78 (&smc->clcsock_release_lock){+.+.}-{3:3}, at: smc_clcsock_release+0x71/0xe0 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/smc/smc_close.c:30
+ #2: ffff88801d3a3130 (k-sk_lock-AF_INET){+.+.}-{0:0}, at: lock_sock mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/./include/net/sock.h:1668 [inline]
+ #2: ffff88801d3a3130 (k-sk_lock-AF_INET){+.+.}-{0:0}, at: tcp_close+0x1e/0xc0 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/ipv4/tcp.c:2918
+ #3: ffffffff8bb827e0 (rcu_read_lock){....}-{1:2}, at: smc_fback_forward_wakeup+0x0/0x540 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:2890
+ #4: ffffffff8bb827e0 (rcu_read_lock){....}-{1:2}, at: smc_fback_forward_wakeup+0x0/0x540 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:2890
+ #5: ffffffff8bb827e0 (rcu_read_lock){....}-{1:2}, at: smc_fback_forward_wakeup+0x0/0x540 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:2890
+ #6: ffffffff8bb827e0 (rcu_read_lock){....}-{1:2}, at: smc_fback_forward_wakeup+0x0/0x540 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:2890
+ #7: ffffffff8bb827e0 (rcu_read_lock){....}-{1:2}, at: smc_fback_forward_wakeup+0x0/0x540 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:2890
+ #8: ffffffff8bb827e0 (rcu_read_lock){....}-{1:2}, at: smc_fback_forward_wakeup+0x0/0x540 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:2890
+ #9: ffffffff8bb827e0 (rcu_read_lock){....}-{1:2}, at: smc_fback_forward_wakeup+0x0/0x540 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:2890
+ #10: ffffffff8bb827e0 (rcu_read_lock){....}-{1:2}, at: smc_fback_forward_wakeup+0x0/0x540 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:2890
+ #11: ffffffff8bb827e0 (rcu_read_lock){....}-{1:2}, at: smc_fback_forward_wakeup+0x0/0x540 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:2890
+ #12: ffffffff8bb827e0 (rcu_read_lock){....}-{1:2}, at: smc_fback_forward_wakeup+0x0/0x540 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:2890
+ #13: ffffffff8bb827e0 (rcu_read_lock){....}-{1:2}, at: smc_fback_forward_wakeup+0x0/0x540 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:2890
+ #14: ffffffff8bb827e0 (rcu_read_lock){....}-{1:2}, at: smc_fback_forward_wakeup+0x0/0x540 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:2890
+ #15: ffffffff8bb827e0 (rcu_read_lock){....}-{1:2}, at: smc_fback_forward_wakeup+0x0/0x540 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:2890
+ #16: ffffffff8bb827e0 (rcu_read_lock){....}-{1:2}, at: smc_fback_forward_wakeup+0x0/0x540 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:2890
+ #17: ffffffff8bb827e0 (rcu_read_lock){....}-{1:2}, at: smc_fback_forward_wakeup+0x0/0x540 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:2890
+ #18: ffffffff8bb827e0 (rcu_read_lock){....}-{1:2}, at: smc_fback_forward_wakeup+0x0/0x540 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:2890
+ #19: ffffffff8bb827e0 (rcu_read_lock){....}-{1:2}, at: smc_fback_forward_wakeup+0x0/0x540 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:2890
+ #20: ffffffff8bb827e0 (rcu_read_lock){....}-{1:2}, at: smc_fback_forward_wakeup+0x0/0x540 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:2890
+ #21: ffffffff8bb827e0 (rcu_read_lock){....}-{1:2}, at: smc_fback_forward_wakeup+0x0/0x540 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:2890
+ #22: ffffffff8bb827e0 (rcu_read_lock){....}-{1:2}, at: smc_fback_forward_wakeup+0x0/0x540 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:2890
+ #23: ffffffff8bb827e0 (rcu_read_lock){....}-{1:2}, at: smc_fback_forward_wakeup+0x0/0x540 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:2890
+ #24: ffffffff8bb827e0 (rcu_read_lock){....}-{1:2}, at: smc_fback_forward_wakeup+0x0/0x540 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:2890
+ #25: ffffffff8bb827e0 (rcu_read_lock){....}-{1:2}, at: smc_fback_forward_wakeup+0x0/0x540 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:2890
+ #26: ffffffff8bb827e0 (rcu_read_lock){....}-{1:2}, at: smc_fback_forward_wakeup+0x0/0x540 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:2890
+ #27: ffffffff8bb827e0 (rcu_read_lock){....}-{1:2}, at: smc_fback_forward_wakeup+0x0/0x540 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:2890
+ #28: ffffffff8bb827e0 (rcu_read_lock){....}-{1:2}, at: smc_fback_forward_wakeup+0x0/0x540 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:2890
+ #29: ffffffff8bb827e0 (rcu_read_lock){....}-{1:2}, at: smc_fback_forward_wakeup+0x0/0x540 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:2890
+ #30: ffffffff8bb827e0 (rcu_read_lock){....}-{1:2}, at: smc_fback_forward_wakeup+0x0/0x540 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:2890
+ #31: ffffffff8bb827e0 (rcu_read_lock){....}-{1:2}, at: smc_fback_forward_wakeup+0x0/0x540 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:2890
+ #32: ffffffff8bb827e0 (rcu_read_lock){....}-{1:2}, at: smc_fback_forward_wakeup+0x0/0x540 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:2890
+ #33: ffffffff8bb827e0 (rcu_read_lock){....}-{1:2}, at: smc_fback_forward_wakeup+0x0/0x540 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:2890
+ #34: ffffffff8bb827e0 (rcu_read_lock){....}-{1:2}, at: smc_fback_forward_wakeup+0x0/0x540 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:2890
+ #35: ffffffff8bb827e0 (rcu_read_lock){....}-{1:2}, at: smc_fback_forward_wakeup+0x0/0x540 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:2890
+ #36: ffffffff8bb827e0 (rcu_read_lock){....}-{1:2}, at: smc_fback_forward_wakeup+0x0/0x540 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:2890
+ #37: ffffffff8bb827e0 (rcu_read_lock){....}-{1:2}, at: smc_fback_forward_wakeup+0x0/0x540 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:2890
+ #38: ffffffff8bb827e0 (rcu_read_lock){....}-{1:2}, at: smc_fback_forward_wakeup+0x0/0x540 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:2890
+ #39: ffffffff8bb827e0 (rcu_read_lock){....}-{1:2}, at: smc_fback_forward_wakeup+0x0/0x540 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:2890
+ #40: ffffffff8bb827e0 (rcu_read_lock){....}-{1:2}, at: smc_fback_forward_wakeup+0x0/0x540 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:2890
+ #41: ffffffff8bb827e0 (rcu_read_lock){....}-{1:2}, at: smc_fback_forward_wakeup+0x0/0x540 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:2890
+ #42: ffffffff8bb827e0 (rcu_read_lock){....}-{1:2}, at: smc_fback_forward_wakeup+0x0/0x540 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:2890
+ #43: ffffffff8bb827e0 (rcu_read_lock){....}-{1:2}, at: smc_fback_forward_wakeup+0x0/0x540 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:2890
+ #44: ffffffff8bb827e0 (rcu_read_lock){....}-{1:2}, at: smc_fback_forward_wakeup+0x0/0x540 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:2890
+ #45: ffffffff8bb827e0 (rcu_read_lock){....}-{1:2}, at: smc_fback_forward_wakeup+0x0/0x540 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:2890
+ #46: ffffffff8bb827e0 (rcu_read_lock){....}-{1:2}, at: smc_fback_forward_wakeup+0x0/0x540 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:2890
+ #47: ffff88811475f258 (&ei->socket.wq.wait){..-.}-{2:2}, at: add_wait_queue+0x42/0x260 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/kernel/sched/wait.c:23
 INFO: lockdep is turned off.
 CPU: 0 PID: 7547 Comm: syz-executor.0 Not tainted 5.17.0-rc1-syzkaller #0
 Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.13.0-1ubuntu1.1 04/01/2014
 Call Trace:
  <TASK>
- __dump_stack mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/lib/dump_stack.c:88 [inline]
- dump_stack_lvl+0xcd/0x134 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/lib/dump_stack.c:106
- __lock_acquire+0x187b/0x5410 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/kernel/locking/lockdep.c:5045
- lock_acquire mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/kernel/locking/lockdep.c:5639 [inline]
- lock_acquire+0x1ab/0x510 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/kernel/locking/lockdep.c:5604
- __raw_spin_lock_irqsave mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/./include/linux/spinlock_api_smp.h:110 [inline]
- _raw_spin_lock_irqsave+0x39/0x50 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/kernel/locking/spinlock.c:162
- add_wait_queue+0x42/0x260 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/kernel/sched/wait.c:23
- smc_fback_forward_wakeup+0x15b/0x540 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:617
- smc_fback_error_report+0x82/0xa0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:664
- smc_fback_forward_wakeup+0x161/0x540 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:618
- smc_fback_error_report+0x82/0xa0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:664
- smc_fback_forward_wakeup+0x161/0x540 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:618
- smc_fback_error_report+0x82/0xa0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:664
- smc_fback_forward_wakeup+0x161/0x540 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:618
- smc_fback_error_report+0x82/0xa0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:664
- smc_fback_forward_wakeup+0x161/0x540 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:618
- smc_fback_error_report+0x82/0xa0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:664
- smc_fback_forward_wakeup+0x161/0x540 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:618
- smc_fback_error_report+0x82/0xa0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:664
- smc_fback_forward_wakeup+0x161/0x540 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:618
- smc_fback_error_report+0x82/0xa0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:664
- smc_fback_forward_wakeup+0x161/0x540 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:618
- smc_fback_error_report+0x82/0xa0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:664
- smc_fback_forward_wakeup+0x161/0x540 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:618
- smc_fback_error_report+0x82/0xa0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:664
- smc_fback_forward_wakeup+0x161/0x540 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:618
- smc_fback_error_report+0x82/0xa0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:664
- smc_fback_forward_wakeup+0x161/0x540 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:618
- smc_fback_error_report+0x82/0xa0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:664
- smc_fback_forward_wakeup+0x161/0x540 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:618
- smc_fback_error_report+0x82/0xa0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:664
- smc_fback_forward_wakeup+0x161/0x540 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:618
- smc_fback_error_report+0x82/0xa0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:664
- smc_fback_forward_wakeup+0x161/0x540 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:618
- smc_fback_error_report+0x82/0xa0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:664
- smc_fback_forward_wakeup+0x161/0x540 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:618
- smc_fback_error_report+0x82/0xa0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:664
- smc_fback_forward_wakeup+0x161/0x540 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:618
- smc_fback_error_report+0x82/0xa0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:664
- smc_fback_forward_wakeup+0x161/0x540 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:618
- smc_fback_error_report+0x82/0xa0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:664
- smc_fback_forward_wakeup+0x161/0x540 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:618
- smc_fback_error_report+0x82/0xa0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:664
- smc_fback_forward_wakeup+0x161/0x540 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:618
- smc_fback_error_report+0x82/0xa0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:664
- smc_fback_forward_wakeup+0x161/0x540 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:618
- smc_fback_error_report+0x82/0xa0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:664
- smc_fback_forward_wakeup+0x161/0x540 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:618
- smc_fback_error_report+0x82/0xa0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:664
- smc_fback_forward_wakeup+0x161/0x540 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:618
- smc_fback_error_report+0x82/0xa0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:664
- smc_fback_forward_wakeup+0x161/0x540 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:618
- smc_fback_error_report+0x82/0xa0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:664
- smc_fback_forward_wakeup+0x161/0x540 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:618
- smc_fback_error_report+0x82/0xa0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:664
- smc_fback_forward_wakeup+0x161/0x540 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:618
- smc_fback_error_report+0x82/0xa0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:664
- smc_fback_forward_wakeup+0x161/0x540 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:618
- smc_fback_error_report+0x82/0xa0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:664
- smc_fback_forward_wakeup+0x161/0x540 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:618
- smc_fback_error_report+0x82/0xa0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:664
- smc_fback_forward_wakeup+0x161/0x540 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:618
- smc_fback_error_report+0x82/0xa0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:664
- smc_fback_forward_wakeup+0x161/0x540 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:618
- smc_fback_error_report+0x82/0xa0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:664
- smc_fback_forward_wakeup+0x161/0x540 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:618
- smc_fback_error_report+0x82/0xa0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:664
- smc_fback_forward_wakeup+0x161/0x540 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:618
- smc_fback_error_report+0x82/0xa0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:664
- smc_fback_forward_wakeup+0x161/0x540 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:618
- smc_fback_error_report+0x82/0xa0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:664
- smc_fback_forward_wakeup+0x161/0x540 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:618
- smc_fback_error_report+0x82/0xa0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:664
- smc_fback_forward_wakeup+0x161/0x540 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:618
- smc_fback_error_report+0x82/0xa0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:664
- smc_fback_forward_wakeup+0x161/0x540 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:618
- smc_fback_error_report+0x82/0xa0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:664
- smc_fback_forward_wakeup+0x161/0x540 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:618
- smc_fback_error_report+0x82/0xa0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:664
- smc_fback_forward_wakeup+0x161/0x540 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:618
- smc_fback_error_report+0x82/0xa0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:664
- smc_fback_forward_wakeup+0x161/0x540 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:618
- smc_fback_error_report+0x82/0xa0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:664
- smc_fback_forward_wakeup+0x161/0x540 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:618
- smc_fback_error_report+0x82/0xa0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:664
- smc_fback_forward_wakeup+0x161/0x540 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:618
- smc_fback_error_report+0x82/0xa0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:664
- smc_fback_forward_wakeup+0x161/0x540 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:618
- smc_fback_error_report+0x82/0xa0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:664
- smc_fback_forward_wakeup+0x161/0x540 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:618
- smc_fback_error_report+0x82/0xa0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:664
- smc_fback_forward_wakeup+0x161/0x540 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:618
- smc_fback_error_report+0x82/0xa0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:664
- smc_fback_forward_wakeup+0x161/0x540 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:618
- smc_fback_error_report+0x82/0xa0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:664
- sk_error_report+0x35/0x310 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/core/sock.c:340
- tcp_disconnect+0x14e3/0x1e80 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/ipv4/tcp.c:3093
- __tcp_close+0xe65/0x12b0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/ipv4/tcp.c:2789
- tcp_close+0x29/0xc0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/ipv4/tcp.c:2919
- inet_release+0x12e/0x280 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/ipv4/af_inet.c:428
- __sock_release mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/socket.c:650 [inline]
- sock_release+0x87/0x1b0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/socket.c:678
- smc_clcsock_release+0xb3/0xe0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/smc_close.c:34
- __smc_release+0x35e/0x5b0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:172
- smc_release+0x17f/0x530 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:209
- __sock_release+0xcd/0x280 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/socket.c:650
- sock_close+0x18/0x20 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/socket.c:1318
- __fput+0x286/0x9f0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/fs/file_table.c:311
- task_work_run+0xdd/0x1a0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/kernel/task_work.c:164
- tracehook_notify_resume mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/./include/linux/tracehook.h:188 [inline]
- exit_to_user_mode_loop mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/kernel/entry/common.c:175 [inline]
- exit_to_user_mode_prepare+0x27e/0x290 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/kernel/entry/common.c:207
- __syscall_exit_to_user_mode_work mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/kernel/entry/common.c:289 [inline]
- syscall_exit_to_user_mode+0x19/0x60 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/kernel/entry/common.c:300
- do_syscall_64+0x42/0xb0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/arch/x86/entry/common.c:86
+ __dump_stack mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/lib/dump_stack.c:88 [inline]
+ dump_stack_lvl+0xcd/0x134 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/lib/dump_stack.c:106
+ __lock_acquire+0x187b/0x5410 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/kernel/locking/lockdep.c:5045
+ lock_acquire mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/kernel/locking/lockdep.c:5639 [inline]
+ lock_acquire+0x1ab/0x510 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/kernel/locking/lockdep.c:5604
+ __raw_spin_lock_irqsave mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/./include/linux/spinlock_api_smp.h:110 [inline]
+ _raw_spin_lock_irqsave+0x39/0x50 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/kernel/locking/spinlock.c:162
+ add_wait_queue+0x42/0x260 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/kernel/sched/wait.c:23
+ smc_fback_forward_wakeup+0x15b/0x540 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:617
+ smc_fback_error_report+0x82/0xa0 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:664
+ smc_fback_forward_wakeup+0x161/0x540 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:618
+ smc_fback_error_report+0x82/0xa0 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:664
+ smc_fback_forward_wakeup+0x161/0x540 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:618
+ smc_fback_error_report+0x82/0xa0 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:664
+ smc_fback_forward_wakeup+0x161/0x540 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:618
+ smc_fback_error_report+0x82/0xa0 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:664
+ smc_fback_forward_wakeup+0x161/0x540 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:618
+ smc_fback_error_report+0x82/0xa0 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:664
+ smc_fback_forward_wakeup+0x161/0x540 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:618
+ smc_fback_error_report+0x82/0xa0 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:664
+ smc_fback_forward_wakeup+0x161/0x540 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:618
+ smc_fback_error_report+0x82/0xa0 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:664
+ smc_fback_forward_wakeup+0x161/0x540 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:618
+ smc_fback_error_report+0x82/0xa0 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:664
+ smc_fback_forward_wakeup+0x161/0x540 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:618
+ smc_fback_error_report+0x82/0xa0 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:664
+ smc_fback_forward_wakeup+0x161/0x540 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:618
+ smc_fback_error_report+0x82/0xa0 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:664
+ smc_fback_forward_wakeup+0x161/0x540 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:618
+ smc_fback_error_report+0x82/0xa0 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:664
+ smc_fback_forward_wakeup+0x161/0x540 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:618
+ smc_fback_error_report+0x82/0xa0 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:664
+ smc_fback_forward_wakeup+0x161/0x540 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:618
+ smc_fback_error_report+0x82/0xa0 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:664
+ smc_fback_forward_wakeup+0x161/0x540 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:618
+ smc_fback_error_report+0x82/0xa0 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:664
+ smc_fback_forward_wakeup+0x161/0x540 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:618
+ smc_fback_error_report+0x82/0xa0 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:664
+ smc_fback_forward_wakeup+0x161/0x540 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:618
+ smc_fback_error_report+0x82/0xa0 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:664
+ smc_fback_forward_wakeup+0x161/0x540 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:618
+ smc_fback_error_report+0x82/0xa0 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:664
+ smc_fback_forward_wakeup+0x161/0x540 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:618
+ smc_fback_error_report+0x82/0xa0 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:664
+ smc_fback_forward_wakeup+0x161/0x540 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:618
+ smc_fback_error_report+0x82/0xa0 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:664
+ smc_fback_forward_wakeup+0x161/0x540 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:618
+ smc_fback_error_report+0x82/0xa0 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:664
+ smc_fback_forward_wakeup+0x161/0x540 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:618
+ smc_fback_error_report+0x82/0xa0 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:664
+ smc_fback_forward_wakeup+0x161/0x540 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:618
+ smc_fback_error_report+0x82/0xa0 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:664
+ smc_fback_forward_wakeup+0x161/0x540 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:618
+ smc_fback_error_report+0x82/0xa0 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:664
+ smc_fback_forward_wakeup+0x161/0x540 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:618
+ smc_fback_error_report+0x82/0xa0 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:664
+ smc_fback_forward_wakeup+0x161/0x540 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:618
+ smc_fback_error_report+0x82/0xa0 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:664
+ smc_fback_forward_wakeup+0x161/0x540 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:618
+ smc_fback_error_report+0x82/0xa0 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:664
+ smc_fback_forward_wakeup+0x161/0x540 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:618
+ smc_fback_error_report+0x82/0xa0 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:664
+ smc_fback_forward_wakeup+0x161/0x540 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:618
+ smc_fback_error_report+0x82/0xa0 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:664
+ smc_fback_forward_wakeup+0x161/0x540 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:618
+ smc_fback_error_report+0x82/0xa0 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:664
+ smc_fback_forward_wakeup+0x161/0x540 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:618
+ smc_fback_error_report+0x82/0xa0 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:664
+ smc_fback_forward_wakeup+0x161/0x540 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:618
+ smc_fback_error_report+0x82/0xa0 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:664
+ smc_fback_forward_wakeup+0x161/0x540 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:618
+ smc_fback_error_report+0x82/0xa0 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:664
+ smc_fback_forward_wakeup+0x161/0x540 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:618
+ smc_fback_error_report+0x82/0xa0 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:664
+ smc_fback_forward_wakeup+0x161/0x540 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:618
+ smc_fback_error_report+0x82/0xa0 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:664
+ smc_fback_forward_wakeup+0x161/0x540 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:618
+ smc_fback_error_report+0x82/0xa0 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:664
+ smc_fback_forward_wakeup+0x161/0x540 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:618
+ smc_fback_error_report+0x82/0xa0 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:664
+ smc_fback_forward_wakeup+0x161/0x540 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:618
+ smc_fback_error_report+0x82/0xa0 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:664
+ smc_fback_forward_wakeup+0x161/0x540 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:618
+ smc_fback_error_report+0x82/0xa0 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:664
+ smc_fback_forward_wakeup+0x161/0x540 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:618
+ smc_fback_error_report+0x82/0xa0 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:664
+ smc_fback_forward_wakeup+0x161/0x540 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:618
+ smc_fback_error_report+0x82/0xa0 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:664
+ smc_fback_forward_wakeup+0x161/0x540 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:618
+ smc_fback_error_report+0x82/0xa0 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:664
+ smc_fback_forward_wakeup+0x161/0x540 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:618
+ smc_fback_error_report+0x82/0xa0 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:664
+ smc_fback_forward_wakeup+0x161/0x540 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:618
+ smc_fback_error_report+0x82/0xa0 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:664
+ smc_fback_forward_wakeup+0x161/0x540 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:618
+ smc_fback_error_report+0x82/0xa0 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:664
+ sk_error_report+0x35/0x310 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/core/sock.c:340
+ tcp_disconnect+0x14e3/0x1e80 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/ipv4/tcp.c:3093
+ __tcp_close+0xe65/0x12b0 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/ipv4/tcp.c:2789
+ tcp_close+0x29/0xc0 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/ipv4/tcp.c:2919
+ inet_release+0x12e/0x280 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/ipv4/af_inet.c:428
+ __sock_release mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/socket.c:650 [inline]
+ sock_release+0x87/0x1b0 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/socket.c:678
+ smc_clcsock_release+0xb3/0xe0 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/smc/smc_close.c:34
+ __smc_release+0x35e/0x5b0 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:172
+ smc_release+0x17f/0x530 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:209
+ __sock_release+0xcd/0x280 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/socket.c:650
+ sock_close+0x18/0x20 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/socket.c:1318
+ __fput+0x286/0x9f0 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/fs/file_table.c:311
+ task_work_run+0xdd/0x1a0 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/kernel/task_work.c:164
+ tracehook_notify_resume mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/./include/linux/tracehook.h:188 [inline]
+ exit_to_user_mode_loop mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/kernel/entry/common.c:175 [inline]
+ exit_to_user_mode_prepare+0x27e/0x290 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/kernel/entry/common.c:207
+ __syscall_exit_to_user_mode_work mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/kernel/entry/common.c:289 [inline]
+ syscall_exit_to_user_mode+0x19/0x60 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/kernel/entry/common.c:300
+ do_syscall_64+0x42/0xb0 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/arch/x86/entry/common.c:86
  entry_SYSCALL_64_after_hwframe+0x44/0xae
 RIP: 0033:0x7f40473968ab
 Code: 03 00 00 00 0f 05 48 3d 00 f0 ff ff 77 41 c3 48 83 ec 18 89 7c 24 0c e8 63 fc ff ff 8b 7c 24 0c 41 89 c0 b8 03 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 2f 44 89 c7 89 44 24 0c e8 a1 fc ff ff 8b 44

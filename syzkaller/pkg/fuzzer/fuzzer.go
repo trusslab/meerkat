@@ -266,7 +266,7 @@ func signalPrio(p *prog.Prog, info *flatrpc.CallInfo, call int) (prio uint8) {
 
 func (fuzzer *Fuzzer) genFuzz() *queue.Request {
 	// Either generate a new input or mutate an existing one.
-    // JTBURSEY: always choose to mutate.
+    // AUTHOR: always choose to mutate.
 	mutateRate := 2.0
 	var req *queue.Request
 	rnd := fuzzer.rand()

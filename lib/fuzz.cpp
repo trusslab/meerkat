@@ -390,7 +390,7 @@ Syzkaller_Result symbolize(Environment &env, const std::string &file)
     res.bad_crashes = 0;
     res.ttf = 0;
 
-    // JTBURSEY: If we ever want to switch back to fuzzing after poc testing (and want to preserve corpus),
+    // AUTHOR: If we ever want to switch back to fuzzing after poc testing (and want to preserve corpus),
     // we will need to use prepare_kaller_wd() instead. For now this saves cycles.
     reset_kaller_wd(env);
 

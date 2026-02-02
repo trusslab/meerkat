@@ -4,7 +4,16 @@ Welcome! This is Meerkat, a bisection tool that utilizes PoC mutation.
 
 ## Meerkat Paper
 
-The results presented in "Meerkat: Leveraging Fuzzing for Robust Bisection in a Changing Kernel," can be found in `results/`. There are more README files there as well to explain the results.
+The results presented in "Meerkat: Pushing the Limits of Dynamic Bisection with PoC Mutation," can be found in `results/`. There are more README files there as well to explain the results.
+
+## Setup
+
+Follow the setup instructions for Syzkaller: https://github.com/google/syzkaller/blob/master/docs/setup.md
+Download and untar the compilers. They should be findable on Syzkaller's git, or are provided in the anonymized tarball of this repository. To untar: `tar -xzf compilers.tar.gz`.
+Once you are confident you can build Syzkaller and Linux, run `make all`.
+An example bug has been provided, so to run Meerkat, run `./mk-manager -s 1 -i 1 -b example.csv`.
+
+A preemtive apology: SOMETHING in Meerkat likes to mess up the tty settings, preventing you from seeing what you're typing on the command line after running Meerkat. If this occurs for you, get a new console line with `ctrl+C` and then type `stty sane`. I tried doing some debugging to figure out what is causing the issue, and I just don't know. It's probably either git or qemu. Sorry.
 
 ## Syzkaller
 
@@ -18,4 +27,4 @@ In order to have an accurate fuzzing environment for Syzkaller and the Linux ker
 
 ## OS Image
 
-Syzkaller has used a few different images in the past, but we only need one of them.
+Syzkaller has used a few different images in the past, but we only need one of them. Be sure to build `image/stretch/` by running `sudo ./create_image.sh`.

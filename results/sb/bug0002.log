@@ -1,4 +1,4 @@
-TrussLab starts bisection 2025-03-20 12:31:56.828737674 -0700 PDT m=+193.060574979
+server starts bisection 2025-03-20 12:31:56.828737674 -0700 PDT m=+193.060574979
 bisecting cause commit starting from 0457e5153e0e8420134f60921349099e907264ca
 building syzkaller on HEAD
 ensuring issue is reproducible on original commit 0457e5153e0e8420134f60921349099e907264ca
@@ -272,93 +272,93 @@ recipients (to): ["davem@davemloft.net" "guwen@linux.alibaba.com" "kgraul@linux.
 recipients (cc): []
 crash: KFENCE: use-after-free in smc_fback_error_report
 ==================================================================
-BUG: KFENCE: use-after-free read in smc_fback_error_report+0x70/0xa0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:664
+BUG: KFENCE: use-after-free read in smc_fback_error_report+0x70/0xa0 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:664
 
 Use-after-free read at 0xffff888135a38528 (in kfence-#27):
- smc_fback_error_report+0x70/0xa0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:664
- sk_error_report+0x35/0x310 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/core/sock.c:340
- tcp_write_err mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/ipv4/tcp_timer.c:71 [inline]
- tcp_write_timeout mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/ipv4/tcp_timer.c:276 [inline]
- tcp_retransmit_timer+0x2146/0x33c0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/ipv4/tcp_timer.c:512
- tcp_write_timer_handler+0x5e6/0xbc0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/ipv4/tcp_timer.c:622
- tcp_write_timer+0xa2/0x2b0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/ipv4/tcp_timer.c:642
- call_timer_fn+0x1a5/0x6b0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/kernel/time/timer.c:1421
- expire_timers mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/kernel/time/timer.c:1466 [inline]
- __run_timers.part.0+0x67c/0xa30 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/kernel/time/timer.c:1734
- __run_timers mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/kernel/time/timer.c:1715 [inline]
- run_timer_softirq+0xb3/0x1d0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/kernel/time/timer.c:1747
- __do_softirq+0x29b/0x9c2 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/kernel/softirq.c:558
- invoke_softirq mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/kernel/softirq.c:432 [inline]
- __irq_exit_rcu+0x123/0x180 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/kernel/softirq.c:637
- irq_exit_rcu+0x5/0x20 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/kernel/softirq.c:649
- sysvec_apic_timer_interrupt+0x93/0xc0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/arch/x86/kernel/apic/apic.c:1097
- asm_sysvec_apic_timer_interrupt+0x12/0x20 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/./arch/x86/include/asm/idtentry.h:638
- __raw_spin_unlock_irqrestore mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/./include/linux/spinlock_api_smp.h:152 [inline]
- _raw_spin_unlock_irqrestore+0x38/0x70 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/kernel/locking/spinlock.c:194
- spin_unlock_irqrestore mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/./include/linux/spinlock.h:404 [inline]
- pcpu_alloc+0x85b/0x13a0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/mm/percpu.c:1850
- xt_percpu_counter_alloc+0x131/0x1a0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/netfilter/x_tables.c:1930
- find_check_entry.constprop.0+0xab/0x9a0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/ipv4/netfilter/ip_tables.c:528
- translate_table+0xc26/0x16a0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/ipv4/netfilter/ip_tables.c:718
- do_replace mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/ipv4/netfilter/ip_tables.c:1136 [inline]
- do_ipt_set_ctl+0x55f/0xb70 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/ipv4/netfilter/ip_tables.c:1630
- nf_setsockopt+0x83/0xe0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/netfilter/nf_sockopt.c:101
- ip_setsockopt+0x3c3/0x3a90 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/ipv4/ip_sockglue.c:1444
- tcp_setsockopt+0x136/0x2520 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/ipv4/tcp.c:3686
- __sys_setsockopt+0x2db/0x610 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/socket.c:2180
- __do_sys_setsockopt mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/socket.c:2191 [inline]
- __se_sys_setsockopt mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/socket.c:2188 [inline]
- __x64_sys_setsockopt+0xba/0x150 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/socket.c:2188
- do_syscall_x64 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/arch/x86/entry/common.c:50 [inline]
- do_syscall_64+0x35/0xb0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/arch/x86/entry/common.c:80
+ smc_fback_error_report+0x70/0xa0 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:664
+ sk_error_report+0x35/0x310 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/core/sock.c:340
+ tcp_write_err mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/ipv4/tcp_timer.c:71 [inline]
+ tcp_write_timeout mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/ipv4/tcp_timer.c:276 [inline]
+ tcp_retransmit_timer+0x2146/0x33c0 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/ipv4/tcp_timer.c:512
+ tcp_write_timer_handler+0x5e6/0xbc0 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/ipv4/tcp_timer.c:622
+ tcp_write_timer+0xa2/0x2b0 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/ipv4/tcp_timer.c:642
+ call_timer_fn+0x1a5/0x6b0 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/kernel/time/timer.c:1421
+ expire_timers mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/kernel/time/timer.c:1466 [inline]
+ __run_timers.part.0+0x67c/0xa30 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/kernel/time/timer.c:1734
+ __run_timers mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/kernel/time/timer.c:1715 [inline]
+ run_timer_softirq+0xb3/0x1d0 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/kernel/time/timer.c:1747
+ __do_softirq+0x29b/0x9c2 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/kernel/softirq.c:558
+ invoke_softirq mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/kernel/softirq.c:432 [inline]
+ __irq_exit_rcu+0x123/0x180 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/kernel/softirq.c:637
+ irq_exit_rcu+0x5/0x20 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/kernel/softirq.c:649
+ sysvec_apic_timer_interrupt+0x93/0xc0 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/arch/x86/kernel/apic/apic.c:1097
+ asm_sysvec_apic_timer_interrupt+0x12/0x20 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/./arch/x86/include/asm/idtentry.h:638
+ __raw_spin_unlock_irqrestore mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/./include/linux/spinlock_api_smp.h:152 [inline]
+ _raw_spin_unlock_irqrestore+0x38/0x70 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/kernel/locking/spinlock.c:194
+ spin_unlock_irqrestore mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/./include/linux/spinlock.h:404 [inline]
+ pcpu_alloc+0x85b/0x13a0 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/mm/percpu.c:1850
+ xt_percpu_counter_alloc+0x131/0x1a0 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/netfilter/x_tables.c:1930
+ find_check_entry.constprop.0+0xab/0x9a0 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/ipv4/netfilter/ip_tables.c:528
+ translate_table+0xc26/0x16a0 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/ipv4/netfilter/ip_tables.c:718
+ do_replace mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/ipv4/netfilter/ip_tables.c:1136 [inline]
+ do_ipt_set_ctl+0x55f/0xb70 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/ipv4/netfilter/ip_tables.c:1630
+ nf_setsockopt+0x83/0xe0 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/netfilter/nf_sockopt.c:101
+ ip_setsockopt+0x3c3/0x3a90 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/ipv4/ip_sockglue.c:1444
+ tcp_setsockopt+0x136/0x2520 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/ipv4/tcp.c:3686
+ __sys_setsockopt+0x2db/0x610 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/socket.c:2180
+ __do_sys_setsockopt mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/socket.c:2191 [inline]
+ __se_sys_setsockopt mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/socket.c:2188 [inline]
+ __x64_sys_setsockopt+0xba/0x150 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/socket.c:2188
+ do_syscall_x64 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/arch/x86/entry/common.c:50 [inline]
+ do_syscall_64+0x35/0xb0 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/arch/x86/entry/common.c:80
  entry_SYSCALL_64_after_hwframe+0x44/0xae
 
 kfence-#27: 0xffff888135a38a80-0xffff888135a38fff, size=1408, cache=sock_inode_cache
 
 allocated by task 7063 on cpu 1 at 268.719011s:
- sock_alloc_inode+0x18/0x1c0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/socket.c:304
- alloc_inode+0x61/0x230 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/fs/inode.c:260
- new_inode_pseudo+0x14/0xe0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/fs/inode.c:1018
- sock_alloc+0x3c/0x260 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/socket.c:627
- __sock_create+0xb9/0x790 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/socket.c:1432
- sock_create mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/socket.c:1519 [inline]
- __sys_socket+0xef/0x200 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/socket.c:1561
- __do_sys_socket mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/socket.c:1570 [inline]
- __se_sys_socket mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/socket.c:1568 [inline]
- __x64_sys_socket+0x6f/0xb0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/socket.c:1568
- do_syscall_x64 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/arch/x86/entry/common.c:50 [inline]
- do_syscall_64+0x35/0xb0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/arch/x86/entry/common.c:80
+ sock_alloc_inode+0x18/0x1c0 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/socket.c:304
+ alloc_inode+0x61/0x230 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/fs/inode.c:260
+ new_inode_pseudo+0x14/0xe0 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/fs/inode.c:1018
+ sock_alloc+0x3c/0x260 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/socket.c:627
+ __sock_create+0xb9/0x790 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/socket.c:1432
+ sock_create mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/socket.c:1519 [inline]
+ __sys_socket+0xef/0x200 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/socket.c:1561
+ __do_sys_socket mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/socket.c:1570 [inline]
+ __se_sys_socket mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/socket.c:1568 [inline]
+ __x64_sys_socket+0x6f/0xb0 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/socket.c:1568
+ do_syscall_x64 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/arch/x86/entry/common.c:50 [inline]
+ do_syscall_64+0x35/0xb0 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/arch/x86/entry/common.c:80
  entry_SYSCALL_64_after_hwframe+0x44/0xae
 
 freed by task 7063 on cpu 1 at 268.755614s:
- i_callback+0x3f/0x70 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/fs/inode.c:249
- rcu_do_batch mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/kernel/rcu/tree.c:2527 [inline]
- rcu_core+0x7b4/0x1530 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/kernel/rcu/tree.c:2778
- __do_softirq+0x29b/0x9c2 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/kernel/softirq.c:558
- invoke_softirq mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/kernel/softirq.c:432 [inline]
- __irq_exit_rcu+0x123/0x180 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/kernel/softirq.c:637
- irq_exit_rcu+0x5/0x20 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/kernel/softirq.c:649
- sysvec_apic_timer_interrupt+0x93/0xc0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/arch/x86/kernel/apic/apic.c:1097
- asm_sysvec_apic_timer_interrupt+0x12/0x20 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/./arch/x86/include/asm/idtentry.h:638
- __raw_spin_unlock_irqrestore mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/./include/linux/spinlock_api_smp.h:152 [inline]
- _raw_spin_unlock_irqrestore+0x38/0x70 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/kernel/locking/spinlock.c:194
- debug_object_active_state mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/lib/debugobjects.c:945 [inline]
- debug_object_active_state+0x260/0x350 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/lib/debugobjects.c:914
- debug_rcu_head_queue mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/kernel/rcu/rcu.h:177 [inline]
- __call_rcu mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/kernel/rcu/tree.c:3010 [inline]
- call_rcu+0x44/0x740 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/kernel/rcu/tree.c:3106
- task_work_run+0xdd/0x1a0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/kernel/task_work.c:164
- tracehook_notify_resume mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/./include/linux/tracehook.h:188 [inline]
- exit_to_user_mode_loop mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/kernel/entry/common.c:175 [inline]
- exit_to_user_mode_prepare+0x27e/0x290 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/kernel/entry/common.c:207
- __syscall_exit_to_user_mode_work mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/kernel/entry/common.c:289 [inline]
- syscall_exit_to_user_mode+0x19/0x60 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/kernel/entry/common.c:300
- do_syscall_64+0x42/0xb0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/arch/x86/entry/common.c:86
+ i_callback+0x3f/0x70 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/fs/inode.c:249
+ rcu_do_batch mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/kernel/rcu/tree.c:2527 [inline]
+ rcu_core+0x7b4/0x1530 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/kernel/rcu/tree.c:2778
+ __do_softirq+0x29b/0x9c2 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/kernel/softirq.c:558
+ invoke_softirq mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/kernel/softirq.c:432 [inline]
+ __irq_exit_rcu+0x123/0x180 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/kernel/softirq.c:637
+ irq_exit_rcu+0x5/0x20 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/kernel/softirq.c:649
+ sysvec_apic_timer_interrupt+0x93/0xc0 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/arch/x86/kernel/apic/apic.c:1097
+ asm_sysvec_apic_timer_interrupt+0x12/0x20 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/./arch/x86/include/asm/idtentry.h:638
+ __raw_spin_unlock_irqrestore mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/./include/linux/spinlock_api_smp.h:152 [inline]
+ _raw_spin_unlock_irqrestore+0x38/0x70 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/kernel/locking/spinlock.c:194
+ debug_object_active_state mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/lib/debugobjects.c:945 [inline]
+ debug_object_active_state+0x260/0x350 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/lib/debugobjects.c:914
+ debug_rcu_head_queue mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/kernel/rcu/rcu.h:177 [inline]
+ __call_rcu mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/kernel/rcu/tree.c:3010 [inline]
+ call_rcu+0x44/0x740 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/kernel/rcu/tree.c:3106
+ task_work_run+0xdd/0x1a0 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/kernel/task_work.c:164
+ tracehook_notify_resume mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/./include/linux/tracehook.h:188 [inline]
+ exit_to_user_mode_loop mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/kernel/entry/common.c:175 [inline]
+ exit_to_user_mode_prepare+0x27e/0x290 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/kernel/entry/common.c:207
+ __syscall_exit_to_user_mode_work mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/kernel/entry/common.c:289 [inline]
+ syscall_exit_to_user_mode+0x19/0x60 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/kernel/entry/common.c:300
+ do_syscall_64+0x42/0xb0 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/arch/x86/entry/common.c:86
  entry_SYSCALL_64_after_hwframe+0x44/0xae
 
 CPU: 1 PID: 7063 Comm: syz-executor.0 Not tainted 5.17.0-rc1-syzkaller #0
 Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.13.0-1ubuntu1.1 04/01/2014
-RIP: 0010:smc_fback_error_report+0x70/0xa0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:664
+RIP: 0010:smc_fback_error_report+0x70/0xa0 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/smc/af_smc.c:664
 Code: 41 5c e9 e3 bc b4 f8 e8 de bc b4 f8 48 8d bd 28 05 00 00 48 b8 00 00 00 00 00 fc ff df 48 89 fa 48 c1 ea 03 80 3c 02 00 75 21 <48> 8b 95 28 05 00 00 4c 89 e6 48 89 ef e8 3e fa ff ff 5d 41 5c e9
 RSP: 0018:ffffc900007c0b58 EFLAGS: 00010246
 RAX: dffffc0000000000 RBX: 1ffff920000f817a RCX: 0000000000000100
@@ -373,27 +373,27 @@ DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
 DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
 Call Trace:
  <IRQ>
- sk_error_report+0x35/0x310 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/core/sock.c:340
- tcp_write_err mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/ipv4/tcp_timer.c:71 [inline]
- tcp_write_timeout mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/ipv4/tcp_timer.c:276 [inline]
- tcp_retransmit_timer+0x2146/0x33c0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/ipv4/tcp_timer.c:512
- tcp_write_timer_handler+0x5e6/0xbc0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/ipv4/tcp_timer.c:622
- tcp_write_timer+0xa2/0x2b0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/ipv4/tcp_timer.c:642
- call_timer_fn+0x1a5/0x6b0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/kernel/time/timer.c:1421
- expire_timers mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/kernel/time/timer.c:1466 [inline]
- __run_timers.part.0+0x67c/0xa30 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/kernel/time/timer.c:1734
- __run_timers mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/kernel/time/timer.c:1715 [inline]
- run_timer_softirq+0xb3/0x1d0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/kernel/time/timer.c:1747
- __do_softirq+0x29b/0x9c2 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/kernel/softirq.c:558
- invoke_softirq mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/kernel/softirq.c:432 [inline]
- __irq_exit_rcu+0x123/0x180 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/kernel/softirq.c:637
- irq_exit_rcu+0x5/0x20 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/kernel/softirq.c:649
- sysvec_apic_timer_interrupt+0x93/0xc0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/arch/x86/kernel/apic/apic.c:1097
+ sk_error_report+0x35/0x310 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/core/sock.c:340
+ tcp_write_err mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/ipv4/tcp_timer.c:71 [inline]
+ tcp_write_timeout mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/ipv4/tcp_timer.c:276 [inline]
+ tcp_retransmit_timer+0x2146/0x33c0 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/ipv4/tcp_timer.c:512
+ tcp_write_timer_handler+0x5e6/0xbc0 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/ipv4/tcp_timer.c:622
+ tcp_write_timer+0xa2/0x2b0 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/ipv4/tcp_timer.c:642
+ call_timer_fn+0x1a5/0x6b0 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/kernel/time/timer.c:1421
+ expire_timers mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/kernel/time/timer.c:1466 [inline]
+ __run_timers.part.0+0x67c/0xa30 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/kernel/time/timer.c:1734
+ __run_timers mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/kernel/time/timer.c:1715 [inline]
+ run_timer_softirq+0xb3/0x1d0 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/kernel/time/timer.c:1747
+ __do_softirq+0x29b/0x9c2 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/kernel/softirq.c:558
+ invoke_softirq mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/kernel/softirq.c:432 [inline]
+ __irq_exit_rcu+0x123/0x180 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/kernel/softirq.c:637
+ irq_exit_rcu+0x5/0x20 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/kernel/softirq.c:649
+ sysvec_apic_timer_interrupt+0x93/0xc0 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/arch/x86/kernel/apic/apic.c:1097
  </IRQ>
  <TASK>
- asm_sysvec_apic_timer_interrupt+0x12/0x20 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/./arch/x86/include/asm/idtentry.h:638
-RIP: 0010:__raw_spin_unlock_irqrestore mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/./include/linux/spinlock_api_smp.h:152 [inline]
-RIP: 0010:_raw_spin_unlock_irqrestore+0x38/0x70 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/kernel/locking/spinlock.c:194
+ asm_sysvec_apic_timer_interrupt+0x12/0x20 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/./arch/x86/include/asm/idtentry.h:638
+RIP: 0010:__raw_spin_unlock_irqrestore mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/./include/linux/spinlock_api_smp.h:152 [inline]
+RIP: 0010:_raw_spin_unlock_irqrestore+0x38/0x70 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/kernel/locking/spinlock.c:194
 Code: 74 24 10 e8 aa 7b 11 f8 48 89 ef e8 62 f1 11 f8 81 e3 00 02 00 00 75 25 9c 58 f6 c4 02 75 2d 48 85 db 74 01 fb bf 01 00 00 00 <e8> f3 ab 04 f8 65 8b 05 9c ae b6 76 85 c0 74 0a 5b 5d c3 e8 d0 d8
 RSP: 0018:ffffc900013ff510 EFLAGS: 00000206
 RAX: 0000000000000002 RBX: 0000000000000200 RCX: 1ffffffff1ff8b16
@@ -401,22 +401,22 @@ RDX: 0000000000000000 RSI: 0000000000000001 RDI: 0000000000000001
 RBP: ffffffff8bc8a420 R08: 0000000000000001 R09: ffffffff8ffc3947
 R10: 0000000000000001 R11: 0000000000000000 R12: 0000000000000400
 R13: 0000000000000400 R14: 0000000000045000 R15: 0000000000045000
- spin_unlock_irqrestore mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/./include/linux/spinlock.h:404 [inline]
- pcpu_alloc+0x85b/0x13a0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/mm/percpu.c:1850
- xt_percpu_counter_alloc+0x131/0x1a0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/netfilter/x_tables.c:1930
- find_check_entry.constprop.0+0xab/0x9a0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/ipv4/netfilter/ip_tables.c:528
- translate_table+0xc26/0x16a0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/ipv4/netfilter/ip_tables.c:718
- do_replace mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/ipv4/netfilter/ip_tables.c:1136 [inline]
- do_ipt_set_ctl+0x55f/0xb70 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/ipv4/netfilter/ip_tables.c:1630
- nf_setsockopt+0x83/0xe0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/netfilter/nf_sockopt.c:101
- ip_setsockopt+0x3c3/0x3a90 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/ipv4/ip_sockglue.c:1444
- tcp_setsockopt+0x136/0x2520 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/ipv4/tcp.c:3686
- __sys_setsockopt+0x2db/0x610 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/socket.c:2180
- __do_sys_setsockopt mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/socket.c:2191 [inline]
- __se_sys_setsockopt mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/socket.c:2188 [inline]
- __x64_sys_setsockopt+0xba/0x150 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/socket.c:2188
- do_syscall_x64 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/arch/x86/entry/common.c:50 [inline]
- do_syscall_64+0x35/0xb0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/arch/x86/entry/common.c:80
+ spin_unlock_irqrestore mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/./include/linux/spinlock.h:404 [inline]
+ pcpu_alloc+0x85b/0x13a0 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/mm/percpu.c:1850
+ xt_percpu_counter_alloc+0x131/0x1a0 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/netfilter/x_tables.c:1930
+ find_check_entry.constprop.0+0xab/0x9a0 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/ipv4/netfilter/ip_tables.c:528
+ translate_table+0xc26/0x16a0 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/ipv4/netfilter/ip_tables.c:718
+ do_replace mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/ipv4/netfilter/ip_tables.c:1136 [inline]
+ do_ipt_set_ctl+0x55f/0xb70 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/ipv4/netfilter/ip_tables.c:1630
+ nf_setsockopt+0x83/0xe0 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/netfilter/nf_sockopt.c:101
+ ip_setsockopt+0x3c3/0x3a90 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/ipv4/ip_sockglue.c:1444
+ tcp_setsockopt+0x136/0x2520 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/ipv4/tcp.c:3686
+ __sys_setsockopt+0x2db/0x610 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/socket.c:2180
+ __do_sys_setsockopt mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/socket.c:2191 [inline]
+ __se_sys_setsockopt mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/socket.c:2188 [inline]
+ __x64_sys_setsockopt+0xba/0x150 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/socket.c:2188
+ do_syscall_x64 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/arch/x86/entry/common.c:50 [inline]
+ do_syscall_64+0x35/0xb0 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/arch/x86/entry/common.c:80
  entry_SYSCALL_64_after_hwframe+0x44/0xae
 RIP: 0033:0x7fa7533f67de
 Code: 73 01 c3 48 c7 c1 b8 ff ff ff f7 d8 64 89 01 48 83 c8 ff c3 0f 1f 84 00 00 00 00 00 f3 0f 1e fa 49 89 ca b8 36 00 00 00 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 b8 ff ff ff f7 d8 64 89 01 48

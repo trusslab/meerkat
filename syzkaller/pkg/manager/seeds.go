@@ -144,7 +144,7 @@ func readInputs(cfg *mgrconfig.Config, db *db.DB, output chan *input) error {
 		count++
 	}
 
-	// JTBURSEY: Add this count here so we don't outright break syzkaller, but also don't use seeds in normal bisection
+	// AUTHOR: Add this count here so we don't outright break syzkaller, but also don't use seeds in normal bisection
 	if count > 0 {
 		return nil
 	}
@@ -294,7 +294,7 @@ func parseProg(target *prog.Target, data []byte, mode prog.DeserializeMode, reqs
 	if len(p.Calls) > prog.MaxCalls {
 		return nil, nil, fmt.Errorf("longer than %d calls (%d)", prog.MaxCalls, len(p.Calls))
 	}
-	// JTBURSEY: Removing this check temporarily. Not sure if it is actually needed and some of our repros do use fault injection.
+	// AUTHOR: Removing this check temporarily. Not sure if it is actually needed and some of our repros do use fault injection.
 	// For some yet unknown reasons, programs with fail_nth > 0 may sneak in. Ignore them.
 	//for _, call := range p.Calls {
 	//	if call.Props.FailNth > 0 {

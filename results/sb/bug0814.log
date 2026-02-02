@@ -1,4 +1,4 @@
-charm starts bisection 2025-04-04 17:01:03.623144303 -0700 PDT m=+101.646125212
+server starts bisection 2025-04-04 17:01:03.623144303 -0700 PDT m=+101.646125212
 bisecting cause commit starting from 4a0fc73da97efd23a383ca839e6fe86410268f6b
 building syzkaller on HEAD
 ensuring issue is reproducible on original commit 4a0fc73da97efd23a383ca839e6fe86410268f6b
@@ -237,45 +237,45 @@ recipients (to): ["konrad.dybcio@linaro.org" "robh@kernel.org" "viresh.kumar@lin
 recipients (cc): []
 crash: KASAN: stack-out-of-bounds Write in end_buffer_read_sync
 ==================================================================
-BUG: KASAN: stack-out-of-bounds in instrument_atomic_read_write mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/./include/linux/instrumented.h:102 [inline]
-BUG: KASAN: stack-out-of-bounds in atomic_dec mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/./include/linux/atomic/atomic-instrumented.h:257 [inline]
-BUG: KASAN: stack-out-of-bounds in put_bh mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/./include/linux/buffer_head.h:323 [inline]
-BUG: KASAN: stack-out-of-bounds in end_buffer_read_sync+0x8f/0xe0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/fs/buffer.c:161
+BUG: KASAN: stack-out-of-bounds in instrument_atomic_read_write mnt/sdd/author/SyzInspector/wd-bisector-5/kernel/./include/linux/instrumented.h:102 [inline]
+BUG: KASAN: stack-out-of-bounds in atomic_dec mnt/sdd/author/SyzInspector/wd-bisector-5/kernel/./include/linux/atomic/atomic-instrumented.h:257 [inline]
+BUG: KASAN: stack-out-of-bounds in put_bh mnt/sdd/author/SyzInspector/wd-bisector-5/kernel/./include/linux/buffer_head.h:323 [inline]
+BUG: KASAN: stack-out-of-bounds in end_buffer_read_sync+0x8f/0xe0 mnt/sdd/author/SyzInspector/wd-bisector-5/kernel/fs/buffer.c:161
 Write of size 4 at addr ffffc9000610f978 by task ksoftirqd/1/23
 
 CPU: 1 PID: 23 Comm: ksoftirqd/1 Not tainted 6.3.0-rc1-syzkaller #0
 Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.13.0-1ubuntu1.1 04/01/2014
 Call Trace:
  <TASK>
- __dump_stack mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/lib/dump_stack.c:88 [inline]
- dump_stack_lvl+0xd9/0x150 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/lib/dump_stack.c:106
- print_address_description.constprop.0+0x2c/0x3c0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/kasan/report.c:319
- print_report mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/kasan/report.c:430 [inline]
- kasan_report+0x11c/0x130 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/kasan/report.c:536
- check_region_inline mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/kasan/generic.c:181 [inline]
- kasan_check_range+0x141/0x190 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/kasan/generic.c:187
- instrument_atomic_read_write mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/./include/linux/instrumented.h:102 [inline]
- atomic_dec mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/./include/linux/atomic/atomic-instrumented.h:257 [inline]
- put_bh mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/./include/linux/buffer_head.h:323 [inline]
- end_buffer_read_sync+0x8f/0xe0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/fs/buffer.c:161
- end_bio_bh_io_sync+0xde/0x130 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/fs/buffer.c:2703
- bio_endio+0x651/0x810 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/block/bio.c:1607
- req_bio_endio mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/block/blk-mq.c:795 [inline]
- blk_update_request+0x436/0x1650 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/block/blk-mq.c:927
- blk_mq_end_request+0x4f/0x80 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/block/blk-mq.c:1054
- lo_complete_rq+0x1c6/0x280 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/drivers/block/loop.c:370
- blk_complete_reqs+0xad/0xe0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/block/blk-mq.c:1132
- __do_softirq+0x2e3/0xae3 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/kernel/softirq.c:571
- run_ksoftirqd mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/kernel/softirq.c:934 [inline]
- run_ksoftirqd+0x31/0x60 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/kernel/softirq.c:926
- smpboot_thread_fn+0x659/0xa20 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/kernel/smpboot.c:164
- kthread+0x2ee/0x3a0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/kernel/kthread.c:376
- ret_from_fork+0x1f/0x30 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/arch/x86/entry/entry_64.S:308
+ __dump_stack mnt/sdd/author/SyzInspector/wd-bisector-5/kernel/lib/dump_stack.c:88 [inline]
+ dump_stack_lvl+0xd9/0x150 mnt/sdd/author/SyzInspector/wd-bisector-5/kernel/lib/dump_stack.c:106
+ print_address_description.constprop.0+0x2c/0x3c0 mnt/sdd/author/SyzInspector/wd-bisector-5/kernel/mm/kasan/report.c:319
+ print_report mnt/sdd/author/SyzInspector/wd-bisector-5/kernel/mm/kasan/report.c:430 [inline]
+ kasan_report+0x11c/0x130 mnt/sdd/author/SyzInspector/wd-bisector-5/kernel/mm/kasan/report.c:536
+ check_region_inline mnt/sdd/author/SyzInspector/wd-bisector-5/kernel/mm/kasan/generic.c:181 [inline]
+ kasan_check_range+0x141/0x190 mnt/sdd/author/SyzInspector/wd-bisector-5/kernel/mm/kasan/generic.c:187
+ instrument_atomic_read_write mnt/sdd/author/SyzInspector/wd-bisector-5/kernel/./include/linux/instrumented.h:102 [inline]
+ atomic_dec mnt/sdd/author/SyzInspector/wd-bisector-5/kernel/./include/linux/atomic/atomic-instrumented.h:257 [inline]
+ put_bh mnt/sdd/author/SyzInspector/wd-bisector-5/kernel/./include/linux/buffer_head.h:323 [inline]
+ end_buffer_read_sync+0x8f/0xe0 mnt/sdd/author/SyzInspector/wd-bisector-5/kernel/fs/buffer.c:161
+ end_bio_bh_io_sync+0xde/0x130 mnt/sdd/author/SyzInspector/wd-bisector-5/kernel/fs/buffer.c:2703
+ bio_endio+0x651/0x810 mnt/sdd/author/SyzInspector/wd-bisector-5/kernel/block/bio.c:1607
+ req_bio_endio mnt/sdd/author/SyzInspector/wd-bisector-5/kernel/block/blk-mq.c:795 [inline]
+ blk_update_request+0x436/0x1650 mnt/sdd/author/SyzInspector/wd-bisector-5/kernel/block/blk-mq.c:927
+ blk_mq_end_request+0x4f/0x80 mnt/sdd/author/SyzInspector/wd-bisector-5/kernel/block/blk-mq.c:1054
+ lo_complete_rq+0x1c6/0x280 mnt/sdd/author/SyzInspector/wd-bisector-5/kernel/drivers/block/loop.c:370
+ blk_complete_reqs+0xad/0xe0 mnt/sdd/author/SyzInspector/wd-bisector-5/kernel/block/blk-mq.c:1132
+ __do_softirq+0x2e3/0xae3 mnt/sdd/author/SyzInspector/wd-bisector-5/kernel/kernel/softirq.c:571
+ run_ksoftirqd mnt/sdd/author/SyzInspector/wd-bisector-5/kernel/kernel/softirq.c:934 [inline]
+ run_ksoftirqd+0x31/0x60 mnt/sdd/author/SyzInspector/wd-bisector-5/kernel/kernel/softirq.c:926
+ smpboot_thread_fn+0x659/0xa20 mnt/sdd/author/SyzInspector/wd-bisector-5/kernel/kernel/smpboot.c:164
+ kthread+0x2ee/0x3a0 mnt/sdd/author/SyzInspector/wd-bisector-5/kernel/kernel/kthread.c:376
+ ret_from_fork+0x1f/0x30 mnt/sdd/author/SyzInspector/wd-bisector-5/kernel/arch/x86/entry/entry_64.S:308
  </TASK>
 
 The buggy address belongs to the virtual mapping at
  [ffffc90006108000, ffffc90006111000) created by:
- kernel_clone+0xeb/0x9a0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/kernel/fork.c:2684
+ kernel_clone+0xeb/0x9a0 mnt/sdd/author/SyzInspector/wd-bisector-5/kernel/kernel/fork.c:2684
 
 The buggy address belongs to the physical page:
 page:ffffea0004210dc0 refcount:1 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x108437
@@ -285,35 +285,35 @@ raw: 0000000000000000 0000000000000000 00000001ffffffff 0000000000000000
 page dumped because: kasan: bad access detected
 page_owner tracks the page as allocated
 page last allocated via order 0, migratetype Unmovable, gfp_mask 0x2dc2(GFP_KERNEL|__GFP_HIGHMEM|__GFP_NOWARN|__GFP_ZERO), pid 14975, tgid 14975 (syz-executor.0), ts 327338553438, free_ts 327269848986
- set_page_owner mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/./include/linux/page_owner.h:31 [inline]
- post_alloc_hook+0x2db/0x350 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/page_alloc.c:2545
- prep_new_page mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/page_alloc.c:2552 [inline]
- get_page_from_freelist+0x1190/0x2f80 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/page_alloc.c:4325
- __alloc_pages+0x1cb/0x5c0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/page_alloc.c:5591
- alloc_pages+0x1aa/0x270 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/mempolicy.c:2283
- vm_area_alloc_pages mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/vmalloc.c:2943 [inline]
- __vmalloc_area_node mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/vmalloc.c:3011 [inline]
- __vmalloc_node_range+0xb30/0x1300 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/vmalloc.c:3181
- alloc_thread_stack_node mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/kernel/fork.c:311 [inline]
- dup_task_struct mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/kernel/fork.c:984 [inline]
- copy_process+0x1316/0x76b0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/kernel/fork.c:2100
- kernel_clone+0xeb/0x9a0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/kernel/fork.c:2684
- __do_sys_clone+0xba/0x100 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/kernel/fork.c:2825
- do_syscall_x64 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/arch/x86/entry/common.c:50 [inline]
- do_syscall_64+0x39/0xb0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/arch/x86/entry/common.c:80
+ set_page_owner mnt/sdd/author/SyzInspector/wd-bisector-5/kernel/./include/linux/page_owner.h:31 [inline]
+ post_alloc_hook+0x2db/0x350 mnt/sdd/author/SyzInspector/wd-bisector-5/kernel/mm/page_alloc.c:2545
+ prep_new_page mnt/sdd/author/SyzInspector/wd-bisector-5/kernel/mm/page_alloc.c:2552 [inline]
+ get_page_from_freelist+0x1190/0x2f80 mnt/sdd/author/SyzInspector/wd-bisector-5/kernel/mm/page_alloc.c:4325
+ __alloc_pages+0x1cb/0x5c0 mnt/sdd/author/SyzInspector/wd-bisector-5/kernel/mm/page_alloc.c:5591
+ alloc_pages+0x1aa/0x270 mnt/sdd/author/SyzInspector/wd-bisector-5/kernel/mm/mempolicy.c:2283
+ vm_area_alloc_pages mnt/sdd/author/SyzInspector/wd-bisector-5/kernel/mm/vmalloc.c:2943 [inline]
+ __vmalloc_area_node mnt/sdd/author/SyzInspector/wd-bisector-5/kernel/mm/vmalloc.c:3011 [inline]
+ __vmalloc_node_range+0xb30/0x1300 mnt/sdd/author/SyzInspector/wd-bisector-5/kernel/mm/vmalloc.c:3181
+ alloc_thread_stack_node mnt/sdd/author/SyzInspector/wd-bisector-5/kernel/kernel/fork.c:311 [inline]
+ dup_task_struct mnt/sdd/author/SyzInspector/wd-bisector-5/kernel/kernel/fork.c:984 [inline]
+ copy_process+0x1316/0x76b0 mnt/sdd/author/SyzInspector/wd-bisector-5/kernel/kernel/fork.c:2100
+ kernel_clone+0xeb/0x9a0 mnt/sdd/author/SyzInspector/wd-bisector-5/kernel/kernel/fork.c:2684
+ __do_sys_clone+0xba/0x100 mnt/sdd/author/SyzInspector/wd-bisector-5/kernel/kernel/fork.c:2825
+ do_syscall_x64 mnt/sdd/author/SyzInspector/wd-bisector-5/kernel/arch/x86/entry/common.c:50 [inline]
+ do_syscall_64+0x39/0xb0 mnt/sdd/author/SyzInspector/wd-bisector-5/kernel/arch/x86/entry/common.c:80
  entry_SYSCALL_64_after_hwframe+0x63/0xcd
 page last free stack trace:
- reset_page_owner mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/./include/linux/page_owner.h:24 [inline]
- free_pages_prepare mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/page_alloc.c:1453 [inline]
- free_pcp_prepare+0x65f/0xb50 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/page_alloc.c:1503
- free_unref_page_prepare mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/page_alloc.c:3387 [inline]
- free_unref_page+0x1d/0x490 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/page_alloc.c:3482
- vfree+0x180/0x7e0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/vmalloc.c:2742
- delayed_vfree_work+0x57/0x70 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/vmalloc.c:2663
- process_one_work+0x982/0x17b0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/kernel/workqueue.c:2390
- worker_thread+0x669/0x1090 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/kernel/workqueue.c:2537
- kthread+0x2ee/0x3a0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/kernel/kthread.c:376
- ret_from_fork+0x1f/0x30 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/arch/x86/entry/entry_64.S:308
+ reset_page_owner mnt/sdd/author/SyzInspector/wd-bisector-5/kernel/./include/linux/page_owner.h:24 [inline]
+ free_pages_prepare mnt/sdd/author/SyzInspector/wd-bisector-5/kernel/mm/page_alloc.c:1453 [inline]
+ free_pcp_prepare+0x65f/0xb50 mnt/sdd/author/SyzInspector/wd-bisector-5/kernel/mm/page_alloc.c:1503
+ free_unref_page_prepare mnt/sdd/author/SyzInspector/wd-bisector-5/kernel/mm/page_alloc.c:3387 [inline]
+ free_unref_page+0x1d/0x490 mnt/sdd/author/SyzInspector/wd-bisector-5/kernel/mm/page_alloc.c:3482
+ vfree+0x180/0x7e0 mnt/sdd/author/SyzInspector/wd-bisector-5/kernel/mm/vmalloc.c:2742
+ delayed_vfree_work+0x57/0x70 mnt/sdd/author/SyzInspector/wd-bisector-5/kernel/mm/vmalloc.c:2663
+ process_one_work+0x982/0x17b0 mnt/sdd/author/SyzInspector/wd-bisector-5/kernel/kernel/workqueue.c:2390
+ worker_thread+0x669/0x1090 mnt/sdd/author/SyzInspector/wd-bisector-5/kernel/kernel/workqueue.c:2537
+ kthread+0x2ee/0x3a0 mnt/sdd/author/SyzInspector/wd-bisector-5/kernel/kernel/kthread.c:376
+ ret_from_fork+0x1f/0x30 mnt/sdd/author/SyzInspector/wd-bisector-5/kernel/arch/x86/entry/entry_64.S:308
 
 Memory state around the buggy address:
  ffffc9000610f800: f1 f1 f1 00 00 f2 f2 00 00 00 f3 f3 f3 f3 f3 00

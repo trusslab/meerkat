@@ -1,4 +1,4 @@
-charm starts bisection 2025-04-04 13:16:15.924749845 -0700 PDT m=+3.892767980
+server starts bisection 2025-04-04 13:16:15.924749845 -0700 PDT m=+3.892767980
 bisecting cause commit starting from 9d004b2f4fea97cde123e7f1939b80e77bf2e695
 building syzkaller on HEAD
 ensuring issue is reproducible on original commit 9d004b2f4fea97cde123e7f1939b80e77bf2e695
@@ -216,13 +216,13 @@ recipients (to): ["kuba@kernel.org"]
 recipients (cc): []
 crash: WARNING: ODEBUG bug in netdev_run_todo
 ------------[ cut here ]------------
-ODEBUG: free active (active state 0) object type: timer_list hint: delayed_work_timer_fn+0x0/0x90 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/./include/linux/find.h:144
-WARNING: CPU: 1 PID: 11 at lib/debugobjects.c:505 debug_print_object+0x16e/0x250 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/lib/debugobjects.c:505
+ODEBUG: free active (active state 0) object type: timer_list hint: delayed_work_timer_fn+0x0/0x90 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/./include/linux/find.h:144
+WARNING: CPU: 1 PID: 11 at lib/debugobjects.c:505 debug_print_object+0x16e/0x250 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/lib/debugobjects.c:505
 Modules linked in:
 CPU: 1 PID: 11 Comm: kworker/u4:1 Not tainted 5.17.0-rc7-syzkaller #0
 Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.13.0-1ubuntu1.1 04/01/2014
 Workqueue: netns cleanup_net
-RIP: 0010:debug_print_object+0x16e/0x250 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/lib/debugobjects.c:505
+RIP: 0010:debug_print_object+0x16e/0x250 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/lib/debugobjects.c:505
 Code: ff df 48 89 fa 48 c1 ea 03 80 3c 02 00 0f 85 af 00 00 00 48 8b 14 dd 40 b2 06 8a 4c 89 ee 48 c7 c7 40 a6 06 8a e8 eb 05 24 05 <0f> 0b 83 05 55 d1 aa 09 01 48 83 c4 18 5b 5d 41 5c 41 5d 41 5e c3
 RSP: 0018:ffffc900006e7848 EFLAGS: 00010286
 RAX: 0000000000000000 RBX: 0000000000000003 RCX: 0000000000000000
@@ -237,26 +237,26 @@ DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
 DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
 Call Trace:
  <TASK>
- __debug_check_no_obj_freed mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/lib/debugobjects.c:992 [inline]
- debug_check_no_obj_freed+0x301/0x420 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/lib/debugobjects.c:1023
- slab_free_hook mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/mm/slub.c:1703 [inline]
- slab_free_freelist_hook+0xeb/0x1c0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/mm/slub.c:1754
- slab_free mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/mm/slub.c:3509 [inline]
- kfree+0xd0/0x390 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/mm/slub.c:4562
- kvfree+0x42/0x50 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/mm/util.c:615
- device_release+0x9f/0x240 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/drivers/base/core.c:2229
- kobject_cleanup mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/lib/kobject.c:705 [inline]
- kobject_release mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/lib/kobject.c:736 [inline]
- kref_put mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/./include/linux/kref.h:65 [inline]
- kobject_put+0x1c8/0x540 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/lib/kobject.c:753
- netdev_run_todo+0x776/0xa90 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/core/dev.c:9973
- default_device_exit_batch+0x2ff/0x3c0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/core/dev.c:10946
- ops_exit_list+0x125/0x170 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/core/net_namespace.c:173
- cleanup_net+0x4ea/0xb00 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/core/net_namespace.c:597
- process_one_work+0x9ac/0x1650 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/kernel/workqueue.c:2307
- worker_thread+0x657/0x1110 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/kernel/workqueue.c:2454
- kthread+0x2e9/0x3a0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/kernel/kthread.c:377
- ret_from_fork+0x1f/0x30 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/arch/x86/entry/entry_64.S:295
+ __debug_check_no_obj_freed mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/lib/debugobjects.c:992 [inline]
+ debug_check_no_obj_freed+0x301/0x420 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/lib/debugobjects.c:1023
+ slab_free_hook mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/mm/slub.c:1703 [inline]
+ slab_free_freelist_hook+0xeb/0x1c0 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/mm/slub.c:1754
+ slab_free mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/mm/slub.c:3509 [inline]
+ kfree+0xd0/0x390 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/mm/slub.c:4562
+ kvfree+0x42/0x50 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/mm/util.c:615
+ device_release+0x9f/0x240 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/drivers/base/core.c:2229
+ kobject_cleanup mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/lib/kobject.c:705 [inline]
+ kobject_release mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/lib/kobject.c:736 [inline]
+ kref_put mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/./include/linux/kref.h:65 [inline]
+ kobject_put+0x1c8/0x540 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/lib/kobject.c:753
+ netdev_run_todo+0x776/0xa90 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/core/dev.c:9973
+ default_device_exit_batch+0x2ff/0x3c0 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/core/dev.c:10946
+ ops_exit_list+0x125/0x170 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/core/net_namespace.c:173
+ cleanup_net+0x4ea/0xb00 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/core/net_namespace.c:597
+ process_one_work+0x9ac/0x1650 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/kernel/workqueue.c:2307
+ worker_thread+0x657/0x1110 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/kernel/workqueue.c:2454
+ kthread+0x2e9/0x3a0 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/kernel/kthread.c:377
+ ret_from_fork+0x1f/0x30 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/arch/x86/entry/entry_64.S:295
  </TASK>
 
 

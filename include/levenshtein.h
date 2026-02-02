@@ -4,7 +4,7 @@
 #include <string>
 #include <vector>
 
-// Author: JTBursey
+// Author: AUTHOR
 // This is a library for computing the Levenshtein distance between two objects.
 // See wiki: https://en.wikipedia.org/wiki/Levenshtein_distance
 

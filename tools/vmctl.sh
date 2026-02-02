@@ -15,10 +15,10 @@ printhelp() {
 # Change these to point to your own directories
 # ===
 
-home="/mnt/sdd/jtbursey/meerkat/"
+home="/mnt/sdd/author/meerkat/"
 
 # this is the directory housing the images, so my bullseye is at .../images/bullseye-sift/bullseye.img
-defaultImagedir="/mnt/sdd/jtbursey/meerkat/image/"
+defaultImagedir="/mnt/sdd/author/meerkat/image/"
 imagedir="stretch/"
 imagename="stretch"
 

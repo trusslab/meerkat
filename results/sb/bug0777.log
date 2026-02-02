@@ -1,4 +1,4 @@
-TrussLab starts bisection 2025-03-28 03:23:12.587410859 -0700 PDT m=+12.483404531
+server starts bisection 2025-03-28 03:23:12.587410859 -0700 PDT m=+12.483404531
 bisecting cause commit starting from ac347a0655dbc7d885e217c89dddd16e2800bd58
 building syzkaller on HEAD
 ensuring issue is reproducible on original commit ac347a0655dbc7d885e217c89dddd16e2800bd58
@@ -206,19 +206,19 @@ recipients (to): ["akpm@linux-foundation.org" "linux-fsdevel@vger.kernel.org" "u
 recipients (cc): ["linux-kernel@vger.kernel.org"]
 crash: WARNING in unmap_page_range
 ------------[ cut here ]------------
-WARNING: CPU: 1 PID: 8987 at mm/memory.c:1520 zap_pte_range mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/memory.c:1520 [inline]
-WARNING: CPU: 1 PID: 8987 at mm/memory.c:1520 zap_pmd_range mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/memory.c:1582 [inline]
-WARNING: CPU: 1 PID: 8987 at mm/memory.c:1520 zap_pud_range mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/memory.c:1611 [inline]
-WARNING: CPU: 1 PID: 8987 at mm/memory.c:1520 zap_p4d_range mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/memory.c:1632 [inline]
-WARNING: CPU: 1 PID: 8987 at mm/memory.c:1520 unmap_page_range+0x15fd/0x2b00 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/memory.c:1653
+WARNING: CPU: 1 PID: 8987 at mm/memory.c:1520 zap_pte_range mnt/sdd/author/SyzInspector/wd-bisector-5/kernel/mm/memory.c:1520 [inline]
+WARNING: CPU: 1 PID: 8987 at mm/memory.c:1520 zap_pmd_range mnt/sdd/author/SyzInspector/wd-bisector-5/kernel/mm/memory.c:1582 [inline]
+WARNING: CPU: 1 PID: 8987 at mm/memory.c:1520 zap_pud_range mnt/sdd/author/SyzInspector/wd-bisector-5/kernel/mm/memory.c:1611 [inline]
+WARNING: CPU: 1 PID: 8987 at mm/memory.c:1520 zap_p4d_range mnt/sdd/author/SyzInspector/wd-bisector-5/kernel/mm/memory.c:1632 [inline]
+WARNING: CPU: 1 PID: 8987 at mm/memory.c:1520 unmap_page_range+0x15fd/0x2b00 mnt/sdd/author/SyzInspector/wd-bisector-5/kernel/mm/memory.c:1653
 Modules linked in:
 CPU: 1 PID: 8987 Comm: syz-executor.0 Not tainted 6.6.0-rc4-syzkaller #0
 Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.13.0-1ubuntu1.1 04/01/2014
-RIP: 0010:zap_pte_range mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/memory.c:1520 [inline]
-RIP: 0010:zap_pmd_range mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/memory.c:1582 [inline]
-RIP: 0010:zap_pud_range mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/memory.c:1611 [inline]
-RIP: 0010:zap_p4d_range mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/memory.c:1632 [inline]
-RIP: 0010:unmap_page_range+0x15fd/0x2b00 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/memory.c:1653
+RIP: 0010:zap_pte_range mnt/sdd/author/SyzInspector/wd-bisector-5/kernel/mm/memory.c:1520 [inline]
+RIP: 0010:zap_pmd_range mnt/sdd/author/SyzInspector/wd-bisector-5/kernel/mm/memory.c:1582 [inline]
+RIP: 0010:zap_pud_range mnt/sdd/author/SyzInspector/wd-bisector-5/kernel/mm/memory.c:1611 [inline]
+RIP: 0010:zap_p4d_range mnt/sdd/author/SyzInspector/wd-bisector-5/kernel/mm/memory.c:1632 [inline]
+RIP: 0010:unmap_page_range+0x15fd/0x2b00 mnt/sdd/author/SyzInspector/wd-bisector-5/kernel/mm/memory.c:1653
 Code: 83 fb 02 0f 86 f9 05 00 00 e8 af a3 c0 ff 44 89 e6 bf 1f 00 00 00 e8 c2 9f c0 ff 41 83 fc 1f 0f 84 00 07 00 00 e8 93 a3 c0 ff <0f> 0b e9 5c f4 ff ff e8 87 a3 c0 ff 48 83 44 24 10 08 e9 e6 f5 ff
 RSP: 0018:ffffc9000551f6c8 EFLAGS: 00010293
 RAX: 0000000000000000 RBX: 0000000000000007 RCX: 0000000000000000
@@ -233,21 +233,21 @@ DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
 DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
 Call Trace:
  <TASK>
- unmap_single_vma+0x19a/0x2b0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/memory.c:1699
- unmap_vmas+0x1ef/0x430 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/memory.c:1743
- exit_mmap+0x1a0/0xa60 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/mm/mmap.c:3228
- __mmput+0x128/0x4c0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/kernel/fork.c:1349
- mmput+0x60/0x70 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/kernel/fork.c:1371
- exit_mm mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/kernel/exit.c:566 [inline]
- do_exit+0x99d/0x2990 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/kernel/exit.c:857
- do_group_exit+0xd4/0x2a0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/kernel/exit.c:1020
- get_signal+0x244c/0x2630 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/kernel/signal.c:2892
- arch_do_signal_or_restart+0x81/0x7e0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/arch/x86/kernel/signal.c:309
- exit_to_user_mode_loop mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/kernel/entry/common.c:168 [inline]
- exit_to_user_mode_prepare+0x11f/0x240 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/kernel/entry/common.c:204
- __syscall_exit_to_user_mode_work mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/kernel/entry/common.c:285 [inline]
- syscall_exit_to_user_mode+0x1d/0x60 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/kernel/entry/common.c:296
- do_syscall_64+0x46/0xb0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/arch/x86/entry/common.c:86
+ unmap_single_vma+0x19a/0x2b0 mnt/sdd/author/SyzInspector/wd-bisector-5/kernel/mm/memory.c:1699
+ unmap_vmas+0x1ef/0x430 mnt/sdd/author/SyzInspector/wd-bisector-5/kernel/mm/memory.c:1743
+ exit_mmap+0x1a0/0xa60 mnt/sdd/author/SyzInspector/wd-bisector-5/kernel/mm/mmap.c:3228
+ __mmput+0x128/0x4c0 mnt/sdd/author/SyzInspector/wd-bisector-5/kernel/kernel/fork.c:1349
+ mmput+0x60/0x70 mnt/sdd/author/SyzInspector/wd-bisector-5/kernel/kernel/fork.c:1371
+ exit_mm mnt/sdd/author/SyzInspector/wd-bisector-5/kernel/kernel/exit.c:566 [inline]
+ do_exit+0x99d/0x2990 mnt/sdd/author/SyzInspector/wd-bisector-5/kernel/kernel/exit.c:857
+ do_group_exit+0xd4/0x2a0 mnt/sdd/author/SyzInspector/wd-bisector-5/kernel/kernel/exit.c:1020
+ get_signal+0x244c/0x2630 mnt/sdd/author/SyzInspector/wd-bisector-5/kernel/kernel/signal.c:2892
+ arch_do_signal_or_restart+0x81/0x7e0 mnt/sdd/author/SyzInspector/wd-bisector-5/kernel/arch/x86/kernel/signal.c:309
+ exit_to_user_mode_loop mnt/sdd/author/SyzInspector/wd-bisector-5/kernel/kernel/entry/common.c:168 [inline]
+ exit_to_user_mode_prepare+0x11f/0x240 mnt/sdd/author/SyzInspector/wd-bisector-5/kernel/kernel/entry/common.c:204
+ __syscall_exit_to_user_mode_work mnt/sdd/author/SyzInspector/wd-bisector-5/kernel/kernel/entry/common.c:285 [inline]
+ syscall_exit_to_user_mode+0x1d/0x60 mnt/sdd/author/SyzInspector/wd-bisector-5/kernel/kernel/entry/common.c:296
+ do_syscall_64+0x46/0xb0 mnt/sdd/author/SyzInspector/wd-bisector-5/kernel/arch/x86/entry/common.c:86
  entry_SYSCALL_64_after_hwframe+0x63/0xcd
 RIP: 0033:0x7fdedfa91ced
 Code: Unable to access opcode bytes at 0x7fdedfa91cc3.

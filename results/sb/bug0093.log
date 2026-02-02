@@ -1,4 +1,4 @@
-charm starts bisection 2025-04-03 15:08:32.607313979 -0700 PDT m=+19.418722562
+server starts bisection 2025-04-03 15:08:32.607313979 -0700 PDT m=+19.418722562
 bisecting cause commit starting from e8bc52cb8df80c31c73c726ab58ea9746e9ff734
 building syzkaller on HEAD
 ensuring issue is reproducible on original commit e8bc52cb8df80c31c73c726ab58ea9746e9ff734
@@ -181,8 +181,8 @@ crash: KASAN: use-after-free Read in nf_tables_trans_destroy_work
 IPv6: ADDRCONF(NETDEV_CHANGE): wlan0: link becomes ready
 IPv6: ADDRCONF(NETDEV_CHANGE): wlan1: link becomes ready
 ==================================================================
-BUG: KASAN: use-after-free in nft_commit_release mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/netfilter/nf_tables_api.c:8332 [inline]
-BUG: KASAN: use-after-free in nf_tables_trans_destroy_work+0x7f4/0x820 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/netfilter/nf_tables_api.c:8378
+BUG: KASAN: use-after-free in nft_commit_release mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/netfilter/nf_tables_api.c:8332 [inline]
+BUG: KASAN: use-after-free in nf_tables_trans_destroy_work+0x7f4/0x820 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/netfilter/nf_tables_api.c:8378
 Read of size 1 at addr ffff88801dd25954 by task kworker/0:2/1165
 
 CPU: 0 PID: 1165 Comm: kworker/0:2 Not tainted 5.18.0-syzkaller #0
@@ -190,103 +190,103 @@ Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.13.0-1ubuntu1.1 04
 Workqueue: events nf_tables_trans_destroy_work
 Call Trace:
  <TASK>
- __dump_stack mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/lib/dump_stack.c:88 [inline]
- dump_stack_lvl+0xcd/0x134 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/lib/dump_stack.c:106
- print_address_description.constprop.0.cold+0xeb/0x495 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/mm/kasan/report.c:313
- print_report mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/mm/kasan/report.c:429 [inline]
- kasan_report.cold+0xf4/0x1c6 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/mm/kasan/report.c:491
- nft_commit_release mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/netfilter/nf_tables_api.c:8332 [inline]
- nf_tables_trans_destroy_work+0x7f4/0x820 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/netfilter/nf_tables_api.c:8378
- process_one_work+0x95d/0x15c0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/kernel/workqueue.c:2289
- worker_thread+0x665/0x1080 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/kernel/workqueue.c:2436
- kthread+0x2e9/0x3a0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/kernel/kthread.c:376
- ret_from_fork+0x1f/0x30 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/arch/x86/entry/entry_64.S:302
+ __dump_stack mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/lib/dump_stack.c:88 [inline]
+ dump_stack_lvl+0xcd/0x134 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/lib/dump_stack.c:106
+ print_address_description.constprop.0.cold+0xeb/0x495 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/mm/kasan/report.c:313
+ print_report mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/mm/kasan/report.c:429 [inline]
+ kasan_report.cold+0xf4/0x1c6 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/mm/kasan/report.c:491
+ nft_commit_release mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/netfilter/nf_tables_api.c:8332 [inline]
+ nf_tables_trans_destroy_work+0x7f4/0x820 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/netfilter/nf_tables_api.c:8378
+ process_one_work+0x95d/0x15c0 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/kernel/workqueue.c:2289
+ worker_thread+0x665/0x1080 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/kernel/workqueue.c:2436
+ kthread+0x2e9/0x3a0 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/kernel/kthread.c:376
+ ret_from_fork+0x1f/0x30 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/arch/x86/entry/entry_64.S:302
  </TASK>
 
 Allocated by task 7543:
- kasan_save_stack+0x1e/0x40 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/mm/kasan/common.c:38
- kasan_set_track mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/mm/kasan/common.c:45 [inline]
- set_alloc_info mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/mm/kasan/common.c:436 [inline]
- ____kasan_kmalloc mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/mm/kasan/common.c:515 [inline]
- ____kasan_kmalloc mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/mm/kasan/common.c:474 [inline]
- __kasan_kmalloc+0xa9/0xd0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/mm/kasan/common.c:524
- kmalloc mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/./include/linux/slab.h:588 [inline]
- kzalloc mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/./include/linux/slab.h:721 [inline]
- nf_tables_addchain.constprop.0+0x7e8/0x16d0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/netfilter/nf_tables_api.c:2253
- nf_tables_newchain+0x1755/0x1f90 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/netfilter/nf_tables_api.c:2586
- nfnetlink_rcv_batch+0x171f/0x2600 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/netfilter/nfnetlink.c:513
- nfnetlink_rcv_skb_batch mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/netfilter/nfnetlink.c:634 [inline]
- nfnetlink_rcv+0x3af/0x420 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/netfilter/nfnetlink.c:652
- netlink_unicast_kernel mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/netlink/af_netlink.c:1319 [inline]
- netlink_unicast+0x543/0x7f0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/netlink/af_netlink.c:1345
- netlink_sendmsg+0x918/0xe10 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/netlink/af_netlink.c:1921
- sock_sendmsg_nosec mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/socket.c:714 [inline]
- sock_sendmsg+0xcf/0x120 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/socket.c:734
- ____sys_sendmsg+0x6eb/0x810 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/socket.c:2492
- ___sys_sendmsg+0xf3/0x170 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/socket.c:2546
- __sys_sendmsg mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/socket.c:2575 [inline]
- __do_sys_sendmsg mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/socket.c:2584 [inline]
- __se_sys_sendmsg mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/socket.c:2582 [inline]
- __x64_sys_sendmsg+0x132/0x220 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/socket.c:2582
- do_syscall_x64 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/arch/x86/entry/common.c:50 [inline]
- do_syscall_64+0x35/0xb0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/arch/x86/entry/common.c:80
+ kasan_save_stack+0x1e/0x40 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/mm/kasan/common.c:38
+ kasan_set_track mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/mm/kasan/common.c:45 [inline]
+ set_alloc_info mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/mm/kasan/common.c:436 [inline]
+ ____kasan_kmalloc mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/mm/kasan/common.c:515 [inline]
+ ____kasan_kmalloc mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/mm/kasan/common.c:474 [inline]
+ __kasan_kmalloc+0xa9/0xd0 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/mm/kasan/common.c:524
+ kmalloc mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/./include/linux/slab.h:588 [inline]
+ kzalloc mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/./include/linux/slab.h:721 [inline]
+ nf_tables_addchain.constprop.0+0x7e8/0x16d0 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/netfilter/nf_tables_api.c:2253
+ nf_tables_newchain+0x1755/0x1f90 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/netfilter/nf_tables_api.c:2586
+ nfnetlink_rcv_batch+0x171f/0x2600 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/netfilter/nfnetlink.c:513
+ nfnetlink_rcv_skb_batch mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/netfilter/nfnetlink.c:634 [inline]
+ nfnetlink_rcv+0x3af/0x420 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/netfilter/nfnetlink.c:652
+ netlink_unicast_kernel mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/netlink/af_netlink.c:1319 [inline]
+ netlink_unicast+0x543/0x7f0 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/netlink/af_netlink.c:1345
+ netlink_sendmsg+0x918/0xe10 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/netlink/af_netlink.c:1921
+ sock_sendmsg_nosec mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/socket.c:714 [inline]
+ sock_sendmsg+0xcf/0x120 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/socket.c:734
+ ____sys_sendmsg+0x6eb/0x810 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/socket.c:2492
+ ___sys_sendmsg+0xf3/0x170 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/socket.c:2546
+ __sys_sendmsg mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/socket.c:2575 [inline]
+ __do_sys_sendmsg mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/socket.c:2584 [inline]
+ __se_sys_sendmsg mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/socket.c:2582 [inline]
+ __x64_sys_sendmsg+0x132/0x220 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/socket.c:2582
+ do_syscall_x64 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/arch/x86/entry/common.c:50 [inline]
+ do_syscall_64+0x35/0xb0 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/arch/x86/entry/common.c:80
  entry_SYSCALL_64_after_hwframe+0x46/0xb0
 
 Freed by task 7542:
- kasan_save_stack+0x1e/0x40 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/mm/kasan/common.c:38
- kasan_set_track+0x21/0x30 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/mm/kasan/common.c:45
- kasan_set_free_info+0x20/0x30 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/mm/kasan/generic.c:370
- ____kasan_slab_free mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/mm/kasan/common.c:366 [inline]
- ____kasan_slab_free+0x166/0x1a0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/mm/kasan/common.c:328
- kasan_slab_free mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/./include/linux/kasan.h:200 [inline]
- slab_free_hook mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/mm/slub.c:1727 [inline]
- slab_free_freelist_hook+0x8b/0x1c0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/mm/slub.c:1753
- slab_free mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/mm/slub.c:3507 [inline]
- kfree+0xd6/0x4d0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/mm/slub.c:4555
- nf_tables_chain_destroy+0x4ec/0x640 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/netfilter/nf_tables_api.c:1889
- __nft_release_table+0x96c/0xcd0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/netfilter/nf_tables_api.c:9837
- nft_rcv_nl_event+0x3f6/0x5b0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/netfilter/nf_tables_api.c:9888
- notifier_call_chain+0xb5/0x200 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/kernel/notifier.c:84
- blocking_notifier_call_chain mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/kernel/notifier.c:319 [inline]
- blocking_notifier_call_chain+0x67/0x90 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/kernel/notifier.c:307
- netlink_release+0xcb6/0x1db0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/netlink/af_netlink.c:790
- __sock_release+0xcd/0x280 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/socket.c:650
- sock_close+0x18/0x20 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/socket.c:1365
- __fput+0x277/0x9d0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/fs/file_table.c:317
- task_work_run+0xdd/0x1a0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/kernel/task_work.c:177
- resume_user_mode_work mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/./include/linux/resume_user_mode.h:49 [inline]
- exit_to_user_mode_loop mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/kernel/entry/common.c:169 [inline]
- exit_to_user_mode_prepare+0x23c/0x250 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/kernel/entry/common.c:201
- __syscall_exit_to_user_mode_work mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/kernel/entry/common.c:283 [inline]
- syscall_exit_to_user_mode+0x19/0x50 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/kernel/entry/common.c:294
- do_syscall_64+0x42/0xb0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/arch/x86/entry/common.c:86
+ kasan_save_stack+0x1e/0x40 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/mm/kasan/common.c:38
+ kasan_set_track+0x21/0x30 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/mm/kasan/common.c:45
+ kasan_set_free_info+0x20/0x30 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/mm/kasan/generic.c:370
+ ____kasan_slab_free mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/mm/kasan/common.c:366 [inline]
+ ____kasan_slab_free+0x166/0x1a0 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/mm/kasan/common.c:328
+ kasan_slab_free mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/./include/linux/kasan.h:200 [inline]
+ slab_free_hook mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/mm/slub.c:1727 [inline]
+ slab_free_freelist_hook+0x8b/0x1c0 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/mm/slub.c:1753
+ slab_free mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/mm/slub.c:3507 [inline]
+ kfree+0xd6/0x4d0 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/mm/slub.c:4555
+ nf_tables_chain_destroy+0x4ec/0x640 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/netfilter/nf_tables_api.c:1889
+ __nft_release_table+0x96c/0xcd0 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/netfilter/nf_tables_api.c:9837
+ nft_rcv_nl_event+0x3f6/0x5b0 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/netfilter/nf_tables_api.c:9888
+ notifier_call_chain+0xb5/0x200 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/kernel/notifier.c:84
+ blocking_notifier_call_chain mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/kernel/notifier.c:319 [inline]
+ blocking_notifier_call_chain+0x67/0x90 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/kernel/notifier.c:307
+ netlink_release+0xcb6/0x1db0 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/netlink/af_netlink.c:790
+ __sock_release+0xcd/0x280 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/socket.c:650
+ sock_close+0x18/0x20 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/socket.c:1365
+ __fput+0x277/0x9d0 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/fs/file_table.c:317
+ task_work_run+0xdd/0x1a0 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/kernel/task_work.c:177
+ resume_user_mode_work mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/./include/linux/resume_user_mode.h:49 [inline]
+ exit_to_user_mode_loop mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/kernel/entry/common.c:169 [inline]
+ exit_to_user_mode_prepare+0x23c/0x250 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/kernel/entry/common.c:201
+ __syscall_exit_to_user_mode_work mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/kernel/entry/common.c:283 [inline]
+ syscall_exit_to_user_mode+0x19/0x50 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/kernel/entry/common.c:294
+ do_syscall_64+0x42/0xb0 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/arch/x86/entry/common.c:86
  entry_SYSCALL_64_after_hwframe+0x46/0xb0
 
 Last potentially related work creation:
- kasan_save_stack+0x1e/0x40 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/mm/kasan/common.c:38
- __kasan_record_aux_stack+0xbe/0xd0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/mm/kasan/generic.c:348
- call_rcu+0x99/0x790 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/kernel/rcu/tree.c:3126
- nf_hook_entries_free mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/netfilter/core.c:88 [inline]
- nf_hook_entries_free mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/netfilter/core.c:75 [inline]
- __nf_register_net_hook+0x3ee/0x8b0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/netfilter/core.c:451
- nf_register_net_hook+0x114/0x170 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/netfilter/core.c:572
- nf_register_net_hooks+0x59/0xc0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/netfilter/core.c:588
- nf_nat_register_fn+0x5b3/0x7e0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/netfilter/nf_nat_core.c:1039
- ip6t_nat_register_lookups mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/ipv6/netfilter/ip6table_nat.c:79 [inline]
- ip6table_nat_table_init+0x1d9/0x470 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/ipv6/netfilter/ip6table_nat.c:123
- xt_find_table_lock+0x39e/0x680 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/netfilter/x_tables.c:1259
- xt_request_find_table_lock+0x27/0xf0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/netfilter/x_tables.c:1284
- get_info+0x16a/0x6d0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/ipv4/netfilter/ip_tables.c:965
- do_ip6t_get_ctl+0x152/0xa10 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/ipv6/netfilter/ip6_tables.c:1663
- nf_getsockopt+0x72/0xd0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/netfilter/nf_sockopt.c:116
- ipv6_getsockopt+0x1be/0x270 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/ipv6/ipv6_sockglue.c:1504
- tcp_getsockopt+0x86/0xd0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/ipv4/tcp.c:4273
- __sys_getsockopt+0x21f/0x6a0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/socket.c:2303
- __do_sys_getsockopt mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/socket.c:2318 [inline]
- __se_sys_getsockopt mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/socket.c:2315 [inline]
- __x64_sys_getsockopt+0xba/0x150 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/socket.c:2315
- do_syscall_x64 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/arch/x86/entry/common.c:50 [inline]
- do_syscall_64+0x35/0xb0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/arch/x86/entry/common.c:80
+ kasan_save_stack+0x1e/0x40 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/mm/kasan/common.c:38
+ __kasan_record_aux_stack+0xbe/0xd0 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/mm/kasan/generic.c:348
+ call_rcu+0x99/0x790 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/kernel/rcu/tree.c:3126
+ nf_hook_entries_free mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/netfilter/core.c:88 [inline]
+ nf_hook_entries_free mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/netfilter/core.c:75 [inline]
+ __nf_register_net_hook+0x3ee/0x8b0 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/netfilter/core.c:451
+ nf_register_net_hook+0x114/0x170 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/netfilter/core.c:572
+ nf_register_net_hooks+0x59/0xc0 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/netfilter/core.c:588
+ nf_nat_register_fn+0x5b3/0x7e0 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/netfilter/nf_nat_core.c:1039
+ ip6t_nat_register_lookups mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/ipv6/netfilter/ip6table_nat.c:79 [inline]
+ ip6table_nat_table_init+0x1d9/0x470 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/ipv6/netfilter/ip6table_nat.c:123
+ xt_find_table_lock+0x39e/0x680 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/netfilter/x_tables.c:1259
+ xt_request_find_table_lock+0x27/0xf0 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/netfilter/x_tables.c:1284
+ get_info+0x16a/0x6d0 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/ipv4/netfilter/ip_tables.c:965
+ do_ip6t_get_ctl+0x152/0xa10 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/ipv6/netfilter/ip6_tables.c:1663
+ nf_getsockopt+0x72/0xd0 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/netfilter/nf_sockopt.c:116
+ ipv6_getsockopt+0x1be/0x270 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/ipv6/ipv6_sockglue.c:1504
+ tcp_getsockopt+0x86/0xd0 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/ipv4/tcp.c:4273
+ __sys_getsockopt+0x21f/0x6a0 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/socket.c:2303
+ __do_sys_getsockopt mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/socket.c:2318 [inline]
+ __se_sys_getsockopt mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/socket.c:2315 [inline]
+ __x64_sys_getsockopt+0xba/0x150 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/socket.c:2315
+ do_syscall_x64 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/arch/x86/entry/common.c:50 [inline]
+ do_syscall_64+0x35/0xb0 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/arch/x86/entry/common.c:80
  entry_SYSCALL_64_after_hwframe+0x46/0xb0
 
 The buggy address belongs to the object at ffff88801dd25900
@@ -302,44 +302,44 @@ raw: 0000000000000000 0000000080100010 00000001ffffffff 0000000000000000
 page dumped because: kasan: bad access detected
 page_owner tracks the page as allocated
 page last allocated via order 0, migratetype Unmovable, gfp_mask 0x12cc0(GFP_KERNEL|__GFP_NOWARN|__GFP_NORETRY), pid 6519, tgid 6519 (syz-executor.0), ts 74045727921, free_ts 74016607395
- prep_new_page mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/mm/page_alloc.c:2441 [inline]
- get_page_from_freelist+0x178d/0x3dc0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/mm/page_alloc.c:4182
- __alloc_pages+0x1b2/0x500 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/mm/page_alloc.c:5408
- alloc_pages+0x1aa/0x310 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/mm/mempolicy.c:2272
- alloc_slab_page mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/mm/slub.c:1797 [inline]
- allocate_slab+0x26c/0x3c0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/mm/slub.c:1942
- new_slab mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/mm/slub.c:2002 [inline]
- ___slab_alloc+0x950/0xd90 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/mm/slub.c:3002
- __slab_alloc.constprop.0+0x4d/0xa0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/mm/slub.c:3089
- slab_alloc_node mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/mm/slub.c:3180 [inline]
- __kmalloc_node+0x2cb/0x390 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/mm/slub.c:4461
- kmalloc_node mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/./include/linux/slab.h:611 [inline]
- kvmalloc_node+0x3e/0x190 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/mm/util.c:612
- kvmalloc mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/./include/linux/slab.h:738 [inline]
- kvzalloc mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/./include/linux/slab.h:746 [inline]
- allocate_hook_entries_size mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/netfilter/core.c:61 [inline]
- nf_hook_entries_grow+0x140/0x780 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/netfilter/core.c:128
- __nf_register_net_hook+0x14d/0x8b0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/netfilter/core.c:429
- nf_register_net_hook+0x114/0x170 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/netfilter/core.c:572
- nf_register_net_hooks+0x59/0xc0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/netfilter/core.c:588
- ebt_register_table+0xce2/0x1120 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/bridge/netfilter/ebtables.c:1276
- find_inlist_lock_noload mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/bridge/netfilter/ebtables.c:343 [inline]
- find_inlist_lock.constprop.0+0x2b5/0x610 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/bridge/netfilter/ebtables.c:370
- find_table_lock mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/bridge/netfilter/ebtables.c:379 [inline]
- do_ebt_get_ctl+0x204/0x790 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/bridge/netfilter/ebtables.c:2467
- nf_getsockopt+0x72/0xd0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/net/netfilter/nf_sockopt.c:116
+ prep_new_page mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/mm/page_alloc.c:2441 [inline]
+ get_page_from_freelist+0x178d/0x3dc0 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/mm/page_alloc.c:4182
+ __alloc_pages+0x1b2/0x500 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/mm/page_alloc.c:5408
+ alloc_pages+0x1aa/0x310 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/mm/mempolicy.c:2272
+ alloc_slab_page mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/mm/slub.c:1797 [inline]
+ allocate_slab+0x26c/0x3c0 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/mm/slub.c:1942
+ new_slab mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/mm/slub.c:2002 [inline]
+ ___slab_alloc+0x950/0xd90 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/mm/slub.c:3002
+ __slab_alloc.constprop.0+0x4d/0xa0 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/mm/slub.c:3089
+ slab_alloc_node mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/mm/slub.c:3180 [inline]
+ __kmalloc_node+0x2cb/0x390 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/mm/slub.c:4461
+ kmalloc_node mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/./include/linux/slab.h:611 [inline]
+ kvmalloc_node+0x3e/0x190 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/mm/util.c:612
+ kvmalloc mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/./include/linux/slab.h:738 [inline]
+ kvzalloc mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/./include/linux/slab.h:746 [inline]
+ allocate_hook_entries_size mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/netfilter/core.c:61 [inline]
+ nf_hook_entries_grow+0x140/0x780 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/netfilter/core.c:128
+ __nf_register_net_hook+0x14d/0x8b0 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/netfilter/core.c:429
+ nf_register_net_hook+0x114/0x170 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/netfilter/core.c:572
+ nf_register_net_hooks+0x59/0xc0 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/netfilter/core.c:588
+ ebt_register_table+0xce2/0x1120 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/bridge/netfilter/ebtables.c:1276
+ find_inlist_lock_noload mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/bridge/netfilter/ebtables.c:343 [inline]
+ find_inlist_lock.constprop.0+0x2b5/0x610 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/bridge/netfilter/ebtables.c:370
+ find_table_lock mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/bridge/netfilter/ebtables.c:379 [inline]
+ do_ebt_get_ctl+0x204/0x790 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/bridge/netfilter/ebtables.c:2467
+ nf_getsockopt+0x72/0xd0 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/netfilter/nf_sockopt.c:116
 page last free stack trace:
- reset_page_owner mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/./include/linux/page_owner.h:24 [inline]
- free_pages_prepare mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/mm/page_alloc.c:1356 [inline]
- free_pcp_prepare+0x549/0xd20 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/mm/page_alloc.c:1406
- free_unref_page_prepare mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/mm/page_alloc.c:3328 [inline]
- free_unref_page+0x19/0x6a0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/mm/page_alloc.c:3423
- __vunmap+0x85d/0xd30 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/mm/vmalloc.c:2667
- free_work+0x58/0x70 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/mm/vmalloc.c:97
- process_one_work+0x95d/0x15c0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/kernel/workqueue.c:2289
- worker_thread+0x665/0x1080 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/kernel/workqueue.c:2436
- kthread+0x2e9/0x3a0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/kernel/kthread.c:376
- ret_from_fork+0x1f/0x30 mnt/sdd/jtbursey/SyzInspector/wd-bisector-4/kernel/arch/x86/entry/entry_64.S:302
+ reset_page_owner mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/./include/linux/page_owner.h:24 [inline]
+ free_pages_prepare mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/mm/page_alloc.c:1356 [inline]
+ free_pcp_prepare+0x549/0xd20 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/mm/page_alloc.c:1406
+ free_unref_page_prepare mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/mm/page_alloc.c:3328 [inline]
+ free_unref_page+0x19/0x6a0 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/mm/page_alloc.c:3423
+ __vunmap+0x85d/0xd30 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/mm/vmalloc.c:2667
+ free_work+0x58/0x70 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/mm/vmalloc.c:97
+ process_one_work+0x95d/0x15c0 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/kernel/workqueue.c:2289
+ worker_thread+0x665/0x1080 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/kernel/workqueue.c:2436
+ kthread+0x2e9/0x3a0 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/kernel/kthread.c:376
+ ret_from_fork+0x1f/0x30 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/arch/x86/entry/entry_64.S:302
 
 Memory state around the buggy address:
  ffff88801dd25800: fa fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb

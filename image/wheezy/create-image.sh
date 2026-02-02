@@ -2,7 +2,7 @@
 # Copyright 2016 syzkaller project authors. All rights reserved.
 # Use of this source code is governed by Apache 2 LICENSE that can be found in the LICENSE file.
 
-# Code modified by JTBursey for use with Meerkat
+# Code modified by AUTHOR for use with Meerkat
 
 # create-image.sh creates a minimal Debian-wheezy Linux image suitable for syzkaller/meerkat.
 

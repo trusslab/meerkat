@@ -1,4 +1,4 @@
-charm starts bisection 2025-04-01 07:13:51.242776184 -0700 PDT m=+4.368255423
+server starts bisection 2025-04-01 07:13:51.242776184 -0700 PDT m=+4.368255423
 bisecting cause commit starting from babe393974de0351c0e6cca50f5f84edaf8d7fa1
 building syzkaller on HEAD
 ensuring issue is reproducible on original commit babe393974de0351c0e6cca50f5f84edaf8d7fa1
@@ -239,7 +239,7 @@ kernel BUG at lib/list_debug.c:62!
 invalid opcode: 0000 [#1] PREEMPT SMP KASAN
 CPU: 1 PID: 12032 Comm: syz-executor.4 Not tainted 6.6.0-rc5-syzkaller #0
 Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.13.0-1ubuntu1.1 04/01/2014
-RIP: 0010:__list_del_entry_valid_or_report+0x11f/0x1b0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/lib/list_debug.c:62
+RIP: 0010:__list_del_entry_valid_or_report+0x11f/0x1b0 mnt/sdd/author/SyzInspector/wd-bisector-5/kernel/lib/list_debug.c:62
 Code: 03 c7 8a e8 c3 f6 4d fd 0f 0b 48 89 ca 48 c7 c7 20 04 c7 8a e8 b2 f6 4d fd 0f 0b 4c 89 c2 48 c7 c7 80 04 c7 8a e8 a1 f6 4d fd <0f> 0b 48 89 d1 48 c7 c7 00 05 c7 8a 4c 89 c2 e8 8d f6 4d fd 0f 0b
 RSP: 0018:ffffc9000306fe00 EFLAGS: 00010082
 RAX: 000000000000006d RBX: ffff88810d1d22c0 RCX: 0000000000000000
@@ -254,18 +254,18 @@ DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
 DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
 Call Trace:
  <TASK>
- __list_del_entry_valid mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/./include/linux/list.h:124 [inline]
- __list_del_entry mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/./include/linux/list.h:215 [inline]
- list_del mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/./include/linux/list.h:229 [inline]
- ptp_release+0x7b/0x210 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/drivers/ptp/ptp_chardev.c:127
- posix_clock_release+0xa4/0x160 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/kernel/time/posix-clock.c:157
- __fput+0x406/0xa70 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/fs/file_table.c:384
- __fput_sync+0x45/0x50 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/fs/file_table.c:465
- __do_sys_close mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/fs/open.c:1572 [inline]
- __se_sys_close mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/fs/open.c:1557 [inline]
- __x64_sys_close+0x8c/0x110 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/fs/open.c:1557
- do_syscall_x64 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/arch/x86/entry/common.c:50 [inline]
- do_syscall_64+0x39/0xb0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/arch/x86/entry/common.c:80
+ __list_del_entry_valid mnt/sdd/author/SyzInspector/wd-bisector-5/kernel/./include/linux/list.h:124 [inline]
+ __list_del_entry mnt/sdd/author/SyzInspector/wd-bisector-5/kernel/./include/linux/list.h:215 [inline]
+ list_del mnt/sdd/author/SyzInspector/wd-bisector-5/kernel/./include/linux/list.h:229 [inline]
+ ptp_release+0x7b/0x210 mnt/sdd/author/SyzInspector/wd-bisector-5/kernel/drivers/ptp/ptp_chardev.c:127
+ posix_clock_release+0xa4/0x160 mnt/sdd/author/SyzInspector/wd-bisector-5/kernel/kernel/time/posix-clock.c:157
+ __fput+0x406/0xa70 mnt/sdd/author/SyzInspector/wd-bisector-5/kernel/fs/file_table.c:384
+ __fput_sync+0x45/0x50 mnt/sdd/author/SyzInspector/wd-bisector-5/kernel/fs/file_table.c:465
+ __do_sys_close mnt/sdd/author/SyzInspector/wd-bisector-5/kernel/fs/open.c:1572 [inline]
+ __se_sys_close mnt/sdd/author/SyzInspector/wd-bisector-5/kernel/fs/open.c:1557 [inline]
+ __x64_sys_close+0x8c/0x110 mnt/sdd/author/SyzInspector/wd-bisector-5/kernel/fs/open.c:1557
+ do_syscall_x64 mnt/sdd/author/SyzInspector/wd-bisector-5/kernel/arch/x86/entry/common.c:50 [inline]
+ do_syscall_64+0x39/0xb0 mnt/sdd/author/SyzInspector/wd-bisector-5/kernel/arch/x86/entry/common.c:80
  entry_SYSCALL_64_after_hwframe+0x63/0xcd
 RIP: 0033:0x7fbf4f6408ab
 Code: 03 00 00 00 0f 05 48 3d 00 f0 ff ff 77 41 c3 48 83 ec 18 89 7c 24 0c e8 63 fc ff ff 8b 7c 24 0c 41 89 c0 b8 03 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 2f 44 89 c7 89 44 24 0c e8 a1 fc ff ff 8b 44
@@ -278,7 +278,7 @@ R13: 00007ffcfbe6e800 R14: 00007fbf4f7cbf80 R15: 0000000000000032
  </TASK>
 Modules linked in:
 ---[ end trace 0000000000000000 ]---
-RIP: 0010:__list_del_entry_valid_or_report+0x11f/0x1b0 mnt/sdd/jtbursey/SyzInspector/wd-bisector-5/kernel/lib/list_debug.c:62
+RIP: 0010:__list_del_entry_valid_or_report+0x11f/0x1b0 mnt/sdd/author/SyzInspector/wd-bisector-5/kernel/lib/list_debug.c:62
 Code: 03 c7 8a e8 c3 f6 4d fd 0f 0b 48 89 ca 48 c7 c7 20 04 c7 8a e8 b2 f6 4d fd 0f 0b 4c 89 c2 48 c7 c7 80 04 c7 8a e8 a1 f6 4d fd <0f> 0b 48 89 d1 48 c7 c7 00 05 c7 8a 4c 89 c2 e8 8d f6 4d fd 0f 0b
 RSP: 0018:ffffc9000306fe00 EFLAGS: 00010082
 RAX: 000000000000006d RBX: ffff88810d1d22c0 RCX: 0000000000000000
