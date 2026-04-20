@@ -1,0 +1,69 @@
+./bin/meerkat -i 1 -c /home/syzretrospector/meerkat/wd-meerkat-1/meerkat.cfg -a e6251ab4551f51fa4cee03523e08051898c3ce82 -F ff-test,find-only -m 20
+Bisecting:          INFO: task hung in vhost_work_dev_flush
+Warning: No syscall found that produces fd_vhost.
+Syzbot Link:        https://syzkaller.appspot.com/bug?id=7b2aea1ce02f87c175f94492d21d04a34bc99b5e
+Working Name:       bug0069
+
+Aliases:
+    INFO: task hung in vhost_work_dev_flush
+
+Anchor Commit:      e6251ab4551f51fa4cee03523e08051898c3ce82
+Repository:         https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
+Branch:             master
+Arch:               amd64
+
+Meerkat:            /home/syzretrospector/meerkat/
+Version:            1.2.0
+Kernel:             /home/syzretrospector/meerkat/wd-meerkat-1/kernel/
+Syzkaller:          /home/syzretrospector/meerkat/syzkaller/
+Compilers:          /home/syzretrospector/meerkat/compilers/
+Compiler:           gcc (Ubuntu 12.3.0-1ubuntu1~22.04.3) 12.3.0
+Linker:             GNU ld (GNU Binutils for Ubuntu) 2.38
+Ccache:             ccache version 4.5.1
+Image:              /home/syzretrospector/meerkat/image/stretch/stretch.img
+Image Key:          /home/syzretrospector/meerkat/image/stretch/stretch.id_rsa
+
+Workdir:            /home/syzretrospector/meerkat/wd-meerkat-1/
+Kconfig:            /home/syzretrospector/meerkat/wd-meerkat-1/config-bug0069.txt
+Reproducers: (1)    /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/
+Syzkaller Workdir:  /home/syzretrospector/meerkat/wd-meerkat-1/wd-kaller/
+Log Directory:      /home/syzretrospector/meerkat/wd-meerkat-1/log/
+
+Syscalls: (9)       ["fcntl$dupfd", "ioctl$VHOST_SET_FEATURES", "ioctl$VHOST_SET_MEM_TABLE", "ioctl$VHOST_SET_VRING_ADDR", "ioctl$VHOST_SET_VRING_BASE", "ioctl$VHOST_VSOCK_SET_RUNNING", "openat$vhost_vsock", "write$vhost_msg_v2", "openat$vnet"]
+VM Count:           8
+CPU Count:          2
+Procs:              16
+Memory:             4096
+Make Procs:         16
+Max Time:           20
+Max Attempts:       1
+
+==== Anchor Commit ====
+
+2026-04-16 15:27:01
+Session:   1
+Kernel:    2022-02-08 - e6251ab4551f51fa4cee03523e08051898c3ce82
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       5  INFO: task hung in vhost_vsock_stop
+      16  SYZFAIL: failed to recv rpc (2)
+      17  SYZFAIL: failed to recv rpc
+      20  no output from test machine
+Attempt 2: (RETRY)
+    Time  Bug Name
+       5  INFO: task hung in vhost_vsock_stop (2)
+      14  INFO: task hung in vhost_vsock_stop
+      15  INFO: task hung in vhost_vsock_dev_ioctl
+      17  INFO: task hung in vhost_vsock_stop
+      18  INFO: task hung in vhost_vsock_dev_ioctl
+      18  INFO: task hung in vhost_vsock_stop (2)
+      19  INFO: task hung in vhost_vsock_stop
+      20  no output from test machine
+Attempt 3: (RETRY)
+    Time  Bug Name
+       5  INFO: task hung in vhost_vsock_stop
+      15  SYZFAIL: failed to recv rpc (2)
+      18  SYZFAIL: failed to recv rpc
+The bug was not found.
+Find-only complete.

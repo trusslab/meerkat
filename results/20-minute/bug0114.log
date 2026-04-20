@@ -1,0 +1,56 @@
+./bin/meerkat -i 1 -c /home/syzretrospector/meerkat/wd-meerkat-1/meerkat.cfg -a 68453767131a5deec1e8f9ac92a9042f929e585d -F ff-test,find-only -m 20
+Bisecting:          KASAN: slab-out-of-bounds Read in packet_recvmsg
+Syzbot Link:        https://syzkaller.appspot.com/bug?id=7c7245f9088053e9e49b97a341dee26c9ed40a2c
+Working Name:       bug0114
+
+Aliases:
+    KASAN: slab-out-of-bounds Read in packet_recvmsg
+
+Anchor Commit:      68453767131a5deec1e8f9ac92a9042f929e585d
+Repository:         https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
+Branch:             master
+Arch:               amd64
+
+Meerkat:            /home/syzretrospector/meerkat/
+Version:            1.2.0
+Kernel:             /home/syzretrospector/meerkat/wd-meerkat-1/kernel/
+Syzkaller:          /home/syzretrospector/meerkat/syzkaller/
+Compilers:          /home/syzretrospector/meerkat/compilers/
+Compiler:           gcc (Ubuntu 12.3.0-1ubuntu1~22.04.3) 12.3.0
+Linker:             GNU ld (GNU Binutils for Ubuntu) 2.38
+Ccache:             ccache version 4.5.1
+Image:              /home/syzretrospector/meerkat/image/stretch/stretch.img
+Image Key:          /home/syzretrospector/meerkat/image/stretch/stretch.id_rsa
+
+Workdir:            /home/syzretrospector/meerkat/wd-meerkat-1/
+Kconfig:            /home/syzretrospector/meerkat/wd-meerkat-1/config-bug0114.txt
+Reproducers: (1)    /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/
+Primary PoC:        /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0114-3.prog
+Syzkaller Workdir:  /home/syzretrospector/meerkat/wd-meerkat-1/wd-kaller/
+Log Directory:      /home/syzretrospector/meerkat/wd-meerkat-1/log/
+
+Syscalls: (17)      ["bind", "getsockname$packet", "recvmsg", "sendmsg$nl_route_sched", "setsockopt$packet_int", "setsockopt$packet_rx_ring", "socket", "socket$packet", "socket$nl_route", "ioctl$F2FS_IOC_START_ATOMIC_WRITE", "openat$selinux_enforce", "socket$netlink", "ioctl$ifreq_SIOCGIFINDEX_vcan", "ioctl$IOCTL_GET_NCIDEV_IDX", "openat$nci", "bpf$BPF_PROG_GET_FD_BY_ID", "bpf$BPF_PROG_GET_NEXT_ID"]
+VM Count:           8
+CPU Count:          2
+Procs:              16
+Memory:             4096
+Make Procs:         16
+Max Time:           20
+Max Attempts:       1
+
+==== Anchor Commit ====
+
+2026-04-17 00:57:35
+Session:   1
+Kernel:    2022-03-11 - 68453767131a5deec1e8f9ac92a9042f929e585d
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+Attempt 2: (RETRY)
+    No crashes found.
+Attempt 3: (RETRY)
+    Time  Bug Name
+      18  WARNING in isotp_tx_timer_handler (has report)
+      20  WARNING in isotp_tx_timer_handler (has report)
+The bug was not found.
+Find-only complete.

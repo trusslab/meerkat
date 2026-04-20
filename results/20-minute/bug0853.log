@@ -1,0 +1,74 @@
+./bin/meerkat -i 1 -c /home/syzretrospector/meerkat/wd-meerkat-1/meerkat.cfg -a fff5a5e7f528b2ed2c335991399a766c2cf01103 -F ff-test,find-only -m 20
+Bisecting:          INFO: task hung in btrfs_sync_file
+Syzbot Link:        https://syzkaller.appspot.com/bug?extid=a694851c6ab28cbcfb9c
+Working Name:       bug0853
+
+Aliases:
+    INFO: task hung in btrfs_sync_file
+
+Anchor Commit:      fff5a5e7f528b2ed2c335991399a766c2cf01103
+Repository:         https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
+Branch:             master
+Arch:               amd64
+
+Meerkat:            /home/syzretrospector/meerkat/
+Version:            1.2.0
+Kernel:             /home/syzretrospector/meerkat/wd-meerkat-1/kernel/
+Syzkaller:          /home/syzretrospector/meerkat/syzkaller/
+Compilers:          /home/syzretrospector/meerkat/compilers/
+Compiler:           gcc (Ubuntu 12.3.0-1ubuntu1~22.04.3) 12.3.0
+Linker:             GNU ld (GNU Binutils for Ubuntu) 2.38
+Ccache:             ccache version 4.5.1
+Image:              /home/syzretrospector/meerkat/image/stretch/stretch.img
+Image Key:          /home/syzretrospector/meerkat/image/stretch/stretch.id_rsa
+
+Workdir:            /home/syzretrospector/meerkat/wd-meerkat-1/
+Kconfig:            /home/syzretrospector/meerkat/wd-meerkat-1/config-bug0853.txt
+Reproducers: (1)    /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/
+Syzkaller Workdir:  /home/syzretrospector/meerkat/wd-meerkat-1/wd-kaller/
+Log Directory:      /home/syzretrospector/meerkat/wd-meerkat-1/log/
+
+Syscalls: (14)      ["creat", "fallocate", "ioctl$FS_IOC_FIEMAP", "mmap", "open", "syz_mount_image$btrfs", "write$RDMA_USER_CM_CMD_ACCEPT", "open$dir", "openat$rdma_cm", "write$RDMA_USER_CM_CMD_CREATE_ID", "mount$bpf", "getuid", "setgid", "getgid"]
+VM Count:           8
+CPU Count:          2
+Procs:              16
+Memory:             4096
+Make Procs:         16
+Max Time:           20
+Max Attempts:       1
+
+==== Anchor Commit ====
+
+2026-04-18 16:26:14
+Session:   1
+Kernel:    2023-03-22 - fff5a5e7f528b2ed2c335991399a766c2cf01103
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       8  kernel BUG in btrfs_global_root_insert (2) (has report)
+       8  INFO: task hung in lock_extent
+       9  kernel BUG in btrfs_global_root_insert (has report)
+      10  kernel BUG in btrfs_global_root_insert (has report)
+      10  INFO: task hung in lock_extent
+      11  kernel BUG in btrfs_global_root_insert (has report)
+      14  kernel BUG in btrfs_global_root_insert (has report)
+      14  INFO: task hung in lock_extent (2)
+      17  INFO: task hung in lock_extent
+      18  INFO: task hung in lock_extent
+Attempt 2: (RETRY)
+    Time  Bug Name
+       5  INFO: task hung in extent_write_cache_pages
+       5  INFO: task hung in lock_extent
+Attempt 3: (RETRY)
+    Time  Bug Name
+       8  kernel BUG in btrfs_global_root_insert (has report)
+       8  INFO: task hung in lock_extent
+      10  INFO: task hung in btrfs_page_mkwrite
+      10  INFO: task hung in lock_extent
+      11  INFO: task hung in process_measurement
+      14  kernel BUG in btrfs_global_root_insert (has report)
+      16  INFO: task hung in lock_extent (2)
+      19  INFO: task hung in lock_extent
+      20  INFO: task hung in lock_extent
+The bug was not found.
+Find-only complete.

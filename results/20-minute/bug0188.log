@@ -1,0 +1,68 @@
+./bin/meerkat -i 1 -c /home/syzretrospector/meerkat/wd-meerkat-1/meerkat.cfg -a b81b1829e7e39f6cebdf6e4d5484eacbceda8554 -F ff-test,find-only -m 20
+Bisecting:          general protection fault in sock_reserve_memory
+Syzbot Link:        https://syzkaller.appspot.com/bug?id=df33000f01fc8cd31a9b7555db19bf583548ed04
+Working Name:       bug0188
+
+Aliases:
+    general protection fault in sock_reserve_memory
+
+Anchor Commit:      b81b1829e7e39f6cebdf6e4d5484eacbceda8554
+Repository:         https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
+Branch:             master
+Arch:               amd64
+
+Meerkat:            /home/syzretrospector/meerkat/
+Version:            1.2.0
+Kernel:             /home/syzretrospector/meerkat/wd-meerkat-1/kernel/
+Syzkaller:          /home/syzretrospector/meerkat/syzkaller/
+Compilers:          /home/syzretrospector/meerkat/compilers/
+Compiler:           gcc (Ubuntu 12.3.0-1ubuntu1~22.04.3) 12.3.0
+Linker:             GNU ld (GNU Binutils for Ubuntu) 2.38
+Ccache:             ccache version 4.5.1
+Image:              /home/syzretrospector/meerkat/image/stretch/stretch.img
+Image Key:          /home/syzretrospector/meerkat/image/stretch/stretch.id_rsa
+
+Workdir:            /home/syzretrospector/meerkat/wd-meerkat-1/
+Kconfig:            /home/syzretrospector/meerkat/wd-meerkat-1/config-bug0188.txt
+Reproducers: (1)    /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/
+Primary PoC:        /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0188-1.prog
+Syzkaller Workdir:  /home/syzretrospector/meerkat/wd-meerkat-1/wd-kaller/
+Log Directory:      /home/syzretrospector/meerkat/wd-meerkat-1/log/
+
+Syscalls: (21)      ["bpf$BPF_PROG_WITH_BTFID_LOAD", "setsockopt$sock_attach_bpf", "socket$alg", "socket", "bpf$BPF_PROG_GET_FD_BY_ID", "ioctl$F2FS_IOC_START_ATOMIC_WRITE", "openat$selinux_enforce", "syz_btf_id_by_name$bpf_lsm", "ioctl$sock_SIOCGIFINDEX", "bpf$BPF_BTF_LOAD", "bpf$OBJ_GET_MAP", "bpf$BPF_BTF_GET_FD_BY_ID", "bpf$BPF_BTF_GET_NEXT_ID", "bpf$BPF_PROG_GET_NEXT_ID", "bpf$TOKEN_CREATE", "bpf$BPF_MAP_CONST_STR_FREEZE", "bpf$MAP_UPDATE_ELEM_TAIL_CALL", "bpf$MAP_CREATE_RINGBUF", "bpf$MAP_UPDATE_CONST_STR", "bpf$MAP_CREATE_TAIL_CALL", "bpf$MAP_CREATE_CONST_STR"]
+VM Count:           8
+CPU Count:          2
+Procs:              16
+Memory:             4096
+Make Procs:         16
+Max Time:           20
+Max Attempts:       1
+
+==== Anchor Commit ====
+
+2026-04-17 16:08:53
+Session:   1
+Kernel:    2022-02-12 - b81b1829e7e39f6cebdf6e4d5484eacbceda8554
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+      10  WARNING: kmalloc bug in bpf (2) (has report)
+      14  suppressed report
+      15  suppressed report
+      16  suppressed report
+      19  WARNING in bpf_check (has report)
+      20  WARNING in bpf_check (has report)
+Attempt 2: (RETRY)
+    Time  Bug Name
+       7  suppressed report
+       8  suppressed report
+      12  suppressed report
+      14  WARNING: ODEBUG bug in netdev_run_todo (has report)
+Attempt 3: (RETRY)
+    Time  Bug Name
+      14  suppressed report (2) (has report)
+      14  WARNING: kmalloc bug in bpf (has report)
+      16  suppressed report (has report)
+      19  suppressed report (2) (has report)
+The bug was not found.
+Find-only complete.

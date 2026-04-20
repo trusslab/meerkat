@@ -1,0 +1,88 @@
+./bin/meerkat -i 1 -c /home/syzretrospector/meerkat/wd-meerkat-1/meerkat.cfg -a 42226c989789d8da4af1de0c31070c96726d990c -F ff-test,find-only -m 20
+Bisecting:          BUG: unable to handle kernel NULL pointer dereference in io_do_iopoll
+Syzbot Link:        https://syzkaller.appspot.com/bug?id=38efa4618c3379cf98642b9379d6e340b14d2702
+Working Name:       bug0156
+
+Aliases:
+    BUG: unable to handle kernel NULL pointer dereference in io_do_iopoll
+
+Anchor Commit:      42226c989789d8da4af1de0c31070c96726d990c
+Repository:         https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
+Branch:             master
+Arch:               amd64
+
+Meerkat:            /home/syzretrospector/meerkat/
+Version:            1.2.0
+Kernel:             /home/syzretrospector/meerkat/wd-meerkat-1/kernel/
+Syzkaller:          /home/syzretrospector/meerkat/syzkaller/
+Compilers:          /home/syzretrospector/meerkat/compilers/
+Compiler:           gcc (Ubuntu 12.3.0-1ubuntu1~22.04.3) 12.3.0
+Linker:             GNU ld (GNU Binutils for Ubuntu) 2.38
+Ccache:             ccache version 4.5.1
+Image:              /home/syzretrospector/meerkat/image/stretch/stretch.img
+Image Key:          /home/syzretrospector/meerkat/image/stretch/stretch.id_rsa
+
+Workdir:            /home/syzretrospector/meerkat/wd-meerkat-1/
+Kconfig:            /home/syzretrospector/meerkat/wd-meerkat-1/config-bug0156.txt
+Reproducers: (1)    /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/
+Primary PoC:        /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0156-2.prog
+Syzkaller Workdir:  /home/syzretrospector/meerkat/wd-meerkat-1/wd-kaller/
+Log Directory:      /home/syzretrospector/meerkat/wd-meerkat-1/log/
+
+Syscalls: (28)      ["io_uring_enter", "mmap$IORING_OFF_SQES", "syz_io_uring_setup", "syz_io_uring_submit", "ioctl$sock_SIOCGIFINDEX", "ioctl$IOCTL_GET_NCIDEV_IDX", "ioctl$F2FS_IOC_START_ATOMIC_WRITE", "openat$selinux_enforce", "statx", "socket", "setsockopt$inet_mreqn", "openat$nci", "bind$nfc_llcp", "open$dir", "io_uring_register$IORING_UNREGISTER_PERSONALITY", "io_uring_register$IORING_REGISTER_PERSONALITY", "futex", "getrusage", "clock_gettime", "mount$bpf", "getuid", "setgid", "getgid", "epoll_create", "socket$inet", "syz_init_net_socket$nfc_llcp", "ioctl$ifreq_SIOCGIFINDEX_vcan", "utimes"]
+VM Count:           8
+CPU Count:          2
+Procs:              16
+Memory:             4096
+Make Procs:         16
+Max Time:           20
+Max Attempts:       1
+
+==== Anchor Commit ====
+
+2026-04-17 06:52:30
+Session:   1
+Kernel:    2022-05-15 - 42226c989789d8da4af1de0c31070c96726d990c
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       3  KASAN: use-after-free Read in io_poll_remove_entries (2) (has report)
+       4  KASAN: use-after-free Read in io_poll_remove_entries (has report)
+       5  KASAN: use-after-free Read in io_poll_remove_entries (has report)
+       6  KASAN: use-after-free Read in io_poll_remove_entries (2) (has report)
+       7  KASAN: use-after-free Read in io_poll_remove_entries (5) (has report)
+       8  KASAN: use-after-free Read in io_poll_remove_entries (2) (has report)
+       9  KASAN: use-after-free Read in io_poll_remove_entries (3) (has report)
+      10  KASAN: use-after-free Read in io_poll_remove_entries (has report)
+      11  KASAN: use-after-free Read in io_poll_remove_entries (2) (has report)
+      12  KASAN: use-after-free Read in io_poll_remove_entries (6) (has report)
+      13  KASAN: use-after-free Read in io_poll_remove_entries (2) (has report)
+      14  KASAN: use-after-free Read in io_poll_remove_entries (6) (has report)
+      15  KASAN: use-after-free Read in io_poll_remove_entries (has report)
+      16  KASAN: use-after-free Read in io_poll_remove_entries (3) (has report)
+      17  KASAN: use-after-free Read in io_poll_remove_entries (4) (has report)
+      18  KASAN: use-after-free Read in io_poll_remove_entries (has report)
+      19  KASAN: use-after-free Read in io_poll_remove_entries (7) (has report)
+      20  KASAN: use-after-free Read in io_poll_remove_entries (2) (has report)
+Attempt 2: (RETRY)
+    Time  Bug Name
+       9  KASAN: use-after-free Read in io_poll_remove_entries (has report)
+      14  KASAN: use-after-free Read in io_poll_remove_entries (has report)
+      20  KASAN: use-after-free Read in io_poll_remove_entries (has report)
+Attempt 3: (RETRY)
+    Time  Bug Name
+       9  KASAN: use-after-free Read in io_poll_remove_entries (2) (has report)
+      10  KASAN: use-after-free Read in io_poll_remove_entries (5) (has report)
+      11  KASAN: use-after-free Read in io_poll_remove_entries (has report)
+      12  KASAN: use-after-free Read in io_poll_remove_entries (5) (has report)
+      13  KASAN: use-after-free Read in io_poll_remove_entries (4) (has report)
+      14  KASAN: use-after-free Read in io_poll_remove_entries (has report)
+      15  KASAN: use-after-free Read in io_poll_remove_entries (2) (has report)
+      16  KASAN: use-after-free Read in io_poll_remove_entries (has report)
+      17  KASAN: use-after-free Read in io_poll_remove_entries (5) (has report)
+      18  KASAN: use-after-free Read in io_poll_remove_entries (2) (has report)
+      18  WARNING: ODEBUG bug in netdev_run_todo (has report)
+      19  KASAN: use-after-free Read in io_poll_remove_entries (2) (has report)
+      20  KASAN: use-after-free Read in io_poll_remove_entries (has report)
+The bug was not found.
+Find-only complete.

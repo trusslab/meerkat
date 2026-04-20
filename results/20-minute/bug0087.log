@@ -1,0 +1,63 @@
+./bin/meerkat -i 1 -c /home/syzretrospector/meerkat/wd-meerkat-1/meerkat.cfg -a 52d543b5497cf31d6baeb0bcfe5a5474c3238578 -F ff-test,find-only -m 20
+Bisecting:          INFO: task hung in rfcomm_process_sessions
+Warning: No syscall found that produces sock_bt.
+Syzbot Link:        https://syzkaller.appspot.com/bug?id=ee9018bd8989530a2dbdd62436efd8b1c3ecd3e5
+Working Name:       bug0087
+
+Aliases:
+    INFO: task hung in rfcomm_process_sessions
+
+Anchor Commit:      52d543b5497cf31d6baeb0bcfe5a5474c3238578
+Repository:         https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
+Branch:             master
+Arch:               amd64
+
+Meerkat:            /home/syzretrospector/meerkat/
+Version:            1.2.0
+Kernel:             /home/syzretrospector/meerkat/wd-meerkat-1/kernel/
+Syzkaller:          /home/syzretrospector/meerkat/syzkaller/
+Compilers:          /home/syzretrospector/meerkat/compilers/
+Compiler:           gcc (Ubuntu 12.3.0-1ubuntu1~22.04.3) 12.3.0
+Linker:             GNU ld (GNU Binutils for Ubuntu) 2.38
+Ccache:             ccache version 4.5.1
+Image:              /home/syzretrospector/meerkat/image/stretch/stretch.img
+Image Key:          /home/syzretrospector/meerkat/image/stretch/stretch.id_rsa
+
+Workdir:            /home/syzretrospector/meerkat/wd-meerkat-1/
+Kconfig:            /home/syzretrospector/meerkat/wd-meerkat-1/config-bug0087.txt
+Reproducers: (10)   /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/
+Syzkaller Workdir:  /home/syzretrospector/meerkat/wd-meerkat-1/wd-kaller/
+Log Directory:      /home/syzretrospector/meerkat/wd-meerkat-1/log/
+
+Syscalls: (9)       ["connect", "syz_init_net_socket$bt_l2cap", "socket", "ioctl$F2FS_IOC_START_ATOMIC_WRITE", "openat$selinux_enforce", "ioctl$sock_SIOCGIFINDEX", "ioctl$ifreq_SIOCGIFINDEX_vcan", "ioctl$IOCTL_GET_NCIDEV_IDX", "openat$nci"]
+VM Count:           8
+CPU Count:          2
+Procs:              16
+Memory:             4096
+Make Procs:         16
+Max Time:           20
+Max Attempts:       1
+
+==== Anchor Commit ====
+
+2026-04-16 17:51:05
+Session:   1
+Kernel:    2022-03-25 - 52d543b5497cf31d6baeb0bcfe5a5474c3238578
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  possible deadlock in rfcomm_sk_state_change (8)
+       3  possible deadlock in rfcomm_sk_state_change (7)
+Attempt 2: (RETRY)
+    Time  Bug Name
+       2  possible deadlock in rfcomm_sk_state_change (8)
+       3  possible deadlock in rfcomm_sk_state_change (8)
+       4  possible deadlock in rfcomm_sk_state_change (3)
+Attempt 3: (RETRY)
+    Time  Bug Name
+       2  possible deadlock in rfcomm_sk_state_change (8)
+       3  possible deadlock in rfcomm_sk_state_change (8)
+       4  possible deadlock in rfcomm_sk_state_change
+      11  WARNING: ODEBUG bug in netdev_run_todo (has report)
+The bug was not found.
+Find-only complete.

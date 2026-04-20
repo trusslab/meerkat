@@ -1,0 +1,90 @@
+./bin/meerkat -i 1 -c /home/syzretrospector/meerkat/wd-meerkat-1/meerkat.cfg -a a689b938df39ab513026c53fb7011fd7cd594943 -F ff-test,find-only -m 20
+Bisecting:          KASAN: use-after-free Read in io_worker_get
+Syzbot Link:        https://syzkaller.appspot.com/bug?extid=55cc59267340fad29512
+Working Name:       bug0897
+
+Aliases:
+    KASAN: use-after-free Read in io_worker_get
+
+Anchor Commit:      a689b938df39ab513026c53fb7011fd7cd594943
+Repository:         https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
+Branch:             master
+Arch:               amd64
+
+Meerkat:            /home/syzretrospector/meerkat/
+Version:            1.2.0
+Kernel:             /home/syzretrospector/meerkat/wd-meerkat-1/kernel/
+Syzkaller:          /home/syzretrospector/meerkat/syzkaller/
+Compilers:          /home/syzretrospector/meerkat/compilers/
+Compiler:           gcc (Ubuntu 12.3.0-1ubuntu1~22.04.3) 12.3.0
+Linker:             GNU ld (GNU Binutils for Ubuntu) 2.38
+Ccache:             ccache version 4.5.1
+Image:              /home/syzretrospector/meerkat/image/stretch/stretch.img
+Image Key:          /home/syzretrospector/meerkat/image/stretch/stretch.id_rsa
+
+Workdir:            /home/syzretrospector/meerkat/wd-meerkat-1/
+Kconfig:            /home/syzretrospector/meerkat/wd-meerkat-1/config-bug0897.txt
+Reproducers: (1)    /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/
+Primary PoC:        /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0897-1.prog
+Syzkaller Workdir:  /home/syzretrospector/meerkat/wd-meerkat-1/wd-kaller/
+Log Directory:      /home/syzretrospector/meerkat/wd-meerkat-1/log/
+
+Syscalls: (29)      ["accept", "bind$alg", "io_uring_enter", "sendmmsg$sock", "setsockopt$ALG_SET_KEY", "socket$alg", "syz_io_uring_setup", "syz_io_uring_submit", "ioctl$sock_SIOCGIFINDEX", "ioctl$IOCTL_GET_NCIDEV_IDX", "keyctl$get_keyring_id", "add_key", "ioctl$F2FS_IOC_START_ATOMIC_WRITE", "openat$selinux_enforce", "statx", "openat$nci", "add_key$keyring", "open$dir", "io_uring_register$IORING_UNREGISTER_PERSONALITY", "io_uring_register$IORING_REGISTER_PERSONALITY", "futex", "getrusage", "clock_gettime", "mount$bpf", "getuid", "setgid", "getgid", "epoll_create", "utimes"]
+VM Count:           8
+CPU Count:          2
+Procs:              16
+Memory:             4096
+Make Procs:         16
+Max Time:           20
+Max Attempts:       1
+
+==== Anchor Commit ====
+
+2026-04-18 21:41:07
+Session:   1
+Kernel:    2023-01-06 - a689b938df39ab513026c53fb7011fd7cd594943
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  INFO: rcu detected stall in corrupted
+       6  INFO: rcu detected stall in corrupted (8)
+       8  INFO: rcu detected stall in corrupted
+       9  INFO: rcu detected stall in corrupted (7)
+      11  INFO: rcu detected stall in corrupted
+      12  INFO: rcu detected stall in corrupted (5)
+      13  INFO: rcu detected stall in corrupted
+      14  INFO: rcu detected stall in corrupted (2)
+      15  INFO: rcu detected stall in corrupted (3)
+      16  INFO: rcu detected stall in corrupted (2)
+      18  INFO: rcu detected stall in corrupted (6)
+      19  INFO: rcu detected stall in corrupted (2)
+      20  INFO: rcu detected stall in corrupted (3)
+Attempt 2: (RETRY)
+    Time  Bug Name
+       5  WARNING in io_fill_cqe_aux (has report)
+       6  INFO: rcu detected stall in corrupted
+       7  INFO: rcu detected stall in corrupted (7)
+       9  INFO: rcu detected stall in corrupted (5)
+      10  INFO: rcu detected stall in corrupted
+      11  INFO: rcu detected stall in corrupted (2)
+      12  INFO: rcu detected stall in corrupted (6)
+      13  INFO: rcu detected stall in corrupted
+      14  INFO: rcu detected stall in corrupted
+      15  INFO: rcu detected stall in corrupted (5)
+      16  INFO: rcu detected stall in corrupted (4)
+      17  INFO: rcu detected stall in corrupted (2)
+      18  INFO: rcu detected stall in corrupted (3)
+      19  INFO: rcu detected stall in corrupted (2)
+      20  INFO: rcu detected stall in corrupted (3)
+Attempt 3: (RETRY)
+    Time  Bug Name
+       2  INFO: rcu detected stall in corrupted
+      14  INFO: rcu detected stall in corrupted
+      15  INFO: rcu detected stall in corrupted (2)
+      16  INFO: rcu detected stall in corrupted (4)
+      17  INFO: rcu detected stall in corrupted
+      18  INFO: rcu detected stall in corrupted (3)
+      19  INFO: rcu detected stall in corrupted (2)
+      20  INFO: rcu detected stall in corrupted (4)
+The bug was not found.
+Find-only complete.

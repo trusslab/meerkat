@@ -1,0 +1,95 @@
+./bin/meerkat -i 1 -c /home/syzretrospector/meerkat/wd-meerkat-1/meerkat.cfg -a e1c04510f521e853019afeca2a5991a5ef8d6a5b -F ff-test,find-only -m 20
+Bisecting:          WARNING in sk_stream_kill_queues
+Syzbot Link:        https://syzkaller.appspot.com/bug?id=3d423b1e2dff471bafd33c63ed2c3efda80dceaf
+Working Name:       bug0076
+
+Aliases:
+    WARNING in sk_stream_kill_queues
+
+Anchor Commit:      e1c04510f521e853019afeca2a5991a5ef8d6a5b
+Repository:         https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
+Branch:             master
+Arch:               amd64
+
+Meerkat:            /home/syzretrospector/meerkat/
+Version:            1.2.0
+Kernel:             /home/syzretrospector/meerkat/wd-meerkat-1/kernel/
+Syzkaller:          /home/syzretrospector/meerkat/syzkaller/
+Compilers:          /home/syzretrospector/meerkat/compilers/
+Compiler:           gcc (Ubuntu 12.3.0-1ubuntu1~22.04.3) 12.3.0
+Linker:             GNU ld (GNU Binutils for Ubuntu) 2.38
+Ccache:             ccache version 4.5.1
+Image:              /home/syzretrospector/meerkat/image/stretch/stretch.img
+Image Key:          /home/syzretrospector/meerkat/image/stretch/stretch.id_rsa
+
+Workdir:            /home/syzretrospector/meerkat/wd-meerkat-1/
+Kconfig:            /home/syzretrospector/meerkat/wd-meerkat-1/config-bug0076.txt
+Reproducers: (2)    /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/
+Primary PoC:        /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0076-1.prog
+Syzkaller Workdir:  /home/syzretrospector/meerkat/wd-meerkat-1/wd-kaller/
+Log Directory:      /home/syzretrospector/meerkat/wd-meerkat-1/log/
+
+Syscalls: (31)      ["bind$inet", "bpf$BPF_PROG_DETACH", "bpf$MAP_CREATE", "bpf$MAP_UPDATE_ELEM", "bpf$PROG_LOAD", "sendto$inet", "shutdown", "socket$inet_tcp", "socket$inet", "openat$cgroup_root", "bpf$LINK_GET_FD_BY_ID", "bpf$BPF_PROG_GET_FD_BY_ID", "socket", "bpf$BPF_PROG_QUERY", "openat$selinux_enforce", "bpf$BPF_BTF_GET_NEXT_ID", "bpf$LINK_GET_NEXT_ID", "socket$inet_udp", "socket$inet6_udp", "socket$inet6_tcp", "ioctl$sock_SIOCGIFINDEX", "bpf$BPF_BTF_LOAD", "socket$inet6", "bpf$TOKEN_CREATE", "bpf$BPF_PROG_GET_NEXT_ID", "bpf$BPF_MAP_CONST_STR_FREEZE", "bpf$MAP_UPDATE_ELEM_TAIL_CALL", "bpf$MAP_CREATE_RINGBUF", "bpf$MAP_UPDATE_CONST_STR", "bpf$MAP_CREATE_TAIL_CALL", "bpf$MAP_CREATE_CONST_STR"]
+VM Count:           8
+CPU Count:          2
+Procs:              16
+Memory:             4096
+Make Procs:         16
+Max Time:           20
+Max Attempts:       1
+
+==== Anchor Commit ====
+
+2026-04-16 16:33:22
+Session:   1
+Kernel:    2023-02-14 - e1c04510f521e853019afeca2a5991a5ef8d6a5b
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       4  INFO: trying to register non-static key in net_free (has report)
+       6  INFO: trying to register non-static key in net_free (7) (has report)
+       9  INFO: trying to register non-static key in net_free (has report)
+      11  suppressed report (has report)
+      11  INFO: trying to register non-static key in net_free (6) (has report)
+      14  suppressed report (has report)
+      15  INFO: trying to register non-static key in net_free (has report)
+      17  suppressed report (has report)
+      17  INFO: trying to register non-static key in net_free (5) (has report)
+      18  WARNING in send_hsr_supervision_frame (has report)
+Attempt 2: (RETRY)
+    Time  Bug Name
+       2  suppressed report
+       3  suppressed report
+       4  INFO: trying to register non-static key in net_free (has report)
+       6  INFO: trying to register non-static key in net_free (5) (has report)
+       8  suppressed report
+       8  INFO: trying to register non-static key in net_free (2) (has report)
+      11  suppressed report
+      11  INFO: trying to register non-static key in net_free (2) (has report)
+      12  suppressed report
+      12  INFO: trying to register non-static key in net_free (has report)
+      12  KASAN: use-after-free Read in consume_skb (has report)
+      14  suppressed report
+      14  INFO: trying to register non-static key in net_free (has report)
+      17  INFO: trying to register non-static key in net_free (5) (has report)
+      18  INFO: trying to register non-static key in net_free (has report)
+      20  INFO: trying to register non-static key in net_free (2) (has report)
+Attempt 3: (RETRY)
+    Time  Bug Name
+       4  INFO: trying to register non-static key in net_free (has report)
+       5  suppressed report
+       6  suppressed report
+       6  INFO: trying to register non-static key in net_free (5) (has report)
+       9  INFO: trying to register non-static key in net_free (has report)
+      10  INFO: trying to register non-static key in net_free (has report)
+      11  INFO: trying to register non-static key in net_free (4) (has report)
+      12  suppressed report
+      12  INFO: trying to register non-static key in net_free (has report)
+      14  INFO: trying to register non-static key in net_free (has report)
+      16  suppressed report
+      16  INFO: trying to register non-static key in net_free (has report)
+      17  INFO: trying to register non-static key in net_free (4) (has report)
+      18  INFO: trying to register non-static key in net_free (has report)
+      20  INFO: trying to register non-static key in net_free (has report)
+The bug was not found.
+Find-only complete.

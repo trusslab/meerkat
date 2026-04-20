@@ -1,0 +1,92 @@
+./bin/meerkat -i 1 -c /home/syzretrospector/meerkat/wd-meerkat-1/meerkat.cfg -a 55be6084c8e0e0ada9278c2ab60b7a584378efda -F ff-test,find-only -m 20
+Bisecting:          general protection fault in end_page_writeback
+Syzbot Link:        https://syzkaller.appspot.com/bug?id=3e6b8dffceaafaa4d2a054ee7b38f6f3fc5ce16a
+Working Name:       bug0089
+
+Aliases:
+    general protection fault in end_page_writeback
+
+Anchor Commit:      55be6084c8e0e0ada9278c2ab60b7a584378efda
+Repository:         https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
+Branch:             master
+Arch:               amd64
+
+Meerkat:            /home/syzretrospector/meerkat/
+Version:            1.2.0
+Kernel:             /home/syzretrospector/meerkat/wd-meerkat-1/kernel/
+Syzkaller:          /home/syzretrospector/meerkat/syzkaller/
+Compilers:          /home/syzretrospector/meerkat/compilers/
+Compiler:           gcc (Ubuntu 12.3.0-1ubuntu1~22.04.3) 12.3.0
+Linker:             GNU ld (GNU Binutils for Ubuntu) 2.38
+Ccache:             ccache version 4.5.1
+Image:              /home/syzretrospector/meerkat/image/stretch/stretch.img
+Image Key:          /home/syzretrospector/meerkat/image/stretch/stretch.id_rsa
+
+Workdir:            /home/syzretrospector/meerkat/wd-meerkat-1/
+Kconfig:            /home/syzretrospector/meerkat/wd-meerkat-1/config-bug0089.txt
+Reproducers: (1)    /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/
+Syzkaller Workdir:  /home/syzretrospector/meerkat/wd-meerkat-1/wd-kaller/
+Log Directory:      /home/syzretrospector/meerkat/wd-meerkat-1/log/
+
+Syscalls: (10)      ["syz_clone", "syz_mount_image$nilfs2", "get_robust_list", "open$dir", "ioctl$F2FS_IOC_START_ATOMIC_WRITE", "openat$selinux_enforce", "mount$bpf", "getuid", "setgid", "getgid"]
+VM Count:           8
+CPU Count:          2
+Procs:              16
+Memory:             4096
+Make Procs:         16
+Max Time:           20
+Max Attempts:       1
+
+==== Anchor Commit ====
+
+2026-04-16 20:19:43
+Session:   1
+Kernel:    2022-10-10 - 55be6084c8e0e0ada9278c2ab60b7a584378efda
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       1  WARNING in wireless_send_event (has report)
+       2  INFO: rcu detected stall in corrupted
+       2  WARNING in wireless_send_event (2) (has report)
+       4  INFO: rcu detected stall in corrupted (4)
+       6  INFO: rcu detected stall in corrupted
+       8  INFO: rcu detected stall in corrupted (2)
+       8  KASAN: use-after-free Read in do_shrink_slab (has report)
+       9  KASAN: use-after-free Read in register_shrinker (has report)
+      10  INFO: rcu detected stall in corrupted
+      10  KASAN: use-after-free Read in do_shrink_slab (has report)
+      11  INFO: rcu detected stall in corrupted
+      12  KASAN: use-after-free Read in register_shrinker_prepared (has report)
+      13  INFO: rcu detected stall in corrupted
+      14  INFO: rcu detected stall in corrupted (2)
+      14  KASAN: use-after-free Read in register_shrinker_prepared (has report)
+      16  INFO: rcu detected stall in corrupted
+      18  INFO: rcu detected stall in corrupted
+      19  INFO: rcu detected stall in corrupted (2)
+Attempt 2: (RETRY)
+    Time  Bug Name
+       1  WARNING in wireless_send_event (has report)
+       2  WARNING in wireless_send_event (6) (has report)
+       3  WARNING in wireless_send_event (has report)
+       4  INFO: rcu detected stall in corrupted (2)
+       5  INFO: rcu detected stall in corrupted (5)
+       8  INFO: rcu detected stall in corrupted (2)
+       9  INFO: rcu detected stall in corrupted (3)
+      10  INFO: rcu detected stall in corrupted (3)
+      11  INFO: rcu detected stall in corrupted (3)
+      12  INFO: rcu detected stall in corrupted (3)
+      13  INFO: rcu detected stall in corrupted (3)
+      14  INFO: rcu detected stall in corrupted (5)
+      15  INFO: rcu detected stall in corrupted (2)
+      16  INFO: rcu detected stall in corrupted (4)
+      17  INFO: rcu detected stall in corrupted (4)
+      18  INFO: rcu detected stall in corrupted (4)
+      19  INFO: rcu detected stall in corrupted (4)
+      20  INFO: rcu detected stall in corrupted (3)
+Error: Waitpid on pid 1206695 failed.
+Error: Syzkaller has experienced a crash.
+Warning: Child process exited with error status 32765.
+Attempt 3: (RETRY)
+    No crashes found.
+The bug was not found.
+Find-only complete.

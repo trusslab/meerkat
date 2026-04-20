@@ -1,0 +1,83 @@
+./bin/meerkat -i 1 -c /home/syzretrospector/meerkat/wd-meerkat-1/meerkat.cfg -a 44c026a73be8038f03dbdeef028b642880cf1511 -F ff-test,find-only -m 20
+Bisecting:          KASAN: slab-use-after-free Write in sco_chan_del
+Warning: No syscall found that produces sock_bt.
+Syzbot Link:        https://syzkaller.appspot.com/bug?extid=cf54c1da6574b6c1b049
+Working Name:       bug0844
+
+Aliases:
+    KASAN: slab-use-after-free Write in sco_chan_del
+
+Anchor Commit:      44c026a73be8038f03dbdeef028b642880cf1511
+Repository:         https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
+Branch:             master
+Arch:               amd64
+
+Meerkat:            /home/syzretrospector/meerkat/
+Version:            1.2.0
+Kernel:             /home/syzretrospector/meerkat/wd-meerkat-1/kernel/
+Syzkaller:          /home/syzretrospector/meerkat/syzkaller/
+Compilers:          /home/syzretrospector/meerkat/compilers/
+Compiler:           gcc (Ubuntu 12.3.0-1ubuntu1~22.04.3) 12.3.0
+Linker:             GNU ld (GNU Binutils for Ubuntu) 2.38
+Ccache:             ccache version 4.5.1
+Image:              /home/syzretrospector/meerkat/image/stretch/stretch.img
+Image Key:          /home/syzretrospector/meerkat/image/stretch/stretch.id_rsa
+
+Workdir:            /home/syzretrospector/meerkat/wd-meerkat-1/
+Kconfig:            /home/syzretrospector/meerkat/wd-meerkat-1/config-bug0844.txt
+Reproducers: (1)    /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/
+Primary PoC:        /home/syzretrospector/meerkat/wd-meerkat-1/reproducers/repro-bug0844-1.prog
+Syzkaller Workdir:  /home/syzretrospector/meerkat/wd-meerkat-1/wd-kaller/
+Log Directory:      /home/syzretrospector/meerkat/wd-meerkat-1/log/
+
+Syscalls: (5)       ["connect$bt_sco", "syz_init_net_socket$bt_sco", "socket", "ioctl$F2FS_IOC_START_ATOMIC_WRITE", "openat$selinux_enforce"]
+VM Count:           4
+CPU Count:          4
+Procs:              24
+Memory:             4096
+Make Procs:         16
+Max Time:           20
+Max Attempts:       1
+
+==== Anchor Commit ====
+
+2026-04-18 13:49:14
+Session:   1
+Kernel:    2023-05-21 - 44c026a73be8038f03dbdeef028b642880cf1511
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       7  KASAN: slab-use-after-free Read in hci_conn_hash_flush (3) (has report)
+       8  KASAN: slab-use-after-free Read in hci_conn_hash_flush (has report)
+      11  KASAN: slab-use-after-free Read in hci_conn_hash_flush (has report)
+      12  KASAN: slab-use-after-free Read in hci_conn_hash_flush (has report)
+      13  KASAN: slab-use-after-free Read in hci_conn_hash_flush (2) (has report)
+      16  KASAN: slab-use-after-free Read in hci_conn_hash_flush (2) (has report)
+      19  KASAN: slab-use-after-free Read in hci_conn_hash_flush (has report)
+      20  KASAN: slab-use-after-free Read in hci_conn_hash_flush (has report)
+Attempt 2: (RETRY)
+    Time  Bug Name
+       4  KASAN: slab-use-after-free Read in hci_conn_hash_flush (has report)
+       5  KASAN: slab-use-after-free Read in hci_conn_hash_flush (has report)
+       6  KASAN: slab-use-after-free Read in hci_conn_hash_flush (has report)
+       7  KASAN: slab-use-after-free Read in hci_conn_hash_flush (has report)
+       9  INFO: trying to register non-static key in sco_sock_timeout (has report)
+      11  KASAN: slab-use-after-free Read in hci_conn_hash_flush (has report)
+      12  KASAN: slab-use-after-free Read in hci_conn_hash_flush (has report)
+      14  KASAN: slab-use-after-free Read in hci_conn_hash_flush (has report)
+      15  KASAN: slab-use-after-free Read in hci_conn_hash_flush (has report)
+      16  KASAN: slab-use-after-free Read in hci_conn_hash_flush (2) (has report)
+      18  KASAN: slab-use-after-free Read in hci_conn_hash_flush (has report)
+      19  KASAN: slab-use-after-free Read in hci_conn_hash_flush (has report)
+      20  KASAN: slab-use-after-free Read in hci_conn_hash_flush (has report)
+Attempt 3: (RETRY)
+    Time  Bug Name
+       6  KASAN: slab-use-after-free Read in hci_conn_hash_flush (3) (has report)
+       7  KASAN: slab-use-after-free Read in hci_conn_hash_flush (has report)
+      11  KASAN: slab-use-after-free Read in hci_conn_hash_flush (3) (has report)
+      12  KASAN: slab-use-after-free Read in hci_conn_hash_flush (has report)
+      15  KASAN: slab-use-after-free Read in hci_conn_hash_flush (has report)
+      17  KASAN: slab-use-after-free Read in hci_conn_hash_flush (2) (has report)
+      18  KASAN: slab-use-after-free Read in hci_conn_hash_flush (2) (has report)
+The bug was not found.
+Find-only complete.
