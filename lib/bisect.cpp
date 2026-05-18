@@ -876,7 +876,8 @@ int uniqify_reproducers(Environment &env)
     }
 
     bool already_have = false;
-    for (int i = 0; i < repros.size(); i++)
+    // If we are only using one PoC, don't grab all of them.
+    for (int i = 0; env.feats.poc_all_pocs && i < repros.size(); i++)
     {
         already_have = false;
         for (std::string kept : keep)
