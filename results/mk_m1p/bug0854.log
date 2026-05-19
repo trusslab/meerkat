@@ -1,0 +1,2234 @@
+./bin/meerkat -i 1 -c /home/author/meerkat/wd-meerkat-1/meerkat.cfg -a 98555239e4c3aab1810d84073166eef6d54eeb3d -F ff-test,stateful-corpus,poc-test,ff-no-find-backup
+Bisecting:          general protection fault in skb_queue_tail
+Syzbot Link:        https://syzkaller.appspot.com/bug?extid=160a7250e255d25725eb
+Working Name:       bug0854
+
+Aliases:
+    general protection fault in skb_queue_tail
+
+Anchor Commit:      98555239e4c3aab1810d84073166eef6d54eeb3d
+Repository:         https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
+Branch:             master
+Arch:               amd64
+
+Meerkat:            /home/author/meerkat/
+Version:            1.2.0
+Kernel:             /home/author/meerkat/wd-meerkat-1/kernel/
+Syzkaller:          /home/author/meerkat/syzkaller/
+Compilers:          /home/author/meerkat/compilers/
+Compiler:           gcc (Ubuntu 12.3.0-1ubuntu1~22.04.3) 12.3.0
+Linker:             GNU ld (GNU Binutils for Ubuntu) 2.38
+Ccache:             ccache version 4.5.1
+Image:              /home/author/meerkat/image/stretch/stretch.img
+Image Key:          /home/author/meerkat/image/stretch/stretch.id_rsa
+
+Workdir:            /home/author/meerkat/wd-meerkat-1/
+Kconfig:            /home/author/meerkat/wd-meerkat-1/config-bug0854.txt
+Reproducers: (1)    /home/author/meerkat/wd-meerkat-1/reproducers/
+Primary PoC:        /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0854-1.prog
+Syzkaller Workdir:  /home/author/meerkat/wd-meerkat-1/wd-kaller/
+Log Directory:      /home/author/meerkat/wd-meerkat-1/log/
+
+Syscalls: (4)       ["syz_usb_connect_ath9k", "syz_usb_ep_write$ath9k_ep2", "syz_usb_control_io", "syz_usb_connect"]
+VM Count:           8
+CPU Count:          2
+Procs:              16
+Memory:             4096
+Make Procs:         16
+Max Time:           10
+Max Attempts:       1
+
+==== Anchor Commit ====
+
+2026-04-29 09:09:21
+Session:   1
+Kernel:    2022-10-26 - 98555239e4c3aab1810d84073166eef6d54eeb3d
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  general protection fault in ath9k_htc_txep (has report)
+       6  SYZFAIL: repeatedly failed to execute the program (2)
+       7  SYZFAIL: repeatedly failed to execute the program
+      10  SYZFAIL: repeatedly failed to execute the program
+Attempt 2: (RETRY)
+    Time  Bug Name
+       2  general protection fault in ath9k_htc_txep (has report)
+***    3  general protection fault in skb_queue_tail (has report)
+Attempt 3: (RETRY)
+    Time  Bug Name
+       3  general protection fault in ath9k_htc_txep (2) (has report)
+       5  SYZFAIL: repeatedly failed to execute the program (2)
+       6  general protection fault in ath9k_htc_txep (2) (has report)
+***    7  general protection fault in skb_queue_tail (2) (has report)
+       7  general protection fault in ath9k_htc_txep (2) (has report)
+The bug was found.
+
+New Max Time: 12
+
+==== Major Release Search ====
+12 Releases
+
+2026-04-29 09:49:38
+Session:   2
+Kernel:    2022-10-02 - 4fe89d07dcc2804c8b562f6c7896a45643d34b2f (v6.0)
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       3  INFO: rcu detected stall in corrupted
+       6  SYZFAIL: repeatedly failed to execute the program (3)
+       7  SYZFAIL: repeatedly failed to execute the program (3)
+       8  SYZFAIL: repeatedly failed to execute the program
+The bug was not found.
+This commit is flagged as unstable.
+About 11 releases remaining
+
+2026-04-29 10:20:55
+Session:   3
+Kernel:    2022-07-31 - 3d7cb6b04c3f3115719235cc6866b10326de34cd (v5.19)
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       6  SYZFAIL: repeatedly failed to execute the program (4)
+       7  SYZFAIL: repeatedly failed to execute the program
+       8  SYZFAIL: repeatedly failed to execute the program
+      10  SYZFAIL: repeatedly failed to execute the program
+      11  SYZFAIL: repeatedly failed to execute the program (2)
+      12  SYZFAIL: repeatedly failed to execute the program
+The bug was not found.
+This commit is flagged as unstable.
+About 10 releases remaining
+
+2026-04-29 10:51:42
+Session:   4
+Kernel:    2022-05-22 - 4b0986a3613c92f4ec1bdc7f60ec66fea135991f (v5.18)
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       5  SYZFAIL: repeatedly failed to execute the program
+       5  WARNING in firmware_fallback_sysfs (has report)
+       6  SYZFAIL: repeatedly failed to execute the program (5)
+      10  SYZFAIL: repeatedly failed to execute the program
+      11  SYZFAIL: repeatedly failed to execute the program (2)
+      12  SYZFAIL: repeatedly failed to execute the program (2)
+The bug was not found.
+This commit is flagged as unstable.
+About 9 releases remaining
+
+2026-04-29 11:21:13
+Session:   5
+Kernel:    2022-01-09 - df0cc57e057f18e44dac8e6c18aba47ab53202f9 (v5.16)
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       4  INFO: trying to register non-static key in skb_queue_tail (has report)
+       4  general protection fault in ath9k_htc_txep (has report)
+       6  SYZFAIL: repeatedly failed to execute the program
+       8  SYZFAIL: repeatedly failed to execute the program
+       9  SYZFAIL: repeatedly failed to execute the program (2)
+      12  SYZFAIL: repeatedly failed to execute the program
+The bug was not found.
+This commit is flagged as unstable.
+About 8 releases remaining
+
+2026-04-29 11:51:12
+Session:   6
+Kernel:    2021-08-29 - 7d2a07b769330c34b4deabeed939325c77a7ec2f (v5.14)
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       3  general protection fault in ath9k_htc_txep (2) (has report)
+       4  INFO: trying to register non-static key in skb_queue_tail (2) (has report)
+       5  SYZFAIL: repeatedly failed to execute the program
+       6  SYZFAIL: repeatedly failed to execute the program
+       7  INFO: trying to register non-static key in skb_queue_tail (has report)
+       8  INFO: trying to register non-static key in skb_queue_tail (3) (has report)
+       8  general protection fault in ath9k_htc_txep (has report)
+      10  INFO: trying to register non-static key in skb_queue_tail (has report)
+      10  SYZFAIL: repeatedly failed to execute the program
+      11  INFO: trying to register non-static key in skb_queue_tail (2) (has report)
+      12  SYZFAIL: repeatedly failed to execute the program
+The bug was not found.
+This commit is flagged as unstable.
+About 7 releases remaining
+
+2026-04-29 12:19:29
+Session:   7
+Kernel:    2021-04-25 - 9f4ad9e425a1d3b6a34617b8ea226d56a119a717 (v5.12)
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       4  general protection fault in ath9k_htc_txep (has report)
+       5  SYZFAIL: repeatedly failed to execute the program (3)
+       9  SYZFAIL: repeatedly failed to execute the program (2)
+      10  SYZFAIL: repeatedly failed to execute the program
+The bug was not found.
+This commit is flagged as unstable.
+About 6 releases remaining
+
+2026-04-29 12:47:04
+Session:   8
+Kernel:    2020-12-13 - 2c85ebc57b3e1817b6ce1a6b703928e113a90442 (v5.10)
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       3  general protection fault in ath9k_htc_txep (has report)
+       5  UBSAN: shift-out-of-bounds in option_probe
+       5  SYZFAIL: repeatedly failed to execute the program
+       6  UBSAN: shift-out-of-bounds in option_probe
+       6  SYZFAIL: repeatedly failed to execute the program
+       7  SYZFAIL: repeatedly failed to execute the program
+      10  SYZFAIL: repeatedly failed to execute the program
+      11  UBSAN: shift-out-of-bounds in option_probe (3)
+The bug was not found.
+This commit is flagged as unstable.
+About 5 releases remaining
+
+2026-04-29 13:14:08
+Session:   9
+Kernel:    2020-08-02 - bcf876870b95592b52519ed4aafcf9d95999bc9c (v5.8)
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       4  UBSAN: shift-out-of-bounds in option_probe
+       4  SYZFAIL: repeatedly failed to execute the program
+       4  general protection fault in ath9k_htc_txep (has report)
+       5  SYZFAIL: repeatedly failed to execute the program (4)
+       6  SYZFAIL: repeatedly failed to execute the program
+       7  UBSAN: shift-out-of-bounds in parse_audio_format_i
+       9  SYZFAIL: repeatedly failed to execute the program (2)
+       9  UBSAN: shift-out-of-bounds in parse_audio_format_i
+      10  SYZFAIL: repeatedly failed to execute the program
+      10  UBSAN: shift-out-of-bounds in parse_audio_format_i
+      11  UBSAN: shift-out-of-bounds in option_probe
+      11  UBSAN: shift-out-of-bounds in parse_audio_format_i
+      12  UBSAN: shift-out-of-bounds in option_probe (2)
+The bug was not found.
+This commit is flagged as unstable.
+About 4 releases remaining
+
+2026-04-29 13:40:29
+Session:   10
+Kernel:    2020-03-29 - 7111951b8d4973bda27ff663f2cf18b663d15b48 (v5.6)
+Compiler:  ccache /home/author/meerkat/compilers/gcc-8.1.0/bin/gcc
+Error: Waitpid on pid 3901556 failed.
+Error: Syzkaller has experienced a crash.
+Warning: Child process exited with error status 32766.
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 3 releases remaining
+
+==== Kernel Bisection ====
+233936 Linux commits
+
+2026-04-29 14:00:41
+Session:   11
+Kernel:    2021-08-27 - 222013f9ac30b9cec44301daa8dbd0aae38abffb
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       2  BUG: sleeping function called from invalid context in lock_sock_nested (has report)
+       3  BUG: sleeping function called from invalid context in lock_sock_nested (3) (has report)
+       5  BUG: sleeping function called from invalid context in lock_sock_nested (has report)
+       7  BUG: sleeping function called from invalid context in lock_sock_nested (2) (has report)
+      10  BUG: sleeping function called from invalid context in lock_sock_nested (has report)
+      11  SYZFAIL: repeatedly failed to execute the program
+      11  BUG: sleeping function called from invalid context in stack_depot_save (has report)
+      12  BUG: sleeping function called from invalid context in lock_sock_nested (has report)
+The bug was not found.
+This commit is flagged as unstable.
+About 233936 commits remaining
+
+2026-04-29 14:33:11
+Session:   12
+Kernel:    2021-08-27 - 3375dca0b542c747d29655cf52f7b2741ecebe0e
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       2  BUG: sleeping function called from invalid context in stack_depot_save (has report)
+       3  BUG: sleeping function called from invalid context in stack_depot_save (has report)
+       5  SYZFAIL: repeatedly failed to execute the program
+       5  BUG: sleeping function called from invalid context in lock_sock_nested (2) (has report)
+       8  BUG: sleeping function called from invalid context in lock_sock_nested (2) (has report)
+      10  SYZFAIL: repeatedly failed to execute the program
+      10  BUG: sleeping function called from invalid context in lock_sock_nested (has report)
+      11  SYZFAIL: repeatedly failed to execute the program
+      11  BUG: sleeping function called from invalid context in lock_sock_nested (has report)
+The bug was not found.
+This commit is flagged as unstable.
+About 233936 commits remaining
+
+2026-04-29 14:55:59
+Session:   13
+Kernel:    2021-10-14 - f0298326d6fb10eaba514e04b5d341a54d340c6c
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       3  general protection fault in ath9k_htc_txep (2) (has report)
+       6  SYZFAIL: repeatedly failed to execute the program
+       7  SYZFAIL: repeatedly failed to execute the program
+       8  SYZFAIL: repeatedly failed to execute the program
+       9  SYZFAIL: repeatedly failed to execute the program (2)
+      11  SYZFAIL: repeatedly failed to execute the program (2)
+The bug was not found.
+This commit is flagged as unstable.
+About 233936 commits remaining
+
+2026-04-29 15:29:40
+Session:   14
+Kernel:    2021-08-26 - 7b05bf771084ff788243b78f51bc2c820730951c
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       3  BUG: sleeping function called from invalid context in lock_sock_nested (3) (has report)
+       4  INFO: trying to register non-static key in skb_queue_tail (has report)
+       4  BUG: sleeping function called from invalid context in lock_sock_nested (has report)
+       4  general protection fault in ath9k_htc_txep (has report)
+       5  BUG: sleeping function called from invalid context in lock_sock_nested (has report)
+***    7  general protection fault in skb_queue_tail (has report)
+Running syz-repro.
+New PoC saved at /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0854-0.prog
+Primary PoC:     /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0854-0.prog
+Run Time:        0h31m0s
+The bug was found.
+About 115995 commits remaining
+
+2026-04-29 16:13:46
+Session:   15
+Kernel:    2020-10-15 - 9ff9b0d392ea08090cd1780fb196f36dbb586529
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       3  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore (8) (has report)
+       5  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore (8) (has report)
+       7  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore (8) (has report)
+       9  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore (8) (has report)
+      11  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore (6) (has report)
+      12  BUG: using __this_cpu_read() in preemptible code in __bad_area_nosemaphore (2) (has report)
+The bug was not found.
+About 56683 commits remaining
+
+2026-04-29 16:40:23
+Session:   16
+Kernel:    2021-03-02 - a864e8f159b13babf552aff14a5fbe11abc017e4
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       3  INFO: trying to register non-static key in skb_queue_tail (has report)
+       4  general protection fault in ath9k_htc_txep (has report)
+       5  INFO: trying to register non-static key in skb_queue_tail (2) (has report)
+       5  SYZFAIL: repeatedly failed to execute the program
+       5  general protection fault in ath9k_htc_txep (has report)
+       6  INFO: trying to register non-static key in skb_queue_tail (2) (has report)
+       6  SYZFAIL: repeatedly failed to execute the program
+       7  INFO: trying to register non-static key in skb_queue_tail (has report)
+       8  INFO: trying to register non-static key in skb_queue_tail (has report)
+      12  INFO: trying to register non-static key in skb_queue_tail (has report)
+      12  SYZFAIL: repeatedly failed to execute the program (3)
+The bug was not found.
+This commit is flagged as unstable.
+About 56683 commits remaining
+
+2026-04-29 17:07:37
+Session:   17
+Kernel:    2021-04-07 - 42fa2bda18d2d666e184dbd0406ec8340b4f4b17
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       3  INFO: trying to register non-static key in skb_queue_tail (has report)
+       4  INFO: trying to register non-static key in skb_queue_tail (2) (has report)
+       4  general protection fault in ath9k_htc_txep (2) (has report)
+       6  INFO: trying to register non-static key in skb_queue_tail (2) (has report)
+       6  general protection fault in ath9k_htc_txep (has report)
+       7  INFO: trying to register non-static key in skb_queue_tail (has report)
+       7  general protection fault in ath9k_htc_txep (has report)
+       8  INFO: trying to register non-static key in skb_queue_tail (3) (has report)
+       8  general protection fault in ath9k_htc_txep (has report)
+      12  SYZFAIL: repeatedly failed to execute the program (3)
+The bug was not found.
+This commit is flagged as unstable.
+About 56683 commits remaining
+
+2026-04-29 17:35:08
+Session:   18
+Kernel:    2020-11-07 - 1aec69ae56be28b5fd3c9daead5f3840c30153c8
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       3  general protection fault in ath9k_htc_txep (2) (has report)
+       5  INFO: trying to register non-static key in skb_queue_tail (has report)
+       5  general protection fault in ath9k_htc_txep (has report)
+       6  UBSAN: shift-out-of-bounds in option_probe
+       6  SYZFAIL: repeatedly failed to execute the program
+       7  UBSAN: shift-out-of-bounds in option_probe
+       7  SYZFAIL: repeatedly failed to execute the program
+       9  INFO: trying to register non-static key in skb_queue_tail (has report)
+       9  SYZFAIL: repeatedly failed to execute the program
+      10  INFO: trying to register non-static key in skb_queue_tail (has report)
+      11  INFO: trying to register non-static key in skb_queue_tail (has report)
+      11  SYZFAIL: repeatedly failed to execute the program
+      12  SYZFAIL: repeatedly failed to execute the program
+The bug was not found.
+This commit is flagged as unstable.
+About 56683 commits remaining
+
+2026-04-29 18:02:22
+Session:   19
+Kernel:    2021-04-06 - b4053a2097ec2f8ea622e817ae5a46a83b23aefe
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       3  INFO: trying to register non-static key in skb_queue_tail (has report)
+       3  general protection fault in release_nodes (3) (has report)
+       4  INFO: trying to register non-static key in skb_queue_tail (has report)
+       8  SYZFAIL: repeatedly failed to execute the program (2)
+       9  INFO: trying to register non-static key in skb_queue_tail (has report)
+       9  SYZFAIL: repeatedly failed to execute the program
+      10  general protection fault in ath9k_htc_txep (has report)
+      12  INFO: trying to register non-static key in skb_queue_tail (has report)
+The bug was not found.
+This commit is flagged as unstable.
+About 56683 commits remaining
+
+2026-04-29 18:29:47
+Session:   20
+Kernel:    2021-05-23 - 996f6f517dc79f337faf29d9db54ceb9a3169787
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       5  INFO: trying to register non-static key in skb_queue_tail (2) (has report)
+       5  SYZFAIL: repeatedly failed to execute the program (3)
+       6  INFO: trying to register non-static key in skb_queue_tail (3) (has report)
+       7  INFO: trying to register non-static key in skb_queue_tail (3) (has report)
+       9  SYZFAIL: repeatedly failed to execute the program
+      12  INFO: trying to register non-static key in skb_queue_tail (has report)
+      12  SYZFAIL: repeatedly failed to execute the program (2)
+The bug was not found.
+This commit is flagged as unstable.
+About 56683 commits remaining
+
+2026-04-29 18:57:21
+Session:   21
+Kernel:    2021-02-12 - eec262d179ff60e8d12298ab2f118661040e0bf5
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       3  INFO: trying to register non-static key in skb_queue_tail (has report)
+       3  general protection fault in ath9k_htc_txep (has report)
+       4  INFO: trying to register non-static key in skb_queue_tail (has report)
+       4  general protection fault in ath9k_htc_txep (2) (has report)
+       7  INFO: trying to register non-static key in skb_queue_tail (has report)
+       8  INFO: trying to register non-static key in skb_queue_tail (has report)
+       9  INFO: trying to register non-static key in skb_queue_tail (has report)
+       9  SYZFAIL: repeatedly failed to execute the program
+      12  SYZFAIL: repeatedly failed to execute the program
+The bug was not found.
+This commit is flagged as unstable.
+About 56683 commits remaining
+
+2026-04-29 19:24:18
+Session:   22
+Kernel:    2021-05-10 - c3dce24c40cc7cd07deca5b81b763eae66f30856
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       3  INFO: trying to register non-static key in skb_queue_tail (has report)
+       3  general protection fault in ath9k_htc_txep (has report)
+       4  INFO: trying to register non-static key in skb_queue_tail (has report)
+       5  SYZFAIL: repeatedly failed to execute the program
+       7  SYZFAIL: repeatedly failed to execute the program (2)
+      11  SYZFAIL: repeatedly failed to execute the program
+      12  SYZFAIL: repeatedly failed to execute the program (3)
+The bug was not found.
+This commit is flagged as unstable.
+About 56683 commits remaining
+
+2026-04-29 19:42:13
+Session:   23
+Kernel:    2021-04-07 - 7cba4128c2c6e9c67a819c5946ed8066c7306418
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       3  general protection fault in release_nodes (5) (has report)
+       5  INFO: trying to register non-static key in skb_queue_tail (has report)
+       5  general protection fault in release_nodes (2) (has report)
+       6  INFO: trying to register non-static key in skb_queue_tail (2) (has report)
+       9  WARNING: ODEBUG bug in netdev_run_todo (has report)
+      10  SYZFAIL: repeatedly failed to execute the program
+The bug was not found.
+This commit is flagged as unstable.
+About 56683 commits remaining
+
+2026-04-29 20:00:16
+Session:   24
+Kernel:    2020-11-26 - 830382e4ccb5e5d9164fcd28854238ef5f5a1751
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       4  INFO: trying to register non-static key in skb_queue_tail (2) (has report)
+       4  general protection fault in ath9k_htc_txep (2) (has report)
+       6  BUG: sleeping function called from invalid context in sta_info_move_state (has report)
+       6  SYZFAIL: repeatedly failed to execute the program
+       7  SYZFAIL: repeatedly failed to execute the program (2)
+       7  general protection fault in ath9k_htc_txep (has report)
+       9  SYZFAIL: repeatedly failed to execute the program
+      11  UBSAN: shift-out-of-bounds in option_probe (2)
+      11  SYZFAIL: repeatedly failed to execute the program
+      12  SYZFAIL: repeatedly failed to execute the program
+The bug was not found.
+This commit is flagged as unstable.
+About 56683 commits remaining
+
+2026-04-29 20:27:26
+Session:   25
+Kernel:    2021-03-23 - 1a7d706d8e2825993e2d82b4b0a3843912ba6bfe
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       4  INFO: trying to register non-static key in skb_queue_tail (2) (has report)
+       4  general protection fault in ath9k_htc_txep (has report)
+       5  SYZFAIL: repeatedly failed to execute the program (2)
+       5  general protection fault in ath9k_htc_txep (has report)
+       9  SYZFAIL: repeatedly failed to execute the program (2)
+The bug was not found.
+This commit is flagged as unstable.
+About 56683 commits remaining
+
+2026-04-29 20:46:28
+Session:   26
+Kernel:    2020-12-11 - e1d15969635ca61aa12091a53dc5d148e5621782
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       3  INFO: trying to register non-static key in skb_queue_tail (has report)
+       3  general protection fault in ath9k_htc_txep (has report)
+       5  INFO: trying to register non-static key in skb_queue_tail (2) (has report)
+       5  SYZFAIL: repeatedly failed to execute the program
+       6  INFO: trying to register non-static key in skb_queue_tail (has report)
+       6  SYZFAIL: repeatedly failed to execute the program (2)
+       6  general protection fault in ath9k_htc_txep (has report)
+       7  INFO: trying to register non-static key in skb_queue_tail (2) (has report)
+       7  general protection fault in ath9k_htc_txep (has report)
+       8  INFO: trying to register non-static key in skb_queue_tail (has report)
+      10  SYZFAIL: repeatedly failed to execute the program
+      10  UBSAN: shift-out-of-bounds in parse_audio_format_i
+      11  UBSAN: shift-out-of-bounds in option_probe (2)
+      12  SYZFAIL: repeatedly failed to execute the program (2)
+The bug was not found.
+This commit is flagged as unstable.
+About 56683 commits remaining
+
+2026-04-29 21:13:39
+Session:   27
+Kernel:    2021-03-11 - c4a1bff9507fbeb1a13389cd51cb100b65de3c59
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       3  general protection fault in release_nodes (3) (has report)
+       4  general protection fault in release_nodes (has report)
+       5  SYZFAIL: repeatedly failed to execute the program
+       6  INFO: trying to register non-static key in skb_queue_tail (has report)
+      10  SYZFAIL: repeatedly failed to execute the program (3)
+      12  SYZFAIL: repeatedly failed to execute the program
+The bug was not found.
+This commit is flagged as unstable.
+About 56683 commits remaining
+
+2026-04-29 21:30:53
+Session:   28
+Kernel:    2020-12-15 - b9dcfdff8b4b223280015281b5050976c484c80a
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       4  INFO: trying to register non-static key in skb_queue_tail (2) (has report)
+       4  general protection fault in ath9k_htc_txep (has report)
+       5  INFO: trying to register non-static key in skb_queue_tail (2) (has report)
+       6  INFO: trying to register non-static key in skb_queue_tail (has report)
+       6  SYZFAIL: repeatedly failed to execute the program
+       6  general protection fault in ath9k_htc_txep (has report)
+       7  INFO: trying to register non-static key in skb_queue_tail (has report)
+       7  general protection fault in ath9k_htc_txep (has report)
+       8  INFO: trying to register non-static key in skb_queue_tail (has report)
+       8  general protection fault in ath9k_htc_txep (has report)
+       9  INFO: trying to register non-static key in skb_queue_tail (has report)
+      11  INFO: trying to register non-static key in skb_queue_tail (2) (has report)
+      11  UBSAN: shift-out-of-bounds in option_probe
+The bug was not found.
+This commit is flagged as unstable.
+About 56683 commits remaining
+
+2026-04-29 21:58:05
+Session:   29
+Kernel:    2021-03-17 - d2da74d1278a1b51ef18beafa9da770f0db1c617
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       3  general protection fault in release_nodes (2) (has report)
+       4  INFO: trying to register non-static key in skb_queue_tail (2) (has report)
+       4  general protection fault in ath9k_htc_txep (has report)
+       4  general protection fault in release_nodes (has report)
+       6  INFO: trying to register non-static key in skb_queue_tail (has report)
+       6  general protection fault in release_nodes (3) (has report)
+       7  INFO: trying to register non-static key in skb_queue_tail (2) (has report)
+       8  INFO: trying to register non-static key in skb_queue_tail (has report)
+       9  INFO: trying to register non-static key in skb_queue_tail (2) (has report)
+      11  SYZFAIL: repeatedly failed to execute the program
+The bug was not found.
+This commit is flagged as unstable.
+About 56683 commits remaining
+
+2026-04-29 22:23:31
+Session:   30
+Kernel:    2021-05-03 - 7935bb56e21b2add81149f4def8e59b4133fe57c
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       2  WARNING in __nf_unregister_net_hook (has report)
+       4  general protection fault in ath9k_htc_txep (has report)
+       5  INFO: trying to register non-static key in skb_queue_tail (has report)
+       5  SYZFAIL: repeatedly failed to execute the program
+       7  WARNING in __nf_unregister_net_hook (3) (has report)
+       8  SYZFAIL: repeatedly failed to execute the program
+       8  WARNING in __nf_unregister_net_hook (2) (has report)
+       9  SYZFAIL: repeatedly failed to execute the program
+      10  WARNING in __nf_unregister_net_hook (has report)
+      11  SYZFAIL: repeatedly failed to execute the program
+The bug was not found.
+This commit is flagged as unstable.
+About 56683 commits remaining
+
+2026-04-29 22:50:59
+Session:   31
+Kernel:    2021-04-07 - 34138a59b92c1a30649a18ec442d2e61f3bc34dd
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       3  general protection fault in release_nodes (3) (has report)
+       4  general protection fault in release_nodes (has report)
+       5  general protection fault in release_nodes (2) (has report)
+       6  SYZFAIL: repeatedly failed to execute the program
+       6  general protection fault in release_nodes (2) (has report)
+      12  SYZFAIL: repeatedly failed to execute the program (2)
+The bug was not found.
+This commit is flagged as unstable.
+About 56683 commits remaining
+
+2026-04-29 23:08:57
+Session:   32
+Kernel:    2021-04-15 - f9fc6f3948a42dcd04e1158b98b9fd5b36d0c4af
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       4  INFO: trying to register non-static key in skb_queue_tail (has report)
+       5  SYZFAIL: repeatedly failed to execute the program (3)
+       7  SYZFAIL: repeatedly failed to execute the program (2)
+       9  SYZFAIL: repeatedly failed to execute the program (3)
+      11  SYZFAIL: repeatedly failed to execute the program
+      12  SYZFAIL: repeatedly failed to execute the program (2)
+The bug was not found.
+This commit is flagged as unstable.
+About 56683 commits remaining
+
+2026-04-29 23:36:21
+Session:   33
+Kernel:    2021-02-09 - f8bf64501873ab750166200a698f3b0cc6983a65
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       4  general protection fault in ath9k_htc_txep (has report)
+       5  INFO: trying to register non-static key in skb_queue_tail (3) (has report)
+       6  general protection fault in ath9k_htc_txep (has report)
+      10  general protection fault in ath9k_htc_txep (has report)
+      11  INFO: trying to register non-static key in skb_queue_tail (has report)
+      11  general protection fault in ath9k_htc_txep (has report)
+The bug was not found.
+About 33875 commits remaining
+
+2026-04-30 00:03:11
+Session:   34
+Kernel:    2021-04-26 - f7857bf3745e9ede6367a8ff89c1c4f308bfd914
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       3  INFO: trying to register non-static key in skb_queue_tail (has report)
+       4  INFO: trying to register non-static key in skb_queue_tail (2) (has report)
+       7  SYZFAIL: repeatedly failed to execute the program
+       8  SYZFAIL: repeatedly failed to execute the program
+       9  SYZFAIL: repeatedly failed to execute the program (2)
+      12  SYZFAIL: repeatedly failed to execute the program (4)
+The bug was not found.
+This commit is flagged as unstable.
+About 33875 commits remaining
+
+2026-04-30 00:30:21
+Session:   35
+Kernel:    2021-04-12 - 3f744a14f331f56703a9d74e86520db045f11831
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       3  general protection fault in release_nodes (has report)
+       5  SYZFAIL: repeatedly failed to execute the program (2)
+       5  general protection fault in release_nodes (has report)
+       6  INFO: trying to register non-static key in skb_queue_tail (has report)
+       6  SYZFAIL: repeatedly failed to execute the program
+       6  general protection fault in release_nodes (has report)
+       7  general protection fault in release_nodes (has report)
+       8  SYZFAIL: repeatedly failed to execute the program
+      11  SYZFAIL: repeatedly failed to execute the program
+      12  SYZFAIL: repeatedly failed to execute the program
+The bug was not found.
+This commit is flagged as unstable.
+About 33875 commits remaining
+
+2026-04-30 00:57:25
+Session:   36
+Kernel:    2021-01-11 - 8811955d0a6d0abfa3e1c0cee30090fda0015069
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       4  INFO: trying to register non-static key in skb_queue_tail (has report)
+       6  SYZFAIL: repeatedly failed to execute the program
+       6  WARNING: ODEBUG bug in netdev_run_todo (has report)
+       8  SYZFAIL: repeatedly failed to execute the program (2)
+The bug was not found.
+This commit is flagged as unstable.
+About 33875 commits remaining
+
+2026-04-30 01:24:17
+Session:   37
+Kernel:    2021-03-16 - dde7b3f5f2f458297aeccfd4783e53ab8ca046db
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       5  SYZFAIL: repeatedly failed to execute the program
+       5  general protection fault in ath9k_htc_txep (has report)
+       6  INFO: trying to register non-static key in skb_queue_tail (has report)
+       6  SYZFAIL: repeatedly failed to execute the program (2)
+       7  INFO: trying to register non-static key in skb_queue_tail (has report)
+      10  SYZFAIL: repeatedly failed to execute the program
+      11  SYZFAIL: repeatedly failed to execute the program
+The bug was not found.
+This commit is flagged as unstable.
+About 33875 commits remaining
+
+2026-04-30 01:51:23
+Session:   38
+Kernel:    2021-01-13 - 95652f98b1daf0c483932ee70ae00a526f205aa9
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       5  SYZFAIL: repeatedly failed to execute the program
+       5  general protection fault in ath9k_htc_txep (has report)
+       6  general protection fault in ath9k_htc_txep (has report)
+       7  WARNING: ODEBUG bug in netdev_run_todo (has report)
+       9  SYZFAIL: repeatedly failed to execute the program
+      12  SYZFAIL: repeatedly failed to execute the program (2)
+The bug was not found.
+This commit is flagged as unstable.
+About 33875 commits remaining
+
+2026-04-30 02:17:45
+Session:   39
+Kernel:    2021-03-18 - b47e330231acbf4506b049643145cc64268a1940
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       4  INFO: trying to register non-static key in skb_queue_tail (has report)
+       4  general protection fault in ath9k_htc_txep (has report)
+       5  INFO: trying to register non-static key in skb_queue_tail (2) (has report)
+       6  INFO: trying to register non-static key in skb_queue_tail (has report)
+       8  SYZFAIL: repeatedly failed to execute the program
+The bug was not found.
+This commit is flagged as unstable.
+About 33875 commits remaining
+
+2026-04-30 02:45:01
+Session:   40
+Kernel:    2021-02-05 - 036f90dd92bb0aac66fdeec8386401dd396c6079
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 35491 commits remaining
+
+2026-04-30 03:11:47
+Session:   41
+Kernel:    2021-06-14 - 3ae613765851cc2a651a42ce9d586078a899d8c8
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       3  BUG: sleeping function called from invalid context in lock_sock_nested (has report)
+       5  INFO: trying to register non-static key in skb_queue_tail (has report)
+       5  SYZFAIL: repeatedly failed to execute the program (2)
+       6  SYZFAIL: repeatedly failed to execute the program
+       6  BUG: sleeping function called from invalid context in lock_sock_nested (has report)
+       7  SYZFAIL: repeatedly failed to execute the program
+       7  general protection fault in ath9k_htc_txep (has report)
+      10  SYZFAIL: repeatedly failed to execute the program (2)
+      10  BUG: sleeping function called from invalid context in lock_sock_nested (has report)
+      11  SYZFAIL: repeatedly failed to execute the program (2)
+      12  SYZFAIL: repeatedly failed to execute the program (2)
+The bug was not found.
+This commit is flagged as unstable.
+About 35491 commits remaining
+
+2026-04-30 03:39:00
+Session:   42
+Kernel:    2021-03-31 - 2711a2d993036f26837e459ffb7b0d45c36b92a2
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       4  INFO: trying to register non-static key in skb_queue_tail (has report)
+       4  SYZFAIL: repeatedly failed to execute the program
+       4  general protection fault in ath9k_htc_txep (has report)
+       5  SYZFAIL: repeatedly failed to execute the program (2)
+       8  SYZFAIL: repeatedly failed to execute the program
+       9  SYZFAIL: repeatedly failed to execute the program (4)
+      10  SYZFAIL: repeatedly failed to execute the program
+The bug was not found.
+This commit is flagged as unstable.
+About 35491 commits remaining
+
+2026-04-30 04:06:10
+Session:   43
+Kernel:    2021-06-17 - 0d148efdf0f0414b2ed2dd9c31e71302bb9ce123
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       5  INFO: trying to register non-static key in skb_queue_tail (has report)
+       5  SYZFAIL: repeatedly failed to execute the program
+       5  general protection fault in ath9k_htc_txep (has report)
+       6  SYZFAIL: repeatedly failed to execute the program (2)
+       8  SYZFAIL: repeatedly failed to execute the program
+       9  SYZFAIL: repeatedly failed to execute the program
+      11  SYZFAIL: repeatedly failed to execute the program (3)
+      11  WARNING: ODEBUG bug in netdev_run_todo (has report)
+      12  SYZFAIL: repeatedly failed to execute the program (2)
+The bug was not found.
+This commit is flagged as unstable.
+About 35491 commits remaining
+
+2026-04-30 04:33:27
+Session:   44
+Kernel:    2021-04-18 - 796b556cbfdbe0d65b9793e63653ad24f9fa033c
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       5  SYZFAIL: repeatedly failed to execute the program (2)
+       5  general protection fault in ath9k_htc_txep (has report)
+      11  SYZFAIL: repeatedly failed to execute the program
+      12  SYZFAIL: repeatedly failed to execute the program (2)
+The bug was not found.
+This commit is flagged as unstable.
+About 35491 commits remaining
+
+2026-04-30 05:00:43
+Session:   45
+Kernel:    2021-05-14 - afe0c26d1968fe3bbef6a45df945bfeff774ca75
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       5  SYZFAIL: repeatedly failed to execute the program
+       5  general protection fault in ath9k_htc_txep (has report)
+       7  SYZFAIL: repeatedly failed to execute the program (3)
+      11  SYZFAIL: repeatedly failed to execute the program (4)
+      12  SYZFAIL: repeatedly failed to execute the program
+The bug was not found.
+This commit is flagged as unstable.
+About 35491 commits remaining
+
+2026-04-30 05:28:04
+Session:   46
+Kernel:    2021-03-26 - f185de28d9ae6c978135993769352e523ee8df06
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       4  INFO: trying to register non-static key in skb_queue_tail (4) (has report)
+       4  general protection fault in ath9k_htc_txep (has report)
+       5  SYZFAIL: repeatedly failed to execute the program
+       6  INFO: trying to register non-static key in skb_queue_tail (3) (has report)
+       7  INFO: trying to register non-static key in skb_queue_tail (has report)
+       7  SYZFAIL: repeatedly failed to execute the program
+       7  general protection fault in ath9k_htc_txep (has report)
+       9  SYZFAIL: repeatedly failed to execute the program
+      10  general protection fault in ath9k_htc_txep (has report)
+      11  SYZFAIL: repeatedly failed to execute the program
+      12  INFO: trying to register non-static key in skb_queue_tail (has report)
+      12  SYZFAIL: repeatedly failed to execute the program
+The bug was not found.
+This commit is flagged as unstable.
+About 35491 commits remaining
+
+2026-04-30 05:55:14
+Session:   47
+Kernel:    2021-06-08 - dff404deb8493e6154ad75a62ce7c4e37ff8fccd
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       5  INFO: trying to register non-static key in skb_queue_tail (has report)
+       5  SYZFAIL: repeatedly failed to execute the program
+       6  INFO: trying to register non-static key in skb_queue_tail (2) (has report)
+       6  SYZFAIL: repeatedly failed to execute the program (2)
+       6  WARNING: ODEBUG bug in netdev_run_todo (has report)
+       8  INFO: trying to register non-static key in skb_queue_tail (3) (has report)
+       9  INFO: trying to register non-static key in skb_queue_tail (has report)
+      10  INFO: trying to register non-static key in skb_queue_tail (has report)
+      11  INFO: trying to register non-static key in skb_queue_tail (has report)
+      12  INFO: trying to register non-static key in skb_queue_tail (has report)
+The bug was not found.
+This commit is flagged as unstable.
+About 35491 commits remaining
+
+2026-04-30 06:22:13
+Session:   48
+Kernel:    2021-03-29 - 3adb60b6a3ed9f233daa632d35cec79fe4781372
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       4  unregister_netdevice: waiting for DEV to become free
+       4  INFO: trying to register non-static key in skb_queue_tail (2) (has report)
+       5  INFO: trying to register non-static key in skb_queue_tail (4) (has report)
+       6  INFO: trying to register non-static key in skb_queue_tail (2) (has report)
+       7  INFO: trying to register non-static key in skb_queue_tail (has report)
+      10  unregister_netdevice: waiting for DEV to become free (2)
+      10  SYZFAIL: repeatedly failed to execute the program (2)
+      11  unregister_netdevice: waiting for DEV to become free (2)
+      12  unregister_netdevice: waiting for DEV to become free
+The bug was not found.
+This commit is flagged as unstable.
+About 35491 commits remaining
+
+2026-04-30 06:41:44
+Session:   49
+Kernel:    2021-05-05 - ba3e054e7a70d447aa95883dab87a4eae641d6bc
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       2  WARNING in __nf_unregister_net_hook (has report)
+       5  SYZFAIL: repeatedly failed to execute the program
+       6  INFO: trying to register non-static key in skb_queue_tail (has report)
+       7  INFO: trying to register non-static key in skb_queue_tail (has report)
+       7  SYZFAIL: repeatedly failed to execute the program
+       8  WARNING in __nf_unregister_net_hook (2) (has report)
+       9  SYZFAIL: repeatedly failed to execute the program
+       9  WARNING in __nf_unregister_net_hook (has report)
+      10  WARNING in __nf_unregister_net_hook (has report)
+      11  SYZFAIL: repeatedly failed to execute the program (2)
+      11  general protection fault in ath9k_htc_txep (has report)
+      12  INFO: trying to register non-static key in skb_queue_tail (has report)
+      12  general protection fault in ath9k_htc_txep (has report)
+The bug was not found.
+This commit is flagged as unstable.
+About 35491 commits remaining
+
+2026-04-30 07:09:04
+Session:   50
+Kernel:    2021-04-03 - 5fabb01207a2d3439a6abe1d08640de9c942945f
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       5  SYZFAIL: repeatedly failed to execute the program (2)
+       6  INFO: trying to register non-static key in skb_queue_tail (has report)
+       6  SYZFAIL: repeatedly failed to execute the program (2)
+       7  INFO: trying to register non-static key in skb_queue_tail (has report)
+       7  SYZFAIL: repeatedly failed to execute the program
+      11  SYZFAIL: repeatedly failed to execute the program
+      12  INFO: task hung in nsim_dev_trap_report_work
+      12  SYZFAIL: repeatedly failed to execute the program
+The bug was not found.
+This commit is flagged as unstable.
+About 35491 commits remaining
+
+2026-04-30 07:33:07
+Session:   51
+Kernel:    2021-02-26 - 0d1bf7a5e2252f1683ace3675ec8c4562bf1b0ac
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       3  general protection fault in release_nodes (has report)
+       4  general protection fault in release_nodes (has report)
+       5  general protection fault in release_nodes (has report)
+       6  INFO: trying to register non-static key in skb_queue_tail (has report)
+       6  general protection fault in release_nodes (has report)
+       7  general protection fault in ath9k_htc_txep (has report)
+       8  INFO: trying to register non-static key in skb_queue_tail (has report)
+       9  SYZFAIL: repeatedly failed to execute the program
+      12  INFO: trying to register non-static key in skb_queue_tail (has report)
+      12  SYZFAIL: repeatedly failed to execute the program (3)
+The bug was not found.
+This commit is flagged as unstable.
+About 35491 commits remaining
+
+2026-04-30 08:00:17
+Session:   52
+Kernel:    2021-04-09 - 49e76a418981293bcd8cb1e32df5b0e00e34d8ff
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       4  general protection fault in ath9k_htc_txep (4) (has report)
+       6  SYZFAIL: repeatedly failed to execute the program
+       7  SYZFAIL: repeatedly failed to execute the program
+       8  SYZFAIL: repeatedly failed to execute the program (3)
+      11  SYZFAIL: repeatedly failed to execute the program
+      12  SYZFAIL: repeatedly failed to execute the program
+      12  INFO: task hung in new_device_store
+The bug was not found.
+This commit is flagged as unstable.
+About 35491 commits remaining
+
+2026-04-30 08:27:26
+Session:   53
+Kernel:    2021-03-11 - 7cd37e7e958bbc1038b90c126162532a4afaa9f8
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       3  general protection fault in release_nodes (has report)
+       4  general protection fault in release_nodes (2) (has report)
+       5  general protection fault in ath9k_htc_txep (has report)
+       6  general protection fault in release_nodes (2) (has report)
+      10  SYZFAIL: repeatedly failed to execute the program (2)
+      12  general protection fault in ftdi_sio_port_remove (has report)
+The bug was not found.
+This commit is flagged as unstable.
+About 35491 commits remaining
+
+2026-04-30 08:54:30
+Session:   54
+Kernel:    2021-05-19 - 50f530e176eac808e64416732e54c0686ce2c39b
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       4  INFO: trying to register non-static key in skb_queue_tail (has report)
+       4  SYZFAIL: repeatedly failed to execute the program
+       4  general protection fault in ath9k_htc_txep (has report)
+       5  INFO: trying to register non-static key in skb_queue_tail (has report)
+       6  INFO: trying to register non-static key in skb_queue_tail (has report)
+       7  INFO: trying to register non-static key in skb_queue_tail (2) (has report)
+       8  INFO: trying to register non-static key in skb_queue_tail (has report)
+      11  INFO: trying to register non-static key in skb_queue_tail (has report)
+      11  SYZFAIL: repeatedly failed to execute the program
+      12  SYZFAIL: repeatedly failed to execute the program (2)
+      12  general protection fault in ath9k_htc_txep (2) (has report)
+The bug was not found.
+This commit is flagged as unstable.
+About 35491 commits remaining
+
+2026-04-30 09:21:40
+Session:   55
+Kernel:    2021-03-29 - 13225a5c7b1c3680068722b53d85b51722b09b80
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       3  general protection fault in release_nodes (has report)
+       4  SYZFAIL: repeatedly failed to execute the program
+       5  INFO: trying to register non-static key in skb_queue_tail (2) (has report)
+       5  SYZFAIL: repeatedly failed to execute the program (2)
+       5  general protection fault in release_nodes (has report)
+       6  INFO: trying to register non-static key in skb_queue_tail (has report)
+       6  general protection fault in ath9k_htc_txep (has report)
+       7  INFO: trying to register non-static key in skb_queue_tail (2) (has report)
+       7  general protection fault in release_nodes (has report)
+       9  INFO: trying to register non-static key in skb_queue_tail (has report)
+       9  general protection fault in ath9k_htc_txep (2) (has report)
+      10  general protection fault in release_nodes (has report)
+      12  INFO: trying to register non-static key in skb_queue_tail (has report)
+      12  SYZFAIL: repeatedly failed to execute the program
+      12  general protection fault in ath9k_htc_txep (has report)
+      12  general protection fault in release_nodes (has report)
+The bug was not found.
+This commit is flagged as unstable.
+About 35491 commits remaining
+
+2026-04-30 09:38:44
+Session:   56
+Kernel:    2021-04-27 - 288321a9c65192878446a00acaa9f6c3ca9bb1f5
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       4  INFO: trying to register non-static key in skb_queue_tail (has report)
+       5  SYZFAIL: repeatedly failed to execute the program
+       8  SYZFAIL: repeatedly failed to execute the program (2)
+       9  SYZFAIL: repeatedly failed to execute the program
+      10  SYZFAIL: repeatedly failed to execute the program (5)
+The bug was not found.
+This commit is flagged as unstable.
+About 35491 commits remaining
+
+2026-04-30 10:05:55
+Session:   57
+Kernel:    2021-03-18 - 6e20a05104e55dc0e4899db8110013d521d20a6e
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       3  general protection fault in release_nodes (2) (has report)
+       4  general protection fault in ath9k_htc_txep (has report)
+       5  INFO: trying to register non-static key in skb_queue_tail (has report)
+       6  INFO: trying to register non-static key in skb_queue_tail (has report)
+       6  general protection fault in release_nodes (2) (has report)
+      10  general protection fault in ftdi_sio_port_remove (has report)
+      12  general protection fault in ftdi_sio_port_remove (has report)
+      12  SYZFAIL: repeatedly failed to execute the program
+The bug was not found.
+This commit is flagged as unstable.
+About 35491 commits remaining
+
+2026-04-30 10:22:58
+Session:   58
+Kernel:    2021-04-26 - 2f9ef0559efbee18a10a3ca26eefe57f69918693
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       4  INFO: trying to register non-static key in skb_queue_tail (has report)
+       5  SYZFAIL: repeatedly failed to execute the program (2)
+       6  INFO: trying to register non-static key in skb_queue_tail (has report)
+       8  SYZFAIL: repeatedly failed to execute the program
+       9  SYZFAIL: repeatedly failed to execute the program (2)
+      11  SYZFAIL: repeatedly failed to execute the program (2)
+The bug was not found.
+This commit is flagged as unstable.
+About 35491 commits remaining
+
+2026-04-30 10:50:11
+Session:   59
+Kernel:    2021-03-08 - 3b4c963243b1cac1882c2a557152d5444580a751
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       4  general protection fault in release_nodes (has report)
+       5  SYZFAIL: repeatedly failed to execute the program
+       5  general protection fault in release_nodes (has report)
+       6  INFO: trying to register non-static key in skb_queue_tail (has report)
+       6  general protection fault in release_nodes (3) (has report)
+       7  INFO: trying to register non-static key in skb_queue_tail (has report)
+       7  general protection fault in release_nodes (2) (has report)
+      12  SYZFAIL: repeatedly failed to execute the program
+The bug was not found.
+This commit is flagged as unstable.
+About 35491 commits remaining
+
+2026-04-30 11:07:16
+Session:   60
+Kernel:    2020-12-28 - d962608ce2188a1d46ec9d356d6fad5cd6fc0341
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       6  SYZFAIL: repeatedly failed to execute the program (2)
+      10  SYZFAIL: repeatedly failed to execute the program
+      12  SYZFAIL: repeatedly failed to execute the program
+The bug was not found.
+This commit is flagged as unstable.
+About 35491 commits remaining
+
+2026-04-30 11:34:09
+Session:   61
+Kernel:    2021-04-08 - 84de8154c516b821bd60493b90d4782c5a4905ab
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       3  general protection fault in release_nodes (2) (has report)
+       4  general protection fault in release_nodes (has report)
+       5  INFO: trying to register non-static key in skb_queue_tail (2) (has report)
+       5  SYZFAIL: repeatedly failed to execute the program
+       6  SYZFAIL: repeatedly failed to execute the program
+       7  INFO: trying to register non-static key in skb_queue_tail (has report)
+       7  general protection fault in release_nodes (2) (has report)
+       8  INFO: trying to register non-static key in skb_queue_tail (has report)
+       8  general protection fault in release_nodes (has report)
+      10  INFO: trying to register non-static key in skb_queue_tail (has report)
+      11  INFO: trying to register non-static key in skb_queue_tail (has report)
+      12  general protection fault in ath9k_htc_txep (has report)
+The bug was not found.
+This commit is flagged as unstable.
+About 35491 commits remaining
+
+2026-04-30 11:51:12
+Session:   62
+Kernel:    2021-01-22 - 88f7a858a80c6bc2ef54035c56ea60d9ce47e3b7
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       7  SYZFAIL: repeatedly failed to execute the program
+       7  general protection fault in ath9k_htc_txep (has report)
+       9  SYZFAIL: repeatedly failed to execute the program
+      10  SYZFAIL: repeatedly failed to execute the program (3)
+The bug was not found.
+This commit is flagged as unstable.
+About 35491 commits remaining
+
+2026-04-30 12:08:34
+Session:   63
+Kernel:    2021-03-22 - 2a35625b84aa76a7457ba20ce7b38fea4fca60f1
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       4  SYZFAIL: repeatedly failed to execute the program
+       4  general protection fault in ath9k_htc_txep (has report)
+       4  general protection fault in release_nodes (2) (has report)
+       6  general protection fault in release_nodes (4) (has report)
+       7  INFO: trying to register non-static key in skb_queue_tail (has report)
+       7  general protection fault in release_nodes (has report)
+      12  SYZFAIL: repeatedly failed to execute the program (4)
+The bug was not found.
+This commit is flagged as unstable.
+About 35491 commits remaining
+
+2026-04-30 12:26:18
+Session:   64
+Kernel:    2021-01-14 - 5a21489207a52f825458d0c190bfca06e36f17e0
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       5  INFO: trying to register non-static key in skb_queue_tail (2) (has report)
+       6  SYZFAIL: repeatedly failed to execute the program (2)
+       9  SYZFAIL: repeatedly failed to execute the program
+      12  SYZFAIL: repeatedly failed to execute the program (3)
+The bug was not found.
+This commit is flagged as unstable.
+About 35491 commits remaining
+
+2026-04-30 12:43:20
+Session:   65
+Kernel:    2021-03-12 - a9349f08ec6c1251d41ef167d27a15cc39bc5b97
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       6  SYZFAIL: repeatedly failed to execute the program
+       7  INFO: trying to register non-static key in skb_queue_tail (has report)
+      12  SYZFAIL: repeatedly failed to execute the program
+The bug was not found.
+This commit is flagged as unstable.
+About 35491 commits remaining
+
+2026-04-30 13:10:29
+Session:   66
+Kernel:    2021-01-27 - 5b2d6d2d602068ae0568f990e850ad80e1f701d3
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       5  INFO: trying to register non-static key in skb_queue_tail (has report)
+       5  SYZFAIL: repeatedly failed to execute the program
+       5  general protection fault in ath9k_htc_txep (has report)
+       9  SYZFAIL: repeatedly failed to execute the program
+      10  SYZFAIL: repeatedly failed to execute the program
+      12  SYZFAIL: repeatedly failed to execute the program
+The bug was not found.
+This commit is flagged as unstable.
+About 35491 commits remaining
+
+2026-04-30 13:27:16
+Session:   67
+Kernel:    2021-04-14 - a69b191f6297310ff140f2868b89fe2a2f355b90
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       5  INFO: trying to register non-static key in skb_queue_tail (2) (has report)
+       6  INFO: trying to register non-static key in skb_queue_tail (2) (has report)
+       6  SYZFAIL: repeatedly failed to execute the program
+       8  INFO: trying to register non-static key in skb_queue_tail (has report)
+       9  INFO: trying to register non-static key in skb_queue_tail (has report)
+      10  SYZFAIL: repeatedly failed to execute the program
+      10  general protection fault in ath9k_htc_txep (has report)
+      11  general protection fault in ath9k_htc_txep (has report)
+      12  SYZFAIL: repeatedly failed to execute the program
+The bug was not found.
+This commit is flagged as unstable.
+About 35491 commits remaining
+
+2026-04-30 13:54:30
+Session:   68
+Kernel:    2021-02-10 - 3999434b6ce6fa452128c36cbb5017f0cd347615
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       5  INFO: trying to register non-static key in skb_queue_tail (has report)
+       6  SYZFAIL: repeatedly failed to execute the program
+       6  general protection fault in ath9k_htc_txep (has report)
+      11  INFO: trying to register non-static key in skb_queue_tail (has report)
+      12  SYZFAIL: repeatedly failed to execute the program (2)
+The bug was not found.
+This commit is flagged as unstable.
+About 35491 commits remaining
+
+2026-04-30 14:21:14
+Session:   69
+Kernel:    2021-03-17 - 09f78b851ea332a67ebaf7b4463a80a4d0d3d747
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       4  INFO: trying to register non-static key in skb_queue_tail (has report)
+       7  SYZFAIL: repeatedly failed to execute the program
+The bug was not found.
+This commit is flagged as unstable.
+About 35491 commits remaining
+
+2026-04-30 14:45:16
+Session:   70
+Kernel:    2021-01-13 - af4c2fab3ff4318b85e7e0ffe86e76d425cc7533
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       5  SYZFAIL: repeatedly failed to execute the program (2)
+       6  SYZFAIL: repeatedly failed to execute the program (2)
+       7  general protection fault in ath9k_htc_txep (has report)
+       8  general protection fault in ath9k_htc_txep (has report)
+       9  INFO: trying to register non-static key in skb_queue_tail (2) (has report)
+      10  INFO: trying to register non-static key in skb_queue_tail (3) (has report)
+The bug was not found.
+This commit is flagged as unstable.
+About 35491 commits remaining
+
+2026-04-30 15:12:10
+Session:   71
+Kernel:    2021-03-22 - 3de43dc98615b15516ec65591ebe28ceb7d8d921
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0854-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      11  WARNING: refcount bug in net_rx_queue_update_kobjects (8) (has report)
+      12  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 35491 commits remaining
+
+2026-04-30 15:34:55
+Session:   72
+Kernel:    2021-02-08 - 059d2a1004981dce19f0127dabc1b4ec927d202a
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       3  general protection fault in __fib6_drop_pcpu_from (has report)
+       5  INFO: trying to register non-static key in skb_queue_tail (has report)
+       6  SYZFAIL: repeatedly failed to execute the program
+       6  general protection fault in ath9k_htc_txep (has report)
+      10  INFO: trying to register non-static key in skb_queue_tail (has report)
+      10  SYZFAIL: repeatedly failed to execute the program
+      11  INFO: trying to register non-static key in skb_queue_tail (2) (has report)
+      12  INFO: trying to register non-static key in skb_queue_tail (2) (has report)
+      12  SYZFAIL: repeatedly failed to execute the program
+The bug was not found.
+This commit is flagged as unstable.
+About 35491 commits remaining
+
+2026-04-30 16:00:02
+Session:   73
+Kernel:    2021-04-14 - a7639136a929fd16dbb1d4a2b531fc9c57eb8bd2
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       5  INFO: trying to register non-static key in skb_queue_tail (2) (has report)
+       5  SYZFAIL: repeatedly failed to execute the program (2)
+       5  general protection fault in ath9k_htc_txep (has report)
+       8  INFO: trying to register non-static key in skb_queue_tail (2) (has report)
+       9  INFO: trying to register non-static key in skb_queue_tail (2) (has report)
+       9  general protection fault in ath9k_htc_txep (3) (has report)
+      10  general protection fault in ath9k_htc_txep (has report)
+The bug was not found.
+This commit is flagged as unstable.
+About 35491 commits remaining
+
+2026-04-30 16:27:11
+Session:   74
+Kernel:    2021-02-13 - 358feceebbf68f33c44c6650d14455389e65282d
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       5  INFO: trying to register non-static key in skb_queue_tail (has report)
+       5  SYZFAIL: repeatedly failed to execute the program (2)
+       7  WARNING in __cfg80211_ibss_joined (has report)
+       8  general protection fault in ath9k_htc_txep (has report)
+       9  SYZFAIL: repeatedly failed to execute the program
+      10  SYZFAIL: repeatedly failed to execute the program (2)
+      11  INFO: trying to register non-static key in skb_queue_tail (has report)
+The bug was not found.
+This commit is flagged as unstable.
+About 35491 commits remaining
+
+2026-04-30 16:54:00
+Session:   75
+Kernel:    2021-04-07 - 8a12f8836145ffe37e9c8733dce18c22fb668b66
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       5  general protection fault in ath9k_htc_txep (has report)
+       6  SYZFAIL: repeatedly failed to execute the program
+       7  INFO: trying to register non-static key in skb_queue_tail (has report)
+       7  SYZFAIL: repeatedly failed to execute the program
+       9  SYZFAIL: repeatedly failed to execute the program
+The bug was not found.
+This commit is flagged as unstable.
+About 35491 commits remaining
+
+2026-04-30 17:20:23
+Session:   76
+Kernel:    2021-02-14 - f704177e4721edd537b98daf597895ee1cbb6080
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       5  SYZFAIL: repeatedly failed to execute the program
+       6  INFO: trying to register non-static key in skb_queue_tail (has report)
+       6  SYZFAIL: repeatedly failed to execute the program (2)
+The bug was not found.
+This commit is flagged as unstable.
+About 35491 commits remaining
+
+2026-04-30 17:47:18
+Session:   77
+Kernel:    2021-04-08 - 800618f955a9647d8e03b9a367da974f7eecb120
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       4  general protection fault in ath9k_htc_txep (2) (has report)
+       5  SYZFAIL: repeatedly failed to execute the program
+       9  SYZFAIL: repeatedly failed to execute the program
+      10  SYZFAIL: repeatedly failed to execute the program (3)
+      12  SYZFAIL: repeatedly failed to execute the program
+The bug was not found.
+This commit is flagged as unstable.
+About 35491 commits remaining
+
+2026-04-30 18:14:32
+Session:   78
+Kernel:    2021-06-05 - bac9c6fa1f929213bbd0ac9cdf21e8e2f0916828
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       5  SYZFAIL: repeatedly failed to execute the program
+       6  INFO: trying to register non-static key in skb_queue_tail (has report)
+       6  SYZFAIL: repeatedly failed to execute the program (2)
+       7  SYZFAIL: repeatedly failed to execute the program
+      10  INFO: task hung in nsim_dev_trap_report_work
+      11  SYZFAIL: repeatedly failed to execute the program (2)
+      12  SYZFAIL: repeatedly failed to execute the program
+The bug was not found.
+This commit is flagged as unstable.
+About 35491 commits remaining
+
+2026-04-30 18:41:45
+Session:   79
+Kernel:    2021-04-09 - 5af50b0b1c200d31f6798a9ddd18aa706c868306
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       5  INFO: trying to register non-static key in skb_queue_tail (has report)
+       6  SYZFAIL: repeatedly failed to execute the program (3)
+       7  INFO: trying to register non-static key in skb_queue_tail (has report)
+       7  SYZFAIL: repeatedly failed to execute the program
+       8  INFO: trying to register non-static key in skb_queue_tail (has report)
+      12  INFO: trying to register non-static key in skb_queue_tail (2) (has report)
+The bug was not found.
+This commit is flagged as unstable.
+About 35491 commits remaining
+
+2026-04-30 19:09:00
+Session:   80
+Kernel:    2021-06-24 - ef318b9edf66a082f23d00d79b70c17b4c055a26
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       5  SYZFAIL: repeatedly failed to execute the program (2)
+       6  INFO: trying to register non-static key in skb_queue_tail (has report)
+       6  SYZFAIL: repeatedly failed to execute the program (3)
+      10  SYZFAIL: repeatedly failed to execute the program (4)
+      12  SYZFAIL: repeatedly failed to execute the program
+The bug was not found.
+This commit is flagged as unstable.
+About 35491 commits remaining
+
+2026-04-30 19:36:19
+Session:   81
+Kernel:    2021-03-25 - b8ecdaaaf328cf2914da99217368dc847fb9e968
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       6  SYZFAIL: repeatedly failed to execute the program (2)
+       7  SYZFAIL: repeatedly failed to execute the program (2)
+       8  SYZFAIL: repeatedly failed to execute the program
+       9  SYZFAIL: repeatedly failed to execute the program
+      11  SYZFAIL: repeatedly failed to execute the program (2)
+The bug was not found.
+This commit is flagged as unstable.
+About 35491 commits remaining
+
+2026-04-30 20:03:33
+Session:   82
+Kernel:    2021-05-21 - 29bf1993fdba17703a836cf098712cf15f96706d
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       5  SYZFAIL: repeatedly failed to execute the program
+       6  SYZFAIL: repeatedly failed to execute the program (2)
+       6  general protection fault in ath9k_htc_txep (has report)
+       7  INFO: trying to register non-static key in skb_queue_tail (has report)
+       7  SYZFAIL: repeatedly failed to execute the program
+      10  SYZFAIL: repeatedly failed to execute the program
+      11  SYZFAIL: repeatedly failed to execute the program (3)
+The bug was not found.
+This commit is flagged as unstable.
+About 35491 commits remaining
+
+2026-04-30 20:30:56
+Session:   83
+Kernel:    2021-04-14 - 8f23fe35ff1e5491b4d279323a8209a31f03ae65
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       6  SYZFAIL: repeatedly failed to execute the program (4)
+       7  SYZFAIL: repeatedly failed to execute the program
+      10  SYZFAIL: repeatedly failed to execute the program (2)
+      12  SYZFAIL: repeatedly failed to execute the program
+The bug was not found.
+This commit is flagged as unstable.
+About 35491 commits remaining
+
+2026-04-30 20:58:08
+Session:   84
+Kernel:    2021-05-11 - 210f563b097997ce917e82feab356b298bfd12b0
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       5  INFO: trying to register non-static key in skb_queue_tail (has report)
+       5  SYZFAIL: repeatedly failed to execute the program (2)
+       6  SYZFAIL: repeatedly failed to execute the program (2)
+       7  SYZFAIL: repeatedly failed to execute the program (2)
+      11  SYZFAIL: repeatedly failed to execute the program (2)
+      12  SYZFAIL: repeatedly failed to execute the program
+The bug was not found.
+This commit is flagged as unstable.
+About 35491 commits remaining
+
+2026-04-30 21:19:18
+Session:   85
+Kernel:    2021-03-30 - e0e3070a9bc9bb3d3e00b37da872ed5b0adbd077
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       4  unregister_netdevice: waiting for DEV to become free
+       5  unregister_netdevice: waiting for DEV to become free
+       5  SYZFAIL: repeatedly failed to execute the program
+       6  unregister_netdevice: waiting for DEV to become free (5)
+      10  unregister_netdevice: waiting for DEV to become free
+      11  unregister_netdevice: waiting for DEV to become free (5)
+      11  SYZFAIL: repeatedly failed to execute the program (2)
+The bug was not found.
+This commit is flagged as unstable.
+About 35491 commits remaining
+
+2026-04-30 21:46:12
+Session:   86
+Kernel:    2021-04-30 - 985b71db17506c668e5a9bd9fc700c95640dc191
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       2  WARNING in __nf_unregister_net_hook (has report)
+       5  INFO: trying to register non-static key in skb_queue_tail (has report)
+       5  SYZFAIL: repeatedly failed to execute the program
+       5  WARNING in __nf_unregister_net_hook (has report)
+       8  WARNING in __nf_unregister_net_hook (has report)
+       9  SYZFAIL: repeatedly failed to execute the program
+       9  WARNING in __nf_unregister_net_hook (4) (has report)
+      12  SYZFAIL: repeatedly failed to execute the program
+The bug was not found.
+This commit is flagged as unstable.
+About 35491 commits remaining
+
+2026-04-30 22:13:24
+Session:   87
+Kernel:    2021-04-19 - f30386a85f695aced2fa5b124d65ce5a5f3dc3ac
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       5  INFO: trying to register non-static key in skb_queue_tail (has report)
+       5  SYZFAIL: repeatedly failed to execute the program (3)
+       6  SYZFAIL: repeatedly failed to execute the program
+       8  INFO: trying to register non-static key in skb_queue_tail (2) (has report)
+       8  SYZFAIL: repeatedly failed to execute the program (2)
+       9  INFO: trying to register non-static key in skb_queue_tail (has report)
+      10  INFO: trying to register non-static key in skb_queue_tail (2) (has report)
+      11  INFO: trying to register non-static key in skb_queue_tail (3) (has report)
+      12  INFO: trying to register non-static key in skb_queue_tail (has report)
+The bug was not found.
+This commit is flagged as unstable.
+About 35491 commits remaining
+
+2026-04-30 22:38:01
+Session:   88
+Kernel:    2021-03-09 - 083d248b2d44ab7513b2410121a4ac5de267d0ee
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       3  general protection fault in release_nodes (3) (has report)
+       5  SYZFAIL: repeatedly failed to execute the program
+       5  general protection fault in release_nodes (has report)
+       6  INFO: trying to register non-static key in skb_queue_tail (has report)
+       6  general protection fault in release_nodes (has report)
+       7  SYZFAIL: repeatedly failed to execute the program
+       8  INFO: trying to register non-static key in skb_queue_tail (has report)
+       8  general protection fault in release_nodes (has report)
+      10  SYZFAIL: repeatedly failed to execute the program
+The bug was not found.
+This commit is flagged as unstable.
+About 35491 commits remaining
+
+2026-04-30 23:05:08
+Session:   89
+Kernel:    2021-04-14 - 378c7be65ccd173762242805f4591618249b91ae
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       5  SYZFAIL: repeatedly failed to execute the program
+       6  SYZFAIL: repeatedly failed to execute the program
+       7  SYZFAIL: repeatedly failed to execute the program
+       8  INFO: trying to register non-static key in skb_queue_tail (2) (has report)
+       8  SYZFAIL: repeatedly failed to execute the program
+      10  SYZFAIL: repeatedly failed to execute the program
+      12  SYZFAIL: repeatedly failed to execute the program
+The bug was not found.
+This commit is flagged as unstable.
+About 35491 commits remaining
+
+2026-04-30 23:32:16
+Session:   90
+Kernel:    2021-04-20 - c2209ea55612efac75de0a58ef5f7394fae7fa0f
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       3  general protection fault in release_nodes (2) (has report)
+       4  general protection fault in release_nodes (has report)
+       5  INFO: trying to register non-static key in skb_queue_tail (2) (has report)
+       5  general protection fault in release_nodes (3) (has report)
+       6  INFO: trying to register non-static key in skb_queue_tail (has report)
+       8  general protection fault in release_nodes (has report)
+      10  SYZFAIL: repeatedly failed to execute the program
+      11  SYZFAIL: repeatedly failed to execute the program
+      12  SYZFAIL: repeatedly failed to execute the program
+The bug was not found.
+This commit is flagged as unstable.
+About 35491 commits remaining
+
+2026-04-30 23:59:02
+Session:   91
+Kernel:    2021-04-21 - 70a7c484c7c3eaa17b679db2c74ec8ecbe8dc0e8
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       5  INFO: trying to register non-static key in skb_queue_tail (has report)
+       5  SYZFAIL: repeatedly failed to execute the program (2)
+       6  INFO: trying to register non-static key in skb_queue_tail (has report)
+       6  SYZFAIL: repeatedly failed to execute the program (2)
+       7  SYZFAIL: repeatedly failed to execute the program
+       8  SYZFAIL: repeatedly failed to execute the program
+      11  SYZFAIL: repeatedly failed to execute the program (2)
+      12  SYZFAIL: repeatedly failed to execute the program (2)
+The bug was not found.
+This commit is flagged as unstable.
+About 35491 commits remaining
+
+2026-05-01 00:22:10
+Session:   92
+Kernel:    2021-03-10 - 73ac79881804eed2e9d76ecdd1018037f8510cb1
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       3  general protection fault in release_nodes (has report)
+       4  general protection fault in release_nodes (has report)
+       5  SYZFAIL: repeatedly failed to execute the program
+       6  INFO: trying to register non-static key in skb_queue_tail (has report)
+       6  general protection fault in release_nodes (3) (has report)
+       7  INFO: trying to register non-static key in skb_queue_tail (has report)
+       9  general protection fault in ftdi_sio_port_remove (has report)
+      11  INFO: trying to register non-static key in ath9k_htc_rxep (has report)
+The bug was not found.
+This commit is flagged as unstable.
+About 35491 commits remaining
+
+2026-05-01 00:39:09
+Session:   93
+Kernel:    2021-04-26 - 6876a18d3361e1893187970e1881a1d88d894d3f
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       4  INFO: trying to register non-static key in skb_queue_tail (has report)
+       5  SYZFAIL: repeatedly failed to execute the program
+       6  SYZFAIL: repeatedly failed to execute the program
+       7  SYZFAIL: repeatedly failed to execute the program
+       8  SYZFAIL: repeatedly failed to execute the program (2)
+       9  SYZFAIL: repeatedly failed to execute the program (2)
+      10  SYZFAIL: repeatedly failed to execute the program
+      12  SYZFAIL: repeatedly failed to execute the program (2)
+The bug was not found.
+This commit is flagged as unstable.
+About 35491 commits remaining
+
+2026-05-01 01:03:15
+Session:   94
+Kernel:    2021-03-10 - 933f98be60a7b9c287acb081fb5d6659dd5e0441
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       4  general protection fault in release_nodes (3) (has report)
+       5  general protection fault in ath9k_htc_txep (has report)
+       5  general protection fault in release_nodes (has report)
+       6  general protection fault in release_nodes (2) (has report)
+       7  general protection fault in ath9k_htc_txep (has report)
+       8  general protection fault in release_nodes (2) (has report)
+      11  SYZFAIL: repeatedly failed to execute the program
+      12  general protection fault in ftdi_sio_port_remove (has report)
+The bug was not found.
+This commit is flagged as unstable.
+About 35491 commits remaining
+
+2026-05-01 01:20:22
+Session:   95
+Kernel:    2020-12-28 - d20c219c7317843cec7f03eba15bfeae54f29654
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       5  INFO: trying to register non-static key in skb_queue_tail (has report)
+       5  SYZFAIL: repeatedly failed to execute the program
+       5  general protection fault in ath9k_htc_txep (has report)
+       6  general protection fault in ath9k_htc_txep (has report)
+       7  SYZFAIL: repeatedly failed to execute the program
+The bug was not found.
+This commit is flagged as unstable.
+About 35491 commits remaining
+
+2026-05-01 01:47:15
+Session:   96
+Kernel:    2021-03-27 - 78d9d7c2a331fb7a68a86e53ef7e12966459e0c5
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       5  SYZFAIL: repeatedly failed to execute the program
+       5  general protection fault in ath9k_htc_txep (has report)
+       5  general protection fault in release_nodes (has report)
+       6  SYZFAIL: repeatedly failed to execute the program
+       6  general protection fault in release_nodes (has report)
+       7  general protection fault in release_nodes (has report)
+       8  general protection fault in release_nodes (2) (has report)
+      11  general protection fault in ftdi_sio_port_remove (3) (has report)
+      12  general protection fault in ftdi_sio_port_remove (2) (has report)
+The bug was not found.
+This commit is flagged as unstable.
+About 35491 commits remaining
+
+2026-05-01 02:04:38
+Session:   97
+Kernel:    2020-12-17 - e2f8b74e58cb1560c1399ba94a470b770e858259
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       4  UBSAN: shift-out-of-bounds in option_probe
+       5  INFO: trying to register non-static key in skb_queue_tail (2) (has report)
+       5  SYZFAIL: repeatedly failed to execute the program
+       6  SYZFAIL: repeatedly failed to execute the program
+       6  general protection fault in ath9k_htc_txep (has report)
+       8  general protection fault in ath9k_htc_txep (has report)
+       9  UBSAN: shift-out-of-bounds in option_probe
+      10  WARNING: ODEBUG bug in netdev_run_todo (has report)
+      11  UBSAN: shift-out-of-bounds in option_probe (2)
+      12  SYZFAIL: repeatedly failed to execute the program
+The bug was not found.
+This commit is flagged as unstable.
+About 35491 commits remaining
+
+2026-05-01 02:31:39
+Session:   98
+Kernel:    2021-03-22 - b83209176d6892ea2e086d0f1d45fdd1cf5f8569
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       4  general protection fault in release_nodes (2) (has report)
+       5  SYZFAIL: repeatedly failed to execute the program (2)
+       6  SYZFAIL: repeatedly failed to execute the program
+       6  general protection fault in release_nodes (has report)
+       7  general protection fault in release_nodes (2) (has report)
+       8  general protection fault in ath9k_htc_txep (has report)
+       8  general protection fault in release_nodes (2) (has report)
+       9  general protection fault in release_nodes (has report)
+      12  SYZFAIL: repeatedly failed to execute the program
+The bug was not found.
+This commit is flagged as unstable.
+About 35491 commits remaining
+
+2026-05-01 02:49:19
+Session:   99
+Kernel:    2021-01-12 - 2b6587288a5aacf05b1388ab0845afdb6fd0358c
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       5  SYZFAIL: repeatedly failed to execute the program
+       6  SYZFAIL: repeatedly failed to execute the program
+       7  SYZFAIL: repeatedly failed to execute the program
+       8  INFO: trying to register non-static key in skb_queue_tail (has report)
+      10  SYZFAIL: repeatedly failed to execute the program
+The bug was not found.
+This commit is flagged as unstable.
+About 35491 commits remaining
+
+2026-05-01 03:06:45
+Session:   100
+Kernel:    2021-06-02 - bcd9a0797d73eeff659582f23277e7ab6e5f18f3
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       4  SYZFAIL: repeatedly failed to execute the program
+       5  INFO: trying to register non-static key in skb_queue_tail (2) (has report)
+       9  INFO: task hung in nsim_dev_trap_report_work
+       9  SYZFAIL: repeatedly failed to execute the program
+The bug was not found.
+This commit is flagged as unstable.
+About 35491 commits remaining
+
+2026-05-01 03:34:06
+Session:   101
+Kernel:    2021-01-21 - 4fd15eaf429a1e7de9d653f0ff2e8a50733495b8
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 35907 commits remaining
+
+2026-05-01 04:00:56
+Session:   102
+Kernel:    2021-03-29 - a5d33be0512b4565808a3aed05567cb56c0e6ad0
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       4  INFO: trying to register non-static key in skb_queue_tail (3) (has report)
+       5  INFO: trying to register non-static key in skb_queue_tail (5) (has report)
+       7  INFO: trying to register non-static key in skb_queue_tail (5) (has report)
+       7  general protection fault in ath9k_htc_txep (has report)
+       8  INFO: trying to register non-static key in skb_queue_tail (2) (has report)
+       9  INFO: trying to register non-static key in skb_queue_tail (has report)
+      10  INFO: trying to register non-static key in skb_queue_tail (has report)
+The bug was not found.
+About 21691 commits remaining
+
+2026-05-01 04:28:06
+Session:   103
+Kernel:    2021-06-11 - 85f3f17b5db2dd9f8a094a0ddc665555135afd22
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       5  SYZFAIL: repeatedly failed to execute the program
+       6  SYZFAIL: repeatedly failed to execute the program (3)
+       7  SYZFAIL: repeatedly failed to execute the program
+       7  general protection fault in ath9k_htc_txep (has report)
+       8  INFO: trying to register non-static key in skb_queue_tail (3) (has report)
+       9  INFO: trying to register non-static key in skb_queue_tail (has report)
+      10  INFO: trying to register non-static key in skb_queue_tail (has report)
+      12  SYZFAIL: repeatedly failed to execute the program
+The bug was not found.
+This commit is flagged as unstable.
+About 21691 commits remaining
+
+2026-05-01 04:45:28
+Session:   104
+Kernel:    2021-03-10 - 628fc9d9a0e6e52fd3116b5591cb4e90473db9ad
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       3  INFO: trying to register non-static key in skb_queue_tail (has report)
+       3  general protection fault in release_nodes (2) (has report)
+       4  INFO: trying to register non-static key in skb_queue_tail (has report)
+       5  SYZFAIL: repeatedly failed to execute the program (2)
+       6  INFO: trying to register non-static key in skb_queue_tail (has report)
+       7  INFO: trying to register non-static key in skb_queue_tail (2) (has report)
+       7  SYZFAIL: repeatedly failed to execute the program
+       8  INFO: trying to register non-static key in skb_queue_tail (3) (has report)
+       9  INFO: trying to register non-static key in skb_queue_tail (has report)
+      12  general protection fault in ftdi_sio_port_remove (has report)
+The bug was not found.
+This commit is flagged as unstable.
+About 21691 commits remaining
+
+2026-05-01 05:12:40
+Session:   105
+Kernel:    2021-06-14 - e3db7579ef355a0b2bfef4448b84d9ac882c8f2c
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       5  SYZFAIL: repeatedly failed to execute the program
+       6  INFO: trying to register non-static key in skb_queue_tail (has report)
+       6  SYZFAIL: repeatedly failed to execute the program (2)
+       7  INFO: trying to register non-static key in skb_queue_tail (has report)
+       7  SYZFAIL: repeatedly failed to execute the program
+       9  SYZFAIL: repeatedly failed to execute the program (2)
+      11  SYZFAIL: repeatedly failed to execute the program (2)
+      12  SYZFAIL: repeatedly failed to execute the program
+The bug was not found.
+This commit is flagged as unstable.
+About 21691 commits remaining
+
+2026-05-01 05:40:06
+Session:   106
+Kernel:    2021-04-03 - 035785ab2826beb43cfa65a2df37d60074915a4d
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       5  SYZFAIL: repeatedly failed to execute the program
+       6  SYZFAIL: repeatedly failed to execute the program
+       7  SYZFAIL: repeatedly failed to execute the program
+       8  SYZFAIL: repeatedly failed to execute the program (2)
+      11  SYZFAIL: repeatedly failed to execute the program
+      12  INFO: task hung in addrconf_dad_work
+The bug was not found.
+This commit is flagged as unstable.
+About 21691 commits remaining
+
+2026-05-01 05:59:07
+Session:   107
+Kernel:    2021-06-16 - fda0b5ba9d5a9f6bfab9bc195f7a8fce13aedf61
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       4  INFO: trying to register non-static key in skb_queue_tail (has report)
+       6  SYZFAIL: repeatedly failed to execute the program (2)
+       7  SYZFAIL: repeatedly failed to execute the program (2)
+       7  WARNING in put_i2c_dev (has report)
+       8  SYZFAIL: repeatedly failed to execute the program
+      11  SYZFAIL: repeatedly failed to execute the program (4)
+      11  WARNING: ODEBUG bug in netdev_run_todo (has report)
+The bug was not found.
+This commit is flagged as unstable.
+About 21691 commits remaining
+
+2026-05-01 06:26:29
+Session:   108
+Kernel:    2021-04-15 - 823b31517ad3196324322804ee365d5fcff704d6
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       3  INFO: trying to register non-static key in skb_queue_tail (has report)
+       3  general protection fault in release_nodes (5) (has report)
+       4  general protection fault in release_nodes (2) (has report)
+       5  INFO: trying to register non-static key in skb_queue_tail (has report)
+       9  general protection fault in ftdi_sio_port_remove (3) (has report)
+       9  SYZFAIL: repeatedly failed to execute the program (2)
+      10  general protection fault in ftdi_sio_port_remove (has report)
+      11  general protection fault in ftdi_sio_port_remove (2) (has report)
+      12  general protection fault in ftdi_sio_port_remove (2) (has report)
+The bug was not found.
+This commit is flagged as unstable.
+About 21691 commits remaining
+
+2026-05-01 06:52:40
+Session:   109
+Kernel:    2021-06-04 - 92638b4e1b47f97d7269e74465dedf73096f777d
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       5  SYZFAIL: repeatedly failed to execute the program
+       6  SYZFAIL: repeatedly failed to execute the program
+       7  SYZFAIL: repeatedly failed to execute the program (2)
+      12  SYZFAIL: repeatedly failed to execute the program (2)
+The bug was not found.
+This commit is flagged as unstable.
+About 21691 commits remaining
+
+2026-05-01 07:19:55
+Session:   110
+Kernel:    2021-03-16 - 4d0b93896ff8d6795ad8d1b604e41aa850d5a635
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       3  general protection fault in ath9k_htc_txep (has report)
+       4  INFO: trying to register non-static key in skb_queue_tail (has report)
+       5  INFO: trying to register non-static key in skb_queue_tail (has report)
+       6  INFO: trying to register non-static key in skb_queue_tail (has report)
+       6  SYZFAIL: repeatedly failed to execute the program
+       7  INFO: trying to register non-static key in skb_queue_tail (has report)
+       7  general protection fault in ath9k_htc_txep (has report)
+       8  SYZFAIL: repeatedly failed to execute the program
+       9  INFO: trying to register non-static key in skb_queue_tail (2) (has report)
+      10  INFO: trying to register non-static key in skb_queue_tail (has report)
+      11  INFO: trying to register non-static key in skb_queue_tail (2) (has report)
+      11  general protection fault in ath9k_htc_txep (2) (has report)
+      12  INFO: trying to register non-static key in skb_queue_tail (2) (has report)
+The bug was not found.
+This commit is flagged as unstable.
+About 21691 commits remaining
+
+2026-05-01 07:47:02
+Session:   111
+Kernel:    2021-05-21 - 9eea2904292c2d8fa98df141d3bf7c41ec9dc1b5
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       3  INFO: trying to register non-static key in skb_queue_tail (has report)
+       4  INFO: trying to register non-static key in skb_queue_tail (5) (has report)
+       4  general protection fault in ath9k_htc_txep (has report)
+       5  INFO: trying to register non-static key in skb_queue_tail (has report)
+       8  SYZFAIL: repeatedly failed to execute the program (4)
+       9  INFO: trying to register non-static key in skb_queue_tail (3) (has report)
+      10  INFO: trying to register non-static key in skb_queue_tail (has report)
+      11  INFO: trying to register non-static key in skb_queue_tail (2) (has report)
+      12  INFO: trying to register non-static key in skb_queue_tail (has report)
+The bug was not found.
+This commit is flagged as unstable.
+About 21691 commits remaining
+
+2026-05-01 08:14:22
+Session:   112
+Kernel:    2021-03-11 - 8827faab2c8b52e848071a039a945db6f3ae8365
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       3  general protection fault in release_nodes (5) (has report)
+       4  general protection fault in release_nodes (3) (has report)
+       5  general protection fault in release_nodes (has report)
+       8  general protection fault in ftdi_sio_port_remove (2) (has report)
+       8  SYZFAIL: repeatedly failed to execute the program
+       9  SYZFAIL: repeatedly failed to execute the program
+      11  SYZFAIL: repeatedly failed to execute the program
+The bug was not found.
+This commit is flagged as unstable.
+About 21691 commits remaining
+
+2026-05-01 08:40:13
+Session:   113
+Kernel:    2021-05-12 - 7ac592aa35a684ff1858fb9ec282886b9e3575ac
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       5  SYZFAIL: repeatedly failed to execute the program (3)
+       6  SYZFAIL: repeatedly failed to execute the program
+       8  SYZFAIL: repeatedly failed to execute the program
+      10  SYZFAIL: repeatedly failed to execute the program
+      11  SYZFAIL: repeatedly failed to execute the program
+      12  SYZFAIL: repeatedly failed to execute the program
+The bug was not found.
+This commit is flagged as unstable.
+About 21691 commits remaining
+
+2026-05-01 09:07:24
+Session:   114
+Kernel:    2021-03-25 - ac62f90c9636c5b7004f6696a9e8c0d109509898
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       3  general protection fault in release_nodes (5) (has report)
+       4  general protection fault in release_nodes (2) (has report)
+       5  general protection fault in release_nodes (has report)
+       6  INFO: trying to register non-static key in skb_queue_tail (has report)
+       6  general protection fault in release_nodes (3) (has report)
+       7  INFO: trying to register non-static key in skb_queue_tail (has report)
+       7  general protection fault in release_nodes (has report)
+       8  INFO: trying to register non-static key in skb_queue_tail (has report)
+       8  general protection fault in release_nodes (has report)
+       9  general protection fault in release_nodes (2) (has report)
+      10  general protection fault in release_nodes (3) (has report)
+      11  SYZFAIL: repeatedly failed to execute the program
+      11  general protection fault in release_nodes (has report)
+      12  general protection fault in release_nodes (has report)
+The bug was not found.
+This commit is flagged as unstable.
+About 21691 commits remaining
+
+2026-05-01 09:24:46
+Session:   115
+Kernel:    2021-05-20 - 19bae51b0191129fd9a6d163678404b77cab24c9
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       4  INFO: trying to register non-static key in skb_queue_tail (has report)
+       4  SYZFAIL: repeatedly failed to execute the program
+       5  SYZFAIL: repeatedly failed to execute the program (3)
+       7  SYZFAIL: repeatedly failed to execute the program
+      10  SYZFAIL: repeatedly failed to execute the program (2)
+      11  SYZFAIL: repeatedly failed to execute the program
+The bug was not found.
+This commit is flagged as unstable.
+About 21691 commits remaining
+
+2026-05-01 09:52:04
+Session:   116
+Kernel:    2021-03-26 - 81dd500b1c8612a42979ee3ea788d2d9f19aa9f9
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       3  INFO: trying to register non-static key in skb_queue_tail (has report)
+       4  INFO: trying to register non-static key in skb_queue_tail (2) (has report)
+       5  general protection fault in ath9k_htc_txep (has report)
+       6  INFO: trying to register non-static key in skb_queue_tail (has report)
+      10  INFO: trying to register non-static key in skb_queue_tail (5) (has report)
+      10  SYZFAIL: repeatedly failed to execute the program (2)
+      11  SYZFAIL: repeatedly failed to execute the program
+      12  INFO: trying to register non-static key in skb_queue_tail (2) (has report)
+The bug was not found.
+This commit is flagged as unstable.
+About 21691 commits remaining
+
+2026-05-01 10:19:15
+Session:   117
+Kernel:    2021-05-17 - e86bdb24375a810ea7993d64ed406a803db71225
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       5  INFO: trying to register non-static key in skb_queue_tail (has report)
+       5  SYZFAIL: repeatedly failed to execute the program (2)
+       6  INFO: trying to register non-static key in skb_queue_tail (has report)
+       7  SYZFAIL: repeatedly failed to execute the program
+       9  SYZFAIL: repeatedly failed to execute the program
+      10  SYZFAIL: repeatedly failed to execute the program
+      11  SYZFAIL: repeatedly failed to execute the program (2)
+      12  SYZFAIL: repeatedly failed to execute the program
+The bug was not found.
+This commit is flagged as unstable.
+About 21691 commits remaining
+
+2026-05-01 10:36:27
+Session:   118
+Kernel:    2021-03-23 - 2d5ba37461013253d2ff0a3641b727fd32ea97a9
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       4  INFO: trying to register non-static key in skb_queue_tail (3) (has report)
+       4  general protection fault in ath9k_htc_txep (has report)
+       5  INFO: trying to register non-static key in skb_queue_tail (4) (has report)
+       6  INFO: trying to register non-static key in skb_queue_tail (2) (has report)
+       7  INFO: trying to register non-static key in skb_queue_tail (has report)
+      12  SYZFAIL: repeatedly failed to execute the program
+The bug was not found.
+This commit is flagged as unstable.
+About 21691 commits remaining
+
+2026-05-01 10:55:33
+Session:   119
+Kernel:    2021-06-01 - 65c1d05325b71b592688590d85c5ef6b360ca3fe
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       3  INFO: trying to register non-static key in skb_queue_tail (has report)
+       5  SYZFAIL: repeatedly failed to execute the program (3)
+       6  SYZFAIL: repeatedly failed to execute the program
+       7  SYZFAIL: repeatedly failed to execute the program (2)
+       9  SYZFAIL: repeatedly failed to execute the program
+      11  SYZFAIL: repeatedly failed to execute the program
+      12  SYZFAIL: repeatedly failed to execute the program (3)
+The bug was not found.
+This commit is flagged as unstable.
+About 21691 commits remaining
+
+2026-05-01 11:12:32
+Session:   120
+Kernel:    2021-03-28 - 487adc545bcef07d38b2918a7216a993c06b7dc9
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       5  SYZFAIL: repeatedly failed to execute the program
+       7  INFO: trying to register non-static key in skb_queue_tail (has report)
+       7  SYZFAIL: repeatedly failed to execute the program (2)
+       8  SYZFAIL: repeatedly failed to execute the program (2)
+      12  SYZFAIL: repeatedly failed to execute the program
+The bug was not found.
+This commit is flagged as unstable.
+About 21691 commits remaining
+
+2026-05-01 11:30:47
+Session:   121
+Kernel:    2021-04-27 - b34b95ebbba9a10257e3a2c9b2ba4119cb345dc3
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       4  INFO: trying to register non-static key in skb_queue_tail (3) (has report)
+       5  INFO: trying to register non-static key in skb_queue_tail (has report)
+       6  SYZFAIL: repeatedly failed to execute the program
+       7  INFO: trying to register non-static key in skb_queue_tail (has report)
+       7  SYZFAIL: repeatedly failed to execute the program
+       7  general protection fault in ath9k_htc_txep (has report)
+       8  INFO: trying to register non-static key in skb_queue_tail (2) (has report)
+       9  INFO: trying to register non-static key in skb_queue_tail (2) (has report)
+       9  general protection fault in ath9k_htc_txep (has report)
+      10  INFO: trying to register non-static key in skb_queue_tail (has report)
+      11  INFO: trying to register non-static key in skb_queue_tail (has report)
+      12  INFO: trying to register non-static key in skb_queue_tail (2) (has report)
+The bug was not found.
+This commit is flagged as unstable.
+About 21691 commits remaining
+
+2026-05-01 11:57:49
+Session:   122
+Kernel:    2021-03-30 - e720e7d0e983bf05de80b231bccc39f1487f0f16
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       5  INFO: trying to register non-static key in skb_queue_tail (has report)
+       5  SYZFAIL: repeatedly failed to execute the program
+       6  SYZFAIL: repeatedly failed to execute the program
+       9  SYZFAIL: repeatedly failed to execute the program (3)
+      10  SYZFAIL: repeatedly failed to execute the program (2)
+      11  INFO: trying to register non-static key in skb_queue_tail (4) (has report)
+      12  INFO: trying to register non-static key in skb_queue_tail (2) (has report)
+The bug was not found.
+This commit is flagged as unstable.
+About 21691 commits remaining
+
+2026-05-01 12:24:20
+Session:   123
+Kernel:    2021-05-07 - 9b472e85d098a40b84dd8b33fbf8a15ab1452025
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       2  WARNING in __nf_unregister_net_hook (has report)
+       4  WARNING in __nf_unregister_net_hook (has report)
+       5  SYZFAIL: repeatedly failed to execute the program
+       5  WARNING in __nf_unregister_net_hook (2) (has report)
+       6  SYZFAIL: repeatedly failed to execute the program
+       7  INFO: trying to register non-static key in skb_queue_tail (has report)
+       9  WARNING in __nf_unregister_net_hook (4) (has report)
+      10  SYZFAIL: repeatedly failed to execute the program
+      11  SYZFAIL: repeatedly failed to execute the program (2)
+The bug was not found.
+This commit is flagged as unstable.
+About 21691 commits remaining
+
+2026-05-01 12:51:34
+Session:   124
+Kernel:    2021-04-04 - d4ff983e323870478f04054c1ba817b481eb1f19
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       4  INFO: trying to register non-static key in skb_queue_tail (5) (has report)
+       4  SYZFAIL: repeatedly failed to execute the program
+       5  SYZFAIL: repeatedly failed to execute the program (2)
+       6  INFO: trying to register non-static key in skb_queue_tail (3) (has report)
+       7  INFO: trying to register non-static key in skb_queue_tail (2) (has report)
+       8  SYZFAIL: repeatedly failed to execute the program
+       9  SYZFAIL: repeatedly failed to execute the program
+      10  SYZFAIL: repeatedly failed to execute the program (2)
+      11  INFO: trying to register non-static key in skb_queue_tail (has report)
+      12  INFO: trying to register non-static key in skb_queue_tail (2) (has report)
+      12  SYZFAIL: repeatedly failed to execute the program
+      12  general protection fault in ath9k_htc_txep (has report)
+The bug was not found.
+This commit is flagged as unstable.
+About 21691 commits remaining
+
+2026-05-01 13:18:46
+Session:   125
+Kernel:    2021-04-30 - f76e0c41c0ac7f6ae614dd50ce3e983b974b87c1
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       2  WARNING in __nf_unregister_net_hook (has report)
+       4  INFO: trying to register non-static key in skb_queue_tail (3) (has report)
+       4  general protection fault in ath9k_htc_txep (2) (has report)
+       5  INFO: trying to register non-static key in skb_queue_tail (has report)
+       6  WARNING in __nf_unregister_net_hook (has report)
+       7  SYZFAIL: repeatedly failed to execute the program
+       8  INFO: trying to register non-static key in skb_queue_tail (has report)
+       9  INFO: trying to register non-static key in skb_queue_tail (3) (has report)
+       9  SYZFAIL: repeatedly failed to execute the program
+      10  SYZFAIL: repeatedly failed to execute the program
+      11  general protection fault in ath9k_htc_txep (has report)
+      12  INFO: trying to register non-static key in skb_queue_tail (3) (has report)
+The bug was not found.
+This commit is flagged as unstable.
+About 21691 commits remaining
+
+2026-05-01 13:46:00
+Session:   126
+Kernel:    2021-04-13 - ac813c625ad5c3ee98a99e1b37659a0d85178978
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc

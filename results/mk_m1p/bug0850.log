@@ -1,0 +1,66 @@
+./bin/meerkat -i 1 -c /home/author/meerkat/wd-meerkat-1/meerkat.cfg -a 3800a713b6070d4f03fb43613a7b7d536a99b2b7 -F ff-test,stateful-corpus,poc-test,ff-no-find-backup
+Bisecting:          kernel BUG in assertfail
+Syzbot Link:        https://syzkaller.appspot.com/bug?extid=c4614eae20a166c25bf0
+Working Name:       bug0850
+
+Aliases:
+    kernel BUG in assertfail
+
+Anchor Commit:      3800a713b6070d4f03fb43613a7b7d536a99b2b7
+Repository:         https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
+Branch:             master
+Arch:               amd64
+
+Meerkat:            /home/author/meerkat/
+Version:            1.2.0
+Kernel:             /home/author/meerkat/wd-meerkat-1/kernel/
+Syzkaller:          /home/author/meerkat/syzkaller/
+Compilers:          /home/author/meerkat/compilers/
+Compiler:           gcc (Ubuntu 12.3.0-1ubuntu1~22.04.3) 12.3.0
+Linker:             GNU ld (GNU Binutils for Ubuntu) 2.38
+Ccache:             ccache version 4.5.1
+Image:              /home/author/meerkat/image/stretch/stretch.img
+Image Key:          /home/author/meerkat/image/stretch/stretch.id_rsa
+
+Workdir:            /home/author/meerkat/wd-meerkat-1/
+Kconfig:            /home/author/meerkat/wd-meerkat-1/config-bug0850.txt
+Reproducers: (1)    /home/author/meerkat/wd-meerkat-1/reproducers/
+Primary PoC:        /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0850-3.prog
+Syzkaller Workdir:  /home/author/meerkat/wd-meerkat-1/wd-kaller/
+Log Directory:      /home/author/meerkat/wd-meerkat-1/log/
+
+Syscalls: (8)       ["syz_mount_image$btrfs", "open$dir", "ioctl$F2FS_IOC_START_ATOMIC_WRITE", "openat$selinux_enforce", "mount$bpf", "getuid", "setgid", "getgid"]
+VM Count:           8
+CPU Count:          2
+Procs:              16
+Memory:             4096
+Make Procs:         16
+Max Time:           10
+Max Attempts:       1
+
+==== Anchor Commit ====
+
+2026-04-29 08:16:37
+Session:   1
+Kernel:    2022-09-26 - 3800a713b6070d4f03fb43613a7b7d536a99b2b7
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       3  INFO: rcu detected stall in corrupted
+       6  WARNING: ODEBUG bug in netdev_run_todo (has report)
+       9  WARNING: ODEBUG bug in netdev_run_todo (has report)
+Attempt 2: (RETRY)
+    Time  Bug Name
+       3  INFO: rcu detected stall in corrupted
+      10  INFO: task hung in new_device_store
+Attempt 3: (RETRY)
+    No crashes found.
+The bug was not found.
+
+Failure: This bug cannot be found at the anchor commit.
+
+==== Partial Result: Focused Fuzzing ====
+Bisection Result:     Failed to reproduce at the anchor commit.
+Stage Time:           0h51m44s
+Run Time:             0h51m51s
+=========================================

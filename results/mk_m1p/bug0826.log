@@ -1,0 +1,364 @@
+./bin/meerkat -i 1 -c /home/author/meerkat/wd-meerkat-1/meerkat.cfg -a 5f63595ebd82f56a2dd36ca013dd7f5ff2e2416a -F ff-test,stateful-corpus,poc-test,ff-no-find-backup
+Bisecting:          WARNING in mark_buffer_dirty
+Syzbot Link:        https://syzkaller.appspot.com/bug?extid=cdfcae656bac88ba0e2d
+Working Name:       bug0826
+
+Aliases:
+    WARNING in mark_buffer_dirty
+
+Anchor Commit:      5f63595ebd82f56a2dd36ca013dd7f5ff2e2416a
+Repository:         https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
+Branch:             master
+Arch:               amd64
+
+Meerkat:            /home/author/meerkat/
+Version:            1.2.0
+Kernel:             /home/author/meerkat/wd-meerkat-1/kernel/
+Syzkaller:          /home/author/meerkat/syzkaller/
+Compilers:          /home/author/meerkat/compilers/
+Compiler:           gcc (Ubuntu 12.3.0-1ubuntu1~22.04.3) 12.3.0
+Linker:             GNU ld (GNU Binutils for Ubuntu) 2.38
+Ccache:             ccache version 4.5.1
+Image:              /home/author/meerkat/image/stretch/stretch.img
+Image Key:          /home/author/meerkat/image/stretch/stretch.id_rsa
+
+Workdir:            /home/author/meerkat/wd-meerkat-1/
+Kconfig:            /home/author/meerkat/wd-meerkat-1/config-bug0826.txt
+Reproducers: (1)    /home/author/meerkat/wd-meerkat-1/reproducers/
+Primary PoC:        /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0826-5.prog
+Syzkaller Workdir:  /home/author/meerkat/wd-meerkat-1/wd-kaller/
+Log Directory:      /home/author/meerkat/wd-meerkat-1/log/
+
+Syscalls: (9)       ["openat$cgroup_ro", "syz_mount_image$nilfs2", "openat$cgroup_root", "ioctl$F2FS_IOC_START_ATOMIC_WRITE", "open$dir", "mount$bpf", "getuid", "setgid", "getgid"]
+VM Count:           4
+CPU Count:          4
+Procs:              24
+Memory:             4096
+Make Procs:         16
+Max Time:           10
+Max Attempts:       1
+
+==== Anchor Commit ====
+
+2026-04-25 13:03:49
+Session:   1
+Kernel:    2023-06-07 - 5f63595ebd82f56a2dd36ca013dd7f5ff2e2416a
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+      10  suppressed report
+Attempt 2: (RETRY)
+    Time  Bug Name
+***    3  WARNING in mark_buffer_dirty (has report)
+Attempt 3: (RETRY)
+    Time  Bug Name
+      10  suppressed report
+The bug was found.
+
+New Max Time: 12
+
+==== Major Release Search ====
+13 Releases
+
+2026-04-25 13:50:08
+Session:   2
+Kernel:    2023-04-23 - 457391b0380335d5e9a5babdec90ac53928b23b4 (v6.3)
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    5  WARNING in mark_buffer_dirty (has report)
+Running syz-repro.
+New PoC saved at /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0826-0.prog
+Primary PoC:     /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0826-0.prog
+Run Time:        0h16m0s
+The bug was found.
+About 12 releases remaining
+
+2026-04-25 14:35:35
+Session:   3
+Kernel:    2023-02-19 - c9c3395d5e3dcc6daee66c6908354d47bf98cb0c (v6.2)
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       7  INFO: task hung in devlink_free (2)
+       7  INFO: task hung in del_device_store (2)
+***    9  WARNING in mark_buffer_dirty (has report)
+The bug was found.
+About 11 releases remaining
+
+2026-04-25 15:23:34
+Session:   4
+Kernel:    2022-12-11 - 830b3c68c1fb1e9176028d02ef86f3cf76aa2476 (v6.1)
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    4  WARNING in mark_buffer_dirty (has report)
+The bug was found.
+About 10 releases remaining
+
+2026-04-25 16:04:30
+Session:   5
+Kernel:    2022-07-31 - 3d7cb6b04c3f3115719235cc6866b10326de34cd (v5.19)
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       5  WARNING in nilfs_dat_prepare_end (4) (has report)
+The bug was not found.
+About 9 releases remaining
+
+==== Kernel Bisection ====
+31694 Linux commits
+
+2026-04-25 16:39:14
+Session:   6
+Kernel:    2022-09-06 - 26f6a2aefd3167a06ac0e9de1fb09b8900878eea
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    4  WARNING in mark_buffer_dirty (has report)
+Running syz-repro.
+Run Time:        0h12m0s
+The bug was found.
+About 15844 commits remaining
+
+2026-04-25 17:18:24
+Session:   7
+Kernel:    2022-08-04 - 228dfe98a313f6b6bff5da8b2c5e650e297ebf1a
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  WARNING: ODEBUG bug in mgmt_index_removed (has report)
+       3  WARNING: ODEBUG bug in mgmt_index_removed (3) (has report)
+       4  WARNING: ODEBUG bug in mgmt_index_removed (has report)
+       5  WARNING: ODEBUG bug in mgmt_index_removed (3) (has report)
+       6  WARNING: ODEBUG bug in mgmt_index_removed (has report)
+       7  WARNING: ODEBUG bug in mgmt_index_removed (3) (has report)
+       8  WARNING: ODEBUG bug in mgmt_index_removed (has report)
+       9  WARNING: ODEBUG bug in mgmt_index_removed (3) (has report)
+      11  WARNING: ODEBUG bug in mgmt_index_removed (has report)
+      12  WARNING: ODEBUG bug in mgmt_index_removed (3) (has report)
+The bug was not found.
+About 7911 commits remaining
+
+2026-04-25 17:52:27
+Session:   8
+Kernel:    2022-08-06 - 668c3c237f5ddc2889879b08f26d2374231f3287
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  WARNING: ODEBUG bug in mgmt_index_removed (has report)
+       3  WARNING: ODEBUG bug in mgmt_index_removed (3) (has report)
+       4  WARNING: ODEBUG bug in mgmt_index_removed (has report)
+       5  WARNING: ODEBUG bug in mgmt_index_removed (3) (has report)
+       6  WARNING: ODEBUG bug in mgmt_index_removed (has report)
+       7  WARNING: ODEBUG bug in mgmt_index_removed (3) (has report)
+       8  WARNING: ODEBUG bug in mgmt_index_removed (has report)
+       9  WARNING: ODEBUG bug in mgmt_index_removed (3) (has report)
+      10  WARNING: ODEBUG bug in mgmt_index_removed (has report)
+      11  WARNING: ODEBUG bug in mgmt_index_removed (3) (has report)
+      12  WARNING: ODEBUG bug in mgmt_index_removed (has report)
+The bug was not found.
+About 3861 commits remaining
+
+2026-04-25 18:25:53
+Session:   9
+Kernel:    2022-08-11 - 7ebfc85e2cd7b08f518b526173e9a33b56b3913b
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       7  INFO: task hung in del_device_store
+      11  WARNING in nilfs_dat_prepare_end (2) (has report)
+      12  WARNING in nilfs_dat_prepare_end (has report)
+The bug was not found.
+About 1914 commits remaining
+
+2026-04-25 19:00:27
+Session:   10
+Kernel:    2022-08-25 - 3f5c20055a640b3758ece75dcaa6ac974fcae26d
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    7  WARNING in mark_buffer_dirty (has report)
+The bug was found.
+About 939 commits remaining
+
+2026-04-25 19:30:25
+Session:   11
+Kernel:    2022-08-18 - 2ae6ab9d82cdd0f7381639ee31e31de45519df4c
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  INFO: rcu detected stall in corrupted
+       5  WARNING in nilfs_dat_prepare_end (3) (has report)
+***    6  WARNING in mark_buffer_dirty (has report)
+The bug was found.
+About 467 commits remaining
+
+2026-04-25 19:58:44
+Session:   12
+Kernel:    2022-08-12 - 69dac8e431af26173ca0a1ebc87054e01c585bcc
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       3  INFO: rcu detected stall in corrupted
+       6  WARNING in nilfs_dat_prepare_end (2) (has report)
+       8  WARNING in nilfs_dat_prepare_end (has report)
+       9  WARNING in nilfs_dat_prepare_end (has report)
+      10  VFS: Busy inodes after unmount (use-after-free)
+      12  WARNING in nilfs_dat_prepare_end (has report)
+The bug was not found.
+About 213 commits remaining
+
+2026-04-25 20:20:25
+Session:   13
+Kernel:    2022-08-14 - d785610f052d7456497cdec2a2406f6d4b16569f
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  INFO: rcu detected stall in corrupted
+       6  WARNING in nilfs_dat_prepare_end (has report)
+       7  WARNING in nilfs_dat_commit_end (has report)
+***    9  WARNING in mark_buffer_dirty (2) (has report)
+Running syz-repro.
+Run Time:        0h8m0s
+The bug was found.
+About 100 commits remaining
+
+2026-04-25 20:51:29
+Session:   14
+Kernel:    2022-08-13 - 9872e4a8734c68b78e8782e4f7f49e22cd6e9463
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       3  INFO: rcu detected stall in corrupted
+***    4  WARNING in mark_buffer_dirty (has report)
+The bug was found.
+About 42 commits remaining
+
+2026-04-25 21:16:51
+Session:   15
+Kernel:    2022-08-13 - abe7a481aac9c277798661f846222f8ad7a6aed5
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  INFO: rcu detected stall in corrupted
+***    5  WARNING in mark_buffer_dirty (has report)
+The bug was found.
+About 22 commits remaining
+
+2026-04-25 21:34:33
+Session:   16
+Kernel:    2022-08-12 - 9c71d39aa0f40d4e6bfe14958045a42c722bd327
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       8  WARNING in nilfs_dat_prepare_end (3) (has report)
+       9  WARNING in nilfs_dat_prepare_end (has report)
+      12  VFS: Busy inodes after unmount (use-after-free)
+      12  WARNING in nilfs_dat_prepare_end (3) (has report)
+The bug was not found.
+About 11338 commits remaining
+
+2026-04-25 22:07:42
+Session:   17
+Kernel:    2022-08-10 - c50cd03dbebd1d5d34a2eb361f315b0bd833d6c1
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  WARNING: ODEBUG bug in mgmt_index_removed (has report)
+       3  WARNING: ODEBUG bug in mgmt_index_removed (3) (has report)
+       4  WARNING: ODEBUG bug in mgmt_index_removed (has report)
+       5  WARNING: ODEBUG bug in mgmt_index_removed (3) (has report)
+       6  WARNING: ODEBUG bug in mgmt_index_removed (has report)
+       7  WARNING: ODEBUG bug in mgmt_index_removed (3) (has report)
+       8  WARNING: ODEBUG bug in mgmt_index_removed (has report)
+       9  WARNING: ODEBUG bug in mgmt_index_removed (3) (has report)
+      11  WARNING: ODEBUG bug in mgmt_index_removed (2) (has report)
+***   12  WARNING in mark_buffer_dirty (has report)
+      12  WARNING: ODEBUG bug in mgmt_index_removed (has report)
+Running syz-repro.
+Run Time:        0h4m0s
+The bug was found.
+About 7434 commits remaining
+
+2026-04-25 22:45:57
+Session:   18
+Kernel:    2022-08-10 - 9317d0014499182c77a03cd095e83bcfb0f53750
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  WARNING: ODEBUG bug in mgmt_index_removed (has report)
+       3  WARNING: ODEBUG bug in mgmt_index_removed (3) (has report)
+       4  WARNING: ODEBUG bug in mgmt_index_removed (has report)
+       5  WARNING: ODEBUG bug in mgmt_index_removed (3) (has report)
+       6  WARNING: ODEBUG bug in mgmt_index_removed (has report)
+       7  WARNING: ODEBUG bug in mgmt_index_removed (3) (has report)
+       8  WARNING: ODEBUG bug in mgmt_index_removed (has report)
+       9  WARNING: ODEBUG bug in mgmt_index_removed (3) (has report)
+      11  WARNING: ODEBUG bug in mgmt_index_removed (4) (has report)
+The bug was not found.
+About 4 commits remaining
+
+2026-04-25 23:09:25
+Session:   19
+Kernel:    2022-08-10 - ec9e96b5230148294c7abcaf3a4c592d3720b62d
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  WARNING: ODEBUG bug in mgmt_index_removed (has report)
+       3  WARNING: ODEBUG bug in mgmt_index_removed (3) (has report)
+       4  WARNING: ODEBUG bug in mgmt_index_removed (has report)
+       5  WARNING: ODEBUG bug in mgmt_index_removed (3) (has report)
+       6  WARNING: ODEBUG bug in mgmt_index_removed (has report)
+       7  WARNING: ODEBUG bug in mgmt_index_removed (3) (has report)
+       8  WARNING: ODEBUG bug in mgmt_index_removed (has report)
+       9  WARNING: ODEBUG bug in mgmt_index_removed (3) (has report)
+      11  WARNING: ODEBUG bug in mgmt_index_removed (4) (has report)
+The bug was not found.
+About 2 commits remaining
+
+==== Partial Result: Focused Fuzzing ====
+Reproducer:           /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0826-0.prog
+Bisection Result:     2022-08-10 - c50cd03dbebd1d5d34a2eb361f315b0bd833d6c1
+Bisected Commit Name: nvme-fabrics: Fix a typo in an error message
+Stage Time:           10h27m48s
+Run Time:             10h27m52s
+=========================================
+
+==== Anchor Commit ====
+
+2026-04-25 23:31:37
+Session:   20
+Kernel:    2022-08-10 - ec9e96b5230148294c7abcaf3a4c592d3720b62d
+Compiler:  ccache gcc
+PoC:       /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0826-0.prog
+Attempt 0:
+    WARNING: ODEBUG bug in mgmt_index_removed (has report)
+Attempt 1:
+    WARNING: ODEBUG bug in mgmt_index_removed (has report)
+Attempt 2:
+    WARNING: ODEBUG bug in mgmt_index_removed (has report)
+Attempt 3:
+    WARNING: ODEBUG bug in mgmt_index_removed (has report)
+Attempt 4:
+    WARNING: ODEBUG bug in mgmt_index_removed (has report)
+Attempt 5:
+    WARNING: ODEBUG bug in mgmt_index_removed (has report)
+Attempt 6:
+    WARNING: ODEBUG bug in mgmt_index_removed (has report)
+Attempt 7:
+    WARNING: ODEBUG bug in mgmt_index_removed (has report)
+The bug was not found.
+
+Failure: This bug cannot be found at the anchor commit.
+
+====================================================================================================================================================
+Bug Name:             WARNING in mark_buffer_dirty
+Bug ID:               bug0826
+Bug Link:             https://syzkaller.appspot.com/bug?extid=cdfcae656bac88ba0e2d
+Bisection Result:     2022-08-10 - c50cd03dbebd1d5d34a2eb361f315b0bd833d6c1
+Bisected Commit Name: nvme-fabrics: Fix a typo in an error message
+Run Time:             10h40m15s
+
+Anchor Commit:        2023-06-07 - 5f63595ebd82f56a2dd36ca013dd7f5ff2e2416a
+Bisection Result:     2022-08-10 - c50cd03dbebd1d5d34a2eb361f315b0bd833d6c1

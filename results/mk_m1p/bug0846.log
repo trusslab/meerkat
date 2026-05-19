@@ -1,0 +1,1337 @@
+./bin/meerkat -i 1 -c /home/author/meerkat/wd-meerkat-1/meerkat.cfg -a a452483508d7b70b0f6c69e249ec0b3ea2330b5c -F ff-test,stateful-corpus,poc-test,ff-no-find-backup
+Bisecting:          possible deadlock in f2fs_getxattr
+Syzbot Link:        https://syzkaller.appspot.com/bug?extid=e5600587fa9cbf8e3826
+Working Name:       bug0846
+
+Aliases:
+    possible deadlock in f2fs_getxattr
+
+Anchor Commit:      a452483508d7b70b0f6c69e249ec0b3ea2330b5c
+Repository:         https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
+Branch:             master
+Arch:               amd64
+
+Meerkat:            /home/author/meerkat/
+Version:            1.2.0
+Kernel:             /home/author/meerkat/wd-meerkat-1/kernel/
+Syzkaller:          /home/author/meerkat/syzkaller/
+Compilers:          /home/author/meerkat/compilers/
+Compiler:           gcc (Ubuntu 12.3.0-1ubuntu1~22.04.3) 12.3.0
+Linker:             GNU ld (GNU Binutils for Ubuntu) 2.38
+Ccache:             ccache version 4.5.1
+Image:              /home/author/meerkat/image/stretch/stretch.img
+Image Key:          /home/author/meerkat/image/stretch/stretch.id_rsa
+
+Workdir:            /home/author/meerkat/wd-meerkat-1/
+Kconfig:            /home/author/meerkat/wd-meerkat-1/config-bug0846.txt
+Reproducers: (1)    /home/author/meerkat/wd-meerkat-1/reproducers/
+Primary PoC:        /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0846-2.prog
+Syzkaller Workdir:  /home/author/meerkat/wd-meerkat-1/wd-kaller/
+Log Directory:      /home/author/meerkat/wd-meerkat-1/log/
+
+Syscalls: (8)       ["ioctl$F2FS_IOC_START_ATOMIC_WRITE", "openat", "syz_mount_image$f2fs", "open$dir", "setgid", "getgid", "mount$bpf", "getuid"]
+VM Count:           8
+CPU Count:          2
+Procs:              16
+Memory:             4096
+Make Procs:         16
+Max Time:           10
+Max Attempts:       1
+
+==== Anchor Commit ====
+
+2026-04-27 13:43:49
+Session:   1
+Kernel:    2023-07-06 - a452483508d7b70b0f6c69e249ec0b3ea2330b5c
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+Attempt 2: (RETRY)
+    No crashes found.
+Attempt 3: (RETRY)
+    Time  Bug Name
+***    4  possible deadlock in f2fs_getxattr
+The bug was found.
+
+New Max Time: 12
+
+==== Major Release Search ====
+13 Releases
+
+2026-04-27 14:35:10
+Session:   2
+Kernel:    2023-06-25 - 6995e2de6891c724bfeb2db33d7b87775f913ad1 (v6.4)
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+      12  suppressed report
+The bug was not found.
+About 12 releases remaining
+
+==== Kernel Bisection ====
+12156 Linux commits
+
+2026-04-27 15:16:51
+Session:   3
+Kernel:    2023-06-29 - f8824e151fbfa0ac0a258015d606ea6f4a10251b
+Compiler:  ccache gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0846-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+       2  UBSAN: array-index-out-of-bounds in corrupted (2)
+       2  UBSAN: array-index-out-of-bounds in copy_process (6)
+       3  UBSAN: array-index-out-of-bounds in corrupted
+       4  UBSAN: array-index-out-of-bounds in corrupted (2)
+       4  UBSAN: array-index-out-of-bounds in alloc_pid (2)
+       4  UBSAN: array-index-out-of-bounds in copy_process (3)
+       5  UBSAN: array-index-out-of-bounds in corrupted (4)
+       5  UBSAN: array-index-out-of-bounds in alloc_pid
+       5  UBSAN: array-index-out-of-bounds in copy_process (3)
+       6  UBSAN: array-index-out-of-bounds in corrupted
+       6  UBSAN: array-index-out-of-bounds in copy_process (5)
+       7  UBSAN: array-index-out-of-bounds in corrupted
+       7  UBSAN: array-index-out-of-bounds in copy_process
+       8  UBSAN: array-index-out-of-bounds in corrupted (3)
+       8  UBSAN: array-index-out-of-bounds in alloc_pid (2)
+       8  UBSAN: array-index-out-of-bounds in copy_process (3)
+       9  UBSAN: array-index-out-of-bounds in corrupted (3)
+       9  UBSAN: array-index-out-of-bounds in copy_process (5)
+      10  UBSAN: array-index-out-of-bounds in corrupted (2)
+      10  UBSAN: array-index-out-of-bounds in copy_process (3)
+      11  UBSAN: array-index-out-of-bounds in corrupted
+      11  UBSAN: array-index-out-of-bounds in alloc_pid
+      11  UBSAN: array-index-out-of-bounds in copy_process
+      12  UBSAN: array-index-out-of-bounds in corrupted (6)
+      12  UBSAN: array-index-out-of-bounds in copy_process (2)
+      12  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 12156 commits remaining
+
+2026-04-27 15:52:49
+Session:   4
+Kernel:    2023-06-09 - ea3600379e0f38f7c25263a0ab01cc3efc6cd3fe
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       4  UBSAN: shift-out-of-bounds in parse_options
+       9  no output from test machine
+       9  WARNING: ODEBUG bug in netdev_run_todo (has report)
+The bug was not found.
+About 12845 commits remaining
+
+2026-04-27 16:29:46
+Session:   5
+Kernel:    2023-06-15 - 6bc829ceea4158c7aeb3a9e73d5c52634d78fb6f
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       4  UBSAN: shift-out-of-bounds in parse_options
+       5  UBSAN: shift-out-of-bounds in parse_options (2)
+       8  INFO: task hung in del_device_store
+       9  no output from test machine
+      10  INFO: task hung in del_device_store
+      11  INFO: task hung in del_device_store (2)
+The bug was not found.
+About 14162 commits remaining
+
+2026-04-27 17:06:09
+Session:   6
+Kernel:    2023-06-16 - 6f14a210661ce03988ef4ed3c8402037c8e06539
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       4  UBSAN: shift-out-of-bounds in parse_options
+      10  UBSAN: shift-out-of-bounds in parse_options
+      12  INFO: task hung in new_device_store
+The bug was not found.
+About 13631 commits remaining
+
+2026-04-27 17:42:53
+Session:   7
+Kernel:    2023-06-29 - 0873694a339821277d9f2cae7ef981a1283b44f5
+Compiler:  ccache gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0846-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+       2  UBSAN: array-index-out-of-bounds in corrupted (5)
+       2  UBSAN: array-index-out-of-bounds in copy_process (3)
+       3  UBSAN: array-index-out-of-bounds in copy_process (6)
+       4  UBSAN: array-index-out-of-bounds in corrupted
+       4  UBSAN: array-index-out-of-bounds in copy_process
+       5  UBSAN: array-index-out-of-bounds in corrupted (5)
+       5  UBSAN: array-index-out-of-bounds in copy_process (3)
+       6  UBSAN: array-index-out-of-bounds in corrupted (4)
+       6  UBSAN: array-index-out-of-bounds in alloc_pid (2)
+       6  UBSAN: array-index-out-of-bounds in copy_process (2)
+       7  UBSAN: array-index-out-of-bounds in corrupted (3)
+       7  UBSAN: array-index-out-of-bounds in alloc_pid
+       7  UBSAN: array-index-out-of-bounds in copy_process (3)
+       8  UBSAN: array-index-out-of-bounds in copy_process
+       9  UBSAN: array-index-out-of-bounds in corrupted (3)
+       9  UBSAN: array-index-out-of-bounds in copy_process (5)
+      10  UBSAN: array-index-out-of-bounds in corrupted (4)
+      10  UBSAN: array-index-out-of-bounds in copy_process (4)
+      11  UBSAN: array-index-out-of-bounds in corrupted (2)
+      11  UBSAN: array-index-out-of-bounds in alloc_pid
+      11  UBSAN: array-index-out-of-bounds in copy_process (4)
+      12  UBSAN: array-index-out-of-bounds in corrupted
+      12  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 13631 commits remaining
+
+2026-04-27 18:18:36
+Session:   8
+Kernel:    2023-05-11 - 2bea1d7c594dd0643db23a8131c689384d0e5d8c
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       3  UBSAN: shift-out-of-bounds in parse_options (4)
+       4  UBSAN: shift-out-of-bounds in parse_options (2)
+       5  UBSAN: shift-out-of-bounds in parse_options (3)
+       9  INFO: task hung in new_device_store
+       9  INFO: task hung in del_device_store
+      10  INFO: task hung in del_device_store (2)
+The bug was not found.
+About 28942 commits remaining
+
+2026-04-27 18:55:18
+Session:   9
+Kernel:    2023-06-15 - c39f5974d38f7250782c2fe52b2793cd00efaac0
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 13670 commits remaining
+
+2026-04-27 19:18:11
+Session:   10
+Kernel:    2023-06-07 - 7a11f70ce8820d13db6bdde913e6520ad58daf20
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       5  UBSAN: shift-out-of-bounds in parse_options
+       9  UBSAN: shift-out-of-bounds in parse_options
+The bug was not found.
+About 12498 commits remaining
+
+2026-04-27 19:54:12
+Session:   11
+Kernel:    2023-06-29 - 1b722407a13b7f8658d2e26917791f32805980a2
+Compiler:  ccache gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0846-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+       2  UBSAN: array-index-out-of-bounds in corrupted (5)
+       2  UBSAN: array-index-out-of-bounds in copy_process (3)
+       3  UBSAN: array-index-out-of-bounds in corrupted (2)
+       3  UBSAN: array-index-out-of-bounds in alloc_pid
+       3  UBSAN: array-index-out-of-bounds in copy_process (3)
+       4  UBSAN: array-index-out-of-bounds in corrupted (2)
+       5  UBSAN: array-index-out-of-bounds in corrupted (4)
+       5  UBSAN: array-index-out-of-bounds in copy_process (4)
+       6  UBSAN: array-index-out-of-bounds in corrupted (3)
+       6  UBSAN: array-index-out-of-bounds in copy_process (5)
+       7  UBSAN: array-index-out-of-bounds in corrupted (3)
+       7  UBSAN: array-index-out-of-bounds in copy_process (3)
+       8  UBSAN: array-index-out-of-bounds in corrupted (2)
+       9  UBSAN: array-index-out-of-bounds in corrupted (3)
+       9  UBSAN: array-index-out-of-bounds in copy_process (5)
+      10  UBSAN: array-index-out-of-bounds in copy_process (8)
+      11  UBSAN: array-index-out-of-bounds in corrupted (3)
+      11  UBSAN: array-index-out-of-bounds in copy_process (4)
+      12  UBSAN: array-index-out-of-bounds in copy_process
+      12  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 12498 commits remaining
+
+2026-04-27 20:29:35
+Session:   12
+Kernel:    2023-06-21 - 9e09fbc5e90247fc6e77fb6ba72dcbf8088cf59a
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       6  UBSAN: shift-out-of-bounds in parse_options
+       7  UBSAN: shift-out-of-bounds in parse_options
+       8  UBSAN: shift-out-of-bounds in parse_options
+      11  UBSAN: shift-out-of-bounds in parse_options
+The bug was not found.
+About 11747 commits remaining
+
+2026-04-27 21:05:37
+Session:   13
+Kernel:    2023-05-22 - 75a616168b7810c30aa26819153c64df43bc9d9e
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 13677 commits remaining
+
+2026-04-27 21:37:01
+Session:   14
+Kernel:    2023-05-11 - 212bc1ce618dd7c734920a68988fe4b473f09f40
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       7  INFO: task hung in del_device_store
+      11  INFO: task hung in del_device_store
+The bug was not found.
+About 14293 commits remaining
+
+2026-04-27 22:11:43
+Session:   15
+Kernel:    2023-06-12 - bffb5b0c0976aa46aaa961dd19a47c9d6301cfe1
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 13306 commits remaining
+
+2026-04-27 22:46:32
+Session:   16
+Kernel:    2023-06-13 - e5d4a21b3a9477ead1c32504a56569a848c22736
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       6  UBSAN: shift-out-of-bounds in parse_options
+      11  INFO: rcu detected stall in newlstat
+      11  INFO: rcu detected stall in corrupted
+      12  suppressed report (2)
+The bug was not found.
+About 11783 commits remaining
+
+2026-04-27 23:23:22
+Session:   17
+Kernel:    2023-05-24 - f7fd546dd693f64404bbbdc154b3dac0aee1f3bb
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       7  INFO: task hung in del_device_store (3)
+The bug was not found.
+About 14208 commits remaining
+
+2026-04-27 23:45:25
+Session:   18
+Kernel:    2023-06-19 - 39da3e152dc664ef13c0b8c1064cba5415767aa3
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+      11  WARNING: ODEBUG bug in netdev_run_todo (has report)
+The bug was not found.
+About 13298 commits remaining
+
+2026-04-28 00:14:06
+Session:   19
+Kernel:    2023-06-13 - 9f5ebcd61009de388af6f66509f2a1169f90dbbe
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       6  INFO: task hung in del_device_store
+       7  INFO: task hung in del_device_store (2)
+       7  UBSAN: shift-out-of-bounds in parse_options
+      11  INFO: task hung in new_device_store
+The bug was not found.
+About 14082 commits remaining
+
+2026-04-28 00:37:10
+Session:   20
+Kernel:    2023-06-09 - 96cb8ae28c652e7ef0633b1c0786eb0f529ed516
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       5  UBSAN: shift-out-of-bounds in parse_options
+       6  UBSAN: shift-out-of-bounds in parse_options
+      11  UBSAN: shift-out-of-bounds in parse_options (2)
+The bug was not found.
+About 13648 commits remaining
+
+2026-04-28 00:59:57
+Session:   21
+Kernel:    2023-06-08 - 1975d167869ef03102771d6267582623d6e07058
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       1  failed to read from qemu: EOF
+       7  INFO: task hung in new_device_store
+       7  INFO: task hung in del_device_store (4)
+       8  INFO: task hung in del_device_store
+       9  UBSAN: shift-out-of-bounds in parse_options
+The bug was not found.
+About 14083 commits remaining
+
+2026-04-28 01:30:12
+Session:   22
+Kernel:    2023-06-29 - 5b4a82a0724af1dfd1320826e0266117b6a57fbd
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+      12  suppressed report
+The bug was not found.
+About 12362 commits remaining
+
+2026-04-28 02:05:54
+Session:   23
+Kernel:    2023-05-30 - dd06e72e68bcb4070ef211be100d2896e236c8fb
+Compiler:  ccache gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0846-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+       2  UBSAN: array-index-out-of-bounds in corrupted (2)
+       2  UBSAN: array-index-out-of-bounds in copy_process (6)
+       3  UBSAN: array-index-out-of-bounds in corrupted (5)
+       3  UBSAN: array-index-out-of-bounds in alloc_pid
+       3  UBSAN: array-index-out-of-bounds in copy_process (2)
+       5  UBSAN: array-index-out-of-bounds in corrupted (2)
+       5  UBSAN: array-index-out-of-bounds in alloc_pid
+       5  UBSAN: array-index-out-of-bounds in copy_process (5)
+       6  UBSAN: array-index-out-of-bounds in corrupted (4)
+       6  UBSAN: array-index-out-of-bounds in alloc_pid
+       6  UBSAN: array-index-out-of-bounds in copy_process (3)
+       7  UBSAN: array-index-out-of-bounds in corrupted (2)
+       7  UBSAN: array-index-out-of-bounds in copy_process (3)
+       8  UBSAN: array-index-out-of-bounds in corrupted
+       8  UBSAN: array-index-out-of-bounds in copy_process (2)
+       9  UBSAN: array-index-out-of-bounds in corrupted (5)
+       9  UBSAN: array-index-out-of-bounds in alloc_pid
+       9  UBSAN: array-index-out-of-bounds in copy_process (2)
+      10  UBSAN: array-index-out-of-bounds in corrupted (2)
+      10  UBSAN: array-index-out-of-bounds in copy_process (6)
+      11  UBSAN: array-index-out-of-bounds in copy_process (2)
+      12  UBSAN: array-index-out-of-bounds in corrupted
+      12  UBSAN: array-index-out-of-bounds in copy_process (5)
+      12  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 12362 commits remaining
+
+2026-04-28 02:40:27
+Session:   24
+Kernel:    2023-06-09 - 7a66ad6c087ee3863cc9a8d696ac2191d1c2e904
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       3  UBSAN: shift-out-of-bounds in parse_options (6)
+       6  UBSAN: shift-out-of-bounds in parse_options (3)
+       7  UBSAN: shift-out-of-bounds in parse_options
+      11  UBSAN: shift-out-of-bounds in parse_options
+      12  INFO: task hung in del_device_store
+The bug was not found.
+About 26842 commits remaining
+
+2026-04-28 03:17:14
+Session:   25
+Kernel:    2023-06-07 - 47e157a5b49a4c099daf202207adc9815a2f2916
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       7  INFO: task hung in new_device_store
+       7  INFO: task hung in del_device_store (2)
+       8  INFO: task hung in del_device_store (2)
+       9  UBSAN: shift-out-of-bounds in parse_options
+      11  UBSAN: shift-out-of-bounds in parse_options
+      12  INFO: task hung in del_device_store
+The bug was not found.
+About 13585 commits remaining
+
+2026-04-28 03:51:02
+Session:   26
+Kernel:    2023-06-29 - be3c213150dc4370ef211a78d78457ff166eba4e
+Compiler:  ccache gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0846-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+       2  UBSAN: array-index-out-of-bounds in corrupted (3)
+       2  UBSAN: array-index-out-of-bounds in alloc_pid
+       2  UBSAN: array-index-out-of-bounds in copy_process (4)
+       3  UBSAN: array-index-out-of-bounds in corrupted
+       4  UBSAN: array-index-out-of-bounds in corrupted (2)
+       4  UBSAN: array-index-out-of-bounds in copy_process (5)
+       5  UBSAN: array-index-out-of-bounds in corrupted (4)
+       5  UBSAN: array-index-out-of-bounds in alloc_pid
+       5  UBSAN: array-index-out-of-bounds in copy_process (3)
+       6  UBSAN: array-index-out-of-bounds in corrupted (7)
+       6  UBSAN: array-index-out-of-bounds in copy_process
+       8  UBSAN: array-index-out-of-bounds in corrupted (4)
+       8  UBSAN: array-index-out-of-bounds in copy_process (4)
+       9  UBSAN: array-index-out-of-bounds in corrupted (5)
+       9  UBSAN: array-index-out-of-bounds in copy_process (3)
+      10  UBSAN: array-index-out-of-bounds in corrupted (2)
+      10  UBSAN: array-index-out-of-bounds in copy_process
+      11  UBSAN: array-index-out-of-bounds in copy_process (5)
+      12  UBSAN: array-index-out-of-bounds in corrupted (4)
+      12  UBSAN: array-index-out-of-bounds in copy_process (4)
+      12  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 13585 commits remaining
+
+2026-04-28 04:26:50
+Session:   27
+Kernel:    2023-06-12 - 2ef789288afd365f4245ba97e56189062de5148e
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       6  UBSAN: shift-out-of-bounds in parse_options
+       7  INFO: task hung in new_device_store (3)
+       7  INFO: task hung in del_device_store (2)
+       9  UBSAN: shift-out-of-bounds in parse_options (2)
+      10  UBSAN: shift-out-of-bounds in parse_options (2)
+      12  INFO: task hung in del_device_store (2)
+The bug was not found.
+About 13910 commits remaining
+
+2026-04-28 05:03:48
+Session:   28
+Kernel:    2023-06-29 - 0a37714f96d5746268dc09bdd400a215f180ba9b
+Compiler:  ccache gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0846-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+       2  UBSAN: array-index-out-of-bounds in corrupted (2)
+       2  UBSAN: array-index-out-of-bounds in alloc_pid
+       2  UBSAN: array-index-out-of-bounds in copy_process (5)
+       3  UBSAN: array-index-out-of-bounds in corrupted
+       3  UBSAN: array-index-out-of-bounds in alloc_pid (2)
+       3  UBSAN: array-index-out-of-bounds in copy_process (5)
+       4  UBSAN: array-index-out-of-bounds in copy_process
+       5  UBSAN: array-index-out-of-bounds in corrupted (5)
+       5  UBSAN: array-index-out-of-bounds in copy_process (2)
+       6  UBSAN: array-index-out-of-bounds in corrupted (5)
+       6  UBSAN: array-index-out-of-bounds in copy_process (3)
+       7  UBSAN: array-index-out-of-bounds in corrupted (3)
+       7  UBSAN: array-index-out-of-bounds in copy_process (5)
+       8  UBSAN: array-index-out-of-bounds in copy_process
+       9  UBSAN: array-index-out-of-bounds in corrupted (2)
+       9  UBSAN: array-index-out-of-bounds in alloc_pid (2)
+       9  UBSAN: array-index-out-of-bounds in copy_process (3)
+      10  UBSAN: array-index-out-of-bounds in corrupted (4)
+      10  UBSAN: array-index-out-of-bounds in copy_process (4)
+      11  UBSAN: array-index-out-of-bounds in corrupted (2)
+      11  UBSAN: array-index-out-of-bounds in copy_process (3)
+      12  UBSAN: array-index-out-of-bounds in copy_process (3)
+      12  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 13910 commits remaining
+
+2026-04-28 05:25:22
+Session:   29
+Kernel:    2023-05-31 - 14360031f804b17c1707c316475db42c84853cf1
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       4  WARNING: ODEBUG bug in netdev_run_todo (has report)
+       6  UBSAN: shift-out-of-bounds in parse_options (2)
+       9  UBSAN: shift-out-of-bounds in parse_options
+      10  UBSAN: shift-out-of-bounds in parse_options
+      11  UBSAN: shift-out-of-bounds in parse_options
+      12  UBSAN: shift-out-of-bounds in parse_options
+The bug was not found.
+About 13342 commits remaining
+
+2026-04-28 06:02:24
+Session:   30
+Kernel:    2023-06-05 - bcfc2ab7f43508ec6e80353768a77aedc883e568
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       6  UBSAN: shift-out-of-bounds in parse_options
+The bug was not found.
+About 12985 commits remaining
+
+2026-04-28 06:39:20
+Session:   31
+Kernel:    2023-06-29 - 9e06150d3c04d1a5028a485263912ea892545d2f
+Compiler:  ccache gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0846-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+       2  UBSAN: array-index-out-of-bounds in corrupted
+       2  UBSAN: array-index-out-of-bounds in copy_process (7)
+       3  UBSAN: array-index-out-of-bounds in corrupted (2)
+       3  UBSAN: array-index-out-of-bounds in alloc_pid
+       3  UBSAN: array-index-out-of-bounds in copy_process (3)
+       4  UBSAN: array-index-out-of-bounds in corrupted (2)
+       5  UBSAN: array-index-out-of-bounds in corrupted (5)
+       5  UBSAN: array-index-out-of-bounds in copy_process (3)
+       6  UBSAN: array-index-out-of-bounds in corrupted (4)
+       6  UBSAN: array-index-out-of-bounds in copy_process (4)
+       7  UBSAN: array-index-out-of-bounds in corrupted (3)
+       7  UBSAN: array-index-out-of-bounds in alloc_pid
+       7  UBSAN: array-index-out-of-bounds in copy_process (2)
+       8  UBSAN: array-index-out-of-bounds in corrupted
+       8  UBSAN: array-index-out-of-bounds in copy_process
+       9  UBSAN: array-index-out-of-bounds in corrupted (2)
+       9  UBSAN: array-index-out-of-bounds in copy_process (6)
+      10  UBSAN: array-index-out-of-bounds in corrupted (3)
+      10  UBSAN: array-index-out-of-bounds in alloc_pid
+      10  UBSAN: array-index-out-of-bounds in copy_process (4)
+      11  UBSAN: array-index-out-of-bounds in alloc_pid
+      11  UBSAN: array-index-out-of-bounds in copy_process
+      12  UBSAN: array-index-out-of-bounds in corrupted
+      12  UBSAN: array-index-out-of-bounds in alloc_pid
+      12  UBSAN: array-index-out-of-bounds in copy_process (4)
+      12  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 12985 commits remaining
+
+2026-04-28 07:01:29
+Session:   32
+Kernel:    2023-05-28 - aae652bc7b47f08bf08ab78d6a276415cc35c677
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       5  WARNING: ODEBUG bug in netdev_run_todo (has report)
+       7  INFO: task hung in del_device_store (5)
+       7  WARNING: ODEBUG bug in netdev_run_todo (has report)
+      10  UBSAN: shift-out-of-bounds in parse_options
+      11  INFO: task hung in new_device_store
+      12  INFO: task hung in del_device_store
+The bug was not found.
+About 14204 commits remaining
+
+2026-04-28 07:38:28
+Session:   33
+Kernel:    2023-06-29 - b9d02c224d00a412d9c7fb1f92c358604038a783
+Compiler:  ccache gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0846-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+       2  UBSAN: array-index-out-of-bounds in corrupted (5)
+       2  UBSAN: array-index-out-of-bounds in copy_process (3)
+       3  UBSAN: array-index-out-of-bounds in corrupted (3)
+       3  UBSAN: array-index-out-of-bounds in copy_process (4)
+       4  UBSAN: array-index-out-of-bounds in copy_process
+       5  UBSAN: array-index-out-of-bounds in corrupted (3)
+       5  UBSAN: array-index-out-of-bounds in alloc_pid
+       5  UBSAN: array-index-out-of-bounds in copy_process (4)
+       6  UBSAN: array-index-out-of-bounds in corrupted
+       6  UBSAN: array-index-out-of-bounds in copy_process (7)
+       7  UBSAN: array-index-out-of-bounds in corrupted (4)
+       7  UBSAN: array-index-out-of-bounds in copy_process (3)
+       8  UBSAN: array-index-out-of-bounds in alloc_pid
+       9  UBSAN: array-index-out-of-bounds in corrupted (3)
+       9  UBSAN: array-index-out-of-bounds in alloc_pid
+       9  UBSAN: array-index-out-of-bounds in copy_process (4)
+      10  UBSAN: array-index-out-of-bounds in corrupted (5)
+      10  UBSAN: array-index-out-of-bounds in copy_process (3)
+      11  UBSAN: array-index-out-of-bounds in corrupted (4)
+      11  UBSAN: array-index-out-of-bounds in copy_process (4)
+      12  UBSAN: array-index-out-of-bounds in corrupted
+      12  UBSAN: array-index-out-of-bounds in copy_process
+      12  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 14204 commits remaining
+
+2026-04-28 08:00:25
+Session:   34
+Kernel:    2023-06-01 - 8360257608f74946a985400f1994d3eea9b74a85
+Compiler:  ccache gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0846-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+       2  UBSAN: array-index-out-of-bounds in corrupted (4)
+       2  UBSAN: array-index-out-of-bounds in copy_process (4)
+       3  UBSAN: array-index-out-of-bounds in corrupted (3)
+       3  UBSAN: array-index-out-of-bounds in alloc_pid
+       3  UBSAN: array-index-out-of-bounds in copy_process (4)
+       4  UBSAN: array-index-out-of-bounds in corrupted
+       5  UBSAN: array-index-out-of-bounds in corrupted (2)
+       5  UBSAN: array-index-out-of-bounds in alloc_pid
+       5  UBSAN: array-index-out-of-bounds in copy_process (4)
+       6  UBSAN: array-index-out-of-bounds in corrupted (2)
+       6  UBSAN: array-index-out-of-bounds in copy_process (6)
+       7  UBSAN: array-index-out-of-bounds in corrupted (3)
+       7  UBSAN: array-index-out-of-bounds in copy_process (5)
+       8  UBSAN: array-index-out-of-bounds in corrupted (2)
+       8  UBSAN: array-index-out-of-bounds in alloc_pid
+       8  UBSAN: array-index-out-of-bounds in copy_process (3)
+       9  UBSAN: array-index-out-of-bounds in corrupted
+       9  UBSAN: array-index-out-of-bounds in alloc_pid
+      10  UBSAN: array-index-out-of-bounds in corrupted (3)
+      10  UBSAN: array-index-out-of-bounds in alloc_pid
+      10  UBSAN: array-index-out-of-bounds in copy_process (4)
+      11  UBSAN: array-index-out-of-bounds in corrupted (3)
+      11  UBSAN: array-index-out-of-bounds in copy_process (5)
+      12  UBSAN: array-index-out-of-bounds in corrupted (3)
+      12  UBSAN: array-index-out-of-bounds in alloc_pid (2)
+      12  UBSAN: array-index-out-of-bounds in copy_process (3)
+      12  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 14204 commits remaining
+
+2026-04-28 08:36:00
+Session:   35
+Kernel:    2023-06-30 - f28a98779de97e24d5e6fde8fca1273056a14f80
+Compiler:  ccache gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0846-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+       2  UBSAN: array-index-out-of-bounds in corrupted (3)
+       2  UBSAN: array-index-out-of-bounds in alloc_pid
+       2  UBSAN: array-index-out-of-bounds in copy_process (4)
+       3  UBSAN: array-index-out-of-bounds in corrupted
+       3  UBSAN: array-index-out-of-bounds in alloc_pid
+       3  UBSAN: array-index-out-of-bounds in copy_process (4)
+       4  UBSAN: array-index-out-of-bounds in alloc_pid
+       4  UBSAN: array-index-out-of-bounds in copy_process
+       5  UBSAN: array-index-out-of-bounds in corrupted (5)
+       5  UBSAN: array-index-out-of-bounds in copy_process (3)
+       6  UBSAN: array-index-out-of-bounds in corrupted (5)
+       6  UBSAN: array-index-out-of-bounds in copy_process (3)
+       8  UBSAN: array-index-out-of-bounds in corrupted (3)
+       8  UBSAN: array-index-out-of-bounds in alloc_pid
+       8  UBSAN: array-index-out-of-bounds in copy_process (4)
+       9  UBSAN: array-index-out-of-bounds in corrupted (3)
+       9  UBSAN: array-index-out-of-bounds in alloc_pid (2)
+       9  UBSAN: array-index-out-of-bounds in copy_process (3)
+      10  UBSAN: array-index-out-of-bounds in corrupted (3)
+      10  UBSAN: array-index-out-of-bounds in copy_process (3)
+      11  UBSAN: array-index-out-of-bounds in alloc_pid
+      11  UBSAN: array-index-out-of-bounds in copy_process
+      12  UBSAN: array-index-out-of-bounds in corrupted (3)
+      12  UBSAN: array-index-out-of-bounds in alloc_pid (2)
+      12  UBSAN: array-index-out-of-bounds in copy_process (3)
+      12  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 14204 commits remaining
+
+2026-04-28 09:10:57
+Session:   36
+Kernel:    2023-06-13 - 97c289026c62f80933b44353904b919572175f61
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       7  INFO: task hung in nsim_destroy
+       7  INFO: task hung in del_device_store (4)
+       8  INFO: task hung in del_device_store (2)
+      11  UBSAN: shift-out-of-bounds in parse_options
+The bug was not found.
+About 14044 commits remaining
+
+2026-04-28 09:44:37
+Session:   37
+Kernel:    2023-06-13 - c2998e9a42637cdab699a21aa75a8cb5a7cbce72
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       8  INFO: task hung in del_device_store
+      11  INFO: task hung in new_device_store
+      11  INFO: task hung in del_device_store (2)
+The bug was not found.
+About 14043 commits remaining
+
+2026-04-28 10:07:05
+Session:   38
+Kernel:    2023-06-13 - f3710f5e9e1a68da53202cffba73f4b604f05b15
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       7  WARNING: ODEBUG bug in netdev_run_todo (has report)
+       7  UBSAN: shift-out-of-bounds in parse_options
+       8  UBSAN: shift-out-of-bounds in parse_options
+      10  WARNING: ODEBUG bug in netdev_run_todo (has report)
+The bug was not found.
+About 12945 commits remaining
+
+2026-04-28 10:42:47
+Session:   39
+Kernel:    2023-05-29 - 1db3af8ed8f7cfe01ff27af3d42b6c658e18ad50
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       7  UBSAN: shift-out-of-bounds in parse_options
+The bug was not found.
+About 13674 commits remaining
+
+2026-04-28 11:19:29
+Session:   40
+Kernel:    2023-06-29 - eee9c708cc89b4600c6e6cdda5bc2b8b4dad96cb
+Compiler:  ccache gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0846-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+       2  UBSAN: array-index-out-of-bounds in corrupted (3)
+       2  UBSAN: array-index-out-of-bounds in alloc_pid
+       2  UBSAN: array-index-out-of-bounds in copy_process (4)
+       3  UBSAN: array-index-out-of-bounds in corrupted (4)
+       3  UBSAN: array-index-out-of-bounds in alloc_pid
+       3  UBSAN: array-index-out-of-bounds in copy_process
+       4  UBSAN: array-index-out-of-bounds in corrupted (2)
+       5  UBSAN: array-index-out-of-bounds in corrupted (6)
+       5  UBSAN: array-index-out-of-bounds in alloc_pid
+       5  UBSAN: array-index-out-of-bounds in copy_process
+       6  UBSAN: array-index-out-of-bounds in corrupted (5)
+       6  UBSAN: array-index-out-of-bounds in copy_process (3)
+       7  UBSAN: array-index-out-of-bounds in corrupted (2)
+       7  UBSAN: array-index-out-of-bounds in copy_process (4)
+       8  UBSAN: array-index-out-of-bounds in corrupted (2)
+       9  UBSAN: array-index-out-of-bounds in corrupted (2)
+       9  UBSAN: array-index-out-of-bounds in alloc_pid
+       9  UBSAN: array-index-out-of-bounds in copy_process (5)
+      10  UBSAN: array-index-out-of-bounds in corrupted
+      10  UBSAN: array-index-out-of-bounds in alloc_pid
+      10  UBSAN: array-index-out-of-bounds in copy_process (6)
+      11  UBSAN: array-index-out-of-bounds in corrupted (3)
+      11  UBSAN: array-index-out-of-bounds in copy_process (4)
+      12  UBSAN: array-index-out-of-bounds in copy_process
+      12  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 13674 commits remaining
+
+2026-04-28 11:54:32
+Session:   41
+Kernel:    2023-06-21 - bfcd5714f6424c03e385e0e9296dcd69855cfea7
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       7  INFO: task hung in new_device_store (3)
+       7  INFO: task hung in del_device_store (4)
+      12  INFO: task hung in del_device_store
+The bug was not found.
+About 14286 commits remaining
+
+2026-04-28 12:27:04
+Session:   42
+Kernel:    2023-06-09 - 5ab97df8642e93559edfcbf2d9f7b8478b683c96
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+      10  UBSAN: shift-out-of-bounds in parse_options
+The bug was not found.
+About 12824 commits remaining
+
+2026-04-28 12:59:25
+Session:   43
+Kernel:    2023-05-24 - 853c064b57491d739bfd0cc35ff75c5ea9c5e8f5
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       7  INFO: task hung in del_device_store (2)
+      10  INFO: task hung in del_device_store
+The bug was not found.
+About 14290 commits remaining
+
+2026-04-28 13:22:05
+Session:   44
+Kernel:    2023-06-25 - f337043b56e0e97c5c67b95ea32886b95b049181
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       6  UBSAN: shift-out-of-bounds in parse_options (2)
+       7  INFO: task hung in del_device_store
+       9  INFO: task hung in new_device_store
+      10  INFO: task hung in del_device_store
+      11  INFO: task hung in del_device_store
+The bug was not found.
+About 14080 commits remaining
+
+2026-04-28 13:52:56
+Session:   45
+Kernel:    2023-06-21 - a4bd03e7cb78ff743d811a09273b40d31e861def
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       6  UBSAN: shift-out-of-bounds in parse_options
+       7  UBSAN: shift-out-of-bounds in parse_options
+       8  UBSAN: shift-out-of-bounds in parse_options
+The bug was not found.
+About 12707 commits remaining
+
+2026-04-28 14:29:40
+Session:   46
+Kernel:    2023-06-29 - aa5e65dc0818bbf676bf06927368ec46867778fd
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       8  UBSAN: shift-out-of-bounds in parse_options
+The bug was not found.
+About 12134 commits remaining
+
+2026-04-28 15:05:57
+Session:   47
+Kernel:    2023-06-22 - 33fe7c08446af6dda0ff08ff4fa9c921e574477f
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       7  UBSAN: shift-out-of-bounds in parse_options
+       8  UBSAN: shift-out-of-bounds in parse_options
+       9  UBSAN: shift-out-of-bounds in parse_options (2)
+      11  UBSAN: shift-out-of-bounds in parse_options
+The bug was not found.
+About 13217 commits remaining
+
+2026-04-28 15:41:29
+Session:   48
+Kernel:    2023-06-19 - 85d8a826c7cde17f9cca9c4debecb4538bdb6573
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 12369 commits remaining
+
+2026-04-28 16:17:40
+Session:   49
+Kernel:    2023-06-26 - e940efa936be65866db9ce20798b13fdc6b3891a
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+      10  UBSAN: shift-out-of-bounds in parse_options
+The bug was not found.
+About 11995 commits remaining
+
+2026-04-28 16:53:21
+Session:   50
+Kernel:    2023-06-19 - 9e2aff90fc2ad2b94933762f5442fef9ee7a692e
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 12329 commits remaining
+
+2026-04-28 17:16:00
+Session:   51
+Kernel:    2023-05-09 - d54bd4bc7b9ae9505f53440894b8c239c521f3da
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       7  INFO: task hung in new_device_store
+       7  INFO: task hung in del_device_store (4)
+      10  UBSAN: shift-out-of-bounds in parse_options
+      11  INFO: task hung in new_device_store
+      11  INFO: task hung in del_device_store
+The bug was not found.
+About 14286 commits remaining
+
+2026-04-28 17:52:12
+Session:   52
+Kernel:    2023-05-31 - e4860f03779cadff011a7a8685c7157ebc133bda
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       5  WARNING: ODEBUG bug in netdev_run_todo (has report)
+       9  UBSAN: shift-out-of-bounds in parse_options
+      11  WARNING: ODEBUG bug in netdev_run_todo (has report)
+      11  UBSAN: shift-out-of-bounds in parse_options
+The bug was not found.
+About 13358 commits remaining
+
+2026-04-28 18:28:40
+Session:   53
+Kernel:    2023-06-13 - f5af638f0609af889f15c700c60b93c06cc76675
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       9  UBSAN: shift-out-of-bounds in parse_options
+The bug was not found.
+About 12831 commits remaining
+
+2026-04-28 19:05:02
+Session:   54
+Kernel:    2023-06-16 - ef73d6a4ef0b35524125c3cfc6deafc26a0c966a
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       7  INFO: task hung in del_device_store (3)
+       7  WARNING: ODEBUG bug in netdev_run_todo (has report)
+       7  UBSAN: shift-out-of-bounds in parse_options
+       8  INFO: task hung in del_device_store
+      10  UBSAN: shift-out-of-bounds in parse_options
+      11  INFO: task hung in del_device_store
+      11  UBSAN: shift-out-of-bounds in parse_options
+The bug was not found.
+About 14251 commits remaining
+
+2026-04-28 19:41:40
+Session:   55
+Kernel:    2023-06-23 - ed959833db7bdb4e57fa8f4076babf3810296f5b
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 13217 commits remaining
+
+2026-04-28 20:17:56
+Session:   56
+Kernel:    2023-06-21 - 724418b84e6248cd27599607b7e5fac365b8e3f5
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       7  INFO: task hung in del_device_store
+The bug was not found.
+About 13919 commits remaining
+
+2026-04-28 20:54:18
+Session:   57
+Kernel:    2023-05-29 - 3d9138e5bdcf9f0277904441cbf4cb1407ed8603
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 13353 commits remaining
+
+2026-04-28 21:30:38
+Session:   58
+Kernel:    2023-06-28 - 49024ec8795ed2bd7217c249ef50a70c4e25d662
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+      10  UBSAN: shift-out-of-bounds in parse_options
+The bug was not found.
+About 12379 commits remaining
+
+2026-04-28 22:07:40
+Session:   59
+Kernel:    2023-05-08 - 44ef1604ae9492a7d9238ea79aa0cc7b4c4de860
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       6  INFO: task hung in new_device_store
+       6  INFO: task hung in del_device_store
+       6  UBSAN: shift-out-of-bounds in parse_options
+       7  INFO: task hung in new_device_store (2)
+       7  INFO: task hung in del_device_store
+       9  UBSAN: shift-out-of-bounds in parse_options
+      11  UBSAN: shift-out-of-bounds in parse_options
+      12  INFO: task hung in del_device_store (3)
+The bug was not found.
+About 14251 commits remaining
+
+2026-04-28 22:38:01
+Session:   60
+Kernel:    2023-06-09 - 6d5aea131f4d99ec0de79d3bd8e8e15ee05563e4
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 12742 commits remaining
+
+2026-04-28 23:15:14
+Session:   61
+Kernel:    2023-06-18 - 63204be2806b09ab75e03e42c477f69bfd050efc
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       7  INFO: task hung in new_device_store
+       7  INFO: task hung in del_device_store (4)
+       8  INFO: task hung in del_device_store
+      10  INFO: task hung in new_device_store
+      11  INFO: task hung in del_device_store
+      12  INFO: task hung in del_device_store (2)
+The bug was not found.
+About 13270 commits remaining
+
+2026-04-28 23:50:08
+Session:   62
+Kernel:    2023-06-30 - 646d07461513b061fa4aacde47827fb6922db3fb
+Compiler:  ccache gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0846-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+       2  UBSAN: array-index-out-of-bounds in corrupted
+       2  UBSAN: array-index-out-of-bounds in copy_process (7)
+       3  UBSAN: array-index-out-of-bounds in corrupted (3)
+       3  UBSAN: array-index-out-of-bounds in copy_process (3)
+       4  UBSAN: array-index-out-of-bounds in corrupted
+       4  UBSAN: array-index-out-of-bounds in copy_process
+       5  UBSAN: array-index-out-of-bounds in corrupted (2)
+       5  UBSAN: array-index-out-of-bounds in copy_process (6)
+       6  UBSAN: array-index-out-of-bounds in corrupted (2)
+       6  UBSAN: array-index-out-of-bounds in alloc_pid
+       6  UBSAN: array-index-out-of-bounds in copy_process (5)
+       7  UBSAN: array-index-out-of-bounds in corrupted (6)
+       7  UBSAN: array-index-out-of-bounds in copy_process
+       8  UBSAN: array-index-out-of-bounds in copy_process
+       9  UBSAN: array-index-out-of-bounds in corrupted
+       9  UBSAN: array-index-out-of-bounds in alloc_pid
+       9  UBSAN: array-index-out-of-bounds in copy_process (6)
+      10  UBSAN: array-index-out-of-bounds in corrupted
+      10  UBSAN: array-index-out-of-bounds in alloc_pid
+      10  UBSAN: array-index-out-of-bounds in copy_process (6)
+      11  UBSAN: array-index-out-of-bounds in corrupted (6)
+      11  UBSAN: array-index-out-of-bounds in alloc_pid
+      11  UBSAN: array-index-out-of-bounds in copy_process
+      12  UBSAN: array-index-out-of-bounds in corrupted
+      12  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 13270 commits remaining
+
+2026-04-29 00:26:22
+Session:   63
+Kernel:    2023-06-05 - e40e5298e692bb6b5a200b3f0f55e6e5adf0e5ad
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       7  INFO: task hung in del_device_store (4)
+      10  UBSAN: shift-out-of-bounds in parse_options (2)
+      12  INFO: task hung in del_device_store
+The bug was not found.
+About 14066 commits remaining
+
+2026-04-29 01:03:21
+Session:   64
+Kernel:    2023-06-06 - e43454c44232640bdb71a0c9ce49d39e856e5ebb
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+      11  UBSAN: shift-out-of-bounds in parse_options
+The bug was not found.
+About 13661 commits remaining
+
+2026-04-29 01:39:44
+Session:   65
+Kernel:    2023-06-15 - a301b2deb66cd93bae0f676702356273ebf8abb6
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       7  INFO: task hung in new_device_store
+       7  INFO: task hung in del_device_store (6)
+      12  INFO: task hung in del_device_store
+The bug was not found.
+About 13855 commits remaining
+
+2026-04-29 02:16:00
+Session:   66
+Kernel:    2023-06-24 - 0c93af1f8907902692014fd7072d54e275034800
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 10560 commits remaining
+
+2026-04-29 02:52:18
+Session:   67
+Kernel:    2023-06-29 - 6c1561fb900524c5bceb924071b3e9b8a67ff3da
+Compiler:  ccache gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0846-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+       2  UBSAN: array-index-out-of-bounds in corrupted (2)
+       2  UBSAN: array-index-out-of-bounds in alloc_pid (2)
+       2  UBSAN: array-index-out-of-bounds in copy_process (4)
+       3  UBSAN: array-index-out-of-bounds in corrupted (3)
+       3  UBSAN: array-index-out-of-bounds in copy_process (5)
+       5  UBSAN: array-index-out-of-bounds in corrupted (3)
+       5  UBSAN: array-index-out-of-bounds in alloc_pid (2)
+       5  UBSAN: array-index-out-of-bounds in copy_process (3)
+       6  UBSAN: array-index-out-of-bounds in corrupted (2)
+       6  UBSAN: array-index-out-of-bounds in copy_process (6)
+       7  UBSAN: array-index-out-of-bounds in corrupted (5)
+       7  UBSAN: array-index-out-of-bounds in alloc_pid
+       7  UBSAN: array-index-out-of-bounds in copy_process (2)
+       8  UBSAN: array-index-out-of-bounds in alloc_pid
+       8  UBSAN: array-index-out-of-bounds in copy_process (2)
+       9  UBSAN: array-index-out-of-bounds in corrupted (3)
+       9  UBSAN: array-index-out-of-bounds in alloc_pid
+       9  UBSAN: array-index-out-of-bounds in copy_process
+      10  UBSAN: array-index-out-of-bounds in corrupted (5)
+      10  UBSAN: array-index-out-of-bounds in copy_process (3)
+      11  UBSAN: array-index-out-of-bounds in corrupted (2)
+      11  UBSAN: array-index-out-of-bounds in alloc_pid (2)
+      11  UBSAN: array-index-out-of-bounds in copy_process (3)
+      12  UBSAN: array-index-out-of-bounds in corrupted (2)
+      12  UBSAN: array-index-out-of-bounds in alloc_pid
+      12  UBSAN: array-index-out-of-bounds in copy_process (2)
+      12  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 10560 commits remaining
+
+2026-04-29 03:27:52
+Session:   68
+Kernel:    2023-07-03 - e8069f5a8e3bdb5fdeeff895780529388592ee7a
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 988 commits remaining
+
+2026-04-29 04:02:34
+Session:   69
+Kernel:    2023-07-05 - fe1de55167963a1c0ebe1579e37a8a41495f0a81
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       7  UBSAN: shift-out-of-bounds in parse_options
+The bug was not found.
+About 345 commits remaining
+
+2026-04-29 04:37:35
+Session:   70
+Kernel:    2023-07-05 - 6843306689aff3aea608e4d2630b2a5a0137f827
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    4  possible deadlock in f2fs_getxattr (7)
+Running syz-repro.
+New PoC saved at /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0846-0.prog
+Primary PoC:     /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0846-0.prog
+Run Time:        0h8m0s
+The bug was found.
+About 179 commits remaining
+
+2026-04-29 05:00:10
+Session:   71
+Kernel:    2023-07-05 - 73a3fcdaa73200e38e38f7e8a32c9b901c5b95b5
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    4  possible deadlock in f2fs_getxattr (3)
+The bug was found.
+About 99 commits remaining
+
+2026-04-29 05:13:42
+Session:   72
+Kernel:    2023-07-05 - bb8e7e9f0bc47d01bea310808ab8c27f6484d850
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       6  UBSAN: shift-out-of-bounds in parse_options
+       9  UBSAN: shift-out-of-bounds in parse_options
+The bug was not found.
+About 48 commits remaining
+
+2026-04-29 05:34:50
+Session:   73
+Kernel:    2023-06-12 - 5079e1c0c879311668b77075de3e701869804adf
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       7  INFO: task hung in new_device_store (2)
+       7  INFO: task hung in del_device_store (3)
+      11  INFO: task hung in new_device_store
+      11  INFO: task hung in del_device_store
+      12  INFO: task hung in new_device_store
+      12  INFO: task hung in del_device_store
+The bug was not found.
+About 14027 commits remaining
+
+2026-04-29 06:10:32
+Session:   74
+Kernel:    2023-06-26 - 9ac00e7cef106b66611e131f59f61f5ae35cf726
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       6  INFO: task hung in del_device_store
+       7  INFO: task hung in del_device_store (5)
+      10  INFO: task hung in del_device_store
+      12  INFO: task hung in new_device_store
+The bug was not found.
+About 14015 commits remaining
+
+2026-04-29 06:32:56
+Session:   75
+Kernel:    2023-06-26 - cf2423a7555c4b012576c7282fb495ce739d50d4
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       4  WARNING: ODEBUG bug in netdev_run_todo (has report)
+       8  INFO: task hung in del_device_store
+       9  UBSAN: shift-out-of-bounds in parse_options
+      10  INFO: task hung in del_device_store
+      11  UBSAN: shift-out-of-bounds in parse_options
+      12  WARNING: ODEBUG bug in netdev_run_todo (has report)
+The bug was not found.
+About 14009 commits remaining
+
+2026-04-29 06:55:20
+Session:   76
+Kernel:    2023-06-30 - c31e49615762a5fa0d14ffcfd5e2f1c206213a14
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    4  possible deadlock in f2fs_getxattr (8)
+The bug was found.
+About 4 commits remaining
+
+2026-04-29 07:08:56
+Session:   77
+Kernel:    2023-06-30 - 0135c482fa97e2fd8245cb462784112a00ed1211
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    4  possible deadlock in f2fs_getxattr (8)
+Running syz-repro.
+New PoC saved at /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0846-1.prog
+Primary PoC:     /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0846-1.prog
+Run Time:        0h7m0s
+The bug was found.
+About 3 commits remaining
+
+2026-04-29 07:29:21
+Session:   78
+Kernel:    2023-06-30 - 5eda1ad1aaffdfebdecf7a164e586060a210f74f
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    4  possible deadlock in f2fs_getxattr (5)
+The bug was found.
+About 2 commits remaining
+
+==== Partial Result: Focused Fuzzing ====
+Reproducer:           /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0846-1.prog
+Bisection Result:     2023-06-30 - 5eda1ad1aaffdfebdecf7a164e586060a210f74f
+Bisected Commit Name: f2fs: fix deadlock in i_xattr_sem and inode page lock
+Stage Time:           41h59m33s
+Run Time:             41h59m37s
+=========================================
+
+==== Anchor Commit ====
+
+2026-04-29 07:43:22
+Session:   79
+Kernel:    2023-06-26 - cf2423a7555c4b012576c7282fb495ce739d50d4
+Compiler:  ccache gcc
+PoC:       /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0846-1.prog
+Attempt 0:
+    INFO: task hung in del_device_store
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    INFO: task hung in new_device_store
+    INFO: task hung in del_device_store
+Attempt 5:
+    INFO: task hung in new_device_store
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    INFO: task hung in del_device_store
+The bug was not found.
+
+Failure: This bug cannot be found at the anchor commit.
+
+====================================================================================================================================================
+Bug Name:             possible deadlock in f2fs_getxattr
+Bug ID:               bug0846
+Bug Link:             https://syzkaller.appspot.com/bug?extid=e5600587fa9cbf8e3826
+Bisection Result:     2023-06-30 - 5eda1ad1aaffdfebdecf7a164e586060a210f74f
+Bisected Commit Name: f2fs: fix deadlock in i_xattr_sem and inode page lock
+Run Time:             42h21m56s
+
+Anchor Commit:        2023-07-06 - a452483508d7b70b0f6c69e249ec0b3ea2330b5c
+Bisection Result:     2023-06-30 - 5eda1ad1aaffdfebdecf7a164e586060a210f74f

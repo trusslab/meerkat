@@ -1,0 +1,116 @@
+./bin/meerkat -i 1 -c /home/author/meerkat/wd-meerkat-1/meerkat.cfg -a b25f62ccb490680a8cee755ac4528909395e0711 -F ff-test,stateful-corpus,poc-test,ff-no-find-backup
+Bisecting:          general protection fault in sys_finit_module
+Syzbot Link:        https://syzkaller.appspot.com/bug?extid=9e4e94a2689427009d35
+Working Name:       bug0832
+
+Aliases:
+    general protection fault in sys_finit_module
+
+Anchor Commit:      b25f62ccb490680a8cee755ac4528909395e0711
+Repository:         https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
+Branch:             master
+Arch:               amd64
+
+Meerkat:            /home/author/meerkat/
+Version:            1.2.0
+Kernel:             /home/author/meerkat/wd-meerkat-1/kernel/
+Syzkaller:          /home/author/meerkat/syzkaller/
+Compilers:          /home/author/meerkat/compilers/
+Compiler:           gcc (Ubuntu 12.3.0-1ubuntu1~22.04.3) 12.3.0
+Linker:             GNU ld (GNU Binutils for Ubuntu) 2.38
+Ccache:             ccache version 4.5.1
+Image:              /home/author/meerkat/image/stretch/stretch.img
+Image Key:          /home/author/meerkat/image/stretch/stretch.id_rsa
+
+Workdir:            /home/author/meerkat/wd-meerkat-1/
+Kconfig:            /home/author/meerkat/wd-meerkat-1/config-bug0832.txt
+Reproducers: (1)    /home/author/meerkat/wd-meerkat-1/reproducers/
+Syzkaller Workdir:  /home/author/meerkat/wd-meerkat-1/wd-kaller/
+Log Directory:      /home/author/meerkat/wd-meerkat-1/log/
+
+Syscalls: (8)       ["finit_module", "socket$nl_generic", "openat$binfmt", "ioctl$F2FS_IOC_START_ATOMIC_WRITE", "openat$selinux_enforce", "socket$netlink", "syz_create_resource$binfmt", "socket"]
+VM Count:           8
+CPU Count:          2
+Procs:              16
+Memory:             4096
+Make Procs:         16
+Max Time:           10
+Max Attempts:       1
+
+==== Anchor Commit ====
+
+2026-04-26 00:44:04
+Session:   1
+Kernel:    2023-06-30 - b25f62ccb490680a8cee755ac4528909395e0711
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       3  BUG: unable to handle kernel paging request in init_module_from_file (2) (has report)
+       3  KASAN: vmalloc-out-of-bounds Read in init_module_from_file (2) (has report)
+       4  general protection fault in init_module_from_file
+       4  KASAN: vmalloc-out-of-bounds Read in init_module_from_file (3) (has report)
+       5  KASAN: vmalloc-out-of-bounds Read in init_module_from_file (3) (has report)
+       6  BUG: unable to handle kernel paging request in init_module_from_file (has report)
+       6  KASAN: stack-out-of-bounds Read in init_module_from_file (has report)
+       6  general protection fault in init_module_from_file
+       6  KASAN: vmalloc-out-of-bounds Read in init_module_from_file (2) (has report)
+       7  general protection fault in init_module_from_file
+       8  BUG: unable to handle kernel paging request in init_module_from_file (2) (has report)
+       8  general protection fault in init_module_from_file (2)
+       8  KASAN: vmalloc-out-of-bounds Read in init_module_from_file (2) (has report)
+       9  BUG: unable to handle kernel paging request in init_module_from_file (has report)
+      10  BUG: unable to handle kernel paging request in init_module_from_file (has report)
+      10  general protection fault in init_module_from_file (3)
+      10  KASAN: vmalloc-out-of-bounds Read in init_module_from_file (3) (has report)
+Attempt 2: (RETRY)
+    Time  Bug Name
+       3  BUG: unable to handle kernel paging request in init_module_from_file (2) (has report)
+       3  KASAN: vmalloc-out-of-bounds Read in init_module_from_file (5) (has report)
+       4  KASAN: vmalloc-out-of-bounds Read in init_module_from_file (has report)
+       5  BUG: unable to handle kernel paging request in init_module_from_file (has report)
+       5  general protection fault in init_module_from_file (2)
+       5  KASAN: vmalloc-out-of-bounds Read in init_module_from_file (2) (has report)
+       6  BUG: unable to handle kernel paging request in init_module_from_file (2) (has report)
+       6  KASAN: vmalloc-out-of-bounds Read in init_module_from_file (has report)
+       7  BUG: unable to handle kernel paging request in init_module_from_file (has report)
+       7  general protection fault in init_module_from_file
+       7  KASAN: vmalloc-out-of-bounds Read in init_module_from_file (2) (has report)
+       8  BUG: unable to handle kernel paging request in init_module_from_file (has report)
+       8  KASAN: vmalloc-out-of-bounds Read in init_module_from_file (3) (has report)
+       9  BUG: unable to handle kernel paging request in init_module_from_file (has report)
+       9  general protection fault in init_module_from_file
+       9  lost connection to test machine
+       9  KASAN: slab-out-of-bounds Read in init_module_from_file (has report)
+      10  BUG: unable to handle kernel paging request in init_module_from_file (has report)
+      10  general protection fault in init_module_from_file
+      10  KASAN: vmalloc-out-of-bounds Read in init_module_from_file (2) (has report)
+Attempt 3: (RETRY)
+    Time  Bug Name
+       3  BUG: unable to handle kernel paging request in init_module_from_file (has report)
+       3  KASAN: stack-out-of-bounds Read in init_module_from_file (2) (has report)
+       3  KASAN: vmalloc-out-of-bounds Read in init_module_from_file (3) (has report)
+       4  BUG: unable to handle kernel paging request in init_module_from_file (has report)
+       4  KASAN: vmalloc-out-of-bounds Read in init_module_from_file (has report)
+       5  general protection fault in init_module_from_file
+       5  KASAN: vmalloc-out-of-bounds Read in init_module_from_file (2) (has report)
+       6  BUG: unable to handle kernel paging request in init_module_from_file (2) (has report)
+       6  general protection fault in init_module_from_file
+       6  KASAN: vmalloc-out-of-bounds Read in init_module_from_file (2) (has report)
+       7  general protection fault in init_module_from_file
+       7  KASAN: vmalloc-out-of-bounds Read in init_module_from_file (has report)
+       8  BUG: unable to handle kernel paging request in init_module_from_file (2) (has report)
+       8  general protection fault in init_module_from_file (2)
+       8  KASAN: vmalloc-out-of-bounds Read in init_module_from_file (2) (has report)
+       9  KASAN: vmalloc-out-of-bounds Read in init_module_from_file (has report)
+      10  BUG: unable to handle kernel paging request in init_module_from_file (has report)
+      10  KASAN: stack-out-of-bounds Read in init_module_from_file (has report)
+      10  KASAN: vmalloc-out-of-bounds Read in init_module_from_file (has report)
+The bug was not found.
+
+Failure: This bug cannot be found at the anchor commit.
+
+==== Partial Result: Focused Fuzzing ====
+Bisection Result:     Failed to reproduce at the anchor commit.
+Stage Time:           0h52m25s
+Run Time:             0h52m29s
+=========================================

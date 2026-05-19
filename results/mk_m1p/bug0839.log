@@ -1,0 +1,664 @@
+./bin/meerkat -i 1 -c /home/author/meerkat/wd-meerkat-1/meerkat.cfg -a f8566aa4f1766bb0267b7a0ed89c1d2c4a82ee1a -F ff-test,stateful-corpus,poc-test,ff-no-find-backup
+Bisecting:          kernel BUG in validate_mm
+Syzbot Link:        https://syzkaller.appspot.com/bug?extid=70b97abe3e253d1c3f8e
+Working Name:       bug0839
+
+Aliases:
+    kernel BUG in validate_mm
+
+Anchor Commit:      f8566aa4f1766bb0267b7a0ed89c1d2c4a82ee1a
+Repository:         https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
+Branch:             master
+Arch:               amd64
+
+Meerkat:            /home/author/meerkat/
+Version:            1.2.0
+Kernel:             /home/author/meerkat/wd-meerkat-1/kernel/
+Syzkaller:          /home/author/meerkat/syzkaller/
+Compilers:          /home/author/meerkat/compilers/
+Compiler:           gcc (Ubuntu 12.3.0-1ubuntu1~22.04.3) 12.3.0
+Linker:             GNU ld (GNU Binutils for Ubuntu) 2.38
+Ccache:             ccache version 4.5.1
+Image:              /home/author/meerkat/image/stretch/stretch.img
+Image Key:          /home/author/meerkat/image/stretch/stretch.id_rsa
+
+Workdir:            /home/author/meerkat/wd-meerkat-1/
+Kconfig:            /home/author/meerkat/wd-meerkat-1/config-bug0839.txt
+Reproducers: (1)    /home/author/meerkat/wd-meerkat-1/reproducers/
+Primary PoC:        /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0839-8.prog
+Syzkaller Workdir:  /home/author/meerkat/wd-meerkat-1/wd-kaller/
+Log Directory:      /home/author/meerkat/wd-meerkat-1/log/
+
+Syscalls: (7)       ["ioctl$KVM_CREATE_VM", "mremap", "openat$kvm", "syz_kvm_setup_cpu$x86", "ioctl$KVM_CREATE_VCPU", "ioctl$F2FS_IOC_START_ATOMIC_WRITE", "openat$selinux_enforce"]
+VM Count:           4
+CPU Count:          4
+Procs:              24
+Memory:             4096
+Make Procs:         16
+Max Time:           10
+Max Attempts:       1
+
+==== Anchor Commit ====
+
+2026-04-26 15:10:09
+Session:   1
+Kernel:    2023-07-01 - f8566aa4f1766bb0267b7a0ed89c1d2c4a82ee1a
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       6  KASAN: slab-use-after-free Read in mas_next_slot (has report)
+       8  general protection fault in mt_validate (has report)
+Attempt 2: (RETRY)
+    Time  Bug Name
+***    5  kernel BUG in validate_mm (2) (has report)
+Attempt 3: (RETRY)
+    Time  Bug Name
+       5  general protection fault in mt_validate (has report)
+***   10  kernel BUG in validate_mm (has report)
+The bug was found.
+
+New Max Time: 12
+
+==== Major Release Search ====
+13 Releases
+
+2026-04-26 15:57:31
+Session:   2
+Kernel:    2023-06-25 - 6995e2de6891c724bfeb2db33d7b87775f913ad1 (v6.4)
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+      12  suppressed report
+The bug was not found.
+About 12 releases remaining
+
+==== Kernel Bisection ====
+10063 Linux commits
+
+2026-04-26 16:36:18
+Session:   3
+Kernel:    2023-06-29 - f8824e151fbfa0ac0a258015d606ea6f4a10251b
+Compiler:  ccache gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0839-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+       2  UBSAN: array-index-out-of-bounds in corrupted
+       2  UBSAN: array-index-out-of-bounds in alloc_pid (2)
+       2  lost connection to test machine
+       3  UBSAN: array-index-out-of-bounds in corrupted
+       3  lost connection to test machine (3)
+       4  UBSAN: array-index-out-of-bounds in copy_process
+       4  lost connection to test machine
+       9  UBSAN: array-index-out-of-bounds in alloc_pid
+       9  lost connection to test machine
+       9  no output from test machine
+      10  UBSAN: array-index-out-of-bounds in copy_process (2)
+      10  lost connection to test machine
+      10  no output from test machine
+      11  UBSAN: array-index-out-of-bounds in corrupted (3)
+      11  lost connection to test machine
+      12  UBSAN: array-index-out-of-bounds in alloc_pid
+      12  UBSAN: array-index-out-of-bounds in copy_process (2)
+      12  lost connection to test machine
+      12  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 10063 commits remaining
+
+2026-04-26 17:10:41
+Session:   4
+Kernel:    2023-06-07 - 8b64d420fe2450f82848178506d3e3a0bd195539
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       7  suppressed report
+The bug was not found.
+About 11267 commits remaining
+
+2026-04-26 17:47:09
+Session:   5
+Kernel:    2023-06-12 - d3944f0ed4e4039201b160fc11004abaa2ca5385
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       5  suppressed report
+      12  suppressed report
+The bug was not found.
+About 11192 commits remaining
+
+2026-04-26 18:22:08
+Session:   6
+Kernel:    2023-06-29 - 86e203edf24bb327ce8fcd3c5c8c6bf530a846df
+Compiler:  ccache gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0839-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+       2  UBSAN: array-index-out-of-bounds in corrupted
+       2  UBSAN: array-index-out-of-bounds in alloc_pid
+       2  UBSAN: array-index-out-of-bounds in copy_process
+       2  lost connection to test machine
+       3  UBSAN: array-index-out-of-bounds in alloc_pid
+       3  UBSAN: array-index-out-of-bounds in copy_process
+       3  lost connection to test machine
+       4  UBSAN: array-index-out-of-bounds in alloc_pid
+       4  UBSAN: array-index-out-of-bounds in copy_process
+       4  lost connection to test machine
+       5  UBSAN: array-index-out-of-bounds in copy_process
+       5  lost connection to test machine (2)
+       8  lost connection to test machine (2)
+       8  no output from test machine
+       9  UBSAN: array-index-out-of-bounds in corrupted
+       9  UBSAN: array-index-out-of-bounds in alloc_pid (2)
+      10  UBSAN: array-index-out-of-bounds in corrupted (2)
+      11  UBSAN: array-index-out-of-bounds in alloc_pid
+      11  UBSAN: array-index-out-of-bounds in copy_process
+      11  lost connection to test machine
+      11  no output from test machine
+      12  UBSAN: array-index-out-of-bounds in corrupted
+      12  lost connection to test machine (2)
+      12  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 11192 commits remaining
+
+2026-04-26 18:45:01
+Session:   7
+Kernel:    2023-06-07 - 2d830f7a41343302ab19e73d4f44f5ccb6940a25
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 10403 commits remaining
+
+2026-04-26 19:19:18
+Session:   8
+Kernel:    2023-06-15 - 00134556058c2c262b9d1cac25b73727f87f46f5
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       6  INFO: task hung in new_device_store
+       6  INFO: task hung in del_device_store (2)
+       7  INFO: task hung in new_device_store
+      12  INFO: task hung in new_device_store
+The bug was not found.
+About 11977 commits remaining
+
+2026-04-26 19:55:04
+Session:   9
+Kernel:    2023-04-11 - f2bf2e7e2d526116aab942aaf1b71a949a570ba6
+Compiler:  ccache gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0839-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+       2  WARNING in c_start (4) (has report)
+       3  WARNING in c_start (4) (has report)
+       4  WARNING in c_start (4) (has report)
+       5  WARNING in c_start (4) (has report)
+       6  WARNING in c_start (4) (has report)
+       7  WARNING in c_start (4) (has report)
+       8  WARNING in c_start (4) (has report)
+       9  WARNING in c_start (4) (has report)
+      10  WARNING in c_start (4) (has report)
+      11  WARNING in c_start (4) (has report)
+      12  WARNING in c_start (4) (has report)
+      12  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 11977 commits remaining
+
+2026-04-26 20:32:15
+Session:   10
+Kernel:    2023-06-09 - 76e5e4c70160b3764db6093b3366b36e4466d727
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       6  INFO: task hung in new_device_store (3)
+       6  INFO: task hung in del_device_store
+      12  INFO: task hung in del_device_store (2)
+The bug was not found.
+About 25218 commits remaining
+
+2026-04-26 21:08:40
+Session:   11
+Kernel:    2023-06-19 - babebf023e661b90b1c78b2baa384fb03a226879
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 10110 commits remaining
+
+2026-04-26 21:43:51
+Session:   12
+Kernel:    2023-06-07 - eb0481bbc4ce386e73e28ad8590b4f12c8aded56
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       6  INFO: task hung in new_device_store
+       6  INFO: task hung in del_device_store (2)
+       7  INFO: task hung in del_device_store
+      12  INFO: task hung in del_device_store (2)
+The bug was not found.
+About 11978 commits remaining
+
+2026-04-26 22:20:13
+Session:   13
+Kernel:    2023-06-12 - 7d9d7d59d44b7e9236d168472aa222b6543fae25
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       6  INFO: task hung in new_device_store
+       6  INFO: task hung in del_device_store (3)
+      12  suppressed report
+      12  INFO: task hung in del_device_store (2)
+The bug was not found.
+About 11810 commits remaining
+
+2026-04-26 22:54:50
+Session:   14
+Kernel:    2023-06-15 - 222e0a8e2f8a89f41c518a43ced46e73c57a700e
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       6  suppressed report (2)
+       6  INFO: task hung in del_device_store (2)
+      12  INFO: task hung in del_device_store (2)
+The bug was not found.
+About 11981 commits remaining
+
+2026-04-26 23:30:41
+Session:   15
+Kernel:    2023-06-22 - c4fc88ad2a765224a648db8ab35f125e120fe41b
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       6  suppressed report
+The bug was not found.
+About 10105 commits remaining
+
+2026-04-27 00:04:23
+Session:   16
+Kernel:    2023-05-22 - 74629c49e66cc6d36c46ac4e3f059780873ceedf
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       5  WARNING: ODEBUG bug in netdev_run_todo (has report)
+       6  suppressed report
+       6  INFO: task hung in new_device_store
+       6  INFO: task hung in del_device_store
+      10  INFO: task hung in del_device_store
+The bug was not found.
+About 12029 commits remaining
+
+2026-04-27 00:35:25
+Session:   17
+Kernel:    2023-05-13 - b1f8ac879346bd8415e405dd9b6c032007b3198e
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       6  INFO: task hung in del_device_store (3)
+       7  INFO: task hung in del_device_store
+The bug was not found.
+About 12202 commits remaining
+
+2026-04-27 00:59:00
+Session:   18
+Kernel:    2023-06-09 - d0915d64c3a636f73065dbb7e5aab78eb7e75f0d
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 9972 commits remaining
+
+2026-04-27 01:36:12
+Session:   19
+Kernel:    2023-06-06 - cad7850ac0f597cd462b263a6395c5cd0ad8e760
+Compiler:  ccache gcc
+Error: index error parsing Warning report
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0839-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+       2  WARNING in register_net_sysctl (4) (has report)
+       3  WARNING in corrupted
+       3  WARNING in register_net_sysctl (3) (has report)
+       4  WARNING in register_net_sysctl (5) (has report)
+       5  WARNING in corrupted
+       5  WARNING in register_net_sysctl (2) (has report)
+       6  WARNING in corrupted
+       6  WARNING in register_net_sysctl (4) (has report)
+       7  WARNING in corrupted
+       7  WARNING in register_net_sysctl (3) (has report)
+       8  WARNING in corrupted (2)
+       8  WARNING in register_net_sysctl (2) (has report)
+       9  WARNING in corrupted
+       9  WARNING in register_net_sysctl (3) (has report)
+      10  WARNING in corrupted
+      10  WARNING in register_net_sysctl (3) (has report)
+      11  WARNING in corrupted (2)
+      11  WARNING in register_net_sysctl (2) (has report)
+      12  WARNING in corrupted
+      12  WARNING in register_net_sysctl (3) (has report)
+      12  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 9972 commits remaining
+
+2026-04-27 02:05:59
+Session:   20
+Kernel:    2023-06-29 - acd1d46b0ddec686d4170b2205bc08c88d5d4d74
+Compiler:  ccache gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0839-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+       2  UBSAN: array-index-out-of-bounds in alloc_pid (3)
+       2  lost connection to test machine
+       7  no output from test machine
+       8  UBSAN: array-index-out-of-bounds in corrupted
+       8  UBSAN: array-index-out-of-bounds in alloc_pid
+       8  UBSAN: array-index-out-of-bounds in copy_process
+       8  no output from test machine
+       9  UBSAN: array-index-out-of-bounds in copy_process (2)
+       9  lost connection to test machine
+      10  UBSAN: array-index-out-of-bounds in alloc_pid
+      10  UBSAN: array-index-out-of-bounds in copy_process
+      10  lost connection to test machine (2)
+      11  UBSAN: array-index-out-of-bounds in corrupted
+      11  UBSAN: array-index-out-of-bounds in alloc_pid
+      11  lost connection to test machine
+      12  UBSAN: array-index-out-of-bounds in corrupted (2)
+      12  UBSAN: array-index-oKVM in corrupted
+      12  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 9972 commits remaining
+
+2026-04-27 02:39:59
+Session:   21
+Kernel:    2023-06-06 - fccf5ff14e00b264c03467186e6055dcb9959475
+Compiler:  ccache gcc
+Error: index error parsing Warning report
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0839-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+       2  WARNING in corrupted (2)
+       2  WARNING in register_net_sysctl (2) (has report)
+       3  WARNING in register_net_sysctl (4) (has report)
+       4  WARNING in corrupted
+       4  WARNING in register_net_sysctl (2) (has report)
+       5  WARNING in corrupted
+       5  WARNING in register_net_sysctl (3) (has report)
+       6  WARNING in corrupted
+       6  WARNING in register_net_sysctl (2) (has report)
+       7  WARNING in register_net_sysctl (4) (has report)
+       8  WARNING in corrupted (3)
+       8  WARNING in register_net_sysctl (has report)
+       9  WARNING in corrupted (3)
+      10  WARNING in corrupted
+      10  WARNING in register_net_sysctl (4) (has report)
+      11  WARNING in corrupted
+      11  WARNING in register_net_sysctl (2) (has report)
+      12  WARNING in corrupted (3)
+      12  WARNING in register_net_sysctl (2) (has report)
+      12  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 9972 commits remaining
+
+2026-04-27 03:02:33
+Session:   22
+Kernel:    2023-05-10 - 42a8af0fa4333701e0e318d3877f45bd6d51ce49
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       6  INFO: task hung in new_device_store
+       6  INFO: task hung in del_device_store (3)
+      12  INFO: task hung in new_device_store
+      12  INFO: task hung in del_device_store
+The bug was not found.
+About 12202 commits remaining
+
+2026-04-27 03:24:38
+Session:   23
+Kernel:    2023-06-09 - 497db7ea33f7cec2a0019894e844789f003dbd22
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       6  suppressed report
+       6  INFO: task hung in new_device_store (2)
+       6  INFO: task hung in del_device_store
+      11  suppressed report
+      12  INFO: task hung in devlink_free
+      12  INFO: task hung in del_device_store
+The bug was not found.
+About 25103 commits remaining
+
+2026-04-27 03:59:27
+Session:   24
+Kernel:    2023-05-30 - d1d3ca03554e51be44546638f83169bb05b20ef8
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       6  suppressed report
+       6  INFO: task hung in new_device_store
+       6  INFO: task hung in del_device_store (2)
+      12  INFO: task hung in new_device_store
+      12  INFO: task hung in del_device_store
+The bug was not found.
+About 12013 commits remaining
+
+2026-04-27 04:21:19
+Session:   25
+Kernel:    2023-06-16 - 234489ac561300ceed33e64c3bf3a810b9e2051d
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 11568 commits remaining
+
+2026-04-27 04:56:06
+Session:   26
+Kernel:    2023-06-15 - 84debc33b529cae428f29b1eb21ccc05c8b47a16
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       6  suppressed report (3)
+       6  INFO: task hung in del_device_store
+      12  INFO: task hung in devlink_free (2)
+      12  INFO: task hung in new_device_store
+      12  INFO: task hung in del_device_store
+The bug was not found.
+About 12122 commits remaining
+
+2026-04-27 05:19:57
+Session:   27
+Kernel:    2023-05-08 - ccfc8750dbe18755532ee3d7c94d918f9f5aee1f
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       6  INFO: task hung in new_device_store (2)
+       6  INFO: task hung in del_device_store (2)
+The bug was not found.
+About 12196 commits remaining
+
+2026-04-27 05:46:27
+Session:   28
+Kernel:    2023-06-19 - e4d86756159b5794edad5b0d0d19c6f3d9888240
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 10961 commits remaining
+
+2026-04-27 06:22:58
+Session:   29
+Kernel:    2023-06-06 - b4f273774c8b2b7c6f5e0cb9b18a234a8ca322b4
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       8  suppressed report
+      10  suppressed report
+The bug was not found.
+About 11520 commits remaining
+
+2026-04-27 06:49:20
+Session:   30
+Kernel:    2023-06-19 - 88b60bf047fd15b75a0d7b78322ad53f917976ce
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+      12  suppressed report
+The bug was not found.
+About 11199 commits remaining
+
+2026-04-27 07:11:34
+Session:   31
+Kernel:    2023-06-06 - 9891422ba6777272e2638c5fbae6800cc23baf4e
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       6  INFO: task hung in new_device_store (4)
+      12  INFO: task hung in devlink_free (2)
+      12  INFO: task hung in del_device_store (2)
+The bug was not found.
+About 12198 commits remaining
+
+2026-04-27 07:34:23
+Session:   32
+Kernel:    2023-06-30 - 5d95ff84e62be914b4a4dabfa814e4096b05b1b0
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 202 commits remaining
+
+2026-04-27 08:10:40
+Session:   33
+Kernel:    2023-07-01 - d25f002575146d67b5ebea541e6db3696c957c25
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       5  KASAN: slab-use-after-free Read in mas_walk (has report)
+       6  general protection fault in mt_validate (has report)
+      11  KASAN: slab-out-of-bounds Read in mt_validate_nulls (has report)
+***   11  kernel BUG in validate_mm (has report)
+Running syz-repro.
+Run Time:        0h20m0s
+The bug was found.
+About 125 commits remaining
+
+2026-04-27 09:03:24
+Session:   34
+Kernel:    2023-07-01 - 0a1c979c6b7dfe5b6c105d0f0f9f068b5eb07e25
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       7  general protection fault in mt_validate (has report)
+The bug was not found.
+About 59 commits remaining
+
+2026-04-27 09:29:11
+Session:   35
+Kernel:    2023-06-25 - aeaefabc59ec3c7edd6d0ca7add7aff2ff6f59d0
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 10475 commits remaining
+
+2026-04-27 10:05:18
+Session:   36
+Kernel:    2023-06-25 - 5d2ffbe4b81a3b6353bf888a523e7e5d4fec47ad
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+      12  suppressed report
+The bug was not found.
+About 10491 commits remaining
+
+2026-04-27 10:29:08
+Session:   37
+Kernel:    2023-06-25 - c2b34d442226b69e519eb0ba61939a74d91712d4
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 11186 commits remaining
+
+2026-04-27 11:07:06
+Session:   38
+Kernel:    2023-06-25 - d2f9fe695313b1e50028c1ec4cd09bea67152a60
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 10465 commits remaining
+
+2026-04-27 11:30:38
+Session:   39
+Kernel:    2023-06-27 - 71baec7b8500c92f9723f39d06a7ae465483da1f
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+      10  suppressed report
+The bug was not found.
+About 10449 commits remaining
+
+2026-04-27 11:54:10
+Session:   40
+Kernel:    2023-06-29 - fe77cc2e5a6a7c85f5c6ef8a39d7694ffc7f41c9
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 10448 commits remaining
+
+==== Partial Result: Focused Fuzzing ====
+Reproducer:           /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0839-8.prog
+Bisection Result:     2023-07-01 - d25f002575146d67b5ebea541e6db3696c957c25
+Bisected Commit Name: Merge tag 'cxl-for-6.5' of git://git.kernel.org/pub/scm/linux/kernel/git/cxl/cxl
+Stage Time:           21h5m52s
+Run Time:             21h5m55s
+=========================================
+
+==== Anchor Commit ====
+
+2026-04-27 12:16:02
+Session:   41
+Kernel:    2023-06-29 - fe77cc2e5a6a7c85f5c6ef8a39d7694ffc7f41c9
+Compiler:  ccache gcc
+PoC:       /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0839-8.prog
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+
+Failure: This bug cannot be found at the anchor commit.
+
+====================================================================================================================================================
+Bug Name:             kernel BUG in validate_mm
+Bug ID:               bug0839
+Bug Link:             https://syzkaller.appspot.com/bug?extid=70b97abe3e253d1c3f8e
+Bisection Result:     2023-07-01 - d25f002575146d67b5ebea541e6db3696c957c25
+Bisected Commit Name: Merge tag 'cxl-for-6.5' of git://git.kernel.org/pub/scm/linux/kernel/git/cxl/cxl
+Run Time:             21h24m26s
+
+Anchor Commit:        2023-07-01 - f8566aa4f1766bb0267b7a0ed89c1d2c4a82ee1a
+Bisection Result:     2023-07-01 - d25f002575146d67b5ebea541e6db3696c957c25
