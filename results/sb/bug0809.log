@@ -271,48 +271,48 @@ in_atomic(): 0, irqs_disabled(): 0, non_block: 0, pid: 51, name: kworker/u7:0
 preempt_count: 0, expected: 0
 RCU nest depth: 1, expected: 0
 4 locks held by kworker/u7:0/51:
- #0: ffff88810c2c8138 ((wq_completion)hci0#2){+.+.}-{0:0}, at: arch_atomic64_set mnt/sdd/author/SyzInspector/wd-bisector-5/kernel/./arch/x86/include/asm/atomic64_64.h:20 [inline]
- #0: ffff88810c2c8138 ((wq_completion)hci0#2){+.+.}-{0:0}, at: raw_atomic64_set mnt/sdd/author/SyzInspector/wd-bisector-5/kernel/./include/linux/atomic/atomic-arch-fallback.h:2608 [inline]
- #0: ffff88810c2c8138 ((wq_completion)hci0#2){+.+.}-{0:0}, at: raw_atomic_long_set mnt/sdd/author/SyzInspector/wd-bisector-5/kernel/./include/linux/atomic/atomic-long.h:79 [inline]
- #0: ffff88810c2c8138 ((wq_completion)hci0#2){+.+.}-{0:0}, at: atomic_long_set mnt/sdd/author/SyzInspector/wd-bisector-5/kernel/./include/linux/atomic/atomic-instrumented.h:3196 [inline]
- #0: ffff88810c2c8138 ((wq_completion)hci0#2){+.+.}-{0:0}, at: set_work_data mnt/sdd/author/SyzInspector/wd-bisector-5/kernel/kernel/workqueue.c:678 [inline]
- #0: ffff88810c2c8138 ((wq_completion)hci0#2){+.+.}-{0:0}, at: set_work_pool_and_clear_pending mnt/sdd/author/SyzInspector/wd-bisector-5/kernel/kernel/workqueue.c:705 [inline]
- #0: ffff88810c2c8138 ((wq_completion)hci0#2){+.+.}-{0:0}, at: process_one_work+0x8fb/0x16f0 mnt/sdd/author/SyzInspector/wd-bisector-5/kernel/kernel/workqueue.c:2570
- #1: ffffc90000dafd90 ((work_completion)(&hdev->rx_work)){+.+.}-{0:0}, at: process_one_work+0x92e/0x16f0 mnt/sdd/author/SyzInspector/wd-bisector-5/kernel/kernel/workqueue.c:2574
- #2: ffff888023928078 (&hdev->lock){+.+.}-{3:3}, at: hci_le_create_big_complete_evt+0xe9/0xab0 mnt/sdd/author/SyzInspector/wd-bisector-5/kernel/net/bluetooth/hci_event.c:6947
- #3: ffffffff8c9a3580 (rcu_read_lock){....}-{1:2}, at: hci_le_ev_skb_pull mnt/sdd/author/SyzInspector/wd-bisector-5/kernel/net/bluetooth/hci_event.c:79 [inline]
- #3: ffffffff8c9a3580 (rcu_read_lock){....}-{1:2}, at: hci_le_create_big_complete_evt+0xcc/0xab0 mnt/sdd/author/SyzInspector/wd-bisector-5/kernel/net/bluetooth/hci_event.c:6943
+ #0: ffff88810c2c8138 ((wq_completion)hci0#2){+.+.}-{0:0}, at: arch_atomic64_set mnt/sdd/author/meerkat/wd-bisector-5/kernel/./arch/x86/include/asm/atomic64_64.h:20 [inline]
+ #0: ffff88810c2c8138 ((wq_completion)hci0#2){+.+.}-{0:0}, at: raw_atomic64_set mnt/sdd/author/meerkat/wd-bisector-5/kernel/./include/linux/atomic/atomic-arch-fallback.h:2608 [inline]
+ #0: ffff88810c2c8138 ((wq_completion)hci0#2){+.+.}-{0:0}, at: raw_atomic_long_set mnt/sdd/author/meerkat/wd-bisector-5/kernel/./include/linux/atomic/atomic-long.h:79 [inline]
+ #0: ffff88810c2c8138 ((wq_completion)hci0#2){+.+.}-{0:0}, at: atomic_long_set mnt/sdd/author/meerkat/wd-bisector-5/kernel/./include/linux/atomic/atomic-instrumented.h:3196 [inline]
+ #0: ffff88810c2c8138 ((wq_completion)hci0#2){+.+.}-{0:0}, at: set_work_data mnt/sdd/author/meerkat/wd-bisector-5/kernel/kernel/workqueue.c:678 [inline]
+ #0: ffff88810c2c8138 ((wq_completion)hci0#2){+.+.}-{0:0}, at: set_work_pool_and_clear_pending mnt/sdd/author/meerkat/wd-bisector-5/kernel/kernel/workqueue.c:705 [inline]
+ #0: ffff88810c2c8138 ((wq_completion)hci0#2){+.+.}-{0:0}, at: process_one_work+0x8fb/0x16f0 mnt/sdd/author/meerkat/wd-bisector-5/kernel/kernel/workqueue.c:2570
+ #1: ffffc90000dafd90 ((work_completion)(&hdev->rx_work)){+.+.}-{0:0}, at: process_one_work+0x92e/0x16f0 mnt/sdd/author/meerkat/wd-bisector-5/kernel/kernel/workqueue.c:2574
+ #2: ffff888023928078 (&hdev->lock){+.+.}-{3:3}, at: hci_le_create_big_complete_evt+0xe9/0xab0 mnt/sdd/author/meerkat/wd-bisector-5/kernel/net/bluetooth/hci_event.c:6947
+ #3: ffffffff8c9a3580 (rcu_read_lock){....}-{1:2}, at: hci_le_ev_skb_pull mnt/sdd/author/meerkat/wd-bisector-5/kernel/net/bluetooth/hci_event.c:79 [inline]
+ #3: ffffffff8c9a3580 (rcu_read_lock){....}-{1:2}, at: hci_le_create_big_complete_evt+0xcc/0xab0 mnt/sdd/author/meerkat/wd-bisector-5/kernel/net/bluetooth/hci_event.c:6943
 CPU: 0 PID: 51 Comm: kworker/u7:0 Not tainted 6.5.0-rc5-syzkaller #0
 Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.13.0-1ubuntu1.1 04/01/2014
 Workqueue: hci0 hci_rx_work
 Call Trace:
  <TASK>
- __dump_stack mnt/sdd/author/SyzInspector/wd-bisector-5/kernel/lib/dump_stack.c:88 [inline]
- dump_stack_lvl+0x136/0x150 mnt/sdd/author/SyzInspector/wd-bisector-5/kernel/lib/dump_stack.c:106
- __might_resched+0x358/0x580 mnt/sdd/author/SyzInspector/wd-bisector-5/kernel/kernel/sched/core.c:10189
- __hci_cmd_sync_sk+0x359/0xe30 mnt/sdd/author/SyzInspector/wd-bisector-5/kernel/net/bluetooth/hci_sync.c:166
- __hci_cmd_sync_status_sk+0x45/0x160 mnt/sdd/author/SyzInspector/wd-bisector-5/kernel/net/bluetooth/hci_sync.c:247
- __hci_cmd_sync_status mnt/sdd/author/SyzInspector/wd-bisector-5/kernel/net/bluetooth/hci_sync.c:273 [inline]
- hci_le_terminate_big_sync+0xa4/0xd0 mnt/sdd/author/SyzInspector/wd-bisector-5/kernel/net/bluetooth/hci_sync.c:1671
- hci_le_create_big_complete_evt+0x741/0xab0 mnt/sdd/author/SyzInspector/wd-bisector-5/kernel/net/bluetooth/hci_event.c:6982
- hci_le_meta_evt+0x2bc/0x510 mnt/sdd/author/SyzInspector/wd-bisector-5/kernel/net/bluetooth/hci_event.c:7182
- hci_event_func mnt/sdd/author/SyzInspector/wd-bisector-5/kernel/net/bluetooth/hci_event.c:7512 [inline]
- hci_event_packet+0x641/0xfd0 mnt/sdd/author/SyzInspector/wd-bisector-5/kernel/net/bluetooth/hci_event.c:7567
- hci_rx_work+0xaeb/0x1340 mnt/sdd/author/SyzInspector/wd-bisector-5/kernel/net/bluetooth/hci_core.c:4090
- process_one_work+0xa32/0x16f0 mnt/sdd/author/SyzInspector/wd-bisector-5/kernel/kernel/workqueue.c:2600
- worker_thread+0x67d/0x10c0 mnt/sdd/author/SyzInspector/wd-bisector-5/kernel/kernel/workqueue.c:2751
- kthread+0x344/0x440 mnt/sdd/author/SyzInspector/wd-bisector-5/kernel/kernel/kthread.c:389
- ret_from_fork+0x2c/0x70 mnt/sdd/author/SyzInspector/wd-bisector-5/kernel/arch/x86/kernel/process.c:145
- ret_from_fork_asm+0x11/0x20 mnt/sdd/author/SyzInspector/wd-bisector-5/kernel/arch/x86/entry/entry_64.S:304
+ __dump_stack mnt/sdd/author/meerkat/wd-bisector-5/kernel/lib/dump_stack.c:88 [inline]
+ dump_stack_lvl+0x136/0x150 mnt/sdd/author/meerkat/wd-bisector-5/kernel/lib/dump_stack.c:106
+ __might_resched+0x358/0x580 mnt/sdd/author/meerkat/wd-bisector-5/kernel/kernel/sched/core.c:10189
+ __hci_cmd_sync_sk+0x359/0xe30 mnt/sdd/author/meerkat/wd-bisector-5/kernel/net/bluetooth/hci_sync.c:166
+ __hci_cmd_sync_status_sk+0x45/0x160 mnt/sdd/author/meerkat/wd-bisector-5/kernel/net/bluetooth/hci_sync.c:247
+ __hci_cmd_sync_status mnt/sdd/author/meerkat/wd-bisector-5/kernel/net/bluetooth/hci_sync.c:273 [inline]
+ hci_le_terminate_big_sync+0xa4/0xd0 mnt/sdd/author/meerkat/wd-bisector-5/kernel/net/bluetooth/hci_sync.c:1671
+ hci_le_create_big_complete_evt+0x741/0xab0 mnt/sdd/author/meerkat/wd-bisector-5/kernel/net/bluetooth/hci_event.c:6982
+ hci_le_meta_evt+0x2bc/0x510 mnt/sdd/author/meerkat/wd-bisector-5/kernel/net/bluetooth/hci_event.c:7182
+ hci_event_func mnt/sdd/author/meerkat/wd-bisector-5/kernel/net/bluetooth/hci_event.c:7512 [inline]
+ hci_event_packet+0x641/0xfd0 mnt/sdd/author/meerkat/wd-bisector-5/kernel/net/bluetooth/hci_event.c:7567
+ hci_rx_work+0xaeb/0x1340 mnt/sdd/author/meerkat/wd-bisector-5/kernel/net/bluetooth/hci_core.c:4090
+ process_one_work+0xa32/0x16f0 mnt/sdd/author/meerkat/wd-bisector-5/kernel/kernel/workqueue.c:2600
+ worker_thread+0x67d/0x10c0 mnt/sdd/author/meerkat/wd-bisector-5/kernel/kernel/workqueue.c:2751
+ kthread+0x344/0x440 mnt/sdd/author/meerkat/wd-bisector-5/kernel/kernel/kthread.c:389
+ ret_from_fork+0x2c/0x70 mnt/sdd/author/meerkat/wd-bisector-5/kernel/arch/x86/kernel/process.c:145
+ ret_from_fork_asm+0x11/0x20 mnt/sdd/author/meerkat/wd-bisector-5/kernel/arch/x86/entry/entry_64.S:304
  </TASK>
 ------------[ cut here ]------------
 Voluntary context switch within RCU read-side critical section!
-WARNING: CPU: 1 PID: 51 at kernel/rcu/tree_plugin.h:320 rcu_note_context_switch+0xbb9/0x1800 mnt/sdd/author/SyzInspector/wd-bisector-5/kernel/kernel/rcu/tree_plugin.h:320
+WARNING: CPU: 1 PID: 51 at kernel/rcu/tree_plugin.h:320 rcu_note_context_switch+0xbb9/0x1800 mnt/sdd/author/meerkat/wd-bisector-5/kernel/kernel/rcu/tree_plugin.h:320
 Modules linked in:
 CPU: 1 PID: 51 Comm: kworker/u7:0 Tainted: G        W          6.5.0-rc5-syzkaller #0
 Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.13.0-1ubuntu1.1 04/01/2014
 Workqueue: hci0 hci_rx_work
-RIP: 0010:rcu_note_context_switch+0xbb9/0x1800 mnt/sdd/author/SyzInspector/wd-bisector-5/kernel/kernel/rcu/tree_plugin.h:320
+RIP: 0010:rcu_note_context_switch+0xbb9/0x1800 mnt/sdd/author/meerkat/wd-bisector-5/kernel/kernel/rcu/tree_plugin.h:320
 Code: ad 54 69 00 4c 8b 4c 24 30 8b 4c 24 28 48 8b 54 24 20 e9 8f 03 00 00 48 c7 c7 a0 1e 6e 8a c6 05 07 58 25 0d 01 e8 77 8b dc ff <0f> 0b e9 4c f5 ff ff 81 e5 ff ff ff 7f 0f 84 d7 f6 ff ff 65 48 8b
 RSP: 0018:ffffc90000daf4a8 EFLAGS: 00010082
 RAX: 0000000000000000 RBX: ffff888135c3d2c0 RCX: 0000000000000000
@@ -327,23 +327,23 @@ DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
 DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
 Call Trace:
  <TASK>
- __schedule+0x276/0x5880 mnt/sdd/author/SyzInspector/wd-bisector-5/kernel/kernel/sched/core.c:6610
- schedule+0xde/0x1a0 mnt/sdd/author/SyzInspector/wd-bisector-5/kernel/kernel/sched/core.c:6786
- schedule_timeout+0x14e/0x2b0 mnt/sdd/author/SyzInspector/wd-bisector-5/kernel/kernel/time/timer.c:2167
- __hci_cmd_sync_sk+0xc1d/0xe30 mnt/sdd/author/SyzInspector/wd-bisector-5/kernel/net/bluetooth/hci_sync.c:166
- __hci_cmd_sync_status_sk+0x45/0x160 mnt/sdd/author/SyzInspector/wd-bisector-5/kernel/net/bluetooth/hci_sync.c:247
- __hci_cmd_sync_status mnt/sdd/author/SyzInspector/wd-bisector-5/kernel/net/bluetooth/hci_sync.c:273 [inline]
- hci_le_terminate_big_sync+0xa4/0xd0 mnt/sdd/author/SyzInspector/wd-bisector-5/kernel/net/bluetooth/hci_sync.c:1671
- hci_le_create_big_complete_evt+0x741/0xab0 mnt/sdd/author/SyzInspector/wd-bisector-5/kernel/net/bluetooth/hci_event.c:6982
- hci_le_meta_evt+0x2bc/0x510 mnt/sdd/author/SyzInspector/wd-bisector-5/kernel/net/bluetooth/hci_event.c:7182
- hci_event_func mnt/sdd/author/SyzInspector/wd-bisector-5/kernel/net/bluetooth/hci_event.c:7512 [inline]
- hci_event_packet+0x641/0xfd0 mnt/sdd/author/SyzInspector/wd-bisector-5/kernel/net/bluetooth/hci_event.c:7567
- hci_rx_work+0xaeb/0x1340 mnt/sdd/author/SyzInspector/wd-bisector-5/kernel/net/bluetooth/hci_core.c:4090
- process_one_work+0xa32/0x16f0 mnt/sdd/author/SyzInspector/wd-bisector-5/kernel/kernel/workqueue.c:2600
- worker_thread+0x67d/0x10c0 mnt/sdd/author/SyzInspector/wd-bisector-5/kernel/kernel/workqueue.c:2751
- kthread+0x344/0x440 mnt/sdd/author/SyzInspector/wd-bisector-5/kernel/kernel/kthread.c:389
- ret_from_fork+0x2c/0x70 mnt/sdd/author/SyzInspector/wd-bisector-5/kernel/arch/x86/kernel/process.c:145
- ret_from_fork_asm+0x11/0x20 mnt/sdd/author/SyzInspector/wd-bisector-5/kernel/arch/x86/entry/entry_64.S:304
+ __schedule+0x276/0x5880 mnt/sdd/author/meerkat/wd-bisector-5/kernel/kernel/sched/core.c:6610
+ schedule+0xde/0x1a0 mnt/sdd/author/meerkat/wd-bisector-5/kernel/kernel/sched/core.c:6786
+ schedule_timeout+0x14e/0x2b0 mnt/sdd/author/meerkat/wd-bisector-5/kernel/kernel/time/timer.c:2167
+ __hci_cmd_sync_sk+0xc1d/0xe30 mnt/sdd/author/meerkat/wd-bisector-5/kernel/net/bluetooth/hci_sync.c:166
+ __hci_cmd_sync_status_sk+0x45/0x160 mnt/sdd/author/meerkat/wd-bisector-5/kernel/net/bluetooth/hci_sync.c:247
+ __hci_cmd_sync_status mnt/sdd/author/meerkat/wd-bisector-5/kernel/net/bluetooth/hci_sync.c:273 [inline]
+ hci_le_terminate_big_sync+0xa4/0xd0 mnt/sdd/author/meerkat/wd-bisector-5/kernel/net/bluetooth/hci_sync.c:1671
+ hci_le_create_big_complete_evt+0x741/0xab0 mnt/sdd/author/meerkat/wd-bisector-5/kernel/net/bluetooth/hci_event.c:6982
+ hci_le_meta_evt+0x2bc/0x510 mnt/sdd/author/meerkat/wd-bisector-5/kernel/net/bluetooth/hci_event.c:7182
+ hci_event_func mnt/sdd/author/meerkat/wd-bisector-5/kernel/net/bluetooth/hci_event.c:7512 [inline]
+ hci_event_packet+0x641/0xfd0 mnt/sdd/author/meerkat/wd-bisector-5/kernel/net/bluetooth/hci_event.c:7567
+ hci_rx_work+0xaeb/0x1340 mnt/sdd/author/meerkat/wd-bisector-5/kernel/net/bluetooth/hci_core.c:4090
+ process_one_work+0xa32/0x16f0 mnt/sdd/author/meerkat/wd-bisector-5/kernel/kernel/workqueue.c:2600
+ worker_thread+0x67d/0x10c0 mnt/sdd/author/meerkat/wd-bisector-5/kernel/kernel/workqueue.c:2751
+ kthread+0x344/0x440 mnt/sdd/author/meerkat/wd-bisector-5/kernel/kernel/kthread.c:389
+ ret_from_fork+0x2c/0x70 mnt/sdd/author/meerkat/wd-bisector-5/kernel/arch/x86/kernel/process.c:145
+ ret_from_fork_asm+0x11/0x20 mnt/sdd/author/meerkat/wd-bisector-5/kernel/arch/x86/entry/entry_64.S:304
  </TASK>
 
 

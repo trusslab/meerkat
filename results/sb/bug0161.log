@@ -175,16 +175,16 @@ recipients (to): ["linux-fsdevel@vger.kernel.org" "miklos@szeredi.hu" "mszeredi@
 recipients (cc): ["linux-kernel@vger.kernel.org"]
 crash: WARNING in fuse_writepages_fill
 ------------[ cut here ]------------
-WARNING: CPU: 0 PID: 1253 at fs/fuse/file.c:1835 fuse_write_file_get mnt/sdd/author/SyzInspector/wd-bisector-7/kernel/fs/fuse/file.c:1835 [inline]
-WARNING: CPU: 0 PID: 1253 at fs/fuse/file.c:1835 fuse_write_file_get mnt/sdd/author/SyzInspector/wd-bisector-7/kernel/fs/fuse/file.c:1832 [inline]
-WARNING: CPU: 0 PID: 1253 at fs/fuse/file.c:1835 fuse_writepages_fill+0x1877/0x1dc0 mnt/sdd/author/SyzInspector/wd-bisector-7/kernel/fs/fuse/file.c:2140
+WARNING: CPU: 0 PID: 1253 at fs/fuse/file.c:1835 fuse_write_file_get mnt/sdd/author/meerkat/wd-bisector-7/kernel/fs/fuse/file.c:1835 [inline]
+WARNING: CPU: 0 PID: 1253 at fs/fuse/file.c:1835 fuse_write_file_get mnt/sdd/author/meerkat/wd-bisector-7/kernel/fs/fuse/file.c:1832 [inline]
+WARNING: CPU: 0 PID: 1253 at fs/fuse/file.c:1835 fuse_writepages_fill+0x1877/0x1dc0 mnt/sdd/author/meerkat/wd-bisector-7/kernel/fs/fuse/file.c:2140
 Modules linked in:
 CPU: 0 PID: 1253 Comm: kworker/u5:4 Not tainted 5.15.0-rc6-syzkaller #0
 Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.13.0-1ubuntu1.1 04/01/2014
 Workqueue: writeback wb_workfn (flush-0:55)
-RIP: 0010:fuse_write_file_get mnt/sdd/author/SyzInspector/wd-bisector-7/kernel/fs/fuse/file.c:1835 [inline]
-RIP: 0010:fuse_write_file_get mnt/sdd/author/SyzInspector/wd-bisector-7/kernel/fs/fuse/file.c:1832 [inline]
-RIP: 0010:fuse_writepages_fill+0x1877/0x1dc0 mnt/sdd/author/SyzInspector/wd-bisector-7/kernel/fs/fuse/file.c:2140
+RIP: 0010:fuse_write_file_get mnt/sdd/author/meerkat/wd-bisector-7/kernel/fs/fuse/file.c:1835 [inline]
+RIP: 0010:fuse_write_file_get mnt/sdd/author/meerkat/wd-bisector-7/kernel/fs/fuse/file.c:1832 [inline]
+RIP: 0010:fuse_writepages_fill+0x1877/0x1dc0 mnt/sdd/author/meerkat/wd-bisector-7/kernel/fs/fuse/file.c:2140
 Code: ff 4c 89 ef e8 8a 83 0c ff e9 8f e9 ff ff e8 80 83 0c ff e9 b0 e9 ff ff e8 06 3c c5 fe 4c 89 ef e8 ae a7 7d 06 e8 f9 3b c5 fe <0f> 0b 48 b8 00 00 00 00 00 fc ff df 48 8b 54 24 18 48 c1 ea 03 80
 RSP: 0018:ffffc900063ef3c0 EFLAGS: 00010293
 RAX: 0000000000000000 RBX: ffff88801f2be348 RCX: 0000000000000000
@@ -198,20 +198,20 @@ CR2: 00007fb01c03d0f8 CR3: 0000000017c15000 CR4: 0000000000350ef0
 DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
 DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
 Call Trace:
- write_cache_pages+0x754/0x11c0 mnt/sdd/author/SyzInspector/wd-bisector-7/kernel/mm/page-writeback.c:2255
- fuse_writepages+0x1cd/0x320 mnt/sdd/author/SyzInspector/wd-bisector-7/kernel/fs/fuse/file.c:2242
- do_writepages+0x1ab/0x7b0 mnt/sdd/author/SyzInspector/wd-bisector-7/kernel/mm/page-writeback.c:2364
- __writeback_single_inode+0x126/0xff0 mnt/sdd/author/SyzInspector/wd-bisector-7/kernel/fs/fs-writeback.c:1616
- writeback_sb_inodes+0x53d/0xf00 mnt/sdd/author/SyzInspector/wd-bisector-7/kernel/fs/fs-writeback.c:1881
- __writeback_inodes_wb+0xc6/0x280 mnt/sdd/author/SyzInspector/wd-bisector-7/kernel/fs/fs-writeback.c:1950
- wb_writeback+0x7f8/0xc30 mnt/sdd/author/SyzInspector/wd-bisector-7/kernel/fs/fs-writeback.c:2055
- wb_check_background_flush mnt/sdd/author/SyzInspector/wd-bisector-7/kernel/fs/fs-writeback.c:2121 [inline]
- wb_do_writeback mnt/sdd/author/SyzInspector/wd-bisector-7/kernel/fs/fs-writeback.c:2209 [inline]
- wb_workfn+0xa4b/0x12d0 mnt/sdd/author/SyzInspector/wd-bisector-7/kernel/fs/fs-writeback.c:2237
- process_one_work+0x965/0x1660 mnt/sdd/author/SyzInspector/wd-bisector-7/kernel/kernel/workqueue.c:2297
- worker_thread+0x658/0x11f0 mnt/sdd/author/SyzInspector/wd-bisector-7/kernel/kernel/workqueue.c:2444
- kthread+0x3e5/0x4d0 mnt/sdd/author/SyzInspector/wd-bisector-7/kernel/kernel/kthread.c:319
- ret_from_fork+0x1f/0x30 mnt/sdd/author/SyzInspector/wd-bisector-7/kernel/arch/x86/entry/entry_64.S:295
+ write_cache_pages+0x754/0x11c0 mnt/sdd/author/meerkat/wd-bisector-7/kernel/mm/page-writeback.c:2255
+ fuse_writepages+0x1cd/0x320 mnt/sdd/author/meerkat/wd-bisector-7/kernel/fs/fuse/file.c:2242
+ do_writepages+0x1ab/0x7b0 mnt/sdd/author/meerkat/wd-bisector-7/kernel/mm/page-writeback.c:2364
+ __writeback_single_inode+0x126/0xff0 mnt/sdd/author/meerkat/wd-bisector-7/kernel/fs/fs-writeback.c:1616
+ writeback_sb_inodes+0x53d/0xf00 mnt/sdd/author/meerkat/wd-bisector-7/kernel/fs/fs-writeback.c:1881
+ __writeback_inodes_wb+0xc6/0x280 mnt/sdd/author/meerkat/wd-bisector-7/kernel/fs/fs-writeback.c:1950
+ wb_writeback+0x7f8/0xc30 mnt/sdd/author/meerkat/wd-bisector-7/kernel/fs/fs-writeback.c:2055
+ wb_check_background_flush mnt/sdd/author/meerkat/wd-bisector-7/kernel/fs/fs-writeback.c:2121 [inline]
+ wb_do_writeback mnt/sdd/author/meerkat/wd-bisector-7/kernel/fs/fs-writeback.c:2209 [inline]
+ wb_workfn+0xa4b/0x12d0 mnt/sdd/author/meerkat/wd-bisector-7/kernel/fs/fs-writeback.c:2237
+ process_one_work+0x965/0x1660 mnt/sdd/author/meerkat/wd-bisector-7/kernel/kernel/workqueue.c:2297
+ worker_thread+0x658/0x11f0 mnt/sdd/author/meerkat/wd-bisector-7/kernel/kernel/workqueue.c:2444
+ kthread+0x3e5/0x4d0 mnt/sdd/author/meerkat/wd-bisector-7/kernel/kernel/kthread.c:319
+ ret_from_fork+0x1f/0x30 mnt/sdd/author/meerkat/wd-bisector-7/kernel/arch/x86/entry/entry_64.S:295
 
 
 WARNING in fuse_write_file_get

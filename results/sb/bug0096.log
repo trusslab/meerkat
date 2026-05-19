@@ -178,57 +178,57 @@ recipients (to): ["coreteam@netfilter.org" "davem@davemloft.net" "edumazet@googl
 recipients (cc): ["linux-kernel@vger.kernel.org"]
 crash: KASAN: use-after-free Read in nf_ct_deliver_cached_events
 ==================================================================
-BUG: KASAN: use-after-free in __nf_ct_ext_exist mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/./include/net/netfilter/nf_conntrack_extend.h:57 [inline]
-BUG: KASAN: use-after-free in nf_ct_ext_exist mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/./include/net/netfilter/nf_conntrack_extend.h:62 [inline]
-BUG: KASAN: use-after-free in __nf_ct_ext_find mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/./include/net/netfilter/nf_conntrack_extend.h:67 [inline]
-BUG: KASAN: use-after-free in nf_ct_ecache_find mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/./include/net/netfilter/nf_conntrack_ecache.h:33 [inline]
-BUG: KASAN: use-after-free in nf_ct_deliver_cached_events+0x22d/0x260 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/netfilter/nf_conntrack_ecache.c:213
+BUG: KASAN: use-after-free in __nf_ct_ext_exist mnt/sdd/author/meerkat/wd-bisector-4/kernel/./include/net/netfilter/nf_conntrack_extend.h:57 [inline]
+BUG: KASAN: use-after-free in nf_ct_ext_exist mnt/sdd/author/meerkat/wd-bisector-4/kernel/./include/net/netfilter/nf_conntrack_extend.h:62 [inline]
+BUG: KASAN: use-after-free in __nf_ct_ext_find mnt/sdd/author/meerkat/wd-bisector-4/kernel/./include/net/netfilter/nf_conntrack_extend.h:67 [inline]
+BUG: KASAN: use-after-free in nf_ct_ecache_find mnt/sdd/author/meerkat/wd-bisector-4/kernel/./include/net/netfilter/nf_conntrack_ecache.h:33 [inline]
+BUG: KASAN: use-after-free in nf_ct_deliver_cached_events+0x22d/0x260 mnt/sdd/author/meerkat/wd-bisector-4/kernel/net/netfilter/nf_conntrack_ecache.c:213
 Read of size 1 at addr ffff88801ac21704 by task syz-executor.0/7573
 
 CPU: 0 PID: 7573 Comm: syz-executor.0 Not tainted 5.18.0-rc2-syzkaller #0
 Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.13.0-1ubuntu1.1 04/01/2014
 Call Trace:
  <TASK>
- __dump_stack mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/lib/dump_stack.c:88 [inline]
- dump_stack_lvl+0xcd/0x134 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/lib/dump_stack.c:106
- print_address_description.constprop.0.cold+0xeb/0x467 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/mm/kasan/report.c:313
- print_report mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/mm/kasan/report.c:429 [inline]
- kasan_report.cold+0xf4/0x1c6 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/mm/kasan/report.c:491
- __nf_ct_ext_exist mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/./include/net/netfilter/nf_conntrack_extend.h:57 [inline]
- nf_ct_ext_exist mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/./include/net/netfilter/nf_conntrack_extend.h:62 [inline]
- __nf_ct_ext_find mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/./include/net/netfilter/nf_conntrack_extend.h:67 [inline]
- nf_ct_ecache_find mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/./include/net/netfilter/nf_conntrack_ecache.h:33 [inline]
- nf_ct_deliver_cached_events+0x22d/0x260 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/netfilter/nf_conntrack_ecache.c:213
- nf_conntrack_confirm mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/./include/net/netfilter/nf_conntrack_core.h:64 [inline]
- nf_confirm+0x389/0x4b0 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/netfilter/nf_conntrack_proto.c:154
- ipv4_confirm+0x183/0x310 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/netfilter/nf_conntrack_proto.c:182
- nf_hook_entry_hookfn mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/./include/linux/netfilter.h:142 [inline]
- nf_hook_slow+0xc5/0x1f0 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/netfilter/core.c:620
- nf_hook+0x1cb/0x5b0 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/./include/linux/netfilter.h:262
- NF_HOOK_COND mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/./include/linux/netfilter.h:295 [inline]
- ip_output+0x216/0x310 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/ipv4/ip_output.c:430
- dst_output mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/./include/net/dst.h:451 [inline]
- ip_local_out mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/ipv4/ip_output.c:126 [inline]
- ip_send_skb+0xd4/0x260 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/ipv4/ip_output.c:1571
- udp_send_skb+0xac5/0x11b0 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/ipv4/udp.c:967
- udp_sendmsg+0x1ba8/0x2730 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/ipv4/udp.c:1254
- inet_sendmsg+0x99/0xe0 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/ipv4/af_inet.c:819
- sock_sendmsg_nosec mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/socket.c:705 [inline]
- sock_sendmsg+0xcf/0x120 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/socket.c:725
- rxrpc_send_abort_packet+0x45c/0x730 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/rxrpc/output.c:330
- rxrpc_release_calls_on_socket+0x211/0x300 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/rxrpc/call_object.c:606
- rxrpc_release_sock mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/rxrpc/af_rxrpc.c:886 [inline]
- rxrpc_release+0x263/0x5a0 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/rxrpc/af_rxrpc.c:917
- __sock_release+0xcd/0x280 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/socket.c:650
- sock_close+0x18/0x20 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/socket.c:1318
- __fput+0x277/0x9d0 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/fs/file_table.c:317
- task_work_run+0xdd/0x1a0 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/kernel/task_work.c:164
- resume_user_mode_work mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/./include/linux/resume_user_mode.h:49 [inline]
- exit_to_user_mode_loop mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/kernel/entry/common.c:169 [inline]
- exit_to_user_mode_prepare+0x23c/0x250 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/kernel/entry/common.c:201
- __syscall_exit_to_user_mode_work mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/kernel/entry/common.c:283 [inline]
- syscall_exit_to_user_mode+0x19/0x60 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/kernel/entry/common.c:294
- do_syscall_64+0x42/0xb0 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/arch/x86/entry/common.c:86
+ __dump_stack mnt/sdd/author/meerkat/wd-bisector-4/kernel/lib/dump_stack.c:88 [inline]
+ dump_stack_lvl+0xcd/0x134 mnt/sdd/author/meerkat/wd-bisector-4/kernel/lib/dump_stack.c:106
+ print_address_description.constprop.0.cold+0xeb/0x467 mnt/sdd/author/meerkat/wd-bisector-4/kernel/mm/kasan/report.c:313
+ print_report mnt/sdd/author/meerkat/wd-bisector-4/kernel/mm/kasan/report.c:429 [inline]
+ kasan_report.cold+0xf4/0x1c6 mnt/sdd/author/meerkat/wd-bisector-4/kernel/mm/kasan/report.c:491
+ __nf_ct_ext_exist mnt/sdd/author/meerkat/wd-bisector-4/kernel/./include/net/netfilter/nf_conntrack_extend.h:57 [inline]
+ nf_ct_ext_exist mnt/sdd/author/meerkat/wd-bisector-4/kernel/./include/net/netfilter/nf_conntrack_extend.h:62 [inline]
+ __nf_ct_ext_find mnt/sdd/author/meerkat/wd-bisector-4/kernel/./include/net/netfilter/nf_conntrack_extend.h:67 [inline]
+ nf_ct_ecache_find mnt/sdd/author/meerkat/wd-bisector-4/kernel/./include/net/netfilter/nf_conntrack_ecache.h:33 [inline]
+ nf_ct_deliver_cached_events+0x22d/0x260 mnt/sdd/author/meerkat/wd-bisector-4/kernel/net/netfilter/nf_conntrack_ecache.c:213
+ nf_conntrack_confirm mnt/sdd/author/meerkat/wd-bisector-4/kernel/./include/net/netfilter/nf_conntrack_core.h:64 [inline]
+ nf_confirm+0x389/0x4b0 mnt/sdd/author/meerkat/wd-bisector-4/kernel/net/netfilter/nf_conntrack_proto.c:154
+ ipv4_confirm+0x183/0x310 mnt/sdd/author/meerkat/wd-bisector-4/kernel/net/netfilter/nf_conntrack_proto.c:182
+ nf_hook_entry_hookfn mnt/sdd/author/meerkat/wd-bisector-4/kernel/./include/linux/netfilter.h:142 [inline]
+ nf_hook_slow+0xc5/0x1f0 mnt/sdd/author/meerkat/wd-bisector-4/kernel/net/netfilter/core.c:620
+ nf_hook+0x1cb/0x5b0 mnt/sdd/author/meerkat/wd-bisector-4/kernel/./include/linux/netfilter.h:262
+ NF_HOOK_COND mnt/sdd/author/meerkat/wd-bisector-4/kernel/./include/linux/netfilter.h:295 [inline]
+ ip_output+0x216/0x310 mnt/sdd/author/meerkat/wd-bisector-4/kernel/net/ipv4/ip_output.c:430
+ dst_output mnt/sdd/author/meerkat/wd-bisector-4/kernel/./include/net/dst.h:451 [inline]
+ ip_local_out mnt/sdd/author/meerkat/wd-bisector-4/kernel/net/ipv4/ip_output.c:126 [inline]
+ ip_send_skb+0xd4/0x260 mnt/sdd/author/meerkat/wd-bisector-4/kernel/net/ipv4/ip_output.c:1571
+ udp_send_skb+0xac5/0x11b0 mnt/sdd/author/meerkat/wd-bisector-4/kernel/net/ipv4/udp.c:967
+ udp_sendmsg+0x1ba8/0x2730 mnt/sdd/author/meerkat/wd-bisector-4/kernel/net/ipv4/udp.c:1254
+ inet_sendmsg+0x99/0xe0 mnt/sdd/author/meerkat/wd-bisector-4/kernel/net/ipv4/af_inet.c:819
+ sock_sendmsg_nosec mnt/sdd/author/meerkat/wd-bisector-4/kernel/net/socket.c:705 [inline]
+ sock_sendmsg+0xcf/0x120 mnt/sdd/author/meerkat/wd-bisector-4/kernel/net/socket.c:725
+ rxrpc_send_abort_packet+0x45c/0x730 mnt/sdd/author/meerkat/wd-bisector-4/kernel/net/rxrpc/output.c:330
+ rxrpc_release_calls_on_socket+0x211/0x300 mnt/sdd/author/meerkat/wd-bisector-4/kernel/net/rxrpc/call_object.c:606
+ rxrpc_release_sock mnt/sdd/author/meerkat/wd-bisector-4/kernel/net/rxrpc/af_rxrpc.c:886 [inline]
+ rxrpc_release+0x263/0x5a0 mnt/sdd/author/meerkat/wd-bisector-4/kernel/net/rxrpc/af_rxrpc.c:917
+ __sock_release+0xcd/0x280 mnt/sdd/author/meerkat/wd-bisector-4/kernel/net/socket.c:650
+ sock_close+0x18/0x20 mnt/sdd/author/meerkat/wd-bisector-4/kernel/net/socket.c:1318
+ __fput+0x277/0x9d0 mnt/sdd/author/meerkat/wd-bisector-4/kernel/fs/file_table.c:317
+ task_work_run+0xdd/0x1a0 mnt/sdd/author/meerkat/wd-bisector-4/kernel/kernel/task_work.c:164
+ resume_user_mode_work mnt/sdd/author/meerkat/wd-bisector-4/kernel/./include/linux/resume_user_mode.h:49 [inline]
+ exit_to_user_mode_loop mnt/sdd/author/meerkat/wd-bisector-4/kernel/kernel/entry/common.c:169 [inline]
+ exit_to_user_mode_prepare+0x23c/0x250 mnt/sdd/author/meerkat/wd-bisector-4/kernel/kernel/entry/common.c:201
+ __syscall_exit_to_user_mode_work mnt/sdd/author/meerkat/wd-bisector-4/kernel/kernel/entry/common.c:283 [inline]
+ syscall_exit_to_user_mode+0x19/0x60 mnt/sdd/author/meerkat/wd-bisector-4/kernel/kernel/entry/common.c:294
+ do_syscall_64+0x42/0xb0 mnt/sdd/author/meerkat/wd-bisector-4/kernel/arch/x86/entry/common.c:86
  entry_SYSCALL_64_after_hwframe+0x44/0xae
 RIP: 0033:0x7fb9e2c408ab
 Code: 03 00 00 00 0f 05 48 3d 00 f0 ff ff 77 41 c3 48 83 ec 18 89 7c 24 0c e8 63 fc ff ff 8b 7c 24 0c 41 89 c0 b8 03 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 2f 44 89 c7 89 44 24 0c e8 a1 fc ff ff 8b 44
@@ -241,94 +241,94 @@ R13: 00007ffc5aaa3070 R14: 00007fb9e2dcbf80 R15: 0000000000000032
  </TASK>
 
 Allocated by task 7573:
- kasan_save_stack+0x1e/0x40 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/mm/kasan/common.c:38
- kasan_set_track mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/mm/kasan/common.c:45 [inline]
- set_alloc_info mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/mm/kasan/common.c:436 [inline]
- ____kasan_kmalloc mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/mm/kasan/common.c:515 [inline]
- ____kasan_kmalloc mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/mm/kasan/common.c:474 [inline]
- __kasan_krealloc+0x10c/0x190 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/mm/kasan/common.c:583
- kasan_krealloc mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/./include/linux/kasan.h:254 [inline]
- __do_krealloc mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/mm/slab_common.c:1180 [inline]
- krealloc+0x54/0xf0 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/mm/slab_common.c:1217
- nf_ct_ext_add+0x1a1/0x380 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/netfilter/nf_conntrack_extend.c:115
- nf_ct_ecache_ext_add mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/./include/net/netfilter/nf_conntrack_ecache.h:53 [inline]
- init_conntrack.constprop.0+0x5db/0x1410 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/netfilter/nf_conntrack_core.c:1717
- resolve_normal_ct mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/netfilter/nf_conntrack_core.c:1807 [inline]
- nf_conntrack_in+0xc8d/0x16c0 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/netfilter/nf_conntrack_core.c:1962
- ipv4_conntrack_local+0x11c/0x260 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/netfilter/nf_conntrack_proto.c:213
- nf_hook_entry_hookfn mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/./include/linux/netfilter.h:142 [inline]
- nf_hook_slow+0xc5/0x1f0 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/netfilter/core.c:620
- nf_hook+0x1cb/0x5b0 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/./include/linux/netfilter.h:262
- __ip_local_out+0x262/0x520 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/ipv4/ip_output.c:115
- ip_local_out mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/ipv4/ip_output.c:124 [inline]
- ip_send_skb+0x46/0x260 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/ipv4/ip_output.c:1571
- udp_send_skb+0xac5/0x11b0 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/ipv4/udp.c:967
- udp_sendmsg+0x1ba8/0x2730 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/ipv4/udp.c:1254
- inet_sendmsg+0x99/0xe0 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/ipv4/af_inet.c:819
- sock_sendmsg_nosec mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/socket.c:705 [inline]
- sock_sendmsg+0xcf/0x120 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/socket.c:725
- rxrpc_send_abort_packet+0x45c/0x730 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/rxrpc/output.c:330
- rxrpc_release_calls_on_socket+0x211/0x300 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/rxrpc/call_object.c:606
- rxrpc_release_sock mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/rxrpc/af_rxrpc.c:886 [inline]
- rxrpc_release+0x263/0x5a0 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/rxrpc/af_rxrpc.c:917
- __sock_release+0xcd/0x280 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/socket.c:650
- sock_close+0x18/0x20 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/socket.c:1318
- __fput+0x277/0x9d0 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/fs/file_table.c:317
- task_work_run+0xdd/0x1a0 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/kernel/task_work.c:164
- resume_user_mode_work mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/./include/linux/resume_user_mode.h:49 [inline]
- exit_to_user_mode_loop mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/kernel/entry/common.c:169 [inline]
- exit_to_user_mode_prepare+0x23c/0x250 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/kernel/entry/common.c:201
- __syscall_exit_to_user_mode_work mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/kernel/entry/common.c:283 [inline]
- syscall_exit_to_user_mode+0x19/0x60 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/kernel/entry/common.c:294
- do_syscall_64+0x42/0xb0 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/arch/x86/entry/common.c:86
+ kasan_save_stack+0x1e/0x40 mnt/sdd/author/meerkat/wd-bisector-4/kernel/mm/kasan/common.c:38
+ kasan_set_track mnt/sdd/author/meerkat/wd-bisector-4/kernel/mm/kasan/common.c:45 [inline]
+ set_alloc_info mnt/sdd/author/meerkat/wd-bisector-4/kernel/mm/kasan/common.c:436 [inline]
+ ____kasan_kmalloc mnt/sdd/author/meerkat/wd-bisector-4/kernel/mm/kasan/common.c:515 [inline]
+ ____kasan_kmalloc mnt/sdd/author/meerkat/wd-bisector-4/kernel/mm/kasan/common.c:474 [inline]
+ __kasan_krealloc+0x10c/0x190 mnt/sdd/author/meerkat/wd-bisector-4/kernel/mm/kasan/common.c:583
+ kasan_krealloc mnt/sdd/author/meerkat/wd-bisector-4/kernel/./include/linux/kasan.h:254 [inline]
+ __do_krealloc mnt/sdd/author/meerkat/wd-bisector-4/kernel/mm/slab_common.c:1180 [inline]
+ krealloc+0x54/0xf0 mnt/sdd/author/meerkat/wd-bisector-4/kernel/mm/slab_common.c:1217
+ nf_ct_ext_add+0x1a1/0x380 mnt/sdd/author/meerkat/wd-bisector-4/kernel/net/netfilter/nf_conntrack_extend.c:115
+ nf_ct_ecache_ext_add mnt/sdd/author/meerkat/wd-bisector-4/kernel/./include/net/netfilter/nf_conntrack_ecache.h:53 [inline]
+ init_conntrack.constprop.0+0x5db/0x1410 mnt/sdd/author/meerkat/wd-bisector-4/kernel/net/netfilter/nf_conntrack_core.c:1717
+ resolve_normal_ct mnt/sdd/author/meerkat/wd-bisector-4/kernel/net/netfilter/nf_conntrack_core.c:1807 [inline]
+ nf_conntrack_in+0xc8d/0x16c0 mnt/sdd/author/meerkat/wd-bisector-4/kernel/net/netfilter/nf_conntrack_core.c:1962
+ ipv4_conntrack_local+0x11c/0x260 mnt/sdd/author/meerkat/wd-bisector-4/kernel/net/netfilter/nf_conntrack_proto.c:213
+ nf_hook_entry_hookfn mnt/sdd/author/meerkat/wd-bisector-4/kernel/./include/linux/netfilter.h:142 [inline]
+ nf_hook_slow+0xc5/0x1f0 mnt/sdd/author/meerkat/wd-bisector-4/kernel/net/netfilter/core.c:620
+ nf_hook+0x1cb/0x5b0 mnt/sdd/author/meerkat/wd-bisector-4/kernel/./include/linux/netfilter.h:262
+ __ip_local_out+0x262/0x520 mnt/sdd/author/meerkat/wd-bisector-4/kernel/net/ipv4/ip_output.c:115
+ ip_local_out mnt/sdd/author/meerkat/wd-bisector-4/kernel/net/ipv4/ip_output.c:124 [inline]
+ ip_send_skb+0x46/0x260 mnt/sdd/author/meerkat/wd-bisector-4/kernel/net/ipv4/ip_output.c:1571
+ udp_send_skb+0xac5/0x11b0 mnt/sdd/author/meerkat/wd-bisector-4/kernel/net/ipv4/udp.c:967
+ udp_sendmsg+0x1ba8/0x2730 mnt/sdd/author/meerkat/wd-bisector-4/kernel/net/ipv4/udp.c:1254
+ inet_sendmsg+0x99/0xe0 mnt/sdd/author/meerkat/wd-bisector-4/kernel/net/ipv4/af_inet.c:819
+ sock_sendmsg_nosec mnt/sdd/author/meerkat/wd-bisector-4/kernel/net/socket.c:705 [inline]
+ sock_sendmsg+0xcf/0x120 mnt/sdd/author/meerkat/wd-bisector-4/kernel/net/socket.c:725
+ rxrpc_send_abort_packet+0x45c/0x730 mnt/sdd/author/meerkat/wd-bisector-4/kernel/net/rxrpc/output.c:330
+ rxrpc_release_calls_on_socket+0x211/0x300 mnt/sdd/author/meerkat/wd-bisector-4/kernel/net/rxrpc/call_object.c:606
+ rxrpc_release_sock mnt/sdd/author/meerkat/wd-bisector-4/kernel/net/rxrpc/af_rxrpc.c:886 [inline]
+ rxrpc_release+0x263/0x5a0 mnt/sdd/author/meerkat/wd-bisector-4/kernel/net/rxrpc/af_rxrpc.c:917
+ __sock_release+0xcd/0x280 mnt/sdd/author/meerkat/wd-bisector-4/kernel/net/socket.c:650
+ sock_close+0x18/0x20 mnt/sdd/author/meerkat/wd-bisector-4/kernel/net/socket.c:1318
+ __fput+0x277/0x9d0 mnt/sdd/author/meerkat/wd-bisector-4/kernel/fs/file_table.c:317
+ task_work_run+0xdd/0x1a0 mnt/sdd/author/meerkat/wd-bisector-4/kernel/kernel/task_work.c:164
+ resume_user_mode_work mnt/sdd/author/meerkat/wd-bisector-4/kernel/./include/linux/resume_user_mode.h:49 [inline]
+ exit_to_user_mode_loop mnt/sdd/author/meerkat/wd-bisector-4/kernel/kernel/entry/common.c:169 [inline]
+ exit_to_user_mode_prepare+0x23c/0x250 mnt/sdd/author/meerkat/wd-bisector-4/kernel/kernel/entry/common.c:201
+ __syscall_exit_to_user_mode_work mnt/sdd/author/meerkat/wd-bisector-4/kernel/kernel/entry/common.c:283 [inline]
+ syscall_exit_to_user_mode+0x19/0x60 mnt/sdd/author/meerkat/wd-bisector-4/kernel/kernel/entry/common.c:294
+ do_syscall_64+0x42/0xb0 mnt/sdd/author/meerkat/wd-bisector-4/kernel/arch/x86/entry/common.c:86
  entry_SYSCALL_64_after_hwframe+0x44/0xae
 
 Freed by task 7573:
- kasan_save_stack+0x1e/0x40 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/mm/kasan/common.c:38
- kasan_set_track+0x21/0x30 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/mm/kasan/common.c:45
- kasan_set_free_info+0x20/0x30 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/mm/kasan/generic.c:370
- ____kasan_slab_free mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/mm/kasan/common.c:366 [inline]
- ____kasan_slab_free+0x13d/0x180 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/mm/kasan/common.c:328
- kasan_slab_free mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/./include/linux/kasan.h:200 [inline]
- __cache_free mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/mm/slab.c:3439 [inline]
- kfree+0x113/0x310 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/mm/slab.c:3810
- nf_conntrack_free+0x100/0x630 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/netfilter/nf_conntrack_core.c:1662
- nf_ct_destroy+0x22e/0x3c0 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/netfilter/nf_conntrack_core.c:645
- nf_ct_put mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/./include/net/netfilter/nf_conntrack.h:185 [inline]
- nf_ct_put mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/./include/net/netfilter/nf_conntrack.h:182 [inline]
- __nf_ct_resolve_clash+0x5dc/0x741 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/netfilter/nf_conntrack_core.c:1009
- nf_ct_resolve_clash+0x14a/0xa23 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/netfilter/nf_conntrack_core.c:1132
- __nf_conntrack_confirm.cold+0x16/0x1a5 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/netfilter/nf_conntrack_core.c:1266
- nf_conntrack_confirm mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/./include/net/netfilter/nf_conntrack_core.h:62 [inline]
- nf_confirm+0x3ff/0x4b0 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/netfilter/nf_conntrack_proto.c:154
- ipv4_confirm+0x183/0x310 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/netfilter/nf_conntrack_proto.c:182
- nf_hook_entry_hookfn mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/./include/linux/netfilter.h:142 [inline]
- nf_hook_slow+0xc5/0x1f0 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/netfilter/core.c:620
- nf_hook+0x1cb/0x5b0 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/./include/linux/netfilter.h:262
- NF_HOOK_COND mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/./include/linux/netfilter.h:295 [inline]
- ip_output+0x216/0x310 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/ipv4/ip_output.c:430
- dst_output mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/./include/net/dst.h:451 [inline]
- ip_local_out mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/ipv4/ip_output.c:126 [inline]
- ip_send_skb+0xd4/0x260 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/ipv4/ip_output.c:1571
- udp_send_skb+0xac5/0x11b0 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/ipv4/udp.c:967
- udp_sendmsg+0x1ba8/0x2730 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/ipv4/udp.c:1254
- inet_sendmsg+0x99/0xe0 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/ipv4/af_inet.c:819
- sock_sendmsg_nosec mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/socket.c:705 [inline]
- sock_sendmsg+0xcf/0x120 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/socket.c:725
- rxrpc_send_abort_packet+0x45c/0x730 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/rxrpc/output.c:330
- rxrpc_release_calls_on_socket+0x211/0x300 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/rxrpc/call_object.c:606
- rxrpc_release_sock mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/rxrpc/af_rxrpc.c:886 [inline]
- rxrpc_release+0x263/0x5a0 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/rxrpc/af_rxrpc.c:917
- __sock_release+0xcd/0x280 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/socket.c:650
- sock_close+0x18/0x20 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/socket.c:1318
- __fput+0x277/0x9d0 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/fs/file_table.c:317
- task_work_run+0xdd/0x1a0 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/kernel/task_work.c:164
- resume_user_mode_work mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/./include/linux/resume_user_mode.h:49 [inline]
- exit_to_user_mode_loop mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/kernel/entry/common.c:169 [inline]
- exit_to_user_mode_prepare+0x23c/0x250 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/kernel/entry/common.c:201
- __syscall_exit_to_user_mode_work mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/kernel/entry/common.c:283 [inline]
- syscall_exit_to_user_mode+0x19/0x60 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/kernel/entry/common.c:294
- do_syscall_64+0x42/0xb0 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/arch/x86/entry/common.c:86
+ kasan_save_stack+0x1e/0x40 mnt/sdd/author/meerkat/wd-bisector-4/kernel/mm/kasan/common.c:38
+ kasan_set_track+0x21/0x30 mnt/sdd/author/meerkat/wd-bisector-4/kernel/mm/kasan/common.c:45
+ kasan_set_free_info+0x20/0x30 mnt/sdd/author/meerkat/wd-bisector-4/kernel/mm/kasan/generic.c:370
+ ____kasan_slab_free mnt/sdd/author/meerkat/wd-bisector-4/kernel/mm/kasan/common.c:366 [inline]
+ ____kasan_slab_free+0x13d/0x180 mnt/sdd/author/meerkat/wd-bisector-4/kernel/mm/kasan/common.c:328
+ kasan_slab_free mnt/sdd/author/meerkat/wd-bisector-4/kernel/./include/linux/kasan.h:200 [inline]
+ __cache_free mnt/sdd/author/meerkat/wd-bisector-4/kernel/mm/slab.c:3439 [inline]
+ kfree+0x113/0x310 mnt/sdd/author/meerkat/wd-bisector-4/kernel/mm/slab.c:3810
+ nf_conntrack_free+0x100/0x630 mnt/sdd/author/meerkat/wd-bisector-4/kernel/net/netfilter/nf_conntrack_core.c:1662
+ nf_ct_destroy+0x22e/0x3c0 mnt/sdd/author/meerkat/wd-bisector-4/kernel/net/netfilter/nf_conntrack_core.c:645
+ nf_ct_put mnt/sdd/author/meerkat/wd-bisector-4/kernel/./include/net/netfilter/nf_conntrack.h:185 [inline]
+ nf_ct_put mnt/sdd/author/meerkat/wd-bisector-4/kernel/./include/net/netfilter/nf_conntrack.h:182 [inline]
+ __nf_ct_resolve_clash+0x5dc/0x741 mnt/sdd/author/meerkat/wd-bisector-4/kernel/net/netfilter/nf_conntrack_core.c:1009
+ nf_ct_resolve_clash+0x14a/0xa23 mnt/sdd/author/meerkat/wd-bisector-4/kernel/net/netfilter/nf_conntrack_core.c:1132
+ __nf_conntrack_confirm.cold+0x16/0x1a5 mnt/sdd/author/meerkat/wd-bisector-4/kernel/net/netfilter/nf_conntrack_core.c:1266
+ nf_conntrack_confirm mnt/sdd/author/meerkat/wd-bisector-4/kernel/./include/net/netfilter/nf_conntrack_core.h:62 [inline]
+ nf_confirm+0x3ff/0x4b0 mnt/sdd/author/meerkat/wd-bisector-4/kernel/net/netfilter/nf_conntrack_proto.c:154
+ ipv4_confirm+0x183/0x310 mnt/sdd/author/meerkat/wd-bisector-4/kernel/net/netfilter/nf_conntrack_proto.c:182
+ nf_hook_entry_hookfn mnt/sdd/author/meerkat/wd-bisector-4/kernel/./include/linux/netfilter.h:142 [inline]
+ nf_hook_slow+0xc5/0x1f0 mnt/sdd/author/meerkat/wd-bisector-4/kernel/net/netfilter/core.c:620
+ nf_hook+0x1cb/0x5b0 mnt/sdd/author/meerkat/wd-bisector-4/kernel/./include/linux/netfilter.h:262
+ NF_HOOK_COND mnt/sdd/author/meerkat/wd-bisector-4/kernel/./include/linux/netfilter.h:295 [inline]
+ ip_output+0x216/0x310 mnt/sdd/author/meerkat/wd-bisector-4/kernel/net/ipv4/ip_output.c:430
+ dst_output mnt/sdd/author/meerkat/wd-bisector-4/kernel/./include/net/dst.h:451 [inline]
+ ip_local_out mnt/sdd/author/meerkat/wd-bisector-4/kernel/net/ipv4/ip_output.c:126 [inline]
+ ip_send_skb+0xd4/0x260 mnt/sdd/author/meerkat/wd-bisector-4/kernel/net/ipv4/ip_output.c:1571
+ udp_send_skb+0xac5/0x11b0 mnt/sdd/author/meerkat/wd-bisector-4/kernel/net/ipv4/udp.c:967
+ udp_sendmsg+0x1ba8/0x2730 mnt/sdd/author/meerkat/wd-bisector-4/kernel/net/ipv4/udp.c:1254
+ inet_sendmsg+0x99/0xe0 mnt/sdd/author/meerkat/wd-bisector-4/kernel/net/ipv4/af_inet.c:819
+ sock_sendmsg_nosec mnt/sdd/author/meerkat/wd-bisector-4/kernel/net/socket.c:705 [inline]
+ sock_sendmsg+0xcf/0x120 mnt/sdd/author/meerkat/wd-bisector-4/kernel/net/socket.c:725
+ rxrpc_send_abort_packet+0x45c/0x730 mnt/sdd/author/meerkat/wd-bisector-4/kernel/net/rxrpc/output.c:330
+ rxrpc_release_calls_on_socket+0x211/0x300 mnt/sdd/author/meerkat/wd-bisector-4/kernel/net/rxrpc/call_object.c:606
+ rxrpc_release_sock mnt/sdd/author/meerkat/wd-bisector-4/kernel/net/rxrpc/af_rxrpc.c:886 [inline]
+ rxrpc_release+0x263/0x5a0 mnt/sdd/author/meerkat/wd-bisector-4/kernel/net/rxrpc/af_rxrpc.c:917
+ __sock_release+0xcd/0x280 mnt/sdd/author/meerkat/wd-bisector-4/kernel/net/socket.c:650
+ sock_close+0x18/0x20 mnt/sdd/author/meerkat/wd-bisector-4/kernel/net/socket.c:1318
+ __fput+0x277/0x9d0 mnt/sdd/author/meerkat/wd-bisector-4/kernel/fs/file_table.c:317
+ task_work_run+0xdd/0x1a0 mnt/sdd/author/meerkat/wd-bisector-4/kernel/kernel/task_work.c:164
+ resume_user_mode_work mnt/sdd/author/meerkat/wd-bisector-4/kernel/./include/linux/resume_user_mode.h:49 [inline]
+ exit_to_user_mode_loop mnt/sdd/author/meerkat/wd-bisector-4/kernel/kernel/entry/common.c:169 [inline]
+ exit_to_user_mode_prepare+0x23c/0x250 mnt/sdd/author/meerkat/wd-bisector-4/kernel/kernel/entry/common.c:201
+ __syscall_exit_to_user_mode_work mnt/sdd/author/meerkat/wd-bisector-4/kernel/kernel/entry/common.c:283 [inline]
+ syscall_exit_to_user_mode+0x19/0x60 mnt/sdd/author/meerkat/wd-bisector-4/kernel/kernel/entry/common.c:294
+ do_syscall_64+0x42/0xb0 mnt/sdd/author/meerkat/wd-bisector-4/kernel/arch/x86/entry/common.c:86
  entry_SYSCALL_64_after_hwframe+0x44/0xae
 
 The buggy address belongs to the object at ffff88801ac21700
@@ -344,48 +344,48 @@ raw: ffff88801ac21400 ffff88801ac21000 0000000100000008 0000000000000000
 page dumped because: kasan: bad access detected
 page_owner tracks the page as allocated
 page last allocated via order 0, migratetype Unmovable, gfp_mask 0x2420c0(__GFP_IO|__GFP_FS|__GFP_NOWARN|__GFP_COMP|__GFP_THISNODE), pid 2994, tgid 2994 ((md-udevd)), ts 87449186267, free_ts 87444509024
- prep_new_page mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/mm/page_alloc.c:2441 [inline]
- get_page_from_freelist+0x178d/0x3dc0 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/mm/page_alloc.c:4182
- __alloc_pages+0x1b2/0x500 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/mm/page_alloc.c:5408
- __alloc_pages_node mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/./include/linux/gfp.h:587 [inline]
- kmem_getpages mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/mm/slab.c:1378 [inline]
- cache_grow_begin+0x75/0x350 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/mm/slab.c:2584
- cache_alloc_refill+0x27f/0x380 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/mm/slab.c:2957
- ____cache_alloc mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/mm/slab.c:3040 [inline]
- ____cache_alloc mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/mm/slab.c:3023 [inline]
- __do_cache_alloc mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/mm/slab.c:3267 [inline]
- slab_alloc mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/mm/slab.c:3309 [inline]
- __do_kmalloc mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/mm/slab.c:3708 [inline]
- __kmalloc+0x3b3/0x4d0 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/mm/slab.c:3719
- kmalloc_array+0x42/0x70 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/./include/linux/slab.h:621
- check_load_and_stores mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/core/filter.c:915 [inline]
- bpf_check_classic+0x420/0x850 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/core/filter.c:1124
- bpf_prepare_filter mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/core/filter.c:1316 [inline]
- bpf_prog_create_from_user+0x276/0x660 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/core/filter.c:1436
- seccomp_prepare_filter mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/kernel/seccomp.c:668 [inline]
- seccomp_prepare_user_filter mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/kernel/seccomp.c:705 [inline]
- seccomp_set_mode_filter mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/kernel/seccomp.c:1833 [inline]
- do_seccomp+0x388/0x2890 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/kernel/seccomp.c:1953
- do_syscall_x64 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/arch/x86/entry/common.c:50 [inline]
- do_syscall_64+0x35/0xb0 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/arch/x86/entry/common.c:80
+ prep_new_page mnt/sdd/author/meerkat/wd-bisector-4/kernel/mm/page_alloc.c:2441 [inline]
+ get_page_from_freelist+0x178d/0x3dc0 mnt/sdd/author/meerkat/wd-bisector-4/kernel/mm/page_alloc.c:4182
+ __alloc_pages+0x1b2/0x500 mnt/sdd/author/meerkat/wd-bisector-4/kernel/mm/page_alloc.c:5408
+ __alloc_pages_node mnt/sdd/author/meerkat/wd-bisector-4/kernel/./include/linux/gfp.h:587 [inline]
+ kmem_getpages mnt/sdd/author/meerkat/wd-bisector-4/kernel/mm/slab.c:1378 [inline]
+ cache_grow_begin+0x75/0x350 mnt/sdd/author/meerkat/wd-bisector-4/kernel/mm/slab.c:2584
+ cache_alloc_refill+0x27f/0x380 mnt/sdd/author/meerkat/wd-bisector-4/kernel/mm/slab.c:2957
+ ____cache_alloc mnt/sdd/author/meerkat/wd-bisector-4/kernel/mm/slab.c:3040 [inline]
+ ____cache_alloc mnt/sdd/author/meerkat/wd-bisector-4/kernel/mm/slab.c:3023 [inline]
+ __do_cache_alloc mnt/sdd/author/meerkat/wd-bisector-4/kernel/mm/slab.c:3267 [inline]
+ slab_alloc mnt/sdd/author/meerkat/wd-bisector-4/kernel/mm/slab.c:3309 [inline]
+ __do_kmalloc mnt/sdd/author/meerkat/wd-bisector-4/kernel/mm/slab.c:3708 [inline]
+ __kmalloc+0x3b3/0x4d0 mnt/sdd/author/meerkat/wd-bisector-4/kernel/mm/slab.c:3719
+ kmalloc_array+0x42/0x70 mnt/sdd/author/meerkat/wd-bisector-4/kernel/./include/linux/slab.h:621
+ check_load_and_stores mnt/sdd/author/meerkat/wd-bisector-4/kernel/net/core/filter.c:915 [inline]
+ bpf_check_classic+0x420/0x850 mnt/sdd/author/meerkat/wd-bisector-4/kernel/net/core/filter.c:1124
+ bpf_prepare_filter mnt/sdd/author/meerkat/wd-bisector-4/kernel/net/core/filter.c:1316 [inline]
+ bpf_prog_create_from_user+0x276/0x660 mnt/sdd/author/meerkat/wd-bisector-4/kernel/net/core/filter.c:1436
+ seccomp_prepare_filter mnt/sdd/author/meerkat/wd-bisector-4/kernel/kernel/seccomp.c:668 [inline]
+ seccomp_prepare_user_filter mnt/sdd/author/meerkat/wd-bisector-4/kernel/kernel/seccomp.c:705 [inline]
+ seccomp_set_mode_filter mnt/sdd/author/meerkat/wd-bisector-4/kernel/kernel/seccomp.c:1833 [inline]
+ do_seccomp+0x388/0x2890 mnt/sdd/author/meerkat/wd-bisector-4/kernel/kernel/seccomp.c:1953
+ do_syscall_x64 mnt/sdd/author/meerkat/wd-bisector-4/kernel/arch/x86/entry/common.c:50 [inline]
+ do_syscall_64+0x35/0xb0 mnt/sdd/author/meerkat/wd-bisector-4/kernel/arch/x86/entry/common.c:80
  entry_SYSCALL_64_after_hwframe+0x44/0xae
 page last free stack trace:
- reset_page_owner mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/./include/linux/page_owner.h:24 [inline]
- free_pages_prepare mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/mm/page_alloc.c:1356 [inline]
- free_pcp_prepare+0x549/0xd20 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/mm/page_alloc.c:1406
- free_unref_page_prepare mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/mm/page_alloc.c:3328 [inline]
- free_unref_page+0x19/0x6a0 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/mm/page_alloc.c:3423
- __put_single_page mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/mm/swap.c:106 [inline]
- __put_page+0x145/0x280 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/mm/swap.c:129
- folio_put mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/./include/linux/mm.h:1200 [inline]
- put_page mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/./include/linux/mm.h:1233 [inline]
- free_page_and_swap_cache+0x253/0x2d0 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/mm/swap_state.c:305
- __tlb_remove_table mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/./arch/x86/include/asm/tlb.h:37 [inline]
- __tlb_remove_table_free mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/mm/mmu_gather.c:102 [inline]
- tlb_remove_table_rcu+0x85/0xe0 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/mm/mmu_gather.c:157
- rcu_do_batch mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/kernel/rcu/tree.c:2535 [inline]
- rcu_core+0x7ad/0x1870 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/kernel/rcu/tree.c:2786
- __do_softirq+0x29b/0x9c2 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/kernel/softirq.c:558
+ reset_page_owner mnt/sdd/author/meerkat/wd-bisector-4/kernel/./include/linux/page_owner.h:24 [inline]
+ free_pages_prepare mnt/sdd/author/meerkat/wd-bisector-4/kernel/mm/page_alloc.c:1356 [inline]
+ free_pcp_prepare+0x549/0xd20 mnt/sdd/author/meerkat/wd-bisector-4/kernel/mm/page_alloc.c:1406
+ free_unref_page_prepare mnt/sdd/author/meerkat/wd-bisector-4/kernel/mm/page_alloc.c:3328 [inline]
+ free_unref_page+0x19/0x6a0 mnt/sdd/author/meerkat/wd-bisector-4/kernel/mm/page_alloc.c:3423
+ __put_single_page mnt/sdd/author/meerkat/wd-bisector-4/kernel/mm/swap.c:106 [inline]
+ __put_page+0x145/0x280 mnt/sdd/author/meerkat/wd-bisector-4/kernel/mm/swap.c:129
+ folio_put mnt/sdd/author/meerkat/wd-bisector-4/kernel/./include/linux/mm.h:1200 [inline]
+ put_page mnt/sdd/author/meerkat/wd-bisector-4/kernel/./include/linux/mm.h:1233 [inline]
+ free_page_and_swap_cache+0x253/0x2d0 mnt/sdd/author/meerkat/wd-bisector-4/kernel/mm/swap_state.c:305
+ __tlb_remove_table mnt/sdd/author/meerkat/wd-bisector-4/kernel/./arch/x86/include/asm/tlb.h:37 [inline]
+ __tlb_remove_table_free mnt/sdd/author/meerkat/wd-bisector-4/kernel/mm/mmu_gather.c:102 [inline]
+ tlb_remove_table_rcu+0x85/0xe0 mnt/sdd/author/meerkat/wd-bisector-4/kernel/mm/mmu_gather.c:157
+ rcu_do_batch mnt/sdd/author/meerkat/wd-bisector-4/kernel/kernel/rcu/tree.c:2535 [inline]
+ rcu_core+0x7ad/0x1870 mnt/sdd/author/meerkat/wd-bisector-4/kernel/kernel/rcu/tree.c:2786
+ __do_softirq+0x29b/0x9c2 mnt/sdd/author/meerkat/wd-bisector-4/kernel/kernel/softirq.c:558
 
 Memory state around the buggy address:
  ffff88801ac21600: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb

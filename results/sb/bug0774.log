@@ -205,7 +205,7 @@ general protection fault, probably for non-canonical address 0xdffffc000000001d:
 KASAN: null-ptr-deref in range [0x00000000000000e8-0x00000000000000ef]
 CPU: 0 PID: 15438 Comm: syz-executor.0 Not tainted 6.6.0-rc4-syzkaller #0
 Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.13.0-1ubuntu1.1 04/01/2014
-RIP: 0010:__lock_acquire+0xe2e/0x5de0 mnt/sdd/author/SyzInspector/wd-bisector-5/kernel/kernel/locking/lockdep.c:5004
+RIP: 0010:__lock_acquire+0xe2e/0x5de0 mnt/sdd/author/meerkat/wd-bisector-5/kernel/kernel/locking/lockdep.c:5004
 Code: 00 00 3b 05 54 b1 81 0f 0f 87 d9 08 00 00 41 bf 01 00 00 00 e9 85 00 00 00 48 b8 00 00 00 00 00 fc ff df 4c 89 ea 48 c1 ea 03 <80> 3c 02 00 0f 85 dd 36 00 00 49 81 7d 00 a0 19 40 90 0f 84 a2 f2
 RSP: 0018:ffffc900027ef780 EFLAGS: 00010006
 RAX: dffffc0000000000 RBX: 1ffff920004fdf21 RCX: 0000000000000000
@@ -220,24 +220,24 @@ DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
 DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
 Call Trace:
  <TASK>
- lock_acquire mnt/sdd/author/SyzInspector/wd-bisector-5/kernel/kernel/locking/lockdep.c:5753 [inline]
- lock_acquire+0x1b1/0x520 mnt/sdd/author/SyzInspector/wd-bisector-5/kernel/kernel/locking/lockdep.c:5718
- down_write+0x92/0x200 mnt/sdd/author/SyzInspector/wd-bisector-5/kernel/kernel/locking/rwsem.c:1573
- hugetlb_vma_lock_write mnt/sdd/author/SyzInspector/wd-bisector-5/kernel/mm/hugetlb.c:300 [inline]
- hugetlb_vma_lock_write+0xae/0x100 mnt/sdd/author/SyzInspector/wd-bisector-5/kernel/mm/hugetlb.c:291
- __hugetlb_zap_begin+0x1eb/0x2b0 mnt/sdd/author/SyzInspector/wd-bisector-5/kernel/mm/hugetlb.c:5447
- hugetlb_zap_begin mnt/sdd/author/SyzInspector/wd-bisector-5/kernel/./include/linux/hugetlb.h:258 [inline]
- unmap_vmas+0x2b3/0x430 mnt/sdd/author/SyzInspector/wd-bisector-5/kernel/mm/memory.c:1733
- exit_mmap+0x1a0/0xa60 mnt/sdd/author/SyzInspector/wd-bisector-5/kernel/mm/mmap.c:3230
- __mmput+0x128/0x4c0 mnt/sdd/author/SyzInspector/wd-bisector-5/kernel/kernel/fork.c:1349
- mmput+0x60/0x70 mnt/sdd/author/SyzInspector/wd-bisector-5/kernel/kernel/fork.c:1371
- exit_mm mnt/sdd/author/SyzInspector/wd-bisector-5/kernel/kernel/exit.c:567 [inline]
- do_exit+0x99d/0x2990 mnt/sdd/author/SyzInspector/wd-bisector-5/kernel/kernel/exit.c:861
- __do_sys_exit mnt/sdd/author/SyzInspector/wd-bisector-5/kernel/kernel/exit.c:991 [inline]
- __se_sys_exit mnt/sdd/author/SyzInspector/wd-bisector-5/kernel/kernel/exit.c:989 [inline]
- __x64_sys_exit+0x42/0x50 mnt/sdd/author/SyzInspector/wd-bisector-5/kernel/kernel/exit.c:989
- do_syscall_x64 mnt/sdd/author/SyzInspector/wd-bisector-5/kernel/arch/x86/entry/common.c:50 [inline]
- do_syscall_64+0x39/0xb0 mnt/sdd/author/SyzInspector/wd-bisector-5/kernel/arch/x86/entry/common.c:80
+ lock_acquire mnt/sdd/author/meerkat/wd-bisector-5/kernel/kernel/locking/lockdep.c:5753 [inline]
+ lock_acquire+0x1b1/0x520 mnt/sdd/author/meerkat/wd-bisector-5/kernel/kernel/locking/lockdep.c:5718
+ down_write+0x92/0x200 mnt/sdd/author/meerkat/wd-bisector-5/kernel/kernel/locking/rwsem.c:1573
+ hugetlb_vma_lock_write mnt/sdd/author/meerkat/wd-bisector-5/kernel/mm/hugetlb.c:300 [inline]
+ hugetlb_vma_lock_write+0xae/0x100 mnt/sdd/author/meerkat/wd-bisector-5/kernel/mm/hugetlb.c:291
+ __hugetlb_zap_begin+0x1eb/0x2b0 mnt/sdd/author/meerkat/wd-bisector-5/kernel/mm/hugetlb.c:5447
+ hugetlb_zap_begin mnt/sdd/author/meerkat/wd-bisector-5/kernel/./include/linux/hugetlb.h:258 [inline]
+ unmap_vmas+0x2b3/0x430 mnt/sdd/author/meerkat/wd-bisector-5/kernel/mm/memory.c:1733
+ exit_mmap+0x1a0/0xa60 mnt/sdd/author/meerkat/wd-bisector-5/kernel/mm/mmap.c:3230
+ __mmput+0x128/0x4c0 mnt/sdd/author/meerkat/wd-bisector-5/kernel/kernel/fork.c:1349
+ mmput+0x60/0x70 mnt/sdd/author/meerkat/wd-bisector-5/kernel/kernel/fork.c:1371
+ exit_mm mnt/sdd/author/meerkat/wd-bisector-5/kernel/kernel/exit.c:567 [inline]
+ do_exit+0x99d/0x2990 mnt/sdd/author/meerkat/wd-bisector-5/kernel/kernel/exit.c:861
+ __do_sys_exit mnt/sdd/author/meerkat/wd-bisector-5/kernel/kernel/exit.c:991 [inline]
+ __se_sys_exit mnt/sdd/author/meerkat/wd-bisector-5/kernel/kernel/exit.c:989 [inline]
+ __x64_sys_exit+0x42/0x50 mnt/sdd/author/meerkat/wd-bisector-5/kernel/kernel/exit.c:989
+ do_syscall_x64 mnt/sdd/author/meerkat/wd-bisector-5/kernel/arch/x86/entry/common.c:50 [inline]
+ do_syscall_64+0x39/0xb0 mnt/sdd/author/meerkat/wd-bisector-5/kernel/arch/x86/entry/common.c:80
  entry_SYSCALL_64_after_hwframe+0x63/0xcd
 RIP: 0033:0x7fd6f9691ced
 Code: Unable to access opcode bytes at 0x7fd6f9691cc3.
@@ -250,7 +250,7 @@ R13: 00007fff6d71c6ef R14: 00007fff6d71c880 R15: 00007fd6fa3dcd80
  </TASK>
 Modules linked in:
 ---[ end trace 0000000000000000 ]---
-RIP: 0010:__lock_acquire+0xe2e/0x5de0 mnt/sdd/author/SyzInspector/wd-bisector-5/kernel/kernel/locking/lockdep.c:5004
+RIP: 0010:__lock_acquire+0xe2e/0x5de0 mnt/sdd/author/meerkat/wd-bisector-5/kernel/kernel/locking/lockdep.c:5004
 Code: 00 00 3b 05 54 b1 81 0f 0f 87 d9 08 00 00 41 bf 01 00 00 00 e9 85 00 00 00 48 b8 00 00 00 00 00 fc ff df 4c 89 ea 48 c1 ea 03 <80> 3c 02 00 0f 85 dd 36 00 00 49 81 7d 00 a0 19 40 90 0f 84 a2 f2
 RSP: 0018:ffffc900027ef780 EFLAGS: 00010006
 RAX: dffffc0000000000 RBX: 1ffff920004fdf21 RCX: 0000000000000000

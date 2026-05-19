@@ -185,8 +185,8 @@ kernel BUG at include/linux/skbuff.h:2587!
 invalid opcode: 0000 [#1] PREEMPT SMP KASAN
 CPU: 0 PID: 7495 Comm: syz-executor.0 Not tainted 5.18.0-rc3-syzkaller #0
 Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.13.0-1ubuntu1.1 04/01/2014
-RIP: 0010:__skb_pull mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/./include/linux/skbuff.h:2587 [inline]
-RIP: 0010:skb_mac_gso_segment+0x48f/0x530 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/core/gro.c:136
+RIP: 0010:__skb_pull mnt/sdd/author/meerkat/wd-bisector-4/kernel/./include/linux/skbuff.h:2587 [inline]
+RIP: 0010:skb_mac_gso_segment+0x48f/0x530 mnt/sdd/author/meerkat/wd-bisector-4/kernel/net/core/gro.c:136
 Code: 00 48 c7 c7 20 90 d2 8a c6 05 52 05 4c 06 01 e8 c2 bc cf 01 e9 2f fd ff ff 49 c7 c4 ea ff ff ff e9 f1 fe ff ff e8 01 c3 20 fa <0f> 0b 48 89 df e8 57 4a 6c fa e9 7f fd ff ff e8 6d 4a 6c fa e9 48
 RSP: 0018:ffffc9000bdcf4b8 EFLAGS: 00010293
 RAX: 0000000000000000 RBX: 0000000000000012 RCX: 0000000000000000
@@ -201,22 +201,22 @@ DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
 DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
 Call Trace:
  <TASK>
- __skb_gso_segment+0x32c/0x6b0 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/core/dev.c:3359
- skb_gso_segment mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/./include/linux/netdevice.h:4690 [inline]
- validate_xmit_skb+0x73b/0xf90 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/core/dev.c:3618
- validate_xmit_skb_list+0xbc/0x120 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/core/dev.c:3668
- sch_direct_xmit+0x3d1/0xbe0 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/sched/sch_generic.c:327
- __dev_xmit_skb mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/core/dev.c:3764 [inline]
- __dev_queue_xmit+0x1572/0x3b10 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/core/dev.c:4173
- packet_snd mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/packet/af_packet.c:3071 [inline]
- packet_sendmsg+0x21c3/0x5550 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/packet/af_packet.c:3102
- sock_sendmsg_nosec mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/socket.c:705 [inline]
- sock_sendmsg+0xcf/0x120 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/socket.c:725
- ____sys_sendmsg+0x6e2/0x800 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/socket.c:2413
- ___sys_sendmsg+0xf3/0x170 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/socket.c:2467
- __sys_sendmsg+0xe5/0x1b0 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/socket.c:2496
- do_syscall_x64 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/arch/x86/entry/common.c:50 [inline]
- do_syscall_64+0x35/0xb0 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/arch/x86/entry/common.c:80
+ __skb_gso_segment+0x32c/0x6b0 mnt/sdd/author/meerkat/wd-bisector-4/kernel/net/core/dev.c:3359
+ skb_gso_segment mnt/sdd/author/meerkat/wd-bisector-4/kernel/./include/linux/netdevice.h:4690 [inline]
+ validate_xmit_skb+0x73b/0xf90 mnt/sdd/author/meerkat/wd-bisector-4/kernel/net/core/dev.c:3618
+ validate_xmit_skb_list+0xbc/0x120 mnt/sdd/author/meerkat/wd-bisector-4/kernel/net/core/dev.c:3668
+ sch_direct_xmit+0x3d1/0xbe0 mnt/sdd/author/meerkat/wd-bisector-4/kernel/net/sched/sch_generic.c:327
+ __dev_xmit_skb mnt/sdd/author/meerkat/wd-bisector-4/kernel/net/core/dev.c:3764 [inline]
+ __dev_queue_xmit+0x1572/0x3b10 mnt/sdd/author/meerkat/wd-bisector-4/kernel/net/core/dev.c:4173
+ packet_snd mnt/sdd/author/meerkat/wd-bisector-4/kernel/net/packet/af_packet.c:3071 [inline]
+ packet_sendmsg+0x21c3/0x5550 mnt/sdd/author/meerkat/wd-bisector-4/kernel/net/packet/af_packet.c:3102
+ sock_sendmsg_nosec mnt/sdd/author/meerkat/wd-bisector-4/kernel/net/socket.c:705 [inline]
+ sock_sendmsg+0xcf/0x120 mnt/sdd/author/meerkat/wd-bisector-4/kernel/net/socket.c:725
+ ____sys_sendmsg+0x6e2/0x800 mnt/sdd/author/meerkat/wd-bisector-4/kernel/net/socket.c:2413
+ ___sys_sendmsg+0xf3/0x170 mnt/sdd/author/meerkat/wd-bisector-4/kernel/net/socket.c:2467
+ __sys_sendmsg+0xe5/0x1b0 mnt/sdd/author/meerkat/wd-bisector-4/kernel/net/socket.c:2496
+ do_syscall_x64 mnt/sdd/author/meerkat/wd-bisector-4/kernel/arch/x86/entry/common.c:50 [inline]
+ do_syscall_64+0x35/0xb0 mnt/sdd/author/meerkat/wd-bisector-4/kernel/arch/x86/entry/common.c:80
  entry_SYSCALL_64_after_hwframe+0x44/0xae
 RIP: 0033:0x7fb62aa91ced
 Code: c3 e8 17 32 00 00 0f 1f 80 00 00 00 00 f3 0f 1e fa 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 b8 ff ff ff f7 d8 64 89 01 48
@@ -229,8 +229,8 @@ R13: 00007ffcc2df4c3f R14: 00007ffcc2df4dd0 R15: 00007fb62b88bd80
  </TASK>
 Modules linked in:
 ---[ end trace 0000000000000000 ]---
-RIP: 0010:__skb_pull mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/./include/linux/skbuff.h:2587 [inline]
-RIP: 0010:skb_mac_gso_segment+0x48f/0x530 mnt/sdd/author/SyzInspector/wd-bisector-4/kernel/net/core/gro.c:136
+RIP: 0010:__skb_pull mnt/sdd/author/meerkat/wd-bisector-4/kernel/./include/linux/skbuff.h:2587 [inline]
+RIP: 0010:skb_mac_gso_segment+0x48f/0x530 mnt/sdd/author/meerkat/wd-bisector-4/kernel/net/core/gro.c:136
 Code: 00 48 c7 c7 20 90 d2 8a c6 05 52 05 4c 06 01 e8 c2 bc cf 01 e9 2f fd ff ff 49 c7 c4 ea ff ff ff e9 f1 fe ff ff e8 01 c3 20 fa <0f> 0b 48 89 df e8 57 4a 6c fa e9 7f fd ff ff e8 6d 4a 6c fa e9 48
 RSP: 0018:ffffc9000bdcf4b8 EFLAGS: 00010293
 RAX: 0000000000000000 RBX: 0000000000000012 RCX: 0000000000000000

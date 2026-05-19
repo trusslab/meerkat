@@ -99,15 +99,3 @@ kernel=${k}/arch/x86/boot/bzImage
 
 # Raw from Syzkaller:
 qemu-system-x86_64 -m 4096 -smp 2,sockets=2,cores=1 -display none -serial stdio -no-reboot -enable-kvm -cpu host,migratable=off -net nic,model=e1000 -net user,host=10.0.2.10,hostfwd=tcp::${port}-:22 -hda ${image} -snapshot -kernel ${kernel} -append "${crashargs}"
-
-# qemu runs on port 12000
-# ssh -i ${LOOM_IMAGE}bullseye/bullseye.id_rsa -p 12000 -o "StrictHostKeyChecking no" root@localhost
-
-# To reproduce a crash using a syz reproducer:
-# Copy syz-execprog, syz-executor, and the POC into the VM
-# scp -P 12000 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i ${LOOM_IMAGE}bullseye/bullseye.id_rsa syzkaller/bin/linux_amd64/syz-execprog syzkaller/bin/linux_amd64/syz-executor bugs/#/repro.syz root@localhost:/root
-# Inside the VM, run syz-execprog
-# ./syz-execprog -executor=/root/syz-executor -threaded -collide -repeat=0 -procs=8 -slowdown=1 -disable=close_fds repro.syz
-
-# My current copy:
-# scp -P 12000 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i ${LOOM_IMAGE}bullseye/bullseye.id_rsa local/files/ root@localhost:/root
