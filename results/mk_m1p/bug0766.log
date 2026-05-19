@@ -1,0 +1,340 @@
+./bin/meerkat -i 1 -c /home/author/meerkat/wd-meerkat-1/meerkat.cfg -a a39b6ac3781d46ba18193c9dbb2110f31e9bffe9 -F ff-test,stateful-corpus,poc-test,ff-no-find-backup
+Bisecting:          general protection fault in skb_segment
+Syzbot Link:        https://syzkaller.appspot.com/bug?id=c8ba9c61f0685028ec6cb84d0b6185133a57384d
+Working Name:       bug0766
+
+Aliases:
+    general protection fault in skb_segment
+
+Anchor Commit:      a39b6ac3781d46ba18193c9dbb2110f31e9bffe9
+Repository:         https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
+Branch:             master
+Arch:               amd64
+
+Meerkat:            /home/author/meerkat/
+Version:            1.2.0
+Kernel:             /home/author/meerkat/wd-meerkat-1/kernel/
+Syzkaller:          /home/author/meerkat/syzkaller/
+Compilers:          /home/author/meerkat/compilers/
+Compiler:           gcc (Ubuntu 12.3.0-1ubuntu1~22.04.3) 12.3.0
+Linker:             GNU ld (GNU Binutils for Ubuntu) 2.38
+Ccache:             ccache version 4.5.1
+Image:              /home/author/meerkat/image/stretch/stretch.img
+Image Key:          /home/author/meerkat/image/stretch/stretch.id_rsa
+
+Workdir:            /home/author/meerkat/wd-meerkat-1/
+Kconfig:            /home/author/meerkat/wd-meerkat-1/config-bug0766.txt
+Reproducers: (1)    /home/author/meerkat/wd-meerkat-1/reproducers/
+Syzkaller Workdir:  /home/author/meerkat/wd-meerkat-1/wd-kaller/
+Log Directory:      /home/author/meerkat/wd-meerkat-1/log/
+
+Syscalls: (7)       ["ioctl$sock_SIOCGIFINDEX", "sendto$packet", "setsockopt$packet_int", "socket$packet", "socket", "ioctl$F2FS_IOC_START_ATOMIC_WRITE", "openat$selinux_enforce"]
+VM Count:           8
+CPU Count:          2
+Procs:              16
+Memory:             4096
+Make Procs:         16
+Max Time:           10
+Max Attempts:       1
+
+==== Anchor Commit ====
+
+2026-05-16 13:40:16
+Session:   1
+Kernel:    2023-12-10 - a39b6ac3781d46ba18193c9dbb2110f31e9bffe9
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    3  general protection fault in skb_segment (4) (has report)
+Attempt 2: (RETRY)
+    Time  Bug Name
+***    2  general protection fault in skb_segment (2) (has report)
+Attempt 3: (RETRY)
+    Time  Bug Name
+***    2  general protection fault in skb_segment (has report)
+The bug was found.
+
+New Max Time: 10
+
+==== Major Release Search ====
+14 Releases
+
+2026-05-16 14:05:19
+Session:   2
+Kernel:    2023-10-29 - ffc253263a1375a65fa6c9f62a893e9767fbebfa (v6.6)
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    2  general protection fault in skb_segment (has report)
+Running syz-repro.
+New PoC saved at /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0766-0.prog
+Primary PoC:     /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0766-0.prog
+Run Time:        0h12m0s
+The bug was found.
+About 13 releases remaining
+
+2026-05-16 14:36:19
+Session:   3
+Kernel:    2023-08-27 - 2dde18cd1d8fac735875f2e4987f11817cc0bc2c (v6.5)
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    2  general protection fault in skb_segment (4) (has report)
+The bug was found.
+About 12 releases remaining
+
+2026-05-16 14:55:05
+Session:   4
+Kernel:    2023-06-25 - 6995e2de6891c724bfeb2db33d7b87775f913ad1 (v6.4)
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    2  general protection fault in skb_segment (3) (has report)
+The bug was found.
+About 11 releases remaining
+
+2026-05-16 15:15:02
+Session:   5
+Kernel:    2023-02-19 - c9c3395d5e3dcc6daee66c6908354d47bf98cb0c (v6.2)
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  INFO: rcu detected stall in corrupted
+***    2  general protection fault in skb_segment (4) (has report)
+Running syz-repro.
+New PoC saved at /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0766-1.prog
+Primary PoC:     /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0766-1.prog
+Run Time:        0h10m0s
+The bug was found.
+About 10 releases remaining
+
+2026-05-16 15:45:25
+Session:   6
+Kernel:    2022-10-02 - 4fe89d07dcc2804c8b562f6c7896a45643d34b2f (v6.0)
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    2  general protection fault in skb_segment (4) (has report)
+The bug was found.
+About 9 releases remaining
+
+2026-05-16 16:04:46
+Session:   7
+Kernel:    2022-05-22 - 4b0986a3613c92f4ec1bdc7f60ec66fea135991f (v5.18)
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 8 releases remaining
+
+==== Kernel Bisection ====
+32984 Linux commits
+
+2026-05-16 16:30:53
+Session:   8
+Kernel:    2022-08-01 - 0fac198def2b41138850867b6aa92044c76ff802
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    2  general protection fault in skb_segment (2) (has report)
+The bug was found.
+About 16480 commits remaining
+
+2026-05-16 16:49:23
+Session:   9
+Kernel:    2022-05-26 - c011dd537ffe47462051930413fed07dbdc80313
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  WARNING in ipgre_xmit (7) (has report)
+***    2  general protection fault in skb_segment (has report)
+Running syz-repro.
+New PoC saved at /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0766-0.prog
+Primary PoC:     /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0766-0.prog
+Run Time:        0h8m0s
+The bug was found.
+About 7906 commits remaining
+
+2026-05-16 17:15:16
+Session:   10
+Kernel:    2022-05-25 - 7e062cda7d90543ac8c7700fc7c5527d0c0f22ad
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  WARNING in ipgre_xmit (7) (has report)
+***    2  general protection fault in skb_segment (has report)
+The bug was found.
+About 4944 commits remaining
+
+2026-05-16 17:32:59
+Session:   11
+Kernel:    2022-05-24 - 3842007b1a33589d57f67eac479b132b77767514
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 2540 commits remaining
+
+2026-05-16 17:58:51
+Session:   12
+Kernel:    2022-05-10 - 53a332f222c015cb82349fd4f6b58cb14f574e8d
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    2  general protection fault in skb_segment (3) (has report)
+The bug was found.
+About 1268 commits remaining
+
+2026-05-16 18:16:43
+Session:   13
+Kernel:    2022-04-27 - 50c6afabfd2ae91a4ff0e2feb14fe702b0688ec5
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    2  general protection fault in skb_segment (2) (has report)
+Running syz-repro.
+New PoC saved at /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0766-1.prog
+Primary PoC:     /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0766-1.prog
+Run Time:        0h8m0s
+The bug was found.
+About 676 commits remaining
+
+2026-05-16 18:42:35
+Session:   14
+Kernel:    2022-04-13 - 7d9dbdfbfdc5e52131bea94a7318ee35b15a5f19
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 1077 commits remaining
+
+2026-05-16 19:08:28
+Session:   15
+Kernel:    2022-04-22 - fb799dd49a25625db05af51dd141371f6f64d3d1
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       7  WARNING: suspicious RCU usage in ip6_pkt_drop (2) (has report)
+       8  WARNING: suspicious RCU usage in ip6_pkt_drop (2) (has report)
+The bug was not found.
+About 170 commits remaining
+
+2026-05-16 19:29:30
+Session:   16
+Kernel:    2022-04-26 - 11d5daa89254ba2233d422777d52dbf24666b280
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       7  WARNING: suspicious RCU usage in ip6_pkt_drop (has report)
+The bug was not found.
+About 1167 commits remaining
+
+2026-05-16 19:50:41
+Session:   17
+Kernel:    2022-04-25 - c5794097b269f15961ed78f7f27b50e51766dec9
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       6  WARNING: suspicious RCU usage in ip6_pkt_drop (2) (has report)
+       9  WARNING: suspicious RCU usage in ip6_pkt_drop (has report)
+The bug was not found.
+About 128 commits remaining
+
+2026-05-16 20:08:22
+Session:   18
+Kernel:    2022-04-27 - 124de27101ffec33a1eb6ccf0eff89a1a9b999a8
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    2  general protection fault in skb_segment (2) (has report)
+The bug was found.
+About 22 commits remaining
+
+2026-05-16 20:21:08
+Session:   19
+Kernel:    2022-04-26 - c706b2b5ed74d30436b85cbd8e63e969f6b5873a
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    2  general protection fault in skb_segment (has report)
+The bug was found.
+About 11 commits remaining
+
+2026-05-16 20:30:11
+Session:   20
+Kernel:    2022-04-26 - de6dd626d7082eda383ec77a5e06093c82122d10
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 6 commits remaining
+
+2026-05-16 20:47:08
+Session:   21
+Kernel:    2022-04-26 - 561215482cc69d1c758944d4463b3d5d96d37bd1
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    2  general protection fault in skb_segment (2) (has report)
+Running syz-repro.
+New PoC saved at /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0766-0.prog
+Primary PoC:     /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0766-0.prog
+Run Time:        0h10m0s
+The bug was found.
+About 3 commits remaining
+
+2026-05-16 21:06:17
+Session:   22
+Kernel:    2022-04-26 - dfed913e8b55a0c2c4906f1242fd38fd9a116e49
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    2  general protection fault in skb_segment (2) (has report)
+The bug was found.
+About 2 commits remaining
+
+==== Partial Result: Focused Fuzzing ====
+Reproducer:           /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0766-0.prog
+Bisection Result:     2022-04-26 - dfed913e8b55a0c2c4906f1242fd38fd9a116e49
+Bisected Commit Name: net/af_packet: add VLAN support for AF_PACKET SOCK_RAW GSO
+Stage Time:           7h35m4s
+Run Time:             7h35m5s
+=========================================
+
+==== Anchor Commit ====
+
+2026-05-16 21:15:20
+Session:   23
+Kernel:    2022-04-26 - de6dd626d7082eda383ec77a5e06093c82122d10
+Compiler:  ccache gcc
+PoC:       /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0766-0.prog
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+
+Failure: This bug cannot be found at the anchor commit.
+
+====================================================================================================================================================
+Bug Name:             general protection fault in skb_segment
+Bug ID:               bug0766
+Bug Link:             https://syzkaller.appspot.com/bug?id=c8ba9c61f0685028ec6cb84d0b6185133a57384d
+Bisection Result:     2022-04-26 - dfed913e8b55a0c2c4906f1242fd38fd9a116e49
+Bisected Commit Name: net/af_packet: add VLAN support for AF_PACKET SOCK_RAW GSO
+Run Time:             7h49m37s
+
+Anchor Commit:        2023-12-10 - a39b6ac3781d46ba18193c9dbb2110f31e9bffe9
+Bisection Result:     2022-04-26 - dfed913e8b55a0c2c4906f1242fd38fd9a116e49

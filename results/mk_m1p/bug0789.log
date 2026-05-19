@@ -1,0 +1,328 @@
+./bin/meerkat -i 1 -c /home/author/meerkat/wd-meerkat-1/meerkat.cfg -a 8ed710da2873c2aeb3bb805864a699affaf1d03b -F ff-test,stateful-corpus,poc-test,ff-no-find-backup
+Bisecting:          KASAN: slab-out-of-bounds Read in ntfs_listxattr
+Syzbot Link:        https://syzkaller.appspot.com/bug?extid=9fcea5ef6dc4dc72d334
+Working Name:       bug0789
+
+Aliases:
+    KASAN: slab-out-of-bounds Read in ntfs_listxattr
+
+Anchor Commit:      8ed710da2873c2aeb3bb805864a699affaf1d03b
+Repository:         https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
+Branch:             master
+Arch:               amd64
+
+Meerkat:            /home/author/meerkat/
+Version:            1.2.0
+Kernel:             /home/author/meerkat/wd-meerkat-1/kernel/
+Syzkaller:          /home/author/meerkat/syzkaller/
+Compilers:          /home/author/meerkat/compilers/
+Compiler:           gcc (Ubuntu 12.3.0-1ubuntu1~22.04.3) 12.3.0
+Linker:             GNU ld (GNU Binutils for Ubuntu) 2.38
+Ccache:             ccache version 4.5.1
+Image:              /home/author/meerkat/image/stretch/stretch.img
+Image Key:          /home/author/meerkat/image/stretch/stretch.id_rsa
+
+Workdir:            /home/author/meerkat/wd-meerkat-1/
+Kconfig:            /home/author/meerkat/wd-meerkat-1/config-bug0789.txt
+Reproducers: (1)    /home/author/meerkat/wd-meerkat-1/reproducers/
+Primary PoC:        /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0789-2.prog
+Syzkaller Workdir:  /home/author/meerkat/wd-meerkat-1/wd-kaller/
+Log Directory:      /home/author/meerkat/wd-meerkat-1/log/
+
+Syscalls: (8)       ["llistxattr", "syz_mount_image$ntfs3", "open$dir", "getuid", "setgid", "getgid", "ioctl$F2FS_IOC_START_ATOMIC_WRITE", "openat$selinux_enforce"]
+VM Count:           8
+CPU Count:          2
+Procs:              16
+Memory:             4096
+Make Procs:         16
+Max Time:           10
+Max Attempts:       1
+
+==== Anchor Commit ====
+
+2026-05-18 15:40:42
+Session:   1
+Kernel:    2022-12-06 - 8ed710da2873c2aeb3bb805864a699affaf1d03b
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    2  KASAN: slab-out-of-bounds Read in ntfs_listxattr (4) (has report)
+Attempt 2: (RETRY)
+    Time  Bug Name
+***    3  KASAN: slab-out-of-bounds Read in ntfs_listxattr (4) (has report)
+Attempt 3: (RETRY)
+    Time  Bug Name
+       2  INFO: rcu detected stall in corrupted
+***    2  KASAN: slab-out-of-bounds Read in ntfs_listxattr (4) (has report)
+The bug was found.
+
+New Max Time: 10
+
+==== Major Release Search ====
+12 Releases
+
+2026-05-18 16:03:49
+Session:   2
+Kernel:    2022-10-02 - 4fe89d07dcc2804c8b562f6c7896a45643d34b2f (v6.0)
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    2  KASAN: slab-out-of-bounds Read in ntfs_listxattr (4) (has report)
+Running syz-repro.
+New PoC saved at /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0789-0.prog
+Primary PoC:     /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0789-0.prog
+Run Time:        0h4m0s
+The bug was found.
+About 11 releases remaining
+
+2026-05-18 16:25:22
+Session:   3
+Kernel:    2022-07-31 - 3d7cb6b04c3f3115719235cc6866b10326de34cd (v5.19)
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    2  KASAN: slab-out-of-bounds Read in ntfs_listxattr (4) (has report)
+The bug was found.
+About 10 releases remaining
+
+2026-05-18 16:42:18
+Session:   4
+Kernel:    2022-05-22 - 4b0986a3613c92f4ec1bdc7f60ec66fea135991f (v5.18)
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    2  KASAN: slab-out-of-bounds Read in ntfs_listxattr (3) (has report)
+The bug was found.
+About 9 releases remaining
+
+2026-05-18 16:58:15
+Session:   5
+Kernel:    2022-01-09 - df0cc57e057f18e44dac8e6c18aba47ab53202f9 (v5.16)
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    2  KASAN: slab-out-of-bounds Read in ntfs_listxattr (2) (has report)
+Running syz-repro.
+New PoC saved at /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0789-1.prog
+Primary PoC:     /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0789-1.prog
+Run Time:        0h4m0s
+The bug was found.
+About 8 releases remaining
+
+2026-05-18 17:17:50
+Session:   6
+Kernel:    2021-08-29 - 7d2a07b769330c34b4deabeed939325c77a7ec2f (v5.14)
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 7 releases remaining
+
+==== Kernel Bisection ====
+28858 Linux commits
+
+2026-05-18 17:40:26
+Session:   7
+Kernel:    2021-10-28 - 970eae15600a883e4ad27dd0757b18871cc983ab
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    2  KASAN: slab-out-of-bounds Read in ntfs_listxattr (3) (has report)
+The bug was found.
+About 14408 commits remaining
+
+2026-05-18 17:55:08
+Session:   8
+Kernel:    2021-09-01 - 32b47072f319bb65e9afad59e78153d83496f1f5
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 7344 commits remaining
+
+2026-05-18 18:17:40
+Session:   9
+Kernel:    2021-09-09 - 43175623dd0dffccacbf014e368ee77f77c73898
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    2  KASAN: slab-out-of-bounds Read in ntfs_listxattr (3) (has report)
+The bug was found.
+About 3672 commits remaining
+
+2026-05-18 18:32:54
+Session:   10
+Kernel:    2021-09-03 - 14726903c835101cd8d0a703b609305094350d61
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       4  KASAN: use-after-free Read in __d_alloc (has report)
+       8  KASAN: use-after-free Read in __d_alloc (has report)
+The bug was not found.
+About 1815 commits remaining
+
+2026-05-18 18:55:27
+Session:   11
+Kernel:    2021-09-07 - a2b28235335fee2586b4bd16448fb59ed6c80eef
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    2  KASAN: slab-out-of-bounds Read in ntfs_listxattr (3) (has report)
+Running syz-repro.
+New PoC saved at /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0789-0.prog
+Primary PoC:     /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0789-0.prog
+Run Time:        0h4m0s
+The bug was found.
+About 906 commits remaining
+
+2026-05-18 19:14:04
+Session:   12
+Kernel:    2021-09-04 - 6abaa83c7352b31450d7e8c173f674324c16b02b
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 456 commits remaining
+
+2026-05-18 19:36:55
+Session:   13
+Kernel:    2021-09-05 - 58ca24158758f1784400d32743373d7d6227d018
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    2  KASAN: slab-out-of-bounds Read in ntfs_listxattr (2) (has report)
+The bug was found.
+About 184 commits remaining
+
+2026-05-18 19:50:52
+Session:   14
+Kernel:    2021-09-05 - 3fe617ccafd6f5bb33c2391d6f4eeb41c1fd0151
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    2  KASAN: slab-out-of-bounds Read in ntfs_listxattr (3) (has report)
+The bug was found.
+About 92 commits remaining
+
+2026-05-18 19:58:28
+Session:   15
+Kernel:    2021-09-04 - 49624efa65ac9889f4e7c7b2452b2e6ce42ba37d
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    2  KASAN: slab-out-of-bounds Read in ntfs_listxattr (4) (has report)
+Running syz-repro.
+New PoC saved at /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0789-1.prog
+Primary PoC:     /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0789-1.prog
+Run Time:        0h4m0s
+The bug was found.
+About 46 commits remaining
+
+2026-05-18 20:09:02
+Session:   16
+Kernel:    2021-08-27 - 195c52bdd5d5ecfdabf5a7c6159efe299e534f84
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    2  KASAN: slab-out-of-bounds Read in ntfs_listxattr (4) (has report)
+The bug was found.
+About 23 commits remaining
+
+2026-05-18 20:23:19
+Session:   17
+Kernel:    2021-08-23 - 11e4e66efd440216032f53ee7e5ca08cd263a292
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    7  KASAN: slab-out-of-bounds Read in ntfs_listxattr (4) (has report)
+The bug was found.
+About 12 commits remaining
+
+2026-05-18 20:34:40
+Session:   18
+Kernel:    2021-08-13 - be71b5cba2e6485e8959da7a9f9a44461a1bb074
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 544 commits remaining
+
+2026-05-18 20:56:33
+Session:   19
+Kernel:    2021-08-13 - 12dad495eaab95e0bb784c43869073617c513ea4
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+      10  WARNING: ODEBUG bug in netdev_run_todo (has report)
+The bug was not found.
+About 541 commits remaining
+
+2026-05-18 21:10:37
+Session:   20
+Kernel:    2021-08-13 - 96b18047a7172037ff4206720f4e889670030b41
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    2  KASAN: slab-out-of-bounds Read in ntfs_listxattr (3) (has report)
+Running syz-repro.
+New PoC saved at /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0789-0.prog
+Primary PoC:     /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0789-0.prog
+Run Time:        0h4m0s
+The bug was found.
+About 3 commits remaining
+
+2026-05-18 21:22:32
+Session:   21
+Kernel:    2021-08-13 - 6e5be40d32fb1907285277c02e74493ed43d77fe
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    2  KASAN: slab-out-of-bounds Read in ntfs_listxattr (3) (has report)
+The bug was found.
+About 2 commits remaining
+
+==== Partial Result: Focused Fuzzing ====
+Reproducer:           /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0789-0.prog
+Bisection Result:     2021-08-13 - 6e5be40d32fb1907285277c02e74493ed43d77fe
+Bisected Commit Name: fs/ntfs3: Add NTFS3 in fs/Kconfig and fs/Makefile
+Stage Time:           5h47m54s
+Run Time:             5h47m55s
+=========================================
+
+==== Anchor Commit ====
+
+2026-05-18 21:28:36
+Session:   22
+Kernel:    2021-08-13 - 12dad495eaab95e0bb784c43869073617c513ea4
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+PoC:       /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0789-0.prog
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+
+Failure: This bug cannot be found at the anchor commit.
+
+====================================================================================================================================================
+Bug Name:             KASAN: slab-out-of-bounds Read in ntfs_listxattr
+Bug ID:               bug0789
+Bug Link:             https://syzkaller.appspot.com/bug?extid=9fcea5ef6dc4dc72d334
+Bisection Result:     2021-08-13 - 6e5be40d32fb1907285277c02e74493ed43d77fe
+Bisected Commit Name: fs/ntfs3: Add NTFS3 in fs/Kconfig and fs/Makefile
+Run Time:             5h59m51s
+
+Anchor Commit:        2022-12-06 - 8ed710da2873c2aeb3bb805864a699affaf1d03b
+Bisection Result:     2021-08-13 - 6e5be40d32fb1907285277c02e74493ed43d77fe

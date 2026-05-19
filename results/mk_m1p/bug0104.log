@@ -1,0 +1,245 @@
+./bin/meerkat -i 1 -c /home/author/meerkat/wd-meerkat-1/meerkat.cfg -a b357fd1c2afc1a3e1b73dc4574bb7ac0e3bd4193 -F ff-test,stateful-corpus,poc-test,ff-no-find-backup
+Bisecting:          possible deadlock in rds_tcp_reset_callbacks
+Syzbot Link:        https://syzkaller.appspot.com/bug?id=6c831f7e51bd8c08ab5d4138ff9bb08d31f762ec
+Working Name:       bug0104
+
+Aliases:
+    possible deadlock in rds_tcp_reset_callbacks
+
+Anchor Commit:      b357fd1c2afc1a3e1b73dc4574bb7ac0e3bd4193
+Repository:         https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
+Branch:             master
+Arch:               amd64
+
+Meerkat:            /home/author/meerkat/
+Version:            1.2.0
+Kernel:             /home/author/meerkat/wd-meerkat-1/kernel/
+Syzkaller:          /home/author/meerkat/syzkaller/
+Compilers:          /home/author/meerkat/compilers/
+Compiler:           gcc (Ubuntu 12.3.0-1ubuntu1~22.04.3) 12.3.0
+Linker:             GNU ld (GNU Binutils for Ubuntu) 2.38
+Ccache:             ccache version 4.5.1
+Image:              /home/author/meerkat/image/stretch/stretch.img
+Image Key:          /home/author/meerkat/image/stretch/stretch.id_rsa
+
+Workdir:            /home/author/meerkat/wd-meerkat-1/
+Kconfig:            /home/author/meerkat/wd-meerkat-1/config-bug0104.txt
+Reproducers: (1)    /home/author/meerkat/wd-meerkat-1/reproducers/
+Syzkaller Workdir:  /home/author/meerkat/wd-meerkat-1/wd-kaller/
+Log Directory:      /home/author/meerkat/wd-meerkat-1/log/
+
+Syscalls: (10)      ["connect$inet6", "openat$cgroup_ro", "sendfile", "socket$inet6_tcp", "write$binfmt_script", "socket$inet6", "openat$cgroup_root", "openat$binfmt", "socket", "syz_create_resource$binfmt"]
+VM Count:           8
+CPU Count:          2
+Procs:              16
+Memory:             4096
+Make Procs:         16
+Max Time:           10
+Max Attempts:       1
+
+==== Anchor Commit ====
+
+2026-04-27 20:48:03
+Session:   1
+Kernel:    2022-10-01 - b357fd1c2afc1a3e1b73dc4574bb7ac0e3bd4193
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    3  possible deadlock in rds_tcp_reset_callbacks (5)
+Attempt 2: (RETRY)
+    Time  Bug Name
+***    3  possible deadlock in rds_tcp_reset_callbacks (4)
+Attempt 3: (RETRY)
+    Time  Bug Name
+***    2  possible deadlock in rds_tcp_reset_callbacks (2)
+The bug was found.
+
+New Max Time: 10
+
+==== Major Release Search ====
+12 Releases
+
+2026-04-27 21:10:25
+Session:   2
+Kernel:    2022-07-31 - 3d7cb6b04c3f3115719235cc6866b10326de34cd (v5.19)
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       8  WARNING in inet_sock_destruct (has report)
+The bug was not found.
+About 11 releases remaining
+
+==== Kernel Bisection ====
+16573 Linux commits
+
+2026-04-27 21:34:05
+Session:   3
+Kernel:    2022-08-04 - 78acd4ca433425e6dd4032cfc2156c60e34931f2
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  WARNING: ODEBUG bug in mgmt_index_removed (has report)
+       5  WARNING in inet_sock_destruct (has report)
+      10  WARNING: ODEBUG bug in mgmt_index_removed (7) (has report)
+The bug was not found.
+About 8374 commits remaining
+
+2026-04-27 21:57:35
+Session:   4
+Kernel:    2022-08-12 - 5cef38dd03f33ef206eb792df0fb3b200d762546
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  WARNING: ODEBUG bug in mgmt_index_removed (has report)
+       3  WARNING in inet_sock_destruct (has report)
+      10  WARNING: ODEBUG bug in mgmt_index_removed (7) (has report)
+The bug was not found.
+About 4243 commits remaining
+
+2026-04-27 22:21:06
+Session:   5
+Kernel:    2022-08-18 - 0de277d44e5b2c4dc823baf0236864ebb0658191
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  INFO: rcu detected stall in corrupted
+The bug was not found.
+About 2123 commits remaining
+
+2026-04-27 22:45:09
+Session:   6
+Kernel:    2022-09-03 - f0c5f7ea81202e997f321d59bdd0c3f5c12ddea7
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 1062 commits remaining
+
+2026-04-27 23:09:04
+Session:   7
+Kernel:    2022-09-22 - 9597f088c9fc0a9a1de402426f57ff0a18cd069e
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  INFO: rcu detected stall in corrupted
+The bug was not found.
+About 528 commits remaining
+
+2026-04-27 23:30:55
+Session:   8
+Kernel:    2022-09-24 - 105a36f3694edc680f3e9318cdd3c03722e42554
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  INFO: rcu detected stall in corrupted
+***    3  possible deadlock in rds_tcp_reset_callbacks (2)
+Running syz-repro.
+syz-repro was terminated after 60 minutes
+Warning: Child process exited with error status 32765.
+Run Time:        1h0m0s
+The bug was found.
+About 265 commits remaining
+
+2026-04-28 00:41:17
+Session:   9
+Kernel:    2022-09-22 - c69cf88cda5faca0e411babb67ac0d8bfd8b4646
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 121 commits remaining
+
+2026-04-28 00:56:39
+Session:   10
+Kernel:    2022-09-23 - 317fab7ec55d5a150bce46f37efbc942013a8c5b
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 62 commits remaining
+
+2026-04-28 01:11:55
+Session:   11
+Kernel:    2022-09-24 - 3db61221f4e8f18d1dd6e45dbe9e3702ff2d67ab
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  INFO: rcu detected stall in corrupted
+The bug was not found.
+About 31 commits remaining
+
+2026-04-28 01:27:04
+Session:   12
+Kernel:    2022-09-24 - 7e2cd21e02b35483ce8ea88da5732d4d3ec3a6c9
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  INFO: rcu detected stall in corrupted
+***    3  possible deadlock in rds_tcp_reset_callbacks (3)
+The bug was found.
+About 13 commits remaining
+
+2026-04-28 01:35:16
+Session:   13
+Kernel:    2022-09-22 - 643792048ee84b199052e9c8f89253649ca78922
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 734 commits remaining
+
+2026-04-28 01:52:16
+Session:   14
+Kernel:    2022-09-23 - df02452f3df069a59bc9e69c84435bf115cb6e37
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 739 commits remaining
+
+2026-04-28 02:07:35
+Session:   15
+Kernel:    2022-09-24 - aae8dda51964ff9d3f1dc96528b853826667efad
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  INFO: rcu detected stall in corrupted
+***    2  possible deadlock in rds_tcp_reset_callbacks
+The bug was found.
+About 731 commits remaining
+
+2026-04-28 02:14:46
+Session:   16
+Kernel:    2022-08-16 - c0feea594e058223973db94c1c32a830c9807c86
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  INFO: rcu detected stall in corrupted
+***    2  possible deadlock in rds_tcp_reset_callbacks (2)
+Running syz-repro.
+New PoC saved at /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0104-0.prog
+Primary PoC:     /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0104-0.prog
+Run Time:        0h12m0s
+The bug was found.
+About 2 commits remaining
+
+==== Partial Result: Focused Fuzzing ====
+Reproducer:           /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0104-0.prog
+Bisection Result:     2022-08-16 - c0feea594e058223973db94c1c32a830c9807c86
+Bisected Commit Name: workqueue: don't skip lockdep work dependency in cancel_work_sync()
+Stage Time:           5h47m44s
+Run Time:             5h47m45s
+=========================================
+
+==== Anchor Commit ====
+
+2026-04-28 02:35:48
+Session:   17
+Kernel:    2022-09-23 - df02452f3df069a59bc9e69c84435bf115cb6e37
+Compiler:  ccache gcc
+Warning: Child process git exited with error status 128.
+Warning: git exited with error status 0x80
+Error: Failed to fetch df02452f3df069a59bc9e69c84435bf115cb6e37 from https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
+Error: Failed to fetch/checkout linux finding commit
+Error: The kernel failed to make.
+Error: Failed to go to anchor commit

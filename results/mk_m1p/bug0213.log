@@ -1,0 +1,100 @@
+./bin/meerkat -i 1 -c /home/author/meerkat/wd-meerkat-1/meerkat.cfg -a ffb39098bf87db327b2be4b5c6f1087bcba94ce9 -F ff-test,stateful-corpus,poc-test,ff-no-find-backup
+Bisecting:          KASAN: use-after-free Read in register_shrinker_prepared
+Syzbot Link:        https://syzkaller.appspot.com/bug?id=6d40ea5ee0f0513c07ec0967f0a350627e9cd773
+Working Name:       bug0213
+
+Aliases:
+    KASAN: use-after-free Read in register_shrinker_prepared
+
+Anchor Commit:      ffb39098bf87db327b2be4b5c6f1087bcba94ce9
+Repository:         https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
+Branch:             master
+Arch:               amd64
+
+Meerkat:            /home/author/meerkat/
+Version:            1.2.0
+Kernel:             /home/author/meerkat/wd-meerkat-1/kernel/
+Syzkaller:          /home/author/meerkat/syzkaller/
+Compilers:          /home/author/meerkat/compilers/
+Compiler:           gcc (Ubuntu 12.3.0-1ubuntu1~22.04.3) 12.3.0
+Linker:             GNU ld (GNU Binutils for Ubuntu) 2.38
+Ccache:             ccache version 4.5.1
+Image:              /home/author/meerkat/image/stretch/stretch.img
+Image Key:          /home/author/meerkat/image/stretch/stretch.id_rsa
+
+Workdir:            /home/author/meerkat/wd-meerkat-1/
+Kconfig:            /home/author/meerkat/wd-meerkat-1/config-bug0213.txt
+Reproducers: (1)    /home/author/meerkat/wd-meerkat-1/reproducers/
+Primary PoC:        /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0213-2.prog
+Syzkaller Workdir:  /home/author/meerkat/wd-meerkat-1/wd-kaller/
+Log Directory:      /home/author/meerkat/wd-meerkat-1/log/
+
+Syscalls: (7)       ["sendto$inet6", "socket$inet6_tcp", "unshare", "socket$inet6", "socket", "ioctl$F2FS_IOC_START_ATOMIC_WRITE", "openat$selinux_enforce"]
+VM Count:           4
+CPU Count:          4
+Procs:              24
+Memory:             4096
+Make Procs:         16
+Max Time:           10
+Max Attempts:       1
+
+==== Anchor Commit ====
+
+2026-05-14 10:40:48
+Session:   1
+Kernel:    2022-10-06 - ffb39098bf87db327b2be4b5c6f1087bcba94ce9
+Compiler:  ccache gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0213-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+       1  WARNING in wireless_send_event (has report)
+       2  WARNING in wireless_send_event (6) (has report)
+       3  WARNING in wireless_send_event (5) (has report)
+       4  WARNING in wireless_send_event (5) (has report)
+       5  WARNING in wireless_send_event (6) (has report)
+       6  WARNING in wireless_send_event (5) (has report)
+       7  WARNING in wireless_send_event (6) (has report)
+       8  WARNING in wireless_send_event (5) (has report)
+       9  WARNING in wireless_send_event (5) (has report)
+      10  WARNING in wireless_send_event (6) (has report)
+      10  boot failure
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0213-boot_failure.log.
+Attempt 2: (RETRY)
+    Time  Bug Name
+       1  WARNING in wireless_send_event (has report)
+       2  WARNING in wireless_send_event (6) (has report)
+       3  WARNING in wireless_send_event (5) (has report)
+       4  WARNING in wireless_send_event (6) (has report)
+       5  WARNING in wireless_send_event (5) (has report)
+       6  WARNING in wireless_send_event (5) (has report)
+       7  WARNING in wireless_send_event (6) (has report)
+       8  WARNING in wireless_send_event (5) (has report)
+       9  WARNING in wireless_send_event (5) (has report)
+      10  WARNING in wireless_send_event (6) (has report)
+      10  boot failure
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0213-boot_failure.log.
+Attempt 3: (RETRY)
+    Time  Bug Name
+       1  WARNING in wireless_send_event (has report)
+       2  WARNING in wireless_send_event (6) (has report)
+       3  WARNING in wireless_send_event (5) (has report)
+       4  WARNING in wireless_send_event (6) (has report)
+       5  WARNING in wireless_send_event (5) (has report)
+       6  WARNING in wireless_send_event (5) (has report)
+       7  WARNING in wireless_send_event (6) (has report)
+       8  WARNING in wireless_send_event (5) (has report)
+       9  WARNING in wireless_send_event (6) (has report)
+      10  WARNING in wireless_send_event (5) (has report)
+      10  boot failure
+The bug was not found.
+
+Failure: This bug cannot be found at the anchor commit.
+
+==== Partial Result: Focused Fuzzing ====
+Bisection Result:     Failed to reproduce at the anchor commit.
+Stage Time:           0h44m48s
+Run Time:             0h44m49s
+=========================================

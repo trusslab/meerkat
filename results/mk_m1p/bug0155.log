@@ -1,0 +1,367 @@
+./bin/meerkat -i 1 -c /home/author/meerkat/wd-meerkat-1/meerkat.cfg -a 6bfb56e93bcef41859c2d5ab234ffd80b691be35 -F ff-test,stateful-corpus,poc-test,ff-no-find-backup
+Bisecting:          KASAN: null-ptr-deref Write in io_file_get_normal
+Syzbot Link:        https://syzkaller.appspot.com/bug?id=bd729504526583afbae896e4862ba0e08afc95ba
+Working Name:       bug0155
+
+Aliases:
+    KASAN: null-ptr-deref Write in io_file_get_normal
+
+Anchor Commit:      6bfb56e93bcef41859c2d5ab234ffd80b691be35
+Repository:         https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
+Branch:             master
+Arch:               amd64
+
+Meerkat:            /home/author/meerkat/
+Version:            1.2.0
+Kernel:             /home/author/meerkat/wd-meerkat-1/kernel/
+Syzkaller:          /home/author/meerkat/syzkaller/
+Compilers:          /home/author/meerkat/compilers/
+Compiler:           gcc (Ubuntu 12.3.0-1ubuntu1~22.04.3) 12.3.0
+Linker:             GNU ld (GNU Binutils for Ubuntu) 2.38
+Ccache:             ccache version 4.5.1
+Image:              /home/author/meerkat/image/stretch/stretch.img
+Image Key:          /home/author/meerkat/image/stretch/stretch.id_rsa
+
+Workdir:            /home/author/meerkat/wd-meerkat-1/
+Kconfig:            /home/author/meerkat/wd-meerkat-1/config-bug0155.txt
+Reproducers: (1)    /home/author/meerkat/wd-meerkat-1/reproducers/
+Primary PoC:        /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0155-2.prog
+Syzkaller Workdir:  /home/author/meerkat/wd-meerkat-1/wd-kaller/
+Log Directory:      /home/author/meerkat/wd-meerkat-1/log/
+
+Syscalls: (27)      ["io_uring_enter", "syz_io_uring_setup", "syz_io_uring_submit", "ioctl$sock_SIOCGIFINDEX", "ioctl$IOCTL_GET_NCIDEV_IDX", "ioctl$F2FS_IOC_START_ATOMIC_WRITE", "openat$selinux_enforce", "statx", "socket", "setsockopt$inet_mreqn", "openat$nci", "bind$nfc_llcp", "open$dir", "io_uring_register$IORING_UNREGISTER_PERSONALITY", "io_uring_register$IORING_REGISTER_PERSONALITY", "futex", "getrusage", "clock_gettime", "mount$bpf", "getuid", "setgid", "getgid", "epoll_create", "socket$inet", "syz_init_net_socket$nfc_llcp", "ioctl$ifreq_SIOCGIFINDEX_vcan", "utimes"]
+VM Count:           8
+CPU Count:          2
+Procs:              16
+Memory:             4096
+Make Procs:         16
+Max Time:           10
+Max Attempts:       1
+
+==== Anchor Commit ====
+
+2026-05-11 16:13:50
+Session:   1
+Kernel:    2022-06-08 - 6bfb56e93bcef41859c2d5ab234ffd80b691be35
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    4  KASAN: null-ptr-deref Write in io_file_get_normal (5) (has report)
+Attempt 2: (RETRY)
+    Time  Bug Name
+***    2  KASAN: null-ptr-deref Write in io_file_get_normal (has report)
+Attempt 3: (RETRY)
+    Time  Bug Name
+***    2  KASAN: null-ptr-deref Write in io_file_get_normal (3) (has report)
+The bug was found.
+
+New Max Time: 10
+
+==== Major Release Search ====
+11 Releases
+
+2026-05-11 16:35:50
+Session:   2
+Kernel:    2022-05-22 - 4b0986a3613c92f4ec1bdc7f60ec66fea135991f (v5.18)
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       5  KASAN: use-after-free Read in io_poll_remove_entries (2) (has report)
+       7  KASAN: use-after-free Read in io_poll_remove_entries (2) (has report)
+       8  KASAN: use-after-free Read in io_poll_remove_entries (4) (has report)
+       9  KASAN: use-after-free Read in io_poll_remove_entries (3) (has report)
+      10  KASAN: use-after-free Read in io_poll_remove_entries (6) (has report)
+The bug was not found.
+About 10 releases remaining
+
+==== Kernel Bisection ====
+13998 Linux commits
+
+2026-05-11 16:59:13
+Session:   3
+Kernel:    2022-05-25 - 2518f226c60d8e04d18ba4295500a5b0b8ac7659
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  WARNING in ipgre_xmit (3) (has report)
+       3  WARNING in ipgre_xmit (4) (has report)
+       4  WARNING in ipgre_xmit (3) (has report)
+       4  KASAN: use-after-free Read in io_poll_remove_entries (has report)
+       5  WARNING in ipgre_xmit (2) (has report)
+       5  KASAN: use-after-free Read in io_poll_remove_entries (2) (has report)
+       6  WARNING in ipgre_xmit (has report)
+       6  KASAN: use-after-free Read in io_poll_remove_entries (has report)
+       7  WARNING in ipgre_xmit (has report)
+       7  KASAN: use-after-free Read in io_poll_remove_entries (3) (has report)
+       8  KASAN: use-after-free Read in io_poll_remove_entries (has report)
+       9  KASAN: use-after-free Read in io_poll_remove_entries (has report)
+      10  WARNING in ipgre_xmit (has report)
+      10  KASAN: use-after-free Read in io_poll_remove_entries (has report)
+The bug was not found.
+About 7056 commits remaining
+
+2026-05-11 17:22:18
+Session:   4
+Kernel:    2022-05-27 - bf272460d744112bacd4c4d562592decbf0edf64
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       3  KASAN: use-after-free Read in io_poll_remove_entries (3) (has report)
+       4  KASAN: use-after-free Read in io_poll_remove_entries (4) (has report)
+       5  WARNING in ipgre_xmit (2) (has report)
+       5  KASAN: use-after-free Read in io_poll_remove_entries (3) (has report)
+       6  WARNING in ipgre_xmit (2) (has report)
+       6  KASAN: use-after-free Read in io_poll_remove_entries (has report)
+       7  WARNING in ipgre_xmit (3) (has report)
+       7  KASAN: use-after-free Read in io_poll_remove_entries (has report)
+       8  WARNING in ipgre_xmit (3) (has report)
+       8  KASAN: use-after-free Read in io_poll_remove_entries (2) (has report)
+       9  KASAN: use-after-free Read in io_poll_remove_entries (2) (has report)
+      10  WARNING in ipgre_xmit (has report)
+      10  KASAN: use-after-free Read in io_poll_remove_entries (4) (has report)
+The bug was not found.
+About 3528 commits remaining
+
+2026-05-11 17:45:31
+Session:   5
+Kernel:    2022-06-02 - 50fd82b3a9a9335df5d50c7ddcb81c81d358c4fc
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       3  WARNING in ipgre_xmit (has report)
+       3  KASAN: use-after-free Read in io_poll_remove_entries (3) (has report)
+       4  WARNING in ipgre_xmit (has report)
+       4  KASAN: use-after-free Read in io_poll_remove_entries (4) (has report)
+       5  WARNING in ipgre_xmit (has report)
+       5  KASAN: use-after-free Read in io_poll_remove_entries (2) (has report)
+       6  WARNING in ipgre_xmit (4) (has report)
+       6  KASAN: use-after-free Read in io_poll_remove_entries (2) (has report)
+       7  WARNING in ipgre_xmit (2) (has report)
+       7  KASAN: use-after-free Read in io_poll_remove_entries (has report)
+       8  WARNING in ipgre_xmit (2) (has report)
+       8  KASAN: use-after-free Read in io_poll_remove_entries (2) (has report)
+       9  WARNING in ipgre_xmit (3) (has report)
+       9  KASAN: use-after-free Read in io_poll_remove_entries (has report)
+      10  KASAN: use-after-free Read in io_poll_remove_entries (4) (has report)
+The bug was not found.
+About 1764 commits remaining
+
+2026-05-11 18:08:46
+Session:   6
+Kernel:    2022-06-03 - 54c2cc79194c961a213c1d375fe3aa4165664cc4
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    3  KASAN: null-ptr-deref Write in io_file_get_normal (4) (has report)
+Running syz-repro.
+New PoC saved at /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0155-0.prog
+Primary PoC:     /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0155-0.prog
+Run Time:        0h10m0s
+The bug was found.
+About 905 commits remaining
+
+2026-05-11 18:33:57
+Session:   7
+Kernel:    2022-05-20 - 6a31a95135da0bb2c5349e49e37d76e9909ab7ea
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       3  KASAN: use-after-free Read in io_poll_remove_entries (3) (has report)
+       4  possible deadlock in io_assign_file
+       4  KASAN: use-after-free Read in io_poll_remove_entries (4) (has report)
+       5  KASAN: use-after-free Read in io_poll_remove_entries (2) (has report)
+       6  KASAN: use-after-free Read in io_poll_remove_entries (3) (has report)
+       7  KASAN: use-after-free Read in io_poll_remove_entries (3) (has report)
+       8  KASAN: use-after-free Read in io_poll_remove_entries (5) (has report)
+       9  KASAN: use-after-free Read in io_poll_remove_entries (3) (has report)
+      10  KASAN: use-after-free Read in io_poll_remove_entries (5) (has report)
+The bug was not found.
+About 14452 commits remaining
+
+2026-05-11 18:56:58
+Session:   8
+Kernel:    2022-06-03 - 4ad680f083ec360e0991c453e18a38ed9ae500d7
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  WARNING in ipgre_xmit (3) (has report)
+       3  WARNING in ipgre_xmit (5) (has report)
+       4  WARNING in ipgre_xmit (has report)
+***    4  KASAN: null-ptr-deref Write in io_file_get_normal (has report)
+The bug was found.
+About 14125 commits remaining
+
+2026-05-11 19:07:19
+Session:   9
+Kernel:    2022-06-03 - 6f6ebb9899861c8a4e49cc7d9796d024f731b512
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  WARNING in ipgre_xmit (2) (has report)
+       3  WARNING in ipgre_xmit (6) (has report)
+       5  WARNING in ipgre_xmit (3) (has report)
+       5  KASAN: use-after-free Read in io_poll_remove_entries (2) (has report)
+       6  WARNING in ipgre_xmit (has report)
+       6  KASAN: use-after-free Read in io_poll_remove_entries (2) (has report)
+       7  KASAN: use-after-free Read in io_poll_remove_entries (3) (has report)
+       8  WARNING in ipgre_xmit (2) (has report)
+       8  KASAN: use-after-free Read in io_poll_remove_entries (2) (has report)
+       9  WARNING in ipgre_xmit (has report)
+       9  KASAN: use-after-free Read in io_poll_remove_entries (3) (has report)
+      10  WARNING in ipgre_xmit (has report)
+      10  KASAN: use-after-free Read in io_poll_remove_entries (3) (has report)
+The bug was not found.
+About 497 commits remaining
+
+2026-05-11 19:22:20
+Session:   10
+Kernel:    2022-06-03 - 6e5f6a86915d65210e90acac0402e6f37e21fc7b
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       3  KASAN: use-after-free Read in io_poll_remove_entries (3) (has report)
+       4  KASAN: use-after-free Read in io_poll_remove_entries (3) (has report)
+       5  KASAN: use-after-free Read in io_poll_remove_entries (3) (has report)
+       6  WARNING in ipgre_xmit (3) (has report)
+       6  KASAN: use-after-free Read in io_poll_remove_entries (4) (has report)
+       7  WARNING in ipgre_xmit (has report)
+       7  KASAN: use-after-free Read in io_poll_remove_entries (has report)
+       8  WARNING in ipgre_xmit (has report)
+       8  KASAN: use-after-free Read in io_poll_remove_entries (3) (has report)
+       9  WARNING in ipgre_xmit (has report)
+       9  KASAN: use-after-free Read in io_poll_remove_entries (4) (has report)
+      10  WARNING in ipgre_xmit (3) (has report)
+      10  KASAN: use-after-free Read in io_poll_remove_entries (4) (has report)
+The bug was not found.
+About 432 commits remaining
+
+2026-05-11 19:37:21
+Session:   11
+Kernel:    2022-06-03 - 72fbbc3d0e3e3117c29a73d0b4d928dc00ed99ce
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    3  KASAN: null-ptr-deref Write in io_file_get_normal (has report)
+The bug was found.
+About 29 commits remaining
+
+2026-05-11 19:49:42
+Session:   12
+Kernel:    2022-06-03 - 5ac8bdb9ad47334a9590e29daf7e4149b0a34729
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    3  KASAN: null-ptr-deref Write in io_file_get_normal (4) (has report)
+Running syz-repro.
+syz-repro was terminated after 60 minutes
+Warning: Child process exited with error status 32764.
+Run Time:        1h0m0s
+The bug was found.
+About 14 commits remaining
+
+2026-05-11 20:57:46
+Session:   13
+Kernel:    2022-05-31 - 21870e02fcd385c39fe635e6531ce78302f3cd71
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       3  KASAN: use-after-free Read in io_poll_remove_entries (3) (has report)
+       4  KASAN: use-after-free Read in io_poll_remove_entries (7) (has report)
+       5  KASAN: use-after-free Read in io_poll_remove_entries (4) (has report)
+       6  KASAN: use-after-free Read in io_poll_remove_entries (2) (has report)
+       7  KASAN: use-after-free Read in io_poll_remove_entries (has report)
+       8  KASAN: use-after-free Read in io_poll_remove_entries (3) (has report)
+       9  KASAN: use-after-free Read in io_poll_remove_entries (6) (has report)
+      10  KASAN: use-after-free Read in io_poll_remove_entries (has report)
+The bug was not found.
+About 11877 commits remaining
+
+2026-05-11 21:20:43
+Session:   14
+Kernel:    2022-05-31 - 4278a0deb1f6cac40ded3362fe2a9827d7efee3d
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       3  KASAN: use-after-free Read in io_poll_remove_entries (3) (has report)
+       4  KASAN: use-after-free Read in io_poll_remove_entries (2) (has report)
+       5  KASAN: use-after-free Read in io_poll_remove_entries (3) (has report)
+       6  KASAN: use-after-free Read in io_poll_remove_entries (2) (has report)
+       7  KASAN: use-after-free Read in io_poll_remove_entries (7) (has report)
+       8  KASAN: use-after-free Read in io_poll_remove_entries (2) (has report)
+       9  KASAN: use-after-free Read in io_poll_remove_entries (4) (has report)
+      10  KASAN: use-after-free Read in io_poll_remove_entries (4) (has report)
+The bug was not found.
+About 11874 commits remaining
+
+2026-05-11 21:35:29
+Session:   15
+Kernel:    2022-06-01 - 61c1b44a21d70d4783db02198fbf68b132f4953c
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       3  KASAN: use-after-free Read in io_poll_remove_entries (2) (has report)
+       4  KASAN: use-after-free Read in io_poll_remove_entries (2) (has report)
+       5  KASAN: use-after-free Read in io_poll_remove_entries (2) (has report)
+       6  KASAN: use-after-free Read in io_poll_remove_entries (2) (has report)
+       7  KASAN: use-after-free Read in io_poll_remove_entries (3) (has report)
+       8  KASAN: use-after-free Read in io_poll_remove_entries (4) (has report)
+       9  KASAN: use-after-free Read in io_poll_remove_entries (4) (has report)
+      10  KASAN: use-after-free Read in io_poll_remove_entries (has report)
+The bug was not found.
+About 11872 commits remaining
+
+2026-05-11 21:50:15
+Session:   16
+Kernel:    2022-06-01 - 9cae36a094e7e9d6e5fe8b6dcd4642138b3eb0c7
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    4  KASAN: null-ptr-deref Write in io_file_get_normal (4) (has report)
+The bug was found.
+About 2 commits remaining
+
+==== Partial Result: Focused Fuzzing ====
+Reproducer:           /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0155-0.prog
+Bisection Result:     2022-06-01 - 9cae36a094e7e9d6e5fe8b6dcd4642138b3eb0c7
+Bisected Commit Name: io_uring: reinstate the inflight tracking
+Stage Time:           5h45m11s
+Run Time:             5h45m16s
+=========================================
+
+==== Anchor Commit ====
+
+2026-05-11 21:59:01
+Session:   17
+Kernel:    2022-06-01 - 61c1b44a21d70d4783db02198fbf68b132f4953c
+Compiler:  ccache gcc
+PoC:       /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0155-0.prog
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+
+Failure: This bug cannot be found at the anchor commit.
+
+====================================================================================================================================================
+Bug Name:             KASAN: null-ptr-deref Write in io_file_get_normal
+Bug ID:               bug0155
+Bug Link:             https://syzkaller.appspot.com/bug?id=bd729504526583afbae896e4862ba0e08afc95ba
+Bisection Result:     2022-06-01 - 9cae36a094e7e9d6e5fe8b6dcd4642138b3eb0c7
+Bisected Commit Name: io_uring: reinstate the inflight tracking
+Run Time:             5h57m15s
+
+Anchor Commit:        2022-06-08 - 6bfb56e93bcef41859c2d5ab234ffd80b691be35
+Bisection Result:     2022-06-01 - 9cae36a094e7e9d6e5fe8b6dcd4642138b3eb0c7

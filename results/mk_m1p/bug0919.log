@@ -1,0 +1,326 @@
+./bin/meerkat -i 1 -c /home/author/meerkat/wd-meerkat-1/meerkat.cfg -a 952923ddc01120190dcf671e7b354364ce1d1362 -F ff-test,stateful-corpus,poc-test,ff-no-find-backup
+Bisecting:          KASAN: use-after-free Read in filp_close
+Syzbot Link:        https://syzkaller.appspot.com/bug?extid=47dd250f527cb7bebf24
+Working Name:       bug0919
+
+Aliases:
+    KASAN: use-after-free Read in filp_close
+
+Anchor Commit:      952923ddc01120190dcf671e7b354364ce1d1362
+Repository:         https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
+Branch:             master
+Arch:               amd64
+
+Meerkat:            /home/author/meerkat/
+Version:            1.2.0
+Kernel:             /home/author/meerkat/wd-meerkat-1/kernel/
+Syzkaller:          /home/author/meerkat/syzkaller/
+Compilers:          /home/author/meerkat/compilers/
+Compiler:           gcc (Ubuntu 12.3.0-1ubuntu1~22.04.3) 12.3.0
+Linker:             GNU ld (GNU Binutils for Ubuntu) 2.38
+Ccache:             ccache version 4.5.1
+Image:              /home/author/meerkat/image/stretch/stretch.img
+Image Key:          /home/author/meerkat/image/stretch/stretch.id_rsa
+
+Workdir:            /home/author/meerkat/wd-meerkat-1/
+Kconfig:            /home/author/meerkat/wd-meerkat-1/config-bug0919.txt
+Reproducers: (1)    /home/author/meerkat/wd-meerkat-1/reproducers/
+Primary PoC:        /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0919-2.prog
+Syzkaller Workdir:  /home/author/meerkat/wd-meerkat-1/wd-kaller/
+Log Directory:      /home/author/meerkat/wd-meerkat-1/log/
+
+Syscalls: (27)      ["dup", "io_uring_enter", "syz_io_uring_setup", "syz_io_uring_submit", "syz_open_dev$sndmidi", "ioctl$sock_SIOCGIFINDEX", "ioctl$IOCTL_GET_NCIDEV_IDX", "statx", "socket", "setsockopt$inet_mreqn", "openat$nci", "bind$nfc_llcp", "open$dir", "io_uring_register$IORING_UNREGISTER_PERSONALITY", "io_uring_register$IORING_REGISTER_PERSONALITY", "futex", "getrusage", "clock_gettime", "mount$bpf", "getuid", "setgid", "getgid", "epoll_create", "socket$inet", "syz_init_net_socket$nfc_llcp", "ioctl$ifreq_SIOCGIFINDEX_vcan", "utimes"]
+VM Count:           4
+CPU Count:          4
+Procs:              24
+Memory:             4096
+Make Procs:         16
+Max Time:           10
+Max Attempts:       1
+
+==== Anchor Commit ====
+
+2026-05-08 06:41:50
+Session:   1
+Kernel:    2022-06-04 - 952923ddc01120190dcf671e7b354364ce1d1362
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       3  KASAN: null-ptr-deref Write in io_file_get_normal (2) (has report)
+       4  KASAN: null-ptr-deref Write in io_file_get_normal (2) (has report)
+***    5  KASAN: use-after-free Read in filp_close (2) (has report)
+       5  KASAN: null-ptr-deref Write in io_file_get_normal (has report)
+       5  VFS: Close: file count is zero (use-after-free)
+Attempt 2: (RETRY)
+    Time  Bug Name
+       2  KASAN: null-ptr-deref Write in io_file_get_normal (2) (has report)
+       3  KASAN: null-ptr-deref Write in io_file_get_normal (4) (has report)
+       4  KASAN: null-ptr-deref Write in io_file_get_normal (3) (has report)
+       5  KASAN: null-ptr-deref Write in io_file_get_normal (has report)
+       6  KASAN: null-ptr-deref Write in io_file_get_normal (3) (has report)
+       7  KASAN: null-ptr-deref Write in io_file_get_normal (2) (has report)
+       8  KASAN: use-after-free Read in lock_sock_nested (has report)
+       8  KASAN: null-ptr-deref Write in io_file_get_normal (has report)
+       9  KASAN: use-after-free Read in lock_sock_nested (2) (has report)
+       9  KASAN: null-ptr-deref Write in io_file_get_normal (has report)
+      10  KASAN: null-ptr-deref Write in io_file_get_normal (2) (has report)
+Attempt 3: (RETRY)
+    Time  Bug Name
+       2  KASAN: null-ptr-deref Write in io_file_get_normal (3) (has report)
+       3  KASAN: null-ptr-deref Write in io_file_get_normal (2) (has report)
+       4  KASAN: null-ptr-deref Write in io_file_get_normal (3) (has report)
+       5  KASAN: null-ptr-deref Write in io_file_get_normal (3) (has report)
+       6  KASAN: null-ptr-deref Write in io_file_get_normal (3) (has report)
+       7  KASAN: null-ptr-deref Write in io_file_get_normal (3) (has report)
+       8  KASAN: null-ptr-deref Write in io_file_get_normal (has report)
+       9  VFS: Close: file count is zero (use-after-free) (2)
+***   10  KASAN: use-after-free Read in filp_close (2) (has report)
+      10  VFS: Close: file count is zero (use-after-free)
+The bug was found.
+
+New Max Time: 12
+
+==== Major Release Search ====
+11 Releases
+
+2026-05-08 07:20:28
+Session:   2
+Kernel:    2022-05-22 - 4b0986a3613c92f4ec1bdc7f60ec66fea135991f (v5.18)
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+      11  KASAN: use-after-free Read in io_poll_remove_entries (has report)
+The bug was not found.
+About 10 releases remaining
+
+==== Kernel Bisection ====
+13843 Linux commits
+
+2026-05-08 07:45:43
+Session:   3
+Kernel:    2022-05-25 - 2518f226c60d8e04d18ba4295500a5b0b8ac7659
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       5  KASAN: use-after-free Read in io_poll_remove_entries (has report)
+The bug was not found.
+About 6901 commits remaining
+
+2026-05-08 08:10:39
+Session:   4
+Kernel:    2022-05-27 - 6b0e34a0307e046c0662d7dcaba2a2c9993c4339
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       4  KASAN: use-after-free Read in io_poll_remove_entries (has report)
+       5  WARNING in ipgre_xmit (has report)
+       9  KASAN: use-after-free Read in nf_confirm (has report)
+The bug was not found.
+About 3432 commits remaining
+
+2026-05-08 08:35:51
+Session:   5
+Kernel:    2022-06-02 - 58f9d52ff689a262bec7f5713c07f5a79e115168
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       6  WARNING in ipgre_xmit (has report)
+       8  KASAN: use-after-free Read in io_poll_remove_entries (2) (has report)
+      10  WARNING in ipgre_xmit (has report)
+      12  KASAN: use-after-free Read in io_poll_remove_entries (2) (has report)
+The bug was not found.
+About 1735 commits remaining
+
+2026-05-08 09:00:58
+Session:   6
+Kernel:    2022-06-03 - 932c2989b59008e530ffcc7c7e6ef507a28b28ca
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       3  KASAN: null-ptr-deref Write in io_file_get_normal (has report)
+       4  KASAN: null-ptr-deref Write in io_file_get_normal (4) (has report)
+       5  KASAN: null-ptr-deref Write in io_file_get_normal (2) (has report)
+       7  KASAN: null-ptr-deref Write in io_file_get_normal (2) (has report)
+       9  KASAN: null-ptr-deref Write in io_file_get_normal (2) (has report)
+      11  KASAN: null-ptr-deref Write in io_file_get_normal (3) (has report)
+The bug was not found.
+About 863 commits remaining
+
+2026-05-08 09:24:20
+Session:   7
+Kernel:    2022-05-22 - 90de6805267f8c79cd2b1a36805071e257c39b5c
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       3  KASAN: use-after-free Read in io_poll_remove_entries (has report)
+      11  WARNING: ODEBUG bug in netdev_run_todo (has report)
+The bug was not found.
+About 14056 commits remaining
+
+2026-05-08 09:49:19
+Session:   8
+Kernel:    2022-06-03 - d1833463dd132b3ff83dfab76c0249fcf46d1656
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  WARNING in ipgre_xmit (has report)
+       4  KASAN: null-ptr-deref Write in io_file_get_normal (2) (has report)
+       5  KASAN: null-ptr-deref Write in io_file_get_normal (has report)
+       9  KASAN: null-ptr-deref Write in io_file_get_normal (has report)
+      10  KASAN: null-ptr-deref Write in io_file_get_normal (has report)
+      11  KASAN: null-ptr-deref Write in io_file_get_normal (has report)
+The bug was not found.
+About 231 commits remaining
+
+2026-05-08 10:14:26
+Session:   9
+Kernel:    2022-06-03 - 1888e9b4bb78c88514b24ecafa9e4e4faf761747
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       5  KASAN: null-ptr-deref Write in io_file_get_normal (2) (has report)
+       6  WARNING in ipgre_xmit (has report)
+       7  KASAN: null-ptr-deref Write in io_file_get_normal (has report)
+       8  KASAN: null-ptr-deref Write in io_file_get_normal (2) (has report)
+      10  WARNING in ipgre_xmit (has report)
+      12  KASAN: null-ptr-deref Write in io_file_get_normal (has report)
+The bug was not found.
+About 125 commits remaining
+
+2026-05-08 10:39:21
+Session:   10
+Kernel:    2022-06-04 - 23df9ba64bb9e26cfee6b34f5c3ece49a8a61ee1
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       4  KASAN: null-ptr-deref Write in io_file_get_normal (2) (has report)
+       6  KASAN: null-ptr-deref Write in io_file_get_normal (has report)
+       8  KASAN: null-ptr-deref Write in io_file_get_normal (has report)
+       9  KASAN: null-ptr-deref Write in io_file_get_normal (has report)
+      10  KASAN: null-ptr-deref Write in io_file_get_normal (has report)
+      11  KASAN: null-ptr-deref Write in io_file_get_normal (has report)
+      12  KASAN: null-ptr-deref Write in io_file_get_normal (has report)
+The bug was not found.
+About 57 commits remaining
+
+2026-05-08 11:04:22
+Session:   11
+Kernel:    2022-06-03 - a7ef9b455c7ca8f07a5b4bd967a3c39c7434d43f
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 15494 commits remaining
+
+2026-05-08 11:29:21
+Session:   12
+Kernel:    2022-06-04 - d66016c5cd3d4c474cd24622c511dcd358645613
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       4  KASAN: null-ptr-deref Write in io_file_get_normal (2) (has report)
+       5  KASAN: null-ptr-deref Write in io_file_get_normal (has report)
+       6  KASAN: null-ptr-deref Write in io_file_get_normal (has report)
+       8  KASAN: null-ptr-deref Write in io_file_get_normal (has report)
+The bug was not found.
+About 15 commits remaining
+
+2026-05-08 11:54:35
+Session:   13
+Kernel:    2022-05-19 - 70f8d9c5750bbb0ca4ef7e23d6abcb05e6061138
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 15928 commits remaining
+
+2026-05-08 12:19:28
+Session:   14
+Kernel:    2022-06-04 - dbe0ee46614016146c1b3e1fc063b44333bb2401
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  WARNING in ipgre_xmit (has report)
+       2  VFS: Close: file count is zero (use-after-free) (3)
+       3  WARNING in ipgre_xmit (has report)
+       4  WARNING in ipgre_xmit (2) (has report)
+       4  KASAN: use-after-free Read in lock_sock_nested (has report)
+       5  WARNING in ipgre_xmit (has report)
+       5  KASAN: use-after-free Read in lock_sock_nested (has report)
+***    6  KASAN: use-after-free Read in filp_close (has report)
+Running syz-repro.
+syz-repro was terminated after 60 minutes
+Warning: Child process exited with error status 32765.
+Run Time:        1h0m0s
+The bug was found.
+About 15923 commits remaining
+
+2026-05-08 13:38:21
+Session:   15
+Kernel:    2022-05-14 - 81132a39c152ca09832b9e4cb748129cee5f55ec
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 15921 commits remaining
+
+2026-05-08 14:02:46
+Session:   16
+Kernel:    2022-05-14 - 6319194ec57b0452dcda4589d24c4e7db299c5bf
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       3  KASAN: use-after-free Read in lock_sock_nested (has report)
+       4  KASAN: use-after-free Read in lock_sock_nested (2) (has report)
+       5  KASAN: use-after-free Read in lock_sock_nested (2) (has report)
+       5  VFS: Close: file count is zero (use-after-free) (2)
+       7  BUG: unable to handle kernel NULL pointer dereference in io_do_iopoll (has report)
+       8  VFS: Close: file count is zero (use-after-free) (2)
+The bug was not found.
+About 15920 commits remaining
+
+==== Partial Result: Focused Fuzzing ====
+Reproducer:           /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0919-2.prog
+Bisection Result:     2022-06-04 - dbe0ee46614016146c1b3e1fc063b44333bb2401
+Bisected Commit Name: Merge tag 'pull-18-rc1-work.fd' of git://git.kernel.org/pub/scm/linux/kernel/git/viro/vfs
+Stage Time:           7h37m53s
+Run Time:             7h37m59s
+=========================================
+
+==== Anchor Commit ====
+
+2026-05-08 14:19:42
+Session:   17
+Kernel:    2022-05-14 - 6319194ec57b0452dcda4589d24c4e7db299c5bf
+Compiler:  ccache gcc
+PoC:       /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0919-2.prog
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+
+Failure: This bug cannot be found at the anchor commit.
+
+====================================================================================================================================================
+Bug Name:             KASAN: use-after-free Read in filp_close
+Bug ID:               bug0919
+Bug Link:             https://syzkaller.appspot.com/bug?extid=47dd250f527cb7bebf24
+Bisection Result:     2022-06-04 - dbe0ee46614016146c1b3e1fc063b44333bb2401
+Bisected Commit Name: Merge tag 'pull-18-rc1-work.fd' of git://git.kernel.org/pub/scm/linux/kernel/git/viro/vfs
+Run Time:             7h49m56s
+
+Anchor Commit:        2022-06-04 - 952923ddc01120190dcf671e7b354364ce1d1362
+Bisection Result:     2022-06-04 - dbe0ee46614016146c1b3e1fc063b44333bb2401

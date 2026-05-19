@@ -1,0 +1,422 @@
+./bin/meerkat -i 1 -c /home/author/meerkat/wd-meerkat-1/meerkat.cfg -a 9a48d604672220545d209e9996c2a1edbb5637f6 -F ff-test,stateful-corpus,poc-test,ff-no-find-backup
+Bisecting:          WARNING in nilfs_segctor_do_construct
+Syzbot Link:        https://syzkaller.appspot.com/bug?extid=33494cd0df2ec2931851
+Working Name:       bug0857
+
+Aliases:
+    WARNING in nilfs_segctor_do_construct
+
+Anchor Commit:      9a48d604672220545d209e9996c2a1edbb5637f6
+Repository:         https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
+Branch:             master
+Arch:               amd64
+
+Meerkat:            /home/author/meerkat/
+Version:            1.2.0
+Kernel:             /home/author/meerkat/wd-meerkat-1/kernel/
+Syzkaller:          /home/author/meerkat/syzkaller/
+Compilers:          /home/author/meerkat/compilers/
+Compiler:           gcc (Ubuntu 12.3.0-1ubuntu1~22.04.3) 12.3.0
+Linker:             GNU ld (GNU Binutils for Ubuntu) 2.38
+Ccache:             ccache version 4.5.1
+Image:              /home/author/meerkat/image/stretch/stretch.img
+Image Key:          /home/author/meerkat/image/stretch/stretch.id_rsa
+
+Workdir:            /home/author/meerkat/wd-meerkat-1/
+Kconfig:            /home/author/meerkat/wd-meerkat-1/config-bug0857.txt
+Reproducers: (1)    /home/author/meerkat/wd-meerkat-1/reproducers/
+Syzkaller Workdir:  /home/author/meerkat/wd-meerkat-1/wd-kaller/
+Log Directory:      /home/author/meerkat/wd-meerkat-1/log/
+
+Syscalls: (9)       ["ioctl$EXT4_IOC_GROUP_ADD", "openat", "syz_mount_image$nilfs2", "write", "open$dir", "mount$bpf", "getuid", "setgid", "getgid"]
+VM Count:           8
+CPU Count:          2
+Procs:              16
+Memory:             4096
+Make Procs:         16
+Max Time:           10
+Max Attempts:       1
+
+==== Anchor Commit ====
+
+2026-05-01 13:59:48
+Session:   1
+Kernel:    2023-05-12 - 9a48d604672220545d209e9996c2a1edbb5637f6
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    2  WARNING in nilfs_segctor_do_construct (has report)
+Attempt 2: (RETRY)
+    Time  Bug Name
+***    2  WARNING in nilfs_segctor_do_construct (2) (has report)
+Attempt 3: (RETRY)
+    Time  Bug Name
+***    2  WARNING in nilfs_segctor_do_construct (has report)
+The bug was found.
+
+New Max Time: 10
+
+==== Major Release Search ====
+13 Releases
+
+2026-05-01 14:23:14
+Session:   2
+Kernel:    2023-04-23 - 457391b0380335d5e9a5babdec90ac53928b23b4 (v6.3)
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    2  WARNING in nilfs_segctor_do_construct (2) (has report)
+Running syz-repro.
+New PoC saved at /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0857-0.prog
+Primary PoC:     /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0857-0.prog
+Run Time:        0h15m0s
+The bug was found.
+About 12 releases remaining
+
+2026-05-01 14:57:56
+Session:   3
+Kernel:    2023-02-19 - c9c3395d5e3dcc6daee66c6908354d47bf98cb0c (v6.2)
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       3  WARNING in call_timer_fn (has report)
+       4  SYZFAIL: initialize_wifi_devices: failed set up IBSS network
+       5  SYZFAIL: tun: ioctl(TUNSETIFF) failed
+***    6  WARNING in nilfs_segctor_do_construct (3) (has report)
+The bug was found.
+About 11 releases remaining
+
+2026-05-01 15:21:37
+Session:   4
+Kernel:    2022-12-11 - 830b3c68c1fb1e9176028d02ef86f3cf76aa2476 (v6.1)
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       3  WARNING in nilfs_dat_prepare_end (6) (has report)
+       4  WARNING in nilfs_dat_prepare_end (has report)
+       5  WARNING in nilfs_dat_prepare_end (5) (has report)
+       6  WARNING in nilfs_dat_prepare_end (6) (has report)
+       7  WARNING in nilfs_dat_prepare_end (6) (has report)
+       8  WARNING in nilfs_dat_prepare_end (5) (has report)
+       8  no output from test machine (2)
+       9  WARNING in nilfs_dat_prepare_end (7) (has report)
+      10  WARNING in nilfs_dat_prepare_end (6) (has report)
+The bug was not found.
+About 10 releases remaining
+
+==== Kernel Bisection ====
+16841 Linux commits
+
+2026-05-01 15:50:14
+Session:   5
+Kernel:    2022-12-13 - 1ca06f1c1acecbe02124f14a37cce347b8c1a90c
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    3  WARNING in nilfs_segctor_do_construct (has report)
+       3  WARNING in nilfs_dat_prepare_end (6) (has report)
+The bug was found.
+About 7411 commits remaining
+
+2026-05-01 16:11:05
+Session:   6
+Kernel:    2022-12-13 - 8715c6d3100fc7c6edddf29af4a399a1c12d028c
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  INFO: rcu detected stall in corrupted
+***    3  WARNING in nilfs_segctor_do_construct (has report)
+       3  WARNING in nilfs_dat_prepare_end (5) (has report)
+Running syz-repro.
+New PoC saved at /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0857-1.prog
+Primary PoC:     /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0857-1.prog
+Run Time:        0h17m0s
+The bug was found.
+About 3656 commits remaining
+
+2026-05-01 16:48:31
+Session:   7
+Kernel:    2022-12-12 - f10bc40168032962ebee26894bdbdc972cde35bf
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       3  WARNING in nilfs_dat_prepare_end (7) (has report)
+       4  INFO: rcu detected stall in corrupted
+       4  WARNING in nilfs_dat_prepare_end (6) (has report)
+       5  WARNING in nilfs_dat_prepare_end (5) (has report)
+       6  WARNING in nilfs_dat_prepare_end (6) (has report)
+       7  WARNING in nilfs_dat_prepare_end (8) (has report)
+       8  WARNING in nilfs_dat_prepare_end (7) (has report)
+       9  WARNING in nilfs_dat_prepare_end (8) (has report)
+      10  WARNING in nilfs_dat_prepare_end (7) (has report)
+The bug was not found.
+About 1842 commits remaining
+
+2026-05-01 17:15:56
+Session:   8
+Kernel:    2022-12-12 - cf619f891971bfac659ac64968f8c35db605c884
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       3  WARNING in nilfs_dat_prepare_end (8) (has report)
+       4  WARNING in nilfs_dat_prepare_end (7) (has report)
+       5  WARNING in nilfs_dat_prepare_end (7) (has report)
+       6  WARNING in nilfs_dat_prepare_end (2) (has report)
+       7  WARNING in nilfs_dat_prepare_end (5) (has report)
+       8  WARNING in nilfs_dat_prepare_end (6) (has report)
+       9  WARNING in nilfs_dat_prepare_end (5) (has report)
+       9  no output from test machine
+      10  WARNING in nilfs_dat_prepare_end (7) (has report)
+The bug was not found.
+About 920 commits remaining
+
+2026-05-01 17:42:57
+Session:   9
+Kernel:    2022-12-12 - 149c51f876322d9bfbd5e2d6ffae7aff3d794384
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  WARNING in nilfs_dat_prepare_end (6) (has report)
+       3  WARNING in nilfs_dat_prepare_end (5) (has report)
+***    4  WARNING in nilfs_segctor_do_construct (has report)
+       4  WARNING in nilfs_dat_prepare_end (has report)
+The bug was found.
+About 439 commits remaining
+
+2026-05-01 18:03:31
+Session:   10
+Kernel:    2022-12-05 - 3c32c7212f1639471ec0197ff1179b8ef2e0f3d3
+Compiler:  ccache gcc
+Error: index error parsing Warning report
+Attempt 1:
+    Time  Bug Name
+       2  INFO: rcu detected stall in corrupted
+       2  WARNING in nilfs_dat_prepare_end (7) (has report)
+       3  WARNING in nilfs_dat_prepare_end (2) (has report)
+       4  WARNING in nilfs_dat_prepare_end (8) (has report)
+       5  WARNING in nilfs_dat_prepare_end (7) (has report)
+       6  WARNING in nilfs_dat_prepare_end (6) (has report)
+       7  WARNING in nilfs_dat_prepare_end (3) (has report)
+       8  WARNING in nilfs_dat_prepare_end (5) (has report)
+       9  WARNING in nilfs_dat_prepare_end (4) (has report)
+       9  WARNING in corrupted
+      10  WARNING in nilfs_dat_prepare_end (6) (has report)
+The bug was not found.
+About 3123 commits remaining
+
+2026-05-01 18:30:27
+Session:   11
+Kernel:    2022-12-12 - 6df7cc2268745e91d090830c58689aa7fcbde6f9
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  WARNING in nilfs_dat_prepare_end (8) (has report)
+       3  WARNING in nilfs_dat_prepare_end (5) (has report)
+       4  KASAN: stack-out-of-bounds Read in profile_pc (has report)
+       5  WARNING in nilfs_dat_prepare_end (6) (has report)
+       6  WARNING in nilfs_dat_prepare_end (3) (has report)
+       7  WARNING in nilfs_dat_prepare_end (2) (has report)
+       8  WARNING in nilfs_dat_prepare_end (2) (has report)
+       9  WARNING in nilfs_dat_prepare_end (2) (has report)
+      10  WARNING in nilfs_dat_prepare_end (2) (has report)
+      10  no output from test machine
+The bug was not found.
+About 328 commits remaining
+
+2026-05-01 18:48:28
+Session:   12
+Kernel:    2022-12-12 - 56c003e4db4adb1d57e599fb4c7d39f9130f9db1
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  INFO: rcu detected stall in corrupted
+       2  WARNING in nilfs_dat_prepare_end (7) (has report)
+       3  WARNING in nilfs_dat_prepare_end (8) (has report)
+       4  WARNING in nilfs_dat_prepare_end (has report)
+***    5  WARNING in nilfs_segctor_do_construct (has report)
+       5  WARNING in nilfs_dat_prepare_end (5) (has report)
+The bug was found.
+About 40 commits remaining
+
+2026-05-01 19:01:19
+Session:   13
+Kernel:    2022-12-09 - 1f3868f06855c97a4954c99b36f3fc9eb8f60326
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    2  WARNING in nilfs_segctor_do_construct (2) (has report)
+       2  INFO: rcu detected stall in corrupted
+       2  WARNING in nilfs_dat_prepare_end (5) (has report)
+Running syz-repro.
+Run Time:        0h58m0s
+The bug was found.
+About 15 commits remaining
+
+2026-05-01 20:18:09
+Session:   14
+Kernel:    2022-11-21 - 36273e5b4e3a934c6d346c8f0b16b97e018094af
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    2  WARNING in nilfs_segctor_do_construct (has report)
+       2  INFO: rcu detected stall in corrupted
+       2  WARNING in nilfs_dat_prepare_end (6) (has report)
+The bug was found.
+About 8 commits remaining
+
+2026-05-01 20:28:01
+Session:   15
+Kernel:    2022-10-25 - ab7720a2b1175b21cace83757a9fd70408156bae
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  INFO: rcu detected stall in corrupted
+       2  WARNING in nilfs_dat_prepare_end (6) (has report)
+       3  WARNING in nilfs_dat_prepare_end (8) (has report)
+       4  WARNING in nilfs_dat_prepare_end (8) (has report)
+       5  WARNING in nilfs_dat_prepare_end (7) (has report)
+       6  WARNING in nilfs_dat_prepare_end (8) (has report)
+       7  WARNING in nilfs_dat_prepare_end (8) (has report)
+       8  WARNING in nilfs_dat_prepare_end (8) (has report)
+       9  WARNING in nilfs_dat_prepare_end (8) (has report)
+      10  WARNING in nilfs_dat_prepare_end (8) (has report)
+The bug was not found.
+About 5 commits remaining
+
+2026-05-01 20:45:52
+Session:   16
+Kernel:    2022-11-21 - bc943f4872a722c5cc64d1cf41daaaf4ec63158e
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  INFO: rcu detected stall in corrupted
+       2  WARNING in nilfs_dat_prepare_end (5) (has report)
+***    3  WARNING in nilfs_segctor_do_construct (2) (has report)
+       3  WARNING in nilfs_dat_prepare_end (6) (has report)
+The bug was found.
+About 3 commits remaining
+
+2026-05-01 20:56:36
+Session:   17
+Kernel:    2022-11-11 - d030bd1a66580b7b198a085e7220c794bcdc2770
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  WARNING in nilfs_dat_prepare_end (7) (has report)
+***    3  WARNING in nilfs_segctor_do_construct (has report)
+       3  WARNING in nilfs_dat_prepare_end (7) (has report)
+Running syz-repro.
+Run Time:        0h6m0s
+The bug was found.
+About 2 commits remaining
+
+==== Partial Result: Focused Fuzzing ====
+Reproducer:           /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0857-1.prog
+Bisection Result:     2022-11-11 - d030bd1a66580b7b198a085e7220c794bcdc2770
+Bisected Commit Name: ext2: Fix some kernel-doc warnings
+Stage Time:           7h13m37s
+Run Time:             7h13m38s
+=========================================
+
+==== Anchor Commit ====
+
+2026-05-01 21:13:25
+Session:   18
+Kernel:    2022-10-25 - ab7720a2b1175b21cace83757a9fd70408156bae
+Compiler:  ccache gcc
+PoC:       /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0857-1.prog
+Attempt 0:
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in switchdev_deferred_process_work
+    INFO: task hung in l2tp_exit_net
+    INFO: task hung in del_device_store
+    INFO: task hung in addrconf_dad_work
+    possible deadlock in vivid_update_format_cap
+    INFO: task hung in devlink_unregister
+    INFO: task hung in rtnetlink_rcv_msg
+Attempt 1:
+    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in switchdev_deferred_process_work
+    INFO: task hung in del_device_store
+    INFO: task hung in addrconf_dad_work
+    possible deadlock in vivid_update_format_cap
+    INFO: task hung in devlink_unregister
+    INFO: task hung in rtnetlink_rcv_msg
+    INFO: task hung in ip_tunnel_delete_nets
+Attempt 2:
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in switchdev_deferred_process_work
+    INFO: task hung in netdev_run_todo
+    INFO: task hung in devlink_nl_port_fill
+    INFO: task hung in new_device_store
+    INFO: task hung in del_device_store
+    possible deadlock in vivid_update_format_cap
+    INFO: task hung in rtnetlink_rcv_msg
+Attempt 3:
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in netdev_run_todo
+    INFO: task hung in new_device_store
+    INFO: task hung in wg_set_device
+    INFO: task hung in del_device_store
+    possible deadlock in vivid_update_format_cap
+    INFO: task hung in devlink_unregister
+    INFO: task hung in linkwatch_event
+    INFO: task hung in rtnetlink_rcv_msg
+Attempt 4:
+    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in netdev_run_todo
+    INFO: task hung in new_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in addrconf_dad_work
+    possible deadlock in vivid_update_format_cap
+    INFO: task hung in devlink_unregister
+    INFO: task hung in linkwatch_event
+    INFO: task hung in rtnetlink_rcv_msg
+Attempt 5:
+    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in switchdev_deferred_process_work
+    INFO: task hung in devlink_nl_port_fill
+    INFO: task hung in del_device_store
+    INFO: task hung in addrconf_dad_work
+    possible deadlock in vivid_update_format_cap
+    INFO: task hung in linkwatch_event
+    INFO: task hung in rtnetlink_rcv_msg
+Attempt 6:
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in new_device_store
+    INFO: task hung in del_device_store
+    possible deadlock in vivid_update_format_cap
+    INFO: task hung in linkwatch_event
+    INFO: task hung in rtnetlink_rcv_msg
+Attempt 7:
+    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in switchdev_deferred_process_work
+    INFO: task hung in new_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in addrconf_dad_work
+    possible deadlock in vivid_update_format_cap
+    INFO: task hung in devlink_unregister
+    INFO: task hung in linkwatch_event
+    INFO: task hung in rtnetlink_rcv_msg
+The bug was not found.
+
+Failure: This bug cannot be found at the anchor commit.
+
+====================================================================================================================================================
+Bug Name:             WARNING in nilfs_segctor_do_construct
+Bug ID:               bug0857
+Bug Link:             https://syzkaller.appspot.com/bug?extid=33494cd0df2ec2931851
+Bisection Result:     2022-11-11 - d030bd1a66580b7b198a085e7220c794bcdc2770
+Bisected Commit Name: ext2: Fix some kernel-doc warnings
+Run Time:             7h26m59s
+
+Anchor Commit:        2023-05-12 - 9a48d604672220545d209e9996c2a1edbb5637f6
+Bisection Result:     2022-11-11 - d030bd1a66580b7b198a085e7220c794bcdc2770

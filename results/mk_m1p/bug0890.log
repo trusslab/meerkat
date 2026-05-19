@@ -1,0 +1,679 @@
+./bin/meerkat -i 1 -c /home/author/meerkat/wd-meerkat-1/meerkat.cfg -a 148341f0a2f53b5e8808d093333d85170586a15d -F ff-test,stateful-corpus,poc-test,ff-no-find-backup
+Bisecting:          KASAN: slab-use-after-free Read in mas_next_entry
+Syzbot Link:        https://syzkaller.appspot.com/bug?extid=a7c1ec5b1d71ceaa5186
+Working Name:       bug0890
+
+Aliases:
+    KASAN: slab-use-after-free Read in mas_next_entry
+
+Anchor Commit:      148341f0a2f53b5e8808d093333d85170586a15d
+Repository:         https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
+Branch:             master
+Arch:               amd64
+
+Meerkat:            /home/author/meerkat/
+Version:            1.2.0
+Kernel:             /home/author/meerkat/wd-meerkat-1/kernel/
+Syzkaller:          /home/author/meerkat/syzkaller/
+Compilers:          /home/author/meerkat/compilers/
+Compiler:           gcc (Ubuntu 12.3.0-1ubuntu1~22.04.3) 12.3.0
+Linker:             GNU ld (GNU Binutils for Ubuntu) 2.38
+Ccache:             ccache version 4.5.1
+Image:              /home/author/meerkat/image/stretch/stretch.img
+Image Key:          /home/author/meerkat/image/stretch/stretch.id_rsa
+
+Workdir:            /home/author/meerkat/wd-meerkat-1/
+Kconfig:            /home/author/meerkat/wd-meerkat-1/config-bug0890.txt
+Reproducers: (1)    /home/author/meerkat/wd-meerkat-1/reproducers/
+Syzkaller Workdir:  /home/author/meerkat/wd-meerkat-1/wd-kaller/
+Log Directory:      /home/author/meerkat/wd-meerkat-1/log/
+
+Syscalls: (29)      ["mbind", "set_mempolicy_home_node", "syz_io_uring_setup", "syz_memcpy_off$IO_URING_METADATA_GENERIC", "syz_io_uring_submit", "ioctl$sock_SIOCGIFINDEX", "ioctl$IOCTL_GET_NCIDEV_IDX", "ioctl$F2FS_IOC_START_ATOMIC_WRITE", "openat$selinux_enforce", "statx", "socket", "setsockopt$inet_mreqn", "openat$nci", "bind$nfc_llcp", "open$dir", "io_uring_register$IORING_UNREGISTER_PERSONALITY", "io_uring_register$IORING_REGISTER_PERSONALITY", "futex", "getrusage", "clock_gettime", "mount$bpf", "getuid", "setgid", "getgid", "epoll_create", "socket$inet", "syz_init_net_socket$nfc_llcp", "ioctl$ifreq_SIOCGIFINDEX_vcan", "utimes"]
+VM Count:           4
+CPU Count:          4
+Procs:              24
+Memory:             4096
+Make Procs:         16
+Max Time:           10
+Max Attempts:       1
+
+==== Anchor Commit ====
+
+2026-05-06 12:47:37
+Session:   1
+Kernel:    2023-04-03 - 148341f0a2f53b5e8808d093333d85170586a15d
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    2  KASAN: slab-use-after-free Read in mas_next_entry (2) (has report)
+Attempt 2: (RETRY)
+    Time  Bug Name
+***    2  KASAN: slab-use-after-free Read in mas_next_entry (3) (has report)
+Attempt 3: (RETRY)
+    Time  Bug Name
+***    2  KASAN: slab-use-after-free Read in mas_next_entry (2) (has report)
+The bug was found.
+
+New Max Time: 10
+
+==== Major Release Search ====
+13 Releases
+
+2026-05-06 13:11:34
+Session:   2
+Kernel:    2023-02-19 - c9c3395d5e3dcc6daee66c6908354d47bf98cb0c (v6.2)
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  KASAN: use-after-free Read in mas_next_nentry (has report)
+       3  KASAN: use-after-free Read in mas_next_nentry (2) (has report)
+       4  KASAN: use-after-free Read in mas_next_nentry (3) (has report)
+       5  KASAN: use-after-free Read in mas_next_nentry (3) (has report)
+       6  KASAN: use-after-free Read in mas_next_nentry (4) (has report)
+       7  KASAN: use-after-free Read in mas_next_nentry (4) (has report)
+       8  KASAN: use-after-free Read in mas_next_nentry (2) (has report)
+       9  KASAN: use-after-free Read in mas_next_nentry (3) (has report)
+      10  KASAN: use-after-free Read in mas_next_nentry (4) (has report)
+The bug was not found.
+About 12 releases remaining
+
+==== Kernel Bisection ====
+14964 Linux commits
+
+2026-05-06 13:40:09
+Session:   3
+Kernel:    2023-02-22 - 307e14c039063f0c9bd7a18a7add8f940580dcc9
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  KASAN: use-after-free Read in mas_next_nentry (has report)
+       3  KASAN: use-after-free Read in mas_next_nentry (4) (has report)
+       4  KASAN: use-after-free Read in mas_next_nentry (4) (has report)
+       5  KASAN: use-after-free Read in mas_next_nentry (has report)
+       6  KASAN: use-after-free Read in mas_next_nentry (4) (has report)
+       7  KASAN: use-after-free Read in mas_next_nentry (4) (has report)
+       8  KASAN: use-after-free Read in mas_next_nentry (3) (has report)
+       9  KASAN: use-after-free Read in mas_next_nentry (4) (has report)
+      10  KASAN: use-after-free Read in mas_next_nentry (2) (has report)
+The bug was not found.
+About 8222 commits remaining
+
+2026-05-06 14:07:59
+Session:   4
+Kernel:    2023-02-25 - d8e473182ab9e85708067be81d20424045d939fa
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    3  KASAN: slab-use-after-free Read in mas_next_entry (2) (has report)
+Running syz-repro.
+syz-repro was terminated after 60 minutes
+Warning: Child process exited with error status 32764.
+Run Time:        1h0m0s
+The bug was found.
+About 4095 commits remaining
+
+2026-05-06 15:28:59
+Session:   5
+Kernel:    2023-02-23 - e4bc15889506723d7b93c053ad4a75cd58248d74
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       3  KASAN: use-after-free Read in mas_next_nentry (3) (has report)
+       4  KASAN: use-after-free Read in mas_next_nentry (has report)
+       5  KASAN: use-after-free Read in mas_next_nentry (4) (has report)
+       6  KASAN: use-after-free Read in mas_next_nentry (has report)
+       7  KASAN: use-after-free Read in mas_next_nentry (3) (has report)
+       8  KASAN: use-after-free Read in mas_next_nentry (2) (has report)
+       9  KASAN: use-after-free Read in mas_next_nentry (3) (has report)
+      10  KASAN: use-after-free Read in mas_next_nentry (3) (has report)
+The bug was not found.
+About 2176 commits remaining
+
+2026-05-06 15:58:33
+Session:   6
+Kernel:    2023-02-24 - 0601f25d1c4937c678db786961705ce56fbd6bb6
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    3  KASAN: slab-use-after-free Read in mas_next_entry (3) (has report)
+The bug was found.
+About 1191 commits remaining
+
+2026-05-06 16:21:59
+Session:   7
+Kernel:    2023-02-24 - ab7362d04d7c14923420c1e19e889da512a65cd7
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    3  KASAN: slab-use-after-free Read in mas_next_entry (4) (has report)
+The bug was found.
+About 579 commits remaining
+
+2026-05-06 16:45:48
+Session:   8
+Kernel:    2023-02-02 - 076cf7ea67010d11a97912423f4cdbeff1bd1f5f
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  INFO: rcu detected stall in corrupted
+       3  KASAN: use-after-free Read in mas_next_nentry (3) (has report)
+       4  KASAN: use-after-free Read in mas_next_nentry (has report)
+       5  KASAN: use-after-free Read in mas_next_nentry (2) (has report)
+       5  KASAN: use-after-free Read in nfc_llcp_find_local (has report)
+       6  KASAN: use-after-free Read in mas_next_nentry (2) (has report)
+       7  KASAN: use-after-free Read in mas_next_nentry (3) (has report)
+       8  KASAN: use-after-free Read in mas_next_nentry (has report)
+       9  KASAN: use-after-free Read in mas_next_nentry (3) (has report)
+      10  KASAN: use-after-free Read in mas_next_nentry (3) (has report)
+The bug was not found.
+About 10320 commits remaining
+
+2026-05-06 17:17:40
+Session:   9
+Kernel:    2023-02-09 - edad1bb1fbf7e28b49bf76b2aa66bfcaba00f627
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    2  KASAN: slab-use-after-free Read in mas_next_entry (has report)
+Running syz-repro.
+New PoC saved at /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0890-0.prog
+Primary PoC:     /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0890-0.prog
+Run Time:        0h48m0s
+The bug was found.
+About 145 commits remaining
+
+2026-05-06 18:29:55
+Session:   10
+Kernel:    2023-02-09 - d60beb1f698a429825ea2c463ee9e3dc3b1a79b7
+Compiler:  ccache gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0890-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 145 commits remaining
+
+2026-05-06 19:01:33
+Session:   11
+Kernel:    2023-02-09 - 6b73cff239e52fd43949c40eaabb369298c11aae
+Compiler:  ccache gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0890-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 145 commits remaining
+
+2026-05-06 19:31:57
+Session:   12
+Kernel:    2023-02-02 - b46402fa894f88ddb42a2e841618a8f42f57d16d
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       3  KASAN: use-after-free Read in mas_next_nentry (3) (has report)
+       4  KASAN: use-after-free Read in mas_next_nentry (2) (has report)
+       5  KASAN: use-after-free Read in mas_next_nentry (2) (has report)
+       6  KASAN: use-after-free Read in mas_next_nentry (3) (has report)
+       7  KASAN: use-after-free Read in mas_next_nentry (has report)
+       8  KASAN: use-after-free Read in mas_next_nentry (4) (has report)
+       9  KASAN: use-after-free Read in mas_next_nentry (has report)
+      10  KASAN: use-after-free Read in mas_next_nentry (3) (has report)
+The bug was not found.
+About 141 commits remaining
+
+2026-05-06 19:55:58
+Session:   13
+Kernel:    2023-02-09 - 11a9b90274f6a50f7877a61c8e82dd3c845ff1dd
+Compiler:  ccache gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0890-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 141 commits remaining
+
+2026-05-06 20:25:50
+Session:   14
+Kernel:    2023-02-09 - c465be97a4bc0022688d99f77a75b9be91843b31
+Compiler:  ccache gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0890-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 141 commits remaining
+
+2026-05-06 20:56:02
+Session:   15
+Kernel:    2023-02-02 - f4c978b6594b7452ef22a2fcff376debafcf25eb
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       3  KASAN: use-after-free Read in mas_next_nentry (3) (has report)
+       4  KASAN: use-after-free Read in mas_next_nentry (3) (has report)
+       5  KASAN: use-after-free Read in mas_next_nentry (3) (has report)
+       6  KASAN: use-after-free Read in mas_next_nentry (2) (has report)
+       7  KASAN: use-after-free Read in mas_next_nentry (3) (has report)
+       8  KASAN: use-after-free Read in mas_next_nentry (4) (has report)
+       9  KASAN: use-after-free Read in mas_next_nentry (3) (has report)
+      10  KASAN: use-after-free Read in mas_next_nentry (3) (has report)
+The bug was not found.
+About 129 commits remaining
+
+2026-05-06 21:27:16
+Session:   16
+Kernel:    2023-02-09 - 214dbc4281374cbbd833edd502d0ed1fd1b0e243
+Compiler:  ccache gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0890-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 129 commits remaining
+
+2026-05-06 21:57:13
+Session:   17
+Kernel:    2023-02-09 - 27b267011296e35dd5c983bf6c53b7230c78f383
+Compiler:  ccache gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0890-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 129 commits remaining
+
+2026-05-06 22:21:54
+Session:   18
+Kernel:    2023-02-02 - 75c59ce74e47d3e11aa7666f1877aa64495f7b03
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  INFO: rcu detected stall in corrupted
+       2  KASAN: use-after-free Read in mas_next_nentry (has report)
+       3  KASAN: use-after-free Read in mas_next_nentry (3) (has report)
+       4  KASAN: use-after-free Read in mas_next_nentry (3) (has report)
+       5  KASAN: use-after-free Read in mas_next_nentry (3) (has report)
+       6  KASAN: use-after-free Read in mas_next_nentry (2) (has report)
+       7  KASAN: use-after-free Read in mas_next_nentry (2) (has report)
+       8  KASAN: use-after-free Read in mas_next_nentry (4) (has report)
+       9  KASAN: use-after-free Read in mas_next_nentry (3) (has report)
+      10  KASAN: use-after-free Read in mas_next_nentry (3) (has report)
+The bug was not found.
+About 103 commits remaining
+
+2026-05-06 22:52:21
+Session:   19
+Kernel:    2023-02-09 - 0fd5a9e2b09ff589370f2c536df77654ed2d341f
+Compiler:  ccache gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0890-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 103 commits remaining
+
+2026-05-06 23:22:24
+Session:   20
+Kernel:    2023-02-09 - bba9697b42ead45687352fdd0fd498735bc4361d
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  INFO: rcu detected stall in corrupted
+***    2  KASAN: slab-use-after-free Read in mas_next_entry (3) (has report)
+The bug was found.
+About 90 commits remaining
+
+2026-05-06 23:45:20
+Session:   21
+Kernel:    2023-02-09 - 07f1bc5ad7983356ca79c65b22148dc5700a24e5
+Compiler:  ccache gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0890-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 90 commits remaining
+
+2026-05-07 00:15:14
+Session:   22
+Kernel:    2023-02-09 - e430a95a04efc557bc4ff9b3035c7c85aee5d63f
+Compiler:  ccache gcc
+Warning: Child process make exited with error status 2.
+Warning: make exited with error status 0x2
+Error: The kernel failed to make.
+Error: The kernel failed to make.
+Attempting to recover.
+
+2026-05-07 00:17:14
+Session:   23
+Kernel:    2023-02-09 - 47d9644de92c1aa9dcd791203397b161c67096ca
+Compiler:  ccache gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0890-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 90 commits remaining
+
+2026-05-07 00:36:41
+Session:   24
+Kernel:    2023-02-09 - bc292ab00f6c7a661a8a605c714e8a148f629ef6
+Compiler:  ccache gcc
+Warning: Child process make exited with error status 2.
+Warning: make exited with error status 0x2
+Error: The kernel failed to make.
+Error: The kernel failed to make.
+Attempting to recover.
+
+2026-05-07 00:38:42
+Session:   25
+Kernel:    2023-02-09 - 34403fa579514a6de378f06f79239821c92305bf
+Compiler:  ccache gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0890-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 90 commits remaining
+
+2026-05-07 01:08:45
+Session:   26
+Kernel:    2023-02-09 - 06e78b614e3780f9ac32056f2861159fd19d9702
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    2  KASAN: use-after-free Read in mas_next_entry (2) (has report)
+The bug was found.
+About 67 commits remaining
+
+2026-05-07 01:30:51
+Session:   27
+Kernel:    2023-02-09 - 2286a6914c776ec34cd97e4573b1466d055cb9de
+Compiler:  ccache gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0890-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 67 commits remaining
+
+2026-05-07 01:51:03
+Session:   28
+Kernel:    2023-02-09 - 183654ce26a5d5bd7bc11bcb02e8086f02f66d7d
+Compiler:  ccache gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0890-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 67 commits remaining
+
+2026-05-07 02:21:19
+Session:   29
+Kernel:    2023-02-09 - 440703e082b9c79c3d4fffcca8c2dffd621e6dc5
+Compiler:  ccache gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0890-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 67 commits remaining
+
+2026-05-07 02:51:10
+Session:   30
+Kernel:    2023-02-09 - 3c441ab7d059ebfd2535a52c001c50eac5d63886
+Compiler:  ccache gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0890-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 67 commits remaining
+
+2026-05-07 03:11:20
+Session:   31
+Kernel:    2023-02-09 - e3d73f848e5f2e9da46646c97fb127dfc6868767
+Compiler:  ccache gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0890-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 67 commits remaining
+
+2026-05-07 03:31:16
+Session:   32
+Kernel:    2023-02-09 - f2ebfe43ba6c845e70b6acbabd6c69ab74b3c52e
+Compiler:  ccache gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0890-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 67 commits remaining
+
+2026-05-07 03:59:37
+Session:   33
+Kernel:    2023-02-02 - d585bdbeb79aa13b8a9bbe952d90f5252f7fe909
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  KASAN: use-after-free Read in mas_next_nentry (3) (has report)
+       3  KASAN: use-after-free Read in mas_next_nentry (has report)
+       4  KASAN: use-after-free Read in mas_next_nentry (3) (has report)
+       5  KASAN: use-after-free Read in mas_next_nentry (has report)
+       6  KASAN: use-after-free Read in mas_next_nentry (4) (has report)
+       7  KASAN: use-after-free Read in mas_next_nentry (has report)
+       8  KASAN: use-after-free Read in mas_next_nentry (4) (has report)
+       9  KASAN: use-after-free Read in mas_next_nentry (3) (has report)
+      10  KASAN: use-after-free Read in mas_next_nentry (3) (has report)
+The bug was not found.
+About 55 commits remaining
+
+2026-05-07 04:27:11
+Session:   34
+Kernel:    2023-02-09 - 178e22ac2078b1a7d284c7e3b4c3fbdb8e85ae99
+Compiler:  ccache gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0890-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 55 commits remaining
+
+2026-05-07 04:54:20
+Session:   35
+Kernel:    2023-02-09 - 0c0c5bffd0a24637f1601ce15937ae38e572069c
+Compiler:  ccache gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0890-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 55 commits remaining
+
+2026-05-07 05:12:47
+Session:   36
+Kernel:    2023-02-09 - b373037fa9bb374f26bbabc0779fe990d02d33b7
+Compiler:  ccache gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0890-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 55 commits remaining
+
+2026-05-07 05:32:57
+Session:   37
+Kernel:    2023-02-02 - 9160cffd45ee93bc20de134e4f127dac9af0cc18
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  INFO: rcu detected stall in corrupted
+       2  KASAN: use-after-free Read in mas_next_nentry (has report)
+       3  KASAN: use-after-free Read in mas_next_nentry (3) (has report)
+       4  KASAN: use-after-free Read in mas_next_nentry (4) (has report)
+       5  KASAN: use-after-free Read in mas_next_nentry (has report)
+       6  KASAN: use-after-free Read in mas_next_nentry (4) (has report)
+       7  KASAN: use-after-free Read in mas_next_nentry (3) (has report)
+       8  KASAN: use-after-free Read in mas_next_nentry (2) (has report)
+       9  KASAN: use-after-free Read in mas_next_nentry (3) (has report)
+      10  KASAN: use-after-free Read in mas_next_nentry (3) (has report)
+The bug was not found.
+About 54 commits remaining
+
+2026-05-07 05:51:33
+Session:   38
+Kernel:    2023-02-09 - 0378c0a0e9e463b9e31b94fbbbc10f94b34225b6
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    2  KASAN: use-after-free Read in mas_next_entry (2) (has report)
+       2  INFO: rcu detected stall in corrupted
+Running syz-repro.
+New PoC saved at /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0890-1.prog
+Primary PoC:     /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0890-1.prog
+Run Time:        0h29m0s
+The bug was found.
+About 14 commits remaining
+
+2026-05-07 06:39:38
+Session:   39
+Kernel:    2023-02-09 - 1202700c3f8cc5f7e4646c3cf05ee6f7c8bc6ccf
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    2  KASAN: use-after-free Read in mas_next_entry (4) (has report)
+The bug was found.
+About 8 commits remaining
+
+2026-05-07 06:59:23
+Session:   40
+Kernel:    2023-02-09 - 65be6f058b0eba98dc6c6f197ea9f62c9b6a519f
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  KASAN: use-after-free Read in mas_next_nentry (3) (has report)
+       3  KASAN: use-after-free Read in mas_next_nentry (2) (has report)
+       4  KASAN: use-after-free Read in mas_next_nentry (3) (has report)
+       5  KASAN: use-after-free Read in mas_next_nentry (4) (has report)
+       6  KASAN: use-after-free Read in mas_next_nentry (3) (has report)
+       7  KASAN: use-after-free Read in mas_next_nentry (2) (has report)
+       8  KASAN: use-after-free Read in mas_next_nentry (4) (has report)
+       9  KASAN: use-after-free Read in mas_next_nentry (2) (has report)
+      10  KASAN: use-after-free Read in mas_next_nentry (2) (has report)
+The bug was not found.
+About 4 commits remaining
+
+2026-05-07 07:17:32
+Session:   41
+Kernel:    2023-02-09 - 50e81c82ad947045c7ed26ddc9acb17276b653b6
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    2  KASAN: use-after-free Read in mas_next_entry (has report)
+The bug was found.
+About 2 commits remaining
+
+==== Partial Result: Focused Fuzzing ====
+Reproducer:           /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0890-1.prog
+Bisection Result:     2023-02-09 - 50e81c82ad947045c7ed26ddc9acb17276b653b6
+Bisected Commit Name: maple_tree: reduce user error potential
+Stage Time:           18h40m14s
+Run Time:             18h40m20s
+=========================================
+
+==== Anchor Commit ====
+
+2026-05-07 07:27:51
+Session:   42
+Kernel:    2023-02-09 - 65be6f058b0eba98dc6c6f197ea9f62c9b6a519f
+Compiler:  ccache gcc
+PoC:       /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0890-1.prog
+Attempt 0:
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in new_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in devlink_unregister
+    INFO: task hung in rtnetlink_rcv_msg
+Attempt 1:
+    KASAN: use-after-free Read in mas_next_nentry (has report)
+Attempt 2:
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in del_device_store
+    INFO: task hung in devlink_unregister
+    INFO: task hung in linkwatch_event
+    INFO: task hung in rtnetlink_rcv_msg
+Attempt 3:
+    KASAN: use-after-free Read in mas_next_nentry (has report)
+Attempt 4:
+    KASAN: use-after-free Read in mas_next_nentry (has report)
+Attempt 5:
+    KASAN: use-after-free Read in mas_next_nentry (has report)
+Attempt 6:
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in del_device_store
+    INFO: task hung in devlink_unregister
+    INFO: task hung in linkwatch_event
+    INFO: task hung in rtnetlink_rcv_msg
+Attempt 7:
+    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in new_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in devlink_unregister
+    INFO: task hung in rtnetlink_rcv_msg
+The bug was not found.
+
+Failure: This bug cannot be found at the anchor commit.
+
+====================================================================================================================================================
+Bug Name:             KASAN: slab-use-after-free Read in mas_next_entry
+Bug ID:               bug0890
+Bug Link:             https://syzkaller.appspot.com/bug?extid=a7c1ec5b1d71ceaa5186
+Bisection Result:     2023-02-09 - 50e81c82ad947045c7ed26ddc9acb17276b653b6
+Bisected Commit Name: maple_tree: reduce user error potential
+Run Time:             18h53m56s
+
+Anchor Commit:        2023-04-03 - 148341f0a2f53b5e8808d093333d85170586a15d
+Bisection Result:     2023-02-09 - 50e81c82ad947045c7ed26ddc9acb17276b653b6

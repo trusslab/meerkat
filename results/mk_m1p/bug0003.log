@@ -1,0 +1,277 @@
+./bin/meerkat -i 1 -c /home/author/meerkat/wd-meerkat-1/meerkat.cfg -a dcb85f85fa6f142aae1fe86f399d4503d49f2b60 -F ff-test,stateful-corpus,poc-test,ff-no-find-backup
+Bisecting:          BUG: MAX_LOCK_DEPTH too low!
+Syzbot Link:        https://syzkaller.appspot.com/bug?id=ac7db280d77ec300d7cdaa14625a32be584c8eec
+Working Name:       bug0003
+
+Aliases:
+    BUG: MAX_LOCK_DEPTH too low!
+
+Anchor Commit:      dcb85f85fa6f142aae1fe86f399d4503d49f2b60
+Repository:         https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
+Branch:             master
+Arch:               amd64
+
+Meerkat:            /home/author/meerkat/
+Version:            1.2.0
+Kernel:             /home/author/meerkat/wd-meerkat-1/kernel/
+Syzkaller:          /home/author/meerkat/syzkaller/
+Compilers:          /home/author/meerkat/compilers/
+Compiler:           gcc (Ubuntu 12.3.0-1ubuntu1~22.04.3) 12.3.0
+Linker:             GNU ld (GNU Binutils for Ubuntu) 2.38
+Ccache:             ccache version 4.5.1
+Image:              /home/author/meerkat/image/stretch/stretch.img
+Image Key:          /home/author/meerkat/image/stretch/stretch.id_rsa
+
+Workdir:            /home/author/meerkat/wd-meerkat-1/
+Kconfig:            /home/author/meerkat/wd-meerkat-1/config-bug0003.txt
+Reproducers: (1)    /home/author/meerkat/wd-meerkat-1/reproducers/
+Primary PoC:        /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0003-2.prog
+Syzkaller Workdir:  /home/author/meerkat/wd-meerkat-1/wd-kaller/
+Log Directory:      /home/author/meerkat/wd-meerkat-1/log/
+
+Syscalls: (13)      ["connect$inet", "sendmmsg", "setsockopt$inet_tcp_TCP_REPAIR", "setsockopt$inet_tcp_TCP_REPAIR_QUEUE", "socket$inet_smc", "socket$inet", "socket", "ioctl$F2FS_IOC_START_ATOMIC_WRITE", "openat$selinux_enforce", "ioctl$sock_SIOCGIFINDEX", "ioctl$ifreq_SIOCGIFINDEX_vcan", "ioctl$IOCTL_GET_NCIDEV_IDX", "openat$nci"]
+VM Count:           8
+CPU Count:          2
+Procs:              16
+Memory:             4096
+Make Procs:         16
+Max Time:           10
+Max Attempts:       1
+
+==== Anchor Commit ====
+
+2026-04-21 13:12:34
+Session:   1
+Kernel:    2022-02-03 - dcb85f85fa6f142aae1fe86f399d4503d49f2b60
+Compiler:  ccache gcc
+Error: index error parsing basic report
+Attempt 1:
+    Time  Bug Name
+***    5  BUG: MAX_LOCK_DEPTH too low! (3) (has report)
+Error: index error parsing basic report
+Attempt 2: (RETRY)
+    Time  Bug Name
+***    3  BUG: MAX_LOCK_DEPTH too low! (has report)
+Error: index error parsing basic report
+Attempt 3: (RETRY)
+    Time  Bug Name
+***    4  BUG: MAX_LOCK_DEPTH too low! (4) (has report)
+The bug was found.
+
+New Max Time: 10
+
+==== Major Release Search ====
+11 Releases
+
+2026-04-21 13:37:33
+Session:   2
+Kernel:    2022-01-09 - df0cc57e057f18e44dac8e6c18aba47ab53202f9 (v5.16)
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 10 releases remaining
+
+==== Kernel Bisection ====
+12432 Linux commits
+
+2026-04-21 14:00:26
+Session:   3
+Kernel:    2022-01-11 - 9149fe8ba7ff798ea1c6b1fa05eeb59f95f9a94a
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 6257 commits remaining
+
+2026-04-21 14:22:56
+Session:   4
+Kernel:    2022-01-18 - aee101d7b95a03078945681dd7f7ea5e4a1e7686
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 3239 commits remaining
+
+2026-04-21 14:45:24
+Session:   5
+Kernel:    2022-01-18 - e3a8b6a1e70c37702054ae3c7c07ed828435d8ee
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       9  KASAN: use-after-free Read in tcp_retransmit_timer (2) (has report)
+       9  KASAN: use-after-free Read in tcp_write_timer_handler (3) (has report)
+      10  KASAN: use-after-free Read in tcp_retransmit_timer (has report)
+      10  KASAN: use-after-free Read in tcp_write_timer_handler (has report)
+The bug was not found.
+About 1638 commits remaining
+
+2026-04-21 15:07:51
+Session:   6
+Kernel:    2022-01-22 - 636b5284d8fa12cadbaa09bb7efa48473aa804f5
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    8  no output from test machine
+Running syz-repro.
+syz-repro was terminated after 60 minutes
+Warning: Child process exited with error status 32764.
+Run Time:        1h0m0s
+The bug was found.
+About 818 commits remaining
+
+2026-04-21 16:28:15
+Session:   7
+Kernel:    2022-01-19 - 1d1df41c5a33359a00e919d54eaebfb789711fdc
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       8  KASAN: use-after-free Read in tcp_retransmit_timer (3) (has report)
+       8  KASAN: use-after-free Read in tcp_write_timer_handler (3) (has report)
+       9  KASAN: use-after-free Read in tcp_retransmit_timer (has report)
+       9  KASAN: use-after-free Read in tcp_write_timer_handler (has report)
+The bug was not found.
+About 412 commits remaining
+
+2026-04-21 16:50:27
+Session:   8
+Kernel:    2022-01-20 - 64f29d8856a9e0d1fcdc5344f76e70c364b941cb
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    8  no output from test machine
+The bug was found.
+About 209 commits remaining
+
+2026-04-21 17:05:54
+Session:   9
+Kernel:    2022-01-19 - ff9fc0a31d85fcf0011eb4bc4ecaf47d3cc9e21c
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       9  KASAN: use-after-free Read in tcp_write_timer_handler (has report)
+      10  KASAN: use-after-free Read in tcp_retransmit_timer (has report)
+The bug was not found.
+About 6087 commits remaining
+
+2026-04-21 17:28:18
+Session:   10
+Kernel:    2022-01-20 - bece04b5b41dd7730dd06aec0d6b15c53d1fbb5a
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       9  KASAN: use-after-free Read in tcp_retransmit_timer (2) (has report)
+***   10  suppressed report
+      10  KASAN: use-after-free Read in tcp_write_timer_handler (has report)
+The bug was found.
+About 54 commits remaining
+
+2026-04-21 17:50:52
+Session:   11
+Kernel:    2022-01-20 - ae7880676bc8019ff61e49126c558ad7c4b6fa21
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    9  no output from test machine
+Running syz-repro.
+syz-repro was terminated after 60 minutes
+Warning: Child process exited with error status 32764.
+Run Time:        1h0m0s
+The bug was found.
+About 27 commits remaining
+
+2026-04-21 19:12:19
+Session:   12
+Kernel:    2022-01-20 - 503471ac36df60bba037c3b110d76f53a93f61b5
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       9  KASAN: use-after-free Read in tcp_retransmit_timer (has report)
+      10  KASAN: use-after-free Read in tcp_write_timer_handler (has report)
+The bug was not found.
+About 14 commits remaining
+
+2026-04-21 19:34:46
+Session:   13
+Kernel:    2022-01-20 - d6986ce24fc00b0638bd29efe8fb7ba7619ed2aa
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    5  suppressed report
+The bug was found.
+About 7 commits remaining
+
+2026-04-21 19:52:11
+Session:   14
+Kernel:    2022-01-20 - d068144d3b2cae09062ed936a3865c093ff69590
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 4 commits remaining
+
+2026-04-21 20:06:52
+Session:   15
+Kernel:    2022-01-20 - 3087c61ed2c48548b74dd343a5209b87082c682d
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    9  unregister_netdevice: waiting for DEV to become free
+The bug was found.
+About 3 commits remaining
+
+2026-04-21 20:26:03
+Session:   16
+Kernel:    2022-01-20 - 4cfb943537ed3716daf668ca5a33d3ce667f82a3
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+      10  KASAN: use-after-free Read in tcp_write_timer_handler (has report)
+The bug was not found.
+About 2 commits remaining
+
+==== Partial Result: Focused Fuzzing ====
+Reproducer:           /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0003-2.prog
+Bisection Result:     2022-01-20 - 3087c61ed2c48548b74dd343a5209b87082c682d
+Bisected Commit Name: tools/testing/selftests/bpf: replace open-coded 16 with TASK_COMM_LEN
+Stage Time:           7h27m47s
+Run Time:             7h27m48s
+=========================================
+
+==== Anchor Commit ====
+
+2026-04-21 20:40:22
+Session:   17
+Kernel:    2022-01-20 - 4cfb943537ed3716daf668ca5a33d3ce667f82a3
+Compiler:  ccache gcc
+PoC:       /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0003-2.prog
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    WARNING: ODEBUG bug in netdev_run_todo (has report)
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+
+Failure: This bug cannot be found at the anchor commit.
+
+====================================================================================================================================================
+Bug Name:             BUG: MAX_LOCK_DEPTH too low!
+Bug ID:               bug0003
+Bug Link:             https://syzkaller.appspot.com/bug?id=ac7db280d77ec300d7cdaa14625a32be584c8eec
+Bisection Result:     2022-01-20 - 3087c61ed2c48548b74dd343a5209b87082c682d
+Bisected Commit Name: tools/testing/selftests/bpf: replace open-coded 16 with TASK_COMM_LEN
+Run Time:             7h39m56s
+
+Anchor Commit:        2022-02-03 - dcb85f85fa6f142aae1fe86f399d4503d49f2b60
+Bisection Result:     2022-01-20 - 3087c61ed2c48548b74dd343a5209b87082c682d

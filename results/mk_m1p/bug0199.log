@@ -1,0 +1,291 @@
+./bin/meerkat -i 1 -c /home/author/meerkat/wd-meerkat-1/meerkat.cfg -a 200e340f2196d7fd427a5810d06e893b932f145a -F ff-test,stateful-corpus,poc-test,ff-no-find-backup
+Bisecting:          WARNING in blk_mq_release
+Syzbot Link:        https://syzkaller.appspot.com/bug?id=1abe2db081aaca3d3ca9eef2108f8131ec128bd4
+Working Name:       bug0199
+
+Aliases:
+    WARNING in blk_mq_release
+
+Anchor Commit:      200e340f2196d7fd427a5810d06e893b932f145a
+Repository:         https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
+Branch:             master
+Arch:               amd64
+
+Meerkat:            /home/author/meerkat/
+Version:            1.2.0
+Kernel:             /home/author/meerkat/wd-meerkat-1/kernel/
+Syzkaller:          /home/author/meerkat/syzkaller/
+Compilers:          /home/author/meerkat/compilers/
+Compiler:           gcc (Ubuntu 12.3.0-1ubuntu1~22.04.3) 12.3.0
+Linker:             GNU ld (GNU Binutils for Ubuntu) 2.38
+Ccache:             ccache version 4.5.1
+Image:              /home/author/meerkat/image/stretch/stretch.img
+Image Key:          /home/author/meerkat/image/stretch/stretch.id_rsa
+
+Workdir:            /home/author/meerkat/wd-meerkat-1/
+Kconfig:            /home/author/meerkat/wd-meerkat-1/config-bug0199.txt
+Reproducers: (1)    /home/author/meerkat/wd-meerkat-1/reproducers/
+Syzkaller Workdir:  /home/author/meerkat/wd-meerkat-1/wd-kaller/
+Log Directory:      /home/author/meerkat/wd-meerkat-1/log/
+
+Syscalls: (5)       ["ioctl$LOOP_CTL_ADD", "ioctl$LOOP_CTL_REMOVE", "openat$loop_ctrl", "ioctl$F2FS_IOC_START_ATOMIC_WRITE", "openat$selinux_enforce"]
+VM Count:           8
+CPU Count:          2
+Procs:              16
+Memory:             4096
+Make Procs:         16
+Max Time:           10
+Max Attempts:       1
+
+==== Anchor Commit ====
+
+2026-05-13 22:00:02
+Session:   1
+Kernel:    2022-08-03 - 200e340f2196d7fd427a5810d06e893b932f145a
+Compiler:  ccache gcc
+Warning: ioctl$LOOP_CTL_ADD was disabled by Syzkaller.
+Warning: ioctl$LOOP_CTL_REMOVE was disabled by Syzkaller.
+Attempt 1:
+    No crashes found.
+Warning: ioctl$LOOP_CTL_ADD was disabled by Syzkaller.
+Warning: ioctl$LOOP_CTL_REMOVE was disabled by Syzkaller.
+Attempt 2: (RETRY)
+    Time  Bug Name
+***    2  WARNING in blk_mq_release (has report)
+Warning: ioctl$LOOP_CTL_ADD was disabled by Syzkaller.
+Warning: ioctl$LOOP_CTL_REMOVE was disabled by Syzkaller.
+Attempt 3: (RETRY)
+    Time  Bug Name
+***    2  WARNING in blk_mq_release (2) (has report)
+The bug was found.
+
+New Max Time: 12
+
+==== Major Release Search ====
+12 Releases
+
+2026-05-13 22:28:27
+Session:   2
+Kernel:    2022-07-31 - 3d7cb6b04c3f3115719235cc6866b10326de34cd (v5.19)
+Compiler:  ccache gcc
+Warning: ioctl$LOOP_CTL_ADD was disabled by Syzkaller.
+Warning: ioctl$LOOP_CTL_REMOVE was disabled by Syzkaller.
+Attempt 1:
+    Time  Bug Name
+      11  suppressed report
+      12  suppressed report
+The bug was not found.
+About 11 releases remaining
+
+==== Kernel Bisection ====
+2973 Linux commits
+
+2026-05-13 22:54:34
+Session:   3
+Kernel:    2022-08-02 - 3976d758e045ed0485e0e665fb3b6692572576d7
+Compiler:  ccache gcc
+Warning: ioctl$LOOP_CTL_ADD was disabled by Syzkaller.
+Warning: ioctl$LOOP_CTL_REMOVE was disabled by Syzkaller.
+Attempt 1:
+    Time  Bug Name
+       2  possible deadlock in blkcg_deactivate_policy
+       6  suppressed report (2)
+       7  suppressed report (5)
+      11  suppressed report (2)
+      12  suppressed report (2)
+The bug was not found.
+About 1465 commits remaining
+
+2026-05-13 23:20:26
+Session:   4
+Kernel:    2022-08-02 - 42df1cbf6a4726934cc5dac12bf263aa73c49fa3
+Compiler:  ccache gcc
+Warning: ioctl$LOOP_CTL_ADD was disabled by Syzkaller.
+Warning: ioctl$LOOP_CTL_REMOVE was disabled by Syzkaller.
+Attempt 1:
+    Time  Bug Name
+       3  possible deadlock in blkcg_deactivate_policy
+       8  suppressed report
+       9  suppressed report (3)
+      11  suppressed report (3)
+      12  suppressed report
+The bug was not found.
+About 737 commits remaining
+
+2026-05-13 23:46:02
+Session:   5
+Kernel:    2022-08-02 - c2a24a7a036b3bd3a2e6c66730dfc777cae6540a
+Compiler:  ccache gcc
+Warning: ioctl$LOOP_CTL_ADD was disabled by Syzkaller.
+Warning: ioctl$LOOP_CTL_REMOVE was disabled by Syzkaller.
+Attempt 1:
+    Time  Bug Name
+***    4  WARNING in blk_mq_release (has report)
+Running syz-repro.
+Run Time:        0h17m0s
+The bug was found.
+About 365 commits remaining
+
+2026-05-14 00:20:37
+Session:   6
+Kernel:    2022-08-02 - c013d0af81f60cc7dbe357c4e2a925fb6738dbfe
+Compiler:  ccache gcc
+Warning: ioctl$LOOP_CTL_ADD was disabled by Syzkaller.
+Warning: ioctl$LOOP_CTL_REMOVE was disabled by Syzkaller.
+Attempt 1:
+    Time  Bug Name
+***    2  WARNING in blk_mq_release (2) (has report)
+The bug was found.
+About 180 commits remaining
+
+2026-05-14 00:34:05
+Session:   7
+Kernel:    2022-07-14 - 4664954c9421ce326bb5c84f175902b03f17237e
+Compiler:  ccache gcc
+Warning: ioctl$LOOP_CTL_ADD was disabled by Syzkaller.
+Warning: ioctl$LOOP_CTL_REMOVE was disabled by Syzkaller.
+Attempt 1:
+    Time  Bug Name
+***    2  WARNING in blk_mq_release (8) (has report)
+The bug was found.
+About 90 commits remaining
+
+2026-05-14 00:49:56
+Session:   8
+Kernel:    2022-06-28 - 4a8d14bba486cca6880062f1ef240cf1d45f3367
+Compiler:  ccache gcc
+Warning: ioctl$LOOP_CTL_ADD was disabled by Syzkaller.
+Warning: ioctl$LOOP_CTL_REMOVE was disabled by Syzkaller.
+Attempt 1:
+    Time  Bug Name
+***    2  WARNING in blk_mq_release (8) (has report)
+Running syz-repro.
+New PoC saved at /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0199-0.prog
+Primary PoC:     /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0199-0.prog
+Run Time:        0h16m0s
+The bug was found.
+About 45 commits remaining
+
+2026-05-14 01:15:06
+Session:   9
+Kernel:    2022-06-27 - 6c77b152f5f1324972cdbdb71e9a6e02d601f49f
+Compiler:  ccache gcc
+Warning: ioctl$LOOP_CTL_ADD was disabled by Syzkaller.
+Warning: ioctl$LOOP_CTL_REMOVE was disabled by Syzkaller.
+Attempt 1:
+    Time  Bug Name
+       3  possible deadlock in blkcg_deactivate_policy
+The bug was not found.
+About 23 commits remaining
+
+2026-05-14 01:40:31
+Session:   10
+Kernel:    2022-06-27 - 9c6227e04355a430aa59709bbf869d9126112d0d
+Compiler:  ccache gcc
+Warning: ioctl$LOOP_CTL_ADD was disabled by Syzkaller.
+Warning: ioctl$LOOP_CTL_REMOVE was disabled by Syzkaller.
+Attempt 1:
+    Time  Bug Name
+       3  possible deadlock in blkcg_deactivate_policy
+      11  suppressed report
+      12  suppressed report (2)
+The bug was not found.
+About 12 commits remaining
+
+2026-05-14 01:59:26
+Session:   11
+Kernel:    2022-06-28 - 1f90307e5f0d7bc9a336ead528f616a5df8e5944
+Compiler:  ccache gcc
+Warning: ioctl$LOOP_CTL_ADD was disabled by Syzkaller.
+Warning: ioctl$LOOP_CTL_REMOVE was disabled by Syzkaller.
+Attempt 1:
+    Time  Bug Name
+       3  possible deadlock in blkcg_deactivate_policy (2)
+       7  suppressed report (2)
+       8  suppressed report (3)
+       9  suppressed report (2)
+      11  suppressed report
+The bug was not found.
+About 7 commits remaining
+
+2026-05-14 02:18:26
+Session:   12
+Kernel:    2022-06-28 - 8b9ab62662048a3274361c7e5f64037c2c133e2c
+Compiler:  ccache gcc
+Warning: ioctl$LOOP_CTL_ADD was disabled by Syzkaller.
+Warning: ioctl$LOOP_CTL_REMOVE was disabled by Syzkaller.
+Attempt 1:
+    Time  Bug Name
+***    2  WARNING in blk_mq_release (8) (has report)
+The bug was found.
+About 4 commits remaining
+
+2026-05-14 02:26:07
+Session:   13
+Kernel:    2022-06-28 - 6f8191fdf41d3a53cc1d63fe2234e812c55a0092
+Compiler:  ccache gcc
+Warning: ioctl$LOOP_CTL_ADD was disabled by Syzkaller.
+Warning: ioctl$LOOP_CTL_REMOVE was disabled by Syzkaller.
+Attempt 1:
+    Time  Bug Name
+***    2  WARNING in blk_mq_release (8) (has report)
+The bug was found.
+About 3 commits remaining
+
+2026-05-14 02:35:07
+Session:   14
+Kernel:    2022-06-28 - 0e3534022f26ae51f7cf28347a253230604b6f4e
+Compiler:  ccache gcc
+Warning: ioctl$LOOP_CTL_ADD was disabled by Syzkaller.
+Warning: ioctl$LOOP_CTL_REMOVE was disabled by Syzkaller.
+Attempt 1:
+    Time  Bug Name
+       2  possible deadlock in blkcg_deactivate_policy
+The bug was not found.
+About 2 commits remaining
+
+==== Partial Result: Focused Fuzzing ====
+Reproducer:           /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0199-0.prog
+Bisection Result:     2022-06-28 - 6f8191fdf41d3a53cc1d63fe2234e812c55a0092
+Bisected Commit Name: block: simplify disk shutdown
+Stage Time:           4h52m26s
+Run Time:             4h52m27s
+=========================================
+
+==== Anchor Commit ====
+
+2026-05-14 02:52:29
+Session:   15
+Kernel:    2022-06-28 - 0e3534022f26ae51f7cf28347a253230604b6f4e
+Compiler:  ccache gcc
+PoC:       /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0199-0.prog
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+
+Failure: This bug cannot be found at the anchor commit.
+
+====================================================================================================================================================
+Bug Name:             WARNING in blk_mq_release
+Bug ID:               bug0199
+Bug Link:             https://syzkaller.appspot.com/bug?id=1abe2db081aaca3d3ca9eef2108f8131ec128bd4
+Bisection Result:     2022-06-28 - 6f8191fdf41d3a53cc1d63fe2234e812c55a0092
+Bisected Commit Name: block: simplify disk shutdown
+Run Time:             5h5m6s
+
+Anchor Commit:        2022-08-03 - 200e340f2196d7fd427a5810d06e893b932f145a
+Bisection Result:     2022-06-28 - 6f8191fdf41d3a53cc1d63fe2234e812c55a0092

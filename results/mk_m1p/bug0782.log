@@ -1,0 +1,388 @@
+./bin/meerkat -i 1 -c /home/author/meerkat/wd-meerkat-1/meerkat.cfg -a a6afa4199d3d038fbfdff5511f7523b0e30cb774 -F ff-test,stateful-corpus,poc-test,ff-no-find-backup
+Bisecting:          WARNING in __kernel_write_iter
+Syzbot Link:        https://syzkaller.appspot.com/bug?extid=12e098239d20385264d3
+Working Name:       bug0782
+
+Aliases:
+    WARNING in __kernel_write_iter
+
+Anchor Commit:      a6afa4199d3d038fbfdff5511f7523b0e30cb774
+Repository:         https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
+Branch:             master
+Arch:               amd64
+
+Meerkat:            /home/author/meerkat/
+Version:            1.2.0
+Kernel:             /home/author/meerkat/wd-meerkat-1/kernel/
+Syzkaller:          /home/author/meerkat/syzkaller/
+Compilers:          /home/author/meerkat/compilers/
+Compiler:           gcc (Ubuntu 12.3.0-1ubuntu1~22.04.3) 12.3.0
+Linker:             GNU ld (GNU Binutils for Ubuntu) 2.38
+Ccache:             ccache version 4.5.1
+Image:              /home/author/meerkat/image/stretch/stretch.img
+Image Key:          /home/author/meerkat/image/stretch/stretch.id_rsa
+
+Workdir:            /home/author/meerkat/wd-meerkat-1/
+Kconfig:            /home/author/meerkat/wd-meerkat-1/config-bug0782.txt
+Reproducers: (1)    /home/author/meerkat/wd-meerkat-1/reproducers/
+Primary PoC:        /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0782-1.prog
+Syzkaller Workdir:  /home/author/meerkat/wd-meerkat-1/wd-kaller/
+Log Directory:      /home/author/meerkat/wd-meerkat-1/log/
+
+Syscalls: (11)      ["ioctl$BTRFS_IOC_BALANCE_V2", "ioctl$BTRFS_IOC_SEND", "syz_mount_image$btrfs", "openat$selinux_enforce", "open$dir", "ioctl$BTRFS_IOC_RESIZE", "ioctl$BTRFS_IOC_BALANCE_PROGRESS", "mount$bpf", "getuid", "setgid", "getgid"]
+VM Count:           8
+CPU Count:          2
+Procs:              16
+Memory:             4096
+Make Procs:         16
+Max Time:           10
+Max Attempts:       1
+
+==== Anchor Commit ====
+
+2026-05-18 03:37:40
+Session:   1
+Kernel:    2022-10-08 - a6afa4199d3d038fbfdff5511f7523b0e30cb774
+Compiler:  ccache gcc
+Error: Waitpid on pid 4158280 failed.
+Error: Syzkaller has experienced a crash.
+Warning: Child process exited with error status 32767.
+Attempt 1:
+    Time  Bug Name
+       1  WARNING in wireless_send_event (has report)
+Error: Waitpid on pid 4160518 failed.
+Error: Syzkaller has experienced a crash.
+Warning: Child process exited with error status 32767.
+Attempt 2: (RETRY)
+    Time  Bug Name
+       1  WARNING in wireless_send_event (has report)
+Attempt 3: (RETRY)
+    Time  Bug Name
+       1  WARNING in wireless_send_event (has report)
+       2  WARNING in wireless_send_event (6) (has report)
+       3  WARNING in wireless_send_event (6) (has report)
+       4  WARNING in wireless_send_event (6) (has report)
+***    5  WARNING in __kernel_write_iter (has report)
+       5  WARNING in wireless_send_event (4) (has report)
+The bug was found.
+
+New Max Time: 10
+
+==== Major Release Search ====
+12 Releases
+
+2026-05-18 04:01:31
+Session:   2
+Kernel:    2022-10-02 - 4fe89d07dcc2804c8b562f6c7896a45643d34b2f (v6.0)
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    2  WARNING in __kernel_write_iter (4) (has report)
+Running syz-repro.
+New PoC saved at /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0782-0.prog
+Primary PoC:     /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0782-0.prog
+Run Time:        0h6m0s
+The bug was found.
+About 11 releases remaining
+
+2026-05-18 04:23:47
+Session:   3
+Kernel:    2022-07-31 - 3d7cb6b04c3f3115719235cc6866b10326de34cd (v5.19)
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  WARNING in __kernel_write (2) (has report)
+       3  WARNING in __kernel_write (2) (has report)
+The bug was not found.
+About 10 releases remaining
+
+==== Kernel Bisection ====
+16585 Linux commits
+
+2026-05-18 04:47:46
+Session:   4
+Kernel:    2022-08-04 - 78acd4ca433425e6dd4032cfc2156c60e34931f2
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  WARNING: ODEBUG bug in mgmt_index_removed (8) (has report)
+       3  WARNING: ODEBUG bug in mgmt_index_removed (8) (has report)
+       4  WARNING: ODEBUG bug in mgmt_index_removed (8) (has report)
+       5  WARNING in __kernel_write (has report)
+       5  WARNING: ODEBUG bug in mgmt_index_removed (7) (has report)
+       6  WARNING: ODEBUG bug in mgmt_index_removed (8) (has report)
+       7  WARNING: ODEBUG bug in mgmt_index_removed (8) (has report)
+       8  WARNING: ODEBUG bug in mgmt_index_removed (8) (has report)
+       9  WARNING: ODEBUG bug in mgmt_index_removed (8) (has report)
+      10  WARNING: ODEBUG bug in mgmt_index_removed (8) (has report)
+The bug was not found.
+About 8386 commits remaining
+
+2026-05-18 05:11:32
+Session:   5
+Kernel:    2022-08-12 - 5cef38dd03f33ef206eb792df0fb3b200d762546
+Compiler:  ccache gcc
+Error: index error parsing Warning report
+Attempt 1:
+    Time  Bug Name
+       2  WARNING: ODEBUG bug in mgmt_index_removed (8) (has report)
+       3  WARNING: ODEBUG bug in mgmt_index_removed (8) (has report)
+       4  WARNING: ODEBUG bug in mgmt_index_removed (8) (has report)
+       5  WARNING in corrupted
+       5  WARNING: ODEBUG bug in mgmt_index_removed (7) (has report)
+       6  WARNING: ODEBUG bug in mgmt_index_removed (8) (has report)
+       7  WARNING: ODEBUG bug in mgmt_index_removed (8) (has report)
+       8  WARNING: ODEBUG bug in mgmt_index_removed (8) (has report)
+       9  WARNING: ODEBUG bug in mgmt_index_removed (8) (has report)
+      10  WARNING: ODEBUG bug in mgmt_index_removed (8) (has report)
+The bug was not found.
+About 4255 commits remaining
+
+2026-05-18 05:35:15
+Session:   6
+Kernel:    2022-08-18 - 90b6b686c1e0273ce6d1724fab9b9651a276217e
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  INFO: rcu detected stall in corrupted
+       2  WARNING in __kernel_write (4) (has report)
+       3  INFO: rcu detected stall in corrupted (3)
+       4  INFO: rcu detected stall in corrupted (4)
+       5  INFO: rcu detected stall in corrupted (6)
+       6  INFO: rcu detected stall in corrupted
+       7  INFO: rcu detected stall in corrupted (7)
+       8  INFO: rcu detected stall in corrupted (2)
+       9  INFO: rcu detected stall in corrupted (5)
+      10  INFO: rcu detected stall in corrupted (3)
+The bug was not found.
+About 2133 commits remaining
+
+2026-05-18 05:59:29
+Session:   7
+Kernel:    2022-09-03 - 65eea2c060aee3bf6d27ea365360059fbd4eeff4
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  WARNING in __kernel_write (has report)
+       3  INFO: rcu detected stall in corrupted (7)
+       3  WARNING in __kernel_write (has report)
+       4  WARNING in __kernel_write (has report)
+       5  INFO: rcu detected stall in corrupted (6)
+       6  INFO: rcu detected stall in corrupted (2)
+       7  INFO: rcu detected stall in corrupted (6)
+       8  INFO: rcu detected stall in corrupted (2)
+       9  INFO: rcu detected stall in corrupted (8)
+The bug was not found.
+About 1069 commits remaining
+
+2026-05-18 06:23:43
+Session:   8
+Kernel:    2022-09-22 - 5e0a93e42756fa93b69fe8848cf8dda7cee5d13a
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  WARNING in __kernel_write (4) (has report)
+       3  INFO: rcu detected stall in corrupted (4)
+       4  INFO: rcu detected stall in corrupted (3)
+       5  INFO: rcu detected stall in corrupted (5)
+       6  INFO: rcu detected stall in corrupted (2)
+       7  INFO: rcu detected stall in corrupted (6)
+       8  INFO: rcu detected stall in corrupted
+       9  INFO: rcu detected stall in corrupted (7)
+      10  INFO: rcu detected stall in corrupted
+The bug was not found.
+About 534 commits remaining
+
+2026-05-18 06:45:52
+Session:   9
+Kernel:    2022-09-25 - f0cc7c00089bf923259370fefc1d4f48d7252fc5
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  WARNING in __kernel_write (has report)
+       3  INFO: rcu detected stall in corrupted (2)
+       3  WARNING in __kernel_write (3) (has report)
+       4  INFO: rcu detected stall in corrupted (4)
+       5  INFO: rcu detected stall in corrupted (4)
+       6  INFO: rcu detected stall in corrupted (5)
+       7  INFO: rcu detected stall in corrupted (5)
+       8  INFO: rcu detected stall in corrupted (3)
+       9  INFO: rcu detected stall in corrupted (4)
+      10  INFO: rcu detected stall in corrupted (5)
+The bug was not found.
+About 268 commits remaining
+
+2026-05-18 07:03:19
+Session:   10
+Kernel:    2022-09-29 - 511cce163b75bc3933fa3de769a82bb7e8663f2b
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  INFO: rcu detected stall in corrupted
+       2  WARNING in __kernel_write (4) (has report)
+       3  INFO: rcu detected stall in corrupted (3)
+       4  INFO: rcu detected stall in corrupted (5)
+       5  INFO: rcu detected stall in corrupted (3)
+       6  INFO: rcu detected stall in corrupted (3)
+       7  INFO: rcu detected stall in corrupted (5)
+       8  INFO: rcu detected stall in corrupted (4)
+       9  INFO: rcu detected stall in corrupted (4)
+      10  INFO: rcu detected stall in corrupted (4)
+The bug was not found.
+About 122 commits remaining
+
+2026-05-18 07:26:53
+Session:   11
+Kernel:    2022-09-30 - 920541bb0b9bf08d1455890694fbb2bbffb7a12b
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    2  WARNING in __kernel_write_iter (3) (has report)
+The bug was found.
+About 58 commits remaining
+
+2026-05-18 07:34:23
+Session:   12
+Kernel:    2022-09-30 - 6643b3836f3908c4f77883b2fae72451e85cf3ca
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  INFO: rcu detected stall in corrupted
+       2  WARNING in __kernel_write (2) (has report)
+       3  INFO: rcu detected stall in corrupted (4)
+       3  WARNING in __kernel_write (2) (has report)
+       4  INFO: rcu detected stall in corrupted (4)
+       5  INFO: rcu detected stall in corrupted (4)
+       6  INFO: rcu detected stall in corrupted (4)
+       7  INFO: rcu detected stall in corrupted (4)
+       8  INFO: rcu detected stall in corrupted (4)
+       9  INFO: rcu detected stall in corrupted (4)
+      10  INFO: rcu detected stall in corrupted (5)
+The bug was not found.
+About 159 commits remaining
+
+2026-05-18 07:51:29
+Session:   13
+Kernel:    2022-09-30 - 7bc6e90d7aa4170039abe80b9f4e8c8e4eb35091
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  INFO: rcu detected stall in corrupted
+***    2  WARNING in __kernel_write_iter (3) (has report)
+The bug was found.
+About 145 commits remaining
+
+2026-05-18 07:58:53
+Session:   14
+Kernel:    2022-09-30 - d649d2c49baa4336bf65a02fc8e9d42c8ef2db6b
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  INFO: rcu detected stall in corrupted
+***    2  WARNING in __kernel_write_iter (has report)
+Running syz-repro.
+New PoC saved at /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0782-1.prog
+Primary PoC:     /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0782-1.prog
+Run Time:        0h6m0s
+The bug was found.
+About 138 commits remaining
+
+2026-05-18 08:12:17
+Session:   15
+Kernel:    2022-09-30 - 5a77386984b513ebfb2700e70dac44509fc81aa9
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  INFO: rcu detected stall in corrupted
+***    2  WARNING in __kernel_write_iter (3) (has report)
+The bug was found.
+About 134 commits remaining
+
+2026-05-18 08:19:39
+Session:   16
+Kernel:    2022-09-29 - 987a926c1d8a40e4256953b04771fbdb63bc7938
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  INFO: rcu detected stall in corrupted
+***    2  WARNING in __kernel_write_iter (has report)
+The bug was found.
+About 133 commits remaining
+
+2026-05-18 08:26:51
+Session:   17
+Kernel:    2022-09-28 - 06bbaa6dc53cb72040db952053432541acb9adc7
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    2  WARNING in __kernel_write_iter (3) (has report)
+Running syz-repro.
+New PoC saved at /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0782-0.prog
+Primary PoC:     /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0782-0.prog
+Run Time:        0h6m0s
+The bug was found.
+About 2 commits remaining
+
+==== Partial Result: Focused Fuzzing ====
+Reproducer:           /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0782-0.prog
+Bisection Result:     2022-09-28 - 06bbaa6dc53cb72040db952053432541acb9adc7
+Bisected Commit Name: [coredump] don't use __kernel_write() on kmap_local_page()
+Stage Time:           5h4m41s
+Run Time:             5h4m43s
+=========================================
+
+==== Anchor Commit ====
+
+2026-05-18 08:42:21
+Session:   18
+Kernel:    2022-09-30 - 6643b3836f3908c4f77883b2fae72451e85cf3ca
+Compiler:  ccache gcc
+PoC:       /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0782-0.prog
+Attempt 0:
+    WARNING in __kernel_write (has report)
+Attempt 1:
+    WARNING in __kernel_write (has report)
+Attempt 2:
+    WARNING in __kernel_write (has report)
+Attempt 3:
+    INFO: task hung in register_nexthop_notifier
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in del_device_store
+    INFO: task hung in linkwatch_event
+    INFO: task hung in rtnetlink_rcv_msg
+Attempt 4:
+    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit (has report)
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in switchdev_deferred_process_work
+    inconsistent lock state in find_vmap_area (has report)
+    INFO: task hung in new_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in devlink_unregister
+    INFO: task hung in rtnetlink_rcv_msg
+Attempt 5:
+    WARNING in __kernel_write (has report)
+Attempt 6:
+    WARNING in __kernel_write (has report)
+Attempt 7:
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in new_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in rtnetlink_rcv_msg
+The bug was not found.
+
+Failure: This bug cannot be found at the anchor commit.
+
+====================================================================================================================================================
+Bug Name:             WARNING in __kernel_write_iter
+Bug ID:               bug0782
+Bug Link:             https://syzkaller.appspot.com/bug?extid=12e098239d20385264d3
+Bisection Result:     2022-09-28 - 06bbaa6dc53cb72040db952053432541acb9adc7
+Bisected Commit Name: [coredump] don't use __kernel_write() on kmap_local_page()
+Run Time:             5h15m50s
+
+Anchor Commit:        2022-10-08 - a6afa4199d3d038fbfdff5511f7523b0e30cb774
+Bisection Result:     2022-09-28 - 06bbaa6dc53cb72040db952053432541acb9adc7

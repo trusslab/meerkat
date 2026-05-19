@@ -1,0 +1,278 @@
+./bin/meerkat -i 1 -c /home/author/meerkat/wd-meerkat-1/meerkat.cfg -a 15b3f48a4339e3c16acf18624e2b7f60bc5e9a2c -F ff-test,stateful-corpus,poc-test,ff-no-find-backup
+Bisecting:          INFO: task hung in scsi_remove_host
+Syzbot Link:        https://syzkaller.appspot.com/bug?id=7c7fab3677f7e27e026384d4fb34cc1adf6059fa
+Working Name:       bug0080
+
+Aliases:
+    INFO: task hung in scsi_remove_host
+
+Anchor Commit:      15b3f48a4339e3c16acf18624e2b7f60bc5e9a2c
+Repository:         https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
+Branch:             master
+Arch:               amd64
+
+Meerkat:            /home/author/meerkat/
+Version:            1.2.0
+Kernel:             /home/author/meerkat/wd-meerkat-1/kernel/
+Syzkaller:          /home/author/meerkat/syzkaller/
+Compilers:          /home/author/meerkat/compilers/
+Compiler:           gcc (Ubuntu 12.3.0-1ubuntu1~22.04.3) 12.3.0
+Linker:             GNU ld (GNU Binutils for Ubuntu) 2.38
+Ccache:             ccache version 4.5.1
+Image:              /home/author/meerkat/image/stretch/stretch.img
+Image Key:          /home/author/meerkat/image/stretch/stretch.id_rsa
+
+Workdir:            /home/author/meerkat/wd-meerkat-1/
+Kconfig:            /home/author/meerkat/wd-meerkat-1/config-bug0080.txt
+Reproducers: (1)    /home/author/meerkat/wd-meerkat-1/reproducers/
+Primary PoC:        /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0080-2.prog
+Syzkaller Workdir:  /home/author/meerkat/wd-meerkat-1/wd-kaller/
+Log Directory:      /home/author/meerkat/wd-meerkat-1/log/
+
+Syscalls: (4)       ["syz_usb_connect", "syz_usb_control_io$hid", "syz_usb_control_io", "syz_usb_connect$hid"]
+VM Count:           4
+CPU Count:          4
+Procs:              24
+Memory:             4096
+Make Procs:         16
+Max Time:           10
+Max Attempts:       1
+
+==== Anchor Commit ====
+
+2026-04-24 07:52:33
+Session:   1
+Kernel:    2022-08-20 - 15b3f48a4339e3c16acf18624e2b7f60bc5e9a2c
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  INFO: rcu detected stall in corrupted
+***    8  INFO: task hung in scsi_remove_host
+Attempt 2: (RETRY)
+    Time  Bug Name
+       2  INFO: rcu detected stall in corrupted
+Attempt 3: (RETRY)
+    Time  Bug Name
+***    7  INFO: task hung in scsi_remove_host
+The bug was found.
+
+New Max Time: 12
+
+==== Major Release Search ====
+12 Releases
+
+2026-04-24 08:31:41
+Session:   2
+Kernel:    2022-07-31 - 3d7cb6b04c3f3115719235cc6866b10326de34cd (v5.19)
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 11 releases remaining
+
+==== Kernel Bisection ====
+14778 Linux commits
+
+2026-04-24 08:57:06
+Session:   3
+Kernel:    2022-08-04 - 798cd57cd5f871452461746032cf6ee50b0fd69a
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       1  WARNING: ODEBUG bug in mgmt_index_removed (has report)
+       8  WARNING: ODEBUG bug in mgmt_index_removed (2) (has report)
+       9  WARNING: ODEBUG bug in mgmt_index_removed (2) (has report)
+The bug was not found.
+About 7497 commits remaining
+
+2026-04-24 09:22:16
+Session:   4
+Kernel:    2022-08-06 - 48a577dc1b09c1d35f2b8b37e7fa9a7169d50f5d
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       1  WARNING: ODEBUG bug in mgmt_index_removed (has report)
+       8  WARNING: ODEBUG bug in mgmt_index_removed (3) (has report)
+       9  WARNING: ODEBUG bug in mgmt_index_removed (has report)
+The bug was not found.
+About 3664 commits remaining
+
+2026-04-24 09:47:30
+Session:   5
+Kernel:    2022-08-08 - 607ca0f742b7d990b6efb3c3e7a52830f7e96419
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       1  WARNING: ODEBUG bug in mgmt_index_removed (has report)
+       8  WARNING: ODEBUG bug in mgmt_index_removed (3) (has report)
+       9  WARNING: ODEBUG bug in mgmt_index_removed (has report)
+The bug was not found.
+About 1794 commits remaining
+
+2026-04-24 10:13:11
+Session:   6
+Kernel:    2022-08-11 - 7ebfc85e2cd7b08f518b526173e9a33b56b3913b
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  INFO: rcu detected stall in corrupted
+      10  WARNING: ODEBUG bug in netdev_run_todo (has report)
+The bug was not found.
+About 848 commits remaining
+
+2026-04-24 10:38:54
+Session:   7
+Kernel:    2022-08-14 - 96f86ff08332d88defd35c330fc6dae219b9e264
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  INFO: rcu detected stall in corrupted
+***    8  INFO: task hung in scsi_remove_host
+Running syz-repro.
+New PoC saved at /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0080-0.prog
+Primary PoC:     /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0080-0.prog
+Run Time:        0h18m0s
+The bug was found.
+About 436 commits remaining
+
+2026-04-24 11:18:29
+Session:   8
+Kernel:    2022-08-12 - 6c833c0581f1c15db2e0344da19360cba75a3351
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  INFO: rcu detected stall in corrupted
+The bug was not found.
+About 231 commits remaining
+
+2026-04-24 11:35:49
+Session:   9
+Kernel:    2022-08-13 - a976835fdb312590ee5c085567a4e2b06da7ac33
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  INFO: rcu detected stall in corrupted
+The bug was not found.
+About 124 commits remaining
+
+2026-04-24 12:01:00
+Session:   10
+Kernel:    2022-08-13 - eeac7730418563152b0e3172bce9bac4ff6d6bc4
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       1  WARNING: ODEBUG bug in mgmt_index_removed (has report)
+       8  WARNING: ODEBUG bug in mgmt_index_removed (3) (has report)
+       9  WARNING: ODEBUG bug in mgmt_index_removed (has report)
+The bug was not found.
+About 1090 commits remaining
+
+2026-04-24 12:25:26
+Session:   11
+Kernel:    2022-08-13 - 332019e23a51db1aa46fec695a9a763445fbe09f
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  INFO: rcu detected stall in corrupted
+The bug was not found.
+About 92 commits remaining
+
+2026-04-24 12:42:57
+Session:   12
+Kernel:    2022-08-13 - b823ee183dc4224f29a8b5e172b647256da24c0e
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       1  WARNING: ODEBUG bug in mgmt_index_removed (has report)
+       9  WARNING: ODEBUG bug in mgmt_index_removed (4) (has report)
+The bug was not found.
+About 1075 commits remaining
+
+2026-04-24 12:59:59
+Session:   13
+Kernel:    2022-08-10 - 83ee9f23763a432a4077bf20624ee35de87bce99
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       1  WARNING: ODEBUG bug in mgmt_index_removed (has report)
+       8  WARNING: ODEBUG bug in mgmt_index_removed (3) (has report)
+       9  WARNING: ODEBUG bug in mgmt_index_removed (has report)
+The bug was not found.
+About 1882 commits remaining
+
+2026-04-24 13:25:14
+Session:   14
+Kernel:    2022-08-13 - aa0d6e9cc23e996b484725d0a31906809862d678
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       1  WARNING: ODEBUG bug in mgmt_index_removed (has report)
+       8  WARNING: ODEBUG bug in mgmt_index_removed (3) (has report)
+       9  WARNING: ODEBUG bug in mgmt_index_removed (has report)
+The bug was not found.
+About 1071 commits remaining
+
+2026-04-24 13:42:14
+Session:   15
+Kernel:    2022-08-13 - aea23e7c464bfdec04b52cf61edb62030e9e0d0a
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    7  INFO: task hung in scsi_remove_host
+The bug was found.
+About 1062 commits remaining
+
+2026-04-24 13:54:30
+Session:   16
+Kernel:    2022-06-28 - ed5fce76b5ea40c87b44cafbe4f3222da8ec981a
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 16365 commits remaining
+
+==== Partial Result: Focused Fuzzing ====
+Reproducer:           /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0080-0.prog
+Bisection Result:     2022-08-13 - aea23e7c464bfdec04b52cf61edb62030e9e0d0a
+Bisected Commit Name: Merge tag 'pull-work.misc' of git://git.kernel.org/pub/scm/linux/kernel/git/viro/vfs
+Stage Time:           6h27m4s
+Run Time:             6h27m5s
+=========================================
+
+==== Anchor Commit ====
+
+2026-04-24 14:19:37
+Session:   17
+Kernel:    2022-06-28 - ed5fce76b5ea40c87b44cafbe4f3222da8ec981a
+Compiler:  ccache gcc
+PoC:       /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0080-0.prog
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    KASAN: use-after-free Read in driver_register (has report)
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+
+Failure: This bug cannot be found at the anchor commit.
+
+====================================================================================================================================================
+Bug Name:             INFO: task hung in scsi_remove_host
+Bug ID:               bug0080
+Bug Link:             https://syzkaller.appspot.com/bug?id=7c7fab3677f7e27e026384d4fb34cc1adf6059fa
+Bisection Result:     2022-08-13 - aea23e7c464bfdec04b52cf61edb62030e9e0d0a
+Bisected Commit Name: Merge tag 'pull-work.misc' of git://git.kernel.org/pub/scm/linux/kernel/git/viro/vfs
+Run Time:             6h39m38s
+
+Anchor Commit:        2022-08-20 - 15b3f48a4339e3c16acf18624e2b7f60bc5e9a2c
+Bisection Result:     2022-08-13 - aea23e7c464bfdec04b52cf61edb62030e9e0d0a

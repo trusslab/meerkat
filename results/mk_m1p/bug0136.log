@@ -1,0 +1,477 @@
+./bin/meerkat -i 1 -c /home/author/meerkat/wd-meerkat-1/meerkat.cfg -a fe24a97cf2543e8832e7a2124802e5c32aac05aa -F ff-test,stateful-corpus,poc-test,ff-no-find-backup
+Bisecting:          possible deadlock in l2tp_tunnel_register
+Warning: No syscall found that produces sock_pppox.
+Syzbot Link:        https://syzkaller.appspot.com/bug?id=dacc7707e9dc2ff70c53cb2ad92b4c675818ac68
+Working Name:       bug0136
+
+Aliases:
+    possible deadlock in l2tp_tunnel_register
+
+Anchor Commit:      fe24a97cf2543e8832e7a2124802e5c32aac05aa
+Repository:         https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
+Branch:             master
+Arch:               amd64
+
+Meerkat:            /home/author/meerkat/
+Version:            1.2.0
+Kernel:             /home/author/meerkat/wd-meerkat-1/kernel/
+Syzkaller:          /home/author/meerkat/syzkaller/
+Compilers:          /home/author/meerkat/compilers/
+Compiler:           gcc (Ubuntu 12.3.0-1ubuntu1~22.04.3) 12.3.0
+Linker:             GNU ld (GNU Binutils for Ubuntu) 2.38
+Ccache:             ccache version 4.5.1
+Image:              /home/author/meerkat/image/stretch/stretch.img
+Image Key:          /home/author/meerkat/image/stretch/stretch.id_rsa
+
+Workdir:            /home/author/meerkat/wd-meerkat-1/
+Kconfig:            /home/author/meerkat/wd-meerkat-1/config-bug0136.txt
+Reproducers: (1)    /home/author/meerkat/wd-meerkat-1/reproducers/
+Syzkaller Workdir:  /home/author/meerkat/wd-meerkat-1/wd-kaller/
+Log Directory:      /home/author/meerkat/wd-meerkat-1/log/
+
+Syscalls: (7)       ["connect$pppl2tp", "socket$inet6_udp", "socket$pppl2tp", "socket$inet6", "socket", "ioctl$F2FS_IOC_START_ATOMIC_WRITE", "openat$selinux_enforce"]
+VM Count:           8
+CPU Count:          2
+Procs:              16
+Memory:             4096
+Make Procs:         16
+Max Time:           10
+Max Attempts:       1
+
+==== Anchor Commit ====
+
+2026-04-28 18:25:17
+Session:   1
+Kernel:    2022-11-18 - fe24a97cf2543e8832e7a2124802e5c32aac05aa
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    2  possible deadlock in l2tp_tunnel_register (8)
+Attempt 2: (RETRY)
+    Time  Bug Name
+       2  INFO: rcu detected stall in corrupted
+***    2  possible deadlock in l2tp_tunnel_register (7)
+Attempt 3: (RETRY)
+    Time  Bug Name
+       2  INFO: rcu detected stall in corrupted
+***    2  possible deadlock in l2tp_tunnel_register (7)
+The bug was found.
+
+New Max Time: 10
+
+==== Major Release Search ====
+12 Releases
+
+2026-04-28 18:48:26
+Session:   2
+Kernel:    2022-10-02 - 4fe89d07dcc2804c8b562f6c7896a45643d34b2f (v6.0)
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 11 releases remaining
+
+==== Kernel Bisection ====
+14298 Linux commits
+
+2026-04-28 19:15:06
+Session:   3
+Kernel:    2022-10-07 - 1227db9eab18f1ebaac990223d3f18eaddf1b442
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       1  WARNING in wireless_send_event (has report)
+       2  WARNING in wireless_send_event (6) (has report)
+       3  WARNING in wireless_send_event (6) (has report)
+       4  WARNING in wireless_send_event (6) (has report)
+       5  WARNING in wireless_send_event (9) (has report)
+       6  WARNING in wireless_send_event (12) (has report)
+       7  WARNING in wireless_send_event (8) (has report)
+       8  WARNING in wireless_send_event (9) (has report)
+       9  WARNING in wireless_send_event (9) (has report)
+      10  WARNING in wireless_send_event (9) (has report)
+The bug was not found.
+About 7165 commits remaining
+
+2026-04-28 19:42:09
+Session:   4
+Kernel:    2022-10-10 - 27bc50fc90647bbf7b734c3fc306a5e61350da53
+Compiler:  ccache gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0136-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 7165 commits remaining
+
+2026-04-28 20:10:20
+Session:   5
+Kernel:    2022-10-02 - af084fdccfafa79ad30a6a42c8eced79b71fb0e7
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       6  INFO: rcu detected stall in corrupted (2)
+       8  INFO: rcu detected stall in corrupted
+       8  suppressed report
+       9  suppressed report
+The bug was not found.
+About 15697 commits remaining
+
+2026-04-28 20:37:21
+Session:   6
+Kernel:    2022-09-29 - 9aa0dade8f6b4cdcbb114e1a06037939ee3238bc
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       4  INFO: rcu detected stall in corrupted
+       6  INFO: rcu detected stall in corrupted
+       7  INFO: rcu detected stall in corrupted
+       9  INFO: rcu detected stall in corrupted
+      10  INFO: rcu detected stall in corrupted
+      10  suppressed report
+The bug was not found.
+About 16334 commits remaining
+
+2026-04-28 21:04:07
+Session:   7
+Kernel:    2022-10-10 - 00833408bb164342990102f272c77983f1ca5e94
+Compiler:  ccache gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0136-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 16334 commits remaining
+
+2026-04-28 21:30:46
+Session:   8
+Kernel:    2022-09-24 - 6eaff06ad064f5182eda361c3615a0e10c032f74
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  INFO: rcu detected stall in corrupted
+       4  INFO: rcu detected stall in corrupted (3)
+       6  INFO: rcu detected stall in corrupted
+       6  suppressed report
+       7  INFO: rcu detected stall in corrupted
+       8  INFO: rcu detected stall in corrupted
+      10  INFO: rcu detected stall in corrupted (2)
+The bug was not found.
+About 16321 commits remaining
+
+2026-04-28 21:49:02
+Session:   9
+Kernel:    2022-10-13 - 977bb6530807a9a8e7f29d7dfba5737135b50df6
+Compiler:  ccache gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0136-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 16321 commits remaining
+
+2026-04-28 22:06:50
+Session:   10
+Kernel:    2022-10-15 - 017e42540639a46fdf7c7f5ee647e0b7806c9013
+Compiler:  ccache gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0136-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 16321 commits remaining
+
+2026-04-28 22:34:15
+Session:   11
+Kernel:    2022-09-30 - d438d94d6483c379935d94a7dcc2d1bf9cdf0803
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       5  INFO: rcu detected stall in corrupted (2)
+       6  INFO: rcu detected stall in corrupted (2)
+       7  INFO: rcu detected stall in corrupted (2)
+       7  suppressed report
+       8  INFO: rcu detected stall in corrupted (2)
+       9  INFO: rcu detected stall in corrupted (2)
+      10  INFO: rcu detected stall in corrupted (2)
+      10  suppressed report
+The bug was not found.
+About 16379 commits remaining
+
+2026-04-28 22:54:07
+Session:   12
+Kernel:    2022-10-10 - 5d170fe435e54cafa599a21521ea65fe9535f537
+Compiler:  ccache gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0136-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 16379 commits remaining
+
+2026-04-28 23:11:47
+Session:   13
+Kernel:    2022-10-25 - 52424f974bc53c26ba3f00300a00e9de9afcd972
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  INFO: rcu detected stall in corrupted
+       4  INFO: rcu detected stall in corrupted (3)
+       5  INFO: rcu detected stall in corrupted (2)
+       6  INFO: rcu detected stall in corrupted
+       7  INFO: rcu detected stall in corrupted (2)
+       9  INFO: rcu detected stall in corrupted (3)
+      10  INFO: rcu detected stall in corrupted (2)
+      10  suppressed report
+The bug was not found.
+About 1460 commits remaining
+
+2026-04-28 23:38:30
+Session:   14
+Kernel:    2022-11-06 - 6e8c78d32b5c60737bcd71346130f0bf91d6e066
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  INFO: rcu detected stall in corrupted
+       4  INFO: rcu detected stall in corrupted (2)
+       4  suppressed report
+       5  INFO: rcu detected stall in corrupted (4)
+       7  suppressed report
+       8  INFO: rcu detected stall in corrupted (2)
+       8  suppressed report (2)
+       9  INFO: rcu detected stall in corrupted
+      10  INFO: rcu detected stall in corrupted (3)
+The bug was not found.
+About 729 commits remaining
+
+2026-04-29 00:05:11
+Session:   15
+Kernel:    2022-11-11 - 4e6b2b2e4f30c29caf89ecfa9ed4d9f97d151102
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       5  INFO: rcu detected stall in corrupted
+       5  suppressed report
+       6  INFO: rcu detected stall in corrupted
+       6  suppressed report
+       7  INFO: rcu detected stall in corrupted
+       7  suppressed report (2)
+       9  INFO: rcu detected stall in corrupted (5)
+The bug was not found.
+About 366 commits remaining
+
+2026-04-29 00:31:55
+Session:   16
+Kernel:    2022-11-17 - ae75334011d3c9f8b859ecb5f63e17e72023051e
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    2  possible deadlock in l2tp_tunnel_register (8)
+Running syz-repro.
+Run Time:        0h33m0s
+The bug was found.
+About 167 commits remaining
+
+2026-04-29 01:23:36
+Session:   17
+Kernel:    2022-11-16 - 941209ef89e3f5e5fd75bffdafe8e74d5c2d4d92
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  INFO: rcu detected stall in corrupted
+       4  INFO: rcu detected stall in corrupted (2)
+       6  suppressed report (2)
+       7  suppressed report
+       8  suppressed report (2)
+       9  INFO: rcu detected stall in corrupted
+       9  INFO: task hung in br_ioctl_call
+      10  INFO: rcu detected stall in corrupted
+The bug was not found.
+About 78 commits remaining
+
+2026-04-29 01:44:53
+Session:   18
+Kernel:    2022-11-15 - 18c532e44939caa17f1fa380f7ac50dbc0718dbb
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       5  INFO: rcu detected stall in corrupted
+       6  INFO: rcu detected stall in corrupted (4)
+       7  INFO: rcu detected stall in corrupted
+       9  INFO: rcu detected stall in corrupted (2)
+      10  INFO: rcu detected stall in corrupted
+      10  suppressed report
+The bug was not found.
+About 285 commits remaining
+
+2026-04-29 02:03:18
+Session:   19
+Kernel:    2022-11-17 - 58e0be1ef6118c5352b56a4d06e974c5599993a5
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  INFO: rcu detected stall in corrupted
+***    2  possible deadlock in l2tp_tunnel_register (7)
+The bug was found.
+About 19 commits remaining
+
+2026-04-29 02:16:24
+Session:   20
+Kernel:    2022-11-16 - ba86af3733aece88dbcee0dfebf7e2dcfefb2be4
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       4  INFO: rcu detected stall in corrupted
+       5  INFO: rcu detected stall in corrupted (2)
+       5  suppressed report
+       6  INFO: rcu detected stall in corrupted (2)
+       8  INFO: rcu detected stall in corrupted (2)
+       8  suppressed report
+       9  INFO: rcu detected stall in corrupted (3)
+      10  INFO: rcu detected stall in corrupted (2)
+The bug was not found.
+About 10 commits remaining
+
+2026-04-29 02:34:35
+Session:   21
+Kernel:    2022-11-16 - aeac4ec8f46d610a10adbaeff5e2edf6a88ffc62
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  INFO: rcu detected stall in corrupted
+***    2  possible deadlock in l2tp_tunnel_register (7)
+The bug was found.
+About 6 commits remaining
+
+2026-04-29 02:44:32
+Session:   22
+Kernel:    2022-11-16 - e4aa85cf0d43e293f474e3b415ff44e49ef768ae
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  INFO: rcu detected stall in corrupted
+       4  INFO: rcu detected stall in corrupted
+       5  INFO: rcu detected stall in corrupted (2)
+       6  INFO: rcu detected stall in corrupted (2)
+       7  INFO: rcu detected stall in corrupted (2)
+       8  INFO: rcu detected stall in corrupted (3)
+       9  INFO: rcu detected stall in corrupted
+The bug was not found.
+About 4 commits remaining
+
+2026-04-29 03:01:40
+Session:   23
+Kernel:    2022-11-16 - b68777d54fac21fc833ec26ea1a2a84f975ab035
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  INFO: rcu detected stall in corrupted
+***    2  possible deadlock in l2tp_tunnel_register (7)
+Running syz-repro.
+New PoC saved at /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0136-0.prog
+Primary PoC:     /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0136-0.prog
+Run Time:        0h21m0s
+The bug was found.
+About 3 commits remaining
+
+2026-04-29 03:32:29
+Session:   24
+Kernel:    2022-11-16 - f524b7289bbb0c8ffaa2ba3c34c146e43da54fb2
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  INFO: rcu detected stall in corrupted
+       5  INFO: rcu detected stall in corrupted
+       6  INFO: rcu detected stall in corrupted (2)
+       6  suppressed report (3)
+       7  INFO: rcu detected stall in corrupted (2)
+       8  INFO: rcu detected stall in corrupted (2)
+       8  suppressed report
+      10  INFO: rcu detected stall in corrupted (2)
+      10  suppressed report (3)
+The bug was not found.
+About 2 commits remaining
+
+==== Partial Result: Focused Fuzzing ====
+Reproducer:           /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0136-0.prog
+Bisection Result:     2022-11-16 - b68777d54fac21fc833ec26ea1a2a84f975ab035
+Bisected Commit Name: l2tp: Serialize access to sk_user_data with sk_callback_lock
+Stage Time:           9h24m44s
+Run Time:             9h24m45s
+=========================================
+
+==== Anchor Commit ====
+
+2026-04-29 03:50:02
+Session:   25
+Kernel:    2022-11-16 - f524b7289bbb0c8ffaa2ba3c34c146e43da54fb2
+Compiler:  ccache gcc
+PoC:       /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0136-0.prog
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in new_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in linkwatch_event
+    INFO: task hung in rtnetlink_rcv_msg
+Attempt 2:
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in del_device_store
+    INFO: task hung in devlink_unregister
+    INFO: task hung in linkwatch_event
+    INFO: task hung in rtnetlink_rcv_msg
+Attempt 3:
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in netdev_run_todo
+    INFO: task hung in new_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in devlink_unregister
+    INFO: task hung in linkwatch_event
+    INFO: task hung in rtnetlink_rcv_msg
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in netdev_run_todo
+    INFO: task hung in del_device_store
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in rtnetlink_rcv_msg
+Attempt 6:
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in l2tp_exit_net
+    INFO: task hung in del_device_store
+    INFO: task hung in devlink_unregister
+    INFO: task hung in linkwatch_event
+    INFO: task hung in rtnetlink_rcv_msg
+Attempt 7:
+    No crashes found.
+The bug was not found.
+
+Failure: This bug cannot be found at the anchor commit.
+
+====================================================================================================================================================
+Bug Name:             possible deadlock in l2tp_tunnel_register
+Bug ID:               bug0136
+Bug Link:             https://syzkaller.appspot.com/bug?id=dacc7707e9dc2ff70c53cb2ad92b4c675818ac68
+Bisection Result:     2022-11-16 - b68777d54fac21fc833ec26ea1a2a84f975ab035
+Bisected Commit Name: l2tp: Serialize access to sk_user_data with sk_callback_lock
+Run Time:             9h40m19s
+
+Anchor Commit:        2022-11-18 - fe24a97cf2543e8832e7a2124802e5c32aac05aa
+Bisection Result:     2022-11-16 - b68777d54fac21fc833ec26ea1a2a84f975ab035

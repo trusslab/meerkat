@@ -1,0 +1,523 @@
+./bin/meerkat -i 1 -c /home/author/meerkat/wd-meerkat-1/meerkat.cfg -a cffb2b72d3ed47f5093d128bd44d9ce136b6b5af -F ff-test,stateful-corpus,poc-test,ff-no-find-backup
+Bisecting:          general protection fault in llc_build_and_send_test_pkt
+Syzbot Link:        https://syzkaller.appspot.com/bug?id=368f90c2481afba9f1c277caecd97e2a43c06dea
+Working Name:       bug0132
+
+Aliases:
+    general protection fault in llc_build_and_send_test_pkt
+
+Anchor Commit:      cffb2b72d3ed47f5093d128bd44d9ce136b6b5af
+Repository:         https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
+Branch:             master
+Arch:               amd64
+
+Meerkat:            /home/author/meerkat/
+Version:            1.2.0
+Kernel:             /home/author/meerkat/wd-meerkat-1/kernel/
+Syzkaller:          /home/author/meerkat/syzkaller/
+Compilers:          /home/author/meerkat/compilers/
+Compiler:           gcc (Ubuntu 12.3.0-1ubuntu1~22.04.3) 12.3.0
+Linker:             GNU ld (GNU Binutils for Ubuntu) 2.38
+Ccache:             ccache version 4.5.1
+Image:              /home/author/meerkat/image/stretch/stretch.img
+Image Key:          /home/author/meerkat/image/stretch/stretch.id_rsa
+
+Workdir:            /home/author/meerkat/wd-meerkat-1/
+Kconfig:            /home/author/meerkat/wd-meerkat-1/config-bug0132.txt
+Reproducers: (1)    /home/author/meerkat/wd-meerkat-1/reproducers/
+Primary PoC:        /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0132-1.prog
+Syzkaller Workdir:  /home/author/meerkat/wd-meerkat-1/wd-kaller/
+Log Directory:      /home/author/meerkat/wd-meerkat-1/log/
+
+Syscalls: (10)      ["bind$llc", "sendmmsg", "syz_init_net_socket$llc", "socket", "ioctl$F2FS_IOC_START_ATOMIC_WRITE", "openat$selinux_enforce", "ioctl$sock_SIOCGIFINDEX", "ioctl$ifreq_SIOCGIFINDEX_vcan", "ioctl$IOCTL_GET_NCIDEV_IDX", "openat$nci"]
+VM Count:           8
+CPU Count:          2
+Procs:              16
+Memory:             4096
+Make Procs:         16
+Max Time:           10
+Max Attempts:       1
+
+==== Anchor Commit ====
+
+2026-04-28 02:37:25
+Session:   1
+Kernel:    2022-03-28 - cffb2b72d3ed47f5093d128bd44d9ce136b6b5af
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    2  general protection fault in llc_build_and_send_test_pkt (2) (has report)
+Attempt 2: (RETRY)
+    Time  Bug Name
+***    2  general protection fault in llc_build_and_send_test_pkt (3) (has report)
+Attempt 3: (RETRY)
+    Time  Bug Name
+       2  general protection fault in llc_ui_sendmsg (4) (has report)
+       5  general protection fault in llc_ui_sendmsg (2) (has report)
+       7  general protection fault in llc_ui_sendmsg (2) (has report)
+       8  general protection fault in llc_ui_sendmsg (2) (has report)
+      10  general protection fault in llc_ui_sendmsg (has report)
+The bug was found.
+
+New Max Time: 12
+
+==== Major Release Search ====
+11 Releases
+
+2026-04-28 03:04:19
+Session:   2
+Kernel:    2022-03-20 - f443e374ae131c168a065ea1748feac6b2e76613 (v5.17)
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 10 releases remaining
+
+==== Kernel Bisection ====
+12818 Linux commits
+
+2026-04-28 03:28:57
+Session:   3
+Kernel:    2022-03-24 - 169e77764adc041b1dacba84ea90516a895d43b2
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  general protection fault in llc_ui_sendmsg (2) (has report)
+       3  general protection fault in llc_ui_sendmsg (has report)
+       4  general protection fault in llc_ui_sendmsg (has report)
+***    5  general protection fault in llc_build_and_send_test_pkt (has report)
+       5  general protection fault in llc_ui_sendmsg (3) (has report)
+Running syz-repro.
+New PoC saved at /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0132-0.prog
+Primary PoC:     /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0132-0.prog
+Run Time:        0h16m0s
+The bug was found.
+About 7552 commits remaining
+
+2026-04-28 04:02:28
+Session:   4
+Kernel:    2022-03-23 - b4bc93bd76d4da32600795cd323c971f00a2e788
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 3790 commits remaining
+
+2026-04-28 04:26:58
+Session:   5
+Kernel:    2022-03-10 - 4c7d2e179576e821b461bb4a58d0a834916601fa
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 5778 commits remaining
+
+2026-04-28 04:51:22
+Session:   6
+Kernel:    2022-03-24 - 1ebdbeb03efe89f01f15df038a589077df3d21f5
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 2829 commits remaining
+
+2026-04-28 05:15:40
+Session:   7
+Kernel:    2022-03-17 - 6284c723d9b9995cc27ab3c6368a9d95d67111ff
+Compiler:  ccache gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0132-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+       2  WARNING in __napi_schedule (6) (has report)
+       3  WARNING in __napi_schedule (6) (has report)
+       4  WARNING in __napi_schedule (5) (has report)
+       5  WARNING in __napi_schedule (6) (has report)
+       6  WARNING in __napi_schedule (5) (has report)
+       7  WARNING in __napi_schedule (6) (has report)
+       8  WARNING in __napi_schedule (5) (has report)
+       9  WARNING in __napi_schedule (6) (has report)
+      10  WARNING in __napi_schedule (5) (has report)
+      11  WARNING in __napi_schedule (6) (has report)
+      12  WARNING in __napi_schedule (5) (has report)
+      12  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 2829 commits remaining
+
+2026-04-28 05:40:03
+Session:   8
+Kernel:    2022-03-03 - b042b27868c00142da1a7e31f4740a5fbd5628ed
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       9  unregister_netdevice: waiting for DEV to become free
+The bug was not found.
+About 8453 commits remaining
+
+2026-04-28 06:04:37
+Session:   9
+Kernel:    2022-03-17 - 597534bd56335c9e7bdb6c52d9abcb66e9cb9275
+Compiler:  ccache gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0132-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+       2  WARNING in __napi_schedule (6) (has report)
+       3  WARNING in __napi_schedule (6) (has report)
+       4  WARNING in __napi_schedule (5) (has report)
+       5  WARNING in __napi_schedule (6) (has report)
+       6  WARNING in __napi_schedule (5) (has report)
+       7  WARNING in __napi_schedule (6) (has report)
+       8  WARNING in __napi_schedule (5) (has report)
+       9  WARNING in __napi_schedule (6) (has report)
+      10  WARNING in __napi_schedule (5) (has report)
+      11  WARNING in __napi_schedule (6) (has report)
+      12  WARNING in __napi_schedule (5) (has report)
+      12  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 8453 commits remaining
+
+2026-04-28 06:24:04
+Session:   10
+Kernel:    2022-03-16 - 5e8930aa86a561998a37aa512d790ad2982122bc
+Compiler:  ccache gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0132-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+       2  WARNING in __napi_schedule (6) (has report)
+       3  WARNING in __napi_schedule (6) (has report)
+       4  WARNING in __napi_schedule (5) (has report)
+       5  WARNING in __napi_schedule (6) (has report)
+       6  WARNING in __napi_schedule (5) (has report)
+       7  WARNING in __napi_schedule (6) (has report)
+       8  WARNING in __napi_schedule (5) (has report)
+       9  WARNING in __napi_schedule (6) (has report)
+      10  WARNING in __napi_schedule (5) (has report)
+      11  WARNING in __napi_schedule (6) (has report)
+      12  WARNING in __napi_schedule (5) (has report)
+      12  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 8453 commits remaining
+
+2026-04-28 06:44:04
+Session:   11
+Kernel:    2022-02-22 - ac74f016f035eeb62b8b40db74040d32a03c4307
+Compiler:  ccache gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0132-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+       2  WARNING: suspicious RCU usage in hsr_create_self_node (6) (has report)
+       3  WARNING: suspicious RCU usage in hsr_create_self_node (6) (has report)
+       4  WARNING: suspicious RCU usage in hsr_create_self_node (6) (has report)
+       5  WARNING: suspicious RCU usage in hsr_create_self_node (6) (has report)
+       6  WARNING: suspicious RCU usage in hsr_create_self_node (6) (has report)
+       7  WARNING: suspicious RCU usage in hsr_create_self_node (5) (has report)
+       8  WARNING: suspicious RCU usage in hsr_create_self_node (6) (has report)
+       9  WARNING: suspicious RCU usage in hsr_create_self_node (6) (has report)
+      10  WARNING: suspicious RCU usage in hsr_create_self_node (6) (has report)
+      11  WARNING: suspicious RCU usage in hsr_create_self_node (5) (has report)
+      12  WARNING: suspicious RCU usage in hsr_create_self_node (6) (has report)
+      12  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 8453 commits remaining
+
+2026-04-28 07:08:36
+Session:   12
+Kernel:    2022-03-17 - ccb6ed426f10ac4f742efa7d897c266aa10ac64a
+Compiler:  ccache gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0132-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+       2  WARNING in __napi_schedule (6) (has report)
+       3  WARNING in __napi_schedule (6) (has report)
+       4  WARNING in __napi_schedule (5) (has report)
+       5  WARNING in __napi_schedule (6) (has report)
+       6  WARNING in __napi_schedule (5) (has report)
+       7  WARNING in __napi_schedule (6) (has report)
+       8  WARNING in __napi_schedule (5) (has report)
+       9  WARNING in __napi_schedule (6) (has report)
+      10  WARNING in __napi_schedule (5) (has report)
+      11  WARNING in __napi_schedule (6) (has report)
+      12  WARNING in __napi_schedule (5) (has report)
+      12  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 8453 commits remaining
+
+2026-04-28 07:25:16
+Session:   13
+Kernel:    2022-02-24 - a07097735da521edd2db462a4e5a140f0c4a577d
+Compiler:  ccache gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0132-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+       2  WARNING: suspicious RCU usage in hsr_create_self_node (6) (has report)
+       3  WARNING: suspicious RCU usage in hsr_create_self_node (6) (has report)
+       4  WARNING: suspicious RCU usage in hsr_create_self_node (6) (has report)
+       5  WARNING: suspicious RCU usage in hsr_create_self_node (6) (has report)
+       6  WARNING: suspicious RCU usage in hsr_create_self_node (5) (has report)
+       7  WARNING: suspicious RCU usage in hsr_create_self_node (6) (has report)
+       8  WARNING: suspicious RCU usage in hsr_create_self_node (6) (has report)
+       9  WARNING: suspicious RCU usage in hsr_create_self_node (6) (has report)
+      10  WARNING: suspicious RCU usage in hsr_create_self_node (6) (has report)
+      11  WARNING: suspicious RCU usage in hsr_create_self_node (5) (has report)
+      12  WARNING: suspicious RCU usage in hsr_create_self_node (6) (has report)
+      12  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 8453 commits remaining
+
+2026-04-28 07:41:33
+Session:   14
+Kernel:    2022-03-17 - 49c98c1dc7d9ed2fe974a1f68aa887ec747e3f1a
+Compiler:  ccache gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0132-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+       2  WARNING in __napi_schedule (6) (has report)
+       3  WARNING in __napi_schedule (5) (has report)
+       4  WARNING in __napi_schedule (6) (has report)
+       5  WARNING in __napi_schedule (5) (has report)
+       6  WARNING in __napi_schedule (6) (has report)
+       7  WARNING in __napi_schedule (5) (has report)
+       8  WARNING in __napi_schedule (6) (has report)
+       9  WARNING in __napi_schedule (5) (has report)
+      10  WARNING in __napi_schedule (6) (has report)
+      11  WARNING in __napi_schedule (5) (has report)
+      12  WARNING in __napi_schedule (6) (has report)
+      12  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 8453 commits remaining
+
+2026-04-28 07:58:01
+Session:   15
+Kernel:    2022-03-09 - 7bfd05ff4e805d017940e889b7a91014c7b6f9e6
+Compiler:  ccache gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0132-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+       2  WARNING: suspicious RCU usage in hsr_create_self_node (6) (has report)
+       3  WARNING: suspicious RCU usage in hsr_create_self_node (6) (has report)
+       4  WARNING: suspicious RCU usage in hsr_create_self_node (6) (has report)
+       5  WARNING: suspicious RCU usage in hsr_create_self_node (6) (has report)
+       6  WARNING: suspicious RCU usage in hsr_create_self_node (5) (has report)
+       7  WARNING: suspicious RCU usage in hsr_create_self_node (6) (has report)
+       8  WARNING: suspicious RCU usage in hsr_create_self_node (6) (has report)
+       9  WARNING: suspicious RCU usage in hsr_create_self_node (6) (has report)
+      10  WARNING: suspicious RCU usage in hsr_create_self_node (6) (has report)
+      11  WARNING: suspicious RCU usage in hsr_create_self_node (5) (has report)
+      12  WARNING: suspicious RCU usage in hsr_create_self_node (6) (has report)
+      12  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 8453 commits remaining
+
+2026-04-28 08:14:50
+Session:   16
+Kernel:    2022-03-17 - cceac97afa090284b3ceecd93ea6b7b527116767
+Compiler:  ccache gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0132-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+       2  WARNING in __napi_schedule (6) (has report)
+       3  WARNING in __napi_schedule (5) (has report)
+       4  WARNING in __napi_schedule (6) (has report)
+       5  WARNING in __napi_schedule (5) (has report)
+       6  WARNING in __napi_schedule (6) (has report)
+       7  WARNING in __napi_schedule (5) (has report)
+       8  WARNING in __napi_schedule (6) (has report)
+       9  WARNING in __napi_schedule (5) (has report)
+      10  WARNING in __napi_schedule (6) (has report)
+      11  WARNING in __napi_schedule (5) (has report)
+      12  WARNING in __napi_schedule (6) (has report)
+      12  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 8453 commits remaining
+
+2026-04-28 08:31:42
+Session:   17
+Kernel:    2022-03-10 - 23de0fa0d2a05ff71c7bc8df9d12c9f23be83f13
+Compiler:  ccache gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0132-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+       2  WARNING: suspicious RCU usage in hsr_create_self_node (6) (has report)
+       3  WARNING: suspicious RCU usage in hsr_create_self_node (6) (has report)
+       4  WARNING: suspicious RCU usage in hsr_create_self_node (6) (has report)
+       5  WARNING: suspicious RCU usage in hsr_create_self_node (6) (has report)
+       6  WARNING: suspicious RCU usage in hsr_create_self_node (6) (has report)
+       7  WARNING: suspicious RCU usage in hsr_create_self_node (5) (has report)
+       8  WARNING: suspicious RCU usage in hsr_create_self_node (6) (has report)
+       9  WARNING: suspicious RCU usage in hsr_create_self_node (6) (has report)
+      10  WARNING: suspicious RCU usage in hsr_create_self_node (6) (has report)
+      11  WARNING: suspicious RCU usage in hsr_create_self_node (5) (has report)
+      12  WARNING: suspicious RCU usage in hsr_create_self_node (6) (has report)
+      12  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 8453 commits remaining
+
+2026-04-28 08:48:28
+Session:   18
+Kernel:    2022-03-17 - 87c167bb94ee3fd49569d4aa2038b9b8840d906f
+Compiler:  ccache gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0132-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+       2  WARNING in __napi_schedule (6) (has report)
+       3  WARNING in __napi_schedule (5) (has report)
+       4  WARNING in __napi_schedule (6) (has report)
+       5  WARNING in __napi_schedule (5) (has report)
+       6  WARNING in __napi_schedule (6) (has report)
+       7  WARNING in __napi_schedule (5) (has report)
+       8  WARNING in __napi_schedule (6) (has report)
+       9  WARNING in __napi_schedule (5) (has report)
+      10  WARNING in __napi_schedule (6) (has report)
+      11  WARNING in __napi_schedule (5) (has report)
+      12  WARNING in __napi_schedule (6) (has report)
+      12  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 8453 commits remaining
+
+2026-04-28 09:05:09
+Session:   19
+Kernel:    2022-03-21 - c050f5e91b47f8f5ae67b9158afd66f8be48f3dc
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+      11  no output from test machine
+      12  unregister_netdevice: waiting for DEV to become free
+      12  no output from test machine
+The bug was not found.
+About 4998 commits remaining
+
+2026-04-28 09:29:43
+Session:   20
+Kernel:    2022-03-17 - 3cccbaa0332169d4ff05587062a7ed528aeddb60
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+      10  unregister_netdevice: waiting for DEV to become free
+The bug was not found.
+About 6116 commits remaining
+
+2026-04-28 09:54:28
+Session:   21
+Kernel:    2022-03-23 - 2844e2434385819f674d1fb4130c308c50ba681e
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+      10  unregister_netdevice: waiting for DEV to become free
+      12  no output from test machine
+The bug was not found.
+About 4827 commits remaining
+
+2026-04-28 10:19:14
+Session:   22
+Kernel:    2022-03-23 - f92fcb5c00dc924a4661d5bf68de7937040f26b8
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 7562 commits remaining
+
+2026-04-28 10:44:00
+Session:   23
+Kernel:    2022-03-15 - 4406f46c9bcd9c40cd0e01fcb97b53b29d63651c
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 8438 commits remaining
+
+2026-04-28 11:08:39
+Session:   24
+Kernel:    2022-03-08 - eeda29db98f429a3b6473117e6ce1c213ab614f2
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 9480 commits remaining
+
+2026-04-28 11:33:31
+Session:   25
+Kernel:    2022-03-24 - 7403e6d8263937dea206dd201fed1ceed190ca18
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+      12  unregister_netdevice: waiting for DEV to become free
+The bug was not found.
+About 2787 commits remaining
+
+2026-04-28 11:58:16
+Session:   26
+Kernel:    2022-03-23 - 764f4eb6846f5475f1244767d24d25dd86528a4a
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    3  general protection fault in llc_build_and_send_test_pkt (2) (has report)
+       3  general protection fault in llc_ui_sendmsg (has report)
+The bug was found.
+About 2757 commits remaining
+
+==== Partial Result: Focused Fuzzing ====
+Reproducer:           /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0132-0.prog
+Bisection Result:     2022-03-23 - 764f4eb6846f5475f1244767d24d25dd86528a4a
+Bisected Commit Name: llc: fix netdevice reference leaks in llc_ui_bind()
+Stage Time:           9h36m35s
+Run Time:             9h36m37s
+=========================================
+
+==== Anchor Commit ====
+
+2026-04-28 12:14:01
+Session:   27
+Kernel:    2022-03-24 - 7403e6d8263937dea206dd201fed1ceed190ca18
+Compiler:  ccache gcc
+PoC:       /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0132-0.prog
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+
+Failure: This bug cannot be found at the anchor commit.
+
+====================================================================================================================================================
+Bug Name:             general protection fault in llc_build_and_send_test_pkt
+Bug ID:               bug0132
+Bug Link:             https://syzkaller.appspot.com/bug?id=368f90c2481afba9f1c277caecd97e2a43c06dea
+Bisection Result:     2022-03-23 - 764f4eb6846f5475f1244767d24d25dd86528a4a
+Bisected Commit Name: llc: fix netdevice reference leaks in llc_ui_bind()
+Run Time:             9h48m30s
+
+Anchor Commit:        2022-03-28 - cffb2b72d3ed47f5093d128bd44d9ce136b6b5af
+Bisection Result:     2022-03-23 - 764f4eb6846f5475f1244767d24d25dd86528a4a

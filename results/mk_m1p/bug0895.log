@@ -1,0 +1,405 @@
+./bin/meerkat -i 1 -c /home/author/meerkat/wd-meerkat-1/meerkat.cfg -a 05ecb680708a1dbe6554d6fc17e5d9a8a7cb5e6a -F ff-test,stateful-corpus,poc-test,ff-no-find-backup
+Bisecting:          WARNING: suspicious RCU usage in mas_walk
+Syzbot Link:        https://syzkaller.appspot.com/bug?extid=2ee18845e89ae76342c5
+Working Name:       bug0895
+
+Aliases:
+    WARNING: suspicious RCU usage in mas_walk
+
+Anchor Commit:      05ecb680708a1dbe6554d6fc17e5d9a8a7cb5e6a
+Repository:         https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
+Branch:             master
+Arch:               amd64
+
+Meerkat:            /home/author/meerkat/
+Version:            1.2.0
+Kernel:             /home/author/meerkat/wd-meerkat-1/kernel/
+Syzkaller:          /home/author/meerkat/syzkaller/
+Compilers:          /home/author/meerkat/compilers/
+Compiler:           gcc (Ubuntu 12.3.0-1ubuntu1~22.04.3) 12.3.0
+Linker:             GNU ld (GNU Binutils for Ubuntu) 2.38
+Ccache:             ccache version 4.5.1
+Image:              /home/author/meerkat/image/stretch/stretch.img
+Image Key:          /home/author/meerkat/image/stretch/stretch.id_rsa
+
+Workdir:            /home/author/meerkat/wd-meerkat-1/
+Kconfig:            /home/author/meerkat/wd-meerkat-1/config-bug0895.txt
+Reproducers: (1)    /home/author/meerkat/wd-meerkat-1/reproducers/
+Syzkaller Workdir:  /home/author/meerkat/wd-meerkat-1/wd-kaller/
+Log Directory:      /home/author/meerkat/wd-meerkat-1/log/
+
+Syscalls: (5)       ["madvise", "openat$sysctl", "write$sysctl", "ioctl$F2FS_IOC_START_ATOMIC_WRITE", "openat$selinux_enforce"]
+VM Count:           4
+CPU Count:          4
+Procs:              24
+Memory:             4096
+Make Procs:         16
+Max Time:           10
+Max Attempts:       1
+
+==== Anchor Commit ====
+
+2026-05-07 07:42:14
+Session:   1
+Kernel:    2023-02-06 - 05ecb680708a1dbe6554d6fc17e5d9a8a7cb5e6a
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    2  WARNING: suspicious RCU usage in mas_walk (4) (has report)
+Attempt 2: (RETRY)
+    Time  Bug Name
+***    2  WARNING: suspicious RCU usage in mas_walk (4) (has report)
+Attempt 3: (RETRY)
+    Time  Bug Name
+***    2  WARNING: suspicious RCU usage in mas_walk (4) (has report)
+The bug was found.
+
+New Max Time: 10
+
+==== Major Release Search ====
+12 Releases
+
+2026-05-07 08:05:50
+Session:   2
+Kernel:    2022-12-11 - 830b3c68c1fb1e9176028d02ef86f3cf76aa2476 (v6.1)
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    2  WARNING: suspicious RCU usage in mas_walk (4) (has report)
+Running syz-repro.
+Run Time:        0h6m0s
+The bug was found.
+About 11 releases remaining
+
+2026-05-07 08:28:44
+Session:   3
+Kernel:    2022-10-02 - 4fe89d07dcc2804c8b562f6c7896a45643d34b2f (v6.0)
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  INFO: rcu detected stall in corrupted
+       5  INFO: rcu detected stall in corrupted
+       7  INFO: rcu detected stall in corrupted
+       8  INFO: rcu detected stall in corrupted
+The bug was not found.
+About 10 releases remaining
+
+==== Kernel Bisection ====
+15110 Linux commits
+
+2026-05-07 08:53:49
+Session:   4
+Kernel:    2022-10-07 - 33e591dee915832c618cf68bb1058c8e7d296128
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  INFO: rcu detected stall in corrupted
+       3  INFO: rcu detected stall in corrupted
+       4  INFO: rcu detected stall in corrupted
+       7  INFO: rcu detected stall in corrupted
+       9  INFO: rcu detected stall in corrupted (2)
+The bug was not found.
+About 7516 commits remaining
+
+2026-05-07 09:18:31
+Session:   5
+Kernel:    2022-10-11 - de492c83cae0af72de370b9404aacda93dafcad5
+Compiler:  ccache gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0895-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 7516 commits remaining
+
+2026-05-07 09:43:18
+Session:   6
+Kernel:    2022-10-19 - 8e77860c62b6eac8bb5b567efe6b8cd232d5f72f
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  INFO: rcu detected stall in corrupted
+       4  INFO: rcu detected stall in corrupted
+       6  INFO: rcu detected stall in corrupted (2)
+       8  INFO: rcu detected stall in corrupted
+      10  INFO: rcu detected stall in corrupted
+The bug was not found.
+About 2812 commits remaining
+
+2026-05-07 10:08:03
+Session:   7
+Kernel:    2022-12-09 - 4a7ba45b1a435e7097ca0f79a847d0949d0eb088
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  INFO: rcu detected stall in corrupted
+***    2  WARNING: suspicious RCU usage in mas_walk (2) (has report)
+The bug was found.
+About 1390 commits remaining
+
+2026-05-07 10:24:52
+Session:   8
+Kernel:    2022-11-02 - b1a2cd50c0357f243b7435a732b4e62ba3157a2e
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    2  WARNING: suspicious RCU usage in mas_walk (4) (has report)
+The bug was found.
+About 695 commits remaining
+
+2026-05-07 10:41:41
+Session:   9
+Kernel:    2022-10-22 - 3272eb1ace32627d0ba1d20373fae246f46770ca
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  INFO: rcu detected stall in corrupted
+       4  INFO: rcu detected stall in corrupted
+       4  WARNING in split_huge_page_to_list (has report)
+       5  INFO: rcu detected stall in corrupted
+       7  INFO: rcu detected stall in corrupted (2)
+       9  INFO: rcu detected stall in corrupted
+      10  INFO: rcu detected stall in corrupted (2)
+      10  WARNING in split_huge_page_to_list (has report)
+The bug was not found.
+About 291 commits remaining
+
+2026-05-07 11:04:01
+Session:   10
+Kernel:    2022-10-26 - 831c05a7621b96944b0b4dbede57ed7cf0578f1c
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  INFO: rcu detected stall in corrupted
+       5  INFO: rcu detected stall in corrupted
+       6  WARNING in split_huge_page_to_list (2) (has report)
+       7  WARNING in split_huge_page_to_list (has report)
+       8  WARNING in split_huge_page_to_list (3) (has report)
+       9  WARNING in split_huge_page_to_list (has report)
+      10  WARNING in split_huge_page_to_list (2) (has report)
+The bug was not found.
+About 146 commits remaining
+
+2026-05-07 11:25:32
+Session:   11
+Kernel:    2022-10-27 - 84ce1ca3fe9e1249bf21176ff162200f1c4e5ed1
+Compiler:  ccache gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0895-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 146 commits remaining
+
+2026-05-07 11:41:27
+Session:   12
+Kernel:    2022-11-02 - f937b758a188d6fd328a81367087eddbb2fce50f
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    2  WARNING: suspicious RCU usage in mas_walk (4) (has report)
+Running syz-repro.
+Run Time:        0h6m0s
+The bug was found.
+About 145 commits remaining
+
+2026-05-07 11:55:22
+Session:   13
+Kernel:    2022-10-27 - 89049273122e7ac92de0f3abfebb5cdb9d874431
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  INFO: rcu detected stall in corrupted
+       5  kernel BUG in rmap_walk_anon (has report)
+       5  INFO: rcu detected stall in corrupted
+       6  INFO: rcu detected stall in corrupted
+       7  WARNING in split_huge_page_to_list (has report)
+       8  INFO: rcu detected stall in corrupted
+       8  WARNING in split_huge_page_to_list (2) (has report)
+       9  WARNING in split_huge_page_to_list (2) (has report)
+      10  INFO: rcu detected stall in corrupted
+The bug was not found.
+About 140 commits remaining
+
+2026-05-07 12:11:16
+Session:   14
+Kernel:    2022-10-27 - 23758867219c8d84c8363316e6dd2f9fd7ae3049
+Compiler:  ccache gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0895-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 140 commits remaining
+
+2026-05-07 12:30:20
+Session:   15
+Kernel:    2022-10-27 - 7dd257d02eb31391c3cf06874412322c0943b67d
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    3  WARNING: suspicious RCU usage in mas_walk (3) (has report)
+The bug was found.
+About 63 commits remaining
+
+2026-05-07 12:39:46
+Session:   16
+Kernel:    2022-10-26 - b229b6ca5abbd63ff40c1396095b1b36b18139c3
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  INFO: rcu detected stall in corrupted
+       4  WARNING in split_huge_page_to_list (has report)
+       6  WARNING in split_huge_page_to_list (has report)
+       7  WARNING in split_huge_page_to_list (has report)
+       9  INFO: rcu detected stall in corrupted
+       9  WARNING in split_huge_page_to_list (has report)
+      10  INFO: rcu detected stall in corrupted
+The bug was not found.
+About 19 commits remaining
+
+2026-05-07 12:55:10
+Session:   17
+Kernel:    2022-10-25 - de547896aac606a00435a219757a940ece142bf0
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  INFO: rcu detected stall in corrupted
+***    2  WARNING: suspicious RCU usage in mas_walk (has report)
+The bug was found.
+About 9 commits remaining
+
+2026-05-07 13:06:19
+Session:   18
+Kernel:    2022-10-25 - 8da7f0976b9071b528c545008de9d10cc81883b1
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  INFO: rcu detected stall in corrupted
+       4  WARNING in split_huge_page_to_list (has report)
+       6  WARNING in split_huge_page_to_list (has report)
+       7  INFO: rcu detected stall in corrupted (3)
+       9  INFO: rcu detected stall in corrupted (2)
+       9  WARNING in split_huge_page_to_list (has report)
+      10  WARNING in split_huge_page_to_list (has report)
+The bug was not found.
+About 5 commits remaining
+
+2026-05-07 13:22:06
+Session:   19
+Kernel:    2022-10-25 - 957148e22870e4021082dddd12f8619a49d9bb50
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  INFO: rcu detected stall in corrupted
+***    3  WARNING: suspicious RCU usage in mas_walk (3) (has report)
+Running syz-repro.
+Run Time:        0h24m0s
+The bug was found.
+About 3 commits remaining
+
+2026-05-07 13:54:40
+Session:   20
+Kernel:    2022-10-25 - eb1d969203eb8212741751f88dcf5cb56bb11830
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  INFO: rcu detected stall in corrupted
+***    2  WARNING: suspicious RCU usage in mas_walk (2) (has report)
+The bug was found.
+About 2 commits remaining
+
+==== Partial Result: Focused Fuzzing ====
+Bisection Result:     2022-10-25 - eb1d969203eb8212741751f88dcf5cb56bb11830
+Bisected Commit Name: media: vivid: fix control handler mutex deadlock
+Stage Time:           6h19m46s
+Run Time:             6h19m47s
+=========================================
+
+==== Anchor Commit ====
+
+2026-05-07 14:02:00
+Session:   21
+Kernel:    2022-10-25 - 8da7f0976b9071b528c545008de9d10cc81883b1
+Compiler:  ccache gcc
+PoC:       /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0895-3.prog
+Attempt 0:
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in switchdev_deferred_process_work
+    INFO: task hung in new_device_store
+    INFO: task hung in addrconf_dad_work
+    possible deadlock in vivid_update_format_cap
+    INFO: task hung in rtnetlink_rcv_msg
+Attempt 1:
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in ieee80211_unregister_hw
+    INFO: task hung in addrconf_dad_work
+    possible deadlock in vivid_update_format_cap
+    INFO: task hung in devlink_unregister
+    INFO: task hung in nl80211_pre_doit
+    INFO: task hung in rtnetlink_rcv_msg
+Attempt 2:
+    possible deadlock in vivid_update_format_cap
+Attempt 3:
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in netdev_run_todo
+    INFO: task hung in del_device_store
+    INFO: task hung in addrconf_dad_work
+    possible deadlock in vivid_update_format_cap
+    INFO: task hung in linkwatch_event
+    INFO: task hung in rtnetlink_rcv_msg
+Attempt 4:
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in l2tp_exit_net
+    INFO: task hung in del_device_store
+    INFO: task hung in addrconf_dad_work
+    possible deadlock in vivid_update_format_cap
+    INFO: task hung in rtnetlink_rcv_msg
+Attempt 5:
+    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in l2tp_exit_net
+    INFO: task hung in del_device_store
+    INFO: task hung in addrconf_dad_work
+    possible deadlock in vivid_update_format_cap
+    INFO: task hung in linkwatch_event
+    INFO: task hung in rtnetlink_rcv_msg
+Attempt 6:
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in netdev_run_todo
+    INFO: task hung in devlink_nl_port_fill
+    INFO: task hung in wg_set_device
+    possible deadlock in vivid_update_format_cap
+    INFO: task hung in rtnetlink_rcv_msg
+Attempt 7:
+    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in sit_exit_batch_net
+    INFO: task hung in switchdev_deferred_process_work
+    INFO: task hung in new_device_store
+    INFO: task hung in addrconf_dad_work
+    possible deadlock in vivid_update_format_cap
+    INFO: task hung in rtnetlink_rcv_msg
+The bug was not found.
+
+Failure: This bug cannot be found at the anchor commit.
+
+====================================================================================================================================================
+Bug Name:             WARNING: suspicious RCU usage in mas_walk
+Bug ID:               bug0895
+Bug Link:             https://syzkaller.appspot.com/bug?extid=2ee18845e89ae76342c5
+Bisection Result:     2022-10-25 - eb1d969203eb8212741751f88dcf5cb56bb11830
+Bisected Commit Name: media: vivid: fix control handler mutex deadlock
+Run Time:             6h34m15s
+
+Anchor Commit:        2023-02-06 - 05ecb680708a1dbe6554d6fc17e5d9a8a7cb5e6a
+Bisection Result:     2022-10-25 - eb1d969203eb8212741751f88dcf5cb56bb11830

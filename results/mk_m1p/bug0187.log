@@ -1,0 +1,86 @@
+./bin/meerkat -i 1 -c /home/author/meerkat/wd-meerkat-1/meerkat.cfg -a 55be6084c8e0e0ada9278c2ab60b7a584378efda -F ff-test,stateful-corpus,poc-test,ff-no-find-backup
+Bisecting:          WARNING in inet_csk_destroy_sock
+Syzbot Link:        https://syzkaller.appspot.com/bug?id=8e2620ee4ac7306654859489a322c33c4de99b20
+Working Name:       bug0187
+
+Aliases:
+    WARNING in inet_csk_destroy_sock
+
+Anchor Commit:      55be6084c8e0e0ada9278c2ab60b7a584378efda
+Repository:         https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
+Branch:             master
+Arch:               amd64
+
+Meerkat:            /home/author/meerkat/
+Version:            1.2.0
+Kernel:             /home/author/meerkat/wd-meerkat-1/kernel/
+Syzkaller:          /home/author/meerkat/syzkaller/
+Compilers:          /home/author/meerkat/compilers/
+Compiler:           gcc (Ubuntu 12.3.0-1ubuntu1~22.04.3) 12.3.0
+Linker:             GNU ld (GNU Binutils for Ubuntu) 2.38
+Ccache:             ccache version 4.5.1
+Image:              /home/author/meerkat/image/stretch/stretch.img
+Image Key:          /home/author/meerkat/image/stretch/stretch.id_rsa
+
+Workdir:            /home/author/meerkat/wd-meerkat-1/
+Kconfig:            /home/author/meerkat/wd-meerkat-1/config-bug0187.txt
+Reproducers: (1)    /home/author/meerkat/wd-meerkat-1/reproducers/
+Primary PoC:        /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0187-1.prog
+Syzkaller Workdir:  /home/author/meerkat/wd-meerkat-1/wd-kaller/
+Log Directory:      /home/author/meerkat/wd-meerkat-1/log/
+
+Syscalls: (27)      ["io_uring_enter", "socket$inet", "syz_io_uring_setup", "syz_io_uring_submit", "ioctl$sock_SIOCGIFINDEX", "ioctl$IOCTL_GET_NCIDEV_IDX", "ioctl$F2FS_IOC_START_ATOMIC_WRITE", "openat$selinux_enforce", "socket", "statx", "setsockopt$inet_mreqn", "openat$nci", "bind$nfc_llcp", "open$dir", "io_uring_register$IORING_UNREGISTER_PERSONALITY", "io_uring_register$IORING_REGISTER_PERSONALITY", "futex", "getrusage", "clock_gettime", "mount$bpf", "getuid", "setgid", "getgid", "epoll_create", "syz_init_net_socket$nfc_llcp", "ioctl$ifreq_SIOCGIFINDEX_vcan", "utimes"]
+VM Count:           8
+CPU Count:          2
+Procs:              16
+Memory:             4096
+Make Procs:         16
+Max Time:           10
+Max Attempts:       1
+
+==== Anchor Commit ====
+
+2026-05-12 21:11:49
+Session:   1
+Kernel:    2022-10-10 - 55be6084c8e0e0ada9278c2ab60b7a584378efda
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       1  WARNING in wireless_send_event (has report)
+       2  WARNING in wireless_send_event (5) (has report)
+       3  INFO: rcu detected stall in corrupted
+       7  INFO: rcu detected stall in corrupted (6)
+       8  INFO: rcu detected stall in corrupted (2)
+       9  INFO: rcu detected stall in corrupted (6)
+      10  INFO: rcu detected stall in corrupted (2)
+Attempt 2: (RETRY)
+    Time  Bug Name
+       1  WARNING in wireless_send_event (has report)
+       2  WARNING in wireless_send_event (6) (has report)
+       3  WARNING in wireless_send_event (6) (has report)
+       4  WARNING in wireless_send_event (6) (has report)
+       5  WARNING in wireless_send_event (6) (has report)
+       6  WARNING in wireless_send_event (4) (has report)
+       8  INFO: rcu detected stall in corrupted
+       9  INFO: rcu detected stall in corrupted (7)
+      10  INFO: rcu detected stall in corrupted (2)
+Attempt 3: (RETRY)
+    Time  Bug Name
+       1  WARNING in wireless_send_event (has report)
+       2  WARNING in wireless_send_event (5) (has report)
+       4  INFO: rcu detected stall in corrupted (7)
+       5  INFO: rcu detected stall in corrupted (3)
+       6  INFO: rcu detected stall in corrupted (2)
+       7  INFO: rcu detected stall in corrupted (6)
+       8  INFO: rcu detected stall in corrupted (3)
+       9  INFO: rcu detected stall in corrupted (5)
+      10  INFO: rcu detected stall in corrupted (3)
+The bug was not found.
+
+Failure: This bug cannot be found at the anchor commit.
+
+==== Partial Result: Focused Fuzzing ====
+Bisection Result:     Failed to reproduce at the anchor commit.
+Stage Time:           0h44m49s
+Run Time:             0h44m55s
+=========================================

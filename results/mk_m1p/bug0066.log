@@ -1,0 +1,382 @@
+./bin/meerkat -i 1 -c /home/author/meerkat/wd-meerkat-1/meerkat.cfg -a d888c83fcec75194a8a48ccd283953bdba7b2550 -F ff-test,stateful-corpus,poc-test,ff-no-find-backup
+Bisecting:          KASAN: slab-out-of-bounds Read in vxlan_vnifilter_dump_dev
+Syzbot Link:        https://syzkaller.appspot.com/bug?id=d894f245105f59f788177ae2f53df8ffce3ec1ac
+Working Name:       bug0066
+
+Aliases:
+    KASAN: slab-out-of-bounds Read in vxlan_vnifilter_dump_dev
+
+Anchor Commit:      d888c83fcec75194a8a48ccd283953bdba7b2550
+Repository:         https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
+Branch:             master
+Arch:               amd64
+
+Meerkat:            /home/author/meerkat/
+Version:            1.2.0
+Kernel:             /home/author/meerkat/wd-meerkat-1/kernel/
+Syzkaller:          /home/author/meerkat/syzkaller/
+Compilers:          /home/author/meerkat/compilers/
+Compiler:           gcc (Ubuntu 12.3.0-1ubuntu1~22.04.3) 12.3.0
+Linker:             GNU ld (GNU Binutils for Ubuntu) 2.38
+Ccache:             ccache version 4.5.1
+Image:              /home/author/meerkat/image/stretch/stretch.img
+Image Key:          /home/author/meerkat/image/stretch/stretch.id_rsa
+
+Workdir:            /home/author/meerkat/wd-meerkat-1/
+Kconfig:            /home/author/meerkat/wd-meerkat-1/config-bug0066.txt
+Reproducers: (1)    /home/author/meerkat/wd-meerkat-1/reproducers/
+Primary PoC:        /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0066-13.prog
+Syzkaller Workdir:  /home/author/meerkat/wd-meerkat-1/wd-kaller/
+Log Directory:      /home/author/meerkat/wd-meerkat-1/log/
+
+Syscalls: (24)      ["ioctl$ifreq_SIOCGIFINDEX_team", "sendmsg$nl_route", "sendmsg$nl_route_sched", "socket$netlink", "socket$nl_route", "socket", "ioctl$F2FS_IOC_START_ATOMIC_WRITE", "openat$selinux_enforce", "ioctl$sock_SIOCGIFINDEX", "get_robust_list", "syz_clone", "ioctl$TUNGETDEVNETNS", "mount$bpf", "getuid", "ioctl$ifreq_SIOCGIFINDEX_vcan", "bpf$BPF_PROG_GET_FD_BY_ID", "openat$tun", "socket$inet_udp", "socket$inet6_udp", "setgid", "getgid", "socket$inet", "socket$inet6", "bpf$BPF_PROG_GET_NEXT_ID"]
+VM Count:           8
+CPU Count:          2
+Procs:              16
+Memory:             4096
+Make Procs:         16
+Max Time:           10
+Max Attempts:       1
+
+==== Anchor Commit ====
+
+2026-04-22 16:19:34
+Session:   1
+Kernel:    2022-03-29 - d888c83fcec75194a8a48ccd283953bdba7b2550
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    2  KASAN: slab-out-of-bounds Read in vxlan_vnifilter_dump_dev (3) (has report)
+Attempt 2: (RETRY)
+    Time  Bug Name
+***    2  KASAN: slab-out-of-bounds Read in vxlan_vnifilter_dump_dev (has report)
+       2  KASAN: use-after-free Read in vxlan_vnifilter_dump_dev (2) (has report)
+Attempt 3: (RETRY)
+    Time  Bug Name
+***    2  KASAN: slab-out-of-bounds Read in vxlan_vnifilter_dump_dev (2) (has report)
+The bug was found.
+
+New Max Time: 10
+
+==== Major Release Search ====
+11 Releases
+
+2026-04-22 16:38:31
+Session:   2
+Kernel:    2022-03-20 - f443e374ae131c168a065ea1748feac6b2e76613 (v5.17)
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 10 releases remaining
+
+==== Kernel Bisection ====
+13035 Linux commits
+
+2026-04-22 17:01:12
+Session:   3
+Kernel:    2022-03-24 - 169e77764adc041b1dacba84ea90516a895d43b2
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  KASAN: use-after-free Read in vxlan_vnifilter_dump_dev (has report)
+***    3  KASAN: slab-out-of-bounds Read in vxlan_vnifilter_dump_dev (2) (has report)
+       3  KASAN: use-after-free Read in vxlan_vnifilter_dump_dev (has report)
+Running syz-repro.
+New PoC saved at /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0066-0.prog
+Primary PoC:     /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0066-0.prog
+Run Time:        0h13m0s
+The bug was found.
+About 7552 commits remaining
+
+2026-04-22 17:29:55
+Session:   4
+Kernel:    2022-03-23 - b4bc93bd76d4da32600795cd323c971f00a2e788
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 3790 commits remaining
+
+2026-04-22 17:52:12
+Session:   5
+Kernel:    2022-03-10 - 4c7d2e179576e821b461bb4a58d0a834916601fa
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    3  KASAN: slab-out-of-bounds Read in vxlan_vnifilter_dump_dev (has report)
+The bug was found.
+About 1896 commits remaining
+
+2026-04-22 18:07:34
+Session:   6
+Kernel:    2022-02-11 - b96a79253fff1cd2c928b379eadd8c7a6f8055e1
+Compiler:  ccache gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0066-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+       1  WARNING: suspicious RCU usage in hsr_create_self_node (has report)
+       2  WARNING: suspicious RCU usage in hsr_create_self_node (6) (has report)
+       3  WARNING: suspicious RCU usage in hsr_create_self_node (5) (has report)
+       4  WARNING: suspicious RCU usage in hsr_create_self_node (6) (has report)
+       5  WARNING: suspicious RCU usage in hsr_create_self_node (6) (has report)
+       6  WARNING: suspicious RCU usage in hsr_create_self_node (6) (has report)
+       7  WARNING: suspicious RCU usage in hsr_create_self_node (5) (has report)
+       8  WARNING: suspicious RCU usage in hsr_create_self_node (6) (has report)
+       9  WARNING: suspicious RCU usage in hsr_create_self_node (6) (has report)
+      10  WARNING: suspicious RCU usage in hsr_create_self_node (6) (has report)
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 1896 commits remaining
+
+2026-04-22 18:29:52
+Session:   7
+Kernel:    2022-02-21 - 13c6a37d409db9abc9c0bfc6d0a2f07bf0fff60e
+Compiler:  ccache gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0066-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+       1  WARNING: suspicious RCU usage in hsr_create_self_node (has report)
+       2  WARNING: suspicious RCU usage in hsr_create_self_node (6) (has report)
+       3  WARNING: suspicious RCU usage in hsr_create_self_node (5) (has report)
+       4  WARNING: suspicious RCU usage in hsr_create_self_node (6) (has report)
+       5  WARNING: suspicious RCU usage in hsr_create_self_node (6) (has report)
+       6  WARNING: suspicious RCU usage in hsr_create_self_node (6) (has report)
+       7  WARNING: suspicious RCU usage in hsr_create_self_node (5) (has report)
+       8  WARNING: suspicious RCU usage in hsr_create_self_node (6) (has report)
+       9  WARNING: suspicious RCU usage in hsr_create_self_node (6) (has report)
+      10  WARNING: suspicious RCU usage in hsr_create_self_node (6) (has report)
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 1896 commits remaining
+
+2026-04-22 18:52:05
+Session:   8
+Kernel:    2022-03-04 - 4bd80d7a4039ac605a1e9ae767d2b01dbfc9b61e
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    2  KASAN: slab-out-of-bounds Read in vxlan_vnifilter_dump_dev (2) (has report)
+The bug was found.
+About 1657 commits remaining
+
+2026-04-22 19:06:08
+Session:   9
+Kernel:    2022-02-17 - d24d2a2b0a81dd5e9bb99aeb4559ec9734e1416f
+Compiler:  ccache gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0066-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+       1  WARNING: suspicious RCU usage in hsr_create_self_node (has report)
+       2  WARNING: suspicious RCU usage in hsr_create_self_node (6) (has report)
+       3  WARNING: suspicious RCU usage in hsr_create_self_node (6) (has report)
+       4  WARNING: suspicious RCU usage in hsr_create_self_node (5) (has report)
+       5  WARNING: suspicious RCU usage in hsr_create_self_node (6) (has report)
+       6  WARNING: suspicious RCU usage in hsr_create_self_node (6) (has report)
+       7  WARNING: suspicious RCU usage in hsr_create_self_node (6) (has report)
+       8  WARNING: suspicious RCU usage in hsr_create_self_node (5) (has report)
+       9  WARNING: suspicious RCU usage in hsr_create_self_node (6) (has report)
+      10  WARNING: suspicious RCU usage in hsr_create_self_node (6) (has report)
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 1657 commits remaining
+
+2026-04-22 19:28:16
+Session:   10
+Kernel:    2022-01-19 - 1080ef5cc0c2c3419dbdd61e441d1e014410824a
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 10179 commits remaining
+
+2026-04-22 19:50:32
+Session:   11
+Kernel:    2022-02-08 - 453f8305483851c20a41b66719d5acdc945541ca
+Compiler:  ccache gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0066-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+       1  WARNING: suspicious RCU usage in hsr_create_self_node (has report)
+       2  WARNING: suspicious RCU usage in hsr_create_self_node (6) (has report)
+       3  WARNING: suspicious RCU usage in hsr_create_self_node (5) (has report)
+       4  WARNING: suspicious RCU usage in hsr_create_self_node (6) (has report)
+       5  WARNING: suspicious RCU usage in hsr_create_self_node (6) (has report)
+       6  WARNING: suspicious RCU usage in hsr_create_self_node (6) (has report)
+       7  WARNING: suspicious RCU usage in hsr_create_self_node (6) (has report)
+       8  WARNING: suspicious RCU usage in hsr_create_self_node (5) (has report)
+       9  WARNING: suspicious RCU usage in hsr_create_self_node (6) (has report)
+      10  WARNING: suspicious RCU usage in hsr_create_self_node (6) (has report)
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 10179 commits remaining
+
+2026-04-22 20:12:55
+Session:   12
+Kernel:    2022-01-27 - b1755400b4be33dbd286272b153579631be2e2ca
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       5  WARNING: ODEBUG bug in netdev_run_todo (has report)
+       6  WARNING: ODEBUG bug in netdev_run_todo (has report)
+The bug was not found.
+About 3844 commits remaining
+
+2026-04-22 20:35:25
+Session:   13
+Kernel:    2022-01-26 - adce573b927adf827f2f8627f05c2ba90031ebc9
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 13227 commits remaining
+
+2026-04-22 20:57:24
+Session:   14
+Kernel:    2022-02-27 - ee6373ddf3a974c4239f56931f5944fd289146e7
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 624 commits remaining
+
+2026-04-22 21:19:44
+Session:   15
+Kernel:    2022-03-03 - 8fe96f586b8326073ab193f2e5cf951d7cd4d609
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    3  KASAN: slab-out-of-bounds Read in vxlan_vnifilter_dump_dev (has report)
+Running syz-repro.
+New PoC saved at /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0066-1.prog
+Primary PoC:     /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0066-1.prog
+Run Time:        0h13m0s
+The bug was found.
+About 134 commits remaining
+
+2026-04-22 21:44:59
+Session:   16
+Kernel:    2022-03-01 - 445b2f36bb4efb81f064e931f28b9ec19f114355
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    3  KASAN: slab-out-of-bounds Read in vxlan_vnifilter_dump_dev (2) (has report)
+The bug was found.
+About 70 commits remaining
+
+2026-04-22 21:55:49
+Session:   17
+Kernel:    2022-02-28 - 98fffd72f934c48e7e69e21e1394de0b5aed49b4
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 38 commits remaining
+
+2026-04-22 22:11:43
+Session:   18
+Kernel:    2022-02-23 - 72fb3b60a3114a1154a8ae5629ea3b43a88a7a4d
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 3062 commits remaining
+
+2026-04-22 22:34:34
+Session:   19
+Kernel:    2022-03-01 - c63053e0cb5afcf53d5119cf82136c22131792a2
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 9 commits remaining
+
+2026-04-22 22:49:09
+Session:   20
+Kernel:    2022-03-01 - a498c5953a9cdadcc1479c07d5b04c1afa3f53dc
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       8  WARNING: ODEBUG bug in netdev_run_todo (has report)
+The bug was not found.
+About 5 commits remaining
+
+2026-04-22 23:07:25
+Session:   21
+Kernel:    2022-03-01 - 3edf5f66c12aa0b318b05ad2c04cf363b0f51f99
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    3  KASAN: slab-out-of-bounds Read in vxlan_vnifilter_dump_dev (has report)
+       3  WARNING: ODEBUG bug in netdev_run_todo (has report)
+The bug was found.
+About 3 commits remaining
+
+2026-04-22 23:15:02
+Session:   22
+Kernel:    2022-03-01 - f9c4bb0b245cee35ef66f75bf409c9573d934cf9
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    3  KASAN: slab-out-of-bounds Read in vxlan_vnifilter_dump_dev (has report)
+       3  KASAN: use-after-free Read in vxlan_vnifilter_dump_dev (2) (has report)
+Running syz-repro.
+New PoC saved at /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0066-0.prog
+Primary PoC:     /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0066-0.prog
+Run Time:        0h16m0s
+The bug was found.
+About 2 commits remaining
+
+==== Partial Result: Focused Fuzzing ====
+Reproducer:           /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0066-0.prog
+Bisection Result:     2022-03-01 - f9c4bb0b245cee35ef66f75bf409c9573d934cf9
+Bisected Commit Name: vxlan: vni filtering support on collect metadata device
+Stage Time:           7h18m49s
+Run Time:             7h18m51s
+=========================================
+
+==== Anchor Commit ====
+
+2026-04-22 23:38:23
+Session:   23
+Kernel:    2022-03-01 - a498c5953a9cdadcc1479c07d5b04c1afa3f53dc
+Compiler:  ccache gcc
+PoC:       /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0066-0.prog
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+
+Failure: This bug cannot be found at the anchor commit.
+
+====================================================================================================================================================
+Bug Name:             KASAN: slab-out-of-bounds Read in vxlan_vnifilter_dump_dev
+Bug ID:               bug0066
+Bug Link:             https://syzkaller.appspot.com/bug?id=d894f245105f59f788177ae2f53df8ffce3ec1ac
+Bisection Result:     2022-03-01 - f9c4bb0b245cee35ef66f75bf409c9573d934cf9
+Bisected Commit Name: vxlan: vni filtering support on collect metadata device
+Run Time:             7h30m41s
+
+Anchor Commit:        2022-03-29 - d888c83fcec75194a8a48ccd283953bdba7b2550
+Bisection Result:     2022-03-01 - f9c4bb0b245cee35ef66f75bf409c9573d934cf9

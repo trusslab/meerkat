@@ -1,0 +1,293 @@
+./bin/meerkat -i 1 -c /home/author/meerkat/wd-meerkat-1/meerkat.cfg -a e8bc52cb8df80c31c73c726ab58ea9746e9ff734 -F ff-test,stateful-corpus,poc-test,ff-no-find-backup
+Bisecting:          KASAN: use-after-free Read in nf_tables_trans_destroy_work
+Syzbot Link:        https://syzkaller.appspot.com/bug?id=897c1d13df86f25965e786c51f023df82e991c37
+Working Name:       bug0093
+
+Aliases:
+    KASAN: use-after-free Read in nf_tables_trans_destroy_work
+
+Anchor Commit:      e8bc52cb8df80c31c73c726ab58ea9746e9ff734
+Repository:         https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
+Branch:             master
+Arch:               amd64
+
+Meerkat:            /home/author/meerkat/
+Version:            1.2.0
+Kernel:             /home/author/meerkat/wd-meerkat-1/kernel/
+Syzkaller:          /home/author/meerkat/syzkaller/
+Compilers:          /home/author/meerkat/compilers/
+Compiler:           gcc (Ubuntu 12.3.0-1ubuntu1~22.04.3) 12.3.0
+Linker:             GNU ld (GNU Binutils for Ubuntu) 2.38
+Ccache:             ccache version 4.5.1
+Image:              /home/author/meerkat/image/stretch/stretch.img
+Image Key:          /home/author/meerkat/image/stretch/stretch.id_rsa
+
+Workdir:            /home/author/meerkat/wd-meerkat-1/
+Kconfig:            /home/author/meerkat/wd-meerkat-1/config-bug0093.txt
+Reproducers: (1)    /home/author/meerkat/wd-meerkat-1/reproducers/
+Primary PoC:        /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0093-1.prog
+Syzkaller Workdir:  /home/author/meerkat/wd-meerkat-1/wd-kaller/
+Log Directory:      /home/author/meerkat/wd-meerkat-1/log/
+
+Syscalls: (6)       ["sendmsg$NFT_BATCH", "socket$nl_netfilter", "socket$netlink", "socket", "ioctl$F2FS_IOC_START_ATOMIC_WRITE", "openat$selinux_enforce"]
+VM Count:           8
+CPU Count:          2
+Procs:              16
+Memory:             4096
+Make Procs:         16
+Max Time:           10
+Max Attempts:       1
+
+==== Anchor Commit ====
+
+2026-04-24 20:00:12
+Session:   1
+Kernel:    2022-10-07 - e8bc52cb8df80c31c73c726ab58ea9746e9ff734
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  INFO: rcu detected stall in corrupted
+***    2  KASAN: use-after-free Read in nf_tables_trans_destroy_work (has report)
+Attempt 2: (RETRY)
+    Time  Bug Name
+***    2  KASAN: use-after-free Read in nf_tables_trans_destroy_work (2) (has report)
+Attempt 3: (RETRY)
+    Time  Bug Name
+***    2  KASAN: use-after-free Read in nf_tables_trans_destroy_work (has report)
+The bug was found.
+
+New Max Time: 10
+
+==== Major Release Search ====
+12 Releases
+
+2026-04-24 20:20:12
+Session:   2
+Kernel:    2022-10-02 - 4fe89d07dcc2804c8b562f6c7896a45643d34b2f (v6.0)
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    2  KASAN: use-after-free Read in nf_tables_trans_destroy_work (3) (has report)
+Running syz-repro.
+New PoC saved at /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0093-0.prog
+Primary PoC:     /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0093-0.prog
+Run Time:        0h43m0s
+The bug was found.
+About 11 releases remaining
+
+2026-04-24 21:18:45
+Session:   3
+Kernel:    2022-07-31 - 3d7cb6b04c3f3115719235cc6866b10326de34cd (v5.19)
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    2  KASAN: use-after-free Read in nf_tables_trans_destroy_work (4) (has report)
+The bug was found.
+About 10 releases remaining
+
+2026-04-24 21:33:54
+Session:   4
+Kernel:    2022-05-22 - 4b0986a3613c92f4ec1bdc7f60ec66fea135991f (v5.18)
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 9 releases remaining
+
+==== Kernel Bisection ====
+16400 Linux commits
+
+2026-04-24 21:56:29
+Session:   5
+Kernel:    2022-05-26 - c011dd537ffe47462051930413fed07dbdc80313
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       6  WARNING in __nf_unregister_net_hook (2) (has report)
+       8  KASAN: slab-out-of-bounds Read in nf_tables_delrule (has report)
+The bug was not found.
+About 8495 commits remaining
+
+2026-04-24 22:18:51
+Session:   6
+Kernel:    2022-06-08 - 5d4af9c1f04ab0411ba5818baad9a68e87f33099
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    3  KASAN: use-after-free Read in nf_tables_trans_destroy_work (2) (has report)
+The bug was found.
+About 4250 commits remaining
+
+2026-04-24 22:34:27
+Session:   7
+Kernel:    2022-05-26 - 7e284070abe53d448517b80493863595af4ab5f0
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 2118 commits remaining
+
+2026-04-24 22:56:58
+Session:   8
+Kernel:    2022-05-28 - 664a393a2663a0f62fc1b18157ccae33dcdbb8c8
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       9  KASAN: slab-out-of-bounds Read in nf_tables_delrule (has report)
+The bug was not found.
+About 1075 commits remaining
+
+2026-04-24 23:19:31
+Session:   9
+Kernel:    2022-05-31 - f8a52af9d00d59fd887d8ad1fa0c2c88a5d775b9
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 525 commits remaining
+
+2026-04-24 23:38:15
+Session:   10
+Kernel:    2022-06-01 - 96752be4d7b443e6f1e322428d61f777d7d8bd4d
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       5  WARNING in fib6_add (has report)
+       6  KASAN: slab-out-of-bounds Read in nf_tables_delrule (has report)
+       6  suppressed report
+       7  KASAN: slab-out-of-bounds Read in nf_tables_delrule (has report)
+The bug was not found.
+About 257 commits remaining
+
+2026-04-24 23:53:06
+Session:   11
+Kernel:    2022-06-02 - 73503963b715a64a44aa2b1c486114b917a17c73
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       5  WARNING in fib6_add (has report)
+       6  suppressed report
+The bug was not found.
+About 140 commits remaining
+
+2026-04-25 00:07:50
+Session:   12
+Kernel:    2022-06-01 - 2440d2068a7517f60003b0e12e5fadcebd14cda3
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       9  WARNING in fib6_add (has report)
+The bug was not found.
+About 7142 commits remaining
+
+2026-04-25 00:30:13
+Session:   13
+Kernel:    2022-06-07 - fd58f7df2415ef747782e01f94880fefad1247cf
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       7  WARNING in fib6_add (has report)
+The bug was not found.
+About 36 commits remaining
+
+2026-04-25 00:48:04
+Session:   14
+Kernel:    2022-06-08 - e44c8f4080ca264b5aac3183a321538662b0950b
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    3  KASAN: use-after-free Read in nf_tables_trans_destroy_work (has report)
+Running syz-repro.
+New PoC saved at /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0093-1.prog
+Primary PoC:     /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0093-1.prog
+Run Time:        0h21m0s
+The bug was found.
+About 19 commits remaining
+
+2026-04-25 01:17:50
+Session:   15
+Kernel:    2022-06-07 - 0737e018a05e2aa352828c52bdeed3b02cff2930
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    2  KASAN: use-after-free Read in nf_tables_trans_destroy_work (has report)
+The bug was found.
+About 10 commits remaining
+
+2026-04-25 01:24:34
+Session:   16
+Kernel:    2022-06-02 - 2c9e4559773c261900c674a86b8e455911675d71
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       6  WARNING in fib6_add (has report)
+The bug was not found.
+About 7124 commits remaining
+
+2026-04-25 01:39:57
+Session:   17
+Kernel:    2022-06-06 - 9dd732e0bdf538b1b76dc7c157e2b5e560ff30d3
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    3  KASAN: use-after-free Read in nf_tables_trans_destroy_work (has report)
+The bug was found.
+About 3 commits remaining
+
+2026-04-25 01:47:27
+Session:   18
+Kernel:    2022-06-06 - c271cc9febaaa1bcbc0842d1ee30466aa6148ea8
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  WARNING in ipgre_xmit (has report)
+       6  WARNING in fib6_add (has report)
+      10  WARNING: ODEBUG bug in netdev_run_todo (has report)
+The bug was not found.
+About 2 commits remaining
+
+==== Partial Result: Focused Fuzzing ====
+Reproducer:           /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0093-1.prog
+Bisection Result:     2022-06-06 - 9dd732e0bdf538b1b76dc7c157e2b5e560ff30d3
+Bisected Commit Name: netfilter: nf_tables: memleak flow rule from commit path
+Stage Time:           6h1m42s
+Run Time:             6h1m43s
+=========================================
+
+==== Anchor Commit ====
+
+2026-04-25 02:01:54
+Session:   19
+Kernel:    2022-06-06 - c271cc9febaaa1bcbc0842d1ee30466aa6148ea8
+Compiler:  ccache gcc
+PoC:       /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0093-1.prog
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+
+Failure: This bug cannot be found at the anchor commit.
+
+====================================================================================================================================================
+Bug Name:             KASAN: use-after-free Read in nf_tables_trans_destroy_work
+Bug ID:               bug0093
+Bug Link:             https://syzkaller.appspot.com/bug?id=897c1d13df86f25965e786c51f023df82e991c37
+Bisection Result:     2022-06-06 - 9dd732e0bdf538b1b76dc7c157e2b5e560ff30d3
+Bisected Commit Name: netfilter: nf_tables: memleak flow rule from commit path
+Run Time:             6h13m25s
+
+Anchor Commit:        2022-10-07 - e8bc52cb8df80c31c73c726ab58ea9746e9ff734
+Bisection Result:     2022-06-06 - 9dd732e0bdf538b1b76dc7c157e2b5e560ff30d3

@@ -1,0 +1,490 @@
+./bin/meerkat -i 1 -c /home/author/meerkat/wd-meerkat-1/meerkat.cfg -a 58390c8ce1bddb6c623f62e7ed36383e7fa5c02f -F ff-test,stateful-corpus,poc-test,ff-no-find-backup
+Bisecting:          KASAN: slab-use-after-free Read in hci_conn_hash_flush
+Warning: No syscall found that produces sock_bt.
+Syzbot Link:        https://syzkaller.appspot.com/bug?extid=8bb72f86fc823817bc5d
+Working Name:       bug0864
+
+Aliases:
+    KASAN: slab-use-after-free Read in hci_conn_hash_flush
+
+Anchor Commit:      58390c8ce1bddb6c623f62e7ed36383e7fa5c02f
+Repository:         https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
+Branch:             master
+Arch:               amd64
+
+Meerkat:            /home/author/meerkat/
+Version:            1.2.0
+Kernel:             /home/author/meerkat/wd-meerkat-1/kernel/
+Syzkaller:          /home/author/meerkat/syzkaller/
+Compilers:          /home/author/meerkat/compilers/
+Compiler:           gcc (Ubuntu 12.3.0-1ubuntu1~22.04.3) 12.3.0
+Linker:             GNU ld (GNU Binutils for Ubuntu) 2.38
+Ccache:             ccache version 4.5.1
+Image:              /home/author/meerkat/image/stretch/stretch.img
+Image Key:          /home/author/meerkat/image/stretch/stretch.id_rsa
+
+Workdir:            /home/author/meerkat/wd-meerkat-1/
+Kconfig:            /home/author/meerkat/wd-meerkat-1/config-bug0864.txt
+Reproducers: (1)    /home/author/meerkat/wd-meerkat-1/reproducers/
+Syzkaller Workdir:  /home/author/meerkat/wd-meerkat-1/wd-kaller/
+Log Directory:      /home/author/meerkat/wd-meerkat-1/log/
+
+Syscalls: (21)      ["bpf$BPF_PROG_RAW_TRACEPOINT_LOAD", "bpf$BPF_RAW_TRACEPOINT_OPEN", "connect$bt_sco", "syz_init_net_socket$bt_sco", "bpf$MAP_UPDATE_ELEM_TAIL_CALL", "perf_event_open", "bpf$BPF_PROG_GET_FD_BY_ID", "bpf$MAP_CREATE_TAIL_CALL", "ioctl$F2FS_IOC_START_ATOMIC_WRITE", "openat$selinux_enforce", "ioctl$sock_SIOCGIFINDEX", "bpf$BPF_BTF_LOAD", "bpf$OBJ_GET_MAP", "syz_clone", "socket", "bpf$TOKEN_CREATE", "bpf$BPF_PROG_GET_NEXT_ID", "bpf$BPF_MAP_CONST_STR_FREEZE", "bpf$MAP_CREATE_RINGBUF", "bpf$MAP_UPDATE_CONST_STR", "bpf$MAP_CREATE_CONST_STR"]
+VM Count:           8
+CPU Count:          2
+Procs:              16
+Memory:             4096
+Make Procs:         16
+Max Time:           10
+Max Attempts:       1
+
+==== Anchor Commit ====
+
+2026-05-05 01:55:55
+Session:   1
+Kernel:    2023-04-30 - 58390c8ce1bddb6c623f62e7ed36383e7fa5c02f
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    2  KASAN: slab-use-after-free Read in hci_conn_hash_flush (3) (has report)
+Attempt 2: (RETRY)
+    Time  Bug Name
+***    2  KASAN: slab-use-after-free Read in hci_conn_hash_flush (3) (has report)
+Attempt 3: (RETRY)
+    Time  Bug Name
+***    2  KASAN: slab-use-after-free Read in hci_conn_hash_flush (3) (has report)
+The bug was found.
+
+New Max Time: 10
+
+==== Major Release Search ====
+13 Releases
+
+2026-05-05 02:23:54
+Session:   2
+Kernel:    2023-04-23 - 457391b0380335d5e9a5babdec90ac53928b23b4 (v6.3)
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       4  WARNING in reserve_ds_buffers (5) (has report)
+       5  WARNING in reserve_ds_buffers (2) (has report)
+       5  SYZFAIL: repeatedly failed to execute the program
+       6  WARNING in reserve_ds_buffers (has report)
+       8  WARNING in reserve_ds_buffers (3) (has report)
+      10  WARNING in reserve_ds_buffers (3) (has report)
+The bug was not found.
+This commit is flagged as unstable.
+About 12 releases remaining
+
+2026-05-05 02:55:23
+Session:   3
+Kernel:    2023-02-19 - c9c3395d5e3dcc6daee66c6908354d47bf98cb0c (v6.2)
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  possible deadlock in sco_conn_del (3)
+       2  INFO: rcu detected stall in corrupted
+       4  WARNING in reserve_ds_buffers (7) (has report)
+       5  possible deadlock in sco_conn_del
+       5  WARNING in reserve_ds_buffers (has report)
+       6  possible deadlock in sco_conn_del (2)
+       6  WARNING in reserve_ds_buffers (2) (has report)
+       7  possible deadlock in sco_conn_del (2)
+       7  INFO: rcu detected stall in corrupted
+       7  WARNING in reserve_ds_buffers (3) (has report)
+       8  possible deadlock in sco_conn_del
+       9  possible deadlock in sco_conn_del
+       9  WARNING in reserve_ds_buffers (3) (has report)
+      10  possible deadlock in sco_conn_del
+      10  WARNING in reserve_ds_buffers (2) (has report)
+The bug was not found.
+About 11 releases remaining
+
+==== Kernel Bisection ====
+27685 Linux commits
+
+2026-05-05 03:28:04
+Session:   4
+Kernel:    2023-03-09 - d0ddf5065ffef45f8fce4001abe0206081c7ff10
+Compiler:  ccache gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0864-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+       2  WARNING in c_start (8) (has report)
+       3  WARNING in c_start (8) (has report)
+       4  WARNING in c_start (8) (has report)
+       5  WARNING in c_start (8) (has report)
+       6  WARNING in c_start (8) (has report)
+       7  WARNING in c_start (9) (has report)
+       8  WARNING in c_start (10) (has report)
+       9  WARNING in c_start (8) (has report)
+      10  WARNING in c_start (12) (has report)
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 27685 commits remaining
+
+2026-05-05 03:59:23
+Session:   5
+Kernel:    2023-03-27 - 1a2dbf0303e8793444a57a2eec0c6b29523657d9
+Compiler:  ccache gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0864-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+       2  WARNING in c_start (8) (has report)
+       3  WARNING in c_start (8) (has report)
+       4  WARNING in c_start (8) (has report)
+       5  WARNING in c_start (9) (has report)
+       6  WARNING in c_start (9) (has report)
+       7  WARNING in c_start (8) (has report)
+       8  WARNING in c_start (9) (has report)
+       9  WARNING in c_start (10) (has report)
+      10  WARNING in c_start (10) (has report)
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 27685 commits remaining
+
+2026-05-05 04:31:10
+Session:   6
+Kernel:    2023-02-03 - 17f248aa8664ff5b3643491136283e73b5c18166
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  possible deadlock in sco_conn_del (3)
+       3  possible deadlock in sco_conn_del (2)
+       4  possible deadlock in sco_conn_del
+       4  INFO: rcu detected stall in corrupted
+       4  WARNING in reserve_ds_buffers (has report)
+       5  WARNING in reserve_ds_buffers (3) (has report)
+       6  possible deadlock in sco_conn_del
+       6  WARNING in reserve_ds_buffers (2) (has report)
+       7  possible deadlock in sco_conn_del (3)
+       8  WARNING in reserve_ds_buffers (2) (has report)
+       9  possible deadlock in sco_conn_del (2)
+      10  INFO: rcu detected stall in corrupted (2)
+The bug was not found.
+About 28521 commits remaining
+
+2026-05-05 05:03:07
+Session:   7
+Kernel:    2023-04-07 - 536ba6c48d8e1a47d688326dfbd04ab37a6eb8dc
+Compiler:  ccache gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0864-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+       2  WARNING in c_start (8) (has report)
+       3  WARNING in c_start (8) (has report)
+       4  WARNING in c_start (8) (has report)
+       5  WARNING in c_start (9) (has report)
+       6  WARNING in c_start (8) (has report)
+       7  WARNING in c_start (8) (has report)
+       8  WARNING in c_start (8) (has report)
+       9  WARNING in c_start (8) (has report)
+      10  WARNING in c_start (10) (has report)
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 28521 commits remaining
+
+2026-05-05 05:26:03
+Session:   8
+Kernel:    2022-11-24 - 1fd4a5a36f9f10aaad5d9b1b329c2c057d80a0e5
+Compiler:  ccache gcc
+Warning: Child process make exited with error status 2.
+Warning: make exited with error status 0x2
+Error: The kernel failed to make.
+Error: The kernel failed to make.
+Attempting to recover.
+
+2026-05-05 05:39:50
+Session:   9
+Kernel:    2023-04-15 - a22eabc825738dfcf06b7fcfe2cd6d020b832786
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  possible deadlock in sco_conn_del
+       3  possible deadlock in sco_conn_del
+       4  WARNING in reserve_ds_buffers (3) (has report)
+       5  WARNING in reserve_ds_buffers (4) (has report)
+       6  possible deadlock in sco_conn_del (2)
+       6  WARNING in reserve_ds_buffers (has report)
+       6  INFO: task hung in del_device_store
+       7  possible deadlock in sco_conn_del
+       7  WARNING in reserve_ds_buffers (3) (has report)
+       8  possible deadlock in sco_conn_del
+       8  WARNING in reserve_ds_buffers (2) (has report)
+       9  possible deadlock in sco_conn_del (2)
+      10  WARNING in reserve_ds_buffers (has report)
+The bug was not found.
+About 13428 commits remaining
+
+2026-05-05 06:11:16
+Session:   10
+Kernel:    2023-04-26 - 9dd6956b38923dc1b7b349ca1eee3c0bb1f0163a
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       4  WARNING in reserve_ds_buffers (8) (has report)
+       5  WARNING in reserve_ds_buffers (4) (has report)
+       6  WARNING in reserve_ds_buffers (3) (has report)
+       7  WARNING in reserve_ds_buffers (has report)
+       8  WARNING in reserve_ds_buffers (5) (has report)
+       9  WARNING in call_timer_fn (has report)
+      10  WARNING in reserve_ds_buffers (has report)
+The bug was not found.
+About 6728 commits remaining
+
+2026-05-05 06:42:16
+Session:   11
+Kernel:    2023-04-27 - 1c15ca4e4efaddb78f83eed31eeee34c522c3ae2
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    2  KASAN: slab-use-after-free Read in hci_conn_hash_flush (has report)
+Running syz-repro.
+syz-repro was terminated after 60 minutes
+Warning: Child process exited with error status 32767.
+Run Time:        1h0m0s
+The bug was found.
+About 3417 commits remaining
+
+2026-05-05 08:05:30
+Session:   12
+Kernel:    2023-04-21 - 65e0185ad764d2801811bb2e7c122e92557208c4
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       4  WARNING in reserve_ds_buffers (7) (has report)
+       4  suppressed report
+       6  WARNING in reserve_ds_buffers (8) (has report)
+       7  WARNING in reserve_ds_buffers (6) (has report)
+       8  WARNING in reserve_ds_buffers (has report)
+      10  WARNING in reserve_ds_buffers (has report)
+The bug was not found.
+About 7094 commits remaining
+
+2026-05-05 08:36:34
+Session:   13
+Kernel:    2023-04-26 - 6e98b09da931a00bf4e0477d0fa52748bf28fcce
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    2  KASAN: slab-use-after-free Read in hci_conn_hash_flush (4) (has report)
+The bug was found.
+About 6277 commits remaining
+
+2026-05-05 08:51:02
+Session:   14
+Kernel:    2023-04-23 - 095327fede005f4b14d40b2183b2f7965c739dbd
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       4  WARNING in reserve_ds_buffers (8) (has report)
+       5  WARNING in reserve_ds_buffers (3) (has report)
+       6  WARNING in reserve_ds_buffers (5) (has report)
+       7  WARNING in reserve_ds_buffers (7) (has report)
+       9  WARNING in reserve_ds_buffers (has report)
+      10  WARNING in reserve_ds_buffers (7) (has report)
+      10  suppressed report
+The bug was not found.
+About 5831 commits remaining
+
+2026-05-05 09:17:16
+Session:   15
+Kernel:    2023-04-11 - 3c85f087faeca3ca9ec9e7b085e1eff370e3f0db
+Compiler:  ccache gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0864-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+       2  WARNING in c_start (8) (has report)
+       3  WARNING in c_start (8) (has report)
+       4  WARNING in c_start (9) (has report)
+       5  WARNING in c_start (8) (has report)
+       6  WARNING in c_start (8) (has report)
+       7  WARNING in c_start (8) (has report)
+       8  WARNING in c_start (9) (has report)
+       9  WARNING in c_start (11) (has report)
+      10  WARNING in c_start (9) (has report)
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 5831 commits remaining
+
+2026-05-05 09:48:58
+Session:   16
+Kernel:    2023-04-26 - 9b78d919632b7149d311aaad5a977e4b48b10321
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  KFENCE: use-after-free in hci_conn_hash_flush (has report)
+***    2  KASAN: slab-use-after-free Read in hci_conn_hash_flush (3) (has report)
+The bug was found.
+About 125 commits remaining
+
+2026-05-05 10:01:05
+Session:   17
+Kernel:    2023-04-24 - df18f2da302f169e1a29098c6ca3b474f1b0269e
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    2  KASAN: slab-use-after-free Read in hci_conn_hash_flush (3) (has report)
+Running syz-repro.
+New PoC saved at /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0864-0.prog
+Primary PoC:     /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0864-0.prog
+Run Time:        0h18m0s
+The bug was found.
+About 63 commits remaining
+
+2026-05-05 10:30:34
+Session:   18
+Kernel:    2023-04-23 - 9e080b53dafae52759c87a105abcb87aa0592cf4
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    2  KASAN: slab-use-after-free Read in hci_conn_hash_flush (3) (has report)
+The bug was found.
+About 32 commits remaining
+
+2026-05-05 10:41:52
+Session:   19
+Kernel:    2023-04-23 - 305d6b6e485e46a7a3e85d5bfecda9af2294f423
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       4  WARNING in reserve_ds_buffers (5) (has report)
+       5  WARNING in reserve_ds_buffers (4) (has report)
+       6  WARNING in reserve_ds_buffers (7) (has report)
+       8  WARNING in reserve_ds_buffers (2) (has report)
+       9  WARNING in reserve_ds_buffers (has report)
+       9  SYZFAIL: repeatedly failed to execute the program
+      10  WARNING in reserve_ds_buffers (2) (has report)
+The bug was not found.
+This commit is flagged as unstable.
+About 32 commits remaining
+
+2026-05-05 11:01:29
+Session:   20
+Kernel:    2023-04-23 - 9a09460274d311466b44743c281c81f36c3e4df4
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       4  WARNING in reserve_ds_buffers (7) (has report)
+       5  WARNING in reserve_ds_buffers (5) (has report)
+       6  WARNING in reserve_ds_buffers (4) (has report)
+       7  WARNING in reserve_ds_buffers (2) (has report)
+       8  WARNING in reserve_ds_buffers (4) (has report)
+       9  WARNING in reserve_ds_buffers (has report)
+      10  WARNING in reserve_ds_buffers (has report)
+      10  WARNING: ODEBUG bug in netdev_run_todo (has report)
+The bug was not found.
+About 21 commits remaining
+
+2026-05-05 11:20:53
+Session:   21
+Kernel:    2023-04-23 - 06149746e7203d5ffe2d6faf9799ee36203aa8b8
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    2  KASAN: slab-use-after-free Read in hci_conn_hash_flush (2) (has report)
+The bug was found.
+About 11 commits remaining
+
+2026-05-05 11:32:38
+Session:   22
+Kernel:    2023-04-23 - 9e3c2ea67a4c24f7a7517e863e3adc89c4e3b66d
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       4  WARNING in reserve_ds_buffers (8) (has report)
+       5  WARNING in reserve_ds_buffers (8) (has report)
+       7  WARNING in reserve_ds_buffers (7) (has report)
+       8  WARNING in reserve_ds_buffers (3) (has report)
+      10  WARNING in reserve_ds_buffers (6) (has report)
+The bug was not found.
+About 4 commits remaining
+
+2026-05-05 11:52:19
+Session:   23
+Kernel:    2023-04-23 - 0811ff480978a2122f0465cb8682d9f7a2f6a169
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       4  WARNING in reserve_ds_buffers (4) (has report)
+       5  WARNING in reserve_ds_buffers (3) (has report)
+       6  WARNING in reserve_ds_buffers (2) (has report)
+       7  WARNING in reserve_ds_buffers (2) (has report)
+       8  WARNING in reserve_ds_buffers (has report)
+      10  WARNING in reserve_ds_buffers (2) (has report)
+The bug was not found.
+About 3 commits remaining
+
+2026-05-05 12:11:34
+Session:   24
+Kernel:    2023-04-23 - e4eea890369c00dd58d97b1c066dc2bddf0da2c7
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  suppressed report
+       3  WARNING: ODEBUG bug in netdev_run_todo (has report)
+       4  WARNING in reserve_ds_buffers (2) (has report)
+       5  WARNING in reserve_ds_buffers (6) (has report)
+       6  WARNING in reserve_ds_buffers (2) (has report)
+       7  WARNING in reserve_ds_buffers (has report)
+       8  WARNING in reserve_ds_buffers (2) (has report)
+       9  SYZFAIL: repeatedly failed to execute the program
+The bug was not found.
+This commit is flagged as unstable.
+Warning: Child process git exited with error status 2.
+About 3 commits remaining
+Git bisect reported multiple guilty commits
+
+==== Partial Result: Focused Fuzzing ====
+Reproducer:           /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0864-0.prog
+Bisection Result:     2023-04-23 - 06149746e7203d5ffe2d6faf9799ee36203aa8b8
+Bisected Commit Name: Bluetooth: hci_conn: Add support for linking multiple hcon
+Stage Time:           10h35m12s
+Run Time:             10h35m15s
+=========================================
+
+==== Anchor Commit ====
+
+2026-05-05 12:31:08
+Session:   25
+Kernel:    2023-04-23 - 0811ff480978a2122f0465cb8682d9f7a2f6a169
+Compiler:  ccache gcc
+PoC:       /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0864-0.prog
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+
+Failure: This bug cannot be found at the anchor commit.
+
+====================================================================================================================================================
+Bug Name:             KASAN: slab-use-after-free Read in hci_conn_hash_flush
+Bug ID:               bug0864
+Bug Link:             https://syzkaller.appspot.com/bug?extid=8bb72f86fc823817bc5d
+Bisection Result:     2023-04-23 - 06149746e7203d5ffe2d6faf9799ee36203aa8b8
+Bisected Commit Name: Bluetooth: hci_conn: Add support for linking multiple hcon
+Run Time:             10h47m34s
+
+Anchor Commit:        2023-04-30 - 58390c8ce1bddb6c623f62e7ed36383e7fa5c02f
+Bisection Result:     2023-04-23 - 06149746e7203d5ffe2d6faf9799ee36203aa8b8

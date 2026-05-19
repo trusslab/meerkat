@@ -1,0 +1,1513 @@
+./bin/meerkat -i 1 -c /home/author/meerkat/wd-meerkat-1/meerkat.cfg -a eb7081409f94a9a8608593d0fb63a1aa3d6f95d8 -F ff-test,stateful-corpus,poc-test,ff-no-find-backup
+Bisecting:          inconsistent lock state in smc_fback_state_change
+Syzbot Link:        https://syzkaller.appspot.com/bug?id=90aba1c33ce6a38bac825f68d4287f31a1aee56c
+Working Name:       bug0137
+
+Aliases:
+    inconsistent lock state in smc_fback_state_change
+
+Anchor Commit:      eb7081409f94a9a8608593d0fb63a1aa3d6f95d8
+Repository:         https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
+Branch:             master
+Arch:               amd64
+
+Meerkat:            /home/author/meerkat/
+Version:            1.2.0
+Kernel:             /home/author/meerkat/wd-meerkat-1/kernel/
+Syzkaller:          /home/author/meerkat/syzkaller/
+Compilers:          /home/author/meerkat/compilers/
+Compiler:           gcc (Ubuntu 12.3.0-1ubuntu1~22.04.3) 12.3.0
+Linker:             GNU ld (GNU Binutils for Ubuntu) 2.38
+Ccache:             ccache version 4.5.1
+Image:              /home/author/meerkat/image/stretch/stretch.img
+Image Key:          /home/author/meerkat/image/stretch/stretch.id_rsa
+
+Workdir:            /home/author/meerkat/wd-meerkat-1/
+Kconfig:            /home/author/meerkat/wd-meerkat-1/config-bug0137.txt
+Reproducers: (1)    /home/author/meerkat/wd-meerkat-1/reproducers/
+Syzkaller Workdir:  /home/author/meerkat/wd-meerkat-1/wd-kaller/
+Log Directory:      /home/author/meerkat/wd-meerkat-1/log/
+
+Syscalls: (17)      ["sendmsg$L2TP_CMD_TUNNEL_CREATE", "sendmsg$inet", "socket$kcm", "socket$nl_generic", "syz_genetlink_get_family_id$l2tp", "socket", "socket$netlink", "ioctl$F2FS_IOC_START_ATOMIC_WRITE", "openat$selinux_enforce", "socket$inet_udp", "socket$inet6_udp", "socket$l2tp", "socket$l2tp6", "setsockopt$inet_mreqn", "ioctl$sock_SIOCGIFINDEX", "socket$inet", "socket$inet6"]
+VM Count:           4
+CPU Count:          4
+Procs:              24
+Memory:             4096
+Make Procs:         16
+Max Time:           10
+Max Attempts:       1
+
+==== Anchor Commit ====
+
+2026-04-29 04:06:18
+Session:   1
+Kernel:    2022-11-20 - eb7081409f94a9a8608593d0fb63a1aa3d6f95d8
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  INFO: rcu detected stall in corrupted
+       2  inconsistent lock state in l2tp_tunnel_register (2) (has report)
+Attempt 2: (RETRY)
+    Time  Bug Name
+       2  INFO: rcu detected stall in corrupted
+       3  possible deadlock in tcp_delack_timer
+***    3  inconsistent lock state in smc_fback_state_change (has report)
+Attempt 3: (RETRY)
+    Time  Bug Name
+       2  INFO: rcu detected stall in corrupted
+       3  possible deadlock in tcp_delack_timer (3)
+       4  inconsistent lock state in l2tp_tunnel_register (3) (has report)
+***    4  inconsistent lock state in smc_fback_state_change (has report)
+The bug was found.
+
+New Max Time: 12
+
+==== Major Release Search ====
+12 Releases
+
+2026-04-29 04:34:51
+Session:   2
+Kernel:    2022-10-02 - 4fe89d07dcc2804c8b562f6c7896a45643d34b2f (v6.0)
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  INFO: rcu detected stall in corrupted
+The bug was not found.
+About 11 releases remaining
+
+==== Kernel Bisection ====
+14355 Linux commits
+
+2026-04-29 05:03:35
+Session:   3
+Kernel:    2022-10-07 - e08466a7c00733a501d3c5328d29ec974478d717
+Compiler:  ccache gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0137-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+       1  WARNING in wireless_send_event (2) (has report)
+       2  WARNING in wireless_send_event (6) (has report)
+       3  WARNING in wireless_send_event (6) (has report)
+       4  WARNING in wireless_send_event (6) (has report)
+       5  WARNING in wireless_send_event (6) (has report)
+       6  WARNING in wireless_send_event (5) (has report)
+       7  WARNING in wireless_send_event (6) (has report)
+       8  WARNING in wireless_send_event (6) (has report)
+       9  WARNING in wireless_send_event (6) (has report)
+      10  WARNING in wireless_send_event (6) (has report)
+      11  WARNING in wireless_send_event (6) (has report)
+      12  WARNING in wireless_send_event (6) (has report)
+      12  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 14355 commits remaining
+
+2026-04-29 05:32:07
+Session:   4
+Kernel:    2022-09-22 - cca1fd41ab2862465d75443822d751e4f9a112ee
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+      10  KASAN: use-after-free Read in tcp_write_timer_handler (has report)
+The bug was not found.
+About 15102 commits remaining
+
+2026-04-29 06:00:28
+Session:   5
+Kernel:    2022-10-07 - 3fb55dd14036b875b96c39d6e18fc53feb891891
+Compiler:  ccache gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0137-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+       1  WARNING in wireless_send_event (2) (has report)
+       2  WARNING in wireless_send_event (6) (has report)
+       3  WARNING in wireless_send_event (5) (has report)
+       4  WARNING in wireless_send_event (6) (has report)
+       5  WARNING in wireless_send_event (6) (has report)
+       6  WARNING in wireless_send_event (6) (has report)
+       7  WARNING in wireless_send_event (6) (has report)
+       8  WARNING in wireless_send_event (6) (has report)
+       9  WARNING in wireless_send_event (5) (has report)
+      10  WARNING in wireless_send_event (6) (has report)
+      11  WARNING in wireless_send_event (6) (has report)
+      12  WARNING in wireless_send_event (6) (has report)
+      12  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 15102 commits remaining
+
+2026-04-29 06:20:47
+Session:   6
+Kernel:    2022-09-26 - dc8635b25e87232f62276c02899b9d21dd0793c2
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 15540 commits remaining
+
+2026-04-29 06:49:05
+Session:   7
+Kernel:    2022-10-07 - 5d435a3f7b6cb1db566d0f56f5f8dc33be0dde69
+Compiler:  ccache gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0137-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+       1  WARNING in wireless_send_event (2) (has report)
+       2  WARNING in wireless_send_event (6) (has report)
+       3  WARNING in wireless_send_event (6) (has report)
+       4  WARNING in wireless_send_event (6) (has report)
+       5  WARNING in wireless_send_event (5) (has report)
+       6  WARNING in wireless_send_event (6) (has report)
+       7  WARNING in wireless_send_event (6) (has report)
+       8  WARNING in wireless_send_event (6) (has report)
+       9  WARNING in wireless_send_event (6) (has report)
+      10  WARNING in wireless_send_event (5) (has report)
+      11  WARNING in wireless_send_event (6) (has report)
+      12  WARNING in wireless_send_event (6) (has report)
+      12  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 15540 commits remaining
+
+2026-04-29 07:08:49
+Session:   8
+Kernel:    2022-10-14 - fe180a52014fd4a768345fc7ff11a7ced45765e6
+Compiler:  ccache gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0137-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      11  WARNING in clocksource_watchdog (4) (has report)
+      12  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 15540 commits remaining
+
+2026-04-29 07:37:22
+Session:   9
+Kernel:    2022-09-30 - 5a47aed0d651490ad0d6f9dbc98bc6dfc71de787
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       5  WARNING in __dev_queue_xmit (has report)
+      12  KASAN: use-after-free Read in tcp_write_timer_handler (has report)
+The bug was not found.
+About 14976 commits remaining
+
+2026-04-29 07:58:59
+Session:   10
+Kernel:    2022-10-05 - c457ac029e443faa5886f59f849e94701375b80f
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 16544 commits remaining
+
+2026-04-29 08:27:10
+Session:   11
+Kernel:    2022-10-07 - 4078aa68509746d0c1a70c50ab22a761ad7c2e0d
+Compiler:  ccache gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0137-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+       1  WARNING in wireless_send_event (2) (has report)
+       2  WARNING in wireless_send_event (5) (has report)
+       3  WARNING in wireless_send_event (6) (has report)
+       4  WARNING in wireless_send_event (5) (has report)
+       5  WARNING in wireless_send_event (6) (has report)
+       6  WARNING in wireless_send_event (5) (has report)
+       7  WARNING in wireless_send_event (6) (has report)
+       8  WARNING in wireless_send_event (5) (has report)
+       9  WARNING in wireless_send_event (6) (has report)
+      10  WARNING in wireless_send_event (5) (has report)
+      11  WARNING in wireless_send_event (6) (has report)
+      12  WARNING in wireless_send_event (5) (has report)
+      12  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 16544 commits remaining
+
+2026-04-29 08:51:55
+Session:   12
+Kernel:    2022-08-30 - 6f95de6d713130c953af0a40b13c1da519f91c4e
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  INFO: rcu detected stall in corrupted
+       5  WARNING in __dev_queue_xmit (has report)
+       8  WARNING in __dev_queue_xmit (2) (has report)
+       9  WARNING in __dev_queue_xmit (has report)
+      10  WARNING in __dev_queue_xmit (4) (has report)
+      11  WARNING in __dev_queue_xmit (4) (has report)
+      12  WARNING in __dev_queue_xmit (3) (has report)
+The bug was not found.
+About 16882 commits remaining
+
+2026-04-29 09:21:06
+Session:   13
+Kernel:    2022-09-20 - 9af23657b33679b5b8d8579ca1cc0214398f576f
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  INFO: rcu detected stall in corrupted
+       3  WARNING in __dev_queue_xmit (2) (has report)
+       4  WARNING in __dev_queue_xmit (has report)
+      10  KASAN: use-after-free Read in tcp_write_timer_handler (has report)
+      11  KASAN: use-after-free Read in tcp_write_timer_handler (has report)
+The bug was not found.
+About 14284 commits remaining
+
+2026-04-29 09:50:03
+Session:   14
+Kernel:    2022-10-07 - 62e6e5940c0c09433efa52d0fa9a11623a4704b2
+Compiler:  ccache gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0137-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+       1  WARNING in wireless_send_event (2) (has report)
+       2  WARNING in wireless_send_event (5) (has report)
+       3  WARNING in wireless_send_event (6) (has report)
+       4  WARNING in wireless_send_event (6) (has report)
+       5  WARNING in wireless_send_event (6) (has report)
+       6  WARNING in wireless_send_event (6) (has report)
+       7  WARNING in wireless_send_event (6) (has report)
+       8  WARNING in wireless_send_event (5) (has report)
+       9  WARNING in wireless_send_event (6) (has report)
+      10  WARNING in wireless_send_event (6) (has report)
+      11  WARNING in wireless_send_event (6) (has report)
+      12  WARNING in wireless_send_event (6) (has report)
+      12  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 14284 commits remaining
+
+2026-04-29 10:10:33
+Session:   15
+Kernel:    2022-10-06 - 7171a8da00035e7913c3013ca5fb5beb5b8b22f0
+Compiler:  ccache gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0137-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+       1  WARNING in wireless_send_event (has report)
+       2  WARNING in wireless_send_event (6) (has report)
+       3  WARNING in wireless_send_event (6) (has report)
+       4  WARNING in wireless_send_event (5) (has report)
+       5  WARNING in wireless_send_event (5) (has report)
+       6  WARNING in wireless_send_event (6) (has report)
+       7  WARNING in wireless_send_event (5) (has report)
+       8  WARNING in wireless_send_event (5) (has report)
+       9  WARNING in wireless_send_event (6) (has report)
+      10  WARNING in wireless_send_event (5) (has report)
+      11  WARNING in wireless_send_event (5) (has report)
+      12  WARNING in wireless_send_event (6) (has report)
+      12  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 14284 commits remaining
+
+2026-04-29 10:39:09
+Session:   16
+Kernel:    2022-09-24 - bf4ed9e3283b3db26089f7c265e65435af4d3e11
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  INFO: rcu detected stall in corrupted
+       9  KASAN: use-after-free Read in tcp_write_timer_handler (has report)
+      11  suppressed report
+The bug was not found.
+About 16417 commits remaining
+
+2026-04-29 11:07:36
+Session:   17
+Kernel:    2022-09-26 - 16708a889867a77fb3f72820fe5046db9e437eee
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  INFO: rcu detected stall in corrupted
+The bug was not found.
+About 14472 commits remaining
+
+2026-04-29 11:35:57
+Session:   18
+Kernel:    2022-10-07 - 416a2f4f91525fcdec821320bc4608cf012d418e
+Compiler:  ccache gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0137-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+       1  WARNING in wireless_send_event (2) (has report)
+       2  WARNING in wireless_send_event (6) (has report)
+       3  WARNING in wireless_send_event (6) (has report)
+       4  WARNING in wireless_send_event (6) (has report)
+       5  WARNING in wireless_send_event (6) (has report)
+       6  WARNING in wireless_send_event (6) (has report)
+       7  WARNING in wireless_send_event (6) (has report)
+       8  WARNING in wireless_send_event (6) (has report)
+       9  WARNING in wireless_send_event (6) (has report)
+      10  WARNING in wireless_send_event (5) (has report)
+      11  WARNING in wireless_send_event (6) (has report)
+      12  WARNING in wireless_send_event (5) (has report)
+      12  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 14472 commits remaining
+
+2026-04-29 11:56:15
+Session:   19
+Kernel:    2022-11-10 - 6510c78490c490a6636e48b61eeaa6fb65981f4b
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  INFO: rcu detected stall in corrupted
+       8  WARNING in __dev_queue_xmit (has report)
+The bug was not found.
+About 2058 commits remaining
+
+2026-04-29 12:24:55
+Session:   20
+Kernel:    2022-11-09 - e61ab42de874c5af8c5d98b327c77a374d9e7da1
+Compiler:  ccache gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0137-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      11  WARNING in genl_register_family (4) (has report)
+      12  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 2058 commits remaining
+
+2026-04-29 12:53:35
+Session:   21
+Kernel:    2022-10-29 - fbe605ab157b174385b3f19ce33928d3548a9b09
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 1589 commits remaining
+
+2026-04-29 13:21:53
+Session:   22
+Kernel:    2022-11-06 - 90153f928bee544c794a2410afba6d936a09edce
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  INFO: rcu detected stall in corrupted
+The bug was not found.
+About 795 commits remaining
+
+2026-04-29 13:50:35
+Session:   23
+Kernel:    2022-11-11 - d7c2b1f64e44c98206752a1599b0203ae5e92f27
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  INFO: rcu detected stall in corrupted
+The bug was not found.
+About 389 commits remaining
+
+2026-04-29 14:19:53
+Session:   24
+Kernel:    2022-11-18 - ae558268371bb94da6d885430b910abd4d22eeda
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  inconsistent lock state in l2tp_tunnel_register (4) (has report)
+       4  possible deadlock in l2tp_tunnel_register
+       4  inconsistent lock state in l2tp_tunnel_register (3) (has report)
+       5  inconsistent lock state in l2tp_tunnel_register (4) (has report)
+       6  inconsistent lock state in l2tp_tunnel_register (3) (has report)
+       7  inconsistent lock state in l2tp_tunnel_register (3) (has report)
+       9  possible deadlock in l2tp_tunnel_register
+       9  inconsistent lock state in l2tp_tunnel_register (3) (has report)
+      10  possible deadlock in l2tp_tunnel_register (2)
+      10  inconsistent lock state in l2tp_tunnel_register (has report)
+      11  possible deadlock in l2tp_tunnel_register
+      11  inconsistent lock state in l2tp_tunnel_register (has report)
+      12  possible deadlock in l2tp_tunnel_register (2)
+      12  inconsistent lock state in l2tp_tunnel_register (2) (has report)
+The bug was not found.
+About 194 commits remaining
+
+2026-04-29 14:43:21
+Session:   25
+Kernel:    2022-11-18 - b5bf1d8a23a683d56be574a934a8296912efc758
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  inconsistent lock state in l2tp_tunnel_register (4) (has report)
+       3  possible deadlock in l2tp_tunnel_register
+       3  inconsistent lock state in l2tp_tunnel_register (has report)
+       4  possible deadlock in l2tp_tunnel_register
+       4  inconsistent lock state in l2tp_tunnel_register (3) (has report)
+       5  inconsistent lock state in l2tp_tunnel_register (2) (has report)
+       6  possible deadlock in l2tp_tunnel_register
+       6  inconsistent lock state in l2tp_tunnel_register (3) (has report)
+       7  inconsistent lock state in l2tp_tunnel_register (2) (has report)
+       9  possible deadlock in l2tp_tunnel_register
+       9  inconsistent lock state in l2tp_tunnel_register (3) (has report)
+      10  possible deadlock in l2tp_tunnel_register
+      10  inconsistent lock state in l2tp_tunnel_register (3) (has report)
+      11  possible deadlock in l2tp_tunnel_register (2)
+      11  inconsistent lock state in l2tp_tunnel_register (2) (has report)
+      12  inconsistent lock state in l2tp_tunnel_register (has report)
+The bug was not found.
+About 91 commits remaining
+
+2026-04-29 15:02:48
+Session:   26
+Kernel:    2022-11-19 - b6e7fdfd6f6a8bf88fcdb4a45da52c42ba238c25
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  INFO: rcu detected stall in corrupted
+       2  inconsistent lock state in l2tp_tunnel_register (3) (has report)
+       3  possible deadlock in l2tp_tunnel_register
+       3  inconsistent lock state in l2tp_tunnel_register (3) (has report)
+       4  inconsistent lock state in l2tp_tunnel_register (has report)
+       5  possible deadlock in l2tp_tunnel_register
+       5  inconsistent lock state in l2tp_tunnel_register (2) (has report)
+       6  possible deadlock in l2tp_tunnel_register (3)
+       6  inconsistent lock state in l2tp_tunnel_register (has report)
+       8  inconsistent lock state in l2tp_tunnel_register (4) (has report)
+       9  possible deadlock in l2tp_tunnel_register
+       9  inconsistent lock state in l2tp_tunnel_register (has report)
+***    9  inconsistent lock state in smc_fback_state_change (has report)
+Running syz-repro.
+syz-repro was terminated after 60 minutes
+Warning: Child process exited with error status 32767.
+Run Time:        1h0m0s
+The bug was found.
+About 47 commits remaining
+
+2026-04-29 16:21:04
+Session:   27
+Kernel:    2022-11-18 - bf5003a0dc5024987eb3193a19aa802fc6235af0
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  INFO: rcu detected stall in corrupted
+       2  inconsistent lock state in l2tp_tunnel_register (3) (has report)
+       3  inconsistent lock state in l2tp_tunnel_register (3) (has report)
+       4  inconsistent lock state in l2tp_tunnel_register (2) (has report)
+       5  inconsistent lock state in l2tp_tunnel_register (3) (has report)
+       6  possible deadlock in l2tp_tunnel_register
+       6  inconsistent lock state in l2tp_tunnel_register (2) (has report)
+       7  inconsistent lock state in l2tp_tunnel_register (3) (has report)
+       8  inconsistent lock state in l2tp_tunnel_register (has report)
+       9  possible deadlock in l2tp_tunnel_register
+       9  inconsistent lock state in l2tp_tunnel_register (3) (has report)
+      10  possible deadlock in l2tp_tunnel_register
+      10  inconsistent lock state in l2tp_tunnel_register (2) (has report)
+      11  possible deadlock in l2tp_tunnel_register (2)
+      11  inconsistent lock state in l2tp_tunnel_register (has report)
+      12  possible deadlock in l2tp_tunnel_register
+      12  inconsistent lock state in l2tp_tunnel_register (2) (has report)
+The bug was not found.
+About 23 commits remaining
+
+2026-04-29 16:40:36
+Session:   28
+Kernel:    2022-11-18 - fe24a97cf2543e8832e7a2124802e5c32aac05aa
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  possible deadlock in l2tp_tunnel_register
+       2  inconsistent lock state in l2tp_tunnel_register (3) (has report)
+       4  possible deadlock in l2tp_tunnel_register
+       4  inconsistent lock state in l2tp_tunnel_register (3) (has report)
+       5  possible deadlock in l2tp_tunnel_register
+       5  inconsistent lock state in l2tp_tunnel_register (3) (has report)
+       6  inconsistent lock state in l2tp_tunnel_register (has report)
+       7  inconsistent lock state in l2tp_tunnel_register (4) (has report)
+       8  inconsistent lock state in l2tp_tunnel_register (4) (has report)
+      10  inconsistent lock state in l2tp_tunnel_register (4) (has report)
+      11  possible deadlock in l2tp_tunnel_register
+      11  inconsistent lock state in l2tp_tunnel_register (3) (has report)
+      12  inconsistent lock state in l2tp_tunnel_register (3) (has report)
+The bug was not found.
+About 14 commits remaining
+
+2026-04-29 17:00:08
+Session:   29
+Kernel:    2022-11-19 - 926028aaa3827554096d42ffb0c2973bc7f5e80f
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  INFO: rcu detected stall in corrupted
+       2  inconsistent lock state in l2tp_tunnel_register (3) (has report)
+       3  inconsistent lock state in l2tp_tunnel_register (3) (has report)
+       4  inconsistent lock state in l2tp_tunnel_register (has report)
+       5  inconsistent lock state in l2tp_tunnel_register (4) (has report)
+       6  possible deadlock in l2tp_tunnel_register (2)
+       6  inconsistent lock state in l2tp_tunnel_register (2) (has report)
+       7  possible deadlock in l2tp_tunnel_register
+       7  inconsistent lock state in l2tp_tunnel_register (3) (has report)
+       8  inconsistent lock state in l2tp_tunnel_register (2) (has report)
+      10  possible deadlock in l2tp_tunnel_register
+      10  inconsistent lock state in l2tp_tunnel_register (3) (has report)
+      11  possible deadlock in l2tp_tunnel_register
+      11  inconsistent lock state in l2tp_tunnel_register (2) (has report)
+      12  possible deadlock in l2tp_tunnel_register
+The bug was not found.
+About 9 commits remaining
+
+2026-04-29 17:20:07
+Session:   30
+Kernel:    2022-11-17 - 5db8face97f81c9342458c052572e19ac6bd8e52
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  INFO: rcu detected stall in corrupted
+The bug was not found.
+About 317 commits remaining
+
+2026-04-29 17:42:13
+Session:   31
+Kernel:    2022-11-19 - 7fc961cf7ffcb130c4e93ee9a5628134f9de700a
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       9  suppressed report
+The bug was not found.
+About 319 commits remaining
+
+2026-04-29 18:01:54
+Session:   32
+Kernel:    2022-11-19 - 8c67d863a9d60f8e2d563477ba2fd664122e0aae
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  inconsistent lock state in l2tp_tunnel_register (2) (has report)
+       2  BUG: sleeping function called from invalid context in static_key_slow_inc (has report)
+       3  inconsistent lock state in l2tp_tunnel_register (has report)
+       4  possible deadlock in l2tp_tunnel_register (3)
+       4  inconsistent lock state in l2tp_tunnel_register (has report)
+       5  inconsistent lock state in l2tp_tunnel_register (4) (has report)
+       6  inconsistent lock state in l2tp_tunnel_register (has report)
+       7  inconsistent lock state in l2tp_tunnel_register (3) (has report)
+       9  possible deadlock in l2tp_tunnel_register
+       9  inconsistent lock state in l2tp_tunnel_register (2) (has report)
+       9  BUG: sleeping function called from invalid context in static_key_slow_inc (has report)
+      10  possible deadlock in l2tp_tunnel_register (2)
+      10  inconsistent lock state in l2tp_tunnel_register (2) (has report)
+      11  inconsistent lock state in l2tp_tunnel_register (3) (has report)
+      12  possible deadlock in l2tp_tunnel_register
+      12  inconsistent lock state in l2tp_tunnel_register (has report)
+The bug was not found.
+About 4 commits remaining
+
+==== Partial Result: Focused Fuzzing ====
+Bisection Result:     2022-11-19 - b6e7fdfd6f6a8bf88fcdb4a45da52c42ba238c25
+Bisected Commit Name: Merge tag 'iommu-fixes-v6.1-rc5' of git://git.kernel.org/pub/scm/linux/kernel/git/joro/iommu
+Stage Time:           14h15m9s
+Run Time:             14h15m11s
+=========================================
+
+==== Anchor Commit ====
+
+2026-04-29 18:21:27
+Session:   33
+Kernel:    2022-11-19 - 8c67d863a9d60f8e2d563477ba2fd664122e0aae
+Compiler:  ccache gcc
+PoC:       /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0137-4.prog
+Attempt 0:
+*** inconsistent lock state in smc_fback_state_change (has report)
+Attempt 1:
+    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in l2tp_exit_net
+    INFO: task hung in del_device_store
+    INFO: task hung in devlink_unregister
+    INFO: task hung in linkwatch_event
+    INFO: task hung in rtnetlink_rcv_msg
+Attempt 2:
+*** inconsistent lock state in smc_fback_state_change (has report)
+Attempt 3:
+*** inconsistent lock state in smc_fback_state_change (has report)
+Attempt 4:
+    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit
+    INFO: task hung in register_nexthop_notifier
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in new_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in devlink_unregister
+    INFO: task hung in linkwatch_event
+    INFO: task hung in rtnetlink_rcv_msg
+Attempt 5:
+*** inconsistent lock state in smc_fback_state_change (has report)
+Attempt 6:
+    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit
+    INFO: task hung in register_nexthop_notifier
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in del_device_store
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in devlink_unregister
+    INFO: task hung in linkwatch_event
+    INFO: task hung in rtnetlink_rcv_msg
+Attempt 7:
+*** inconsistent lock state in smc_fback_state_change (has report)
+The bug was found.
+
+==== Major Release Search ====
+12 Releases
+
+2026-04-29 18:37:25
+Session:   34
+Kernel:    2022-10-02 - 4fe89d07dcc2804c8b562f6c7896a45643d34b2f (v6.0)
+Compiler:  ccache gcc
+PoC:       /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0137-4.prog
+Attempt 0:
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in devlink_nl_port_fill
+    INFO: task hung in new_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in devlink_unregister
+    INFO: task hung in linkwatch_event
+    INFO: task hung in rtnetlink_rcv_msg
+Attempt 1:
+    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in fib6_rules_net_exit_batch
+    INFO: task hung in fqdir_free_fn
+    INFO: task hung in new_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in rtnetlink_rcv_msg
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in devlink_nl_port_fill
+    INFO: task hung in new_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in linkwatch_event
+    INFO: task hung in rtnetlink_rcv_msg
+Attempt 4:
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in devlink_unregister
+Attempt 5:
+    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in wg_destruct
+    INFO: task hung in new_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in devlink_unregister
+    INFO: task hung in linkwatch_event
+    INFO: task hung in rtnetlink_rcv_msg
+Attempt 6:
+    INFO: rcu detected stall in cleanup_net
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in del_device_store
+    INFO: task hung in devlink_unregister
+    INFO: task hung in linkwatch_event
+    INFO: task hung in rtnetlink_rcv_msg
+Attempt 7:
+    No crashes found.
+The bug was not found.
+About 11 releases remaining
+
+==== Kernel Bisection ====
+14308 Linux commits
+
+2026-04-29 19:03:24
+Session:   35
+Kernel:    2022-10-07 - 1227db9eab18f1ebaac990223d3f18eaddf1b442
+Compiler:  ccache gcc
+PoC:       /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0137-4.prog
+Attempt 0:
+    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in switchdev_deferred_process_work
+    INFO: task hung in del_device_store
+    possible deadlock in vivid_update_format_cap
+    INFO: task hung in devlink_unregister
+    INFO: task hung in linkwatch_event
+    INFO: task hung in rtnetlink_rcv_msg
+Attempt 1:
+    possible deadlock in vivid_update_format_cap
+Attempt 2:
+    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in switchdev_deferred_process_work
+    INFO: task hung in netdev_run_todo
+    INFO: task hung in addrconf_dad_work
+    possible deadlock in vivid_update_format_cap
+    INFO: task hung in rtnetlink_rcv_msg
+Attempt 3:
+    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in new_device_store
+    possible deadlock in vivid_update_format_cap
+    INFO: task hung in rtnetlink_rcv_msg
+Attempt 4:
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in switchdev_deferred_process_work
+    INFO: task hung in addrconf_dad_work
+    possible deadlock in vivid_update_format_cap
+    INFO: task hung in devlink_unregister
+    INFO: task hung in linkwatch_event
+    INFO: task hung in rtnetlink_rcv_msg
+Attempt 5:
+    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in switchdev_deferred_process_work
+    INFO: task hung in netdev_run_todo
+    INFO: task hung in crda_timeout_work
+    INFO: task hung in new_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in addrconf_dad_work
+    possible deadlock in vivid_update_format_cap
+    INFO: task hung in rtnetlink_rcv_msg
+Attempt 6:
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in new_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in addrconf_dad_work
+    possible deadlock in vivid_update_format_cap
+    INFO: task hung in devlink_unregister
+    INFO: task hung in linkwatch_event
+    INFO: task hung in rtnetlink_rcv_msg
+Attempt 7:
+    possible deadlock in vivid_update_format_cap
+The bug was not found.
+About 7175 commits remaining
+
+2026-04-29 19:28:27
+Session:   36
+Kernel:    2022-10-10 - f721d24e5dae8358b49b24399d27ba5d12a7e049
+Compiler:  ccache gcc
+PoC:       /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0137-4.prog
+Warning: VM has not responded after 5 attempts.
+Warning: Only booted 0 VMs.
+The bug was not found.
+This commit is flagged as unstable.
+About 7175 commits remaining
+
+2026-04-29 19:46:11
+Session:   37
+Kernel:    2022-09-28 - d3e1e24604031b0d83b6c2d38f54eeea265cfcc0
+Compiler:  ccache gcc
+PoC:       /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0137-4.prog
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    INFO: rcu detected stall in cleanup_net
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in del_device_store
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in devlink_unregister
+    INFO: task hung in linkwatch_event
+    INFO: task hung in rtnetlink_rcv_msg
+Attempt 2:
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in devlink_nl_port_fill
+    INFO: task hung in del_device_store
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in linkwatch_event
+    INFO: task hung in rtnetlink_rcv_msg
+Attempt 3:
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in switchdev_deferred_process_work
+    INFO: task hung in new_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in devlink_unregister
+    INFO: task hung in rtnetlink_rcv_msg
+Attempt 4:
+    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit (has report)
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    inconsistent lock state in find_vmap_area (has report)
+    INFO: task hung in del_device_store
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in rtnetlink_rcv_msg
+Attempt 5:
+    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit (has report)
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    inconsistent lock state in find_vmap_area (has report)
+    INFO: task hung in new_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in linkwatch_event
+    INFO: task hung in rtnetlink_rcv_msg
+Attempt 6:
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in l2tp_exit_net
+    INFO: task hung in del_device_store
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in devlink_unregister
+    INFO: task hung in rtnetlink_rcv_msg
+Attempt 7:
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in new_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in devlink_unregister
+    INFO: task hung in rtnetlink_rcv_msg
+The bug was not found.
+About 16510 commits remaining
+
+2026-04-29 20:11:14
+Session:   38
+Kernel:    2022-09-27 - 171539f5a90e3fdf7d17f5396fac79d7e44ad68e
+Compiler:  ccache gcc
+PoC:       /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0137-4.prog
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in cangw_pernet_exit_batch
+    INFO: task hung in devlink_nl_port_fill
+    INFO: task hung in new_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in rtnetlink_rcv_msg
+Attempt 2:
+    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit (has report)
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in switchdev_deferred_process_work
+    inconsistent lock state in find_vmap_area (has report)
+    INFO: task hung in del_device_store
+    INFO: task hung in linkwatch_event
+    INFO: task hung in rtnetlink_rcv_msg
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit (has report)
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in switchdev_deferred_process_work
+    inconsistent lock state in find_vmap_area (has report)
+    INFO: task hung in new_device_store
+    INFO: task hung in devlink_unregister
+    INFO: task hung in linkwatch_event
+    INFO: task hung in rtnetlink_rcv_msg
+Attempt 7:
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in del_device_store
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in devlink_unregister
+    INFO: task hung in rtnetlink_rcv_msg
+The bug was not found.
+About 16506 commits remaining
+
+2026-04-29 20:27:08
+Session:   39
+Kernel:    2022-10-10 - dc914858561c424978307561492fcf3145b8b525
+Compiler:  ccache gcc
+PoC:       /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0137-4.prog
+Warning: VM has not responded after 5 attempts.
+Warning: Only booted 0 VMs.
+The bug was not found.
+This commit is flagged as unstable.
+About 16506 commits remaining
+
+2026-04-29 20:35:45
+Session:   40
+Kernel:    2022-11-02 - 780854186946e0de2be192ee7fa5125666533b3a
+Compiler:  ccache gcc
+PoC:       /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0137-4.prog
+Attempt 0:
+    possible deadlock in vivid_update_format_cap
+Attempt 1:
+    possible deadlock in vivid_update_format_cap
+Attempt 2:
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in l2tp_exit_net
+    INFO: task hung in del_device_store
+    possible deadlock in vivid_update_format_cap
+    INFO: task hung in devlink_unregister
+    INFO: task hung in rtnetlink_rcv_msg
+Attempt 3:
+    INFO: rcu detected stall in cleanup_net
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in del_device_store
+    INFO: task hung in addrconf_dad_work
+    possible deadlock in vivid_update_format_cap
+    INFO: task hung in devlink_unregister
+    INFO: task hung in linkwatch_event
+Attempt 4:
+    INFO: rcu detected stall in cleanup_net
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in wg_set_device
+    INFO: task hung in del_device_store
+    INFO: task hung in addrconf_dad_work
+    possible deadlock in vivid_update_format_cap
+    INFO: task hung in devlink_unregister
+    INFO: task hung in linkwatch_event
+    INFO: task hung in rtnetlink_rcv_msg
+Attempt 5:
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in del_device_store
+    INFO: task hung in addrconf_dad_work
+    possible deadlock in vivid_update_format_cap
+    INFO: task hung in devlink_unregister
+    INFO: task hung in rtnetlink_rcv_msg
+Attempt 6:
+    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in netdev_run_todo
+    INFO: task hung in del_device_store
+    INFO: task hung in addrconf_dad_work
+    possible deadlock in vivid_update_format_cap
+    INFO: task hung in linkwatch_event
+    INFO: task hung in rtnetlink_rcv_msg
+Attempt 7:
+    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in switchdev_deferred_process_work
+    INFO: task hung in netdev_run_todo
+    INFO: task hung in new_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in addrconf_dad_work
+    possible deadlock in vivid_update_format_cap
+    INFO: task hung in linkwatch_event
+    INFO: task hung in rtnetlink_rcv_msg
+The bug was not found.
+About 1918 commits remaining
+
+2026-04-29 21:03:11
+Session:   41
+Kernel:    2022-11-09 - 001459787158280d84fce1bc94cec49f34f48b9f
+Compiler:  ccache gcc
+PoC:       /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0137-4.prog
+Warning: VM has not responded after 5 attempts.
+Warning: Only booted 0 VMs.
+The bug was not found.
+This commit is flagged as unstable.
+About 1918 commits remaining
+
+2026-04-29 21:21:22
+Session:   42
+Kernel:    2022-11-15 - 59d0d52c30d4991ac4b329f049cc37118e00f5b0
+Compiler:  ccache gcc
+PoC:       /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0137-4.prog
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in vti6_exit_batch_net
+    INFO: task hung in new_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in devlink_unregister
+    INFO: task hung in linkwatch_event
+    INFO: task hung in rtnetlink_rcv_msg
+Attempt 4:
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in del_device_store
+    INFO: task hung in devlink_unregister
+    INFO: task hung in linkwatch_event
+    INFO: task hung in rtnetlink_rcv_msg
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in switchdev_deferred_process_work
+    INFO: task hung in wg_destruct
+    INFO: task hung in new_device_store
+    INFO: task hung in linkwatch_event
+    INFO: task hung in rtnetlink_rcv_msg
+The bug was not found.
+About 300 commits remaining
+
+2026-04-29 21:46:36
+Session:   43
+Kernel:    2022-11-18 - ae558268371bb94da6d885430b910abd4d22eeda
+Compiler:  ccache gcc
+PoC:       /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0137-4.prog
+Attempt 0:
+*** inconsistent lock state in smc_fback_state_change (has report)
+Attempt 1:
+*** inconsistent lock state in smc_fback_state_change (has report)
+Attempt 2:
+    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in del_device_store
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in linkwatch_event
+    INFO: task hung in rtnetlink_rcv_msg
+Attempt 3:
+    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in switchdev_deferred_process_work
+    INFO: task hung in new_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in rtnetlink_rcv_msg
+Attempt 4:
+*** inconsistent lock state in smc_fback_state_change (has report)
+Attempt 5:
+*** inconsistent lock state in smc_fback_state_change (has report)
+Attempt 6:
+*** inconsistent lock state in smc_fback_state_change (has report)
+Attempt 7:
+    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in del_device_store
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in devlink_unregister
+    INFO: task hung in rtnetlink_rcv_msg
+The bug was found.
+About 154 commits remaining
+
+2026-04-29 22:05:17
+Session:   44
+Kernel:    2022-11-17 - 847ccab8fdcf4a0cd85a278480fab1ccdc9f6136
+Compiler:  ccache gcc
+PoC:       /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0137-4.prog
+Attempt 0:
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in new_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in devlink_unregister
+    INFO: task hung in rtnetlink_rcv_msg
+Attempt 1:
+*** inconsistent lock state in smc_fback_state_change (has report)
+Attempt 2:
+    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in new_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in devlink_unregister
+    INFO: task hung in linkwatch_event
+    INFO: task hung in rtnetlink_rcv_msg
+Attempt 3:
+*** inconsistent lock state in smc_fback_state_change (has report)
+Attempt 4:
+*** inconsistent lock state in smc_fback_state_change (has report)
+Attempt 5:
+*** inconsistent lock state in smc_fback_state_change (has report)
+Attempt 6:
+    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in new_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in devlink_unregister
+    INFO: task hung in rtnetlink_rcv_msg
+Attempt 7:
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in devlink_nl_port_fill
+    INFO: task hung in wg_set_device
+    INFO: task hung in del_device_store
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in linkwatch_event
+    INFO: task hung in rtnetlink_rcv_msg
+The bug was found.
+About 84 commits remaining
+
+2026-04-29 22:21:56
+Session:   45
+Kernel:    2022-11-15 - 510d7b6ae842e59ee00d57e5f07ac15131b6d899
+Compiler:  ccache gcc
+PoC:       /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0137-4.prog
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in netdev_run_todo
+    INFO: task hung in del_device_store
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in devlink_unregister
+    INFO: task hung in linkwatch_event
+    INFO: task hung in rtnetlink_rcv_msg
+Attempt 3:
+    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in devlink_nl_port_fill
+    INFO: task hung in del_device_store
+    INFO: task hung in devlink_unregister
+    INFO: task hung in linkwatch_event
+    INFO: task hung in rtnetlink_rcv_msg
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in linkwatch_event
+    INFO: task hung in rtnetlink_rcv_msg
+Attempt 6:
+    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in new_device_store
+    INFO: task hung in devlink_unregister
+    INFO: task hung in linkwatch_event
+    INFO: task hung in rtnetlink_rcv_msg
+Attempt 7:
+    No crashes found.
+The bug was not found.
+About 275 commits remaining
+
+2026-04-29 22:47:21
+Session:   46
+Kernel:    2022-11-16 - 31c9c4c54ea9902af4b01545d3a10acd3cf815a9
+Compiler:  ccache gcc
+PoC:       /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0137-4.prog
+Attempt 0:
+    INFO: rcu detected stall in cleanup_net
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in del_device_store
+    INFO: task hung in devlink_unregister
+    INFO: task hung in linkwatch_event
+    INFO: task hung in rtnetlink_rcv_msg
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    INFO: rcu detected stall in cleanup_net
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in del_device_store
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in devlink_unregister
+The bug was not found.
+About 64 commits remaining
+
+2026-04-29 23:03:02
+Session:   47
+Kernel:    2022-11-16 - aeac4ec8f46d610a10adbaeff5e2edf6a88ffc62
+Compiler:  ccache gcc
+PoC:       /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0137-4.prog
+Attempt 0:
+*** inconsistent lock state in smc_fback_state_change (has report)
+Attempt 1:
+*** inconsistent lock state in smc_fback_state_change (has report)
+Attempt 2:
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in cangw_pernet_exit_batch
+    INFO: task hung in new_device_store
+    INFO: task hung in del_device_store
+*** inconsistent lock state in smc_fback_state_change (has report)
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in rtnetlink_rcv_msg
+Attempt 3:
+*** inconsistent lock state in smc_fback_state_change (has report)
+Attempt 4:
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in new_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in devlink_unregister
+    INFO: task hung in rtnetlink_rcv_msg
+Attempt 5:
+    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in switchdev_deferred_process_work
+    INFO: task hung in devlink_nl_port_fill
+    INFO: task hung in del_device_store
+    INFO: task hung in linkwatch_event
+    INFO: task hung in rtnetlink_rcv_msg
+Attempt 6:
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in l2tp_exit_net
+    INFO: task hung in new_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in linkwatch_event
+Attempt 7:
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in switchdev_deferred_process_work
+    INFO: task hung in new_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in devlink_unregister
+    INFO: task hung in rtnetlink_rcv_msg
+The bug was found.
+About 53 commits remaining
+
+2026-04-29 23:21:00
+Session:   48
+Kernel:    2022-11-15 - 4e0c19fcb8b5323716140fa82b79aa9f60e60407
+Compiler:  ccache gcc
+PoC:       /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0137-4.prog
+Attempt 0:
+    INFO: rcu detected stall in cleanup_net
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in del_device_store
+    INFO: task hung in devlink_unregister
+    INFO: task hung in linkwatch_event
+Attempt 1:
+    INFO: rcu detected stall in cleanup_net
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in del_device_store
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in linkwatch_event
+    INFO: task hung in rtnetlink_rcv_msg
+Attempt 2:
+    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in devlink_nl_port_fill
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in devlink_unregister
+    INFO: task hung in linkwatch_event
+    INFO: task hung in rtnetlink_rcv_msg
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in netdev_run_todo
+    INFO: task hung in del_device_store
+    INFO: task hung in rtnetlink_rcv_msg
+Attempt 5:
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in netdev_run_todo
+    INFO: task hung in del_device_store
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in devlink_unregister
+    INFO: task hung in linkwatch_event
+    INFO: task hung in rtnetlink_rcv_msg
+Attempt 6:
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in del_device_store
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in devlink_unregister
+    INFO: task hung in linkwatch_event
+    INFO: task hung in rtnetlink_rcv_msg
+Attempt 7:
+    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in fqdir_free_fn
+    INFO: task hung in del_device_store
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in rtnetlink_rcv_msg
+The bug was not found.
+About 7 commits remaining
+
+2026-04-29 23:37:13
+Session:   49
+Kernel:    2022-11-16 - e4aa85cf0d43e293f474e3b415ff44e49ef768ae
+Compiler:  ccache gcc
+PoC:       /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0137-4.prog
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in devlink_nl_port_fill
+    INFO: task hung in new_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in devlink_unregister
+    INFO: task hung in linkwatch_event
+    INFO: task hung in rtnetlink_rcv_msg
+Attempt 2:
+    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in fqdir_free_fn
+    INFO: task hung in fib_net_exit_batch
+    INFO: task hung in del_device_store
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in rtnetlink_rcv_msg
+Attempt 3:
+    WARNING: ODEBUG bug in netdev_run_todo (has report)
+Attempt 4:
+    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in cangw_pernet_exit_batch
+    INFO: task hung in del_device_store
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in devlink_unregister
+    INFO: task hung in rtnetlink_rcv_msg
+Attempt 5:
+    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit
+    INFO: task hung in gtp_net_exit
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in switchdev_deferred_process_work
+    INFO: task hung in new_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in devlink_unregister
+    INFO: task hung in rtnetlink_rcv_msg
+Attempt 6:
+    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in del_device_store
+    INFO: task hung in devlink_unregister
+    INFO: task hung in rtnetlink_rcv_msg
+Attempt 7:
+    No crashes found.
+The bug was not found.
+About 4 commits remaining
+
+2026-04-29 23:53:10
+Session:   50
+Kernel:    2022-11-16 - b68777d54fac21fc833ec26ea1a2a84f975ab035
+Compiler:  ccache gcc
+PoC:       /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0137-4.prog
+Attempt 0:
+    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in del_device_store
+    INFO: task hung in devlink_unregister
+    INFO: task hung in linkwatch_event
+    INFO: task hung in rtnetlink_rcv_msg
+Attempt 1:
+*** inconsistent lock state in smc_fback_state_change (has report)
+Attempt 2:
+*** inconsistent lock state in smc_fback_state_change (has report)
+Attempt 3:
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in new_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in linkwatch_event
+    INFO: task hung in rtnetlink_rcv_msg
+Attempt 4:
+    INFO: rcu detected stall in cleanup_net
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in del_device_store
+    INFO: task hung in devlink_unregister
+Attempt 5:
+    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in devlink_nl_port_fill
+    INFO: task hung in del_device_store
+    INFO: task hung in devlink_unregister
+    INFO: task hung in linkwatch_event
+    INFO: task hung in rtnetlink_rcv_msg
+Attempt 6:
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in switchdev_deferred_process_work
+    INFO: task hung in new_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in rtnetlink_rcv_msg
+Attempt 7:
+    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in devlink_nl_port_fill
+    INFO: task hung in new_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in rtnetlink_rcv_msg
+The bug was found.
+About 3 commits remaining
+
+2026-04-30 00:10:05
+Session:   51
+Kernel:    2022-11-16 - f524b7289bbb0c8ffaa2ba3c34c146e43da54fb2
+Compiler:  ccache gcc
+PoC:       /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0137-4.prog
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in devlink_nl_port_fill
+    INFO: task hung in del_device_store
+    INFO: task hung in linkwatch_event
+    INFO: task hung in xfrmi_exit_batch_net
+    INFO: task hung in rtnetlink_rcv_msg
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in nsim_create
+    INFO: task hung in del_device_store
+    INFO: task hung in devlink_unregister
+    INFO: task hung in linkwatch_event
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in del_device_store
+The bug was not found.
+About 2 commits remaining
+
+====================================================================================================================================================
+Bug Name:             inconsistent lock state in smc_fback_state_change
+Bug ID:               bug0137
+Bug Link:             https://syzkaller.appspot.com/bug?id=90aba1c33ce6a38bac825f68d4287f31a1aee56c
+Bisection Result:     2022-11-16 - b68777d54fac21fc833ec26ea1a2a84f975ab035
+Bisected Commit Name: l2tp: Serialize access to sk_user_data with sk_callback_lock
+Run Time:             20h19m33s
+
+Anchor Commit:        2022-11-20 - eb7081409f94a9a8608593d0fb63a1aa3d6f95d8
+Bisection Result:     2022-11-16 - b68777d54fac21fc833ec26ea1a2a84f975ab035

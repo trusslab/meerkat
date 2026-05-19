@@ -1,0 +1,266 @@
+./bin/meerkat -i 1 -c /home/author/meerkat/wd-meerkat-1/meerkat.cfg -a 5a6a09e97199d6600d31383055f9d43fbbcbe86f -F ff-test,stateful-corpus,poc-test,ff-no-find-backup
+Bisecting:          KASAN: slab-use-after-free Read in btrfs_qgroup_account_extent
+Syzbot Link:        https://syzkaller.appspot.com/bug?extid=e0b615318f8fcfc01ceb
+Working Name:       bug0768
+
+Aliases:
+    KASAN: slab-use-after-free Read in btrfs_qgroup_account_extent
+
+Anchor Commit:      5a6a09e97199d6600d31383055f9d43fbbcbe86f
+Repository:         https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
+Branch:             master
+Arch:               amd64
+
+Meerkat:            /home/author/meerkat/
+Version:            1.2.0
+Kernel:             /home/author/meerkat/wd-meerkat-1/kernel/
+Syzkaller:          /home/author/meerkat/syzkaller/
+Compilers:          /home/author/meerkat/compilers/
+Compiler:           gcc (Ubuntu 12.3.0-1ubuntu1~22.04.3) 12.3.0
+Linker:             GNU ld (GNU Binutils for Ubuntu) 2.38
+Ccache:             ccache version 4.5.1
+Image:              /home/author/meerkat/image/stretch/stretch.img
+Image Key:          /home/author/meerkat/image/stretch/stretch.id_rsa
+
+Workdir:            /home/author/meerkat/wd-meerkat-1/
+Kconfig:            /home/author/meerkat/wd-meerkat-1/config-bug0768.txt
+Reproducers: (1)    /home/author/meerkat/wd-meerkat-1/reproducers/
+Primary PoC:        /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0768-3.prog
+Syzkaller Workdir:  /home/author/meerkat/wd-meerkat-1/wd-kaller/
+Log Directory:      /home/author/meerkat/wd-meerkat-1/log/
+
+Syscalls: (9)       ["ioctl$BTRFS_IOC_QGROUP_CREATE", "ioctl$BTRFS_IOC_QUOTA_CTL", "open", "syz_mount_image$btrfs", "open$dir", "mount$bpf", "getuid", "setgid", "getgid"]
+VM Count:           4
+CPU Count:          4
+Procs:              24
+Memory:             4096
+Make Procs:         16
+Max Time:           10
+Max Attempts:       1
+
+==== Anchor Commit ====
+
+2026-05-16 21:30:36
+Session:   1
+Kernel:    2023-10-30 - 5a6a09e97199d6600d31383055f9d43fbbcbe86f
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    3  KASAN: slab-use-after-free Read in btrfs_qgroup_account_extent (has report)
+Error: index error parsing basic report
+Attempt 2: (RETRY)
+    Time  Bug Name
+       7  BUG: MAX_LOCKDEP_KEYS too low! (3) (has report)
+       8  BUG: MAX_LOCKDEP_KEYS too low! (has report)
+Error: index error parsing basic report
+Attempt 3: (RETRY)
+    Time  Bug Name
+       6  BUG: MAX_LOCKDEP_KEYS too low! (3) (has report)
+       7  BUG: MAX_LOCKDEP_KEYS too low! (has report)
+The bug was found.
+
+New Max Time: 12
+
+==== Major Release Search ====
+14 Releases
+
+2026-05-16 22:10:44
+Session:   2
+Kernel:    2023-10-29 - ffc253263a1375a65fa6c9f62a893e9767fbebfa (v6.6)
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       7  suppressed report
+       9  suppressed report (2)
+The bug was not found.
+About 13 releases remaining
+
+==== Kernel Bisection ====
+3861 Linux commits
+
+2026-05-16 22:39:23
+Session:   3
+Kernel:    2023-10-22 - 17047fbced563cf5abe5aa546f6a92af48900b69
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+      10  suppressed report
+      12  suppressed report
+The bug was not found.
+About 4060 commits remaining
+
+2026-05-16 23:07:53
+Session:   4
+Kernel:    2023-10-26 - b827ac419721a106ae2fccaa40576b0594edad92
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       8  suppressed report
+      10  suppressed report
+The bug was not found.
+About 3208 commits remaining
+
+2026-05-16 23:27:23
+Session:   5
+Kernel:    2023-10-30 - 9ab021a1b57007a22761f6f41d91eb4aae10d145
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       5  suppressed report
+       8  suppressed report
+      10  suppressed report
+      12  WARNING in send_hsr_supervision_frame (has report)
+The bug was not found.
+About 535 commits remaining
+
+2026-05-16 23:55:52
+Session:   6
+Kernel:    2023-10-30 - c891e98ab32d55b25d87e380d919c279a8b228e0
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       6  suppressed report
+       8  suppressed report (2)
+       9  suppressed report
+      11  BUG: MAX_LOCKDEP_KEYS too low! (has report)
+The bug was not found.
+About 267 commits remaining
+
+2026-05-17 00:24:32
+Session:   7
+Kernel:    2023-10-30 - fdce8bd38037a4a2b2961ca4abffaab195690b30
+Compiler:  ccache gcc
+Error: index error parsing basic report
+Attempt 1:
+    Time  Bug Name
+       5  BUG: MAX_LOCKDEP_KEYS too low! (has report)
+       6  BUG: MAX_LOCKDEP_KEYS too low! (has report)
+       7  BUG: MAX_LOCKDEP_KEYS too low! (has report)
+       8  suppressed report
+The bug was not found.
+About 135 commits remaining
+
+2026-05-17 00:53:17
+Session:   8
+Kernel:    2023-10-30 - d82c0a37d431ada0d1dae9a2665fcfe17b0f9e14
+Compiler:  ccache gcc
+Error: index error parsing basic report
+Attempt 1:
+    Time  Bug Name
+       6  suppressed report (3)
+       7  suppressed report
+      11  BUG: MAX_LOCKDEP_KEYS too low! (has report)
+      12  suppressed report
+The bug was not found.
+About 63 commits remaining
+
+2026-05-17 01:22:01
+Session:   9
+Kernel:    2023-10-30 - 455cdcb45f8fa9e7c70273e7bec0537ff02d5247
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       7  suppressed report
+       9  suppressed report (2)
+      10  suppressed report
+The bug was not found.
+About 26 commits remaining
+
+2026-05-17 01:50:27
+Session:   10
+Kernel:    2023-10-04 - 783a8334ec1cadefbb992ca2adbb459b0ee0f9f7
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       6  suppressed report
+       7  suppressed report
+       9  suppressed report (2)
+The bug was not found.
+About 5707 commits remaining
+
+2026-05-17 02:18:42
+Session:   11
+Kernel:    2023-09-25 - 115c95e9e14c482682080598907e6a18091fd0af
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       5  suppressed report
+       8  suppressed report
+      11  suppressed report
+The bug was not found.
+About 5298 commits remaining
+
+2026-05-17 02:47:00
+Session:   12
+Kernel:    2023-10-30 - 866b8870b6e6f478e9a1c51e732c9ba26dddbe91
+Compiler:  ccache gcc
+Error: index error parsing basic report
+Attempt 1:
+    Time  Bug Name
+       5  BUG: MAX_LOCKDEP_KEYS too low! (has report)
+       5  suppressed report
+       6  suppressed report
+       7  suppressed report
+      11  suppressed report (2)
+      12  suppressed report
+The bug was not found.
+About 16 commits remaining
+
+2026-05-17 03:15:43
+Session:   13
+Kernel:    2023-10-17 - a41796b5537dd90eed0e8a6341dec97f4507f5ed
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       6  suppressed report
+       7  suppressed report
+       9  suppressed report
+      10  suppressed report
+The bug was not found.
+About 5705 commits remaining
+
+==== Partial Result: Focused Fuzzing ====
+Reproducer:           /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0768-3.prog
+Bisection Result:     2023-10-30 - 5a6a09e97199d6600d31383055f9d43fbbcbe86f
+Bisected Commit Name: Merge tag 'cgroup-for-6.7' of git://git.kernel.org/pub/scm/linux/kernel/git/tj/cgroup
+Stage Time:           6h3m37s
+Run Time:             6h3m39s
+=========================================
+
+==== Anchor Commit ====
+
+2026-05-17 03:34:14
+Session:   14
+Kernel:    2023-10-17 - a41796b5537dd90eed0e8a6341dec97f4507f5ed
+Compiler:  ccache gcc
+PoC:       /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0768-3.prog
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+
+Failure: This bug cannot be found at the anchor commit.
+
+====================================================================================================================================================
+Bug Name:             KASAN: slab-use-after-free Read in btrfs_qgroup_account_extent
+Bug ID:               bug0768
+Bug Link:             https://syzkaller.appspot.com/bug?extid=e0b615318f8fcfc01ceb
+Bisection Result:     2023-10-30 - 5a6a09e97199d6600d31383055f9d43fbbcbe86f
+Bisected Commit Name: Merge tag 'cgroup-for-6.7' of git://git.kernel.org/pub/scm/linux/kernel/git/tj/cgroup
+Run Time:             6h18m31s
+
+Anchor Commit:        2023-10-30 - 5a6a09e97199d6600d31383055f9d43fbbcbe86f
+Bisection Result:     2023-10-30 - 5a6a09e97199d6600d31383055f9d43fbbcbe86f

@@ -1,0 +1,299 @@
+./bin/meerkat -i 1 -c /home/author/meerkat/wd-meerkat-1/meerkat.cfg -a 92901222f83d988617aee37680cb29e1a743b5e4 -F ff-test,stateful-corpus,poc-test,ff-no-find-backup
+Bisecting:          BUG: sleeping function called from invalid context in __hci_cmd_sync_sk
+Syzbot Link:        https://syzkaller.appspot.com/bug?extid=c715e1bd8dfbcb1ab176
+Working Name:       bug0809
+
+Aliases:
+    BUG: sleeping function called from invalid context in __hci_cmd_sync_sk
+
+Anchor Commit:      92901222f83d988617aee37680cb29e1a743b5e4
+Repository:         https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
+Branch:             master
+Arch:               amd64
+
+Meerkat:            /home/author/meerkat/
+Version:            1.2.0
+Kernel:             /home/author/meerkat/wd-meerkat-1/kernel/
+Syzkaller:          /home/author/meerkat/syzkaller/
+Compilers:          /home/author/meerkat/compilers/
+Compiler:           gcc (Ubuntu 12.3.0-1ubuntu1~22.04.3) 12.3.0
+Linker:             GNU ld (GNU Binutils for Ubuntu) 2.38
+Ccache:             ccache version 4.5.1
+Image:              /home/author/meerkat/image/stretch/stretch.img
+Image Key:          /home/author/meerkat/image/stretch/stretch.id_rsa
+
+Workdir:            /home/author/meerkat/wd-meerkat-1/
+Kconfig:            /home/author/meerkat/wd-meerkat-1/config-bug0809.txt
+Reproducers: (1)    /home/author/meerkat/wd-meerkat-1/reproducers/
+Primary PoC:        /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0809-1.prog
+Syzkaller Workdir:  /home/author/meerkat/wd-meerkat-1/wd-kaller/
+Log Directory:      /home/author/meerkat/wd-meerkat-1/log/
+
+Syscalls: (1)       ["syz_emit_vhci"]
+VM Count:           8
+CPU Count:          2
+Procs:              16
+Memory:             4096
+Make Procs:         16
+Max Time:           10
+Max Attempts:       1
+
+==== Anchor Commit ====
+
+2026-05-19 07:51:04
+Session:   1
+Kernel:    2023-09-02 - 92901222f83d988617aee37680cb29e1a743b5e4
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    2  BUG: sleeping function called from invalid context in __hci_cmd_sync_sk (has report)
+       2  WARNING in hci_conn_timeout (has report)
+Attempt 2: (RETRY)
+    Time  Bug Name
+***    2  BUG: sleeping function called from invalid context in __hci_cmd_sync_sk (2) (has report)
+       2  WARNING in hci_conn_timeout (has report)
+Attempt 3: (RETRY)
+    Time  Bug Name
+***    2  BUG: sleeping function called from invalid context in __hci_cmd_sync_sk (has report)
+       2  WARNING in hci_conn_timeout (2) (has report)
+The bug was found.
+
+New Max Time: 10
+
+==== Major Release Search ====
+14 Releases
+
+2026-05-19 08:14:19
+Session:   2
+Kernel:    2023-08-27 - 2dde18cd1d8fac735875f2e4987f11817cc0bc2c (v6.5)
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  WARNING in hci_conn_timeout (3) (has report)
+       4  WARNING in hci_conn_timeout (3) (has report)
+       5  WARNING in hci_conn_timeout (2) (has report)
+       7  WARNING in hci_conn_timeout (has report)
+       8  WARNING in hci_conn_timeout (has report)
+      10  WARNING in hci_conn_timeout (has report)
+The bug was not found.
+About 13 releases remaining
+
+==== Kernel Bisection ====
+11076 Linux commits
+
+2026-05-19 08:42:14
+Session:   3
+Kernel:    2023-08-30 - 53ea7f624fb91074c2f9458832ed74975ee5d64c
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    2  BUG: sleeping function called from invalid context in __hci_cmd_sync_sk (2) (has report)
+Running syz-repro.
+New PoC saved at /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0809-0.prog
+Primary PoC:     /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0809-0.prog
+Run Time:        0h4m0s
+The bug was found.
+About 5022 commits remaining
+
+2026-05-19 09:04:46
+Session:   4
+Kernel:    2023-08-29 - c873512ef3a39cc1a605b7a5ff2ad0a33d619aa8
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  BUG: sleeping function called from invalid context in hci_cmd_sync_submit (has report)
+***    2  BUG: sleeping function called from invalid context in __hci_cmd_sync_sk (has report)
+       2  WARNING in hci_conn_timeout (4) (has report)
+The bug was found.
+About 2007 commits remaining
+
+2026-05-19 09:23:04
+Session:   5
+Kernel:    2023-08-06 - 6e97ba552b8d3dd074a28b8600740b8bed42267b
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  WARNING in hci_conn_timeout (6) (has report)
+       3  WARNING in hci_conn_timeout (has report)
+       5  WARNING in hci_conn_timeout (has report)
+       6  WARNING in hci_conn_timeout (has report)
+       7  WARNING in hci_conn_timeout (has report)
+       8  WARNING in hci_conn_timeout (2) (has report)
+       9  WARNING in hci_conn_timeout (has report)
+      10  WARNING in hci_conn_timeout (has report)
+The bug was not found.
+About 1846 commits remaining
+
+2026-05-19 09:49:19
+Session:   6
+Kernel:    2023-08-19 - 85c786340a65eb059183a5c3c6fab8664e1f6e8a
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  BUG: sleeping function called from invalid context in hci_cmd_sync_submit (2) (has report)
+***    2  BUG: sleeping function called from invalid context in __hci_cmd_sync_sk (2) (has report)
+       2  WARNING in hci_conn_timeout (4) (has report)
+The bug was found.
+About 1104 commits remaining
+
+2026-05-19 10:07:41
+Session:   7
+Kernel:    2023-08-11 - f88670161eb205f842989df555d0dd2f9fe2d4b5
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    2  BUG: sleeping function called from invalid context in __hci_cmd_sync_sk (2) (has report)
+       2  WARNING in hci_conn_timeout (5) (has report)
+Running syz-repro.
+New PoC saved at /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0809-1.prog
+Primary PoC:     /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0809-1.prog
+Run Time:        0h3m0s
+The bug was found.
+About 538 commits remaining
+
+2026-05-19 10:29:09
+Session:   8
+Kernel:    2023-08-09 - e05a53ab867c106a3f21a806599ef885c67e59bd
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  WARNING in hci_conn_timeout (4) (has report)
+       3  WARNING in hci_conn_timeout (2) (has report)
+       4  WARNING in hci_conn_timeout (has report)
+       5  WARNING in hci_conn_timeout (2) (has report)
+       6  WARNING in hci_conn_timeout (has report)
+       7  WARNING in hci_conn_timeout (has report)
+       9  WARNING in hci_conn_timeout (has report)
+The bug was not found.
+About 413 commits remaining
+
+2026-05-19 10:55:34
+Session:   9
+Kernel:    2023-08-11 - cc317ea3d9272fab4f6fef527c865f30ca479394
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  WARNING in hci_conn_timeout (has report)
+       3  WARNING in hci_conn_timeout (2) (has report)
+       4  WARNING in hci_conn_timeout (has report)
+       5  WARNING in hci_conn_timeout (has report)
+       7  WARNING in hci_conn_timeout (2) (has report)
+       8  WARNING in hci_conn_timeout (has report)
+       9  WARNING in hci_conn_timeout (2) (has report)
+      10  WARNING in hci_conn_timeout (has report)
+The bug was not found.
+About 64 commits remaining
+
+2026-05-19 11:12:52
+Session:   10
+Kernel:    2023-08-11 - 9f78191cc9f1b34c2e2afd7b554a83bf034092dd
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    2  BUG: sleeping function called from invalid context in __hci_cmd_sync_sk (has report)
+       2  WARNING in hci_conn_timeout (7) (has report)
+The bug was found.
+About 32 commits remaining
+
+2026-05-19 11:21:50
+Session:   11
+Kernel:    2023-08-11 - 464c702fb9374ff8f3f816f24fb7ac719dd20e1e
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    2  BUG: sleeping function called from invalid context in __hci_cmd_sync_sk (2) (has report)
+       2  WARNING in hci_conn_timeout (4) (has report)
+The bug was found.
+About 16 commits remaining
+
+2026-05-19 11:30:35
+Session:   12
+Kernel:    2023-08-11 - 80f9ad046052509d0eee9b72e11d0e8ae31b665f
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  WARNING in hci_conn_timeout (3) (has report)
+       3  WARNING in hci_conn_timeout (has report)
+       8  WARNING in hci_conn_timeout (has report)
+      10  WARNING in hci_conn_timeout (3) (has report)
+The bug was not found.
+About 8 commits remaining
+
+2026-05-19 11:47:11
+Session:   13
+Kernel:    2023-08-11 - a0bfde167b506423111ddb8cd71930497a40fc54
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    2  BUG: sleeping function called from invalid context in __hci_cmd_sync_sk (has report)
+       2  WARNING in hci_conn_timeout (3) (has report)
+Running syz-repro.
+New PoC saved at /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0809-0.prog
+Primary PoC:     /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0809-0.prog
+Run Time:        0h10m0s
+The bug was found.
+About 4 commits remaining
+
+2026-05-19 12:06:33
+Session:   14
+Kernel:    2023-08-11 - 044014ce85a17c0b7fab8e5df0925792010c29b2
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  WARNING in hci_conn_timeout (7) (has report)
+       3  WARNING in hci_conn_timeout (5) (has report)
+       4  WARNING in hci_conn_timeout (3) (has report)
+       5  WARNING in hci_conn_timeout (2) (has report)
+       6  WARNING in hci_conn_timeout (has report)
+       7  WARNING in hci_conn_timeout (2) (has report)
+       8  WARNING in hci_conn_timeout (2) (has report)
+       9  WARNING in hci_conn_timeout (has report)
+      10  WARNING in hci_conn_timeout (3) (has report)
+The bug was not found.
+About 2 commits remaining
+
+==== Partial Result: Focused Fuzzing ====
+Reproducer:           /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0809-0.prog
+Bisection Result:     2023-08-11 - a0bfde167b506423111ddb8cd71930497a40fc54
+Bisected Commit Name: Bluetooth: ISO: Add support for connecting multiple BISes
+Stage Time:           4h32m20s
+Run Time:             4h32m21s
+=========================================
+
+==== Anchor Commit ====
+
+2026-05-19 12:23:24
+Session:   15
+Kernel:    2023-08-11 - 044014ce85a17c0b7fab8e5df0925792010c29b2
+Compiler:  ccache gcc
+PoC:       /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0809-0.prog
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+
+Failure: This bug cannot be found at the anchor commit.
+
+====================================================================================================================================================
+Bug Name:             BUG: sleeping function called from invalid context in __hci_cmd_sync_sk
+Bug ID:               bug0809
+Bug Link:             https://syzkaller.appspot.com/bug?extid=c715e1bd8dfbcb1ab176
+Bisection Result:     2023-08-11 - a0bfde167b506423111ddb8cd71930497a40fc54
+Bisected Commit Name: Bluetooth: ISO: Add support for connecting multiple BISes
+Run Time:             4h46m26s
+
+Anchor Commit:        2023-09-02 - 92901222f83d988617aee37680cb29e1a743b5e4
+Bisection Result:     2023-08-11 - a0bfde167b506423111ddb8cd71930497a40fc54

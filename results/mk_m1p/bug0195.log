@@ -1,0 +1,1005 @@
+./bin/meerkat -i 1 -c /home/author/meerkat/wd-meerkat-1/meerkat.cfg -a b6bb9676f2165d518b35ba3bea5f1fcfc0d969bf -F ff-test,stateful-corpus,poc-test,ff-no-find-backup
+Bisecting:          general protection fault in start_transaction
+Syzbot Link:        https://syzkaller.appspot.com/bug?id=724cf869d3bb512081588651530d8071a4b61ceb
+Working Name:       bug0195
+
+Aliases:
+    general protection fault in start_transaction
+
+Anchor Commit:      b6bb9676f2165d518b35ba3bea5f1fcfc0d969bf
+Repository:         https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
+Branch:             master
+Arch:               amd64
+
+Meerkat:            /home/author/meerkat/
+Version:            1.2.0
+Kernel:             /home/author/meerkat/wd-meerkat-1/kernel/
+Syzkaller:          /home/author/meerkat/syzkaller/
+Compilers:          /home/author/meerkat/compilers/
+Compiler:           gcc (Ubuntu 12.3.0-1ubuntu1~22.04.3) 12.3.0
+Linker:             GNU ld (GNU Binutils for Ubuntu) 2.38
+Ccache:             ccache version 4.5.1
+Image:              /home/author/meerkat/image/stretch/stretch.img
+Image Key:          /home/author/meerkat/image/stretch/stretch.id_rsa
+
+Workdir:            /home/author/meerkat/wd-meerkat-1/
+Kconfig:            /home/author/meerkat/wd-meerkat-1/config-bug0195.txt
+Reproducers: (1)    /home/author/meerkat/wd-meerkat-1/reproducers/
+Syzkaller Workdir:  /home/author/meerkat/wd-meerkat-1/wd-kaller/
+Log Directory:      /home/author/meerkat/wd-meerkat-1/log/
+
+Syscalls: (11)      ["creat", "ioctl$BTRFS_IOC_QUOTA_CTL", "ioctl$BTRFS_IOC_QUOTA_RESCAN", "openat$cgroup_ro", "syz_mount_image$btrfs", "openat$cgroup_root", "open$dir", "mount$bpf", "getuid", "setgid", "getgid"]
+VM Count:           4
+CPU Count:          4
+Procs:              24
+Memory:             4096
+Make Procs:         16
+Max Time:           10
+Max Attempts:       1
+
+==== Anchor Commit ====
+
+2026-05-12 21:57:22
+Session:   1
+Kernel:    2022-12-20 - b6bb9676f2165d518b35ba3bea5f1fcfc0d969bf
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  INFO: rcu detected stall in corrupted
+***    5  general protection fault in start_transaction (2) (has report)
+Attempt 2: (RETRY)
+    Time  Bug Name
+       8  INFO: rcu detected stall in corrupted
+       9  INFO: rcu detected stall in corrupted
+      10  suppressed report
+Attempt 3: (RETRY)
+    Time  Bug Name
+       2  INFO: rcu detected stall in corrupted
+       3  INFO: rcu detected stall in corrupted
+       5  INFO: rcu detected stall in corrupted
+       6  INFO: rcu detected stall in corrupted (2)
+***    8  general protection fault in start_transaction (has report)
+The bug was found.
+
+New Max Time: 12
+
+==== Major Release Search ====
+12 Releases
+
+2026-05-12 22:38:17
+Session:   2
+Kernel:    2022-12-11 - 830b3c68c1fb1e9176028d02ef86f3cf76aa2476 (v6.1)
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  INFO: rcu detected stall in corrupted
+***    6  general protection fault in start_transaction (has report)
+Running syz-repro.
+New PoC saved at /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0195-0.prog
+Primary PoC:     /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0195-0.prog
+Run Time:        0h49m0s
+The bug was found.
+About 11 releases remaining
+
+2026-05-12 23:48:21
+Session:   3
+Kernel:    2022-10-02 - 4fe89d07dcc2804c8b562f6c7896a45643d34b2f (v6.0)
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       3  suppressed report
+       5  INFO: rcu detected stall in corrupted
+       6  suppressed report
+       7  INFO: rcu detected stall in corrupted
+       9  INFO: rcu detected stall in corrupted
+      10  INFO: rcu detected stall in corrupted
+The bug was not found.
+About 10 releases remaining
+
+==== Kernel Bisection ====
+15110 Linux commits
+
+2026-05-13 00:15:30
+Session:   4
+Kernel:    2022-10-07 - 33e591dee915832c618cf68bb1058c8e7d296128
+Compiler:  ccache gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0195-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+       1  WARNING in wireless_send_event (has report)
+       2  WARNING in wireless_send_event (6) (has report)
+       3  WARNING in wireless_send_event (6) (has report)
+       4  WARNING in wireless_send_event (6) (has report)
+       5  WARNING in wireless_send_event (6) (has report)
+       6  WARNING in wireless_send_event (6) (has report)
+       7  WARNING in wireless_send_event (6) (has report)
+       8  WARNING in wireless_send_event (6) (has report)
+       9  WARNING in wireless_send_event (6) (has report)
+      10  WARNING in wireless_send_event (5) (has report)
+      11  WARNING in wireless_send_event (6) (has report)
+      12  WARNING in wireless_send_event (6) (has report)
+      12  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 15110 commits remaining
+
+2026-05-13 00:42:26
+Session:   5
+Kernel:    2022-10-03 - 79dbd006a6d6f51777ba4948046561b6d9270504
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  INFO: rcu detected stall in corrupted
+       3  INFO: rcu detected stall in corrupted
+       4  INFO: rcu detected stall in corrupted
+       6  INFO: rcu detected stall in corrupted
+       7  INFO: rcu detected stall in corrupted
+       7  suppressed report
+      10  INFO: rcu detected stall in corrupted (2)
+***   10  general protection fault in start_transaction (has report)
+The bug was found.
+About 468 commits remaining
+
+2026-05-13 01:07:11
+Session:   6
+Kernel:    2022-09-26 - 69dbe6daf1041e32e003f966d71f70f20c63af53
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    2  general protection fault in start_transaction (has report)
+The bug was found.
+About 235 commits remaining
+
+2026-05-13 01:23:56
+Session:   7
+Kernel:    2022-09-11 - 6bf414a00ae7688fac1e03f63431a355068a1d79
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       3  INFO: rcu detected stall in corrupted
+       4  suppressed report
+       5  INFO: rcu detected stall in corrupted (3)
+***    6  general protection fault in start_transaction (has report)
+Running syz-repro.
+syz-repro was terminated after 60 minutes
+Warning: Child process exited with error status 32765.
+Run Time:        1h0m0s
+The bug was found.
+About 118 commits remaining
+
+2026-05-13 02:44:38
+Session:   8
+Kernel:    2022-09-11 - 3aa4ed8040e1535d95c03cef8b52cf11bf0d8546
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  INFO: rcu detected stall in corrupted
+       6  INFO: rcu detected stall in corrupted
+       7  INFO: rcu detected stall in corrupted (2)
+       9  INFO: rcu detected stall in corrupted
+      10  INFO: rcu detected stall in corrupted (2)
+***   11  general protection fault in start_transaction (has report)
+The bug was found.
+About 59 commits remaining
+
+2026-05-13 03:10:17
+Session:   9
+Kernel:    2022-09-11 - cf1e3fe4975c4bd6a6a14428700c5a2c36528a7b
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  INFO: rcu detected stall in corrupted (2)
+       3  suppressed report
+       5  INFO: rcu detected stall in corrupted
+       5  suppressed report (2)
+***    6  general protection fault in start_transaction (has report)
+The bug was found.
+About 30 commits remaining
+
+2026-05-13 03:30:57
+Session:   10
+Kernel:    2022-09-11 - 1370a21fe4708b3bfa748d355146e4fbadf52f90
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       4  INFO: rcu detected stall in corrupted
+       4  suppressed report
+       6  INFO: rcu detected stall in corrupted
+***    8  general protection fault in start_transaction (has report)
+Running syz-repro.
+syz-repro was terminated after 60 minutes
+Warning: Child process exited with error status 32765.
+Run Time:        1h0m0s
+The bug was found.
+About 15 commits remaining
+
+2026-05-13 04:53:38
+Session:   11
+Kernel:    2022-09-11 - 50722804423680488b8063f6cc9a451333bf6f9b
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  INFO: rcu detected stall in corrupted
+       4  INFO: rcu detected stall in corrupted
+       5  INFO: rcu detected stall in corrupted
+       6  INFO: rcu detected stall in corrupted
+       7  INFO: rcu detected stall in corrupted (2)
+       9  INFO: rcu detected stall in corrupted (2)
+      11  INFO: rcu detected stall in corrupted
+      12  INFO: rcu detected stall in corrupted (3)
+The bug was not found.
+About 8 commits remaining
+
+2026-05-13 05:19:34
+Session:   12
+Kernel:    2022-09-11 - 61c2c6764e6fcc95507dcf672d15f33b0af300f2
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  INFO: rcu detected stall in corrupted (2)
+       3  INFO: rcu detected stall in corrupted
+       4  INFO: rcu detected stall in corrupted
+       5  INFO: rcu detected stall in corrupted
+       6  INFO: rcu detected stall in corrupted
+***    8  general protection fault in start_transaction (has report)
+The bug was found.
+About 5 commits remaining
+
+2026-05-13 05:32:54
+Session:   13
+Kernel:    2022-09-11 - 7d2c4385c3417cab8c08ac4c86a3852b9a851980
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  INFO: rcu detected stall in corrupted
+***    2  general protection fault in start_transaction (has report)
+The bug was found.
+About 3 commits remaining
+
+2026-05-13 05:40:26
+Session:   14
+Kernel:    2022-09-11 - 7d8faaf155454f8798ec56404faca29a82689c77
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       3  suppressed report
+The bug was not found.
+About 2 commits remaining
+
+==== Partial Result: Focused Fuzzing ====
+Reproducer:           /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0195-0.prog
+Bisection Result:     2022-09-11 - 7d2c4385c3417cab8c08ac4c86a3852b9a851980
+Bisected Commit Name: mm/khugepaged: rename prefix of shared collapse functions
+Stage Time:           8h0m36s
+Run Time:             8h0m37s
+=========================================
+
+==== Anchor Commit ====
+
+2026-05-13 05:57:58
+Session:   15
+Kernel:    2022-09-11 - 7d8faaf155454f8798ec56404faca29a82689c77
+Compiler:  ccache gcc
+PoC:       /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0195-0.prog
+Attempt 0:
+*** general protection fault in start_transaction (has report)
+Attempt 1:
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in switchdev_deferred_process_work
+    INFO: task hung in new_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in rtnetlink_rcv_msg
+Attempt 2:
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    INFO: task hung in new_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in devlink_unregister
+    INFO: task hung in linkwatch_event
+    INFO: task hung in rtnetlink_rcv_msg
+Attempt 3:
+*** general protection fault in start_transaction (has report)
+Attempt 4:
+*** general protection fault in start_transaction (has report)
+Attempt 5:
+    INFO: rcu detected stall in devlink_nl_cmd_port_get_dumpit (has report)
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in synchronize_rcu
+    inconsistent lock state in find_vmap_area (has report)
+    INFO: task hung in devlink_nl_port_fill
+    INFO: task hung in del_device_store
+    INFO: task hung in devlink_unregister
+    INFO: task hung in linkwatch_event
+    INFO: task hung in rtnetlink_rcv_msg
+Attempt 6:
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in new_device_store
+    INFO: task hung in del_device_store
+    INFO: task hung in addrconf_dad_work
+    INFO: task hung in rtnetlink_rcv_msg
+Attempt 7:
+    INFO: rcu detected stall in corrupted
+    INFO: task hung in del_device_store
+    INFO: task hung in devlink_unregister
+    INFO: task hung in linkwatch_event
+    INFO: task hung in rtnetlink_rcv_msg
+The bug was found.
+
+==== Major Release Search ====
+12 Releases
+
+2026-05-13 06:08:33
+Session:   16
+Kernel:    2022-07-31 - 3d7cb6b04c3f3115719235cc6866b10326de34cd (v5.19)
+Compiler:  ccache gcc
+PoC:       /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0195-0.prog
+Attempt 0:
+*** general protection fault in start_transaction (has report)
+Attempt 1:
+*** general protection fault in start_transaction (has report)
+Attempt 2:
+*** general protection fault in start_transaction (has report)
+Attempt 3:
+*** general protection fault in start_transaction (has report)
+Attempt 4:
+*** general protection fault in start_transaction (has report)
+Attempt 5:
+*** general protection fault in start_transaction (has report)
+Attempt 6:
+*** general protection fault in start_transaction (has report)
+Attempt 7:
+*** general protection fault in start_transaction (has report)
+The bug was found.
+About 11 releases remaining
+
+2026-05-13 06:25:41
+Session:   17
+Kernel:    2022-05-22 - 4b0986a3613c92f4ec1bdc7f60ec66fea135991f (v5.18)
+Compiler:  ccache gcc
+PoC:       /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0195-0.prog
+Attempt 0:
+*** general protection fault in start_transaction (has report)
+Attempt 1:
+*** general protection fault in start_transaction (has report)
+Attempt 2:
+*** general protection fault in start_transaction (has report)
+Attempt 3:
+*** general protection fault in start_transaction (has report)
+Attempt 4:
+*** general protection fault in start_transaction (has report)
+Attempt 5:
+*** general protection fault in start_transaction (has report)
+Attempt 6:
+*** general protection fault in start_transaction (has report)
+Attempt 7:
+*** general protection fault in start_transaction (has report)
+The bug was found.
+About 10 releases remaining
+
+2026-05-13 06:43:29
+Session:   18
+Kernel:    2022-03-20 - f443e374ae131c168a065ea1748feac6b2e76613 (v5.17)
+Compiler:  ccache gcc
+PoC:       /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0195-0.prog
+Attempt 0:
+*** general protection fault in start_transaction (has report)
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+*** general protection fault in start_transaction (has report)
+Attempt 4:
+*** general protection fault in start_transaction (has report)
+Attempt 5:
+*** general protection fault in start_transaction (has report)
+Attempt 6:
+*** general protection fault in start_transaction (has report)
+Attempt 7:
+*** general protection fault in start_transaction (has report)
+The bug was found.
+About 9 releases remaining
+
+2026-05-13 07:04:25
+Session:   19
+Kernel:    2021-10-31 - 8bb7eca972ad531c9b149c0a51ab43a417385813 (v5.15)
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+PoC:       /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0195-0.prog
+Attempt 0:
+*** general protection fault in start_transaction (has report)
+Attempt 1:
+    INFO: task hung in btrfs_commit_transaction
+    INFO: task hung in btrfs_quota_disable
+Attempt 2:
+    INFO: task hung in btrfs_commit_transaction
+    INFO: task hung in btrfs_quota_disable
+Attempt 3:
+    KASAN: use-after-free Read in btrfs_get_global_root (has report)
+Attempt 4:
+    INFO: task hung in btrfs_commit_transaction
+    INFO: task hung in btrfs_quota_disable
+Attempt 5:
+    INFO: task hung in btrfs_commit_transaction
+    INFO: task hung in btrfs_quota_disable
+Attempt 6:
+    INFO: task hung in btrfs_commit_transaction
+    INFO: task hung in btrfs_quota_disable
+Attempt 7:
+    KASAN: use-after-free Read in btrfs_get_global_root (has report)
+The bug was found.
+About 8 releases remaining
+
+2026-05-13 07:22:56
+Session:   20
+Kernel:    2021-06-27 - 62fb9874f5da54fdb243003b386128037319b219 (v5.13)
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+PoC:       /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0195-0.prog
+Attempt 0:
+    INFO: task hung in btrfs_commit_transaction
+    BUG: sleeping function called from invalid context in lock_sock_nested (has report)
+    possible deadlock in hci_sock_dev_event
+    INFO: task hung in btrfs_quota_disable
+Attempt 1:
+    KASAN: use-after-free Read in start_transaction (has report)
+Error: index error parsing basic report
+Attempt 2:
+    kernel panic: scheduling while atomic
+    BUG: sleeping function called from invalid context in lock_sock_nested (has report)
+    possible deadlock in hci_sock_dev_event
+    BUG: scheduling while atomic in __lock_sock (has report)
+Attempt 3:
+    INFO: task hung in btrfs_commit_transaction
+    BUG: sleeping function called from invalid context in lock_sock_nested (has report)
+    possible deadlock in hci_sock_dev_event
+    INFO: task hung in btrfs_quota_disable
+Attempt 4:
+    INFO: task hung in btrfs_commit_transaction
+    BUG: sleeping function called from invalid context in lock_sock_nested (has report)
+    possible deadlock in hci_sock_dev_event
+    INFO: task hung in btrfs_quota_disable
+Attempt 5:
+    INFO: task hung in btrfs_commit_transaction
+    INFO: task hung in btrfs_quota_disable
+Attempt 6:
+    INFO: task hung in btrfs_commit_transaction
+    INFO: task hung in btrfs_quota_disable
+Attempt 7:
+    INFO: task hung in btrfs_commit_transaction
+    BUG: sleeping function called from invalid context in lock_sock_nested (has report)
+    possible deadlock in hci_sock_dev_event
+    INFO: task hung in btrfs_quota_disable
+The bug was not found.
+About 7 releases remaining
+
+==== Kernel Bisection ====
+29345 Linux commits
+
+2026-05-13 07:41:14
+Session:   21
+Kernel:    2021-07-26 - d20e5880fe9df149a9159673d9fec57aab43ac61
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+PoC:       /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0195-0.prog
+Attempt 0:
+    INFO: task hung in btrfs_commit_transaction
+    BUG: sleeping function called from invalid context in lock_sock_nested (has report)
+    possible deadlock in hci_sock_dev_event
+    INFO: task hung in btrfs_quota_disable
+Attempt 1:
+    INFO: task hung in btrfs_commit_transaction
+    BUG: sleeping function called from invalid context in lock_sock_nested (has report)
+    possible deadlock in hci_sock_dev_event
+    INFO: task hung in btrfs_quota_disable
+Attempt 2:
+    INFO: task hung in btrfs_commit_transaction
+    BUG: sleeping function called from invalid context in lock_sock_nested (has report)
+    possible deadlock in hci_sock_dev_event
+    INFO: task hung in btrfs_quota_disable
+Attempt 3:
+    INFO: task hung in btrfs_commit_transaction
+    BUG: sleeping function called from invalid context in lock_sock_nested (has report)
+    possible deadlock in hci_sock_dev_event
+    INFO: task hung in btrfs_quota_disable
+Attempt 4:
+    INFO: task hung in btrfs_commit_transaction
+    INFO: task hung in btrfs_quota_disable
+Attempt 5:
+    INFO: task hung in btrfs_commit_transaction
+    INFO: task hung in btrfs_quota_disable
+Attempt 6:
+    INFO: task hung in btrfs_commit_transaction
+    BUG: sleeping function called from invalid context in lock_sock_nested (has report)
+    possible deadlock in hci_sock_dev_event
+    INFO: task hung in btrfs_quota_disable
+Attempt 7:
+    INFO: task hung in btrfs_commit_transaction
+    BUG: sleeping function called from invalid context in lock_sock_nested (has report)
+    possible deadlock in hci_sock_dev_event
+    INFO: task hung in btrfs_quota_disable
+The bug was not found.
+About 14660 commits remaining
+
+2026-05-13 08:00:00
+Session:   22
+Kernel:    2021-09-01 - 477f70cd2a67904e04c2c2b9bd0fa2e95222f2f6
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+PoC:       /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0195-0.prog
+Attempt 0:
+    INFO: task hung in btrfs_commit_transaction
+    possible deadlock in blktrans_open
+    INFO: task hung in btrfs_quota_disable
+Attempt 1:
+    INFO: task hung in btrfs_commit_transaction
+    possible deadlock in blktrans_open
+    INFO: task hung in btrfs_quota_disable
+Attempt 2:
+    INFO: task hung in btrfs_commit_transaction
+    possible deadlock in blktrans_open
+    INFO: task hung in btrfs_quota_disable
+Attempt 3:
+    INFO: task hung in btrfs_commit_transaction
+    possible deadlock in blktrans_open
+    INFO: task hung in btrfs_quota_disable
+Attempt 4:
+    INFO: task hung in btrfs_commit_transaction
+    possible deadlock in blktrans_open
+    INFO: task hung in btrfs_quota_disable
+Attempt 5:
+    INFO: task hung in btrfs_commit_transaction
+    possible deadlock in blktrans_open
+    INFO: task hung in btrfs_quota_disable
+Attempt 6:
+    INFO: task hung in btrfs_commit_transaction
+    possible deadlock in blktrans_open
+    INFO: task hung in btrfs_quota_disable
+Attempt 7:
+    INFO: task hung in btrfs_commit_transaction
+    possible deadlock in blktrans_open
+    INFO: task hung in btrfs_quota_disable
+The bug was not found.
+About 6695 commits remaining
+
+2026-05-13 08:18:20
+Session:   23
+Kernel:    2021-09-07 - 626bf91a292e2035af5b9d9cce35c5c138dfe06d
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+PoC:       /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0195-0.prog
+Attempt 0:
+    INFO: task hung in btrfs_commit_transaction
+    INFO: task hung in btrfs_quota_disable
+Attempt 1:
+*** general protection fault in start_transaction (has report)
+Attempt 2:
+    INFO: task hung in btrfs_commit_transaction
+    INFO: task hung in btrfs_quota_disable
+Attempt 3:
+    INFO: task hung in btrfs_commit_transaction
+    INFO: task hung in btrfs_quota_disable
+Attempt 4:
+*** general protection fault in start_transaction (has report)
+Attempt 5:
+    INFO: task hung in btrfs_commit_transaction
+    INFO: task hung in btrfs_quota_disable
+Attempt 6:
+    INFO: task hung in btrfs_commit_transaction
+    INFO: task hung in btrfs_quota_disable
+Attempt 7:
+*** general protection fault in start_transaction (has report)
+The bug was found.
+About 3377 commits remaining
+
+2026-05-13 08:36:36
+Session:   24
+Kernel:    2021-09-02 - 23852bec534a1633dc08f4df88b8493ae99953a9
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+PoC:       /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0195-0.prog
+Attempt 0:
+    INFO: task hung in btrfs_commit_transaction
+    possible deadlock in blktrans_open
+    INFO: task hung in btrfs_quota_disable
+Attempt 1:
+    INFO: task hung in btrfs_commit_transaction
+    possible deadlock in blktrans_open
+    INFO: task hung in btrfs_quota_disable
+Attempt 2:
+    INFO: task hung in btrfs_commit_transaction
+    possible deadlock in blktrans_open
+    INFO: task hung in btrfs_quota_disable
+Attempt 3:
+    INFO: task hung in btrfs_commit_transaction
+    possible deadlock in blktrans_open
+    INFO: task hung in btrfs_quota_disable
+Attempt 4:
+    INFO: task hung in btrfs_commit_transaction
+    possible deadlock in blktrans_open
+    INFO: task hung in btrfs_quota_disable
+Attempt 5:
+    INFO: task hung in btrfs_commit_transaction
+    possible deadlock in blktrans_open
+    INFO: task hung in btrfs_quota_disable
+Attempt 6:
+    INFO: task hung in btrfs_commit_transaction
+    possible deadlock in blktrans_open
+    INFO: task hung in btrfs_quota_disable
+Attempt 7:
+    INFO: task hung in btrfs_commit_transaction
+    possible deadlock in blktrans_open
+    INFO: task hung in btrfs_quota_disable
+The bug was not found.
+About 1704 commits remaining
+
+2026-05-13 08:55:01
+Session:   25
+Kernel:    2021-09-04 - 55d1308bdff7341b778e5cf36220616a0dd6ab8f
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+PoC:       /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0195-0.prog
+Attempt 0:
+    INFO: task hung in btrfs_commit_transaction
+    possible deadlock in blktrans_open
+    INFO: task hung in btrfs_quota_disable
+Attempt 1:
+    INFO: task hung in btrfs_commit_transaction
+    possible deadlock in blktrans_open
+    INFO: task hung in btrfs_quota_disable
+Attempt 2:
+    INFO: task hung in btrfs_commit_transaction
+    possible deadlock in blktrans_open
+    INFO: task hung in btrfs_quota_disable
+Attempt 3:
+    INFO: task hung in btrfs_commit_transaction
+    possible deadlock in blktrans_open
+    INFO: task hung in btrfs_quota_disable
+Attempt 4:
+    INFO: task hung in btrfs_commit_transaction
+    possible deadlock in blktrans_open
+    INFO: task hung in btrfs_quota_disable
+Attempt 5:
+    INFO: task hung in btrfs_commit_transaction
+    possible deadlock in blktrans_open
+    INFO: task hung in btrfs_quota_disable
+Attempt 6:
+    INFO: task hung in btrfs_commit_transaction
+    possible deadlock in blktrans_open
+    INFO: task hung in btrfs_quota_disable
+Attempt 7:
+    INFO: task hung in btrfs_commit_transaction
+    possible deadlock in blktrans_open
+    INFO: task hung in btrfs_quota_disable
+The bug was not found.
+About 871 commits remaining
+
+2026-05-13 09:13:33
+Session:   26
+Kernel:    2021-09-07 - 3754707bcc3e190e5dadc978d172b61e809cb3bd
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+PoC:       /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0195-0.prog
+Attempt 0:
+    INFO: task hung in btrfs_commit_transaction
+    INFO: task hung in btrfs_quota_disable
+Attempt 1:
+    INFO: task hung in btrfs_commit_transaction
+    INFO: task hung in btrfs_quota_disable
+Attempt 2:
+    KASAN: use-after-free Read in btrfs_get_global_root (has report)
+Attempt 3:
+    KASAN: use-after-free Read in btrfs_get_global_root (has report)
+Attempt 4:
+    KASAN: use-after-free Read in btrfs_get_global_root (has report)
+Attempt 5:
+    INFO: task hung in btrfs_commit_transaction
+    INFO: task hung in btrfs_quota_disable
+Attempt 6:
+*** general protection fault in start_transaction (has report)
+Attempt 7:
+    KASAN: use-after-free Read in btrfs_root_node (has report)
+*** general protection fault in start_transaction (has report)
+The bug was found.
+About 436 commits remaining
+
+2026-05-13 09:31:27
+Session:   27
+Kernel:    2021-09-05 - e07af2626643293fa16df655979e7963250abc63
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+PoC:       /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0195-0.prog
+Attempt 0:
+*** general protection fault in start_transaction (has report)
+Attempt 1:
+    INFO: task hung in btrfs_commit_transaction
+    INFO: task hung in btrfs_quota_disable
+Attempt 2:
+    INFO: task hung in btrfs_commit_transaction
+    INFO: task hung in btrfs_quota_disable
+Attempt 3:
+    INFO: task hung in btrfs_commit_transaction
+    INFO: task hung in btrfs_quota_disable
+Attempt 4:
+*** general protection fault in start_transaction (has report)
+Attempt 5:
+    INFO: task hung in btrfs_commit_transaction
+    INFO: task hung in btrfs_quota_disable
+Attempt 6:
+    INFO: task hung in btrfs_commit_transaction
+    INFO: task hung in btrfs_quota_disable
+Attempt 7:
+    INFO: task hung in btrfs_commit_transaction
+    INFO: task hung in btrfs_quota_disable
+The bug was found.
+About 235 commits remaining
+
+2026-05-13 09:49:06
+Session:   28
+Kernel:    2021-09-04 - f7464060f7ab9a2424428008f0ee9f1e267e410f
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+PoC:       /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0195-0.prog
+Attempt 0:
+    INFO: task hung in btrfs_commit_transaction
+    possible deadlock in blktrans_open
+    INFO: task hung in btrfs_quota_disable
+Attempt 1:
+    INFO: task hung in btrfs_commit_transaction
+    possible deadlock in blktrans_open
+    INFO: task hung in btrfs_quota_disable
+Attempt 2:
+    INFO: task hung in btrfs_commit_transaction
+    possible deadlock in blktrans_open
+    INFO: task hung in btrfs_quota_disable
+Attempt 3:
+    INFO: task hung in btrfs_commit_transaction
+    possible deadlock in blktrans_open
+    INFO: task hung in btrfs_quota_disable
+Attempt 4:
+    INFO: task hung in btrfs_commit_transaction
+    possible deadlock in blktrans_open
+    INFO: task hung in btrfs_quota_disable
+Attempt 5:
+    INFO: task hung in btrfs_commit_transaction
+    possible deadlock in blktrans_open
+    INFO: task hung in btrfs_quota_disable
+Attempt 6:
+    INFO: task hung in btrfs_commit_transaction
+    possible deadlock in blktrans_open
+    INFO: task hung in btrfs_quota_disable
+Attempt 7:
+    INFO: task hung in btrfs_commit_transaction
+    possible deadlock in blktrans_open
+    INFO: task hung in btrfs_quota_disable
+The bug was not found.
+About 111 commits remaining
+
+2026-05-13 10:01:28
+Session:   29
+Kernel:    2021-09-05 - 3fe617ccafd6f5bb33c2391d6f4eeb41c1fd0151
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+PoC:       /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0195-0.prog
+Attempt 0:
+    INFO: task hung in btrfs_commit_transaction
+    INFO: task hung in btrfs_quota_disable
+Attempt 1:
+    general protection fault in ulist_reinit (has report)
+Attempt 2:
+    general protection fault in ulist_reinit (has report)
+Attempt 3:
+    INFO: task hung in btrfs_commit_transaction
+    INFO: task hung in btrfs_quota_disable
+Attempt 4:
+    INFO: task hung in btrfs_commit_transaction
+    INFO: task hung in btrfs_quota_disable
+Attempt 5:
+    KASAN: use-after-free Read in btrfs_get_global_root (has report)
+Attempt 6:
+    KASAN: use-after-free Read in start_transaction (has report)
+Attempt 7:
+*** general protection fault in start_transaction (has report)
+The bug was found.
+About 55 commits remaining
+
+2026-05-13 10:11:23
+Session:   30
+Kernel:    2021-09-03 - c1fe77e42440d2cad76055df6fb58caabf622d51
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+PoC:       /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0195-0.prog
+Attempt 0:
+    INFO: task hung in btrfs_commit_transaction
+    BUG: sleeping function called from invalid context in lock_sock_nested (has report)
+    possible deadlock in hci_sock_dev_event
+    INFO: task hung in btrfs_quota_disable
+Error: index error parsing basic report
+Attempt 1:
+    kernel panic: scheduling while atomic
+    possible deadlock in get_page_from_freelist
+    BUG: sleeping function called from invalid context in lock_sock_nested (has report)
+    BUG: scheduling while atomic in __lock_sock (has report)
+Error: index error parsing basic report
+Attempt 2:
+    kernel panic: scheduling while atomic
+    BUG: sleeping function called from invalid context in lock_sock_nested (has report)
+    BUG: scheduling while atomic in __lock_sock (has report)
+Attempt 3:
+    possible deadlock in get_page_from_freelist
+    INFO: task hung in btrfs_commit_transaction
+    BUG: sleeping function called from invalid context in stack_depot_save (has report)
+    INFO: task hung in btrfs_quota_disable
+Attempt 4:
+    KASAN: use-after-free Read in btrfs_get_global_root (has report)
+Attempt 5:
+    KASAN: use-after-free Read in start_transaction (has report)
+Attempt 6:
+    INFO: task hung in btrfs_commit_transaction
+    BUG: sleeping function called from invalid context in lock_sock_nested (has report)
+    possible deadlock in hci_sock_dev_event
+    INFO: task hung in btrfs_quota_disable
+Attempt 7:
+    possible deadlock in get_page_from_freelist
+    INFO: task hung in btrfs_commit_transaction
+    BUG: sleeping function called from invalid context in stack_depot_save (has report)
+    INFO: task hung in btrfs_quota_disable
+The bug was not found.
+About 11539 commits remaining
+
+2026-05-13 10:29:05
+Session:   31
+Kernel:    2021-09-01 - 1b4f3dfb4792f03b139edf10124fcbeb44e608e6
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+PoC:       /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0195-0.prog
+Warning: VM has not responded after 5 attempts.
+Warning: Only booted 7 VMs.
+Attempt 0:
+    INFO: task hung in btrfs_commit_transaction
+    possible deadlock in blktrans_open
+    INFO: task hung in btrfs_quota_disable
+Attempt 1:
+    possible deadlock in blktrans_open
+    KFENCE: use-after-free in kvm_fastop_exception (has report)
+Attempt 2:
+    INFO: task hung in btrfs_commit_transaction
+    possible deadlock in blktrans_open
+    INFO: task hung in btrfs_quota_disable
+Attempt 3:
+    INFO: task hung in btrfs_commit_transaction
+    possible deadlock in blktrans_open
+    INFO: task hung in btrfs_quota_disable
+Attempt 4:
+    INFO: task hung in btrfs_commit_transaction
+    possible deadlock in blktrans_open
+    INFO: task hung in btrfs_quota_disable
+Attempt 5:
+    INFO: task hung in btrfs_commit_transaction
+    possible deadlock in blktrans_open
+    INFO: task hung in btrfs_quota_disable
+Attempt 6:
+    INFO: task hung in btrfs_commit_transaction
+    possible deadlock in blktrans_open
+    INFO: task hung in btrfs_quota_disable
+Attempt 7:
+    INFO: task hung in btrfs_commit_transaction
+    possible deadlock in blktrans_open
+    INFO: task hung in btrfs_quota_disable
+The bug was not found.
+About 4028 commits remaining
+
+2026-05-13 10:48:45
+Session:   32
+Kernel:    2021-09-03 - 6128b3af2a5e42386aa7faf37609b57f39fb7d00
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+PoC:       /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0195-0.prog
+Attempt 0:
+    KASAN: use-after-free Read in btrfs_get_global_root (has report)
+Attempt 1:
+    KASAN: use-after-free Read in btrfs_get_global_root (has report)
+Attempt 2:
+    INFO: task hung in btrfs_commit_transaction
+    INFO: task hung in btrfs_quota_disable
+Attempt 3:
+    INFO: task hung in btrfs_commit_transaction
+    INFO: task hung in btrfs_quota_disable
+Attempt 4:
+*** general protection fault in start_transaction (has report)
+Attempt 5:
+    KASAN: use-after-free Read in btrfs_get_global_root (has report)
+Attempt 6:
+    INFO: task hung in btrfs_commit_transaction
+    INFO: task hung in btrfs_quota_disable
+Attempt 7:
+    INFO: task hung in btrfs_commit_transaction
+    INFO: task hung in btrfs_quota_disable
+The bug was found.
+About 7 commits remaining
+
+2026-05-13 11:07:18
+Session:   33
+Kernel:    2021-09-03 - fe69d560b5bd9ec77b5d5749bd7027344daef47e
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+PoC:       /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0195-0.prog
+Attempt 0:
+    INFO: task hung in btrfs_commit_transaction
+    INFO: task hung in btrfs_quota_disable
+Attempt 1:
+    general protection fault in ulist_reinit (has report)
+Attempt 2:
+*** general protection fault in start_transaction (has report)
+Attempt 3:
+*** general protection fault in start_transaction (has report)
+Attempt 4:
+    INFO: task hung in btrfs_commit_transaction
+    INFO: task hung in btrfs_quota_disable
+Attempt 5:
+    INFO: task hung in btrfs_commit_transaction
+    INFO: task hung in btrfs_quota_disable
+Attempt 6:
+*** general protection fault in start_transaction (has report)
+Attempt 7:
+    INFO: task hung in btrfs_commit_transaction
+    INFO: task hung in btrfs_quota_disable
+The bug was found.
+About 4 commits remaining
+
+2026-05-13 11:25:31
+Session:   34
+Kernel:    2021-09-03 - 35d7bdc86031a2c1ae05ac27dfa93b2acdcbaecc
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+PoC:       /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0195-0.prog
+Attempt 0:
+    INFO: task hung in btrfs_commit_transaction
+    INFO: task hung in btrfs_quota_disable
+Attempt 1:
+*** general protection fault in start_transaction (has report)
+Attempt 2:
+    INFO: task hung in btrfs_commit_transaction
+    INFO: task hung in btrfs_quota_disable
+Attempt 3:
+    INFO: task hung in btrfs_commit_transaction
+    INFO: task hung in btrfs_quota_disable
+Attempt 4:
+*** general protection fault in start_transaction (has report)
+Attempt 5:
+    KASAN: use-after-free Read in btrfs_get_global_root (has report)
+Attempt 6:
+    INFO: task hung in btrfs_commit_transaction
+    INFO: task hung in btrfs_quota_disable
+Attempt 7:
+    INFO: task hung in btrfs_commit_transaction
+    INFO: task hung in btrfs_quota_disable
+The bug was found.
+About 3 commits remaining
+
+2026-05-13 11:43:49
+Session:   35
+Kernel:    2021-09-03 - 42be8b42535183f84df99acbaf799e38724348f3
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+PoC:       /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0195-0.prog
+Attempt 0:
+*** general protection fault in start_transaction (has report)
+Attempt 1:
+    INFO: task hung in btrfs_commit_transaction
+    INFO: task hung in btrfs_quota_disable
+Attempt 2:
+    INFO: task hung in btrfs_commit_transaction
+    INFO: task hung in btrfs_quota_disable
+Attempt 3:
+    INFO: task hung in btrfs_commit_transaction
+    INFO: task hung in btrfs_quota_disable
+Attempt 4:
+*** general protection fault in start_transaction (has report)
+Attempt 5:
+    INFO: task hung in btrfs_commit_transaction
+    INFO: task hung in btrfs_quota_disable
+Attempt 6:
+*** general protection fault in start_transaction (has report)
+Attempt 7:
+    INFO: task hung in btrfs_commit_transaction
+    INFO: task hung in btrfs_quota_disable
+The bug was found.
+About 2 commits remaining
+
+====================================================================================================================================================
+Bug Name:             general protection fault in start_transaction
+Bug ID:               bug0195
+Bug Link:             https://syzkaller.appspot.com/bug?id=724cf869d3bb512081588651530d8071a4b61ceb
+Bisection Result:     2021-09-03 - 42be8b42535183f84df99acbaf799e38724348f3
+Bisected Commit Name: binfmt: don't use MAP_DENYWRITE when loading shared libraries via uselib()
+Run Time:             14h4m18s
+
+Anchor Commit:        2022-12-20 - b6bb9676f2165d518b35ba3bea5f1fcfc0d969bf
+Bisection Result:     2021-09-03 - 42be8b42535183f84df99acbaf799e38724348f3

@@ -1,0 +1,284 @@
+./bin/meerkat -i 1 -c /home/author/meerkat/wd-meerkat-1/meerkat.cfg -a d1dc87763f406d4e67caf16dbe438a5647692395 -F ff-test,stateful-corpus,poc-test,ff-no-find-backup
+Bisecting:          WARNING in inet_csk_get_port
+Syzbot Link:        https://syzkaller.appspot.com/bug?id=ea15ed20f874608f0b5e8f90c9d1cda69f1e34be
+Working Name:       bug0007
+
+Aliases:
+    WARNING in inet_csk_get_port
+
+Anchor Commit:      d1dc87763f406d4e67caf16dbe438a5647692395
+Repository:         https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
+Branch:             master
+Arch:               amd64
+
+Meerkat:            /home/author/meerkat/
+Version:            1.2.0
+Kernel:             /home/author/meerkat/wd-meerkat-1/kernel/
+Syzkaller:          /home/author/meerkat/syzkaller/
+Compilers:          /home/author/meerkat/compilers/
+Compiler:           gcc (Ubuntu 12.3.0-1ubuntu1~22.04.3) 12.3.0
+Linker:             GNU ld (GNU Binutils for Ubuntu) 2.38
+Ccache:             ccache version 4.5.1
+Image:              /home/author/meerkat/image/stretch/stretch.img
+Image Key:          /home/author/meerkat/image/stretch/stretch.id_rsa
+
+Workdir:            /home/author/meerkat/wd-meerkat-1/
+Kconfig:            /home/author/meerkat/wd-meerkat-1/config-bug0007.txt
+Reproducers: (1)    /home/author/meerkat/wd-meerkat-1/reproducers/
+Primary PoC:        /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0007-1.prog
+Syzkaller Workdir:  /home/author/meerkat/wd-meerkat-1/wd-kaller/
+Log Directory:      /home/author/meerkat/wd-meerkat-1/log/
+
+Syscalls: (8)       ["bind$inet6", "listen", "sendto$inet6", "setsockopt$sock_int", "socket$inet6", "socket", "ioctl$F2FS_IOC_START_ATOMIC_WRITE", "openat$selinux_enforce"]
+VM Count:           8
+CPU Count:          2
+Procs:              16
+Memory:             4096
+Make Procs:         16
+Max Time:           10
+Max Attempts:       1
+
+==== Anchor Commit ====
+
+2026-04-21 21:36:53
+Session:   1
+Kernel:    2022-06-01 - d1dc87763f406d4e67caf16dbe438a5647692395
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    2  WARNING in inet_csk_get_port (3) (has report)
+Attempt 2: (RETRY)
+    Time  Bug Name
+***    2  WARNING in inet_csk_get_port (2) (has report)
+Attempt 3: (RETRY)
+    Time  Bug Name
+***    2  WARNING in inet_csk_get_port (2) (has report)
+The bug was found.
+
+New Max Time: 10
+
+==== Major Release Search ====
+11 Releases
+
+2026-04-21 21:56:05
+Session:   2
+Kernel:    2022-05-22 - 4b0986a3613c92f4ec1bdc7f60ec66fea135991f (v5.18)
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 10 releases remaining
+
+==== Kernel Bisection ====
+11973 Linux commits
+
+2026-04-21 22:19:01
+Session:   3
+Kernel:    2022-05-25 - 86c87bea6b42100c67418af690919c44de6ede6e
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    2  WARNING in inet_csk_get_port (4) (has report)
+Running syz-repro.
+New PoC saved at /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0007-0.prog
+Primary PoC:     /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0007-0.prog
+Run Time:        0h11m0s
+The bug was found.
+About 5170 commits remaining
+
+2026-04-21 22:44:33
+Session:   4
+Kernel:    2022-05-24 - 7208c9842c50f97327aac20be62edc8ad230f05c
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 2585 commits remaining
+
+2026-04-21 23:07:20
+Session:   5
+Kernel:    2022-05-11 - 01f4685797a5723b0046da03c30185ac9ff42b30
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 4394 commits remaining
+
+2026-04-21 23:29:52
+Session:   6
+Kernel:    2022-05-23 - 1ef0736c0711e2633a59b540931406de626f2836
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    2  WARNING in inet_csk_get_port (2) (has report)
+The bug was found.
+About 1105 commits remaining
+
+2026-04-21 23:44:19
+Session:   7
+Kernel:    2022-05-19 - d353e1a3bafd468941d42f6aa59bbd8ac42959b6
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       5  KASAN: use-after-free Read in nf_confirm (has report)
+       7  KASAN: use-after-free Read in nf_confirm (4) (has report)
+       9  KASAN: use-after-free Read in nf_confirm (2) (has report)
+      10  KASAN: use-after-free Read in nf_confirm (4) (has report)
+The bug was not found.
+About 297 commits remaining
+
+2026-04-22 00:06:57
+Session:   8
+Kernel:    2022-05-23 - 8f445a3ec3fd36feb90c5b2ef8d21e2492819cdc
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    2  WARNING in inet_csk_get_port (2) (has report)
+The bug was found.
+About 142 commits remaining
+
+2026-04-22 00:17:04
+Session:   9
+Kernel:    2022-05-22 - 60f243ad1426b796efed750937733b0e410f9257
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    2  WARNING in inet_csk_get_port (2) (has report)
+Running syz-repro.
+New PoC saved at /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0007-1.prog
+Primary PoC:     /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0007-1.prog
+Run Time:        0h11m0s
+The bug was found.
+About 71 commits remaining
+
+2026-04-22 00:37:10
+Session:   10
+Kernel:    2022-05-19 - 16ea52c44e7a56c983a2a49e218af5a9dbbd8965
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       5  KASAN: use-after-free Read in nf_confirm (has report)
+       7  KASAN: use-after-free Read in nf_confirm (has report)
+       9  KASAN: use-after-free Read in nf_confirm (has report)
+      10  KASAN: use-after-free Read in nf_confirm (4) (has report)
+The bug was not found.
+About 36 commits remaining
+
+2026-04-22 00:51:43
+Session:   11
+Kernel:    2022-05-20 - dc2df00af951569689ec39ce0a41b1dff7e3595e
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       5  KASAN: use-after-free Read in nf_confirm (2) (has report)
+       6  KASAN: use-after-free Read in nf_confirm (2) (has report)
+       7  KASAN: use-after-free Read in nf_confirm (has report)
+       8  KASAN: use-after-free Read in nf_confirm (has report)
+       9  KASAN: use-after-free Read in nf_confirm (has report)
+      10  KASAN: use-after-free Read in nf_confirm (5) (has report)
+The bug was not found.
+About 19 commits remaining
+
+2026-04-22 01:06:09
+Session:   12
+Kernel:    2022-05-20 - 538aaf9b2383701094a47797b4554c6a21c83eed
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    2  WARNING in inet_csk_get_port (2) (has report)
+The bug was found.
+About 10 commits remaining
+
+2026-04-22 01:12:22
+Session:   13
+Kernel:    2022-05-20 - c2e10f53455c898050738d6a5f8c237f27aec225
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       6  KASAN: use-after-free Read in nf_confirm (has report)
+       7  KASAN: use-after-free Read in nf_confirm (has report)
+      10  KASAN: use-after-free Read in nf_confirm (2) (has report)
+The bug was not found.
+About 6 commits remaining
+
+2026-04-22 01:26:50
+Session:   14
+Kernel:    2022-05-20 - 29849a486a85f7ab1f3b389db5e3d4948119bef2
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       6  KASAN: use-after-free Read in nf_confirm (3) (has report)
+       7  KASAN: use-after-free Read in nf_confirm (has report)
+       9  KASAN: use-after-free Read in nf_confirm (has report)
+The bug was not found.
+About 4 commits remaining
+
+2026-04-22 01:41:06
+Session:   15
+Kernel:    2022-05-20 - d5a42de8bdbe25081f07b801d8b35f4d75a791f4
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    2  WARNING in inet_csk_get_port (has report)
+The bug was found.
+About 3 commits remaining
+
+2026-04-22 01:47:22
+Session:   16
+Kernel:    2022-05-20 - eac67d83bf2553f98cfddd42cfbcfd6f9ccfc287
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       6  KASAN: use-after-free Read in nf_confirm (3) (has report)
+       7  KASAN: use-after-free Read in nf_confirm (3) (has report)
+       8  KASAN: use-after-free Read in nf_confirm (has report)
+       9  KASAN: use-after-free Read in nf_confirm (2) (has report)
+      10  KASAN: use-after-free Read in nf_confirm (has report)
+The bug was not found.
+About 2 commits remaining
+
+==== Partial Result: Focused Fuzzing ====
+Reproducer:           /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0007-1.prog
+Bisection Result:     2022-05-20 - d5a42de8bdbe25081f07b801d8b35f4d75a791f4
+Bisected Commit Name: net: Add a second bind table hashed by port and address
+Stage Time:           4h24m40s
+Run Time:             4h24m41s
+=========================================
+
+==== Anchor Commit ====
+
+2026-04-22 02:01:33
+Session:   17
+Kernel:    2022-05-20 - eac67d83bf2553f98cfddd42cfbcfd6f9ccfc287
+Compiler:  ccache gcc
+PoC:       /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0007-1.prog
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+
+Failure: This bug cannot be found at the anchor commit.
+
+====================================================================================================================================================
+Bug Name:             WARNING in inet_csk_get_port
+Bug ID:               bug0007
+Bug Link:             https://syzkaller.appspot.com/bug?id=ea15ed20f874608f0b5e8f90c9d1cda69f1e34be
+Bisection Result:     2022-05-20 - d5a42de8bdbe25081f07b801d8b35f4d75a791f4
+Bisected Commit Name: net: Add a second bind table hashed by port and address
+Run Time:             4h36m20s
+
+Anchor Commit:        2022-06-01 - d1dc87763f406d4e67caf16dbe438a5647692395
+Bisection Result:     2022-05-20 - d5a42de8bdbe25081f07b801d8b35f4d75a791f4

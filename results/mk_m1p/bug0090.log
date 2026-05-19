@@ -1,0 +1,255 @@
+./bin/meerkat -i 1 -c /home/author/meerkat/wd-meerkat-1/meerkat.cfg -a 700170bf6b4d773e328fa54ebb70ba444007c702 -F ff-test,stateful-corpus,poc-test,ff-no-find-backup
+Bisecting:          UBSAN: array-index-out-of-bounds in nfnetlink_unbind
+Syzbot Link:        https://syzkaller.appspot.com/bug?id=bb7660e85693c73347a5043561f6bf41dc2fdbe5
+Working Name:       bug0090
+
+Aliases:
+    UBSAN: array-index-out-of-bounds in nfnetlink_unbind
+
+Anchor Commit:      700170bf6b4d773e328fa54ebb70ba444007c702
+Repository:         https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
+Branch:             master
+Arch:               amd64
+
+Meerkat:            /home/author/meerkat/
+Version:            1.2.0
+Kernel:             /home/author/meerkat/wd-meerkat-1/kernel/
+Syzkaller:          /home/author/meerkat/syzkaller/
+Compilers:          /home/author/meerkat/compilers/
+Compiler:           gcc (Ubuntu 12.3.0-1ubuntu1~22.04.3) 12.3.0
+Linker:             GNU ld (GNU Binutils for Ubuntu) 2.38
+Ccache:             ccache version 4.5.1
+Image:              /home/author/meerkat/image/stretch/stretch.img
+Image Key:          /home/author/meerkat/image/stretch/stretch.id_rsa
+
+Workdir:            /home/author/meerkat/wd-meerkat-1/
+Kconfig:            /home/author/meerkat/wd-meerkat-1/config-bug0090.txt
+Reproducers: (1)    /home/author/meerkat/wd-meerkat-1/reproducers/
+Primary PoC:        /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0090-1.prog
+Syzkaller Workdir:  /home/author/meerkat/wd-meerkat-1/wd-kaller/
+Log Directory:      /home/author/meerkat/wd-meerkat-1/log/
+
+Syscalls: (6)       ["bind$netlink", "socket$nl_netfilter", "socket$netlink", "socket", "ioctl$F2FS_IOC_START_ATOMIC_WRITE", "openat$selinux_enforce"]
+VM Count:           8
+CPU Count:          2
+Procs:              16
+Memory:             4096
+Make Procs:         16
+Max Time:           10
+Max Attempts:       1
+
+==== Anchor Commit ====
+
+2026-04-24 15:16:32
+Session:   1
+Kernel:    2022-05-31 - 700170bf6b4d773e328fa54ebb70ba444007c702
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    2  UBSAN: array-index-out-of-bounds in nfnetlink_unbind (8)
+Attempt 2: (RETRY)
+    Time  Bug Name
+***    2  UBSAN: array-index-out-of-bounds in nfnetlink_unbind (8)
+Attempt 3: (RETRY)
+    Time  Bug Name
+***    2  UBSAN: array-index-out-of-bounds in nfnetlink_unbind (8)
+The bug was found.
+
+New Max Time: 10
+
+==== Major Release Search ====
+11 Releases
+
+2026-04-24 15:37:41
+Session:   2
+Kernel:    2022-05-22 - 4b0986a3613c92f4ec1bdc7f60ec66fea135991f (v5.18)
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 10 releases remaining
+
+==== Kernel Bisection ====
+11713 Linux commits
+
+2026-04-24 16:03:57
+Session:   3
+Kernel:    2022-05-25 - 86c87bea6b42100c67418af690919c44de6ede6e
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    2  UBSAN: array-index-out-of-bounds in nfnetlink_unbind (5)
+Running syz-repro.
+New PoC saved at /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0090-0.prog
+Primary PoC:     /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0090-0.prog
+Run Time:        0h4m0s
+The bug was found.
+About 5170 commits remaining
+
+2026-04-24 16:25:27
+Session:   4
+Kernel:    2022-05-24 - 7208c9842c50f97327aac20be62edc8ad230f05c
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 2585 commits remaining
+
+2026-04-24 16:51:01
+Session:   5
+Kernel:    2022-05-11 - 01f4685797a5723b0046da03c30185ac9ff42b30
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 4394 commits remaining
+
+2026-04-24 17:16:24
+Session:   6
+Kernel:    2022-05-23 - 1ef0736c0711e2633a59b540931406de626f2836
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    2  UBSAN: array-index-out-of-bounds in nfnetlink_unbind (5)
+The bug was found.
+About 1105 commits remaining
+
+2026-04-24 17:33:49
+Session:   7
+Kernel:    2022-05-19 - d353e1a3bafd468941d42f6aa59bbd8ac42959b6
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    2  UBSAN: array-index-out-of-bounds in nfnetlink_unbind (7)
+The bug was found.
+About 809 commits remaining
+
+2026-04-24 17:50:15
+Session:   8
+Kernel:    2022-05-17 - 6e144b47f560edc25744498f360835b1042b73dd
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    2  UBSAN: array-index-out-of-bounds in nfnetlink_unbind (7)
+Running syz-repro.
+New PoC saved at /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0090-1.prog
+Primary PoC:     /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0090-1.prog
+Run Time:        0h4m0s
+The bug was found.
+About 408 commits remaining
+
+2026-04-24 18:05:14
+Session:   9
+Kernel:    2022-05-16 - 1a01a0751731c807c04e81d3c19c5b782d205af7
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    2  UBSAN: array-index-out-of-bounds in nfnetlink_unbind (7)
+The bug was found.
+About 322 commits remaining
+
+2026-04-24 18:15:15
+Session:   10
+Kernel:    2022-05-13 - 0f6deac3a07958195173119627502350925dce78
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 51 commits remaining
+
+2026-04-24 18:33:18
+Session:   11
+Kernel:    2022-05-13 - 2c5f1536473b7530adefd09a25cf3fef2cfe01f2
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 22 commits remaining
+
+2026-04-24 18:50:19
+Session:   12
+Kernel:    2022-05-13 - 0bcfbafbcd345f285db0c3788e6359ceac6a008c
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 2164 commits remaining
+
+2026-04-24 19:12:38
+Session:   13
+Kernel:    2022-05-13 - 8edc813111001e9be3cce066d3d4091d2ef04a1d
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    2  UBSAN: array-index-out-of-bounds in nfnetlink_unbind (6)
+The bug was found.
+About 6 commits remaining
+
+2026-04-24 19:22:34
+Session:   14
+Kernel:    2022-05-13 - 2794cdb0b97bfe62d25c996c8afe4832207e78bc
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    2  UBSAN: array-index-out-of-bounds in nfnetlink_unbind (6)
+Running syz-repro.
+New PoC saved at /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0090-0.prog
+Primary PoC:     /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0090-0.prog
+Run Time:        0h4m0s
+The bug was found.
+About 3 commits remaining
+
+2026-04-24 19:33:06
+Session:   15
+Kernel:    2022-05-13 - 8169ff584003c871a226719e998bb034231954d6
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 2 commits remaining
+
+==== Partial Result: Focused Fuzzing ====
+Reproducer:           /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0090-0.prog
+Bisection Result:     2022-05-13 - 2794cdb0b97bfe62d25c996c8afe4832207e78bc
+Bisected Commit Name: netfilter: nfnetlink: allow to detect if ctnetlink listeners exist
+Stage Time:           4h31m12s
+Run Time:             4h31m13s
+=========================================
+
+==== Anchor Commit ====
+
+2026-04-24 19:47:44
+Session:   16
+Kernel:    2022-05-13 - 8169ff584003c871a226719e998bb034231954d6
+Compiler:  ccache gcc
+PoC:       /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0090-0.prog
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+
+Failure: This bug cannot be found at the anchor commit.
+
+====================================================================================================================================================
+Bug Name:             UBSAN: array-index-out-of-bounds in nfnetlink_unbind
+Bug ID:               bug0090
+Bug Link:             https://syzkaller.appspot.com/bug?id=bb7660e85693c73347a5043561f6bf41dc2fdbe5
+Bisection Result:     2022-05-13 - 2794cdb0b97bfe62d25c996c8afe4832207e78bc
+Bisected Commit Name: netfilter: nfnetlink: allow to detect if ctnetlink listeners exist
+Run Time:             4h42m57s
+
+Anchor Commit:        2022-05-31 - 700170bf6b4d773e328fa54ebb70ba444007c702
+Bisection Result:     2022-05-13 - 2794cdb0b97bfe62d25c996c8afe4832207e78bc

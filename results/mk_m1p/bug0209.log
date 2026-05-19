@@ -1,0 +1,65 @@
+./bin/meerkat -i 1 -c /home/author/meerkat/wd-meerkat-1/meerkat.cfg -a 8291eaafed36f575f23951f3ce18407f480e9ecf -F ff-test,stateful-corpus,poc-test,ff-no-find-backup
+Bisecting:          KASAN: use-after-free Read in inet_bind2_bucket_find
+Syzbot Link:        https://syzkaller.appspot.com/bug?id=190828444408403a087cb8fd424e338f69ef6de6
+Working Name:       bug0209
+
+Aliases:
+    KASAN: use-after-free Read in inet_bind2_bucket_find
+
+Anchor Commit:      8291eaafed36f575f23951f3ce18407f480e9ecf
+Repository:         https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
+Branch:             master
+Arch:               amd64
+
+Meerkat:            /home/author/meerkat/
+Version:            1.2.0
+Kernel:             /home/author/meerkat/wd-meerkat-1/kernel/
+Syzkaller:          /home/author/meerkat/syzkaller/
+Compilers:          /home/author/meerkat/compilers/
+Compiler:           gcc (Ubuntu 12.3.0-1ubuntu1~22.04.3) 12.3.0
+Linker:             GNU ld (GNU Binutils for Ubuntu) 2.38
+Ccache:             ccache version 4.5.1
+Image:              /home/author/meerkat/image/stretch/stretch.img
+Image Key:          /home/author/meerkat/image/stretch/stretch.id_rsa
+
+Workdir:            /home/author/meerkat/wd-meerkat-1/
+Kconfig:            /home/author/meerkat/wd-meerkat-1/config-bug0209.txt
+Reproducers: (1)    /home/author/meerkat/wd-meerkat-1/reproducers/
+Primary PoC:        /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0209-2.prog
+Syzkaller Workdir:  /home/author/meerkat/wd-meerkat-1/wd-kaller/
+Log Directory:      /home/author/meerkat/wd-meerkat-1/log/
+
+Syscalls: (31)      ["getgroups", "io_uring_enter", "prctl$PR_SCHED_CORE", "socket$inet", "syz_io_uring_setup", "syz_io_uring_submit", "syz_memcpy_off$IO_URING_METADATA_GENERIC", "ioctl$sock_SIOCGIFINDEX", "ioctl$IOCTL_GET_NCIDEV_IDX", "setgid", "getgid", "syz_clone", "ioctl$F2FS_IOC_START_ATOMIC_WRITE", "openat$selinux_enforce", "socket", "statx", "setsockopt$inet_mreqn", "openat$nci", "bind$nfc_llcp", "open$dir", "io_uring_register$IORING_UNREGISTER_PERSONALITY", "io_uring_register$IORING_REGISTER_PERSONALITY", "futex", "getrusage", "clock_gettime", "mount$bpf", "getuid", "epoll_create", "syz_init_net_socket$nfc_llcp", "ioctl$ifreq_SIOCGIFINDEX_vcan", "utimes"]
+VM Count:           4
+CPU Count:          4
+Procs:              24
+Memory:             4096
+Make Procs:         16
+Max Time:           10
+Max Attempts:       1
+
+==== Anchor Commit ====
+
+2026-05-14 09:56:24
+Session:   1
+Kernel:    2022-05-27 - 8291eaafed36f575f23951f3ce18407f480e9ecf
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+      10  suppressed report
+Attempt 2: (RETRY)
+    No crashes found.
+Attempt 3: (RETRY)
+    Time  Bug Name
+       8  suppressed report (2)
+       9  suppressed report
+      10  KASAN: use-after-free Read in io_poll_remove_entries (has report)
+The bug was not found.
+
+Failure: This bug cannot be found at the anchor commit.
+
+==== Partial Result: Focused Fuzzing ====
+Bisection Result:     Failed to reproduce at the anchor commit.
+Stage Time:           0h43m42s
+Run Time:             0h43m47s
+=========================================

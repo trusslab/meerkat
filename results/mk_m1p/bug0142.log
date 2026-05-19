@@ -1,0 +1,869 @@
+./bin/meerkat -i 1 -c /home/author/meerkat/wd-meerkat-1/meerkat.cfg -a ca1fdab7fd27eb069df1384b2850dcd0c2bebe8d -F ff-test,stateful-corpus,poc-test,ff-no-find-backup
+Bisecting:          KASAN: null-ptr-deref Write in kcm_tx_work
+Syzbot Link:        https://syzkaller.appspot.com/bug?id=5ad0e07964a412d314292e72053f2a27b9694f33
+Working Name:       bug0142
+
+Aliases:
+    KASAN: null-ptr-deref Write in kcm_tx_work
+
+Anchor Commit:      ca1fdab7fd27eb069df1384b2850dcd0c2bebe8d
+Repository:         https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
+Branch:             master
+Arch:               amd64
+
+Meerkat:            /home/author/meerkat/
+Version:            1.2.0
+Kernel:             /home/author/meerkat/wd-meerkat-1/kernel/
+Syzkaller:          /home/author/meerkat/syzkaller/
+Compilers:          /home/author/meerkat/compilers/
+Compiler:           gcc (Ubuntu 12.3.0-1ubuntu1~22.04.3) 12.3.0
+Linker:             GNU ld (GNU Binutils for Ubuntu) 2.38
+Ccache:             ccache version 4.5.1
+Image:              /home/author/meerkat/image/stretch/stretch.img
+Image Key:          /home/author/meerkat/image/stretch/stretch.id_rsa
+
+Workdir:            /home/author/meerkat/wd-meerkat-1/
+Kconfig:            /home/author/meerkat/wd-meerkat-1/config-bug0142.txt
+Reproducers: (1)    /home/author/meerkat/wd-meerkat-1/reproducers/
+Primary PoC:        /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0142-2.prog
+Syzkaller Workdir:  /home/author/meerkat/wd-meerkat-1/wd-kaller/
+Log Directory:      /home/author/meerkat/wd-meerkat-1/log/
+
+Syscalls: (30)      ["bpf$PROG_LOAD", "connect$inet6", "ioctl$sock_kcm_SIOCKCMATTACH", "sendmmsg", "sendmsg$RDMA_NLDEV_CMD_NEWLINK", "sendmsg$rds", "socket", "socket$inet6", "socket$kcm", "bpf$BPF_PROG_GET_FD_BY_ID", "socket$nl_rdma", "socket$rds", "bpf$BPF_BTF_GET_NEXT_ID", "ioctl$F2FS_IOC_START_ATOMIC_WRITE", "openat$selinux_enforce", "socket$netlink", "ioctl$sock_SIOCGIFINDEX", "bpf$BPF_BTF_LOAD", "bpf$OBJ_GET_MAP", "bpf$TOKEN_CREATE", "bpf$BPF_PROG_GET_NEXT_ID", "ioctl$ifreq_SIOCGIFINDEX_vcan", "ioctl$IOCTL_GET_NCIDEV_IDX", "bpf$BPF_MAP_CONST_STR_FREEZE", "bpf$MAP_UPDATE_ELEM_TAIL_CALL", "bpf$MAP_CREATE_RINGBUF", "openat$nci", "bpf$MAP_UPDATE_CONST_STR", "bpf$MAP_CREATE_TAIL_CALL", "bpf$MAP_CREATE_CONST_STR"]
+VM Count:           4
+CPU Count:          4
+Procs:              24
+Memory:             4096
+Make Procs:         16
+Max Time:           10
+Max Attempts:       1
+
+==== Anchor Commit ====
+
+2026-04-30 01:05:28
+Session:   1
+Kernel:    2022-06-21 - ca1fdab7fd27eb069df1384b2850dcd0c2bebe8d
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       5  SYZFAIL: tun: ioctl(TUNSETIFF) failed (2)
+       6  SYZFAIL: tun: ioctl(TUNSETIFF) failed
+       7  SYZFAIL: tun: ioctl(TUNSETIFF) failed
+       9  SYZFAIL: tun: ioctl(TUNSETIFF) failed
+***    9  KASAN: null-ptr-deref Write in kcm_tx_work (has report)
+Attempt 2: (RETRY)
+    Time  Bug Name
+       7  suppressed report
+***    7  KASAN: null-ptr-deref Write in kcm_tx_work (2) (has report)
+Attempt 3: (RETRY)
+    Time  Bug Name
+***    6  KASAN: null-ptr-deref Write in kcm_tx_work (has report)
+The bug was found.
+
+New Max Time: 11
+
+==== Major Release Search ====
+11 Releases
+
+2026-04-30 01:41:33
+Session:   2
+Kernel:    2022-05-22 - 4b0986a3613c92f4ec1bdc7f60ec66fea135991f (v5.18)
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       3  KASAN: use-after-free Read in cfusbl_device_notify (has report)
+***    3  KASAN: null-ptr-deref Write in kcm_tx_work (has report)
+Running syz-repro.
+syz-repro was terminated after 60 minutes
+Warning: Child process exited with error status 32766.
+Run Time:        1h0m0s
+The bug was found.
+About 10 releases remaining
+
+2026-04-30 02:57:29
+Session:   3
+Kernel:    2022-03-20 - f443e374ae131c168a065ea1748feac6b2e76613 (v5.17)
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    3  KASAN: null-ptr-deref Write in kcm_tx_work (has report)
+The bug was found.
+About 9 releases remaining
+
+2026-04-30 03:13:04
+Session:   4
+Kernel:    2022-01-09 - df0cc57e057f18e44dac8e6c18aba47ab53202f9 (v5.16)
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       5  unregister_netdevice: waiting for DEV to become free
+      10  WARNING in process_one_work (has report)
+      11  suppressed report
+The bug was not found.
+About 8 releases remaining
+
+==== Kernel Bisection ====
+14200 Linux commits
+
+2026-04-30 03:37:03
+Session:   5
+Kernel:    2022-01-12 - 22ef12195e13c5ec58320dbf99ef85059a2c0820
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    3  KASAN: null-ptr-deref Write in kcm_tx_work (2) (has report)
+The bug was found.
+About 7204 commits remaining
+
+2026-04-30 03:52:39
+Session:   6
+Kernel:    2022-01-10 - 9bcbf894b6872216ef61faf17248ec234e3db6bc
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    3  KASAN: null-ptr-deref Write in kcm_tx_work (has report)
+Running syz-repro.
+syz-repro was terminated after 60 minutes
+Warning: Child process exited with error status 32766.
+Run Time:        1h0m0s
+The bug was found.
+About 2818 commits remaining
+
+2026-04-30 05:08:26
+Session:   7
+Kernel:    2021-12-31 - cb6846fbb83b574c85c2a80211b402a6347b60b1
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       5  unregister_netdevice: waiting for DEV to become free (2)
+***    5  KASAN: null-ptr-deref Write in kcm_tx_work (has report)
+The bug was found.
+About 1278 commits remaining
+
+2026-04-30 05:25:43
+Session:   8
+Kernel:    2021-12-10 - 15bb79910fe734ad21c765d1cae762e855969caa
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       2  possible deadlock in smc_switch_to_fallback (4)
+       3  possible deadlock in smc_switch_to_fallback (2)
+       4  possible deadlock in smc_switch_to_fallback (2)
+       5  possible deadlock in smc_switch_to_fallback (3)
+       6  possible deadlock in smc_switch_to_fallback (3)
+       7  possible deadlock in smc_switch_to_fallback (4)
+       8  possible deadlock in smc_switch_to_fallback (4)
+      10  possible deadlock in smc_switch_to_fallback (4)
+      11  possible deadlock in smc_switch_to_fallback (2)
+The bug was not found.
+About 1805 commits remaining
+
+2026-04-30 05:48:57
+Session:   9
+Kernel:    2021-12-23 - b06103b5325364e0b9944024db41b400b9028df9
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    4  KASAN: null-ptr-deref Write in kcm_tx_work (has report)
+The bug was found.
+About 1544 commits remaining
+
+2026-04-30 05:57:43
+Session:   10
+Kernel:    2021-12-17 - eacef9fd61dcf5eac8b775bb1814042e78a5c42d
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       7  unregister_netdevice: waiting for DEV to become free
+The bug was not found.
+About 204 commits remaining
+
+2026-04-30 06:13:43
+Session:   11
+Kernel:    2021-12-13 - 2cb6577a303425090f3b5f4c40096d45a9048875
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       5  unregister_netdevice: waiting for DEV to become free (2)
+       7  SYZFAIL: tun: ioctl(TUNSETIFF) failed
+The bug was not found.
+This commit is flagged as unstable.
+About 204 commits remaining
+
+2026-04-30 06:37:02
+Session:   12
+Kernel:    2021-12-13 - 2c113b999c20a6083a9d65f0e2d2537ed818b395
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       6  unregister_netdevice: waiting for DEV to become free
+       6  SYZFAIL: tun: ioctl(TUNSETIFF) failed
+       9  suppressed report
+The bug was not found.
+This commit is flagged as unstable.
+About 204 commits remaining
+
+2026-04-30 06:52:30
+Session:   13
+Kernel:    2021-12-13 - 64cf26f04ad05ac7b4fc7d3339d893f21a06cab1
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    4  KASAN: null-ptr-deref Write in kcm_tx_work (2) (has report)
+Running syz-repro.
+syz-repro was terminated after 60 minutes
+Warning: Child process exited with error status 32766.
+Run Time:        1h0m0s
+The bug was found.
+About 86 commits remaining
+
+2026-04-30 08:01:02
+Session:   14
+Kernel:    2021-12-01 - 2c1f19b3272c0c09184b1cce592a91dc34a83506
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    3  KASAN: null-ptr-deref Write in kcm_tx_work (has report)
+The bug was found.
+About 43 commits remaining
+
+2026-04-30 08:08:27
+Session:   15
+Kernel:    2021-12-01 - 6421f7c750e92c35ceb239ccbd03ceeae2c65ff8
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    4  KASAN: null-ptr-deref Write in kcm_tx_work (has report)
+The bug was found.
+About 22 commits remaining
+
+2026-04-30 08:16:54
+Session:   16
+Kernel:    2021-12-01 - 232d1d43b522b64266a16606e918ce92a8a0b244
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    4  KASAN: null-ptr-deref Write in kcm_tx_work (2) (has report)
+Running syz-repro.
+syz-repro was terminated after 60 minutes
+Warning: Child process exited with error status 32766.
+Run Time:        1h0m0s
+The bug was found.
+About 11 commits remaining
+
+2026-04-30 09:25:38
+Session:   17
+Kernel:    2021-12-01 - f37668301e362a0ed4b0b2ec6866f0a02fefa4db
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       5  unregister_netdevice: waiting for DEV to become free
+       5  SYZFAIL: tun: ioctl(TUNSETIFF) failed
+***    9  KASAN: null-ptr-deref Write in kcm_tx_work (has report)
+The bug was found.
+About 6 commits remaining
+
+2026-04-30 09:39:11
+Session:   18
+Kernel:    2021-12-01 - 981b3045460d1c6f201ca83c1f479cf38d28a393
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    5  KASAN: null-ptr-deref Write in kcm_tx_work (has report)
+The bug was found.
+About 3 commits remaining
+
+2026-04-30 09:48:39
+Session:   19
+Kernel:    2021-12-01 - 627d137aa09fe58308eac06191afcaf865bd11cd
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       6  SYZFAIL: tun: ioctl(TUNSETIFF) failed
+      10  SYZFAIL: tun: ioctl(TUNSETIFF) failed
+The bug was not found.
+This commit is flagged as unstable.
+Warning: Child process git exited with error status 2.
+About 3 commits remaining
+Git bisect reported multiple guilty commits
+
+==== Partial Result: Focused Fuzzing ====
+Reproducer:           /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0142-2.prog
+Bisection Result:     2021-12-01 - 981b3045460d1c6f201ca83c1f479cf38d28a393
+Bisected Commit Name: drm/amdgpu/sriov/vcn: add new vcn ip revision check case for SIENNA_CICHLID
+Stage Time:           8h58m36s
+Run Time:             8h58m38s
+=========================================
+
+==== Anchor Commit ====
+
+2026-04-30 10:04:05
+Session:   20
+Kernel:    2021-12-17 - eacef9fd61dcf5eac8b775bb1814042e78a5c42d
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+PoC:       /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0142-2.prog
+Attempt 0:
+*** KASAN: null-ptr-deref Write in kcm_tx_work (has report)
+Attempt 1:
+*** KASAN: null-ptr-deref Write in kcm_tx_work (has report)
+Attempt 2:
+*** KASAN: null-ptr-deref Write in kcm_tx_work (has report)
+Attempt 3:
+*** KASAN: null-ptr-deref Write in kcm_tx_work (has report)
+Attempt 4:
+*** KASAN: null-ptr-deref Write in kcm_tx_work (has report)
+Attempt 5:
+*** KASAN: null-ptr-deref Write in kcm_tx_work (has report)
+Attempt 6:
+*** KASAN: null-ptr-deref Write in kcm_tx_work (has report)
+Attempt 7:
+*** KASAN: null-ptr-deref Write in kcm_tx_work (has report)
+The bug was found.
+
+==== Major Release Search ====
+10 Releases
+
+2026-04-30 10:12:11
+Session:   21
+Kernel:    2021-10-31 - 8bb7eca972ad531c9b149c0a51ab43a417385813 (v5.15)
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+PoC:       /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0142-2.prog
+Attempt 0:
+*** KASAN: null-ptr-deref Write in kcm_tx_work (has report)
+Attempt 1:
+*** KASAN: null-ptr-deref Write in kcm_tx_work (has report)
+Attempt 2:
+*** KASAN: null-ptr-deref Write in kcm_tx_work (has report)
+Attempt 3:
+*** KASAN: null-ptr-deref Write in kcm_tx_work (has report)
+Attempt 4:
+*** KASAN: null-ptr-deref Write in kcm_tx_work (has report)
+Attempt 5:
+*** KASAN: null-ptr-deref Write in kcm_tx_work (has report)
+Attempt 6:
+*** KASAN: null-ptr-deref Write in kcm_tx_work (has report)
+Attempt 7:
+*** KASAN: null-ptr-deref Write in kcm_tx_work (has report)
+The bug was found.
+About 9 releases remaining
+
+2026-04-30 10:28:19
+Session:   22
+Kernel:    2021-08-29 - 7d2a07b769330c34b4deabeed939325c77a7ec2f (v5.14)
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+PoC:       /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0142-2.prog
+Attempt 0:
+*** KASAN: null-ptr-deref Write in kcm_tx_work (has report)
+Attempt 1:
+*** KASAN: null-ptr-deref Write in kcm_tx_work (has report)
+Attempt 2:
+*** KASAN: null-ptr-deref Write in kcm_tx_work (has report)
+Attempt 3:
+*** KASAN: null-ptr-deref Write in kcm_tx_work (has report)
+Attempt 4:
+*** KASAN: null-ptr-deref Write in kcm_tx_work (has report)
+Attempt 5:
+*** KASAN: null-ptr-deref Write in kcm_tx_work (has report)
+Attempt 6:
+*** KASAN: null-ptr-deref Write in kcm_tx_work (has report)
+Attempt 7:
+*** KASAN: null-ptr-deref Write in kcm_tx_work (has report)
+The bug was found.
+About 8 releases remaining
+
+2026-04-30 10:43:50
+Session:   23
+Kernel:    2021-06-27 - 62fb9874f5da54fdb243003b386128037319b219 (v5.13)
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+PoC:       /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0142-2.prog
+Attempt 0:
+*** KASAN: null-ptr-deref Write in kcm_tx_work (has report)
+Attempt 1:
+*** KASAN: null-ptr-deref Write in kcm_tx_work (has report)
+Attempt 2:
+*** KASAN: null-ptr-deref Write in kcm_tx_work (has report)
+Attempt 3:
+*** KASAN: null-ptr-deref Write in kcm_tx_work (has report)
+Attempt 4:
+*** KASAN: null-ptr-deref Write in kcm_tx_work (has report)
+Attempt 5:
+*** KASAN: null-ptr-deref Write in kcm_tx_work (has report)
+Attempt 6:
+*** KASAN: null-ptr-deref Write in kcm_tx_work (has report)
+Attempt 7:
+*** KASAN: null-ptr-deref Write in kcm_tx_work (has report)
+The bug was found.
+About 7 releases remaining
+
+2026-04-30 10:59:20
+Session:   24
+Kernel:    2021-02-14 - f40ddce88593482919761f74910f42f4b84c004b (v5.11)
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+PoC:       /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0142-2.prog
+Attempt 0:
+*** KASAN: null-ptr-deref Write in kcm_tx_work (has report)
+Attempt 1:
+*** KASAN: null-ptr-deref Write in kcm_tx_work (has report)
+Attempt 2:
+*** KASAN: null-ptr-deref Write in kcm_tx_work (has report)
+Attempt 3:
+*** KASAN: null-ptr-deref Write in kcm_tx_work (has report)
+Attempt 4:
+*** KASAN: null-ptr-deref Write in kcm_tx_work (has report)
+Attempt 5:
+*** KASAN: null-ptr-deref Write in kcm_tx_work (has report)
+Attempt 6:
+*** KASAN: null-ptr-deref Write in kcm_tx_work (has report)
+Attempt 7:
+*** KASAN: null-ptr-deref Write in kcm_tx_work (has report)
+The bug was found.
+About 6 releases remaining
+
+2026-04-30 11:15:42
+Session:   25
+Kernel:    2020-10-11 - bbf5c979011a099af5dc76498918ed7df445635b (v5.9)
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+PoC:       /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0142-2.prog
+Attempt 0:
+*** KASAN: null-ptr-deref Write in kcm_tx_work (has report)
+Attempt 1:
+*** KASAN: null-ptr-deref Write in kcm_tx_work (has report)
+Attempt 2:
+*** KASAN: null-ptr-deref Write in kcm_tx_work (has report)
+Attempt 3:
+*** KASAN: null-ptr-deref Write in kcm_tx_work (has report)
+Attempt 4:
+*** KASAN: null-ptr-deref Write in kcm_tx_work (has report)
+Attempt 5:
+*** KASAN: null-ptr-deref Write in kcm_tx_work (has report)
+Attempt 6:
+*** KASAN: null-ptr-deref Write in kcm_tx_work (has report)
+Attempt 7:
+*** KASAN: null-ptr-deref Write in kcm_tx_work (has report)
+The bug was found.
+About 5 releases remaining
+
+2026-04-30 11:30:39
+Session:   26
+Kernel:    2020-05-31 - 3d77e6a8804abcc0504c904bd6e5cdf3a5cf8162 (v5.7)
+Compiler:  ccache /home/author/meerkat/compilers/gcc-8.1.0/bin/gcc
+PoC:       /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0142-2.prog
+Attempt 0:
+*** KASAN: null-ptr-deref Write in kcm_tx_work (has report)
+Attempt 1:
+*** KASAN: null-ptr-deref Write in kcm_tx_work (has report)
+Attempt 2:
+*** KASAN: null-ptr-deref Write in kcm_tx_work (has report)
+Attempt 3:
+*** KASAN: null-ptr-deref Write in kcm_tx_work (has report)
+Attempt 4:
+*** KASAN: null-ptr-deref Write in kcm_tx_work (has report)
+Attempt 5:
+*** KASAN: null-ptr-deref Write in kcm_tx_work (has report)
+Attempt 6:
+*** KASAN: null-ptr-deref Write in kcm_tx_work (has report)
+Attempt 7:
+*** KASAN: null-ptr-deref Write in kcm_tx_work (has report)
+The bug was found.
+About 4 releases remaining
+
+2026-04-30 11:46:20
+Session:   27
+Kernel:    2020-01-26 - d5226fa6dbae0569ee43ecfc08bdcd6770fc4755 (v5.5)
+Compiler:  ccache /home/author/meerkat/compilers/gcc-8.1.0/bin/gcc
+PoC:       /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0142-2.prog
+Attempt 0:
+*** KASAN: null-ptr-deref Write in kcm_tx_work (has report)
+Attempt 1:
+*** KASAN: null-ptr-deref Write in kcm_tx_work (has report)
+Attempt 2:
+*** KASAN: null-ptr-deref Write in kcm_tx_work (has report)
+Attempt 3:
+*** KASAN: null-ptr-deref Write in kcm_tx_work (has report)
+Attempt 4:
+*** KASAN: null-ptr-deref Write in kcm_tx_work (has report)
+Attempt 5:
+*** KASAN: null-ptr-deref Write in kcm_tx_work (has report)
+Attempt 6:
+*** KASAN: null-ptr-deref Write in kcm_tx_work (has report)
+Attempt 7:
+*** KASAN: null-ptr-deref Write in kcm_tx_work (has report)
+The bug was found.
+About 3 releases remaining
+
+2026-04-30 12:00:19
+Session:   28
+Kernel:    2019-09-15 - 4d856f72c10ecb060868ed10ff1b1453943fc6c8 (v5.3)
+Compiler:  ccache /home/author/meerkat/compilers/gcc-8.1.0/bin/gcc
+PoC:       /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0142-2.prog
+Attempt 0:
+    BUG: spinlock bad magic in nf_connlabels_get (has report)
+Attempt 1:
+    BUG: spinlock bad magic in nf_connlabels_get (has report)
+Attempt 2:
+    BUG: spinlock bad magic in nf_connlabels_get (has report)
+Attempt 3:
+    BUG: spinlock bad magic in nf_connlabels_get (has report)
+Attempt 4:
+    BUG: spinlock bad magic in nf_connlabels_get (has report)
+Attempt 5:
+    BUG: spinlock bad magic in nf_connlabels_get (has report)
+Attempt 6:
+    BUG: spinlock bad magic in nf_connlabels_get (has report)
+Attempt 7:
+    BUG: spinlock bad magic in nf_connlabels_get (has report)
+The bug was not found.
+About 2 releases remaining
+
+==== Kernel Bisection ====
+31223 Linux commits
+
+2026-04-30 12:12:29
+Session:   29
+Kernel:    2019-10-30 - 60845e34f0c5c19a9e86af477b429993952f585b
+Compiler:  ccache /home/author/meerkat/compilers/gcc-8.1.0/bin/gcc
+PoC:       /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0142-2.prog
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+About 15619 commits remaining
+
+2026-04-30 12:24:05
+Session:   30
+Kernel:    2019-11-27 - 0dd09bc02c1bad55e92306ca83b38b3cf48b9f40
+Compiler:  ccache /home/author/meerkat/compilers/gcc-8.1.0/bin/gcc
+PoC:       /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0142-2.prog
+Attempt 0:
+    WARNING in devlink_port_type_warn (has report)
+Error: index error parsing basic report
+Attempt 1:
+    BUG: MAX_LOCKDEP_ENTRIES too low! (has report)
+Attempt 2:
+    WARNING in devlink_port_type_warn (has report)
+Attempt 3:
+    WARNING in devlink_port_type_warn (has report)
+Attempt 4:
+    WARNING in devlink_port_type_warn (has report)
+Attempt 5:
+    WARNING in devlink_port_type_warn (has report)
+Attempt 6:
+    WARNING in devlink_port_type_warn (has report)
+Attempt 7:
+    BUG: MAX_LOCKDEP_ENTRIES too low! (has report)
+The bug was not found.
+About 8823 commits remaining
+
+2026-04-30 12:44:09
+Session:   31
+Kernel:    2019-12-04 - 6cdc7f2efc25a6dbddf7c57bb2eee5d6c033d678
+Compiler:  ccache /home/author/meerkat/compilers/gcc-8.1.0/bin/gcc
+PoC:       /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0142-2.prog
+Error: index error parsing basic report
+Attempt 0:
+    BUG: MAX_LOCKDEP_ENTRIES too low! (has report)
+Attempt 1:
+    WARNING in devlink_port_type_warn (has report)
+Attempt 2:
+    WARNING in devlink_port_type_warn (has report)
+Attempt 3:
+    WARNING in devlink_port_type_warn (has report)
+Attempt 4:
+    BUG: MAX_LOCKDEP_ENTRIES too low! (has report)
+Attempt 5:
+    WARNING in devlink_port_type_warn (has report)
+Attempt 6:
+    WARNING in devlink_port_type_warn (has report)
+Attempt 7:
+    WARNING in devlink_port_type_warn (has report)
+The bug was not found.
+About 3787 commits remaining
+
+2026-04-30 13:04:18
+Session:   32
+Kernel:    2019-12-19 - a019739c1c32cbd07f62b1d84fa57620897464b1
+Compiler:  ccache /home/author/meerkat/compilers/gcc-8.1.0/bin/gcc
+PoC:       /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0142-2.prog
+Attempt 0:
+*** KASAN: null-ptr-deref Write in kcm_tx_work (has report)
+Attempt 1:
+*** KASAN: null-ptr-deref Write in kcm_tx_work (has report)
+Attempt 2:
+*** KASAN: null-ptr-deref Write in kcm_tx_work (has report)
+Attempt 3:
+*** KASAN: null-ptr-deref Write in kcm_tx_work (has report)
+Attempt 4:
+*** KASAN: null-ptr-deref Write in kcm_tx_work (has report)
+Attempt 5:
+*** KASAN: null-ptr-deref Write in kcm_tx_work (has report)
+Attempt 6:
+*** KASAN: null-ptr-deref Write in kcm_tx_work (has report)
+Attempt 7:
+*** KASAN: null-ptr-deref Write in kcm_tx_work (has report)
+The bug was found.
+About 1895 commits remaining
+
+2026-04-30 13:19:01
+Session:   33
+Kernel:    2019-12-05 - eb275167d18684e07ee43bdc0e09a18326540461
+Compiler:  ccache /home/author/meerkat/compilers/gcc-8.1.0/bin/gcc
+PoC:       /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0142-2.prog
+Error: index error parsing basic report
+Attempt 0:
+    BUG: MAX_LOCKDEP_ENTRIES too low! (has report)
+Attempt 1:
+    WARNING in devlink_port_type_warn (has report)
+Attempt 2:
+    WARNING in devlink_port_type_warn (has report)
+Attempt 3:
+    WARNING in devlink_port_type_warn (has report)
+Attempt 4:
+    WARNING in devlink_port_type_warn (has report)
+Attempt 5:
+    WARNING in devlink_port_type_warn (has report)
+Attempt 6:
+    WARNING in devlink_port_type_warn (has report)
+Attempt 7:
+    WARNING in devlink_port_type_warn (has report)
+The bug was not found.
+About 777 commits remaining
+
+2026-04-30 13:39:13
+Session:   34
+Kernel:    2019-12-07 - 94e89b40235476a83a53a47b9ffb0cb91a4c335e
+Compiler:  ccache /home/author/meerkat/compilers/gcc-8.1.0/bin/gcc
+PoC:       /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0142-2.prog
+Attempt 0:
+*** KASAN: null-ptr-deref Write in kcm_tx_work (has report)
+Attempt 1:
+*** KASAN: null-ptr-deref Write in kcm_tx_work (has report)
+Attempt 2:
+*** KASAN: null-ptr-deref Write in kcm_tx_work (has report)
+Attempt 3:
+*** KASAN: null-ptr-deref Write in kcm_tx_work (has report)
+Attempt 4:
+*** KASAN: null-ptr-deref Write in kcm_tx_work (has report)
+Attempt 5:
+*** KASAN: null-ptr-deref Write in kcm_tx_work (has report)
+Attempt 6:
+*** KASAN: null-ptr-deref Write in kcm_tx_work (has report)
+Attempt 7:
+*** KASAN: null-ptr-deref Write in kcm_tx_work (has report)
+The bug was found.
+About 376 commits remaining
+
+2026-04-30 13:51:59
+Session:   35
+Kernel:    2019-12-06 - 9feb1af97e7366b512ecb9e4dd61d3252074cda3
+Compiler:  ccache /home/author/meerkat/compilers/gcc-8.1.0/bin/gcc
+PoC:       /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0142-2.prog
+Attempt 0:
+*** KASAN: null-ptr-deref Write in kcm_tx_work (has report)
+Attempt 1:
+*** KASAN: null-ptr-deref Write in kcm_tx_work (has report)
+Attempt 2:
+*** KASAN: null-ptr-deref Write in kcm_tx_work (has report)
+Attempt 3:
+*** KASAN: null-ptr-deref Write in kcm_tx_work (has report)
+Attempt 4:
+*** KASAN: null-ptr-deref Write in kcm_tx_work (has report)
+Attempt 5:
+*** KASAN: null-ptr-deref Write in kcm_tx_work (has report)
+Attempt 6:
+*** KASAN: null-ptr-deref Write in kcm_tx_work (has report)
+Attempt 7:
+*** KASAN: null-ptr-deref Write in kcm_tx_work (has report)
+The bug was found.
+About 153 commits remaining
+
+2026-04-30 14:06:30
+Session:   36
+Kernel:    2019-12-05 - 7ce4fab8191396a1b8e4bc42d3b90029876b2bcd
+Compiler:  ccache /home/author/meerkat/compilers/gcc-8.1.0/bin/gcc
+PoC:       /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0142-2.prog
+Attempt 0:
+    WARNING in devlink_port_type_warn (has report)
+Attempt 1:
+    WARNING in devlink_port_type_warn (has report)
+Attempt 2:
+    WARNING in devlink_port_type_warn (has report)
+Attempt 3:
+*** KASAN: null-ptr-deref Write in kcm_tx_work (has report)
+Attempt 4:
+    WARNING in devlink_port_type_warn (has report)
+Attempt 5:
+    WARNING in devlink_port_type_warn (has report)
+Attempt 6:
+    WARNING in devlink_port_type_warn (has report)
+Attempt 7:
+    WARNING in devlink_port_type_warn (has report)
+The bug was found.
+About 69 commits remaining
+
+2026-04-30 14:24:08
+Session:   37
+Kernel:    2019-11-03 - 1903de7777c001aa4eba37d4eace9f538cf511cd
+Compiler:  ccache /home/author/meerkat/compilers/gcc-8.1.0/bin/gcc
+PoC:       /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0142-2.prog
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+About 15018 commits remaining
+
+2026-04-30 14:35:27
+Session:   38
+Kernel:    2019-11-16 - a235f803dbc878d1db83cbaabf6963ca9ef3a1a2
+Compiler:  ccache /home/author/meerkat/compilers/gcc-8.1.0/bin/gcc
+PoC:       /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0142-2.prog
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+About 15001 commits remaining
+
+2026-04-30 14:40:28
+Session:   39
+Kernel:    2019-11-27 - f1ebdeffc6f325e30e0ddb9f7a70f1370fa4b851
+Compiler:  ccache /home/author/meerkat/compilers/gcc-8.1.0/bin/gcc
+PoC:       /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0142-2.prog
+Attempt 0:
+    No crashes found.
+Attempt 1:
+*** KASAN: null-ptr-deref Write in kcm_tx_work (has report)
+Attempt 2:
+*** KASAN: null-ptr-deref Write in kcm_tx_work (has report)
+Attempt 3:
+    No crashes found.
+Attempt 4:
+*** KASAN: null-ptr-deref Write in kcm_tx_work (has report)
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was found.
+About 1823 commits remaining
+
+2026-04-30 14:58:01
+Session:   40
+Kernel:    2019-11-12 - 00929447f5758c4f64c74d0a4b40a6eb3d9df0e3
+Compiler:  ccache /home/author/meerkat/compilers/gcc-8.1.0/bin/gcc
+PoC:       /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0142-2.prog
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+*** KASAN: null-ptr-deref Write in kcm_tx_work (has report)
+The bug was found.
+About 1819 commits remaining
+
+2026-04-30 15:09:13
+Session:   41
+Kernel:    2019-11-12 - 8aab336b14c115c6bf1d4baeb9247e41ed9ce6de
+Compiler:  ccache /home/author/meerkat/compilers/gcc-8.1.0/bin/gcc
+PoC:       /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0142-2.prog
+Attempt 0:
+*** KASAN: null-ptr-deref Write in kcm_tx_work (has report)
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+*** KASAN: null-ptr-deref Write in kcm_tx_work (has report)
+Attempt 4:
+    No crashes found.
+Attempt 5:
+*** KASAN: null-ptr-deref Write in kcm_tx_work (has report)
+Attempt 6:
+    No crashes found.
+Attempt 7:
+*** KASAN: null-ptr-deref Write in kcm_tx_work (has report)
+The bug was found.
+About 1817 commits remaining
+
+2026-04-30 15:20:34
+Session:   42
+Kernel:    2019-11-12 - eb59bd17d2fa6e5e84fba61a5ebdea984222e6d5
+Compiler:  ccache /home/author/meerkat/compilers/gcc-8.1.0/bin/gcc
+PoC:       /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0142-2.prog
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+About 2 commits remaining
+
+====================================================================================================================================================
+Bug Name:             KASAN: null-ptr-deref Write in kcm_tx_work
+Bug ID:               bug0142
+Bug Link:             https://syzkaller.appspot.com/bug?id=5ad0e07964a412d314292e72053f2a27b9694f33
+Bisection Result:     2019-11-12 - 8aab336b14c115c6bf1d4baeb9247e41ed9ce6de
+Bisected Commit Name: fuse: verify write return
+Run Time:             14h26m21s
+
+Anchor Commit:        2022-06-21 - ca1fdab7fd27eb069df1384b2850dcd0c2bebe8d
+Bisection Result:     2019-11-12 - 8aab336b14c115c6bf1d4baeb9247e41ed9ce6de

@@ -1,0 +1,335 @@
+./bin/meerkat -i 1 -c /home/author/meerkat/wd-meerkat-1/meerkat.cfg -a f4bc5bbb5fef3cf421ba3485d6d383c27ec473ed -F ff-test,stateful-corpus,poc-test,ff-no-find-backup
+Bisecting:          kernel BUG in workingset_activation
+Syzbot Link:        https://syzkaller.appspot.com/bug?extid=644848628d5e12d5438c
+Working Name:       bug0861
+
+Aliases:
+    kernel BUG in workingset_activation
+
+Anchor Commit:      f4bc5bbb5fef3cf421ba3485d6d383c27ec473ed
+Repository:         https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
+Branch:             master
+Arch:               amd64
+
+Meerkat:            /home/author/meerkat/
+Version:            1.2.0
+Kernel:             /home/author/meerkat/wd-meerkat-1/kernel/
+Syzkaller:          /home/author/meerkat/syzkaller/
+Compilers:          /home/author/meerkat/compilers/
+Compiler:           gcc (Ubuntu 12.3.0-1ubuntu1~22.04.3) 12.3.0
+Linker:             GNU ld (GNU Binutils for Ubuntu) 2.38
+Ccache:             ccache version 4.5.1
+Image:              /home/author/meerkat/image/stretch/stretch.img
+Image Key:          /home/author/meerkat/image/stretch/stretch.id_rsa
+
+Workdir:            /home/author/meerkat/wd-meerkat-1/
+Kconfig:            /home/author/meerkat/wd-meerkat-1/config-bug0861.txt
+Reproducers: (1)    /home/author/meerkat/wd-meerkat-1/reproducers/
+Primary PoC:        /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0861-1.prog
+Syzkaller Workdir:  /home/author/meerkat/wd-meerkat-1/wd-kaller/
+Log Directory:      /home/author/meerkat/wd-meerkat-1/log/
+
+Syscalls: (8)       ["ioctl$KVM_CREATE_VCPU", "ioctl$KVM_CREATE_VM", "ioctl$KVM_RUN", "mmap", "openat$kvm", "syz_kvm_setup_cpu$x86", "syz_open_dev$usbfs", "openat$selinux_enforce"]
+VM Count:           8
+CPU Count:          2
+Procs:              16
+Memory:             4096
+Make Procs:         16
+Max Time:           10
+Max Attempts:       1
+
+==== Anchor Commit ====
+
+2026-05-04 18:35:23
+Session:   1
+Kernel:    2022-02-09 - f4bc5bbb5fef3cf421ba3485d6d383c27ec473ed
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    4  kernel BUG in workingset_activation (8) (has report)
+Attempt 2: (RETRY)
+    Time  Bug Name
+***    4  kernel BUG in workingset_activation (8) (has report)
+Attempt 3: (RETRY)
+    Time  Bug Name
+***    4  kernel BUG in workingset_activation (7) (has report)
+The bug was found.
+
+New Max Time: 10
+
+==== Major Release Search ====
+11 Releases
+
+2026-05-04 19:03:51
+Session:   2
+Kernel:    2022-01-09 - df0cc57e057f18e44dac8e6c18aba47ab53202f9 (v5.16)
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    4  kernel BUG in workingset_activation (2) (has report)
+Running syz-repro.
+New PoC saved at /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0861-0.prog
+Primary PoC:     /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0861-0.prog
+Run Time:        0h21m0s
+The bug was found.
+About 10 releases remaining
+
+2026-05-04 19:45:04
+Session:   3
+Kernel:    2021-10-31 - 8bb7eca972ad531c9b149c0a51ab43a417385813 (v5.15)
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    4  kernel BUG in workingset_activation (has report)
+The bug was found.
+About 9 releases remaining
+
+2026-05-04 20:04:10
+Session:   4
+Kernel:    2021-08-29 - 7d2a07b769330c34b4deabeed939325c77a7ec2f (v5.14)
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       2  UBSAN: array-index-out-of-bounds in vmx_create_vcpu (8)
+       4  UBSAN: array-index-out-of-bounds in vmx_create_vcpu (8)
+       5  UBSAN: array-index-out-of-bounds in vmx_create_vcpu (8)
+       7  UBSAN: array-index-out-of-bounds in vmx_create_vcpu (8)
+       8  UBSAN: array-index-out-of-bounds in vmx_create_vcpu (8)
+      10  UBSAN: array-index-out-of-bounds in vmx_create_vcpu (8)
+The bug was not found.
+About 8 releases remaining
+
+==== Kernel Bisection ====
+13474 Linux commits
+
+2026-05-04 20:29:06
+Session:   5
+Kernel:    2021-09-01 - 477f70cd2a67904e04c2c2b9bd0fa2e95222f2f6
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       2  UBSAN: array-index-out-of-bounds in vmx_create_vcpu (7)
+       3  UBSAN: array-index-out-of-bounds in vmx_create_vcpu (4)
+       4  UBSAN: array-index-out-of-bounds in vmx_create_vcpu (3)
+       5  UBSAN: array-index-out-of-bounds in vmx_create_vcpu (6)
+       6  UBSAN: array-index-out-of-bounds in vmx_create_vcpu (6)
+       7  KFENCE: use-after-free in kvm_fastop_exception (has report)
+       8  UBSAN: array-index-out-of-bounds in vmx_create_vcpu (5)
+       9  UBSAN: array-index-out-of-bounds in vmx_create_vcpu (6)
+      10  UBSAN: array-index-out-of-bounds in vmx_create_vcpu (3)
+The bug was not found.
+About 6695 commits remaining
+
+2026-05-04 20:54:08
+Session:   6
+Kernel:    2021-09-07 - 626bf91a292e2035af5b9d9cce35c5c138dfe06d
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       2  UBSAN: array-index-out-of-bounds in vmx_create_vcpu (8)
+       4  UBSAN: array-index-out-of-bounds in vmx_create_vcpu (8)
+       5  UBSAN: array-index-out-of-bounds in vmx_create_vcpu (6)
+       5  KFENCE: use-after-free in kvm_fastop_exception (has report)
+       6  UBSAN: array-index-out-of-bounds in vmx_create_vcpu
+       7  UBSAN: array-index-out-of-bounds in vmx_create_vcpu (7)
+       8  UBSAN: array-index-out-of-bounds in vmx_create_vcpu (5)
+       9  UBSAN: array-index-out-of-bounds in vmx_create_vcpu (2)
+      10  UBSAN: array-index-out-of-bounds in vmx_create_vcpu (7)
+The bug was not found.
+About 3319 commits remaining
+
+2026-05-04 21:19:09
+Session:   7
+Kernel:    2021-09-25 - a3b397b4fffb799d25658defafd962f0fb3e9fe0
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       2  UBSAN: array-index-out-of-bounds in vmx_create_vcpu (8)
+       4  UBSAN: array-index-out-of-bounds in vmx_create_vcpu (8)
+       5  UBSAN: array-index-out-of-bounds in vmx_create_vcpu (8)
+       7  UBSAN: array-index-out-of-bounds in vmx_create_vcpu (8)
+       8  UBSAN: array-index-out-of-bounds in vmx_create_vcpu (8)
+      10  UBSAN: array-index-out-of-bounds in vmx_create_vcpu (8)
+The bug was not found.
+About 1652 commits remaining
+
+2026-05-04 21:44:02
+Session:   8
+Kernel:    2021-10-14 - 3ff6d64e68abc231955d216236615918797614ae
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    5  kernel BUG in workingset_activation (7) (has report)
+The bug was found.
+About 801 commits remaining
+
+2026-05-04 22:03:49
+Session:   9
+Kernel:    2021-10-03 - 9e1ff307c779ce1f0f810c7ecce3d95bbae40896
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    5  kernel BUG in workingset_activation (2) (has report)
+Running syz-repro.
+New PoC saved at /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0861-1.prog
+Primary PoC:     /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0861-1.prog
+Run Time:        0h29m0s
+The bug was found.
+About 401 commits remaining
+
+2026-05-04 22:52:43
+Session:   10
+Kernel:    2021-09-30 - 115f6134a050bb098414f38555a5ab780ebbfef0
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       2  UBSAN: array-index-out-of-bounds in vmx_create_vcpu (8)
+       4  UBSAN: array-index-out-of-bounds in vmx_create_vcpu (8)
+       5  UBSAN: array-index-out-of-bounds in vmx_create_vcpu (8)
+       7  UBSAN: array-index-out-of-bounds in vmx_create_vcpu (8)
+       8  UBSAN: array-index-out-of-bounds in vmx_create_vcpu (8)
+      10  UBSAN: array-index-out-of-bounds in vmx_create_vcpu (8)
+The bug was not found.
+About 215 commits remaining
+
+2026-05-04 23:17:35
+Session:   11
+Kernel:    2021-10-01 - 24f67d82c43c9c594821ee1bc4367a23d89d9f8b
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       2  UBSAN: array-index-out-of-bounds in vmx_create_vcpu (8)
+       4  UBSAN: array-index-out-of-bounds in vmx_create_vcpu (8)
+       5  UBSAN: array-index-out-of-bounds in vmx_create_vcpu (8)
+       7  UBSAN: array-index-out-of-bounds in vmx_create_vcpu (8)
+       8  UBSAN: array-index-out-of-bounds in vmx_create_vcpu (8)
+      10  UBSAN: array-index-out-of-bounds in vmx_create_vcpu (8)
+The bug was not found.
+About 104 commits remaining
+
+2026-05-04 23:39:52
+Session:   12
+Kernel:    2021-10-02 - 7b66f4393ad421e425ba643fde0493fa64346a43
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       5  SYZFAIL: repeatedly failed to execute the program
+***    6  kernel BUG in workingset_activation (2) (has report)
+The bug was found.
+About 54 commits remaining
+
+2026-05-04 23:51:20
+Session:   13
+Kernel:    2021-10-02 - 9904468fb0b72a59a10753a86ce121fbdd2e9b3d
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    5  kernel BUG in workingset_activation (has report)
+       5  WARNING: ODEBUG bug in netdev_run_todo (has report)
+The bug was found.
+About 29 commits remaining
+
+2026-05-05 00:01:30
+Session:   14
+Kernel:    2021-10-02 - f05c643743a43b42e7603a520ad052e5218f4e53
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    5  kernel BUG in workingset_activation (has report)
+Running syz-repro.
+New PoC saved at /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0861-0.prog
+Primary PoC:     /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0861-0.prog
+Run Time:        0h16m0s
+The bug was found.
+About 16 commits remaining
+
+2026-05-05 00:27:51
+Session:   15
+Kernel:    2021-10-01 - b2626f1e3245ddd810b69df86514774d6cb655ee
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    7  kernel BUG in workingset_activation (2) (has report)
+The bug was found.
+About 8 commits remaining
+
+2026-05-05 00:40:12
+Session:   16
+Kernel:    2021-09-30 - ad9af930680bb396c87582edc172b3a7cf2a3fbf
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    7  kernel BUG in workingset_activation (has report)
+The bug was found.
+About 4 commits remaining
+
+2026-05-05 01:02:10
+Session:   17
+Kernel:    2021-09-28 - e02c16b9cd24925ea627f007df9ca9ee00eaaa62
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    5  kernel BUG in workingset_activation (has report)
+Running syz-repro.
+New PoC saved at /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0861-1.prog
+Primary PoC:     /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0861-1.prog
+Run Time:        0h22m0s
+The bug was found.
+About 3 commits remaining
+
+2026-05-05 01:34:30
+Session:   18
+Kernel:    2021-09-27 - 5c49d1850ddd3240d20dc40b01f593e35a184f38
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    7  kernel BUG in workingset_activation (3) (has report)
+       7  INFO: task hung in new_device_store
+The bug was found.
+About 2 commits remaining
+
+==== Partial Result: Focused Fuzzing ====
+Reproducer:           /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0861-1.prog
+Bisection Result:     2021-09-27 - 5c49d1850ddd3240d20dc40b01f593e35a184f38
+Bisected Commit Name: KVM: VMX: Fix a TSX_CTRL_CPUID_CLEAR field mask issue
+Stage Time:           7h11m18s
+Run Time:             7h11m20s
+=========================================
+
+==== Anchor Commit ====
+
+2026-05-05 01:46:41
+Session:   19
+Kernel:    2021-10-01 - 24f67d82c43c9c594821ee1bc4367a23d89d9f8b
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+PoC:       /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0861-1.prog
+Attempt 0:
+    UBSAN: array-index-out-of-bounds in vmx_create_vcpu
+Attempt 1:
+    UBSAN: array-index-out-of-bounds in vmx_create_vcpu
+Attempt 2:
+    UBSAN: array-index-out-of-bounds in vmx_create_vcpu
+Attempt 3:
+    UBSAN: array-index-out-of-bounds in vmx_create_vcpu
+Attempt 4:
+    UBSAN: array-index-out-of-bounds in vmx_create_vcpu
+Attempt 5:
+    UBSAN: array-index-out-of-bounds in vmx_create_vcpu
+Attempt 6:
+    UBSAN: array-index-out-of-bounds in vmx_create_vcpu
+Attempt 7:
+    UBSAN: array-index-out-of-bounds in vmx_create_vcpu
+The bug was not found.
+
+Failure: This bug cannot be found at the anchor commit.
+
+====================================================================================================================================================
+Bug Name:             kernel BUG in workingset_activation
+Bug ID:               bug0861
+Bug Link:             https://syzkaller.appspot.com/bug?extid=644848628d5e12d5438c
+Bisection Result:     2021-09-27 - 5c49d1850ddd3240d20dc40b01f593e35a184f38
+Bisected Commit Name: KVM: VMX: Fix a TSX_CTRL_CPUID_CLEAR field mask issue
+Run Time:             7h19m33s
+
+Anchor Commit:        2022-02-09 - f4bc5bbb5fef3cf421ba3485d6d383c27ec473ed
+Bisection Result:     2021-09-27 - 5c49d1850ddd3240d20dc40b01f593e35a184f38

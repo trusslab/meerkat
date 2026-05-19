@@ -1,0 +1,2671 @@
+./bin/meerkat -i 1 -c /home/author/meerkat/wd-meerkat-1/meerkat.cfg -a c96618275234ad03d44eafe9f8844305bb44fda4 -F ff-test,stateful-corpus,poc-test,ff-no-find-backup
+Bisecting:          KASAN: slab-out-of-bounds Read in ext4_group_desc_csum
+Syzbot Link:        https://syzkaller.appspot.com/bug?extid=8785e41224a3afd04321
+Working Name:       bug0859
+
+Aliases:
+    KASAN: slab-out-of-bounds Read in ext4_group_desc_csum
+
+Anchor Commit:      c96618275234ad03d44eafe9f8844305bb44fda4
+Repository:         https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
+Branch:             master
+Arch:               amd64
+
+Meerkat:            /home/author/meerkat/
+Version:            1.2.0
+Kernel:             /home/author/meerkat/wd-meerkat-1/kernel/
+Syzkaller:          /home/author/meerkat/syzkaller/
+Compilers:          /home/author/meerkat/compilers/
+Compiler:           gcc (Ubuntu 12.3.0-1ubuntu1~22.04.3) 12.3.0
+Linker:             GNU ld (GNU Binutils for Ubuntu) 2.38
+Ccache:             ccache version 4.5.1
+Image:              /home/author/meerkat/image/stretch/stretch.img
+Image Key:          /home/author/meerkat/image/stretch/stretch.id_rsa
+
+Workdir:            /home/author/meerkat/wd-meerkat-1/
+Kconfig:            /home/author/meerkat/wd-meerkat-1/config-bug0859.txt
+Reproducers: (1)    /home/author/meerkat/wd-meerkat-1/reproducers/
+Syzkaller Workdir:  /home/author/meerkat/wd-meerkat-1/wd-kaller/
+Log Directory:      /home/author/meerkat/wd-meerkat-1/log/
+
+Syscalls: (12)      ["chdir", "mmap", "mount", "mount$fuse", "open", "syz_mount_image$ext4", "unlink", "open$dir", "openat$fuse", "getuid", "setgid", "getgid"]
+VM Count:           4
+CPU Count:          4
+Procs:              24
+Memory:             4096
+Make Procs:         16
+Max Time:           10
+Max Attempts:       1
+
+==== Anchor Commit ====
+
+2026-05-01 21:27:29
+Session:   1
+Kernel:    2023-01-28 - c96618275234ad03d44eafe9f8844305bb44fda4
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  INFO: rcu detected stall in corrupted
+       2  KASAN: use-after-free Read in ext4_group_desc_csum (2) (has report)
+***    3  KASAN: slab-out-of-bounds Read in ext4_group_desc_csum (has report)
+       3  KASAN: use-after-free Read in ext4_group_desc_csum (2) (has report)
+Attempt 2: (RETRY)
+    Time  Bug Name
+***    2  KASAN: slab-out-of-bounds Read in ext4_group_desc_csum (3) (has report)
+       2  KASAN: use-after-free Read in ext4_group_desc_csum (has report)
+Attempt 3: (RETRY)
+    Time  Bug Name
+***    2  KASAN: slab-out-of-bounds Read in ext4_group_desc_csum (has report)
+       2  INFO: rcu detected stall in corrupted
+       2  KASAN: use-after-free Read in ext4_group_desc_csum (2) (has report)
+The bug was found.
+
+New Max Time: 10
+
+==== Major Release Search ====
+12 Releases
+
+2026-05-01 21:52:15
+Session:   2
+Kernel:    2022-12-11 - 830b3c68c1fb1e9176028d02ef86f3cf76aa2476 (v6.1)
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    2  KASAN: slab-out-of-bounds Read in ext4_group_desc_csum (2) (has report)
+       2  INFO: rcu detected stall in corrupted
+       2  KASAN: use-after-free Read in ext4_group_desc_csum (has report)
+Running syz-repro.
+syz-repro was terminated after 60 minutes
+Warning: Child process exited with error status 32767.
+Run Time:        1h0m0s
+The bug was found.
+About 11 releases remaining
+
+2026-05-01 23:09:07
+Session:   3
+Kernel:    2022-10-02 - 4fe89d07dcc2804c8b562f6c7896a45643d34b2f (v6.0)
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    2  KASAN: slab-out-of-bounds Read in ext4_group_desc_csum (has report)
+       2  KASAN: use-after-free Read in ext4_group_desc_csum (3) (has report)
+The bug was found.
+About 10 releases remaining
+
+2026-05-01 23:25:39
+Session:   4
+Kernel:    2022-07-31 - 3d7cb6b04c3f3115719235cc6866b10326de34cd (v5.19)
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    2  KASAN: slab-out-of-bounds Read in ext4_group_desc_csum (2) (has report)
+       2  KASAN: use-after-free Read in ext4_group_desc_csum (2) (has report)
+The bug was found.
+About 9 releases remaining
+
+2026-05-01 23:41:29
+Session:   5
+Kernel:    2022-03-20 - f443e374ae131c168a065ea1748feac6b2e76613 (v5.17)
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    2  KASAN: slab-out-of-bounds Read in ext4_group_desc_csum (3) (has report)
+       2  KASAN: use-after-free Read in ext4_group_desc_csum (has report)
+Running syz-repro.
+New PoC saved at /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0859-0.prog
+Primary PoC:     /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0859-0.prog
+Run Time:        0h20m0s
+The bug was found.
+About 8 releases remaining
+
+2026-05-02 00:16:29
+Session:   6
+Kernel:    2021-10-31 - 8bb7eca972ad531c9b149c0a51ab43a417385813 (v5.15)
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    2  KASAN: slab-out-of-bounds Read in ext4_group_desc_csum (3) (has report)
+       2  KASAN: use-after-free Read in ext4_group_desc_csum (has report)
+The bug was found.
+About 7 releases remaining
+
+2026-05-02 00:30:56
+Session:   7
+Kernel:    2021-06-27 - 62fb9874f5da54fdb243003b386128037319b219 (v5.13)
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    2  KASAN: slab-out-of-bounds Read in ext4_group_desc_csum (2) (has report)
+       2  KASAN: use-after-free Read in ext4_group_desc_csum (has report)
+       2  BUG: sleeping function called from invalid context in lock_sock_nested (has report)
+The bug was found.
+About 6 releases remaining
+
+2026-05-02 00:44:51
+Session:   8
+Kernel:    2021-02-14 - f40ddce88593482919761f74910f42f4b84c004b (v5.11)
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 5 releases remaining
+
+2026-05-02 01:06:13
+Session:   9
+Kernel:    2020-10-11 - bbf5c979011a099af5dc76498918ed7df445635b (v5.9)
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 4 releases remaining
+
+2026-05-02 01:26:59
+Session:   10
+Kernel:    2020-05-31 - 3d77e6a8804abcc0504c904bd6e5cdf3a5cf8162 (v5.7)
+Compiler:  ccache /home/author/meerkat/compilers/gcc-8.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 3 releases remaining
+
+2026-05-02 01:47:49
+Session:   11
+Kernel:    2019-11-24 - 219d54332a09e8d8741c1e1982f5eae56099de85 (v5.4)
+Compiler:  ccache /home/author/meerkat/compilers/gcc-8.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       2  KASAN: use-after-free Read in ext4_group_desc_csum (4) (has report)
+       3  KASAN: use-after-free Read in ext4_group_desc_csum (2) (has report)
+       4  KASAN: use-after-free Read in ext4_group_desc_csum (has report)
+       6  KASAN: use-after-free Read in ext4_group_desc_csum (4) (has report)
+       7  KASAN: out-of-bounds Read in ext4_group_desc_csum (has report)
+       7  KASAN: use-after-free Read in ext4_group_desc_csum (2) (has report)
+       8  KASAN: use-after-free Read in ext4_group_desc_csum (3) (has report)
+       9  KASAN: use-after-free Read in ext4_group_desc_csum (2) (has report)
+      10  KASAN: use-after-free Read in ext4_group_desc_csum (2) (has report)
+The bug was not found.
+About 2 releases remaining
+
+==== Kernel Bisection ====
+142169 Linux commits
+
+2026-05-02 02:09:35
+Session:   12
+Kernel:    2020-08-06 - 3f9df56480fc8ce492fc9e988d67bdea884ed15c
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 142169 commits remaining
+
+2026-05-02 02:30:46
+Session:   13
+Kernel:    2020-08-06 - c0c419c04557117258d184876d94091d29bbd9a6
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 142169 commits remaining
+
+2026-05-02 02:45:03
+Session:   14
+Kernel:    2020-10-13 - 722939528a37aa0cb22d441e2045c0cf53e78fb0
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 142169 commits remaining
+
+2026-05-02 03:06:21
+Session:   15
+Kernel:    2020-08-06 - d6efb3ac3e6c19ab722b28bdb9252bae0b9676b6
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 142169 commits remaining
+
+2026-05-02 03:20:36
+Session:   16
+Kernel:    2020-08-07 - 1d9cfee7535c213038a615f112c900c2d0ba8f54
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 142169 commits remaining
+
+2026-05-02 03:41:55
+Session:   17
+Kernel:    2020-08-07 - c1a06df6ebf6ca98fb7a672fe447c7469d6c1968
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 142169 commits remaining
+
+2026-05-02 03:56:49
+Session:   18
+Kernel:    2020-10-05 - dfe537cf47186bfb59db3e57eed7417cd5efde17
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 142169 commits remaining
+
+2026-05-02 04:18:02
+Session:   19
+Kernel:    2020-08-07 - 4a93025cbe4a0b19d1a25a2d763a3d2018bad0d9
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 142169 commits remaining
+
+2026-05-02 04:32:08
+Session:   20
+Kernel:    2020-09-13 - 955c69f75eba1fcb0bcc78cf49533c9a3bb381ef
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 142169 commits remaining
+
+2026-05-02 04:46:29
+Session:   21
+Kernel:    2020-11-26 - 889d1a675fcfe734f83c459de023a6f0a91a7a0e
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 142169 commits remaining
+
+2026-05-02 05:08:40
+Session:   22
+Kernel:    2020-08-12 - 9066e5cfb73cdbcdbb49e87999482ab615e9fc76
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 142169 commits remaining
+
+2026-05-02 05:29:58
+Session:   23
+Kernel:    2020-10-28 - c2ec4a6e5410096d41bec795008a76770d9962dc
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 142169 commits remaining
+
+2026-05-02 05:52:02
+Session:   24
+Kernel:    2020-08-07 - 38cf307c1f2011d413750c5acb725456f47d9172
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 142169 commits remaining
+
+2026-05-02 06:13:17
+Session:   25
+Kernel:    2020-07-07 - ef550c5d0a8e32b9ac080ee83331f23acfe157e3
+Compiler:  ccache /home/author/meerkat/compilers/gcc-8.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 142169 commits remaining
+
+2026-05-02 06:34:36
+Session:   26
+Kernel:    2020-08-07 - 4ca1085c9573ea08767521dabce62456e3fc2fd0
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 142169 commits remaining
+
+2026-05-02 06:48:43
+Session:   27
+Kernel:    2020-09-14 - 80c2145fa5e7ced8c95f17a1a60866951627f43c
+Compiler:  ccache /home/author/meerkat/compilers/gcc-8.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 142169 commits remaining
+
+2026-05-02 07:10:22
+Session:   28
+Kernel:    2020-08-07 - 79e3ea5aab48c83de9410e43b52895406847eca7
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 142169 commits remaining
+
+2026-05-02 07:24:28
+Session:   29
+Kernel:    2020-09-08 - d397820f36ffe4701343b6ee12687d60db0ed8db
+Compiler:  ccache /home/author/meerkat/compilers/gcc-8.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 142169 commits remaining
+
+2026-05-02 07:46:03
+Session:   30
+Kernel:    2020-08-07 - d830020656c5b68ced962ed3cb51a90e0a89d4c4
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 142169 commits remaining
+
+2026-05-02 08:00:03
+Session:   31
+Kernel:    2020-07-02 - 55844741a1e74bd41b4cea57502c2efedc99bf47
+Compiler:  ccache /home/author/meerkat/compilers/gcc-8.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 142169 commits remaining
+
+2026-05-02 08:20:17
+Session:   32
+Kernel:    2020-08-07 - 4f491bb6ea2aef2f5b184f385904a73796d98554
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 142169 commits remaining
+
+2026-05-02 08:34:17
+Session:   33
+Kernel:    2020-07-28 - 59f8f7c84c506cd4fafbfa47acd23ebdb6256dac
+Compiler:  ccache /home/author/meerkat/compilers/gcc-8.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 142169 commits remaining
+
+2026-05-02 08:54:32
+Session:   34
+Kernel:    2020-08-07 - 1d35b6054a9b94b48511e23a7fab6cd1dbf3fde6
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 142169 commits remaining
+
+2026-05-02 09:08:33
+Session:   35
+Kernel:    2020-08-06 - 6b6352dd1f96ca2464d7373557cb913f00c9e6dd
+Compiler:  ccache /home/author/meerkat/compilers/gcc-8.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 142169 commits remaining
+
+2026-05-02 09:26:04
+Session:   36
+Kernel:    2020-08-07 - f643b9ee97766e1846fab237c58a56277bf7e530
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 142169 commits remaining
+
+2026-05-02 09:40:03
+Session:   37
+Kernel:    2020-10-07 - 98272bb77bf4cc20ed1ffca89832d713e70ebf09
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 142169 commits remaining
+
+2026-05-02 10:01:26
+Session:   38
+Kernel:    2020-08-07 - ecda6e27fa834b2aa37fc9ad49f89b80e9ee8f97
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 142169 commits remaining
+
+2026-05-02 10:15:26
+Session:   39
+Kernel:    2020-09-29 - 5807bb32055bb8badc44bf835ebc376415cd0a17
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 142169 commits remaining
+
+2026-05-02 10:36:37
+Session:   40
+Kernel:    2020-08-07 - 431151b64af6c8ebec85ee1db3597b56a613f526
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 142169 commits remaining
+
+2026-05-02 10:50:42
+Session:   41
+Kernel:    2020-10-23 - b1cff585784edf2ab03edb63376a7543a9c50644
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 142169 commits remaining
+
+2026-05-02 11:11:57
+Session:   42
+Kernel:    2020-08-07 - f90dde44c57a1cf338ae01a691110eb980e48563
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 142169 commits remaining
+
+2026-05-02 11:25:58
+Session:   43
+Kernel:    2020-09-09 - e7033bdfd43b85281b63d281b4dad3b9119f4427
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 142169 commits remaining
+
+2026-05-02 11:47:05
+Session:   44
+Kernel:    2020-08-07 - d2b02165df683e1b05ed6e38e9051632625b528c
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 142169 commits remaining
+
+2026-05-02 12:01:12
+Session:   45
+Kernel:    2020-08-19 - 142061eba35ef4f7097f31732547d33eca667f9d
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 142169 commits remaining
+
+2026-05-02 12:22:18
+Session:   46
+Kernel:    2020-08-07 - 70a175e5071f9b5066413d80a96b853b73a69fc6
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 142169 commits remaining
+
+2026-05-02 12:36:22
+Session:   47
+Kernel:    2020-08-20 - 70d65cd555c5e43c613700f604a47f7ebcf7b6f1
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 142169 commits remaining
+
+2026-05-02 12:56:40
+Session:   48
+Kernel:    2020-08-07 - 1146f7e2dc15a227a7e1ef9a1fb67182b25e687f
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 142169 commits remaining
+
+2026-05-02 13:10:45
+Session:   49
+Kernel:    2020-08-17 - 327da008e65a25b8206b36b7fc0c9e4edbb36a58
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 142169 commits remaining
+
+2026-05-02 13:28:13
+Session:   50
+Kernel:    2020-08-07 - 504ec37dfdfbf9c65166c51f7b12126d2a9b18dc
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 142169 commits remaining
+
+2026-05-02 13:42:25
+Session:   51
+Kernel:    2020-08-12 - 121ae8da9cd49f7139bf80f26352337458e63fe1
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 142169 commits remaining
+
+2026-05-02 14:03:39
+Session:   52
+Kernel:    2020-08-07 - 7eba77d59e0593b91af0c438594cb70700893b18
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 142169 commits remaining
+
+2026-05-02 14:17:47
+Session:   53
+Kernel:    2020-09-09 - 479a7bf5c1f7f14eb37c6d6aeb401562efc1fcad
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 142169 commits remaining
+
+2026-05-02 14:39:02
+Session:   54
+Kernel:    2020-08-07 - 38d51b2dd171ad973afc1f5faab825ed05a2d5e9
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 142169 commits remaining
+
+2026-05-02 14:53:26
+Session:   55
+Kernel:    2020-09-07 - 649abf2f5d328a5a19824f712987f0a1de095332
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 142169 commits remaining
+
+2026-05-02 15:14:01
+Session:   56
+Kernel:    2020-11-24 - 206ad34d52a2f1205c84d08c12fc116aad0eb407
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 142169 commits remaining
+
+2026-05-02 15:36:04
+Session:   57
+Kernel:    2020-09-16 - c1df5e0c5796f775e60d1aec0b52f6d03d66ccd4
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 142169 commits remaining
+
+2026-05-02 15:56:34
+Session:   58
+Kernel:    2020-12-04 - e0852d9083fa1a96aec2d3b7492f913c7371f75c
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 142169 commits remaining
+
+2026-05-02 16:18:37
+Session:   59
+Kernel:    2020-08-07 - 4510a5a98aff2d395e67890c480c0665f953ea00
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 142169 commits remaining
+
+2026-05-02 16:39:58
+Session:   60
+Kernel:    2020-11-26 - 8857779a9faba5789ad30ca1f944a17aaa747056
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 142169 commits remaining
+
+2026-05-02 16:54:31
+Session:   61
+Kernel:    2020-08-07 - 57c720d4144a9c2b88105c3e8f7b0e97e4b5cc93
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 142169 commits remaining
+
+2026-05-02 17:08:49
+Session:   62
+Kernel:    2020-06-26 - c17d1a3a8ee4dac7539d5c976b45d9300f6f10bc
+Compiler:  ccache /home/author/meerkat/compilers/gcc-8.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 142169 commits remaining
+
+2026-05-02 17:30:27
+Session:   63
+Kernel:    2020-08-07 - 453431a54934d917153c65211b2dabf45562ca88
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 142169 commits remaining
+
+2026-05-02 17:51:33
+Session:   64
+Kernel:    2020-08-17 - 3a059c76f4eb8ff9cffc40eb591e9e3aca360666
+Compiler:  ccache /home/author/meerkat/compilers/gcc-8.1.0/bin/gcc
+Warning: Child process make exited with error status 2.
+Warning: make exited with error status 0x2
+Error: The kernel failed to make.
+Error: The kernel failed to make.
+Attempting to recover.
+
+2026-05-02 17:56:03
+Session:   65
+Kernel:    2020-08-07 - fa9ba3aa89f9f1c003b5f5cde893bbbc140c7223
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 142169 commits remaining
+
+2026-05-02 18:10:13
+Session:   66
+Kernel:    2020-07-13 - 7b814900b8ccb4e61ebe704d42a12dc2d06b4a3a
+Compiler:  ccache /home/author/meerkat/compilers/gcc-8.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 142169 commits remaining
+
+2026-05-02 18:31:47
+Session:   67
+Kernel:    2020-08-07 - 3404be67bf73515babd74acd8525d09dafe4234d
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 142169 commits remaining
+
+2026-05-02 18:45:52
+Session:   68
+Kernel:    2020-07-27 - 26cfd12b5e24993ac943ac37044128fe33b3ed94
+Compiler:  ccache /home/author/meerkat/compilers/gcc-8.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 142169 commits remaining
+
+2026-05-02 19:00:58
+Session:   69
+Kernel:    2020-08-07 - dabc3e291d56e3125113101bc6d53d1a1738294d
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 142169 commits remaining
+
+2026-05-02 19:15:04
+Session:   70
+Kernel:    2020-07-14 - 4df587ab87b0b09f4873964f71020cf5c12ea878
+Compiler:  ccache /home/author/meerkat/compilers/gcc-8.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 142169 commits remaining
+
+2026-05-02 19:35:18
+Session:   71
+Kernel:    2020-08-07 - 444050990db4abdf0c85ca6050542b888ba316a1
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 142169 commits remaining
+
+2026-05-02 19:49:32
+Session:   72
+Kernel:    2020-10-26 - e34b8feeaa4b65725b25f49c9b08a0f8707e8e86
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 142169 commits remaining
+
+2026-05-02 20:10:48
+Session:   73
+Kernel:    2020-08-07 - 221503e1281f8a7d67eacbb6dc99db95acdf806c
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 142169 commits remaining
+
+2026-05-02 20:24:49
+Session:   74
+Kernel:    2020-09-30 - 65026da59cda16baf6c3e98b74ec439f366e468f
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 142169 commits remaining
+
+2026-05-02 20:46:03
+Session:   75
+Kernel:    2020-08-07 - e17f1dfba37b84b574ae91e809ae3804fe5b29b9
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 142169 commits remaining
+
+2026-05-02 21:00:16
+Session:   76
+Kernel:    2020-10-02 - 581e2b41977dfc2d4c26c8e976f89c43bb92f9bf
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 142169 commits remaining
+
+2026-05-02 21:21:28
+Session:   77
+Kernel:    2020-08-07 - ad38b5b1131e2a0e5c46724847da2e1eba31fb68
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 142169 commits remaining
+
+2026-05-02 21:35:39
+Session:   78
+Kernel:    2020-09-17 - dcde34c47d8f7befc647fda65e8efa8cc0e795ca
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 142169 commits remaining
+
+2026-05-02 21:56:53
+Session:   79
+Kernel:    2020-08-07 - 32a6f409b6935d175464f26d31250ea13fda6b66
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 142169 commits remaining
+
+2026-05-02 22:11:05
+Session:   80
+Kernel:    2020-09-03 - 9b734bb9e7c689217e3025d0a512bf06e3b6ecd4
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 142169 commits remaining
+
+2026-05-02 22:32:15
+Session:   81
+Kernel:    2020-08-07 - 060807f841ac94d3826ce6fa3b4f3831cd0c015b
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 142169 commits remaining
+
+2026-05-02 22:46:28
+Session:   82
+Kernel:    2020-09-14 - feb39c74f2965ba3270239777a22b6a7e59332b2
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 142169 commits remaining
+
+2026-05-02 23:01:10
+Session:   83
+Kernel:    2020-08-07 - 8f58119ac49c03c5a0879353661c586b0436c250
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 142169 commits remaining
+
+2026-05-02 23:15:23
+Session:   84
+Kernel:    2020-10-02 - 1f66d95efdb7220913bbecda2f0feb8be3bcddfd
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 142169 commits remaining
+
+2026-05-02 23:29:28
+Session:   85
+Kernel:    2020-08-07 - ca0cab65ea2b8c1527dc48c8dfd38ae055f5f241
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 142169 commits remaining
+
+2026-05-02 23:43:44
+Session:   86
+Kernel:    2020-08-17 - cbb2f09abcd635888508338d4436771fe07688d1
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 142169 commits remaining
+
+2026-05-02 23:57:58
+Session:   87
+Kernel:    2020-08-07 - 59052e89fc89e3e6bef0151052e093566e446851
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 142169 commits remaining
+
+2026-05-03 00:12:13
+Session:   88
+Kernel:    2020-08-07 - a2e9a95d2190ef55bf0724ecdf8a466d393a86b6
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 142169 commits remaining
+
+2026-05-03 00:33:33
+Session:   89
+Kernel:    2020-08-07 - 8fc8d6664247a6e65cba000789e2e85e2288f6f7
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 142169 commits remaining
+
+2026-05-03 00:47:46
+Session:   90
+Kernel:    2020-09-11 - 2f5388a29be82a62529d146499e70987e856f6f7
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 142169 commits remaining
+
+2026-05-03 01:09:04
+Session:   91
+Kernel:    2020-08-07 - d3c58f24be1bf10fa9e11977080a2398ddcd8361
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 142169 commits remaining
+
+2026-05-03 01:23:21
+Session:   92
+Kernel:    2020-09-24 - 8ede56489e954ae6b5fb2983870320bfb592e4cc
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 142169 commits remaining
+
+2026-05-03 01:37:35
+Session:   93
+Kernel:    2020-12-01 - 669f3f2bac1ca6ad887419f63ac5430e9ea85e6a
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 142169 commits remaining
+
+2026-05-03 01:59:49
+Session:   94
+Kernel:    2020-08-13 - 405fa8ac89e7aaa87282df659e525992f2639e76
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 142169 commits remaining
+
+2026-05-03 02:21:11
+Session:   95
+Kernel:    2020-11-30 - 1e1a5afde9f79386815233aacf48e188a6710fc2
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 142169 commits remaining
+
+2026-05-03 02:43:22
+Session:   96
+Kernel:    2020-08-07 - e42f174e43e47b623d9dbf814521c4961000c962
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 142169 commits remaining
+
+2026-05-03 03:04:40
+Session:   97
+Kernel:    2020-06-04 - 8898ad58a0195e2d3f5ffb770fbe9c9dc978a171
+Compiler:  ccache /home/author/meerkat/compilers/gcc-8.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 142169 commits remaining
+
+2026-05-03 03:26:04
+Session:   98
+Kernel:    2020-08-07 - b3cb9fc3aeaf9d52967c87d54a98f035e96279dc
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 142169 commits remaining
+
+2026-05-03 03:40:19
+Session:   99
+Kernel:    2020-06-19 - 3471b9f7e43d3505fcffc63d0271f13dd9246873
+Compiler:  ccache /home/author/meerkat/compilers/gcc-8.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 142169 commits remaining
+
+2026-05-03 04:02:03
+Session:   100
+Kernel:    2020-08-07 - cfbe1636c3585c1e032bfac512fb8be903fbc913
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 142169 commits remaining
+
+2026-05-03 04:16:13
+Session:   101
+Kernel:    2020-07-16 - 0a82f3f083617150cebacab57f9293b15e9917e0
+Compiler:  ccache /home/author/meerkat/compilers/gcc-8.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 142169 commits remaining
+
+2026-05-03 04:37:30
+Session:   102
+Kernel:    2020-08-07 - 05289402d71736bd275902372e4b25664aeac6b8
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 142169 commits remaining
+
+2026-05-03 04:51:41
+Session:   103
+Kernel:    2020-07-02 - 00b22b61b78fbf159c6b9119e7e79f22b1583d19
+Compiler:  ccache /home/author/meerkat/compilers/gcc-8.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 142169 commits remaining
+
+2026-05-03 05:11:55
+Session:   104
+Kernel:    2020-08-07 - a5c3b9ffb0f404ba90622ea4a25c06035dd01249
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 142169 commits remaining
+
+2026-05-03 05:26:15
+Session:   105
+Kernel:    2020-07-23 - 4b40b225812d1be14c043fcaefe956856a2b8ab0
+Compiler:  ccache /home/author/meerkat/compilers/gcc-8.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 142169 commits remaining
+
+2026-05-03 05:46:25
+Session:   106
+Kernel:    2020-08-07 - 6315df41afccf12a468ba0b17188d60b26009bc2
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 142169 commits remaining
+
+2026-05-03 06:00:36
+Session:   107
+Kernel:    2020-09-28 - 89b8c02a35f5c6199f76a839b7a7e450f8185f1b
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 142169 commits remaining
+
+2026-05-03 06:21:50
+Session:   108
+Kernel:    2020-08-07 - b1d00007f2126e045c465daf754df43ba74ddcdd
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 142169 commits remaining
+
+2026-05-03 06:35:56
+Session:   109
+Kernel:    2020-09-17 - b6c91dadaffee8bf253b0b5ac26a2638c388c6c6
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 142169 commits remaining
+
+2026-05-03 06:57:06
+Session:   110
+Kernel:    2020-08-07 - e1ab96f8cc713c673df4ab806bd90918e5ab6c98
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 142169 commits remaining
+
+2026-05-03 07:11:20
+Session:   111
+Kernel:    2020-09-09 - a53cf9497a1683ae49f870d066b693ceea5e517f
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 142169 commits remaining
+
+2026-05-03 07:32:31
+Session:   112
+Kernel:    2020-08-07 - 452b557c9500d27903a20c450ca8d2919c3742be
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 142169 commits remaining
+
+2026-05-03 07:46:44
+Session:   113
+Kernel:    2020-09-21 - 31f23a6a181c81543b10a1a9056b0e6c7ef1c747
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 142169 commits remaining
+
+2026-05-03 08:08:02
+Session:   114
+Kernel:    2020-08-07 - 0b93d59e90d4403dd7c6bccaf27bd5bc91396866
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 142169 commits remaining
+
+2026-05-03 08:22:06
+Session:   115
+Kernel:    2020-09-11 - 90ad200b4cbc92e160c3f3331bb999f87cc0fbfd
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 142169 commits remaining
+
+2026-05-03 08:43:25
+Session:   116
+Kernel:    2020-08-07 - 9ad3826575abd1c096cf678a87dd860395c46d78
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 142169 commits remaining
+
+2026-05-03 08:57:38
+Session:   117
+Kernel:    2020-08-29 - fe2b582429b76c3fc73596c58a4631c41c61697d
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 142169 commits remaining
+
+2026-05-03 09:18:04
+Session:   118
+Kernel:    2020-08-07 - 9bdaf2cc5eb570a875c6871ef7bee86a8c5be2d7
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 142169 commits remaining
+
+2026-05-03 09:32:17
+Session:   119
+Kernel:    2020-09-03 - 7c8b9e3000f82de68373db23819f9585e54186bb
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 142169 commits remaining
+
+2026-05-03 09:46:49
+Session:   120
+Kernel:    2020-08-07 - 54a75157d97976f35e63e37e31e39bda622cbf39
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 142169 commits remaining
+
+2026-05-03 10:01:05
+Session:   121
+Kernel:    2020-09-17 - f493602db56beee1514b37180599a1f3f66f816e
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 142169 commits remaining
+
+2026-05-03 10:15:10
+Session:   122
+Kernel:    2020-08-07 - 6dc5ea16c86f753951f53085aa04df49cf17cb50
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 142169 commits remaining
+
+2026-05-03 10:35:42
+Session:   123
+Kernel:    2020-08-12 - 968614fc7b8410e1ee99d0111015a1bf3e955f64
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 142169 commits remaining
+
+2026-05-03 10:56:57
+Session:   124
+Kernel:    2020-08-07 - b9306a796cad8a65f4d21779524e73fe0745bae1
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 142169 commits remaining
+
+2026-05-03 11:11:12
+Session:   125
+Kernel:    2020-09-21 - 7a0230759ea6795af037f3fd9526d00dc896ce19
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 142169 commits remaining
+
+2026-05-03 11:32:34
+Session:   126
+Kernel:    2020-08-07 - 605cad8343721c4a53e80f87d5b1161baf1a7d2b
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 142169 commits remaining
+
+2026-05-03 11:46:42
+Session:   127
+Kernel:    2020-08-25 - 1e89da5ef9c28c673e86048c89ef9495618d987d
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 142169 commits remaining
+
+2026-05-03 12:08:06
+Session:   128
+Kernel:    2020-12-22 - 2a5f1b67ec577fb1544b563086e0377f095f88e2
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 142169 commits remaining
+
+2026-05-03 12:30:12
+Session:   129
+Kernel:    2020-10-02 - 21d64817c72470ed69483f59279ce557c0658826
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 142169 commits remaining
+
+2026-05-03 12:51:22
+Session:   130
+Kernel:    2020-12-09 - 8b3c8035297e71abb9e6d0f50ceab50d33c0d64b
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 142169 commits remaining
+
+2026-05-03 13:13:24
+Session:   131
+Kernel:    2020-08-07 - 0a36f7f85e69ce248a89634b2d386600bc4c637b
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 142169 commits remaining
+
+2026-05-03 13:34:43
+Session:   132
+Kernel:    2020-12-05 - 3b4c362e5ef102ca2d70d33f4e8cf0780053a7db
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 142169 commits remaining
+
+2026-05-03 13:53:58
+Session:   133
+Kernel:    2020-08-07 - f90eae2a0f8ec43081c2d590004da9dd55a64791
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 142169 commits remaining
+
+2026-05-03 14:08:01
+Session:   134
+Kernel:    2020-06-18 - cfb12c8952f617df58d73d24161e539a035d82b0
+Compiler:  ccache /home/author/meerkat/compilers/gcc-8.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 142169 commits remaining
+
+2026-05-03 14:29:39
+Session:   135
+Kernel:    2020-08-07 - d69a9575f57ef742df599f1186dcbfb28af0f846
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 142169 commits remaining
+
+2026-05-03 14:43:52
+Session:   136
+Kernel:    2020-07-31 - 48f5dd56cf2980ff932c6fd98ff5a2c503cde97b
+Compiler:  ccache /home/author/meerkat/compilers/gcc-8.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 142169 commits remaining
+
+2026-05-03 14:58:13
+Session:   137
+Kernel:    2020-08-07 - e0f3ebba97f190ce988829ccc5b527e8eef40e01
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 142169 commits remaining
+
+2026-05-03 15:12:29
+Session:   138
+Kernel:    2020-07-01 - f5436f774886540375dde0c6c7ea82053c1e098d
+Compiler:  ccache /home/author/meerkat/compilers/gcc-8.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 142169 commits remaining
+
+2026-05-03 15:34:10
+Session:   139
+Kernel:    2020-08-07 - 27ec4878df7bdffa4667f41d3830520597679a74
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 142169 commits remaining
+
+2026-05-03 15:48:39
+Session:   140
+Kernel:    2020-07-08 - 089565fbf3bba99f91293b47b8c59ed85e00a81c
+Compiler:  ccache /home/author/meerkat/compilers/gcc-8.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 142169 commits remaining
+
+2026-05-03 16:09:09
+Session:   141
+Kernel:    2020-08-07 - 0f190a7ab78878f9e6c6930fc0f5f92c1250b57d
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 142169 commits remaining
+
+2026-05-03 16:23:22
+Session:   142
+Kernel:    2020-08-05 - 7164675ab5caf46867d6a5448f4ff3af92d80a30
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 142169 commits remaining
+
+2026-05-03 16:45:02
+Session:   143
+Kernel:    2020-08-07 - e809d5f0b5c912fe981dce738f3283b2010665f0
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 142169 commits remaining
+
+2026-05-03 17:06:04
+Session:   144
+Kernel:    2020-09-28 - 32e4d9df60f71d641fbe628a9afbe2f44d7e9a37
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 142169 commits remaining
+
+2026-05-03 17:27:16
+Session:   145
+Kernel:    2020-08-07 - ea3271f7196c65ae5d3e1c7b3f733892c017dbd6
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 142169 commits remaining
+
+2026-05-03 17:41:53
+Session:   146
+Kernel:    2020-09-16 - 4eef91a8dbcea1d699cd1de7d528520d6165b56c
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 142169 commits remaining
+
+2026-05-03 18:03:09
+Session:   147
+Kernel:    2020-08-07 - d648bcc7fe65f09ecd19091f68395dfb3b7a87c8
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 142169 commits remaining
+
+2026-05-03 18:17:22
+Session:   148
+Kernel:    2020-10-03 - 2494ad156d2a8018f576db8ac519c91b06bebbaf
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 142169 commits remaining
+
+2026-05-03 18:38:29
+Session:   149
+Kernel:    2020-08-07 - eedc4e5a142cc33fbb54f8d72b929a0e123c48c4
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 142169 commits remaining
+
+2026-05-03 18:56:18
+Session:   150
+Kernel:    2020-09-30 - a509a66a9d0d4f4e304d58fad38c078d0336c445
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 142169 commits remaining
+
+2026-05-03 19:12:00
+Session:   151
+Kernel:    2020-08-07 - ea426c2a7de8e575108b7cecd3374e0c15a9f25e
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 142169 commits remaining
+
+2026-05-03 19:33:15
+Session:   152
+Kernel:    2020-09-09 - 0dc0b5c29be240e4d0b6e1cb31be39116cd237b2
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Warning: Child process make exited with error status 2.
+Warning: make exited with error status 0x2
+Error: The kernel failed to make.
+Error: The kernel failed to make.
+Attempting to recover.
+
+2026-05-03 19:43:07
+Session:   153
+Kernel:    2020-08-07 - d42f3245c7e299e017213fa028c319316bcdb7f4
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 142169 commits remaining
+
+2026-05-03 20:04:14
+Session:   154
+Kernel:    2020-09-14 - cc4521cf8877a47a0ea4c452ecd93f3c3c7a5b74
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 142169 commits remaining
+
+2026-05-03 20:18:48
+Session:   155
+Kernel:    2020-08-07 - 4138fdfc8b5db5a7a4b9b50c69d475fb2ac351b7
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 142169 commits remaining
+
+2026-05-03 20:33:01
+Session:   156
+Kernel:    2020-08-18 - aa207a05f95abc3530b7415232f0f73278336bd3
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 142169 commits remaining
+
+2026-05-03 20:47:02
+Session:   157
+Kernel:    2020-08-07 - 1a3e1f40962c445b997151a542314f3c6097f8c3
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 142169 commits remaining
+
+2026-05-03 21:01:17
+Session:   158
+Kernel:    2020-08-18 - 39b3cffb8cf3111738ea993e2757ab382253d86a
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 142169 commits remaining
+
+2026-05-03 21:15:29
+Session:   159
+Kernel:    2020-08-07 - bf4f059954dcb221384b2f784677e19a13cd4bdb
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 142169 commits remaining
+
+2026-05-03 21:33:09
+Session:   160
+Kernel:    2020-08-10 - 2f941622fd88328ca75806c45c9e9709286a0609
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 142169 commits remaining
+
+2026-05-03 21:54:16
+Session:   161
+Kernel:    2020-08-07 - 286e04b8ed7a04279ae277f0f024430246ea5eec
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 142169 commits remaining
+
+2026-05-03 22:15:28
+Session:   162
+Kernel:    2020-09-07 - b49a7d51c32e73b0e971247903e7e2a168c4482e
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 142169 commits remaining
+
+2026-05-03 22:36:36
+Session:   163
+Kernel:    2020-08-07 - 964d4bd370d559d9bd8e4abc139e85d2753956fb
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 142169 commits remaining
+
+2026-05-03 22:54:24
+Session:   164
+Kernel:    2020-10-01 - 5b6b3e21ec4a554583a018c46d06a75d8d460bd2
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 142169 commits remaining
+
+2026-05-03 23:15:43
+Session:   165
+Kernel:    2020-12-04 - 830dfe88ea37881cbb7d390e90b45611929d5943
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 142169 commits remaining
+
+2026-05-03 23:37:46
+Session:   166
+Kernel:    2020-09-01 - 1e1129b65ef3f72dbccf24de56b700a181b45227
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 142169 commits remaining
+
+2026-05-03 23:51:50
+Session:   167
+Kernel:    2020-11-24 - 75fa2d4218c7df7added689dc941ba7b52519b2e
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 142169 commits remaining
+
+2026-05-04 00:13:50
+Session:   168
+Kernel:    2020-08-07 - f2fe7b09a52bc898ec030d4fa6f78725439c7c2c
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 142169 commits remaining
+
+2026-05-04 00:28:54
+Session:   169
+Kernel:    2020-10-26 - 4a9baf45fd72615a804947a8495b73c4a0a4cb54
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 142169 commits remaining
+
+2026-05-04 00:50:52
+Session:   170
+Kernel:    2020-08-07 - 4330a26bc4527f1d8918c398ebc983574f761cca
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 142169 commits remaining
+
+2026-05-04 01:05:06
+Session:   171
+Kernel:    2020-06-15 - 17212e7188783de75d2a1226c32d3fd7af96ad5d
+Compiler:  ccache /home/author/meerkat/compilers/gcc-8.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 142169 commits remaining
+
+2026-05-04 01:26:45
+Session:   172
+Kernel:    2020-08-07 - 0f876e4dc55db5fafef774917fd66e1373c0f390
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 142169 commits remaining
+
+2026-05-04 01:44:31
+Session:   173
+Kernel:    2020-06-24 - eb2932b00fc75a154bb4607773dc0666924116ad
+Compiler:  ccache /home/author/meerkat/compilers/gcc-8.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 142169 commits remaining
+
+2026-05-04 02:05:53
+Session:   174
+Kernel:    2020-08-07 - 9855609bde03e2472b99a95e869d29ee1e78a751
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 142169 commits remaining
+
+2026-05-04 02:26:55
+Session:   175
+Kernel:    2020-07-10 - 0d989da36b1512a6c61ebbd9b155969f0d2de436
+Compiler:  ccache /home/author/meerkat/compilers/gcc-8.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 142169 commits remaining
+
+2026-05-04 02:47:10
+Session:   176
+Kernel:    2020-08-07 - d797b7d05405c519f7b62ea69a75cea1883863b2
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 142169 commits remaining
+
+2026-05-04 03:04:54
+Session:   177
+Kernel:    2020-07-23 - d8904ca9d338cdaa67e3bd06d7a7d418e426648c
+Compiler:  ccache /home/author/meerkat/compilers/gcc-8.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 142169 commits remaining
+
+2026-05-04 03:25:00
+Session:   178
+Kernel:    2020-08-07 - 272911a4ad18c48f8bc449a5db945a54987dd687
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 142169 commits remaining
+
+2026-05-04 03:42:46
+Session:   179
+Kernel:    2020-09-30 - 294f44c19fa65b0c813608d7ddfbb378875eb6b0
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 142169 commits remaining
+
+2026-05-04 04:04:13
+Session:   180
+Kernel:    2020-08-07 - c7094406fcb7cdf4fe1de8893f0613b75349773d
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 142169 commits remaining
+
+2026-05-04 04:18:32
+Session:   181
+Kernel:    2020-09-25 - c220ba6f6237ed3d83d547607f42073398571433
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 142169 commits remaining
+
+2026-05-04 04:39:56
+Session:   182
+Kernel:    2020-08-07 - 15999eef7f25e2ea6a1c33f026166f472c5714e9
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 142169 commits remaining
+
+2026-05-04 04:54:00
+Session:   183
+Kernel:    2020-10-12 - 48b458591749d35c927351b4960b49e35af30fe6
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 142169 commits remaining
+
+2026-05-04 05:15:04
+Session:   184
+Kernel:    2020-08-07 - 10befea91b61c4e2c2d1df06a2e978d182fcf792
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 142169 commits remaining
+
+2026-05-04 05:36:00
+Session:   185
+Kernel:    2020-09-04 - e2dacf6cd13c1f8d40a59fdda41ecd139c2207df
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 142169 commits remaining
+
+2026-05-04 05:57:10
+Session:   186
+Kernel:    2020-08-07 - 933dc80ec262ed8b1cc2ab463d989e1f59ee05c4
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 142169 commits remaining
+
+2026-05-04 06:11:15
+Session:   187
+Kernel:    2020-08-26 - 91244d108441013b7367b3b4dcc6869998676473
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 142169 commits remaining
+
+2026-05-04 06:32:24
+Session:   188
+Kernel:    2020-08-07 - fbc1ac9d09d70859eee24131d667e01e3986e368
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 142169 commits remaining
+
+2026-05-04 06:46:29
+Session:   189
+Kernel:    2020-09-08 - 988100a7de0f07c27063d1376ebc4eab983e228b
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 142169 commits remaining
+
+2026-05-04 07:07:37
+Session:   190
+Kernel:    2020-08-07 - 991e7673859ed41e7ba83c8c4e57afe8cfebe314
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 142169 commits remaining
+
+2026-05-04 07:28:53
+Session:   191
+Kernel:    2020-08-27 - 8f3243a0479e3c817262eacb31157a3f95fc272e
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 142169 commits remaining
+
+2026-05-04 07:43:24
+Session:   192
+Kernel:    2020-08-07 - 849504809f86ef43b0b12617c0a71b6c6e61cd78
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 142169 commits remaining
+
+2026-05-04 07:57:27
+Session:   193
+Kernel:    2020-08-18 - cb1e6d59e89ce272a67e6dc22e9ec72df622fb1b
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 142169 commits remaining
+
+2026-05-04 08:11:39
+Session:   194
+Kernel:    2020-08-07 - 74d555bed5d0f8a1264f1e083183f5409b1aa36a
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 142169 commits remaining
+
+2026-05-04 08:25:41
+Session:   195
+Kernel:    2020-09-01 - 7e8c4ed2638d08a1604c87b60ed7161bf92e6f86
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 142169 commits remaining
+
+2026-05-04 08:46:52
+Session:   196
+Kernel:    2020-08-07 - eda330e57b26df8fabce184736ae3d11e7a104bd
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 142169 commits remaining
+
+2026-05-04 09:04:38
+Session:   197
+Kernel:    2020-09-14 - fcb2b70cdb194157678fb1a75f9ff499aeba3d2a
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 142169 commits remaining
+
+2026-05-04 09:25:47
+Session:   198
+Kernel:    2020-08-07 - 536d3bf261a2fc3b05b3e91e7eef7383443015cf
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 142169 commits remaining
+
+2026-05-04 09:40:02
+Session:   199
+Kernel:    2020-08-26 - 044d0d6de9f50192f9697583504a382347ee95ca
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 142169 commits remaining
+
+2026-05-04 10:01:24
+Session:   200
+Kernel:    2020-11-27 - 4bc3c8dc9f5f1eff0d3bfa59491383ac11308b6b
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 142169 commits remaining
+
+2026-05-04 10:23:24
+Session:   201
+Kernel:    2020-10-01 - 0d555b3ac49b40f94c270681b697d45dcae9faa6
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0859-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 142169 commits remaining
+
+2026-05-04 10:44:42
+Session:   202
+Kernel:    2020-11-02 - 23a881852f3eff6a7ba8d240b57de076763fdef9
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc

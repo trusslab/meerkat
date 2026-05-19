@@ -1,0 +1,383 @@
+./bin/meerkat -i 1 -c /home/author/meerkat/wd-meerkat-1/meerkat.cfg -a 028192fea1de083f4f12bfb1eb7c4d7beb5c8ecd -F ff-test,stateful-corpus,poc-test,ff-no-find-backup
+Bisecting:          general protection fault in __dentry_path
+Syzbot Link:        https://syzkaller.appspot.com/bug?id=df1627594ef123f71d415a6a11b388e53c310fa3
+Working Name:       bug0173
+
+Aliases:
+    general protection fault in __dentry_path
+
+Anchor Commit:      028192fea1de083f4f12bfb1eb7c4d7beb5c8ecd
+Repository:         https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
+Branch:             master
+Arch:               amd64
+
+Meerkat:            /home/author/meerkat/
+Version:            1.2.0
+Kernel:             /home/author/meerkat/wd-meerkat-1/kernel/
+Syzkaller:          /home/author/meerkat/syzkaller/
+Compilers:          /home/author/meerkat/compilers/
+Compiler:           gcc (Ubuntu 12.3.0-1ubuntu1~22.04.3) 12.3.0
+Linker:             GNU ld (GNU Binutils for Ubuntu) 2.38
+Ccache:             ccache version 4.5.1
+Image:              /home/author/meerkat/image/stretch/stretch.img
+Image Key:          /home/author/meerkat/image/stretch/stretch.id_rsa
+
+Workdir:            /home/author/meerkat/wd-meerkat-1/
+Kconfig:            /home/author/meerkat/wd-meerkat-1/config-bug0173.txt
+Reproducers: (1)    /home/author/meerkat/wd-meerkat-1/reproducers/
+Syzkaller Workdir:  /home/author/meerkat/wd-meerkat-1/wd-kaller/
+Log Directory:      /home/author/meerkat/wd-meerkat-1/log/
+
+Syscalls: (14)      ["ioctl$KVM_CREATE_VM", "openat$kvm", "recvmmsg", "sendmsg", "socketpair", "ioctl$F2FS_IOC_START_ATOMIC_WRITE", "openat$selinux_enforce", "getrusage", "clock_gettime", "ioctl$sock_SIOCGIFINDEX", "ioctl$ifreq_SIOCGIFINDEX_vcan", "ioctl$IOCTL_GET_NCIDEV_IDX", "utimes", "openat$nci"]
+VM Count:           4
+CPU Count:          4
+Procs:              24
+Memory:             4096
+Make Procs:         16
+Max Time:           10
+Max Attempts:       1
+
+==== Anchor Commit ====
+
+2026-05-12 12:16:20
+Session:   1
+Kernel:    2022-04-14 - 028192fea1de083f4f12bfb1eb7c4d7beb5c8ecd
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    5  general protection fault in __dentry_path (4) (has report)
+Attempt 2: (RETRY)
+    Time  Bug Name
+***    5  general protection fault in __dentry_path (3) (has report)
+Attempt 3: (RETRY)
+    Time  Bug Name
+***    5  general protection fault in __dentry_path (has report)
+The bug was found.
+
+New Max Time: 10
+
+==== Major Release Search ====
+11 Releases
+
+2026-05-12 12:44:34
+Session:   2
+Kernel:    2022-03-20 - f443e374ae131c168a065ea1748feac6b2e76613 (v5.17)
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 10 releases remaining
+
+==== Kernel Bisection ====
+14746 Linux commits
+
+2026-05-12 13:07:35
+Session:   3
+Kernel:    2022-03-24 - 169e77764adc041b1dacba84ea90516a895d43b2
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  general protection fault in kvm_mmu_uninit_tdp_mmu (2) (has report)
+       3  general protection fault in kvm_mmu_uninit_tdp_mmu (has report)
+       4  general protection fault in kvm_mmu_uninit_tdp_mmu (4) (has report)
+       5  general protection fault in kvm_mmu_uninit_tdp_mmu (3) (has report)
+       6  general protection fault in kvm_mmu_uninit_tdp_mmu (2) (has report)
+       7  general protection fault in kvm_mmu_uninit_tdp_mmu (3) (has report)
+       8  general protection fault in kvm_mmu_uninit_tdp_mmu (4) (has report)
+       9  general protection fault in kvm_mmu_uninit_tdp_mmu (2) (has report)
+      10  general protection fault in kvm_mmu_uninit_tdp_mmu (3) (has report)
+The bug was not found.
+About 7195 commits remaining
+
+2026-05-12 13:30:24
+Session:   4
+Kernel:    2022-03-26 - f022814633e1c600507b3a99691b4d624c2813f0
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       3  general protection fault in kvm_mmu_uninit_tdp_mmu (3) (has report)
+       4  general protection fault in kvm_mmu_uninit_tdp_mmu (4) (has report)
+       5  general protection fault in kvm_mmu_uninit_tdp_mmu (3) (has report)
+       6  general protection fault in kvm_mmu_uninit_tdp_mmu (has report)
+       7  general protection fault in kvm_mmu_uninit_tdp_mmu (3) (has report)
+       8  general protection fault in kvm_mmu_uninit_tdp_mmu (4) (has report)
+       9  general protection fault in kvm_mmu_uninit_tdp_mmu (4) (has report)
+      10  general protection fault in kvm_mmu_uninit_tdp_mmu (2) (has report)
+The bug was not found.
+About 3608 commits remaining
+
+2026-05-12 13:53:21
+Session:   5
+Kernel:    2022-03-29 - 1ec48f95519bd3e920536118e8ddd30e28cde4ab
+Compiler:  ccache gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0173-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+       1  SYZFAIL: posix_spawnp failed (4)
+       2  SYZFAIL: posix_spawnp failed (4)
+       3  SYZFAIL: posix_spawnp failed (4)
+       4  SYZFAIL: posix_spawnp failed (8)
+       5  SYZFAIL: posix_spawnp failed (4)
+       6  SYZFAIL: posix_spawnp failed (4)
+       7  SYZFAIL: posix_spawnp failed (8)
+       8  SYZFAIL: posix_spawnp failed (4)
+       9  SYZFAIL: posix_spawnp failed (4)
+      10  SYZFAIL: posix_spawnp failed (8)
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 3608 commits remaining
+
+2026-05-12 14:16:20
+Session:   6
+Kernel:    2022-03-25 - af704c856e888fb044b058d731d61b46eeec499d
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  general protection fault in kvm_mmu_uninit_tdp_mmu (2) (has report)
+       3  general protection fault in kvm_mmu_uninit_tdp_mmu (has report)
+       4  general protection fault in kvm_mmu_uninit_tdp_mmu (4) (has report)
+       5  general protection fault in kvm_mmu_uninit_tdp_mmu (4) (has report)
+       6  general protection fault in kvm_mmu_uninit_tdp_mmu (2) (has report)
+       7  general protection fault in kvm_mmu_uninit_tdp_mmu (2) (has report)
+       8  general protection fault in kvm_mmu_uninit_tdp_mmu (3) (has report)
+       9  general protection fault in kvm_mmu_uninit_tdp_mmu (2) (has report)
+      10  general protection fault in kvm_mmu_uninit_tdp_mmu (3) (has report)
+The bug was not found.
+About 5018 commits remaining
+
+2026-05-12 14:39:09
+Session:   7
+Kernel:    2022-03-15 - 4ad8b50da86341aab5bb13f278fb6fd3f627fed9
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 16980 commits remaining
+
+2026-05-12 15:01:59
+Session:   8
+Kernel:    2022-03-29 - 965181d7ef7e1a863477536dc328c23a7ebc8a1d
+Compiler:  ccache gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0173-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+       1  SYZFAIL: posix_spawnp failed (4)
+       2  SYZFAIL: posix_spawnp failed (4)
+       3  SYZFAIL: posix_spawnp failed (4)
+       4  SYZFAIL: posix_spawnp failed (8)
+       5  SYZFAIL: posix_spawnp failed (4)
+       6  SYZFAIL: posix_spawnp failed (4)
+       7  SYZFAIL: posix_spawnp failed (8)
+       8  SYZFAIL: posix_spawnp failed (4)
+       9  SYZFAIL: posix_spawnp failed (4)
+      10  SYZFAIL: posix_spawnp failed (8)
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 16980 commits remaining
+
+2026-05-12 15:16:58
+Session:   9
+Kernel:    2022-01-24 - a5ab04af49434aef532bf6cd4baa08a13665d608
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 17131 commits remaining
+
+2026-05-12 15:31:26
+Session:   10
+Kernel:    2022-01-25 - 11dda11f00079cdf764b80211e948d48379c1e2e
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 17130 commits remaining
+
+2026-05-12 15:45:53
+Session:   11
+Kernel:    2022-02-15 - 90e0372af7b869971ddce12aea0553c2dcbf3450
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 15676 commits remaining
+
+2026-05-12 16:08:34
+Session:   12
+Kernel:    2022-04-01 - 5a60542c61f3cce6e5dff2a38c8fb08a852a517b
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       4  general protection fault in kvm_mmu_uninit_tdp_mmu (3) (has report)
+       5  general protection fault in kvm_mmu_uninit_tdp_mmu (3) (has report)
+       7  general protection fault in kvm_mmu_uninit_tdp_mmu (3) (has report)
+       8  general protection fault in kvm_mmu_uninit_tdp_mmu (3) (has report)
+       9  general protection fault in kvm_mmu_uninit_tdp_mmu (3) (has report)
+      10  general protection fault in kvm_mmu_uninit_tdp_mmu (3) (has report)
+The bug was not found.
+About 1697 commits remaining
+
+2026-05-12 16:30:56
+Session:   13
+Kernel:    2022-04-01 - ec251f3e1851380f3e177e1559fc497843947e35
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       4  general protection fault in kvm_mmu_uninit_tdp_mmu (4) (has report)
+       5  general protection fault in kvm_mmu_uninit_tdp_mmu (2) (has report)
+       6  general protection fault in kvm_mmu_uninit_tdp_mmu (2) (has report)
+       7  general protection fault in kvm_mmu_uninit_tdp_mmu (3) (has report)
+       8  general protection fault in kvm_mmu_uninit_tdp_mmu (3) (has report)
+       9  general protection fault in kvm_mmu_uninit_tdp_mmu (has report)
+      10  general protection fault in kvm_mmu_uninit_tdp_mmu (3) (has report)
+The bug was not found.
+About 853 commits remaining
+
+2026-05-12 16:53:43
+Session:   14
+Kernel:    2022-04-08 - d00c50b35101b862c3db270ffeba53a63a1063d9
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 426 commits remaining
+
+2026-05-12 17:16:21
+Session:   15
+Kernel:    2022-04-11 - 7281a59ce3a584ed7379bbdcd06a2008c47c3e5c
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 211 commits remaining
+
+2026-05-12 17:39:09
+Session:   16
+Kernel:    2022-04-14 - b9b4c79e58305ac64352286ee5030d193fc8aa22
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    2  general protection fault in __dentry_path (4) (has report)
+Running syz-repro.
+Run Time:        0h19m0s
+The bug was found.
+About 114 commits remaining
+
+2026-05-12 18:10:44
+Session:   17
+Kernel:    2022-04-14 - 722985e2f6ec9127064771ba526578ea8275834d
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    2  general protection fault in __dentry_path (4) (has report)
+The bug was found.
+About 61 commits remaining
+
+2026-05-12 18:17:25
+Session:   18
+Kernel:    2022-04-12 - 453096eb048ce613d5775ea21cdf7826d4340e80
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    2  general protection fault in __dentry_path (4) (has report)
+The bug was found.
+About 33 commits remaining
+
+2026-05-12 18:25:39
+Session:   19
+Kernel:    2022-04-08 - a44e2c207c30a5780c4ad0cc3579b8715cebf52e
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    2  general protection fault in __dentry_path (4) (has report)
+Running syz-repro.
+Run Time:        0h19m0s
+The bug was found.
+About 18 commits remaining
+
+2026-05-12 18:53:11
+Session:   20
+Kernel:    2022-04-07 - 02de9331c4d0c6bddac9c5fa66d91f70adf8612b
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 10 commits remaining
+
+2026-05-12 19:07:52
+Session:   21
+Kernel:    2022-04-06 - 5593473a1e6c743764b08e3b6071cb43b5cfa6c4
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 13 commits remaining
+
+2026-05-12 19:22:32
+Session:   22
+Kernel:    2022-04-07 - 386ba265a8197716076a88853244f4437b92b167
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    2  general protection fault in __dentry_path (4) (has report)
+The bug was found.
+About 11 commits remaining
+
+2026-05-12 19:29:09
+Session:   23
+Kernel:    2022-04-07 - a44a4cc1c969afec97dbb2aedaf6f38eaa6253bb
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    2  general protection fault in __dentry_path (4) (has report)
+The bug was found.
+About 10 commits remaining
+
+==== Partial Result: Focused Fuzzing ====
+Bisection Result:     2022-04-07 - a44a4cc1c969afec97dbb2aedaf6f38eaa6253bb
+Bisected Commit Name: KVM: Don't create VM debugfs files outside of the VM directory
+Stage Time:           7h19m15s
+Run Time:             7h19m17s
+=========================================
+
+==== Anchor Commit ====
+
+2026-05-12 19:35:35
+Session:   24
+Kernel:    2022-04-06 - 5593473a1e6c743764b08e3b6071cb43b5cfa6c4
+Compiler:  ccache gcc
+PoC:       /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0173-2.prog
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+
+Failure: This bug cannot be found at the anchor commit.
+
+====================================================================================================================================================
+Bug Name:             general protection fault in __dentry_path
+Bug ID:               bug0173
+Bug Link:             https://syzkaller.appspot.com/bug?id=df1627594ef123f71d415a6a11b388e53c310fa3
+Bisection Result:     2022-04-07 - a44a4cc1c969afec97dbb2aedaf6f38eaa6253bb
+Bisected Commit Name: KVM: Don't create VM debugfs files outside of the VM directory
+Run Time:             7h31m15s
+
+Anchor Commit:        2022-04-14 - 028192fea1de083f4f12bfb1eb7c4d7beb5c8ecd
+Bisection Result:     2022-04-07 - a44a4cc1c969afec97dbb2aedaf6f38eaa6253bb

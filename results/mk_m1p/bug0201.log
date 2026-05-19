@@ -1,0 +1,265 @@
+./bin/meerkat -i 1 -c /home/author/meerkat/wd-meerkat-1/meerkat.cfg -a dcf8e5633e2e69ad60b730ab5905608b756a032f -F ff-test,stateful-corpus,poc-test,ff-no-find-backup
+Bisecting:          general protection fault in binder_alloc_new_buf
+Syzbot Link:        https://syzkaller.appspot.com/bug?id=4b73439fd182fc6932d0a596d5d81b0a64847b33
+Working Name:       bug0201
+
+Aliases:
+    general protection fault in binder_alloc_new_buf
+
+Anchor Commit:      dcf8e5633e2e69ad60b730ab5905608b756a032f
+Repository:         https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
+Branch:             master
+Arch:               amd64
+
+Meerkat:            /home/author/meerkat/
+Version:            1.2.0
+Kernel:             /home/author/meerkat/wd-meerkat-1/kernel/
+Syzkaller:          /home/author/meerkat/syzkaller/
+Compilers:          /home/author/meerkat/compilers/
+Compiler:           gcc (Ubuntu 12.3.0-1ubuntu1~22.04.3) 12.3.0
+Linker:             GNU ld (GNU Binutils for Ubuntu) 2.38
+Ccache:             ccache version 4.5.1
+Image:              /home/author/meerkat/image/stretch/stretch.img
+Image Key:          /home/author/meerkat/image/stretch/stretch.id_rsa
+
+Workdir:            /home/author/meerkat/wd-meerkat-1/
+Kconfig:            /home/author/meerkat/wd-meerkat-1/config-bug0201.txt
+Reproducers: (1)    /home/author/meerkat/wd-meerkat-1/reproducers/
+Syzkaller Workdir:  /home/author/meerkat/wd-meerkat-1/wd-kaller/
+Log Directory:      /home/author/meerkat/wd-meerkat-1/log/
+
+Syscalls: (5)       ["dup2", "ioctl$BINDER_SET_CONTEXT_MGR_EXT", "ioctl$BINDER_WRITE_READ", "openat$binderfs", "mmap$binder"]
+VM Count:           4
+CPU Count:          4
+Procs:              24
+Memory:             4096
+Make Procs:         16
+Max Time:           10
+Max Attempts:       1
+
+==== Anchor Commit ====
+
+2026-05-14 03:51:37
+Session:   1
+Kernel:    2022-08-29 - dcf8e5633e2e69ad60b730ab5905608b756a032f
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  INFO: rcu detected stall in corrupted
+***    2  general protection fault in binder_alloc_new_buf (3) (has report)
+Attempt 2: (RETRY)
+    Time  Bug Name
+***    2  general protection fault in binder_alloc_new_buf (4) (has report)
+Attempt 3: (RETRY)
+    Time  Bug Name
+       2  INFO: rcu detected stall in corrupted
+***    2  general protection fault in binder_alloc_new_buf (2) (has report)
+The bug was found.
+
+New Max Time: 10
+
+==== Major Release Search ====
+12 Releases
+
+2026-05-14 04:12:44
+Session:   2
+Kernel:    2022-07-31 - 3d7cb6b04c3f3115719235cc6866b10326de34cd (v5.19)
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 11 releases remaining
+
+==== Kernel Bisection ====
+15171 Linux commits
+
+2026-05-14 04:37:09
+Session:   3
+Kernel:    2022-08-04 - 798cd57cd5f871452461746032cf6ee50b0fd69a
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       1  WARNING: ODEBUG bug in mgmt_index_removed (has report)
+       2  WARNING: ODEBUG bug in mgmt_index_removed (3) (has report)
+       3  WARNING: ODEBUG bug in mgmt_index_removed (has report)
+       4  WARNING: ODEBUG bug in mgmt_index_removed (3) (has report)
+       5  WARNING: ODEBUG bug in mgmt_index_removed (has report)
+       6  WARNING: ODEBUG bug in mgmt_index_removed (3) (has report)
+       7  WARNING: ODEBUG bug in mgmt_index_removed (has report)
+       8  WARNING: ODEBUG bug in mgmt_index_removed (3) (has report)
+       9  WARNING: ODEBUG bug in mgmt_index_removed (2) (has report)
+      10  WARNING: ODEBUG bug in mgmt_index_removed (2) (has report)
+The bug was not found.
+About 7890 commits remaining
+
+2026-05-14 05:01:25
+Session:   4
+Kernel:    2022-08-06 - f20c95b46b8fa3ad34b3ea2e134337f88591468b
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       1  WARNING: ODEBUG bug in mgmt_index_removed (has report)
+       3  WARNING: ODEBUG bug in mgmt_index_removed (3) (has report)
+       4  WARNING: ODEBUG bug in mgmt_index_removed (has report)
+       5  WARNING: ODEBUG bug in mgmt_index_removed (3) (has report)
+       6  WARNING: ODEBUG bug in mgmt_index_removed (has report)
+       7  WARNING: ODEBUG bug in mgmt_index_removed (has report)
+       8  WARNING: ODEBUG bug in mgmt_index_removed (3) (has report)
+      10  WARNING: ODEBUG bug in mgmt_index_removed (3) (has report)
+The bug was not found.
+About 4044 commits remaining
+
+2026-05-14 05:25:04
+Session:   5
+Kernel:    2022-08-08 - 5d5d353bed32dc3ea52e2619e0d1c60b17133b91
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       1  WARNING: ODEBUG bug in mgmt_index_removed (has report)
+       6  WARNING: ODEBUG bug in mgmt_index_removed (4) (has report)
+       8  WARNING: ODEBUG bug in mgmt_index_removed (4) (has report)
+The bug was not found.
+About 2002 commits remaining
+
+2026-05-14 05:49:11
+Session:   6
+Kernel:    2022-08-12 - 69dac8e431af26173ca0a1ebc87054e01c585bcc
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 987 commits remaining
+
+2026-05-14 06:13:25
+Session:   7
+Kernel:    2022-08-19 - 963a70bee5880640d0fd83ed29dc1e7ec0d2bd4a
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  INFO: rcu detected stall in corrupted
+The bug was not found.
+About 490 commits remaining
+
+2026-05-14 06:37:35
+Session:   8
+Kernel:    2022-08-25 - 4c612826bec1441214816827979b62f84a097e91
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 204 commits remaining
+
+2026-05-14 07:01:43
+Session:   9
+Kernel:    2022-08-27 - 89b749d8552d78c4dd86dea86e2e6ba8aafab9fe
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  INFO: rcu detected stall in corrupted
+The bug was not found.
+About 103 commits remaining
+
+2026-05-14 07:25:53
+Session:   10
+Kernel:    2022-08-28 - 2f23a7c914317ac0b2a7e2bbe48dc00213652f98
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  INFO: rcu detected stall in corrupted
+The bug was not found.
+About 53 commits remaining
+
+2026-05-14 07:50:00
+Session:   11
+Kernel:    2022-08-28 - 373eff576e580b6bbc1e709cd3ca0d100783431f
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 30 commits remaining
+
+2026-05-14 08:05:46
+Session:   12
+Kernel:    2022-08-28 - dd0ff4d12dd284c334f7e9b07f8f335af856ac78
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    2  general protection fault in binder_alloc_new_buf (3) (has report)
+Running syz-repro.
+Run Time:        0h38m0s
+The bug was found.
+About 15 commits remaining
+
+2026-05-14 08:59:09
+Session:   13
+Kernel:    2022-08-28 - 6c26d17eea01477f9223c4d5da8ebc2099e4f027
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  INFO: rcu detected stall in corrupted
+The bug was not found.
+About 8 commits remaining
+
+2026-05-14 09:15:35
+Session:   14
+Kernel:    2022-08-28 - 44e602b4e52f70f04620bbbf4fe46ecb40170bde
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    2  general protection fault in binder_alloc_new_buf (4) (has report)
+The bug was found.
+About 4 commits remaining
+
+2026-05-14 09:27:26
+Session:   15
+Kernel:    2022-08-28 - fcab34b433e2c13e333b2f53c4a8409eadc432c7
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 2 commits remaining
+
+==== Partial Result: Focused Fuzzing ====
+Bisection Result:     2022-08-28 - 44e602b4e52f70f04620bbbf4fe46ecb40170bde
+Bisected Commit Name: binder_alloc: add missing mmap_lock calls when using the VMA
+Stage Time:           5h51m17s
+Run Time:             5h51m18s
+=========================================
+
+==== Anchor Commit ====
+
+2026-05-14 09:42:54
+Session:   16
+Kernel:    2022-08-28 - fcab34b433e2c13e333b2f53c4a8409eadc432c7
+Compiler:  ccache gcc
+PoC:       /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0201-2.prog
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+
+Failure: This bug cannot be found at the anchor commit.
+
+====================================================================================================================================================
+Bug Name:             general protection fault in binder_alloc_new_buf
+Bug ID:               bug0201
+Bug Link:             https://syzkaller.appspot.com/bug?id=4b73439fd182fc6932d0a596d5d81b0a64847b33
+Bisection Result:     2022-08-28 - 44e602b4e52f70f04620bbbf4fe46ecb40170bde
+Bisected Commit Name: binder_alloc: add missing mmap_lock calls when using the VMA
+Run Time:             6h4m0s
+
+Anchor Commit:        2022-08-29 - dcf8e5633e2e69ad60b730ab5905608b756a032f
+Bisection Result:     2022-08-28 - 44e602b4e52f70f04620bbbf4fe46ecb40170bde

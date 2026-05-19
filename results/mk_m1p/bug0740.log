@@ -1,0 +1,74 @@
+./bin/meerkat -i 1 -c /home/author/meerkat/wd-meerkat-1/meerkat.cfg -a 38e04b3e4240a6d8fb43129ebad41608db64bc6f -F ff-test,stateful-corpus,poc-test,ff-no-find-backup
+Bisecting:          kernel BUG in end_buffer_async_write
+Syzbot Link:        https://syzkaller.appspot.com/bug?extid=5c04210f7c7f897c1e7f
+Working Name:       bug0740
+
+Aliases:
+    kernel BUG in end_buffer_async_write
+
+Anchor Commit:      38e04b3e4240a6d8fb43129ebad41608db64bc6f
+Repository:         https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
+Branch:             master
+Arch:               amd64
+
+Meerkat:            /home/author/meerkat/
+Version:            1.2.0
+Kernel:             /home/author/meerkat/wd-meerkat-1/kernel/
+Syzkaller:          /home/author/meerkat/syzkaller/
+Compilers:          /home/author/meerkat/compilers/
+Compiler:           gcc (Ubuntu 12.3.0-1ubuntu1~22.04.3) 12.3.0
+Linker:             GNU ld (GNU Binutils for Ubuntu) 2.38
+Ccache:             ccache version 4.5.1
+Image:              /home/author/meerkat/image/stretch/stretch.img
+Image Key:          /home/author/meerkat/image/stretch/stretch.id_rsa
+
+Workdir:            /home/author/meerkat/wd-meerkat-1/
+Kconfig:            /home/author/meerkat/wd-meerkat-1/config-bug0740.txt
+Reproducers: (1)    /home/author/meerkat/wd-meerkat-1/reproducers/
+Primary PoC:        /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0740-2.prog
+Syzkaller Workdir:  /home/author/meerkat/wd-meerkat-1/wd-kaller/
+Log Directory:      /home/author/meerkat/wd-meerkat-1/log/
+
+Syscalls: (12)      ["mount", "open", "openat", "sendfile", "syz_mount_image$nilfs2", "write$FUSE_CREATE_OPEN", "open$dir", "openat$fuse", "read$FUSE", "getuid", "getgid", "get_robust_list"]
+VM Count:           4
+CPU Count:          4
+Procs:              24
+Memory:             4096
+Make Procs:         16
+Max Time:           10
+Max Attempts:       1
+
+==== Anchor Commit ====
+
+2026-05-15 10:36:01
+Session:   1
+Kernel:    2023-03-16 - 38e04b3e4240a6d8fb43129ebad41608db64bc6f
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  WARNING in mark_buffer_dirty (has report)
+       7  WARNING in mark_buffer_dirty (has report)
+Attempt 2: (RETRY)
+    Time  Bug Name
+       2  WARNING in mark_buffer_dirty (has report)
+       4  WARNING in mark_buffer_dirty (has report)
+       5  WARNING in mark_buffer_dirty (2) (has report)
+       6  WARNING in mark_buffer_dirty (has report)
+       8  possible deadlock in nilfs_dirty_inode
+      10  kernel BUG in folio_end_writeback (has report)
+Attempt 3: (RETRY)
+    Time  Bug Name
+       2  WARNING in mark_buffer_dirty (has report)
+       5  WARNING in mark_buffer_dirty (2) (has report)
+       6  WARNING in mark_buffer_dirty (has report)
+       8  kernel BUG in submit_bh_wbc (has report)
+       9  WARNING in mark_buffer_dirty (2) (has report)
+The bug was not found.
+
+Failure: This bug cannot be found at the anchor commit.
+
+==== Partial Result: Focused Fuzzing ====
+Bisection Result:     Failed to reproduce at the anchor commit.
+Stage Time:           0h47m39s
+Run Time:             0h47m40s
+=========================================

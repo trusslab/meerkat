@@ -1,0 +1,265 @@
+./bin/meerkat -i 1 -c /home/author/meerkat/wd-meerkat-1/meerkat.cfg -a 17d8e3d90b6989419806c1926b894d7d7483a25b -F ff-test,stateful-corpus,poc-test,ff-no-find-backup
+Bisecting:          WARNING in ipgre_xmit
+Syzbot Link:        https://syzkaller.appspot.com/bug?id=ffb9228cab75ad9d812af93d19e9637873d18439
+Working Name:       bug0148
+
+Aliases:
+    WARNING in ipgre_xmit
+
+Anchor Commit:      17d8e3d90b6989419806c1926b894d7d7483a25b
+Repository:         https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
+Branch:             master
+Arch:               amd64
+
+Meerkat:            /home/author/meerkat/
+Version:            1.2.0
+Kernel:             /home/author/meerkat/wd-meerkat-1/kernel/
+Syzkaller:          /home/author/meerkat/syzkaller/
+Compilers:          /home/author/meerkat/compilers/
+Compiler:           gcc (Ubuntu 12.3.0-1ubuntu1~22.04.3) 12.3.0
+Linker:             GNU ld (GNU Binutils for Ubuntu) 2.38
+Ccache:             ccache version 4.5.1
+Image:              /home/author/meerkat/image/stretch/stretch.img
+Image Key:          /home/author/meerkat/image/stretch/stretch.id_rsa
+
+Workdir:            /home/author/meerkat/wd-meerkat-1/
+Kconfig:            /home/author/meerkat/wd-meerkat-1/config-bug0148.txt
+Reproducers: (1)    /home/author/meerkat/wd-meerkat-1/reproducers/
+Primary PoC:        /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0148-2.prog
+Syzkaller Workdir:  /home/author/meerkat/wd-meerkat-1/wd-kaller/
+Log Directory:      /home/author/meerkat/wd-meerkat-1/log/
+
+Syscalls: (18)      ["bpf$BPF_PROG_TEST_RUN", "bpf$PROG_LOAD", "bpf$BPF_PROG_GET_FD_BY_ID", "bpf$BPF_BTF_GET_NEXT_ID", "ioctl$F2FS_IOC_START_ATOMIC_WRITE", "openat$selinux_enforce", "ioctl$sock_SIOCGIFINDEX", "bpf$BPF_BTF_LOAD", "bpf$OBJ_GET_MAP", "bpf$TOKEN_CREATE", "bpf$BPF_PROG_GET_NEXT_ID", "socket", "bpf$BPF_MAP_CONST_STR_FREEZE", "bpf$MAP_UPDATE_ELEM_TAIL_CALL", "bpf$MAP_CREATE_RINGBUF", "bpf$MAP_UPDATE_CONST_STR", "bpf$MAP_CREATE_TAIL_CALL", "bpf$MAP_CREATE_CONST_STR"]
+VM Count:           8
+CPU Count:          2
+Procs:              16
+Memory:             4096
+Make Procs:         16
+Max Time:           10
+Max Attempts:       1
+
+==== Anchor Commit ====
+
+2026-04-30 15:32:34
+Session:   1
+Kernel:    2022-06-02 - 17d8e3d90b6989419806c1926b894d7d7483a25b
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    2  WARNING in ipgre_xmit (has report)
+Attempt 2: (RETRY)
+    Time  Bug Name
+***    2  WARNING in ipgre_xmit (2) (has report)
+Attempt 3: (RETRY)
+    Time  Bug Name
+***    3  WARNING in ipgre_xmit (4) (has report)
+The bug was found.
+
+New Max Time: 10
+
+==== Major Release Search ====
+11 Releases
+
+2026-04-30 15:52:51
+Session:   2
+Kernel:    2022-05-22 - 4b0986a3613c92f4ec1bdc7f60ec66fea135991f (v5.18)
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       5  suppressed report
+       6  suppressed report
+The bug was not found.
+About 10 releases remaining
+
+==== Kernel Bisection ====
+12008 Linux commits
+
+2026-04-30 16:15:48
+Session:   3
+Kernel:    2022-05-25 - 86c87bea6b42100c67418af690919c44de6ede6e
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    2  WARNING in ipgre_xmit (8) (has report)
+Running syz-repro.
+New PoC saved at /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0148-0.prog
+Primary PoC:     /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0148-0.prog
+Run Time:        0h8m0s
+The bug was found.
+About 5170 commits remaining
+
+2026-04-30 16:38:30
+Session:   4
+Kernel:    2022-05-24 - 7208c9842c50f97327aac20be62edc8ad230f05c
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       7  suppressed report
+The bug was not found.
+About 2585 commits remaining
+
+2026-04-30 17:01:04
+Session:   5
+Kernel:    2022-05-11 - 01f4685797a5723b0046da03c30185ac9ff42b30
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    2  WARNING in ipgre_xmit (8) (has report)
+The bug was found.
+About 1292 commits remaining
+
+2026-04-30 17:15:38
+Session:   6
+Kernel:    2022-04-27 - 50c6afabfd2ae91a4ff0e2feb14fe702b0688ec5
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       9  suppressed report
+The bug was not found.
+About 1345 commits remaining
+
+2026-04-30 17:38:11
+Session:   7
+Kernel:    2022-05-03 - f39af96d352dd4f36a4a43601ea90561e17e5ca6
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       9  suppressed report
+The bug was not found.
+About 2634 commits remaining
+
+2026-04-30 18:00:47
+Session:   8
+Kernel:    2022-05-04 - 0c38a5bd60ebce1172e27cfaf37e7b855f5392a3
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 553 commits remaining
+
+2026-04-30 18:23:17
+Session:   9
+Kernel:    2022-05-09 - 13e920d93e37fcaef4a9309515798a3cae9dcf19
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+      10  WARNING: ODEBUG bug in netdev_run_todo (has report)
+The bug was not found.
+About 98 commits remaining
+
+2026-04-30 18:43:03
+Session:   10
+Kernel:    2022-05-09 - e2c45931ff124381e6389c5e226a9527ff8c9969
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+      10  suppressed report
+The bug was not found.
+About 50 commits remaining
+
+2026-04-30 19:01:07
+Session:   11
+Kernel:    2022-05-10 - bca56ea6849fafcbc7d50b2338bd06385474a370
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 34 commits remaining
+
+2026-04-30 19:19:21
+Session:   12
+Kernel:    2022-05-10 - 53a332f222c015cb82349fd4f6b58cb14f574e8d
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 25 commits remaining
+
+2026-04-30 19:37:33
+Session:   13
+Kernel:    2022-05-11 - dc3a2001f61611347c057fea422c382b9ce3cfcb
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       8  suppressed report
+The bug was not found.
+About 9 commits remaining
+
+2026-04-30 19:51:53
+Session:   14
+Kernel:    2022-05-11 - d7ea0d9df2a6265b2b180d17ebc64b38105968fc
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    2  WARNING in ipgre_xmit (8) (has report)
+The bug was found.
+About 5 commits remaining
+
+2026-04-30 20:02:06
+Session:   15
+Kernel:    2022-05-11 - d268c1f5cfc92eb5bb605f7365769aacd93be234
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 3 commits remaining
+
+2026-04-30 20:20:08
+Session:   16
+Kernel:    2022-05-11 - 66e4c8d950083df8e12981babca788e1635c92b6
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    2  WARNING in ipgre_xmit (8) (has report)
+Running syz-repro.
+New PoC saved at /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0148-1.prog
+Primary PoC:     /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0148-1.prog
+Run Time:        0h9m0s
+The bug was found.
+About 2 commits remaining
+
+==== Partial Result: Focused Fuzzing ====
+Reproducer:           /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0148-1.prog
+Bisection Result:     2022-05-11 - 66e4c8d950083df8e12981babca788e1635c92b6
+Bisected Commit Name: net: warn if transport header was not set
+Stage Time:           5h3m5s
+Run Time:             5h3m7s
+=========================================
+
+==== Anchor Commit ====
+
+2026-04-30 20:35:40
+Session:   17
+Kernel:    2022-05-11 - d268c1f5cfc92eb5bb605f7365769aacd93be234
+Compiler:  ccache gcc
+PoC:       /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0148-1.prog
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+
+Failure: This bug cannot be found at the anchor commit.
+
+====================================================================================================================================================
+Bug Name:             WARNING in ipgre_xmit
+Bug ID:               bug0148
+Bug Link:             https://syzkaller.appspot.com/bug?id=ffb9228cab75ad9d812af93d19e9637873d18439
+Bisection Result:     2022-05-11 - 66e4c8d950083df8e12981babca788e1635c92b6
+Bisected Commit Name: net: warn if transport header was not set
+Run Time:             5h14m53s
+
+Anchor Commit:        2022-06-02 - 17d8e3d90b6989419806c1926b894d7d7483a25b
+Bisection Result:     2022-05-11 - 66e4c8d950083df8e12981babca788e1635c92b6

@@ -1,0 +1,63 @@
+./bin/meerkat -i 1 -c /home/author/meerkat/wd-meerkat-1/meerkat.cfg -a 81ac25651a62c958bb0e074e0d4e25060ea557dd -F ff-test,stateful-corpus,poc-test,ff-no-find-backup
+Bisecting:          BUG: sleeping function called from invalid context in static_key_slow_inc
+Syzbot Link:        https://syzkaller.appspot.com/bug?id=6f32d3bb387424036a0ce937607c7697038beaac
+Working Name:       bug0138
+
+Aliases:
+    BUG: sleeping function called from invalid context in static_key_slow_inc
+
+Anchor Commit:      81ac25651a62c958bb0e074e0d4e25060ea557dd
+Repository:         https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
+Branch:             master
+Arch:               amd64
+
+Meerkat:            /home/author/meerkat/
+Version:            1.2.0
+Kernel:             /home/author/meerkat/wd-meerkat-1/kernel/
+Syzkaller:          /home/author/meerkat/syzkaller/
+Compilers:          /home/author/meerkat/compilers/
+Compiler:           gcc (Ubuntu 12.3.0-1ubuntu1~22.04.3) 12.3.0
+Linker:             GNU ld (GNU Binutils for Ubuntu) 2.38
+Ccache:             ccache version 4.5.1
+Image:              /home/author/meerkat/image/stretch/stretch.img
+Image Key:          /home/author/meerkat/image/stretch/stretch.id_rsa
+
+Workdir:            /home/author/meerkat/wd-meerkat-1/
+Kconfig:            /home/author/meerkat/wd-meerkat-1/config-bug0138.txt
+Reproducers: (1)    /home/author/meerkat/wd-meerkat-1/reproducers/
+Primary PoC:        /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0138-1.prog
+Syzkaller Workdir:  /home/author/meerkat/wd-meerkat-1/wd-kaller/
+Log Directory:      /home/author/meerkat/wd-meerkat-1/log/
+
+Syscalls: (18)      ["mmap", "openat$cgroup_ro", "sendfile", "sendmsg$L2TP_CMD_TUNNEL_CREATE", "socket$nl_generic", "syz_genetlink_get_family_id$l2tp", "write$binfmt_script", "openat$cgroup_root", "openat$binfmt", "socket$netlink", "socket", "syz_create_resource$binfmt", "socket$inet_udp", "socket$inet6_udp", "socket$l2tp", "socket$l2tp6", "socket$inet", "socket$inet6"]
+VM Count:           8
+CPU Count:          2
+Procs:              16
+Memory:             4096
+Make Procs:         16
+Max Time:           10
+Max Attempts:       1
+
+==== Anchor Commit ====
+
+2026-04-30 00:26:43
+Session:   1
+Kernel:    2022-11-17 - 81ac25651a62c958bb0e074e0d4e25060ea557dd
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  INFO: rcu detected stall in corrupted
+Attempt 2: (RETRY)
+    No crashes found.
+Attempt 3: (RETRY)
+    Time  Bug Name
+       2  INFO: rcu detected stall in corrupted
+The bug was not found.
+
+Failure: This bug cannot be found at the anchor commit.
+
+==== Partial Result: Focused Fuzzing ====
+Bisection Result:     Failed to reproduce at the anchor commit.
+Stage Time:           0h38m2s
+Run Time:             0h38m4s
+=========================================

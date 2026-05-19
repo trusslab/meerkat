@@ -1,0 +1,2597 @@
+./bin/meerkat -i 1 -c /home/author/meerkat/wd-meerkat-1/meerkat.cfg -a 7f50d4dfe816dd916a7cbf39039674825c2b388b -F ff-test,stateful-corpus,poc-test,ff-no-find-backup
+Bisecting:          KASAN: use-after-free Read in nf_confirm
+Syzbot Link:        https://syzkaller.appspot.com/bug?id=8d094d6bc5fba75ff8d065959e44152c39e58690
+Working Name:       bug0096
+
+Aliases:
+    KASAN: use-after-free Read in nf_confirm
+
+Anchor Commit:      7f50d4dfe816dd916a7cbf39039674825c2b388b
+Repository:         https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
+Branch:             master
+Arch:               amd64
+
+Meerkat:            /home/author/meerkat/
+Version:            1.2.0
+Kernel:             /home/author/meerkat/wd-meerkat-1/kernel/
+Syzkaller:          /home/author/meerkat/syzkaller/
+Compilers:          /home/author/meerkat/compilers/
+Compiler:           gcc (Ubuntu 12.3.0-1ubuntu1~22.04.3) 12.3.0
+Linker:             GNU ld (GNU Binutils for Ubuntu) 2.38
+Ccache:             ccache version 4.5.1
+Image:              /home/author/meerkat/image/stretch/stretch.img
+Image Key:          /home/author/meerkat/image/stretch/stretch.id_rsa
+
+Workdir:            /home/author/meerkat/wd-meerkat-1/
+Kconfig:            /home/author/meerkat/wd-meerkat-1/config-bug0096.txt
+Reproducers: (1)    /home/author/meerkat/wd-meerkat-1/reproducers/
+Primary PoC:        /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0096-1.prog
+Syzkaller Workdir:  /home/author/meerkat/wd-meerkat-1/wd-kaller/
+Log Directory:      /home/author/meerkat/wd-meerkat-1/log/
+
+Syscalls: (18)      ["connect$rxrpc", "recvmmsg", "sendmmsg", "sendmsg", "socket", "write$binfmt_elf32", "socket$rxrpc", "openat$binfmt", "ioctl$F2FS_IOC_START_ATOMIC_WRITE", "openat$selinux_enforce", "getrusage", "clock_gettime", "syz_create_resource$binfmt", "ioctl$sock_SIOCGIFINDEX", "ioctl$ifreq_SIOCGIFINDEX_vcan", "ioctl$IOCTL_GET_NCIDEV_IDX", "utimes", "openat$nci"]
+VM Count:           8
+CPU Count:          2
+Procs:              16
+Memory:             4096
+Make Procs:         16
+Max Time:           10
+Max Attempts:       1
+
+==== Anchor Commit ====
+
+2026-04-25 02:57:51
+Session:   1
+Kernel:    2022-05-26 - 7f50d4dfe816dd916a7cbf39039674825c2b388b
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    3  KASAN: use-after-free Read in nf_confirm (has report)
+Attempt 2: (RETRY)
+    Time  Bug Name
+***    4  KASAN: use-after-free Read in nf_confirm (has report)
+       4  KASAN: slab-out-of-bounds Read in cttimeout_net_exit (3) (has report)
+Attempt 3: (RETRY)
+    Time  Bug Name
+       3  KASAN: slab-out-of-bounds Read in cttimeout_net_exit (has report)
+***    4  KASAN: use-after-free Read in nf_confirm (has report)
+       4  KASAN: slab-out-of-bounds Read in cttimeout_net_exit (3) (has report)
+The bug was found.
+
+New Max Time: 10
+
+==== Major Release Search ====
+11 Releases
+
+2026-04-25 03:21:57
+Session:   2
+Kernel:    2022-05-22 - 4b0986a3613c92f4ec1bdc7f60ec66fea135991f (v5.18)
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       8  SYZFAIL: tun: ioctl(TUNSETIFF) failed
+       9  SYZFAIL: tun: ioctl(TUNSETIFF) failed (2)
+       9  SYZFAIL: mmap of data segment failed (5)
+The bug was not found.
+This commit is flagged as unstable.
+About 10 releases remaining
+
+2026-04-25 03:44:27
+Session:   3
+Kernel:    2022-03-20 - f443e374ae131c168a065ea1748feac6b2e76613 (v5.17)
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       3  SYZFAIL: mmap of data segment failed (2)
+       4  SYZFAIL: mmap of data segment failed
+       5  SYZFAIL: mmap of data segment failed
+       6  SYZFAIL: mmap of data segment failed
+       8  SYZFAIL: mmap of data segment failed (6)
+      10  SYZFAIL: mmap of data segment failed (4)
+The bug was not found.
+This commit is flagged as unstable.
+About 9 releases remaining
+
+2026-04-25 04:06:42
+Session:   4
+Kernel:    2022-01-09 - df0cc57e057f18e44dac8e6c18aba47ab53202f9 (v5.16)
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       3  SYZFAIL: mmap of data segment failed (2)
+       5  SYZFAIL: mmap of data segment failed
+       6  SYZFAIL: mmap of data segment failed
+       7  SYZFAIL: mmap of data segment failed (5)
+       8  SYZFAIL: mmap of data segment failed (2)
+      10  SYZFAIL: mmap of data segment failed
+The bug was not found.
+This commit is flagged as unstable.
+About 8 releases remaining
+
+2026-04-25 04:29:17
+Session:   5
+Kernel:    2021-08-29 - 7d2a07b769330c34b4deabeed939325c77a7ec2f (v5.14)
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       3  SYZFAIL: mmap of data segment failed
+       5  WARNING in selinux_ima_measure_state (3) (has report)
+       6  WARNING in selinux_ima_measure_state (has report)
+       7  WARNING in selinux_ima_measure_state (3) (has report)
+       8  WARNING in selinux_ima_measure_state (5) (has report)
+       9  WARNING in selinux_ima_measure_state (2) (has report)
+      10  WARNING in selinux_ima_measure_state (2) (has report)
+The bug was not found.
+This commit is flagged as unstable.
+About 7 releases remaining
+
+2026-04-25 04:50:49
+Session:   6
+Kernel:    2021-04-25 - 9f4ad9e425a1d3b6a34617b8ea226d56a119a717 (v5.12)
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Error: index error parsing basic report
+Attempt 1:
+    Time  Bug Name
+       4  unregister_netdevice: waiting for DEV to become free
+       6  BUG: using smp_processor_id() in preemptible code in radix_tree_node_alloc (has report)
+       9  SYZFAIL: mmap of data segment failed
+The bug was not found.
+This commit is flagged as unstable.
+About 6 releases remaining
+
+2026-04-25 05:12:04
+Session:   7
+Kernel:    2020-12-13 - 2c85ebc57b3e1817b6ce1a6b703928e113a90442 (v5.10)
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       4  SYZFAIL: mmap of data segment failed (2)
+       5  SYZFAIL: mmap of data segment failed
+       7  WARNING in sta_info_insert_rcu (2) (has report)
+      10  SYZFAIL: mmap of data segment failed (3)
+The bug was not found.
+This commit is flagged as unstable.
+About 5 releases remaining
+
+2026-04-25 05:33:00
+Session:   8
+Kernel:    2020-08-02 - bcf876870b95592b52519ed4aafcf9d95999bc9c (v5.8)
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Error: index error parsing basic report
+Attempt 1:
+    Time  Bug Name
+       3  SYZFAIL: mmap of data segment failed (2)
+       5  BUG: using smp_processor_id() in preemptible code in radix_tree_node_alloc (2) (has report)
+       5  SYZFAIL: mmap of data segment failed
+       6  SYZFAIL: mmap of data segment failed
+       9  SYZFAIL: mmap of data segment failed (2)
+      10  SYZFAIL: mmap of data segment failed (2)
+The bug was not found.
+This commit is flagged as unstable.
+About 4 releases remaining
+
+2026-04-25 05:53:25
+Session:   9
+Kernel:    2020-03-29 - 7111951b8d4973bda27ff663f2cf18b663d15b48 (v5.6)
+Compiler:  ccache /home/author/meerkat/compilers/gcc-8.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       2  general protection fault in rds_ib_add_one (3) (has report)
+       3  general protection fault in rds_ib_add_one (5) (has report)
+       4  WARNING in hsr_addr_subst_dest (5) (has report)
+       5  WARNING in hsr_addr_subst_dest (4) (has report)
+       5  general protection fault in rds_ib_add_one (3) (has report)
+       6  WARNING in hsr_addr_subst_dest (has report)
+       6  general protection fault in rds_ib_add_one (has report)
+       7  WARNING in hsr_addr_subst_dest (3) (has report)
+       7  general protection fault in rds_ib_add_one (2) (has report)
+       8  general protection fault in rds_ib_add_one (2) (has report)
+       9  general protection fault in rds_ib_add_one (has report)
+      10  general protection fault in rds_ib_add_one (has report)
+The bug was not found.
+About 3 releases remaining
+
+==== Kernel Bisection ====
+198014 Linux commits
+
+2026-04-25 06:15:14
+Session:   10
+Kernel:    2021-04-26 - f7857bf3745e9ede6367a8ff89c1c4f308bfd914
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Error: index error parsing basic report
+Attempt 1:
+    Time  Bug Name
+       3  SYZFAIL: mmap of data segment failed (2)
+       4  SYZFAIL: mmap of data segment failed
+       5  unregister_netdevice: waiting for DEV to become free
+       6  unregister_netdevice: waiting for DEV to become free
+       7  SYZFAIL: mmap of data segment failed
+       8  BUG: using smp_processor_id() in preemptible code in radix_tree_node_alloc (has report)
+       9  BUG: using smp_processor_id() in preemptible code in radix_tree_node_alloc (has report)
+       9  SYZFAIL: mmap of data segment failed
+      10  unregister_netdevice: waiting for DEV to become free (2)
+      10  SYZFAIL: mmap of data segment failed
+The bug was not found.
+This commit is flagged as unstable.
+About 198014 commits remaining
+
+2026-04-25 06:37:27
+Session:   11
+Kernel:    2021-06-18 - d25a944693c7949842bbba3597481d7fd264e3ed
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       2  general protection fault in smc_tx_sendmsg (2) (has report)
+       3  general protection fault in kcm_sendmsg (3) (has report)
+       3  general protection fault in smc_tx_sendmsg (2) (has report)
+       4  general protection fault in kcm_sendmsg (3) (has report)
+       4  general protection fault in smc_tx_sendmsg (has report)
+       5  general protection fault in kcm_sendmsg (3) (has report)
+       5  general protection fault in smc_tx_sendmsg (2) (has report)
+       6  general protection fault in kcm_sendmsg (3) (has report)
+       6  general protection fault in smc_tx_sendmsg (has report)
+       8  general protection fault in smc_tx_sendmsg (4) (has report)
+       8  WARNING in selinux_ima_measure_state (has report)
+       9  general protection fault in smc_tx_sendmsg (has report)
+       9  WARNING in selinux_ima_measure_state (has report)
+      10  general protection fault in kcm_sendmsg (2) (has report)
+      10  general protection fault in smc_tx_sendmsg (has report)
+      10  WARNING in selinux_ima_measure_state (has report)
+The bug was not found.
+About 84616 commits remaining
+
+2026-04-25 06:58:53
+Session:   12
+Kernel:    2021-11-22 - 1005f19b9357b81aa64e1decd08d6e332caaa284
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       3  SYZFAIL: mmap of data segment failed
+       4  SYZFAIL: mmap of data segment failed
+       9  WARNING in selinux_ima_measure_state (has report)
+       9  SYZFAIL: mmap of data segment failed (7)
+The bug was not found.
+This commit is flagged as unstable.
+About 84616 commits remaining
+
+2026-04-25 07:21:06
+Session:   13
+Kernel:    2021-12-04 - 89b93a7b15f75d04ed579baeb4d941e8ce7634c8
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       3  WARNING in selinux_ima_measure_state (has report)
+       4  SYZFAIL: mmap of data segment failed (2)
+       6  unregister_netdevice: waiting for DEV to become free
+       7  WARNING in selinux_ima_measure_state (has report)
+       8  WARNING in selinux_ima_measure_state (2) (has report)
+       9  WARNING in selinux_ima_measure_state (has report)
+       9  SYZFAIL: mmap of data segment failed (2)
+      10  SYZFAIL: tun: ioctl(TUNSETIFF) failed
+The bug was not found.
+This commit is flagged as unstable.
+About 84616 commits remaining
+
+2026-04-25 07:43:25
+Session:   14
+Kernel:    2021-10-06 - 2684ac05a8c4d2d5c49e6c11eb6206b30a284813
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       3  SYZFAIL: mmap of data segment failed
+       5  WARNING in selinux_ima_measure_state (has report)
+       6  WARNING in selinux_ima_measure_state (3) (has report)
+       6  SYZFAIL: mmap of data segment failed
+       8  WARNING in selinux_ima_measure_state (has report)
+       8  SYZFAIL: mmap of data segment failed
+       9  WARNING in selinux_ima_measure_state (2) (has report)
+       9  SYZFAIL: mmap of data segment failed
+The bug was not found.
+This commit is flagged as unstable.
+About 84616 commits remaining
+
+2026-04-25 08:05:20
+Session:   15
+Kernel:    2022-02-09 - 953f534a7ed6b725d4f101d2949393acc9262880
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       6  WARNING in selinux_ima_measure_state (2) (has report)
+       7  WARNING in selinux_ima_measure_state (4) (has report)
+       8  WARNING in selinux_ima_measure_state (4) (has report)
+       9  WARNING in selinux_ima_measure_state (2) (has report)
+The bug was not found.
+About 42502 commits remaining
+
+2026-04-25 08:21:46
+Session:   16
+Kernel:    2022-03-24 - 7403e6d8263937dea206dd201fed1ceed190ca18
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       3  SYZFAIL: mmap of data segment failed
+       7  SYZFAIL: mmap of data segment failed (3)
+       8  SYZFAIL: mmap of data segment failed (5)
+      10  SYZFAIL: mmap of data segment failed
+The bug was not found.
+This commit is flagged as unstable.
+About 42502 commits remaining
+
+2026-04-25 08:44:13
+Session:   17
+Kernel:    2022-02-22 - e03525794aff713d0de66431450133a7cc29f925
+Compiler:  ccache gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0096-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+       2  WARNING: suspicious RCU usage in hsr_create_self_node (6) (has report)
+       3  WARNING: suspicious RCU usage in hsr_create_self_node (6) (has report)
+       4  WARNING: suspicious RCU usage in hsr_create_self_node (6) (has report)
+       5  WARNING: suspicious RCU usage in hsr_create_self_node (6) (has report)
+       6  WARNING: suspicious RCU usage in hsr_create_self_node (5) (has report)
+       7  WARNING: suspicious RCU usage in hsr_create_self_node (6) (has report)
+       8  WARNING: suspicious RCU usage in hsr_create_self_node (6) (has report)
+       9  WARNING: suspicious RCU usage in hsr_create_self_node (6) (has report)
+      10  WARNING: suspicious RCU usage in hsr_create_self_node (5) (has report)
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 42502 commits remaining
+
+2026-04-25 09:06:40
+Session:   18
+Kernel:    2022-05-04 - ada09af92e621ab500dd80a16d1d0299a18a1180
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       3  SYZFAIL: mmap of data segment failed
+       6  SYZFAIL: mmap of data segment failed
+       8  SYZFAIL: mmap of data segment failed (5)
+       9  SYZFAIL: mmap of data segment failed (2)
+      10  SYZFAIL: mmap of data segment failed (2)
+The bug was not found.
+This commit is flagged as unstable.
+About 42502 commits remaining
+
+2026-04-25 09:29:14
+Session:   19
+Kernel:    2022-04-01 - aa4df840d1c5eab2bb33695efe4409b3e5526749
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       7  SYZFAIL: mmap of data segment failed (5)
+       8  SYZFAIL: tun: ioctl(TUNSETIFF) failed
+       8  SYZFAIL: mmap of data segment failed
+      10  SYZFAIL: mmap of data segment failed
+The bug was not found.
+This commit is flagged as unstable.
+About 42502 commits remaining
+
+2026-04-25 09:51:32
+Session:   20
+Kernel:    2022-04-28 - f326c9a6f49b06c0a936d68ae23cb90899835c3b
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       7  KASAN: use-after-free Read in cfusbl_device_notify (has report)
+       8  SYZFAIL: mmap of data segment failed (5)
+       9  SYZFAIL: mmap of data segment failed (2)
+The bug was not found.
+This commit is flagged as unstable.
+About 42502 commits remaining
+
+2026-04-25 10:14:00
+Session:   21
+Kernel:    2022-02-24 - 3d4a0a2a46ab8ff8897dfd6324edee5e8184d2c5
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       8  SYZFAIL: mmap of data segment failed (3)
+       9  KASAN: use-after-free Read in cfusbl_device_notify (has report)
+       9  SYZFAIL: mmap of data segment failed (4)
+The bug was not found.
+This commit is flagged as unstable.
+About 42502 commits remaining
+
+2026-04-25 10:36:26
+Session:   22
+Kernel:    2022-05-09 - ff69ec96b87dccb3a29edef8cec5d4fefbbc2055
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       8  KASAN: use-after-free Read in cfusbl_device_notify (has report)
+       9  SYZFAIL: tun: ioctl(TUNSETIFF) failed
+       9  SYZFAIL: mmap of data segment failed (5)
+      10  SYZFAIL: mmap of data segment failed
+The bug was not found.
+This commit is flagged as unstable.
+About 42502 commits remaining
+
+2026-04-25 10:58:57
+Session:   23
+Kernel:    2022-03-28 - 60fce7417fd6c0fef34ca1661bb17d63cf6db30b
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       3  SYZFAIL: mmap of data segment failed (2)
+       9  SYZFAIL: mmap of data segment failed (7)
+      10  SYZFAIL: mmap of data segment failed
+The bug was not found.
+This commit is flagged as unstable.
+About 42502 commits remaining
+
+2026-04-25 11:21:23
+Session:   24
+Kernel:    2022-05-06 - 257d24b3589ba745e5709f180667c6b27e5442aa
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       3  KASAN: use-after-free Read in cfusbl_device_notify (has report)
+       8  SYZFAIL: tun: ioctl(TUNSETIFF) failed
+       9  SYZFAIL: tun: ioctl(TUNSETIFF) failed
+       9  SYZFAIL: mmap of data segment failed (5)
+      10  SYZFAIL: mmap of data segment failed
+The bug was not found.
+This commit is flagged as unstable.
+About 42502 commits remaining
+
+2026-04-25 11:35:46
+Session:   25
+Kernel:    2022-05-04 - a32fa029218f17f48af8bb56e8f618befc650671
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       4  SYZFAIL: mmap of data segment failed
+       6  unregister_netdevice: waiting for DEV to become free
+       8  SYZFAIL: mmap of data segment failed (5)
+       9  SYZFAIL: mmap of data segment failed
+      10  SYZFAIL: mmap of data segment failed
+The bug was not found.
+This commit is flagged as unstable.
+About 42502 commits remaining
+
+2026-04-25 11:50:07
+Session:   26
+Kernel:    2022-05-15 - 2e40316753ee552fb598e8da8ca0d20a04e67453
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       8  unregister_netdevice: waiting for DEV to become free
+       8  SYZFAIL: mmap of data segment failed (3)
+       9  SYZFAIL: mmap of data segment failed (3)
+The bug was not found.
+This commit is flagged as unstable.
+About 42502 commits remaining
+
+2026-04-25 12:04:41
+Session:   27
+Kernel:    2022-03-10 - 63ac8cce506360191975e66d26b32e5e56c83db4
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       8  SYZFAIL: mmap of data segment failed (4)
+       9  SYZFAIL: tun: ioctl(TUNSETIFF) failed
+       9  SYZFAIL: mmap of data segment failed
+      10  SYZFAIL: mmap of data segment failed
+The bug was not found.
+This commit is flagged as unstable.
+About 42502 commits remaining
+
+2026-04-25 12:26:59
+Session:   28
+Kernel:    2022-04-04 - a740f4e684c020ea57a8a198a9322d739f7ab6d5
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       8  SYZFAIL: mmap of data segment failed (5)
+       9  SYZFAIL: mmap of data segment failed (2)
+      10  SYZFAIL: tun: ioctl(TUNSETIFF) failed
+The bug was not found.
+This commit is flagged as unstable.
+About 42502 commits remaining
+
+2026-04-25 12:41:23
+Session:   29
+Kernel:    2022-04-05 - bbfdc5a751a634fcdaae669cc98b3d0e1dc0eedf
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       7  SYZFAIL: mmap of data segment failed
+       8  SYZFAIL: mmap of data segment failed (6)
+       9  SYZFAIL: mmap of data segment failed (2)
+      10  SYZFAIL: mmap of data segment failed (2)
+The bug was not found.
+This commit is flagged as unstable.
+About 42502 commits remaining
+
+2026-04-25 12:59:33
+Session:   30
+Kernel:    2022-01-27 - 4f3a00c7f5b2cfe4e127fd3fe49b55e1b318c01f
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       4  SYZFAIL: mmap of data segment failed
+       8  WARNING in selinux_ima_measure_state (has report)
+       8  SYZFAIL: mmap of data segment failed (4)
+      10  SYZFAIL: mmap of data segment failed (2)
+The bug was not found.
+This commit is flagged as unstable.
+About 42502 commits remaining
+
+2026-04-25 13:22:08
+Session:   31
+Kernel:    2022-03-21 - e7dc00f3d6c323709c5515a7a3d05062a0034b83
+Compiler:  ccache gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0096-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+       2  WARNING in __napi_schedule (6) (has report)
+       3  WARNING in __napi_schedule (5) (has report)
+       4  WARNING in __napi_schedule (6) (has report)
+       5  WARNING in __napi_schedule (5) (has report)
+       6  WARNING in __napi_schedule (6) (has report)
+       7  WARNING in __napi_schedule (5) (has report)
+       8  WARNING in __napi_schedule (5) (has report)
+       9  WARNING in __napi_schedule (6) (has report)
+      10  WARNING in __napi_schedule (5) (has report)
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 42502 commits remaining
+
+2026-04-25 13:44:26
+Session:   32
+Kernel:    2022-01-25 - ebc77bcc6e1660a011483c035d53c461c8dcc4f5
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       5  WARNING in selinux_ima_measure_state (has report)
+       6  WARNING in selinux_ima_measure_state (3) (has report)
+       7  SYZFAIL: mmap of data segment failed (2)
+       8  SYZFAIL: mmap of data segment failed
+       9  SYZFAIL: tun: ioctl(TUNSETIFF) failed
+      10  WARNING in selinux_ima_measure_state (has report)
+The bug was not found.
+This commit is flagged as unstable.
+About 42502 commits remaining
+
+2026-04-25 14:06:52
+Session:   33
+Kernel:    2021-12-17 - 33c6a549641db662621b4bf6993df1589669aaac
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       6  WARNING in selinux_ima_measure_state (has report)
+       8  SYZFAIL: mmap of data segment failed (4)
+       9  SYZFAIL: tun: ioctl(TUNSETIFF) failed
+       9  SYZFAIL: mmap of data segment failed (2)
+The bug was not found.
+This commit is flagged as unstable.
+About 42502 commits remaining
+
+2026-04-25 14:29:11
+Session:   34
+Kernel:    2022-02-10 - aa3b2b4c669205200615dd8a2cc4af4f81fd0335
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  WARNING in selinux_ima_measure_state (has report)
+       7  WARNING in selinux_ima_measure_state (has report)
+       7  SYZFAIL: mmap of data segment failed (6)
+       8  SYZFAIL: mmap of data segment failed
+       9  WARNING in selinux_ima_measure_state (2) (has report)
+The bug was not found.
+This commit is flagged as unstable.
+About 42502 commits remaining
+
+2026-04-25 14:45:49
+Session:   35
+Kernel:    2021-11-15 - 4c375743c5fe1ef84d1dd7269dd12585957f403e
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       4  SYZFAIL: mmap of data segment failed
+       8  WARNING in selinux_ima_measure_state (3) (has report)
+       8  SYZFAIL: mmap of data segment failed (2)
+       9  SYZFAIL: mmap of data segment failed (2)
+      10  WARNING in selinux_ima_measure_state (5) (has report)
+      10  SYZFAIL: mmap of data segment failed
+The bug was not found.
+This commit is flagged as unstable.
+About 42502 commits remaining
+
+2026-04-25 15:07:44
+Session:   36
+Kernel:    2022-02-24 - 05f2281b4192320a20d746df6146b3dd82f96e39
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       3  SYZFAIL: mmap of data segment failed
+       6  WARNING in selinux_ima_measure_state (3) (has report)
+       7  WARNING in selinux_ima_measure_state (2) (has report)
+       7  SYZFAIL: mmap of data segment failed
+       8  WARNING in selinux_ima_measure_state (has report)
+       9  WARNING in selinux_ima_measure_state (3) (has report)
+The bug was not found.
+This commit is flagged as unstable.
+About 42502 commits remaining
+
+2026-04-25 15:22:35
+Session:   37
+Kernel:    2021-11-25 - b3d893ab19026a1e9f808e10314b382cd904e95c
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       6  WARNING in selinux_ima_measure_state (has report)
+       8  WARNING in selinux_ima_measure_state (has report)
+       8  SYZFAIL: mmap of data segment failed (2)
+       9  SYZFAIL: tun: ioctl(TUNSETIFF) failed (2)
+       9  WARNING in selinux_ima_measure_state (has report)
+       9  SYZFAIL: mmap of data segment failed (2)
+The bug was not found.
+This commit is flagged as unstable.
+About 42502 commits remaining
+
+2026-04-25 15:36:59
+Session:   38
+Kernel:    2022-02-04 - f0a6fd1527067da537e9c48390237488719948ed
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       3  SYZFAIL: mmap of data segment failed
+       6  WARNING in selinux_ima_measure_state (has report)
+       7  SYZFAIL: mmap of data segment failed (5)
+       8  SYZFAIL: tun: ioctl(TUNSETIFF) failed
+       8  SYZFAIL: mmap of data segment failed
+       9  WARNING in selinux_ima_measure_state (has report)
+      10  WARNING in selinux_ima_measure_state (2) (has report)
+The bug was not found.
+This commit is flagged as unstable.
+About 42502 commits remaining
+
+2026-04-25 15:59:23
+Session:   39
+Kernel:    2021-12-20 - e047d0372689f5d4231eefb731b60ac64720bbf0
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       4  WARNING in selinux_ima_measure_state (2) (has report)
+       5  WARNING in selinux_ima_measure_state (2) (has report)
+       6  WARNING in selinux_ima_measure_state (has report)
+       8  SYZFAIL: mmap of data segment failed (4)
+The bug was not found.
+This commit is flagged as unstable.
+About 42502 commits remaining
+
+2026-04-25 16:14:09
+Session:   40
+Kernel:    2022-02-04 - 7eb3848cc8c17a822f4cced5da0aa437e0063097
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       6  WARNING in selinux_ima_measure_state (has report)
+       8  SYZFAIL: mmap of data segment failed (6)
+       9  WARNING in selinux_ima_measure_state (2) (has report)
+      10  WARNING in selinux_ima_measure_state (2) (has report)
+The bug was not found.
+This commit is flagged as unstable.
+About 42502 commits remaining
+
+2026-04-25 16:36:39
+Session:   41
+Kernel:    2021-12-07 - 1e8b7f43774aa15b95d93923a032b0fee1ed1964
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       2  possible deadlock in smc_switch_to_fallback (4)
+       3  possible deadlock in smc_switch_to_fallback (4)
+       4  possible deadlock in smc_switch_to_fallback (3)
+       5  possible deadlock in smc_switch_to_fallback (3)
+       6  possible deadlock in smc_switch_to_fallback (6)
+       7  possible deadlock in smc_switch_to_fallback (6)
+       8  possible deadlock in smc_switch_to_fallback (4)
+       9  possible deadlock in smc_switch_to_fallback (2)
+The bug was not found.
+About 41926 commits remaining
+
+2026-04-25 16:58:54
+Session:   42
+Kernel:    2022-03-02 - c674c5b9342e5cb0f3d9e9bcaf37dbe2087845e5
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       3  SYZFAIL: mmap of data segment failed
+       6  WARNING in selinux_ima_measure_state (has report)
+       9  SYZFAIL: mmap of data segment failed (2)
+      10  SYZFAIL: tun: ioctl(TUNSETIFF) failed
+      10  SYZFAIL: mmap of data segment failed (4)
+The bug was not found.
+This commit is flagged as unstable.
+About 41926 commits remaining
+
+2026-04-25 17:21:16
+Session:   43
+Kernel:    2022-04-15 - a75de820575d54185a7569494e89f83dca49368e
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       7  SYZFAIL: mmap of data segment failed (4)
+       8  SYZFAIL: mmap of data segment failed (4)
+      10  SYZFAIL: mmap of data segment failed
+The bug was not found.
+This commit is flagged as unstable.
+About 41926 commits remaining
+
+2026-04-25 17:43:51
+Session:   44
+Kernel:    2022-02-28 - 43429ea74a121683dc231d0a694bb32734caea92
+Compiler:  ccache gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0096-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+       2  WARNING: suspicious RCU usage in hsr_create_self_node (6) (has report)
+       3  WARNING: suspicious RCU usage in hsr_create_self_node (6) (has report)
+       4  WARNING: suspicious RCU usage in hsr_create_self_node (6) (has report)
+       5  WARNING: suspicious RCU usage in hsr_create_self_node (5) (has report)
+       6  WARNING: suspicious RCU usage in hsr_create_self_node (6) (has report)
+       7  WARNING: suspicious RCU usage in hsr_create_self_node (6) (has report)
+       8  WARNING: suspicious RCU usage in hsr_create_self_node (6) (has report)
+       9  WARNING: suspicious RCU usage in hsr_create_self_node (5) (has report)
+      10  WARNING: suspicious RCU usage in hsr_create_self_node (6) (has report)
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 41926 commits remaining
+
+2026-04-25 18:06:18
+Session:   45
+Kernel:    2022-04-13 - 4e140f59d285c1ca1e5c81b4c13e27366865bd09
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       8  SYZFAIL: mmap of data segment failed (7)
+       9  SYZFAIL: mmap of data segment failed
+      10  SYZFAIL: mmap of data segment failed (2)
+The bug was not found.
+This commit is flagged as unstable.
+About 41926 commits remaining
+
+2026-04-25 18:27:16
+Session:   46
+Kernel:    2022-03-29 - fd04847372ba86347066c536ba99bc3c1f351334
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       4  SYZFAIL: mmap of data segment failed
+       5  SYZFAIL: mmap of data segment failed (2)
+       8  SYZFAIL: mmap of data segment failed (4)
+      10  unregister_netdevice: waiting for DEV to become free
+      10  SYZFAIL: mmap of data segment failed
+The bug was not found.
+This commit is flagged as unstable.
+About 41926 commits remaining
+
+2026-04-25 18:49:35
+Session:   47
+Kernel:    2022-04-08 - a8340cc02beed4ffbb5e7b1b0eadca445323fc6a
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       8  SYZFAIL: mmap of data segment failed (8)
+The bug was not found.
+This commit is flagged as unstable.
+About 41926 commits remaining
+
+2026-04-25 19:12:10
+Session:   48
+Kernel:    2022-05-04 - 0ee42ab70118ace9a09861bccaaf43e9779fa91e
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       3  SYZFAIL: mmap of data segment failed
+       7  SYZFAIL: mmap of data segment failed
+       8  SYZFAIL: mmap of data segment failed (5)
+       9  SYZFAIL: mmap of data segment failed (3)
+The bug was not found.
+This commit is flagged as unstable.
+About 41926 commits remaining
+
+2026-04-25 19:26:55
+Session:   49
+Kernel:    2022-04-06 - 79a6c9a4f3c4473dd508a7384ae328bf683b7382
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       8  KASAN: use-after-free Read in cfusbl_device_notify (has report)
+       8  SYZFAIL: tun: ioctl(TUNSETIFF) failed
+       8  SYZFAIL: mmap of data segment failed (3)
+       9  SYZFAIL: tun: ioctl(TUNSETIFF) failed
+      10  unregister_netdevice: waiting for DEV to become free
+      10  SYZFAIL: mmap of data segment failed
+The bug was not found.
+This commit is flagged as unstable.
+About 41926 commits remaining
+
+2026-04-25 19:46:14
+Session:   50
+Kernel:    2022-03-10 - c359931d2545173c4328d828643035259a0ba936
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       9  SYZFAIL: tun: ioctl(TUNSETIFF) failed
+       9  SYZFAIL: mmap of data segment failed (5)
+      10  SYZFAIL: tun: ioctl(TUNSETIFF) failed (2)
+The bug was not found.
+This commit is flagged as unstable.
+About 41926 commits remaining
+
+2026-04-25 20:08:44
+Session:   51
+Kernel:    2022-05-03 - ede17552b1e70d4435decba026b86e137b516248
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       8  SYZFAIL: mmap of data segment failed (2)
+       9  KASAN: use-after-free Read in cfusbl_device_notify (has report)
+       9  SYZFAIL: tun: ioctl(TUNSETIFF) failed
+       9  SYZFAIL: mmap of data segment failed (2)
+      10  SYZFAIL: mmap of data segment failed (2)
+The bug was not found.
+This commit is flagged as unstable.
+About 41926 commits remaining
+
+2026-04-25 20:26:51
+Session:   52
+Kernel:    2022-03-16 - 9a657684158f44d04845c770c1cfa57989fc2400
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       8  KASAN: use-after-free Read in cfusbl_device_notify (has report)
+       8  SYZFAIL: tun: ioctl(TUNSETIFF) failed
+       8  SYZFAIL: mmap of data segment failed (5)
+       9  SYZFAIL: mmap of data segment failed (2)
+      10  SYZFAIL: mmap of data segment failed
+The bug was not found.
+This commit is flagged as unstable.
+About 41926 commits remaining
+
+2026-04-25 20:49:28
+Session:   53
+Kernel:    2022-03-30 - 95124339875c8d9c092eb2fa3993e4751e1be48d
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       8  SYZFAIL: mmap of data segment failed (7)
+       9  SYZFAIL: mmap of data segment failed
+The bug was not found.
+This commit is flagged as unstable.
+About 41926 commits remaining
+
+2026-04-25 21:12:06
+Session:   54
+Kernel:    2022-03-24 - 25fd2d41b505d0640bdfe67aa77c549de2d3c18a
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       9  SYZFAIL: mmap of data segment failed (3)
+      10  KASAN: use-after-free Read in cfusbl_device_notify (has report)
+      10  SYZFAIL: tun: ioctl(TUNSETIFF) failed
+      10  SYZFAIL: mmap of data segment failed (2)
+The bug was not found.
+This commit is flagged as unstable.
+About 41926 commits remaining
+
+2026-04-25 21:34:44
+Session:   55
+Kernel:    2022-01-31 - 071a13332de894cb3c38b17c82350f1e4167c023
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       4  WARNING in selinux_ima_measure_state (2) (has report)
+       5  WARNING in selinux_ima_measure_state (3) (has report)
+       7  WARNING in selinux_ima_measure_state (has report)
+       7  SYZFAIL: mmap of data segment failed (2)
+       8  SYZFAIL: tun: ioctl(TUNSETIFF) failed
+       8  WARNING in selinux_ima_measure_state (has report)
+       9  WARNING in selinux_ima_measure_state (2) (has report)
+      10  SYZFAIL: mmap of data segment failed
+The bug was not found.
+This commit is flagged as unstable.
+About 41926 commits remaining
+
+2026-04-25 21:57:14
+Session:   56
+Kernel:    2022-03-24 - 66711cfea642a162bc99abdefe1645b26dbd778f
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       9  SYZFAIL: mmap of data segment failed (3)
+      10  SYZFAIL: tun: ioctl(TUNSETIFF) failed (3)
+      10  SYZFAIL: mmap of data segment failed (2)
+The bug was not found.
+This commit is flagged as unstable.
+About 41926 commits remaining
+
+2026-04-25 22:19:49
+Session:   57
+Kernel:    2022-01-29 - 567e44fb51b4f909ae58038a7301352eecea8426
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       4  WARNING in selinux_ima_measure_state (2) (has report)
+       5  WARNING in selinux_ima_measure_state (3) (has report)
+       7  WARNING in selinux_ima_measure_state (has report)
+       8  WARNING in selinux_ima_measure_state (has report)
+       8  SYZFAIL: mmap of data segment failed (3)
+      10  WARNING in selinux_ima_measure_state (2) (has report)
+The bug was not found.
+This commit is flagged as unstable.
+About 41926 commits remaining
+
+2026-04-25 22:34:14
+Session:   58
+Kernel:    2021-11-16 - 67d61d30b8a8f33d2a4f269f3a548409827d7b01
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       4  WARNING in selinux_ima_measure_state (has report)
+       5  WARNING in selinux_ima_measure_state (4) (has report)
+       8  SYZFAIL: mmap of data segment failed (3)
+       9  WARNING in selinux_ima_measure_state (has report)
+      10  WARNING in selinux_ima_measure_state (has report)
+The bug was not found.
+This commit is flagged as unstable.
+About 41926 commits remaining
+
+2026-04-25 22:56:26
+Session:   59
+Kernel:    2022-01-31 - 17ac8af678b6da6a8f1df7da8ebf2c5198741827
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       6  WARNING in selinux_ima_measure_state (2) (has report)
+       7  WARNING in selinux_ima_measure_state (6) (has report)
+       9  WARNING in selinux_ima_measure_state (3) (has report)
+      10  WARNING in selinux_ima_measure_state (has report)
+The bug was not found.
+About 28451 commits remaining
+
+2026-04-25 23:10:51
+Session:   60
+Kernel:    2022-03-28 - 02e2af20f4f9f2aa0c84e9a30a35c02f0fbb7daa
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       7  KASAN: use-after-free Read in cfusbl_device_notify (2) (has report)
+       7  SYZFAIL: mmap of data segment failed (3)
+       9  SYZFAIL: tun: ioctl(TUNSETIFF) failed
+      10  SYZFAIL: mmap of data segment failed (2)
+The bug was not found.
+This commit is flagged as unstable.
+About 28451 commits remaining
+
+2026-04-25 23:33:27
+Session:   61
+Kernel:    2022-04-25 - 30ca44eb2480ede838c7c8c131a7d25589a98f0a
+Compiler:  ccache gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0096-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+       2  WARNING: suspicious RCU usage in hsr_create_self_node (6) (has report)
+       3  WARNING: suspicious RCU usage in hsr_create_self_node (6) (has report)
+       4  WARNING: suspicious RCU usage in hsr_create_self_node (6) (has report)
+       5  WARNING: suspicious RCU usage in hsr_create_self_node (5) (has report)
+       6  WARNING: suspicious RCU usage in hsr_create_self_node (6) (has report)
+       7  WARNING: suspicious RCU usage in hsr_create_self_node (6) (has report)
+       8  WARNING: suspicious RCU usage in hsr_create_self_node (6) (has report)
+       9  WARNING: suspicious RCU usage in hsr_create_self_node (5) (has report)
+      10  WARNING: suspicious RCU usage in hsr_create_self_node (6) (has report)
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 28451 commits remaining
+
+2026-04-25 23:56:00
+Session:   62
+Kernel:    2022-04-11 - 15cf0b82271b1823fb02ab8c377badba614d95d5
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       5  unregister_netdevice: waiting for DEV to become free
+       8  KASAN: use-after-free Read in cfusbl_device_notify (has report)
+       8  SYZFAIL: mmap of data segment failed (5)
+       9  KASAN: use-after-free Read in cfusbl_device_notify (has report)
+      10  SYZFAIL: mmap of data segment failed
+The bug was not found.
+This commit is flagged as unstable.
+About 28451 commits remaining
+
+2026-04-26 00:18:34
+Session:   63
+Kernel:    2022-03-14 - 871b9316e7a778ff97bdc34fdb2f2977f616651d
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       8  SYZFAIL: mmap of data segment failed
+       9  SYZFAIL: tun: ioctl(TUNSETIFF) failed
+       9  SYZFAIL: mmap of data segment failed (4)
+      10  SYZFAIL: mmap of data segment failed
+The bug was not found.
+This commit is flagged as unstable.
+About 28451 commits remaining
+
+2026-04-26 00:41:02
+Session:   64
+Kernel:    2022-05-11 - 03a679a1a4ec8fbe44119a6d06eeabdf7944883d
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       9  KASAN: use-after-free Read in __fib6_clean_all (has report)
+       9  SYZFAIL: mmap of data segment failed (6)
+      10  SYZFAIL: mmap of data segment failed
+The bug was not found.
+This commit is flagged as unstable.
+About 28451 commits remaining
+
+2026-04-26 01:03:21
+Session:   65
+Kernel:    2022-03-06 - 9ddef266bcff8fdd138d61c4ada25cfdf062e3c1
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       8  unregister_netdevice: waiting for DEV to become free
+       8  SYZFAIL: mmap of data segment failed (3)
+       9  SYZFAIL: tun: ioctl(TUNSETIFF) failed
+       9  SYZFAIL: mmap of data segment failed (2)
+The bug was not found.
+This commit is flagged as unstable.
+About 28451 commits remaining
+
+2026-04-26 01:25:50
+Session:   66
+Kernel:    2022-04-07 - ccc706353d1b89d8ff1726e575dd4a10f8550fb7
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       4  SYZFAIL: mmap of data segment failed (2)
+       8  SYZFAIL: tun: ioctl(TUNSETIFF) failed
+       8  SYZFAIL: mmap of data segment failed (3)
+       9  SYZFAIL: mmap of data segment failed (2)
+      10  SYZFAIL: mmap of data segment failed
+The bug was not found.
+This commit is flagged as unstable.
+About 28451 commits remaining
+
+2026-04-26 01:40:32
+Session:   67
+Kernel:    2022-03-23 - aeb213cddeb5c31f8d418180e0b9956bfd53b018
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       8  SYZFAIL: mmap of data segment failed (3)
+       9  SYZFAIL: tun: ioctl(TUNSETIFF) failed
+       9  SYZFAIL: mmap of data segment failed (3)
+      10  SYZFAIL: mmap of data segment failed
+The bug was not found.
+This commit is flagged as unstable.
+About 28451 commits remaining
+
+2026-04-26 02:03:02
+Session:   68
+Kernel:    2022-04-09 - 33597f0c48be0836854d43c577e35c8f8a765a7d
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       8  KASAN: use-after-free Read in notifier_call_chain (has report)
+       8  KASAN: use-after-free Read in __fib6_clean_all (has report)
+       8  SYZFAIL: mmap of data segment failed (6)
+The bug was not found.
+This commit is flagged as unstable.
+About 28451 commits remaining
+
+2026-04-26 02:17:44
+Session:   69
+Kernel:    2022-03-01 - 6bf536eb5c8ca011d1ff57b5c5f7c57ceac06a37
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       7  SYZFAIL: mmap of data segment failed
+       8  KASAN: use-after-free Read in __fib6_clean_all (2) (has report)
+       8  SYZFAIL: mmap of data segment failed
+       9  SYZFAIL: mmap of data segment failed (3)
+      10  SYZFAIL: mmap of data segment failed
+The bug was not found.
+This commit is flagged as unstable.
+About 28451 commits remaining
+
+2026-04-26 02:40:14
+Session:   70
+Kernel:    2022-04-04 - 7e5a7e39d767b60d8631792bd3d7820a6f4a43f8
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       7  KASAN: use-after-free Read in nexthop_flush_dev (has report)
+       8  KASAN: use-after-free Read in notifier_call_chain (has report)
+       8  SYZFAIL: mmap of data segment failed (4)
+       9  SYZFAIL: mmap of data segment failed (2)
+The bug was not found.
+This commit is flagged as unstable.
+About 28451 commits remaining
+
+2026-04-26 02:54:37
+Session:   71
+Kernel:    2022-03-05 - 0b206c6d1066f1ee85e4238a1e34d7437148a9a3
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       4  KASAN: use-after-free Read in notifier_call_chain (has report)
+       6  WARNING: ODEBUG bug in netdev_run_todo (has report)
+       8  SYZFAIL: mmap of data segment failed
+       9  KASAN: use-after-free Read in cfusbl_device_notify (has report)
+       9  KASAN: use-after-free Read in __ethtool_get_link_ksettings (has report)
+       9  SYZFAIL: mmap of data segment failed (3)
+The bug was not found.
+This commit is flagged as unstable.
+About 28451 commits remaining
+
+2026-04-26 03:14:50
+Session:   72
+Kernel:    2022-04-05 - 9a7ef9f86b96be22d009422e4c0ba52e1292492f
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       9  KASAN: use-after-free Read in cfusbl_device_notify (2) (has report)
+       9  SYZFAIL: tun: ioctl(TUNSETIFF) failed
+       9  KASAN: use-after-free Read in __fib6_clean_all (has report)
+       9  SYZFAIL: mmap of data segment failed (3)
+      10  SYZFAIL: mmap of data segment failed
+The bug was not found.
+This commit is flagged as unstable.
+About 28451 commits remaining
+
+2026-04-26 03:37:21
+Session:   73
+Kernel:    2022-03-16 - 51f9325c7b43c604cec8885c8e0d0352b811f1a6
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       4  SYZFAIL: mmap of data segment failed (2)
+       9  SYZFAIL: mmap of data segment failed
+      10  SYZFAIL: mmap of data segment failed (3)
+The bug was not found.
+This commit is flagged as unstable.
+About 28451 commits remaining
+
+2026-04-26 03:59:53
+Session:   74
+Kernel:    2022-03-31 - 50d34a0d151dc7abbdbec781bd7f09f2b3cbf01a
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       3  SYZFAIL: mmap of data segment failed
+       9  KASAN: slab-out-of-bounds Read in cfusbl_device_notify (has report)
+       9  SYZFAIL: mmap of data segment failed (4)
+      10  KASAN: use-after-free Read in cfusbl_device_notify (has report)
+      10  SYZFAIL: mmap of data segment failed (2)
+The bug was not found.
+This commit is flagged as unstable.
+About 28451 commits remaining
+
+2026-04-26 04:22:16
+Session:   75
+Kernel:    2022-05-09 - bbed702412041c370d336f076b783bc9e5e04c21
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       7  WARNING: ODEBUG bug in netdev_run_todo (has report)
+       9  KASAN: use-after-free Read in __fib6_clean_all (has report)
+      10  SYZFAIL: mmap of data segment failed
+The bug was not found.
+This commit is flagged as unstable.
+About 28451 commits remaining
+
+2026-04-26 04:44:55
+Session:   76
+Kernel:    2022-03-02 - 602a4eda68839bb33ca35c54d400e0685bac1d71
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       7  WARNING in selinux_ima_measure_state (3) (has report)
+       8  WARNING in selinux_ima_measure_state (2) (has report)
+       9  WARNING in selinux_ima_measure_state (4) (has report)
+       9  SYZFAIL: mmap of data segment failed
+      10  WARNING in selinux_ima_measure_state (has report)
+The bug was not found.
+This commit is flagged as unstable.
+About 28451 commits remaining
+
+2026-04-26 05:07:29
+Session:   77
+Kernel:    2022-05-16 - 91d6ac1d62c3dc0f102986318f4027ccfa22c638
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       8  KASAN: use-after-free Read in notifier_call_chain (2) (has report)
+       8  SYZFAIL: mmap of data segment failed (6)
+       9  SYZFAIL: mmap of data segment failed
+      10  SYZFAIL: mmap of data segment failed
+The bug was not found.
+This commit is flagged as unstable.
+About 28451 commits remaining
+
+2026-04-26 05:30:04
+Session:   78
+Kernel:    2022-01-25 - de1956f48543e90f94b1194395f33140898b39b2
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       4  WARNING in selinux_ima_measure_state (2) (has report)
+       4  SYZFAIL: mmap of data segment failed
+       5  WARNING in selinux_ima_measure_state (2) (has report)
+       9  no output from test machine
+       9  WARNING in selinux_ima_measure_state (has report)
+       9  SYZFAIL: mmap of data segment failed
+      10  WARNING in selinux_ima_measure_state (2) (has report)
+The bug was not found.
+This commit is flagged as unstable.
+About 28451 commits remaining
+
+2026-04-26 05:52:43
+Session:   79
+Kernel:    2022-05-10 - 12a4d677b1c34717443470c1492fe520638ef39a
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       7  KASAN: use-after-free Read in __fib6_clean_all (has report)
+       7  SYZFAIL: mmap of data segment failed (2)
+       8  KASAN: use-after-free Read in notifier_call_chain (2) (has report)
+       9  SYZFAIL: tun: ioctl(TUNSETIFF) failed
+      10  SYZFAIL: mmap of data segment failed
+The bug was not found.
+This commit is flagged as unstable.
+About 28451 commits remaining
+
+2026-04-26 06:14:57
+Session:   80
+Kernel:    2022-02-04 - f9800dde34e678d7ed1de9e95b4b65a257fd0f93
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       3  SYZFAIL: mmap of data segment failed
+       4  WARNING in selinux_ima_measure_state (5) (has report)
+       8  WARNING in selinux_ima_measure_state (has report)
+       9  SYZFAIL: mmap of data segment failed (3)
+      10  SYZFAIL: mmap of data segment failed
+The bug was not found.
+This commit is flagged as unstable.
+About 28451 commits remaining
+
+2026-04-26 06:30:41
+Session:   81
+Kernel:    2022-04-28 - e583b5c472bd23d450e06f148dc1f37be74f7666
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       7  KASAN: use-after-free Read in notifier_call_chain (has report)
+       7  KASAN: use-after-free Read in cfusbl_device_notify (has report)
+       7  KASAN: use-after-free Read in __fib6_clean_all (has report)
+       7  SYZFAIL: mmap of data segment failed
+       8  SYZFAIL: mmap of data segment failed (3)
+The bug was not found.
+This commit is flagged as unstable.
+About 28451 commits remaining
+
+2026-04-26 06:53:12
+Session:   82
+Kernel:    2022-01-19 - b662000aff84f2ca9660db15e5f8ac926681df27
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       4  WARNING in selinux_ima_measure_state (has report)
+       7  WARNING in selinux_ima_measure_state (has report)
+       7  SYZFAIL: mmap of data segment failed (2)
+       8  WARNING in selinux_ima_measure_state (2) (has report)
+       9  WARNING in selinux_ima_measure_state (has report)
+       9  SYZFAIL: mmap of data segment failed (2)
+      10  WARNING in selinux_ima_measure_state (3) (has report)
+The bug was not found.
+This commit is flagged as unstable.
+About 28451 commits remaining
+
+2026-04-26 07:15:37
+Session:   83
+Kernel:    2022-05-13 - ba9a7dbb232e2694c5885fbd651879fabf44c2e9
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       8  KASAN: use-after-free Read in notifier_call_chain (2) (has report)
+       8  KASAN: slab-out-of-bounds Read in cfusbl_device_notify (has report)
+       8  SYZFAIL: mmap of data segment failed (2)
+       9  KASAN: use-after-free Read in cfusbl_device_notify (has report)
+       9  SYZFAIL: tun: ioctl(TUNSETIFF) failed
+       9  SYZFAIL: mmap of data segment failed
+      10  KASAN: use-after-free Read in cfusbl_device_notify (has report)
+The bug was not found.
+This commit is flagged as unstable.
+About 28451 commits remaining
+
+2026-04-26 07:38:03
+Session:   84
+Kernel:    2022-02-21 - fefee95488412796b293d28c948be6fce63d149b
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       7  WARNING in selinux_ima_measure_state (has report)
+       7  SYZFAIL: mmap of data segment failed (5)
+       8  SYZFAIL: mmap of data segment failed
+       9  unregister_netdevice: waiting for DEV to become free
+       9  SYZFAIL: mmap of data segment failed
+      10  WARNING in selinux_ima_measure_state (has report)
+The bug was not found.
+This commit is flagged as unstable.
+About 28451 commits remaining
+
+2026-04-26 07:53:59
+Session:   85
+Kernel:    2022-04-17 - f0f975a4dde890bfe25ce17bf07a6495453988a4
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       7  KASAN: use-after-free Read in cfusbl_device_notify (has report)
+       7  SYZFAIL: mmap of data segment failed (3)
+       8  SYZFAIL: mmap of data segment failed (3)
+       9  SYZFAIL: mmap of data segment failed
+The bug was not found.
+This commit is flagged as unstable.
+About 28451 commits remaining
+
+2026-04-26 08:13:46
+Session:   86
+Kernel:    2022-01-25 - 10cdc794dae890fb3149e90854e8440cf5bf615e
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       4  WARNING in selinux_ima_measure_state (2) (has report)
+       7  WARNING in selinux_ima_measure_state (2) (has report)
+       7  SYZFAIL: mmap of data segment failed (2)
+       8  SYZFAIL: tun: ioctl(TUNSETIFF) failed
+       8  WARNING in selinux_ima_measure_state (has report)
+       8  SYZFAIL: mmap of data segment failed
+       9  SYZFAIL: tun: ioctl(TUNSETIFF) failed
+       9  WARNING in selinux_ima_measure_state (has report)
+       9  SYZFAIL: mmap of data segment failed
+      10  WARNING in selinux_ima_measure_state (2) (has report)
+The bug was not found.
+This commit is flagged as unstable.
+About 28451 commits remaining
+
+2026-04-26 08:36:19
+Session:   87
+Kernel:    2022-05-02 - 581d69981159b00f0443d171a4b900089f34ccfe
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       8  KASAN: use-after-free Read in cfusbl_device_notify (has report)
+       9  SYZFAIL: mmap of data segment failed (7)
+The bug was not found.
+This commit is flagged as unstable.
+About 28451 commits remaining
+
+2026-04-26 08:58:54
+Session:   88
+Kernel:    2022-03-29 - a4691038b4071ff0d9ae486d8822a2c0d41d5796
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       5  unregister_netdevice: waiting for DEV to become free
+       6  WARNING in selinux_ima_measure_state (has report)
+       7  WARNING in selinux_ima_measure_state (2) (has report)
+       7  SYZFAIL: mmap of data segment failed
+       8  WARNING in selinux_ima_measure_state (has report)
+       8  SYZFAIL: mmap of data segment failed (3)
+      10  SYZFAIL: mmap of data segment failed
+The bug was not found.
+This commit is flagged as unstable.
+About 28451 commits remaining
+
+2026-04-26 09:19:37
+Session:   89
+Kernel:    2022-04-13 - 2603c974b45dbfeece80474ee32173756aac3ba1
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       3  SYZFAIL: mmap of data segment failed
+      10  SYZFAIL: mmap of data segment failed (8)
+The bug was not found.
+This commit is flagged as unstable.
+About 28451 commits remaining
+
+2026-04-26 09:34:25
+Session:   90
+Kernel:    2022-02-04 - 56b4b5abcdab6daf71c5536fca2772f178590e06
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       3  SYZFAIL: mmap of data segment failed
+       4  SYZFAIL: mmap of data segment failed
+       5  SYZFAIL: mmap of data segment failed (2)
+       7  WARNING in selinux_ima_measure_state (has report)
+       7  SYZFAIL: mmap of data segment failed (2)
+       8  SYZFAIL: mmap of data segment failed (2)
+       9  SYZFAIL: mmap of data segment failed (3)
+      10  WARNING in selinux_ima_measure_state (has report)
+The bug was not found.
+This commit is flagged as unstable.
+About 28451 commits remaining
+
+2026-04-26 09:57:00
+Session:   91
+Kernel:    2022-04-05 - aa46154355e1e81ef746470d2e88bdb283508bff
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       8  SYZFAIL: mmap of data segment failed (2)
+      10  no output from test machine
+      10  SYZFAIL: mmap of data segment failed (2)
+The bug was not found.
+This commit is flagged as unstable.
+About 28451 commits remaining
+
+2026-04-26 10:19:31
+Session:   92
+Kernel:    2022-02-17 - edf176f48d87fa25ca93f09362707cf5314bf7ee
+Compiler:  ccache gcc
+Warning: Child process make exited with error status 2.
+Warning: make exited with error status 0x2
+Error: The kernel failed to make.
+Error: The kernel failed to make.
+Attempting to recover.
+
+2026-04-26 10:28:28
+Session:   93
+Kernel:    2022-05-16 - ce9858ea499da025684a7a5f19823c2c3f14bdce
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       7  SYZFAIL: mmap of data segment failed
+       8  SYZFAIL: mmap of data segment failed (3)
+       9  SYZFAIL: mmap of data segment failed (2)
+      10  SYZFAIL: mmap of data segment failed
+The bug was not found.
+This commit is flagged as unstable.
+About 28451 commits remaining
+
+2026-04-26 10:43:43
+Session:   94
+Kernel:    2022-03-24 - 15a809211a6971cac5262c309aeadddc158c64d9
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       7  SYZFAIL: mmap of data segment failed
+       8  WARNING in selinux_ima_measure_state (has report)
+      10  no output from test machine
+      10  WARNING in selinux_ima_measure_state (7) (has report)
+The bug was not found.
+This commit is flagged as unstable.
+About 28451 commits remaining
+
+2026-04-26 11:05:04
+Session:   95
+Kernel:    2022-04-25 - 2bde1985e39173d8cb64005dad6f34e9bee4c750
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       3  SYZFAIL: mmap of data segment failed
+       7  SYZFAIL: mmap of data segment failed
+       8  SYZFAIL: mmap of data segment failed (3)
+       9  SYZFAIL: mmap of data segment failed (2)
+The bug was not found.
+This commit is flagged as unstable.
+About 28451 commits remaining
+
+2026-04-26 11:19:59
+Session:   96
+Kernel:    2022-04-02 - 4f4c4a3ee53cc20569158a05f99b6c2d1f9c998a
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       4  SYZFAIL: mmap of data segment failed
+       7  WARNING in selinux_ima_measure_state (has report)
+       7  SYZFAIL: mmap of data segment failed (2)
+       8  WARNING in selinux_ima_measure_state (2) (has report)
+       8  SYZFAIL: mmap of data segment failed
+       9  SYZFAIL: mmap of data segment failed
+      10  SYZFAIL: mmap of data segment failed
+The bug was not found.
+This commit is flagged as unstable.
+About 28451 commits remaining
+
+2026-04-26 11:42:32
+Session:   97
+Kernel:    2022-04-22 - 04e8d9d139c9fca2717b65a46333dd1cfd87dc28
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       6  WARNING: ODEBUG bug in netdev_run_todo (has report)
+       8  KASAN: use-after-free Read in notifier_call_chain (2) (has report)
+       8  SYZFAIL: tun: ioctl(TUNSETIFF) failed
+       9  SYZFAIL: tun: ioctl(TUNSETIFF) failed (2)
+      10  unregister_netdevice: waiting for DEV to become free
+      10  SYZFAIL: mmap of data segment failed
+The bug was not found.
+This commit is flagged as unstable.
+About 28451 commits remaining
+
+2026-04-26 11:57:01
+Session:   98
+Kernel:    2022-03-01 - 17ba1e87fca9e6bad7eacbb1ef042c83358d245e
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       7  WARNING in selinux_ima_measure_state (2) (has report)
+       8  SYZFAIL: mmap of data segment failed (3)
+       9  SYZFAIL: tun: ioctl(TUNSETIFF) failed
+       9  SYZFAIL: mmap of data segment failed (2)
+      10  SYZFAIL: mmap of data segment failed
+The bug was not found.
+This commit is flagged as unstable.
+About 28451 commits remaining
+
+2026-04-26 12:19:35
+Session:   99
+Kernel:    2022-05-03 - 1dcbae86ee669bdb0338954cd0136863f5c96c0a
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       8  KASAN: use-after-free Read in notifier_call_chain (has report)
+       8  KASAN: use-after-free Read in __fib6_clean_all (has report)
+       8  SYZFAIL: mmap of data segment failed (2)
+       9  KASAN: use-after-free Read in notifier_call_chain (has report)
+       9  SYZFAIL: mmap of data segment failed (2)
+      10  SYZFAIL: mmap of data segment failed
+The bug was not found.
+This commit is flagged as unstable.
+About 28451 commits remaining
+
+2026-04-26 12:34:00
+Session:   100
+Kernel:    2022-02-17 - 779596ce6a79e187995f04f143fc5ea44a565ea9
+Compiler:  ccache gcc
+Warning: Child process make exited with error status 2.
+Warning: make exited with error status 0x2
+Error: The kernel failed to make.
+Error: The kernel failed to make.
+Attempting to recover.
+
+2026-04-26 12:44:56
+Session:   101
+Kernel:    2022-04-20 - d4860224e6a9bcaef24121827e97831001290328
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       3  SYZFAIL: mmap of data segment failed
+       9  KASAN: use-after-free Read in notifier_call_chain (has report)
+       9  SYZFAIL: mmap of data segment failed (3)
+      10  KASAN: use-after-free Read in notifier_call_chain (has report)
+      10  SYZFAIL: tun: ioctl(TUNSETIFF) failed
+      10  SYZFAIL: mmap of data segment failed
+The bug was not found.
+This commit is flagged as unstable.
+About 28451 commits remaining
+
+2026-04-26 12:59:18
+Session:   102
+Kernel:    2022-03-14 - a450a4af74331706b51650a0d826720a4da27428
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       6  SYZFAIL: mmap of data segment failed
+       8  SYZFAIL: mmap of data segment failed (3)
+       9  SYZFAIL: tun: ioctl(TUNSETIFF) failed (3)
+      10  unregister_netdevice: waiting for DEV to become free
+The bug was not found.
+This commit is flagged as unstable.
+About 28451 commits remaining
+
+2026-04-26 13:21:48
+Session:   103
+Kernel:    2022-04-04 - 87a87657249316616138c103c2bdb7525c34d987
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       7  unregister_netdevice: waiting for DEV to become free
+       7  SYZFAIL: mmap of data segment failed (2)
+       8  KASAN: use-after-free Read in notifier_call_chain (has report)
+       8  SYZFAIL: mmap of data segment failed
+       9  KASAN: use-after-free Read in notifier_call_chain (has report)
+       9  SYZFAIL: mmap of data segment failed (2)
+The bug was not found.
+This commit is flagged as unstable.
+About 28451 commits remaining
+
+2026-04-26 13:36:14
+Session:   104
+Kernel:    2022-03-01 - bd004cad78c04d762a99127af2f8208b9579af21
+Compiler:  ccache gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0096-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+       2  WARNING: suspicious RCU usage in hsr_create_self_node (6) (has report)
+       3  WARNING: suspicious RCU usage in hsr_create_self_node (6) (has report)
+       4  WARNING: suspicious RCU usage in hsr_create_self_node (6) (has report)
+       5  WARNING: suspicious RCU usage in hsr_create_self_node (5) (has report)
+       6  WARNING: suspicious RCU usage in hsr_create_self_node (6) (has report)
+       7  WARNING: suspicious RCU usage in hsr_create_self_node (6) (has report)
+       8  WARNING: suspicious RCU usage in hsr_create_self_node (6) (has report)
+       9  WARNING: suspicious RCU usage in hsr_create_self_node (5) (has report)
+      10  WARNING: suspicious RCU usage in hsr_create_self_node (6) (has report)
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 28451 commits remaining
+
+2026-04-26 13:58:48
+Session:   105
+Kernel:    2022-04-22 - 4a25f2ea0e030b2fc852c4059a50181bfc5b2f57
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       4  SYZFAIL: mmap of data segment failed
+       7  SYZFAIL: mmap of data segment failed (2)
+       8  SYZFAIL: mmap of data segment failed (6)
+The bug was not found.
+This commit is flagged as unstable.
+About 28451 commits remaining
+
+2026-04-26 14:13:13
+Session:   106
+Kernel:    2022-03-25 - 9d8a8d78d95261241fdc009ff5b44cfa9f78c8e7
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       7  SYZFAIL: mmap of data segment failed (2)
+       8  SYZFAIL: mmap of data segment failed (6)
+      10  SYZFAIL: mmap of data segment failed
+The bug was not found.
+This commit is flagged as unstable.
+About 28451 commits remaining
+
+2026-04-26 14:35:49
+Session:   107
+Kernel:    2022-04-01 - 9a005bea4f59b603c413ac1df19cda37aa3aa486
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       7  SYZFAIL: mmap of data segment failed (3)
+       8  KASAN: use-after-free Read in notifier_call_chain (2) (has report)
+       8  SYZFAIL: mmap of data segment failed
+       9  SYZFAIL: mmap of data segment failed (2)
+The bug was not found.
+This commit is flagged as unstable.
+About 28451 commits remaining
+
+2026-04-26 14:58:16
+Session:   108
+Kernel:    2022-05-05 - af6958492a0f197cae279839fcb7f1cf1f0c73e1
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       7  SYZFAIL: mmap of data segment failed (4)
+       8  SYZFAIL: tun: ioctl(TUNSETIFF) failed
+       9  SYZFAIL: tun: ioctl(TUNSETIFF) failed
+       9  SYZFAIL: mmap of data segment failed
+      10  SYZFAIL: mmap of data segment failed
+The bug was not found.
+This commit is flagged as unstable.
+About 28451 commits remaining
+
+2026-04-26 15:13:00
+Session:   109
+Kernel:    2022-04-11 - c3e6e59af2a0c7937815808804eb4d9ddc9df9be
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       8  SYZFAIL: mmap of data segment failed (4)
+       9  KASAN: use-after-free Read in notifier_call_chain (has report)
+       9  SYZFAIL: mmap of data segment failed (2)
+      10  SYZFAIL: mmap of data segment failed (2)
+The bug was not found.
+This commit is flagged as unstable.
+About 28451 commits remaining
+
+2026-04-26 15:35:41
+Session:   110
+Kernel:    2022-05-22 - 62dfb4cc444649b3f841ddb4f472a12ed6422714
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    3  KASAN: use-after-free Read in nf_confirm (has report)
+       3  KASAN: use-after-free Read in __fib6_clean_all (has report)
+Running syz-repro.
+New PoC saved at /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0096-0.prog
+Primary PoC:     /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0096-0.prog
+Run Time:        0h11m0s
+The bug was found.
+About 20238 commits remaining
+
+2026-04-26 16:02:28
+Session:   111
+Kernel:    2022-03-23 - baaa68a9796ef2cadfe5caaf4c730412eda0f31c
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       3  SYZFAIL: mmap of data segment failed
+       8  SYZFAIL: mmap of data segment failed (7)
+      10  SYZFAIL: mmap of data segment failed
+The bug was not found.
+This commit is flagged as unstable.
+About 20238 commits remaining
+
+2026-04-26 16:25:03
+Session:   112
+Kernel:    2022-02-21 - 6e8ec2552c7d13991148e551e3325a624d73fac6
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       4  WARNING in selinux_ima_measure_state (2) (has report)
+       4  SYZFAIL: mmap of data segment failed
+       5  WARNING in selinux_ima_measure_state (2) (has report)
+       6  WARNING in selinux_ima_measure_state (4) (has report)
+       8  WARNING in selinux_ima_measure_state (has report)
+       8  SYZFAIL: mmap of data segment failed
+       9  unregister_netdevice: waiting for DEV to become free
+      10  WARNING in selinux_ima_measure_state (has report)
+The bug was not found.
+This commit is flagged as unstable.
+About 20238 commits remaining
+
+2026-04-26 16:47:36
+Session:   113
+Kernel:    2022-03-26 - 5c7e49be96ea24776a5b5a07c732c477294add00
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       3  SYZFAIL: mmap of data segment failed
+       5  SYZFAIL: mmap of data segment failed
+       8  KASAN: use-after-free Read in notifier_call_chain (has report)
+       8  SYZFAIL: mmap of data segment failed (5)
+      10  unregister_netdevice: waiting for DEV to become free
+The bug was not found.
+This commit is flagged as unstable.
+About 20238 commits remaining
+
+2026-04-26 17:10:15
+Session:   114
+Kernel:    2022-02-25 - 4fb547be355d4af349681ba4c3bab81d99f4f774
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       7  SYZFAIL: mmap of data segment failed (2)
+       8  SYZFAIL: tun: ioctl(TUNSETIFF) failed
+       8  SYZFAIL: mmap of data segment failed
+       9  SYZFAIL: tun: ioctl(TUNSETIFF) failed
+       9  SYZFAIL: mmap of data segment failed (2)
+The bug was not found.
+This commit is flagged as unstable.
+About 20238 commits remaining
+
+2026-04-26 17:32:28
+Session:   115
+Kernel:    2022-03-24 - 363106c4cefe7d08ca67cc77f3d38d4213190f31
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       8  unregister_netdevice: waiting for DEV to become free
+      10  SYZFAIL: mmap of data segment failed (7)
+The bug was not found.
+This commit is flagged as unstable.
+About 20238 commits remaining
+
+2026-04-26 17:55:02
+Session:   116
+Kernel:    2022-03-18 - f2aad54703dbe630f9d8b235eb58e8c8cc78f37d
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       3  SYZFAIL: mmap of data segment failed
+       4  SYZFAIL: mmap of data segment failed
+       9  SYZFAIL: mmap of data segment failed (4)
+      10  SYZFAIL: tun: ioctl(TUNSETIFF) failed
+      10  SYZFAIL: mmap of data segment failed (3)
+The bug was not found.
+This commit is flagged as unstable.
+About 20238 commits remaining
+
+2026-04-26 18:17:17
+Session:   117
+Kernel:    2022-01-12 - cc5bff38463e0894dd596befa99f9d6860e15f5e
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       3  SYZFAIL: mmap of data segment failed
+       4  WARNING in selinux_ima_measure_state (has report)
+       5  WARNING in selinux_ima_measure_state (has report)
+       6  WARNING in selinux_ima_measure_state (2) (has report)
+       7  SYZFAIL: mmap of data segment failed
+       8  SYZFAIL: mmap of data segment failed (3)
+       9  WARNING in selinux_ima_measure_state (has report)
+       9  SYZFAIL: mmap of data segment failed
+      10  WARNING in selinux_ima_measure_state (2) (has report)
+The bug was not found.
+This commit is flagged as unstable.
+About 20238 commits remaining
+
+2026-04-26 18:39:52
+Session:   118
+Kernel:    2022-03-08 - c79fcc27be90b308b3fa90811aefafdd4078668c
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       3  SYZFAIL: mmap of data segment failed
+       7  SYZFAIL: mmap of data segment failed (3)
+       8  SYZFAIL: mmap of data segment failed (2)
+       9  unregister_netdevice: waiting for DEV to become free
+       9  SYZFAIL: mmap of data segment failed (2)
+The bug was not found.
+This commit is flagged as unstable.
+About 20238 commits remaining
+
+2026-04-26 19:00:13
+Session:   119
+Kernel:    2022-02-12 - 8754a7e61c766fbc533c627b56ff181550dca00e
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       4  WARNING in selinux_ima_measure_state (3) (has report)
+       6  WARNING in selinux_ima_measure_state (has report)
+       7  SYZFAIL: mmap of data segment failed (5)
+       9  WARNING in selinux_ima_measure_state (3) (has report)
+      10  SYZFAIL: mmap of data segment failed
+The bug was not found.
+This commit is flagged as unstable.
+About 20238 commits remaining
+
+2026-04-26 19:22:47
+Session:   120
+Kernel:    2022-03-23 - e2c0cb7c0cc72939b61a7efee376206725796625
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       4  SYZFAIL: mmap of data segment failed
+       7  SYZFAIL: mmap of data segment failed (4)
+       8  SYZFAIL: mmap of data segment failed (3)
+      10  SYZFAIL: mmap of data segment failed (3)
+The bug was not found.
+This commit is flagged as unstable.
+About 20238 commits remaining
+
+2026-04-26 19:45:13
+Session:   121
+Kernel:    2022-03-03 - a3d328037846d013bb4c7f3777241e190e4c75e1
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       6  WARNING in selinux_ima_measure_state (2) (has report)
+       8  SYZFAIL: mmap of data segment failed (4)
+       9  SYZFAIL: mmap of data segment failed
+      10  WARNING in selinux_ima_measure_state (has report)
+      10  SYZFAIL: mmap of data segment failed
+The bug was not found.
+This commit is flagged as unstable.
+About 20238 commits remaining
+
+2026-04-26 19:59:35
+Session:   122
+Kernel:    2022-03-18 - cd9363018269636b4905012a5fc8706cfc7aa116
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       8  SYZFAIL: mmap of data segment failed (7)
+The bug was not found.
+This commit is flagged as unstable.
+About 20238 commits remaining
+
+2026-04-26 20:22:10
+Session:   123
+Kernel:    2022-02-17 - eb7b7a7de99396ba0b92a24e79339f635d195bfb
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       4  WARNING in selinux_ima_measure_state (2) (has report)
+       7  SYZFAIL: mmap of data segment failed (5)
+       8  SYZFAIL: mmap of data segment failed (2)
+       9  SYZFAIL: mmap of data segment failed
+      10  SYZFAIL: mmap of data segment failed (2)
+The bug was not found.
+This commit is flagged as unstable.
+About 20238 commits remaining
+
+2026-04-26 20:36:31
+Session:   124
+Kernel:    2022-03-22 - 16785bd7743104d57257a455001172b75afa7614
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       3  SYZFAIL: mmap of data segment failed
+       4  SYZFAIL: mmap of data segment failed
+       6  SYZFAIL: mmap of data segment failed
+       7  SYZFAIL: mmap of data segment failed
+       8  SYZFAIL: mmap of data segment failed (4)
+       9  SYZFAIL: mmap of data segment failed
+The bug was not found.
+This commit is flagged as unstable.
+About 20238 commits remaining
+
+2026-04-26 20:58:59
+Session:   125
+Kernel:    2022-02-24 - f4866732a7b55b8ce65e8ef259e8782cac910653
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       4  SYZFAIL: mmap of data segment failed
+       6  SYZFAIL: mmap of data segment failed
+       7  SYZFAIL: mmap of data segment failed (5)
+       8  SYZFAIL: mmap of data segment failed (2)
+       9  SYZFAIL: mmap of data segment failed (2)
+      10  SYZFAIL: mmap of data segment failed (3)
+The bug was not found.
+This commit is flagged as unstable.
+About 20238 commits remaining
+
+2026-04-26 21:13:24
+Session:   126
+Kernel:    2022-04-27 - e4d8a29997731b3bb14059024b24df9f784288d0
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       8  KASAN: use-after-free Read in notifier_call_chain (has report)
+       8  WARNING in __nf_unregister_net_hook (2) (has report)
+       8  SYZFAIL: mmap of data segment failed (2)
+       9  KASAN: use-after-free Read in notifier_call_chain (has report)
+       9  SYZFAIL: tun: ioctl(TUNSETIFF) failed
+       9  WARNING in __nf_unregister_net_hook (has report)
+      10  SYZFAIL: mmap of data segment failed
+The bug was not found.
+This commit is flagged as unstable.
+About 20238 commits remaining
+
+2026-04-26 21:35:59
+Session:   127
+Kernel:    2022-01-25 - c1d193c5058e72c418e150e93e9f65bc925e196c
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       3  SYZFAIL: mmap of data segment failed
+       5  WARNING in selinux_ima_measure_state (has report)
+       7  WARNING in selinux_ima_measure_state (has report)
+       7  SYZFAIL: mmap of data segment failed (6)
+       8  SYZFAIL: mmap of data segment failed
+      10  SYZFAIL: mmap of data segment failed
+The bug was not found.
+This commit is flagged as unstable.
+About 20238 commits remaining
+
+2026-04-26 21:50:22
+Session:   128
+Kernel:    2022-03-21 - 02b82b02c34321dde10d003aafcd831a769b2a8a
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       3  SYZFAIL: mmap of data segment failed
+       5  SYZFAIL: mmap of data segment failed
+       8  SYZFAIL: mmap of data segment failed (6)
+       9  SYZFAIL: mmap of data segment failed
+The bug was not found.
+This commit is flagged as unstable.
+About 20238 commits remaining
+
+2026-04-26 22:12:51
+Session:   129
+Kernel:    2022-02-14 - 0c483a07e92638aca1f7d42a4986e32c58d29ad2
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       5  WARNING in selinux_ima_measure_state (2) (has report)
+       7  SYZFAIL: mmap of data segment failed
+       8  SYZFAIL: mmap of data segment failed (4)
+       9  SYZFAIL: mmap of data segment failed
+      10  WARNING in selinux_ima_measure_state (2) (has report)
+The bug was not found.
+This commit is flagged as unstable.
+About 20238 commits remaining
+
+2026-04-26 22:27:14
+Session:   130
+Kernel:    2022-03-15 - 6e6faf7a8364c77f4021f44043a5a5cee91f7025
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       3  SYZFAIL: mmap of data segment failed
+       8  SYZFAIL: mmap of data segment failed (8)
+The bug was not found.
+This commit is flagged as unstable.
+About 20238 commits remaining
+
+2026-04-26 22:49:39
+Session:   131
+Kernel:    2022-02-22 - 624e8b62083cecb929dc462877ab371fac327a4a
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       3  SYZFAIL: mmap of data segment failed
+       6  WARNING in selinux_ima_measure_state (has report)
+       7  SYZFAIL: mmap of data segment failed (2)
+       8  SYZFAIL: tun: ioctl(TUNSETIFF) failed
+       8  SYZFAIL: mmap of data segment failed (4)
+       9  WARNING in selinux_ima_measure_state (has report)
+      10  SYZFAIL: mmap of data segment failed
+The bug was not found.
+This commit is flagged as unstable.
+About 20238 commits remaining
+
+2026-04-26 23:04:39
+Session:   132
+Kernel:    2022-04-20 - 45969b4152c1752089351cd6836a42a566d49bcf
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       3  SYZFAIL: mmap of data segment failed
+       6  SYZFAIL: mmap of data segment failed
+       8  unregister_netdevice: waiting for DEV to become free (2)
+       8  SYZFAIL: mmap of data segment failed (2)
+       9  SYZFAIL: mmap of data segment failed (4)
+The bug was not found.
+This commit is flagged as unstable.
+About 20238 commits remaining
+
+2026-04-26 23:27:12
+Session:   133
+Kernel:    2022-02-07 - 3786a9bc0455ca58d953319f62daf96b6eb95490
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       6  WARNING in selinux_ima_measure_state (has report)
+       8  SYZFAIL: mmap of data segment failed
+       9  WARNING in selinux_ima_measure_state (2) (has report)
+       9  SYZFAIL: mmap of data segment failed (2)
+      10  SYZFAIL: tun: ioctl(TUNSETIFF) failed
+      10  SYZFAIL: mmap of data segment failed (2)
+The bug was not found.
+This commit is flagged as unstable.
+About 20238 commits remaining
+
+2026-04-26 23:49:25
+Session:   134
+Kernel:    2022-03-04 - 2bc0a832fad341a745786ba158e9a32ab1beced6
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       3  SYZFAIL: mmap of data segment failed
+       5  SYZFAIL: mmap of data segment failed
+       6  unregister_netdevice: waiting for DEV to become free
+       8  SYZFAIL: mmap of data segment failed (5)
+       9  SYZFAIL: mmap of data segment failed
+      10  SYZFAIL: mmap of data segment failed
+The bug was not found.
+This commit is flagged as unstable.
+About 20238 commits remaining
+
+2026-04-27 00:11:57
+Session:   135
+Kernel:    2022-02-23 - 4712a236db409d5ee5dccb8c7e57fe54d7d3ec66
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       3  SYZFAIL: mmap of data segment failed
+       5  SYZFAIL: mmap of data segment failed
+       6  WARNING in selinux_ima_measure_state (2) (has report)
+       8  SYZFAIL: mmap of data segment failed (4)
+      10  WARNING in selinux_ima_measure_state (2) (has report)
+      10  SYZFAIL: mmap of data segment failed
+The bug was not found.
+This commit is flagged as unstable.
+About 20238 commits remaining
+
+2026-04-27 00:34:30
+Session:   136
+Kernel:    2022-04-09 - 54deb0e77561973f4ca4515e18ab972c281eea1d
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       8  SYZFAIL: mmap of data segment failed (4)
+       9  SYZFAIL: mmap of data segment failed
+      10  SYZFAIL: mmap of data segment failed (2)
+The bug was not found.
+This commit is flagged as unstable.
+About 20238 commits remaining
+
+2026-04-27 00:55:37
+Session:   137
+Kernel:    2022-03-05 - cca96584b35765bf9eb5f38ca55a144ea2ba0de4
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       3  SYZFAIL: mmap of data segment failed
+       6  WARNING in selinux_ima_measure_state (has report)
+       7  SYZFAIL: mmap of data segment failed (5)
+       8  SYZFAIL: mmap of data segment failed
+       9  SYZFAIL: mmap of data segment failed
+      10  SYZFAIL: mmap of data segment failed (2)
+The bug was not found.
+This commit is flagged as unstable.
+About 20238 commits remaining
+
+2026-04-27 01:10:02
+Session:   138
+Kernel:    2022-04-04 - fb39d30e227233498c8debe6a9fe3e7cf575c85f
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       3  SYZFAIL: mmap of data segment failed (2)
+       8  KASAN: use-after-free Read in __fib6_clean_all (has report)
+       8  SYZFAIL: mmap of data segment failed
+       9  SYZFAIL: mmap of data segment failed (2)
+      10  KASAN: use-after-free Read in notifier_call_chain (has report)
+      10  SYZFAIL: tun: ioctl(TUNSETIFF) failed
+      10  SYZFAIL: mmap of data segment failed (2)
+The bug was not found.
+This commit is flagged as unstable.
+About 20238 commits remaining
+
+2026-04-27 01:25:03
+Session:   139
+Kernel:    2022-04-12 - 10b1881a97be240126891cb384bd3bc1869f52d8
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       4  WARNING in selinux_ima_measure_state (2) (has report)
+       5  WARNING in selinux_ima_measure_state (5) (has report)
+       6  WARNING in selinux_ima_measure_state (4) (has report)
+       8  WARNING in selinux_ima_measure_state (has report)
+       9  WARNING in selinux_ima_measure_state (2) (has report)
+      10  WARNING in selinux_ima_measure_state (has report)
+The bug was not found.
+About 19652 commits remaining
+
+2026-04-27 01:47:38
+Session:   140
+Kernel:    2022-03-08 - 79498d5af8e458102242d1667cf44df1f1564e63
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       7  SYZFAIL: mmap of data segment failed (3)
+       8  SYZFAIL: mmap of data segment failed (3)
+       9  SYZFAIL: mmap of data segment failed (2)
+The bug was not found.
+This commit is flagged as unstable.
+About 19652 commits remaining
+
+2026-04-27 02:10:08
+Session:   141
+Kernel:    2022-01-26 - e547ffe9e6f497e36bde9d86dbcfbc781946752b
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       6  WARNING in selinux_ima_measure_state (has report)
+       7  WARNING in selinux_ima_measure_state (has report)
+       8  SYZFAIL: mmap of data segment failed (3)
+       9  SYZFAIL: mmap of data segment failed (3)
+      10  WARNING in selinux_ima_measure_state (2) (has report)
+The bug was not found.
+This commit is flagged as unstable.
+About 19652 commits remaining
+
+2026-04-27 02:32:23
+Session:   142
+Kernel:    2022-03-16 - 3b2b78a8eb7cc38d207c5ee516769bc3f44d19ea
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       7  SYZFAIL: mmap of data segment failed (4)
+       8  SYZFAIL: mmap of data segment failed (4)
+      10  SYZFAIL: mmap of data segment failed (2)
+The bug was not found.
+This commit is flagged as unstable.
+About 19652 commits remaining
+
+2026-04-27 02:54:57
+Session:   143
+Kernel:    2022-01-25 - 6aa89ae1fb049614b7e03e24485bbfb96754a02b
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       2  possible deadlock in smc_switch_to_fallback
+       3  possible deadlock in smc_switch_to_fallback (7)
+       4  possible deadlock in smc_switch_to_fallback (3)
+       6  possible deadlock in smc_switch_to_fallback (6)
+       7  possible deadlock in smc_switch_to_fallback (4)
+       8  possible deadlock in smc_switch_to_fallback (2)
+      10  possible deadlock in smc_switch_to_fallback
+The bug was not found.
+About 33407 commits remaining
+
+2026-04-27 03:17:05
+Session:   144
+Kernel:    2022-03-03 - 499aa9e1b3329263bd26856699899120e56b2d7d
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       7  KASAN: use-after-free Read in notifier_call_chain (has report)
+       7  SYZFAIL: mmap of data segment failed
+       8  SYZFAIL: mmap of data segment failed (6)
+      10  SYZFAIL: mmap of data segment failed
+The bug was not found.
+This commit is flagged as unstable.
+About 33407 commits remaining
+
+2026-04-27 03:39:34
+Session:   145
+Kernel:    2022-01-27 - 3dd411efe1edbddd08d024645f119df53398e746
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       3  SYZFAIL: mmap of data segment failed
+       5  SYZFAIL: mmap of data segment failed
+       6  WARNING in selinux_ima_measure_state (has report)
+       7  SYZFAIL: mmap of data segment failed (7)
+       8  WARNING in selinux_ima_measure_state (2) (has report)
+      10  SYZFAIL: mmap of data segment failed
+The bug was not found.
+This commit is flagged as unstable.
+About 33407 commits remaining
+
+2026-04-27 04:02:08
+Session:   146
+Kernel:    2022-04-13 - 1b0e81416a24d6e9b8c2341e22e8bf48f8b8bfc9
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       8  KASAN: use-after-free Read in nexthop_flush_dev (has report)
+       8  KASAN: use-after-free Read in __fib6_clean_all (has report)
+       8  SYZFAIL: mmap of data segment failed
+       9  KASAN: use-after-free Read in notifier_call_chain (has report)
+      10  SYZFAIL: mmap of data segment failed (2)
+The bug was not found.
+This commit is flagged as unstable.
+About 33407 commits remaining
+
+2026-04-27 04:24:51
+Session:   147
+Kernel:    2022-01-27 - 560e08eda7969c3ef0639ab05f718be03a49d387
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       7  SYZFAIL: mmap of data segment failed
+       8  SYZFAIL: tun: ioctl(TUNSETIFF) failed (2)
+       8  SYZFAIL: mmap of data segment failed (2)
+       9  SYZFAIL: tun: ioctl(TUNSETIFF) failed
+       9  SYZFAIL: mmap of data segment failed
+      10  unregister_netdevice: waiting for DEV to become free
+The bug was not found.
+This commit is flagged as unstable.
+About 33407 commits remaining
+
+2026-04-27 04:43:08
+Session:   148
+Kernel:    2022-04-08 - d1f66ac69f37bd4923bb0fc494d7129c54e94a22
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       8  KASAN: use-after-free Read in notifier_call_chain (3) (has report)
+       8  SYZFAIL: mmap of data segment failed (4)
+       9  SYZFAIL: mmap of data segment failed
+The bug was not found.
+This commit is flagged as unstable.
+About 33407 commits remaining
+
+2026-04-27 05:01:29
+Session:   149
+Kernel:    2022-02-08 - 3d4a39404ba323b08fb42bcdca9a015144e213dd
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       8  SYZFAIL: mmap of data segment failed (8)
+      10  SYZFAIL: mmap of data segment failed
+The bug was not found.
+This commit is flagged as unstable.
+About 33407 commits remaining
+
+2026-04-27 05:24:00
+Session:   150
+Kernel:    2022-03-15 - 2486ab434b2c2a14e9237296db00b1e1b7ae3273
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       6  SYZFAIL: mmap of data segment failed
+       8  SYZFAIL: mmap of data segment failed (4)
+       9  SYZFAIL: mmap of data segment failed (2)
+      10  SYZFAIL: mmap of data segment failed
+The bug was not found.
+This commit is flagged as unstable.
+About 33407 commits remaining
+
+2026-04-27 05:46:35
+Session:   151
+Kernel:    2022-02-16 - 34841e6fb125aa3f0e33e4eaac9f5eb86b2bb34b
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       5  SYZFAIL: mmap of data segment failed
+       7  SYZFAIL: mmap of data segment failed (4)
+       8  SYZFAIL: mmap of data segment failed (2)
+       9  SYZFAIL: mmap of data segment failed
+The bug was not found.
+This commit is flagged as unstable.
+About 33407 commits remaining
+
+2026-04-27 06:06:59
+Session:   152
+Kernel:    2022-04-11 - e1e965156438a3662dbb151d892ada834214c833
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       7  KASAN: use-after-free Read in notifier_call_chain (has report)
+       8  SYZFAIL: mmap of data segment failed (4)
+       9  SYZFAIL: tun: ioctl(TUNSETIFF) failed
+       9  KASAN: use-after-free Read in nexthop_flush_dev (has report)
+       9  SYZFAIL: mmap of data segment failed
+The bug was not found.
+This commit is flagged as unstable.
+About 33407 commits remaining
+
+2026-04-27 06:26:49
+Session:   153
+Kernel:    2022-02-03 - 2c86f6752046da72b1643c5647dabff82db407a2
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       6  WARNING in selinux_ima_measure_state (2) (has report)
+       6  SYZFAIL: mmap of data segment failed
+       7  SYZFAIL: mmap of data segment failed (5)
+       8  WARNING in selinux_ima_measure_state (2) (has report)
+       9  WARNING in selinux_ima_measure_state (2) (has report)
+The bug was not found.
+This commit is flagged as unstable.
+About 33407 commits remaining
+
+2026-04-27 06:49:28
+Session:   154
+Kernel:    2022-04-04 - 2316f0fc0ad2aa87a568ceaf3d76be983ee555c3
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       3  SYZFAIL: mmap of data segment failed
+       9  SYZFAIL: mmap of data segment failed (8)
+The bug was not found.
+This commit is flagged as unstable.
+About 33407 commits remaining
+
+2026-04-27 07:03:54
+Session:   155
+Kernel:    2022-02-15 - ab1e435ca7913e384ed801210418633eee43a71b
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       4  WARNING in selinux_ima_measure_state (has report)
+       9  SYZFAIL: mmap of data segment failed (3)
+      10  SYZFAIL: mmap of data segment failed (5)
+The bug was not found.
+This commit is flagged as unstable.
+About 33407 commits remaining
+
+2026-04-27 07:26:32
+Session:   156
+Kernel:    2022-04-01 - ada543af3bfe3d953986eca118601b9612382c13
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       7  SYZFAIL: mmap of data segment failed
+       9  SYZFAIL: mmap of data segment failed (3)
+      10  unregister_netdevice: waiting for DEV to become free
+      10  SYZFAIL: mmap of data segment failed
+The bug was not found.
+This commit is flagged as unstable.
+About 33407 commits remaining
+
+2026-04-27 07:49:10
+Session:   157
+Kernel:    2022-02-14 - 49898fef49d61eacbebcecf07a4566f0714e2fb6
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       3  SYZFAIL: mmap of data segment failed
+       7  SYZFAIL: mmap of data segment failed (3)
+       8  SYZFAIL: mmap of data segment failed (2)
+       9  WARNING in selinux_ima_measure_state (has report)
+       9  SYZFAIL: mmap of data segment failed (2)
+The bug was not found.
+This commit is flagged as unstable.
+About 33407 commits remaining
+
+2026-04-27 08:11:29
+Session:   158
+Kernel:    2022-03-30 - 57c06b6e1e74b62eabaacacbe40bdb29c7e990eb
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       3  SYZFAIL: mmap of data segment failed
+       8  SYZFAIL: mmap of data segment failed (7)
+       9  SYZFAIL: mmap of data segment failed
+The bug was not found.
+This commit is flagged as unstable.
+About 33407 commits remaining
+
+2026-04-27 08:34:08
+Session:   159
+Kernel:    2022-02-21 - 57435c42400ec147a527b2313188b649e81e449e
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       7  WARNING in selinux_ima_measure_state (has report)
+       8  SYZFAIL: mmap of data segment failed (2)
+       9  SYZFAIL: mmap of data segment failed (2)
+      10  SYZFAIL: mmap of data segment failed (3)
+The bug was not found.
+This commit is flagged as unstable.
+About 33407 commits remaining
+
+2026-04-27 08:56:40
+Session:   160
+Kernel:    2022-03-18 - fbeed25bcc45ef6df4b8fc35ec82edd895fc6587
+Compiler:  ccache gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0096-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+       2  WARNING in __napi_schedule (6) (has report)
+       3  WARNING in __napi_schedule (5) (has report)
+       4  WARNING in __napi_schedule (5) (has report)
+       5  WARNING in __napi_schedule (6) (has report)
+       6  WARNING in __napi_schedule (5) (has report)
+       7  WARNING in __napi_schedule (6) (has report)
+       8  WARNING in __napi_schedule (5) (has report)
+       9  WARNING in __napi_schedule (6) (has report)
+      10  WARNING in __napi_schedule (5) (has report)
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 33407 commits remaining
+
+2026-04-27 09:19:16
+Session:   161
+Kernel:    2022-03-21 - 4ba1119cd53166d853050ff1a9d76079cd8f8e06
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       3  SYZFAIL: mmap of data segment failed
+       4  WARNING in selinux_ima_measure_state (2) (has report)
+       5  WARNING in selinux_ima_measure_state (4) (has report)
+       5  SYZFAIL: mmap of data segment failed
+       7  WARNING in selinux_ima_measure_state (has report)
+       9  SYZFAIL: mmap of data segment failed (2)
+      10  WARNING in selinux_ima_measure_state (has report)
+      10  SYZFAIL: mmap of data segment failed
+The bug was not found.
+This commit is flagged as unstable.
+About 33407 commits remaining
+
+2026-04-27 09:41:46
+Session:   162
+Kernel:    2022-03-28 - 10f17b2054a7ab3b86a8d333d99146fff3e9c728
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       8  KASAN: use-after-free Read in notifier_call_chain (has report)
+       8  SYZFAIL: mmap of data segment failed (5)
+       9  SYZFAIL: tun: ioctl(TUNSETIFF) failed
+       9  SYZFAIL: mmap of data segment failed
+The bug was not found.
+This commit is flagged as unstable.
+About 33407 commits remaining
+
+2026-04-27 10:04:24
+Session:   163
+Kernel:    2022-02-25 - b342c1f335981ebc442127efe03524d2331a273c
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       3  SYZFAIL: mmap of data segment failed
+       5  SYZFAIL: mmap of data segment failed
+       7  WARNING in selinux_ima_measure_state (has report)
+       7  SYZFAIL: mmap of data segment failed (3)
+       8  SYZFAIL: mmap of data segment failed
+       9  SYZFAIL: mmap of data segment failed (3)
+The bug was not found.
+This commit is flagged as unstable.
+About 33407 commits remaining
+
+2026-04-27 10:26:46
+Session:   164
+Kernel:    2022-03-26 - 8778372118023e2258612c03573c47efef41d755
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       7  SYZFAIL: mmap of data segment failed (5)
+       8  KASAN: use-after-free Read in __fib6_clean_all (has report)
+       9  SYZFAIL: mmap of data segment failed (3)
+The bug was not found.
+This commit is flagged as unstable.
+About 33407 commits remaining
+
+2026-04-27 10:49:18
+Session:   165
+Kernel:    2022-03-04 - b4060db9251f919506e4d672737c6b8ab9a84701
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       3  SYZFAIL: mmap of data segment failed
+       7  SYZFAIL: mmap of data segment failed
+       8  SYZFAIL: mmap of data segment failed (5)
+       9  SYZFAIL: mmap of data segment failed (2)
+      10  SYZFAIL: mmap of data segment failed (2)
+The bug was not found.
+This commit is flagged as unstable.
+About 33407 commits remaining
+
+2026-04-27 11:11:34
+Session:   166
+Kernel:    2022-03-24 - 9ae8f2b849f7991cb88ba20c39cb488d0a4f7916
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       6  unregister_netdevice: waiting for DEV to become free
+       7  SYZFAIL: mmap of data segment failed (7)
+The bug was not found.
+This commit is flagged as unstable.
+About 33407 commits remaining
+
+2026-04-27 11:34:15
+Session:   167
+Kernel:    2022-05-01 - 052ada096842a910327936b4ed203048906eb2c3
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       7  SYZFAIL: mmap of data segment failed
+       8  KASAN: use-after-free Read in notifier_call_chain (2) (has report)
+       8  SYZFAIL: mmap of data segment failed (4)
+       9  SYZFAIL: mmap of data segment failed
+The bug was not found.
+This commit is flagged as unstable.
+About 33407 commits remaining
+
+2026-04-27 11:56:59
+Session:   168
+Kernel:    2022-03-09 - 213556235526abffe4b7fdec2aabf4d751a7c0f9
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       6  SYZFAIL: mmap of data segment failed
+       7  WARNING in selinux_ima_measure_state (has report)
+       7  SYZFAIL: mmap of data segment failed (5)
+       8  WARNING in selinux_ima_measure_state (has report)
+       9  WARNING in selinux_ima_measure_state (has report)
+      10  WARNING in selinux_ima_measure_state (has report)
+      10  SYZFAIL: mmap of data segment failed
+The bug was not found.
+This commit is flagged as unstable.
+About 33407 commits remaining
+
+2026-04-27 12:19:44
+Session:   169
+Kernel:    2022-02-24 - 158a05a0b885f456a86720b9b6b4571943d2e307
+Compiler:  ccache gcc
+Warning: Child process make exited with error status 2.
+Warning: make exited with error status 0x2
+Error: The kernel failed to make.
+Error: The kernel failed to make.
+Attempting to recover.
+
+2026-04-27 12:30:44
+Session:   170
+Kernel:    2022-03-01 - ecd2a1c1d541a80a2197fd5cac274c65b3ec30c8
+Compiler:  ccache gcc

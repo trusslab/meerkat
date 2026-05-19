@@ -1,0 +1,224 @@
+./bin/meerkat -i 1 -c /home/author/meerkat/wd-meerkat-1/meerkat.cfg -a 4312098baf37ee17a8350725e6e0d0e8590252d4 -F ff-test,stateful-corpus,poc-test,ff-no-find-backup
+Bisecting:          KASAN: slab-out-of-bounds Write in hfs_asc2mac
+Syzbot Link:        https://syzkaller.appspot.com/bug?id=67d3719a7490d99812faae7f9c2c26e9f386c1a6
+Working Name:       bug0159
+
+Aliases:
+    KASAN: slab-out-of-bounds Write in hfs_asc2mac
+
+Anchor Commit:      4312098baf37ee17a8350725e6e0d0e8590252d4
+Repository:         https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
+Branch:             master
+Arch:               amd64
+
+Meerkat:            /home/author/meerkat/
+Version:            1.2.0
+Kernel:             /home/author/meerkat/wd-meerkat-1/kernel/
+Syzkaller:          /home/author/meerkat/syzkaller/
+Compilers:          /home/author/meerkat/compilers/
+Compiler:           gcc (Ubuntu 12.3.0-1ubuntu1~22.04.3) 12.3.0
+Linker:             GNU ld (GNU Binutils for Ubuntu) 2.38
+Ccache:             ccache version 4.5.1
+Image:              /home/author/meerkat/image/stretch/stretch.img
+Image Key:          /home/author/meerkat/image/stretch/stretch.id_rsa
+
+Workdir:            /home/author/meerkat/wd-meerkat-1/
+Kconfig:            /home/author/meerkat/wd-meerkat-1/config-bug0159.txt
+Reproducers: (1)    /home/author/meerkat/wd-meerkat-1/reproducers/
+Syzkaller Workdir:  /home/author/meerkat/wd-meerkat-1/wd-kaller/
+Log Directory:      /home/author/meerkat/wd-meerkat-1/log/
+
+Syscalls: (8)       ["mount", "syz_mount_image$hfs", "open$dir", "getuid", "setgid", "getgid", "ioctl$F2FS_IOC_START_ATOMIC_WRITE", "openat$selinux_enforce"]
+VM Count:           8
+CPU Count:          2
+Procs:              16
+Memory:             4096
+Make Procs:         16
+Max Time:           10
+Max Attempts:       1
+
+==== Anchor Commit ====
+
+2026-05-12 04:27:40
+Session:   1
+Kernel:    2022-11-23 - 4312098baf37ee17a8350725e6e0d0e8590252d4
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    2  KASAN: slab-out-of-bounds Write in hfs_asc2mac (7) (has report)
+Attempt 2: (RETRY)
+    Time  Bug Name
+***    2  KASAN: slab-out-of-bounds Write in hfs_asc2mac (8) (has report)
+Attempt 3: (RETRY)
+    Time  Bug Name
+***    2  KASAN: slab-out-of-bounds Write in hfs_asc2mac (6) (has report)
+The bug was found.
+
+New Max Time: 10
+
+==== Major Release Search ====
+12 Releases
+
+2026-05-12 04:49:04
+Session:   2
+Kernel:    2022-10-02 - 4fe89d07dcc2804c8b562f6c7896a45643d34b2f (v6.0)
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    2  KASAN: slab-out-of-bounds Write in hfs_asc2mac (7) (has report)
+       2  INFO: rcu detected stall in corrupted
+Running syz-repro.
+New PoC saved at /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0159-0.prog
+Primary PoC:     /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0159-0.prog
+Run Time:        0h15m0s
+The bug was found.
+About 11 releases remaining
+
+2026-05-12 05:20:54
+Session:   3
+Kernel:    2022-07-31 - 3d7cb6b04c3f3115719235cc6866b10326de34cd (v5.19)
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    2  KASAN: slab-out-of-bounds Write in hfs_asc2mac (8) (has report)
+The bug was found.
+About 10 releases remaining
+
+2026-05-12 05:37:01
+Session:   4
+Kernel:    2022-05-22 - 4b0986a3613c92f4ec1bdc7f60ec66fea135991f (v5.18)
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    2  KASAN: slab-out-of-bounds Write in hfs_asc2mac (8) (has report)
+The bug was found.
+About 9 releases remaining
+
+2026-05-12 05:52:22
+Session:   5
+Kernel:    2022-01-09 - df0cc57e057f18e44dac8e6c18aba47ab53202f9 (v5.16)
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    2  KASAN: slab-out-of-bounds Write in hfs_asc2mac (7) (has report)
+Running syz-repro.
+New PoC saved at /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0159-1.prog
+Primary PoC:     /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0159-1.prog
+Run Time:        0h8m0s
+The bug was found.
+About 8 releases remaining
+
+2026-05-12 06:15:56
+Session:   6
+Kernel:    2021-08-29 - 7d2a07b769330c34b4deabeed939325c77a7ec2f (v5.14)
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    2  KASAN: slab-out-of-bounds Write in hfs_asc2mac (8) (has report)
+The bug was found.
+About 7 releases remaining
+
+2026-05-12 06:30:17
+Session:   7
+Kernel:    2021-04-25 - 9f4ad9e425a1d3b6a34617b8ea226d56a119a717 (v5.12)
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    2  KASAN: slab-out-of-bounds Write in hfs_asc2mac (6) (has report)
+The bug was found.
+About 6 releases remaining
+
+2026-05-12 06:44:17
+Session:   8
+Kernel:    2020-12-13 - 2c85ebc57b3e1817b6ce1a6b703928e113a90442 (v5.10)
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0159-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 5 releases remaining
+
+2026-05-12 07:06:07
+Session:   9
+Kernel:    2020-08-02 - bcf876870b95592b52519ed4aafcf9d95999bc9c (v5.8)
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0159-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 4 releases remaining
+
+2026-05-12 07:27:17
+Session:   10
+Kernel:    2020-03-29 - 7111951b8d4973bda27ff663f2cf18b663d15b48 (v5.6)
+Compiler:  ccache /home/author/meerkat/compilers/gcc-8.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    2  KASAN: slab-out-of-bounds Write in hfs_asc2mac (4) (has report)
+Running syz-repro.
+New PoC saved at /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0159-0.prog
+Primary PoC:     /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0159-0.prog
+Run Time:        0h8m0s
+The bug was found.
+About 3 releases remaining
+
+2026-05-12 07:48:46
+Session:   11
+Kernel:    2019-09-15 - 4d856f72c10ecb060868ed10ff1b1453943fc6c8 (v5.3)
+Compiler:  ccache /home/author/meerkat/compilers/gcc-8.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0159-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+       2  lost connection to test machine (8)
+       3  lost connection to test machine (8)
+       4  lost connection to test machine (8)
+       5  lost connection to test machine (8)
+       6  lost connection to test machine (8)
+       7  lost connection to test machine (8)
+       8  lost connection to test machine (8)
+       9  lost connection to test machine (8)
+      10  lost connection to test machine (8)
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 2 releases remaining
+
+2026-05-12 08:09:29
+Session:   12
+Kernel:    2019-03-03 - 1c163f4c7b3f621efff9b28a47abb36f7378d783 (v5.0)
+Compiler:  ccache /home/author/meerkat/compilers/gcc-8.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    2  KASAN: slab-out-of-bounds Write in hfs_asc2mac (6)
+***    2  KASAN: slab-out-of-bounds in hfs_asc2mac (has report)
+The bug was found.
+About 1 releases remaining
+
+2026-05-12 08:21:21
+Session:   13
+Kernel:    2018-10-22 - 84df9525b0c27f3ebc2ebb1864fa62a97fdedb7d (v4.19)
+Compiler:  ccache /home/author/meerkat/compilers/gcc-8.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    2  KASAN: slab-out-of-bounds Write in hfs_asc2mac (7) (has report)
+The bug was found.
+About 0 releases remaining
+This bug was found on the oldest tested release.
+
+====================================================================================================================================================
+Bug Name:             KASAN: slab-out-of-bounds Write in hfs_asc2mac
+Bug ID:               bug0159
+Bug Link:             https://syzkaller.appspot.com/bug?id=67d3719a7490d99812faae7f9c2c26e9f386c1a6
+Bisection Result:     2018-10-22 - 84df9525b0c27f3ebc2ebb1864fa62a97fdedb7d
+Bisected Commit Name: Linux 4.19
+Run Time:             4h5m8s
+
+Anchor Commit:        2022-11-23 - 4312098baf37ee17a8350725e6e0d0e8590252d4
+Bisection Result:     2018-10-22 - 84df9525b0c27f3ebc2ebb1864fa62a97fdedb7d

@@ -1,0 +1,307 @@
+./bin/meerkat -i 1 -c /home/author/meerkat/wd-meerkat-1/meerkat.cfg -a 9d004b2f4fea97cde123e7f1939b80e77bf2e695 -F ff-test,stateful-corpus,poc-test,ff-no-find-backup
+Bisecting:          INFO: task hung in hci_dev_close_sync
+Syzbot Link:        https://syzkaller.appspot.com/bug?id=8137f770127ad3ae80cc615fbb3b3bdf71c5e17e
+Working Name:       bug0101
+
+Aliases:
+    INFO: task hung in hci_dev_close_sync
+
+Anchor Commit:      9d004b2f4fea97cde123e7f1939b80e77bf2e695
+Repository:         https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
+Branch:             master
+Arch:               amd64
+
+Meerkat:            /home/author/meerkat/
+Version:            1.2.0
+Kernel:             /home/author/meerkat/wd-meerkat-1/kernel/
+Syzkaller:          /home/author/meerkat/syzkaller/
+Compilers:          /home/author/meerkat/compilers/
+Compiler:           gcc (Ubuntu 12.3.0-1ubuntu1~22.04.3) 12.3.0
+Linker:             GNU ld (GNU Binutils for Ubuntu) 2.38
+Ccache:             ccache version 4.5.1
+Image:              /home/author/meerkat/image/stretch/stretch.img
+Image Key:          /home/author/meerkat/image/stretch/stretch.id_rsa
+
+Workdir:            /home/author/meerkat/wd-meerkat-1/
+Kconfig:            /home/author/meerkat/wd-meerkat-1/config-bug0101.txt
+Reproducers: (1)    /home/author/meerkat/wd-meerkat-1/reproducers/
+Primary PoC:        /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0101-1.prog
+Syzkaller Workdir:  /home/author/meerkat/wd-meerkat-1/wd-kaller/
+Log Directory:      /home/author/meerkat/wd-meerkat-1/log/
+
+Syscalls: (4)       ["openat$rfkill", "write$rfkill", "ioctl$F2FS_IOC_START_ATOMIC_WRITE", "openat$selinux_enforce"]
+VM Count:           4
+CPU Count:          4
+Procs:              24
+Memory:             4096
+Make Procs:         16
+Max Time:           10
+Max Attempts:       1
+
+==== Anchor Commit ====
+
+2026-04-27 13:26:12
+Session:   1
+Kernel:    2022-05-27 - 9d004b2f4fea97cde123e7f1939b80e77bf2e695
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    4  INFO: task hung in hci_dev_close_sync (2)
+       4  suppressed report (2)
+Attempt 2: (RETRY)
+    Time  Bug Name
+***    4  INFO: task hung in hci_dev_close_sync (2)
+       4  suppressed report (2)
+Attempt 3: (RETRY)
+    Time  Bug Name
+***    4  INFO: task hung in hci_dev_close_sync (4)
+The bug was found.
+
+New Max Time: 10
+
+==== Major Release Search ====
+11 Releases
+
+2026-04-27 13:51:38
+Session:   2
+Kernel:    2022-05-22 - 4b0986a3613c92f4ec1bdc7f60ec66fea135991f (v5.18)
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       4  suppressed report
+       7  suppressed report
+      10  suppressed report
+The bug was not found.
+About 10 releases remaining
+
+==== Kernel Bisection ====
+10644 Linux commits
+
+2026-04-27 14:14:37
+Session:   3
+Kernel:    2022-05-25 - 86c87bea6b42100c67418af690919c44de6ede6e
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       4  suppressed report (3)
+       5  suppressed report
+***    8  INFO: task hung in hci_dev_close_sync (2)
+       8  suppressed report (2)
+Running syz-repro.
+syz-repro was terminated after 60 minutes
+Warning: Child process exited with error status 32765.
+Run Time:        1h0m0s
+The bug was found.
+About 5170 commits remaining
+
+2026-04-27 15:35:30
+Session:   4
+Kernel:    2022-05-24 - 7208c9842c50f97327aac20be62edc8ad230f05c
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       9  suppressed report
+The bug was not found.
+About 2585 commits remaining
+
+2026-04-27 15:58:05
+Session:   5
+Kernel:    2022-05-11 - 01f4685797a5723b0046da03c30185ac9ff42b30
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       4  suppressed report
+       6  suppressed report (2)
+       8  suppressed report
+       9  suppressed report
+The bug was not found.
+About 4394 commits remaining
+
+2026-04-27 16:20:41
+Session:   6
+Kernel:    2022-05-23 - 1ef0736c0711e2633a59b540931406de626f2836
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    4  INFO: task hung in hci_dev_close_sync
+       4  suppressed report
+       4  KASAN: use-after-free Read in nf_confirm (has report)
+The bug was found.
+About 1105 commits remaining
+
+2026-04-27 16:37:18
+Session:   7
+Kernel:    2022-05-19 - d353e1a3bafd468941d42f6aa59bbd8ac42959b6
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       4  suppressed report
+       7  suppressed report
+       8  suppressed report
+The bug was not found.
+About 297 commits remaining
+
+2026-04-27 16:59:45
+Session:   8
+Kernel:    2022-05-23 - 8f445a3ec3fd36feb90c5b2ef8d21e2492819cdc
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       5  suppressed report (2)
+The bug was not found.
+About 156 commits remaining
+
+2026-04-27 17:17:55
+Session:   9
+Kernel:    2022-05-11 - 0bed8f374a9981d94c6b03376925419ef588f44a
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       6  suppressed report
+       7  suppressed report
+The bug was not found.
+About 2371 commits remaining
+
+2026-04-27 17:40:25
+Session:   10
+Kernel:    2022-05-23 - d88bb5eed04ce50cc20e7f9282977841728be798
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  WARNING in process_one_work (has report)
+       3  WARNING: ODEBUG bug in netdev_run_todo (has report)
+       4  suppressed report
+       5  suppressed report
+       9  suppressed report
+The bug was not found.
+About 2333 commits remaining
+
+2026-04-27 17:56:09
+Session:   11
+Kernel:    2022-05-13 - 0d37ddfc50d9a81f46d3b2ffa156d4fea8a410f7
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    4  INFO: task hung in hci_dev_close_sync (2)
+The bug was found.
+About 1645 commits remaining
+
+2026-04-27 18:09:20
+Session:   12
+Kernel:    2022-05-13 - d44e1dbda36fff5d7c2586683c4adc0963aef908
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       3  suppressed report
+       5  suppressed report
+       6  suppressed report (2)
+      10  suppressed report (2)
+The bug was not found.
+About 11 commits remaining
+
+2026-04-27 18:23:44
+Session:   13
+Kernel:    2022-05-13 - 4622594766d0bc96d04079a96e13eb58f3f799f2
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       4  suppressed report (2)
+       5  suppressed report
+      10  suppressed report
+The bug was not found.
+About 6 commits remaining
+
+2026-04-27 18:38:20
+Session:   14
+Kernel:    2022-05-13 - 247f226adadfb7be09dd537f177429f4415aef8e
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    4  INFO: task hung in hci_dev_close_sync
+       4  suppressed report
+Running syz-repro.
+New PoC saved at /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0101-0.prog
+Primary PoC:     /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0101-0.prog
+Run Time:        0h54m0s
+The bug was found.
+About 3 commits remaining
+
+2026-04-27 19:40:57
+Session:   15
+Kernel:    2022-05-13 - ff7f2926114d3a50f5ffe461a9bce8d761748da5
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    4  INFO: task hung in hci_dev_close_sync
+       4  suppressed report
+The bug was found.
+About 2 commits remaining
+
+==== Partial Result: Focused Fuzzing ====
+Reproducer:           /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0101-0.prog
+Bisection Result:     2022-05-13 - ff7f2926114d3a50f5ffe461a9bce8d761748da5
+Bisected Commit Name: Bluetooth: core: Fix missing power_on work cancel on HCI close
+Stage Time:           6h23m20s
+Run Time:             6h23m22s
+=========================================
+
+==== Anchor Commit ====
+
+2026-04-27 19:49:33
+Session:   16
+Kernel:    2022-05-13 - 4622594766d0bc96d04079a96e13eb58f3f799f2
+Compiler:  ccache gcc
+PoC:       /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0101-0.prog
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    INFO: task hung in misc_open
+    INFO: task hung in rfkill_global_led_trigger_worker
+    INFO: task hung in rfkill_fop_open
+    INFO: task hung in scan_update_work
+    INFO: task hung in hci_request_cancel_all
+Attempt 2:
+    INFO: task hung in rfkill_unregister
+    INFO: task hung in misc_open
+    INFO: task hung in rfkill_fop_open
+    INFO: task hung in scan_update_work
+    INFO: task hung in hci_request_cancel_all
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    INFO: task hung in misc_open
+    INFO: task hung in rfkill_global_led_trigger_worker
+    INFO: task hung in rfkill_fop_open
+    INFO: task hung in scan_update_work
+    INFO: task hung in rfkill_register
+    INFO: task hung in genl_rcv_msg
+    INFO: task hung in genl_family_rcv_msg_dumpit
+    INFO: task hung in hci_request_cancel_all
+Attempt 5:
+    INFO: task hung in rfkill_unregister
+    INFO: task hung in misc_open
+    INFO: task hung in rfkill_global_led_trigger_worker
+    INFO: task hung in rfkill_fop_open
+    INFO: task hung in scan_update_work
+    INFO: task hung in rfkill_fop_release
+    INFO: task hung in rfkill_register
+    INFO: task hung in genl_rcv_msg
+    INFO: task hung in hci_request_cancel_all
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+
+Failure: This bug cannot be found at the anchor commit.
+
+====================================================================================================================================================
+Bug Name:             INFO: task hung in hci_dev_close_sync
+Bug ID:               bug0101
+Bug Link:             https://syzkaller.appspot.com/bug?id=8137f770127ad3ae80cc615fbb3b3bdf71c5e17e
+Bisection Result:     2022-05-13 - ff7f2926114d3a50f5ffe461a9bce8d761748da5
+Bisected Commit Name: Bluetooth: core: Fix missing power_on work cancel on HCI close
+Run Time:             6h35m44s
+
+Anchor Commit:        2022-05-27 - 9d004b2f4fea97cde123e7f1939b80e77bf2e695
+Bisection Result:     2022-05-13 - ff7f2926114d3a50f5ffe461a9bce8d761748da5

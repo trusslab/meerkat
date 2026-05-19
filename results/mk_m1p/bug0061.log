@@ -1,0 +1,718 @@
+./bin/meerkat -i 1 -c /home/author/meerkat/wd-meerkat-1/meerkat.cfg -a b229b6ca5abbd63ff40c1396095b1b36b18139c3 -F ff-test,stateful-corpus,poc-test,ff-no-find-backup
+Bisecting:          WARNING in ieee80211_link_info_change_notify
+Syzbot Link:        https://syzkaller.appspot.com/bug?id=64a91d95c31faa0e8dd58a5a7cc0ab963e28600a
+Working Name:       bug0061
+
+Aliases:
+    WARNING in ieee80211_link_info_change_notify
+
+Anchor Commit:      b229b6ca5abbd63ff40c1396095b1b36b18139c3
+Repository:         https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
+Branch:             master
+Arch:               amd64
+
+Meerkat:            /home/author/meerkat/
+Version:            1.2.0
+Kernel:             /home/author/meerkat/wd-meerkat-1/kernel/
+Syzkaller:          /home/author/meerkat/syzkaller/
+Compilers:          /home/author/meerkat/compilers/
+Compiler:           gcc (Ubuntu 12.3.0-1ubuntu1~22.04.3) 12.3.0
+Linker:             GNU ld (GNU Binutils for Ubuntu) 2.38
+Ccache:             ccache version 4.5.1
+Image:              /home/author/meerkat/image/stretch/stretch.img
+Image Key:          /home/author/meerkat/image/stretch/stretch.id_rsa
+
+Workdir:            /home/author/meerkat/wd-meerkat-1/
+Kconfig:            /home/author/meerkat/wd-meerkat-1/config-bug0061.txt
+Reproducers: (1)    /home/author/meerkat/wd-meerkat-1/reproducers/
+Primary PoC:        /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0061-1.prog
+Syzkaller Workdir:  /home/author/meerkat/wd-meerkat-1/wd-kaller/
+Log Directory:      /home/author/meerkat/wd-meerkat-1/log/
+
+Syscalls: (27)      ["ioctl$sock_SIOCGIFINDEX_80211", "sendmsg$NL80211_CMD_SET_MCAST_RATE", "sendmsg$nl_route", "socket$nl_generic", "socket$nl_route", "syz_genetlink_get_family_id$nl80211", "socket", "sendmsg$NL80211_CMD_GET_INTERFACE", "ioctl$F2FS_IOC_START_ATOMIC_WRITE", "openat$selinux_enforce", "socket$netlink", "ioctl$sock_SIOCGIFINDEX", "get_robust_list", "syz_clone", "ioctl$TUNGETDEVNETNS", "mount$bpf", "getuid", "ioctl$ifreq_SIOCGIFINDEX_vcan", "bpf$BPF_PROG_GET_FD_BY_ID", "openat$tun", "socket$inet_udp", "socket$inet6_udp", "setgid", "getgid", "socket$inet", "socket$inet6", "bpf$BPF_PROG_GET_NEXT_ID"]
+VM Count:           8
+CPU Count:          2
+Procs:              16
+Memory:             4096
+Make Procs:         16
+Max Time:           10
+Max Attempts:       1
+
+==== Anchor Commit ====
+
+2026-04-22 02:13:59
+Session:   1
+Kernel:    2022-10-26 - b229b6ca5abbd63ff40c1396095b1b36b18139c3
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  INFO: rcu detected stall in corrupted
+***    2  WARNING in ieee80211_link_info_change_notify (2) (has report)
+Attempt 2: (RETRY)
+    Time  Bug Name
+***    2  WARNING in ieee80211_link_info_change_notify (3) (has report)
+Attempt 3: (RETRY)
+    Time  Bug Name
+       2  INFO: rcu detected stall in corrupted
+***    2  WARNING in ieee80211_link_info_change_notify (4) (has report)
+The bug was found.
+
+New Max Time: 10
+
+==== Major Release Search ====
+12 Releases
+
+2026-04-22 02:34:15
+Session:   2
+Kernel:    2022-10-02 - 4fe89d07dcc2804c8b562f6c7896a45643d34b2f (v6.0)
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  INFO: rcu detected stall in corrupted
+***    2  WARNING in ieee80211_link_info_change_notify (2) (has report)
+Running syz-repro.
+New PoC saved at /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0061-0.prog
+Primary PoC:     /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0061-0.prog
+Run Time:        0h54m0s
+The bug was found.
+About 11 releases remaining
+
+2026-04-22 03:43:55
+Session:   3
+Kernel:    2022-07-31 - 3d7cb6b04c3f3115719235cc6866b10326de34cd (v5.19)
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  WARNING in drv_bss_info_changed (2) (has report)
+       3  WARNING in drv_bss_info_changed (has report)
+       8  WARNING in drv_bss_info_changed (6) (has report)
+       9  WARNING in drv_bss_info_changed (3) (has report)
+      10  WARNING in drv_bss_info_changed (6) (has report)
+The bug was not found.
+About 10 releases remaining
+
+==== Kernel Bisection ====
+16585 Linux commits
+
+2026-04-22 04:07:19
+Session:   4
+Kernel:    2022-08-04 - 78acd4ca433425e6dd4032cfc2156c60e34931f2
+Compiler:  ccache gcc
+Error: index error parsing Warning report
+Attempt 1:
+    Time  Bug Name
+       2  WARNING in corrupted
+       2  WARNING: ODEBUG bug in mgmt_index_removed (has report)
+***    3  WARNING in ieee80211_link_info_change_notify (3) (has report)
+       3  WARNING: ODEBUG bug in mgmt_index_removed (has report)
+The bug was found.
+About 8200 commits remaining
+
+2026-04-22 04:23:25
+Session:   5
+Kernel:    2022-08-03 - 526942b8134cc34d25d27f95dfff98b8ce2f6fcd
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  WARNING in drv_bss_info_changed (has report)
+       3  WARNING in drv_bss_info_changed (5) (has report)
+       4  WARNING in drv_bss_info_changed (3) (has report)
+       5  WARNING in drv_bss_info_changed (5) (has report)
+       6  WARNING in drv_bss_info_changed (4) (has report)
+       7  WARNING in drv_bss_info_changed (5) (has report)
+       8  WARNING in drv_bss_info_changed (6) (has report)
+       9  WARNING in drv_bss_info_changed (2) (has report)
+      10  WARNING in drv_bss_info_changed (7) (has report)
+The bug was not found.
+About 4992 commits remaining
+
+2026-04-22 04:46:28
+Session:   6
+Kernel:    2022-08-03 - 12b68040a5e468068fd7f4af1150eab8f6e96235
+Compiler:  ccache gcc
+Error: index error parsing Warning report
+Attempt 1:
+    Time  Bug Name
+       2  INFO: rcu detected stall in corrupted
+       2  WARNING: ODEBUG bug in mgmt_index_removed (has report)
+       3  WARNING in corrupted (2)
+***    3  WARNING in ieee80211_link_info_change_notify (3) (has report)
+The bug was found.
+About 2564 commits remaining
+
+2026-04-22 05:02:38
+Session:   7
+Kernel:    2022-07-21 - b945804d993072e24138741ab67e28f6b09b2502
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  INFO: trying to register non-static key in ieee80211_do_stop (5)
+       3  INFO: trying to register non-static key in ieee80211_do_stop (5)
+       4  INFO: trying to register non-static key in ieee80211_do_stop (2)
+       6  INFO: trying to register non-static key in ieee80211_do_stop
+       7  INFO: trying to register non-static key in ieee80211_do_stop
+       8  INFO: trying to register non-static key in ieee80211_do_stop
+       9  INFO: trying to register non-static key in ieee80211_do_stop (5)
+      10  INFO: trying to register non-static key in ieee80211_do_stop
+The bug was not found.
+About 4730 commits remaining
+
+2026-04-22 05:25:38
+Session:   8
+Kernel:    2022-07-29 - ff4970b130e74af4f2fe5bc6a7a963bc977cae1a
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  WARNING: ODEBUG bug in mgmt_index_removed (has report)
+***    3  WARNING in ieee80211_link_info_change_notify (4) (has report)
+Running syz-repro.
+Run Time:        0h3m0s
+The bug was found.
+About 840 commits remaining
+
+2026-04-22 05:44:40
+Session:   9
+Kernel:    2022-07-29 - 5cc8cc4406edee1bc22991c23d38efbbb797aa6d
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    3  WARNING in ieee80211_link_info_change_notify (3) (has report)
+The bug was found.
+About 264 commits remaining
+
+2026-04-22 05:58:07
+Session:   10
+Kernel:    2022-07-18 - ec65e0e9acf758585249e43a51abf082ba1af582
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  INFO: trying to register non-static key in ieee80211_do_stop
+       3  INFO: trying to register non-static key in ieee80211_do_stop (4)
+       5  INFO: trying to register non-static key in ieee80211_do_stop (5)
+       6  INFO: trying to register non-static key in ieee80211_do_stop (3)
+       7  INFO: trying to register non-static key in ieee80211_do_stop (3)
+       8  INFO: trying to register non-static key in ieee80211_do_stop (4)
+       9  INFO: trying to register non-static key in ieee80211_do_stop (2)
+      10  INFO: trying to register non-static key in ieee80211_do_stop (2)
+The bug was not found.
+About 142 commits remaining
+
+2026-04-22 06:13:40
+Session:   11
+Kernel:    2022-07-11 - fc8f841bacfc092d0ca0f3022dc9bdf8e570797b
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    3  WARNING in ieee80211_link_info_change_notify (4) (has report)
+The bug was found.
+About 71 commits remaining
+
+2026-04-22 06:29:39
+Session:   12
+Kernel:    2022-07-11 - 364718c94ac2ea4e51958ac0aa15c9092c785a3a
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    3  WARNING in ieee80211_link_info_change_notify (4) (has report)
+Running syz-repro.
+New PoC saved at /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0061-1.prog
+Primary PoC:     /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0061-1.prog
+Run Time:        0h21m0s
+The bug was found.
+About 36 commits remaining
+
+2026-04-22 06:58:30
+Session:   13
+Kernel:    2022-07-11 - c132fc7d83bb9f459ef10d7fe082bc301f63cd3b
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    3  WARNING in ieee80211_link_info_change_notify (4) (has report)
+The bug was found.
+About 18 commits remaining
+
+2026-04-22 07:06:21
+Session:   14
+Kernel:    2022-07-11 - ef55564e2b173d459a4aaae962c84f05aeaf8e36
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    3  WARNING in ieee80211_link_info_change_notify (4) (has report)
+The bug was found.
+About 9 commits remaining
+
+2026-04-22 07:14:10
+Session:   15
+Kernel:    2022-07-11 - 162d5c14ba482934334428b3be972571f0c007b0
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    3  WARNING in ieee80211_link_info_change_notify (3) (has report)
+Running syz-repro.
+New PoC saved at /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0061-0.prog
+Primary PoC:     /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0061-0.prog
+Run Time:        0h13m0s
+The bug was found.
+About 5 commits remaining
+
+2026-04-22 07:34:54
+Session:   16
+Kernel:    2022-07-11 - cffd93411575afd987788e2ec3cb8eaff70f0215
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    3  WARNING in ieee80211_link_info_change_notify (3) (has report)
+The bug was found.
+About 3 commits remaining
+
+2026-04-22 07:42:44
+Session:   17
+Kernel:    2022-07-11 - 63907290faa916ffab1c8455141c79ca8e3a79bb
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    3  WARNING in ieee80211_link_info_change_notify (4) (has report)
+The bug was found.
+About 2 commits remaining
+
+==== Partial Result: Focused Fuzzing ====
+Reproducer:           /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0061-0.prog
+Bisection Result:     2022-07-11 - 63907290faa916ffab1c8455141c79ca8e3a79bb
+Bisected Commit Name: mt76: mt7915: fix endianness in mt7915_rf_regval_get
+Stage Time:           5h36m32s
+Run Time:             5h36m35s
+=========================================
+
+==== Anchor Commit ====
+
+2026-04-22 07:50:31
+Session:   18
+Kernel:    2022-07-18 - ec65e0e9acf758585249e43a51abf082ba1af582
+Compiler:  ccache gcc
+PoC:       /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0061-0.prog
+Attempt 0:
+    INFO: trying to register non-static key in ieee80211_do_stop
+*** WARNING in ieee80211_link_info_change_notify (has report)
+Attempt 1:
+    INFO: trying to register non-static key in ieee80211_do_stop
+*** WARNING in ieee80211_link_info_change_notify (has report)
+Attempt 2:
+    INFO: trying to register non-static key in ieee80211_do_stop
+*** WARNING in ieee80211_link_info_change_notify (has report)
+Attempt 3:
+    INFO: trying to register non-static key in ieee80211_do_stop
+*** WARNING in ieee80211_link_info_change_notify (has report)
+Attempt 4:
+    INFO: trying to register non-static key in ieee80211_do_stop
+*** WARNING in ieee80211_link_info_change_notify (has report)
+Attempt 5:
+    INFO: trying to register non-static key in ieee80211_do_stop
+*** WARNING in ieee80211_link_info_change_notify (has report)
+Attempt 6:
+    INFO: trying to register non-static key in ieee80211_do_stop
+*** WARNING in ieee80211_link_info_change_notify (has report)
+Attempt 7:
+    INFO: trying to register non-static key in ieee80211_do_stop
+*** WARNING in ieee80211_link_info_change_notify (has report)
+The bug was found.
+
+==== Major Release Search ====
+11 Releases
+
+2026-04-22 07:57:52
+Session:   19
+Kernel:    2022-05-22 - 4b0986a3613c92f4ec1bdc7f60ec66fea135991f (v5.18)
+Compiler:  ccache gcc
+PoC:       /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0061-0.prog
+Attempt 0:
+    WARNING in drv_bss_info_changed (has report)
+Attempt 1:
+    WARNING in drv_bss_info_changed (has report)
+Attempt 2:
+    WARNING in drv_bss_info_changed (has report)
+Attempt 3:
+    WARNING in drv_bss_info_changed (has report)
+Attempt 4:
+    WARNING in drv_bss_info_changed (has report)
+Attempt 5:
+    WARNING in drv_bss_info_changed (has report)
+Attempt 6:
+    WARNING in drv_bss_info_changed (has report)
+Attempt 7:
+    WARNING in drv_bss_info_changed (has report)
+The bug was not found.
+About 10 releases remaining
+
+==== Kernel Bisection ====
+17100 Linux commits
+
+2026-04-22 08:12:50
+Session:   20
+Kernel:    2022-05-26 - ae862183285cbb2ef9032770d98ffa9becffe9d5
+Compiler:  ccache gcc
+PoC:       /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0061-0.prog
+Attempt 0:
+    WARNING in drv_bss_info_changed (has report)
+Attempt 1:
+    WARNING in drv_bss_info_changed (has report)
+Attempt 2:
+    WARNING in drv_bss_info_changed (has report)
+Attempt 3:
+    WARNING in drv_bss_info_changed (has report)
+Attempt 4:
+    WARNING in drv_bss_info_changed (has report)
+Attempt 5:
+    WARNING in drv_bss_info_changed (has report)
+Attempt 6:
+    WARNING in drv_bss_info_changed (has report)
+Attempt 7:
+    WARNING in drv_bss_info_changed (has report)
+The bug was not found.
+About 8357 commits remaining
+
+2026-04-22 08:27:35
+Session:   21
+Kernel:    2022-06-03 - 932c2989b59008e530ffcc7c7e6ef507a28b28ca
+Compiler:  ccache gcc
+PoC:       /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0061-0.prog
+Attempt 0:
+    WARNING in drv_bss_info_changed (has report)
+Attempt 1:
+    WARNING in drv_bss_info_changed (has report)
+Attempt 2:
+    WARNING in drv_bss_info_changed (has report)
+Attempt 3:
+    WARNING in drv_bss_info_changed (has report)
+Attempt 4:
+    WARNING in drv_bss_info_changed (has report)
+Attempt 5:
+    WARNING in drv_bss_info_changed (has report)
+Attempt 6:
+    WARNING in drv_bss_info_changed (has report)
+Attempt 7:
+    WARNING in drv_bss_info_changed (has report)
+The bug was not found.
+About 4120 commits remaining
+
+2026-04-22 08:42:20
+Session:   22
+Kernel:    2022-06-26 - 413c1f14919b3efee05eb79d2e913663e964abda
+Compiler:  ccache gcc
+PoC:       /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0061-0.prog
+Attempt 0:
+    WARNING in drv_bss_info_changed (has report)
+Attempt 1:
+    WARNING in drv_bss_info_changed (has report)
+Attempt 2:
+    WARNING in drv_bss_info_changed (has report)
+Attempt 3:
+    WARNING in drv_bss_info_changed (has report)
+Attempt 4:
+    WARNING in drv_bss_info_changed (has report)
+Attempt 5:
+    WARNING in drv_bss_info_changed (has report)
+Attempt 6:
+    WARNING in drv_bss_info_changed (has report)
+Attempt 7:
+    WARNING in drv_bss_info_changed (has report)
+The bug was not found.
+About 2070 commits remaining
+
+2026-04-22 08:57:32
+Session:   23
+Kernel:    2022-07-07 - cf21b355ccb39b0de0b6a7362532bb5584c84a80
+Compiler:  ccache gcc
+PoC:       /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0061-0.prog
+Attempt 0:
+    WARNING in drv_bss_info_changed (has report)
+Attempt 1:
+    WARNING in drv_bss_info_changed (has report)
+Attempt 2:
+    WARNING in drv_bss_info_changed (has report)
+Attempt 3:
+    WARNING in drv_bss_info_changed (has report)
+Attempt 4:
+    WARNING in drv_bss_info_changed (has report)
+Attempt 5:
+    WARNING in drv_bss_info_changed (has report)
+Attempt 6:
+    WARNING in drv_bss_info_changed (has report)
+Attempt 7:
+    WARNING in drv_bss_info_changed (has report)
+The bug was not found.
+About 1153 commits remaining
+
+2026-04-22 09:12:49
+Session:   24
+Kernel:    2022-07-14 - f41d5df5f146d606df02ec8fafd080a5ee6e6e81
+Compiler:  ccache gcc
+PoC:       /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0061-0.prog
+Attempt 0:
+    WARNING in drv_bss_info_changed (has report)
+Attempt 1:
+    WARNING in drv_bss_info_changed (has report)
+Attempt 2:
+    WARNING in drv_bss_info_changed (has report)
+Attempt 3:
+    WARNING in drv_bss_info_changed (has report)
+Attempt 4:
+    WARNING in drv_bss_info_changed (has report)
+Attempt 5:
+    WARNING in drv_bss_info_changed (has report)
+Attempt 6:
+    WARNING in drv_bss_info_changed (has report)
+Attempt 7:
+    WARNING in drv_bss_info_changed (has report)
+The bug was not found.
+About 1362 commits remaining
+
+2026-04-22 09:28:01
+Session:   25
+Kernel:    2022-07-13 - 736002fb6a09861c2663596011371884a8b7c0dd
+Compiler:  ccache gcc
+PoC:       /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0061-0.prog
+Attempt 0:
+*** WARNING in ieee80211_link_info_change_notify (has report)
+Attempt 1:
+*** WARNING in ieee80211_link_info_change_notify (has report)
+Attempt 2:
+*** WARNING in ieee80211_link_info_change_notify (has report)
+Attempt 3:
+*** WARNING in ieee80211_link_info_change_notify (has report)
+Attempt 4:
+*** WARNING in ieee80211_link_info_change_notify (has report)
+Attempt 5:
+*** WARNING in ieee80211_link_info_change_notify (has report)
+Attempt 6:
+*** WARNING in ieee80211_link_info_change_notify (has report)
+Attempt 7:
+*** WARNING in ieee80211_link_info_change_notify (has report)
+The bug was found.
+About 1111 commits remaining
+
+2026-04-22 09:43:17
+Session:   26
+Kernel:    2022-07-12 - da212bd29d7fdc326f0be47d15183d62e9c7c172
+Compiler:  ccache gcc
+PoC:       /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0061-0.prog
+Attempt 0:
+    WARNING in drv_bss_info_changed (has report)
+Attempt 1:
+    WARNING in drv_bss_info_changed (has report)
+Attempt 2:
+    WARNING in drv_bss_info_changed (has report)
+Attempt 3:
+    WARNING in drv_bss_info_changed (has report)
+Attempt 4:
+    WARNING in drv_bss_info_changed (has report)
+Attempt 5:
+    WARNING in drv_bss_info_changed (has report)
+Attempt 6:
+    WARNING in drv_bss_info_changed (has report)
+Attempt 7:
+    WARNING in drv_bss_info_changed (has report)
+The bug was not found.
+About 170 commits remaining
+
+2026-04-22 09:54:22
+Session:   27
+Kernel:    2022-06-21 - c4756d5de72e549fdaa32a1fab12ae776fca5be7
+Compiler:  ccache gcc
+PoC:       /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0061-0.prog
+Attempt 0:
+*** WARNING in ieee80211_link_info_change_notify (has report)
+Attempt 1:
+*** WARNING in ieee80211_link_info_change_notify (has report)
+Attempt 2:
+*** WARNING in ieee80211_link_info_change_notify (has report)
+Attempt 3:
+*** WARNING in ieee80211_link_info_change_notify (has report)
+Attempt 4:
+*** WARNING in ieee80211_link_info_change_notify (has report)
+Attempt 5:
+*** WARNING in ieee80211_link_info_change_notify (has report)
+Attempt 6:
+*** WARNING in ieee80211_link_info_change_notify (has report)
+Attempt 7:
+*** WARNING in ieee80211_link_info_change_notify (has report)
+The bug was found.
+About 85 commits remaining
+
+2026-04-22 10:09:29
+Session:   28
+Kernel:    2022-06-20 - 40a27ea07949a022a083de28da99f8f472242e2e
+Compiler:  ccache gcc
+PoC:       /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0061-0.prog
+Attempt 0:
+*** WARNING in ieee80211_link_info_change_notify (has report)
+Attempt 1:
+*** WARNING in ieee80211_link_info_change_notify (has report)
+Attempt 2:
+*** WARNING in ieee80211_link_info_change_notify (has report)
+Attempt 3:
+*** WARNING in ieee80211_link_info_change_notify (has report)
+Attempt 4:
+*** WARNING in ieee80211_link_info_change_notify (has report)
+Attempt 5:
+*** WARNING in ieee80211_link_info_change_notify (has report)
+Attempt 6:
+*** WARNING in ieee80211_link_info_change_notify (has report)
+Attempt 7:
+*** WARNING in ieee80211_link_info_change_notify (has report)
+The bug was found.
+About 43 commits remaining
+
+2026-04-22 10:17:24
+Session:   29
+Kernel:    2022-06-06 - 3926e0c12238a8053ed5a598b5b84c6cf2adacab
+Compiler:  ccache gcc
+PoC:       /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0061-0.prog
+Attempt 0:
+    WARNING in drv_bss_info_changed (has report)
+Attempt 1:
+    WARNING in drv_bss_info_changed (has report)
+Attempt 2:
+    WARNING in drv_bss_info_changed (has report)
+Attempt 3:
+    WARNING in drv_bss_info_changed (has report)
+Attempt 4:
+    WARNING in drv_bss_info_changed (has report)
+Attempt 5:
+    WARNING in drv_bss_info_changed (has report)
+Attempt 6:
+    WARNING in drv_bss_info_changed (has report)
+Attempt 7:
+    WARNING in drv_bss_info_changed (has report)
+The bug was not found.
+About 14084 commits remaining
+
+2026-04-22 10:32:11
+Session:   30
+Kernel:    2022-06-20 - 7fc83a2ba2d54780690d871d03d0d8e75868a803
+Compiler:  ccache gcc
+PoC:       /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0061-0.prog
+Attempt 0:
+*** WARNING in ieee80211_link_info_change_notify (has report)
+Attempt 1:
+*** WARNING in ieee80211_link_info_change_notify (has report)
+Attempt 2:
+*** WARNING in ieee80211_link_info_change_notify (has report)
+Attempt 3:
+*** WARNING in ieee80211_link_info_change_notify (has report)
+Attempt 4:
+*** WARNING in ieee80211_link_info_change_notify (has report)
+Attempt 5:
+*** WARNING in ieee80211_link_info_change_notify (has report)
+Attempt 6:
+*** WARNING in ieee80211_link_info_change_notify (has report)
+Attempt 7:
+*** WARNING in ieee80211_link_info_change_notify (has report)
+The bug was found.
+About 14073 commits remaining
+
+2026-04-22 10:39:44
+Session:   31
+Kernel:    2022-06-20 - d0a9123ef548def5c8880e83e5df948eb5b55c62
+Compiler:  ccache gcc
+PoC:       /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0061-0.prog
+Attempt 0:
+    WARNING in drv_bss_info_changed (has report)
+Attempt 1:
+    WARNING in drv_bss_info_changed (has report)
+Attempt 2:
+    WARNING in drv_bss_info_changed (has report)
+Attempt 3:
+    WARNING in drv_bss_info_changed (has report)
+Attempt 4:
+    WARNING in drv_bss_info_changed (has report)
+Attempt 5:
+    WARNING in drv_bss_info_changed (has report)
+Attempt 6:
+    WARNING in drv_bss_info_changed (has report)
+Attempt 7:
+    WARNING in drv_bss_info_changed (has report)
+The bug was not found.
+About 6 commits remaining
+
+2026-04-22 10:47:23
+Session:   32
+Kernel:    2022-06-20 - bfd8403adddd09f32033a14bf25be398291e7881
+Compiler:  ccache gcc
+PoC:       /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0061-0.prog
+Attempt 0:
+    WARNING in drv_bss_info_changed (has report)
+Attempt 1:
+    WARNING in drv_bss_info_changed (has report)
+Attempt 2:
+    WARNING in drv_bss_info_changed (has report)
+Attempt 3:
+    WARNING in drv_bss_info_changed (has report)
+Attempt 4:
+    WARNING in drv_bss_info_changed (has report)
+Attempt 5:
+    WARNING in drv_bss_info_changed (has report)
+Attempt 6:
+    WARNING in drv_bss_info_changed (has report)
+Attempt 7:
+    WARNING in drv_bss_info_changed (has report)
+The bug was not found.
+About 4 commits remaining
+
+2026-04-22 10:55:01
+Session:   33
+Kernel:    2022-06-20 - 8e14130d3faf7b6b0fc57b530bb601cd9d6a1dab
+Compiler:  ccache gcc
+PoC:       /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0061-0.prog
+Attempt 0:
+*** WARNING in ieee80211_link_info_change_notify (has report)
+Attempt 1:
+*** WARNING in ieee80211_link_info_change_notify (has report)
+Attempt 2:
+*** WARNING in ieee80211_link_info_change_notify (has report)
+Attempt 3:
+*** WARNING in ieee80211_link_info_change_notify (has report)
+Attempt 4:
+*** WARNING in ieee80211_link_info_change_notify (has report)
+Attempt 5:
+*** WARNING in ieee80211_link_info_change_notify (has report)
+Attempt 6:
+*** WARNING in ieee80211_link_info_change_notify (has report)
+Attempt 7:
+*** WARNING in ieee80211_link_info_change_notify (has report)
+The bug was found.
+About 3 commits remaining
+
+2026-04-22 11:02:23
+Session:   34
+Kernel:    2022-06-20 - 7b7090b4c6a906cc7c3e2a460335f705b93f4506
+Compiler:  ccache gcc
+PoC:       /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0061-0.prog
+Attempt 0:
+*** WARNING in ieee80211_link_info_change_notify (has report)
+Attempt 1:
+*** WARNING in ieee80211_link_info_change_notify (has report)
+Attempt 2:
+*** WARNING in ieee80211_link_info_change_notify (has report)
+Attempt 3:
+*** WARNING in ieee80211_link_info_change_notify (has report)
+Attempt 4:
+*** WARNING in ieee80211_link_info_change_notify (has report)
+Attempt 5:
+*** WARNING in ieee80211_link_info_change_notify (has report)
+Attempt 6:
+*** WARNING in ieee80211_link_info_change_notify (has report)
+Attempt 7:
+*** WARNING in ieee80211_link_info_change_notify (has report)
+The bug was found.
+About 2 commits remaining
+
+====================================================================================================================================================
+Bug Name:             WARNING in ieee80211_link_info_change_notify
+Bug ID:               bug0061
+Bug Link:             https://syzkaller.appspot.com/bug?id=64a91d95c31faa0e8dd58a5a7cc0ab963e28600a
+Bisection Result:     2022-06-20 - 7b7090b4c6a906cc7c3e2a460335f705b93f4506
+Bisected Commit Name: wifi: mac80211: split bss_info_changed method
+Run Time:             8h56m3s
+
+Anchor Commit:        2022-10-26 - b229b6ca5abbd63ff40c1396095b1b36b18139c3
+Bisection Result:     2022-06-20 - 7b7090b4c6a906cc7c3e2a460335f705b93f4506
