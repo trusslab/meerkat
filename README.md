@@ -20,7 +20,7 @@ sudo usermod -aG kvm `whoami`
 # Setup the compilers (download from our zenodo)
 mkdir compilers
 pushd compilers
-wget https://zenodo.org/records/20316001/files/compilers.tar.gz?download=1
+wget "https://zenodo.org/records/20316001/files/compilers.tar.gz?download=1" -O compilers.tar.gz
 tar -xzf compilers.tar.gz
 popd
 
