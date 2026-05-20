@@ -1,3 +1,255 @@
 ./bin/meerkat -i 1 -c /home/author/meerkat/wd-meerkat-1/meerkat.cfg -a 2c5ca23f7414eb2c782f945aa417cfab7b5c88dd -F ff-test,stateful-corpus,poc-test,ff-no-find-backup
-Warning: Child process git exited with error status 1.
-Warning: git exited with error status 0x1
+Bisecting:          kernel BUG in __skb_gso_segment
+Syzbot Link:        https://syzkaller.appspot.com/bug?id=bf7780df648105d40e1fdbb0566defda3605ed93
+Working Name:       bug0115
+
+Aliases:
+    kernel BUG in __skb_gso_segment
+
+Anchor Commit:      2c5ca23f7414eb2c782f945aa417cfab7b5c88dd
+Repository:         https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
+Branch:             master
+Arch:               amd64
+
+Meerkat:            /home/author/meerkat/
+Version:            1.2.0
+Kernel:             /home/author/meerkat/wd-meerkat-1/kernel/
+Syzkaller:          /home/author/meerkat/syzkaller/
+Compilers:          /home/author/meerkat/compilers/
+Compiler:           gcc (Ubuntu 12.3.0-1ubuntu1~22.04.3) 12.3.0
+Linker:             GNU ld (GNU Binutils for Ubuntu) 2.38
+Ccache:             ccache version 4.5.1
+Image:              /home/author/meerkat/image/stretch/stretch.img
+Image Key:          /home/author/meerkat/image/stretch/stretch.id_rsa
+
+Workdir:            /home/author/meerkat/wd-meerkat-1/
+Kconfig:            /home/author/meerkat/wd-meerkat-1/config-bug0115.txt
+Reproducers: (1)    /home/author/meerkat/wd-meerkat-1/reproducers/
+Primary PoC:        /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0115-3.prog
+Syzkaller Workdir:  /home/author/meerkat/wd-meerkat-1/wd-kaller/
+Log Directory:      /home/author/meerkat/wd-meerkat-1/log/
+
+Syscalls: (12)      ["bind$packet", "ioctl$sock_SIOCGIFINDEX", "sendmsg$netlink", "setsockopt$packet_int", "socket", "socket$packet", "socket$netlink", "openat$selinux_enforce", "syz_clone", "getuid", "setgid", "getgid"]
+VM Count:           8
+CPU Count:          2
+Procs:              16
+Memory:             4096
+Make Procs:         16
+Max Time:           10
+Max Attempts:       1
+
+==== Anchor Commit ====
+
+2026-05-19 21:29:42
+Session:   1
+Kernel:    2022-05-30 - 2c5ca23f7414eb2c782f945aa417cfab7b5c88dd
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    2  kernel BUG in __skb_gso_segment (3) (has report)
+Attempt 2: (RETRY)
+    Time  Bug Name
+***    2  kernel BUG in __skb_gso_segment (3) (has report)
+Attempt 3: (RETRY)
+    Time  Bug Name
+***    2  kernel BUG in __skb_gso_segment (2) (has report)
+The bug was found.
+
+New Max Time: 10
+
+==== Major Release Search ====
+11 Releases
+
+2026-05-19 21:49:41
+Session:   2
+Kernel:    2022-05-22 - 4b0986a3613c92f4ec1bdc7f60ec66fea135991f (v5.18)
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 10 releases remaining
+
+==== Kernel Bisection ====
+11339 Linux commits
+
+2026-05-19 22:13:52
+Session:   3
+Kernel:    2022-05-25 - 86c87bea6b42100c67418af690919c44de6ede6e
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    3  kernel BUG in __skb_gso_segment (3) (has report)
+Running syz-repro.
+New PoC saved at /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0115-0.prog
+Primary PoC:     /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0115-0.prog
+Run Time:        0h14m0s
+The bug was found.
+About 5170 commits remaining
+
+2026-05-19 22:49:36
+Session:   4
+Kernel:    2022-05-24 - 7208c9842c50f97327aac20be62edc8ad230f05c
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 2585 commits remaining
+
+2026-05-19 23:17:50
+Session:   5
+Kernel:    2022-05-11 - 01f4685797a5723b0046da03c30185ac9ff42b30
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    3  kernel BUG in __skb_gso_segment (8) (has report)
+The bug was found.
+About 1292 commits remaining
+
+2026-05-19 23:38:56
+Session:   6
+Kernel:    2022-04-27 - 50c6afabfd2ae91a4ff0e2feb14fe702b0688ec5
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    3  kernel BUG in __skb_gso_segment (8) (has report)
+The bug was found.
+About 676 commits remaining
+
+2026-05-20 00:00:04
+Session:   7
+Kernel:    2022-04-13 - 7d9dbdfbfdc5e52131bea94a7318ee35b15a5f19
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 1077 commits remaining
+
+2026-05-20 00:28:22
+Session:   8
+Kernel:    2022-04-22 - fb799dd49a25625db05af51dd141371f6f64d3d1
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 170 commits remaining
+
+2026-05-20 00:49:53
+Session:   9
+Kernel:    2022-04-26 - 11d5daa89254ba2233d422777d52dbf24666b280
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 1167 commits remaining
+
+2026-05-20 01:08:34
+Session:   10
+Kernel:    2022-04-25 - c5794097b269f15961ed78f7f27b50e51766dec9
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 128 commits remaining
+
+2026-05-20 01:24:07
+Session:   11
+Kernel:    2022-04-27 - 124de27101ffec33a1eb6ccf0eff89a1a9b999a8
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    2  kernel BUG in __skb_gso_segment (6) (has report)
+Running syz-repro.
+New PoC saved at /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0115-1.prog
+Primary PoC:     /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0115-1.prog
+Run Time:        0h13m0s
+The bug was found.
+About 22 commits remaining
+
+2026-05-20 01:47:44
+Session:   12
+Kernel:    2022-04-26 - c706b2b5ed74d30436b85cbd8e63e969f6b5873a
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    2  kernel BUG in __skb_gso_segment (6) (has report)
+The bug was found.
+About 11 commits remaining
+
+2026-05-20 01:54:36
+Session:   13
+Kernel:    2022-04-26 - de6dd626d7082eda383ec77a5e06093c82122d10
+Compiler:  ccache gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 6 commits remaining
+
+2026-05-20 02:09:26
+Session:   14
+Kernel:    2022-04-26 - 561215482cc69d1c758944d4463b3d5d96d37bd1
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    2  kernel BUG in __skb_gso_segment (5) (has report)
+The bug was found.
+About 3 commits remaining
+
+2026-05-20 02:16:16
+Session:   15
+Kernel:    2022-04-26 - dfed913e8b55a0c2c4906f1242fd38fd9a116e49
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    2  kernel BUG in __skb_gso_segment (4) (has report)
+Running syz-repro.
+New PoC saved at /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0115-0.prog
+Primary PoC:     /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0115-0.prog
+Run Time:        0h14m0s
+The bug was found.
+About 2 commits remaining
+
+==== Partial Result: Focused Fuzzing ====
+Reproducer:           /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0115-0.prog
+Bisection Result:     2022-04-26 - dfed913e8b55a0c2c4906f1242fd38fd9a116e49
+Bisected Commit Name: net/af_packet: add VLAN support for AF_PACKET SOCK_RAW GSO
+Stage Time:           5h7m20s
+Run Time:             5h7m22s
+=========================================
+
+==== Anchor Commit ====
+
+2026-05-20 02:37:03
+Session:   16
+Kernel:    2022-04-26 - de6dd626d7082eda383ec77a5e06093c82122d10
+Compiler:  ccache gcc
+PoC:       /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0115-0.prog
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+
+Failure: This bug cannot be found at the anchor commit.
+
+====================================================================================================================================================
+Bug Name:             kernel BUG in __skb_gso_segment
+Bug ID:               bug0115
+Bug Link:             https://syzkaller.appspot.com/bug?id=bf7780df648105d40e1fdbb0566defda3605ed93
+Bisection Result:     2022-04-26 - dfed913e8b55a0c2c4906f1242fd38fd9a116e49
+Bisected Commit Name: net/af_packet: add VLAN support for AF_PACKET SOCK_RAW GSO
+Run Time:             5h19m23s
+
+Anchor Commit:        2022-05-30 - 2c5ca23f7414eb2c782f945aa417cfab7b5c88dd
+Bisection Result:     2022-04-26 - dfed913e8b55a0c2c4906f1242fd38fd9a116e49

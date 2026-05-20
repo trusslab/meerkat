@@ -1,3 +1,302 @@
 ./bin/meerkat -i 1 -c /home/author/meerkat/wd-meerkat-1/meerkat.cfg -a 9f7fb8de5d9bac17b6392a14af40baf555d9129b -F ff-test,stateful-corpus,poc-test,ff-no-find-backup
-Warning: Child process git exited with error status 1.
-Warning: git exited with error status 0x1
+Bisecting:          possible deadlock in ___neigh_create
+Syzbot Link:        https://syzkaller.appspot.com/bug?id=46243cd4c222b2ec9f0885efe0142dd1e26a0e39
+Working Name:       bug0117
+
+Aliases:
+    possible deadlock in ___neigh_create
+
+Anchor Commit:      9f7fb8de5d9bac17b6392a14af40baf555d9129b
+Repository:         https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
+Branch:             master
+Arch:               amd64
+
+Meerkat:            /home/author/meerkat/
+Version:            1.2.0
+Kernel:             /home/author/meerkat/wd-meerkat-1/kernel/
+Syzkaller:          /home/author/meerkat/syzkaller/
+Compilers:          /home/author/meerkat/compilers/
+Compiler:           gcc (Ubuntu 12.3.0-1ubuntu1~22.04.3) 12.3.0
+Linker:             GNU ld (GNU Binutils for Ubuntu) 2.38
+Ccache:             ccache version 4.5.1
+Image:              /home/author/meerkat/image/stretch/stretch.img
+Image Key:          /home/author/meerkat/image/stretch/stretch.id_rsa
+
+Workdir:            /home/author/meerkat/wd-meerkat-1/
+Kconfig:            /home/author/meerkat/wd-meerkat-1/config-bug0117.txt
+Reproducers: (1)    /home/author/meerkat/wd-meerkat-1/reproducers/
+Syzkaller Workdir:  /home/author/meerkat/wd-meerkat-1/wd-kaller/
+Log Directory:      /home/author/meerkat/wd-meerkat-1/log/
+
+Syscalls: (28)      ["connect$inet", "ioctl$FITRIM", "ioctl$ifreq_SIOCGIFINDEX_team", "sendmmsg", "sendmsg$nl_route", "setsockopt$SO_BINDTODEVICE", "socket$inet_udp", "socket$netlink", "socket$inet", "openat$selinux_enforce", "socket", "socket$nl_route", "ioctl$sock_SIOCGIFINDEX", "get_robust_list", "syz_clone", "ioctl$TUNGETDEVNETNS", "mount$bpf", "getuid", "ioctl$ifreq_SIOCGIFINDEX_vcan", "bpf$BPF_PROG_GET_FD_BY_ID", "ioctl$IOCTL_GET_NCIDEV_IDX", "openat$tun", "socket$inet6_udp", "setgid", "getgid", "openat$nci", "socket$inet6", "bpf$BPF_PROG_GET_NEXT_ID"]
+VM Count:           4
+CPU Count:          4
+Procs:              24
+Memory:             4096
+Make Procs:         16
+Max Time:           10
+Max Attempts:       1
+
+==== Anchor Commit ====
+
+2026-05-20 03:35:32
+Session:   1
+Kernel:    2022-02-01 - 9f7fb8de5d9bac17b6392a14af40baf555d9129b
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    2  possible deadlock in ___neigh_create (4)
+Attempt 2: (RETRY)
+    Time  Bug Name
+***    2  possible deadlock in ___neigh_create
+Attempt 3: (RETRY)
+    Time  Bug Name
+***    2  possible deadlock in ___neigh_create (2)
+The bug was found.
+
+New Max Time: 10
+
+==== Major Release Search ====
+11 Releases
+
+2026-05-20 03:55:01
+Session:   2
+Kernel:    2022-01-09 - df0cc57e057f18e44dac8e6c18aba47ab53202f9 (v5.16)
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+***    2  possible deadlock in ___neigh_create (2)
+Running syz-repro.
+syz-repro was terminated after 60 minutes
+Warning: Child process exited with error status 32764.
+Run Time:        1h0m0s
+The bug was found.
+About 10 releases remaining
+
+2026-05-20 05:10:21
+Session:   3
+Kernel:    2021-10-31 - 8bb7eca972ad531c9b149c0a51ab43a417385813 (v5.15)
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 9 releases remaining
+
+==== Kernel Bisection ====
+15385 Linux commits
+
+2026-05-20 05:33:04
+Session:   4
+Kernel:    2021-11-03 - 2219b0ceefe835b92a8a74a73fe964aa052742a2
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    3  possible deadlock in ___neigh_create
+The bug was found.
+About 7514 commits remaining
+
+2026-05-20 05:48:40
+Session:   5
+Kernel:    2021-11-02 - fc02cb2b37fe2cbf1d3334b9f0f0eab9431766c4
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    3  possible deadlock in ___neigh_create (2)
+The bug was found.
+About 4567 commits remaining
+
+2026-05-20 06:04:12
+Session:   6
+Kernel:    2021-11-01 - b7b98f868987cd3e86c9bd9a6db048614933d7a0
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Warning: Syzkaller never completed machine check.
+Saved log at /home/author/meerkat/wd-meerkat-1/log/bug0117-boot_failure.log.
+Attempt 1:
+    Time  Bug Name
+       2  WARNING in skb_try_coalesce (8) (has report)
+       3  WARNING in skb_try_coalesce (4) (has report)
+       4  WARNING in skb_try_coalesce (4) (has report)
+       5  WARNING in skb_try_coalesce (4) (has report)
+       6  WARNING in skb_try_coalesce (4) (has report)
+       7  WARNING in skb_try_coalesce (4) (has report)
+       8  WARNING in skb_try_coalesce (4) (has report)
+       9  WARNING in skb_try_coalesce (4) (has report)
+      10  WARNING in skb_try_coalesce (7) (has report)
+      10  boot failure
+The bug was not found.
+This commit is flagged as unstable.
+About 4567 commits remaining
+
+2026-05-20 06:26:43
+Session:   7
+Kernel:    2021-10-19 - 7ce1bb83a14019f8c396d57ec704d19478747716
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 6141 commits remaining
+
+2026-05-20 06:49:10
+Session:   8
+Kernel:    2021-10-26 - 38c310eb46f5f80213a92093af11af270c209a76
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+       2  WARNING in devlink_trap_groups_unregister (has report)
+***    3  possible deadlock in ___neigh_create (2)
+Running syz-repro.
+Run Time:        0h37m0s
+The bug was found.
+About 3062 commits remaining
+
+2026-05-20 07:41:41
+Session:   9
+Kernel:    2021-10-08 - 94114d90037fe730bab5ea76d388bc294034fa39
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 1622 commits remaining
+
+2026-05-20 08:04:04
+Session:   10
+Kernel:    2021-10-22 - 1e9258c389ee58b34238abaa600c10270b081af8
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    3  possible deadlock in ___neigh_create (2)
+The bug was found.
+About 1183 commits remaining
+
+2026-05-20 08:16:06
+Session:   11
+Kernel:    2021-10-15 - 2ec16ddde1fa31a83aee04320b248e94348d9152
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    3  possible deadlock in ___neigh_create
+The bug was found.
+About 493 commits remaining
+
+2026-05-20 08:30:27
+Session:   12
+Kernel:    2021-10-13 - 50515cac8d0ea2026db2f0cb456bfa51d5e8e85f
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    5  possible deadlock in ___neigh_create
+Running syz-repro.
+syz-repro was terminated after 60 minutes
+Warning: Child process exited with error status 32764.
+Run Time:        1h0m0s
+The bug was found.
+About 111 commits remaining
+
+2026-05-20 09:43:30
+Session:   13
+Kernel:    2021-10-10 - 6213f07cb542c9651ba614e784bf58ed41354936
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 56 commits remaining
+
+2026-05-20 10:01:36
+Session:   14
+Kernel:    2021-10-11 - f0563ebec68feefa741e6d76bbc8999563444c97
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 29 commits remaining
+
+2026-05-20 10:16:16
+Session:   15
+Kernel:    2021-10-12 - 7482e3841d520a368426ac196720601687e2dc47
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    Time  Bug Name
+***    4  possible deadlock in ___neigh_create (2)
+The bug was found.
+About 15 commits remaining
+
+2026-05-20 10:25:10
+Session:   16
+Kernel:    2021-10-12 - a703b5179b5c0740c69358b2cfb22c12545d13a4
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 8 commits remaining
+
+2026-05-20 10:39:36
+Session:   17
+Kernel:    2021-10-12 - 7bb39a394490c0690dc7304f2f0345539d590d2b
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 5 commits remaining
+
+2026-05-20 10:54:03
+Session:   18
+Kernel:    2021-10-12 - 3dc20f4762c62d3b3f0940644881ed818aa7b2f5
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 3 commits remaining
+
+2026-05-20 11:11:46
+Session:   19
+Kernel:    2021-10-12 - 2c611ad97a82b51221bb0920cc6cac0b1d4c0e52
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+Attempt 1:
+    No crashes found.
+The bug was not found.
+About 2 commits remaining
+
+==== Partial Result: Focused Fuzzing ====
+Bisection Result:     2021-10-12 - 7482e3841d520a368426ac196720601687e2dc47
+Bisected Commit Name: net, neigh: Add NTF_MANAGED flag for managed neighbor entries
+Stage Time:           7h54m49s
+Run Time:             7h54m51s
+=========================================
+
+==== Anchor Commit ====
+
+2026-05-20 11:30:21
+Session:   20
+Kernel:    2021-10-12 - 2c611ad97a82b51221bb0920cc6cac0b1d4c0e52
+Compiler:  ccache /home/author/meerkat/compilers/gcc-10.1.0/bin/gcc
+PoC:       /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0117-2.prog
+Attempt 0:
+    No crashes found.
+Attempt 1:
+    No crashes found.
+Attempt 2:
+    No crashes found.
+Attempt 3:
+    No crashes found.
+Attempt 4:
+    No crashes found.
+Attempt 5:
+    No crashes found.
+Attempt 6:
+    No crashes found.
+Attempt 7:
+    No crashes found.
+The bug was not found.
+
+Failure: This bug cannot be found at the anchor commit.
+
+====================================================================================================================================================
+Bug Name:             possible deadlock in ___neigh_create
+Bug ID:               bug0117
+Bug Link:             https://syzkaller.appspot.com/bug?id=46243cd4c222b2ec9f0885efe0142dd1e26a0e39
+Bisection Result:     2021-10-12 - 7482e3841d520a368426ac196720601687e2dc47
+Bisected Commit Name: net, neigh: Add NTF_MANAGED flag for managed neighbor entries
+Run Time:             8h7m2s
+
+Anchor Commit:        2022-02-01 - 9f7fb8de5d9bac17b6392a14af40baf555d9129b
+Bisection Result:     2021-10-12 - 7482e3841d520a368426ac196720601687e2dc47

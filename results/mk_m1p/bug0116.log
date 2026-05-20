@@ -1,3 +1,63 @@
 ./bin/meerkat -i 1 -c /home/author/meerkat/wd-meerkat-1/meerkat.cfg -a 15b3f48a4339e3c16acf18624e2b7f60bc5e9a2c -F ff-test,stateful-corpus,poc-test,ff-no-find-backup
-Warning: Child process git exited with error status 1.
-Warning: git exited with error status 0x1
+Bisecting:          WARNING in __dev_queue_xmit
+Syzbot Link:        https://syzkaller.appspot.com/bug?id=8a47019c46b0fcffca58d29c2b8edbe7f1b999f9
+Working Name:       bug0116
+
+Aliases:
+    WARNING in __dev_queue_xmit
+
+Anchor Commit:      15b3f48a4339e3c16acf18624e2b7f60bc5e9a2c
+Repository:         https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
+Branch:             master
+Arch:               amd64
+
+Meerkat:            /home/author/meerkat/
+Version:            1.2.0
+Kernel:             /home/author/meerkat/wd-meerkat-1/kernel/
+Syzkaller:          /home/author/meerkat/syzkaller/
+Compilers:          /home/author/meerkat/compilers/
+Compiler:           gcc (Ubuntu 12.3.0-1ubuntu1~22.04.3) 12.3.0
+Linker:             GNU ld (GNU Binutils for Ubuntu) 2.38
+Ccache:             ccache version 4.5.1
+Image:              /home/author/meerkat/image/stretch/stretch.img
+Image Key:          /home/author/meerkat/image/stretch/stretch.id_rsa
+
+Workdir:            /home/author/meerkat/wd-meerkat-1/
+Kconfig:            /home/author/meerkat/wd-meerkat-1/config-bug0116.txt
+Reproducers: (1)    /home/author/meerkat/wd-meerkat-1/reproducers/
+Primary PoC:        /home/author/meerkat/wd-meerkat-1/reproducers/repro-bug0116-1.prog
+Syzkaller Workdir:  /home/author/meerkat/wd-meerkat-1/wd-kaller/
+Log Directory:      /home/author/meerkat/wd-meerkat-1/log/
+
+Syscalls: (9)       ["sendmsg$kcm", "socket$kcm", "socket", "ioctl$F2FS_IOC_START_ATOMIC_WRITE", "openat$selinux_enforce", "ioctl$sock_SIOCGIFINDEX", "ioctl$ifreq_SIOCGIFINDEX_vcan", "ioctl$IOCTL_GET_NCIDEV_IDX", "openat$nci"]
+VM Count:           8
+CPU Count:          2
+Procs:              16
+Memory:             4096
+Make Procs:         16
+Max Time:           10
+Max Attempts:       1
+
+==== Anchor Commit ====
+
+2026-05-20 02:49:55
+Session:   1
+Kernel:    2022-08-20 - 15b3f48a4339e3c16acf18624e2b7f60bc5e9a2c
+Compiler:  ccache gcc
+Attempt 1:
+    Time  Bug Name
+       2  INFO: rcu detected stall in corrupted
+Attempt 2: (RETRY)
+    Time  Bug Name
+       2  INFO: rcu detected stall in corrupted
+Attempt 3: (RETRY)
+    No crashes found.
+The bug was not found.
+
+Failure: This bug cannot be found at the anchor commit.
+
+==== Partial Result: Focused Fuzzing ====
+Bisection Result:     Failed to reproduce at the anchor commit.
+Stage Time:           0h44m53s
+Run Time:             0h44m54s
+=========================================
