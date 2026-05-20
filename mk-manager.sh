@@ -85,7 +85,7 @@ do
         i)
             id="${OPTARG}" ;;
         b)
-            bugfile="$bisectdir/parse/${OPTARG}" ;;
+            bugfile="${OPTARG}" ;;
         m)
             mtime="-m ${OPTARG}" ;;
         F)
