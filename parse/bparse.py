@@ -7,7 +7,14 @@ from urllib.request import urlopen
 from urllib.error import URLError
 from lxml import html
 
+# Joseph Bursey <jbursey@uci.edu>
+
 # Crawl Syzbot for bugs that fit criteria
+
+# This script currently doesn't work to it's fullest! Due to all the "innovation" going on in the
+# field of LLMs, many websites, including the linux git website, are now flat-out denying anything
+# bot shaped. So, it isn't able to parse linux commits like it used to. Thanks LLMs!
+# (yes I could parse git directly instead, but that would be more work than is worth it right now)
 
 class Commit:
     def __init__(self, h, l, d):
@@ -25,17 +32,19 @@ class Commit:
         print("Date:      ", self.date)
 
 class CrashEntry:
-    def __init__(self, k, c, r, m, d):
+    def __init__(self, k, c, rep, r, m, d):
         self.date = d                       # date of crash
         self.kernel = k                     # kernel commit
         self.config = syzbotlink + c        # config link
-        self.repro = r                      # reproducer link
+        self.report = syzbotlink + rep      # report link
+        self.repro = syzbotlink + r if len(r) > 0 else ""        # reproducer link
         self.manager = m                    # manager name
 
     def print(self):
         print("Date:      ", self.date)
         print("Kernel:    ", self.kernel)
         print("Config:    ", self.config)
+        print("Report:    ", self.report)
         print("Repro:     ", self.repro)
         print("Manager:   ", self.manager)
 
@@ -141,15 +150,15 @@ class Bugdata:
         elif self.truefind == "":
             print("Bug: Bad truefind date", flush=True)
             return False
-        elif len(self.fixCommits) == 0:
-            print("Bug: No fixing commits", flush=True)
-            return False
-        elif len(self.guiltyCommits) == 0:
-            print("Bug: No guilty commits", flush=True)
-            return False
-        elif self.bisectAttempt == False:
-            print("Bug: No bisection attempt", flush=True)
-            return False
+#        elif len(self.fixCommits) == 0:
+#            print("Bug: No fixing commits", flush=True)
+#            return False
+#        elif len(self.guiltyCommits) == 0:
+#            print("Bug: No guilty commits", flush=True)
+#            return False
+#        elif self.bisectAttempt == False:
+#            print("Bug: No bisection attempt", flush=True)
+#            return False
         return True
 
     def print_basic(self):
@@ -206,26 +215,27 @@ def check_lengths(arrays):
         
     return True
 
-def transpose_crash_entries(times, kernels, configs, repros, managers) -> List[CrashEntry]:
-    if not check_lengths([times, kernels, configs, repros, managers]):
-        print("Warning: Array lengths are mismatched!", len(times), len(kernels), len(configs), len(repros), len(managers))
+def transpose_crash_entries(times, kernels, configs, reports, repros, managers) -> List[CrashEntry]:
+    if not check_lengths([times, kernels, configs, reports, managers]):
+        print("Warning: Array lengths are mismatched!", len(times), len(kernels), len(configs), len(reports), len(managers))
         return []
 
     crashes = []
     for i in range(len(kernels)):
-        crashes.append(CrashEntry(kernels[i], configs[i], repros[i], managers[i], times[i].split(" ")[0]))
+        crashes.append(CrashEntry(kernels[i], configs[i], reports[i], (repros[i] if i < len(repros) else ""), managers[i], times[i].split(" ")[0]))
 
     return crashes
 
-def get_link_arr(link_elements, prepend = "") -> List[str]:
+def get_link_arr(link_elements, prepend = "", contains = "") -> List[str]:
     links = []
 
+    path = "a"+contains+"/@href"
     for x in link_elements:
-        if len(x.xpath("a/@href")) == 1:
-            links.append(prepend + x.xpath("a/@href")[0])
-        elif len(x.xpath("a/@href")) > 1:
+        if len(x.xpath(path)) == 1:
+            links.append(prepend + x.xpath(path)[0])
+        elif len(x.xpath(path)) > 1:
             print("Warning: Found more than one link in crash entry!")
-            links.append(prepend + x.xpath("a/@href")[0])
+            links.append(prepend + x.xpath(path)[0])
         else:
             links.append("")
     
@@ -428,11 +438,11 @@ def fetch_bug(bug : Bugdata) -> Bugdata:
     times = bughtml.xpath("//body/table[@class='list_table']/tbody/tr/td[@class='time']/text()")
     kernels = bughtml.xpath("//body/table[@class='list_table']/tbody/tr/td[@class='tag']")[0::2]
     kernels = get_link_arr(kernels)
-    configs = bughtml.xpath("//body/table[@class='list_table']/tbody/tr/td[@class='config']/a/@href")
-    repros = bughtml.xpath("//body/table[@class='list_table']/tbody/tr/td[@class='config']/following-sibling::td[3][contains(@class, 'repro')]")
-    repros = get_link_arr(repros, syzbotlink)
+    configs = bughtml.xpath("//body/table[@class='list_table']/tbody/tr/td[@class='config']/a[contains(text(),'config')]/@href")
+    reports = bughtml.xpath("//body/table[@class='list_table']/tbody/tr/td[@class='repro']/a[contains(text(),'report')]/@href")
+    repros = bughtml.xpath("//body/table[@class='list_table']/tbody/tr/td[contains(@class, 'repro')]/a[contains(text(),'syz')]/@href")
     managers = bughtml.xpath("//body/table[@class='list_table']/tbody/tr/td[@class='manager'][starts-with(text(), 'ci') or starts-with(text(), 'skylake')]/text()")
-    bug.crashes = transpose_crash_entries(times, kernels, configs, repros, managers)
+    bug.crashes = transpose_crash_entries(times, kernels, configs, reports, repros, managers)
 
     if len(bug.valid_crashes()) == 0:
         bug.print()
@@ -448,90 +458,90 @@ def fetch_bug(bug : Bugdata) -> Bugdata:
     else:
         bug.bit32 = "amd64"
 
-    fixlinks = bughtml.xpath("//body/span[@class='mono']/a/@href")
-    guiltyhashes = []
-    for l in fixlinks:
-        fixhtml = fetch_link(l)
-        kcommit = parse_kernel_commit(fixhtml, l)
-        if kcommit != None:
-            bug.fixCommits.append(kcommit)
-        else:
-            continue
+#    fixlinks = bughtml.xpath("//body/span[@class='mono']/a/@href")
+#    guiltyhashes = []
+#    for l in fixlinks:
+#        fixhtml = fetch_link(l)
+#        kcommit = parse_kernel_commit(fixhtml, l)
+#        if kcommit != None:
+#            bug.fixCommits.append(kcommit)
+#        else:
+#            continue
 
-        fixtext = fixhtml.xpath("//div[@class='commit-msg']/text()")
-        fixtext = "\n".join(fixtext).split("\n")
-        for line in fixtext:
-            if line.startswith("Fixes:"):
-                hash = line.split(" ")[1]
-                if len(hash) >= 12 and all(c in string.hexdigits for c in hash):
-                    guiltyhashes.append(hash)
+#        fixtext = fixhtml.xpath("//div[@class='commit-msg']/text()")
+#        fixtext = "\n".join(fixtext).split("\n")
+#        for line in fixtext:
+#            if line.startswith("Fixes:"):
+#                hash = line.split(" ")[1]
+#                if len(hash) >= 12 and all(c in string.hexdigits for c in hash):
+#                    guiltyhashes.append(hash)
 
-    bug.fixCommits.sort(reverse=True, key=sort_date)
-    if len(bug.fixCommits) == 0:
-        bug.print()
-        print(bug.name + ": No valid fixes.")
-        return None
+#    bug.fixCommits.sort(reverse=True, key=sort_date)
+#    if len(bug.fixCommits) == 0:
+#        bug.print()
+#        print(bug.name + ": No valid fixes.")
+#        return None
 
-    for hash in guiltyhashes:
+#    for hash in guiltyhashes:
         # I think there is some issue here with too many requests or timeout or something. A problem for a later date.
-        searchhtml = fetch_link("https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/log/?qt=range&q=" + hash)
-        searchres = searchhtml.xpath("//table[@class='list nowrap']/tr[2]/td[1]/span/text()")
-        if len(searchres) <= 0:
-            bug.print()
-            print(bug.name + ": Guilty Commit Search Failed.")
-            return None
-        guiltydate = searchres[0]
-        guiltylink = "https://git.kernel.org" + searchhtml.xpath("//table[@class='list nowrap']/tr[2]/td[2]/a/@href")[0]
-        bug.guiltyCommits.append(Commit(guiltylink.split("=")[-1], guiltylink, guiltydate))
+#        searchhtml = fetch_link("https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/log/?qt=range&q=" + hash)
+#        searchres = searchhtml.xpath("//table[@class='list nowrap']/tr[2]/td[1]/span/text()")
+#        if len(searchres) <= 0:
+#            bug.print()
+#            print(bug.name + ": Guilty Commit Search Failed.")
+#            return None
+#        guiltydate = searchres[0]
+#        guiltylink = "https://git.kernel.org" + searchhtml.xpath("//table[@class='list nowrap']/tr[2]/td[2]/a/@href")[0]
+#        bug.guiltyCommits.append(Commit(guiltylink.split("=")[-1], guiltylink, guiltydate))
     
-    bug.guiltyCommits.sort(key=sort_date)
-    if len(bug.guiltyCommits) == 0:
-        bug.print()
-        print(bug.name + ": No valid guilty commits.")
-        return None
+#    bug.guiltyCommits.sort(key=sort_date)
+#    if len(bug.guiltyCommits) == 0:
+#        bug.print()
+#        print(bug.name + ": No valid guilty commits.")
+#        return None
 
     # fetch bisection result
-    bisect_result = bughtml.xpath("//body/div/div[@class='bug-bisection-info']/b[1]/text()")
-    if len(bisect_result) == 0:
-        bug.bisectResult.converge = "none"
-        bug.bisectAttempt = False
-    else:
-        bisect_result = bisect_result[0]
-        bug.bisectAttempt = True
-        if "Cause bisection:" not in bisect_result:
-            print("Failed to parse bisection result: " + bisect_result, flush=True)
-            bug.bisectResult.err = "parse failure"
-        else:
-            if "introduced by" in bisect_result:
-                bug.bisectResult = handle_good_result(line, bughtml, bug)
+#    bisect_result = bughtml.xpath("//body/div/div[@class='bug-bisection-info']/b[1]/text()")
+#    if len(bisect_result) == 0:
+#        bug.bisectResult.converge = "none"
+#        bug.bisectAttempt = False
+#    else:
+#        bisect_result = bisect_result[0]
+#        bug.bisectAttempt = True
+#        if "Cause bisection:" not in bisect_result:
+#            print("Failed to parse bisection result: " + bisect_result, flush=True)
+#            bug.bisectResult.err = "parse failure"
+#        else:
+#            if "introduced by" in bisect_result:
+#                bug.bisectResult = handle_good_result(line, bughtml, bug)
+#
+#            elif "the cause commit could be any of" in bisect_result:
+#                bug.bisectResult = handle_multiple_result(line, bughtml, bug)
 
-            elif "the cause commit could be any of" in bisect_result:
-                bug.bisectResult = handle_multiple_result(line, bughtml, bug)
-
-            elif "failed" in bisect_result:
-                bug.bisectResult = handle_error_result(line, bughtml, bug)
+#            elif "failed" in bisect_result:
+#                bug.bisectResult = handle_error_result(line, bughtml, bug)
             
-            elif "oldest tested release" in bisect_result:
-                bug.bisectResult = handle_oldest_result(line, bughtml, bug)
+#            elif "oldest tested release" in bisect_result:
+#                bug.bisectResult = handle_oldest_result(line, bughtml, bug)
 
-            else:
-                print("Unknown bisection result:", bisect_result, flush=True)
-                bug.bisectResult.err = "unknown result"
+#            else:
+#                print("Unknown bisection result:", bisect_result, flush=True)
+#                bug.bisectResult.err = "unknown result"
 
     bug.print()
     if bug.validate():
         print()
         print("Anchor: (Finding Commit)")
         bug.anchor_crash().print()
-        print()
-        print("Patch:")
-        bug.fixCommits[0].print()
-        print()
-        print("Guilty Commit:", flush=True)
-        bug.guiltyCommits[0].print()
-        print()
-        print("Bisection:", flush=True)
-        bug.bisectResult.print()
+#        print()
+#        print("Patch:")
+#        bug.fixCommits[0].print()
+#        print()
+#        print("Guilty Commit:", flush=True)
+#        bug.guiltyCommits[0].print()
+#        print()
+#        print("Bisection:", flush=True)
+#        bug.bisectResult.print()
         return bug
 
     print(bug.name + ": Failed Validation.")
@@ -547,12 +557,13 @@ def links2bugs(filename : str) -> List[Bugdata]:
 
 def bug2csv(bug : Bugdata) -> str:
     # bug.bit32 is left out of this because they are all amd64
-    return ",".join([str(bug.number), bug.link, bug.name, bug.truefind, bug.anchor.config, bug.anchor.kernel, bug.anchor.date, bug.fixCommits[0].link, bug.fixCommits[0].date, bug.guiltyCommits[0].link, bug.guiltyCommits[0].date, bug.bisectResult.converge, bug.bisectResult.hash, bug.bisectResult.date, bug.bisectResult.best_hash, bug.bisectResult.best_date, bug.bisectResult.syz_repro, bug.bisectResult.err, " ".join(bug.reproducers())]) + "\n"
+    #return ",".join([str(bug.number), bug.link, bug.name, bug.truefind, bug.anchor.config, bug.anchor.report, bug.anchor.kernel, bug.anchor.date, bug.fixCommits[0].link, bug.fixCommits[0].date, bug.guiltyCommits[0].link, bug.guiltyCommits[0].date, bug.bisectResult.converge, bug.bisectResult.hash, bug.bisectResult.date, bug.bisectResult.best_hash, bug.bisectResult.best_date, bug.bisectResult.syz_repro, bug.bisectResult.err, " ".join(bug.reproducers())]) + "\n"
+    return ",".join([str(bug.number), bug.link, bug.name, bug.truefind, bug.anchor.config, bug.anchor.report, bug.anchor.kernel, " ".join(bug.reproducers())]) + "\n"
     #               $1                $2        $3        $4            $5                 $6                 $7               $8                      $9                      $10                        $11                        $12                        $13                    $14                    $15                         $16                         $17                         $18                   $19
 
 def main():
     # read list of bug links
-    bugs = links2bugs("bisect-links.csv")
+    bugs = links2bugs("links.csv")
     print(len(bugs), " bug-links found")
 
     if (len(bugs) == 0):
