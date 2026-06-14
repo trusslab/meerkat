@@ -61,6 +61,7 @@ writebugalias () {
 
     mkdir -p ${wd}/bugs/primary/
     echo "${bugName}" > ${wd}/bugs/primary/description
+    wget "${reportlink}" -O ${wd}/bugs/primary/report
 }
 
 printhelp () {
@@ -143,13 +144,13 @@ line=${startLine}
 echo "file: ${bugfile} startline: ${startLine} endline: ${endLine}" >> $logfile
 echo "" >> $logfile
 
-# $bugNum,$l,$name,$truefinddate,$config,$findlink,$finddate,$fixlink,$fixdate,$guiltylink,$guiltydate,$bisectConverge,$bisectHash,$bisectDate,$bisectReproHash,$bisectReproDate,$bisectRepro,$bisectErr,${allrepro[@]}
-# $1,     $2,$3,   $4,           $5,     $6,       $7,       $8,      $9,       $10,       $11,        $12,            $13,        $14,        $15,             $16,             $17,         $18,       $19
+# $bugNum,$l,$name,$truefinddate,$config,$report,$findlink,$finddate,$fixlink,$fixdate,$guiltylink,$guiltydate,$bisectConverge,$bisectHash,$bisectDate,$bisectReproHash,$bisectReproDate,$bisectRepro,$bisectErr,${allrepro[@]}
+# $1,     $2,$3,   $4,           $5,     $6,     $7,       $8,       $9,      $10,      $11,       $12,        $13,            $14,        $15,        $16,             $17,             $18,         $19        $20
 while (( $line <= $endLine )); do
     linetext=$(sed -n ${line}p ${bugfile})
-    fixDate=$(echo "${linetext}" | awk -F',' '{ print $9; }')
-    findDate=$(echo "${linetext}" | awk -F',' '{ print $7; }')
-    guiltyDate=$(echo "${linetext}" | awk -F',' '{ print $11; }')
+    fixDate=$(echo "${linetext}" | awk -F',' '{ print $10; }')
+    findDate=$(echo "${linetext}" | awk -F',' '{ print $8; }')
+    guiltyDate=$(echo "${linetext}" | awk -F',' '{ print $12; }')
     echo -n "${line},${fixDate},${findDate},${guiltyDate}" >> $logfile
 
     # bug number and name
@@ -162,10 +163,12 @@ while (( $line <= $endLine )); do
     configlink=$(echo "${linetext}" | awk -F',' '{ print $5; }')
     wget ${configlink} -O ${wd}config-${curBug}.txt 2> /dev/null
 
+    reportlink=$(echo "${linetext}" | awk -F',' '{ print $6; }')
+
     # reproducers - download them
     rm -rf ${wd}reproducers/*
-    allrepro=$(echo "${linetext}" | awk -F',' '{ print $19; }')
-    bisectrepro=$(echo "${linetext}" | awk -F',' '{ print $17; }')
+    allrepro=$(echo "${linetext}" | awk -F',' '{ print $20; }')
+    bisectrepro=$(echo "${linetext}" | awk -F',' '{ print $18; }')
     primaryrepro=""
     reprocount=0
     for reprolink in ${allrepro[@]}; do
@@ -178,7 +181,7 @@ while (( $line <= $endLine )); do
 
     # linux kernel repository
     # the link to the finding commit has what we need
-    findlink=$(echo "${linetext}" | awk -F',' '{ print $6; }')
+    findlink=$(echo "${linetext}" | awk -F',' '{ print $7; }')
     repo=$(echo "${findlink}" | grep -o "https://git\.kernel.*\.git" | cat)
     shortrepo=$(echo "${repo}" | awk -F'/' '{ print $9"/"$10; }' | cat)
     if [[ ${shortrepo} == "torvalds/linux.git" ]]; then
