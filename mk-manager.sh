@@ -61,7 +61,7 @@ writebugalias () {
 
     mkdir -p ${wd}/bugs/primary/
     echo "${bugName}" > ${wd}/bugs/primary/description
-    wget "${reportlink}" -O ${wd}/bugs/primary/report
+    wget "${reportlink}" -O ${wd}/bugs/primary/report 2> /dev/null
 }
 
 printhelp () {
