@@ -1,5 +1,10 @@
 #!/bin/bash
 
+# Joseph Bursey <jbursey@uci.edu>
+
+# This script runs meerkat based on the arguments provided.
+# Bug data is taken from a specified bug file, rather than manually entered data.
+
 set -e
 
 self=$0
