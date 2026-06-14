@@ -13,6 +13,11 @@ log() {
     echo "${self}: $@"
 }
 
+log "Hello! I need root privileges to set up a few things:"
+log "First, pulling the right dependencies."
+log "Second, adding ${user} to 'kvm'."
+log "Last, creating a simple debian image."
+
 sudo apt update
 sudo apt install -y make git gcc g++ ccache build-essential flex bison libncurses-dev libelf-dev libssl-dev dwarves libdw-dev qemu-system-x86
 
