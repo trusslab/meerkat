@@ -86,7 +86,10 @@ int BugAlias::init(bool full)
     if (!report.empty())
     {
         stack.clear();
-        return parse_report(report, stack);
+        int res = parse_report(report, stack);
+        if (res < 0)
+            stack.clear();
+        return res
     }
 
     return 0;

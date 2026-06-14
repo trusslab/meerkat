@@ -254,8 +254,7 @@ int Environment::parse_aliases()
     for (std::string hash : hashes)
     {
         BugAlias alias = BugAlias(hash);
-        if (alias.init() < 0)
-            std::cerr << "Error: Failed to init BugAlias for " << hash << "\n" << std::flush;
+        alias.init() < 0;
         duplicates.push_back(alias);
     }
 
