@@ -24,20 +24,11 @@ usage() {
     echo "    mknm: Run Meerkat with Mk_nm settings."
     echo "    mkm1p: Run Meerkat with Mk_m1p settings."
     echo "    mk: Run Meerkat with Mk settings."
-    # TODO: add basic, short, full
-    # Profiles:
-    # help
-    # setup-only
-    # functional
-    # mk1p
-    # mknm
-    # mkm1p
-    # mk
-        # basic (1)
-        # short (34)
-        # full (all)
-    # For each, we want basic (1), short (like 34), and full(all)
-
+    echo ""
+    echo "Profile Arguments: (For mk1p, mknm, mkm1p, and mk)"
+    echo "    basic: Run a singular bug to test functionality."
+    echo "    short: Run the X bugs where Mk outperformed SB."
+    echo "    full: Run all 200 bugs."
 }
 
 profile=${1}
@@ -75,6 +66,10 @@ elif [[ ${profileArg} == "short" ]]; then
 elif [[ ${profileArg} == "full" ]]; then
     s=1
     e=200
+else
+    log "Unknown profile argument given!"
+    usage
+    exit
 fi
 
 if [[ ${profile} == "mk" ]]; then
@@ -85,6 +80,16 @@ elif [[ ${profile} == "mknm" ]]; then
     F="poc-test,poc-all-pocs"
 elif [[ ${profile} == "mk1p" ]]; then
     F="poc-test"
+elif [[ ${profile} == "functional" ]]; then
+    log "Not set up yet!"
+    exit
+elif [[ ${profile} == "reproducible" ]]; then
+    log "Not set up yet!"
+    exit
+else
+    log "Unknown profile given!"
+    usage
+    exit
 fi
 
 ./mk-manager.sh -s ${s} -e ${e} -i ${i} -b ${b} -m ${m} -F ${F}

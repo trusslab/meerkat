@@ -18,10 +18,12 @@ log "First, pulling the right dependencies."
 log "Second, adding ${user} to 'kvm'."
 log "Last, creating a simple debian image."
 
+log "Pulling dependencies"
 sudo apt update
 sudo apt install -y make git gcc g++ ccache build-essential flex bison libncurses-dev libelf-dev libssl-dev dwarves libdw-dev qemu-system-x86
 
 # Make sure you can actually boot the VM
+log "Adding ${user} to kvm"
 sudo usermod -aG kvm ${user}
 
 # Setup the compilers (download from our zenodo)
@@ -54,17 +56,21 @@ popd
 which go > /dev/null 2> /dev/null
 if (( $? != 0 )); then
     if [ ! -d go/ ]; then
+        log "Downloading Go"
         wget https://dl.google.com/go/go1.23.6.linux-amd64.tar.gz
         tar -xf go1.23.6.linux-amd64.tar.gz
     fi
+    log "Exporting Go"
     export PATH=`pwd`/go/bin:$PATH
     go version
 fi
 
 # Build Meerkat and Syzkaller
+log "Cleaning Meerkat and Syzkaller"
 make clean
 set +e
 make syzkaller-clean
 set -e
+log "Building Meerkat and Syzkaller"
 make all -j`nproc`
 
