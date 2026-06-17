@@ -53,8 +53,10 @@ popd
 # Setup go (any recent version should work)
 which go > /dev/null 2> /dev/null
 if (( $? != 0 )); then
-    wget https://dl.google.com/go/go1.23.6.linux-amd64.tar.gz
-    tar -xf go1.23.6.linux-amd64.tar.gz
+    if [ ! -d go/ ]; then
+        wget https://dl.google.com/go/go1.23.6.linux-amd64.tar.gz
+        tar -xf go1.23.6.linux-amd64.tar.gz
+    fi
     export PATH=`pwd`/go/bin:$PATH
     go version
 fi
