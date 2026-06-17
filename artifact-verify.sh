@@ -57,12 +57,13 @@ b=parse/bugs.csv
 i=1
 m=10
 
-if [[ ${profileArg} == "basic" ]]; then
+if [[ ${profileArg} == "basic" ]] || [[ ${profile} == "functional" ]]; then
     s=2
     e=2
-elif [[ ${profileArg} == "short" ]]; then
-    log "Not set up yet!"
-    exit
+elif [[ ${profileArg} == "short" ]] || [[ ${profile} == "reproducible" ]]; then
+    s=1
+    e=37
+    b=parse/short.csv
 elif [[ ${profileArg} == "full" ]]; then
     s=1
     e=200
@@ -72,7 +73,7 @@ else
     exit
 fi
 
-if [[ ${profile} == "mk" ]]; then
+if [[ ${profile} == "mk" ]] || [[ ${profile} == "reproducible" ]] || [[ ${profile} == "functional" ]]; then
     F="ff-test,poc-test,stateful-corpus,poc-all-pocs"
 elif [[ ${profile} == "mkm1p" ]]; then
     F="ff-test,poc-test,stateful-corpus"
@@ -80,12 +81,6 @@ elif [[ ${profile} == "mknm" ]]; then
     F="poc-test,poc-all-pocs"
 elif [[ ${profile} == "mk1p" ]]; then
     F="poc-test"
-elif [[ ${profile} == "functional" ]]; then
-    log "Not set up yet!"
-    exit
-elif [[ ${profile} == "reproducible" ]]; then
-    log "Not set up yet!"
-    exit
 else
     log "Unknown profile given!"
     usage
