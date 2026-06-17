@@ -33,5 +33,5 @@ Assuming you start from scratch, the script will pull some packages from `apt`
 
 ### Example:
 
-    see <results.md>
+ - see [results.md](results.md)
 
