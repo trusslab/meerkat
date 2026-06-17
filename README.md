@@ -2,9 +2,14 @@
 
 Welcome! This is Meerkat, a bisection tool that utilizes PoC mutation.
 
+For artifact verification (functional, reproducible), please see [this README](docs/README.md).
+It will handle everything necessary for evaluation towards those badges.
+For everyone else, this README is probably what you want.
+
 ## Meerkat Paper
 
-The results presented in "Meerkat: Pushing the Limits of Dynamic Bisection with PoC Mutation," can be found in `results/`. There are more README files there as well to explain the results.
+The results presented in "Meerkat: Pushing the Limits of Dynamic Bisection with PoC Mutation," can be found in `results/`.
+There are more README files there as well to explain the results.
 
 ## Setup
 
@@ -42,17 +47,32 @@ make all
 ./mk-manager -s 1 -i 1 -b parse/example.csv
 ```
 
-A preemtive apology: SOMETHING in Meerkat likes to mess up the tty settings, preventing you from seeing what you're typing on the command line after running Meerkat. If this occurs for you, get a new console line with `ctrl+C` and then type `stty sane`. I tried doing some debugging to figure out what is causing the issue, and I just don't know. It's probably either git or qemu. Sorry.
+_A preemtive apology_: **SOMETHING** in Meerkat likes to mess up the tty settings, preventing you from seeing what you're typing on the command line after running Meerkat.
+If this occurs for you, get a new console line with `ctrl+C` and then type `stty sane`.
+I tried doing some debugging to figure out what is causing the issue, and I just don't know.
+It's probably either git or qemu. Sorry.
 
 ### Syzkaller
 
-Meerkat comes with the Syzkaller version it needs to perform bisection, which can be found in `syzkaller/`. Go ahead and build it and make sure it works properly before running Meerkat. Make sure to also install Go. Meerkat used Go 1.23.1 during testing. Syzkaller will have excellent intructions on installing both Syzkaller and Go: https://github.com/google/syzkaller/blob/master/docs/setup.md.
+Meerkat comes with the Syzkaller version it needs to perform bisection, which can be found in `syzkaller/`.
+Go ahead and build it and make sure it works properly before running Meerkat.
+Make sure to also install Go. Meerkat used Go 1.23.1 during testing, but a more recent version should also work.
+Syzkaller will have excellent intructions on installing both [Syzkaller and Go](https://github.com/google/syzkaller/blob/master/docs/setup.md).
 
 ### Compilers
 
-In order to have an accurate fuzzing environment for Syzkaller and the Linux kernel, Meerkat uses older gcc compilers for older versions of Linux. This has the added benefit of fixing some compiler-time bugs that have otherwise plagued me. However, this means you need to download multiple versions of gcc. Thankfully, the wonderful people over at Syzkaller have kept a log of all the compiler versions they have used, and they come pre-compiled! For ease, we have uploaded these compilers to a separate Zenodo repository at https://zenodo.org/records/20316001. Apparently they were too big for Github. Download them and untar them into `compilers/` so that the actual executable is found at `compilers/gcc-10.1.0/bin/gcc` (10.1.0 should be the version of gcc).
+In order to have an accurate fuzzing environment for Syzkaller and the Linux kernel, Meerkat uses older gcc compilers for older versions of Linux.
+This has the added benefit of fixing some compiler-time bugs that have otherwise plagued me. However, this means you need to download multiple versions of gcc.
+Thankfully, the wonderful people over at Syzkaller have kept a log of all the compiler versions they have used, and they come pre-compiled!
+For ease, we have uploaded these compilers to a separate [Zenodo repository](https://zenodo.org/records/20316001).
+Apparently they were too big for Github.
+Download them and untar them into `compilers/` so that the actual executable is found at `compilers/gcc-10.1.0/bin/gcc` (10.1.0 should be the version of gcc).
 
-**Note**: Test out each compiler before you use it! Some of them require old libraries. You'll need to download them and put them in the right directory for your system. Often times, gcc can use the more recent library, but you'll need to point a symbolic link at it.
+**Note**: Test out each compiler before you use it!
+Some of them require old libraries.
+You'll need to download them and put them in the right directory for your system.
+Often times, gcc can use the more recent library, but you'll need to point a symbolic link at it.
+(This is a best effort kind of tool. Just use what works on your system.)
 
 ### OS Image
 
