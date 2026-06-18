@@ -24,7 +24,7 @@ This string of commands should get you up and running:
 ```
 # Install known dependencies
 sudo apt update
-sudo apt install make git gcc g++ ccache build-essential flex bison libncurses-dev libelf-dev libssl-dev dwarves libdw-dev qemu-system-x86
+sudo apt install make git gcc g++ ccache build-essential flex bison libncurses-dev libelf-dev libssl-dev dwarves libdw-dev qemu-system-x86 libmpfr-dev
 
 # Make sure you can actually boot the VM
 sudo usermod -aG kvm `whoami`
@@ -35,6 +35,13 @@ pushd compilers
 wget "https://zenodo.org/records/20316001/files/compilers.tar.gz?download=1" -O compilers.tar.gz
 tar -xzf compilers.tar.gz
 popd
+
+# The older compilers need libmpfr.so.4, but that library is depricated and no easily obtained.
+# So, the solution is to point a symlink at the newer version, which seems to work just fine.
+sudo ln -s /usr/lib/x86_64-linux-gnu/libmpfr.so.6 /usr/lib/x86_64-linux-gnu/libmpfr.so.4
+
+# Verify that the compilers work
+./verify-compilers.sh
 
 # Setup the OS image
 pushd image/stretch
@@ -48,6 +55,8 @@ export PATH=`pwd`/go/bin:$PATH
 go version
 
 # Build Meerkat and Syzkaller
+make clean
+make syzkaller-clean
 make all
 
 # Run a minimal test
