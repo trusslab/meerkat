@@ -38,9 +38,9 @@ unsigned int _levenshtein_vec(const std::vector<std::string> &v1, unsigned int i
         goto out;
 
     if (i1 >= v1.size())
-        mem.insert({{i1, i2}, v2.size() - i2});
+        mem.insert({{i1, i2}, static_cast<unsigned int>(v2.size()) - i2});
     else if (i2 >= v2.size())
-        mem.insert({{i1, i2}, v1.size() - i1});
+        mem.insert({{i1, i2}, static_cast<unsigned int>(v1.size()) - i1});
     else if (v1.at(i1) == v2.at(i2))
         mem.insert({{i1, i2}, _levenshtein_vec(v1, i1 + 1, v2, i2 + 1, mem)});
     else
