@@ -22,7 +22,7 @@ for v in ${versions[@]}; do
     compilers/${v}/bin/gcc example.c -o example
     if (( $? != 0)) || [ ! -f example ]; then
         log "${v} failed to compile an example program!"
-        exit
+        exit -1
     fi
     rm -f example example.c
 done
