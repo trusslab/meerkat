@@ -9,8 +9,8 @@
 // See wiki: https://en.wikipedia.org/wiki/Levenshtein_distance
 
 // Presents the levenshtein distance where smaller is more similar.
-int levenshtein_str(const std::string &, const std::string &);
-int levenshtein_vec(const std::vector<std::string> &, const std::vector<std::string> &);
+unsigned int levenshtein_str(const std::string &, const std::string &);
+unsigned int levenshtein_vec(const std::vector<std::string> &, const std::vector<std::string> &);
 
 // Normalizes the levenshtein distance to a similarity score in [0,1] where 0 is more similar.
 // I'll let the user do the 1 - x part so this library always has 0 is better.
