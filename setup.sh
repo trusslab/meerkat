@@ -42,6 +42,7 @@ fi
 if [ ! -d gcc-10.1.0 ]; then
     log "Unpacking Compilers"
     tar -xzf compilers.tar.gz
+    log "*** READ THIS ***"
     log "Alright, the solution for a missing library is to manually link it to the newer version."
     log "The command to be run is: sudo ln -s /usr/lib/x86_64-linux-gnu/libmpfr.so.6 /usr/lib/x86_64-linux-gnu/libmpfr.so.4"
     log "Ctrl+C if you don't want this!"
@@ -50,7 +51,6 @@ if [ ! -d gcc-10.1.0 ]; then
 fi
 popd
 ./verify-compilers.sh
-
 
 # Setup the OS image
 pushd image/stretch
