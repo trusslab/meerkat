@@ -16,11 +16,15 @@ log() {
 log "Hello! I need root privileges to set up a few things:"
 log "First, pulling the right dependencies."
 log "Second, adding ${user} to 'kvm'."
+log "Third, setting up the compilers"
 log "Last, creating a simple debian image."
 
 log "Pulling dependencies"
+# setting +e because I guess apt update is unstable (not really, its just our servers being silly with packages)
+set +e
 sudo apt update
 sudo apt install -y make git gcc g++ ccache build-essential flex bison libncurses-dev libelf-dev libssl-dev dwarves libdw-dev qemu-system-x86
+set -e
 
 # Make sure you can actually boot the VM
 log "Adding ${user} to kvm"
@@ -38,6 +42,11 @@ fi
 if [ ! -d gcc-10.1.0 ]; then
     log "Unpacking Compilers"
     tar -xzf compilers.tar.gz
+    log "Alright, the solution for a missing library is to manually link it to the newer version."
+    log "The command to be run is: sudo ln -s /usr/lib/x86_64-linux-gnu/libmpfr.so.6 /usr/lib/x86_64-linux-gnu/libmpfr.so.4"
+    log "Ctrl+C if you don't want this!"
+    read $nothing
+    sudo ln -s /usr/lib/x86_64-linux-gnu/libmpfr.so.6 /usr/lib/x86_64-linux-gnu/libmpfr.so.4
 fi
 popd
 ./verify-compilers.sh
@@ -68,6 +77,7 @@ fi
 # Build Meerkat and Syzkaller
 log "Cleaning Meerkat and Syzkaller"
 make clean
+# This errors and I expect it to.
 set +e
 make syzkaller-clean
 set -e
