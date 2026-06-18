@@ -234,7 +234,7 @@ int bisect(Environment &env)
     if (bisector.mode() == Mode_FF)
     {
         stagetime = chrono::steady_clock::now();
-        stage_title = "Focused Fuzzing";
+        stage_title = "Mutation Phase";
 
         err = do_bisection(env, bisector, linux_git);
         switch (err) {
