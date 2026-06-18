@@ -206,7 +206,7 @@ while (( $line <= $endLine )); do
         echo ",good fuzz,${findDate}" >> $logfile
         echo "./${bisector} -i ${id} -c ${bisectorconfig} -a ${findhash} ${feature} ${mtime}" >> $logfile
         set +e
-        ./${bisector} -i ${id} -c ${bisectorconfig} -a ${findhash} ${feature} ${mtime} 2>&1 | tee ${wd}log/${curBug}.log
+        timeout 2d ./${bisector} -i ${id} -c ${bisectorconfig} -a ${findhash} ${feature} ${mtime} 2>&1 | tee ${wd}log/${curBug}.log
         set -e
         cp ${wd}reproducers/* ${wd}old/
         number=$(( ${number} + 1 ))
