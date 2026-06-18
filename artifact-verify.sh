@@ -44,7 +44,7 @@ if [[ ${profile} == "help" ]]; then
     exit
 fi
 
-./setup.sh
+. ./setup.sh
 if [[ ${profile} == "setup-only" ]]; then
     log "Setup complete"
     exit
