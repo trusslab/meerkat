@@ -34,8 +34,30 @@ The ones we used are `parse/bugs.csv` and `parse/short.csv`.
 
 ### -F `<feature list>`
 
+This argument accepts a comma-separated list of features that Meerkat should use.
+They are described below:
 
+ - `poc-test`: run phase 2 testing with just the PoCs (not including this means phase 2 will not be run).
+ - `ff-test`: run phase 1 testing with PoC mutation (not including this means phase 1 will not be run).
+ - `poc-all-pocs`: use all known PoCs for a bug rather than just one.
+ - `stateful-corpus`: keep the corpus between mutation sessions.
+ - `setup-only`: stop after buiding the anchor commit.
+ - `find-only`: stop after testing the anchor commit.
+ - `ff-no-find-backup`: if the bug is not found at the anchor commit, stop. Don't fall back to phase 2.
+ - `default`: equivalent to `poc-test,ff-test,poc-all-pocs,stateful-corpus`. This is the default if `-F` is not used.
+
+ - `no-patch-kernel`: don't patch the older kernel (don't use this).
+ - `obselete-patches`: use the old/manual method of patching the kernel (don't use this).
+ - `old-syzkaller`: use syzkaller command that is compatible with a slightly older version (don't use this).
 
 ### `-m <int>`
 
+The maximum fuzzing time.
+The default is 10 if `-m` is not specified.
 
+## Example
+
+This is what a reasonable command looks like:
+```
+./mk-manager.sh -i 1 -s 1 -e 5 -b parse/bugs.csv -F ff-test,poc-test,poc-all-pocs,stateful-corpus
+```
