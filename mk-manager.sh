@@ -72,7 +72,7 @@ printhelp () {
     echo "    b - [file] determine the name of the bug file"
     echo "    m - [int] the maximum time to fuzz at the finding commit"
     echo "    F - [string] The feature string"
-    echo "        [ all, default, poc-test, ff-test, setup-only, find-only, poc-all-pocs, ff-no-find-backup, stateful-corpus, no-patch-kernel ]"
+    echo "        [ default, poc-test, ff-test, setup-only, find-only, poc-all-pocs, ff-no-find-backup, stateful-corpus, no-patch-kernel ]"
 }
 
 # =================================================================================================
