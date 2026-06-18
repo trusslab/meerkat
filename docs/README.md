@@ -6,7 +6,7 @@ These profiles run a small subset of the bugs in Meerkat's dataset, primarily be
 
 ## Environment
 
- - Meerkat has been tested on Ubuntu 20.04 and 24.04. It should be able to run on any debian-base system, but has not been tested.
+ - Meerkat has been tested on Ubuntu 20.04 and 24.04. It should be able to run on any debian-based system, but has not been tested.
  - Meerkat expects to be run on an x86 machine.
  - Meerkat can be run in a VM assuming nested virtualization is enabled (and the VM has enough cores).
  - Meerkat expects to be on a system with at least 16 threads (`nproc` >= 16), at least 20 is recommended.
