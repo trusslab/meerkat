@@ -54,9 +54,17 @@ An example command for running this is as follows:
 
 These results were gathered by running Syz-bisect as-is on each of the bugs.
 
+### `bugs.csv`
+
+This is our dataset and a clone of `parse/bugs.csv`.
+
 ### `corrected-ground-truth.csv`
 
 This file shows the results of our manual effort to correct the BiC of the bugs in our dataset.
+
+### `bics.csv`
+
+This holds the final ground truth, simply bug number and BiC hash for easy reference.
 
 ### `inter-report-dedup.csv`
 
