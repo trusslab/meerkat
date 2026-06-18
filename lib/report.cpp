@@ -320,7 +320,8 @@ int parse_basic_stack(const std::vector<std::string> &lines, int &i, std::vector
 {
     if (read_RIP_entries(lines, i, stack) < 0)
     {
-        std::cerr << "Error: error parsing RIP values in basic report\n" << std::flush;
+        // JTBursey: Fail this quietly for now. This is the default path.
+        //std::cerr << "Error: error parsing RIP values in basic report\n" << std::flush;
         return -1;
     }
 
