@@ -21,7 +21,7 @@ An example command for running this is as follows:
 
 These results cover both Mk_1p and Mk_nm.
 This is because the result for Mk_1p is simply the result after the first PoC of Mk_nm, which is observable in the logs.
-These cases were wun with the features: `poc-test,poc-all-pocs`.
+These cases were run with the features: `poc-test,poc-all-pocs`.
 
 An example command for running this is as follows:
 ```
