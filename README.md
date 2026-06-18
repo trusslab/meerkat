@@ -11,6 +11,13 @@ For everyone else, this README is probably what you want.
 The results presented in "Meerkat: Pushing the Limits of Dynamic Bisection with PoC Mutation," can be found in `results/`.
 There are more README files there as well to explain the results.
 
+### Authors
+
+ - Joseph Bursey  (<jbursey@uci.edu>)
+ - Christoph Sendner
+ - Ardalan Amiri Sani
+ - Zhiyun Qian
+
 ## Setup
 
 This string of commands should get you up and running:
