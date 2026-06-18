@@ -4,18 +4,18 @@
 #include <vector>
 #include <map>
 
-int min3(unsigned int x, unsigned int y, unsigned int z)
+unsigned int min3(unsigned int x, unsigned int y, unsigned int z)
 {
     return x < y ? (x < z ? x : z) : (y < z ? y : z);
 }
 
 // That feeling when it's easier to write the function yourself than include the library.
-int max2(unsigned int x, unsigned int y)
+unsigned int max2(unsigned int x, unsigned int y)
 {
     return x > y ? x : y;
 }
 
-int levenshtein_str(const std::string &s1, const std::string &s2)
+unsigned int levenshtein_str(const std::string &s1, const std::string &s2)
 {
     if (s1.empty())
         return s2.size();
@@ -51,7 +51,7 @@ out:
     return mem.at({i1, i2});
 }
 
-int levenshtein_vec(const std::vector<std::string> &v1, const std::vector<std::string> &v2)
+unsigned int levenshtein_vec(const std::vector<std::string> &v1, const std::vector<std::string> &v2)
 {
     std::map<std::pair<unsigned int, unsigned int>, unsigned int> mem;
     return _levenshtein_vec(v1, 0, v2, 0, mem);
