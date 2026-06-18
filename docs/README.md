@@ -44,6 +44,9 @@ Testing the reproducibility of our entire results would take a long time and a l
 So, we have provided a strategic subset which should be enough to verify our claims while taking less time.
 The subset we have provided consists of the 37 bugs for which Meerkat was able to find the BiC, but Syz-bisect could not.
 This subset can be found in `parse/short.csv`.
+The smaller dataset _should_ complete in about 14 days, assuming the 9 hour average runtime holds.
+
+You can run this dataset with `./artifact-verify.sh reproducible`
 
 ### 37 is not 34
 
@@ -76,6 +79,11 @@ These are described below.
  - basic: Run a single bug. Specifically, bug0003.
  - short: Run the 37 bugs selected for the reproducible badge, descriped above.
  - full: Run all 200 bugs.
+
+For example, if you wanted to run the full dataset as mk1p, you would use `./artifact-verify.sh mk1p full`
+
+Finally, you can run `mk-manager.sh` directly.
+For documentation, use `-h`.
 
 ## Understanding the Results
 
