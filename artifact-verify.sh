@@ -87,5 +87,24 @@ else
     exit
 fi
 
+# Set the id based on the profile. That should be nice.
+if [[ ${profile} == "mk" ]]; then
+    i=1
+elif [[ ${profile} == "reproducible" ]]; then
+    i=2
+elif [[ ${profile} == "functional" ]]; then
+    i=3
+elif [[ ${profile} == "mkm1p" ]]; then
+    i=4
+elif [[ ${profile} == "mknm" ]]; then
+    i=5
+elif [[ ${profile} == "mk1p" ]]; then
+    i=6
+else
+    log "Unknown profile given!"
+    usage
+    exit
+fi
+
 ./mk-manager.sh -s ${s} -e ${e} -i ${i} -b ${b} -m ${m} -F ${F}
 
