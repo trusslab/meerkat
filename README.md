@@ -2,9 +2,8 @@
 
 Welcome! This is Meerkat, a bisection tool that utilizes PoC mutation.
 
-For artifact verification (functional, reproducible), please see [this README](docs/README.md).
-It will handle everything necessary for evaluation towards those badges.
-For everyone else, this README is probably what you want.
+For artifact verification (functional, reproducible) or just more in-depth docs, please see [this README](docs/README.md).
+It will handle pretty much everything.
 
 ## Meerkat Paper
 
