@@ -84,7 +84,9 @@ For example, if you wanted to run the full dataset as mk1p, you would use `./art
 Note, the `functional` profile is equivalent to `mk basic`, and `reproducible` is equivalent to `mk short`.
 
 Finally, you can run `mk-manager.sh` directly.
-For documentation, use `-h` or check out [mk-manager.md](mk-manager.md).
+For documentation, use `-h` or check out [docs/mk-manager.md](mk-manager.md).
+
+Finally finally, if you really just want to run `./bin/meerkat`, check out [docs/meerkat.md](meerkat.md).
 
 ## Understanding the Results
 
