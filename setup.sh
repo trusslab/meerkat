@@ -16,7 +16,7 @@ log() {
 log "Hello! I need root privileges to set up a few things:"
 log "First, pulling the right dependencies."
 log "Second, adding ${user} to 'kvm'."
-log "Third, setting up the compilers"
+log "Third, linking a compiler-needed library"
 log "Last, creating a simple debian image."
 
 log "Pulling dependencies"
