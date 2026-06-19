@@ -165,7 +165,6 @@ Let's skip ahead now.
 Session:   15
 Kernel:    2022-01-31 - 341adeec9adad0874f29a0a1af35638207352a39
 Compiler:  ccache gcc
-Error: index error parsing basic report
 Attempt 1:
     Time  Bug Name
 ***    2  BUG: MAX_LOCK_DEPTH too low! (4) (has report)
